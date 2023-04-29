@@ -1,0 +1,47 @@
+
+.tab-pan-wrapper .ant-tabs-nav{
+    background: #d9ede1;
+    padding: 0 15px;
+    color: black;
+}
+
+
+.order-bump-offer{
+    font-size: 16px;
+    background: #7979F5;
+    height: 50px;
+    font-size: 20px;
+}
+
+.order-bump-appearance{
+    font-size: 16px;
+    background: #7979F5;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.order-bump-offer-text, .order-bump-appearance-text{
+    font-size: 27px;
+}
+
+.order-bump-offer-section{
+    background: #EEEEEE;
+    height: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.order-bump-offer-section-text{
+    font-size: 16px;
+    color: #9b9bf5; 
+}
+.order-bump-save-change-button{
+    background: #7979F5;
+    border: 1px solid #7979F5;
+    margin-top: 20px;
+}
+
+

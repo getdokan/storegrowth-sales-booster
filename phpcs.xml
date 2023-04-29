@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Plugin Coding Standards">
+
+    <description>WordPress Plugin PHP_CodeSniffer ruleset.</description>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>bin/*</exclude-pattern>
+    <exclude-pattern>lib/*</exclude-pattern>
+    <exclude-pattern>assets/*</exclude-pattern>
+
+    <!-- Exclude module assets -->
+    <exclude-pattern>includes/modules/fly-cart/assets/*</exclude-pattern>
+    <exclude-pattern>includes/modules/progressive-discount-banner/assets/*</exclude-pattern>
+    <exclude-pattern>includes/modules/sales-pop/assets/*</exclude-pattern>
+    <exclude-pattern>includes/modules/stock-countdown/assets/*</exclude-pattern>
+    <exclude-pattern>includes/modules/upsell-order-bump/assets/*</exclude-pattern>
+
+    <!-- Configs -->
+    <config name="minimum_supported_wp_version" value="5.0" />
+    <config name="testVersion" value="7.0-"/>
+
+    <arg name="basepath" value="."/>
+
+    <!-- Rules -->
+    <rule ref="WordPress" />
+
+    <rule ref="PHPCompatibilityWP" />
+
+    <rule ref="WooCommerce-Core" />
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="sbfw" />
+        </properties>
+    </rule>
+</ruleset>

@@ -1,0 +1,132 @@
+<?php
+/**
+ * All necessary custom functions will be here.
+ *
+ * @package WPBP
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! function_exists( 'sbfw_assets_url' ) ) {
+	/**
+	 * Get plugin assets url.
+	 *
+	 * @param string $path Plugin path.
+	 */
+	function sbfw_assets_url( $path ) {
+		return WPCODAL_SBFW_PLUGIN_DIR_URL . 'assets/' . $path;
+	}
+}
+
+if ( ! function_exists( 'sbfw_modules_url' ) ) {
+	/**
+	 * Get modules url.
+	 *
+	 * @param string $path Module internal path.
+	 */
+	function sbfw_modules_url( $path ) {
+		return WPCODAL_SBFW_PLUGIN_DIR_URL . 'includes/modules/' . $path;
+	}
+}
+
+if ( ! function_exists( 'sbfw_modules_path' ) ) {
+	/**
+	 * Get modules path.
+	 *
+	 * @param string $path Module internal path.
+	 */
+	function sbfw_modules_path( $path ) {
+		return WPCODAL_SBFW_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
+	}
+}
+
+if ( ! function_exists( 'sbfw_plugin_path' ) ) {
+	/**
+	 * Get plugin file path.
+	 *
+	 * @param string $path Plugin path.
+	 */
+	function sbfw_plugin_path( $path ) {
+		return WPCODAL_SBFW_PLUGIN_DIR_PATH . $path;
+	}
+}
+
+if ( ! function_exists( 'sbfw_get_file_content' ) ) {
+	/**
+	 * Get plugin file path.
+	 *
+	 * @param string $path Plugin path.
+	 */
+	function sbfw_get_file_content( $path ) {
+		ob_start();
+
+		require WPCODAL_SBFW_PLUGIN_DIR_PATH . $path;
+
+		return ob_get_clean();
+	}
+}
+
+if ( ! function_exists( 'sbfw_find_option_setting' ) ) {
+	/**
+	 * Find a settings value from array.
+	 *
+	 * @param array  $settings WP option array.
+	 * @param string $key Key from option array.
+	 * @param string $default Default value.
+	 */
+	function sbfw_find_option_setting( $settings, $key, $default = '' ) {
+		if ( isset( $settings[ $key ] ) ) {
+			return $settings[ $key ];
+		}
+
+		return $default;
+	}
+}
+
+if ( ! function_exists( 'sbfw_sanitize_form_fields' ) ) {
+	/**
+	 * Sanitize form text fields.
+	 *
+	 * @param string $value User input.
+	 */
+	function sbfw_sanitize_form_fields( $value ) {
+		$value = sanitize_text_field( $value );
+
+		if ( 'true' === $value ) {
+			return true;
+		}
+
+		if ( 'false' === $value ) {
+			return false;
+		}
+
+		return $value;
+	}
+}
+
+if ( ! function_exists( 'sbfw_sanitize_svg_icon_fields' ) ) {
+	/**
+	 * Sanitize form SVG field xml.
+	 *
+	 * @param string $value SVG string.
+	 */
+	function sbfw_sanitize_svg_icon_fields( $value ) {
+		$icon_allowed_html = array(
+			'svg'  => array(
+				'viewbox' => true,
+				'height'  => true,
+				'width'   => true,
+			),
+			'path' => array(
+				'd' => true,
+			),
+			'g'    => array(),
+		);
+
+		return wp_kses( $value, $icon_allowed_html );
+
+	}
+}

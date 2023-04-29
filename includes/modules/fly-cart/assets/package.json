@@ -1,0 +1,19 @@
+{
+  "name": "sales-booster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "wp-scripts start src/settings.js",
+    "build": "wp-scripts build src/settings.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/scripts": "^23.0.0"
+  },
+  "dependencies": {
+    "antd": "^4.20.4",
+    "nanoid": "^3.3.4"
+  }
+}
