@@ -1,0 +1,25 @@
+{
+  "name": "shamssadek/storepulse-sales-booster",
+  "autoload": {
+    "psr-4": {
+      "StorePlus\\Inc\\": "includes/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Shams Sadek",
+      "email": "shamssadek@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "wp-coding-standards/wpcs": "dev-develop",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+    "woocommerce/woocommerce-sniffs": "^0.0.2"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
