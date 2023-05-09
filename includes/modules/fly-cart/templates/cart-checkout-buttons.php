@@ -8,10 +8,10 @@
 ?>
 <div class="sbfw-cart-widget-buttons">
 	<a href="#" class="sbfw-cart-widget-shooping-button sbfw-cart-widget-close">
-		<?php esc_html_e( 'Keep Shopping', 'sbfw' ); ?>
+		<?php esc_html_e( 'Keep Shopping', 'spsb' ); ?>
 	</a>
 
 	<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="sbfw-cart-widget-checkout-button">
-		<?php esc_html_e( 'Checkout', 'sbfw' ); ?>
+		<?php esc_html_e( 'Checkout', 'spsb' ); ?>
 	</a>
 </div>

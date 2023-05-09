@@ -35,8 +35,8 @@ class Admin_Menu {
 		// $icon = sbfw_get_file_content( 'assets/images/rocket-icon.svg' );
 
 		add_menu_page(
-			__( 'Sales Booster', 'sbfw' ),
-			__( 'Sales Booster', 'sbfw' ),
+			__( 'Sales Booster', 'spsb' ),
+			__( 'Sales Booster', 'spsb' ),
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
@@ -47,8 +47,8 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - Sales Booster', 'sbfw' ),
-			__( 'Modules', 'sbfw' ),
+			__( 'Modules - Sales Booster', 'spsb' ),
+			__( 'Modules', 'spsb' ),
 			'manage_options',
 			'sbfw-modules',
 			array( $this, 'modules_callback' )
@@ -56,8 +56,8 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Settings - Sales Booster', 'sbfw' ),
-			__( 'Settings', 'sbfw' ),
+			__( 'Settings - Sales Booster', 'spsb' ),
+			__( 'Settings', 'spsb' ),
 			'manage_options',
 			'sbfw-settings',
 			array( $this, 'settings_callback' )
