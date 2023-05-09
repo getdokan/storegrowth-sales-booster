@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Sales Pop module initiator class.
  */
-class Upsell_Order_Bump implements Module_Skeleton {
+class Upsell_Order_Bump_Module implements Module_Skeleton {
 
 
 	use Singleton;
@@ -97,4 +97,4 @@ class Upsell_Order_Bump implements Module_Skeleton {
 }
 
 // Create object and return.
-return Upsell_Order_Bump::instance();
+return Upsell_Order_Bump_Module::instance();
