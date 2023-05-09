@@ -14,16 +14,17 @@
 		<hr style="margin-bottom:<?php echo esc_attr( $bump_info->box_top_margin ); ?>px"/>
 		<div class="offer-main-wrap" 
 		style="<?php echo 'no_border' !== $bump_info->box_border_style ? 'border:2px ' . esc_attr( $bump_info->box_border_style ) . ' ' . esc_attr( $bump_info->box_border_color ) : ''; ?>">
-			<div class="dynamic-offer-text" 
-			style="<?php
+			<div class="dynamic-offer-text"
+			style="
+			<?php
 			echo 'background:' . esc_attr( $bump_info->discount_background_color ) . ';';
 			echo 'color:' . esc_attr( $bump_info->discount_text_color ) . ';';
 			echo 'font-size:' . esc_attr( $bump_info->discount_font_size ) . 'px;'
 			?>
 			"
-			>
+			>q
 
-			<?php 
+			<?php
 			echo 'discount' === $offer_type ? '&nbsp;' . esc_attr( $offer_amount ) . '% off only for you' : 'Just Only $' . esc_attr( $offer_amount ) . '.00';
 			?>
 			</div>
@@ -32,7 +33,8 @@
 					<img src="<?php echo esc_attr( $bump_info->offer_image_url ); ?>" width='70' alt="" />	
 				</div>
 				<div class="offer-product-title" 
-				style = "<?php
+				style = "
+				<?php
 				echo 'color:' . esc_attr( $bump_info->product_description_text_color ) . ';';
 				echo 'font-size:' . esc_attr( $bump_info->product_description_font_size ) . 'px;'
 				?>
@@ -49,7 +51,8 @@
 			</div>
 			<div class="product-checkbox-and-excitement-message" 
 
-			style = "<?php
+			style = "
+			<?php
 			echo 'background:' . esc_attr( $bump_info->accept_offer_background_color ) . ';';
 			echo 'color:' . esc_attr( $bump_info->accept_offer_text_color ) . ';';
 			echo 'font-size:' . esc_attr( $bump_info->accept_offer_font_size ) . 'px;'
@@ -69,7 +72,8 @@
 
 			<div 
 				class = "product-description"
-				style = "<?php
+				style = "
+				<?php
 				echo 'background:' . esc_attr( $bump_info->offer_description_background_color ) . ';';
 				echo 'color:' . esc_attr( $bump_info->offer_description_text_color ) . ';';
 				echo 'font-size:' . esc_attr( $bump_info->offer_description_font_size ) . 'px;'

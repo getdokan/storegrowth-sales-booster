@@ -36,7 +36,6 @@ class Ajax {
 
 		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
-
 	}
 
 	/**
@@ -148,7 +147,6 @@ class Ajax {
 		}
 
 		die();
-
 	}
 
 	/**

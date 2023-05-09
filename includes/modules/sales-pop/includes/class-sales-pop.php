@@ -45,7 +45,6 @@ class Sales_POP {
 		if ( isset( $popup_properties['enable'] ) && $popup_properties['enable'] ) {
 			include __DIR__ . '/../templates/popup.php';
 		}
-
 	}
 
 }

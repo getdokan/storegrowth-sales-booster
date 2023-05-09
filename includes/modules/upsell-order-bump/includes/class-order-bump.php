@@ -88,7 +88,7 @@ class Order_Bump {
 			}
 
 			if (
-				isset($bump_info->target_categories)
+				isset( $bump_info->target_categories )
 				&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bump_info->target_categories ) )
 				&& ! in_array( $offer_product_id, $showed_bump_product_id, true )
 			) {

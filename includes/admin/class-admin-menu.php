@@ -32,7 +32,7 @@ class Admin_Menu {
 	 * Register a custom menu page.
 	 */
 	public function register_admin_menu() {
-//		$icon = sbfw_get_file_content( 'assets/images/rocket-icon.svg' );
+		// $icon = sbfw_get_file_content( 'assets/images/rocket-icon.svg' );
 
 		add_menu_page(
 			__( 'Sales Booster', 'sbfw' ),
@@ -40,8 +40,8 @@ class Admin_Menu {
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-//			'data:image/svg+xml;base64,' . base64_encode( $icon ), // phpcs:ignore
-			"dashicons-admin-customizer",
+			// 'data:image/svg+xml;base64,' . base64_encode( $icon ), // phpcs:ignore
+			'dashicons-admin-customizer',
 			58
 		);
 
