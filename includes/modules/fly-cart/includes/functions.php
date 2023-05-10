@@ -10,11 +10,11 @@
  *
  * @param bool $url_only Set return format.
  */
-function sbfw_fast_cart_get_query_string_for_http_ajax_referer( $url_only = false ) {
-	$nonce = wp_create_nonce( 'sbfw_frontend_ajax' );
+function spsb_fast_cart_get_query_string_for_http_ajax_referer( $url_only = false ) {
+	$nonce = wp_create_nonce( 'spsb_frontend_ajax' );
 
 	$ajax_referer = sprintf(
-		'%1$s?action=sbfw_fly_cart_frontend&method=get_cart_contents&_ajax_nonce=%2$s',
+		'%1$s?action=spsb_fly_cart_frontend&method=get_cart_contents&_ajax_nonce=%2$s',
 		admin_url( 'admin-ajax.php' ),
 		$nonce
 	);

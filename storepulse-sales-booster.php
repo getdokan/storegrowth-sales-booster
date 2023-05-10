@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: StorePulse - WooCommerce Sales Booster Addon
+ * Plugin Name: StorePulse - Sales Booster
  * Description: Take your WooCommerce store to new heights with StorePulse, the must-have addon designed to skyrocket your sales. Whether you're just starting out or running a thriving online shop, StorePulse offers a comprehensive set of essential modules to optimize your store's performance and maximize conversions. With our free version, you'll gain access to five powerful modules that will supercharge your sales strategy. From advanced inventory management to persuasive marketing tools, StorePulse is your secret weapon for success. Get started with StorePulse today and unlock the full potential of your WooCommerce store.
  * Version:     1.0.0
  * Author:      Invizo
@@ -10,7 +10,7 @@
  * Text Domain: spsb
  * Domain Path: /languages
  *
- * @package SBFW
+ * @package SPSB
  */
 
 // If this file is called directly, abort.
@@ -21,29 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define plugin __FILE__
  */
-if ( ! defined( 'WPCODAL_SBFW_PLUGIN_FILE' ) ) {
-	define( 'WPCODAL_SBFW_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'INVIZO_PLUGIN_FILE' ) ) {
+	define( 'INVIZO_PLUGIN_FILE', __FILE__ );
 }
 
 /**
  * Define plugin directory URL.
  */
-if ( ! defined( 'WPCODAL_SBFW_PLUGIN_DIR_URL' ) ) {
-	define( 'WPCODAL_SBFW_PLUGIN_DIR_URL', plugin_dir_url( WPCODAL_SBFW_PLUGIN_FILE ) );
+if ( ! defined( 'INVIZO_PLUGIN_DIR_URL' ) ) {
+	define( 'INVIZO_PLUGIN_DIR_URL', plugin_dir_url( INVIZO_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin directory path.
  */
-if ( ! defined( 'WPCODAL_SBFW_PLUGIN_DIR_PATH' ) ) {
-	define( 'WPCODAL_SBFW_PLUGIN_DIR_PATH', plugin_dir_path( WPCODAL_SBFW_PLUGIN_FILE ) );
+if ( ! defined( 'INVIZO_PLUGIN_DIR_PATH' ) ) {
+	define( 'INVIZO_PLUGIN_DIR_PATH', plugin_dir_path( INVIZO_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin basename.
  */
-if ( ! defined( 'WPCODAL_SBFW_PLUGIN_BASENAME' ) ) {
-	define( 'WPCODAL_SBFW_PLUGIN_BASENAME', plugin_basename( WPCODAL_SBFW_PLUGIN_FILE ) );
+if ( ! defined( 'INVIZO_PLUGIN_BASENAME' ) ) {
+	define( 'INVIZO_PLUGIN_BASENAME', plugin_basename( INVIZO_PLUGIN_FILE ) );
 }
 
 /**
@@ -56,7 +56,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		'admin_notices',
 		function () {
 			$message = sprintf(
-				__( 'Sales booster for WooCommerce requires %s to be installed and active.', 'sbfw' ),
+				__( 'Sales booster for WooCommerce requires %s to be installed and active.', 'spsb' ),
 				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 			);
 

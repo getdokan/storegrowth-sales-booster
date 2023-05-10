@@ -32,7 +32,7 @@ class Admin_Menu {
 	 * Register a custom menu page.
 	 */
 	public function register_admin_menu() {
-		// $icon = sbfw_get_file_content( 'assets/images/rocket-icon.svg' );
+		// $icon = spsb_get_file_content( 'assets/images/rocket-icon.svg' );
 
 		add_menu_page(
 			__( 'Sales Booster', 'spsb' ),
@@ -50,7 +50,7 @@ class Admin_Menu {
 			__( 'Modules - Sales Booster', 'spsb' ),
 			__( 'Modules', 'spsb' ),
 			'manage_options',
-			'sbfw-modules',
+			'spsb-modules',
 			array( $this, 'modules_callback' )
 		);
 
@@ -59,7 +59,7 @@ class Admin_Menu {
 			__( 'Settings - Sales Booster', 'spsb' ),
 			__( 'Settings', 'spsb' ),
 			'manage_options',
-			'sbfw-settings',
+			'spsb-settings',
 			array( $this, 'settings_callback' )
 		);
 

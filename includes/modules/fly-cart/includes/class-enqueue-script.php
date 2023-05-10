@@ -42,23 +42,23 @@ class Enqueue_Script {
 
 		wp_enqueue_style(
 			'flaticon',
-			sbfw_modules_url( 'fly-cart/assets/font/flaticon.css' ),
+			spsb_modules_url( 'fly-cart/assets/font/flaticon.css' ),
 			array(),
-			filemtime( sbfw_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
+			filemtime( spsb_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
 		);
 
 		wp_enqueue_style(
-			'sbfw-ffc-style',
-			sbfw_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
+			'spsb-ffc-style',
+			spsb_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
 			array(),
-			filemtime( sbfw_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
+			filemtime( spsb_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wfc-flyto',
-			sbfw_modules_url( 'fly-cart/assets/js/flyto.js' ),
+			spsb_modules_url( 'fly-cart/assets/js/flyto.js' ),
 			array( 'jquery', 'jquery-effects-shake' ),
-			filemtime( sbfw_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
+			filemtime( spsb_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
 			true
 		);
 
@@ -71,7 +71,7 @@ class Enqueue_Script {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'sbfw_ffc_wp_enqueue_scripts' );
+		do_action( 'spsb_ffc_wp_enqueue_scripts' );
 	}
 
 	/**
@@ -80,18 +80,18 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sbfw-settings' === $hook ) {
+		if ( 'sales-booster_page_spsb-settings' === $hook ) {
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 
-			$settings_file = require sbfw_modules_path( 'fly-cart/assets/build/settings.asset.php' );
+			$settings_file = require spsb_modules_path( 'fly-cart/assets/build/settings.asset.php' );
 
 			// Extra dependencies.
 			$settings_file['dependencies'][] = 'wp-color-picker';
 
 			wp_enqueue_script(
-				'sbfw-fly-cart-settings',
-				sbfw_modules_url( 'fly-cart/assets/build/settings.js' ),
+				'spsb-fly-cart-settings',
+				spsb_modules_url( 'fly-cart/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -104,10 +104,10 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get style options.
-		$settings        = get_option( 'sbfw_fly_cart_settings' );
-		$wfc_color       = sbfw_find_option_setting( $settings, 'icon_color', '#2ecc71' );
-		$wfc_btn_bgcolor = sbfw_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
-		$widget_bg_color = sbfw_find_option_setting( $settings, 'widget_bg_color', '#fff' );
+		$settings        = get_option( 'spsb_fly_cart_settings' );
+		$wfc_color       = spsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
+		$wfc_btn_bgcolor = spsb_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
+		$widget_bg_color = spsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -119,17 +119,17 @@ class Enqueue_Script {
 			.wfc-widget-sidebar {
 				background-color: {$widget_bg_color};
 			}
-			.sbfw-cart-widget-buttons a {
+			.spsb-cart-widget-buttons a {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
-			.sbfw-cart-widget-buttons a.sbfw-cart-widget-shooping-button {
+			.spsb-cart-widget-buttons a.spsb-cart-widget-shooping-button {
 				color: {$wfc_btn_bgcolor};
 				background-color: {$widget_bg_color};
 			}
 		";
 
-		wp_add_inline_style( 'sbfw-ffc-style', $custom_css );
+		wp_add_inline_style( 'spsb-ffc-style', $custom_css );
 	}
 
 	/**
@@ -138,18 +138,18 @@ class Enqueue_Script {
 	private function frontend_widget_script() {
 		wp_enqueue_script(
 			'wfc-script',
-			sbfw_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
+			spsb_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
+			filemtime( spsb_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
 			true
 		);
 
 		wp_localize_script(
 			'wfc-script',
-			'sbfwFrontend',
+			'spsbFrontend',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'sbfw_frontend_ajax' ),
+				'nonce'   => wp_create_nonce( 'spsb_frontend_ajax' ),
 			)
 		);
 	}

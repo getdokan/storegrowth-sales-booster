@@ -40,7 +40,7 @@ class Sales_POP {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
-		$popup_properties = maybe_unserialize( get_option( 'sbfw_popup_products', true ) );
+		$popup_properties = maybe_unserialize( get_option( 'spsb_popup_products', true ) );
 
 		if ( isset( $popup_properties['enable'] ) && $popup_properties['enable'] ) {
 			include __DIR__ . '/../templates/popup.php';

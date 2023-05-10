@@ -5,7 +5,7 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 /**
  * Add routes to sidebar.
  */
-addFilter( 'sbfw_routes', 'sbfw', (routes) => {
+addFilter( 'spsb_routes', 'spsb', (routes) => {
   routes.push( {
     path: "/fly-cart",
     element: <FlyCart />,
@@ -18,7 +18,7 @@ addFilter( 'sbfw_routes', 'sbfw', (routes) => {
 /**
  * Add sidebar menu items
  */
-addFilter( 'sidebar_menu_items', 'sbfw', (items, Link) => {
+addFilter( 'sidebar_menu_items', 'spsb', (items, Link) => {
   items.push( {
     label: <Link to="/fly-cart">Fly Cart</Link>,
     key: 'fly-cart',

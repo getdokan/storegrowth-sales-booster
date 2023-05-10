@@ -44,7 +44,7 @@ const selectors = {
   }
 };
 
-const store = createReduxStore( 'sbfw', {
+const store = createReduxStore( 'spsb', {
   reducer,
   actions,
   selectors

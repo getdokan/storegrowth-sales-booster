@@ -10,7 +10,7 @@ function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
 
   return (
-    <Layout className="sbfw-layout-relative">
+    <Layout className="spsb-layout-relative">
       <Sidebar routes={routes} />
 
       <Layout>
@@ -42,13 +42,13 @@ function NoModuleActive() {
 function AppLayout() {
   let navigate = useNavigate();
 
-  let routes = applyFilters( 'sbfw_routes', [], Outlet, navigate, useParams, useSearchParams );
+  let routes = applyFilters( 'spsb_routes', [], Outlet, navigate, useParams, useSearchParams );
 
   return (
     <Layout>
       <HeaderBar />
 
-      <h1 className="sbfw-heading" style={ { marginBottom: '15px' } }>Sales Booster Settings</h1>
+      <h1 className="spsb-heading" style={ { marginBottom: '15px' } }>Sales Booster Settings</h1>
 
       {!routes.length ? <NoModuleActive /> : <ModuleSettings routes={routes} />}
     </Layout>

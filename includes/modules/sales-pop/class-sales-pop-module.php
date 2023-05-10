@@ -39,7 +39,7 @@ class Sales_Pop_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sbfw_modules_url( 'sales-pop/assets/images/icon.png' );
+		return spsb_modules_url( 'sales-pop/assets/images/icon.png' );
 	}
 
 	/**

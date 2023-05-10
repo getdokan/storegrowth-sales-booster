@@ -115,7 +115,7 @@ const selectors = {
   }
 };
 
-export default createReduxStore( 'sbfw_order_bump', {
+export default createReduxStore( 'spsb_order_bump', {
   reducer,
   actions,
   selectors

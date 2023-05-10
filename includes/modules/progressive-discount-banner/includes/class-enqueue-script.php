@@ -34,11 +34,11 @@ class Enqueue_Script {
 	 * Add JS scripts to frontend.
 	 */
 	public function wp_enqueue_scripts() {
-		$style_file = sbfw_modules_path( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' );
+		$style_file = spsb_modules_path( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' );
 
 		wp_enqueue_style(
-			'sbfw-pd-banner-style',
-			sbfw_modules_url( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' ),
+			'spsb-pd-banner-style',
+			spsb_modules_url( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' ),
 			array(),
 			filemtime( $style_file )
 		);
@@ -52,12 +52,12 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sbfw-settings' === $hook ) {
-			$settings_file = require sbfw_modules_path( 'progressive-discount-banner/assets/build/settings.asset.php' );
+		if ( 'sales-booster_page_spsb-settings' === $hook ) {
+			$settings_file = require spsb_modules_path( 'progressive-discount-banner/assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
-				'sbfw-pd-banner-settings',
-				sbfw_modules_url( 'progressive-discount-banner/assets/build/settings.js' ),
+				'spsb-pd-banner-settings',
+				spsb_modules_url( 'progressive-discount-banner/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -70,22 +70,22 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get style options.
-		$settings     = sbfw_pd_banner_get_settings();
-		$bar_position = sbfw_find_option_setting( $settings, 'bar_position', 'top' );
-		$bg_color     = sbfw_find_option_setting( $settings, 'background_color', '#2E5780' );
-		$text_color   = sbfw_find_option_setting( $settings, 'text_color', '#ffffff' );
-		$icon_color   = sbfw_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$settings     = spsb_pd_banner_get_settings();
+		$bar_position = spsb_find_option_setting( $settings, 'bar_position', 'top' );
+		$bg_color     = spsb_find_option_setting( $settings, 'background_color', '#2E5780' );
+		$text_color   = spsb_find_option_setting( $settings, 'text_color', '#ffffff' );
+		$icon_color   = spsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
-				.sbfw-pd-banner-bar-wrapper {
+				.spsb-pd-banner-bar-wrapper {
 					top: auto;
 					bottom: 0;
 				}
 			';
 		} else {
 			$css = '
-				body.admin-bar .sbfw-pd-banner-bar-wrapper {
+				body.admin-bar .spsb-pd-banner-bar-wrapper {
 					top: 32px;
 				}
 				body {
@@ -95,16 +95,16 @@ class Enqueue_Script {
 		}
 
 		$css .= "
-			.sbfw-pd-banner-bar-wrapper {
+			.spsb-pd-banner-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
 			}
-			.sbfw-pd-banner-bar-wrapper p svg {
+			.spsb-pd-banner-bar-wrapper p svg {
 				fill: {$icon_color};
 			}
 		";
 
-		wp_add_inline_style( 'sbfw-pd-banner-style', $css );
+		wp_add_inline_style( 'spsb-pd-banner-style', $css );
 	}
 
 }

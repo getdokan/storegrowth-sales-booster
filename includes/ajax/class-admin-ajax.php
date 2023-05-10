@@ -26,7 +26,7 @@ class Admin_Ajax {
 	 * Constructor of Admin_Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_sbfw_admin_ajax', array( $this, 'admin_ajax' ) );
+		add_action( 'wp_ajax_spsb_admin_ajax', array( $this, 'admin_ajax' ) );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Admin_Ajax {
 	 * @uses update_module_status
 	 */
 	public function admin_ajax() {
-		check_ajax_referer( 'sbfw_ajax_nonce' );
+		check_ajax_referer( 'spsb_ajax_nonce' );
 
 		if ( ! isset( $_POST['method'] ) ) {
 			wp_die();

@@ -10,10 +10,10 @@
  *
  * @param int $product_id Product post ID.
  */
-function sbfw_stock_cd_is_product_discountable( $product_id ) {
-	$discount_amount = get_post_meta( $product_id, '_sbfw_stock_countdown_discount_amount', true );
-	$start_date      = get_post_meta( $product_id, '_sbfw_stock_countdown_discount_start', true );
-	$end_date        = get_post_meta( $product_id, '_sbfw_stock_countdown_discount_end', true );
+function spsb_stock_cd_is_product_discountable( $product_id ) {
+	$discount_amount = get_post_meta( $product_id, '_spsb_stock_countdown_discount_amount', true );
+	$start_date      = get_post_meta( $product_id, '_spsb_stock_countdown_discount_start', true );
+	$end_date        = get_post_meta( $product_id, '_spsb_stock_countdown_discount_end', true );
 
 	// If data is not set.
 	if ( ! $discount_amount || ! $end_date ) {

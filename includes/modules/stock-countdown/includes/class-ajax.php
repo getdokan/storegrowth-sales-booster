@@ -25,24 +25,24 @@ class Ajax {
 	 * Constructor of Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_sbfw_stock_countdown_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sbfw_stock_countdown_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_spsb_stock_countdown_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_spsb_stock_countdown_get_settings', array( $this, 'get_settings' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sbfw_ajax_nonce' );
+		check_ajax_referer( 'spsb_ajax_nonce' );
 
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `sbfw_sanitize_form_fields`.
-		$form_data = array_map( 'sbfw_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `spsb_sanitize_form_fields`.
+		$form_data = array_map( 'spsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
 
-		update_option( 'sbfw_stock_countdown_settings', $form_data );
+		update_option( 'spsb_stock_countdown_settings', $form_data );
 
 		wp_send_json_success();
 	}
@@ -51,9 +51,9 @@ class Ajax {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sbfw_ajax_nonce' );
+		check_ajax_referer( 'spsb_ajax_nonce' );
 
-		$form_data = get_option( 'sbfw_stock_countdown_settings', array() );
+		$form_data = get_option( 'spsb_stock_countdown_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

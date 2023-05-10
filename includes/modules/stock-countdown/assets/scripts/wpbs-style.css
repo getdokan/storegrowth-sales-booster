@@ -1,13 +1,13 @@
-.sbfw-stock-progressbar-status {
+.spsb-stock-progressbar-status {
 	width: 100%;
 	margin-bottom: 8px;
 }
-.sbfw-stock-progressbar-status::after {
+.spsb-stock-progressbar-status::after {
 	display: table;
 	content: " ";
 	clear: both;
 }
-.sbfw-stock-progressbar-status span {
+.spsb-stock-progressbar-status span {
 	display: block;
 }
 span.total-sold {
@@ -20,34 +20,34 @@ span.instock {
 	margin-top: 0;
 	margin-bottom: 8px;
 }
-.sbfw-stock-counter-and-bar {
+.spsb-stock-counter-and-bar {
 	border: 1px solid #ccc;
 	padding: 7px 10px;
 	border-radius: 4px;
 }
-.sbfw-stock-counter-heading {
+.spsb-stock-counter-heading {
 	margin: 0 0 10px 0;
 	text-align: center;
 	font-size: 26px;
 	line-height: 1.2;
 }
-.sbfw-stock-counter-items {
+.spsb-stock-counter-items {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 10px;
 }
-.sbfw-stock-counter-item {
+.spsb-stock-counter-item {
 	text-align: center;
 	padding: 0 10px;
 }
-.sbfw-stock-counter-item strong {
+.spsb-stock-counter-item strong {
 	display: block;
 	font-size: 32px;
 	line-height: 1.2;
 }
-.sbfw-stock-progressbar-status-below {
+.spsb-stock-progressbar-status-below {
 	text-align: center;
 }
-.sbfw-stock-progress-bar-format-below {
+.spsb-stock-progress-bar-format-below {
 	padding-top: 5px;
 }

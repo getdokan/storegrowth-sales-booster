@@ -7,7 +7,7 @@ import ModuleCard from './ModuleCard';
 import { Ajax } from '../../ajax';
 
 function Modules() {
-  const { updateModules, setPageLoading } = useDispatch( 'sbfw' );
+  const { updateModules, setPageLoading } = useDispatch( 'spsb' );
 
   useEffect(() => {
     setPageLoading(true);
@@ -20,7 +20,7 @@ function Modules() {
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
-    allModules: select('sbfw').getModules()
+    allModules: select('spsb').getModules()
   }));
 
   return (

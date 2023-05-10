@@ -41,33 +41,33 @@ class Enqueue_Script {
 		}
 
 		wp_enqueue_style(
-			'sbfw-stock-cd-custom-style',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/wpbs-style.css' ),
+			'spsb-stock-cd-custom-style',
+			spsb_modules_url( 'stock-countdown/assets/scripts/wpbs-style.css' ),
 			array(),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/wpbs-style.css' ) )
+			filemtime( spsb_modules_path( 'stock-countdown/assets/scripts/wpbs-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wpbsc_jqmeter',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/jqmeter.min.js' ),
+			spsb_modules_url( 'stock-countdown/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/jqmeter.min.js' ) ),
+			filemtime( spsb_modules_path( 'stock-countdown/assets/scripts/jqmeter.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
-			'sbfw-jquery-countdown',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ),
+			'spsb-jquery-countdown',
+			spsb_modules_url( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ) ),
+			filemtime( spsb_modules_path( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'wpbsc_custom_script',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
+			spsb_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
+			filemtime( spsb_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
 			true
 		);
 
@@ -80,15 +80,15 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sbfw-settings' !== $hook ) {
+		if ( 'sales-booster_page_spsb-settings' !== $hook ) {
 			return;
 		}
 
-		$settings_file = require sbfw_modules_path( 'stock-countdown/assets/build/settings.asset.php' );
+		$settings_file = require spsb_modules_path( 'stock-countdown/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sbfw-stock-countdown-settings',
-			sbfw_modules_url( 'stock-countdown/assets/build/settings.js' ),
+			'spsb-stock-countdown-settings',
+			spsb_modules_url( 'stock-countdown/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
@@ -100,19 +100,19 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sbfw_stock_countdown_settings' );
+		$settings = get_option( 'spsb_stock_countdown_settings' );
 
-		$widget_bg_color = sbfw_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color    = sbfw_find_option_setting( $settings, 'border_color', '#cccccc' );
+		$widget_bg_color = spsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
+		$border_color    = spsb_find_option_setting( $settings, 'border_color', '#cccccc' );
 
 		$custom_css = "
-			.sbfw-stock-counter-and-bar {
+			.spsb-stock-counter-and-bar {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
 		";
 
-		wp_add_inline_style( 'sbfw-stock-cd-custom-style', $custom_css );
+		wp_add_inline_style( 'spsb-stock-cd-custom-style', $custom_css );
 	}
 
 }

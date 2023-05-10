@@ -25,7 +25,7 @@
 	</style>
 </head>
 
-<body <?php body_class( 'sbfw-checkout' ); ?>>
+<body <?php body_class( 'spsb-checkout' ); ?>>
 
 	<?php
 		the_post();
@@ -35,8 +35,8 @@
 	<?php wp_footer(); ?>
 	<script>
 		jQuery(window).load(function() {
-			if ( window.parent.sbfwFastCart ) {
-				window.parent.sbfwFastCart.updateIframeHeight( jQuery( 'html' ).height() );
+			if ( window.parent.spsbFastCart ) {
+				window.parent.spsbFastCart.updateIframeHeight( jQuery( 'html' ).height() );
 			}
 		});
 	</script>

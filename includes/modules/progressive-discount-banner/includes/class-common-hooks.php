@@ -27,7 +27,7 @@ class Common_Hooks {
 	private function __construct() {
 		//phpcs:disable
 		// Don't load banner on fast fly cart.
-		if ( ! isset( $_GET['sbfw-checkout'] ) ) {
+		if ( ! isset( $_GET['spsb-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
@@ -39,7 +39,7 @@ class Common_Hooks {
 	 * Output bar html
 	 */
 	public function wp_footer() {
-		sbfw_pd_banner_get_bar_content();
+		spsb_pd_banner_get_bar_content();
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Common_Hooks {
 	 */
 	public function woocommerce_add_to_cart_fragments( $fragments ) {
 
-		$fragments['div.sbfw-pd-banner-bar-wrapper'] = sbfw_pd_banner_get_bar_content( false );
+		$fragments['div.spsb-pd-banner-bar-wrapper'] = spsb_pd_banner_get_bar_content( false );
 
 		return $fragments;
 	}

@@ -2,8 +2,8 @@ import { Layout } from "antd";
 
 function Header() {
   return (
-      <Layout.Header className="sbfw-header">
-        <div className="sbfw-logo">Sales Booster for WooCommerce</div>
+      <Layout.Header className="spsb-header">
+        <div className="spsb-logo">StorePulse - Sales Booster</div>
       </Layout.Header>
   );
 }

@@ -15,7 +15,7 @@ import { useDispatch } from '@wordpress/data';
 import InputColor from 'react-input-color';
 
 function StockCountdown() {
-  const { setPageLoading } = useDispatch( 'sbfw' );
+  const { setPageLoading } = useDispatch( 'spsb' );
   const [ buttonLoading, setButtonLoading ] = useState(false);
 
   const [ formData, setFormData ] = useState({
@@ -40,13 +40,13 @@ function StockCountdown() {
     setButtonLoading(true);
 
     let data = {
-      action: 'sbfw_stock_countdown_save_settings',
-      _ajax_nonce: sbfwAdmin.nonce,
+      action: 'spsb_stock_countdown_save_settings',
+      _ajax_nonce: spsbAdmin.nonce,
       form_data: formData
     };
 
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: spsbAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {
@@ -62,11 +62,11 @@ function StockCountdown() {
     setPageLoading(true);
 
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: spsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sbfw_stock_countdown_get_settings',
-        _ajax_nonce: sbfwAdmin.nonce,
+        action: 'spsb_stock_countdown_get_settings',
+        _ajax_nonce: spsbAdmin.nonce,
       }
     }).success((response) => {
       if ( response.success ) {

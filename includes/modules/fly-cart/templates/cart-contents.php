@@ -15,19 +15,19 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
-$settings             = get_option( 'sbfw_fly_cart_settings' );
-$show_product_image   = sbfw_find_option_setting( $settings, 'show_product_image', true );
-$show_remove_icon     = sbfw_find_option_setting( $settings, 'show_remove_icon', true );
-$show_quantity_picker = sbfw_find_option_setting( $settings, 'show_quantity_picker', true );
-$show_product_price   = sbfw_find_option_setting( $settings, 'show_product_price', true );
-$show_coupon          = sbfw_find_option_setting( $settings, 'show_coupon', true );
+$settings             = get_option( 'spsb_fly_cart_settings' );
+$show_product_image   = spsb_find_option_setting( $settings, 'show_product_image', true );
+$show_remove_icon     = spsb_find_option_setting( $settings, 'show_remove_icon', true );
+$show_quantity_picker = spsb_find_option_setting( $settings, 'show_quantity_picker', true );
+$show_product_price   = spsb_find_option_setting( $settings, 'show_product_price', true );
+$show_coupon          = spsb_find_option_setting( $settings, 'show_coupon', true );
 
 do_action( 'woocommerce_before_cart' ); ?>
 
-<form class="sbfw-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+<form class="spsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
-	<table class="sbfw-fly-cart-table" cellspacing="0">
+	<table class="spsb-fly-cart-table" cellspacing="0">
 		<tbody>
 		<?php do_action( 'woocommerce_before_cart_contents' ); ?>
 
@@ -49,8 +49,8 @@ do_action( 'woocommerce_before_cart' ); ?>
 							echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								'woocommerce_cart_item_remove_link',
 								sprintf(
-									'<a href="%s" class="sbfw-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
-									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . sbfw_fast_cart_get_query_string_for_http_ajax_referer() ),
+									'<a href="%s" class="spsb-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
+									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . spsb_fast_cart_get_query_string_for_http_ajax_referer() ),
 									esc_html__( 'Remove this item', 'spsb' ),
 									esc_attr( $product_id ),
 									esc_attr( $_product->get_sku() )
@@ -76,7 +76,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 					<?php endif; ?>
 
 					<td class="product-name">
-						<div class="sbfw-product-title">
+						<div class="spsb-product-title">
 							<?php
 							if ( ! $product_permalink ) {
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
@@ -93,7 +93,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 							if ( $_product->is_sold_individually() ) {
 								$product_quantity = sprintf( '<input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
 							} else {
-								$product_quantity  = '<button type="button" class="sbfw-minus-icon">-</button>';
+								$product_quantity  = '<button type="button" class="spsb-minus-icon">-</button>';
 								$product_quantity .= woocommerce_quantity_input(
 									array(
 										'input_name'   => "cart[{$cart_item_key}][qty]",
@@ -105,7 +105,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 									$_product,
 									false
 								);
-								$product_quantity .= '<button type="button" class="sbfw-plus-icon">+</button>';
+								$product_quantity .= '<button type="button" class="spsb-plus-icon">+</button>';
 							}
 
 							// phpcs:ignore
@@ -137,7 +137,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 				<?php
 				if ( $show_coupon && wc_coupons_enabled() ) {
-					do_action( 'sbfw_fly_cart_coupon' );
+					do_action( 'spsb_fly_cart_coupon' );
 				}
 				?>
 
@@ -146,7 +146,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<?php do_action( 'woocommerce_cart_actions' ); ?>
 
 				<?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce', false ); ?>
-				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( sbfw_fast_cart_get_query_string_for_http_ajax_referer( true ) ); ?>">
+				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( spsb_fast_cart_get_query_string_for_http_ajax_referer( true ) ); ?>">
 			</td>
 		</tr>
 
@@ -156,9 +156,9 @@ do_action( 'woocommerce_before_cart' ); ?>
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
 
-<?php do_action( 'sbfw_woocommerce_before_cart_collaterals' ); ?>
+<?php do_action( 'spsb_woocommerce_before_cart_collaterals' ); ?>
 
-<div class="sbfw-cart-collaterals cart-collaterals">
+<div class="spsb-cart-collaterals cart-collaterals">
 	<?php
 	/**
 	 * Cart collaterals hook.

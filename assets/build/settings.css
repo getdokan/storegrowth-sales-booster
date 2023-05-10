@@ -27318,16 +27318,16 @@ body {
     line-height: 1.4em;
 }
 
-.sbfw-header.ant-layout-header {
+.spsb-header.ant-layout-header {
     background-color: #fff;
     padding: 0 20px;
     margin: -9px -20px 20px -20px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
-.sbfw-logo {
+.spsb-logo {
     font-size: 23px;
 }
-.sbfw-module-card img {
+.spsb-module-card img {
     width: 100%;
     height: auto;
 }
@@ -27337,10 +27337,10 @@ li.ant-menu-item a:focus {
 }
 
 /* Page loading effect */
-.sbfw-layout-relative {
+.spsb-layout-relative {
     position: relative;
 }
-@-webkit-keyframes sbfw-loader-ld-spin {
+@-webkit-keyframes spsb-loader-ld-spin {
     0% {
         -webkit-animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
                 animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
@@ -27350,7 +27350,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-@keyframes sbfw-loader-ld-spin {
+@keyframes spsb-loader-ld-spin {
     0% {
         -webkit-animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
                 animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
@@ -27360,7 +27360,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-.sbfw-page-loader {
+.spsb-page-loader {
     position: absolute;
     left: 0;
     top: 0;
@@ -27368,7 +27368,7 @@ li.ant-menu-item a:focus {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
 }
-.sbfw-page-loader-ring {
+.spsb-page-loader-ring {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -27378,10 +27378,10 @@ li.ant-menu-item a:focus {
     transition: all .3s;
     transition-timing-function: ease-in;
     box-sizing: content-box;
-    -webkit-animation: sbfw-loader-ld-spin 1s infinite linear;
-            animation: sbfw-loader-ld-spin 1s infinite linear;
+    -webkit-animation: spsb-loader-ld-spin 1s infinite linear;
+            animation: spsb-loader-ld-spin 1s infinite linear;
 }
-.sbfw-page-loader-ring:after {
+.spsb-page-loader-ring:after {
     content: " ";
     display: block;
     width: 6em;
@@ -27404,12 +27404,12 @@ li.ant-menu-item a:focus {
 .ant-form .ant-form-item-label label {
     font-weight: 600;
 }
-.sbfw-field-upgrade-pro-label {
+.spsb-field-upgrade-pro-label {
     color: #1890ff;
 }
 /* Form end */
 
-.sbfw-module-card {
+.spsb-module-card {
     margin-bottom: 16px;
 }
 

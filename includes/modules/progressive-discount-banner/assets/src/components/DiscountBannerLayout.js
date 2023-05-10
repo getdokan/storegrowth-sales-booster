@@ -7,7 +7,7 @@ import SettingsTab from './SettingsTab';
 import DesignTab from './DesignTab';
 
 function DiscountBannerLayout() {
-	const { setPageLoading } = useDispatch('sbfw');
+	const { setPageLoading } = useDispatch('spsb');
 	const [buttonLoading, setButtonLoading] = useState(false);
 
 	const [formData, setFormData] = useState({
@@ -35,11 +35,11 @@ function DiscountBannerLayout() {
 
 		jQuery
 			.ajax({
-				url: sbfwAdmin.ajax_url,
+				url: spsbAdmin.ajax_url,
 				method: 'POST',
 				data: {
-					action: 'sbfw_pd_banner_get_settings',
-					_ajax_nonce: sbfwAdmin.nonce,
+					action: 'spsb_pd_banner_get_settings',
+					_ajax_nonce: spsbAdmin.nonce,
 				},
 			})
 			.success((response) => {
@@ -83,14 +83,14 @@ function DiscountBannerLayout() {
 		setButtonLoading(true);
 
 		const data = {
-			action: 'sbfw_pd_banner_save_settings',
-			_ajax_nonce: sbfwAdmin.nonce,
+			action: 'spsb_pd_banner_save_settings',
+			_ajax_nonce: spsbAdmin.nonce,
 			form_data: formData,
 		};
 
 		jQuery
 			.ajax({
-				url: sbfwAdmin.ajax_url,
+				url: spsbAdmin.ajax_url,
 				method: 'POST',
 				data,
 			})

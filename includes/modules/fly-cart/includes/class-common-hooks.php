@@ -29,7 +29,7 @@ class Common_Hooks {
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
-		add_action( 'sbfw_woocommerce_before_cart_collaterals', array( $this, 'sbfw_before_cart_collaterals' ) );
+		add_action( 'spsb_woocommerce_before_cart_collaterals', array( $this, 'spsb_before_cart_collaterals' ) );
 
 		add_filter( 'template_include', array( $this, 'set_custom_checkout_template' ), 20 );
 	}
@@ -58,10 +58,10 @@ class Common_Hooks {
 			return;
 		}
 
-		$settings = get_option( 'sbfw_fly_cart_settings' );
+		$settings = get_option( 'spsb_fly_cart_settings' );
 
-		$icon_position = sbfw_find_option_setting( $settings, 'icon_position', 'bottom-right' );
-		$icon_name     = sbfw_find_option_setting( $settings, 'icon_name', 'flaticon-shopping-cart-3' );
+		$icon_position = spsb_find_option_setting( $settings, 'icon_position', 'bottom-right' );
+		$icon_name     = spsb_find_option_setting( $settings, 'icon_name', 'flaticon-shopping-cart-3' );
 
 		include __DIR__ . '/../templates/fly-cart.php';
 	}
@@ -69,7 +69,7 @@ class Common_Hooks {
 	/**
 	 * Hook woocommerce_before_cart_collaterals
 	 */
-	public function sbfw_before_cart_collaterals() {
+	public function spsb_before_cart_collaterals() {
 		remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
 		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 
@@ -92,7 +92,7 @@ class Common_Hooks {
 	 */
 	public function set_custom_checkout_template( $template ) {
 		// phpcs:ignore
-		if ( ! is_checkout() || empty( $_GET['sbfw-checkout'] ) ) {
+		if ( ! is_checkout() || empty( $_GET['spsb-checkout'] ) ) {
 			return $template;
 		}
 

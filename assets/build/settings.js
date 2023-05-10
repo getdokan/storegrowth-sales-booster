@@ -4551,10 +4551,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function Header() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"].Header, {
-    className: "sbfw-header"
+    className: "spsb-header"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "sbfw-logo"
-  }, "Sales Booster for WooCommerce"));
+    className: "spsb-logo"
+  }, "StorePulse - Sales Booster"));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Header);
@@ -4580,12 +4580,12 @@ function PageLoader() {
   const {
     loading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    loading: select('sbfw').getPageLoading()
+    loading: select('spsb').getPageLoading()
   }));
   return loading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "sbfw-page-loader"
+    className: "spsb-page-loader"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "sbfw-page-loader-ring"
+    className: "spsb-page-loader-ring"
   }));
 }
 
@@ -4626,7 +4626,7 @@ function ModuleSettings(_ref) {
   } = _ref;
   let element = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useRoutes)(routes);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "sbfw-layout-relative"
+    className: "spsb-layout-relative"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Sidebar__WEBPACK_IMPORTED_MODULE_3__["default"], {
     routes: routes
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Content, {
@@ -4647,9 +4647,9 @@ function NoModuleActive() {
 
 function AppLayout() {
   let navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
-  let routes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)('sbfw_routes', [], react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Outlet, navigate, react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams, react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams);
+  let routes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)('spsb_routes', [], react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Outlet, navigate, react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams, react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_HeaderBar__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "sbfw-heading",
+    className: "spsb-heading",
     style: {
       marginBottom: '15px'
     }
@@ -4780,7 +4780,7 @@ const selectors = {
   }
 
 };
-const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('sbfw', {
+const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('spsb', {
   reducer,
   actions,
   selectors

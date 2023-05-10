@@ -18,13 +18,13 @@ const text = `
 
 function CreateBump({navigate, useParams}) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { setPageLoading } = useDispatch( 'sbfw' );
+  const { setPageLoading } = useDispatch( 'spsb' );
   const [buttonLoading, setButtonLoading] = useState(false);
-  const { setCreateFromData, resetCreateFromData } = useDispatch( 'sbfw_order_bump' );
+  const { setCreateFromData, resetCreateFromData } = useDispatch( 'spsb_order_bump' );
   let {bump_id,action_name} = useParams();
 
   const { createBumpData } = useSelect( ( select ) => ({
-    createBumpData: select('sbfw_order_bump').getCreateFromData()
+    createBumpData: select('spsb_order_bump').getCreateFromData()
   }));
 
 

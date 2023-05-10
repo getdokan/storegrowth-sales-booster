@@ -3,11 +3,11 @@ import { useDispatch, useSelect } from '@wordpress/data';
 
 
 function General( { onFormSave } ) {
-  const { setCreateFromData } = useDispatch( 'sbfw_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupForm: select( 'sbfw_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading: select( 'sbfw_order_sales_pop' ).getButtonLoading()
+    createPopupForm: select( 'spsb_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading: select( 'spsb_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {

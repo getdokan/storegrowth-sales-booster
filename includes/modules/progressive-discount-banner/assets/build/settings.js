@@ -15219,7 +15219,7 @@ __webpack_require__.r(__webpack_exports__);
 function DiscountBannerLayout() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sbfw');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('spsb');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     default_banner: false,
@@ -15244,11 +15244,11 @@ function DiscountBannerLayout() {
   const getSettings = () => {
     setPageLoading(true);
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: spsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sbfw_pd_banner_get_settings',
-        _ajax_nonce: sbfwAdmin.nonce
+        action: 'spsb_pd_banner_get_settings',
+        _ajax_nonce: spsbAdmin.nonce
       }
     }).success(response => {
       if (response.success && response.data) {
@@ -15289,12 +15289,12 @@ function DiscountBannerLayout() {
   const onFormSave = type => {
     setButtonLoading(true);
     const data = {
-      action: 'sbfw_pd_banner_save_settings',
-      _ajax_nonce: sbfwAdmin.nonce,
+      action: 'spsb_pd_banner_save_settings',
+      _ajax_nonce: spsbAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: spsbAdmin.ajax_url,
       method: 'POST',
       data
     }).success(() => {
@@ -15404,7 +15404,7 @@ function DiscountBannerFields(props) {
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     addonAfter: formData.discount_amount_mode == 'percentage' ? '%' : null,
-    addonBefore: formData.discount_amount_mode == 'fixed-amount' ? sbfwAdmin.currencySymbol : null,
+    addonBefore: formData.discount_amount_mode == 'fixed-amount' ? spsbAdmin.currencySymbol : null,
     value: formData.discount_amount_value,
     onChange: v => onFieldChange('discount_amount_value', v),
     style: {
@@ -15415,7 +15415,7 @@ function DiscountBannerFields(props) {
     labelAlign: "left",
     extra: "Require minimum amount in customer cart to avail this discount."
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    addonBefore: sbfwAdmin.currencySymbol,
+    addonBefore: spsbAdmin.currencySymbol,
     value: formData.cart_minimum_amount,
     onChange: v => onFieldChange('cart_minimum_amount', v),
     style: {
@@ -15477,7 +15477,7 @@ function SettingsTab(props) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     value: formData.default_banner_text,
     onChange: e => onFieldChange('default_banner_text', e.target.value),
-    placeholder: `Shop more than ${sbfwAdmin.currencySymbol}100 to get free shipping.`
+    placeholder: `Shop more than ${spsbAdmin.currencySymbol}100 to get free shipping.`
   })), formData.default_banner && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Default Banner Icon",
     labelAlign: "left"
@@ -57477,7 +57477,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add routes to sidebar.
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sbfw_routes', 'sbfw', routes => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('spsb_routes', 'spsb', routes => {
   routes.push({
     path: '/progressive-discount-banner',
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_DiscountBannerLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null),
@@ -57489,7 +57489,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add sidebar menu items
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'sbfw', (items, Link) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'spsb', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/progressive-discount-banner"

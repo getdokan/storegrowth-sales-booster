@@ -39,7 +39,7 @@ class Order_Bump {
 		$all_cart_product_ids   = array();
 		$all_cart_category_ids  = array();
 		$args_bump              = array(
-			'post_type'      => 'sbfw_order_bump',
+			'post_type'      => 'spsb_order_bump',
 			'posts_per_page' => -1,
 		);
 		$bump_list              = get_posts( $args_bump );

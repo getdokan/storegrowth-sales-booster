@@ -42,14 +42,14 @@ class Woocommerce_Discount {
 			return;
 		}
 
-		$settings      = sbfw_pd_banner_get_settings();
-		$discount_type = sbfw_find_option_setting( $settings, 'discount_type', false );
+		$settings      = spsb_pd_banner_get_settings();
+		$discount_type = spsb_find_option_setting( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = sbfw_find_option_setting( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = spsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -96,14 +96,14 @@ class Woocommerce_Discount {
 	 * Calculate discount amount.
 	 */
 	public function woocommerce_cart_calculate_fees() {
-		$settings      = sbfw_pd_banner_get_settings();
-		$discount_type = sbfw_find_option_setting( $settings, 'discount_type', false );
+		$settings      = spsb_pd_banner_get_settings();
+		$discount_type = spsb_find_option_setting( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = sbfw_find_option_setting( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = spsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -125,7 +125,7 @@ class Woocommerce_Discount {
 	private function set_discount_amount( $settings, $cart_amount ) {
 		$discount_amount = 0;
 
-		$discount_amount_value = floatval( sbfw_find_option_setting( $settings, 'discount_amount_value', 0 ) );
+		$discount_amount_value = floatval( spsb_find_option_setting( $settings, 'discount_amount_value', 0 ) );
 
 		if ( 'fixed-amount' === $settings['discount_amount_mode'] ) {
 			$discount_amount = $discount_amount_value;
@@ -145,7 +145,7 @@ class Woocommerce_Discount {
 		// Add discount as fee.
 		$fees_api->add_fee(
 			array(
-				'id'     => 'sbfw-pd-banner-discount',
+				'id'     => 'spsb-pd-banner-discount',
 				'name'   => 'Discount',
 				'amount' => - $discount_amount, // Negative value to decrease the total.
 			)

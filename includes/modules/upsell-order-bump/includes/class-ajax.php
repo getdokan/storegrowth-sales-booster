@@ -49,7 +49,7 @@ class Ajax {
 		$my_post = array(
 			'post_title'   => $bump_detail['name_of_order_bump'],
 			'post_status'  => 'publish',
-			'post_type'    => 'sbfw_order_bump',
+			'post_type'    => 'spsb_order_bump',
 			'post_excerpt' => maybe_serialize( $bump_detail ),
 			'post_content' => 'Not defined',
 
@@ -77,7 +77,7 @@ class Ajax {
 			wp_send_json_success( maybe_unserialize( $bump->post_excerpt ) );
 		} else {
 			$args_bump = array(
-				'post_type'      => 'sbfw_order_bump',
+				'post_type'      => 'spsb_order_bump',
 				'posts_per_page' => - 1,
 			);
 			$bump_list = get_posts( $args_bump );

@@ -25,7 +25,7 @@ class Admin_Hooks {
 	 * Constructor of Admin_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'plugin_action_links_' . WPCODAL_SBFW_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . INVIZO_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 	}
 
 	/**
@@ -37,8 +37,8 @@ class Admin_Hooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'modules'  => '<a href="' . admin_url( 'admin.php?page=sbfw-modules' ) . '">' . esc_html__( 'Modules', 'spsb' ) . '</a>',
-			'settings' => '<a href="' . admin_url( 'admin.php?page=sbfw-settings' ) . '">' . esc_html__( 'Settings', 'spsb' ) . '</a>',
+			'modules'  => '<a href="' . admin_url( 'admin.php?page=spsb-modules' ) . '">' . esc_html__( 'Modules', 'spsb' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=spsb-settings' ) . '">' . esc_html__( 'Settings', 'spsb' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

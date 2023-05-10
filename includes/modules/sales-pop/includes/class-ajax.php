@@ -37,7 +37,7 @@ class Ajax {
 	 * Order bump creation
 	 */
 	public function popup_products() {
-		wp_send_json_success( maybe_unserialize( get_option( 'sbfw_popup_products' ) ) );
+		wp_send_json_success( maybe_unserialize( get_option( 'spsb_popup_products' ) ) );
 	}
 
 	/**
@@ -50,11 +50,11 @@ class Ajax {
 		$popup_products     = $this->form_validation( $popup_products );
 		$state_without_city = isset( $popup_data['state_without_city'] ) ? $popup_data['state_without_city'] : array();
 
-		update_option( 'sbfw_popup_products', maybe_serialize( $popup_products ) );
+		update_option( 'spsb_popup_products', maybe_serialize( $popup_products ) );
 
-		update_option( 'sbfw_state_without_city', maybe_serialize( $state_without_city ) );
+		update_option( 'spsb_state_without_city', maybe_serialize( $state_without_city ) );
 
-		wp_send_json_success( maybe_unserialize( get_option( 'sbfw_popup_products' ) ) );
+		wp_send_json_success( maybe_unserialize( get_option( 'spsb_popup_products' ) ) );
 	}
 
 	/**
