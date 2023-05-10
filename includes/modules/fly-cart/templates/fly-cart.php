@@ -23,7 +23,7 @@ $class_name = 'center' === $layout ? 'sbfw-fast-cart-center-layout' : '';
 <div class="wfc-overlay wfc-hide"></div>
 <div class="wfc-widget-sidebar wfc-slide <?php echo esc_attr( $class_name ); ?>">
 	<h3 class="wfc-cart-heading">
-		<?php esc_html_e( 'Shopping Cart', 'sbfw' ); ?>
+		<?php esc_html_e( 'Shopping Cart', 'spsb' ); ?>
 		<span class="wfc-close-btn sbfw-cart-widget-close" title="Close">×</span>
 	</h3>
 	<div class="sbfw-widget-shopping-cart-content-wrapper">

@@ -25,12 +25,14 @@ class Common_Hooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
+		//phpcs:disable
 		// Don't load banner on fast fly cart.
 		if ( ! isset( $_GET['sbfw-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
 		}
+		// phpcs:enable
 	}
 
 	/**

@@ -45,7 +45,7 @@ class Ajax {
 	 */
 	public function create_popup() {
 		check_ajax_referer( 'ajd_protected' );
-		$popup_data         = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array();
+		$popup_data         = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); //phpcs:ignore
 		$popup_products     = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
 		$popup_products     = $this->form_validation( $popup_products );
 		$state_without_city = isset( $popup_data['state_without_city'] ) ? $popup_data['state_without_city'] : array();

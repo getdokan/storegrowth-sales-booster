@@ -150,11 +150,11 @@ class Enqueue_Script {
 			'posts_per_page' => -1,
 		);
 
-		$products                  = get_posts( $args );
-		
-		$product_list_for_select   = array();
-		$product_title_by_id       = array();
-		$simple_product_for_offer  = array();
+		$products = get_posts( $args );
+
+		$product_list_for_select  = array();
+		$product_title_by_id      = array();
+		$simple_product_for_offer = array();
 
 		foreach ( $products as $product ) {
 			$product_list_for_select[] = array(
@@ -174,7 +174,7 @@ class Enqueue_Script {
 
 			$product_title_by_id[ $product->ID ] = $product->post_title;
 		}
-		
+
 		$product_info['productListForSelect']  = $product_list_for_select;
 		$product_info['simpleProductForOffer'] = $simple_product_for_offer;
 		$product_info['productTitleById']      = $product_title_by_id;

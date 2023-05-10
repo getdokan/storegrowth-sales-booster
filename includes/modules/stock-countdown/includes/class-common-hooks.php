@@ -65,7 +65,7 @@ class Common_Hooks {
 	public function woocommerce_product_data_tabs( $tabs ) {
 		// Adds the new tab.
 		$tabs['stock_countdown_tab'] = array(
-			'label'  => __( 'Stock Countdown', 'sbfw' ),
+			'label'  => __( 'Stock Countdown', 'spsb' ),
 			'target' => 'sbfw-stock-countdown-tab',
 		);
 
@@ -90,7 +90,7 @@ class Common_Hooks {
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['_sbfw_stock_countdown_discount_start'] ) ) {
-			$discount_start_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_start'] ) );
+			$discount_start_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_start'] ) ); //phpcs:ignore
 
 			if ( $discount_start_date ) {
 				$discount_start_date = gmdate( 'Y-m-d 00:00:00', strtotime( $discount_start_date ) );
@@ -98,14 +98,14 @@ class Common_Hooks {
 		}
 
 		if ( isset( $_POST['_sbfw_stock_countdown_discount_end'] ) ) {
-			$discount_end_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_end'] ) );
+			$discount_end_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_end'] ) ); // phpcs:ignore
 
 			if ( $discount_end_date ) {
 				$discount_end_date = gmdate( 'Y-m-d 23:59:59', strtotime( $discount_end_date ) );
 			}
 		}
 
-		$stock_discount_amount = isset( $_POST['_sbfw_stock_countdown_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_amount'] ) ) : null;
+		$stock_discount_amount = isset( $_POST['_sbfw_stock_countdown_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_amount'] ) ) : null; // phpcs:ignore
 
 		update_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_start', $discount_start_date );
 		update_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_end', $discount_end_date );

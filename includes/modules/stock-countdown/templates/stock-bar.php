@@ -47,7 +47,7 @@ $available_item_text = sbfw_find_option_setting( $settings, 'available_item_coun
 	<div class="sbfw-stock-progressbar-status-below">
 		<?php
 			/* translators: %s: Left items in stock */
-			echo esc_html( sprintf( __( 'Only %s left in stock', 'sbfw' ), ( $stock - $total_sales ) ) );
+			echo esc_html( sprintf( __( 'Only %s left in stock', 'spsb' ), ( $stock - $total_sales ) ) );
 		?>
 	</div>
 	<?php endif; ?>

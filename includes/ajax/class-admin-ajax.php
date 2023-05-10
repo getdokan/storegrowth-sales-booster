@@ -64,6 +64,8 @@ class Admin_Ajax {
 	 * Make a module active/disable.
 	 */
 	private function update_module_status() {
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if ( ! isset( $_POST['data'] ) ) {
 			wp_die();
 		}
@@ -71,8 +73,10 @@ class Admin_Ajax {
 		$modules        = Modules::instance();
 		$active_modules = $modules->get_active_module_ids();
 
-		$module_id = sanitize_text_field( wp_unslash( $_POST['data']['module_id'] ) );
-		$status    = sanitize_text_field( wp_unslash( $_POST['data']['status'] ) );
+		$module_id = isset( $_POST['data']['module_id'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['module_id'] ) ) : null;
+		$status    = isset( $_POST['data']['status'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['status'] ) ) : null;
+
+		// phpcs:enable
 
 		$selected_module = $modules->get_module_by_id( $module_id );
 

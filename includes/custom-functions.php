@@ -75,14 +75,14 @@ if ( ! function_exists( 'sbfw_find_option_setting' ) ) {
 	 *
 	 * @param array  $settings WP option array.
 	 * @param string $key Key from option array.
-	 * @param string $default Default value.
+	 * @param string $default1 Default value.
 	 */
-	function sbfw_find_option_setting( $settings, $key, $default = '' ) {
+	function sbfw_find_option_setting( $settings, $key, $default1 = '' ) {
 		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
 
-		return $default;
+		return $default1;
 	}
 }
 
@@ -127,6 +127,5 @@ if ( ! function_exists( 'sbfw_sanitize_svg_icon_fields' ) ) {
 		);
 
 		return wp_kses( $value, $icon_allowed_html );
-
 	}
 }

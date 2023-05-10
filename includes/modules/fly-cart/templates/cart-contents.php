@@ -51,7 +51,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 								sprintf(
 									'<a href="%s" class="sbfw-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
 									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . sbfw_fast_cart_get_query_string_for_http_ajax_referer() ),
-									esc_html__( 'Remove this item', 'sbfw' ),
+									esc_html__( 'Remove this item', 'spsb' ),
 									esc_attr( $product_id ),
 									esc_attr( $_product->get_sku() )
 								),
