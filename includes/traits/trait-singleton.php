@@ -5,7 +5,7 @@
  * @package WPBP
  */
 
-namespace WPCodal\SBFW\Traits;
+namespace STOREPULSE\SPSB\Traits;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

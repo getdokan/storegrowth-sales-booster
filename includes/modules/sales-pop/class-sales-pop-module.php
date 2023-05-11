@@ -5,12 +5,12 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Sales_Pop;
+namespace STOREPULSE\SPSB\Modules\Sales_Pop;
 
-use WPCodal\SBFW\Interfaces\Module_Skeleton;
-use WPCodal\SBFW\Traits\Singleton;
-use WPCodal\SBFW\Modules\Sales_Pop\Sales_Pop;
-use WPCodal\SBFW\Modules\Sales_Pop\Enqueue;
+use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
+use STOREPULSE\SPSB\Traits\Singleton;
+use STOREPULSE\SPSB\Modules\Sales_Pop\Sales_Pop;
+use STOREPULSE\SPSB\Modules\Sales_Pop\Enqueue;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -39,7 +39,7 @@ class Sales_Pop_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sbfw_modules_url( 'sales-pop/assets/images/icon.png' );
+		return storepulse_sales_booster_modules_url( 'sales-pop/assets/images/icon.png' );
 	}
 
 	/**

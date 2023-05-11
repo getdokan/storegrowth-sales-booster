@@ -5,18 +5,18 @@
  * @package SBFW
  */
 
-$banner_type_to_show = sbfw_pd_banner_get_banner_type_to_show();
+$banner_type_to_show = storepulse_sales_booster_pd_banner_get_banner_type_to_show();
 
 if ( ! $banner_type_to_show ) {
 	return;
 }
 
-$settings    = sbfw_pd_banner_get_settings();
-$banner_text = sbfw_pd_banner_get_banner_text( $settings );
-$banner_icon = sbfw_pd_banner_get_banner_icon( $settings );
+$settings    = storepulse_sales_booster_pd_banner_get_settings();
+$banner_text = storepulse_sales_booster_pd_banner_get_banner_text( $settings );
+$banner_icon = storepulse_sales_booster_pd_banner_get_banner_icon( $settings );
 ?>
-<div class="sbfw-pd-banner-bar-wrapper">
-	<div class="sbfw-pd-banner-bar">
+<div class="storepulse_sales_booster-pd-banner-bar-wrapper">
+	<div class="storepulse_sales_booster-pd-banner-bar">
 		<p>
 			<?php
 			if ( $banner_icon ) {

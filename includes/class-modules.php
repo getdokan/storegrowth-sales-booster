@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW;
+namespace STOREPULSE\SPSB;
 
-use WPCodal\SBFW\Interfaces\Module_Skeleton;
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -89,7 +89,7 @@ class Modules {
 	 * @return array
 	 */
 	public function get_active_module_ids() {
-		$ids = get_option( 'sbfw_active_module_ids', array() );
+		$ids = get_option( 'storepulse_sales_booster_active_module_ids', array() );
 
 		if ( ! $ids ) {
 			return array();
@@ -123,7 +123,7 @@ class Modules {
 	 * @return bool
 	 */
 	public function update_active_module_ids( $ids ) {
-		return update_option( 'sbfw_active_module_ids', (array) $ids );
+		return update_option( 'storepulse_sales_booster_active_module_ids', (array) $ids );
 	}
 
 	/**

@@ -10,12 +10,12 @@ import Message from './Message';
 import { State, City } from 'country-state-city';
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
-  const { setCreateFromData, setButtonLoading } = useDispatch( 'sbfw_order_sales_pop' );
+  const { setCreateFromData, setButtonLoading } = useDispatch( 'storepulse_sales_booster_order_sales_pop' );
   let [ searchParams, setSearchParams ] = useSearchParams();
 
   const tabName = searchParams.get( 'tab_name' )
   const { createPopupForm } = useSelect( ( select ) => ({
-    createPopupForm: select( 'sbfw_order_sales_pop' ).getCreateFromData()
+    createPopupForm: select( 'storepulse_sales_booster_order_sales_pop' ).getCreateFromData()
   }) );
 
   const changeTab = ( key ) => {

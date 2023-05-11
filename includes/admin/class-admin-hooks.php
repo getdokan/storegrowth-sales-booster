@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Admin;
+namespace STOREPULSE\SPSB\Admin;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,7 +25,7 @@ class Admin_Hooks {
 	 * Constructor of Admin_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'plugin_action_links_' . WPCODAL_SBFW_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . STOREPULSE_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 	}
 
 	/**
@@ -37,8 +37,8 @@ class Admin_Hooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'modules'  => '<a href="' . admin_url( 'admin.php?page=sbfw-modules' ) . '">' . esc_html__( 'Modules', 'spsb' ) . '</a>',
-			'settings' => '<a href="' . admin_url( 'admin.php?page=sbfw-settings' ) . '">' . esc_html__( 'Settings', 'spsb' ) . '</a>',
+			'modules'  => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storepulse_sales_booster' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storepulse_sales_booster' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

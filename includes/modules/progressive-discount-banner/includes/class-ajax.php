@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\PD_Banner;
+namespace STOREPULSE\SPSB\Modules\PD_Banner;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,15 +25,15 @@ class Ajax {
 	 * Constructor of Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_sbfw_pd_banner_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sbfw_pd_banner_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_storepulse_sales_booster_pd_banner_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_storepulse_sales_booster_pd_banner_get_settings', array( $this, 'get_settings' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sbfw_ajax_nonce' );
+		check_ajax_referer( 'storepulse_sales_booster_ajax_nonce' );
 
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
@@ -52,16 +52,16 @@ class Ajax {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		foreach ( $_POST['form_data'] as $form_key => $form_value ) {
 			if ( in_array( $form_key, $icon_validator, true ) ) {
-				$form_data[ $form_key ] = sbfw_sanitize_svg_icon_fields( $form_value );
+				$form_data[ $form_key ] = storepulse_sales_booster_sanitize_svg_icon_fields( $form_value );
 			} else {
-				$form_data[ $form_key ] = sbfw_sanitize_form_fields( $form_value );
+				$form_data[ $form_key ] = storepulse_sales_booster_sanitize_form_fields( $form_value );
 			}
 		}
 
-		$get_form_data = sbfw_pd_banner_get_settings();
+		$get_form_data = storepulse_sales_booster_pd_banner_get_settings();
 		$merged_data   = array_merge( $get_form_data, $form_data );
 
-		update_option( 'sbfw_progressive_discount_banner_settings', $merged_data );
+		update_option( 'storepulse_sales_booster_progressive_discount_banner_settings', $merged_data );
 
 		wp_send_json_success( $merged_data );
 	}
@@ -70,9 +70,9 @@ class Ajax {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sbfw_ajax_nonce' );
+		check_ajax_referer( 'storepulse_sales_booster_ajax_nonce' );
 
-		wp_send_json_success( sbfw_pd_banner_get_settings() );
+		wp_send_json_success( storepulse_sales_booster_pd_banner_get_settings() );
 	}
 
 }

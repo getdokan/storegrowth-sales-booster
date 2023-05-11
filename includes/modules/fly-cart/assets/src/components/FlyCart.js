@@ -40,10 +40,10 @@ function GenenralSettings({ formData, onFieldChange, onFormSave, buttonLoading }
         >
           <Space direction="vertical">
             <Radio value="side">Side cart</Radio>
-            <Radio value="center" disabled={!sbfwAdmin.isPro}>
-              <span>Centered popup </span>
-              {!sbfwAdmin.isPro && <span className="sbfw-field-upgrade-pro-label">(Upgrade to premium)</span>}
-            </Radio>
+            {/* <Radio value="center" disabled={!storepulse_sales_boosterAdmin.isPro}>
+              <span>Centered popup test </span>
+              {!storepulse_sales_boosterAdmin.isPro && <span className="storepulse_sales_booster-field-upgrade-pro-label">(Upgrade to premium)</span>}
+            </Radio> */}
           </Space>
         </Radio.Group>
       </Form.Item>
@@ -73,15 +73,15 @@ function GenenralSettings({ formData, onFieldChange, onFormSave, buttonLoading }
             value="show_product_price"
             onChange={(e) => onFieldChange('show_product_price', e.target.checked)}
           >Show product price</Checkbox>
-          <Checkbox
+          {/* <Checkbox
             checked={formData.show_coupon}
             value="show_coupon"
             onChange={(e) => onFieldChange('show_coupon', e.target.checked)}
-            disabled={!sbfwAdmin.isPro}
+            disabled={!storepulse_sales_boosterAdmin.isPro}
           >
             <span>Show coupon </span>
-            {!sbfwAdmin.isPro && <span className="sbfw-field-upgrade-pro-label">(Upgrade to premium)</span>}
-          </Checkbox>
+            {!storepulse_sales_boosterAdmin.isPro && <span className="storepulse_sales_booster-field-upgrade-pro-label">(Upgrade to premium)</span>}
+          </Checkbox> */}
         </Space>
       </Form.Item>
 
@@ -154,7 +154,7 @@ function DesignSettings({ formData, onFieldChange, onFormSave, buttonLoading }) 
         labelAlign="left"
       >
         <Input
-          className="sbfw-flycart-color-picker"
+          className="storepulse_sales_booster-flycart-color-picker"
           value={formData.icon_color}
           name="icon_color"
           style={{ width: 170 }}
@@ -166,7 +166,7 @@ function DesignSettings({ formData, onFieldChange, onFormSave, buttonLoading }) 
         labelAlign="left"
       >
         <Input
-          className="sbfw-flycart-color-picker"
+          className="storepulse_sales_booster-flycart-color-picker"
           name="buttons_bg_color"
           value={formData.buttons_bg_color}
           style={{ width: 170 }}
@@ -178,7 +178,7 @@ function DesignSettings({ formData, onFieldChange, onFormSave, buttonLoading }) 
         labelAlign="left"
       >
         <Input
-          className="sbfw-flycart-color-picker"
+          className="storepulse_sales_booster-flycart-color-picker"
           name="widget_bg_color"
           value={formData.widget_bg_color}
           style={{ width: 170 }}
@@ -192,7 +192,7 @@ function DesignSettings({ formData, onFieldChange, onFormSave, buttonLoading }) 
 }
 
 function FlyCart() {
-  const { setPageLoading } = useDispatch( 'sbfw' );
+  const { setPageLoading } = useDispatch( 'storepulse_sales_booster' );
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const [formData, updateFormData] = useState({
@@ -213,11 +213,11 @@ function FlyCart() {
     setPageLoading(true);
 
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sbfw_fly_cart_get_settings',
-        _ajax_nonce: sbfwAdmin.nonce,
+        action: 'storepulse_sales_booster_fly_cart_get_settings',
+        _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
       }
     }).success((response) => {
       if ( response.success ) {
@@ -233,7 +233,7 @@ function FlyCart() {
   }, []);
 
   const initializeColorPicker = () => {
-    jQuery( '.sbfw-flycart-color-picker' ).wpColorPicker({
+    jQuery( '.storepulse_sales_booster-flycart-color-picker' ).wpColorPicker({
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.
         formData[event.target.name] = ui.color.toString();
@@ -274,13 +274,13 @@ function FlyCart() {
     setButtonLoading(true);
 
     let data = {
-      action: 'sbfw_fly_cart_save_settings',
-      _ajax_nonce: sbfwAdmin.nonce,
+      action: 'storepulse_sales_booster_fly_cart_save_settings',
+      _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
       form_data: formData
     };
 
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {

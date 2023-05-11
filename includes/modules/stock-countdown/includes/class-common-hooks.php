@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Stock_Countdown;
+namespace STOREPULSE\SPSB\Modules\Stock_Countdown;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,8 +65,8 @@ class Common_Hooks {
 	public function woocommerce_product_data_tabs( $tabs ) {
 		// Adds the new tab.
 		$tabs['stock_countdown_tab'] = array(
-			'label'  => __( 'Stock Countdown', 'spsb' ),
-			'target' => 'sbfw-stock-countdown-tab',
+			'label'  => __( 'Stock Countdown', 'storepulse_sales_booster' ),
+			'target' => 'storepulse_sales_booster-stock-countdown-tab',
 		);
 
 		return $tabs;
@@ -89,27 +89,27 @@ class Common_Hooks {
 		$discount_end_date   = '';
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		if ( isset( $_POST['_sbfw_stock_countdown_discount_start'] ) ) {
-			$discount_start_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_start'] ) ); //phpcs:ignore
+		if ( isset( $_POST['_storepulse_sales_booster_stock_countdown_discount_start'] ) ) {
+			$discount_start_date = wc_clean( wp_unslash( $_POST['_storepulse_sales_booster_stock_countdown_discount_start'] ) ); //phpcs:ignore
 
 			if ( $discount_start_date ) {
 				$discount_start_date = gmdate( 'Y-m-d 00:00:00', strtotime( $discount_start_date ) );
 			}
 		}
 
-		if ( isset( $_POST['_sbfw_stock_countdown_discount_end'] ) ) {
-			$discount_end_date = wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_end'] ) ); // phpcs:ignore
+		if ( isset( $_POST['_storepulse_sales_booster_stock_countdown_discount_end'] ) ) {
+			$discount_end_date = wc_clean( wp_unslash( $_POST['_storepulse_sales_booster_stock_countdown_discount_end'] ) ); // phpcs:ignore
 
 			if ( $discount_end_date ) {
 				$discount_end_date = gmdate( 'Y-m-d 23:59:59', strtotime( $discount_end_date ) );
 			}
 		}
 
-		$stock_discount_amount = isset( $_POST['_sbfw_stock_countdown_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_sbfw_stock_countdown_discount_amount'] ) ) : null; // phpcs:ignore
+		$stock_discount_amount = isset( $_POST['_storepulse_sales_booster_stock_countdown_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_storepulse_sales_booster_stock_countdown_discount_amount'] ) ) : null; // phpcs:ignore
 
-		update_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_start', $discount_start_date );
-		update_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_end', $discount_end_date );
-		update_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_amount', $stock_discount_amount );
+		update_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_start', $discount_start_date );
+		update_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_end', $discount_end_date );
+		update_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_amount', $stock_discount_amount );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
@@ -125,7 +125,7 @@ class Common_Hooks {
 		}
 
 		// Check countdown discount is set.
-		if ( ! sbfw_stock_cd_is_product_discountable( $product->get_id() ) ) {
+		if ( ! storepulse_sales_booster_stock_cd_is_product_discountable( $product->get_id() ) ) {
 			return $sale_price;
 		}
 
@@ -140,9 +140,9 @@ class Common_Hooks {
 	 */
 	public function woocommerce_product_get_price( $price, $product ) {
 		// Check countdown discount is set.
-		if ( sbfw_stock_cd_is_product_discountable( $product->get_id() ) ) {
+		if ( storepulse_sales_booster_stock_cd_is_product_discountable( $product->get_id() ) ) {
 			$float_price     = floatval( $product->get_regular_price() );
-			$discount_amount = get_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_amount', true );
+			$discount_amount = get_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_amount', true );
 			$discount_amount = 100 - intval( $discount_amount );
 
 			return ( $float_price * $discount_amount ) / 100;
@@ -159,7 +159,7 @@ class Common_Hooks {
 	 */
 	public function woocommerce_product_is_on_sale( $is_on_sale, $product ) {
 		// Check countdown discount is set.
-		if ( sbfw_stock_cd_is_product_discountable( $product->get_id() ) ) {
+		if ( storepulse_sales_booster_stock_cd_is_product_discountable( $product->get_id() ) ) {
 			return true;
 		}
 

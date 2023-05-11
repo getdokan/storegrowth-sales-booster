@@ -5,7 +5,7 @@ import { InsertRowAboveOutlined } from '@ant-design/icons';
 /**
  * Add routes to sidebar.
  */
-addFilter('sbfw_routes', 'sbfw', (routes) => {
+addFilter('storepulse_sales_booster_routes', 'storepulse_sales_booster', (routes) => {
 	routes.push({
 		path: '/progressive-discount-banner',
 		element: <DiscountBannerLayout />,
@@ -18,7 +18,7 @@ addFilter('sbfw_routes', 'sbfw', (routes) => {
 /**
  * Add sidebar menu items
  */
-addFilter('sidebar_menu_items', 'sbfw', (items, Link) => {
+addFilter('sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
 	items.push({
 		label: <Link to="/progressive-discount-banner">Discount Banner</Link>,
 		key: 'progressive-discount-banner',

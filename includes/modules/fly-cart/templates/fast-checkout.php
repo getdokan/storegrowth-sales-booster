@@ -25,7 +25,7 @@
 	</style>
 </head>
 
-<body <?php body_class( 'sbfw-checkout' ); ?>>
+<body <?php body_class( 'storepulse_sales_booster-checkout' ); ?>>
 
 	<?php
 		the_post();
@@ -35,8 +35,8 @@
 	<?php wp_footer(); ?>
 	<script>
 		jQuery(window).load(function() {
-			if ( window.parent.sbfwFastCart ) {
-				window.parent.sbfwFastCart.updateIframeHeight( jQuery( 'html' ).height() );
+			if ( window.parent.storepulse_sales_boosterFastCart ) {
+				window.parent.storepulse_sales_boosterFastCart.updateIframeHeight( jQuery( 'html' ).height() );
 			}
 		});
 	</script>

@@ -13,7 +13,7 @@ register( SalesPopStore );
 /**
  * Add routes to sidebar.
  */
-addFilter( 'sbfw_routes', 'sbfw', (routes, outlet, navigate,useParams, useSearchParams) => {
+addFilter( 'storepulse_sales_booster_routes', 'storepulse_sales_booster', (routes, outlet, navigate,useParams, useSearchParams) => {
 	routes.push( {
 		path: "/sales-pop",
 		name: 'sales-pop',
@@ -39,7 +39,7 @@ addFilter( 'sbfw_routes', 'sbfw', (routes, outlet, navigate,useParams, useSearch
 /**
  * Add sidebar menu items
  */
-addFilter( 'sidebar_menu_items', 'sbfw', (items, Link) => {
+addFilter( 'sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
 	items.push( {
 		label: <Link to="/sales-pop?tab_name=general">Sales Pop</Link>,
 		key: 'sales-pop',

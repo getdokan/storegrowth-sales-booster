@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW;
+namespace STOREPULSE\SPSB;
 
-use WPCodal\SBFW\Ajax\Admin_Ajax;
-use WPCodal\SBFW\Admin\Admin_Menu;
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Ajax\Admin_Ajax;
+use STOREPULSE\SPSB\Admin\Admin_Menu;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

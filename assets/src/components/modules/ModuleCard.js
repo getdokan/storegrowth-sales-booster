@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import { Ajax } from '../../ajax';
 
 function ModuleSwitch({ module }) {
-  const { updateSingleModule, setPageLoading } = useDispatch( 'sbfw' );
+  const { updateSingleModule, setPageLoading } = useDispatch( 'storepulse_sales_booster' );
 
   const showSuccessModal = ( module ) => {
     Swal.fire({
@@ -16,7 +16,7 @@ function ModuleSwitch({ module }) {
       confirmButtonText: 'View Settings'
     }).then((result) => {
       if (result.isConfirmed) {
-        location.href = "admin.php?page=sbfw-settings#/" + module.id;
+        location.href = "admin.php?page=storepulse_sales_booster-settings#/" + module.id;
       }
     });
   };
@@ -50,7 +50,7 @@ function ModuleCard( { module } ) {
         title={module.name}
         bordered={false}
         extra={<ModuleSwitch module={module} />}
-        className="sbfw-module-card"
+        className="storepulse_sales_booster-module-card"
       >
         <Row>
           <Col span={7}>

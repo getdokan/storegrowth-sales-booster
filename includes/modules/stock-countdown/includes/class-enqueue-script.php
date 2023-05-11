@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Stock_Countdown;
+namespace STOREPULSE\SPSB\Modules\Stock_Countdown;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,33 +41,33 @@ class Enqueue_Script {
 		}
 
 		wp_enqueue_style(
-			'sbfw-stock-cd-custom-style',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/wpbs-style.css' ),
+			'storepulse_sales_booster-stock-cd-custom-style',
+			storepulse_sales_booster_modules_url( 'stock-countdown/assets/scripts/wpbs-style.css' ),
 			array(),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/wpbs-style.css' ) )
+			filemtime( storepulse_sales_booster_modules_path( 'stock-countdown/assets/scripts/wpbs-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wpbsc_jqmeter',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/jqmeter.min.js' ),
+			storepulse_sales_booster_modules_url( 'stock-countdown/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/jqmeter.min.js' ) ),
+			filemtime( storepulse_sales_booster_modules_path( 'stock-countdown/assets/scripts/jqmeter.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
-			'sbfw-jquery-countdown',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ),
+			'storepulse_sales_booster-jquery-countdown',
+			storepulse_sales_booster_modules_url( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ) ),
+			filemtime( storepulse_sales_booster_modules_path( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'wpbsc_custom_script',
-			sbfw_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
+			storepulse_sales_booster_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
 			array( 'jquery' ),
-			filemtime( sbfw_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
+			filemtime( storepulse_sales_booster_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
 			true
 		);
 
@@ -80,15 +80,15 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sbfw-settings' !== $hook ) {
+		if ( 'sales-booster_page_storepulse_sales_booster-settings' !== $hook ) {
 			return;
 		}
 
-		$settings_file = require sbfw_modules_path( 'stock-countdown/assets/build/settings.asset.php' );
+		$settings_file = require storepulse_sales_booster_modules_path( 'stock-countdown/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sbfw-stock-countdown-settings',
-			sbfw_modules_url( 'stock-countdown/assets/build/settings.js' ),
+			'storepulse_sales_booster-stock-countdown-settings',
+			storepulse_sales_booster_modules_url( 'stock-countdown/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
@@ -100,19 +100,19 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sbfw_stock_countdown_settings' );
+		$settings = get_option( 'storepulse_sales_booster_stock_countdown_settings' );
 
-		$widget_bg_color = sbfw_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color    = sbfw_find_option_setting( $settings, 'border_color', '#cccccc' );
+		$widget_bg_color = storepulse_sales_booster_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
+		$border_color    = storepulse_sales_booster_find_option_setting( $settings, 'border_color', '#cccccc' );
 
 		$custom_css = "
-			.sbfw-stock-counter-and-bar {
+			.storepulse_sales_booster-stock-counter-and-bar {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
 		";
 
-		wp_add_inline_style( 'sbfw-stock-cd-custom-style', $custom_css );
+		wp_add_inline_style( 'storepulse_sales_booster-stock-cd-custom-style', $custom_css );
 	}
 
 }

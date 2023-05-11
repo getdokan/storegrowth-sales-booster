@@ -2,12 +2,12 @@ import { useSelect } from '@wordpress/data';
 
 function PageLoader() {
   const { loading } = useSelect((select) => ({
-    loading: select('sbfw').getPageLoading()
+    loading: select('storepulse_sales_booster').getPageLoading()
   }));
 
   return ( loading &&
-    <div className="sbfw-page-loader">
-        <div className="sbfw-page-loader-ring" />
+    <div className="storepulse_sales_booster-page-loader">
+        <div className="storepulse_sales_booster-page-loader-ring" />
     </div>
   );
 }

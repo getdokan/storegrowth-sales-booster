@@ -13,39 +13,39 @@ if ( is_product() && ! $product_countdown_enable ) {
 	return;
 }
 
-$start_date = get_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_start', true );
-$end_date   = get_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_end', true );
+$start_date = get_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_start', true );
+$end_date   = get_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_end', true );
 
 // If data is not set.
-if ( ! sbfw_stock_cd_is_product_discountable( $product->get_id() ) ) {
+if ( ! storepulse_sales_booster_stock_cd_is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 
-$discount_amount = get_post_meta( $product->get_id(), '_sbfw_stock_countdown_discount_amount', true );
+$discount_amount = get_post_meta( $product->get_id(), '_storepulse_sales_booster_stock_countdown_discount_amount', true );
 
-$heading_text = sbfw_find_option_setting( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
+$heading_text = storepulse_sales_booster_find_option_setting( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
 ?>
-<div class="sbfw-stock-counter-wrapper">
+<div class="storepulse_sales_booster-stock-counter-wrapper">
 	<?php if ( $heading_text ) : ?>
-	<p class="sbfw-stock-counter-heading"><?php echo wp_kses_post( $heading ); ?></p>
+	<p class="storepulse_sales_booster-stock-counter-heading"><?php echo wp_kses_post( $heading ); ?></p>
 	<?php endif; ?>
 
-	<div class="sbfw-stock-counter-items" data-end-date="<?php echo esc_attr( $end_date ); ?>">
-		<div class="sbfw-stock-counter-item">
-			<strong class="sbfw-stock-counter-item-days">00</strong>
+	<div class="storepulse_sales_booster-stock-counter-items" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="storepulse_sales_booster-stock-counter-item">
+			<strong class="storepulse_sales_booster-stock-counter-item-days">00</strong>
 			<span>Days</span>
 		</div>
-		<div class="sbfw-stock-counter-item">
-			<strong class="sbfw-stock-counter-item-hours">00</strong>
+		<div class="storepulse_sales_booster-stock-counter-item">
+			<strong class="storepulse_sales_booster-stock-counter-item-hours">00</strong>
 			<span>Hours</span>
 		</div>
-		<div class="sbfw-stock-counter-item">
-			<strong class="sbfw-stock-counter-item-minutes">00</strong>
+		<div class="storepulse_sales_booster-stock-counter-item">
+			<strong class="storepulse_sales_booster-stock-counter-item-minutes">00</strong>
 			<span>Minutes</span>
 		</div>
-		<div class="sbfw-stock-counter-item">
-			<strong class="sbfw-stock-counter-item-seconds">00</strong>
+		<div class="storepulse_sales_booster-stock-counter-item">
+			<strong class="storepulse_sales_booster-stock-counter-item-seconds">00</strong>
 			<span>Seconds</span>
 		</div>
 	</div>

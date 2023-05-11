@@ -146,7 +146,7 @@ const selectors = {
 	}
 };
 
-export default createReduxStore( 'sbfw_order_sales_pop', {
+export default createReduxStore( 'storepulse_sales_booster_order_sales_pop', {
 	reducer,
 	actions,
 	selectors

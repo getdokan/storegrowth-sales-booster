@@ -13495,12 +13495,7 @@ function GenenralSettings(_ref) {
     direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     value: "side"
-  }, "Side cart"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    value: "center",
-    disabled: !sbfwAdmin.isPro
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Centered popup "), !sbfwAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "sbfw-field-upgrade-pro-label"
-  }, "(Upgrade to premium)"))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, "Side cart")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Cart Contents",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -13521,14 +13516,7 @@ function GenenralSettings(_ref) {
     checked: formData.show_product_price,
     value: "show_product_price",
     onChange: e => onFieldChange('show_product_price', e.target.checked)
-  }, "Show product price"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    checked: formData.show_coupon,
-    value: "show_coupon",
-    onChange: e => onFieldChange('show_coupon', e.target.checked),
-    disabled: !sbfwAdmin.isPro
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Show coupon "), !sbfwAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "sbfw-field-upgrade-pro-label"
-  }, "(Upgrade to premium)")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, "Show product price"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
     onClick: () => onFormSave('general_settings'),
     loading: buttonLoading
@@ -13604,7 +13592,7 @@ function DesignSettings(_ref2) {
     label: "Cart Icon Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "sbfw-flycart-color-picker",
+    className: "storepulse_sales_booster-flycart-color-picker",
     value: formData.icon_color,
     name: "icon_color",
     style: {
@@ -13614,7 +13602,7 @@ function DesignSettings(_ref2) {
     label: "Buttons Background Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "sbfw-flycart-color-picker",
+    className: "storepulse_sales_booster-flycart-color-picker",
     name: "buttons_bg_color",
     value: formData.buttons_bg_color,
     style: {
@@ -13624,7 +13612,7 @@ function DesignSettings(_ref2) {
     label: "Widget Background Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "sbfw-flycart-color-picker",
+    className: "storepulse_sales_booster-flycart-color-picker",
     name: "widget_bg_color",
     value: formData.widget_bg_color,
     style: {
@@ -13641,7 +13629,7 @@ function DesignSettings(_ref2) {
 function FlyCart() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sbfw');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, updateFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     icon_position: 'bottom-right',
@@ -13660,11 +13648,11 @@ function FlyCart() {
   const getSettings = () => {
     setPageLoading(true);
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sbfw_fly_cart_get_settings',
-        _ajax_nonce: sbfwAdmin.nonce
+        action: 'storepulse_sales_booster_fly_cart_get_settings',
+        _ajax_nonce: storepulse_sales_boosterAdmin.nonce
       }
     }).success(response => {
       if (response.success) {
@@ -13682,7 +13670,7 @@ function FlyCart() {
   }, []);
 
   const initializeColorPicker = () => {
-    jQuery('.sbfw-flycart-color-picker').wpColorPicker({
+    jQuery('.storepulse_sales_booster-flycart-color-picker').wpColorPicker({
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.
         formData[event.target.name] = ui.color.toString();
@@ -13718,12 +13706,12 @@ function FlyCart() {
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'sbfw_fly_cart_save_settings',
-      _ajax_nonce: sbfwAdmin.nonce,
+      action: 'storepulse_sales_booster_fly_cart_save_settings',
+      _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
-      url: sbfwAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {
@@ -41802,7 +41790,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add routes to sidebar.
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sbfw_routes', 'sbfw', routes => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('storepulse_sales_booster_routes', 'storepulse_sales_booster', routes => {
   routes.push({
     path: "/fly-cart",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_FlyCart__WEBPACK_IMPORTED_MODULE_2__["default"], null),
@@ -41814,7 +41802,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add sidebar menu items
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'sbfw', (items, Link) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/fly-cart"

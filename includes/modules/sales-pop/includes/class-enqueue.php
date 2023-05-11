@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Sales_Pop;
+namespace STOREPULSE\SPSB\Modules\Sales_Pop;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,34 +37,43 @@ class Enqueue {
 	 * Add JS scripts.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'popup-custom-js', sbfw_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
+		wp_enqueue_script( 'popup-custom-js', storepulse_sales_booster_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
 		$args             = array(
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
 		);
 		$products         = get_posts( $args );
-		$popup_properties = maybe_unserialize( get_option( 'sbfw_popup_products', true ) );
-		$popup_products   = $popup_properties['popup_products'];
+		$popup_properties = get_option('storepulse_sales_booster_popup_products', false);
 
-		$product_list      = array();
-		$product_url       = array();
-		$product_image_url = array();
-		if ( $popup_products ) {
-			foreach ( $products as $product ) {
-				if ( in_array( $product->ID, $popup_products, true ) ) {
-					$product_list[]      = $product->post_title;
-					$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
-					$product_image_url[] = $image_url[0];
-					$product_url[]       = get_permalink( $product->ID );
+		if ( $popup_properties !== false ) {
+			$popup_properties = maybe_unserialize( $popup_properties );
+			$popup_products 	= $popup_properties['popup_products'];
+			$product_list      	= array();
+			$product_url       	= array();
+			$product_image_url 	= array();
+			if ( $popup_products ) {
+				foreach ( $products as $product ) {
+					if ( in_array( $product->ID, $popup_products, true ) ) {
+						$product_list[]      = $product->post_title;
+						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
+						$product_image_url[] = $image_url[0];
+						$product_url[]       = get_permalink( $product->ID );
 
+					}
 				}
 			}
+		} else {
+			return;
 		}
 
-		$state_without_city = maybe_unserialize( get_option( 'sbfw_state_without_city', true ) );
+
+		$state_without_city = maybe_unserialize( get_option( 'storepulse_sales_booster_state_without_city', true ) );
 		$virtual_state      = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
 
-		$popup_state_without_city = array_intersect( $state_without_city, $virtual_state );
+		if( is_array( $state_without_city ) ) {
+			$popup_state_without_city = array_intersect( $state_without_city, $virtual_state );
+		}
+		
 
 		$country_name_by_code = array();
 
@@ -142,10 +151,10 @@ class Enqueue {
 	 * Add CSS files.
 	 */
 	public function enqueue_styles() {
-		$ftime = filemtime( sbfw_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
+		$ftime = filemtime( storepulse_sales_booster_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
 		wp_enqueue_style(
 			'popup-custom-css',
-			sbfw_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
+			storepulse_sales_booster_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
 			null,
 			$ftime
 		);
@@ -158,27 +167,27 @@ class Enqueue {
 	 * @param string $screen name of screen.
 	 */
 	public function admin_enqueue_scripts( $screen ) {
-		$popup_properties = maybe_unserialize( get_option( 'sbfw_popup_products', true ) );
+		$popup_properties = maybe_unserialize( get_option( 'storepulse_sales_booster_popup_products', true ) );
 
-		if ( 'sales-booster_page_sbfw-settings' === $screen ) {
+		if ( 'sales-booster_page_storepulse_sales_booster-settings' === $screen ) {
 
-			$settings_file = require sbfw_modules_path( 'sales-pop/assets/build/settings.asset.php' );
+			$settings_file = require storepulse_sales_booster_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
-				'sbfw-sales-pop-settings',
-				sbfw_modules_url( 'sales-pop/assets/build/settings.js' ),
+				'storepulse_sales_booster-sales-pop-settings',
+				storepulse_sales_booster_modules_url( 'sales-pop/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
 			);
 
 			wp_localize_script(
-				'sbfw-sales-pop-settings',
+				'storepulse_sales_booster-sales-pop-settings',
 				'sales_pop_data',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
-					'image_folder' => sbfw_modules_url( 'upsell-order-bump/assets/images' ),
+					'image_folder' => storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/images' ),
 					'product_list' => $this->prodcut_list(),
 				)
 			);
