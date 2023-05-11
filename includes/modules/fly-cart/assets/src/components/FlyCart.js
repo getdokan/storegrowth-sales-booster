@@ -40,10 +40,10 @@ function GenenralSettings({ formData, onFieldChange, onFormSave, buttonLoading }
         >
           <Space direction="vertical">
             <Radio value="side">Side cart</Radio>
-            <Radio value="center" disabled={!storepulse_sales_boosterAdmin.isPro}>
-              <span>Centered popup </span>
+            {/* <Radio value="center" disabled={!storepulse_sales_boosterAdmin.isPro}>
+              <span>Centered popup test </span>
               {!storepulse_sales_boosterAdmin.isPro && <span className="storepulse_sales_booster-field-upgrade-pro-label">(Upgrade to premium)</span>}
-            </Radio>
+            </Radio> */}
           </Space>
         </Radio.Group>
       </Form.Item>
@@ -73,7 +73,7 @@ function GenenralSettings({ formData, onFieldChange, onFormSave, buttonLoading }
             value="show_product_price"
             onChange={(e) => onFieldChange('show_product_price', e.target.checked)}
           >Show product price</Checkbox>
-          <Checkbox
+          {/* <Checkbox
             checked={formData.show_coupon}
             value="show_coupon"
             onChange={(e) => onFieldChange('show_coupon', e.target.checked)}
@@ -81,7 +81,7 @@ function GenenralSettings({ formData, onFieldChange, onFormSave, buttonLoading }
           >
             <span>Show coupon </span>
             {!storepulse_sales_boosterAdmin.isPro && <span className="storepulse_sales_booster-field-upgrade-pro-label">(Upgrade to premium)</span>}
-          </Checkbox>
+          </Checkbox> */}
         </Space>
       </Form.Item>
 

@@ -13495,12 +13495,7 @@ function GenenralSettings(_ref) {
     direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     value: "side"
-  }, "Side cart"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    value: "center",
-    disabled: !storepulse_sales_boosterAdmin.isPro
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Centered popup "), !storepulse_sales_boosterAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "storepulse_sales_booster-field-upgrade-pro-label"
-  }, "(Upgrade to premium)"))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, "Side cart")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Cart Contents",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -13521,14 +13516,7 @@ function GenenralSettings(_ref) {
     checked: formData.show_product_price,
     value: "show_product_price",
     onChange: e => onFieldChange('show_product_price', e.target.checked)
-  }, "Show product price"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    checked: formData.show_coupon,
-    value: "show_coupon",
-    onChange: e => onFieldChange('show_coupon', e.target.checked),
-    disabled: !storepulse_sales_boosterAdmin.isPro
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Show coupon "), !storepulse_sales_boosterAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "storepulse_sales_booster-field-upgrade-pro-label"
-  }, "(Upgrade to premium)")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, "Show product price"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
     onClick: () => onFormSave('general_settings'),
     loading: buttonLoading
