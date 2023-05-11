@@ -13,13 +13,13 @@ jQuery(document).ready( function($) {
     displayTotal: false,
   });
 
-  $('.spsb-stock-counter-items').each(function() {
+  $('.storepulse_sales_booster-stock-counter-items').each(function() {
 	$(this).countdown( $(this).data('end-date') )
 		.on('update.countdown', function(event) {
-		$(this).find('strong.spsb-stock-counter-item-days').html(event.strftime('%D'));
-		$(this).find('strong.spsb-stock-counter-item-hours').html(event.strftime('%H'));
-		$(this).find('strong.spsb-stock-counter-item-minutes').html(event.strftime('%M'));
-		$(this).find('strong.spsb-stock-counter-item-seconds').html(event.strftime('%S'));
+		$(this).find('strong.storepulse_sales_booster-stock-counter-item-days').html(event.strftime('%D'));
+		$(this).find('strong.storepulse_sales_booster-stock-counter-item-hours').html(event.strftime('%H'));
+		$(this).find('strong.storepulse_sales_booster-stock-counter-item-minutes').html(event.strftime('%M'));
+		$(this).find('strong.storepulse_sales_booster-stock-counter-item-seconds').html(event.strftime('%S'));
 		});
   });
 

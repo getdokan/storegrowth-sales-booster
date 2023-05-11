@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Fly_Cart;
+namespace STOREPULSE\SPSB\Modules\Fly_Cart;
 
-use WPCodal\SBFW\Interfaces\Module_Skeleton;
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +37,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return spsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.png' );
+		return storepulse_sales_booster_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.png' );
 	}
 
 	/**

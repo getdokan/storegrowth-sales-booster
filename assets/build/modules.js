@@ -4233,12 +4233,12 @@ __webpack_require__.r(__webpack_exports__);
 const Ajax = function (method) {
   let data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   let body = {
-    action: 'spsb_admin_ajax',
-    _ajax_nonce: spsbAdmin.nonce,
+    action: 'storepulse_sales_booster_admin_ajax',
+    _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
     data: data,
     method: method
   };
-  return jQuery.post(spsbAdmin.ajax_url, body);
+  return jQuery.post(storepulse_sales_boosterAdmin.ajax_url, body);
 };
 
 /***/ }),
@@ -4259,9 +4259,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function Header() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"].Header, {
-    className: "spsb-header"
+    className: "storepulse_sales_booster-header"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "spsb-logo"
+    className: "storepulse_sales_booster-logo"
   }, "StorePulse - Sales Booster"));
 }
 
@@ -4288,12 +4288,12 @@ function PageLoader() {
   const {
     loading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    loading: select('spsb').getPageLoading()
+    loading: select('storepulse_sales_booster').getPageLoading()
   }));
   return loading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "spsb-page-loader"
+    className: "storepulse_sales_booster-page-loader"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "spsb-page-loader-ring"
+    className: "storepulse_sales_booster-page-loader-ring"
   }));
 }
 
@@ -4323,7 +4323,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function AppLayout() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_HeaderBar__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "spsb-heading"
+    className: "storepulse_sales_booster-heading"
   }, "Sales Booster Modules"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     style: {
       paddingTop: '20px'
@@ -4372,7 +4372,7 @@ function ModuleSwitch(_ref) {
   const {
     updateSingleModule,
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('spsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
 
   const showSuccessModal = module => {
     sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
@@ -4382,7 +4382,7 @@ function ModuleSwitch(_ref) {
       confirmButtonText: 'View Settings'
     }).then(result => {
       if (result.isConfirmed) {
-        location.href = "admin.php?page=spsb-settings#/" + module.id;
+        location.href = "admin.php?page=storepulse_sales_booster-settings#/" + module.id;
       }
     });
   };
@@ -4422,7 +4422,7 @@ function ModuleCard(_ref2) {
     extra: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ModuleSwitch, {
       module: module
     }),
-    className: "spsb-module-card"
+    className: "storepulse_sales_booster-module-card"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     span: 7
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
@@ -4465,7 +4465,7 @@ function Modules() {
   const {
     updateModules,
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('spsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setPageLoading(true);
     (0,_ajax__WEBPACK_IMPORTED_MODULE_3__.Ajax)('get_all_modules').success(response => {
@@ -4478,7 +4478,7 @@ function Modules() {
   const {
     allModules
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    allModules: select('spsb').getModules()
+    allModules: select('storepulse_sales_booster').getModules()
   }));
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "site-card-wrapper"
@@ -4591,7 +4591,7 @@ const selectors = {
   }
 
 };
-const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('spsb', {
+const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('storepulse_sales_booster', {
   reducer,
   actions,
   selectors

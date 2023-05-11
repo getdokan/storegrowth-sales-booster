@@ -59,12 +59,12 @@ function TargetProductAndCategory( { catList, productList } ) {
 
 function OrderBumpList( { navigate } ) {
 
-  const { setPageLoading } = useDispatch( 'spsb' );
-  const { setBumpData } = useDispatch( 'spsb_order_bump' )
+  const { setPageLoading } = useDispatch( 'storepulse_sales_booster' );
+  const { setBumpData } = useDispatch( 'storepulse_sales_booster_order_bump' )
   const [ buttonLoading, setButtonLoading ] = useState( false );
 
   const { bumpListData } = useSelect( ( select ) => ({
-    bumpListData: select( 'spsb_order_bump' ).getBumpData()
+    bumpListData: select( 'storepulse_sales_booster_order_bump' ).getBumpData()
   }) );
 
   useEffect( () => {

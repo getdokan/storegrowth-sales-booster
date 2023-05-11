@@ -14,7 +14,7 @@ register( OrderBumpStore );
 /**
  * Add routes to sidebar.
  */
-addFilter( 'spsb_routes', 'spsb', (routes, outlet, navigate,useParams) => {
+addFilter( 'storepulse_sales_booster_routes', 'storepulse_sales_booster', (routes, outlet, navigate,useParams) => {
   routes.push( {
     path: "/upsell-order-bump",
     exact:true,
@@ -46,7 +46,7 @@ addFilter( 'spsb_routes', 'spsb', (routes, outlet, navigate,useParams) => {
 /**
  * Add sidebar menu items
  */
-addFilter( 'sidebar_menu_items', 'spsb', (items, Link) => {
+addFilter( 'sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
   items.push( {
     label: <Link to="/upsell-order-bump">Order Bump</Link>,
     key: 'upsell-order-bump',

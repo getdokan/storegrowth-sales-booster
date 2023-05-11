@@ -7,7 +7,7 @@
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: spsb
+ * Text Domain: storepulse_sales_booster
  * Domain Path: /languages
  *
  * @package SPSB
@@ -21,29 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define plugin __FILE__
  */
-if ( ! defined( 'INVIZO_PLUGIN_FILE' ) ) {
-	define( 'INVIZO_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'STOREPULSE_PLUGIN_FILE' ) ) {
+	define( 'STOREPULSE_PLUGIN_FILE', __FILE__ );
 }
 
 /**
  * Define plugin directory URL.
  */
-if ( ! defined( 'INVIZO_PLUGIN_DIR_URL' ) ) {
-	define( 'INVIZO_PLUGIN_DIR_URL', plugin_dir_url( INVIZO_PLUGIN_FILE ) );
+if ( ! defined( 'STOREPULSE_PLUGIN_DIR_URL' ) ) {
+	define( 'STOREPULSE_PLUGIN_DIR_URL', plugin_dir_url( STOREPULSE_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin directory path.
  */
-if ( ! defined( 'INVIZO_PLUGIN_DIR_PATH' ) ) {
-	define( 'INVIZO_PLUGIN_DIR_PATH', plugin_dir_path( INVIZO_PLUGIN_FILE ) );
+if ( ! defined( 'STOREPULSE_PLUGIN_DIR_PATH' ) ) {
+	define( 'STOREPULSE_PLUGIN_DIR_PATH', plugin_dir_path( STOREPULSE_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin basename.
  */
-if ( ! defined( 'INVIZO_PLUGIN_BASENAME' ) ) {
-	define( 'INVIZO_PLUGIN_BASENAME', plugin_basename( INVIZO_PLUGIN_FILE ) );
+if ( ! defined( 'STOREPULSE_PLUGIN_BASENAME' ) ) {
+	define( 'STOREPULSE_PLUGIN_BASENAME', plugin_basename( STOREPULSE_PLUGIN_FILE ) );
 }
 
 /**
@@ -56,7 +56,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		'admin_notices',
 		function () {
 			$message = sprintf(
-				__( 'Sales booster for WooCommerce requires %s to be installed and active.', 'spsb' ),
+				__( 'StorePulse - Sales Booster requires %s to be installed and active.', 'storepulse_sales_booster' ),
 				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 			);
 
@@ -70,7 +70,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 /**
  * Include necessary files to initial load of the plugin.
  */
-if ( ! class_exists( 'WPCodal\SBFW\Bootstrap' ) ) {
+if ( ! class_exists( 'STOREPULSE\SPSB\Bootstrap' ) ) {
 	require_once __DIR__ . '/includes/traits/trait-singleton.php';
 	require_once __DIR__ . '/includes/class-bootstrap.php';
 }
@@ -81,9 +81,9 @@ if ( ! class_exists( 'WPCodal\SBFW\Bootstrap' ) ) {
  * @since  1.0.0
  * @return SBFW\Bootstrap
  */
-function wpcodal_sales_booster_plugin() {
-	return WPCodal\SBFW\Bootstrap::instance();
+function storepulse_sales_booster_plugin() {
+	return STOREPULSE\SPSB\Bootstrap::instance();
 }
 
 // Call initialization function.
-wpcodal_sales_booster_plugin();
+storepulse_sales_booster_plugin();

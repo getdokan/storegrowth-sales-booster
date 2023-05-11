@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Fly_Cart;
+namespace STOREPULSE\SPSB\Modules\Fly_Cart;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,30 +25,30 @@ class Ajax {
 	 * Constructor of Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_spsb_fly_cart_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_spsb_fly_cart_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_storepulse_sales_booster_fly_cart_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_storepulse_sales_booster_fly_cart_get_settings', array( $this, 'get_settings' ) );
 
-		add_action( 'wp_ajax_nopriv_spsb_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
-		add_action( 'wp_ajax_spsb_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
+		add_action( 'wp_ajax_nopriv_storepulse_sales_booster_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
+		add_action( 'wp_ajax_storepulse_sales_booster_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'spsb_ajax_nonce' );
+		check_ajax_referer( 'storepulse_sales_booster_ajax_nonce' );
 
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `spsb_sanitize_form_fields`.
-		$form_data = array_map( 'spsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `storepulse_sales_booster_sanitize_form_fields`.
+		$form_data = array_map( 'storepulse_sales_booster_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
 
-		$get_form_data = get_option( 'spsb_fly_cart_settings', array() );
+		$get_form_data = get_option( 'storepulse_sales_booster_fly_cart_settings', array() );
 		$merged_data   = array_merge( $get_form_data, $form_data );
 
-		update_option( 'spsb_fly_cart_settings', $merged_data );
+		update_option( 'storepulse_sales_booster_fly_cart_settings', $merged_data );
 
 		wp_send_json_success();
 	}
@@ -57,9 +57,9 @@ class Ajax {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'spsb_ajax_nonce' );
+		check_ajax_referer( 'storepulse_sales_booster_ajax_nonce' );
 
-		$form_data = get_option( 'spsb_fly_cart_settings', array() );
+		$form_data = get_option( 'storepulse_sales_booster_fly_cart_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -70,7 +70,7 @@ class Ajax {
 	 * @uses get_cart_contents
 	 */
 	public function fly_cart_frontend() {
-		check_ajax_referer( 'spsb_frontend_ajax' );
+		check_ajax_referer( 'storepulse_sales_booster_frontend_ajax' );
 
 		if ( ! isset( $_REQUEST['method'] ) ) {
 			wp_die();

@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Interfaces;
+namespace STOREPULSE\SPSB\Interfaces;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

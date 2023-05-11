@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Sales_Pop;
+namespace STOREPULSE\SPSB\Modules\Sales_Pop;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,7 +40,7 @@ class Sales_POP {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
-		$popup_properties = maybe_unserialize( get_option( 'spsb_popup_products', true ) );
+		$popup_properties = maybe_unserialize( get_option( 'storepulse_sales_booster_popup_products', true ) );
 
 		if ( isset( $popup_properties['enable'] ) && $popup_properties['enable'] ) {
 			include __DIR__ . '/../templates/popup.php';

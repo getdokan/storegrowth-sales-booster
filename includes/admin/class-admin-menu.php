@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Admin;
+namespace STOREPULSE\SPSB\Admin;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,11 +32,11 @@ class Admin_Menu {
 	 * Register a custom menu page.
 	 */
 	public function register_admin_menu() {
-		// $icon = spsb_get_file_content( 'assets/images/rocket-icon.svg' );
+		// $icon = storepulse_sales_booster_get_file_content( 'assets/images/rocket-icon.svg' );
 
 		add_menu_page(
-			__( 'Sales Booster', 'spsb' ),
-			__( 'Sales Booster', 'spsb' ),
+			__( 'Sales Booster', 'storepulse_sales_booster' ),
+			__( 'Sales Booster', 'storepulse_sales_booster' ),
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
@@ -47,19 +47,19 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - Sales Booster', 'spsb' ),
-			__( 'Modules', 'spsb' ),
+			__( 'Modules - Sales Booster', 'storepulse_sales_booster' ),
+			__( 'Modules', 'storepulse_sales_booster' ),
 			'manage_options',
-			'spsb-modules',
+			'storepulse_sales_booster-modules',
 			array( $this, 'modules_callback' )
 		);
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Settings - Sales Booster', 'spsb' ),
-			__( 'Settings', 'spsb' ),
+			__( 'Settings - Sales Booster', 'storepulse_sales_booster' ),
+			__( 'Settings', 'storepulse_sales_booster' ),
 			'manage_options',
-			'spsb-settings',
+			'storepulse_sales_booster-settings',
 			array( $this, 'settings_callback' )
 		);
 

@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\PD_Banner;
+namespace STOREPULSE\SPSB\Modules\PD_Banner;
 
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,7 +27,7 @@ class Common_Hooks {
 	private function __construct() {
 		//phpcs:disable
 		// Don't load banner on fast fly cart.
-		if ( ! isset( $_GET['spsb-checkout'] ) ) {
+		if ( ! isset( $_GET['storepulse_sales_booster-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
@@ -39,7 +39,7 @@ class Common_Hooks {
 	 * Output bar html
 	 */
 	public function wp_footer() {
-		spsb_pd_banner_get_bar_content();
+		storepulse_sales_booster_pd_banner_get_bar_content();
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Common_Hooks {
 	 */
 	public function woocommerce_add_to_cart_fragments( $fragments ) {
 
-		$fragments['div.spsb-pd-banner-bar-wrapper'] = spsb_pd_banner_get_bar_content( false );
+		$fragments['div.storepulse_sales_booster-pd-banner-bar-wrapper'] = storepulse_sales_booster_pd_banner_get_bar_content( false );
 
 		return $fragments;
 	}

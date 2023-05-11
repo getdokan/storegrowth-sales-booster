@@ -1,5 +1,5 @@
 {
-  "name": "shamssadek/storepulse-sales-booster",
+  "name": "shamssadek/storepulse_sales_booster",
   "autoload": {
     "psr-4": {
       "StorePlus\\Inc\\": "includes/"

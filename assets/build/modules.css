@@ -28831,16 +28831,16 @@ body {
     line-height: 1.4em;
 }
 
-.spsb-header.ant-layout-header {
+.storepulse_sales_booster-header.ant-layout-header {
     background-color: #fff;
     padding: 0 20px;
     margin: -9px -20px 20px -20px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
-.spsb-logo {
+.storepulse_sales_booster-logo {
     font-size: 23px;
 }
-.spsb-module-card img {
+.storepulse_sales_booster-module-card img {
     width: 100%;
     height: auto;
 }
@@ -28850,10 +28850,10 @@ li.ant-menu-item a:focus {
 }
 
 /* Page loading effect */
-.spsb-layout-relative {
+.storepulse_sales_booster-layout-relative {
     position: relative;
 }
-@-webkit-keyframes spsb-loader-ld-spin {
+@-webkit-keyframes storepulse_sales_booster-loader-ld-spin {
     0% {
         -webkit-animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
                 animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
@@ -28863,7 +28863,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-@keyframes spsb-loader-ld-spin {
+@keyframes storepulse_sales_booster-loader-ld-spin {
     0% {
         -webkit-animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
                 animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
@@ -28873,7 +28873,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-.spsb-page-loader {
+.storepulse_sales_booster-page-loader {
     position: absolute;
     left: 0;
     top: 0;
@@ -28881,7 +28881,7 @@ li.ant-menu-item a:focus {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
 }
-.spsb-page-loader-ring {
+.storepulse_sales_booster-page-loader-ring {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -28891,10 +28891,10 @@ li.ant-menu-item a:focus {
     transition: all .3s;
     transition-timing-function: ease-in;
     box-sizing: content-box;
-    -webkit-animation: spsb-loader-ld-spin 1s infinite linear;
-            animation: spsb-loader-ld-spin 1s infinite linear;
+    -webkit-animation: storepulse_sales_booster-loader-ld-spin 1s infinite linear;
+            animation: storepulse_sales_booster-loader-ld-spin 1s infinite linear;
 }
-.spsb-page-loader-ring:after {
+.storepulse_sales_booster-page-loader-ring:after {
     content: " ";
     display: block;
     width: 6em;
@@ -28917,12 +28917,12 @@ li.ant-menu-item a:focus {
 .ant-form .ant-form-item-label label {
     font-weight: 600;
 }
-.spsb-field-upgrade-pro-label {
+.storepulse_sales_booster-field-upgrade-pro-label {
     color: #1890ff;
 }
 /* Form end */
 
-.spsb-module-card {
+.storepulse_sales_booster-module-card {
     margin-bottom: 16px;
 }
 

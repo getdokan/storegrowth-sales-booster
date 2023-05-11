@@ -10,66 +10,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! function_exists( 'spsb_assets_url' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_assets_url' ) ) {
 	/**
 	 * Get plugin assets url.
 	 *
 	 * @param string $path Plugin path.
 	 */
-	function spsb_assets_url( $path ) {
-		return INVIZO_PLUGIN_DIR_URL . 'assets/' . $path;
+	function storepulse_sales_booster_assets_url( $path ) {
+		return STOREPULSE_PLUGIN_DIR_URL . 'assets/' . $path;
 	}
 }
 
-if ( ! function_exists( 'spsb_modules_url' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_modules_url' ) ) {
 	/**
 	 * Get modules url.
 	 *
 	 * @param string $path Module internal path.
 	 */
-	function spsb_modules_url( $path ) {
-		return INVIZO_PLUGIN_DIR_URL . 'includes/modules/' . $path;
+	function storepulse_sales_booster_modules_url( $path ) {
+		return STOREPULSE_PLUGIN_DIR_URL . 'includes/modules/' . $path;
 	}
 }
 
-if ( ! function_exists( 'spsb_modules_path' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_modules_path' ) ) {
 	/**
 	 * Get modules path.
 	 *
 	 * @param string $path Module internal path.
 	 */
-	function spsb_modules_path( $path ) {
-		return INVIZO_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
+	function storepulse_sales_booster_modules_path( $path ) {
+		return STOREPULSE_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
 	}
 }
 
-if ( ! function_exists( 'spsb_plugin_path' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_plugin_path' ) ) {
 	/**
 	 * Get plugin file path.
 	 *
 	 * @param string $path Plugin path.
 	 */
-	function spsb_plugin_path( $path ) {
-		return INVIZO_PLUGIN_DIR_PATH . $path;
+	function storepulse_sales_booster_plugin_path( $path ) {
+		return STOREPULSE_PLUGIN_DIR_PATH . $path;
 	}
 }
 
-if ( ! function_exists( 'spsb_get_file_content' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_get_file_content' ) ) {
 	/**
 	 * Get plugin file path.
 	 *
 	 * @param string $path Plugin path.
 	 */
-	function spsb_get_file_content( $path ) {
+	function storepulse_sales_booster_get_file_content( $path ) {
 		ob_start();
 
-		require INVIZO_PLUGIN_DIR_PATH . $path;
+		require STOREPULSE_PLUGIN_DIR_PATH . $path;
 
 		return ob_get_clean();
 	}
 }
 
-if ( ! function_exists( 'spsb_find_option_setting' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_find_option_setting' ) ) {
 	/**
 	 * Find a settings value from array.
 	 *
@@ -77,7 +77,7 @@ if ( ! function_exists( 'spsb_find_option_setting' ) ) {
 	 * @param string $key Key from option array.
 	 * @param string $default1 Default value.
 	 */
-	function spsb_find_option_setting( $settings, $key, $default1 = '' ) {
+	function storepulse_sales_booster_find_option_setting( $settings, $key, $default1 = '' ) {
 		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
@@ -86,13 +86,13 @@ if ( ! function_exists( 'spsb_find_option_setting' ) ) {
 	}
 }
 
-if ( ! function_exists( 'spsb_sanitize_form_fields' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_sanitize_form_fields' ) ) {
 	/**
 	 * Sanitize form text fields.
 	 *
 	 * @param string $value User input.
 	 */
-	function spsb_sanitize_form_fields( $value ) {
+	function storepulse_sales_booster_sanitize_form_fields( $value ) {
 		$value = sanitize_text_field( $value );
 
 		if ( 'true' === $value ) {
@@ -107,13 +107,13 @@ if ( ! function_exists( 'spsb_sanitize_form_fields' ) ) {
 	}
 }
 
-if ( ! function_exists( 'spsb_sanitize_svg_icon_fields' ) ) {
+if ( ! function_exists( 'storepulse_sales_booster_sanitize_svg_icon_fields' ) ) {
 	/**
 	 * Sanitize form SVG field xml.
 	 *
 	 * @param string $value SVG string.
 	 */
-	function spsb_sanitize_svg_icon_fields( $value ) {
+	function storepulse_sales_booster_sanitize_svg_icon_fields( $value ) {
 		$icon_allowed_html = array(
 			'svg'  => array(
 				'viewbox' => true,

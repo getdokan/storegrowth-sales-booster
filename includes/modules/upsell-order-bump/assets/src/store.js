@@ -115,7 +115,7 @@ const selectors = {
   }
 };
 
-export default createReduxStore( 'spsb_order_bump', {
+export default createReduxStore( 'storepulse_sales_booster_order_bump', {
   reducer,
   actions,
   selectors

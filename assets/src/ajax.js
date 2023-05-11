@@ -1,11 +1,11 @@
 export const Ajax = (method, data = []) => {
 
   let body = {
-    action: 'spsb_admin_ajax',
-    _ajax_nonce: spsbAdmin.nonce,
+    action: 'storepulse_sales_booster_admin_ajax',
+    _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
     data: data,
     method: method,
   };
 
-  return jQuery.post( spsbAdmin.ajax_url, body );
+  return jQuery.post( storepulse_sales_boosterAdmin.ajax_url, body );
 }

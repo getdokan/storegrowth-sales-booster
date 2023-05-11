@@ -13,10 +13,10 @@
    * Set Fly Cart Contents.
    */
   function setCartContents(htmlResponse) {
-    $('.spsb-widget-shopping-cart-content').html(htmlResponse);
+    $('.storepulse_sales_booster-widget-shopping-cart-content').html(htmlResponse);
 
     setTimeout( function() {
-      $('.spsb-fly-cart-loader').addClass('wfc-hide');
+      $('.storepulse_sales_booster-fly-cart-loader').addClass('wfc-hide');
     }, 500 );
 
     jQuery(document.body).trigger('wc_fragment_refresh');
@@ -26,14 +26,14 @@
    * Get Cart Contents.
    */
   function getCartContents() {
-    $('.spsb-fly-cart-loader').removeClass('wfc-hide');
+    $('.storepulse_sales_booster-fly-cart-loader').removeClass('wfc-hide');
 
     $.ajax({
-      url: spsbFrontend.ajaxUrl,
+      url: storepulse_sales_boosterFrontend.ajaxUrl,
       method: "POST",
       data: {
-        action: "spsb_fly_cart_frontend",
-        _ajax_nonce: spsbFrontend.nonce,
+        action: "storepulse_sales_booster_fly_cart_frontend",
+        _ajax_nonce: storepulse_sales_boosterFrontend.nonce,
         method: "get_cart_contents",
       },
       success: setCartContents
@@ -56,7 +56,7 @@
     inputElm.val(newVal);
 
     // Submit the form.
-    $('form.spsb-woocommerce-cart-form').submit();
+    $('form.storepulse_sales_booster-woocommerce-cart-form').submit();
   }
 
   // For sidebar.
@@ -70,7 +70,7 @@
       jQuery(this).addClass('wfc-hide');
       jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
     });
-    jQuery(document).on('click', '.spsb-cart-widget-close', function (event) {
+    jQuery(document).on('click', '.storepulse_sales_booster-cart-widget-close', function (event) {
       event.preventDefault();
       jQuery('.wfc-overlay').addClass('wfc-hide');
       jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
@@ -79,10 +79,10 @@
     // Handle cart form submit.
     $(document).on(
       'submit',
-      'form.spsb-woocommerce-cart-form',
+      'form.storepulse_sales_booster-woocommerce-cart-form',
       function (event) {
         event.preventDefault();
-        $('.spsb-fly-cart-loader').removeClass('wfc-hide');
+        $('.storepulse_sales_booster-fly-cart-loader').removeClass('wfc-hide');
 
         $.ajax({
           url: event.target.action,
@@ -96,7 +96,7 @@
     // On plus icon click.
     $(document).on(
       'click',
-      '.spsb-fly-cart-table .product-quantity button.spsb-plus-icon',
+      '.storepulse_sales_booster-fly-cart-table .product-quantity button.storepulse_sales_booster-plus-icon',
       function () {
         updateProductQuantity.bind(this, 'plus').call();
       }
@@ -105,7 +105,7 @@
     // On minus icon click.
     $(document).on(
       'click',
-      '.spsb-fly-cart-table .product-quantity button.spsb-minus-icon',
+      '.storepulse_sales_booster-fly-cart-table .product-quantity button.storepulse_sales_booster-minus-icon',
       function () {
         updateProductQuantity.bind(this, 'minus').call();
       }
@@ -114,10 +114,10 @@
     // Remove product from cart.
     $(document).on(
       'click',
-      'form.spsb-woocommerce-cart-form a.spsb-fly-cart-remove',
+      'form.storepulse_sales_booster-woocommerce-cart-form a.storepulse_sales_booster-fly-cart-remove',
       function (event) {
         event.preventDefault();
-        $('.spsb-fly-cart-loader').removeClass('wfc-hide');
+        $('.storepulse_sales_booster-fly-cart-loader').removeClass('wfc-hide');
 
         $.ajax({
           url: $(this).attr('href'),
@@ -129,14 +129,14 @@
 
     function openCheckoutPageCallback(href) {
       // Show loader.
-      $('.spsb-fly-cart-loader').removeClass('wfc-hide');
-      $('.spsb-widget-shopping-cart-content').html("");
+      $('.storepulse_sales_booster-fly-cart-loader').removeClass('wfc-hide');
+      $('.storepulse_sales_booster-widget-shopping-cart-content').html("");
 
       let checkoutFrame = document.createElement('iframe');
-      checkoutFrame.classList.add('spsb-fast-cart-checkout-frame');
+      checkoutFrame.classList.add('storepulse_sales_booster-fast-cart-checkout-frame');
       checkoutFrame.setAttribute('scrolling', 'no');
 
-      window.spsbFastCart = {
+      window.storepulse_sales_boosterFastCart = {
         updateIframeHeight: function (iframeHeight) {
           checkoutFrame.style.height = ( iframeHeight ) + 'px';
           if ( checkoutFrame.isAttached ) {
@@ -146,7 +146,7 @@
       };
 
       let url = new URL(href);
-      url.searchParams.set('spsb-checkout', 'true');
+      url.searchParams.set('storepulse_sales_booster-checkout', 'true');
 
       checkoutFrame.src = url;
       checkoutFrame.style.opacity = 0;
@@ -155,7 +155,7 @@
         if (checkoutFrame.isAttached) {
           checkoutFrame.style.opacity = 1;
           // Hide loader.
-          $('.spsb-fly-cart-loader').addClass('wfc-hide');
+          $('.storepulse_sales_booster-fly-cart-loader').addClass('wfc-hide');
         }
       };
 
@@ -164,16 +164,16 @@
       if (checkoutFrame.isLoaded) {
         checkoutFrame.style.opacity = 1;
         // Hide loader.
-        $('.spsb-fly-cart-loader').addClass('wfc-hide');
+        $('.storepulse_sales_booster-fly-cart-loader').addClass('wfc-hide');
       }
 
-      $('.spsb-widget-shopping-cart-content').html(checkoutFrame);
+      $('.storepulse_sales_booster-widget-shopping-cart-content').html(checkoutFrame);
     }
 
     // Open checkout page.
     $(document).on(
       'click',
-      '.wfc-widget-sidebar a.spsb-cart-widget-checkout-button',
+      '.wfc-widget-sidebar a.storepulse_sales_booster-cart-widget-checkout-button',
       function (event) {
         event.preventDefault();
 

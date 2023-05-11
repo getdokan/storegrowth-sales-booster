@@ -5,13 +5,13 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\Upsell_Order_Bump;
+namespace STOREPULSE\SPSB\Modules\Upsell_Order_Bump;
 
-use WPCodal\SBFW\Interfaces\Module_Skeleton;
-use WPCodal\SBFW\Traits\Singleton;
-use WPCodal\SBFW\Modules\Upsell_Order_Bump\Order_Bump;
-use WPCodal\SBFW\Modules\Upsell_Order_Bump\Ajax\Ajax;
-use WPCodal\SBFW\Modules\Order_Bump\Enqueue_Script;
+use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
+use STOREPULSE\SPSB\Traits\Singleton;
+use STOREPULSE\SPSB\Modules\Upsell_Order_Bump\Order_Bump;
+use STOREPULSE\SPSB\Modules\Upsell_Order_Bump\Ajax\Ajax;
+use STOREPULSE\SPSB\Modules\Order_Bump\Enqueue_Script;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,7 +41,7 @@ class Upsell_Order_Bump_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return spsb_modules_url( 'sales-pop/assets/images/icon.png' );
+		return storepulse_sales_booster_modules_url( 'sales-pop/assets/images/icon.png' );
 	}
 
 	/**

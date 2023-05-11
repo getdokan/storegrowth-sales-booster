@@ -6,10 +6,10 @@ import { Country, State, City }  from 'country-state-city';
 
 
 function SalesPop({ outlet: Outlet, useSearchParams }) {
-	const { setCreateFromData } = useDispatch( 'spsb_order_sales_pop' );
-	const { setPageLoading } = useDispatch( 'spsb' );
+	const { setCreateFromData } = useDispatch( 'storepulse_sales_booster_order_sales_pop' );
+	const { setPageLoading } = useDispatch( 'storepulse_sales_booster' );
 	const { createPopupForm } = useSelect( ( select ) => ({
-		createPopupForm: select('spsb_order_sales_pop').getCreateFromData()
+		createPopupForm: select('storepulse_sales_booster_order_sales_pop').getCreateFromData()
 	}));
 	const layout = {
 		labelCol: {

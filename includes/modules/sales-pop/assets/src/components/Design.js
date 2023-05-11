@@ -4,11 +4,11 @@ import TextDesign from './TextDesign';
 import BasicDesign from './BasicDesign';
 
 function Desgin( { onFormSave } ) {
-  const { setCreateFromData } = useDispatch( 'spsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'storepulse_sales_booster_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupForm: select( 'spsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading: select( 'spsb_order_sales_pop' ).getButtonLoading()
+    createPopupForm: select( 'storepulse_sales_booster_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading: select( 'storepulse_sales_booster_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {

@@ -2,10 +2,10 @@ import { Form, Select, Switch } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 function Sound() {
-	const { setCreateFromData } = useDispatch( 'spsb_order_sales_pop' );
+	const { setCreateFromData } = useDispatch( 'storepulse_sales_booster_order_sales_pop' );
 
 	const { createPopupForm } = useSelect( ( select ) => ({
-		createPopupForm: select('spsb_order_sales_pop').getCreateFromData()
+		createPopupForm: select('storepulse_sales_booster_order_sales_pop').getCreateFromData()
 	}));
 
 	const onFieldChange = (key, value) => {

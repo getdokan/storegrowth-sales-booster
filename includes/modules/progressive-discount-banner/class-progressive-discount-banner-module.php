@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace WPCodal\SBFW\Modules\PD_Banner;
+namespace STOREPULSE\SPSB\Modules\PD_Banner;
 
-use WPCodal\SBFW\Interfaces\Module_Skeleton;
-use WPCodal\SBFW\Traits\Singleton;
+use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
+use STOREPULSE\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +37,7 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return spsb_modules_url( 'progressive-discount-banner/assets/images/banner.png' );
+		return storepulse_sales_booster_modules_url( 'progressive-discount-banner/assets/images/banner.png' );
 	}
 
 	/**

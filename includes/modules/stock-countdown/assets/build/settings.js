@@ -17138,7 +17138,7 @@ __webpack_require__.r(__webpack_exports__);
 function StockCountdown() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('spsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     widget_background_color: '#ffffff',
@@ -17159,12 +17159,12 @@ function StockCountdown() {
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'spsb_stock_countdown_save_settings',
-      _ajax_nonce: spsbAdmin.nonce,
+      action: 'storepulse_sales_booster_stock_countdown_save_settings',
+      _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
-      url: spsbAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {
@@ -17179,11 +17179,11 @@ function StockCountdown() {
   const getSettings = () => {
     setPageLoading(true);
     jQuery.ajax({
-      url: spsbAdmin.ajax_url,
+      url: storepulse_sales_boosterAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'spsb_stock_countdown_get_settings',
-        _ajax_nonce: spsbAdmin.nonce
+        action: 'storepulse_sales_booster_stock_countdown_get_settings',
+        _ajax_nonce: storepulse_sales_boosterAdmin.nonce
       }
     }).success(response => {
       if (response.success) {
@@ -50776,7 +50776,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add routes to sidebar.
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('spsb_routes', 'spsb', routes => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('storepulse_sales_booster_routes', 'storepulse_sales_booster', routes => {
   routes.push({
     path: "/stock-countdown",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockCountdown__WEBPACK_IMPORTED_MODULE_2__["default"], null),
@@ -50788,7 +50788,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add sidebar menu items
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'spsb', (items, Link) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/stock-countdown"

@@ -4,10 +4,10 @@ const { TextArea } = Input;
 
 function ContentBump() {
 
-  const { setCreateFromData } = useDispatch( 'spsb_order_bump' );
+  const { setCreateFromData } = useDispatch( 'storepulse_sales_booster_order_bump' );
 
   const { createBumpData } = useSelect((select) => ({
-    createBumpData: select('spsb_order_bump').getCreateFromData()
+    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
   }));
 
 
