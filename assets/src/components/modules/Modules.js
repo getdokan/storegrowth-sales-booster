@@ -26,7 +26,7 @@ function Modules() {
   return (
     <div className="site-card-wrapper">
       <Row gutter={16}>
-
+		{console.log(allModules)}
         {allModules.map((module) => <ModuleCard module={module} key={nanoid()} />)}
 
       </Row>

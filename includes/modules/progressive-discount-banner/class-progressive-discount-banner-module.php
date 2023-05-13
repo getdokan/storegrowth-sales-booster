@@ -37,7 +37,7 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return storepulse_sales_booster_modules_url( 'progressive-discount-banner/assets/images/banner.png' );
+		return storepulse_sales_booster_modules_url( 'progressive-discount-banner/assets/images/progressive-discount-banner.svg' );
 	}
 
 	/**

@@ -41,7 +41,7 @@ class Upsell_Order_Bump_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return storepulse_sales_booster_modules_url( 'sales-pop/assets/images/icon.png' );
+		return storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**

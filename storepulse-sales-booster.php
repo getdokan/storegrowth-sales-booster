@@ -7,7 +7,7 @@
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: storepulse_sales_booster
+ * Text Domain: storepulse-sales-booster
  * Domain Path: /languages
  *
  * @package SPSB

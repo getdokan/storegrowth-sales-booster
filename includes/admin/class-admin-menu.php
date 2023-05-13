@@ -32,16 +32,13 @@ class Admin_Menu {
 	 * Register a custom menu page.
 	 */
 	public function register_admin_menu() {
-		// $icon = storepulse_sales_booster_get_file_content( 'assets/images/rocket-icon.svg' );
-
 		add_menu_page(
-			__( 'Sales Booster', 'storepulse_sales_booster' ),
-			__( 'Sales Booster', 'storepulse_sales_booster' ),
+			__( 'Sales Booster', 'storepulse-sales-booster' ),
+			__( 'Sales Booster', 'storepulse-sales-booster' ),
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-			// 'data:image/svg+xml;base64,' . base64_encode( $icon ), // phpcs:ignore
-			'dashicons-admin-customizer',
+			STOREPULSE_PLUGIN_DIR_URL. 'assets/images/storepulse.svg',
 			58
 		);
 

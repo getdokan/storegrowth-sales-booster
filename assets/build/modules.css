@@ -27564,6 +27564,8 @@ body {
 .storepulse_sales_booster-module-card img {
     width: 100%;
     height: auto;
+    max-width: 80px;
+
 }
 li.ant-menu-item a:focus {
     outline: 0 none;
@@ -27633,6 +27635,10 @@ li.ant-menu-item a:focus {
 .storepulse_sales_booster-module-card {
     margin-bottom: 16px;
 }
-
+/* Admin menu icon size*/
+#adminmenu .toplevel_page_sales-booster-for-woocommerce.menu-top-last .wp-menu-image img {
+    width: 32px;
+    height: 30px;
+}
 
 /*# sourceMappingURL=modules.css.map*/
