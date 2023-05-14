@@ -38,14 +38,14 @@ class Admin_Menu {
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-			STOREPULSE_PLUGIN_DIR_URL. 'assets/images/storepulse.svg',
+			STOREPULSE_PLUGIN_DIR_URL . 'assets/images/storepulse.svg',
 			58
 		);
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - Sales Booster', 'storepulse_sales_booster' ),
-			__( 'Modules', 'storepulse_sales_booster' ),
+			__( 'Modules - Sales Booster', 'storepulse-sales-booster' ),
+			__( 'Modules', 'storepulse-sales-booster' ),
 			'manage_options',
 			'storepulse_sales_booster-modules',
 			array( $this, 'modules_callback' )
@@ -53,8 +53,8 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Settings - Sales Booster', 'storepulse_sales_booster' ),
-			__( 'Settings', 'storepulse_sales_booster' ),
+			__( 'Settings - Sales Booster', 'storepulse-sales-booster' ),
+			__( 'Settings', 'storepulse-sales-booster' ),
 			'manage_options',
 			'storepulse_sales_booster-settings',
 			array( $this, 'settings_callback' )
