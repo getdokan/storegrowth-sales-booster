@@ -42,7 +42,7 @@ class Enqueue {
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
 		);
-		$products         = get_posts( $args );
+		$products         = get_posts($args);
 		$popup_properties = get_option('storepulse_sales_booster_popup_products', false);
 
 		if ( $popup_properties !== false ) {
