@@ -44,6 +44,7 @@ function ModuleSwitch({ module }) {
 }
 
 function ModuleCard( { module } ) {
+  console.log({module});
   return (
     <Col span={8}>
       <Card
