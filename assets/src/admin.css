@@ -93,8 +93,3 @@ li.ant-menu-item a:focus {
 .storepulse_sales_booster-module-card {
     margin-bottom: 16px;
 }
-/* Admin menu icon size*/
-#adminmenu .toplevel_page_sales-booster-for-woocommerce.menu-top-last .wp-menu-image img {
-    width: 32px;
-    height: 30px;
-}
