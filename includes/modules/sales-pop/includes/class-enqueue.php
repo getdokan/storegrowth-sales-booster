@@ -43,14 +43,14 @@ class Enqueue {
 			'posts_per_page' => -1,
 		);
 		$products         = get_posts( $args );
-		$popup_properties = get_option('storepulse_sales_booster_popup_products', false);
+		$popup_properties = get_option( 'storepulse_sales_booster_popup_products', false );
 
-		if ( $popup_properties !== false ) {
-			$popup_properties = maybe_unserialize( $popup_properties );
-			$popup_products 	= $popup_properties['popup_products'];
-			$product_list      	= array();
-			$product_url       	= array();
-			$product_image_url 	= array();
+		if ( false !== $popup_properties ) {
+			$popup_properties  = maybe_unserialize( $popup_properties );
+			$popup_products    = $popup_properties['popup_products'];
+			$product_list      = array();
+			$product_url       = array();
+			$product_image_url = array();
 			if ( $popup_products ) {
 				foreach ( $products as $product ) {
 					if ( in_array( $product->ID, $popup_products, true ) ) {
@@ -66,14 +66,12 @@ class Enqueue {
 			return;
 		}
 
-
 		$state_without_city = maybe_unserialize( get_option( 'storepulse_sales_booster_state_without_city', true ) );
 		$virtual_state      = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
 
-		if( is_array( $state_without_city ) ) {
+		if ( is_array( $state_without_city ) ) {
 			$popup_state_without_city = array_intersect( $state_without_city, $virtual_state );
 		}
-		
 
 		$country_name_by_code = array();
 

@@ -47,7 +47,7 @@ $available_item_text = storepulse_sales_booster_find_option_setting( $settings, 
 	<div class="storepulse_sales_booster-stock-progressbar-status-below">
 		<?php
 			/* translators: %s: Left items in stock */
-			echo esc_html( sprintf( __( 'Only %s left in stock', 'storepulse_sales_booster' ), ( $stock - $total_sales ) ) );
+			echo esc_html( sprintf( __( 'Only %s left in stock', 'storepulse-sales-booster' ), ( $stock - $total_sales ) ) );
 		?>
 	</div>
 	<?php endif; ?>

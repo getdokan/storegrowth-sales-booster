@@ -14,7 +14,7 @@
 			<?php
 			if ( 'left' === $popup_properties['image_position'] ) {
 				?>
-				<div class="custom-notification-image-wrapper" style="padding:<?php echo  isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
+				<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
 					<?php if ( 'true' === $popup_properties['link_image_to_product'] ) { ?>
 						<a id="product_url" href="#" target="<?php echo 'true' === $popup_properties['open_product_link_in_new_tab'] ? '_blank' : null; ?>">
 							<img id="image_of_product" 
@@ -25,7 +25,7 @@
 					<?php } else { ?>
 							<img id="image_of_product" 
 								src="https://wiki.openstreetmap.org/w/images/d/d1/Tile_osm-no-label.png" 
-								style="<?php echo isset($image_style) ? esc_attr( $image_style ) : null; ?>;"
+								style="<?php echo isset( $image_style ) ? esc_attr( $image_style ) : null; ?>;"
 							>
 					<?php } ?>
 				</div>

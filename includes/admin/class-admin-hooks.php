@@ -37,8 +37,8 @@ class Admin_Hooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'modules'  => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storepulse_sales_booster' ) . '</a>',
-			'settings' => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storepulse_sales_booster' ) . '</a>',
+			'modules'  => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storepulse-sales-booster' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storepulse-sales-booster' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

@@ -65,7 +65,7 @@ class Common_Hooks {
 	public function woocommerce_product_data_tabs( $tabs ) {
 		// Adds the new tab.
 		$tabs['stock_countdown_tab'] = array(
-			'label'  => __( 'Stock Countdown', 'storepulse_sales_booster' ),
+			'label'  => __( 'Stock Countdown', 'storepulse-sales-booster' ),
 			'target' => 'storepulse_sales_booster-stock-countdown-tab',
 		);
 
