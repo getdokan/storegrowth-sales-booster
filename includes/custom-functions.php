@@ -17,7 +17,7 @@ if ( ! function_exists( 'storepulse_sales_booster_assets_url' ) ) {
 	 * @param string $path Plugin path.
 	 */
 	function storepulse_sales_booster_assets_url( $path ) {
-		return STOREPULSE_PLUGIN_DIR_URL . 'assets/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_URL . 'assets/' . $path;
 	}
 }
 
@@ -28,7 +28,7 @@ if ( ! function_exists( 'storepulse_sales_booster_modules_url' ) ) {
 	 * @param string $path Module internal path.
 	 */
 	function storepulse_sales_booster_modules_url( $path ) {
-		return STOREPULSE_PLUGIN_DIR_URL . 'includes/modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_URL . 'includes/modules/' . $path;
 	}
 }
 
@@ -39,7 +39,7 @@ if ( ! function_exists( 'storepulse_sales_booster_modules_path' ) ) {
 	 * @param string $path Module internal path.
 	 */
 	function storepulse_sales_booster_modules_path( $path ) {
-		return STOREPULSE_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
 	}
 }
 
@@ -50,7 +50,7 @@ if ( ! function_exists( 'storepulse_sales_booster_plugin_path' ) ) {
 	 * @param string $path Plugin path.
 	 */
 	function storepulse_sales_booster_plugin_path( $path ) {
-		return STOREPULSE_PLUGIN_DIR_PATH . $path;
+		return STOREGROWTH_PLUGIN_DIR_PATH . $path;
 	}
 }
 

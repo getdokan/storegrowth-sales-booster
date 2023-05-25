@@ -23,7 +23,7 @@ $class_name = 'center' === $layout ? 'storepulse_sales_booster-fast-cart-center-
 <div class="wfc-overlay wfc-hide"></div>
 <div class="wfc-widget-sidebar wfc-slide <?php echo esc_attr( $class_name ); ?>">
 	<h3 class="wfc-cart-heading">
-		<?php esc_html_e( 'Shopping Cart', 'storepulse-sales-booster' ); ?>
+		<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
 		<span class="wfc-close-btn storepulse_sales_booster-cart-widget-close" title="Close">×</span>
 	</h3>
 	<div class="storepulse_sales_booster-widget-shopping-cart-content-wrapper">

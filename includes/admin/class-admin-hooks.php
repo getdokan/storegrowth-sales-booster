@@ -25,7 +25,7 @@ class Admin_Hooks {
 	 * Constructor of Admin_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'plugin_action_links_' . STOREPULSE_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . STOREGROWTH_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 	}
 
 	/**
@@ -37,8 +37,8 @@ class Admin_Hooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'modules'  => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storepulse-sales-booster' ) . '</a>',
-			'settings' => '<a href="' . admin_url( 'admin.php?page=storepulse_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storepulse-sales-booster' ) . '</a>',
+			'modules'  => '<a href="' . admin_url( 'admin.php?page=storegrowth_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storegrowth-sales-booster' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=storegrowth_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storegrowth-sales-booster' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );

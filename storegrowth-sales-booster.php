@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name: StorePulse - Sales Booster
- * Description: Take your WooCommerce store to new heights with StorePulse, the must-have addon designed to skyrocket your sales. Whether you're just starting out or running a thriving online shop, StorePulse offers a comprehensive set of essential modules to optimize your store's performance and maximize conversions. With our free version, you'll gain access to five powerful modules that will supercharge your sales strategy. From advanced inventory management to persuasive marketing tools, StorePulse is your secret weapon for success. Get started with StorePulse today and unlock the full potential of your WooCommerce store.
+ * Plugin Name: StoreGrowth - Sales Booster
+ * Description: Take your WooCommerce store to new heights with StoreGrowth, the must-have addon designed to skyrocket your sales. Whether you're just starting out or running a thriving online shop, StoreGrowth offers a comprehensive set of essential modules to optimize your store's performance and maximize conversions. With our free version, you'll gain access to five powerful modules that will supercharge your sales strategy. From advanced inventory management to persuasive marketing tools, StoreGrowth is your secret weapon for success. Get started with StoreGrowth today and unlock the full potential of your WooCommerce store.
  * Version:     1.0.0
  * Author:      Invizo
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: storepulse-sales-booster
+ * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
  *
- * @package SPSB
+ * @package SGSB
  */
 
 // If this file is called directly, abort.
@@ -21,29 +21,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define plugin __FILE__
  */
-if ( ! defined( 'STOREPULSE_PLUGIN_FILE' ) ) {
-	define( 'STOREPULSE_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'STOREGROWTH_PLUGIN_FILE' ) ) {
+	define( 'STOREGROWTH_PLUGIN_FILE', __FILE__ );
 }
 
 /**
  * Define plugin directory URL.
  */
-if ( ! defined( 'STOREPULSE_PLUGIN_DIR_URL' ) ) {
-	define( 'STOREPULSE_PLUGIN_DIR_URL', plugin_dir_url( STOREPULSE_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_URL' ) ) {
+	define( 'STOREGROWTH_PLUGIN_DIR_URL', plugin_dir_url( STOREGROWTH_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin directory path.
  */
-if ( ! defined( 'STOREPULSE_PLUGIN_DIR_PATH' ) ) {
-	define( 'STOREPULSE_PLUGIN_DIR_PATH', plugin_dir_path( STOREPULSE_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
+	define( 'STOREGROWTH_PLUGIN_DIR_PATH', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) );
 }
 
 /**
  * Define plugin basename.
  */
-if ( ! defined( 'STOREPULSE_PLUGIN_BASENAME' ) ) {
-	define( 'STOREPULSE_PLUGIN_BASENAME', plugin_basename( STOREPULSE_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
+	define( 'STOREGROWTH_PLUGIN_BASENAME', plugin_basename( STOREGROWTH_PLUGIN_FILE ) );
 }
 
 /**
@@ -56,7 +56,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		'admin_notices',
 		function () {
 			$message = sprintf(
-				__( 'StorePulse - Sales Booster requires %s to be installed and active.', 'storepulse_sales_booster' ),
+				__( 'StoreGrowth - Sales Booster requires %s to be installed and active.', 'storegrowth_sales_booster' ),
 				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 			);
 

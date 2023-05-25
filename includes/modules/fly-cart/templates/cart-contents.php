@@ -51,7 +51,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 								sprintf(
 									'<a href="%s" class="storepulse_sales_booster-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
 									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . storepulse_sales_booster_fast_cart_get_query_string_for_http_ajax_referer() ),
-									esc_html__( 'Remove this item', 'storepulse-sales-booster' ),
+									esc_html__( 'Remove this item', 'storegrowth-sales-booster' ),
 									esc_attr( $product_id ),
 									esc_attr( $_product->get_sku() )
 								),
