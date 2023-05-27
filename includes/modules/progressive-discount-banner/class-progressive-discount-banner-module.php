@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\PD_Banner;
+namespace STOREGROWTH\SPSB\Modules\PD_Banner;
 
-use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

@@ -70,7 +70,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 /**
  * Include necessary files to initial load of the plugin.
  */
-if ( ! class_exists( 'STOREPULSE\SPSB\Bootstrap' ) ) {
+if ( ! class_exists( 'STOREGROWTH\SPSB\Bootstrap' ) ) {
 	require_once __DIR__ . '/includes/traits/trait-singleton.php';
 	require_once __DIR__ . '/includes/class-bootstrap.php';
 }
@@ -82,7 +82,7 @@ if ( ! class_exists( 'STOREPULSE\SPSB\Bootstrap' ) ) {
  * @return SBFW\Bootstrap
  */
 function storepulse_sales_booster_plugin() {
-	return STOREPULSE\SPSB\Bootstrap::instance();
+	return STOREGROWTH\SPSB\Bootstrap::instance();
 }
 
 // Call initialization function.

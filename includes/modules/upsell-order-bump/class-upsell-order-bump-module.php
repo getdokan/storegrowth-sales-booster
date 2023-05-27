@@ -5,13 +5,13 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Upsell_Order_Bump;
+namespace STOREGROWTH\SPSB\Modules\Upsell_Order_Bump;
 
-use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
-use STOREPULSE\SPSB\Traits\Singleton;
-use STOREPULSE\SPSB\Modules\Upsell_Order_Bump\Order_Bump;
-use STOREPULSE\SPSB\Modules\Upsell_Order_Bump\Ajax\Ajax;
-use STOREPULSE\SPSB\Modules\Order_Bump\Enqueue_Script;
+use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Modules\Upsell_Order_Bump\Order_Bump;
+use STOREGROWTH\SPSB\Modules\Upsell_Order_Bump\Ajax\Ajax;
+use STOREGROWTH\SPSB\Modules\Order_Bump\Enqueue_Script;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

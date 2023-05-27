@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Ajax;
+namespace STOREGROWTH\SPSB\Ajax;
 
-use STOREPULSE\SPSB\Modules;
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Modules;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

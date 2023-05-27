@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB;
+namespace STOREGROWTH\SPSB;
 
-use STOREPULSE\SPSB\Ajax\Admin_Ajax;
-use STOREPULSE\SPSB\Admin\Admin_Menu;
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Ajax\Admin_Ajax;
+use STOREGROWTH\SPSB\Admin\Admin_Menu;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
