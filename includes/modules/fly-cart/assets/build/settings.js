@@ -13907,7 +13907,7 @@ function DesignSettings(_ref2) {
     label: "Cart Icon Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "storepulse_sales_booster-flycart-color-picker",
+    className: "sgsb-flycart-color-picker",
     value: formData.icon_color,
     name: "icon_color",
     style: {
@@ -13917,7 +13917,7 @@ function DesignSettings(_ref2) {
     label: "Buttons Background Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "storepulse_sales_booster-flycart-color-picker",
+    className: "sgsb-flycart-color-picker",
     name: "buttons_bg_color",
     value: formData.buttons_bg_color,
     style: {
@@ -13927,7 +13927,7 @@ function DesignSettings(_ref2) {
     label: "Widget Background Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    className: "storepulse_sales_booster-flycart-color-picker",
+    className: "sgsb-flycart-color-picker",
     name: "widget_bg_color",
     value: formData.widget_bg_color,
     style: {
@@ -13944,7 +13944,7 @@ function DesignSettings(_ref2) {
 function FlyCart() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, updateFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     icon_position: 'bottom-right',
@@ -13963,11 +13963,11 @@ function FlyCart() {
   const getSettings = () => {
     setPageLoading(true);
     jQuery.ajax({
-      url: storepulse_sales_boosterAdmin.ajax_url,
+      url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'storepulse_sales_booster_fly_cart_get_settings',
-        _ajax_nonce: storepulse_sales_boosterAdmin.nonce
+        action: 'sgsb_fly_cart_get_settings',
+        _ajax_nonce: sgsbAdmin.nonce
       }
     }).success(response => {
       if (response.success) {
@@ -13985,7 +13985,7 @@ function FlyCart() {
   }, []);
 
   const initializeColorPicker = () => {
-    jQuery('.storepulse_sales_booster-flycart-color-picker').wpColorPicker({
+    jQuery('.sgsb-flycart-color-picker').wpColorPicker({
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.
         formData[event.target.name] = ui.color.toString();
@@ -14021,12 +14021,12 @@ function FlyCart() {
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'storepulse_sales_booster_fly_cart_save_settings',
-      _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
+      action: 'sgsb_fly_cart_save_settings',
+      _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
-      url: storepulse_sales_boosterAdmin.ajax_url,
+      url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {
@@ -42321,7 +42321,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add routes to sidebar.
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('storepulse_sales_booster_routes', 'storepulse_sales_booster', routes => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sgsb_routes', 'sgsb', routes => {
   routes.push({
     path: "/fly-cart",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_FlyCart__WEBPACK_IMPORTED_MODULE_2__["default"], null),
@@ -42333,7 +42333,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add sidebar menu items
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/fly-cart"

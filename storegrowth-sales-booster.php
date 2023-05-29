@@ -81,9 +81,9 @@ if ( ! class_exists( 'STOREGROWTH\SPSB\Bootstrap' ) ) {
  * @since  1.0.0
  * @return SBFW\Bootstrap
  */
-function storepulse_sales_booster_plugin() {
+function sgsb_plugin() {
 	return STOREGROWTH\SPSB\Bootstrap::instance();
 }
 
 // Call initialization function.
-storepulse_sales_booster_plugin();
+sgsb_plugin();

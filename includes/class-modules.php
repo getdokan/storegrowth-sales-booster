@@ -89,7 +89,7 @@ class Modules {
 	 * @return array
 	 */
 	public function get_active_module_ids() {
-		$ids = get_option( 'storepulse_sales_booster_active_module_ids', array() );
+		$ids = get_option( 'sgsb_active_module_ids', array() );
 
 		if ( ! $ids ) {
 			return array();
@@ -123,7 +123,7 @@ class Modules {
 	 * @return bool
 	 */
 	public function update_active_module_ids( $ids ) {
-		return update_option( 'storepulse_sales_booster_active_module_ids', (array) $ids );
+		return update_option( 'sgsb_active_module_ids', (array) $ids );
 	}
 
 	/**

@@ -40,14 +40,14 @@ class Enqueue_Script {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( 'sales-booster_page_storepulse_sales_booster-settings' === $hook ) {
+		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
 
-			$settings_file                   = require storepulse_sales_booster_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
+			$settings_file                   = require sgsb_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
 			wp_enqueue_script(
-				'storepulse_sales_booster-order-bump-settings',
-				storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
+				'sgsb-order-bump-settings',
+				sgsb_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
@@ -57,7 +57,7 @@ class Enqueue_Script {
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(
-				'storepulse_sales_booster-order-bump-settings',
+				'sgsb-order-bump-settings',
 				'products_and_categories',
 				array(
 					'product_list'          => $this->prodcut_list(),
@@ -68,12 +68,12 @@ class Enqueue_Script {
 			);
 
 			wp_localize_script(
-				'storepulse_sales_booster-order-bump-settings',
+				'sgsb-order-bump-settings',
 				'bump_save_url',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => $ajd_nonce,
-					'image_folder' => storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/images' ),
+					'image_folder' => sgsb_modules_url( 'upsell-order-bump/assets/images' ),
 				)
 			);
 		}
@@ -83,19 +83,19 @@ class Enqueue_Script {
 	 * Add CSS scripts to admin.
 	 */
 	public function admin_enqueue_styles() {
-		$ftime          = filemtime( storepulse_sales_booster_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
-		$ftime_template = filemtime( storepulse_sales_booster_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
+		$ftime          = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
+		$ftime_template = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
 
 		wp_enqueue_style(
-			'storepulse_sales_booster-order-bump-custom-admin-css',
-			storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
+			'sgsb-order-bump-custom-admin-css',
+			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
 			null,
 			$ftime
 		);
 
 		wp_enqueue_style(
-			'storepulse_sales_booster-order-bump-template-css',
-			storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
+			'sgsb-order-bump-template-css',
+			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
 			null,
 			$ftime_template
 		);
@@ -105,11 +105,11 @@ class Enqueue_Script {
 	 * Style for frontend.
 	 */
 	public function front_styles() {
-		$ftime = filemtime( storepulse_sales_booster_modules_path( 'upsell-order-bump/assets/css/order-bump-front.css' ) );
+		$ftime = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-front.css' ) );
 
 		wp_enqueue_style(
-			'storepulse_sales_booster-order-bump-front-css',
-			storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/css/order-bump-front.css' ),
+			'sgsb-order-bump-front-css',
+			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-front.css' ),
 			null,
 			$ftime
 		);
@@ -119,11 +119,11 @@ class Enqueue_Script {
 	 * Script for frontend.
 	 */
 	public function front_scripts() {
-		$ftime = filemtime( storepulse_sales_booster_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
+		$ftime = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
 
 		wp_enqueue_script(
-			'storepulse_sales_booster-order-bump-front-js',
-			storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/js/order-bump-custom.js' ),
+			'sgsb-order-bump-front-js',
+			sgsb_modules_url( 'upsell-order-bump/assets/js/order-bump-custom.js' ),
 			'jquery',
 			$ftime,
 			true
@@ -132,7 +132,7 @@ class Enqueue_Script {
 		$action    = 'ajd_protected';
 		$ajd_nonce = wp_create_nonce( $action );
 		wp_localize_script(
-			'storepulse_sales_booster-order-bump-front-js',
+			'sgsb-order-bump-front-js',
 			'bump_save_url',
 			array(
 				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
@@ -240,7 +240,7 @@ class Enqueue_Script {
 	 */
 	public function order_bump_list() {
 		$args_bump = array(
-			'post_type'      => 'storepulse_sales_booster_order_bump',
+			'post_type'      => 'sgsb_order_bump',
 			'posts_per_page' => -1,
 		);
 		$bump_list = get_posts( $args_bump );

@@ -5,7 +5,7 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 /**
  * Add routes to sidebar.
  */
-addFilter( 'storepulse_sales_booster_routes', 'storepulse_sales_booster', (routes) => {
+addFilter( 'sgsb_routes', 'sgsb', (routes) => {
   routes.push( {
     path: "/fly-cart",
     element: <FlyCart />,
@@ -18,7 +18,7 @@ addFilter( 'storepulse_sales_booster_routes', 'storepulse_sales_booster', (route
 /**
  * Add sidebar menu items
  */
-addFilter( 'sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
+addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push( {
     label: <Link to="/fly-cart">Fly Cart</Link>,
     key: 'fly-cart',

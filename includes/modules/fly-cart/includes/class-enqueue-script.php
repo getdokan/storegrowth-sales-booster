@@ -42,23 +42,23 @@ class Enqueue_Script {
 
 		wp_enqueue_style(
 			'flaticon',
-			storepulse_sales_booster_modules_url( 'fly-cart/assets/font/flaticon.css' ),
+			sgsb_modules_url( 'fly-cart/assets/font/flaticon.css' ),
 			array(),
-			filemtime( storepulse_sales_booster_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
+			filemtime( sgsb_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
 		);
 
 		wp_enqueue_style(
-			'storepulse_sales_booster-ffc-style',
-			storepulse_sales_booster_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
+			'sgsb-ffc-style',
+			sgsb_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
 			array(),
-			filemtime( storepulse_sales_booster_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
+			filemtime( sgsb_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wfc-flyto',
-			storepulse_sales_booster_modules_url( 'fly-cart/assets/js/flyto.js' ),
+			sgsb_modules_url( 'fly-cart/assets/js/flyto.js' ),
 			array( 'jquery', 'jquery-effects-shake' ),
-			filemtime( storepulse_sales_booster_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
+			filemtime( sgsb_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
 			true
 		);
 
@@ -71,7 +71,7 @@ class Enqueue_Script {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'storepulse_sales_booster_ffc_wp_enqueue_scripts' );
+		do_action( 'sgsb_ffc_wp_enqueue_scripts' );
 	}
 
 	/**
@@ -80,18 +80,18 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_storepulse_sales_booster-settings' === $hook ) {
+		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 
-			$settings_file = require storepulse_sales_booster_modules_path( 'fly-cart/assets/build/settings.asset.php' );
+			$settings_file = require sgsb_modules_path( 'fly-cart/assets/build/settings.asset.php' );
 
 			// Extra dependencies.
 			$settings_file['dependencies'][] = 'wp-color-picker';
 
 			wp_enqueue_script(
-				'storepulse_sales_booster-fly-cart-settings',
-				storepulse_sales_booster_modules_url( 'fly-cart/assets/build/settings.js' ),
+				'sgsb-fly-cart-settings',
+				sgsb_modules_url( 'fly-cart/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -104,10 +104,10 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get style options.
-		$settings        = get_option( 'storepulse_sales_booster_fly_cart_settings' );
-		$wfc_color       = storepulse_sales_booster_find_option_setting( $settings, 'icon_color', '#2ecc71' );
-		$wfc_btn_bgcolor = storepulse_sales_booster_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
-		$widget_bg_color = storepulse_sales_booster_find_option_setting( $settings, 'widget_bg_color', '#fff' );
+		$settings        = get_option( 'sgsb_fly_cart_settings' );
+		$wfc_color       = sgsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
+		$wfc_btn_bgcolor = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
+		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -119,17 +119,17 @@ class Enqueue_Script {
 			.wfc-widget-sidebar {
 				background-color: {$widget_bg_color};
 			}
-			.storepulse_sales_booster-cart-widget-buttons a {
+			.sgsb-cart-widget-buttons a {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
-			.storepulse_sales_booster-cart-widget-buttons a.storepulse_sales_booster-cart-widget-shooping-button {
+			.sgsb-cart-widget-buttons a.sgsb-cart-widget-shooping-button {
 				color: {$wfc_btn_bgcolor};
 				background-color: {$widget_bg_color};
 			}
 		";
 
-		wp_add_inline_style( 'storepulse_sales_booster-ffc-style', $custom_css );
+		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
 	}
 
 	/**
@@ -138,18 +138,18 @@ class Enqueue_Script {
 	private function frontend_widget_script() {
 		wp_enqueue_script(
 			'wfc-script',
-			storepulse_sales_booster_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
+			sgsb_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
 			array( 'jquery' ),
-			filemtime( storepulse_sales_booster_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
+			filemtime( sgsb_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
 			true
 		);
 
 		wp_localize_script(
 			'wfc-script',
-			'storepulse_sales_boosterFrontend',
+			'sgsbFrontend',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'storepulse_sales_booster_frontend_ajax' ),
+				'nonce'   => wp_create_nonce( 'sgsb_frontend_ajax' ),
 			)
 		);
 	}

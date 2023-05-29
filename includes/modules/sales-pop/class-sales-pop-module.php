@@ -39,7 +39,7 @@ class Sales_Pop_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return storepulse_sales_booster_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
+		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
 	}
 
 	/**

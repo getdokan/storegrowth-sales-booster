@@ -37,7 +37,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return storepulse_sales_booster_modules_url( 'stock-countdown/assets/images/stock-countdown.svg' );
+		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown.svg' );
 	}
 
 	/**

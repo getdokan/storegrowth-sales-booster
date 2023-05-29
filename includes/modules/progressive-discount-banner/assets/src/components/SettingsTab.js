@@ -71,7 +71,7 @@ function DiscountBannerFields(props) {
 						}
 						addonBefore={
 							formData.discount_amount_mode == 'fixed-amount'
-								? storepulse_sales_boosterAdmin.currencySymbol
+								? sgsbAdmin.currencySymbol
 								: null
 						}
 						value={formData.discount_amount_value}
@@ -89,7 +89,7 @@ function DiscountBannerFields(props) {
 				extra="Require minimum amount in customer cart to avail this discount."
 			>
 				<InputNumber
-					addonBefore={storepulse_sales_boosterAdmin.currencySymbol}
+					addonBefore={sgsbAdmin.currencySymbol}
 					value={formData.cart_minimum_amount}
 					onChange={(v) => onFieldChange('cart_minimum_amount', v)}
 					style={{ width: 150 }}
@@ -167,7 +167,7 @@ function SettingsTab(props) {
 						onChange={(e) =>
 							onFieldChange('default_banner_text', e.target.value)
 						}
-						placeholder={`Shop more than ${storepulse_sales_boosterAdmin.currencySymbol}100 to get free shipping.`}
+						placeholder={`Shop more than ${sgsbAdmin.currencySymbol}100 to get free shipping.`}
 					/>
 				</Form.Item>
 			)}

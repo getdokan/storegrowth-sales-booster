@@ -26,14 +26,14 @@ class Enqueue {
 	 *
 	 * @var string
 	 */
-	private $modules_page_hook = 'sales-booster_page_storepulse_sales_booster-modules';
+	private $modules_page_hook = 'sales-booster_page_sgsb-modules';
 
 	/**
 	 * Module settings page slug.
 	 *
 	 * @var string
 	 */
-	private $settings_page_hook = 'sales-booster_page_storepulse_sales_booster-settings';
+	private $settings_page_hook = 'sales-booster_page_sgsb-settings';
 
 	/**
 	 * Constructor of Enqueue class.
@@ -51,44 +51,44 @@ class Enqueue {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		if ( $this->modules_page_hook === $hook ) {
-			$settings_file = require storepulse_sales_booster_plugin_path( 'assets/build/modules.asset.php' );
+			$settings_file = require sgsb_plugin_path( 'assets/build/modules.asset.php' );
 
 			wp_enqueue_script(
-				'storepulse_sales_booster-modules-script',
-				storepulse_sales_booster_assets_url( 'build/modules.js' ),
+				'sgsb-modules-script',
+				sgsb_assets_url( 'build/modules.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
 			);
 
 			wp_localize_script(
-				'storepulse_sales_booster-modules-script',
-				'storepulse_sales_boosterAdmin',
+				'sgsb-modules-script',
+				'sgsbAdmin',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'storepulse_sales_booster_ajax_nonce' ),
+					'nonce'    => wp_create_nonce( 'sgsb_ajax_nonce' ),
 					'isPro'    => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
 				)
 			);
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
-			$settings_file = require storepulse_sales_booster_plugin_path( 'assets/build/settings.asset.php' );
+			$settings_file = require sgsb_plugin_path( 'assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
-				'storepulse_sales_booster-settings-script',
-				storepulse_sales_booster_assets_url( 'build/settings.js' ),
+				'sgsb-settings-script',
+				sgsb_assets_url( 'build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
 			);
 
 			wp_localize_script(
-				'storepulse_sales_booster-settings-script',
-				'storepulse_sales_boosterAdmin',
+				'sgsb-settings-script',
+				'sgsbAdmin',
 				array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
-					'nonce'          => wp_create_nonce( 'storepulse_sales_booster_ajax_nonce' ),
+					'nonce'          => wp_create_nonce( 'sgsb_ajax_nonce' ),
 					'isPro'          => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
@@ -107,10 +107,10 @@ class Enqueue {
 			|| $this->settings_page_hook === $hook
 		) {
 			wp_enqueue_style(
-				'storepulse_sales_booster-admin-style',
-				storepulse_sales_booster_assets_url( 'build/modules.css' ),
+				'sgsb-admin-style',
+				sgsb_assets_url( 'build/modules.css' ),
 				array(),
-				filemtime( storepulse_sales_booster_plugin_path( 'assets/build/modules.css' ) )
+				filemtime( sgsb_plugin_path( 'assets/build/modules.css' ) )
 			);
 		}
 	}

@@ -23243,11 +23243,11 @@ const {
 const BasicInfo = () => {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -23379,12 +23379,12 @@ function CreateBump(_ref) {
   const [isModalVisible, setIsModalVisible] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     setCreateFromData,
     resetCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   let {
     bump_id,
     action_name
@@ -23392,7 +23392,7 @@ function CreateBump(_ref) {
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const showModal = () => {
@@ -23604,11 +23604,11 @@ const {
 const OfferSection = () => {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -23949,15 +23949,15 @@ function OrderBumpList(_ref3) {
   } = _ref3;
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
   const {
     setBumpData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     bumpListData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    bumpListData: select('storepulse_sales_booster_order_bump').getBumpData()
+    bumpListData: select('sgsb_order_bump').getBumpData()
   }));
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setPageLoading(true);
@@ -24163,11 +24163,11 @@ const {
 function ContentBump() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
   const layout = {
     labelCol: {
@@ -24294,11 +24294,11 @@ __webpack_require__.r(__webpack_exports__);
 function AcceptOfferSection() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -24423,11 +24423,11 @@ __webpack_require__.r(__webpack_exports__);
 function DiscountSection() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -24516,11 +24516,11 @@ __webpack_require__.r(__webpack_exports__);
 function OfferDescriptionSection() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -24609,11 +24609,11 @@ __webpack_require__.r(__webpack_exports__);
 function OverviewBox() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -24720,11 +24720,11 @@ __webpack_require__.r(__webpack_exports__);
 function ProductSelection() {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
@@ -24794,11 +24794,11 @@ __webpack_require__.r(__webpack_exports__);
 function OverViewArea(props) {
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('storepulse_sales_booster_order_bump');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
   const {
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
   var offerAmout = 999999999;
   var offerMessage = "20% off only for you";
@@ -25020,7 +25020,7 @@ const selectors = {
   }
 
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('storepulse_sales_booster_order_bump', {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('sgsb_order_bump', {
   reducer,
   actions,
   selectors
@@ -69106,7 +69106,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add routes to sidebar.
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('storepulse_sales_booster_routes', 'storepulse_sales_booster', (routes, outlet, navigate, useParams) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sgsb_routes', 'sgsb', (routes, outlet, navigate, useParams) => {
   routes.push({
     path: "/upsell-order-bump",
     exact: true,
@@ -69147,7 +69147,7 @@ __webpack_require__.r(__webpack_exports__);
  * Add sidebar menu items
  */
 
-(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'storepulse_sales_booster', (items, Link) => {
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/upsell-order-bump"

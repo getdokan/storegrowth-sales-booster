@@ -15,7 +15,7 @@ import { useDispatch } from '@wordpress/data';
 import InputColor from 'react-input-color';
 
 function StockCountdown() {
-  const { setPageLoading } = useDispatch( 'storepulse_sales_booster' );
+  const { setPageLoading } = useDispatch( 'sgsb' );
   const [ buttonLoading, setButtonLoading ] = useState(false);
 
   const [ formData, setFormData ] = useState({
@@ -40,13 +40,13 @@ function StockCountdown() {
     setButtonLoading(true);
 
     let data = {
-      action: 'storepulse_sales_booster_stock_countdown_save_settings',
-      _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
+      action: 'sgsb_stock_countdown_save_settings',
+      _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
 
     jQuery.ajax({
-      url: storepulse_sales_boosterAdmin.ajax_url,
+      url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: data
     }).success(() => {
@@ -62,11 +62,11 @@ function StockCountdown() {
     setPageLoading(true);
 
     jQuery.ajax({
-      url: storepulse_sales_boosterAdmin.ajax_url,
+      url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'storepulse_sales_booster_stock_countdown_get_settings',
-        _ajax_nonce: storepulse_sales_boosterAdmin.nonce,
+        action: 'sgsb_stock_countdown_get_settings',
+        _ajax_nonce: sgsbAdmin.nonce,
       }
     }).success((response) => {
       if ( response.success ) {

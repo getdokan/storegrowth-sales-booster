@@ -39,7 +39,7 @@ class Order_Bump {
 		$all_cart_product_ids   = array();
 		$all_cart_category_ids  = array();
 		$args_bump              = array(
-			'post_type'      => 'storepulse_sales_booster_order_bump',
+			'post_type'      => 'sgsb_order_bump',
 			'posts_per_page' => -1,
 		);
 		$bump_list              = get_posts( $args_bump );

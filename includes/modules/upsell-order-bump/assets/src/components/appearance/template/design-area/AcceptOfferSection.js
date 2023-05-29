@@ -5,10 +5,10 @@ import InputColor from 'react-input-color';
 
 function AcceptOfferSection() {
 
-  const { setCreateFromData } = useDispatch( 'storepulse_sales_booster_order_bump' );
+  const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
 
   const { createBumpData } = useSelect((select) => ({
-    createBumpData: select('storepulse_sales_booster_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = ( key, value ) => {
