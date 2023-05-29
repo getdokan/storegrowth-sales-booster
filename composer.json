@@ -1,5 +1,5 @@
 {
-  "name": "shamssadek/storepulse_sales_booster",
+  "name": "invizo/storegrowth",
   "autoload": {
     "psr-4": {
       "StorePlus\\Inc\\": "includes/"
@@ -8,7 +8,7 @@
   "authors": [
     {
       "name": "Invizo",
-      "email": "mahedicsit@gmail.com"
+      "email": "info@invizo.io"
     }
   ],
   "require-dev": {

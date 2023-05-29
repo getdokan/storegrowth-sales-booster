@@ -15,19 +15,19 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
-$settings             = get_option( 'storepulse_sales_booster_fly_cart_settings' );
-$show_product_image   = storepulse_sales_booster_find_option_setting( $settings, 'show_product_image', true );
-$show_remove_icon     = storepulse_sales_booster_find_option_setting( $settings, 'show_remove_icon', true );
-$show_quantity_picker = storepulse_sales_booster_find_option_setting( $settings, 'show_quantity_picker', true );
-$show_product_price   = storepulse_sales_booster_find_option_setting( $settings, 'show_product_price', true );
-$show_coupon          = storepulse_sales_booster_find_option_setting( $settings, 'show_coupon', true );
+$settings             = get_option( 'sgsb_fly_cart_settings' );
+$show_product_image   = sgsb_find_option_setting( $settings, 'show_product_image', true );
+$show_remove_icon     = sgsb_find_option_setting( $settings, 'show_remove_icon', true );
+$show_quantity_picker = sgsb_find_option_setting( $settings, 'show_quantity_picker', true );
+$show_product_price   = sgsb_find_option_setting( $settings, 'show_product_price', true );
+$show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true );
 
 do_action( 'woocommerce_before_cart' ); ?>
 
-<form class="storepulse_sales_booster-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+<form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
-	<table class="storepulse_sales_booster-fly-cart-table" cellspacing="0">
+	<table class="sgsb-fly-cart-table" cellspacing="0">
 		<tbody>
 		<?php do_action( 'woocommerce_before_cart_contents' ); ?>
 
@@ -49,8 +49,8 @@ do_action( 'woocommerce_before_cart' ); ?>
 							echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								'woocommerce_cart_item_remove_link',
 								sprintf(
-									'<a href="%s" class="storepulse_sales_booster-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
-									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . storepulse_sales_booster_fast_cart_get_query_string_for_http_ajax_referer() ),
+									'<a href="%s" class="sgsb-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">&times;</a>',
+									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . sgsb_fast_cart_get_query_string_for_http_ajax_referer() ),
 									esc_html__( 'Remove this item', 'storegrowth-sales-booster' ),
 									esc_attr( $product_id ),
 									esc_attr( $_product->get_sku() )
@@ -76,7 +76,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 					<?php endif; ?>
 
 					<td class="product-name">
-						<div class="storepulse_sales_booster-product-title">
+						<div class="sgsb-product-title">
 							<?php
 							if ( ! $product_permalink ) {
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
@@ -93,7 +93,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 							if ( $_product->is_sold_individually() ) {
 								$product_quantity = sprintf( '<input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
 							} else {
-								$product_quantity  = '<button type="button" class="storepulse_sales_booster-minus-icon">-</button>';
+								$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
 								$product_quantity .= woocommerce_quantity_input(
 									array(
 										'input_name'   => "cart[{$cart_item_key}][qty]",
@@ -105,7 +105,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 									$_product,
 									false
 								);
-								$product_quantity .= '<button type="button" class="storepulse_sales_booster-plus-icon">+</button>';
+								$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
 							}
 
 							// phpcs:ignore
@@ -137,7 +137,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 				<?php
 				if ( $show_coupon && wc_coupons_enabled() ) {
-					do_action( 'storepulse_sales_booster_fly_cart_coupon' );
+					do_action( 'sgsb_fly_cart_coupon' );
 				}
 				?>
 
@@ -146,7 +146,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 				<?php do_action( 'woocommerce_cart_actions' ); ?>
 
 				<?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce', false ); ?>
-				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( storepulse_sales_booster_fast_cart_get_query_string_for_http_ajax_referer( true ) ); ?>">
+				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( sgsb_fast_cart_get_query_string_for_http_ajax_referer( true ) ); ?>">
 			</td>
 		</tr>
 
@@ -156,9 +156,9 @@ do_action( 'woocommerce_before_cart' ); ?>
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
 
-<?php do_action( 'storepulse_sales_booster_woocommerce_before_cart_collaterals' ); ?>
+<?php do_action( 'sgsb_woocommerce_before_cart_collaterals' ); ?>
 
-<div class="storepulse_sales_booster-cart-collaterals cart-collaterals">
+<div class="sgsb-cart-collaterals cart-collaterals">
 	<?php
 	/**
 	 * Cart collaterals hook.

@@ -1,13 +1,13 @@
-.storepulse_sales_booster-stock-progressbar-status {
+.sgsb-stock-progressbar-status {
 	width: 100%;
 	margin-bottom: 8px;
 }
-.storepulse_sales_booster-stock-progressbar-status::after {
+.sgsb-stock-progressbar-status::after {
 	display: table;
 	content: " ";
 	clear: both;
 }
-.storepulse_sales_booster-stock-progressbar-status span {
+.sgsb-stock-progressbar-status span {
 	display: block;
 }
 span.total-sold {
@@ -20,34 +20,34 @@ span.instock {
 	margin-top: 0;
 	margin-bottom: 8px;
 }
-.storepulse_sales_booster-stock-counter-and-bar {
+.sgsb-stock-counter-and-bar {
 	border: 1px solid #ccc;
 	padding: 7px 10px;
 	border-radius: 4px;
 }
-.storepulse_sales_booster-stock-counter-heading {
+.sgsb-stock-counter-heading {
 	margin: 0 0 10px 0;
 	text-align: center;
 	font-size: 26px;
 	line-height: 1.2;
 }
-.storepulse_sales_booster-stock-counter-items {
+.sgsb-stock-counter-items {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 10px;
 }
-.storepulse_sales_booster-stock-counter-item {
+.sgsb-stock-counter-item {
 	text-align: center;
 	padding: 0 10px;
 }
-.storepulse_sales_booster-stock-counter-item strong {
+.sgsb-stock-counter-item strong {
 	display: block;
 	font-size: 32px;
 	line-height: 1.2;
 }
-.storepulse_sales_booster-stock-progressbar-status-below {
+.sgsb-stock-progressbar-status-below {
 	text-align: center;
 }
-.storepulse_sales_booster-stock-progress-bar-format-below {
+.sgsb-stock-progress-bar-format-below {
 	padding-top: 5px;
 }

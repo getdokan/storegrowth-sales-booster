@@ -37,13 +37,13 @@ class Enqueue {
 	 * Add JS scripts.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'popup-custom-js', storepulse_sales_booster_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
+		wp_enqueue_script( 'popup-custom-js', sgsb_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
 		$args             = array(
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
 		);
 		$products         = get_posts( $args );
-		$popup_properties = get_option( 'storepulse_sales_booster_popup_products', false );
+		$popup_properties = get_option( 'sgsb_popup_products', false );
 
 		if ( false !== $popup_properties ) {
 			$popup_properties  = maybe_unserialize( $popup_properties );
@@ -66,7 +66,7 @@ class Enqueue {
 			return;
 		}
 
-		$state_without_city = maybe_unserialize( get_option( 'storepulse_sales_booster_state_without_city', true ) );
+		$state_without_city = maybe_unserialize( get_option( 'sgsb_state_without_city', true ) );
 		$virtual_state      = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
 
 		if ( is_array( $state_without_city ) ) {
@@ -149,10 +149,10 @@ class Enqueue {
 	 * Add CSS files.
 	 */
 	public function enqueue_styles() {
-		$ftime = filemtime( storepulse_sales_booster_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
+		$ftime = filemtime( sgsb_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
 		wp_enqueue_style(
 			'popup-custom-css',
-			storepulse_sales_booster_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
+			sgsb_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
 			null,
 			$ftime
 		);
@@ -165,27 +165,27 @@ class Enqueue {
 	 * @param string $screen name of screen.
 	 */
 	public function admin_enqueue_scripts( $screen ) {
-		$popup_properties = maybe_unserialize( get_option( 'storepulse_sales_booster_popup_products', true ) );
+		$popup_properties = maybe_unserialize( get_option( 'sgsb_popup_products', true ) );
 
-		if ( 'sales-booster_page_storepulse_sales_booster-settings' === $screen ) {
+		if ( 'sales-booster_page_sgsb-settings' === $screen ) {
 
-			$settings_file = require storepulse_sales_booster_modules_path( 'sales-pop/assets/build/settings.asset.php' );
+			$settings_file = require sgsb_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
-				'storepulse_sales_booster-sales-pop-settings',
-				storepulse_sales_booster_modules_url( 'sales-pop/assets/build/settings.js' ),
+				'sgsb-sales-pop-settings',
+				sgsb_modules_url( 'sales-pop/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
 			);
 
 			wp_localize_script(
-				'storepulse_sales_booster-sales-pop-settings',
+				'sgsb-sales-pop-settings',
 				'sales_pop_data',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
-					'image_folder' => storepulse_sales_booster_modules_url( 'upsell-order-bump/assets/images' ),
+					'image_folder' => sgsb_modules_url( 'upsell-order-bump/assets/images' ),
 					'product_list' => $this->prodcut_list(),
 				)
 			);

@@ -1,4 +1,4 @@
-=== StorePulse - Sales Booster ===
+=== StoreGrowth - Sales Booster ===
 Contributors: mehedi_csit, sourovroy
 Tags: booster, sales, sales booster, for woocommerce, fly cart, sales pop, upsell, order bump, cross sell, stock countdown
 Requires at least: 5.4
@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-StorePulse - Sales Booster is an All-in-One Marketing plugin for Woocommerce that empowers store owners to create multiple discounted offers for customers at product & checkout pages to increase sales.
+StoreGrowth - Sales Booster is an All-in-One Marketing plugin for Woocommerce that empowers store owners to create multiple discounted offers for customers at product & checkout pages to increase sales.
 
 == Description ==
 
@@ -33,7 +33,7 @@ Upsell Order Bump Plugin will help you to promote your selected product very rap
 
 == Installation ==
 
-1. Upload the StorePulse - Sales Booster plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the StoreGrowth - Sales Booster plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Use the Sales Booster admin menu to configure the plugin
 

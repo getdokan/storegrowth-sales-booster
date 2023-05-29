@@ -26,7 +26,7 @@ class Admin_Ajax {
 	 * Constructor of Admin_Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_storepulse_sales_booster_admin_ajax', array( $this, 'admin_ajax' ) );
+		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Admin_Ajax {
 	 * @uses update_module_status
 	 */
 	public function admin_ajax() {
-		check_ajax_referer( 'storepulse_sales_booster_ajax_nonce' );
+		check_ajax_referer( 'sgsb_ajax_nonce' );
 
 		if ( ! isset( $_POST['method'] ) ) {
 			wp_die();

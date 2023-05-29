@@ -7,7 +7,7 @@ import SettingsTab from './SettingsTab';
 import DesignTab from './DesignTab';
 
 function DiscountBannerLayout() {
-	const { setPageLoading } = useDispatch('storepulse_sales_booster');
+	const { setPageLoading } = useDispatch('sgsb');
 	const [buttonLoading, setButtonLoading] = useState(false);
 
 	const [formData, setFormData] = useState({
@@ -35,11 +35,11 @@ function DiscountBannerLayout() {
 
 		jQuery
 			.ajax({
-				url: storepulse_sales_boosterAdmin.ajax_url,
+				url: sgsbAdmin.ajax_url,
 				method: 'POST',
 				data: {
-					action: 'storepulse_sales_booster_pd_banner_get_settings',
-					_ajax_nonce: storepulse_sales_boosterAdmin.nonce,
+					action: 'sgsb_pd_banner_get_settings',
+					_ajax_nonce: sgsbAdmin.nonce,
 				},
 			})
 			.success((response) => {
@@ -83,14 +83,14 @@ function DiscountBannerLayout() {
 		setButtonLoading(true);
 
 		const data = {
-			action: 'storepulse_sales_booster_pd_banner_save_settings',
-			_ajax_nonce: storepulse_sales_boosterAdmin.nonce,
+			action: 'sgsb_pd_banner_save_settings',
+			_ajax_nonce: sgsbAdmin.nonce,
 			form_data: formData,
 		};
 
 		jQuery
 			.ajax({
-				url: storepulse_sales_boosterAdmin.ajax_url,
+				url: sgsbAdmin.ajax_url,
 				method: 'POST',
 				data,
 			})

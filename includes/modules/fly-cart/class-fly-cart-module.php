@@ -37,7 +37,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return storepulse_sales_booster_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
+		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
 	}
 
 	/**

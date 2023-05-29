@@ -38,7 +38,7 @@ class Admin_Menu {
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-			STOREGROWTH_PLUGIN_DIR_URL . 'assets/images/storepulse.svg',
+			STOREGROWTH_PLUGIN_DIR_URL . 'assets/images/StoreGrowth.svg',
 			58
 		);
 
@@ -47,7 +47,7 @@ class Admin_Menu {
 			__( 'Modules - Sales Booster', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'storepulse_sales_booster-modules',
+			'sgsb-modules',
 			array( $this, 'modules_callback' )
 		);
 
@@ -56,7 +56,7 @@ class Admin_Menu {
 			__( 'Settings - Sales Booster', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'storepulse_sales_booster-settings',
+			'sgsb-settings',
 			array( $this, 'settings_callback' )
 		);
 
