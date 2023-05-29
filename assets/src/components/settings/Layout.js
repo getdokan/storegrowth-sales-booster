@@ -10,7 +10,7 @@ function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
 
   return (
-    <Layout className="storepulse_sales_booster-layout-relative">
+    <Layout className="sgsb-layout-relative">
       <Sidebar routes={routes} />
 
       <Layout>
@@ -42,13 +42,13 @@ function NoModuleActive() {
 function AppLayout() {
   let navigate = useNavigate();
 
-  let routes = applyFilters( 'storepulse_sales_booster_routes', [], Outlet, navigate, useParams, useSearchParams );
+  let routes = applyFilters( 'sgsb_routes', [], Outlet, navigate, useParams, useSearchParams );
 
   return (
     <Layout>
       <HeaderBar />
 
-      <h1 className="storepulse_sales_booster-heading" style={ { marginBottom: '15px' } }>Sales Booster Settings</h1>
+      <h1 className="sgsb-heading" style={ { marginBottom: '15px' } }>Sales Booster Settings</h1>
 
       {!routes.length ? <NoModuleActive /> : <ModuleSettings routes={routes} />}
     </Layout>

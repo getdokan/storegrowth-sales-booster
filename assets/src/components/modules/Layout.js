@@ -9,7 +9,7 @@ function AppLayout() {
     <Layout>
       <HeaderBar />
 
-      <h1 className="storepulse_sales_booster-heading">Modules</h1>
+      <h1 className="sgsb-heading">Modules</h1>
 
       <Layout
           style={{
