@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Admin;
+namespace STOREGROWTH\SPSB\Admin;
 
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -33,19 +33,19 @@ class Admin_Menu {
 	 */
 	public function register_admin_menu() {
 		add_menu_page(
-			__( 'Sales Booster', 'storepulse-sales-booster' ),
-			__( 'Sales Booster', 'storepulse-sales-booster' ),
+			__( 'Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Sales Booster', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-			STOREPULSE_PLUGIN_DIR_URL . 'assets/images/storepulse.svg',
+			STOREGROWTH_PLUGIN_DIR_URL . 'assets/images/storepulse.svg',
 			58
 		);
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - Sales Booster', 'storepulse-sales-booster' ),
-			__( 'Modules', 'storepulse-sales-booster' ),
+			__( 'Modules - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'storepulse_sales_booster-modules',
 			array( $this, 'modules_callback' )
@@ -53,8 +53,8 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Settings - Sales Booster', 'storepulse-sales-booster' ),
-			__( 'Settings', 'storepulse-sales-booster' ),
+			__( 'Settings - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'storepulse_sales_booster-settings',
 			array( $this, 'settings_callback' )

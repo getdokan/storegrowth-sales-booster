@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
 
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,7 +65,7 @@ class Common_Hooks {
 	public function woocommerce_product_data_tabs( $tabs ) {
 		// Adds the new tab.
 		$tabs['stock_countdown_tab'] = array(
-			'label'  => __( 'Stock Countdown', 'storepulse-sales-booster' ),
+			'label'  => __( 'Stock Countdown', 'storegrowth-sales-booster' ),
 			'target' => 'storepulse_sales_booster-stock-countdown-tab',
 		);
 

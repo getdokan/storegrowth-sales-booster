@@ -5,12 +5,12 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Sales_Pop;
+namespace STOREGROWTH\SPSB\Modules\Sales_Pop;
 
-use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
-use STOREPULSE\SPSB\Traits\Singleton;
-use STOREPULSE\SPSB\Modules\Sales_Pop\Sales_Pop;
-use STOREPULSE\SPSB\Modules\Sales_Pop\Enqueue;
+use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Modules\Sales_Pop\Sales_Pop;
+use STOREGROWTH\SPSB\Modules\Sales_Pop\Enqueue;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

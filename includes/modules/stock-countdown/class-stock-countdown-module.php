@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
 
-use STOREPULSE\SPSB\Interfaces\Module_Skeleton;
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

@@ -27552,16 +27552,16 @@ body {
     line-height: 1.4em;
 }
 
-.storepulse_sales_booster-header.ant-layout-header {
+.sgsb-header.ant-layout-header {
     background-color: #fff;
     padding: 0 20px;
     margin: -9px -20px 20px -20px;
     box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
 }
-.storepulse_sales_booster-logo {
+.sgsb-logo {
     font-size: 23px;
 }
-.storepulse_sales_booster-module-card img {
+.sgsb-module-card img {
     width: 100%;
     height: auto;
     max-width: 80px;
@@ -27573,10 +27573,10 @@ li.ant-menu-item a:focus {
 }
 
 /* Page loading effect */
-.storepulse_sales_booster-layout-relative {
+.sgsb-layout-relative {
     position: relative;
 }
-@keyframes storepulse_sales_booster-loader-ld-spin {
+@keyframes sgsb-loader-ld-spin {
     0% {
         animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
         transform: rotate(0deg);
@@ -27585,7 +27585,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-.storepulse_sales_booster-page-loader {
+.sgsb-page-loader {
     position: absolute;
     left: 0;
     top: 0;
@@ -27593,7 +27593,7 @@ li.ant-menu-item a:focus {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
 }
-.storepulse_sales_booster-page-loader-ring {
+.sgsb-page-loader-ring {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -27603,9 +27603,9 @@ li.ant-menu-item a:focus {
     transition: all .3s;
     transition-timing-function: ease-in;
     box-sizing: content-box;
-    animation: storepulse_sales_booster-loader-ld-spin 1s infinite linear;
+    animation: sgsb-loader-ld-spin 1s infinite linear;
 }
-.storepulse_sales_booster-page-loader-ring:after {
+.sgsb-page-loader-ring:after {
     content: " ";
     display: block;
     width: 6em;
@@ -27627,12 +27627,12 @@ li.ant-menu-item a:focus {
 .ant-form .ant-form-item-label label {
     font-weight: 600;
 }
-.storepulse_sales_booster-field-upgrade-pro-label {
+.sgsb-field-upgrade-pro-label {
     color: #1890ff;
 }
 /* Form end */
 
-.storepulse_sales_booster-module-card {
+.sgsb-module-card {
     margin-bottom: 16px;
 }
 

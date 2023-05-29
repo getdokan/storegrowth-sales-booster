@@ -84,7 +84,7 @@ const selectors = {
   }
 };
 
-const store = createReduxStore( 'storepulse_sales_booster', {
+const store = createReduxStore( 'sgsb', {
   reducer,
   actions,
   selectors

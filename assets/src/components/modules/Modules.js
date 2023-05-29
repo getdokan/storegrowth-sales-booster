@@ -7,7 +7,7 @@ import ModuleCard from './ModuleCard';
 import { Ajax } from '../../ajax';
 
 function Modules() {
-  const { updateModules, setPageLoading } = useDispatch( 'storepulse_sales_booster' );
+  const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
 
   useEffect(() => {
     setPageLoading(true);
@@ -20,7 +20,7 @@ function Modules() {
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
-    allModules: select('storepulse_sales_booster').getModules()
+    allModules: select('sgsb').getModules()
   }));
 
   return (

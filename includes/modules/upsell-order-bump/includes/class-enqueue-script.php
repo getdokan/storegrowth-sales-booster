@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Order_Bump;
+namespace STOREGROWTH\SPSB\Modules\Order_Bump;
 
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

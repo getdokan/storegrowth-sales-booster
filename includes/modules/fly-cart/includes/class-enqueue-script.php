@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Fly_Cart;
+namespace STOREGROWTH\SPSB\Modules\Fly_Cart;
 
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREPULSE\SPSB\Modules\Sales_Pop;
+namespace STOREGROWTH\SPSB\Modules\Sales_Pop;
 
-use STOREPULSE\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

@@ -4699,10 +4699,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function Header() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"].Header, {
-    className: "storepulse_sales_booster-header"
+    className: "sgsb-header"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "storepulse_sales_booster-logo"
-  }, "StorePulse - Sales Booster"));
+    className: "sgsb-logo"
+  }, "StoreGrowth - Sales Booster"));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
@@ -4731,12 +4731,12 @@ function PageLoader() {
   const {
     loading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    loading: select('storepulse_sales_booster').getPageLoading()
+    loading: select('sgsb').getPageLoading()
   }));
   return loading && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "storepulse_sales_booster-page-loader"
+    className: "sgsb-page-loader"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "storepulse_sales_booster-page-loader-ring"
+    className: "sgsb-page-loader-ring"
   }));
 }
 
@@ -4780,7 +4780,7 @@ function ModuleSettings(_ref) {
   } = _ref;
   let element = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useRoutes)(routes);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    className: "storepulse_sales_booster-layout-relative"
+    className: "sgsb-layout-relative"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Sidebar__WEBPACK_IMPORTED_MODULE_3__["default"], {
     routes: routes
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Content, {
@@ -4801,9 +4801,9 @@ function NoModuleActive() {
 
 function AppLayout() {
   let navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
-  let routes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)('storepulse_sales_booster_routes', [], react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Outlet, navigate, react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams, react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams);
+  let routes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)('sgsb_routes', [], react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Outlet, navigate, react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams, react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_HeaderBar__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "storepulse_sales_booster-heading",
+    className: "sgsb-heading",
     style: {
       marginBottom: '15px'
     }
@@ -4940,7 +4940,7 @@ const selectors = {
   }
 
 };
-const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('storepulse_sales_booster', {
+const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('sgsb', {
   reducer,
   actions,
   selectors

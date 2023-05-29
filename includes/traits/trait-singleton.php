@@ -5,7 +5,7 @@
  * @package WPBP
  */
 
-namespace STOREPULSE\SPSB\Traits;
+namespace STOREGROWTH\SPSB\Traits;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
