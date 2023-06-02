@@ -27,7 +27,6 @@
    */
   function getCartContents() {
     $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
-
     $.ajax({
       url: sgsbFrontend.ajaxUrl,
       method: "POST",

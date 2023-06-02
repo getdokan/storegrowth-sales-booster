@@ -71,21 +71,16 @@ class Ajax {
 	 */
 	public function fly_cart_frontend() {
 		check_ajax_referer( 'sgsb_frontend_ajax' );
-
 		if ( ! isset( $_REQUEST['method'] ) ) {
 			wp_die();
 		}
-
-		$method = sanitize_text_field( wp_unslash( $_REQUEST['method'] ) );
-
+		$method = isset( $_REQUEST['method'] ) ? sanitize_key( $_REQUEST['method'] ) : '';
 		if ( method_exists( $this, $method ) ) {
-			// Ignoring phpcs as we are sanitize data later.
-			// phpcs:ignore
-			$data = isset( $_REQUEST['data'] ) ? $_REQUEST['data'] : array();
-
+			$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array();
+			$data = wp_unslash( $data );
+			$data = array_map( 'sanitize_text_field', $data );
 			call_user_func( array( $this, $method ), $data );
 		}
-
 		wp_die();
 	}
 
