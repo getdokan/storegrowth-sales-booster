@@ -15,7 +15,6 @@
   "dependencies": {
     "antd": "^4.20.4",
     "nanoid": "^3.3.4",
-    "react-router-dom": "^6.3.0",
-    "sweetalert2": "^11.4.20"
+    "react-router-dom": "^6.3.0"
   }
 }

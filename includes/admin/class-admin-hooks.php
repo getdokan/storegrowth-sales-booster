@@ -37,8 +37,8 @@ class Admin_Hooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'modules'  => '<a href="' . admin_url( 'admin.php?page=storegrowth_sales_booster-modules' ) . '">' . esc_html__( 'Modules', 'storegrowth-sales-booster' ) . '</a>',
-			'settings' => '<a href="' . admin_url( 'admin.php?page=storegrowth_sales_booster-settings' ) . '">' . esc_html__( 'Settings', 'storegrowth-sales-booster' ) . '</a>',
+			'modules'  => '<a href="' . admin_url( 'admin.php?page=sgsb-modules' ) . '">' . esc_html__( 'Modules', 'storegrowth-sales-booster' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'admin.php?page=sgsb-settings' ) . '">' . esc_html__( 'Settings', 'storegrowth-sales-booster' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );
