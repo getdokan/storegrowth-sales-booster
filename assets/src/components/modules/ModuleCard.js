@@ -1,25 +1,9 @@
 import { useDispatch } from '@wordpress/data';
 import { Card, Row, Col } from "antd";
-import { Switch } from "antd";
-import Swal from 'sweetalert2'
-
+import { Switch, Button, Divider } from "antd";
 import { Ajax } from '../../ajax';
-
 function ModuleSwitch({ module }) {
   const { updateSingleModule, setPageLoading } = useDispatch( 'sgsb' );
-
-  const showSuccessModal = ( module ) => {
-    Swal.fire({
-      title: 'Success!',
-      text: module.name + ' module has been activated successfully, You can now update module settings.',
-      icon: 'success',
-      confirmButtonText: 'View Settings'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        location.href = "admin.php?page=sgsb-settings#/" + module.id;
-      }
-    });
-  };
 
   const onChange = (checked) => {
     setPageLoading(true);
@@ -31,9 +15,6 @@ function ModuleSwitch({ module }) {
       if (response.success) {
         updateSingleModule(module.id, checked);
         setPageLoading(false);
-        if ( checked ) {
-          showSuccessModal( module );
-        }
       }
     });
   }
@@ -44,7 +25,6 @@ function ModuleSwitch({ module }) {
 }
 
 function ModuleCard( { module } ) {
-  console.log({module});
   return (
     <Col span={8}>
       <Card
@@ -59,6 +39,18 @@ function ModuleCard( { module } ) {
           </Col>
           <Col offset={1} span={16}>
             <div>{module.description}</div>
+          </Col>
+        </Row>
+        <Divider orientation="left/right" />
+        <Row>
+          <Col span={7}>
+            <Button
+              type="default"
+              shape="round"
+              href="admin.php?page=sgsb-settings"
+            >
+              Settings
+            </Button>
           </Col>
         </Row>
       </Card>
