@@ -26359,7 +26359,7 @@ body {
 .sgsb-module-card img {
     width: 100%;
     height: auto;
-    max-width: 80px;
+    max-width: 36px;
 
 }
 li.ant-menu-item a:focus {
@@ -26429,6 +26429,47 @@ li.ant-menu-item a:focus {
 
 .sgsb-module-card {
     margin-bottom: 16px;
+}
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+.site-card-wrapper .sgsb-module-card {
+  border-radius: 8px;
+}
+.site-card-wrapper .sgsb-module-card .ant-card-body {
+  padding: 0;
+}
+.site-card-wrapper .sgsb-module-card .ant-card-body .ant-divider {
+  margin-bottom: 16px;
+}
+.site-card-wrapper .sgsb-module-card .ant-card-body .ant-btn[class] {
+  border-radius: 8px;
+  height: auto;
+  line-height: inherit;
+  padding: 15px 16px 11px;
+  padding-top: 11px !important;
+  border: 1px solid #ECEDF0;
+}
+.site-card-wrapper .sgsb-module-card .ant-switch-checked {
+  background: #02AC6E;
+}
+.site-card-wrapper .sgsb-module-card .module-thumb {
+  background: #F9FAFC;
+  border-radius: 8px;
+  padding: 14px;
+  margin-right: 7px;
+}
+.site-card-wrapper .sgsb-module-card .module-name {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+.site-card-wrapper .sgsb-module-card .module-desc {
+  color: #66656D;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 28px;
+  padding: 0 23px 3px;
 }
 
 /*# sourceMappingURL=modules.css.map*/

@@ -46,7 +46,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Fast Fly Cart';
+		return 'Quick Cart';
 	}
 
 	/**

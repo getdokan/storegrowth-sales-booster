@@ -1,0 +1,50 @@
+.site-card-wrapper {
+    .sgsb-module-card {
+        border-radius: 8px;
+
+        .ant-card-body {
+            padding: 0;
+
+            .ant-divider {
+                margin-bottom: 16px;
+
+            }
+
+            .ant-btn[class] {
+                border-radius: 8px;
+                height: auto;
+                line-height: inherit;
+                padding: 15px 16px 11px;
+                padding-top: 11px !important;
+                border: 1px solid #ECEDF0;
+
+            }
+
+        }
+
+        .ant-switch-checked {
+            background: #02AC6E;
+
+        }
+        .module-thumb {
+            background: #F9FAFC;
+            border-radius: 8px;
+            padding: 14px;
+            margin-right: 7px;
+        }
+        .module-name {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 29px;
+
+        }
+        .module-desc {
+            color: #66656D;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 28px;
+            padding: 0 23px 3px;
+
+        }
+    }
+}

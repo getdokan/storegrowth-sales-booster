@@ -6,6 +6,7 @@ import store from './modules-store';
 import Layout from "./components/modules/Layout";
 import 'antd/dist/antd.css';
 import './admin.css';
+import './admin.scss';
 
 register( store );
 

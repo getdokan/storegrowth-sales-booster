@@ -46,7 +46,7 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Progressive Discount Banner';
+		return 'Discount Banner';
 	}
 
 	/**
