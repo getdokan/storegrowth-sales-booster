@@ -28,7 +28,7 @@ class Common_Hooks {
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_stock_status_template' ) );
 		add_action( 'woocommerce_shop_loop_item_title', array( $this, 'show_stock_status_template' ) );
 
-		add_filter( 'woocommerce_get_stock_html', array( $this, 'woocommerce_get_stock_html' ) );
+		add_filter( 'woocommerce_get_stock_html', array( $this, 'woocommerce_get_stock_html' ), 10, 2 );
 
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'woocommerce_product_data_panels' ) );
@@ -52,9 +52,17 @@ class Common_Hooks {
 
 	/**
 	 * WooCommerce get stock html.
+	 *
+	 * @param string     $html HTML string.
+	 * @param WC_Product $product Product Object.
 	 */
-	public function woocommerce_get_stock_html() {
-		return '';
+	public function woocommerce_get_stock_html( $html, $product ) {
+		$stock_status = $product->get_stock_status();
+		if ( $stock_status === 'outofstock' ) {
+			return $html;
+		} else {
+			return '';
+		}
 	}
 
 	/**
