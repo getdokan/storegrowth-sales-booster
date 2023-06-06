@@ -44,8 +44,8 @@ class Common_Hooks {
 	 */
 	public function show_stock_status_template() {
 		global $product;
-
-		if ( $product->is_type( 'simple' ) ) {
+        $stock_status = $product->get_stock_status();
+		if ( $product->is_type( 'simple' ) && $stock_status !== 'outofstock' ) {
 			include __DIR__ . '/../templates/simple-stock-status.php';
 		}
 	}
