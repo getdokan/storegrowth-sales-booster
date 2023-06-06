@@ -116,3 +116,32 @@
         }
     }
 }
+
+.sgsb__module-pagination {
+    li {
+        min-width: 47px;
+        height: 47px;
+        line-height: 45px;
+        border-radius: 4px;
+
+    }
+
+    .ant-pagination-item {
+        a {
+            &:hover {
+                color: #fff;
+                background: #008DFF;
+
+            }
+        }
+
+        &.ant-pagination-item-active {
+            a {
+                color: #fff;
+                background: #008DFF;
+
+            }
+        }
+    }
+    
+}

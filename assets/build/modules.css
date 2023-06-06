@@ -26520,4 +26520,19 @@ li.ant-menu-item a:focus {
   padding: 0 23px 7px;
 }
 
+.sgsb__module-pagination li {
+  min-width: 47px;
+  height: 47px;
+  line-height: 45px;
+  border-radius: 4px;
+}
+.sgsb__module-pagination .ant-pagination-item a:hover {
+  color: #fff;
+  background: #008DFF;
+}
+.sgsb__module-pagination .ant-pagination-item.ant-pagination-item-active a {
+  color: #fff;
+  background: #008DFF;
+}
+
 /*# sourceMappingURL=modules.css.map*/

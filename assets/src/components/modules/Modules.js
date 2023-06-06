@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 
 import ModuleCard from './ModuleCard';
 import { Ajax } from '../../ajax';
+import ModulePaginaton from './ModulePagination';
 
 function Modules() {
   const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
@@ -26,10 +27,18 @@ function Modules() {
   return (
     <div className="site-card-wrapper">
       <Row gutter={16}>
-		{console.log(allModules)}
+		    {console.log(allModules)}
         {allModules.map((module) => <ModuleCard module={module} key={nanoid()} />)}
+        
 
       </Row>
+      <div className='sgsb__module-pagination'
+        style={{
+          paddingTop: '30px'
+        }}
+      >
+        <ModulePaginaton />
+      </div>
     </div>
   );
 }
