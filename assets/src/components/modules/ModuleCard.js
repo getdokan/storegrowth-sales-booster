@@ -2,6 +2,7 @@ import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { Card, Row, Col, Space } from "antd";
 import { Switch, Button, Divider } from "antd";
+import { SettingOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Ajax } from '../../ajax';
 
 function ModuleSwitch({ module }) {
@@ -74,6 +75,7 @@ function ModuleCard( { module } ) {
               shape="default"
               href="admin.php?page=sgsb-settings"
             >
+              <SettingOutlined />
               Settings
             </Button>
             <Button
@@ -82,6 +84,7 @@ function ModuleCard( { module } ) {
               shape="default"
               href="#"
             >
+              <FileTextOutlined />
               Documentation
             </Button>
           </Space>
