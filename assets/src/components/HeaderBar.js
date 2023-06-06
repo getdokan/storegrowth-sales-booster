@@ -3,7 +3,8 @@ import { Layout } from "antd";
 function Header() {
   return (
       <Layout.Header className="sgsb-header">
-        <div className="sgsb-logo">StoreGrowth - Sales Booster</div>
+        <div className="sgsb-logo">
+        </div>
       </Layout.Header>
   );
 }

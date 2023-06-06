@@ -64,24 +64,26 @@ function ModuleCard( { module } ) {
         </Row>
         <Row
           style={{
-            padding: '24px',
+            padding: '24px'
           }}
         >
           <Space align='center' size={size}>
             <Button
-                type="default"
-                shape="default"
-                href="admin.php?page=sgsb-settings"
-              >
-                Settings
-              </Button>
-              <Button
-                type="default"
-                shape="default"
-                href="#"
-              >
-                Documentation
-              </Button>
+              className='setting-btn'
+              type="default"
+              shape="default"
+              href="admin.php?page=sgsb-settings"
+            >
+              Settings
+            </Button>
+            <Button
+              className='doc-btn'
+              type="default"
+              shape="default"
+              href="#"
+            >
+              Documentation
+            </Button>
           </Space>
         </Row>
       </Card>

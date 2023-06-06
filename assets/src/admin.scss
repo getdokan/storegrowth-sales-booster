@@ -1,6 +1,30 @@
+.sgsb-header {
+    height: 100px;
+    display: inline-flex;
+    align-items: center;
+
+    .sgsb-logo {
+        background: url('../images/logo.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        width: 212px;
+        height: 56px;
+    }
+}
+
+.sgsb-heading[class] {
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 48px;
+    padding: 20px 0;
+
+}
+
 .site-card-wrapper {
     .sgsb-module-card {
         border-radius: 8px;
+        border: 1px solid #ECEDF0;
 
         .ant-card-body {
             padding: 0;
@@ -14,18 +38,80 @@
                 border-radius: 8px;
                 height: auto;
                 line-height: inherit;
-                padding: 15px 16px 11px;
+                padding: 15px 18px 11px 42px;
                 padding-top: 11px !important;
                 border: 1px solid #ECEDF0;
+                position: relative;
+
+                &.setting-btn {
+
+                    span:before {
+                        content: "";
+                        position: absolute;
+                        background: url('../images/setting-icon.svg');
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        background-position: center;
+                        width: 16px;
+                        height: 16px;
+                        left: 15px;
+                        top: 50%;
+                        transform: translateY(-50%);
+
+                    }
+                }
+
+                &.doc-btn {
+                   span:before {
+                    content: "";
+                    position: absolute;
+                    background: url('../images/document-icon.svg');
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    background-position: center;
+                    width: 18px;
+                    height: 18px;
+                    left: 15px;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                   }
+                   
+                }
+
+                &:hover {
+                    border: 1px solid #008DFF;
+
+                }
 
             }
 
         }
+        
+        .ant-switch {
+            background: #D7DBDF;
+            width: 54px;
+            height: 29px;
+            margin-left: -10px;
 
-        .ant-switch-checked {
-            background: #02AC6E;
+            .ant-switch-handle {
+                top: 5px;
+                left: 5px;
+                
+            }
 
+            &.ant-switch-checked {
+                background: #02AC6E;
+
+                .ant-switch-handle {
+                    left: calc(100% - 18px - 5px);
+
+                }
+    
+            }
         }
+
+        
         .module-thumb {
             background: #F9FAFC;
             border-radius: 8px;
@@ -43,7 +129,7 @@
             font-weight: 400;
             font-size: 16px;
             line-height: 28px;
-            padding: 0 23px 3px;
+            padding: 0 23px 7px;
 
         }
     }

@@ -5175,7 +5175,7 @@ function Header() {
     className: "sgsb-header"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-logo"
-  }, "StoreGrowth - Sales Booster"));
+  }));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
@@ -5364,10 +5364,12 @@ function ModuleCard(_ref2) {
     align: "center",
     size: size
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: "setting-btn",
     type: "default",
     shape: "default",
     href: "admin.php?page=sgsb-settings"
   }, "Settings"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    className: "doc-btn",
     type: "default",
     shape: "default",
     href: "#"
