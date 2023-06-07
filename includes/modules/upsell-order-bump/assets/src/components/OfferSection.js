@@ -9,7 +9,7 @@ const OfferSection = () => {
   const { createBumpData } = useSelect((select) => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
-  console.log(createBumpData);
+
   const onFieldChange = (key, value) => {
     if ( key=='offer_product' ) {
       setCreateFromData( {

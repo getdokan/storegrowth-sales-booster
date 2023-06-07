@@ -23857,7 +23857,6 @@ const OfferSection = () => {
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
-  console.log(createBumpData);
 
   const onFieldChange = (key, value) => {
     if (key == 'offer_product') {
