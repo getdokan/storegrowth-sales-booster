@@ -1,4 +1,4 @@
-import { Form, Input, Select, Row, Col } from 'antd';
+import { Form, InputNumber, Select, Row, Col } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 const { Option } = Select;
 
@@ -9,7 +9,7 @@ const OfferSection = () => {
   const { createBumpData } = useSelect((select) => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
-
+  console.log(createBumpData);
   const onFieldChange = (key, value) => {
     if ( key=='offer_product' ) {
       setCreateFromData( {
@@ -26,6 +26,7 @@ const OfferSection = () => {
       } );
     }
   };
+  
   
 return (
     <>
@@ -98,8 +99,10 @@ return (
               },
             ]}
           >
-            <Input 
-            onChange={(v) => onFieldChange('offer_amount', v.target.value)}
+          <InputNumber
+            min={0}
+            style={{ width: '100%' }}
+            onChange={(value) => onFieldChange('offer_amount', value)}
             value={createBumpData.offer_amount}
               />
           </Form.Item>
