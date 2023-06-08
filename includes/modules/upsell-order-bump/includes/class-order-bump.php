@@ -71,7 +71,7 @@ class Order_Bump {
 			if ( 'discount' === $offer_type ) {
 				$offer_price = ceil( intval( $regular_price ) - intval( $regular_price * $offer_amount ) / 100 );
 			} else {
-				$regular_price = $offer_amount;
+				$offer_price = $offer_amount;
 			}
 
 			if (
