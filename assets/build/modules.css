@@ -26454,6 +26454,9 @@ li.ant-menu-item a:focus {
   padding: 20px 0;
 }
 
+/*=============================
+Module Card Style
+=============================*/
 .site-card-wrapper .sgsb-module-card {
   border-radius: 8px;
   border: 1px solid #ECEDF0;
@@ -26506,6 +26509,8 @@ li.ant-menu-item a:focus {
   border-radius: 8px;
   padding: 14px;
   margin-right: 7px;
+  width: 64px;
+  height: 64px;
 }
 .site-card-wrapper .sgsb-module-card .module-name {
   font-weight: 500;
@@ -26518,8 +26523,13 @@ li.ant-menu-item a:focus {
   font-size: 16px;
   line-height: 28px;
   padding: 0 23px 7px;
+  height: 62px;
+  overflow: hidden;
 }
 
+/*=============================
+Pagination Style
+=============================*/
 .sgsb__module-pagination li {
   min-width: 47px;
   height: 47px;
