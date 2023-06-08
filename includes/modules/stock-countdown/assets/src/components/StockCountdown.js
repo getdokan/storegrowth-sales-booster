@@ -161,6 +161,7 @@ function StockCountdown() {
           labelAlign="left"
         >
           <InputNumber
+            min={1}
             addonAfter="px"
             value={formData.progressbar_height}
             onChange={(v) => onFieldChange('progressbar_height', v)}
