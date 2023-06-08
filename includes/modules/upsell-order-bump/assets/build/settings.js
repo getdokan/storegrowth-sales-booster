@@ -23890,8 +23890,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/table/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
@@ -23900,23 +23900,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const deleteBump = stateUpdateCallback => id => {
+  stateUpdateCallback(true);
+  jQuery.post(bump_save_url.ajax_url, {
+    'action': 'bump_delete',
+    'data': id,
+    '_ajax_nonce': bump_save_url.ajd_nonce
+  }, function () {
+    antd__WEBPACK_IMPORTED_MODULE_2__["default"].error({
+      message: 'Order Bump deleted'
+    });
+    stateUpdateCallback(false);
+    location.reload();
+  });
+};
+
 function ActionButton(_ref) {
   let {
     navigate,
-    bump_id,
-    buttonLoading,
-    deleteBump
+    bump_id
   } = _ref;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "primary",
     shape: "round",
     size: "small",
     onClick: () => navigate("/upsell-order-bump/" + bump_id)
-  }, "Edit"), " |\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Edit"), " |\xA0", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "danger",
     shape: "round",
     size: "small",
-    onClick: () => deleteBump(bump_id),
+    onClick: () => deleteBump(setButtonLoading)(bump_id),
     loading: buttonLoading
   }, "Delete"));
 }
@@ -23953,7 +23967,6 @@ function OrderBumpList(_ref3) {
   const {
     setBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
-  const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     bumpListData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
@@ -23970,23 +23983,6 @@ function OrderBumpList(_ref3) {
       setBumpData(bumpDataFromAjax.data);
     });
   }, []);
-
-  const deleteBump = bump_id => {
-    setButtonLoading(true);
-    let $ = jQuery;
-    $.post(bump_save_url.ajax_url, {
-      'action': 'bump_delete',
-      'data': bump_id,
-      '_ajax_nonce': bump_save_url.ajd_nonce
-    }, function (data) {
-      antd__WEBPACK_IMPORTED_MODULE_3__["default"].error({
-        message: 'Order Bump deleted'
-      });
-      setButtonLoading(false);
-      location.reload();
-    });
-  };
-
   const columns = [{
     title: 'Name',
     dataIndex: 'name',
@@ -24037,13 +24033,11 @@ function OrderBumpList(_ref3) {
       offers: offerProduct,
       action: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ActionButton, {
         navigate: navigate,
-        bump_id: item.id,
-        buttonLoading: buttonLoading,
-        deleteBump: deleteBump
+        bump_id: item.id
       })
     };
   });
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     type: "primary",
     shape: "round",
     onClick: () => navigate("/upsell-order-bump/create-bump"),
