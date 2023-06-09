@@ -26347,6 +26347,15 @@ body {
     line-height: 1.4em;
 }
 
+.sales-booster_page_sgsb-modules #wpcontent {
+    background: #F9FAFC;
+
+}
+
+.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout {
+    background: #F9FAFC;
+}
+
 .sgsb-header.ant-layout-header {
     background-color: #fff;
     padding: 0 20px;

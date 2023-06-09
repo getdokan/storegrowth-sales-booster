@@ -1,10 +1,12 @@
 import { useEffect, useState } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { Row, Pagination } from 'antd';
+import { Row, Pagination, Col} from 'antd';
 import { nanoid } from 'nanoid'
 
 import ModuleCard from './ModuleCard';
 import { Ajax } from '../../ajax';
+import ModuleFilter from './ModuleFilter';
+import ModuleSearch from './ModuleSearch';
 
 function Modules() {
   const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
@@ -24,7 +26,7 @@ function Modules() {
   }));
 
   // pagination
-  const perPageItem = 3
+  const perPageItem = 5
   const [ minValue, setMinValue ] = useState(0)
   const [ maxValue, setMaxValue ] = useState(perPageItem)
 
@@ -36,6 +38,19 @@ function Modules() {
 
   return (
     <div className="site-card-wrapper">
+      <Row className='sgsb-search-section' align="middle" justify="espace-betweennd">
+
+        <Col span={12}>
+          <h1 className="sgsb-heading">Sales Booster for WooCommerce</h1>
+        </Col>
+
+        <Col span={12}>
+          <Row justify="end">
+            <ModuleSearch />
+            <ModuleFilter />
+          </Row>
+        </Col>
+      </Row>
 
       <Row gutter={16}>
         {allModules.slice(minValue, maxValue).map((module) => <ModuleCard module={module} key={nanoid()} />)}

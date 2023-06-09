@@ -26347,6 +26347,15 @@ body {
     line-height: 1.4em;
 }
 
+.sales-booster_page_sgsb-modules #wpcontent {
+    background: #F9FAFC;
+
+}
+
+.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout {
+    background: #F9FAFC;
+}
+
 .sgsb-header.ant-layout-header {
     background-color: #fff;
     padding: 0 20px;
@@ -26449,7 +26458,7 @@ li.ant-menu-item a:focus {
 
 .sgsb-heading[class] {
   font-weight: 600;
-  font-size: 40px;
+  font-size: 32px;
   line-height: 48px;
   padding: 20px 0;
 }
@@ -26543,6 +26552,62 @@ Pagination Style
 .sgsb__module-pagination .ant-pagination-item.ant-pagination-item-active a {
   color: #fff;
   background: #008DFF;
+}
+
+.sgsb-search-section {
+  margin-bottom: 14px;
+}
+.sgsb-search-section input[class] {
+  background: #ECEDF0;
+  border-radius: 8px;
+  border: 0;
+  height: 54px;
+  width: 250px;
+  outline: none;
+}
+.sgsb-search-section input[class]:focus {
+  box-shadow: none;
+}
+.sgsb-search-section .ant-input-group-addon[class] {
+  background-color: #ecedf1;
+  border: 1px solid #ecedf1;
+  padding: 4px 0 0 16px;
+  border-radius: 8px;
+  color: #989FAB;
+  font-size: 18px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.sgsb-search-section .ant-select-selector[class] {
+  height: 56px;
+  padding: 11px 24px;
+  border: 1px solid #ECEDF0;
+  border-radius: 8px;
+}
+.sgsb-search-section .module-filter {
+  margin-left: 24px;
+}
+.sgsb-search-section .module-filter .ant-dropdown-button {
+  position: relative;
+}
+.sgsb-search-section .module-filter .ant-dropdown-button button {
+  width: 210px;
+  text-align: left;
+  height: 56px;
+  border-radius: 8px !important;
+}
+.sgsb-search-section .module-filter .ant-dropdown-button .ant-dropdown-trigger {
+  position: absolute;
+  right: 5px;
+  z-index: 3;
+  top: 6px;
+  height: 40px;
+  border: 0;
+  width: auto;
+}
+
+.ant-select-item[class] {
+  min-height: inherit;
 }
 
 /*# sourceMappingURL=modules.css.map*/
