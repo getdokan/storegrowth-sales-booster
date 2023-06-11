@@ -9,7 +9,13 @@ import ModuleFilter from './ModuleFilter';
 import ModuleSearch from './ModuleSearch';
 
 function Modules() {
+  const options = [
+    'Bangladesh', 'Africa', 'America', 'Asia', 'Europe', 'Oceania'
+  ];
+
   const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
+  const [ searchModule, setSearchModule ] = useState("");
+  const [selectedValue , setSelectedValue ] = useState(options[0]);
 
   useEffect(() => {
     setPageLoading(true);
@@ -36,6 +42,11 @@ function Modules() {
     
   };
 
+  const handleFilterModule = (e) => {
+    let value = e.target.options;
+    setSelectedValue(value);
+  };
+
   return (
     <div className="site-card-wrapper">
       <Row className='sgsb-search-section' align="middle" justify="espace-betweennd">
@@ -46,14 +57,22 @@ function Modules() {
 
         <Col span={12}>
           <Row justify="end">
-            <ModuleSearch />
-            <ModuleFilter />
+            <ModuleSearch
+              options={options}
+              value={selectedValue}
+              onChange={(e) => 
+                setSearchModule(e.target.value)
+              }
+            />
+            <ModuleFilter 
+              onChange={handleFilterModule}
+            />
           </Row>
         </Col>
       </Row>
 
       <Row gutter={16}>
-        {allModules.slice(minValue, maxValue).map((module) => <ModuleCard module={module} key={nanoid()} />)}
+        {allModules.filter((module) => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map((module) => <ModuleCard module={module} key={nanoid()} />)}
         
       </Row>
 
