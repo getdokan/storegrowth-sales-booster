@@ -23339,20 +23339,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/select/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/collapse/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/modal/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/collapse/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/modal/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _OfferSection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OfferSection */ "./src/components/OfferSection.js");
 /* harmony import */ var _BasicInfo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./BasicInfo */ "./src/components/BasicInfo.js");
-/* harmony import */ var _appearance_AppearanceBump__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./appearance/AppearanceBump */ "./src/components/appearance/AppearanceBump.js");
-/* harmony import */ var _appearance_template_design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./appearance/template/design-area/DesignChangeArea */ "./src/components/appearance/template/design-area/DesignChangeArea.js");
-/* harmony import */ var _appearance_ContentBump__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./appearance/ContentBump */ "./src/components/appearance/ContentBump.js");
-/* harmony import */ var _appearance_template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./appearance/template/overview-area/OverViewArea */ "./src/components/appearance/template/overview-area/OverViewArea.js");
+/* harmony import */ var _appearance_template_design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./appearance/template/design-area/DesignChangeArea */ "./src/components/appearance/template/design-area/DesignChangeArea.js");
+/* harmony import */ var _appearance_ContentBump__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./appearance/ContentBump */ "./src/components/appearance/ContentBump.js");
+/* harmony import */ var _appearance_template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./appearance/template/overview-area/OverViewArea */ "./src/components/appearance/template/overview-area/OverViewArea.js");
 
 
 
@@ -23362,18 +23360,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-const {
-  Option
-} = antd__WEBPACK_IMPORTED_MODULE_8__["default"];
 const {
   Panel
-} = antd__WEBPACK_IMPORTED_MODULE_9__["default"];
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+} = antd__WEBPACK_IMPORTED_MODULE_7__["default"];
 
 function CreateBump(_ref) {
   let {
@@ -23427,7 +23416,7 @@ function CreateBump(_ref) {
       '_ajax_nonce': bump_save_url.ajd_nonce
     }, function (data) {
       setPageLoading(false);
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Order Bump deleted'
       });
       navigate("/upsell-order-bump");
@@ -23468,42 +23457,42 @@ function CreateBump(_ref) {
 
   const onFormSave = () => {
     if (!createBumpData.name_of_order_bump) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Please enter name of order bump'
       });
       return null;
     }
 
     if (createBumpData.target_products.length == 0 && createBumpData.target_categories.length == 0) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'You have to select target products or target categories or both'
       });
       return null;
     }
 
     if (createBumpData.bump_schedule.length == 0) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Please select bump schedule'
       });
       return null;
     }
 
     if (!createBumpData.offer_product) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Please select offer product'
       });
       return null;
     }
 
     if (createBumpData.offer_type.length == 0) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Please select offer type'
       });
       return null;
     }
 
     if (!createBumpData.offer_amount) {
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].error({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].error({
         message: 'Please select offer amount'
       });
       return null;
@@ -23573,7 +23562,7 @@ function CreateBump(_ref) {
         offer_product_id: data
       });
       setButtonLoading(false);
-      antd__WEBPACK_IMPORTED_MODULE_10__["default"].success({
+      antd__WEBPACK_IMPORTED_MODULE_8__["default"].success({
         message: 'Order Bump Creation',
         description: 'Data for order bump creation saved successfully'
       });
@@ -23585,7 +23574,7 @@ function CreateBump(_ref) {
 
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     onChange: onChange,
     defaultActiveKey: "1"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
@@ -23601,40 +23590,40 @@ function CreateBump(_ref) {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Design Section",
     key: "4"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Template Section",
     key: "4"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_template_design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_template_design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_4__["default"], {
     onFormSave: onFormSave,
     buttonLoading: buttonLoading
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Content Section",
     key: "5"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_ContentBump__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_ContentBump__WEBPACK_IMPORTED_MODULE_5__["default"], {
     onFormSave: onFormSave,
     buttonLoading: buttonLoading
   }))))), (isDuplicateCatsFound || isDuplicateProductsFound) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
     style: {
       color: "Red"
     }
-  }, "Error!!! another bump with the given offer product for the specified schedule already exists for the selected ", " ", isDuplicateCatsFound && isDuplicateProductsFound ? "categories & products" : isDuplicateProductsFound ? "products" : "categories", ".", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Please change your inputs and then try again."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, "Error!!! another bump with the given offer product for the specified schedule already exists for the selected ", " ", isDuplicateCatsFound && isDuplicateProductsFound ? "categories & products" : isDuplicateProductsFound ? "products" : "categories", ".", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Please change your inputs and then try again."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     type: "primary",
     htmlType: "submit",
     className: "order-bump-save-change-button",
     onClick: () => onFormSave(),
     loading: buttonLoading
-  }, "Save Changes"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, "Save Changes"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     type: "info",
     onClick: showModal,
     style: {
       marginLeft: '5px'
     }
-  }, "Bump Overview"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }, "Bump Overview"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
     title: "Bump Overview Section",
     visible: isModalVisible,
     onOk: handleOk,
     onCancel: handleCancel
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_7__["default"], null))));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_6__["default"], null))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CreateBump);
@@ -24134,80 +24123,6 @@ function OrderBumpList(_ref3) {
 
 /***/ }),
 
-/***/ "./src/components/appearance/AppearanceBump.js":
-/*!*****************************************************!*\
-  !*** ./src/components/appearance/AppearanceBump.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/tabs/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/select/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
-/* harmony import */ var _template_Template__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./template/Template */ "./src/components/appearance/template/Template.js");
-/* harmony import */ var _ContentBump__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ContentBump */ "./src/components/appearance/ContentBump.js");
-/* harmony import */ var _template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./template/overview-area/OverViewArea */ "./src/components/appearance/template/overview-area/OverViewArea.js");
-
-
-
-
-
-const {
-  TabPane
-} = antd__WEBPACK_IMPORTED_MODULE_4__["default"];
-const {
-  Option
-} = antd__WEBPACK_IMPORTED_MODULE_5__["default"];
-const layout = {
-  labelCol: {
-    span: 8
-  },
-  wrapperCol: {
-    span: 12
-  }
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16
-  }
-};
-
-const AppearanceBump = _ref => {
-  let {
-    onFormSave,
-    buttonLoading
-  } = _ref;
-
-  const onChange = key => {};
-
-  const [form] = antd__WEBPACK_IMPORTED_MODULE_6__["default"].useForm();
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    defaultActiveKey: "10",
-    onChange: onChange
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TabPane, {
-    tab: "Template",
-    key: "10"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_template_Template__WEBPACK_IMPORTED_MODULE_1__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TabPane, {
-    tab: "Content",
-    key: "12"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bump-template-main-wrapper"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "demo-template-design-change-area"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ContentBump__WEBPACK_IMPORTED_MODULE_2__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_template_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AppearanceBump);
-
-/***/ }),
-
 /***/ "./src/components/appearance/ContentBump.js":
 /*!**************************************************!*\
   !*** ./src/components/appearance/ContentBump.js ***!
@@ -24298,43 +24213,6 @@ function ContentBump() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ContentBump);
-
-/***/ }),
-
-/***/ "./src/components/appearance/template/Template.js":
-/*!********************************************************!*\
-  !*** ./src/components/appearance/template/Template.js ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./design-area/DesignChangeArea */ "./src/components/appearance/template/design-area/DesignChangeArea.js");
-/* harmony import */ var _overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./overview-area/OverViewArea */ "./src/components/appearance/template/overview-area/OverViewArea.js");
-/* harmony import */ var _design_area_ProductSelection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./design-area/ProductSelection */ "./src/components/appearance/template/design-area/ProductSelection.js");
-
-
-
-
-
-
-
-
-function Template() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bump-template-main-wrapper"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_design_area_DesignChangeArea__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_overview_area_OverViewArea__WEBPACK_IMPORTED_MODULE_3__["default"], null));
-}
-
-;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Template);
 
 /***/ }),
 

@@ -1,20 +1,13 @@
-import { Form, Input, Select, notification, Collapse, Button, Modal } from 'antd';
+import { Form, notification, Collapse, Button, Modal } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
 import OfferSection from './OfferSection';
 import BasicInfo from './BasicInfo';
-import AppearanceBump from './appearance/AppearanceBump';
 import DesignChangeArea from './appearance/template/design-area/DesignChangeArea';
 import ContentBump from './appearance/ContentBump';
 import OverViewArea from './appearance/template/overview-area/OverViewArea';
-const { Option } = Select;
 
 const { Panel } = Collapse;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 function CreateBump({navigate, useParams}) {
   const [duplicateDataError, setDuplicateDataError] = useState({});
