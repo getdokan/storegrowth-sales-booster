@@ -58,8 +58,6 @@ class Order_Bump {
 			$offer_product_id = $bump_info->offer_product;
 			$offer_type       = $bump_info->offer_type;
 			$offer_amount     = $bump_info->offer_amount;
-			$product_cart_id  = WC()->cart->generate_cart_id( $offer_product_id );
-			$in_cart          = WC()->cart->find_product_in_cart( $product_cart_id );
 
 			$checked = '';
 			if ( in_array( (int) $offer_product_id, $all_cart_product_ids, true ) ) {
@@ -74,6 +72,24 @@ class Order_Bump {
 				$regular_price = $offer_amount;
 			}
 
+			$cart                            = WC()->cart;
+			$product_already_added_from_shop = false;
+			foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
+				$product    = $cart_item['data'];
+				$product_id = $product->get_id();
+				if ( absint( $product_id ) !== absint( $offer_product_id ) ) {
+					continue;
+				}
+				$price = $product->get_price();
+				if ( floatval( $price ) !== floatval( $offer_price ) ) {
+					$product_already_added_from_shop = true;
+				}
+				break;
+			}
+			if ( $product_already_added_from_shop ) {
+				// don't show the offer if the 'offer product' is already added in the cart from the shop page with regular price.
+				continue;
+			}
 			if (
 				$bump_info->target_products
 				&&
