@@ -11,6 +11,7 @@ import OverViewArea from './appearance/template/overview-area/OverViewArea';
 const { Panel } = Collapse;
 
 function CreateBump({navigate, useParams}) {
+  const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { setPageLoading } = useDispatch( 'sgsb' );
@@ -18,10 +19,27 @@ function CreateBump({navigate, useParams}) {
   const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
   let {bump_id,action_name} = useParams();
 
-  const { allBumpsData, createBumpData } = useSelect( ( select ) => ({
+  const { bumpData, createBumpData } = useSelect( ( select ) => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData(),
-    allBumpsData: wp.data.select('sgsb_order_bump').getBumpData()
+    bumpData: wp.data.select('sgsb_order_bump').getBumpData()
   }));
+
+  useEffect(() => {
+    if(!bumpData?.length > 0){
+        setPageLoading( true );
+        jQuery.post( bump_save_url.ajax_url, {
+            'action': 'bump_list',
+            'data': [],
+            '_ajax_nonce': bump_save_url.ajd_nonce
+            }, function ( bumpDataFromAjax ) {
+            setPageLoading( false );
+            const bumpDataParsed = bumpDataFromAjax.data.map(bumpItem => convertBumpItemHtmlEntitiesToTexts(bumpItem));
+            setallBumpsData( bumpDataParsed );
+        } );
+    }else{
+        setallBumpsData( bumpData );
+    }
+  }, [])
 
 
   const showModal = () => {
