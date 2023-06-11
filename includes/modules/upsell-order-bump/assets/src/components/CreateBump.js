@@ -234,11 +234,11 @@ function CreateBump({navigate, useParams}) {
       <Form {...layout} >
         <Collapse onChange={onChange} defaultActiveKey="1">
           <Panel header="Basic Informarion form" key="1">
-            <BasicInfo clearErrors={clearErrors} product_list = {products_and_categories.product_list}/>
+            <BasicInfo clearErrors={clearErrors} />
           </Panel>
 
           <Panel header="Offer Section Form" key="2">
-            <OfferSection clearErrors={clearErrors} product_list = {products_and_categories.product_list}/>
+            <OfferSection clearErrors={clearErrors} />
           </Panel>
 
           <Panel header="Design Section" key="4">

@@ -23592,14 +23592,12 @@ function CreateBump(_ref) {
     header: "Basic Informarion form",
     key: "1"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BasicInfo__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    clearErrors: clearErrors,
-    product_list: products_and_categories.product_list
+    clearErrors: clearErrors
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Offer Section Form",
     key: "2"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_OfferSection__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    clearErrors: clearErrors,
-    product_list: products_and_categories.product_list
+    clearErrors: clearErrors
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Design Section",
     key: "4"
