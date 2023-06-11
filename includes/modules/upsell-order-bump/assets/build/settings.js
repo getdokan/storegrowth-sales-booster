@@ -23240,7 +23240,10 @@ const {
   Option
 } = antd__WEBPACK_IMPORTED_MODULE_2__["default"];
 
-const BasicInfo = () => {
+const BasicInfo = _ref => {
+  let {
+    clearErrors
+  } = _ref;
   const {
     setCreateFromData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
@@ -23251,6 +23254,7 @@ const BasicInfo = () => {
   }));
 
   const onFieldChange = (key, value) => {
+    clearErrors();
     setCreateFromData({ ...createBumpData,
       [key]: value
     });
@@ -23376,6 +23380,7 @@ function CreateBump(_ref) {
     navigate,
     useParams
   } = _ref;
+  const [duplicateDataError, setDuplicateDataError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({});
   const [isModalVisible, setIsModalVisible] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     setPageLoading
@@ -23390,9 +23395,11 @@ function CreateBump(_ref) {
     action_name
   } = useParams();
   const {
+    allBumpsData,
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    createBumpData: select('sgsb_order_bump').getCreateFromData()
+    createBumpData: select('sgsb_order_bump').getCreateFromData(),
+    allBumpsData: wp.data.select('sgsb_order_bump').getBumpData()
   }));
 
   const showModal = () => {
@@ -23502,6 +23509,58 @@ function CreateBump(_ref) {
       return null;
     }
 
+    const isEditingExistingBumpItem = typeof bump_id == "string" && !isNaN(bump_id) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)
+    !isNaN(parseFloat(bump_id)); // if bump_id is just whitespaces then fail
+
+    const intBumpId = isEditingExistingBumpItem && parseInt(bump_id);
+    const filteredBumpsData = isEditingExistingBumpItem ? allBumpsData.filter(item => item.id !== intBumpId) : allBumpsData;
+    const duplicateErrs = {
+      duplicateTargetCats: [],
+      duplicateTargetProducts: []
+    };
+    const newOfferProduct = createBumpData.offer_product;
+    const newTargetCats = createBumpData.target_categories;
+    const newTargetProducts = createBumpData.target_products;
+    const newTargetSchedules = createBumpData.bump_schedule;
+
+    for (const bumpItem of filteredBumpsData) {
+      if (bumpItem.offer_product !== newOfferProduct) {
+        continue;
+      }
+
+      let isSameScheduleExist = false;
+
+      for (const newScheduleItem of newTargetSchedules) {
+        if (bumpItem.bump_schedule.includes(newScheduleItem)) {
+          isSameScheduleExist = true;
+          break;
+        }
+      }
+
+      if (!isSameScheduleExist) {
+        continue;
+      }
+
+      for (const newCatItem of newTargetCats) {
+        if (bumpItem.target_categories.includes(newCatItem)) {
+          duplicateErrs.duplicateTargetCats.push(newCatItem);
+          break;
+        }
+      }
+
+      for (const newProductItem of newTargetProducts) {
+        if (bumpItem.target_products.includes(newProductItem)) {
+          duplicateErrs.duplicateTargetProducts.push(newProductItem);
+          break;
+        }
+      }
+
+      if (duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0) {
+        setDuplicateDataError(duplicateErrs);
+        return false;
+      }
+    }
+
     setButtonLoading(true);
     let $ = jQuery;
     $.post(bump_save_url.ajax_url, {
@@ -23522,6 +23581,10 @@ function CreateBump(_ref) {
     });
   };
 
+  const clearErrors = () => setDuplicateDataError({});
+
+  const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
+  const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     onChange: onChange,
     defaultActiveKey: "1"
@@ -23529,11 +23592,13 @@ function CreateBump(_ref) {
     header: "Basic Informarion form",
     key: "1"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BasicInfo__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    clearErrors: clearErrors,
     product_list: products_and_categories.product_list
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Offer Section Form",
     key: "2"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_OfferSection__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    clearErrors: clearErrors,
     product_list: products_and_categories.product_list
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
     header: "Design Section",
@@ -23550,7 +23615,11 @@ function CreateBump(_ref) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_appearance_ContentBump__WEBPACK_IMPORTED_MODULE_6__["default"], {
     onFormSave: onFormSave,
     buttonLoading: buttonLoading
-  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }))))), (isDuplicateCatsFound || isDuplicateProductsFound) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+    style: {
+      color: "Red"
+    }
+  }, "Error!!! another bump with the given offer product for the specified schedule already exists for the selected ", " ", isDuplicateCatsFound && isDuplicateProductsFound ? "categories & products" : isDuplicateProductsFound ? "products" : "categories", ".", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Please change your inputs and then try again."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
     type: "primary",
     htmlType: "submit",
     className: "order-bump-save-change-button",
@@ -23601,7 +23670,10 @@ const {
   Option
 } = antd__WEBPACK_IMPORTED_MODULE_2__["default"];
 
-const OfferSection = () => {
+const OfferSection = _ref => {
+  let {
+    clearErrors
+  } = _ref;
   const {
     setCreateFromData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb_order_bump');
@@ -23612,6 +23684,8 @@ const OfferSection = () => {
   }));
 
   const onFieldChange = (key, value) => {
+    clearErrors();
+
     if (key == 'offer_product') {
       setCreateFromData({ ...createBumpData,
         [key]: value,
