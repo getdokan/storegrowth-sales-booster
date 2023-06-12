@@ -47,7 +47,11 @@ return (
         showSearch
         onChange={(v) => onFieldChange('offer_product', v)}
         value={parseInt(createBumpData.offer_product)?parseInt(createBumpData.offer_product):null}
-        
+        filterOption = {(inputValue, option) => option.props.children
+            .toString()
+            .toLowerCase()
+            .includes(inputValue.toLowerCase())
+        }
       >
         {
         products_and_categories.product_list.simpleProductForOffer.map((item,i)=>

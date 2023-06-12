@@ -1,6 +1,7 @@
 import { Table, Button, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
+import {  convertBumpItemHtmlEntitiesToTexts } from '../helper';
 
 const deleteBump = stateUpdateCallback => id  => {
     stateUpdateCallback( true );
@@ -93,7 +94,8 @@ function OrderBumpList( { navigate } ) {
     }, function ( bumpDataFromAjax ) {
       setPageLoading( false );
 
-      setBumpData( bumpDataFromAjax.data );
+      const bumpDataParsed = bumpDataFromAjax.data.map(bumpItem => convertBumpItemHtmlEntitiesToTexts(bumpItem));
+      setBumpData( bumpDataParsed );
     } );
   }, [] );
 

@@ -74,6 +74,7 @@ function DiscountBannerFields(props) {
 								? sgsbAdmin.currencySymbol
 								: null
 						}
+						min={0}
 						value={formData.discount_amount_value}
 						onChange={(v) =>
 							onFieldChange('discount_amount_value', v)
@@ -89,6 +90,7 @@ function DiscountBannerFields(props) {
 				extra="Require minimum amount in customer cart to avail this discount."
 			>
 				<InputNumber
+					min={0}
 					addonBefore={sgsbAdmin.currencySymbol}
 					value={formData.cart_minimum_amount}
 					onChange={(v) => onFieldChange('cart_minimum_amount', v)}

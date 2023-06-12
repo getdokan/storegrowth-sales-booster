@@ -10,6 +10,9 @@ global $product_object;
 $dates_from = get_post_meta( $product_object->get_id(), '_sgsb_stock_countdown_discount_start', true );
 $dates_to   = get_post_meta( $product_object->get_id(), '_sgsb_stock_countdown_discount_end', true );
 
+$dates_from = $dates_from ? gmdate( 'Y-m-d', strtotime( $dates_from ) ) : $dates_from;
+$dates_to   = $dates_to ? gmdate( 'Y-m-d', strtotime( $dates_to ) ) : $dates_to;
+
 ?>
 <div id="sgsb-stock-countdown-tab" class="panel woocommerce_options_panel hidden">
 	<div class="options_group">
