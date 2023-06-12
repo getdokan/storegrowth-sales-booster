@@ -1,30 +1,26 @@
-import { Form, Input, Select, notification, Collapse, Button, Modal } from 'antd';
+import { Form, notification, Collapse, Button, Modal } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
+import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities } from '../helper';
 import OfferSection from './OfferSection';
 import BasicInfo from './BasicInfo';
-import AppearanceBump from './appearance/AppearanceBump';
 import DesignChangeArea from './appearance/template/design-area/DesignChangeArea';
 import ContentBump from './appearance/ContentBump';
 import OverViewArea from './appearance/template/overview-area/OverViewArea';
-const { Option } = Select;
 
 const { Panel } = Collapse;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 function CreateBump({navigate, useParams}) {
+  const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { setPageLoading } = useDispatch( 'sgsb' );
   const [buttonLoading, setButtonLoading] = useState(false);
   const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
   let {bump_id,action_name} = useParams();
 
-  const { createBumpData } = useSelect( ( select ) => ({
-    createBumpData: select('sgsb_order_bump').getCreateFromData()
+  const { allBumpsData, createBumpData } = useSelect( ( select ) => ({
+    createBumpData: select('sgsb_order_bump').getCreateFromData(),
+    allBumpsData: wp.data.select('sgsb_order_bump').getBumpData()
   }));
 
 
@@ -67,9 +63,10 @@ function CreateBump({navigate, useParams}) {
       console.log('Bangladesh',data)
       setPageLoading(false);
 
+      const parsedBumpItem = convertBumpItemHtmlEntitiesToTexts(data.data)
       setCreateFromData({
         ...createBumpData,
-        ...data.data,
+        ...parsedBumpItem,
         offer_product_id:bump_id
       });
        
@@ -150,17 +147,66 @@ function CreateBump({navigate, useParams}) {
       
     }
 
+    const isEditingExistingBumpItem = typeof bump_id == "string" && 
+            !isNaN(bump_id) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)
+            !isNaN(parseFloat(bump_id)) // if bump_id is just whitespaces then fail
+    const intBumpId = isEditingExistingBumpItem && parseInt(bump_id);
+    const filteredBumpsData = isEditingExistingBumpItem ? allBumpsData.filter(item => item.id !== intBumpId) : allBumpsData;
+
+    const duplicateErrs = {
+        duplicateTargetCats: [],
+        duplicateTargetProducts: [],
+    }
+
+    const newOfferProduct = createBumpData.offer_product;
+    const newTargetCats = createBumpData.target_categories;
+    const newTargetProducts = createBumpData.target_products;
+    const newTargetSchedules = createBumpData.bump_schedule;
+    
+    for (const bumpItem of filteredBumpsData) {
+        if(bumpItem.offer_product !== newOfferProduct){
+            continue;
+        }
+        let isSameScheduleExist = false;
+        for (const newScheduleItem of newTargetSchedules) {
+            if(bumpItem.bump_schedule.includes(newScheduleItem)){
+                isSameScheduleExist = true;
+                break;
+            }
+        }
+        if(!isSameScheduleExist){
+            continue;
+        }
+        for (const newCatItem of newTargetCats) {
+            if(bumpItem.target_categories.includes(newCatItem)){
+                duplicateErrs.duplicateTargetCats.push(newCatItem);
+                break;
+            }
+        }
+        for (const newProductItem of newTargetProducts) {
+            if(bumpItem.target_products.includes(newProductItem)){
+                duplicateErrs.duplicateTargetProducts.push(newProductItem);
+                break;
+            }
+        }
+        if(duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ){
+            setDuplicateDataError(duplicateErrs);
+            return false;
+        }
+    }
+    
     setButtonLoading( true );
+    const bumpDataParsedToEntities = convertBumpItemTextDatasToHtmlEntities(createBumpData);
     let $ = jQuery;
     $.post( bump_save_url.ajax_url, { 
       'action'    : 'bump_create',
-      'data'      : createBumpData,
+      'data'      : bumpDataParsedToEntities,
       '_ajax_nonce' : bump_save_url.ajd_nonce
 
       }, function ( data ) {
       console.log('created bump', data)
       setCreateFromData( {
-        ...createBumpData,
+        ...bumpDataParsedToEntities,
         offer_product_id: data
       } );
       setButtonLoading( false );
@@ -175,16 +221,20 @@ function CreateBump({navigate, useParams}) {
 
   }
 
+  const clearErrors = () => setDuplicateDataError({});
+  const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
+  const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
+
   return (
     <>
       <Form {...layout} >
         <Collapse onChange={onChange} defaultActiveKey="1">
           <Panel header="Basic Informarion form" key="1">
-            <BasicInfo product_list = {products_and_categories.product_list}/>
+            <BasicInfo clearErrors={clearErrors} />
           </Panel>
 
           <Panel header="Offer Section Form" key="2">
-            <OfferSection product_list = {products_and_categories.product_list}/>
+            <OfferSection clearErrors={clearErrors} />
           </Panel>
 
           <Panel header="Design Section" key="4">
@@ -200,7 +250,22 @@ function CreateBump({navigate, useParams}) {
           </Panel>
         
         </Collapse>
-
+        {
+            ( isDuplicateCatsFound || isDuplicateProductsFound ) && (
+                <h3 style={{color:"Red"}}>
+                    Error!!! another bump with the given offer product for the specified schedule already exists for the selected {" "}
+                    {
+                    (isDuplicateCatsFound && isDuplicateProductsFound) 
+                        ? "categories & products" 
+                        : isDuplicateProductsFound 
+                            ? "products"
+                            : "categories"
+                    }
+                    .<br/>
+                    Please change your inputs and then try again.
+                </h3>
+            )
+        }
         <Button 
           type      = "primary" 
           htmlType  = "submit" 

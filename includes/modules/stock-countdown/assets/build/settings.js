@@ -17266,6 +17266,7 @@ function StockCountdown() {
     label: "Progress Bar Height",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    min: 1,
     addonAfter: "px",
     value: formData.progressbar_height,
     onChange: v => onFieldChange('progressbar_height', v),
