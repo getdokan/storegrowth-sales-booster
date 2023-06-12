@@ -13987,10 +13987,12 @@ function FlyCart() {
   const initializeColorPicker = () => {
     jQuery('.sgsb-flycart-color-picker').wpColorPicker({
       change(event, ui) {
-        // Not sure why it is needed, But it is required to work properly.
-        formData[event.target.name] = ui.color.toString();
-        updateFormData({ ...formData
-        });
+        // Not sure why it is needed, But it is required to work properly.;
+        const fieldName = event.target.name;
+        let fieldValue = ui.color.toString();
+        updateFormData(prevFormData => ({ ...prevFormData,
+          [fieldName]: fieldValue
+        }));
       }
 
     });

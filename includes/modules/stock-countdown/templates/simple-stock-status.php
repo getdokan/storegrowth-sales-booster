@@ -18,6 +18,14 @@ $shop_bar_enable          = sgsb_find_option_setting( $settings, 'shop_page_prog
 $shop_countdown_enable    = sgsb_find_option_setting( $settings, 'shop_page_countdown_enable', true );
 $product_bar_enable       = sgsb_find_option_setting( $settings, 'product_page_progress_bar_enable', true );
 $product_countdown_enable = sgsb_find_option_setting( $settings, 'product_page_countdown_enable', true );
+
+$hide_template_in_shop    = is_shop() && ( ! $product->managing_stock() || ! $shop_bar_enable ) && ! $shop_countdown_enable;
+$hide_template_in_product = is_product() && ( ! $product->managing_stock() || ! $product_bar_enable ) && ! $product_countdown_enable;
+
+if ( $hide_template_in_shop || $hide_template_in_product ) {
+	return false;
+}
+
 ?>
 <div class="sgsb-stock-counter-and-bar">
 	<?php

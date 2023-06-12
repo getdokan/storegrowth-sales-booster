@@ -1,8 +1,26 @@
 import { Table, Button, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
+import {  convertBumpItemHtmlEntitiesToTexts } from '../helper';
 
-function ActionButton( { navigate, bump_id, buttonLoading, deleteBump } ) {
+const deleteBump = stateUpdateCallback => id  => {
+    stateUpdateCallback( true );
+    jQuery.post( bump_save_url.ajax_url, {
+      'action': 'bump_delete',
+      'data': id,
+      '_ajax_nonce': bump_save_url.ajd_nonce
+    }, function () {
+      notification[ 'error' ]( {
+        message: 'Order Bump deleted',
+      } );
+      stateUpdateCallback( false );
+      location.reload();
+    } );
+  }
+
+function ActionButton( { navigate, bump_id } ) {
+  const [ buttonLoading, setButtonLoading ] = useState( false );
+
   return (
     <>
       <Button
@@ -16,7 +34,7 @@ function ActionButton( { navigate, bump_id, buttonLoading, deleteBump } ) {
         type="danger"
         shape="round"
         size='small'
-        onClick={ () => deleteBump( bump_id ) }
+        onClick={ () => deleteBump( setButtonLoading )( bump_id ) }
         loading={ buttonLoading }
       >
         Delete
@@ -61,7 +79,6 @@ function OrderBumpList( { navigate } ) {
 
   const { setPageLoading } = useDispatch( 'sgsb' );
   const { setBumpData } = useDispatch( 'sgsb_order_bump' )
-  const [ buttonLoading, setButtonLoading ] = useState( false );
 
   const { bumpListData } = useSelect( ( select ) => ({
     bumpListData: select( 'sgsb_order_bump' ).getBumpData()
@@ -77,27 +94,11 @@ function OrderBumpList( { navigate } ) {
     }, function ( bumpDataFromAjax ) {
       setPageLoading( false );
 
-      setBumpData( bumpDataFromAjax.data );
+      const bumpDataParsed = bumpDataFromAjax.data.map(bumpItem => convertBumpItemHtmlEntitiesToTexts(bumpItem));
+      setBumpData( bumpDataParsed );
     } );
   }, [] );
 
-  const deleteBump = ( bump_id ) => {
-    setButtonLoading( true );
-    let $ = jQuery;
-    $.post( bump_save_url.ajax_url, {
-      'action': 'bump_delete',
-      'data': bump_id,
-      '_ajax_nonce': bump_save_url.ajd_nonce
-    }, function ( data ) {
-      notification[ 'error' ]( {
-        message: 'Order Bump deleted',
-      } );
-      setButtonLoading( false );
-      location.reload();
-    } );
-
-
-  }
 
 
   const columns = [
@@ -155,8 +156,6 @@ function OrderBumpList( { navigate } ) {
       action: <ActionButton
         navigate={ navigate }
         bump_id={ item.id }
-        buttonLoading={ buttonLoading }
-        deleteBump={ deleteBump }
       />,
     }
   } )

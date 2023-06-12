@@ -15405,6 +15405,7 @@ function DiscountBannerFields(props) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     addonAfter: formData.discount_amount_mode == 'percentage' ? '%' : null,
     addonBefore: formData.discount_amount_mode == 'fixed-amount' ? sgsbAdmin.currencySymbol : null,
+    min: 0,
     value: formData.discount_amount_value,
     onChange: v => onFieldChange('discount_amount_value', v),
     style: {
@@ -15415,6 +15416,7 @@ function DiscountBannerFields(props) {
     labelAlign: "left",
     extra: "Require minimum amount in customer cart to avail this discount."
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    min: 0,
     addonBefore: sgsbAdmin.currencySymbol,
     value: formData.cart_minimum_amount,
     onChange: v => onFieldChange('cart_minimum_amount', v),
