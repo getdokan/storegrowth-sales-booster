@@ -1,6 +1,9 @@
 (function ($) {
   "use strict";
 
+  //Variable to set Timeout
+  var timeoutId;
+
   // For flyout.
   $(".products").flyto({
     item: "li.product",
@@ -54,8 +57,13 @@
     // Update input value.
     inputElm.val(newVal);
 
+    //Clear the time out
+    clearTimeout(timeoutId)
+
     // Submit the form.
-    $('form.sgsb-woocommerce-cart-form').submit();
+    timeoutId = setTimeout(function(){
+      $('form.sgsb-woocommerce-cart-form').submit();
+    },800)
   }
 
   // For sidebar.
@@ -109,6 +117,38 @@
         updateProductQuantity.bind(this, 'minus').call();
       }
     );
+
+    // Restrict the input of other than numeric amd leading zero
+    $(document).on('input', 'input.qty', function () {
+      $(this).val(function (_, value) {
+        return value.replace(/^0*(?!$)/, ''); // Remove leading zeros if not the only character
+      });
+    }).on('keypress', 'input.qty', function (e) {
+      if (e.which === 48 && this.value === '0') {
+        return false; // Prevent input of additional leading zeros
+      }
+      if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) {
+        return false; // Prevent input of non-numeric characters
+      }
+    });
+    
+     
+    
+    // On input change fire up the submit 
+    $(document).on('input', 'input.qty', function() {
+        var inputValue = $(this).val();
+        clearTimeout(timeoutId);
+    
+        // Set a new timeout to submit the form after 800 milliseconds
+        timeoutId = setTimeout(function() {
+    
+        if (inputValue >= 1) {
+          $('form.sgsb-woocommerce-cart-form').submit();
+        }else{
+          return;
+        }
+      }.bind(this), 800);
+    });
 
     // Remove product from cart.
     $(document).on(
