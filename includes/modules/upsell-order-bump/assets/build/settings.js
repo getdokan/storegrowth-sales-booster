@@ -23637,7 +23637,8 @@ const OfferSection = () => {
     placeholder: "Search for offer product",
     showSearch: true,
     onChange: v => onFieldChange('offer_product', v),
-    value: parseInt(createBumpData.offer_product) ? parseInt(createBumpData.offer_product) : null
+    value: parseInt(createBumpData.offer_product) ? parseInt(createBumpData.offer_product) : null,
+    filterOption: (inputValue, option) => option.props.children.toString().toLowerCase().includes(inputValue.toLowerCase())
   }, products_and_categories.product_list.simpleProductForOffer.map((item, i) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Option, {
     value: item.value
   }, item.label)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
