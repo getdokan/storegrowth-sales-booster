@@ -17,6 +17,18 @@ function Time( { onFormSave } ) {
     } );
   };
 
+  
+  /** 
+   * This is a numeric validator method that allows positive and numeric values and rejects
+   * any other kind of input values.
+   * @param {*} key
+   * @param {*} value
+   */
+  const handleNumericInputChange = (key, value) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    onFieldChange(key, numericValue);
+  };
+
   return (
     <>
       <Form.Item
@@ -35,7 +47,7 @@ function Time( { onFormSave } ) {
         extra="Time to start next notification(in seconds)"
       >
         <Input
-          onChange={ ( v ) => onFieldChange( 'next_time_display', v.target.value ) }
+          onChange={ ( v ) => handleNumericInputChange( 'next_time_display', v.target.value ) }
           placeholder="Enter Next Time Display"
           value={ createPopupForm.next_time_display }
         />
@@ -46,7 +58,7 @@ function Time( { onFormSave } ) {
         extra="Quantity Notifications Per Page"
       >
         <Input
-          onChange={ ( v ) => onFieldChange( 'notification_per_page', v.target.value ) }
+          onChange={ ( v ) => handleNumericInputChange( 'notification_per_page', v.target.value ) }
           placeholder="Enter Notification Per Page"
           value={ createPopupForm.notification_per_page }
         />
@@ -58,7 +70,7 @@ function Time( { onFormSave } ) {
         extra="When Your Site Load, Notification will wait this time to show(in seconds)"
       >
         <Input
-          onChange={ ( v ) => onFieldChange( 'initial_time_delay', v.target.value ) }
+          onChange={ ( v ) => handleNumericInputChange( 'initial_time_delay', v.target.value ) }
           placeholder="Enter Initial Time Delay"
           value={ createPopupForm.initial_time_delay }
         />
@@ -70,7 +82,7 @@ function Time( { onFormSave } ) {
         extra="Time your notification display"
       >
         <Input
-          onChange={ ( v ) => onFieldChange( 'dispaly_time', v.target.value ) }
+          onChange={ ( v ) => handleNumericInputChange( 'dispaly_time', v.target.value ) }
           placeholder="Enter Virtual Time"
           value={ createPopupForm.dispaly_time }
         />
