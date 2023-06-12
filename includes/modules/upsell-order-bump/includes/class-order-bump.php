@@ -46,7 +46,8 @@ class Order_Bump {
 		$showed_bump_product_id = array();
 
 		foreach ( $all_cart_products as $value ) {
-			foreach ( $value['data']->category_ids as $cat_id ) {
+			$cat_ids = $value['data']->get_category_ids();
+			foreach ( $cat_ids as $cat_id ) {
 				$all_cart_category_ids[] = $cat_id;
 			}
 			$all_cart_product_ids[] = $value['product_id'];
