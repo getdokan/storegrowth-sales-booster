@@ -1,6 +1,7 @@
 import { Form, Input, Select, notification, Collapse, Button, Modal } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
+import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities } from '../helper';
 import OfferSection from './OfferSection';
 import BasicInfo from './BasicInfo';
 import AppearanceBump from './appearance/AppearanceBump';
@@ -67,9 +68,10 @@ function CreateBump({navigate, useParams}) {
       console.log('Bangladesh',data)
       setPageLoading(false);
 
+      const parsedBumpItem = convertBumpItemHtmlEntitiesToTexts(data.data)
       setCreateFromData({
         ...createBumpData,
-        ...data.data,
+        ...parsedBumpItem,
         offer_product_id:bump_id
       });
        
@@ -151,16 +153,17 @@ function CreateBump({navigate, useParams}) {
     }
 
     setButtonLoading( true );
+    const bumpDataParsedToEntities = convertBumpItemTextDatasToHtmlEntities(createBumpData);
     let $ = jQuery;
     $.post( bump_save_url.ajax_url, { 
       'action'    : 'bump_create',
-      'data'      : createBumpData,
+      'data'      : bumpDataParsedToEntities,
       '_ajax_nonce' : bump_save_url.ajd_nonce
 
       }, function ( data ) {
       console.log('created bump', data)
       setCreateFromData( {
-        ...createBumpData,
+        ...bumpDataParsedToEntities,
         offer_product_id: data
       } );
       setButtonLoading( false );
