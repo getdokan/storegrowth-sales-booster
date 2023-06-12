@@ -4,13 +4,14 @@ const { Option } = Select;
 
 
 
-const OfferSection = () => {
+const OfferSection = ({clearErrors}) => {
   const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
   const { createBumpData } = useSelect((select) => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData()
   }));
 
   const onFieldChange = (key, value) => {
+    clearErrors();
     if ( key=='offer_product' ) {
       setCreateFromData( {
         ...createBumpData,
