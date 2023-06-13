@@ -2,12 +2,15 @@
 	var popup_all_properties = popup_info.popup_all_properties;
 	var popup_position       = popup_all_properties.popup_position;
 	var message_popup        = popup_all_properties.message_popup;
+	var display_time				 = popup_all_properties.dispaly_time;
 	var next_time_display    = popup_all_properties.next_time_display;
 	var initial_time_delay   = popup_all_properties.initial_time_delay;
 	message_popup            = message_popup?message_popup:'please prepare you message';
 
 	var country = new Array ();
+
 	country     = popup_info.random_popup_country;
+	
 	var finalCountry = country.map((item,i)=>{
 
 			var countryStringToArray =  item.split(',');
@@ -84,7 +87,7 @@
 			$(".custom-social-proof").css('left', '20px');
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
-		setTimeout( popDownContentGenerator, next_time_display*1000 );
+		setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
@@ -96,7 +99,7 @@
 			$(".custom-social-proof").css('bottom', '-150px');
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
-		setTimeout( popupContentGenerator, 3000 );
+		setTimeout( popupContentGenerator, next_time_display*1000 );
 	}
 
 	var testMessage = message_popup.replaceAll(/\s+/g,' ').trim();
