@@ -92,7 +92,7 @@ class Order_Bump {
 				continue;
 			}
 			if (
-				$bump_info->target_products
+				isset( $bump_info->target_products )
 				&&
 				count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $bump_info->target_products ) )
 				&&
