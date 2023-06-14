@@ -44,8 +44,8 @@ class Common_Hooks {
 	 */
 	public function show_stock_status_template() {
 		global $product;
-        $stock_status = $product->get_stock_status();
-		if ( $product->is_type( 'simple' ) && $stock_status !== 'outofstock' ) {
+		$stock_status = $product->get_stock_status();
+		if ( $product->is_type( 'simple' ) && 'outofstock' !== $stock_status ) {
 			include __DIR__ . '/../templates/simple-stock-status.php';
 		}
 	}
@@ -58,7 +58,7 @@ class Common_Hooks {
 	 */
 	public function woocommerce_get_stock_html( $html, $product ) {
 		$stock_status = $product->get_stock_status();
-		if ( $stock_status === 'outofstock' ) {
+		if ( 'outofstock' === $stock_status ) {
 			return $html;
 		} else {
 			return '';
