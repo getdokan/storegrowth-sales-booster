@@ -6,8 +6,10 @@
 	var next_time_display     = popup_all_properties.next_time_display;
 	var initial_time_delay    = popup_all_properties.initial_time_delay;
 	var notification_per_page = popup_all_properties.notification_per_page;
+	var mobile_view						= popup_all_properties.mobile_view
+	
 	var notification_count 	  = 0;
-
+	
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
 	var country = new Array ();
@@ -132,4 +134,19 @@
 			$(".custom-social-proof").stop().slideToggle('slow');
 	} );
 
+	function handlePopupVisibility() {
+    if (!mobile_view && $(window).width() <= 767) {
+      $(".custom-notification").css('display', 'none');
+    } else {
+      $(".custom-notification").css('display', 'block');
+    }
+  }
+
+  $(window).on('load resize', function() {
+    handlePopupVisibility();
+  });
+
 } )(jQuery);
+
+
+// Initial check when the page loads
