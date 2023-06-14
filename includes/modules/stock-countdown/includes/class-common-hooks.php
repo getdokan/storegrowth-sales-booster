@@ -71,12 +71,13 @@ class Common_Hooks {
 	 * @param array $tabs WooCommerce product data tabs.
 	 */
 	public function woocommerce_product_data_tabs( $tabs ) {
-		// Adds the new tab.
-		$tabs['stock_countdown_tab'] = array(
-			'label'  => __( 'Stock Countdown', 'storegrowth-sales-booster' ),
-			'target' => 'sgsb-stock-countdown-tab',
-		);
-
+		if ( ! $this->is_external_product() ) {
+			// Adds the new tab.
+			$tabs['stock_countdown_tab'] = array(
+				'label'  => __( 'Stock Countdown', 'storegrowth-sales-booster' ),
+				'target' => 'sgsb-stock-countdown-tab',
+			);
+		}
 		return $tabs;
 	}
 
@@ -84,7 +85,9 @@ class Common_Hooks {
 	 * Output HTML of tab content.
 	 */
 	public function woocommerce_product_data_panels() {
-		include __DIR__ . '/../templates/wc-product-data-panels.php';
+		if ( ! $this->is_external_product() ) {
+			include __DIR__ . '/../templates/wc-product-data-panels.php';
+		}
 	}
 
 	/**
@@ -173,4 +176,21 @@ class Common_Hooks {
 
 		return $is_on_sale;
 	}
+
+	/**
+	 * Check if the product is an external type.
+	 *
+	 * @return bool Whether the product is an external type.
+	 */
+	public function is_external_product() {
+		global $post;
+		$product = wc_get_product( $post->ID );
+
+		if ( $product && $product->is_type( 'external' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
