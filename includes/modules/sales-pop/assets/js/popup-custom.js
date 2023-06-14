@@ -7,7 +7,7 @@
 	var initial_time_delay    = popup_all_properties.initial_time_delay;
 	var notification_per_page = popup_all_properties.notification_per_page;
 	var notification_count 	  = 0;
-
+console.log(notification_per_page);
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
 	var country = new Array ();
@@ -123,7 +123,11 @@
 
 	$('.custom-notification-content').html(testMessage);
 
-	setTimeout(popupContentGenerator, initial_time_delay*1000);
+	if (notification_per_page !== '0' && notification_per_page !== '') {
+		setTimeout(popupContentGenerator, initial_time_delay * 1000);
+	}
+	
+
 	$( ".custom-close").click( function() {
 			$(".custom-social-proof").stop().slideToggle('slow');
 	} );
