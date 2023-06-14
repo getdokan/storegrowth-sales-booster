@@ -7,7 +7,7 @@
 	var initial_time_delay    = popup_all_properties.initial_time_delay;
 	var notification_per_page = popup_all_properties.notification_per_page;
 	var notification_count 	  = 0;
-console.log(notification_per_page);
+
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
 	var country = new Array ();
