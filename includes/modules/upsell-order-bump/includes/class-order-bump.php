@@ -33,18 +33,15 @@ class Order_Bump {
 	 * Bump offer product for frontend.
 	 */
 	public function bump_product_frontend_view() {
-
 		global $woocommerce;
-		$all_cart_products      = $woocommerce->cart->get_cart();
-		$all_cart_product_ids   = array();
-		$all_cart_category_ids  = array();
-		$args_bump              = array(
+		$all_cart_products     = $woocommerce->cart->get_cart();
+		$all_cart_product_ids  = array();
+		$all_cart_category_ids = array();
+		$args_bump             = array(
 			'post_type'      => 'sgsb_order_bump',
 			'posts_per_page' => -1,
 		);
-		$bump_list              = get_posts( $args_bump );
-		$showed_bump_product_id = array();
-
+		$bump_list             = get_posts( $args_bump );
 		foreach ( $all_cart_products as $value ) {
 			$cat_ids = $value['data']->get_category_ids();
 			foreach ( $cat_ids as $cat_id ) {
@@ -53,6 +50,7 @@ class Order_Bump {
 			$all_cart_product_ids[] = $value['product_id'];
 		}
 
+		$bumps_to_show_with_datas = array();
 		foreach ( $bump_list as $bump ) {
 			$bump_info        = maybe_unserialize( $bump->post_excerpt );
 			$bump_info        = (object) $bump_info;
@@ -87,33 +85,42 @@ class Order_Bump {
 				}
 				break;
 			}
+
 			if ( $product_already_added_from_shop ) {
 				// don't show the offer if the 'offer product' is already added in the cart from the shop page with regular price.
 				continue;
 			}
-			if (
-				isset( $bump_info->target_products )
-				&&
-				count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $bump_info->target_products ) )
-				&&
-				! in_array( $offer_product_id, $showed_bump_product_id, true )
-			) {
 
-				include __DIR__ . '/../templates/bump-product-front-view.php';
+			$show_bump_based_on_products   = isset( $bump_info->target_products )
+			&& count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $bump_info->target_products ) );
+			$show_bump_based_on_categories = isset( $bump_info->target_categories )
+			&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bump_info->target_categories ) );
 
-				$showed_bump_product_id[] = $offer_product_id;
+			if ( ! ( $show_bump_based_on_products || $show_bump_based_on_categories ) ) {
+				continue;
 			}
-
-			if (
-				isset( $bump_info->target_categories )
-				&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bump_info->target_categories ) )
-				&& ! in_array( $offer_product_id, $showed_bump_product_id, true )
-			) {
-
-				include __DIR__ . '/../templates/bump-product-front-view.php';
-
-				$showed_bump_product_id[] = $offer_product_id;
+			$compacted_required_datas = compact(
+				'bump_info',
+				'offer_type',
+				'offer_amount',
+				'regular_price',
+				'offer_price',
+				'offer_product_id',
+				'checked',
+				'offer_price'
+			);
+			if ( isset( $bumps_to_show_with_datas[ $offer_product_id ] ) ) {
+				if ( $offer_price < $bumps_to_show_with_datas[ $offer_product_id ]['offer_price'] ) {
+					$bumps_to_show_with_datas[ $offer_product_id ] = $compacted_required_datas;
+				}
+			} else {
+				$bumps_to_show_with_datas[ $offer_product_id ] = $compacted_required_datas;
 			}
+		}
+
+		foreach ( $bumps_to_show_with_datas as $bump ) {
+			extract( $bump );
+			include __DIR__ . '/../templates/bump-product-front-view.php';
 		}
 	}
 
