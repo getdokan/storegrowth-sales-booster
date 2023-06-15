@@ -54,16 +54,8 @@
       return;
     }
 
-    // Update input value.
-    inputElm.val(newVal);
-
-    //Clear the time out
-    clearTimeout(timeoutId)
-
-    // Submit the form.
-    timeoutId = setTimeout(function(){
-      $('form.sgsb-woocommerce-cart-form').submit();
-    },800)
+    // Update input value & trigger the 'input' event.
+    inputElm.val(newVal).trigger('input');
   }
 
   // For sidebar.
@@ -138,11 +130,9 @@
     $(document).on('input', 'input.qty', function() {
         var inputValue = $(this).val();
         clearTimeout(timeoutId);
-    
         // Set a new timeout to submit the form after 800 milliseconds
         timeoutId = setTimeout(function() {
-    
-        if (inputValue >= 1) {
+        if (inputValue >= 1 && $(this)[0].getAttribute('value') !== inputValue) {
           $('form.sgsb-woocommerce-cart-form').submit();
         }else{
           return;
