@@ -13,6 +13,12 @@ $main_div_border_radius = $popup_properties['popup_border_radius'] ? $popup_prop
 $main_div_background    = $popup_properties['background_color'] ? $popup_properties['background_color'] : 'white';
 $main_div_style         = "padding:10px;width:$main_div_width" . 'px; border-radius: ' . " $main_div_border_radius px;background:$main_div_background";
 
+// Normal Text style.
+$normal_text_color       = $popup_properties['normal_text_color'];
+$normal_text_font_size   = $popup_properties['normal_text_font_size'] . 'px';
+$normal_text_font_weight = $popup_properties['normal_text_font_weight'];
+$normal_text_style       = "color:$normal_text_color;font-size:$normal_text_font_size;font-weight:$normal_text_font_weight";
+
 // First name style.
 $name_color       = $popup_properties['name_text_color'];
 $name_font_size   = $popup_properties['name_text_font_size'] . 'px';
@@ -33,4 +39,3 @@ $time_style       = "color:$time_color;font-size:$time_font_size;font-weight:$na
 
 // Image spacing.
 $image_spacing = $popup_properties['spacing_around_image'];
-
