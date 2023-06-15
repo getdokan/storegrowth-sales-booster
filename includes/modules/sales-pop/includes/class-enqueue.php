@@ -202,20 +202,28 @@ class Enqueue {
 		);
 
 		$products                = get_posts( $args );
+		$product_info            = array();
 		$product_list_for_select = array();
 		$product_title_by_id     = array();
+		$external_products_ids   = array();
 
 		foreach ( $products as $product ) {
+			$product_id                = $product->ID;
 			$product_list_for_select[] = array(
-				'value' => $product->ID,
+				'value' => $product_id,
 				'label' => $product->post_title,
 			);
 
-			$product_title_by_id[ $product->ID ] = $product->post_title;
+			$product_title_by_id[ $product_id ] = $product->post_title;
+			$product_obj                        = wc_get_product( $product_id );
+			if ( $product_obj && $product_obj->is_type( 'external' ) ) {
+				$external_products_ids[] = $product_id;
+			}
 		}
 
 		$product_info['productListForSelect'] = $product_list_for_select;
 		$product_info['productTitleById']     = $product_title_by_id;
+		$product_info['externalProductsIds']  = $external_products_ids;
 
 		return $product_info;
 	}
