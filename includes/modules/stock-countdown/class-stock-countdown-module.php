@@ -59,6 +59,15 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Stock';
+	}
+
+	/**
 	 * Module activation function.
 	 *
 	 * @return void

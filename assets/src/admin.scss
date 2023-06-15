@@ -197,6 +197,75 @@ Pagination Style
 
     .module-filter {
         margin-left: 24px;
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+
+        .select-dropdown__button {
+            background: #FFFFFF;
+            border: 1px solid #ECEDF0;
+            border-radius: 8px;
+            width: 218px;
+            height: 56px;
+            text-align: left;
+            padding: 0 20px;  
+            cursor: pointer;      
+
+            &:focus {
+                outline: none;
+            }
+
+            span {
+                color: #1B1B50;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 22px;
+
+            }
+        }
+
+        .dropdown__list {
+            background: #FFFFFF;
+            border: 1px solid #ECEDF0;
+            box-shadow: 0px 12px 48px rgba(27, 27, 80, 0.1);
+            border-radius: 8px;
+            width: 218px;
+            padding: 18px;
+            transform-origin: top left;
+            transform: translateY(20px);
+            transition: all ease-in-out .3s;
+            z-index: 2;
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+
+            li {
+                margin-bottom: 12px;
+
+                &:last-child {
+                    margin-bottom: 0;
+
+                }
+
+                label {
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 16px;
+                    color: #1B1B50;
+
+                }
+            }
+
+        }
+
+        &.active {
+            .dropdown__list {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(4px);
+            }
+            
+        }
 
         .ant-dropdown-button {
             position: relative;

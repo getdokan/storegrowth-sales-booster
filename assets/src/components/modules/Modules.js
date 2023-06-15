@@ -1,6 +1,6 @@
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useCallback } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { Row, Pagination, Col} from 'antd';
+import { Row, Pagination, Col } from 'antd';
 import { nanoid } from 'nanoid'
 
 import ModuleCard from './ModuleCard';
@@ -8,14 +8,10 @@ import { Ajax } from '../../ajax';
 import ModuleFilter from './ModuleFilter';
 import ModuleSearch from './ModuleSearch';
 
-function Modules() {
-  const options = [
-    'Bangladesh', 'Africa', 'America', 'Asia', 'Europe', 'Oceania'
-  ];
+function Modules({modules}) {
 
   const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
   const [ searchModule, setSearchModule ] = useState("");
-  const [selectedValue , setSelectedValue ] = useState(options[0]);
 
   useEffect(() => {
     setPageLoading(true);
@@ -42,9 +38,13 @@ function Modules() {
     
   };
 
-  const handleFilterModule = (e) => {
-    let value = e.target.options;
-    setSelectedValue(value);
+  const [filteredProducts, setFilteredProducts] = useState(allModules);
+
+  const handleFilter = (filters) => {
+    const filtered = allModules.filter((module) =>
+      filters.includes(module.category)
+    );
+    setFilteredProducts(filtered);
   };
 
   return (
@@ -58,22 +58,31 @@ function Modules() {
         <Col span={12}>
           <Row justify="end">
             <ModuleSearch
-              options={options}
-              value={selectedValue}
               onChange={(e) => 
                 setSearchModule(e.target.value)
               }
             />
-            <ModuleFilter 
-              onChange={handleFilterModule}
-            />
+            <ModuleFilter onFilter={handleFilter} />
+   
+
           </Row>
         </Col>
       </Row>
 
       <Row gutter={16}>
-        {allModules.filter((module) => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map((module) => <ModuleCard module={module} key={nanoid()} />)}
+        {/* {filteredProducts.map((module) => (
+          <ModuleCard module={module} key={nanoid()} />
+        ))} */}
+      </Row>
+
+      <Row gutter={16}>
         
+        {
+
+          allModules.filter((module) => module.name.toLowerCase().includes(searchModule) ).slice(minValue, maxValue).map((module) => <ModuleCard module={ module } key={nanoid()} />)
+
+        }
+      
       </Row>
 
       <div className='sgsb__module-pagination'

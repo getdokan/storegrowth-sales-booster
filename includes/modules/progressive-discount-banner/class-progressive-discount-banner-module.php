@@ -59,6 +59,15 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Discount Banner';
+	}
+
+	/**
 	 * Module activation function.
 	 *
 	 * @return void

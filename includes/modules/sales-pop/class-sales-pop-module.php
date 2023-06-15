@@ -61,6 +61,15 @@ class Sales_Pop_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Sales';
+	}
+
+	/**
 	 * Module activation function.
 	 *
 	 * @return void

@@ -46,6 +46,13 @@ interface Module_Skeleton {
 	public function get_description();
 
 	/**
+	 * Category for the module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category();
+
+	/**
 	 * Module activation function.
 	 *
 	 * @return void

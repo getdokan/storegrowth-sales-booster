@@ -59,6 +59,15 @@ class Fly_Cart_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Quick Cart';
+	}
+
+	/**
 	 * Module activation function.
 	 *
 	 * @return void
