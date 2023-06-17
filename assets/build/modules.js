@@ -3809,349 +3809,6 @@ Card.Meta = _Meta__WEBPACK_IMPORTED_MODULE_11__["default"];
 
 /***/ }),
 
-/***/ "./node_modules/antd/es/checkbox/Checkbox.js":
-/*!***************************************************!*\
-  !*** ./node_modules/antd/es/checkbox/Checkbox.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var rc_checkbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rc-checkbox */ "./node_modules/rc-checkbox/es/index.js");
-/* harmony import */ var _form_context__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../form/context */ "./node_modules/antd/es/form/context.js");
-/* harmony import */ var _Group__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Group */ "./node_modules/antd/es/checkbox/Group.js");
-/* harmony import */ var _config_provider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../config-provider */ "./node_modules/antd/es/config-provider/context.js");
-/* harmony import */ var _util_warning__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../_util/warning */ "./node_modules/antd/es/_util/warning.js");
-
-
-
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-
-
-
-
-
-var InternalCheckbox = function InternalCheckbox(_a, ref) {
-  var _classNames;
-
-  var customizePrefixCls = _a.prefixCls,
-      className = _a.className,
-      children = _a.children,
-      _a$indeterminate = _a.indeterminate,
-      indeterminate = _a$indeterminate === void 0 ? false : _a$indeterminate,
-      style = _a.style,
-      onMouseEnter = _a.onMouseEnter,
-      onMouseLeave = _a.onMouseLeave,
-      _a$skipGroup = _a.skipGroup,
-      skipGroup = _a$skipGroup === void 0 ? false : _a$skipGroup,
-      restProps = __rest(_a, ["prefixCls", "className", "children", "indeterminate", "style", "onMouseEnter", "onMouseLeave", "skipGroup"]);
-
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_config_provider__WEBPACK_IMPORTED_MODULE_5__.ConfigContext),
-      getPrefixCls = _React$useContext.getPrefixCls,
-      direction = _React$useContext.direction;
-
-  var checkboxGroup = react__WEBPACK_IMPORTED_MODULE_2__.useContext(_Group__WEBPACK_IMPORTED_MODULE_6__.GroupContext);
-
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_2__.useContext)(_form_context__WEBPACK_IMPORTED_MODULE_7__.FormItemInputContext),
-      isFormItemInput = _useContext.isFormItemInput;
-
-  var prevValue = react__WEBPACK_IMPORTED_MODULE_2__.useRef(restProps.value);
-  react__WEBPACK_IMPORTED_MODULE_2__.useEffect(function () {
-    checkboxGroup === null || checkboxGroup === void 0 ? void 0 : checkboxGroup.registerValue(restProps.value);
-     true ? (0,_util_warning__WEBPACK_IMPORTED_MODULE_8__["default"])('checked' in restProps || !!checkboxGroup || !('value' in restProps), 'Checkbox', '`value` is not a valid prop, do you mean `checked`?') : 0;
-  }, []);
-  react__WEBPACK_IMPORTED_MODULE_2__.useEffect(function () {
-    if (skipGroup) {
-      return;
-    }
-
-    if (restProps.value !== prevValue.current) {
-      checkboxGroup === null || checkboxGroup === void 0 ? void 0 : checkboxGroup.cancelValue(prevValue.current);
-      checkboxGroup === null || checkboxGroup === void 0 ? void 0 : checkboxGroup.registerValue(restProps.value);
-      prevValue.current = restProps.value;
-    }
-
-    return function () {
-      return checkboxGroup === null || checkboxGroup === void 0 ? void 0 : checkboxGroup.cancelValue(restProps.value);
-    };
-  }, [restProps.value]);
-  var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
-
-  var checkboxProps = (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({}, restProps);
-
-  if (checkboxGroup && !skipGroup) {
-    checkboxProps.onChange = function () {
-      if (restProps.onChange) {
-        restProps.onChange.apply(restProps, arguments);
-      }
-
-      if (checkboxGroup.toggleOption) {
-        checkboxGroup.toggleOption({
-          label: children,
-          value: restProps.value
-        });
-      }
-    };
-
-    checkboxProps.name = checkboxGroup.name;
-    checkboxProps.checked = checkboxGroup.value.indexOf(restProps.value) !== -1;
-    checkboxProps.disabled = restProps.disabled || checkboxGroup.disabled;
-  }
-
-  var classString = classnames__WEBPACK_IMPORTED_MODULE_3___default()((_classNames = {}, (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "".concat(prefixCls, "-wrapper"), true), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "".concat(prefixCls, "-rtl"), direction === 'rtl'), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "".concat(prefixCls, "-wrapper-checked"), checkboxProps.checked), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "".concat(prefixCls, "-wrapper-disabled"), checkboxProps.disabled), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "".concat(prefixCls, "-wrapper-in-form-item"), isFormItemInput), _classNames), className);
-  var checkboxClass = classnames__WEBPACK_IMPORTED_MODULE_3___default()((0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])({}, "".concat(prefixCls, "-indeterminate"), indeterminate));
-  var ariaChecked = indeterminate ? 'mixed' : undefined;
-  return (
-    /*#__PURE__*/
-    // eslint-disable-next-line jsx-a11y/label-has-associated-control
-    react__WEBPACK_IMPORTED_MODULE_2__.createElement("label", {
-      className: classString,
-      style: style,
-      onMouseEnter: onMouseEnter,
-      onMouseLeave: onMouseLeave
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement(rc_checkbox__WEBPACK_IMPORTED_MODULE_4__["default"], (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_1__["default"])({
-      "aria-checked": ariaChecked
-    }, checkboxProps, {
-      prefixCls: prefixCls,
-      className: checkboxClass,
-      ref: ref
-    })), children !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("span", null, children))
-  );
-};
-
-var Checkbox = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef(InternalCheckbox);
-Checkbox.displayName = 'Checkbox';
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Checkbox);
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/checkbox/Group.js":
-/*!************************************************!*\
-  !*** ./node_modules/antd/es/checkbox/Group.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GroupContext": () => (/* binding */ GroupContext),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/toConsumableArray */ "./node_modules/@babel/runtime/helpers/esm/toConsumableArray.js");
-/* harmony import */ var _babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/slicedToArray */ "./node_modules/@babel/runtime/helpers/esm/slicedToArray.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var rc_util_es_omit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rc-util/es/omit */ "./node_modules/rc-util/es/omit.js");
-/* harmony import */ var _Checkbox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Checkbox */ "./node_modules/antd/es/checkbox/Checkbox.js");
-/* harmony import */ var _config_provider__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../config-provider */ "./node_modules/antd/es/config-provider/context.js");
-
-
-
-
-
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-
-
-
-
-
-var GroupContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createContext(null);
-
-var InternalCheckboxGroup = function InternalCheckboxGroup(_a, ref) {
-  var defaultValue = _a.defaultValue,
-      children = _a.children,
-      _a$options = _a.options,
-      options = _a$options === void 0 ? [] : _a$options,
-      customizePrefixCls = _a.prefixCls,
-      className = _a.className,
-      style = _a.style,
-      onChange = _a.onChange,
-      restProps = __rest(_a, ["defaultValue", "children", "options", "prefixCls", "className", "style", "onChange"]);
-
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_4__.useContext(_config_provider__WEBPACK_IMPORTED_MODULE_7__.ConfigContext),
-      getPrefixCls = _React$useContext.getPrefixCls,
-      direction = _React$useContext.direction;
-
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_4__.useState(restProps.value || defaultValue || []),
-      _React$useState2 = (0,_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_React$useState, 2),
-      value = _React$useState2[0],
-      setValue = _React$useState2[1];
-
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_4__.useState([]),
-      _React$useState4 = (0,_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_3__["default"])(_React$useState3, 2),
-      registeredValues = _React$useState4[0],
-      setRegisteredValues = _React$useState4[1];
-
-  react__WEBPACK_IMPORTED_MODULE_4__.useEffect(function () {
-    if ('value' in restProps) {
-      setValue(restProps.value || []);
-    }
-  }, [restProps.value]);
-
-  var getOptions = function getOptions() {
-    return options.map(function (option) {
-      if (typeof option === 'string' || typeof option === 'number') {
-        return {
-          label: option,
-          value: option
-        };
-      }
-
-      return option;
-    });
-  };
-
-  var cancelValue = function cancelValue(val) {
-    setRegisteredValues(function (prevValues) {
-      return prevValues.filter(function (v) {
-        return v !== val;
-      });
-    });
-  };
-
-  var registerValue = function registerValue(val) {
-    setRegisteredValues(function (prevValues) {
-      return [].concat((0,_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(prevValues), [val]);
-    });
-  };
-
-  var toggleOption = function toggleOption(option) {
-    var optionIndex = value.indexOf(option.value);
-
-    var newValue = (0,_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_2__["default"])(value);
-
-    if (optionIndex === -1) {
-      newValue.push(option.value);
-    } else {
-      newValue.splice(optionIndex, 1);
-    }
-
-    if (!('value' in restProps)) {
-      setValue(newValue);
-    }
-
-    var opts = getOptions();
-    onChange === null || onChange === void 0 ? void 0 : onChange(newValue.filter(function (val) {
-      return registeredValues.indexOf(val) !== -1;
-    }).sort(function (a, b) {
-      var indexA = opts.findIndex(function (opt) {
-        return opt.value === a;
-      });
-      var indexB = opts.findIndex(function (opt) {
-        return opt.value === b;
-      });
-      return indexA - indexB;
-    }));
-  };
-
-  var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
-  var groupPrefixCls = "".concat(prefixCls, "-group");
-  var domProps = (0,rc_util_es_omit__WEBPACK_IMPORTED_MODULE_6__["default"])(restProps, ['value', 'disabled']);
-
-  if (options && options.length > 0) {
-    children = getOptions().map(function (option) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(_Checkbox__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        prefixCls: prefixCls,
-        key: option.value.toString(),
-        disabled: 'disabled' in option ? option.disabled : restProps.disabled,
-        value: option.value,
-        checked: value.indexOf(option.value) !== -1,
-        onChange: option.onChange,
-        className: "".concat(groupPrefixCls, "-item"),
-        style: option.style
-      }, option.label);
-    });
-  } // eslint-disable-next-line react/jsx-no-constructed-context-values
-
-
-  var context = {
-    toggleOption: toggleOption,
-    value: value,
-    disabled: restProps.disabled,
-    name: restProps.name,
-    // https://github.com/ant-design/ant-design/issues/16376
-    registerValue: registerValue,
-    cancelValue: cancelValue
-  };
-  var classString = classnames__WEBPACK_IMPORTED_MODULE_5___default()(groupPrefixCls, (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])({}, "".concat(groupPrefixCls, "-rtl"), direction === 'rtl'), className);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement("div", (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
-    className: classString,
-    style: style
-  }, domProps, {
-    ref: ref
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.createElement(GroupContext.Provider, {
-    value: context
-  }, children));
-};
-
-var CheckboxGroup = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.forwardRef(InternalCheckboxGroup);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4__.memo(CheckboxGroup));
-
-/***/ }),
-
-/***/ "./node_modules/antd/es/checkbox/index.js":
-/*!************************************************!*\
-  !*** ./node_modules/antd/es/checkbox/index.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Checkbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Checkbox */ "./node_modules/antd/es/checkbox/Checkbox.js");
-/* harmony import */ var _Group__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Group */ "./node_modules/antd/es/checkbox/Group.js");
-
-
-var Checkbox = _Checkbox__WEBPACK_IMPORTED_MODULE_0__["default"];
-Checkbox.Group = _Group__WEBPACK_IMPORTED_MODULE_1__["default"];
-Checkbox.__ANT_CHECKBOX = true;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Checkbox);
-
-/***/ }),
-
 /***/ "./node_modules/antd/es/col/index.js":
 /*!*******************************************!*\
   !*** ./node_modules/antd/es/col/index.js ***!
@@ -9366,51 +9023,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/checkbox/index.js");
-
 
 
 
 
 function ModuleFilter(_ref) {
   let {
-    onFilter
+    onFilterChange,
+    categories
   } = _ref;
-  const [selectedFilters, setSelectedFilters] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [isActive, setActive] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)("false");
-  const filters = [{
-    name: 'All',
-    value: 'All'
-  }, {
-    name: 'Quick Cart',
-    value: 'Quick Cart'
-  }, {
-    name: 'Discount Banner',
-    value: 'Discount Banner'
-  }, {
-    name: 'Upsell',
-    value: 'Upsell'
-  }, {
-    name: 'Stock',
-    value: 'Stock'
-  }, {
-    name: 'Sales',
-    value: 'Sales'
-  }];
-
-  const handleFilterChange = e => {
-    const filterValue = e.target.value;
-    let newFilters = [];
-
-    if (selectedFilters.includes(filterValue)) {
-      newFilters = selectedFilters.filter(filter => filter !== filterValue);
-    } else {
-      newFilters = [...selectedFilters, filterValue];
-    }
-
-    setSelectedFilters(newFilters);
-    onFilter(newFilters);
-  };
 
   const handleToggle = () => {
     setActive(!isActive);
@@ -9424,11 +9046,13 @@ function ModuleFilter(_ref) {
     class: "select-dropdown__button"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Select ")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
     className: "dropdown__list"
-  }, filters.map(filter => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    value: filter.value,
-    checked: selectedFilters.includes(filter.name),
-    onChange: handleFilterChange
-  }, filter.name)))));
+  }, categories.map(category => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+    key: category
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    onChange: onFilterChange,
+    type: "checkbox",
+    value: category
+  }), category)))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModuleFilter);
@@ -9489,10 +9113,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/row/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/row/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/col/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/pagination/index.js");
-/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
+/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
 /* harmony import */ var _ModuleCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModuleCard */ "./src/components/modules/ModuleCard.js");
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../ajax */ "./src/ajax.js");
 /* harmony import */ var _ModuleFilter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModuleFilter */ "./src/components/modules/ModuleFilter.js");
@@ -9507,15 +9131,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function Modules(_ref) {
-  let {
-    modules
-  } = _ref;
+function Modules() {
   const {
     updateModules,
     setPageLoading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
   const [searchModule, setSearchModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+  const [selectFilter, setSelectFilter] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    modules: []
+  });
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setPageLoading(true);
     (0,_ajax__WEBPACK_IMPORTED_MODULE_3__.Ajax)('get_all_modules').success(response => {
@@ -9538,41 +9162,77 @@ function Modules(_ref) {
   const hanglePageItem = pageNumber => {
     setMinValue((pageNumber - 1) * perPageItem);
     setMaxValue(pageNumber * perPageItem);
-  };
+  }; // static filter category
 
-  const [filteredProducts, setFilteredProducts] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(allModules);
 
-  const handleFilter = filters => {
-    const filtered = allModules.filter(module => filters.includes(module.category));
-    setFilteredProducts(filtered);
+  const CATEGORIES = ["Quick Cart", "Discount Banner", "Upsell", "Stock", "Sales"];
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (allModules) {
+      setSelectFilter({
+        modules: allModules
+      });
+    }
+  }, [allModules]); // handle filter func
+
+  const handleFilterChange = event => {
+    setSelectFilter(prevState => {
+      let filters = new Set(prevState.filters);
+      let modules = allModules;
+
+      if (event.target.checked) {
+        filters.add(event.target.value);
+      } else {
+        filters.delete(event.target.value);
+      }
+
+      if (filters.size) {
+        modules = modules.filter(module => {
+          return filters.has(module.category);
+        });
+      }
+
+      return {
+        filters,
+        modules
+      };
+    });
+  }; // Module List
+
+
+  const ModuleList = _ref => {
+    let {
+      modules
+    } = _ref;
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      module: module,
+      key: (0,nanoid__WEBPACK_IMPORTED_MODULE_6__.nanoid)()
+    })));
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "site-card-wrapper"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: "sgsb-search-section",
     align: "middle",
     justify: "espace-betweennd"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     span: 12
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
     className: "sgsb-heading"
-  }, "Sales Booster for WooCommerce")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, "Sales Booster for WooCommerce")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     span: 12
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     justify: "end"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleSearch__WEBPACK_IMPORTED_MODULE_5__["default"], {
     onChange: e => setSearchModule(e.target.value)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    onFilter: handleFilter
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    categories: CATEGORIES,
+    onFilterChange: handleFilterChange
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     gutter: 16
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    gutter: 16
-  }, allModules.filter(module => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    module: module,
-    key: (0,nanoid__WEBPACK_IMPORTED_MODULE_8__.nanoid)()
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ModuleList, {
+    modules: selectFilter.modules
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb__module-pagination",
     style: {
       paddingTop: '30px'
@@ -14698,201 +14358,6 @@ function monitorResize(element, callback) {
     resizeObserver.disconnect();
   };
 }
-
-/***/ }),
-
-/***/ "./node_modules/rc-checkbox/es/index.js":
-/*!**********************************************!*\
-  !*** ./node_modules/rc-checkbox/es/index.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
-/* harmony import */ var _babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
-/* harmony import */ var _babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/esm/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inherits */ "./node_modules/@babel/runtime/helpers/esm/inherits.js");
-/* harmony import */ var _babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/esm/createSuper */ "./node_modules/@babel/runtime/helpers/esm/createSuper.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_9__);
-
-
-
-
-
-
-
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-
-
-
-var Checkbox = /*#__PURE__*/function (_Component) {
-  (0,_babel_runtime_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_6__["default"])(Checkbox, _Component);
-
-  var _super = (0,_babel_runtime_helpers_esm_createSuper__WEBPACK_IMPORTED_MODULE_7__["default"])(Checkbox);
-
-  function Checkbox(props) {
-    var _this;
-
-    (0,_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_4__["default"])(this, Checkbox);
-
-    _this = _super.call(this, props);
-
-    _this.handleChange = function (e) {
-      var _this$props = _this.props,
-          disabled = _this$props.disabled,
-          onChange = _this$props.onChange;
-
-      if (disabled) {
-        return;
-      }
-
-      if (!('checked' in _this.props)) {
-        _this.setState({
-          checked: e.target.checked
-        });
-      }
-
-      if (onChange) {
-        onChange({
-          target: (0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__["default"])((0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__["default"])({}, _this.props), {}, {
-            checked: e.target.checked
-          }),
-          stopPropagation: function stopPropagation() {
-            e.stopPropagation();
-          },
-          preventDefault: function preventDefault() {
-            e.preventDefault();
-          },
-          nativeEvent: e.nativeEvent
-        });
-      }
-    };
-
-    _this.saveInput = function (node) {
-      _this.input = node;
-    };
-
-    var checked = 'checked' in props ? props.checked : props.defaultChecked;
-    _this.state = {
-      checked: checked
-    };
-    return _this;
-  }
-
-  (0,_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_5__["default"])(Checkbox, [{
-    key: "focus",
-    value: function focus() {
-      this.input.focus();
-    }
-  }, {
-    key: "blur",
-    value: function blur() {
-      this.input.blur();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _classNames;
-
-      var _this$props2 = this.props,
-          prefixCls = _this$props2.prefixCls,
-          className = _this$props2.className,
-          style = _this$props2.style,
-          name = _this$props2.name,
-          id = _this$props2.id,
-          type = _this$props2.type,
-          disabled = _this$props2.disabled,
-          readOnly = _this$props2.readOnly,
-          tabIndex = _this$props2.tabIndex,
-          onClick = _this$props2.onClick,
-          onFocus = _this$props2.onFocus,
-          onBlur = _this$props2.onBlur,
-          onKeyDown = _this$props2.onKeyDown,
-          onKeyPress = _this$props2.onKeyPress,
-          onKeyUp = _this$props2.onKeyUp,
-          autoFocus = _this$props2.autoFocus,
-          value = _this$props2.value,
-          required = _this$props2.required,
-          others = (0,_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_2__["default"])(_this$props2, ["prefixCls", "className", "style", "name", "id", "type", "disabled", "readOnly", "tabIndex", "onClick", "onFocus", "onBlur", "onKeyDown", "onKeyPress", "onKeyUp", "autoFocus", "value", "required"]);
-
-      var globalProps = Object.keys(others).reduce(function (prev, key) {
-        if (key.substr(0, 5) === 'aria-' || key.substr(0, 5) === 'data-' || key === 'role') {
-          // eslint-disable-next-line no-param-reassign
-          prev[key] = others[key];
-        }
-
-        return prev;
-      }, {});
-      var checked = this.state.checked;
-      var classString = classnames__WEBPACK_IMPORTED_MODULE_9___default()(prefixCls, className, (_classNames = {}, (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_classNames, "".concat(prefixCls, "-checked"), checked), (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_1__["default"])(_classNames, "".concat(prefixCls, "-disabled"), disabled), _classNames));
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default().createElement("span", {
-        className: classString,
-        style: style
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default().createElement("input", (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
-        name: name,
-        id: id,
-        type: type,
-        required: required,
-        readOnly: readOnly,
-        disabled: disabled,
-        tabIndex: tabIndex,
-        className: "".concat(prefixCls, "-input"),
-        checked: !!checked,
-        onClick: onClick,
-        onFocus: onFocus,
-        onBlur: onBlur,
-        onKeyUp: onKeyUp,
-        onKeyDown: onKeyDown,
-        onKeyPress: onKeyPress,
-        onChange: this.handleChange,
-        autoFocus: autoFocus,
-        ref: this.saveInput,
-        value: value
-      }, globalProps)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default().createElement("span", {
-        className: "".concat(prefixCls, "-inner")
-      }));
-    }
-  }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(props, state) {
-      if ('checked' in props) {
-        return (0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__["default"])((0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_3__["default"])({}, state), {}, {
-          checked: props.checked
-        });
-      }
-
-      return null;
-    }
-  }]);
-
-  return Checkbox;
-}(react__WEBPACK_IMPORTED_MODULE_8__.Component);
-
-Checkbox.defaultProps = {
-  prefixCls: 'rc-checkbox',
-  className: '',
-  style: {},
-  type: 'checkbox',
-  defaultChecked: false,
-  onFocus: function onFocus() {},
-  onBlur: function onBlur() {},
-  onChange: function onChange() {},
-  onKeyDown: function onKeyDown() {},
-  onKeyPress: function onKeyPress() {},
-  onKeyUp: function onKeyUp() {}
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Checkbox);
 
 /***/ }),
 

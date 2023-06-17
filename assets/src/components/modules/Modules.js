@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { Row, Pagination, Col } from 'antd';
 import { nanoid } from 'nanoid'
@@ -8,10 +8,13 @@ import { Ajax } from '../../ajax';
 import ModuleFilter from './ModuleFilter';
 import ModuleSearch from './ModuleSearch';
 
-function Modules({modules}) {
+function Modules() {
 
   const { updateModules, setPageLoading } = useDispatch( 'sgsb' );
   const [ searchModule, setSearchModule ] = useState("");
+  const [selectFilter, setSelectFilter] = useState({
+    modules: [],
+  });
 
   useEffect(() => {
     setPageLoading(true);
@@ -25,6 +28,7 @@ function Modules({modules}) {
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
     allModules: select('sgsb').getModules()
+  
   }));
 
   // pagination
@@ -38,14 +42,57 @@ function Modules({modules}) {
     
   };
 
-  const [filteredProducts, setFilteredProducts] = useState(allModules);
+  // static filter category
+  const CATEGORIES = [
+    "Quick Cart", 
+    "Discount Banner", 
+    "Upsell", 
+    "Stock",
+    "Sales"
+  ]
 
-  const handleFilter = (filters) => {
-    const filtered = allModules.filter((module) =>
-      filters.includes(module.category)
-    );
-    setFilteredProducts(filtered);
-  };
+  useEffect(() => {
+    if (allModules) {
+      setSelectFilter({ modules: allModules });
+    }
+  }, [allModules]);
+
+  // handle filter func
+  const handleFilterChange = (event) => {
+    setSelectFilter(prevState => {
+      let filters = new Set(prevState.filters)
+      let modules = allModules
+      
+      
+      if (event.target.checked) {
+        filters.add(event.target.value)
+      } else {
+        filters.delete(event.target.value)
+      }
+      
+      if (filters.size) {
+        modules = modules.filter(module => {
+          return filters.has(module.category)
+        })
+      }
+      
+      return {
+        filters,
+        modules,
+      }
+    })
+  }
+
+  // Module List
+  const ModuleList = ({ modules }) =>{
+    return (
+      <>
+      {modules.filter((module) => module.name.toLowerCase().includes(searchModule) ).slice(minValue, maxValue).map(module => (
+          <ModuleCard module={ module } key={nanoid()} />
+      ))}
+    </>
+    )
+  }
 
   return (
     <div className="site-card-wrapper">
@@ -62,27 +109,19 @@ function Modules({modules}) {
                 setSearchModule(e.target.value)
               }
             />
-            <ModuleFilter onFilter={handleFilter} />
-   
+            <ModuleFilter 
+              categories={CATEGORIES}
+              onFilterChange={handleFilterChange}
+            />
 
           </Row>
         </Col>
       </Row>
 
       <Row gutter={16}>
-        {/* {filteredProducts.map((module) => (
-          <ModuleCard module={module} key={nanoid()} />
-        ))} */}
-      </Row>
 
-      <Row gutter={16}>
+        <ModuleList modules={selectFilter.modules} />
         
-        {
-
-          allModules.filter((module) => module.name.toLowerCase().includes(searchModule) ).slice(minValue, maxValue).map((module) => <ModuleCard module={ module } key={nanoid()} />)
-
-        }
-      
       </Row>
 
       <div className='sgsb__module-pagination'
