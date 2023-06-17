@@ -9,11 +9,11 @@ function AppLayout() {
     <Layout>
       <HeaderBar />
 
-      <h1 className="sgsb-heading">Modules</h1>
+      {/* <h1 className="sgsb-heading">Sales Booster for WooCommerce</h1> */}
 
       <Layout
           style={{
-            paddingTop: '20px',
+            paddingTop: '4px',
           }}
         >
         <Layout.Content

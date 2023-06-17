@@ -46,7 +46,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Fast Fly Cart';
+		return 'Quick Cart';
 	}
 
 	/**
@@ -56,6 +56,15 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 */
 	public function get_description() {
 		return 'Empowers your site with the superpower of adding products to the cart without reloading the page.';
+	}
+
+	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Quick Cart';
 	}
 
 	/**

@@ -1,7 +1,10 @@
 import { useDispatch } from '@wordpress/data';
-import { Card, Row, Col } from "antd";
+import { useState } from '@wordpress/element';
+import { Card, Row, Col, Space } from "antd";
 import { Switch, Button, Divider } from "antd";
+import { SettingOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Ajax } from '../../ajax';
+
 function ModuleSwitch({ module }) {
   const { updateSingleModule, setPageLoading } = useDispatch( 'sgsb' );
 
@@ -25,33 +28,66 @@ function ModuleSwitch({ module }) {
 }
 
 function ModuleCard( { module } ) {
+  const [size, setSize] = useState(16);
+
   return (
     <Col span={8}>
       <Card
-        title={module.name}
         bordered={false}
-        extra={<ModuleSwitch module={module} />}
         className="sgsb-module-card"
+        
       >
-        <Row>
-          <Col span={7}>
-            <img src={module.icon} />
+        <Row justify="space-between" align="middle"
+          style={{
+            padding: '24px',
+            paddingBottom: '0px',
+          }}
+        >
+          <Col span={20}>
+            <Space align='center'>
+              <div className='module-thumb'>
+                <img src={module.icon} />
+              </div>
+              <div className='module-name'>
+                {module.name}
+              </div>
+            </Space>
           </Col>
-          <Col offset={1} span={16}>
-            <div>{module.description}</div>
+          <Col span={3} style={{ float: 'right' }}>
+            <ModuleSwitch module={module} />
           </Col>
         </Row>
         <Divider orientation="left/right" />
         <Row>
-          <Col span={7}>
+          <Col span={24}>
+            <div className='module-desc'>{module.description}</div>
+          </Col>
+        </Row>
+        <Row
+          style={{
+            padding: '24px'
+          }}
+        >
+          <Space align='center' size={size}>
             <Button
+              className='setting-btn'
               type="default"
-              shape="round"
+              shape="default"
               href="admin.php?page=sgsb-settings"
             >
+              <SettingOutlined />
               Settings
             </Button>
-          </Col>
+            <Button
+              className='doc-btn'
+              type="default"
+              shape="default"
+              href="#"
+            >
+              <FileTextOutlined />
+              Documentation
+            </Button>
+          </Space>
         </Row>
       </Card>
     </Col>

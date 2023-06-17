@@ -4702,7 +4702,7 @@ function Header() {
     className: "sgsb-header"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-logo"
-  }, "StoreGrowth - Sales Booster"));
+  }));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);

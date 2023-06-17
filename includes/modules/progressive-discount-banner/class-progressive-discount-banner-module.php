@@ -46,7 +46,7 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Progressive Discount Banner';
+		return 'Discount Banner';
 	}
 
 	/**
@@ -56,6 +56,15 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 */
 	public function get_description() {
 		return 'Easily add multi-announcements progressive bar for special discounts.';
+	}
+
+	/**
+	 * Category for a module.
+	 *
+	 * @return string
+	 */
+	public function get_module_category() {
+		return 'Discount Banner';
 	}
 
 	/**
