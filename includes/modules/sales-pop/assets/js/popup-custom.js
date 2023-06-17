@@ -6,8 +6,9 @@
 	var next_time_display     = popup_all_properties.next_time_display;
 	var initial_time_delay    = popup_all_properties.initial_time_delay;
 	var notification_per_page = popup_all_properties.notification_per_page;
-	var mobile_view						= popup_all_properties.mobile_view
-	
+	var mobile_view						= popup_all_properties.mobile_view;
+	var product_random				= popup_all_properties.product_random;
+
 	var notification_count 	  = 0;
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
@@ -60,13 +61,19 @@
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
 		var countryRandom         = Math.floor( country.length*Math.random() );
-		var productAndImageRandom = Math.floor( product_image.length*Math.random() );
+		var productAndImage;
 
+		if(product_random){
+			productAndImage = Math.floor( product_image.length*Math.random() );
+		}else{
+			productAndImage = notification_count % product_image.length
+		}
+		console.log(productAndImage);
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
-		$("#product_url").attr( "href", product_url[ productAndImageRandom ] );
-		$("#image_of_product").attr( "src", product_image[ productAndImageRandom ] );
-		$('#product').text( products[ productAndImageRandom ] );
+		$("#product_url").attr( "href", product_url[ productAndImage ] );
+		$("#image_of_product").attr( "src", product_image[ productAndImage ] );
+		$('#product').text( products[ productAndImage ] );
 		var timeVal = Math.floor( 11*Math.random() );
 		$('#time').text( timeVal );
 
