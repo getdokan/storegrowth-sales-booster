@@ -68,7 +68,7 @@
 		}else{
 			productAndImage = notification_count % product_image.length
 		}
-		console.log(productAndImage);
+		
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
