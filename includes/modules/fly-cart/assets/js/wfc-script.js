@@ -3,6 +3,7 @@
 
   //Variable to set Timeout
   var timeoutId;
+  var checkoutIframeCssAddingIntervalId = false;
 
   // For flyout.
   $(".products").flyto({
@@ -54,16 +55,8 @@
       return;
     }
 
-    // Update input value.
-    inputElm.val(newVal);
-
-    //Clear the time out
-    clearTimeout(timeoutId)
-
-    // Submit the form.
-    timeoutId = setTimeout(function(){
-      $('form.sgsb-woocommerce-cart-form').submit();
-    },800)
+    // Update input value & trigger the 'input' event.
+    inputElm.val(newVal).trigger('input');
   }
 
   // For sidebar.
@@ -138,11 +131,9 @@
     $(document).on('input', 'input.qty', function() {
         var inputValue = $(this).val();
         clearTimeout(timeoutId);
-    
         // Set a new timeout to submit the form after 800 milliseconds
         timeoutId = setTimeout(function() {
-    
-        if (inputValue >= 1) {
+        if (inputValue >= 1 && $(this)[0].getAttribute('value') !== inputValue) {
           $('form.sgsb-woocommerce-cart-form').submit();
         }else{
           return;
@@ -207,6 +198,26 @@
       }
 
       $('.sgsb-widget-shopping-cart-content').html(checkoutFrame);
+
+      if(checkoutIframeCssAddingIntervalId){
+        clearInterval(checkoutIframeCssAddingIntervalId);
+      }
+      checkoutIframeCssAddingIntervalId = setInterval(() => {
+        const iframeDocument = checkoutFrame?.contentWindow?.document;
+        const iframeBody = iframeDocument?.body;
+        if(!iframeBody || iframeBody.classList.contains("iframe-style-added")){
+            return false
+        }
+        const ifrmaeStyle = iframeDocument.createElement('style');
+        ifrmaeStyle.innerHTML = `
+            #wpadminbar,header,.custom-social-proof,footer{
+                display:none !important;
+            }
+        `;
+        iframeBody.classList.add("iframe-style-added");
+        iframeDocument.head.appendChild(ifrmaeStyle);
+    }, 1000)
+
     }
 
     // Open checkout page.

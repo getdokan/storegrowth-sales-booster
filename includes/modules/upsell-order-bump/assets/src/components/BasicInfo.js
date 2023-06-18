@@ -17,7 +17,11 @@ const BasicInfo = ({clearErrors}) => {
       [key]: value
     });
   };
-  
+
+  const offerProductId = createBumpData?.offer_product;
+  const originalProductListForSelect = products_and_categories.product_list.productListForSelect;
+  const productListForSelect = offerProductId ? originalProductListForSelect.filter(item => item.value !== offerProductId) : originalProductListForSelect;
+
 return (
     <>
     
@@ -40,7 +44,7 @@ return (
             <Select
                 allowClear
                 placeholder      = "Search for products"
-                options          = {products_and_categories.product_list.productListForSelect}
+                options          = {productListForSelect}
                 onChange         = {(v) => onFieldChange('target_products', v)}
                 mode             = "multiple"
                 filterOption     = {true}

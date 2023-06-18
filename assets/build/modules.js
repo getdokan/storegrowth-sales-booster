@@ -8938,6 +8938,7 @@ function ModuleSwitch(_ref) {
     });
   };
 
+  console.log(module);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onChange: onChange,
     checked: module.status
@@ -8991,7 +8992,7 @@ function ModuleCard(_ref2) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     align: "center",
     size: size
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, module.status && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "setting-btn",
     type: "default",
     shape: "default",

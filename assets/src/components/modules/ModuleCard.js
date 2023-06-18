@@ -22,6 +22,8 @@ function ModuleSwitch({ module }) {
     });
   }
 
+  console.log(module)
+
   return (
     <Switch onChange={onChange} checked={module.status} />
   );
@@ -69,15 +71,20 @@ function ModuleCard( { module } ) {
           }}
         >
           <Space align='center' size={size}>
-            <Button
-              className='setting-btn'
-              type="default"
-              shape="default"
-              href="admin.php?page=sgsb-settings"
-            >
-              <SettingOutlined />
-              Settings
-            </Button>
+            {
+              module.status && (
+                <Button
+                  className='setting-btn'
+                  type="default"
+                  shape="default"
+                  href="admin.php?page=sgsb-settings"
+                >
+                  <SettingOutlined />
+                  Settings
+                </Button>
+              )
+            }
+           
             <Button
               className='doc-btn'
               type="default"
