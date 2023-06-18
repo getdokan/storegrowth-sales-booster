@@ -1,13 +1,22 @@
 ;(function($){
-	var popup_all_properties = popup_info.popup_all_properties;
-	var popup_position       = popup_all_properties.popup_position;
-	var message_popup        = popup_all_properties.message_popup;
-	var next_time_display    = popup_all_properties.next_time_display;
-	var initial_time_delay   = popup_all_properties.initial_time_delay;
-	message_popup            = message_popup?message_popup:'please prepare you message';
+	var popup_all_properties  = popup_info.popup_all_properties;
+	var popup_position        = popup_all_properties.popup_position;
+	var message_popup         = popup_all_properties.message_popup;
+	var display_time				  = popup_all_properties.dispaly_time;
+	var next_time_display     = popup_all_properties.next_time_display;
+	var initial_time_delay    = popup_all_properties.initial_time_delay;
+	var notification_per_page = popup_all_properties.notification_per_page;
+	var mobile_view						= popup_all_properties.mobile_view;
+	var product_random				= popup_all_properties.product_random;
+
+	var notification_count 	  = 0;
+	
+	message_popup             = message_popup?message_popup:'please prepare you message';
 
 	var country = new Array ();
+
 	country     = popup_info.random_popup_country;
+	
 	var finalCountry = country.map((item,i)=>{
 
 			var countryStringToArray =  item.split(',');
@@ -52,13 +61,19 @@
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
 		var countryRandom         = Math.floor( country.length*Math.random() );
-		var productAndImageRandom = Math.floor( product_image.length*Math.random() );
+		var productAndImage;
 
+		if(product_random){
+			productAndImage = Math.floor( product_image.length*Math.random() );
+		}else{
+			productAndImage = notification_count % product_image.length
+		}
+		
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
-		$("#product_url").attr( "href", product_url[ productAndImageRandom ] );
-		$("#image_of_product").attr( "src", product_image[ productAndImageRandom ] );
-		$('#product').text( products[ productAndImageRandom ] );
+		$("#product_url").attr( "href", product_url[ productAndImage ] );
+		$("#image_of_product").attr( "src", product_image[ productAndImage ] );
+		$('#product').text( products[ productAndImage ] );
 		var timeVal = Math.floor( 11*Math.random() );
 		$('#time').text( timeVal );
 
@@ -84,10 +99,12 @@
 			$(".custom-social-proof").css('left', '20px');
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
-		setTimeout( popDownContentGenerator, next_time_display*1000 );
+		notification_count++;
+		setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
+
 		if ( popup_position == 'right_top' || popup_position == 'left_top') {
 			$(".custom-social-proof").css('top', '-150px');
 		}
@@ -96,7 +113,12 @@
 			$(".custom-social-proof").css('bottom', '-150px');
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
-		setTimeout( popupContentGenerator, 3000 );
+
+		if ( notification_count > notification_per_page) {
+			return ;
+		} else{
+			setTimeout( popupContentGenerator, next_time_display*1000 ); 
+		}
 	}
 
 	var testMessage = message_popup.replaceAll(/\s+/g,' ').trim();
@@ -110,9 +132,28 @@
 
 	$('.custom-notification-content').html(testMessage);
 
-	setTimeout(popupContentGenerator, initial_time_delay*1000);
+	if (notification_per_page !== '0' && notification_per_page !== '') {
+		setTimeout(popupContentGenerator, initial_time_delay * 1000);
+	}
+	
+
 	$( ".custom-close").click( function() {
 			$(".custom-social-proof").stop().slideToggle('slow');
 	} );
 
+	function handlePopupVisibility() {
+    if (!mobile_view && $(window).width() <= 767) {
+      $(".custom-notification").css('display', 'none');
+    } else {
+      $(".custom-notification").css('display', 'block');
+    }
+  }
+
+  $(window).on('load resize', function() {
+    handlePopupVisibility();
+  });
+
 } )(jQuery);
+
+
+// Initial check when the page loads

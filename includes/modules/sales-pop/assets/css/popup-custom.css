@@ -97,3 +97,8 @@
 .message-line-height{
 	line-height: 1px;
 }
+
+a, a:focus, a:hover, a:visited {
+  text-decoration: none;
+	outline: none;
+}

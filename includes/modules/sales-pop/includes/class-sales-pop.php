@@ -43,6 +43,7 @@ class Sales_POP {
 		$popup_properties = maybe_unserialize( get_option( 'sgsb_popup_products', true ) );
 
 		if ( isset( $popup_properties['enable'] ) && $popup_properties['enable'] ) {
+			include __DIR__ . '/../templates/popup-style.php';
 			include __DIR__ . '/../templates/popup.php';
 		}
 	}
