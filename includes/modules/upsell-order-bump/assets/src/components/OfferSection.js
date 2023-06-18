@@ -28,7 +28,10 @@ const OfferSection = ({clearErrors}) => {
     }
   };
   
-  
+  const targetProducts = createBumpData.target_products;
+  const originalSimpleProductForOffer = products_and_categories.product_list.simpleProductForOffer;
+  const simpleProductForOffer = Array.isArray(targetProducts) && targetProducts.length !== 0 ? originalSimpleProductForOffer.filter(item => !targetProducts.includes(item.value) ) : originalSimpleProductForOffer;
+
 return (
     <>
     
@@ -56,7 +59,7 @@ return (
         }
       >
         {
-        products_and_categories.product_list.simpleProductForOffer.map((item,i)=>
+        simpleProductForOffer.map((item,i)=>
         <Option  value={item.value} >
           {item.label}
         </Option>)

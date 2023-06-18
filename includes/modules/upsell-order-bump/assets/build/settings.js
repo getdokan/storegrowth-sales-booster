@@ -23507,6 +23507,9 @@ const BasicInfo = _ref => {
     });
   };
 
+  const offerProductId = createBumpData?.offer_product;
+  const originalProductListForSelect = products_and_categories.product_list.productListForSelect;
+  const productListForSelect = offerProductId ? originalProductListForSelect.filter(item => item.value !== offerProductId) : originalProductListForSelect;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Name of Order Bump",
     labelAlign: "left"
@@ -23521,7 +23524,7 @@ const BasicInfo = _ref => {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     allowClear: true,
     placeholder: "Search for products",
-    options: products_and_categories.product_list.productListForSelect,
+    options: productListForSelect,
     onChange: v => onFieldChange('target_products', v),
     mode: "multiple",
     filterOption: true,
@@ -23955,6 +23958,9 @@ const OfferSection = _ref => {
     }
   };
 
+  const targetProducts = createBumpData.target_products;
+  const originalSimpleProductForOffer = products_and_categories.product_list.simpleProductForOffer;
+  const simpleProductForOffer = Array.isArray(targetProducts) && targetProducts.length !== 0 ? originalSimpleProductForOffer.filter(item => !targetProducts.includes(item.value)) : originalSimpleProductForOffer;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Offer Product",
     labelAlign: "left",
@@ -23968,7 +23974,7 @@ const OfferSection = _ref => {
     onChange: v => onFieldChange('offer_product', v),
     value: parseInt(createBumpData.offer_product) ? parseInt(createBumpData.offer_product) : null,
     filterOption: (inputValue, option) => option.props.children.toString().toLowerCase().includes(inputValue.toLowerCase())
-  }, products_and_categories.product_list.simpleProductForOffer.map((item, i) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Option, {
+  }, simpleProductForOffer.map((item, i) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Option, {
     value: item.value
   }, item.label)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Offer Price/Discount",
