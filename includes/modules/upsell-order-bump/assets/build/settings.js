@@ -23618,6 +23618,7 @@ function CreateBump(_ref) {
     navigate,
     useParams
   } = _ref;
+  const [allBumpsData, setallBumpsData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const [duplicateDataError, setDuplicateDataError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({});
   const [isModalVisible, setIsModalVisible] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
@@ -23633,12 +23634,28 @@ function CreateBump(_ref) {
     action_name
   } = useParams();
   const {
-    allBumpsData,
+    bumpData,
     createBumpData
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     createBumpData: select('sgsb_order_bump').getCreateFromData(),
-    allBumpsData: wp.data.select('sgsb_order_bump').getBumpData()
+    bumpData: wp.data.select('sgsb_order_bump').getBumpData()
   }));
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!bumpData?.length > 0) {
+      setPageLoading(true);
+      jQuery.post(bump_save_url.ajax_url, {
+        'action': 'bump_list',
+        'data': [],
+        '_ajax_nonce': bump_save_url.ajd_nonce
+      }, function (bumpDataFromAjax) {
+        setPageLoading(false);
+        const bumpDataParsed = bumpDataFromAjax.data.map(bumpItem => (0,_helper__WEBPACK_IMPORTED_MODULE_2__.convertBumpItemHtmlEntitiesToTexts)(bumpItem));
+        setallBumpsData(bumpDataParsed);
+      });
+    } else {
+      setallBumpsData(bumpData);
+    }
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
