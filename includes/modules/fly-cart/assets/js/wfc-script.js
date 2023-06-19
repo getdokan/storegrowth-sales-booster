@@ -76,6 +76,10 @@
       jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
     });
 
+    if(document.getElementById('wpadminbar')){
+        jQuery('.wfc-widget-sidebar').css('margin-top', '32px');
+    }
+
     // Handle cart form submit.
     $(document).on(
       'submit',
