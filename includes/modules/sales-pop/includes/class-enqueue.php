@@ -59,7 +59,7 @@ class Enqueue {
 					if ( $popup_properties['external_link'] || ( ! $popup_properties['external_link'] && ! wc_get_product( $product->ID )->is_type( 'external' ) ) ) {
 						$product_list[]      = $product->post_title;
 						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
-						$product_image_url[] = $image_url[0];
+						$product_image_url[] = isset( $image_url[0] ) ? $image_url[0] : false;
 						$product_url[]       = get_permalink( $product->ID );
 
 					}
@@ -143,6 +143,7 @@ class Enqueue {
 			'random_popup_country' => $final_popup_country,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
+			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
 		);
 
 		wp_localize_script( 'popup-custom-js', 'popup_info', $popup_info );
