@@ -53,7 +53,10 @@ class Enqueue {
 			$product_image_url = array();
 			if ( $popup_products ) {
 				foreach ( $products as $product ) {
-					if ( in_array( $product->ID, $popup_products, true ) ) {
+					if ( ! in_array( $product->ID, $popup_products, true ) ) {
+						continue;
+					}
+					if ( $popup_properties['external_link'] || ( ! $popup_properties['external_link'] && ! wc_get_product( $product->ID )->is_type( 'external' ) ) ) {
 						$product_list[]      = $product->post_title;
 						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
 						$product_image_url[] = $image_url[0];
