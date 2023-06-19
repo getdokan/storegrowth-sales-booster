@@ -48,7 +48,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams) => {
  */
 addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push( {
-    label: <Link to="/upsell-order-bump">Order Bump</Link>,
+    label: <Link to="/upsell-order-bump">Upsell Order Bump</Link>,
     key: 'upsell-order-bump',
     icon: <ShoppingCartOutlined />,
   } );

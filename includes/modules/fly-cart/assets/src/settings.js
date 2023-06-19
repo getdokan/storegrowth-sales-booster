@@ -20,7 +20,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
  */
 addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push( {
-    label: <Link to="/fly-cart">Fly Cart</Link>,
+    label: <Link to="/fly-cart">Quick Cart</Link>,
     key: 'fly-cart',
     icon: <ShoppingCartOutlined />,
   } );
