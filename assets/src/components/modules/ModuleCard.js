@@ -22,8 +22,6 @@ function ModuleSwitch({ module }) {
     });
   }
 
-  console.log(module)
-
   return (
     <Switch onChange={onChange} checked={module.status} />
   );
@@ -77,7 +75,7 @@ function ModuleCard( { module } ) {
                   className='setting-btn'
                   type="default"
                   shape="default"
-                  href="admin.php?page=sgsb-settings"
+                  href={ `admin.php?page=sgsb-settings#/${module?.id}` }
                 >
                   <SettingOutlined />
                   Settings

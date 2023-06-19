@@ -4840,6 +4840,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function Sidebar(_ref) {
   let {
     routes
@@ -4859,12 +4860,16 @@ function Sidebar(_ref) {
   const [{
     route: currentRoute
   }] = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.matchRoutes)(routes, location);
+  const [selectedMenu, setSelectedMenu] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setSelectedMenu(currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name);
+  }, [currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Sider, {
     width: 200,
     className: "site-layout-background"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     mode: "inline",
-    defaultSelectedKeys: [currentRoute.name],
+    defaultSelectedKeys: [selectedMenu],
     style: {
       height: "100%",
       borderRight: 0

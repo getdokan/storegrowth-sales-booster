@@ -8938,7 +8938,6 @@ function ModuleSwitch(_ref) {
     });
   };
 
-  console.log(module);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onChange: onChange,
     checked: module.status
@@ -8996,7 +8995,7 @@ function ModuleCard(_ref2) {
     className: "setting-btn",
     type: "default",
     shape: "default",
-    href: "admin.php?page=sgsb-settings"
+    href: `admin.php?page=sgsb-settings#/${module === null || module === void 0 ? void 0 : module.id}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_10__["default"], null), "Settings"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "doc-btn",
     type: "default",
