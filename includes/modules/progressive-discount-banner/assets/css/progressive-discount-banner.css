@@ -9,7 +9,6 @@
     z-index: 999;
     height: auto;
     padding: 8px 0px;
-    margin-bottom: 1.7vw;
 }
 .sgsb-pd-banner-bar {
     display: flex;
@@ -31,3 +30,8 @@
     font-size: 20px;
     font-weight: 400;
 }
+
+.sgsb-pd-banner-bar-remove {
+    cursor: pointer;
+}
+
