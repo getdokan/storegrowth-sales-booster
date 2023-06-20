@@ -69,9 +69,6 @@
 			productAndImage = notification_count % product_image.length
 		}
 
-        const theImageUrl = product_image[ productAndImage ] || popup_info.fallback_image_url;
-        console.log({theImageUrl})
-
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
