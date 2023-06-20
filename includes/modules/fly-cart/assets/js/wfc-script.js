@@ -3,7 +3,6 @@
 
   //Variable to set Timeout
   var timeoutId;
-  var checkoutIframeCssAddingIntervalId = false;
 
   // For flyout.
   $(".products").flyto({
@@ -184,8 +183,16 @@
 
       checkoutFrame.src = url;
       $(checkoutFrame).on('load', function() {
-          const iframeBody = checkoutFrame?.contentWindow?.document?.body;
-          iframeBody.style.backgroundColor = $(".wfc-widget-sidebar").css("background-color");
+        const iframeDocument = checkoutFrame?.contentWindow?.document;
+        const iframeBody = iframeDocument?.body;
+        const ifrmaeStyle = iframeDocument.createElement('style');
+        ifrmaeStyle.innerHTML = `
+        #wpadminbar,header,.custom-social-proof,footer{
+            display:none !important;
+        }
+        `;
+        iframeBody.style.backgroundColor = $(".wfc-widget-sidebar").css("background-color");
+        iframeDocument.head.appendChild(ifrmaeStyle);
       });
 
       checkoutFrame.style.opacity = 0;
@@ -207,25 +214,6 @@
       }
 
       $('.sgsb-widget-shopping-cart-content').html(checkoutFrame);
-
-      if(checkoutIframeCssAddingIntervalId){
-        clearInterval(checkoutIframeCssAddingIntervalId);
-      }
-      checkoutIframeCssAddingIntervalId = setInterval(() => {
-        const iframeDocument = checkoutFrame?.contentWindow?.document;
-        const iframeBody = iframeDocument?.body;
-        if(!iframeBody || iframeBody.classList.contains("iframe-style-added")){
-            return false
-        }
-        const ifrmaeStyle = iframeDocument.createElement('style');
-        ifrmaeStyle.innerHTML = `
-            #wpadminbar,header,.custom-social-proof,footer{
-                display:none !important;
-            }
-        `;
-        iframeBody.classList.add("iframe-style-added");
-        iframeDocument.head.appendChild(ifrmaeStyle);
-    }, 1000)
 
     }
 
