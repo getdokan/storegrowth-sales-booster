@@ -100,7 +100,7 @@
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
 		notification_count++;
-		setTimeout( popDownContentGenerator, display_time*1000 );
+	//	setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
@@ -138,7 +138,7 @@
 	
 
 	$( ".custom-close").click( function() {
-			$(".custom-social-proof").stop().slideToggle('slow');
+		$(".custom-social-proof").stop().slideToggle('slow');
 	} );
 
 	function handlePopupVisibility() {

@@ -33,37 +33,43 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 				<?php
 			}
 			?>
+
 			<div class="custom-notification-content-wrapper">
 				<div class="custom-notification-content" 
 				style="<?php echo isset( $normal_text_style ) ? esc_attr( $normal_text_style ) : null; ?>">
-					<p class="message-line-height" id="popup_title">
+					<div class="message-line-height" id="popup_title">
 						<span id="product" 
 						style="color:<?php echo esc_attr( $popup_properties['product_title_color'] ); ?>; font-size:<?php echo esc_attr( $popup_properties['product_title_font_size'] ); ?>px ;">
 						hosting
 						</span> 
 						<br>
-					</p> 
+					</div> 
 
-					<p class="message-line-height" id="popup_virtual_name">
-						<span id="virtual_name" 
-							style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">
-							Someone 
-						</span> 
-						<br>
-					</p>
-					<p class="message-line-height" id="popup_location">
+					<div class="message-line-height" id="popup_virtual_name">
+						<div class="my-name" >
+							<span id="virtual_name my_name" 
+								style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">
+								Someone 
+							</span> 
+							<br>
+						</div>
+					</div>
+
+					<div class="message-line-height" id="popup_location">
 						<span id="country">Nepal</span>
 						<br>
-					</p>
-					<p id="popup_time">
+					</div>
+					<div id="popup_time">
 						<span id="time" style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">1</span>
 						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">Hour ago</span> 
 						<br>	
-					</p>
+					</div>
+
 				</div>
 			</div>
-			<?php
 
+
+			<?php
 			if ( 'right' === $popup_properties['image_position'] ) {
 				?>
 					<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
