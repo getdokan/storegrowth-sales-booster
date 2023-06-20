@@ -97,7 +97,7 @@ class Enqueue_Script {
 					top: 32px;
 				}
 				body {
-					padding-top: 48px;
+					padding-top: 57px;
 				}
 			';
 		}
