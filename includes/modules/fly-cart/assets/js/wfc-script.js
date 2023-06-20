@@ -168,16 +168,7 @@
 
       let checkoutFrame = document.createElement('iframe');
       checkoutFrame.classList.add('sgsb-fast-cart-checkout-frame');
-      checkoutFrame.setAttribute('scrolling', 'no');
-
-      window.sgsbFastCart = {
-        updateIframeHeight: function (iframeHeight) {
-          checkoutFrame.style.height = ( iframeHeight ) + 'px';
-          if ( checkoutFrame.isAttached ) {
-              checkoutFrame.style.opacity = 1;
-          }
-        }
-      };
+      checkoutFrame.style.height = '100vh';
 
       let url = new URL(href);
       url.searchParams.set('sgsb-checkout', 'true');
