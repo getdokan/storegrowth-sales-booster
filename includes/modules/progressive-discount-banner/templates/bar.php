@@ -34,8 +34,8 @@ $banner_icon = sgsb_pd_banner_get_banner_icon( $settings );
 				echo wp_kses_post( apply_filters( 'sales_boster_pd_banner_text', $banner_text ) );
 				?>
 			</span>
-			
-				<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . '../assets/images/sgsb-pd-banner-bar-remove.svg' ); ?>" alt="remove">
-			
+				<div class="sgsb-pd-banner-bar-remove">
+					<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . '../assets/images/sgsb-pd-banner-bar-remove.svg' ); ?>" alt="remove">
+				</div>			
 	</div>
 </div>
