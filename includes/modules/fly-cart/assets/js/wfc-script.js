@@ -183,6 +183,11 @@
       url.searchParams.set('sgsb-checkout', 'true');
 
       checkoutFrame.src = url;
+      $(checkoutFrame).on('load', function() {
+          const iframeBody = checkoutFrame?.contentWindow?.document?.body;
+          iframeBody.style.backgroundColor = $(".wfc-widget-sidebar").css("background-color");
+      });
+
       checkoutFrame.style.opacity = 0;
       checkoutFrame.onload = () => {
         checkoutFrame.isLoaded = true;
