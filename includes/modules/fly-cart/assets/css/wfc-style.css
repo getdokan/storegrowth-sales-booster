@@ -150,6 +150,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
     padding-right: 4%;
     display: flex;
     /* align-items: center; */
+    padding-left: 2%;
 }
 .sgsb-fly-cart-table td.product-subtotal {
     width: 25%;
@@ -188,8 +189,9 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 .sgsb-fly-cart-table .product-quantity button {
     width: 36px;
     background: #fff !important;
-    height: 37px;
+    height: 36px;
     text-align: center;
+    line-height: ;
 }
 .sgsb-fly-cart-table .product-quantity button.sgsb-minus-icon {
     border: 1px solid #f3f3f3;
@@ -204,12 +206,11 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 .sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon {
     border: 1px solid #f3f3f3;
     font-size: 30px;
-    line-height: 1.25;
+    line-height: 0.25;
     color: #989FAB;
     border-radius: 8px;
     transition: .33s;
     cursor: pointer;
-    alignment-baseline: central;
 }
 .sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon:hover,
 .sgsb-fly-cart-table .product-quantity button.sgsb-minus-icon:hover{
@@ -225,6 +226,16 @@ tr.woocommerce-cart-form__cart-item.cart_item {
     border: 0px solid rgb(221, 221, 221);
     outline: 0px;
     font-size: 18px;
+    overflow: hidden;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
 }
 .sgsb-fly-cart-table .product-quantity input::-webkit-outer-spin-button,
 .sgsb-fly-cart-table .product-quantity input::-webkit-inner-spin-button {
@@ -363,8 +374,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
     display: none;
 }
 .sgsb-cart-widget-buttons {
-    display: flex;
-    justify-content: space-between;
+    display: block;
     padding-top: 30px;
 }
 .sgsb-cart-widget-buttons a {
@@ -374,16 +384,20 @@ tr.woocommerce-cart-form__cart-item.cart_item {
     border: none;
     padding: 15px 0;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 15px;
     width: 100%;
     font-size: 24px;
     border-radius: 13px;
-    width: 45%;
+    width: 100%;
     transition: .33s;
+    display: block;
+    width: 100%;
 }
 
 .sgsb-cart-widget-buttons a.sgsb-cart-widget-shooping-button {
     color: #fff !important;
+    width: 100%;
+    display: block;
 }
 .sgsb-cart-collaterals .shop_table td,
 .sgsb-cart-collaterals .shop_table th {
