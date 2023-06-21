@@ -1,31 +1,48 @@
+body.show_discount_banner .sgsb-pd-banner-bar-wrapper{
+    display: block;
+    transition: 0.5s;
+}
+
+body:not(.show_discount_banner){
+    padding-top: 0;
+}
+
 .sgsb-pd-banner-bar-wrapper {
+    display: none;
     position: fixed;
     left: 0;
     top: 0;
     text-align: center;
     width: 100%;
-    background-color: #2E5780;
+    background-color: #008DFF;
     color: #fff;
     z-index: 999;
-    height: 48px;
-    padding: 5px;
+    height: auto;
+    padding: 8px 0px;
 }
 .sgsb-pd-banner-bar {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: space-between;
+    width: 97%;
+    margin:auto;
     height: 100%;
     align-items: center;
+    padding: 0px 20px;
 }
-.sgsb-pd-banner-bar-wrapper p {
-    margin: 0;
-    font-size: 17px;
-    display: flex;
-    align-items: center;
-}
-.sgsb-pd-banner-bar-wrapper p svg {
-    margin-right: 8px;
+
+.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
+    margin-top: 8px;
     fill: #fff;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
 }
+
+.sgsb-pd-banner-text{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.sgsb-pd-banner-bar-remove {
+    cursor: pointer;
+}
+

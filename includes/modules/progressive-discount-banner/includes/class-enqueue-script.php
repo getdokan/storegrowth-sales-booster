@@ -43,6 +43,14 @@ class Enqueue_Script {
 			filemtime( $style_file )
 		);
 
+		wp_enqueue_script(
+			'sgsb-pd-banner-bar-remove',
+			sgsb_modules_url( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ),
+			array( 'jquery' ),
+			filemtime( sgsb_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
+			true
+		);
+
 		$this->inline_styles();
 	}
 
@@ -72,7 +80,7 @@ class Enqueue_Script {
 		// Get style options.
 		$settings     = sgsb_pd_banner_get_settings();
 		$bar_position = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'background_color', '#2E5780' );
+		$bg_color     = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
 		$text_color   = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$icon_color   = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
 
@@ -89,7 +97,7 @@ class Enqueue_Script {
 					top: 32px;
 				}
 				body {
-					padding-top: 48px;
+					padding-top: 57px;
 				}
 			';
 		}
@@ -99,7 +107,7 @@ class Enqueue_Script {
 				background-color: {$bg_color};
 				color: {$text_color};
 			}
-			.sgsb-pd-banner-bar-wrapper p svg {
+			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
 				fill: {$icon_color};
 			}
 		";

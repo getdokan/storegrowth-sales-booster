@@ -21,7 +21,7 @@ function DiscountBannerLayout() {
 		progressive_banner_text: '',
 		goal_completion_text: '',
 		bar_position: 'top',
-		background_color: '#2E5780',
+		background_color: '#008DFF',
 		text_color: '#ffffff',
 		icon_color: '#ffffff',
 		default_banner_icon_name: '',
