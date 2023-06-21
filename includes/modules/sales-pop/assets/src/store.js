@@ -6,10 +6,10 @@ import { createReduxStore } from '@wordpress/data';
  const message = {
 
 
-	message_popup           : `Purchased {product_title}
-by {virtual_name}
-from {location}
-TIME verfied by wpCodal `,
+	message_popup           : `{virtual_name}
+{product_title}
+From {location}
+{time}`,
 	message_checkout        : 'Test Checkout Message',
 	normal_text_color       : '#000000',
 	product_title_color     : '#000000',
@@ -21,15 +21,15 @@ TIME verfied by wpCodal `,
 	city_text_color         : '#000000',
 	name_text_color         : '#000000',
 
-	normal_text_font_size   : '16',
-	product_title_font_size : '16',
-	product_link_font_size  : '16',
-	time_text_font_size     : '16',
-	date_text_font_size     : '16',
-	country_text_font_size  : '16',
-	state_text_font_size    : '16',
-	city_text_font_size     : '16',
-	name_text_font_size     : '16',
+	normal_text_font_size   : '12',
+	product_title_font_size : '12',
+	product_link_font_size  : '12',
+	time_text_font_size     : '12',
+	date_text_font_size     : '12',
+	country_text_font_size  : '12',
+	state_text_font_size    : '12',
+	city_text_font_size     : '12',
+	name_text_font_size     : '12',
 
 	normal_text_font_weight   : 'normal',
 	product_title_font_weight : 'normal',
@@ -51,7 +51,7 @@ TIME verfied by wpCodal `,
 	background_color             : '#ECF0F1',
 	image_position               : 'left',
 	popup_position               : 'left_bottom',
-	popup_width                  : 30,
+	popup_width                  : 22,
 	popup_image_width            : 20,
 	popup_mobile_image_width     : 25,
 	popup_border_radius          : 5,

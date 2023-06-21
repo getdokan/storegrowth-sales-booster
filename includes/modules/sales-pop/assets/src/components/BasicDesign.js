@@ -59,7 +59,7 @@ const BasicDesign = (props) => {
 						}}
 					>
 					{
-						 [...Array(11).keys()].map((popupWidth, i)=><Select.Option value={popupWidth+25}>{popupWidth+25}</Select.Option>)
+						 [...Array(11).keys()].map((popupWidth, i)=><Select.Option value={popupWidth+20}>{popupWidth+20}</Select.Option>)
 						
 					}
 					</Select>
