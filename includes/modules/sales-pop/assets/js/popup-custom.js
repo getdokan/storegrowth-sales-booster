@@ -101,7 +101,7 @@
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
 		notification_count++;
-		// setTimeout( popDownContentGenerator, display_time*1000 );
+		setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
@@ -127,7 +127,6 @@
 	var testMessage = testMessage.replace('{virtual_name}', $("#popup_virtual_name").html());
 	var testMessage = testMessage.replace('{location}',$("#popup_location").html());
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
-	console.log(testMessage);
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
 
