@@ -69,11 +69,11 @@ class Enqueue {
 			return;
 		}
 
-		$state_without_city = maybe_unserialize( get_option( 'sgsb_state_without_city', true ) );
-		$virtual_state      = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
+		$states_without_city = maybe_unserialize( get_option( 'sgsb_states_without_city', true ) );
+		$virtual_state       = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
 
-		if ( is_array( $state_without_city ) ) {
-			$popup_state_without_city = array_intersect( $state_without_city, $virtual_state );
+		if ( is_array( $states_without_city ) ) {
+			$popup_states_without_city = array_intersect( $states_without_city, $virtual_state );
 		}
 
 		$country_name_by_code = array();
@@ -101,7 +101,7 @@ class Enqueue {
 		}
 
 		$popup_location_without_city = array();
-		foreach ( $popup_state_without_city as $value ) {
+		foreach ( $popup_states_without_city as $value ) {
 			$country_and_state             = explode( '#', $value );
 			$popup_location_without_city[] = array( $country_name_by_code[ $country_and_state[0] ], $state_by_code[ $value ] );
 		}

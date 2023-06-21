@@ -25,7 +25,8 @@ class Ajax {
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
-
+		add_action( 'wp_ajax_fetch_popup_flags', array( $this, 'fetch_popup_flags' ) );
+		add_action( 'wp_ajax_set_states_without_cities_data', array( $this, 'set_states_without_cities_data' ) );
 		add_action( 'wp_ajax_popup_products', array( $this, 'popup_products' ) );
 		add_action( 'wp_ajax_nopriv_popup_products', array( $this, 'popup_products' ) );
 
@@ -41,19 +42,45 @@ class Ajax {
 	}
 
 	/**
+	 * Fetch Popup Flags
+	 */
+	public function fetch_popup_flags() {
+		check_ajax_referer( 'ajd_protected' );
+		$flags = maybe_unserialize( get_option( 'sgsb_popup_flags' ) );
+		wp_send_json_success( $flags );
+	}
+
+	/**
+	 * Update states without cities data
+	 */
+	public function set_states_without_cities_data() {
+		// this method will run 'only once' in the entire lifetime of this plugin.
+		check_ajax_referer( 'ajd_protected' );
+		$data                = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); //phpcs:ignore
+		$states_without_city = isset( $data['states_without_city'] ) ? $data['states_without_city'] : null;
+		$current_popup_flags = maybe_unserialize( get_option( 'sgsb_popup_flags', array() ) );
+		$response            = array();
+		if ( $states_without_city ) {
+			delete_option( 'sgsb_states_without_city' );
+			$response['is_done_setting_states_without_cities'] = update_option( 'sgsb_states_without_city', maybe_serialize( $states_without_city ) );
+		}
+		if ( isset( $response['is_done_setting_states_without_cities'] ) && $response['is_done_setting_states_without_cities'] ) {
+			$current_popup_flags['isStatesWithoutCitiesInDb'] = true;
+		}
+		$response['updated_popup_flags'] = update_option( 'sgsb_popup_flags', maybe_serialize( $current_popup_flags ) );
+		$response['flags']               = $current_popup_flags;
+		wp_send_json_success( $response );
+	}
+
+	/**
 	 * Order bump creation
 	 */
 	public function create_popup() {
 		check_ajax_referer( 'ajd_protected' );
 		$popup_data         = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); //phpcs:ignore
-		$popup_products     = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
-		$popup_products     = $this->form_validation( $popup_products );
-		$state_without_city = isset( $popup_data['state_without_city'] ) ? $popup_data['state_without_city'] : array();
-
+		$popup_products = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
+		$popup_products = $this->form_validation( $popup_products );
 		update_option( 'sgsb_popup_products', maybe_serialize( $popup_products ) );
-
-		update_option( 'sgsb_state_without_city', maybe_serialize( $state_without_city ) );
-
 		wp_send_json_success( maybe_unserialize( get_option( 'sgsb_popup_products' ) ) );
 	}
 

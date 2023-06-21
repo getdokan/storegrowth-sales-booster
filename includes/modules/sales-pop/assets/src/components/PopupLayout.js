@@ -7,7 +7,6 @@ import Desgin from './Design';
 import Time from './Time';
 import General from './General';
 import Message from './Message';
-import { State, City } from 'country-state-city';
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
   const { setCreateFromData, setButtonLoading } = useDispatch( 'sgsb_order_sales_pop' );
@@ -64,23 +63,12 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
   const onFormSave = ( type ) => {
     setButtonLoading( true );
 
-    // We are running a log job so having delay.
-    setTimeout(() => {
-      const allState = State.getAllStates();
-      const StateWithoutCity = [];
-      var i = 0;
-      allState.map( ( item, k ) => {
-        if ( City.getCitiesOfState( item.countryCode, item.isoCode ).length == 0 ) {
-          StateWithoutCity[ i ] = item.countryCode + '#' + item.isoCode;
-          i++;
-        }
-      } )
 
-      jQuery.post(
+    jQuery.post(
         sales_pop_data.ajax_url,
         {
           'action': 'create_popup',
-          'data': JSON.stringify( { 'popup_data': createPopupForm, state_without_city: StateWithoutCity } ),
+          'data': JSON.stringify( { 'popup_data': createPopupForm} ),
           '_ajax_nonce': sales_pop_data.ajd_nonce
         },
         function ( response ) {
@@ -89,7 +77,6 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
           notificationMessage( type );
         }
       );
-    }, 1000);
   }
 
   return (
