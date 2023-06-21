@@ -11,7 +11,8 @@ $main_div_width         = $main_div_width ? $main_div_width : 400;
 $main_div_height        = $main_div_width * 20 / 100;
 $main_div_border_radius = $popup_properties['popup_border_radius'] ? $popup_properties['popup_border_radius'] : 0;
 $main_div_background    = $popup_properties['background_color'] ? $popup_properties['background_color'] : 'white';
-$main_div_style         = "padding:10px;width:$main_div_width" . 'px; border-radius: ' . " $main_div_border_radius px;background:$main_div_background";
+$main_div_style         = 'width: ' . $main_div_width . 'px; border-radius: ' . $main_div_border_radius . 'px; background: ' . $main_div_background;
+
 
 // Normal Text style.
 $normal_text_color       = $popup_properties['normal_text_color'];

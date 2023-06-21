@@ -33,12 +33,5 @@
 	?>
 
 	<?php wp_footer(); ?>
-	<script>
-		jQuery(window).load(function() {
-			if ( window.parent.sgsbFastCart ) {
-				window.parent.sgsbFastCart.updateIframeHeight( jQuery( 'html' ).height() );
-			}
-		});
-	</script>
 </body>
 </html>

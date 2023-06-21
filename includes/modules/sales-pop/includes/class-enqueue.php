@@ -53,10 +53,13 @@ class Enqueue {
 			$product_image_url = array();
 			if ( $popup_products ) {
 				foreach ( $products as $product ) {
-					if ( in_array( $product->ID, $popup_products, true ) ) {
+					if ( ! in_array( $product->ID, $popup_products, true ) ) {
+						continue;
+					}
+					if ( $popup_properties['external_link'] || ( ! $popup_properties['external_link'] && ! wc_get_product( $product->ID )->is_type( 'external' ) ) ) {
 						$product_list[]      = $product->post_title;
 						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
-						$product_image_url[] = $image_url[0];
+						$product_image_url[] = isset( $image_url[0] ) ? $image_url[0] : false;
 						$product_url[]       = get_permalink( $product->ID );
 
 					}
@@ -66,11 +69,11 @@ class Enqueue {
 			return;
 		}
 
-		$state_without_city = maybe_unserialize( get_option( 'sgsb_state_without_city', true ) );
-		$virtual_state      = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
+		$states_without_city = maybe_unserialize( get_option( 'sgsb_states_without_city', true ) );
+		$virtual_state       = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
 
-		if ( is_array( $state_without_city ) ) {
-			$popup_state_without_city = array_intersect( $state_without_city, $virtual_state );
+		if ( is_array( $states_without_city ) ) {
+			$popup_states_without_city = array_intersect( $states_without_city, $virtual_state );
 		}
 
 		$country_name_by_code = array();
@@ -98,7 +101,7 @@ class Enqueue {
 		}
 
 		$popup_location_without_city = array();
-		foreach ( $popup_state_without_city as $value ) {
+		foreach ( $popup_states_without_city as $value ) {
 			$country_and_state             = explode( '#', $value );
 			$popup_location_without_city[] = array( $country_name_by_code[ $country_and_state[0] ], $state_by_code[ $value ] );
 		}
@@ -140,6 +143,7 @@ class Enqueue {
 			'random_popup_country' => $final_popup_country,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
+			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
 		);
 
 		wp_localize_script( 'popup-custom-js', 'popup_info', $popup_info );
@@ -202,20 +206,28 @@ class Enqueue {
 		);
 
 		$products                = get_posts( $args );
+		$product_info            = array();
 		$product_list_for_select = array();
 		$product_title_by_id     = array();
+		$external_products_ids   = array();
 
 		foreach ( $products as $product ) {
+			$product_id                = $product->ID;
 			$product_list_for_select[] = array(
-				'value' => $product->ID,
+				'value' => $product_id,
 				'label' => $product->post_title,
 			);
 
-			$product_title_by_id[ $product->ID ] = $product->post_title;
+			$product_title_by_id[ $product_id ] = $product->post_title;
+			$product_obj                        = wc_get_product( $product_id );
+			if ( $product_obj && $product_obj->is_type( 'external' ) ) {
+				$external_products_ids[] = $product_id;
+			}
 		}
 
 		$product_info['productListForSelect'] = $product_list_for_select;
 		$product_info['productTitleById']     = $product_title_by_id;
+		$product_info['externalProductsIds']  = $external_products_ids;
 
 		return $product_info;
 	}

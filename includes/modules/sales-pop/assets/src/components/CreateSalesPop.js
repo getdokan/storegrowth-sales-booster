@@ -107,6 +107,12 @@ function CreateSalesPop( { onFormSave } ) {
     } );
   };
 
+
+  const externalLink = createPopupForm.external_link;
+  const externalProductsIds = sales_pop_data.product_list.externalProductsIds;
+  const allProductListForSelect = sales_pop_data.product_list.productListForSelect;
+  const productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
+
   return (
     <>
 
@@ -116,7 +122,7 @@ function CreateSalesPop( { onFormSave } ) {
         labelAlign='left'
       >
         <Switch
-          checked={ (createPopupForm.external_link == 'true' || createPopupForm.external_link == true) ? true : false }
+          checked={ !!externalLink }
           onChange={ ( v ) => onFieldChange( 'external_link', v ) }
         />
       </Form.Item>
@@ -138,7 +144,7 @@ function CreateSalesPop( { onFormSave } ) {
         <Select
           allowClear
           placeholder="Search for products"
-          options={ sales_pop_data.product_list.productListForSelect }
+          options={ productListForSelect }
           onChange={ ( v ) => onFieldChange( 'popup_products', v ) }
           mode="multiple"
           filterOption={ true }

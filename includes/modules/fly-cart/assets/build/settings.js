@@ -13804,7 +13804,7 @@ function GenenralSettings(_ref) {
     label: "Layout",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Group, {
-    onChange: e => onFieldChange('layout', e.target.value),
+    onChange: e => onFieldChange("layout", e.target.value),
     value: formData.layout
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     direction: "vertical"
@@ -13818,22 +13818,22 @@ function GenenralSettings(_ref) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     checked: formData.show_product_image,
     value: "show_product_image",
-    onChange: e => onFieldChange('show_product_image', e.target.checked)
+    onChange: e => onFieldChange("show_product_image", e.target.checked)
   }, "Show product image"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     checked: formData.show_quantity_picker,
     value: "show_quantity_picker",
-    onChange: e => onFieldChange('show_quantity_picker', e.target.checked)
+    onChange: e => onFieldChange("show_quantity_picker", e.target.checked)
   }, "Show quantity picker"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     checked: formData.show_remove_icon,
     value: "show_remove_icon",
-    onChange: e => onFieldChange('show_remove_icon', e.target.checked)
+    onChange: e => onFieldChange("show_remove_icon", e.target.checked)
   }, "Show remove icon"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     checked: formData.show_product_price,
     value: "show_product_price",
-    onChange: e => onFieldChange('show_product_price', e.target.checked)
+    onChange: e => onFieldChange("show_product_price", e.target.checked)
   }, "Show product price"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
-    onClick: () => onFormSave('general_settings'),
+    onClick: () => onFormSave("general_settings"),
     loading: buttonLoading
   }, "Save Changes"));
 }
@@ -13867,7 +13867,7 @@ function DesignSettings(_ref2) {
     style: {
       width: 170
     },
-    onChange: v => onFieldChange('icon_position', v)
+    onChange: v => onFieldChange("icon_position", v)
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
     value: "top-left"
   }, "Top Left"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
@@ -13884,7 +13884,7 @@ function DesignSettings(_ref2) {
       width: 250
     },
     value: formData.icon_name,
-    onChange: v => onFieldChange('icon_name', v)
+    onChange: v => onFieldChange("icon_name", v)
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
     value: "flaticon-shopping-cart"
   }, "flaticon-shopping-cart"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
@@ -13933,10 +13933,10 @@ function DesignSettings(_ref2) {
     style: {
       width: 170
     },
-    onChange: e => onFieldChange('widget_bg_color', e.target.value)
+    onChange: e => onFieldChange("widget_bg_color", e.target.value)
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
-    onClick: () => onFormSave('design'),
+    onClick: () => onFormSave("design"),
     loading: buttonLoading
   }, "Save Changes"));
 }
@@ -13944,15 +13944,15 @@ function DesignSettings(_ref2) {
 function FlyCart() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb");
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, updateFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    icon_position: 'bottom-right',
-    icon_name: 'flaticon-shopping-cart-3',
-    icon_color: '#2ecc71',
-    buttons_bg_color: '#2ecc71',
-    widget_bg_color: '#fff',
-    layout: 'side',
+    icon_position: "bottom-right",
+    icon_name: "flaticon-shopping-cart-3",
+    icon_color: "#2ecc71",
+    buttons_bg_color: "#2ecc71",
+    widget_bg_color: "#fff",
+    layout: "side",
     show_product_image: true,
     show_quantity_picker: true,
     show_delete_button: true,
@@ -13964,9 +13964,9 @@ function FlyCart() {
     setPageLoading(true);
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: {
-        action: 'sgsb_fly_cart_get_settings',
+        action: "sgsb_fly_cart_get_settings",
         _ajax_nonce: sgsbAdmin.nonce
       }
     }).success(response => {
@@ -13985,7 +13985,7 @@ function FlyCart() {
   }, []);
 
   const initializeColorPicker = () => {
-    jQuery('.sgsb-flycart-color-picker').wpColorPicker({
+    jQuery(".sgsb-flycart-color-picker").wpColorPicker({
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.;
         const fieldName = event.target.name;
@@ -14005,17 +14005,17 @@ function FlyCart() {
   };
 
   const notificationMessage = type => {
-    if (type == 'general_settings') {
+    if (type == "general_settings") {
       antd__WEBPACK_IMPORTED_MODULE_10__["default"].success({
-        message: 'General Settings Section',
-        description: 'General section settings data updated successfully.'
+        message: "General Settings Section",
+        description: "General section settings data updated successfully."
       });
     }
 
-    if (type == 'design') {
+    if (type == "design") {
       antd__WEBPACK_IMPORTED_MODULE_10__["default"].success({
-        message: 'Design Section',
-        description: 'Design section data updated successfully.'
+        message: "Design Section",
+        description: "Design section data updated successfully."
       });
     }
   };
@@ -14023,13 +14023,13 @@ function FlyCart() {
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'sgsb_fly_cart_save_settings',
+      action: "sgsb_fly_cart_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: data
     }).success(() => {
       setButtonLoading(false);
@@ -42339,7 +42339,7 @@ __webpack_require__.r(__webpack_exports__);
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/fly-cart"
-    }, "Fly Cart"),
+    }, "Quick Cart"),
     key: 'fly-cart',
     icon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   });

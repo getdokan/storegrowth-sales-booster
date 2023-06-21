@@ -5,7 +5,6 @@
  * @package Popup message
  */
 
-// This will include style file.
 $image_with_link = '<a id="product_url" href="#" target="' . ( $popup_properties['open_product_link_in_new_tab'] ? '_blank' : '' ) . '">
 											<img id="image_of_product" src="https://wiki.openstreetmap.org/w/images/d/d1/Tile_osm-no-label.png" 
 											style="' . esc_attr( $image_style ) . ';">
@@ -37,31 +36,31 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 			<div class="custom-notification-content-wrapper">
 				<div class="custom-notification-content" 
 				style="<?php echo isset( $normal_text_style ) ? esc_attr( $normal_text_style ) : null; ?>">
-					<div class="message-line-height" id="popup_title">
+
+					<p class="message-line-height" id="popup_virtual_name">
+						<span id="virtual_name" 
+							style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">
+							Someone 
+						</span>
+						<span style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">Just purchased</span> 
+						<br>
+					</p>
+
+					<p class="message-line-height" id="popup_title">
 						<span id="product" 
 						style="color:<?php echo esc_attr( $popup_properties['product_title_color'] ); ?>; font-size:<?php echo esc_attr( $popup_properties['product_title_font_size'] ); ?>px ;">
 						hosting
 						</span> 
 						<br>
-					</div> 
+					</p>
 
-					<div class="message-line-height" id="popup_virtual_name">
-						<div class="my-name" >
-							<span id="virtual_name my_name" 
-								style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">
-								Someone 
-							</span> 
-							<br>
-						</div>
-					</div>
-
-					<div class="message-line-height" id="popup_location">
+					<p class="message-line-height" id="popup_location">
 						<span id="country">Nepal</span>
 						<br>
-					</div>
-					<div id="popup_time">
-						<span id="time" style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">1</span>
-						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">Hour ago</span> 
+					</p>
+					<p id="popup_time">
+						<span id="time" style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">15</span>
+						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">minutes ago</span> 
 						<br>	
 					</div>
 

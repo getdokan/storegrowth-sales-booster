@@ -1,4 +1,5 @@
-import { createReduxStore } from '@wordpress/data';
+import { createReduxStore,  subscribe, select, dispatch } from '@wordpress/data';
+import { getAllStatesWithoutCity } from './helper';
 
 /**
  * Default state of create popup.
@@ -6,10 +7,10 @@ import { createReduxStore } from '@wordpress/data';
  const message = {
 
 
-	message_popup           : `Purchased {product_title}
-by {virtual_name}
-from {location}
-TIME verfied by wpCodal `,
+	message_popup           : `{virtual_name}
+{product_title}
+From {location}
+{time}`,
 	message_checkout        : 'Test Checkout Message',
 	normal_text_color       : '#000000',
 	product_title_color     : '#000000',
@@ -21,15 +22,15 @@ TIME verfied by wpCodal `,
 	city_text_color         : '#000000',
 	name_text_color         : '#000000',
 
-	normal_text_font_size   : '16',
-	product_title_font_size : '16',
-	product_link_font_size  : '16',
-	time_text_font_size     : '16',
-	date_text_font_size     : '16',
-	country_text_font_size  : '16',
-	state_text_font_size    : '16',
-	city_text_font_size     : '16',
-	name_text_font_size     : '16',
+	normal_text_font_size   : '12',
+	product_title_font_size : '12',
+	product_link_font_size  : '12',
+	time_text_font_size     : '12',
+	date_text_font_size     : '12',
+	country_text_font_size  : '12',
+	state_text_font_size    : '12',
+	city_text_font_size     : '12',
+	name_text_font_size     : '12',
 
 	normal_text_font_weight   : 'normal',
 	product_title_font_weight : 'normal',
@@ -51,7 +52,7 @@ TIME verfied by wpCodal `,
 	background_color             : '#ECF0F1',
 	image_position               : 'left',
 	popup_position               : 'left_bottom',
-	popup_width                  : 30,
+	popup_width                  : 22,
 	popup_image_width            : 20,
 	popup_mobile_image_width     : 25,
 	popup_border_radius          : 5,
@@ -84,12 +85,19 @@ TIME verfied by wpCodal `,
 	screen_height                : window.screen.height,
 };
 
+const salesPopFlags = {
+    isStatesWithoutCitiesInDb: false,
+    isSettingStatesWithoutCitiesInDb: false,
+    isFetchedInitialFlags: false,
+    isFetchingInitialFlags: false,
+}
 /**
  * Default state.
  */
 const DEFAULT_STATE = {
 	createPopupForm,
-	buttonLoading: false
+	buttonLoading: false,
+    salesPopFlags,
 };
 
 /**
@@ -97,7 +105,16 @@ const DEFAULT_STATE = {
  */
  const reducer = (state = DEFAULT_STATE, action) => {
 	switch ( action.type ) {
-		case 'UPDATE_POPUP_CREATE_FORM':
+		case 'UPDATE_SALES_POP_FLAGS':
+            return {
+                ...state,
+                salesPopFlags:{
+                    ...state.salesPopFlags,
+                    ...action.payload,
+                }
+            }
+
+        case 'UPDATE_POPUP_CREATE_FORM':
 			return {
 				...state,
 				createPopupForm: action.payload,
@@ -118,7 +135,14 @@ const DEFAULT_STATE = {
  * Actions to call the reducer.
  */
 const actions = {
-	setCreateFromData(payload) {
+	setSalesPopFlags(payload) {
+		return {
+			type: 'UPDATE_SALES_POP_FLAGS',
+			payload,
+		};
+	},
+
+    setCreateFromData(payload) {
 		return {
 			type: 'UPDATE_POPUP_CREATE_FORM',
 			payload,
@@ -143,6 +167,10 @@ const selectors = {
 
 	getButtonLoading(state) {
 		return state.buttonLoading;
+	},
+
+	getSalesPopFlags(state) {
+		return state.salesPopFlags;
 	}
 };
 
@@ -151,3 +179,44 @@ export default createReduxStore( 'sgsb_order_sales_pop', {
 	actions,
 	selectors
 } );
+
+subscribe(() => {
+    const {
+        isStatesWithoutCitiesInDb,
+        isFetchedInitialFlags,
+        isFetchingInitialFlags,
+        isSettingStatesWithoutCitiesInDb
+    } = select('sgsb_order_sales_pop').getSalesPopFlags();
+
+    if(!isFetchedInitialFlags && !isFetchingInitialFlags){
+        dispatch('sgsb_order_sales_pop').setSalesPopFlags({isFetchingInitialFlags: true})
+        jQuery.post( sales_pop_data.ajax_url, { 
+            'action'    : 'fetch_popup_flags', 
+		    'data'      : [] ,
+			'_ajax_nonce' : sales_pop_data.ajd_nonce
+		}, function (response) {
+            const data = response.data || {};
+            dispatch('sgsb_order_sales_pop').setSalesPopFlags({
+                isFetchingInitialFlags: false,
+                isFetchedInitialFlags:true,
+                ...data,
+            })
+		});
+    }
+
+    if(isFetchedInitialFlags && !isSettingStatesWithoutCitiesInDb && !isStatesWithoutCitiesInDb){
+        dispatch('sgsb_order_sales_pop').setSalesPopFlags({isSettingStatesWithoutCitiesInDb:true})
+        const states_without_city = getAllStatesWithoutCity();
+        jQuery.post( sales_pop_data.ajax_url, {
+            'action'    : 'set_states_without_cities_data',
+		    'data'      : JSON.stringify({ states_without_city }),
+			'_ajax_nonce' : sales_pop_data.ajd_nonce
+		}, function (response) {
+            const flags = response?.data?.flags || {};
+            dispatch('sgsb_order_sales_pop').setSalesPopFlags({
+                isSettingStatesWithoutCitiesInDb:false,
+                ...flags
+            })
+		});
+    }
+})
