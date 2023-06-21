@@ -1,4 +1,14 @@
+body.show_discount_banner .sgsb-pd-banner-bar-wrapper{
+    display: block;
+    transition: 0.5s;
+}
+
+body:not(.show_discount_banner){
+    padding-top: 0;
+}
+
 .sgsb-pd-banner-bar-wrapper {
+    display: none;
     position: fixed;
     left: 0;
     top: 0;
