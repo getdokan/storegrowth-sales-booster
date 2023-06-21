@@ -8,7 +8,8 @@
 	var notification_per_page = popup_all_properties.notification_per_page;
 	var mobile_view						= popup_all_properties.mobile_view;
 	var product_random				= popup_all_properties.product_random;
-
+	
+	
 	var notification_count 	  = 0;
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
@@ -74,7 +75,7 @@
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
         $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
         $('#product').text( products[ productAndImage ] );
-		var timeVal = Math.floor( 11*Math.random() );
+		var timeVal = Math.floor(Math.random() * 59);
 		$('#time').text( timeVal );
 
 		$(".custom-social-proof").css('display', 'block');
@@ -100,7 +101,7 @@
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
 		notification_count++;
-		setTimeout( popDownContentGenerator, display_time*1000 );
+		// setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
@@ -126,6 +127,7 @@
 	var testMessage = testMessage.replace('{virtual_name}', $("#popup_virtual_name").html());
 	var testMessage = testMessage.replace('{location}',$("#popup_location").html());
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
+	console.log(testMessage);
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
 
@@ -142,10 +144,19 @@
 	} );
 
 	function handlePopupVisibility() {
-    if (!mobile_view && $(window).width() <= 767) {
+		var windowWidth = $(window).width();
+		var popupWidth						= popup_all_properties.screen_width * popup_all_properties.popup_width/ 100;
+
+		if (windowWidth <= 320) {
+			popupWidth = 300;
+		} else if (windowWidth <= 425) {
+			popupWidth = 350;
+		}
+
+    if (!mobile_view && windowWidth <= 767) {
       $(".custom-notification").css('display', 'none');
     } else {
-      $(".custom-notification").css('display', 'block');
+      $(".custom-notification").css('display', 'block').css('width',popupWidth+'px');
     }
   }
 
