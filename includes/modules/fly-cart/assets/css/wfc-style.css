@@ -185,7 +185,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 
 .sgsb-fly-cart-table .product-quantity {
     display: flex;
-    width: 9vw;
+    width: 110px;
 }
 .sgsb-fly-cart-table .product-quantity button {
     width: 36px;
