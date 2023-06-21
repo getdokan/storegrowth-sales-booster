@@ -101,3 +101,35 @@ a, a:focus, a:hover, a:visited {
   text-decoration: none;
 	outline: none;
 }
+
+
+
+/* main design */
+
+
+.custom-notification-container {
+    display: flex;
+}
+.custom-notification {
+    background: #ffff !important;
+    border-radius: 8px;
+    padding: 0vw !important;
+}
+
+span#virtual_name {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500 !important;
+    line-height: 19px;
+    margin-top: 7px;
+    font-size: 1.1vw !important;
+    margin: 0.3vw 0vw;
+    display: block;
+}
+.custom-notification-content {
+    margin-left: .5vw;
+}
+img#image_of_product {
+    width: 100%;
+    height: 100%;
+}

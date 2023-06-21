@@ -32,6 +32,7 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 				<?php
 			}
 			?>
+
 			<div class="custom-notification-content-wrapper">
 				<div class="custom-notification-content" 
 				style="<?php echo isset( $normal_text_style ) ? esc_attr( $normal_text_style ) : null; ?>">
@@ -61,11 +62,13 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 						<span id="time" style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">15</span>
 						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">minutes ago</span> 
 						<br>	
-					</p>
+					</div>
+
 				</div>
 			</div>
-			<?php
 
+
+			<?php
 			if ( 'right' === $popup_properties['image_position'] ) {
 				?>
 					<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
