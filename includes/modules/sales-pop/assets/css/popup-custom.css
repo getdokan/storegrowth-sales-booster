@@ -106,6 +106,8 @@ a, a:focus, a:hover, a:visited {
 
 
 /* main design */
+
+
 .custom-notification-container {
     display: flex;
 }

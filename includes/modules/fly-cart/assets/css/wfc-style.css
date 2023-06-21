@@ -144,12 +144,11 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 .sgsb-fly-cart-table td.product-thumbnail {
     max-width: 15%;
     padding-right: 0;
-    /* position: relative; */
     line-height: 0;
 }
 .sgsb-fly-cart-table td.product-name {
     width: 50%;
-    padding-right: 4%;
+    padding-right: 0%;
     display: flex;
     align-items: center;
     padding-left: 2%;
@@ -158,8 +157,6 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 .sgsb-fly-cart-table td.product-subtotal {
     width: 25%;
     font-weight: bold;
-    /* text-align: right; */
-    /* font-size: 17px; */
     font-size: 28px;
     text-align: center;
     padding-right: 6px;
@@ -188,10 +185,10 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 
 .sgsb-fly-cart-table .product-quantity {
     display: flex;
-    width: 25%;
+    width: 9vw;
 }
 .sgsb-fly-cart-table .product-quantity button {
-    /* width: 36px; */
+    width: 36px;
     background: #fff !important;
     height: 36px;
     text-align: center;
@@ -455,13 +452,13 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 .sgsb-cart-widget-buttons a:hover{
     background: rgb(0 111 201) !important;
 }
-
 .product-remove span{
     display: none !important;
 }
-
 .woocommerce .quantity .qty{
     color: #272731;
+    background: transparent !important;
+    width: 35px !important;
 }
 /* Checkout page start */
 iframe.sgsb-fast-cart-checkout-frame {
@@ -469,13 +466,22 @@ iframe.sgsb-fast-cart-checkout-frame {
     max-width: initial;
     border: 0 none;
 }
-
-
 .woocommerce-page .woocommerce-checkout #customer_details, 
 .woocommerce-page.woocommerce-order-pay #customer_details {
     width: 100%;
     float: left;
 }
+
+
+.woocommerce-billing-fields h3 {
+    font-size: 5vw !important;
+}
+
+.woocommerce form .form-row label,
+.woocommerce form .form-row label {
+    color: red;
+}
+
 
 
 /* Checkout page end */
@@ -528,11 +534,11 @@ iframe.sgsb-fast-cart-checkout-frame {
         width: 54%;
     }
     .sgsb-fly-cart-table td.product-name .sgsb-product-title a {
-        font-size: 18px;
+        font-size: 16px;
     }
     .sgsb-fly-cart-table td.product-subtotal {
         width: 25%;
-        font-size: 20px;
+        font-size: 17px;
     }
     .sgsb-fly-cart-table .product-quantity input {
         width: 1.5em !important;
