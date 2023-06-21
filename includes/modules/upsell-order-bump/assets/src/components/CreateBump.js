@@ -54,12 +54,6 @@ function CreateBump({navigate, useParams}) {
     setIsModalVisible(false);
   };
 
-
-  const onChange = (key) => {
-    console.log(key);
-  };
-
- 
   if( action_name == 'delete' ) {
     setPageLoading(true);
     let $ = jQuery;
@@ -78,7 +72,6 @@ function CreateBump({navigate, useParams}) {
       setPageLoading( true );
       let $ = jQuery;
      $.post( bump_save_url.ajax_url, { 'action': 'bump_list', 'data': bump_id, '_ajax_nonce' : bump_save_url.ajd_nonce }, function ( data ) {
-      console.log('Bangladesh',data)
       setPageLoading(false);
 
       const parsedBumpItem = convertBumpItemHtmlEntitiesToTexts(data.data)
@@ -222,7 +215,6 @@ function CreateBump({navigate, useParams}) {
       '_ajax_nonce' : bump_save_url.ajd_nonce
 
       }, function ( data ) {
-      console.log('created bump', data)
       setCreateFromData( {
         ...bumpDataParsedToEntities,
         offer_product_id: data
@@ -246,7 +238,7 @@ function CreateBump({navigate, useParams}) {
   return (
     <>
       <Form {...layout} >
-        <Collapse onChange={onChange} defaultActiveKey="1">
+        <Collapse defaultActiveKey="1">
           <Panel header="Basic Informarion form" key="1">
             <BasicInfo clearErrors={clearErrors} />
           </Panel>
