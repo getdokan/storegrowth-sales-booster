@@ -102,7 +102,6 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 		);
 		delete_option( 'sgsb_progressive_discount_banner_settings' );
 		$result = update_option( 'sgsb_progressive_discount_banner_settings', $default_data );
-		elog( array( 'result' => $result ) );
 		if ( $result ) {
 			update_option( 'sgsb_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
 		}
