@@ -69,9 +69,9 @@ class Enqueue {
 			return;
 		}
 
-		$states_without_city = maybe_unserialize( get_option( 'sgsb_states_without_city', true ) );
-		$virtual_state       = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
-
+		$states_without_city       = maybe_unserialize( get_option( 'sgsb_states_without_city', true ) );
+		$virtual_state             = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
+		$popup_states_without_city = array();
 		if ( is_array( $states_without_city ) ) {
 			$popup_states_without_city = array_intersect( $states_without_city, $virtual_state );
 		}
