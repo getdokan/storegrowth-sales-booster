@@ -286,12 +286,12 @@ function CreateBump({navigate, useParams}) {
             Save Changes
         </Button>
 
-        <Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>
+        {/* <Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>
           Bump Overview
         </Button>
         <Modal title="Bump Overview Section" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           <OverViewArea/>
-        </Modal>
+        </Modal> */}
       </Form>
     </>
   );

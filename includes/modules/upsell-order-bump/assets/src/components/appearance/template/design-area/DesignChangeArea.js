@@ -12,8 +12,8 @@ function DesignChangeArea() {
             <OverviewBox/>
             <DiscountSection/>
             <ProductSelection/>
-            <AcceptOfferSection/>
-            <OfferDescriptionSection/>
+            {/* <AcceptOfferSection/> */}
+            {/* <OfferDescriptionSection/> */}
         </div>
 
   );
