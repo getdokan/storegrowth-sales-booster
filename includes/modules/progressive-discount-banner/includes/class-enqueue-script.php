@@ -84,6 +84,11 @@ class Enqueue_Script {
 		$text_color   = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$icon_color   = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
 
+		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
+			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
+			return false;
+		}
+
 		if ( 'bottom' === $bar_position ) {
 			$css = '
 				.sgsb-pd-banner-bar-wrapper {
