@@ -6,11 +6,11 @@
  */
 
 $image_with_link = '<a id="product_url" href="#" target="' . ( $popup_properties['open_product_link_in_new_tab'] ? '_blank' : '' ) . '">
-											<img id="image_of_product" src="https://wiki.openstreetmap.org/w/images/d/d1/Tile_osm-no-label.png" 
+											<img id="image_of_product" src="#" 
 											style="' . esc_attr( $image_style ) . ';">
 										</a>';
 
-$image_without_link = '<img id="image_of_product" src="https://wiki.openstreetmap.org/w/images/d/d1/Tile_osm-no-label.png" 
+$image_without_link = '<img id="image_of_product" src="#" 
 												style="' . ( isset( $image_style ) ? esc_attr( $image_style ) : '' ) . ';">';
 
 ?>
@@ -47,10 +47,12 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 					</p>
 
 					<p class="message-line-height" id="popup_title">
+					<a id="product_url_title" href="#" target="">
 						<span id="product" 
 						style="color:<?php echo esc_attr( $popup_properties['product_title_color'] ); ?>; font-size:<?php echo esc_attr( $popup_properties['product_title_font_size'] ); ?>px ;">
 						hosting
-						</span> 
+						</span>
+					</a> 
 						<br>
 					</p>
 
@@ -82,11 +84,10 @@ $image_without_link = '<img id="image_of_product" src="https://wiki.openstreetma
 				</div>
 				<?php
 			}
-			?>
-		</div>
-		
-		<?php if ( true === $popup_properties['show_close_button'] ) { ?>
+			if ( true === $popup_properties['show_close_button'] ) {
+				?>
 			<div class="custom-close"></div>
 		<?php } ?>
+		</div>	
 	</div>
 </section>
