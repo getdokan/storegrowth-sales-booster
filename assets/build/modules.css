@@ -26347,12 +26347,13 @@ body {
     line-height: 1.4em;
 }
 
-.sales-booster_page_sgsb-modules #wpcontent {
+.sales-booster_page_sgsb-modules #wpcontent, .sales-booster_page_sgsb-settings #wpcontent {
     background: #F9FAFC;
 
 }
 
-.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout {
+.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
+.sales-booster_page_sgsb-settings #sbooster-settings-page .ant-layout {
     background: #F9FAFC;
 }
 
@@ -26442,6 +26443,7 @@ li.ant-menu-item a:focus {
 /*!***************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin.scss ***!
   \***************************************************************************************************************************************************************************************************************************************/
+/* variable color */
 .sgsb-header {
   height: 100px;
   display: inline-flex;
@@ -26663,5 +26665,57 @@ Pagination Style
 .ant-select-item[class] {
   min-height: inherit;
 }
+
+/*===============================
+Settings Sidebar
+===============================*/
+.sgsb__settings-sidebar {
+  background: #FFFFFF;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] {
+  background: #FFFFFF;
+  border: 1px solid #ECEDF0;
+  border-radius: 8px;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul {
+  background: none;
+  padding: 4px 18px;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li {
+  padding: 6px;
+  padding-left: 18px !important;
+  height: 46px;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li .ant-menu-item-icon {
+  display: none;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li .ant-menu-title-content {
+  margin-left: 0;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1B1B50;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected {
+  background: #008DFF;
+  border-radius: 8px;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected a {
+  color: #FFFFFF;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected:after {
+  display: none;
+}
+.sgsb__settings-sidebar .ant-layout-sider-children[class] h3 {
+  font-size: 20px;
+  color: #080814;
+  border-bottom: 1px solid #ECEDF0;
+  padding: 18px 24px;
+}
+
+/*===============================
+End Settings Sidebar
+===============================*/
 
 /*# sourceMappingURL=modules.css.map*/
