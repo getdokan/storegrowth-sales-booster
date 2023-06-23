@@ -24,7 +24,8 @@ function Sidebar({ routes }) {
   }, [ currentRoute?.name ] );
 
   return (
-    <Layout.Sider width={ 200 } className="site-layout-background">
+    <Layout.Sider width={ 248 } className="site-layout-background sgsb__settings-sidebar">
+      <h3>Menu</h3>
       <Menu
         mode="inline"
         defaultSelectedKeys={ [ selectedMenu ] }
