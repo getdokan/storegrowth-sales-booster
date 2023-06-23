@@ -1,6 +1,11 @@
+@import url(../fonts/inter-regular/stylesheet.css);
+@import url(../fonts/inter-medium/stylesheet.css);
+@import url(../fonts/Inter-semibold/stylesheet.css);
+@import url(../fonts/inter-bold/stylesheet.css);
+
 .sgsb-stock-progressbar-status {
 	width: 100%;
-	margin-bottom: 8px;
+	margin-bottom: 5px;
 }
 .sgsb-stock-progressbar-status::after {
 	display: table;
@@ -12,18 +17,26 @@
 }
 span.total-sold {
 	float: left;
+	color: #1B1B50;
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
 }
 span.instock {
 	float: right;
+	margin-top: -5px;
 }
 .jqmeter-container .outer-therm {
 	margin-top: 0;
 	margin-bottom: 8px;
 }
 .sgsb-stock-counter-and-bar {
-	border: 1px solid #ccc;
-	padding: 7px 10px;
-	border-radius: 4px;
+	border: 1px solid #fff;
+	padding: 15px 10px 10px;
+	margin-bottom: 25px;
+	border-radius: 8px;
 }
 .sgsb-stock-counter-heading {
 	margin: 0 0 10px 0;
@@ -36,18 +49,44 @@ span.instock {
 	justify-content: center;
 	margin-bottom: 10px;
 }
+.sgsb-stock-progress-bar {
+    padding: 10px 25px 7px;
+}
 .sgsb-stock-counter-item {
 	text-align: center;
-	padding: 0 10px;
+	color: #989FAB;
+	font-size: 12px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	height: 64px;
+	width: 64px;
+	border: 1px solid #ECEDF0;
+	border-radius: 8px;
+	padding: 14px 0;
+	font-family: 'Inter';
 }
 .sgsb-stock-counter-item strong {
 	display: block;
-	font-size: 32px;
-	line-height: 1.2;
+	font-size: 24px;
+	line-height: .75;
+	color: #1B1B50;
+	font-weight: 500;
 }
 .sgsb-stock-progressbar-status-below {
 	text-align: center;
 }
 .sgsb-stock-progress-bar-format-below {
 	padding-top: 5px;
+}
+.sgsb-colon{
+	margin: 0 14px;
+	line-height: 4;
+	color: #008DFF;
+}
+span.total-sale {
+    display: inline;
+    font-weight: 600;
+}
+.single-product .summary .sgsb-stock-counter-and-bar {
+    margin-right: 2.81vw;
 }
