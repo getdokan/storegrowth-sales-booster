@@ -17,7 +17,7 @@
 	var country = new Array ();
 
 	country     = popup_info.random_popup_country;
-	
+
 	var finalCountry = country.map((item,i)=>{
 
 			var countryStringToArray =  item.split(',');
@@ -43,10 +43,13 @@
 				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[1] + "</span>, ";
 				var country = "<span style=" + countryStyle + ">" + countryStringToArray[2] + "</span>";
 				return city + state + country;
-			} else {
+			} else if(countryStringToArray.length == 2) {
 				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[0] + "</span>, ";
 				var country = "<span style=" + countryStyle + ">" + countryStringToArray[1] + "</span>";
 				return state + country;
+			}else{
+				var country = "<span style=" + countryStyle + ">" + countryStringToArray[0] + "</span>";
+				return country;
 			}
 
 					
@@ -60,22 +63,27 @@
 	var virtual_name  = popup_info.virtual_name;
 	var productAndImage;
 
-	if(product_random){
-		productAndImage = Math.floor( product_image.length*Math.random() );
-	}else{
-		productAndImage = notification_count % product_image.length
-	}
 
-	
+
+	function getRandomProductImage() {
+			if (product_random) {
+				return Math.floor(product_image.length * Math.random());
+			} else {
+				return notification_count % product_image.length;
+			}
+		}
+			
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
 		var countryRandom         = Math.floor( country.length*Math.random() );
+		productAndImage = getRandomProductImage();
 
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
     $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
     $('#product').text( products[ productAndImage ] );
+		$("#product_url_title").attr( "href", product_url[ productAndImage ] );
 		var timeVal = Math.floor(Math.random() * 59);
 		$('#time').text( timeVal );
 
@@ -130,9 +138,7 @@
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
-
 	$('.custom-notification-content').html(testMessage);
-	$("#product_url_title").attr( "href", product_url[ productAndImage ] );
 	if(link_new_tab){
 		$("#product_url_title").attr( "target", '_blank' );
 	}
