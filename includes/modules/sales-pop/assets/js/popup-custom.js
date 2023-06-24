@@ -137,7 +137,6 @@
 		$("#product_url_title").attr( "target", '_blank' );
 	}
 	
-	console.log(testMessage);
 
 	if (notification_per_page !== '0' && notification_per_page !== '') {
 		setTimeout(popupContentGenerator, initial_time_delay * 1000);
