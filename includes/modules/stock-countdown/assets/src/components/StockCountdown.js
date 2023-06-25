@@ -169,7 +169,7 @@ function StockCountdown() {
           />
         </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           label="Stock Display Format"
           labelAlign="left"
         >
@@ -181,7 +181,7 @@ function StockCountdown() {
             <Select.Option value="above">Above Progress Bar</Select.Option>
             <Select.Option value="below">Below Progress Bar</Select.Option>
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
         {formData.stock_display_format === "above" && <div>
           <Form.Item

@@ -47,12 +47,4 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 	</div>
 	<?php endif; ?>
 	<div class="jqmeter-container"></div>
-	<?php if ( 'below' === $sd_format ) : ?>
-	<div class="sgsb-stock-progressbar-status-below">
-		<?php
-			/* translators: %s: Left items in stock */
-			echo esc_html( sprintf( __( 'Only %s left in stock', 'storegrowth-sales-booster' ), ( $stock - $total_sales ) ) );
-		?>
-	</div>
-	<?php endif; ?>
 </div>
