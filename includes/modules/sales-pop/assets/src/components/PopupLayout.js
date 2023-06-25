@@ -93,14 +93,14 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
         <TabPane tab="Products" key="products">
           <CreateSalesPop onFormSave={ onFormSave } />
         </TabPane>
-
+{/* 
         <TabPane tab="Message" key="message">
           <Message onFormSave={ onFormSave } />
         </TabPane>
 
         <TabPane tab="Time" key="time">
           <Time onFormSave={ onFormSave } />
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </>
   );
