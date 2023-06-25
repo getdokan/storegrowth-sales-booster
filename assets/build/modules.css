@@ -26470,7 +26470,7 @@ Module Card Style
 =============================*/
 .site-card-wrapper .sgsb-module-card {
   border-radius: 8px;
-  border: 1px solid #ECEDF0;
+  border: 1px solid #ecedf0;
 }
 .site-card-wrapper .sgsb-module-card .ant-card-body {
   padding: 0;
@@ -26484,23 +26484,23 @@ Module Card Style
   line-height: inherit;
   padding: 15px 18px 11px 15px;
   padding-top: 11px !important;
-  border: 1px solid #ECEDF0;
+  border: 1px solid #ecedf0;
   position: relative;
 }
 .site-card-wrapper .sgsb-module-card .ant-card-body .ant-btn[class] .anticon svg {
   font-size: 16px;
-  color: #989FAB;
+  color: #989fab;
   position: relative;
   top: 1px;
 }
 .site-card-wrapper .sgsb-module-card .ant-card-body .ant-btn[class]:hover {
-  border: 1px solid #008DFF;
+  border: 1px solid #008dff;
 }
 .site-card-wrapper .sgsb-module-card .ant-card-body .ant-btn[class]:hover .anticon svg {
-  color: #008DFF;
+  color: #008dff;
 }
 .site-card-wrapper .sgsb-module-card .ant-switch {
-  background: #D7DBDF;
+  background: #d7dbdf;
   width: 54px;
   height: 29px;
   margin-left: -10px;
@@ -26510,13 +26510,13 @@ Module Card Style
   left: 5px;
 }
 .site-card-wrapper .sgsb-module-card .ant-switch.ant-switch-checked {
-  background: #02AC6E;
+  background: #02ac6e;
 }
 .site-card-wrapper .sgsb-module-card .ant-switch.ant-switch-checked .ant-switch-handle {
   left: calc(100% - 18px - 5px);
 }
 .site-card-wrapper .sgsb-module-card .module-thumb {
-  background: #F9FAFC;
+  background: #f9fafc;
   border-radius: 8px;
   padding: 14px;
   margin-right: 7px;
@@ -26529,7 +26529,7 @@ Module Card Style
   line-height: 29px;
 }
 .site-card-wrapper .sgsb-module-card .module-desc {
-  color: #66656D;
+  color: #66656d;
   font-weight: 400;
   font-size: 16px;
   line-height: 28px;
@@ -26549,18 +26549,18 @@ Pagination Style
 }
 .sgsb__module-pagination .ant-pagination-item a:hover {
   color: #fff;
-  background: #008DFF;
+  background: #008dff;
 }
 .sgsb__module-pagination .ant-pagination-item.ant-pagination-item-active a {
   color: #fff;
-  background: #008DFF;
+  background: #008dff;
 }
 
 .sgsb-search-section {
   margin-bottom: 14px;
 }
 .sgsb-search-section input[class] {
-  background: #ECEDF0;
+  background: #ecedf0;
   border-radius: 8px;
   border: 0;
   height: 54px;
@@ -26575,7 +26575,7 @@ Pagination Style
   border: 1px solid #ecedf1;
   padding: 4px 0 0 16px;
   border-radius: 8px;
-  color: #989FAB;
+  color: #989fab;
   font-size: 18px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -26583,7 +26583,7 @@ Pagination Style
 .sgsb-search-section .ant-select-selector[class] {
   height: 56px;
   padding: 11px 24px;
-  border: 1px solid #ECEDF0;
+  border: 1px solid #ecedf0;
   border-radius: 8px;
 }
 .sgsb-search-section .module-filter {
@@ -26593,8 +26593,8 @@ Pagination Style
   max-width: 100%;
 }
 .sgsb-search-section .module-filter .select-dropdown__button {
-  background: #FFFFFF;
-  border: 1px solid #ECEDF0;
+  background: #ffffff;
+  border: 1px solid #ecedf0;
   border-radius: 8px;
   width: 218px;
   height: 56px;
@@ -26606,14 +26606,14 @@ Pagination Style
   outline: none;
 }
 .sgsb-search-section .module-filter .select-dropdown__button span {
-  color: #1B1B50;
+  color: #1b1b50;
   font-weight: 400;
   font-size: 18px;
   line-height: 22px;
 }
 .sgsb-search-section .module-filter .dropdown__list {
-  background: #FFFFFF;
-  border: 1px solid #ECEDF0;
+  background: #ffffff;
+  border: 1px solid #ecedf0;
   box-shadow: 0px 12px 48px rgba(27, 27, 80, 0.1);
   border-radius: 8px;
   width: 218px;
@@ -26636,7 +26636,7 @@ Pagination Style
   font-weight: 400;
   font-size: 16px;
   line-height: 16px;
-  color: #1B1B50;
+  color: #1b1b50;
 }
 .sgsb-search-section .module-filter.active .dropdown__list {
   opacity: 1;
@@ -26670,11 +26670,11 @@ Pagination Style
 Settings Sidebar
 ===============================*/
 .sgsb__settings-sidebar {
-  background: #FFFFFF;
+  background: #ffffff;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] {
-  background: #FFFFFF;
-  border: 1px solid #ECEDF0;
+  background: #ffffff;
+  border: 1px solid #ecedf0;
   border-radius: 8px;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] ul {
@@ -26695,14 +26695,14 @@ Settings Sidebar
 .sgsb__settings-sidebar .ant-layout-sider-children[class] ul li a {
   font-size: 16px;
   font-weight: 500;
-  color: #1B1B50;
+  color: #1b1b50;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected {
-  background: #008DFF;
+  background: #008dff;
   border-radius: 8px;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected a {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] ul li.ant-menu-item-selected:after {
   display: none;
@@ -26710,12 +26710,30 @@ Settings Sidebar
 .sgsb__settings-sidebar .ant-layout-sider-children[class] h3 {
   font-size: 20px;
   color: #080814;
-  border-bottom: 1px solid #ECEDF0;
+  border-bottom: 1px solid #ecedf0;
   padding: 18px 24px;
 }
 
 /*===============================
 End Settings Sidebar
 ===============================*/
+.sgsb-removable-icon-picker-wrapper {
+  position: relative;
+}
+.sgsb-removable-icon-picker-wrapper .clear-icon {
+  position: absolute;
+  top: -11px;
+  left: 38px;
+  font-size: 18px;
+  height: 22px;
+  width: 22px;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff;
+  padding-bottom: 2px;
+}
 
 /*# sourceMappingURL=modules.css.map*/

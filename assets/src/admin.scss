@@ -1,374 +1,354 @@
 /* variable color */
-$white-color: #FFFFFF;
+$white-color: #ffffff;
 
 .sgsb-header {
-    height: 100px;
-    display: inline-flex;
-    align-items: center;
+  height: 100px;
+  display: inline-flex;
+  align-items: center;
 
-    .sgsb-logo {
-        background: url('../images/logo.svg');
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        width: 212px;
-        height: 56px;
-    }
+  .sgsb-logo {
+    background: url("../images/logo.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 212px;
+    height: 56px;
+  }
 }
 
 .sgsb-heading[class] {
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 48px;
-    padding: 20px 0;
-
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 48px;
+  padding: 20px 0;
 }
 
 /*=============================
 Module Card Style
 =============================*/
 .site-card-wrapper {
-    .sgsb-module-card {
+  .sgsb-module-card {
+    border-radius: 8px;
+    border: 1px solid #ecedf0;
+
+    .ant-card-body {
+      padding: 0;
+
+      .ant-divider {
+        margin-bottom: 16px;
+      }
+
+      .ant-btn[class] {
         border-radius: 8px;
-        border: 1px solid #ECEDF0;
+        height: auto;
+        line-height: inherit;
+        padding: 15px 18px 11px 15px;
+        padding-top: 11px !important;
+        border: 1px solid #ecedf0;
+        position: relative;
 
-        .ant-card-body {
-            padding: 0;
-
-            .ant-divider {
-                margin-bottom: 16px;
-
-            }
-
-            .ant-btn[class] {
-                border-radius: 8px;
-                height: auto;
-                line-height: inherit;
-                padding: 15px 18px 11px 15px;
-                padding-top: 11px !important;
-                border: 1px solid #ECEDF0;
-                position: relative;
-
-                .anticon {
-                    svg {
-                        font-size: 16px;
-                        color: #989FAB;
-                        position: relative;
-                        top: 1px;
-                    }
-
-                }
-
-                &:hover {
-                    border: 1px solid #008DFF;
-
-                    .anticon {
-                        svg {
-                            color: #008DFF;
-
-                        }
-    
-                    }
-
-                }
-
-            }
-
-        }
-        
-        .ant-switch {
-            background: #D7DBDF;
-            width: 54px;
-            height: 29px;
-            margin-left: -10px;
-
-            .ant-switch-handle {
-                top: 5px;
-                left: 5px;
-                
-            }
-
-            &.ant-switch-checked {
-                background: #02AC6E;
-
-                .ant-switch-handle {
-                    left: calc(100% - 18px - 5px);
-
-                }
-    
-            }
-        }
-
-        
-        .module-thumb {
-            background: #F9FAFC;
-            border-radius: 8px;
-            padding: 14px;
-            margin-right: 7px;
-            width: 64px;
-            height: 64px;
-
-        }
-        .module-name {
-            font-weight: 500;
-            font-size: 24px;
-            line-height: 29px;
-
-        }
-        .module-desc {
-            color: #66656D;
-            font-weight: 400;
+        .anticon {
+          svg {
             font-size: 16px;
-            line-height: 28px;
-            padding: 0 23px 7px;
-            height: 62px;
-            overflow: hidden;
-
+            color: #989fab;
+            position: relative;
+            top: 1px;
+          }
         }
+
+        &:hover {
+          border: 1px solid #008dff;
+
+          .anticon {
+            svg {
+              color: #008dff;
+            }
+          }
+        }
+      }
     }
+
+    .ant-switch {
+      background: #d7dbdf;
+      width: 54px;
+      height: 29px;
+      margin-left: -10px;
+
+      .ant-switch-handle {
+        top: 5px;
+        left: 5px;
+      }
+
+      &.ant-switch-checked {
+        background: #02ac6e;
+
+        .ant-switch-handle {
+          left: calc(100% - 18px - 5px);
+        }
+      }
+    }
+
+    .module-thumb {
+      background: #f9fafc;
+      border-radius: 8px;
+      padding: 14px;
+      margin-right: 7px;
+      width: 64px;
+      height: 64px;
+    }
+    .module-name {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 29px;
+    }
+    .module-desc {
+      color: #66656d;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 28px;
+      padding: 0 23px 7px;
+      height: 62px;
+      overflow: hidden;
+    }
+  }
 }
 
 /*=============================
 Pagination Style
 =============================*/
 .sgsb__module-pagination {
-    li {
-        min-width: 47px;
-        height: 47px;
-        line-height: 45px;
-        border-radius: 4px;
+  li {
+    min-width: 47px;
+    height: 47px;
+    line-height: 45px;
+    border-radius: 4px;
+  }
 
+  .ant-pagination-item {
+    a {
+      &:hover {
+        color: #fff;
+        background: #008dff;
+      }
     }
 
-    .ant-pagination-item {
-        a {
-            &:hover {
-                color: #fff;
-                background: #008DFF;
-
-            }
-        }
-
-        &.ant-pagination-item-active {
-            a {
-                color: #fff;
-                background: #008DFF;
-
-            }
-        }
+    &.ant-pagination-item-active {
+      a {
+        color: #fff;
+        background: #008dff;
+      }
     }
-    
+  }
 }
 
 .sgsb-search-section {
-    margin-bottom: 14px;
+  margin-bottom: 14px;
 
-    input[class] {
-        background: #ECEDF0;
-        border-radius: 8px;
-        border: 0;
-        height: 54px;
-        width: 250px;
+  input[class] {
+    background: #ecedf0;
+    border-radius: 8px;
+    border: 0;
+    height: 54px;
+    width: 250px;
+    outline: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .ant-input-group-addon[class] {
+    background-color: #ecedf1;
+    border: 1px solid #ecedf1;
+    padding: 4px 0 0 16px;
+    border-radius: 8px;
+    color: #989fab;
+    font-size: 18px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .ant-select-selector[class] {
+    height: 56px;
+    padding: 11px 24px;
+    border: 1px solid #ecedf0;
+    border-radius: 8px;
+  }
+
+  .module-filter {
+    margin-left: 24px;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+
+    .select-dropdown__button {
+      background: #ffffff;
+      border: 1px solid #ecedf0;
+      border-radius: 8px;
+      width: 218px;
+      height: 56px;
+      text-align: left;
+      padding: 0 20px;
+      cursor: pointer;
+
+      &:focus {
         outline: none;
+      }
 
-        &:focus {
-            box-shadow: none;
-
-        }
-
-    }
-
-    .ant-input-group-addon[class] {
-        background-color: #ecedf1;
-        border: 1px solid #ecedf1;
-        padding: 4px 0 0 16px;
-        border-radius: 8px;
-        color: #989FAB;
+      span {
+        color: #1b1b50;
+        font-weight: 400;
         font-size: 18px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-
+        line-height: 22px;
+      }
     }
 
-    .ant-select-selector[class] {
+    .dropdown__list {
+      background: #ffffff;
+      border: 1px solid #ecedf0;
+      box-shadow: 0px 12px 48px rgba(27, 27, 80, 0.1);
+      border-radius: 8px;
+      width: 218px;
+      padding: 18px;
+      transform-origin: top left;
+      transform: translateY(20px);
+      transition: all ease-in-out 0.3s;
+      z-index: 2;
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+
+      li {
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        label {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 16px;
+          color: #1b1b50;
+        }
+      }
+    }
+
+    &.active {
+      .dropdown__list {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(4px);
+      }
+    }
+
+    .ant-dropdown-button {
+      position: relative;
+
+      button {
+        width: 210px;
+        text-align: left;
         height: 56px;
-        padding: 11px 24px;
-        border: 1px solid #ECEDF0;
-        border-radius: 8px;
+        border-radius: 8px !important;
+      }
 
+      .ant-dropdown-trigger {
+        position: absolute;
+        right: 5px;
+        z-index: 3;
+        top: 6px;
+        height: 40px;
+        border: 0;
+        width: auto;
+      }
     }
-
-    .module-filter {
-        margin-left: 24px;
-        position: relative;
-        display: inline-block;
-        max-width: 100%;
-
-        .select-dropdown__button {
-            background: #FFFFFF;
-            border: 1px solid #ECEDF0;
-            border-radius: 8px;
-            width: 218px;
-            height: 56px;
-            text-align: left;
-            padding: 0 20px;  
-            cursor: pointer;      
-
-            &:focus {
-                outline: none;
-            }
-
-            span {
-                color: #1B1B50;
-                font-weight: 400;
-                font-size: 18px;
-                line-height: 22px;
-
-            }
-        }
-
-        .dropdown__list {
-            background: #FFFFFF;
-            border: 1px solid #ECEDF0;
-            box-shadow: 0px 12px 48px rgba(27, 27, 80, 0.1);
-            border-radius: 8px;
-            width: 218px;
-            padding: 18px;
-            transform-origin: top left;
-            transform: translateY(20px);
-            transition: all ease-in-out .3s;
-            z-index: 2;
-            position: absolute;
-            opacity: 0;
-            visibility: hidden;
-
-            li {
-                margin-bottom: 12px;
-
-                &:last-child {
-                    margin-bottom: 0;
-
-                }
-
-                label {
-                    font-weight: 400;
-                    font-size: 16px;
-                    line-height: 16px;
-                    color: #1B1B50;
-
-                }
-            }
-
-        }
-
-        &.active {
-            .dropdown__list {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(4px);
-            }
-            
-        }
-
-        .ant-dropdown-button {
-            position: relative;
-
-            button {
-                width: 210px;
-                text-align: left;
-                height: 56px;
-                border-radius: 8px !important;
-
-            }
-
-            .ant-dropdown-trigger {
-                position: absolute;
-                right: 5px;
-                z-index: 3;
-                top: 6px;
-                height: 40px;
-                border: 0;
-                width: auto;
-
-            }
-        }
-
-    }
+  }
 }
 
 .ant-select-item[class] {
-    min-height: inherit;
+  min-height: inherit;
 }
-
 
 /*===============================
 Settings Sidebar
 ===============================*/
 .sgsb__settings-sidebar {
+  background: $white-color;
+
+  .ant-layout-sider-children[class] {
     background: $white-color;
+    border: 1px solid #ecedf0;
+    border-radius: 8px;
 
-    .ant-layout-sider-children[class] {
-        background: $white-color;
-        border: 1px solid #ECEDF0;
-        border-radius: 8px;
+    ul {
+      background: none;
+      padding: 4px 18px;
 
-        ul {
-            background: none;
-            padding: 4px 18px;
+      li {
+        padding: 6px;
+        padding-left: 18px !important;
+        height: 46px;
 
-            li {
-                padding: 6px;
-                padding-left: 18px !important;
-                height: 46px;
-
-                .ant-menu-item-icon {
-                    display: none;
-
-                }
-
-                .ant-menu-title-content {
-                    margin-left: 0;
-
-                }
-
-                a {
-                    font-size: 16px;
-                    font-weight: 500;
-                    color: #1B1B50;
-
-                }
-
-                &.ant-menu-item-selected {
-                    background: #008DFF;
-                    border-radius: 8px;
-                    
-                    a {
-                        color: $white-color;
-    
-                    }
-    
-                    &:after {
-                        display: none;
-    
-                    }
-    
-                }
-
-            }
-
-            
+        .ant-menu-item-icon {
+          display: none;
         }
 
-        h3 {
-            font-size: 20px;
-            color: #080814;
-            border-bottom: 1px solid #ECEDF0;
-            padding: 18px 24px;
-
+        .ant-menu-title-content {
+          margin-left: 0;
         }
-        
+
+        a {
+          font-size: 16px;
+          font-weight: 500;
+          color: #1b1b50;
+        }
+
+        &.ant-menu-item-selected {
+          background: #008dff;
+          border-radius: 8px;
+
+          a {
+            color: $white-color;
+          }
+
+          &:after {
+            display: none;
+          }
+        }
+      }
     }
+
+    h3 {
+      font-size: 20px;
+      color: #080814;
+      border-bottom: 1px solid #ecedf0;
+      padding: 18px 24px;
+    }
+  }
 }
 /*===============================
 End Settings Sidebar
 ===============================*/
+
+// progressive discount banner css start
+.sgsb-removable-icon-picker-wrapper {
+  position: relative;
+
+  .clear-icon {
+    position: absolute;
+    top: -11px;
+    left: 38px;
+    font-size: 18px;
+    height: 22px;
+    width: 22px;
+    background: #0009;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    padding-bottom: 2px;
+  }
+}
+
+// progressive discount banner css end
