@@ -116,7 +116,7 @@ function CreateSalesPop( { onFormSave } ) {
   return (
     <>
 
-      <Form.Item
+      {/* <Form.Item
         extra="Working with External/Affiliate Products. Product link is product url"
         label="External Link"
         labelAlign='left'
@@ -125,7 +125,7 @@ function CreateSalesPop( { onFormSave } ) {
           checked={ !!externalLink }
           onChange={ ( v ) => onFieldChange( 'external_link', v ) }
         />
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         label="Product Show Random"
