@@ -71,19 +71,6 @@ $image_without_link = '<img id="image_of_product" src="#"
 
 
 			<?php
-			if ( 'right' === $popup_properties['image_position'] ) {
-				?>
-					<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
-					<?php
-					if ( $popup_properties['link_image_to_product'] ) {
-						echo $image_with_link; //phpcs:ignore
-					} else {
-						echo $image_without_link; //phpcs:ignore
-					}
-					?>
-				</div>
-				<?php
-			}
 			if ( true === $popup_properties['show_close_button'] ) {
 				?>
 			<div class="custom-close"></div>
