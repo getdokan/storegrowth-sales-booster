@@ -16377,29 +16377,7 @@ function StockCountdown() {
     initialValue: formData.progressbar_bg_color,
     onChange: e => onFieldChange('progressbar_bg_color', e.hex),
     placement: "right"
-  })), formData.stock_display_format === "above" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
-    label: "Total Sell Count Text",
-    labelAlign: "left",
-    extra: "It will be placed left side of the above of the progress bar. e.g. Total Sold"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    value: formData.total_sell_count_text,
-    onChange: e => onFieldChange('total_sell_count_text', e.target.value),
-    style: {
-      width: 400
-    },
-    placeholder: "Total Sold"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
-    label: "Available Item Count Text",
-    labelAlign: "left",
-    extra: "It will be placed right side of the above of the progress bar. e.g. Available Item"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    value: formData.available_item_count_text,
-    onChange: e => onFieldChange('available_item_count_text', e.target.value),
-    style: {
-      width: 400
-    },
-    placeholder: "Available Item"
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
     level: 4,
     style: {
       marginBottom: '20px'

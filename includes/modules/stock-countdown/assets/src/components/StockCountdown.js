@@ -183,7 +183,7 @@ function StockCountdown() {
           </Select>
         </Form.Item> */}
 
-        {formData.stock_display_format === "above" && <div>
+        {/* {formData.stock_display_format === "above" && <div>
           <Form.Item
             label="Total Sell Count Text"
             labelAlign="left"
@@ -209,7 +209,7 @@ function StockCountdown() {
               placeholder="Available Item"
             />
           </Form.Item>
-        </div>}
+        </div>} */}
 
         {/* <Typography.Title level={4} style={{marginBottom: '20px'}}>Shop Page</Typography.Title>
 
