@@ -44,6 +44,15 @@ class Ajax {
 	public function bump_create() {
 		check_ajax_referer( 'ajd_protected' );
 
+		$args_bump = array(
+			'post_type'      => 'sgsb_order_bump',
+			'posts_per_page' => - 1,
+		);
+		$bump_list = get_posts( $args_bump );
+		if ( is_array( $bump_list ) && count( $bump_list ) >= 2 ) {
+			return;
+		}
+
 		$bump_detail = $this->get_sanitized_create_bump_data();
 
 		$my_post = array(

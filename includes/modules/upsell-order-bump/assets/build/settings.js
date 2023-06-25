@@ -22862,6 +22862,11 @@ function CreateBump(_ref) {
 
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
+
+  if (allBumpsData?.length >= 2) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "In this version, you are not able to create more than two order bumps.");
+  }
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     defaultActiveKey: "1"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
@@ -23385,14 +23390,18 @@ function OrderBumpList(_ref3) {
       })
     };
   });
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  const isDisableBumpCreation = bumpListData?.length >= 2;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, isDisableBumpCreation && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "sgsb-order-bumps-limit-warning-message"
+  }, "In this version, you are not able to create more than two order bumps."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     type: "primary",
     shape: "round",
     onClick: () => navigate("/upsell-order-bump/create-bump"),
     style: {
       float: 'right',
       marginBottom: '10px'
-    }
+    },
+    disabled: isDisableBumpCreation
   }, "+ CREATE NEW"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     columns: columns,
     dataSource: data,
