@@ -108,13 +108,22 @@ function CreateSalesPop( { onFormSave } ) {
   };
 
   const max_option_count_in_free = 5;
-  const selectedPopupProducts = createPopupForm.popup_products;
-  const isProductsSelectReachedlimit = selectedPopupProducts.length >= max_option_count_in_free;
+
   const externalLink = createPopupForm.external_link;
   const externalProductsIds = sales_pop_data.product_list.externalProductsIds;
   const allProductListForSelect = sales_pop_data.product_list.productListForSelect;
+
+  const selectedPopupProducts = createPopupForm.popup_products;
+  const isProductsSelectReachedlimit = selectedPopupProducts.length >= max_option_count_in_free;
   let productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
   productListForSelect = isProductsSelectReachedlimit ? productListForSelect.filter(item => selectedPopupProducts.includes(item.value)) : productListForSelect;
+
+  const selectedVirtualCountries = createPopupForm.virtual_countries;
+  const isCountriesSelectionReachedlimit = selectedVirtualCountries?.length >= max_option_count_in_free;
+  let virtualCountriesOptions = createPopupForm.countries;
+  virtualCountriesOptions = isCountriesSelectionReachedlimit ? virtualCountriesOptions.filter(item => selectedVirtualCountries.includes(item.value)) : virtualCountriesOptions;
+
+  const warningMessage = <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span>;
 
   return (
     <>
@@ -144,7 +153,7 @@ function CreateSalesPop( { onFormSave } ) {
         label="Select Popup Products"
         labelAlign='left'
       >
-        {isProductsSelectReachedlimit && <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span> }
+        {isProductsSelectReachedlimit && warningMessage }
         <Select
           allowClear
           placeholder="Search for products"
@@ -200,15 +209,16 @@ function CreateSalesPop( { onFormSave } ) {
         labelAlign='left'
         extra="Virtual country show on notification"
       >
+        {isCountriesSelectionReachedlimit && <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span> }
         <Select
           allowClear
           placeholder="Search for products"
-          options={ createPopupForm.countries }
+          options={ virtualCountriesOptions }
           onChange={ ( v ) => onFieldChangeCountry( 'virtual_countries', v ) }
           mode="multiple"
           filterOption={ true }
           optionFilterProp="label"
-          value={ createPopupForm.virtual_countries }
+          value={ selectedVirtualCountries }
 
         />
       </Form.Item>
