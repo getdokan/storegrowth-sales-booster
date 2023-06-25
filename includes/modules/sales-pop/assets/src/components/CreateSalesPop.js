@@ -171,7 +171,7 @@ function CreateSalesPop( { onFormSave } ) {
         />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
 
         label="Virtual Address Type"
         labelAlign='left'
@@ -191,7 +191,7 @@ function CreateSalesPop( { onFormSave } ) {
           <Select.Option value="virtual">Virtual Address</Select.Option>
 
         </Select>
-      </Form.Item>
+      </Form.Item> */}
 
 
       <Form.Item
@@ -213,7 +213,7 @@ function CreateSalesPop( { onFormSave } ) {
         />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="Virtual State"
         labelAlign='left'
         extra="Virtual state what will show on notification"
@@ -247,7 +247,7 @@ function CreateSalesPop( { onFormSave } ) {
             value={ createPopupForm.virtual_city }
 
           />
-        </Form.Item> : null }
+        </Form.Item> : null } */}
       <Button
         type="primary"
         onClick={ () => onFormSave( 'product' ) }
