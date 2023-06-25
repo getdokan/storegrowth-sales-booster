@@ -24,8 +24,8 @@ function StockCountdown() {
     progressbar_bg_color: '#444444',
     progressbar_fg_color: '#C3D168',
     progressbar_height: 5,
-    shop_page_progress_bar_enable: true,
-    shop_page_countdown_enable: true,
+    shop_page_progress_bar_enable: false,
+    shop_page_countdown_enable: false,
     product_page_progress_bar_enable: true,
     product_page_countdown_enable: true,
     countdown_heading: 'Last chance! [discount]% OFF',
@@ -211,7 +211,7 @@ function StockCountdown() {
           </Form.Item>
         </div>}
 
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Shop Page</Typography.Title>
+        {/* <Typography.Title level={4} style={{marginBottom: '20px'}}>Shop Page</Typography.Title>
 
         <Form.Item
           label="Shop Page Display"
@@ -229,7 +229,7 @@ function StockCountdown() {
               onChange={(e) => onFieldChange('shop_page_countdown_enable', e.target.checked)}
             >Stock Countdown</Checkbox>
           </Space>
-        </Form.Item>
+        </Form.Item> */}
 
         <Typography.Title level={4} style={{marginBottom: '20px'}}>Product Details Page</Typography.Title>
 

@@ -17146,8 +17146,8 @@ function StockCountdown() {
     progressbar_bg_color: '#444444',
     progressbar_fg_color: '#C3D168',
     progressbar_height: 5,
-    shop_page_progress_bar_enable: true,
-    shop_page_countdown_enable: true,
+    shop_page_progress_bar_enable: false,
+    shop_page_countdown_enable: false,
     product_page_progress_bar_enable: true,
     product_page_countdown_enable: true,
     countdown_heading: 'Last chance! [discount]% OFF',
@@ -17309,24 +17309,6 @@ function StockCountdown() {
     },
     placeholder: "Available Item"
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
-    level: 4,
-    style: {
-      marginBottom: '20px'
-    }
-  }, "Shop Page"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
-    label: "Shop Page Display",
-    labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    checked: formData.shop_page_progress_bar_enable,
-    value: "shop_page_progress_bar_enable",
-    onChange: e => onFieldChange('shop_page_progress_bar_enable', e.target.checked)
-  }, "Progress Bar"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    checked: formData.shop_page_countdown_enable,
-    value: "shop_page_countdown_enable",
-    onChange: e => onFieldChange('shop_page_countdown_enable', e.target.checked)
-  }, "Stock Countdown"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
     level: 4,
     style: {
       marginBottom: '20px'
