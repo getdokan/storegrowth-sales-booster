@@ -7,7 +7,7 @@ import {
 	Button,
 	InputNumber,
 } from 'antd';
-import { IconPicker } from 'react-fa-icon-picker';
+import { RemovableIconPicker } from './RemovableIconPicker';
 
 function DiscountBannerFields(props) {
 	const { formData, onFieldChange, onIconChange } = props;
@@ -127,7 +127,8 @@ function DiscountBannerFields(props) {
 			</Form.Item>
 
       <Form.Item label="Progressive Banner Icon" labelAlign="left">
-        <IconPicker
+        <RemovableIconPicker
+          onClear={(v) => onIconChange('progressive_banner_icon_name', 'progressive_banner_icon_html', "")}
           onChange={(v) => onIconChange('progressive_banner_icon_name', 'progressive_banner_icon_html', v)}
           value={formData.progressive_banner_icon_name}
         />
@@ -176,7 +177,8 @@ function SettingsTab(props) {
 
       {formData.default_banner && (
         <Form.Item label="Default Banner Icon" labelAlign="left">
-          <IconPicker
+          <RemovableIconPicker
+            onClear={(v) => onIconChange('default_banner_icon_name', 'default_banner_icon_html', "")}
             onChange={(v) => onIconChange('default_banner_icon_name', 'default_banner_icon_html', v)}
             value={formData.default_banner_icon_name}
           />

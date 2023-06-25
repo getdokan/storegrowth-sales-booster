@@ -15339,6 +15339,47 @@ function DiscountBannerLayout() {
 
 /***/ }),
 
+/***/ "./src/components/RemovableIconPicker.js":
+/*!***********************************************!*\
+  !*** ./src/components/RemovableIconPicker.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RemovableIconPicker": () => (/* binding */ RemovableIconPicker)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_fa_icon_picker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-fa-icon-picker */ "./node_modules/react-fa-icon-picker/dist/index.js");
+
+
+
+const noop = () => {};
+
+const RemovableIconPicker = props => {
+  const {
+    onClear = noop,
+    //
+    value = false
+  } = props;
+  console.log("---removeable ", {
+    value
+  });
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sgsb-removable-icon-picker-wrapper"
+  }, value && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "clear-icon",
+    style: {
+      cursor: "pointer"
+    },
+    onClick: onClear
+  }, "x"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_fa_icon_picker__WEBPACK_IMPORTED_MODULE_1__.IconPicker, props));
+};
+
+/***/ }),
+
 /***/ "./src/components/SettingsTab.js":
 /*!***************************************!*\
   !*** ./src/components/SettingsTab.js ***!
@@ -15358,7 +15399,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/switch/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
-/* harmony import */ var react_fa_icon_picker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-fa-icon-picker */ "./node_modules/react-fa-icon-picker/dist/index.js");
+/* harmony import */ var _RemovableIconPicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RemovableIconPicker */ "./src/components/RemovableIconPicker.js");
 
 
 
@@ -15442,7 +15483,8 @@ function DiscountBannerFields(props) {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Progressive Banner Icon",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_fa_icon_picker__WEBPACK_IMPORTED_MODULE_1__.IconPicker, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_RemovableIconPicker__WEBPACK_IMPORTED_MODULE_1__.RemovableIconPicker, {
+    onClear: v => onIconChange('progressive_banner_icon_name', 'progressive_banner_icon_html', ""),
     onChange: v => onIconChange('progressive_banner_icon_name', 'progressive_banner_icon_html', v),
     value: formData.progressive_banner_icon_name
   })));
@@ -15483,7 +15525,8 @@ function SettingsTab(props) {
   })), formData.default_banner && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Default Banner Icon",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_fa_icon_picker__WEBPACK_IMPORTED_MODULE_1__.IconPicker, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_RemovableIconPicker__WEBPACK_IMPORTED_MODULE_1__.RemovableIconPicker, {
+    onClear: v => onIconChange('default_banner_icon_name', 'default_banner_icon_html', ""),
     onChange: v => onIconChange('default_banner_icon_name', 'default_banner_icon_html', v),
     value: formData.default_banner_icon_name
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
