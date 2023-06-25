@@ -306,6 +306,7 @@ Settings Sidebar
 ===============================*/
 .sgsb__settings-sidebar {
     background: $white-color;
+    border-radius: 8px;
 
     .ant-layout-sider-children[class] {
         background: $white-color;
@@ -371,4 +372,134 @@ Settings Sidebar
 }
 /*===============================
 End Settings Sidebar
+===============================*/
+
+/*===============================
+Start Settings Content
+===============================*/
+.sgsb__settings-content {
+    background: #fff;
+    border: 1px solid #ECEDF0;
+    border-radius: 8px;
+
+    .ant-card-bordered {
+        border: 0;
+        border-radius: 8px;
+
+        .ant-tabs-nav {
+            background: none;
+
+            &:before {
+                display: none;
+
+            }
+
+            .ant-tabs-tab {
+                border: 0;
+                font-size: 18px;
+                color: #1B1B50;
+                font-weight: 500;
+                background: #F9FAFC;
+                border-radius: 8px;
+                margin: 0 10px;
+                padding: 12px 20px 10px;
+
+                &:first-child {
+                    margin-left: 0;
+
+                }
+
+                &.ant-tabs-tab-active {
+                    background: #EBF6FF;
+
+                }
+
+            }
+
+            .ant-tabs-ink-bar {
+                display: none;
+
+            }
+        }
+
+        .ant-tabs-content-holder {
+            border: 1px solid #ECEDF0;
+            border-radius: 8px;
+            padding: 30px 40px;
+
+            button.ant-btn-primary {
+                background: #008DFF;
+                padding: 15px 32px 18px;
+                border-radius: 8px;
+                height: 57px;
+                font-size: 18px;
+                border: 0;
+                font-weight: 500;
+
+            }
+
+            label {
+                font-size: 20px;
+                color: #1B1B50;
+                font-weight: 500;
+
+            }
+
+            .ant-space-item {
+                span {
+                    font-size: 18px;
+                    color: #1B1B50;
+                    font-weight: 400;
+
+                }
+            }
+
+            .ant-checkbox-wrapper {
+                .ant-checkbox-inner {
+                    width: 18px;
+                    height: 18px;
+                    border-color: #989FAB;
+
+                }
+
+                &.ant-checkbox-wrapper-checked {
+                    .ant-checkbox-inner[class] {
+                        background-color: #02AC6E;
+                        border-color: #02AC6E;
+
+                        &:after {
+                            top: 46%;
+                            left: 5px;
+        
+                        }
+        
+                    }
+                }
+            }
+
+            .ant-tabs-content {
+                .ant-select-selector {
+                    border: 1px solid #ECEDF0;
+                    border-radius: 8px;
+                    padding: 11px 23px 12px;
+                    height: 54px;
+                                        
+                }
+
+                .wp-picker-container {
+                    border: 1px solid #ECEDF0;
+                    padding: 10px;
+                    border-radius: 8px;
+                    min-width: 186px;
+                    padding-bottom: 4px;
+
+                }
+            }
+
+        }
+
+    }
+}
+/*===============================
+End Settings Content
 ===============================*/

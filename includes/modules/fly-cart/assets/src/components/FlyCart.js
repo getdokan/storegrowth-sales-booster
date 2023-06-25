@@ -27,10 +27,10 @@ function GenenralSettings({
   return (
     <Form
       labelCol={{
-        span: 7,
+        span: 10,
       }}
       wrapperCol={{
-        span: 18,
+        span: 14,
       }}
       autoComplete="off"
     >
@@ -122,10 +122,10 @@ function DesignSettings({
   return (
     <Form
       labelCol={{
-        span: 7,
+        span: 10,
       }}
       wrapperCol={{
-        span: 18,
+        span: 14,
       }}
       autoComplete="off"
     >

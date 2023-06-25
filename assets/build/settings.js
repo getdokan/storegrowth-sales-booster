@@ -4785,9 +4785,10 @@ function ModuleSettings(_ref) {
     routes: routes
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Content, {
     style: {
-      paddingLeft: 25,
+      marginLeft: 25,
       minHeight: 550
-    }
+    },
+    className: "sgsb__settings-content"
   }, element)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PageLoader__WEBPACK_IMPORTED_MODULE_4__["default"], null));
 } // If not module is active.
 

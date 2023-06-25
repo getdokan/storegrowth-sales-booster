@@ -26671,6 +26671,7 @@ Settings Sidebar
 ===============================*/
 .sgsb__settings-sidebar {
   background: #FFFFFF;
+  border-radius: 8px;
 }
 .sgsb__settings-sidebar .ant-layout-sider-children[class] {
   background: #FFFFFF;
@@ -26716,6 +26717,97 @@ Settings Sidebar
 
 /*===============================
 End Settings Sidebar
+===============================*/
+/*===============================
+Start Settings Content
+===============================*/
+.sgsb__settings-content {
+  background: #fff;
+  border: 1px solid #ECEDF0;
+  border-radius: 8px;
+}
+.sgsb__settings-content .ant-card-bordered {
+  border: 0;
+  border-radius: 8px;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav {
+  background: none;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav:before {
+  display: none;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav .ant-tabs-tab {
+  border: 0;
+  font-size: 18px;
+  color: #1B1B50;
+  font-weight: 500;
+  background: #F9FAFC;
+  border-radius: 8px;
+  margin: 0 10px;
+  padding: 12px 20px 10px;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav .ant-tabs-tab:first-child {
+  margin-left: 0;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active {
+  background: #EBF6FF;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-nav .ant-tabs-ink-bar {
+  display: none;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder {
+  border: 1px solid #ECEDF0;
+  border-radius: 8px;
+  padding: 30px 40px;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder button.ant-btn-primary {
+  background: #008DFF;
+  padding: 15px 32px 18px;
+  border-radius: 8px;
+  height: 57px;
+  font-size: 18px;
+  border: 0;
+  font-weight: 500;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder label {
+  font-size: 20px;
+  color: #1B1B50;
+  font-weight: 500;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-space-item span {
+  font-size: 18px;
+  color: #1B1B50;
+  font-weight: 400;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-checkbox-wrapper .ant-checkbox-inner {
+  width: 18px;
+  height: 18px;
+  border-color: #989FAB;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-checkbox-wrapper.ant-checkbox-wrapper-checked .ant-checkbox-inner[class] {
+  background-color: #02AC6E;
+  border-color: #02AC6E;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-checkbox-wrapper.ant-checkbox-wrapper-checked .ant-checkbox-inner[class]:after {
+  top: 46%;
+  left: 5px;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-tabs-content .ant-select-selector {
+  border: 1px solid #ECEDF0;
+  border-radius: 8px;
+  padding: 11px 23px 12px;
+  height: 54px;
+}
+.sgsb__settings-content .ant-card-bordered .ant-tabs-content-holder .ant-tabs-content .wp-picker-container {
+  border: 1px solid #ECEDF0;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 186px;
+  padding-bottom: 4px;
+}
+
+/*===============================
+End Settings Content
 ===============================*/
 
 /*# sourceMappingURL=modules.css.map*/

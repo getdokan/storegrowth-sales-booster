@@ -16,9 +16,10 @@ function ModuleSettings({ routes }) {
       <Layout>
         <Layout.Content
           style={{
-            paddingLeft: 25,
+            marginLeft: 25,
             minHeight: 550,
           }}
+          className="sgsb__settings-content"
         >
           {element}
         </Layout.Content>

@@ -13794,10 +13794,10 @@ function GenenralSettings(_ref) {
   } = _ref;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     labelCol: {
-      span: 7
+      span: 10
     },
     wrapperCol: {
-      span: 18
+      span: 14
     },
     autoComplete: "off"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
@@ -13851,10 +13851,10 @@ function DesignSettings(_ref2) {
   } = _ref2;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     labelCol: {
-      span: 7
+      span: 10
     },
     wrapperCol: {
-      span: 18
+      span: 14
     },
     autoComplete: "off"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"].Title, {
