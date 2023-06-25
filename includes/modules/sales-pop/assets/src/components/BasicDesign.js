@@ -154,7 +154,7 @@ const BasicDesign = (props) => {
 					/>
 				</Col> */}
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Open product link in new tab<br />
 					<Switch 
 						checked={(
@@ -164,7 +164,7 @@ const BasicDesign = (props) => {
 						)?true:false} 
 						onChange={(v) => props.onFieldChange('open_product_link_in_new_tab', v)} 
 					/>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Show close button<br />
