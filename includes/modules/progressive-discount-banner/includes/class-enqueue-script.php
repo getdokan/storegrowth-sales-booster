@@ -34,6 +34,11 @@ class Enqueue_Script {
 	 * Add JS scripts to frontend.
 	 */
 	public function wp_enqueue_scripts() {
+		// On WooCommerce v7.8 wc-cart-fragments has been removed from all pages, So we added it here.
+		if ( is_cart() || is_checkout() ) {
+			wp_enqueue_script( 'wc-cart-fragments' );
+		}
+
 		$style_file = sgsb_modules_path( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' );
 
 		wp_enqueue_style(
