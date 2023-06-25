@@ -9,9 +9,6 @@ if ( ! $product->managing_stock() ) {
 	return;
 }
 
-if ( is_shop() && ! $shop_bar_enable ) {
-	return;
-}
 
 if ( is_product() && ! $product_bar_enable ) {
 	return;

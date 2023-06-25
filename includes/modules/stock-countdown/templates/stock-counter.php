@@ -5,10 +5,6 @@
  * @package SBFW
  */
 
-if ( is_shop() && ! $shop_countdown_enable ) {
-	return;
-}
-
 if ( is_product() && ! $product_countdown_enable ) {
 	return;
 }
