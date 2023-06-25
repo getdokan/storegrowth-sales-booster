@@ -129,3 +129,29 @@ if ( ! function_exists( 'sgsb_sanitize_svg_icon_fields' ) ) {
 		return wp_kses( $value, $icon_allowed_html );
 	}
 }
+
+
+  	/**
+    * This function allows you to track usage of your plugin
+    */
+   if( ! function_exists( 'storegrowth_sales_booster_start_plugin_tracking' ) ) {
+      function storegrowth_sales_booster_start_plugin_tracking() {
+          if( ! class_exists( 'WPInsights_Storegrowth_Sales_Booster') ) {
+              require_once dirname( __FILE__ ) . '/admin/class-wpinsights-storegrowth-sales-booster.php';
+          }
+        $tracker = WPInsights_Storegrowth_Sales_Booster::get_instance( STOREGROWTH_PLUGIN_DIR_PATH, [
+        'opt_in'       => true,
+        'goodbye_form' => true,
+        'item_id'      => 'cdabb75e4451684da3a3'
+      ] );
+      $tracker->set_notice_options(array(
+        'notice' => __( 'Want to help make <strong>StoreGrowth</strong> even more awesome? Be the first to get access to <strong>StoreGrowth PRO</strong> with a huge <strong>50% Early Bird Discount</strong> if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
+        'extra_notice' => __( 'We collect non-sensitive diagnostic data and plugin usage information. 
+        Your site URL, WordPress & PHP version, plugins & themes and email address to send you the 
+        discount coupon. This data lets us make sure this plugin always stays compatible with the most 
+        popular plugins and themes. No spam, I promise.', 'storegrowth-sales-booster' ),
+      ));
+      $tracker->init();
+      }
+      storegrowth_sales_booster_start_plugin_tracking();
+  }
