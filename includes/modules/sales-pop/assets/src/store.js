@@ -49,7 +49,7 @@ From {location}
 	mobile_view                  : false,
 	highlight_color              : '#000000',
 	text_color                   : '#000000',
-	background_color             : '#ECF0F1',
+	background_color             : '#ffffff',
 	image_position               : 'left',
 	popup_position               : 'left_bottom',
 	popup_width                  : 22,

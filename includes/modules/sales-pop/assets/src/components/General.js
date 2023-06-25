@@ -28,7 +28,7 @@ function General( { onFormSave } ) {
           onChange={ ( v ) => onFieldChange( 'enable', v ) }
         />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         label="Popup in Mobile"
         labelAlign='left'
       >
@@ -36,7 +36,7 @@ function General( { onFormSave } ) {
           checked={ (createPopupForm.mobile_view == 'true' || createPopupForm.mobile_view == true) ? true : false }
           onChange={ ( v ) => onFieldChange( 'mobile_view', v ) }
         />
-      </Form.Item>
+      </Form.Item> */}
 
       <Button
         type="primary"
