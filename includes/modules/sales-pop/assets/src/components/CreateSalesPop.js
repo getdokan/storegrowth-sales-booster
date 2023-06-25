@@ -4,6 +4,8 @@ const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
 import { State, City } from 'country-state-city';
 
+const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
+
 function CreateSalesPop( { onFormSave } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
@@ -123,7 +125,13 @@ function CreateSalesPop( { onFormSave } ) {
   let virtualCountriesOptions = createPopupForm.countries;
   virtualCountriesOptions = isCountriesSelectionReachedlimit ? virtualCountriesOptions.filter(item => selectedVirtualCountries.includes(item.value)) : virtualCountriesOptions;
 
-  const warningMessage = <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span>;
+  const virtualName = createPopupForm.virtual_name;
+  const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "").split(",")?.length;
+  const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
+  const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
+  console.log("---create pop", {
+    virtualName, virtualNameLength
+  })
 
   return (
     <>
@@ -153,7 +161,7 @@ function CreateSalesPop( { onFormSave } ) {
         label="Select Popup Products"
         labelAlign='left'
       >
-        {isProductsSelectReachedlimit && warningMessage }
+        {isProductsSelectReachedlimit && <WarningMessage /> }
         <Select
           allowClear
           placeholder="Search for products"
@@ -172,10 +180,13 @@ function CreateSalesPop( { onFormSave } ) {
         labelAlign='left'
         extra="Please use comma(,) separator to insert multiple name"
       >
+        {(isFirstNameReachedLimit || isFirstNameExceededLimit) && <WarningMessage warningColor={isFirstNameExceededLimit ? "#f00" : false} />}
         <TextArea
           rows={ 4 }
-          value={ createPopupForm.virtual_name }
-          onChange={ ( v ) => onFieldChange( 'virtual_name', v.target.value ) }
+          value={ virtualName }
+          onChange={ ( v ) => {
+            onFieldChange( 'virtual_name', v.target.value ) 
+        }}
           placeholder='Name1, Name2, Name3'
         />
       </Form.Item>
@@ -209,7 +220,7 @@ function CreateSalesPop( { onFormSave } ) {
         labelAlign='left'
         extra="Virtual country show on notification"
       >
-        {isCountriesSelectionReachedlimit && <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span> }
+        {isCountriesSelectionReachedlimit && <WarningMessage /> }
         <Select
           allowClear
           placeholder="Search for products"
@@ -260,9 +271,10 @@ function CreateSalesPop( { onFormSave } ) {
         </Form.Item> : null } */}
       <Button
         type="primary"
-        onClick={ () => onFormSave( 'product' ) }
+        onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
         className='order-bump-save-change-button'
         loading={ getButtonLoading }
+        disabled={isFirstNameExceededLimit}
       >
         Save Changes
       </Button>
