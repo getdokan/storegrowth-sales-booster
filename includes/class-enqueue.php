@@ -61,15 +61,7 @@ class Enqueue {
 				true
 			);
 
-			wp_localize_script(
-				'sgsb-modules-script',
-				'sgsbAdmin',
-				array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'sgsb_ajax_nonce' ),
-					'isPro'    => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
-				)
-			);
+			$this->admin_localize_script();
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
@@ -83,16 +75,7 @@ class Enqueue {
 				true
 			);
 
-			wp_localize_script(
-				'sgsb-settings-script',
-				'sgsbAdmin',
-				array(
-					'ajax_url'       => admin_url( 'admin-ajax.php' ),
-					'nonce'          => wp_create_nonce( 'sgsb_ajax_nonce' ),
-					'isPro'          => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
-					'currencySymbol' => get_woocommerce_currency_symbol(),
-				)
-			);
+			$this->admin_localize_script();
 		}
 	}
 
@@ -113,5 +96,23 @@ class Enqueue {
 				filemtime( sgsb_plugin_path( 'assets/build/modules.css' ) )
 			);
 		}
+	}
+
+	/**
+	 * Add functionality of localize script to send data to frontend.
+	 *
+	 * @return void
+	 */
+	private function admin_localize_script() {
+		wp_localize_script(
+			'sgsb-settings-script',
+			'sgsbAdmin',
+			array(
+				'ajax_url'       => admin_url( 'admin-ajax.php' ),
+				'nonce'          => wp_create_nonce( 'sgsb_ajax_nonce' ),
+				'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+				'currencySymbol' => get_woocommerce_currency_symbol(),
+			)
+		);
 	}
 }

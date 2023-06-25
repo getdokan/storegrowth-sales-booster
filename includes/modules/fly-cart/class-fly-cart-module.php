@@ -106,7 +106,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'fast_fly_cart_module_init' );
+		do_action( 'storegrowth_quick_cart_module_init' );
 	}
 
 }
