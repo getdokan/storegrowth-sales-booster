@@ -15360,11 +15360,16 @@ const noop = () => {};
 
 const RemovableIconPicker = props => {
   const {
-    onClear = noop
+    onClear = noop,
+    //
+    value = false
   } = props;
+  console.log("---removeable ", {
+    value
+  });
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-removable-icon-picker-wrapper"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }, value && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "clear-icon",
     style: {
       cursor: "pointer"
