@@ -26737,4 +26737,9 @@ End Settings Sidebar
   z-index: 99999;
 }
 
+.sgsb-order-bumps-limit-warning-message {
+  color: #f00;
+  font-style: italic;
+}
+
 /*# sourceMappingURL=modules.css.map*/

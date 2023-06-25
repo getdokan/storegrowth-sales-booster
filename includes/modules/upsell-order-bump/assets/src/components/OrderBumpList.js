@@ -160,13 +160,17 @@ function OrderBumpList( { navigate } ) {
     }
   } )
 
+  const isDisableBumpCreation = bumpListData?.length >= 2;
+
   return (
     <>
+      {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>In this version, you are not able to create more than two order bumps.</span>}
       <Button
         type="primary"
         shape="round"
         onClick={ () => navigate( "/upsell-order-bump/create-bump" ) }
         style={ { float: 'right', marginBottom: '10px' } }
+        disabled={isDisableBumpCreation}
       >
         + CREATE NEW
       </Button>
