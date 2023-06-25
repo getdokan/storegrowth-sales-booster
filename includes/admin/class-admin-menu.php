@@ -38,7 +38,7 @@ class Admin_Menu {
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
-			STOREGROWTH_PLUGIN_DIR_URL . 'assets/images/StoreGrowth.svg',
+			STOREGROWTH_PLUGIN_DIR_URL . 'assets/images/storegrowth.svg',
 			58
 		);
 

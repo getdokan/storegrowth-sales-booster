@@ -48,9 +48,7 @@
 
 .template-overview-area{
   width: 100%;
-  min-height: 800px;
   float: left;
-  padding: 10 20px ;
 }
 
 .offer-overview-top-text{
@@ -65,54 +63,58 @@
 
 .offer-main-wrap{
   width: 100%;
-  height: 600px;
-  padding: 10px;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 48px;
 }
 
 .offer-main-wrap .dynamic-offer-text{
   width: 100%;
-  min-height: 30px;
+  min-height: 33px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  padding: 16px 75px;
+  border-radius: 16px;
 }
 
 .offer-main-wrap .product-image-and-title{
   width: 100%;
   min-height: 160px;
-  margin-bottom: 20px;
   padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.offer-main-wrap .product-image-and-title .offer-product-image{
-  background: rgb(247, 242, 242);
-  min-height: 120px;
-  width: 30%;
-  padding: 5px;
-  float: left;
-  
+.offer-main-wrap .product-image-and-title .offer-product-image-title{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.offer-main-wrap .product-image-and-title .offer-price{
+  font-weight: 800;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-image img{
+  width: 120px;
+  border-radius:16px;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-title{
-  min-height: 150px;
-  width: 65%;
   padding: 5px;
   margin-bottom: 10px;
-  float: left;
 }
 
-.offer-main-wrap .product-checkbox-and-excitement-message{
-  width: 98%;
-  min-height: 35px;
-  margin-bottom: 20px;
-  padding: 5px;
-  font-size: 15px;
-  margin-top: 20px;
-  clear: both;
+.offer-main-wrap .product-image-and-title .offer-product-title h3{
+  font-weight: bold;
 }
 
 .offer-main-wrap .product-checkbox-and-excitement-message .custom-checkbox{
-  height: 25px;
-  width: 25px;
+  height: 18px;
+  width: 18px;
 }
 
 .offer-main-wrap .product-description{

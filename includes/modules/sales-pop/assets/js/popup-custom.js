@@ -8,7 +8,7 @@
 	var notification_per_page = popup_all_properties.notification_per_page;
 	var mobile_view						= popup_all_properties.mobile_view;
 	var product_random				= popup_all_properties.product_random;
-	
+	var link_new_tab					= popup_all_properties.open_product_link_in_new_tab
 	
 	var notification_count 	  = 0;
 	
@@ -17,7 +17,7 @@
 	var country = new Array ();
 
 	country     = popup_info.random_popup_country;
-	
+
 	var finalCountry = country.map((item,i)=>{
 
 			var countryStringToArray =  item.split(',');
@@ -43,10 +43,13 @@
 				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[1] + "</span>, ";
 				var country = "<span style=" + countryStyle + ">" + countryStringToArray[2] + "</span>";
 				return city + state + country;
-			} else {
+			} else if(countryStringToArray.length == 2) {
 				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[0] + "</span>, ";
 				var country = "<span style=" + countryStyle + ">" + countryStringToArray[1] + "</span>";
 				return state + country;
+			}else{
+				var country = "<span style=" + countryStyle + ">" + countryStringToArray[0] + "</span>";
+				return country;
 			}
 
 					
@@ -58,23 +61,29 @@
 	var product_url   = popup_info.product_url;
 	var products      = popup_info.product_list;
 	var virtual_name  = popup_info.virtual_name;
-	
+	var productAndImage;
+
+
+
+	function getRandomProductImage() {
+			if (product_random) {
+				return Math.floor(product_image.length * Math.random());
+			} else {
+				return notification_count % product_image.length;
+			}
+		}
+			
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
 		var countryRandom         = Math.floor( country.length*Math.random() );
-		var productAndImage;
-
-		if(product_random){
-			productAndImage = Math.floor( product_image.length*Math.random() );
-		}else{
-			productAndImage = notification_count % product_image.length
-		}
+		productAndImage = getRandomProductImage();
 
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( country[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
-        $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
-        $('#product').text( products[ productAndImage ] );
+    $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
+    $('#product').text( products[ productAndImage ] );
+		$("#product_url_title").attr( "href", product_url[ productAndImage ] );
 		var timeVal = Math.floor(Math.random() * 59);
 		$('#time').text( timeVal );
 
@@ -101,7 +110,7 @@
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
 		notification_count++;
-			setTimeout( popDownContentGenerator, display_time*1000 );
+		setTimeout( popDownContentGenerator, display_time*1000 );
 	}
 	
 	function popDownContentGenerator() {
@@ -129,9 +138,11 @@
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
-
-
 	$('.custom-notification-content').html(testMessage);
+	if(link_new_tab){
+		$("#product_url_title").attr( "target", '_blank' );
+	}
+	
 
 	if (notification_per_page !== '0' && notification_per_page !== '') {
 		setTimeout(popupContentGenerator, initial_time_delay * 1000);

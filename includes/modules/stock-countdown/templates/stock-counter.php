@@ -36,17 +36,20 @@ $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
 			<strong class="sgsb-stock-counter-item-days">00</strong>
 			<span>Days</span>
 		</div>
+		<span class="sgsb-colon">:</span>
 		<div class="sgsb-stock-counter-item">
 			<strong class="sgsb-stock-counter-item-hours">00</strong>
 			<span>Hours</span>
 		</div>
+		<span class="sgsb-colon">:</span>
 		<div class="sgsb-stock-counter-item">
 			<strong class="sgsb-stock-counter-item-minutes">00</strong>
-			<span>Minutes</span>
+			<span>Min</span>
 		</div>
+		<span class="sgsb-colon">:</span>
 		<div class="sgsb-stock-counter-item">
 			<strong class="sgsb-stock-counter-item-seconds">00</strong>
-			<span>Seconds</span>
+			<span>Sec</span>
 		</div>
 	</div>
 </div>

@@ -4865,9 +4865,9 @@ function Sidebar(_ref) {
     setSelectedMenu(currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name);
   }, [currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Sider, {
-    width: 200,
-    className: "site-layout-background"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    width: 248,
+    className: "site-layout-background sgsb__settings-sidebar"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Menu"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     mode: "inline",
     defaultSelectedKeys: [selectedMenu],
     style: {

@@ -26347,12 +26347,13 @@ body {
     line-height: 1.4em;
 }
 
-.sales-booster_page_sgsb-modules #wpcontent {
+.sales-booster_page_sgsb-modules #wpcontent, .sales-booster_page_sgsb-settings #wpcontent {
     background: #F9FAFC;
 
 }
 
-.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout {
+.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
+.sales-booster_page_sgsb-settings #sbooster-settings-page .ant-layout {
     background: #F9FAFC;
 }
 

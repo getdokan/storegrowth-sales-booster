@@ -76,7 +76,7 @@ class Ajax {
 		}
 		$method = isset( $_REQUEST['method'] ) ? sanitize_key( $_REQUEST['method'] ) : '';
 		if ( method_exists( $this, $method ) ) {
-			$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array();
+			$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array(); //phpcs:ignore
 			$data = wp_unslash( $data );
 			$data = array_map( 'sanitize_text_field', $data );
 			call_user_func( array( $this, $method ), $data );

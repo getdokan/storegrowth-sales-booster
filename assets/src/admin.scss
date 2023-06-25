@@ -1,3 +1,6 @@
+/* variable color */
+$white-color: #FFFFFF;
+
 .sgsb-header {
     height: 100px;
     display: inline-flex;
@@ -296,3 +299,76 @@ Pagination Style
 .ant-select-item[class] {
     min-height: inherit;
 }
+
+
+/*===============================
+Settings Sidebar
+===============================*/
+.sgsb__settings-sidebar {
+    background: $white-color;
+
+    .ant-layout-sider-children[class] {
+        background: $white-color;
+        border: 1px solid #ECEDF0;
+        border-radius: 8px;
+
+        ul {
+            background: none;
+            padding: 4px 18px;
+
+            li {
+                padding: 6px;
+                padding-left: 18px !important;
+                height: 46px;
+
+                .ant-menu-item-icon {
+                    display: none;
+
+                }
+
+                .ant-menu-title-content {
+                    margin-left: 0;
+
+                }
+
+                a {
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #1B1B50;
+
+                }
+
+                &.ant-menu-item-selected {
+                    background: #008DFF;
+                    border-radius: 8px;
+                    
+                    a {
+                        color: $white-color;
+    
+                    }
+    
+                    &:after {
+                        display: none;
+    
+                    }
+    
+                }
+
+            }
+
+            
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #080814;
+            border-bottom: 1px solid #ECEDF0;
+            padding: 18px 24px;
+
+        }
+        
+    }
+}
+/*===============================
+End Settings Sidebar
+===============================*/

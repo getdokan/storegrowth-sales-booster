@@ -35,10 +35,17 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 	<?php if ( 'above' === $sd_format ) : ?>
 	<div class="sgsb-stock-progressbar-status">
 		<span class="total-sold">
-			<?php echo esc_html( sprintf( '%1$s: %2$s', $total_sell_text, $total_sales ) ); ?>
+			<?php echo esc_html( sprintf( '%1$s:', $total_sell_text ) ); ?>
+			<span class="total-sale">
+				<?php echo esc_html( sprintf( '%1$s', $total_sales ) ); ?>
+			</span>
 		</span>
 		<span class="instock">
-			<?php echo esc_html( sprintf( '%1$s: %2$s', $available_item_text, $stock ) ); ?>
+			<?php echo esc_html( sprintf( '%1$s:', $available_item_text ) ); ?>
+			<span class="total-sale">
+				<?php echo esc_html( sprintf( '%1$s', $stock ) ); ?>
+			</span>
+
 		</span>
 	</div>
 	<?php endif; ?>

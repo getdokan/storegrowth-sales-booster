@@ -56,6 +56,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		'admin_notices',
 		function () {
 			$message = sprintf(
+					// translators: %s is a placeholder for the WooCommerce plugin link.
 				__( 'StoreGrowth - Sales Booster requires %s to be installed and active.', 'storegrowth_sales_booster' ),
 				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 			);
