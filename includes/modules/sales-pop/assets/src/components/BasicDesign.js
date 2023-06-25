@@ -116,7 +116,7 @@ const BasicDesign = (props) => {
 					</Select>
 				</Col> */}
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Border radius of image<br />
 					<InputNumber
 						onChange    = {(v) => props.onFieldChange('popup_image_border_radius', v)}
@@ -126,7 +126,7 @@ const BasicDesign = (props) => {
 							width  : '100%',
 						}}
 					/>
-				</Col>
+				</Col> */}
 			</Row>
 			<br />
 			<Row  gutter={30}>
