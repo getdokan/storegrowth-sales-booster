@@ -146,13 +146,13 @@ const BasicDesign = (props) => {
 					</Select>
 				</Col> */}
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Link image to product page<br />
 					<Switch 
 						checked  = {(props.createPopupForm.link_image_to_product=='true' || props.createPopupForm.link_image_to_product== true)?true:false} 
 						onChange = {(v) => props.onFieldChange('link_image_to_product', v)} 
 					/>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Open product link in new tab<br />
