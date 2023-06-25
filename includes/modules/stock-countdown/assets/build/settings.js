@@ -17256,13 +17256,6 @@ function StockCountdown() {
     onChange: e => onFieldChange('progressbar_bg_color', e.hex),
     placement: "right"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
-    label: "Foreground Color",
-    labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    initialValue: formData.progressbar_fg_color,
-    onChange: e => onFieldChange('progressbar_fg_color', e.hex),
-    placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Progress Bar Height",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {

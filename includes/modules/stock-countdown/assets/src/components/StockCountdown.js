@@ -145,7 +145,7 @@ function StockCountdown() {
           />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label="Foreground Color"
           labelAlign="left"
         >
@@ -154,7 +154,7 @@ function StockCountdown() {
             onChange={(e) => onFieldChange('progressbar_fg_color', e.hex)}
             placement="right"
           />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label="Progress Bar Height"
