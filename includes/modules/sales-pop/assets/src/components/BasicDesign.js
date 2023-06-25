@@ -67,7 +67,7 @@ const BasicDesign = (props) => {
 			</Row>
 			<br />
 			<Row  gutter={30}>
-				<Col span={6}>
+				{/* <Col span={6}>
 					Popup Image Width<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('popup_image_width', v)}
@@ -82,7 +82,7 @@ const BasicDesign = (props) => {
 
 					}
 					</Select>
-				</Col>
+				</Col> */}
 
 				{/* <Col span={6}>
 					Image width for mobile<br />
