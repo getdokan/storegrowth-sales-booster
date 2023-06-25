@@ -130,7 +130,7 @@ const BasicDesign = (props) => {
 			</Row>
 			<br />
 			<Row  gutter={30}>
-				<Col span={6}>
+				{/* <Col span={6}>
 					Image Spacing<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('spacing_around_image', v)}
@@ -144,7 +144,7 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Link image to product page<br />
