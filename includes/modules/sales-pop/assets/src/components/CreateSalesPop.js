@@ -107,11 +107,14 @@ function CreateSalesPop( { onFormSave } ) {
     } );
   };
 
-
+  const max_option_count_in_free = 5;
+  const selectedPopupProducts = createPopupForm.popup_products;
+  const isProductsSelectReachedlimit = selectedPopupProducts.length >= max_option_count_in_free;
   const externalLink = createPopupForm.external_link;
   const externalProductsIds = sales_pop_data.product_list.externalProductsIds;
   const allProductListForSelect = sales_pop_data.product_list.productListForSelect;
-  const productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
+  let productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
+  productListForSelect = isProductsSelectReachedlimit ? productListForSelect.filter(item => selectedPopupProducts.includes(item.value)) : productListForSelect;
 
   return (
     <>
@@ -141,6 +144,7 @@ function CreateSalesPop( { onFormSave } ) {
         label="Select Popup Products"
         labelAlign='left'
       >
+        {isProductsSelectReachedlimit && <span style={{color:"red", fontStyle:"italic"}}>cannot select more than 5 items in this version</span> }
         <Select
           allowClear
           placeholder="Search for products"
@@ -149,8 +153,7 @@ function CreateSalesPop( { onFormSave } ) {
           mode="multiple"
           filterOption={ true }
           optionFilterProp="label"
-          value={ createPopupForm.popup_products.map( Number ) }
-
+          value={ selectedPopupProducts.map( Number ) }
         />
 
       </Form.Item>
