@@ -100,7 +100,7 @@ const BasicDesign = (props) => {
 					</Select>
 				</Col> */}
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Border radius<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('popup_border_radius', v)}
@@ -114,7 +114,7 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Border radius of image<br />
