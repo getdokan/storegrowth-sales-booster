@@ -63,7 +63,7 @@ if ( ! function_exists( 'sgsb_get_file_content' ) ) {
 	function sgsb_get_file_content( $path ) {
 		ob_start();
 
-		require StoreGrowth_PLUGIN_DIR_PATH . $path;
+		require STOREGROWTH_PLUGIN_DIR_PATH . $path;
 
 		return ob_get_clean();
 	}
