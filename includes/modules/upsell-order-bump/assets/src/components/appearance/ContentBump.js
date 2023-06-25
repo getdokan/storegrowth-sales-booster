@@ -49,7 +49,7 @@ function ContentBump() {
          />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label      = "Product Description"
         labelAlign = 'left'
       >
@@ -86,7 +86,7 @@ function ContentBump() {
           onChange    = {(v) => onFieldChange('offer_description', v.target.value)}
           placeholder = 'Enter Order Bump Name'
          />
-      </Form.Item>
+      </Form.Item> */}
     </div>
   );
 }
