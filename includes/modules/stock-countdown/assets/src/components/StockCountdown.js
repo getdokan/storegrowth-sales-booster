@@ -156,7 +156,7 @@ function StockCountdown() {
           />
         </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           label="Progress Bar Height"
           labelAlign="left"
         >
@@ -167,7 +167,7 @@ function StockCountdown() {
             onChange={(v) => onFieldChange('progressbar_height', v)}
             style={{ width: 100 }}
           />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           label="Stock Display Format"
