@@ -22862,6 +22862,11 @@ function CreateBump(_ref) {
 
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
+
+  if (allBumpsData?.length >= 2) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "In this version, you are not able to create more than two order bumps.");
+  }
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     defaultActiveKey: "1"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Panel, {
