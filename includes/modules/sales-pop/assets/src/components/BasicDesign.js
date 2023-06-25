@@ -84,7 +84,7 @@ const BasicDesign = (props) => {
 					</Select>
 				</Col>
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Image width for mobile<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('popup_mobile_image_width', v)}
@@ -98,7 +98,7 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Border radius<br />
