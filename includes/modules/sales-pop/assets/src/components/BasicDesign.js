@@ -35,7 +35,7 @@ const BasicDesign = (props) => {
 					</Select>
 				</Col> */}
 
-				<Col span={6}>
+				{/* <Col span={6}>
 					Image Position<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('image_position', v)}
@@ -47,7 +47,7 @@ const BasicDesign = (props) => {
 						<Select.Option value="left">Left</Select.Option>
 						<Select.Option value="right">Right</Select.Option>
 					</Select>
-				</Col>
+				</Col> */}
 
 				<Col span={6}>
 					Popup Width<br />
