@@ -1,12 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" width="20" height="20" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-<g>
-	<path fill="#1D9BFF" d="M170.33,250.21H87.57c0,60.75,33.37,113.67,82.76,141.53c22.81,12.87,49.03,20.37,76.98,20.83V250.21H170.33z"
-		/>
-	<path fill="#0875FF" d="M247.31,165.95h-76.98v84.26h76.98v162.36c0.9,0.01,1.79,0.07,2.69,0.07c29.04,0,56.28-7.66,79.87-21.01
-		V250.21v-84.26H247.31z"/>
-	<path fill="#1B49F6" d="M253.09,87.37v78.59h76.78v84.26v141.42c49.28-27.89,82.56-80.75,82.56-141.42V87.37H253.09z"/>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="22" height="22">
+
+<g transform="matrix(1.3333334 0 0 1.3333334 0 0)">
+    <image  x="0" y="0" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE7SURBVEhL7dS7SsRAGAXgRBBsBFsfQPAVfAMb0T43EkjqtQpJinRJaZE7WAu+ia2FlXYiWwir7DaL6I4nw0QGze7MdIIeOF3+L38mu9F+RWzbvkCfJXrJRuTSDziOQ0S1LOuajcjlD8KEED2O42mSJHO+URS9oYSv67ovqvACGBEV8Owfpt0I13U94VuW5Xme50uUDM2ybAXoXQXWgRFRq6r6ALSUgdGCboyh1RjGVxE+ozAe/W4M46sCG4axT+G2bU/GML4K8FP/8imcpukWtn4dA4fKwqZpHlN0SFEUR5vOWgbGt+Tma1s+GI7W4SIYP7Gp53m7jPoRHZtPekQFxqb3wPeYsT5d1x3izB9EcP+1830/CoJgm42K059V0zQHAK9wk0c8yQJ/8zk6A3obhuEpXvoOu/xbNO0T1UcV5LEuNqwAAAAASUVORK5CYII=" preserveAspectRatio="none" width="16.5" height="16.5"/>
 </g>
 </svg>
