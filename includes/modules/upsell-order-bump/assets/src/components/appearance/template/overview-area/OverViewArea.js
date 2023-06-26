@@ -39,7 +39,7 @@ function OverViewArea(props) {
                 fontSize   : createBumpData.discount_font_size+'px',
             }}
             >
-                {offerMessage} {console.log('bumpData', createBumpData)}
+                {offerMessage}
             </div>
             <div className="product-image-and-title">
                 <div className="offer-product-image">

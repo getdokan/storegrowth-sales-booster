@@ -7,7 +7,6 @@ export const RemovableIconPicker = (props) => {
     //
     value = false,
   } = props;
-  console.log("---removeable ", { value });
   return (
     <div className="sgsb-removable-icon-picker-wrapper">
       {value && (

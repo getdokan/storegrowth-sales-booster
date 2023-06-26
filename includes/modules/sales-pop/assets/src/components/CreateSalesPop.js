@@ -129,9 +129,6 @@ function CreateSalesPop( { onFormSave } ) {
   const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "").split(",")?.length;
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
-  console.log("---create pop", {
-    virtualName, virtualNameLength
-  })
 
   return (
     <>

@@ -24051,7 +24051,7 @@ function OverViewArea(props) {
       color: createBumpData.discount_text_color,
       fontSize: createBumpData.discount_font_size + 'px'
     }
-  }, offerMessage, " ", console.log('bumpData', createBumpData)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, offerMessage), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "product-image-and-title"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "offer-product-image"
