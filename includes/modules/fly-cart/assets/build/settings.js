@@ -13891,19 +13891,7 @@ function DesignSettings(_ref2) {
     value: "flaticon-shopping-cart-1"
   }, "flaticon-shopping-cart-1"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
     value: "flaticon-shopping-cart-2"
-  }, "flaticon-shopping-cart-2"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-shopping-cart-3"
-  }, "flaticon-shopping-cart-3"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-shopping-cart-4"
-  }, "flaticon-shopping-cart-4"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-cart"
-  }, "flaticon-cart"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-shopping-bag"
-  }, "flaticon-shopping-bag"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-shopping-bag-1"
-  }, "flaticon-shopping-bag-1"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
-    value: "flaticon-shopping-bag-2"
-  }, "flaticon-shopping-bag-2"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, "flaticon-shopping-cart-2"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Cart Icon Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
