@@ -8949,6 +8949,19 @@ function ModuleCard(_ref2) {
     module
   } = _ref2;
   const [size, setSize] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(16);
+  const {
+    id
+  } = module;
+  let docSlug = id;
+
+  if (id === "progressive-discount-banner") {
+    docSlug = "discount-banner";
+  }
+
+  if (id === "fly-cart") {
+    docSlug = "quick-cart";
+  }
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     span: 8
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -9000,7 +9013,8 @@ function ModuleCard(_ref2) {
     className: "doc-btn",
     type: "default",
     shape: "default",
-    href: "#"
+    href: `https://storegrowth.io/docs/${docSlug}/`,
+    target: "_blank"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_11__["default"], null), "Documentation")))));
 }
 
@@ -9203,6 +9217,9 @@ function Modules() {
     let {
       modules
     } = _ref;
+    console.log("---modules", {
+      modules
+    });
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_2__["default"], {
       module: module,
       key: (0,nanoid__WEBPACK_IMPORTED_MODULE_6__.nanoid)()

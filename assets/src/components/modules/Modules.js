@@ -85,6 +85,7 @@ function Modules() {
 
   // Module List
   const ModuleList = ({ modules }) =>{
+    console.log("---modules", {modules})
     return (
       <>
       {modules.filter((module) => module.name.toLowerCase().includes(searchModule) ).slice(minValue, maxValue).map(module => (

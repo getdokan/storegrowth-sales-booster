@@ -29,6 +29,15 @@ function ModuleSwitch({ module }) {
 
 function ModuleCard( { module } ) {
   const [size, setSize] = useState(16);
+  const {id} = module;
+
+  let docSlug = id;
+  if(id === "progressive-discount-banner"){
+    docSlug = "discount-banner"
+  }
+  if(id === "fly-cart"){
+    docSlug = "quick-cart"
+  }
 
   return (
     <Col span={8}>
@@ -87,7 +96,8 @@ function ModuleCard( { module } ) {
               className='doc-btn'
               type="default"
               shape="default"
-              href="#"
+              href={`https://storegrowth.io/docs/${docSlug}/`}
+              target='_blank'
             >
               <FileTextOutlined />
               Documentation
