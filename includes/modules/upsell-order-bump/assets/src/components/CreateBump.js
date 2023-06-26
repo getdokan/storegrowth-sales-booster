@@ -235,7 +235,9 @@ function CreateBump({navigate, useParams}) {
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
 
-  if(allBumpsData?.length >= 2){
+  const offer_product = createBumpData.offer_product;
+
+  if((!bump_id || !offer_product) && allBumpsData?.length >= 2){
     return <h2>In this version, you are not able to create more than two order bumps.</h2>;
   }
 
