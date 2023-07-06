@@ -30403,7 +30403,7 @@ function StockCountdown() {
     disabled: !sgsbAdmin.isPro,
     checked: formData.shop_page_progress_bar_enable,
     value: "shop_page_progress_bar_enable",
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange('shop_page_progress_bar_enable', e.target.checked) : ''
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'shop_page_progress_bar_enable', e.target.checked) : ''
   }, "Progress Bar"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
     disabled: !sgsbAdmin.isPro,
     checked: formData.shop_page_countdown_enable,

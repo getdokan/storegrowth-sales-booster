@@ -256,7 +256,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
               disabled = {!sgsbAdmin.isPro}
               checked={formData.shop_page_progress_bar_enable}
               value="shop_page_progress_bar_enable"
-              onChange={sgsbAdmin.isPro?(e) => isProFieldChange('shop_page_progress_bar_enable', e.target.checked):''}
+              onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_progress_bar_enable', e.target.checked):''}
             >Progress Bar</Checkbox>
             <Checkbox
               disabled = {!sgsbAdmin.isPro}
