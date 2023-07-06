@@ -27,10 +27,10 @@ function GenenralSettings({
   return (
     <Form
       labelCol={{
-        span: 7,
+        span: 10,
       }}
       wrapperCol={{
-        span: 18,
+        span: 14,
       }}
       autoComplete="off"
     >
@@ -122,10 +122,10 @@ function DesignSettings({
   return (
     <Form
       labelCol={{
-        span: 7,
+        span: 10,
       }}
       wrapperCol={{
-        span: 18,
+        span: 14,
       }}
       autoComplete="off"
     >
@@ -145,7 +145,6 @@ function DesignSettings({
       </Form.Item>
 
       <Form.Item label="Cart Icon" labelAlign="left">
-        {/*  */}
         <Select
           style={{ width: 250 }}
           value={formData.icon_name}
@@ -160,7 +159,7 @@ function DesignSettings({
           <Select.Option value="flaticon-shopping-cart-2">
             flaticon-shopping-cart-2
           </Select.Option>
-          {/* <Select.Option value="flaticon-shopping-cart-3">
+          <Select.Option value="flaticon-shopping-cart-3">
             flaticon-shopping-cart-3
           </Select.Option>
           <Select.Option value="flaticon-shopping-cart-4">
@@ -175,7 +174,7 @@ function DesignSettings({
           </Select.Option>
           <Select.Option value="flaticon-shopping-bag-2">
             flaticon-shopping-bag-2
-          </Select.Option> */}
+          </Select.Option>
         </Select>
       </Form.Item>
 
