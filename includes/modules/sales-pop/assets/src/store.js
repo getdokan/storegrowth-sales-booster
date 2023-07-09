@@ -1,5 +1,4 @@
-import { createReduxStore,  subscribe, select, dispatch } from '@wordpress/data';
-import { getAllStatesWithoutCity } from './helper';
+import { createReduxStore } from '@wordpress/data';
 
 /**
  * Default state of create popup.
@@ -85,19 +84,12 @@ From {location}
 	screen_height                : window.screen.height,
 };
 
-const salesPopFlags = {
-    isStatesWithoutCitiesInDb: false,
-    isSettingStatesWithoutCitiesInDb: false,
-    isFetchedInitialFlags: false,
-    isFetchingInitialFlags: false,
-}
 /**
  * Default state.
  */
 const DEFAULT_STATE = {
 	createPopupForm,
-	buttonLoading: false,
-    salesPopFlags,
+	buttonLoading: false
 };
 
 /**
@@ -105,16 +97,7 @@ const DEFAULT_STATE = {
  */
  const reducer = (state = DEFAULT_STATE, action) => {
 	switch ( action.type ) {
-		case 'UPDATE_SALES_POP_FLAGS':
-            return {
-                ...state,
-                salesPopFlags:{
-                    ...state.salesPopFlags,
-                    ...action.payload,
-                }
-            }
-
-        case 'UPDATE_POPUP_CREATE_FORM':
+		case 'UPDATE_POPUP_CREATE_FORM':
 			return {
 				...state,
 				createPopupForm: action.payload,
@@ -135,14 +118,7 @@ const DEFAULT_STATE = {
  * Actions to call the reducer.
  */
 const actions = {
-	setSalesPopFlags(payload) {
-		return {
-			type: 'UPDATE_SALES_POP_FLAGS',
-			payload,
-		};
-	},
-
-    setCreateFromData(payload) {
+	setCreateFromData(payload) {
 		return {
 			type: 'UPDATE_POPUP_CREATE_FORM',
 			payload,
@@ -167,10 +143,6 @@ const selectors = {
 
 	getButtonLoading(state) {
 		return state.buttonLoading;
-	},
-
-	getSalesPopFlags(state) {
-		return state.salesPopFlags;
 	}
 };
 
@@ -179,44 +151,3 @@ export default createReduxStore( 'sgsb_order_sales_pop', {
 	actions,
 	selectors
 } );
-
-subscribe(() => {
-    const {
-        isStatesWithoutCitiesInDb,
-        isFetchedInitialFlags,
-        isFetchingInitialFlags,
-        isSettingStatesWithoutCitiesInDb
-    } = select('sgsb_order_sales_pop').getSalesPopFlags();
-
-    if(!isFetchedInitialFlags && !isFetchingInitialFlags){
-        dispatch('sgsb_order_sales_pop').setSalesPopFlags({isFetchingInitialFlags: true})
-        jQuery.post( sales_pop_data.ajax_url, { 
-            'action'    : 'fetch_popup_flags', 
-		    'data'      : [] ,
-			'_ajax_nonce' : sales_pop_data.ajd_nonce
-		}, function (response) {
-            const data = response.data || {};
-            dispatch('sgsb_order_sales_pop').setSalesPopFlags({
-                isFetchingInitialFlags: false,
-                isFetchedInitialFlags:true,
-                ...data,
-            })
-		});
-    }
-
-    if(isFetchedInitialFlags && !isSettingStatesWithoutCitiesInDb && !isStatesWithoutCitiesInDb){
-        dispatch('sgsb_order_sales_pop').setSalesPopFlags({isSettingStatesWithoutCitiesInDb:true})
-        const states_without_city = getAllStatesWithoutCity();
-        jQuery.post( sales_pop_data.ajax_url, {
-            'action'    : 'set_states_without_cities_data',
-		    'data'      : JSON.stringify({ states_without_city }),
-			'_ajax_nonce' : sales_pop_data.ajd_nonce
-		}, function (response) {
-            const flags = response?.data?.flags || {};
-            dispatch('sgsb_order_sales_pop').setSalesPopFlags({
-                isSettingStatesWithoutCitiesInDb:false,
-                ...flags
-            })
-		});
-    }
-})
