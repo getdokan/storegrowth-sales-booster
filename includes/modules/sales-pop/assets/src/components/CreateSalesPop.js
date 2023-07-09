@@ -2,7 +2,7 @@ import { Form, Select, Switch, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
-import { State, City } from 'country-state-city';
+// import { State, City } from 'country-state-city';
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
@@ -26,7 +26,8 @@ function CreateSalesPop( { onFormSave } ) {
     var i = 0;
 
     value.map( ( coutryIsoCode, j ) => {
-      const states = State.getStatesOfCountry( coutryIsoCode );
+    //   const states = State.getStatesOfCountry( coutryIsoCode );
+      const states = [];
       for ( var stateInfo in states ) {
         stateByCountry[ i ] = states[ stateInfo ];
         i++;
@@ -77,7 +78,8 @@ function CreateSalesPop( { onFormSave } ) {
       let hasPosition = countryCodeAndStateCode.indexOf( "#" )
       let stateCode = countryCodeAndStateCode.substring( hasPosition + 1 );
       let countryCode = countryCodeAndStateCode.substring( 0, hasPosition );
-      const cities = City.getCitiesOfState( countryCode, stateCode );
+    //   const cities = City.getCitiesOfState( countryCode, stateCode );
+      const cities = [];
       for ( var city in cities ) {
         cityByState[ i ] = cities[ city ];
         i++;
@@ -247,14 +249,13 @@ function CreateSalesPop( { onFormSave } ) {
           value={ createPopupForm.virtual_state }
 
         />
-      </Form.Item>
-      { createPopupForm.city_by_state.length ?
+        </Form.Item>
         <Form.Item
-          label="Virtual City"
-          labelAlign='left'
-          extra="Virtual city what will show on notification"
+            label="Virtual City"
+            labelAlign='left'
+            extra="Virtual city what will show on notification"
         >
-          <Select
+            <Select
             allowClear
             placeholder="Search for virtual city"
             options={ createPopupForm.city_by_state }
@@ -264,8 +265,8 @@ function CreateSalesPop( { onFormSave } ) {
             optionFilterProp="label"
             value={ createPopupForm.virtual_city }
 
-          />
-        </Form.Item> : null }
+            />
+        </Form.Item> 
       <Button
         type="primary"
         onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }

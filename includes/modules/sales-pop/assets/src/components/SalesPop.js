@@ -1,7 +1,7 @@
 import { Card, Form } from 'antd';
 import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { Country }  from 'country-state-city';
+// import { Country }  from 'country-state-city';
 
 
 function SalesPop({ outlet: Outlet }) {
@@ -29,7 +29,8 @@ function SalesPop({ outlet: Outlet }) {
 		    'data'      : [] ,
 			'_ajax_nonce' : sales_pop_data.ajd_nonce
 		}, function (response) {
-			const countriesBefore = Country.getAllCountries();
+			// const countriesBefore = Country.getAllCountries();
+			const countriesBefore = [];
 			const updatedCountries = countriesBefore.map((country) => ({
 				label: country.name,
 				value: country.isoCode
