@@ -231,7 +231,7 @@ function CreateSalesPop( { onFormSave } ) {
         />
       </Form.Item>
 
-      {/* <Form.Item
+      <Form.Item
         label="Virtual State"
         labelAlign='left'
         extra="Virtual state what will show on notification"
@@ -265,7 +265,7 @@ function CreateSalesPop( { onFormSave } ) {
             value={ createPopupForm.virtual_city }
 
           />
-        </Form.Item> : null } */}
+        </Form.Item> : null }
       <Button
         type="primary"
         onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
