@@ -2,7 +2,6 @@ import { Form, Select, Switch, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
-// import { State, City } from 'country-state-city';
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
@@ -18,96 +17,6 @@ function CreateSalesPop( { onFormSave } ) {
     setCreateFromData( {
       ...createPopupForm,
       [ key ]: value,
-    } );
-  };
-
-  const onFieldChangeCountry = ( key, value ) => {
-    var stateByCountry = []
-    var i = 0;
-
-    value.map( ( coutryIsoCode, j ) => {
-    //   const states = State.getStatesOfCountry( coutryIsoCode );
-      const states = [];
-      for ( var stateInfo in states ) {
-        stateByCountry[ i ] = states[ stateInfo ];
-        i++;
-
-      }
-    } )
-
-    const stateByCountryFinal = stateByCountry.map( ( stateInfo ) => ({
-      label: stateInfo.name,
-      value: stateInfo.countryCode + '#' + stateInfo.isoCode
-    }) );
-
-    var fCountry = value;
-
-    var final_virtual_state = createPopupForm.virtual_state.filter( ( item, i ) => {
-      const countryState = item.split( "#" );
-      return fCountry.includes( countryState[ 0 ] )
-    } )
-
-    var final_virtual_city = createPopupForm.virtual_city.filter( ( item, i ) => {
-      const countryStateCity = item.split( "#" );
-      var countryStateCode = countryStateCity[ 0 ] + "#" + countryStateCity[ 1 ];
-
-      return final_virtual_state.includes( countryStateCode )
-
-    } )
-
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-      state_by_country: stateByCountryFinal,
-      virtual_state: final_virtual_state,
-      virtual_city: final_virtual_city
-    } );
-  };
-
-  const onFieldChangeState = ( key, value ) => {
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-    } );
-
-
-    var cityByState = []
-    var i = 0;
-
-    value.map( ( countryCodeAndStateCode, k ) => {
-      let hasPosition = countryCodeAndStateCode.indexOf( "#" )
-      let stateCode = countryCodeAndStateCode.substring( hasPosition + 1 );
-      let countryCode = countryCodeAndStateCode.substring( 0, hasPosition );
-    //   const cities = City.getCitiesOfState( countryCode, stateCode );
-      const cities = [];
-      for ( var city in cities ) {
-        cityByState[ i ] = cities[ city ];
-        i++;
-
-      }
-    } )
-
-
-    const cityByStateFinal = cityByState.map( ( cityInfo ) => ({
-      label: cityInfo.name,
-      value: cityInfo.countryCode + "#" + cityInfo.stateCode + '#' + cityInfo.name
-    }) );
-
-    var fState = value;
-    var final_virtual_city = createPopupForm.virtual_city.filter( ( item, i ) => {
-      const countryStateCity = item.split( "#" );
-      var countryStateCode = countryStateCity[ 0 ] + "#" + countryStateCity[ 1 ];
-
-      return fState.includes( countryStateCode )
-
-    } )
-
-
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-      city_by_state: cityByStateFinal,
-      virtual_city: final_virtual_city
     } );
   };
 

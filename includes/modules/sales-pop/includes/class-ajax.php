@@ -62,10 +62,6 @@ class Ajax {
 			$popup_products['popup_products'] = array();
 		}
 
-		if ( ! isset( $popup_products['popup_products'] ) ) {
-			$popup_products['popup_products'] = array();
-		}
-
 		if ( ! isset( $popup_products['state_by_country'] ) ) {
 			$popup_products['state_by_country'] = array();
 		}
