@@ -14934,6 +14934,7 @@ function CreateSalesPop(_ref2) {
   const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "").split(",")?.length;
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
+  const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Product Show Random",
     labelAlign: "left"
@@ -14966,44 +14967,17 @@ function CreateSalesPop(_ref2) {
     },
     placeholder: "Name1, Name2, Name3"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
-    label: "Virtual Country",
+    label: "Virtual Location",
     labelAlign: "left",
-    extra: "Virtual country show on notification"
-  }, isCountriesSelectionReachedlimit && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(WarningMessage, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    allowClear: true,
-    placeholder: "Search for products",
-    options: virtualCountriesOptions,
-    onChange: v => onFieldChangeCountry('virtual_countries', v),
-    mode: "multiple",
-    filterOption: true,
-    optionFilterProp: "label",
-    value: selectedVirtualCountries
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
-    label: "Virtual State",
-    labelAlign: "left",
-    extra: "Virtual state what will show on notification"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    allowClear: true,
-    placeholder: "Search for virtual city",
-    options: createPopupForm.state_by_country,
-    onChange: v => onFieldChangeState('virtual_state', v),
-    mode: "multiple",
-    filterOption: true,
-    optionFilterProp: "label",
-    value: createPopupForm.virtual_state
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
-    label: "Virtual City",
-    labelAlign: "left",
-    extra: "Virtual city what will show on notification"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    allowClear: true,
-    placeholder: "Search for virtual city",
-    options: createPopupForm.city_by_state,
-    onChange: v => onFieldChange('virtual_city', v),
-    mode: "multiple",
-    filterOption: true,
-    optionFilterProp: "label",
-    value: createPopupForm.virtual_city
+    extra: "Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country).",
+    rules: [{
+      message: 'Please Write your virtual locations'
+    }]
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
+    rows: 4,
+    value: virtualLocationPlaceHolder,
+    onChange: v => onFieldChange('virtual_location', v.target.value),
+    placeholder: virtualLocationPlaceHolder
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
     onClick: () => !isFirstNameExceededLimit && onFormSave('product'),

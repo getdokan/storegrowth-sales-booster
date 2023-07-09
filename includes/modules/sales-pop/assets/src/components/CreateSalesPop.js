@@ -132,6 +132,8 @@ function CreateSalesPop( { onFormSave } ) {
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
+  const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
+
   return (
     <>
 
@@ -212,61 +214,22 @@ function CreateSalesPop( { onFormSave } ) {
         </Select>
       </Form.Item> */}
 
-
       <Form.Item
-
-        label="Virtual Country"
+        label="Virtual Location"
         labelAlign='left'
-        extra="Virtual country show on notification"
+        extra="Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country)."
+        rules={ [
+          { message: 'Please Write your virtual locations' },
+        ] }
       >
-        {isCountriesSelectionReachedlimit && <WarningMessage /> }
-        <Select
-          allowClear
-          placeholder="Search for products"
-          options={ virtualCountriesOptions }
-          onChange={ ( v ) => onFieldChangeCountry( 'virtual_countries', v ) }
-          mode="multiple"
-          filterOption={ true }
-          optionFilterProp="label"
-          value={ selectedVirtualCountries }
-
+        <TextArea
+          rows={ 4 }
+          value={virtualLocationPlaceHolder}
+          onChange={ ( v ) =>  onFieldChange( 'virtual_location', v.target.value ) }
+          placeholder={virtualLocationPlaceHolder}
         />
       </Form.Item>
 
-      <Form.Item
-        label="Virtual State"
-        labelAlign='left'
-        extra="Virtual state what will show on notification"
-      >
-        <Select
-          allowClear
-          placeholder="Search for virtual city"
-          options={ createPopupForm.state_by_country }
-          onChange={ ( v ) => onFieldChangeState( 'virtual_state', v ) }
-          mode="multiple"
-          filterOption={ true }
-          optionFilterProp="label"
-          value={ createPopupForm.virtual_state }
-
-        />
-        </Form.Item>
-        <Form.Item
-            label="Virtual City"
-            labelAlign='left'
-            extra="Virtual city what will show on notification"
-        >
-            <Select
-            allowClear
-            placeholder="Search for virtual city"
-            options={ createPopupForm.city_by_state }
-            onChange={ ( v ) => onFieldChange( 'virtual_city', v ) }
-            mode="multiple"
-            filterOption={ true }
-            optionFilterProp="label"
-            value={ createPopupForm.virtual_city }
-
-            />
-        </Form.Item> 
       <Button
         type="primary"
         onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
