@@ -1,11 +1,10 @@
-import {Tabs,Card, Button, Form } from 'antd';
-const { TabPane } = Tabs;
+import { Card, Form } from 'antd';
 import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { Country, State, City }  from 'country-state-city';
+import { Country }  from 'country-state-city';
 
 
-function SalesPop({ outlet: Outlet, useSearchParams }) {
+function SalesPop({ outlet: Outlet }) {
 	const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 	const { setPageLoading } = useDispatch( 'sgsb' );
 	const { createPopupForm } = useSelect( ( select ) => ({
@@ -17,12 +16,6 @@ function SalesPop({ outlet: Outlet, useSearchParams }) {
 		},
 		wrapperCol: {
 			span: 18,
-		},
-	};
-
-	const tailLayout = {
-		wrapperCol: {
-			span: 16,
 		},
 	};
 
