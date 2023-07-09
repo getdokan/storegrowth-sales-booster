@@ -199,7 +199,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           <Select
             disabled = {!sgsbAdmin.isPro}
             value={formData.stock_display_format}
-            onChange={!sgsbAdmin.isPro?(v) => isProFieldChange(sgsbAdmin.isPro,'stock_display_format', v):''}
+            onChange={sgsbAdmin.isPro?(v) => isProFieldChange(sgsbAdmin.isPro,'stock_display_format', v):''}
             style={{ width: 400 }}
           >
             <Select.Option value="above">Above Progress Bar</Select.Option>
@@ -235,7 +235,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
             <Input
               disabled = {!sgsbAdmin.isPro}
               value={formData.available_item_count_text}
-              onChange={sgsbAdmin.isPro?(e) => isProFieldChange('available_item_count_text', e.target.value):''}
+              onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'available_item_count_text', e.target.value):''}
               style={{ width: 400 }}
               placeholder="Available Item"
             />

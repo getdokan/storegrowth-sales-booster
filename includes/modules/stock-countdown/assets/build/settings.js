@@ -30357,7 +30357,7 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     disabled: !sgsbAdmin.isPro,
     value: formData.stock_display_format,
-    onChange: !sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, 'stock_display_format', v) : '',
+    onChange: sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, 'stock_display_format', v) : '',
     style: {
       width: 400
     }
@@ -30384,7 +30384,7 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     disabled: !sgsbAdmin.isPro,
     value: formData.available_item_count_text,
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange('available_item_count_text', e.target.value) : '',
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'available_item_count_text', e.target.value) : '',
     style: {
       width: 400
     },
