@@ -40,6 +40,21 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
 }
 
 /**
+ * Define The Template's Folder Constant
+ */
+if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
+	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . '/includes/modules/' );
+}
+
+/**
+ * Define The Stock Count Down Template Constant
+ */
+
+if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
+	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'stock-countdown/templates/' );
+}
+
+/**
  * Define plugin basename.
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {

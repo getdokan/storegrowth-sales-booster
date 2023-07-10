@@ -106,7 +106,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'stock_countdown_module_init' );
+		do_action( 'storegrowth_stock_countdown_module_init' );
 	}
 
 }

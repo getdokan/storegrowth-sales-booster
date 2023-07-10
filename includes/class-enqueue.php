@@ -67,7 +67,7 @@ class Enqueue {
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'sgsb_ajax_nonce' ),
-					'isPro'    => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
+					'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 				)
 			);
 		}
@@ -89,7 +89,7 @@ class Enqueue {
 				array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
 					'nonce'          => wp_create_nonce( 'sgsb_ajax_nonce' ),
-					'isPro'          => is_plugin_active( 'sales-boster-for-woocommerce-pro/sales-booster-for-wcoommerce-pro.php' ),
+					'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
 			);
