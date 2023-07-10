@@ -23,7 +23,6 @@ function CreateBump({navigate, useParams}) {
     createBumpData: select('sgsb_order_bump').getCreateFromData(),
     bumpData: wp.data.select('sgsb_order_bump').getBumpData()
   }));
-
   useEffect(() => {
     if(!bumpData?.length > 0){
         setPageLoading( true );
@@ -237,7 +236,7 @@ function CreateBump({navigate, useParams}) {
 
   const offer_product = createBumpData.offer_product;
 
-  if((!bump_id || !offer_product) && allBumpsData?.length >= 2){
+  if((!bump_id || !offer_product) && allBumpsData?.length >= 2 && !sgsbAdmin.isPro){
     return <h2>In this version, you are not able to create more than two order bumps.</h2>;
   }
 

@@ -84,6 +84,7 @@ function OrderBumpList( { navigate } ) {
     bumpListData: select( 'sgsb_order_bump' ).getBumpData()
   }) );
 
+
   useEffect( () => {
     setPageLoading( true );
 
@@ -123,45 +124,56 @@ function OrderBumpList( { navigate } ) {
 
   let catInfoByCatId = products_and_categories.category_list.catNameById
   let productInfoById = products_and_categories.product_list.productTitleById
-
-  let data = bumpListData.map( function ( item, i ) {
+ 
+  function mapBumpData(item) {
     let categories = item.target_categories;
     let catList = '';
-
-    for ( const key in categories ) {
-      if ( Object.keys( categories ).length - 1 > key ) {
-        catList = catList + catInfoByCatId[ categories[ key ] ] + ', '
+  
+    for (const key in categories) {
+      if (Object.keys(categories).length - 1 > key) {
+        catList = catList + catInfoByCatId[categories[key]] + ', ';
       } else {
-        catList = catList + catInfoByCatId[ categories[ key ] ]
+        catList = catList + catInfoByCatId[categories[key]];
       }
     }
-
+  
     let products = item.target_products;
     let productList = '';
-
-    for ( const key in products ) {
-      if ( Object.keys( products ).length - 1 > key ) {
-        productList = productList + productInfoById[ products[ key ] ] + '( #' + products[ key ] + ' )' + ', '
+  
+    for (const key in products) {
+      if (Object.keys(products).length - 1 > key) {
+        productList = productList + productInfoById[products[key]] + '( #' + products[key] + ' )' + ', ';
       } else {
-        productList = productList + productInfoById[ products[ key ] ] + '( #' + products[ key ] + ' )'
+        productList = productList + productInfoById[products[key]] + '( #' + products[key] + ' )';
       }
     }
-
-    let offerProduct = productInfoById[ item.offer_product ]
+  
+    let offerProduct = productInfoById[item.offer_product];
     return {
       key: item,
       name: item.name_of_order_bump,
-      product_category: <TargetProductAndCategory catList={ catList } productList={ productList } />,
+      product_category: <TargetProductAndCategory catList={catList} productList={productList} />,
       offers: offerProduct,
       action: <ActionButton
-        navigate={ navigate }
-        bump_id={ item.id }
+        navigate={navigate}
+        bump_id={item.id}
       />,
-    }
-  } )
+    };
+  }
+  
+  let data;
+  
+  if (sgsbAdmin.isPro) {
+    data = bumpListData.map(mapBumpData);
+    console.log(data);
+  } else {
+    data = bumpListData.slice(-2).map(mapBumpData);
+  }
+  
+  
 
-  const isDisableBumpCreation = bumpListData?.length >= 2;
-
+  const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
+  console.log(sgsbAdmin.isPro);
   return (
     <>
       {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>In this version, you are not able to create more than two order bumps.</span>}
