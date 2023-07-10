@@ -41,10 +41,10 @@ function GenenralSettings({
         >
           <Space direction="vertical">
             <Radio value="side">Side cart</Radio>
-            {/* <Radio value="center" disabled={!sgsbAdmin.isPro}>
+            <Radio value="center" disabled={!sgsbAdmin.isPro}>
               <span>Centered popup test </span>
               {!sgsbAdmin.isPro && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>}
-            </Radio> */}
+            </Radio>
           </Space>
         </Radio.Group>
       </Form.Item>
@@ -87,7 +87,7 @@ function GenenralSettings({
           >
             Show product price
           </Checkbox>
-          {/* <Checkbox
+          <Checkbox
             checked={formData.show_coupon}
             value="show_coupon"
             onChange={(e) => onFieldChange('show_coupon', e.target.checked)}
@@ -95,7 +95,7 @@ function GenenralSettings({
           >
             <span>Show coupon </span>
             {!sgsbAdmin.isPro && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>}
-          </Checkbox> */}
+          </Checkbox>
         </Space>
       </Form.Item>
 
