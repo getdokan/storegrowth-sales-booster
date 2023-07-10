@@ -137,7 +137,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 				<?php
 				if ( $show_coupon && wc_coupons_enabled() ) {
-					do_action( 'sgsb_fly_cart_coupon' );
+					do_action( 'storegrowth_sb_quick_cart_coupon' );
 				}
 				?>
 

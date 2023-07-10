@@ -9,7 +9,7 @@ jQuery(document).ready( function($) {
     width: '100%',
     height: $('.wpbsc_total_sale').data('height') + "px",
     bgColor: $('.wpbsc_total_sale').data('bgcolor'),
-    barColor: $('.wpbsc_total_sale').attr('fgcolor'),
+    barColor: $('.wpbsc_total_sale').data('fgcolor'),
     displayTotal: false,
   });
 

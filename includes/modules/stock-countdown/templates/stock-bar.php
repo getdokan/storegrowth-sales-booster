@@ -47,4 +47,10 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 	</div>
 	<?php endif; ?>
 	<div class="jqmeter-container"></div>
+	<?php
+	if ( 'below' === $sd_format ) :
+			/* translators: %s: Left items in stock */
+			do_action( 'sgsb_stock_countdown_stock_below' );
+		endif;
+	?>
 </div>
