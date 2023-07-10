@@ -14905,8 +14905,8 @@ function CreateSalesPop(_ref2) {
     }]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
     rows: 4,
-    value: virtualLocationPlaceHolder,
-    onChange: v => onFieldChange('virtual_location', v.target.value),
+    value: createPopupForm?.virtual_location || virtualLocationPlaceHolder,
+    onChange: e => onFieldChange('virtual_location', e.target.value),
     placeholder: virtualLocationPlaceHolder
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
@@ -15316,17 +15316,10 @@ function SalesPop(_ref) {
       'data': [],
       '_ajax_nonce': sales_pop_data.ajd_nonce
     }, function (response) {
-      // const countriesBefore = Country.getAllCountries();
-      const countriesBefore = [];
-      const updatedCountries = countriesBefore.map(country => ({
-        label: country.name,
-        value: country.isoCode
-      }));
       setPageLoading(false);
       setCreateFromData({
         ...createPopupForm,
-        ...response.data,
-        countries: updatedCountries
+        ...response.data
       });
     });
   }, []);
@@ -15603,12 +15596,7 @@ const createPopupForm = {
   dispaly_time: 5,
   sound: false,
   sound_type: 'sound_a',
-  countries: [],
-  virtual_countries: [],
-  state_by_country: [],
-  virtual_state: [],
-  city_by_state: [],
-  virtual_city: [],
+  virtual_locations: `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`,
   screen_width: window.screen.width,
   screen_height: window.screen.height
 };

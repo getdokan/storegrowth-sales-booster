@@ -42,7 +42,6 @@ function CreateSalesPop( { onFormSave } ) {
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
-
   return (
     <>
 
@@ -133,8 +132,8 @@ function CreateSalesPop( { onFormSave } ) {
       >
         <TextArea
           rows={ 4 }
-          value={virtualLocationPlaceHolder}
-          onChange={ ( v ) =>  onFieldChange( 'virtual_location', v.target.value ) }
+          value={createPopupForm?.virtual_location || virtualLocationPlaceHolder}
+          onChange={ ( e ) => onFieldChange( 'virtual_location', e.target.value ) }
           placeholder={virtualLocationPlaceHolder}
         />
       </Form.Item>

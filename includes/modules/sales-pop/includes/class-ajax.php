@@ -62,27 +62,10 @@ class Ajax {
 			$popup_products['popup_products'] = array();
 		}
 
-		if ( ! isset( $popup_products['state_by_country'] ) ) {
-			$popup_products['state_by_country'] = array();
+		if ( ! isset( $popup_products['virtual_locations'] ) ) {
+			$popup_products['virtual_location'] = array();
 		}
 
-		if ( ! isset( $popup_products['virtual_countries'] ) ) {
-			$popup_products['virtual_countries'] = array();
-			$popup_products['state_by_country']  = array();
-		}
-
-		if ( ! isset( $popup_products['city_by_state'] ) ) {
-			$popup_products['city_by_state'] = array();
-		}
-
-		if ( ! isset( $popup_products['virtual_state'] ) ) {
-			$popup_products['virtual_state'] = array();
-			$popup_products['city_by_state'] = array();
-		}
-
-		if ( ! isset( $popup_products['virtual_city'] ) ) {
-			$popup_products['virtual_city'] = array();
-		}
 		return $popup_products;
 	}
 }

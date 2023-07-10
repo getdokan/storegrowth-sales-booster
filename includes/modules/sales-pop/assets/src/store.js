@@ -74,12 +74,7 @@ From {location}
 	dispaly_time                 : 5,
 	sound                        : false,
 	sound_type                   : 'sound_a',
-	countries                    : [],
-	virtual_countries            : [],
-	state_by_country             : [],
-	virtual_state                : [],
-	city_by_state                : [],
-	virtual_city                 : [],
+    virtual_locations            : `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`,
 	screen_width                 : window.screen.width,
 	screen_height                : window.screen.height,
 };

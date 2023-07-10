@@ -29,18 +29,11 @@ function SalesPop({ outlet: Outlet }) {
 		    'data'      : [] ,
 			'_ajax_nonce' : sales_pop_data.ajd_nonce
 		}, function (response) {
-			// const countriesBefore = Country.getAllCountries();
-			const countriesBefore = [];
-			const updatedCountries = countriesBefore.map((country) => ({
-				label: country.name,
-				value: country.isoCode
-			}));
 			setPageLoading( false );
 			setCreateFromData(
 				{
-					...createPopupForm, ...response.data,
-					countries:updatedCountries,
-						
+					...createPopupForm, 
+                    ...response.data,
 				}
 			);
 		});
