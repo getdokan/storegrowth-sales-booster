@@ -19,20 +19,20 @@
 	country     = popup_info.random_popup_country;
 
     // for city
-    var cityColor       = popup_all_properties.city_text_color;
-    var cityFontSize    = popup_all_properties.city_text_font_size+"px";
-    var cityFontWeight  = popup_all_properties.city_text_font_weight;
-    var cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
+    const cityColor       = popup_all_properties.city_text_color;
+    const cityFontSize    = popup_all_properties.city_text_font_size+"px";
+    const cityFontWeight  = popup_all_properties.city_text_font_weight;
+    const cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
     // for state
-    var stateColor      = popup_all_properties.state_text_color;
-    var stateFontSize   = popup_all_properties.state_text_font_size+"px";
-    var stateFontWeight = popup_all_properties.state_text_font_weight;
-    var stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
+    const stateColor      = popup_all_properties.state_text_color;
+    const stateFontSize   = popup_all_properties.state_text_font_size+"px";
+    const stateFontWeight = popup_all_properties.state_text_font_weight;
+    const stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
     // for country
-    var countryColor      = popup_all_properties.country_text_color;
-    var countryFontSize   = popup_all_properties.country_text_font_size+"px";
-    var countryFontWeight = popup_all_properties.country_text_font_weight;
-    var countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
+    const countryColor      = popup_all_properties.country_text_color;
+    const countryFontSize   = popup_all_properties.country_text_font_size+"px";
+    const countryFontWeight = popup_all_properties.country_text_font_weight;
+    const countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
 
 	var finalCountry = country.map((item,i)=>{
 			var countryStringToArray =  item.split(',');
