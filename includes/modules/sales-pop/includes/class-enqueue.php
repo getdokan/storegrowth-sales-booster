@@ -69,60 +69,6 @@ class Enqueue {
 			return;
 		}
 
-		$states_without_city       = maybe_unserialize( get_option( 'sgsb_states_without_city', true ) );
-		$virtual_state             = $popup_properties['virtual_state'] ? $popup_properties['virtual_state'] : array();
-		$popup_states_without_city = array();
-		if ( is_array( $states_without_city ) ) {
-			$popup_states_without_city = array_intersect( $states_without_city, $virtual_state );
-		}
-
-		$country_name_by_code = array();
-
-		if ( isset( $popup_properties['countries'] ) ) {
-			foreach ( $popup_properties['countries'] as $country ) {
-				$country_name_by_code[ $country['value'] ] = $country['label'];
-			}
-		}
-
-		$state_by_country = $popup_properties['state_by_country'] ? $popup_properties['state_by_country'] : array();
-		foreach ( $state_by_country as $state ) {
-			$state_by_code[ $state['value'] ] = $state['label'];
-		}
-
-		$coutry_state_for_popup = array();
-		$virtual_city           = $popup_properties['virtual_city'] ? $popup_properties['virtual_city'] : array();
-		foreach ( $virtual_city as $value ) {
-			$country_state_city       = explode( '#', $value );
-			$state_code               = $country_state_city[0] . '#' . $country_state_city[1];
-			$country_state_city[0]    = $country_name_by_code[ $country_state_city[0] ];
-			$country_state_city[1]    = $state_by_code[ $state_code ];
-			$coutry_state_for_popup[] = $country_state_city;
-
-		}
-
-		$popup_location_without_city = array();
-		foreach ( $popup_states_without_city as $value ) {
-			$country_and_state             = explode( '#', $value );
-			$popup_location_without_city[] = array( $country_name_by_code[ $country_and_state[0] ], $state_by_code[ $value ] );
-		}
-
-		$popup_location_with_and_without_city = array_merge( $popup_location_without_city, $coutry_state_for_popup );
-
-		$final_popup_country = array();
-
-		foreach ( $popup_location_with_and_without_city as $value ) {
-			$final_popup_country[] = implode( ', ', array_reverse( $value ) );
-		}
-		$countries          = $popup_properties['countries'] ? $popup_properties['countries'] : array();
-		$selected_countries = isset( $popup_properties['virtual_countries'] ) ? $popup_properties['virtual_countries'] : null;
-		$popup_country      = array();
-		foreach ( $countries as $country_info ) {
-			if ( $selected_countries && in_array( $country_info['value'], $selected_countries, true ) ) {
-				$popup_country[] = $country_info['label'];
-			}
-		}
-		$random_popups_country = array_merge( $popup_country, $final_popup_country );
-
 		$virtual_name = array();
 
 		if ( isset( $popup_properties['virtual_name'] ) ) {
@@ -139,7 +85,7 @@ class Enqueue {
 			'product_list'         => $product_list,
 			'product_url'          => $product_url,
 			'product_image_url'    => $product_image_url,
-			'random_popup_country' => $random_popups_country,
+			// 'random_popup_country' => $random_popups_country,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
 			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
