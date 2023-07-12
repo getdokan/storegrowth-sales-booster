@@ -81,11 +81,14 @@ class Enqueue {
 			}
 		}
 
+		$virtual_locations = isset( $popup_properties['virtual_locations'] ) ? $popup_properties['virtual_locations'] : '';
+		$virtual_locations = explode( "\n", $virtual_locations );
+
 		$popup_info = array(
 			'product_list'         => $product_list,
 			'product_url'          => $product_url,
 			'product_image_url'    => $product_image_url,
-			// 'random_popup_country' => $random_popups_country,
+			'virtual_locations'    => $virtual_locations,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
 			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
