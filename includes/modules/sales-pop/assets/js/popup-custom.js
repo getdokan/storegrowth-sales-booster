@@ -30,8 +30,7 @@
     const countryFontWeight = popup_all_properties.country_text_font_weight;
     const countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
 
-	let country = new Array ();
-	country     = popup_info.random_popup_country;
+	let country     = popup_info.random_popup_country;
 
 	country = country.map((item,i)=>{
 			var countryStringToArray =  item.split(',');
