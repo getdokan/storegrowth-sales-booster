@@ -18,25 +18,24 @@
 
 	country     = popup_info.random_popup_country;
 
+    // for city
+    var cityColor       = popup_all_properties.city_text_color;
+    var cityFontSize    = popup_all_properties.city_text_font_size+"px";
+    var cityFontWeight  = popup_all_properties.city_text_font_weight;
+    var cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
+    // for state
+    var stateColor      = popup_all_properties.state_text_color;
+    var stateFontSize   = popup_all_properties.state_text_font_size+"px";
+    var stateFontWeight = popup_all_properties.state_text_font_weight;
+    var stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
+    // for country
+    var countryColor      = popup_all_properties.country_text_color;
+    var countryFontSize   = popup_all_properties.country_text_font_size+"px";
+    var countryFontWeight = popup_all_properties.country_text_font_weight;
+    var countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
+
 	var finalCountry = country.map((item,i)=>{
-
 			var countryStringToArray =  item.split(',');
-			// for city
-			var cityColor       = popup_all_properties.city_text_color;
-			var cityFontSize    = popup_all_properties.city_text_font_size+"px";
-			var cityFontWeight  = popup_all_properties.city_text_font_weight;
-			var cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
-			// for state
-			var stateColor      = popup_all_properties.state_text_color;
-			var stateFontSize   = popup_all_properties.state_text_font_size+"px";
-			var stateFontWeight = popup_all_properties.state_text_font_weight;
-			var stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
-			// for country
-			var countryColor      = popup_all_properties.country_text_color;
-			var countryFontSize   = popup_all_properties.country_text_font_size+"px";
-			var countryFontWeight = popup_all_properties.country_text_font_weight;
-			var countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
-
 
 			if ( countryStringToArray.length == 3 ) {
 				var city    = "<span style=" + cityStyle    + ">" + countryStringToArray[0] + "</span>, ";
