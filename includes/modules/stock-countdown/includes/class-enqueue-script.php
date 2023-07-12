@@ -66,7 +66,7 @@ class Enqueue_Script {
 		wp_enqueue_script(
 			'wpbsc_custom_script',
 			sgsb_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'wpbsc_jqmeter' ),
 			filemtime( sgsb_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
 			true
 		);
