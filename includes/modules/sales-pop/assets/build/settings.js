@@ -14905,8 +14905,8 @@ function CreateSalesPop(_ref2) {
     }]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
     rows: 4,
-    value: createPopupForm?.virtual_location || virtualLocationPlaceHolder,
-    onChange: e => onFieldChange('virtual_location', e.target.value),
+    value: createPopupForm?.virtual_locations || virtualLocationPlaceHolder,
+    onChange: e => onFieldChange('virtual_locations', e.target.value),
     placeholder: virtualLocationPlaceHolder
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",

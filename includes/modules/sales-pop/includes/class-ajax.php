@@ -63,7 +63,7 @@ class Ajax {
 		}
 
 		if ( ! isset( $popup_products['virtual_locations'] ) ) {
-			$popup_products['virtual_location'] = array();
+			$popup_products['virtual_locations'] = array();
 		}
 
 		return $popup_products;

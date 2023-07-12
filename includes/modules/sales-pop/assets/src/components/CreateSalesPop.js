@@ -132,8 +132,8 @@ function CreateSalesPop( { onFormSave } ) {
       >
         <TextArea
           rows={ 4 }
-          value={createPopupForm?.virtual_location || virtualLocationPlaceHolder}
-          onChange={ ( e ) => onFieldChange( 'virtual_location', e.target.value ) }
+          value={createPopupForm?.virtual_locations || virtualLocationPlaceHolder}
+          onChange={ ( e ) => onFieldChange( 'virtual_locations', e.target.value ) }
           placeholder={virtualLocationPlaceHolder}
         />
       </Form.Item>
