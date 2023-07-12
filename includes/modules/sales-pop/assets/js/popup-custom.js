@@ -14,10 +14,6 @@
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
-	var country = new Array ();
-
-	country     = popup_info.random_popup_country;
-
     // for city
     const cityColor       = popup_all_properties.city_text_color;
     const cityFontSize    = popup_all_properties.city_text_font_size+"px";
@@ -34,7 +30,10 @@
     const countryFontWeight = popup_all_properties.country_text_font_weight;
     const countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
 
-	var finalCountry = country.map((item,i)=>{
+	let country = new Array ();
+	country     = popup_info.random_popup_country;
+
+	country = country.map((item,i)=>{
 			var countryStringToArray =  item.split(',');
 
 			if ( countryStringToArray.length == 3 ) {
@@ -53,8 +52,6 @@
 
 					
 	})
-
-	country = finalCountry
  
 	var product_image = popup_info.product_image_url;
 	var product_url   = popup_info.product_url;
