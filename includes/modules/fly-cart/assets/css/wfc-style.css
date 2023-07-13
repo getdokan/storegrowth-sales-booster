@@ -66,22 +66,7 @@
     font-weight: 600;
 }
 
-.wfc-widget-sidebar {
-    width: 500px;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: #fff;
-    z-index: 1001;
-    -webkit-box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
-    -moz-box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
-    box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    transition: 0.5s;
-    overflow: auto;
-}
+
 .wfc-cart-heading{
     font-weight: 600;
     color: #111;
@@ -101,25 +86,9 @@
     color: #989FAB;
     cursor: pointer;
     font-size: 45px;
-    line-height: 32px;
     font-weight: 300;
-    margin-top: -15px;
 }
-.wfc-slide{
-    right: -500px;
-}
-.wfc-overlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.83);
-    top: 0;
-    left: 0;
-    z-index: 1000;
-}
-.wfc-hide {
-    display: none
-}
+
 
 /* Cart Table */
 table.sgsb-fly-cart-table {

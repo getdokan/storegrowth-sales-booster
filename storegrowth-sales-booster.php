@@ -25,6 +25,8 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_FILE' ) ) {
 	define( 'STOREGROWTH_PLUGIN_FILE', __FILE__ );
 }
 
+
+
 /**
  * Define plugin directory URL.
  */
@@ -83,6 +85,11 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 	return;
 }
 
+if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
+	define( 'SGSB_PRO_ACTIVE', true );
+} else {
+	define( 'SGSB_PRO_ACTIVE', false );
+}
 /**
  * Include necessary files to initial load of the plugin.
  */
