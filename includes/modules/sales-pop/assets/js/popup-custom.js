@@ -34,8 +34,8 @@
 	countryArray = countryArray.map((item,i)=>{
 			const countryStringToArray = (typeof item === 'string' ? item : "").split(',');
             const city    = countryStringToArray[0] ? `<span style="${cityStyle}" >${countryStringToArray[0]}</span>` : "";
-            const state   = countryStringToArray[1] ? `<span style="${stateStyle}" >, ${countryStringToArray[1]}</span>` : "";
-            const country = countryStringToArray[2] ? `<span style="${countryStyle}" >, ${countryStringToArray[2]}</span>` : "";
+            const state   = countryStringToArray[1] ? `<span style="${stateStyle}" >${city ? ',' : ''} ${countryStringToArray[1]}</span>` : "";
+            const country = countryStringToArray[2] ? `<span style="${countryStyle}" >${city || state ? ',' : ''} ${countryStringToArray[2]}</span>` : "";
             return `${city}${state}${country}`;
 	})
 	var product_image = popup_info.product_image_url;
