@@ -2,7 +2,6 @@ import { Form, Select, Switch, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
-import { State, City } from 'country-state-city';
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
@@ -18,94 +17,6 @@ function CreateSalesPop( { onFormSave } ) {
     setCreateFromData( {
       ...createPopupForm,
       [ key ]: value,
-    } );
-  };
-
-  const onFieldChangeCountry = ( key, value ) => {
-    var stateByCountry = []
-    var i = 0;
-
-    value.map( ( coutryIsoCode, j ) => {
-      const states = State.getStatesOfCountry( coutryIsoCode );
-      for ( var stateInfo in states ) {
-        stateByCountry[ i ] = states[ stateInfo ];
-        i++;
-
-      }
-    } )
-
-    const stateByCountryFinal = stateByCountry.map( ( stateInfo ) => ({
-      label: stateInfo.name,
-      value: stateInfo.countryCode + '#' + stateInfo.isoCode
-    }) );
-
-    var fCountry = value;
-
-    var final_virtual_state = createPopupForm.virtual_state.filter( ( item, i ) => {
-      const countryState = item.split( "#" );
-      return fCountry.includes( countryState[ 0 ] )
-    } )
-
-    var final_virtual_city = createPopupForm.virtual_city.filter( ( item, i ) => {
-      const countryStateCity = item.split( "#" );
-      var countryStateCode = countryStateCity[ 0 ] + "#" + countryStateCity[ 1 ];
-
-      return final_virtual_state.includes( countryStateCode )
-
-    } )
-
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-      state_by_country: stateByCountryFinal,
-      virtual_state: final_virtual_state,
-      virtual_city: final_virtual_city
-    } );
-  };
-
-  const onFieldChangeState = ( key, value ) => {
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-    } );
-
-
-    var cityByState = []
-    var i = 0;
-
-    value.map( ( countryCodeAndStateCode, k ) => {
-      let hasPosition = countryCodeAndStateCode.indexOf( "#" )
-      let stateCode = countryCodeAndStateCode.substring( hasPosition + 1 );
-      let countryCode = countryCodeAndStateCode.substring( 0, hasPosition );
-      const cities = City.getCitiesOfState( countryCode, stateCode );
-      for ( var city in cities ) {
-        cityByState[ i ] = cities[ city ];
-        i++;
-
-      }
-    } )
-
-
-    const cityByStateFinal = cityByState.map( ( cityInfo ) => ({
-      label: cityInfo.name,
-      value: cityInfo.countryCode + "#" + cityInfo.stateCode + '#' + cityInfo.name
-    }) );
-
-    var fState = value;
-    var final_virtual_city = createPopupForm.virtual_city.filter( ( item, i ) => {
-      const countryStateCity = item.split( "#" );
-      var countryStateCode = countryStateCity[ 0 ] + "#" + countryStateCity[ 1 ];
-
-      return fState.includes( countryStateCode )
-
-    } )
-
-
-    setCreateFromData( {
-      ...createPopupForm,
-      [ key ]: value,
-      city_by_state: cityByStateFinal,
-      virtual_city: final_virtual_city
     } );
   };
 
@@ -130,6 +41,7 @@ function CreateSalesPop( { onFormSave } ) {
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
+  const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
   return (
     <>
 
@@ -210,62 +122,22 @@ function CreateSalesPop( { onFormSave } ) {
         </Select>
       </Form.Item> */}
 
-
       <Form.Item
-
-        label="Virtual Country"
+        label="Virtual Location"
         labelAlign='left'
-        extra="Virtual country show on notification"
+        extra="Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country)."
+        rules={ [
+          { message: 'Please Write your virtual locations' },
+        ] }
       >
-        {isCountriesSelectionReachedlimit && <WarningMessage /> }
-        <Select
-          allowClear
-          placeholder="Search for products"
-          options={ virtualCountriesOptions }
-          onChange={ ( v ) => onFieldChangeCountry( 'virtual_countries', v ) }
-          mode="multiple"
-          filterOption={ true }
-          optionFilterProp="label"
-          value={ selectedVirtualCountries }
-
+        <TextArea
+          rows={ 4 }
+          value={createPopupForm?.virtual_locations || virtualLocationPlaceHolder}
+          onChange={ ( e ) => onFieldChange( 'virtual_locations', e.target.value ) }
+          placeholder={virtualLocationPlaceHolder}
         />
       </Form.Item>
 
-      {/* <Form.Item
-        label="Virtual State"
-        labelAlign='left'
-        extra="Virtual state what will show on notification"
-      >
-        <Select
-          allowClear
-          placeholder="Search for virtual city"
-          options={ createPopupForm.state_by_country }
-          onChange={ ( v ) => onFieldChangeState( 'virtual_state', v ) }
-          mode="multiple"
-          filterOption={ true }
-          optionFilterProp="label"
-          value={ createPopupForm.virtual_state }
-
-        />
-      </Form.Item>
-      { createPopupForm.city_by_state.length ?
-        <Form.Item
-          label="Virtual City"
-          labelAlign='left'
-          extra="Virtual city what will show on notification"
-        >
-          <Select
-            allowClear
-            placeholder="Search for virtual city"
-            options={ createPopupForm.city_by_state }
-            onChange={ ( v ) => onFieldChange( 'virtual_city', v ) }
-            mode="multiple"
-            filterOption={ true }
-            optionFilterProp="label"
-            value={ createPopupForm.virtual_city }
-
-          />
-        </Form.Item> : null } */}
       <Button
         type="primary"
         onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }

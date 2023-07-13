@@ -14,49 +14,30 @@
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
-	var country = new Array ();
+    // for city
+    const cityColor       = popup_all_properties.city_text_color;
+    const cityFontSize    = popup_all_properties.city_text_font_size+"px";
+    const cityFontWeight  = popup_all_properties.city_text_font_weight;
+    const cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
+    // for state
+    const stateColor      = popup_all_properties.state_text_color;
+    const stateFontSize   = popup_all_properties.state_text_font_size+"px";
+    const stateFontWeight = popup_all_properties.state_text_font_weight;
+    const stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
+    // for country
+    const countryColor      = popup_all_properties.country_text_color;
+    const countryFontSize   = popup_all_properties.country_text_font_size+"px";
+    const countryFontWeight = popup_all_properties.country_text_font_weight;
+    const countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
 
-	country     = popup_info.random_popup_country;
-
-	var finalCountry = country.map((item,i)=>{
-
-			var countryStringToArray =  item.split(',');
-			// for city
-			var cityColor       = popup_all_properties.city_text_color;
-			var cityFontSize    = popup_all_properties.city_text_font_size+"px";
-			var cityFontWeight  = popup_all_properties.city_text_font_weight;
-			var cityStyle       = "color:" + cityColor+ ";font-size:" + cityFontSize +";font-weight:" + cityFontWeight;
-			// for state
-			var stateColor      = popup_all_properties.state_text_color;
-			var stateFontSize   = popup_all_properties.state_text_font_size+"px";
-			var stateFontWeight = popup_all_properties.state_text_font_weight;
-			var stateStyle      = "color:" + stateColor+ ";font-size:" + stateFontSize +";font-weight:" + stateFontWeight;
-			// for country
-			var countryColor      = popup_all_properties.country_text_color;
-			var countryFontSize   = popup_all_properties.country_text_font_size+"px";
-			var countryFontWeight = popup_all_properties.country_text_font_weight;
-			var countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
-
-
-			if ( countryStringToArray.length == 3 ) {
-				var city    = "<span style=" + cityStyle    + ">" + countryStringToArray[0] + "</span>, ";
-				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[1] + "</span>, ";
-				var country = "<span style=" + countryStyle + ">" + countryStringToArray[2] + "</span>";
-				return city + state + country;
-			} else if(countryStringToArray.length == 2) {
-				var state   = "<span style=" + stateStyle   + ">" + countryStringToArray[0] + "</span>, ";
-				var country = "<span style=" + countryStyle + ">" + countryStringToArray[1] + "</span>";
-				return state + country;
-			}else{
-				var country = "<span style=" + countryStyle + ">" + countryStringToArray[0] + "</span>";
-				return country;
-			}
-
-					
+	let countryArray     = Array.isArray(popup_info.virtual_locations) ? popup_info.virtual_locations : [];
+	countryArray = countryArray.map((item,i)=>{
+			const countryStringToArray = (typeof item === 'string' ? item : "").split(',');
+            const city    = countryStringToArray[0] ? `<span style="${cityStyle}" >${countryStringToArray[0]}</span>` : "";
+            const state   = countryStringToArray[1] ? `<span style="${stateStyle}" >${city ? ',' : ''} ${countryStringToArray[1]}</span>` : "";
+            const country = countryStringToArray[2] ? `<span style="${countryStyle}" >${city || state ? ',' : ''} ${countryStringToArray[2]}</span>` : "";
+            return `${city}${state}${country}`;
 	})
-
-	country = finalCountry
- 
 	var product_image = popup_info.product_image_url;
 	var product_url   = popup_info.product_url;
 	var products      = popup_info.product_list;
@@ -75,11 +56,11 @@
 			
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
-		var countryRandom         = Math.floor( country.length*Math.random() );
+		var countryRandom         = Math.floor( countryArray.length*Math.random() );
 		productAndImage = getRandomProductImage();
 
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
-		$('#country').html( country[countryRandom] );
+		$('#country').html( countryArray[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
     $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
     $('#product').text( products[ productAndImage ] );

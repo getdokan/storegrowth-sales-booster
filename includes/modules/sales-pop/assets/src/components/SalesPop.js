@@ -1,11 +1,10 @@
-import {Tabs,Card, Button, Form } from 'antd';
-const { TabPane } = Tabs;
+import { Card, Form } from 'antd';
 import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { Country, State, City }  from 'country-state-city';
+// import { Country }  from 'country-state-city';
 
 
-function SalesPop({ outlet: Outlet, useSearchParams }) {
+function SalesPop({ outlet: Outlet }) {
 	const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 	const { setPageLoading } = useDispatch( 'sgsb' );
 	const { createPopupForm } = useSelect( ( select ) => ({
@@ -20,12 +19,6 @@ function SalesPop({ outlet: Outlet, useSearchParams }) {
 		},
 	};
 
-	const tailLayout = {
-		wrapperCol: {
-			span: 16,
-		},
-	};
-
 	useEffect(() => {
 		
 		setPageLoading( true );
@@ -36,17 +29,11 @@ function SalesPop({ outlet: Outlet, useSearchParams }) {
 		    'data'      : [] ,
 			'_ajax_nonce' : sales_pop_data.ajd_nonce
 		}, function (response) {
-			const countriesBefore = Country.getAllCountries();
-			const updatedCountries = countriesBefore.map((country) => ({
-				label: country.name,
-				value: country.isoCode
-			}));
 			setPageLoading( false );
 			setCreateFromData(
 				{
-					...createPopupForm, ...response.data,
-					countries:updatedCountries,
-						
+					...createPopupForm, 
+                    ...response.data,
 				}
 			);
 		});
