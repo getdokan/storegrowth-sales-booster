@@ -81,18 +81,20 @@ class Enqueue {
 			}
 		}
 
-		$virtual_locations = isset( $popup_properties['virtual_locations'] ) ? $popup_properties['virtual_locations'] : '';
-		$virtual_locations = explode( "\n", $virtual_locations );
-
 		$popup_info = array(
 			'product_list'         => $product_list,
 			'product_url'          => $product_url,
 			'product_image_url'    => $product_image_url,
-			'virtual_locations'    => $virtual_locations,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
 			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
 		);
+
+		if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
+			$virtual_locations               = isset( $popup_properties['virtual_locations'] ) ? $popup_properties['virtual_locations'] : '';
+			$virtual_locations               = explode( "\n", $virtual_locations );
+			$popup_info['virtual_locations'] = $virtual_locations;
+		}
 
 		wp_localize_script( 'popup-custom-js', 'popup_info', $popup_info );
 	}
