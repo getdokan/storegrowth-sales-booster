@@ -42,6 +42,13 @@ function CreateSalesPop( { onFormSave } ) {
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
+
+  const virtualLocationsFormVal = createPopupForm?.virtual_locations;
+  const virtualLocationsValue =
+    !virtualLocationsFormVal && "" !== virtualLocationsFormVal
+      ? virtualLocationPlaceHolder
+      : virtualLocationsFormVal;
+  
   return (
     <>
 
@@ -132,7 +139,7 @@ function CreateSalesPop( { onFormSave } ) {
       >
         <TextArea
           rows={ 4 }
-          value={createPopupForm?.virtual_locations || virtualLocationPlaceHolder}
+          value={virtualLocationsValue}
           onChange={ ( e ) => onFieldChange( 'virtual_locations', e.target.value ) }
           placeholder={virtualLocationPlaceHolder}
         />

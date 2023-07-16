@@ -14865,6 +14865,8 @@ function CreateSalesPop(_ref2) {
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
+  const virtualLocationsFormVal = createPopupForm?.virtual_locations;
+  const virtualLocationsValue = !virtualLocationsFormVal && "" !== virtualLocationsFormVal ? virtualLocationPlaceHolder : virtualLocationsFormVal;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Product Show Random",
     labelAlign: "left"
@@ -14905,7 +14907,7 @@ function CreateSalesPop(_ref2) {
     }]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
     rows: 4,
-    value: createPopupForm?.virtual_locations || virtualLocationPlaceHolder,
+    value: virtualLocationsValue,
     onChange: e => onFieldChange('virtual_locations', e.target.value),
     placeholder: virtualLocationPlaceHolder
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
