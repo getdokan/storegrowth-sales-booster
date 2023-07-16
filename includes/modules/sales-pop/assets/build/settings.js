@@ -14817,6 +14817,7 @@ const {
   TextArea
 } = antd__WEBPACK_IMPORTED_MODULE_1__["default"];
 
+const noop = () => {};
 const WarningMessage = _ref => {
   let {
     warningColor
@@ -14867,6 +14868,10 @@ function CreateSalesPop(_ref2) {
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
   const virtualLocationsFormVal = createPopupForm?.virtual_locations;
   const virtualLocationsValue = !virtualLocationsFormVal && "" !== virtualLocationsFormVal ? virtualLocationPlaceHolder : virtualLocationsFormVal;
+  const isProEnabled = sgsbAdmin.isPro;
+  const upgradeTeaser = !isProEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: "sgsb-field-upgrade-pro-label"
+  }, "(Upgrade to premium)");
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Product Show Random",
     labelAlign: "left"
@@ -14901,16 +14906,17 @@ function CreateSalesPop(_ref2) {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Virtual Location",
     labelAlign: "left",
-    extra: "Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country).",
+    extra: isProEnabled && "Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country).",
     rules: [{
       message: 'Please Write your virtual locations'
     }]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
     rows: 4,
     value: virtualLocationsValue,
-    onChange: e => onFieldChange('virtual_locations', e.target.value),
+    disabled: !isProEnabled,
+    onChange: e => isProEnabled ? onFieldChange('virtual_locations', e.target.value) : noop(),
     placeholder: virtualLocationPlaceHolder
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), upgradeTeaser), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     type: "primary",
     onClick: () => !isFirstNameExceededLimit && onFormSave('product'),
     className: "order-bump-save-change-button",
