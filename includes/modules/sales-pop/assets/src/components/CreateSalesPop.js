@@ -3,7 +3,6 @@ import { Form, Select, Switch, Input, Button } from 'antd';
 const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
 
-const noop = () => {};
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
 function CreateSalesPop( { onFormSave } ) {
@@ -49,9 +48,6 @@ function CreateSalesPop( { onFormSave } ) {
     !virtualLocationsFormVal && "" !== virtualLocationsFormVal
       ? virtualLocationPlaceHolder
       : virtualLocationsFormVal;
-  
-  const isProEnabled = sgsbAdmin.isPro;
-  const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
   
   return (
     <>
@@ -136,7 +132,7 @@ function CreateSalesPop( { onFormSave } ) {
       <Form.Item
         label="Virtual Location"
         labelAlign='left'
-        extra={isProEnabled && "Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country)."}
+        extra="Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country)."
         rules={ [
           { message: 'Please Write your virtual locations' },
         ] }
@@ -144,11 +140,9 @@ function CreateSalesPop( { onFormSave } ) {
         <TextArea
           rows={ 4 }
           value={virtualLocationsValue}
-          disabled={!isProEnabled}
-          onChange={ ( e ) => isProEnabled ? onFieldChange( 'virtual_locations', e.target.value ) : noop()}
+          onChange={ ( e ) => onFieldChange( 'virtual_locations', e.target.value ) }
           placeholder={virtualLocationPlaceHolder}
         />
-        {upgradeTeaser}
       </Form.Item>
 
       <Button
