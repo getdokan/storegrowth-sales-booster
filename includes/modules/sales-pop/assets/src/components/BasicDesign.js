@@ -1,8 +1,13 @@
 import { Select, Col, Row, InputNumber, Switch} from 'antd';
 import InputColor from 'react-input-color';
 
+import { noop } from '../helper';
+
 const BasicDesign = (props) => {
 
+    const isProEnabled = sgsbAdmin.isPro;
+    const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
+  
 	return (
 		<>
 			<Row  gutter={30}>
@@ -19,10 +24,11 @@ const BasicDesign = (props) => {
 						}}
 					/>
 				</Col>
-				{/* <Col span={6}>
+				<Col span={6}>
 					Popup Position<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('popup_position', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_position', v)}
 						value    = {props.createPopupForm.popup_position}
 						style    = {{
 							width  : '100%',
@@ -33,12 +39,14 @@ const BasicDesign = (props) => {
 						<Select.Option value="left_top">Left Top</Select.Option>
 						<Select.Option value="right_top">Right Top</Select.Option>
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 
-				{/* <Col span={6}>
+				<Col span={6}>
 					Image Position<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('image_position', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('image_position', v)}
 						value    = {props.createPopupForm.image_position}
 						style    = {{
 							width  : '100%',
@@ -47,12 +55,14 @@ const BasicDesign = (props) => {
 						<Select.Option value="left">Left</Select.Option>
 						<Select.Option value="right">Right</Select.Option>
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 
-				{/* <Col span={6}>
+				<Col span={6}>
 					Popup Width<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('popup_width', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_width', v)}
 						value    = {props.createPopupForm.popup_width}
 						style    = {{
 							width  : '100%',
@@ -63,14 +73,16 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 			</Row>
 			<br />
 			<Row  gutter={30}>
-				{/* <Col span={6}>
+				<Col span={6}>
 					Popup Image Width<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('popup_image_width', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_image_width', v)}
 						value    = {props.createPopupForm.popup_image_width}
 						style    = {{
 							width  : '100%',
@@ -82,28 +94,14 @@ const BasicDesign = (props) => {
 
 					}
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 
-				{/* <Col span={6}>
-					Image width for mobile<br />
-					<Select
-						onChange = {(v) => props.onFieldChange('popup_mobile_image_width', v)}
-						value    = {props.createPopupForm.popup_mobile_image_width}
-						style    = {{
-							width  : '100%',
-						}}
-					>
-					{
-						 [...Array(10).keys()].map((mobileImageWidth, i)=><Select.Option value={mobileImageWidth+21}>{mobileImageWidth+21}</Select.Option>)
-						
-					}
-					</Select>
-				</Col> */}
-
-				{/* <Col span={6}>
+				<Col span={6}>
 					Border radius<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('popup_border_radius', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_border_radius', v)}
 						value    = {props.createPopupForm.popup_border_radius}
 						style    = {{
 							width  : '100%',
@@ -114,26 +112,27 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 
-				{/* <Col span={6}>
+				<Col span={6}>
 					Border radius of image<br />
 					<InputNumber
-						onChange    = {(v) => props.onFieldChange('popup_image_border_radius', v)}
+                        disabled = {upgradeTeaser}
+						onChange    = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_image_border_radius', v)}
 						placeholder = "Enter border radius of popup"
 						value       = {props.createPopupForm.popup_image_border_radius}
 						style       = {{
 							width  : '100%',
 						}}
 					/>
-				</Col> */}
-			</Row>
-			<br />
-			<Row  gutter={30}>
-				{/* <Col span={6}>
+                    {upgradeTeaser}
+				</Col>
+                <Col span={6}>
 					Image Spacing<br />
 					<Select
-						onChange = {(v) => props.onFieldChange('spacing_around_image', v)}
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('spacing_around_image', v)}
 						value    = {props.createPopupForm.spacing_around_image}
 						style    = {{
 							width  : '100%',
@@ -144,27 +143,35 @@ const BasicDesign = (props) => {
 						
 					}
 					</Select>
-				</Col> */}
+                    {upgradeTeaser}
+				</Col>
 
-				{/* <Col span={6}>
+			</Row>
+			<br />
+			<Row gutter={30}>
+				<Col span={6}>
 					Link image to product page<br />
 					<Switch 
+                        disabled = {upgradeTeaser}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('link_image_to_product', v) }
 						checked  = {(props.createPopupForm.link_image_to_product=='true' || props.createPopupForm.link_image_to_product== true)?true:false} 
-						onChange = {(v) => props.onFieldChange('link_image_to_product', v)} 
 					/>
-				</Col> */}
+                    <p>{upgradeTeaser}</p>
+				</Col>
 
-				{/* <Col span={6}>
+				<Col span={6}>
 					Open product link in new tab<br />
 					<Switch 
+                        disabled = {upgradeTeaser}
+                        onChange={upgradeTeaser ? noop : (v) => props.onFieldChange('open_product_link_in_new_tab', v) }
 						checked={(
                             props.createPopupForm.open_product_link_in_new_tab=='true'
 						|| 
 						    props.createPopupForm.open_product_link_in_new_tab== true
 						)?true:false} 
-						onChange={(v) => props.onFieldChange('open_product_link_in_new_tab', v)} 
 					/>
-				</Col> */}
+                    <p>{upgradeTeaser}</p>
+				</Col>
 
 				<Col span={6}>
 					Show close button<br />

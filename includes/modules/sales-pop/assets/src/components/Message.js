@@ -1,9 +1,11 @@
 import { Form, Input, Button, Typography } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
+import { noop } from '../helper';
+
 const { TextArea } = Input;
 
-function Message( { onFormSave } ) {
+function Message( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -27,11 +29,13 @@ function Message( { onFormSave } ) {
         className='form-input-distance'
       >
         <TextArea
+          disabled={ upgradeTeaser }
           rows={ 4 }
           value={ createPopupForm.message_popup }
-          onChange={ ( v ) => onFieldChange( 'message_popup', v.target.value ) }
+          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'message_popup', v.target.value ) }
           placeholder='Enter Message Popup'
         />
+        {upgradeTeaser}
       </Form.Item>
       <p>{ '{product_title} = Title of Product' }</p>
       <p>{ '{virtual_name} = Name of purchaser' }</p>

@@ -7,13 +7,16 @@ const fontStyle = {
 	borderRadius:'5px'
 }
 
+import { noop } from '../helper';
+
 const TextDesign = (props) => {
 
+    const {upgradeTeaser} = props;
 	return (
 		<>
 			<Row style={fontStyle}>
 				<Col span={24}>
-					<span style={{color:'#072965'}}>&nbsp;&nbsp; <b>{props.textTitle}</b> </span>
+					<span style={{color:'#072965'}}>&nbsp;&nbsp; <b>{props.textTitle}</b> </span> {upgradeTeaser}
 				</Col>
 			</Row>
 
@@ -21,8 +24,9 @@ const TextDesign = (props) => {
 				<Col span={8}>
 					Color<br />
 					<InputColor
+                        disabled     = {upgradeTeaser}
 						initialValue = {props.fontColor}
-						onChange     = {(v) => props.onFieldChange(props.fontName, v.hex)}
+						onChange     = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontName, v.hex) }
 						placement    = "right"
 						style        = {{
 							width  : '100%',
@@ -35,7 +39,8 @@ const TextDesign = (props) => {
 				<Col span={8}>
 					Font size<br />
 					<Select
-						onChange = {(v) => props.onFieldChange(props.fontSizeName, v)}
+                        disabled = {upgradeTeaser}
+						onChange = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontSizeName, v) }
 						value    = {props.fontSize}
 						style    = {{
 							width  : '100%',
@@ -51,7 +56,8 @@ const TextDesign = (props) => {
 				<Col span={8}>
 					Font weight<br />
 					<Select
-						onChange = {(v) => props.onFieldChange(props.fontWeightName, v)}
+                        disabled = {upgradeTeaser}
+						onChange = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontWeightName, v) }
 						value    = {props.fontWeight}
 						style    = {{
 							width  : '100%',
