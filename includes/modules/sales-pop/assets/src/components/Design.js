@@ -3,7 +3,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import TextDesign from './TextDesign';
 import BasicDesign from './BasicDesign';
 
-function Desgin( { onFormSave } ) {
+function Desgin( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -23,10 +23,12 @@ function Desgin( { onFormSave } ) {
       <BasicDesign
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
+        upgradeTeaser={upgradeTeaser}
       />
 
       {/* normal text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='Normal Text'
@@ -36,7 +38,7 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.normal_text_font_size }
         fontWeightName='normal_text_font_weight'
         fontWeight={ createPopupForm.normal_text_font_weight }
-      /> */}
+      />
 
       {/* product name text*/ }
       <TextDesign
@@ -51,19 +53,6 @@ function Desgin( { onFormSave } ) {
         fontWeight={ createPopupForm.product_title_font_weight }
       />
 
-      {/* product link text*/ }
-      {/* <TextDesign
-        createPopupForm={ createPopupForm }
-        onFieldChange={ onFieldChange }
-        textTitle='Product Link Text'
-        fontName='product_link_color'
-        fontColor={ createPopupForm.product_link_color }
-        fontSizeName='product_link_font_size'
-        fontSize={ createPopupForm.product_link_font_size }
-        fontWeightName='product_link_font_weight'
-        fontWeight={ createPopupForm.product_link_font_weight }
-      /> */}
-
       {/* time text*/ }
       <TextDesign
         createPopupForm={ createPopupForm }
@@ -76,19 +65,6 @@ function Desgin( { onFormSave } ) {
         fontWeightName='time_text_font_weight'
         fontWeight={ createPopupForm.time_text_font_weight }
       />
-
-      {/* date text*/ }
-      {/* <TextDesign
-        createPopupForm={ createPopupForm }
-        onFieldChange={ onFieldChange }
-        textTitle='Date Text'
-        fontName='date_text_color'
-        fontColor={ createPopupForm.date_text_color }
-        fontSizeName='date_text_font_size'
-        fontSize={ createPopupForm.date_text_font_size }
-        fontWeightName='date_text_font_weight'
-        fontWeight={ createPopupForm.date_text_font_weight }
-      /> */}
 
       {/* country text*/ }
       <TextDesign
@@ -104,7 +80,8 @@ function Desgin( { onFormSave } ) {
       />
 
       {/* state text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='State Text'
@@ -114,10 +91,11 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.state_text_font_size }
         fontWeightName='state_text_font_weight'
         fontWeight={ createPopupForm.state_text_font_weight }
-      /> */}
+      />
 
       {/* city text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='City Text'
@@ -127,7 +105,7 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.city_text_font_size }
         fontWeightName='city_text_font_weight'
         fontWeight={ createPopupForm.city_text_font_weight }
-      /> */}
+      />
 
       {/* name text */ }
       <TextDesign

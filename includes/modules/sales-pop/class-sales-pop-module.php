@@ -98,6 +98,8 @@ class Sales_Pop_Module implements Module_Skeleton {
 		require_once __DIR__ . '/includes/class-ajax.php';
 		Sales_POP::instance();
 		Ajax::instance();
+
+		do_action( 'storegrowth_sales_pop_module_init' );
 	}
 
 }
