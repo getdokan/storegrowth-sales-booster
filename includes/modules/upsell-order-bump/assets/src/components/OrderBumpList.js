@@ -176,7 +176,7 @@ function OrderBumpList( { navigate } ) {
   console.log(sgsbAdmin.isPro);
   return (
     <>
-      {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>In this version, you are not able to create more than two order bumps.</span>}
+      {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>Upgrade to premeuim to create more than two order bumps.</span>}
       <Button
         type="primary"
         shape="round"
