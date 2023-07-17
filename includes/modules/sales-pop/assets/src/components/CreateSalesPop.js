@@ -107,28 +107,6 @@ function CreateSalesPop( { onFormSave } ) {
         />
       </Form.Item>
 
-      {/* <Form.Item
-
-        label="Virtual Address Type"
-        labelAlign='left'
-        extra="You can use auto detect address or make virtual address for customer"
-        rules={ [
-          {
-            message: 'Please select offer type',
-          },
-        ] }
-      >
-        <Select
-          onChange={ ( v ) => onFieldChange( 'address', v ) }
-          value={ createPopupForm.address }
-
-        >
-          <Select.Option value="real">Real Address</Select.Option>
-          <Select.Option value="virtual">Virtual Address</Select.Option>
-
-        </Select>
-      </Form.Item> */}
-
       <Form.Item
         label="Virtual Location"
         labelAlign='left'
