@@ -237,7 +237,7 @@ function CreateBump({navigate, useParams}) {
   const offer_product = createBumpData.offer_product;
 
   if((!bump_id || !offer_product) && allBumpsData?.length >= 2 && !sgsbAdmin.isPro){
-    return <h2>In this version, you are not able to create more than two order bumps.</h2>;
+    return <h2>Upgrade to premeuim to create more than two order bumps.</h2>;
   }
 
   return (
