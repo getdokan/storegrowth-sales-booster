@@ -7,7 +7,7 @@ const fontStyle = {
 	borderRadius:'5px'
 }
 
-const noop = () => {};
+import { noop } from '../helper';
 
 const TextDesign = (props) => {
 
@@ -26,7 +26,7 @@ const TextDesign = (props) => {
 					<InputColor
                         disabled     = {upgradeTeaser}
 						initialValue = {props.fontColor}
-						onChange     = {upgradeTeaser ? (v) => props.onFieldChange(props.fontName, v.hex) : noop}
+						onChange     = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontName, v.hex) }
 						placement    = "right"
 						style        = {{
 							width  : '100%',
@@ -40,7 +40,7 @@ const TextDesign = (props) => {
 					Font size<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange(props.fontSizeName, v) : noop}
+						onChange = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontSizeName, v) }
 						value    = {props.fontSize}
 						style    = {{
 							width  : '100%',
@@ -57,7 +57,7 @@ const TextDesign = (props) => {
 					Font weight<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange(props.fontWeightName, v) : noop}
+						onChange = { upgradeTeaser ? noop : (v) => props.onFieldChange(props.fontWeightName, v) }
 						value    = {props.fontWeight}
 						style    = {{
 							width  : '100%',

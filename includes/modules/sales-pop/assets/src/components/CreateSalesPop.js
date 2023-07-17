@@ -3,9 +3,11 @@ import { Form, Select, Switch, Input, Button } from 'antd';
 const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
 
+import { noop } from '../helper';
+
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
-function CreateSalesPop( { onFormSave } ) {
+function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -52,16 +54,18 @@ function CreateSalesPop( { onFormSave } ) {
   return (
     <>
 
-      {/* <Form.Item
+      <Form.Item
         extra="Working with External/Affiliate Products. Product link is product url"
         label="External Link"
         labelAlign='left'
       >
         <Switch
+          disabled={ upgradeTeaser }
           checked={ !!externalLink }
-          onChange={ ( v ) => onFieldChange( 'external_link', v ) }
+          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'external_link', v ) }
         />
-      </Form.Item> */}
+        <p>{upgradeTeaser}</p>
+      </Form.Item>
 
       <Form.Item
         label="Product Show Random"

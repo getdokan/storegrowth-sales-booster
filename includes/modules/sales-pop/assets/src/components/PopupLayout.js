@@ -9,6 +9,10 @@ import General from './General';
 import Message from './Message';
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
+
+  const isProEnabled = sgsbAdmin.isPro;
+  const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
+
   const { setCreateFromData, setButtonLoading } = useDispatch( 'sgsb_order_sales_pop' );
   let [ searchParams, setSearchParams ] = useSearchParams();
 
@@ -83,24 +87,39 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
     <>
       <Tabs activeKey={ tabName ? tabName : 'general' } onTabClick={ changeTab }>
         <TabPane tab="General" key="general">
-          <General onFormSave={ onFormSave } />
+          <General 
+            onFormSave={ onFormSave }
+            upgradeTeaser={upgradeTeaser}
+          />
         </TabPane>
 
         <TabPane tab="Design" key="design">
-          <Desgin onFormSave={ onFormSave } />
+          <Desgin 
+            onFormSave={ onFormSave }
+            upgradeTeaser={upgradeTeaser}
+          />
         </TabPane>
 
         <TabPane tab="Products" key="products">
-          <CreateSalesPop onFormSave={ onFormSave } />
+          <CreateSalesPop 
+            onFormSave={ onFormSave }
+            upgradeTeaser={upgradeTeaser}
+          />
         </TabPane>
-{/* 
+
         <TabPane tab="Message" key="message">
-          <Message onFormSave={ onFormSave } />
+          <Message 
+            onFormSave={ onFormSave }
+            upgradeTeaser={upgradeTeaser}
+          />
         </TabPane>
 
         <TabPane tab="Time" key="time">
-          <Time onFormSave={ onFormSave } />
-        </TabPane> */}
+          <Time 
+            onFormSave={ onFormSave }
+            upgradeTeaser={upgradeTeaser}
+          />
+        </TabPane>
       </Tabs>
     </>
   );

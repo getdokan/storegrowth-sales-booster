@@ -1,8 +1,9 @@
 import { Form, Switch, Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
+import { noop } from '../helper';
 
-function General( { onFormSave } ) {
+function General( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -28,15 +29,17 @@ function General( { onFormSave } ) {
           onChange={ ( v ) => onFieldChange( 'enable', v ) }
         />
       </Form.Item>
-      {/* <Form.Item
+      <Form.Item
         label="Popup in Mobile"
         labelAlign='left'
       >
         <Switch
+          disabled={ upgradeTeaser }
           checked={ (createPopupForm.mobile_view == 'true' || createPopupForm.mobile_view == true) ? true : false }
-          onChange={ ( v ) => onFieldChange( 'mobile_view', v ) }
+          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'mobile_view', v ) }
         />
-      </Form.Item> */}
+        <p>{upgradeTeaser}</p>
+      </Form.Item>
 
       <Button
         type="primary"

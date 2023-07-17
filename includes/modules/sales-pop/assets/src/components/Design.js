@@ -3,7 +3,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import TextDesign from './TextDesign';
 import BasicDesign from './BasicDesign';
 
-function Desgin( { onFormSave } ) {
+function Desgin( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -18,14 +18,12 @@ function Desgin( { onFormSave } ) {
     } );
   };
 
-  const isProEnabled = sgsbAdmin.isPro;
-  const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
-
   return (
     <>
       <BasicDesign
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
+        upgradeTeaser={upgradeTeaser}
       />
 
       {/* normal text */ }

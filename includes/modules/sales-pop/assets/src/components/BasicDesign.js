@@ -1,7 +1,7 @@
 import { Select, Col, Row, InputNumber, Switch} from 'antd';
 import InputColor from 'react-input-color';
 
-const noop = () => {}
+import { noop } from '../helper';
 
 const BasicDesign = (props) => {
 
@@ -28,7 +28,7 @@ const BasicDesign = (props) => {
 					Popup Position<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('popup_position', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_position', v)}
 						value    = {props.createPopupForm.popup_position}
 						style    = {{
 							width  : '100%',
@@ -46,7 +46,7 @@ const BasicDesign = (props) => {
 					Image Position<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('image_position', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('image_position', v)}
 						value    = {props.createPopupForm.image_position}
 						style    = {{
 							width  : '100%',
@@ -62,7 +62,7 @@ const BasicDesign = (props) => {
 					Popup Width<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('popup_width', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_width', v)}
 						value    = {props.createPopupForm.popup_width}
 						style    = {{
 							width  : '100%',
@@ -82,7 +82,7 @@ const BasicDesign = (props) => {
 					Popup Image Width<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('popup_image_width', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_image_width', v)}
 						value    = {props.createPopupForm.popup_image_width}
 						style    = {{
 							width  : '100%',
@@ -101,7 +101,7 @@ const BasicDesign = (props) => {
 					Border radius<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('popup_border_radius', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_border_radius', v)}
 						value    = {props.createPopupForm.popup_border_radius}
 						style    = {{
 							width  : '100%',
@@ -119,7 +119,7 @@ const BasicDesign = (props) => {
 					Border radius of image<br />
 					<InputNumber
                         disabled = {upgradeTeaser}
-						onChange    = {upgradeTeaser ? (v) => props.onFieldChange('popup_image_border_radius', v): noop}
+						onChange    = {upgradeTeaser ? noop : (v) => props.onFieldChange('popup_image_border_radius', v)}
 						placeholder = "Enter border radius of popup"
 						value       = {props.createPopupForm.popup_image_border_radius}
 						style       = {{
@@ -132,7 +132,7 @@ const BasicDesign = (props) => {
 					Image Spacing<br />
 					<Select
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('spacing_around_image', v): noop}
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('spacing_around_image', v)}
 						value    = {props.createPopupForm.spacing_around_image}
 						style    = {{
 							width  : '100%',
@@ -153,24 +153,24 @@ const BasicDesign = (props) => {
 					Link image to product page<br />
 					<Switch 
                         disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? (v) => props.onFieldChange('link_image_to_product', v) : noop} 
+						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('link_image_to_product', v) }
 						checked  = {(props.createPopupForm.link_image_to_product=='true' || props.createPopupForm.link_image_to_product== true)?true:false} 
 					/>
-                    {upgradeTeaser}
+                    <p>{upgradeTeaser}</p>
 				</Col>
 
 				<Col span={6}>
 					Open product link in new tab<br />
 					<Switch 
                         disabled = {upgradeTeaser}
-                        onChange={upgradeTeaser ? (v) => props.onFieldChange('open_product_link_in_new_tab', v) : noop} 
+                        onChange={upgradeTeaser ? noop : (v) => props.onFieldChange('open_product_link_in_new_tab', v) }
 						checked={(
                             props.createPopupForm.open_product_link_in_new_tab=='true'
 						|| 
 						    props.createPopupForm.open_product_link_in_new_tab== true
 						)?true:false} 
 					/>
-                    {upgradeTeaser}
+                    <p>{upgradeTeaser}</p>
 				</Col>
 
 				<Col span={6}>
