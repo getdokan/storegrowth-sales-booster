@@ -51,19 +51,6 @@ function Desgin( { onFormSave } ) {
         fontWeight={ createPopupForm.product_title_font_weight }
       />
 
-      {/* product link text*/ }
-      {/* <TextDesign
-        createPopupForm={ createPopupForm }
-        onFieldChange={ onFieldChange }
-        textTitle='Product Link Text'
-        fontName='product_link_color'
-        fontColor={ createPopupForm.product_link_color }
-        fontSizeName='product_link_font_size'
-        fontSize={ createPopupForm.product_link_font_size }
-        fontWeightName='product_link_font_weight'
-        fontWeight={ createPopupForm.product_link_font_weight }
-      /> */}
-
       {/* time text*/ }
       <TextDesign
         createPopupForm={ createPopupForm }
@@ -76,19 +63,6 @@ function Desgin( { onFormSave } ) {
         fontWeightName='time_text_font_weight'
         fontWeight={ createPopupForm.time_text_font_weight }
       />
-
-      {/* date text*/ }
-      {/* <TextDesign
-        createPopupForm={ createPopupForm }
-        onFieldChange={ onFieldChange }
-        textTitle='Date Text'
-        fontName='date_text_color'
-        fontColor={ createPopupForm.date_text_color }
-        fontSizeName='date_text_font_size'
-        fontSize={ createPopupForm.date_text_font_size }
-        fontWeightName='date_text_font_weight'
-        fontWeight={ createPopupForm.date_text_font_weight }
-      /> */}
 
       {/* country text*/ }
       <TextDesign

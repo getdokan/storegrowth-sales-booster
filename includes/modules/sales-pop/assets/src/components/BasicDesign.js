@@ -85,22 +85,6 @@ const BasicDesign = (props) => {
 				</Col> */}
 
 				{/* <Col span={6}>
-					Image width for mobile<br />
-					<Select
-						onChange = {(v) => props.onFieldChange('popup_mobile_image_width', v)}
-						value    = {props.createPopupForm.popup_mobile_image_width}
-						style    = {{
-							width  : '100%',
-						}}
-					>
-					{
-						 [...Array(10).keys()].map((mobileImageWidth, i)=><Select.Option value={mobileImageWidth+21}>{mobileImageWidth+21}</Select.Option>)
-						
-					}
-					</Select>
-				</Col> */}
-
-				{/* <Col span={6}>
 					Border radius<br />
 					<Select
 						onChange = {(v) => props.onFieldChange('popup_border_radius', v)}
