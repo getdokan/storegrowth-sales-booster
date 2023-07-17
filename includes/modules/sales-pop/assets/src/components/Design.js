@@ -18,6 +18,9 @@ function Desgin( { onFormSave } ) {
     } );
   };
 
+  const isProEnabled = sgsbAdmin.isPro;
+  const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
+
   return (
     <>
       <BasicDesign
@@ -26,7 +29,8 @@ function Desgin( { onFormSave } ) {
       />
 
       {/* normal text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='Normal Text'
@@ -36,7 +40,7 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.normal_text_font_size }
         fontWeightName='normal_text_font_weight'
         fontWeight={ createPopupForm.normal_text_font_weight }
-      /> */}
+      />
 
       {/* product name text*/ }
       <TextDesign
@@ -78,7 +82,8 @@ function Desgin( { onFormSave } ) {
       />
 
       {/* state text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='State Text'
@@ -88,10 +93,11 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.state_text_font_size }
         fontWeightName='state_text_font_weight'
         fontWeight={ createPopupForm.state_text_font_weight }
-      /> */}
+      />
 
       {/* city text */ }
-      {/* <TextDesign
+      <TextDesign
+        upgradeTeaser={upgradeTeaser}
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='City Text'
@@ -101,7 +107,7 @@ function Desgin( { onFormSave } ) {
         fontSize={ createPopupForm.city_text_font_size }
         fontWeightName='city_text_font_weight'
         fontWeight={ createPopupForm.city_text_font_weight }
-      /> */}
+      />
 
       {/* name text */ }
       <TextDesign
