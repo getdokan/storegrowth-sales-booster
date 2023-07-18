@@ -56,14 +56,6 @@ class Enqueue_Script {
 		);
 
 		wp_enqueue_script(
-			'sgsb-jquery-countdown',
-			sgsb_modules_url( 'stock-bar/assets/scripts/jquery.countdown.min.js' ),
-			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/jquery.countdown.min.js' ) ),
-			true
-		);
-
-		wp_enqueue_script(
 			'wpbsc_custom_script',
 			sgsb_modules_url( 'stock-bar/assets/scripts/custom.js' ),
 			array( 'jquery', 'wpbsc_jqmeter' ),
