@@ -13813,7 +13813,7 @@ function GenenralSettings(_ref) {
   }, "Side cart"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     value: "center",
     disabled: !sgsbAdmin.isPro
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Centered popup test "), !sgsbAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Centered cart"), !sgsbAdmin.isPro && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "sgsb-field-upgrade-pro-label"
   }, "(Upgrade to premium)"))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Cart Contents",

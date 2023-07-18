@@ -42,7 +42,7 @@ function GenenralSettings({
           <Space direction="vertical">
             <Radio value="side">Side cart</Radio>
             <Radio value="center" disabled={!sgsbAdmin.isPro}>
-              <span>Centered popup test </span>
+              <span>Centered cart</span>
               {!sgsbAdmin.isPro && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>}
             </Radio>
           </Space>
