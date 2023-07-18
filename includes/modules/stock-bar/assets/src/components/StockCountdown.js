@@ -39,7 +39,7 @@ function StockCountdown() {
     setButtonLoading(true);
 
     let data = {
-      action: 'sgsb_stock_countdown_save_settings',
+      action: 'sgsb_stock_bar_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
@@ -51,7 +51,7 @@ function StockCountdown() {
     }).success(() => {
       setButtonLoading(false);
       notification['success']({
-        message     : 'Stock Countdown',
+        message     : 'Stock Bar',
         description : 'Stock count down data updated successfully.',
       });
     });
@@ -64,7 +64,7 @@ function StockCountdown() {
       url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sgsb_stock_countdown_get_settings',
+        action: 'sgsb_stock_bar_get_settings',
         _ajax_nonce: sgsbAdmin.nonce,
       }
     }).success((response) => {
@@ -106,7 +106,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
         }}
         autoComplete="off"
       >
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Stock Countdown Settings</Typography.Title>
+        <Typography.Title level={4} style={{marginBottom: '20px'}}>Stock Bar Settings</Typography.Title>
 
         <Form.Item
           label="Widget Background Color"
@@ -263,7 +263,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
               checked={formData.shop_page_countdown_enable}
               value="shop_page_countdown_enable"
               onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_countdown_enable', e.target.checked):''}
-            >Stock Countdown</Checkbox>
+            >Stock Bar</Checkbox>
           </Space>
           <div>
             {upgradeLabel}
@@ -286,7 +286,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
               checked={formData.product_page_countdown_enable}
               value="product_page_countdown_enable"
               onChange={(e) => onFieldChange('product_page_countdown_enable', e.target.checked)}
-            >Stock Countdown</Checkbox>
+            >Stock Bar</Checkbox>
           </Space>
         </Form.Item>
 

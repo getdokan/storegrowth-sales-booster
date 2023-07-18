@@ -50,7 +50,7 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 	<?php
 	if ( 'below' === $sd_format ) :
 			/* translators: %s: Left items in stock */
-			do_action( 'sgsb_stock_countdown_stock_below' );
+			do_action( 'sgsb_stock_bar_stock_below' );
 		endif;
 	?>
 </div>

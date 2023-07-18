@@ -1,11 +1,11 @@
 <?php
 /**
- * File for Stock_Countdown_Module class.
+ * File for Stock_Bar_Module class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Stock_Bar;
 
 use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * `Stock Countdown` module initiator class.
+ * `Stock Bar` module initiator class.
  */
-class Stock_Countdown_Module implements Module_Skeleton {
+class Stock_Bar_Module implements Module_Skeleton {
 
 	use Singleton;
 
@@ -28,7 +28,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_id() {
-		return 'stock-countdown';
+		return 'stock-bar';
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown.svg' );
+		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Stock Countdown';
+		return 'Stock Bar';
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add stock status bar and Countdown timer to your products.';
+		return 'Easily add stock status bar to your products.';
 	}
 
 	/**
@@ -106,10 +106,10 @@ class Stock_Countdown_Module implements Module_Skeleton {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'storegrowth_stock_countdown_module_init' );
+		do_action( 'storegrowth_stock_bar_module_init' );
 	}
 
 }
 
 // Create object and return.
-return Stock_Countdown_Module::instance();
+return Stock_Bar_Module::instance();

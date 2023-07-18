@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-if ( ! sgsb_stock_cd_is_product_discountable( $product->get_id() ) && ! $product->managing_stock() ) {
+if ( ! sgsb_stock_bar_is_product_discountable( $product->get_id() ) && ! $product->managing_stock() ) {
 	return;
 }
 
@@ -13,7 +13,7 @@ $total_sales = intval( $product->get_total_sales() );
 $stock       = intval( $product->get_stock_quantity() );
 $total_stock = $stock + $total_sales;
 
-$settings                 = get_option( 'sgsb_stock_countdown_settings' );
+$settings                 = get_option( 'sgsb_stock_bar_settings' );
 $product_bar_enable       = sgsb_find_option_setting( $settings, 'product_page_progress_bar_enable', true );
 $product_countdown_enable = sgsb_find_option_setting( $settings, 'product_page_countdown_enable', true );
 
