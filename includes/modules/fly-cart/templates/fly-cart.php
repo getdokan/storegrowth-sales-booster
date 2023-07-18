@@ -10,7 +10,8 @@
 
 $settings   = get_option( 'sgsb_fly_cart_settings' );
 $layout     = sgsb_find_option_setting( $settings, 'layout', 'side' );
-$class_name = 'center' === $layout ? 'sgsb-fast-cart-center-layout' : '';
+$class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
+
 ?>
 <div class="wfc-cart-icon <?php echo esc_attr( $icon_position ); ?>">
 	<span class="wfc-open-btn wfc-icon <?php echo esc_attr( $icon_name ); ?>">
@@ -21,7 +22,7 @@ $class_name = 'center' === $layout ? 'sgsb-fast-cart-center-layout' : '';
 </div>
 
 <div class="wfc-overlay wfc-hide"></div>
-<div class="wfc-widget-sidebar wfc-slide <?php echo esc_attr( $class_name ); ?>">
+<div class="wfc-widget-sidebar <?php echo esc_attr( SGSB_PRO_ACTIVE ? $class_name : '' ); ?> wfc-slide ">
 	<h3 class="wfc-cart-heading">
 		<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
 		<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">×</span>

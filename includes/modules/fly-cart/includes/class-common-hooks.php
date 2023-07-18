@@ -58,8 +58,7 @@ class Common_Hooks {
 			return;
 		}
 
-		$settings = get_option( 'sgsb_fly_cart_settings' );
-
+		$settings      = get_option( 'sgsb_fly_cart_settings' );
 		$icon_position = sgsb_find_option_setting( $settings, 'icon_position', 'bottom-right' );
 		$icon_name     = sgsb_find_option_setting( $settings, 'icon_name', 'flaticon-shopping-cart-3' );
 

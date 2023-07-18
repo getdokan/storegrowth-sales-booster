@@ -167,7 +167,7 @@
 
       let checkoutFrame = document.createElement('iframe');
       checkoutFrame.classList.add('sgsb-fast-cart-checkout-frame');
-      checkoutFrame.style.height = '100vh';
+      checkoutFrame.style.height = '80vh';
 
       let url = new URL(href);
       url.searchParams.set('sgsb-checkout', 'true');

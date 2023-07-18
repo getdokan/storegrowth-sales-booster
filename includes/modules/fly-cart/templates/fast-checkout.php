@@ -31,7 +31,6 @@
 		the_post();
 		the_content();
 	?>
-
 	<?php wp_footer(); ?>
 </body>
 </html>

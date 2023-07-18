@@ -45,7 +45,6 @@ class Ajax {
 		check_ajax_referer( 'ajd_protected' );
 
 		$bump_detail = $this->get_sanitized_create_bump_data();
-		$is_pro      = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
 
 		$my_post = array(
 			'post_title'   => $bump_detail['name_of_order_bump'],
@@ -61,7 +60,7 @@ class Ajax {
 				'posts_per_page' => - 1,
 			);
 			$bump_list = get_posts( $args_bump );
-			if ( is_array( $bump_list ) && count( $bump_list ) >= 2 && ! $is_pro ) {
+			if ( is_array( $bump_list ) && count( $bump_list ) >= 2 && ! SGSB_PRO_ACTIVE ) {
 				// don't allow creating more than 2 bumps.
 				return;
 			}

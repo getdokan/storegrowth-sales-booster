@@ -26,7 +26,6 @@ class Enqueue_Script {
 	 */
 	private function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
@@ -36,6 +35,8 @@ class Enqueue_Script {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
+		$settings = get_option( 'sgsb_fly_cart_settings' );
+		$layout   = sgsb_find_option_setting( $settings, 'layout', 'side' );
 		if ( is_checkout() || is_cart() ) {
 			return;
 		}
@@ -63,15 +64,19 @@ class Enqueue_Script {
 		);
 
 		$this->frontend_widget_script();
+		$this->qc_basic_inline_styles();
 
-		$this->inline_styles();
+		if ( 'center' === $layout && SGSB_PRO_ACTIVE ) {
+				do_action( 'sgsb_ffc_wp_enqueue_scripts' );
+		} else {
+				$this->qc_side_cart_styles();
+		}
 
 		/**
 		 * Fast fly cart module wp_enqueue_scripts.
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'sgsb_ffc_wp_enqueue_scripts' );
 	}
 
 	/**
@@ -102,7 +107,7 @@ class Enqueue_Script {
 	/**
 	 * All inline styles
 	 */
-	private function inline_styles() {
+	private function qc_basic_inline_styles() {
 		// Get style options.
 		$settings        = get_option( 'sgsb_fly_cart_settings' );
 		$wfc_color       = sgsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
@@ -123,11 +128,46 @@ class Enqueue_Script {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
-			.sgsb-cart-widget-buttons a.sgsb-cart-widget-shooping-button {
-				color: {$wfc_btn_bgcolor};
-				background-color: {$widget_bg_color};
-			}
 		";
+
+		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
+	}
+
+	/**
+	 * Quick Cart Side cart design
+	 *
+	 * @return void
+	 */
+	private function qc_side_cart_styles() {
+
+		$custom_css = '
+			.wfc-widget-sidebar {
+				width: 500px;
+				height: 100%;
+				position: fixed;
+				padding: 30px 35px;
+				top: 0;
+				right: 0;
+				z-index: 1001;
+				box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
+				transition: 0.5s;
+				overflow: auto;
+			}
+				.wfc-overlay {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(255, 255, 255, 0.83);
+				top: 0;
+				left: 0;
+				z-index: 1000;
+			}
+			.wfc-hide {
+				display: none
+			}
+			.wfc-slide{
+				right: -500px;
+			}';
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
 	}
