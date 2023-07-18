@@ -3,16 +3,16 @@
 @import url(../fonts/Inter-semibold/stylesheet.css);
 @import url(../fonts/inter-bold/stylesheet.css);
 
-.sgsb-stock-progressbar-status {
+.sgsb-stock-stockbar-status {
 	width: 100%;
 	margin-bottom: 5px;
 }
-.sgsb-stock-progressbar-status::after {
+.sgsb-stock-stockbar-status::after {
 	display: table;
 	content: " ";
 	clear: both;
 }
-.sgsb-stock-progressbar-status span {
+.sgsb-stock-stockbar-status span {
 	display: block;
 }
 span.total-sold {
@@ -49,7 +49,7 @@ span.instock {
 	justify-content: center;
 	margin-bottom: 10px;
 }
-.sgsb-stock-progress-bar {
+.sgsb-stock-stock-bar {
     padding: 10px 25px 7px;
 }
 .sgsb-stock-counter-item {
@@ -72,10 +72,10 @@ span.instock {
 	color: #1B1B50;
 	font-weight: 500;
 }
-.sgsb-stock-progressbar-status-below {
+.sgsb-stock-stockbar-status-below {
 	text-align: center;
 }
-.sgsb-stock-progress-bar-format-below {
+.sgsb-stock-stock-bar-format-below {
 	padding-top: 5px;
 }
 .sgsb-colon{

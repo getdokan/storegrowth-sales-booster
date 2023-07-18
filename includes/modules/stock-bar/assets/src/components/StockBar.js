@@ -21,12 +21,12 @@ function StockCountdown() {
   const [ formData, setFormData ] = useState({
     widget_background_color: '#ffffff',
     border_color: '#cccccc',
-    progressbar_bg_color: '#444444',
-    progressbar_fg_color: '#c3d168',
-    progressbar_height: 5,
-    shop_page_progress_bar_enable: false,
+    stockbar_bg_color: '#444444',
+    stockbar_fg_color: '#c3d168',
+    stockbar_height: 5,
+    shop_page_stock_bar_enable: false,
     shop_page_countdown_enable: false,
-    product_page_progress_bar_enable: true,
+    product_page_stock_bar_enable: true,
     product_page_countdown_enable: true,
     countdown_heading: 'Last chance! [discount]% OFF',
     stock_display_format: 'above',
@@ -111,8 +111,8 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           labelAlign="left"
         >
           <InputColor
-            initialValue={formData.progressbar_bg_color}
-            onChange={(e) => onFieldChange('progressbar_bg_color', e.hex)}
+            initialValue={formData.stockbar_bg_color}
+            onChange={(e) => onFieldChange('stockbar_bg_color', e.hex)}
             placement="right"
           />
         </Form.Item>
@@ -125,8 +125,8 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
             style={isProStyle}
           >
               <InputColor
-                initialValue={formData.progressbar_fg_color}
-                onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'progressbar_fg_color',e.hex):""}
+                initialValue={formData.stockbar_fg_color}
+                onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'stockbar_fg_color',e.hex):""}
                 placement="right"
               />
           </div>
@@ -144,8 +144,8 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
             disabled={!sgsbAdmin.isPro}
             min={1}
             addonAfter="px"
-            value={formData.progressbar_height}
-            onChange={sgsbAdmin.isPro?(v) => isProFieldChange(sgsbAdmin.isPro,'progressbar_height', v):''}
+            value={formData.stockbar_height}
+            onChange={sgsbAdmin.isPro?(v) => isProFieldChange(sgsbAdmin.isPro,'stockbar_height', v):''}
             style={{ width: 100 }}
           />
           </div>
@@ -213,9 +213,9 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           <Space direction="vertical">
             <Checkbox
               disabled = {!sgsbAdmin.isPro}
-              checked={formData.shop_page_progress_bar_enable}
-              value="shop_page_progress_bar_enable"
-              onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_progress_bar_enable', e.target.checked):''}
+              checked={formData.shop_page_stock_bar_enable}
+              value="shop_page_stock_bar_enable"
+              onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_stock_bar_enable', e.target.checked):''}
             ></Checkbox>
           </Space>
           <div>
@@ -229,9 +229,9 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
         >
           <Space direction="vertical">
             <Checkbox
-              checked={formData.product_page_progress_bar_enable}
-              value="product_page_progress_bar_enable"
-              onChange={(e) => onFieldChange('product_page_progress_bar_enable', e.target.checked)}
+              checked={formData.product_page_stock_bar_enable}
+              value="product_page_stock_bar_enable"
+              onChange={(e) => onFieldChange('product_page_stock_bar_enable', e.target.checked)}
             ></Checkbox>
           </Space>
         </Form.Item>

@@ -14,7 +14,7 @@ $stock       = intval( $product->get_stock_quantity() );
 $total_stock = $stock + $total_sales;
 
 $settings                 = get_option( 'sgsb_stock_bar_settings' );
-$product_bar_enable       = sgsb_find_option_setting( $settings, 'product_page_progress_bar_enable', true );
+$product_bar_enable       = sgsb_find_option_setting( $settings, 'product_page_stock_bar_enable', true );
 $product_countdown_enable = sgsb_find_option_setting( $settings, 'product_page_countdown_enable', true );
 
 
