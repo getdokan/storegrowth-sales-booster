@@ -1,6 +1,6 @@
 import { addFilter } from '@wordpress/hooks';
-import StockCountdown from './components/StockCountdown';
 import { StockOutlined } from '@ant-design/icons';
+import StockBar from './components/StockBar';
 
 /**
  * Add routes to sidebar.
@@ -8,7 +8,7 @@ import { StockOutlined } from '@ant-design/icons';
 addFilter( 'sgsb_routes', 'sgsb', (routes) => {
   routes.push({
     path: "/stock-bar",
-    element: <StockCountdown />,
+    element: <StockBar />,
     name: 'stock-bar',
   });
 

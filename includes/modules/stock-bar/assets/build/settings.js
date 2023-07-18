@@ -17103,10 +17103,10 @@ Schema.validators = validators;
 
 /***/ }),
 
-/***/ "./src/components/StockCountdown.js":
-/*!******************************************!*\
-  !*** ./src/components/StockCountdown.js ***!
-  \******************************************/
+/***/ "./src/components/StockBar.js":
+/*!************************************!*\
+  !*** ./src/components/StockBar.js ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -50790,8 +50790,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_StockCountdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/StockCountdown */ "./src/components/StockCountdown.js");
 /* harmony import */ var _ant_design_icons__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ant-design/icons */ "./node_modules/@ant-design/icons/es/icons/StockOutlined.js");
+/* harmony import */ var _components_StockBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/StockBar */ "./src/components/StockBar.js");
 
 
 
@@ -50803,7 +50803,7 @@ __webpack_require__.r(__webpack_exports__);
 (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sgsb_routes', 'sgsb', routes => {
   routes.push({
     path: "/stock-bar",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockCountdown__WEBPACK_IMPORTED_MODULE_2__["default"], null),
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockBar__WEBPACK_IMPORTED_MODULE_2__["default"], null),
     name: 'stock-bar'
   });
   return routes;
