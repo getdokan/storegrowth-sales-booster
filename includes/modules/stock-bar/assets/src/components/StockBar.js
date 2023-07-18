@@ -106,45 +106,6 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
         }}
         autoComplete="off"
       >
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Stock Bar Settings</Typography.Title>
-
-        <Form.Item
-          label="Widget Background Color"
-          labelAlign="left"
-        >
-          <InputColor
-            initialValue={formData.widget_background_color}
-            onChange={(e) => onFieldChange('widget_background_color', e.hex)}
-            placement="right"
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Border Color"
-          labelAlign="left"
-        >
-          <InputColor
-            initialValue={formData.border_color}
-            onChange={(e) => onFieldChange('border_color', e.hex)}
-            placement="right"
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Countdown Heading"
-          labelAlign="left"
-          extra={<div>[discount] will be replace with your actual discount percentage.<br /> e.g. Last chance! [discount]% OFF</div>}
-        >
-          <Input
-            value={formData.countdown_heading}
-            onChange={(e) => onFieldChange('countdown_heading', e.target.value)}
-            style={{ width: 400 }}
-            placeholder="Last chance! [discount]% OFF"
-          />
-        </Form.Item>
-
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Progress Bar</Typography.Title>
-
         <Form.Item
           label="Background Color"
           labelAlign="left"
@@ -173,7 +134,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
         </Form.Item>
 
         <Form.Item
-          label="Progress Bar Height"
+          label="Stock Bar Height"
           labelAlign="left"
         >
           <div
@@ -202,8 +163,8 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
             onChange={sgsbAdmin.isPro?(v) => isProFieldChange(sgsbAdmin.isPro,'stock_display_format', v):''}
             style={{ width: 400 }}
           >
-            <Select.Option value="above">Above Progress Bar</Select.Option>
-            <Select.Option value="below">Below Progress Bar</Select.Option>
+            <Select.Option value="above">Above Stock Bar</Select.Option>
+            <Select.Option value="below">Below Stock Bar</Select.Option>
           </Select>
           </div>
           {upgradeLabel}
@@ -213,7 +174,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           <Form.Item
             label="Total Sell Count Text"
             labelAlign="left"
-            extra="It will be placed left side of the above of the progress bar. e.g. Total Sold"
+            extra="It will be placed left side of the above of the Stock Bar. e.g. Total Sold"
           >
             <Input
               disabled = {!sgsbAdmin.isPro}
@@ -230,7 +191,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           <Form.Item
             label="Available Item Count Text"
             labelAlign="left"
-            extra="It will be placed right side of the above of the progress bar. e.g. Available Item"
+            extra="It will be placed right side of the above of the Stock Bar. e.g. Available Item"
           >
             <Input
               disabled = {!sgsbAdmin.isPro}
@@ -245,10 +206,8 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           </Form.Item>
         </div>}
 
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Shop Page</Typography.Title>
-
         <Form.Item
-          label="Shop Page Display"
+          label="Display on Shop Page"
           labelAlign="left"
         >
           <Space direction="vertical">
@@ -257,23 +216,15 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
               checked={formData.shop_page_progress_bar_enable}
               value="shop_page_progress_bar_enable"
               onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_progress_bar_enable', e.target.checked):''}
-            >Progress Bar</Checkbox>
-            <Checkbox
-              disabled = {!sgsbAdmin.isPro}
-              checked={formData.shop_page_countdown_enable}
-              value="shop_page_countdown_enable"
-              onChange={sgsbAdmin.isPro?(e) => isProFieldChange(sgsbAdmin.isPro,'shop_page_countdown_enable', e.target.checked):''}
-            >Stock Bar</Checkbox>
+            ></Checkbox>
           </Space>
           <div>
             {upgradeLabel}
           </div>
         </Form.Item>
 
-        <Typography.Title level={4} style={{marginBottom: '20px'}}>Product Details Page</Typography.Title>
-
         <Form.Item
-          label="Product Page Display"
+          label="Display on Product Page"
           labelAlign="left"
         >
           <Space direction="vertical">
@@ -281,12 +232,7 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
               checked={formData.product_page_progress_bar_enable}
               value="product_page_progress_bar_enable"
               onChange={(e) => onFieldChange('product_page_progress_bar_enable', e.target.checked)}
-            >Progress Bar</Checkbox>
-            <Checkbox
-              checked={formData.product_page_countdown_enable}
-              value="product_page_countdown_enable"
-              onChange={(e) => onFieldChange('product_page_countdown_enable', e.target.checked)}
-            >Stock Bar</Checkbox>
+            ></Checkbox>
           </Space>
         </Form.Item>
 
