@@ -27,7 +27,6 @@ $class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
 		<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
 		<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">×</span>
 	</h3>
-	<span>Total count <?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?></span>
 	<div class="sgsb-widget-shopping-cart-content-wrapper">
 		<div class="sgsb-widget-shopping-cart-content"></div>
 		<div class="sgsb-page-loader sgsb-fly-cart-loader">

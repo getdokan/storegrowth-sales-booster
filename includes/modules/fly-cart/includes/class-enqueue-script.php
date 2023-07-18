@@ -128,10 +128,6 @@ class Enqueue_Script {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
-			.sgsb-cart-widget-buttons a.sgsb-cart-widget-shooping-button {
-				color: {$wfc_btn_bgcolor};
-				background-color: {$widget_bg_color};
-			}
 		";
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
@@ -149,9 +145,9 @@ class Enqueue_Script {
 				width: 500px;
 				height: 100%;
 				position: fixed;
+				padding: 30px 35px;
 				top: 0;
 				right: 0;
-				background: #fff;
 				z-index: 1001;
 				box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
 				transition: 0.5s;

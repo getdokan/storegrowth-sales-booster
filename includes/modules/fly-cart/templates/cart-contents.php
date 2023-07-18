@@ -21,10 +21,14 @@ $show_remove_icon     = sgsb_find_option_setting( $settings, 'show_remove_icon',
 $show_quantity_picker = sgsb_find_option_setting( $settings, 'show_quantity_picker', true );
 $show_product_price   = sgsb_find_option_setting( $settings, 'show_product_price', true );
 $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true );
+?>
 
-do_action( 'woocommerce_before_cart' ); ?>
+
+<span class="sgsb-cart-item-count">You have <?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?> items in your cart</span>
+<?php do_action( 'woocommerce_before_cart' ); ?>
 
 <form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
 	<table class="sgsb-fly-cart-table" cellspacing="0">
@@ -134,12 +138,6 @@ do_action( 'woocommerce_before_cart' ); ?>
 		<tr>
 			<td colspan="6" class="actions">
 
-				<?php
-				if ( $show_coupon && wc_coupons_enabled() ) {
-					do_action( 'storegrowth_sb_quick_cart_coupon' );
-				}
-				?>
-
 				<input type="hidden" name="update_cart" value="Update cart">
 
 				<?php do_action( 'woocommerce_cart_actions' ); ?>
@@ -154,7 +152,6 @@ do_action( 'woocommerce_before_cart' ); ?>
 	</table>
 	<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
-
 <?php do_action( 'sgsb_woocommerce_before_cart_collaterals' ); ?>
 
 <div class="sgsb-cart-collaterals cart-collaterals">
@@ -164,6 +161,10 @@ do_action( 'woocommerce_before_cart' ); ?>
 	 *
 	 * @since 1.0.0
 	 */
+	if ( $show_coupon && wc_coupons_enabled() ) {
+		do_action( 'storegrowth_sb_quick_cart_coupon' );
+	}
+
 	do_action( 'woocommerce_cart_collaterals' );
 	?>
 </div>
