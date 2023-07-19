@@ -29,8 +29,6 @@ class Common_Hooks {
 
 		add_filter( 'woocommerce_get_stock_html', array( $this, 'woocommerce_get_stock_html' ), 10, 2 );
 
-		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );
-		add_action( 'woocommerce_product_data_panels', array( $this, 'woocommerce_product_data_panels' ) );
 		add_action( 'woocommerce_admin_process_product_object', array( $this, 'woocommerce_admin_process_product_object' ) );
 
 		add_filter( 'woocommerce_product_get_price', array( $this, 'woocommerce_product_get_price' ), 10, 2 );
@@ -61,31 +59,6 @@ class Common_Hooks {
 			return $html;
 		} else {
 			return '';
-		}
-	}
-
-	/**
-	 * Add a custom product data tab.
-	 *
-	 * @param array $tabs WooCommerce product data tabs.
-	 */
-	public function woocommerce_product_data_tabs( $tabs ) {
-		if ( ! $this->is_external_product() ) {
-			// Adds the new tab.
-			$tabs['stock_bar_tab'] = array(
-				'label'  => __( 'Stock Bar', 'storegrowth-sales-booster' ),
-				'target' => 'sgsb-stock-bar-tab',
-			);
-		}
-		return $tabs;
-	}
-
-	/**
-	 * Output HTML of tab content.
-	 */
-	public function woocommerce_product_data_panels() {
-		if ( ! $this->is_external_product() ) {
-			include __DIR__ . '/../templates/wc-product-data-panels.php';
 		}
 	}
 
