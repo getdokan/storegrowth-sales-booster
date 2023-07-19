@@ -27,8 +27,6 @@ if ( $hide_template_in_product ) {
 ?>
 <div class="sgsb-stock-counter-and-bar">
 	<?php
-		require __DIR__ . '/stock-counter.php';
-
 		require __DIR__ . '/stock-bar.php';
 	?>
 </div>
