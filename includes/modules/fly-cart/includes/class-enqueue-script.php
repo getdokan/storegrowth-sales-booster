@@ -151,7 +151,6 @@ class Enqueue_Script {
 				z-index: 1001;
 				box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
 				transition: 0.5s;
-				overflow: auto;
 			}
 				.wfc-overlay {
 				position: fixed;

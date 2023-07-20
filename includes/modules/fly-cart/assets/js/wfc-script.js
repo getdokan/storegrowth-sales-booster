@@ -16,8 +16,9 @@
    * Set Fly Cart Contents.
    */
   function setCartContents(htmlResponse) {
+    // console.log(htmlResponse);
     $('.sgsb-widget-shopping-cart-content').html(htmlResponse);
-
+    console.log($('.sgsb-widget-shopping-cart-content').html(htmlResponse));
     setTimeout( function() {
       $('.sgsb-fly-cart-loader').addClass('wfc-hide');
     }, 500 );
@@ -30,6 +31,7 @@
    */
   function getCartContents() {
     $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
+    console.log(sgsbFrontend);
     $.ajax({
       url: sgsbFrontend.ajaxUrl,
       method: "POST",
@@ -178,7 +180,7 @@
         const iframeBody = iframeDocument?.body;
         const ifrmaeStyle = iframeDocument.createElement('style');
         ifrmaeStyle.innerHTML = `
-        #wpadminbar,header,.custom-social-proof,footer{
+        #ast-scroll-top,#wpadminbar,header,footer{
             display:none !important;
         }
         `;

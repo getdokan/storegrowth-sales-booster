@@ -75,9 +75,10 @@
     letter-spacing: 0.7px;
     font-family: 'Inter';
 }
-/* .sgsb-widget-shopping-cart-content-wrapper {
-    padding: 0 23px 35px;
-} */
+.sgsb-widget-shopping-cart-content-wrapper {
+    height:90%;
+    overflow-y: scroll;
+}
 .wfc-close-btn {
     float: right;
     color: #989FAB;
@@ -678,6 +679,9 @@ iframe.sgsb-fast-cart-checkout-frame {
 
     
 
+}
+.qc-cart-heading{
+    position:sticky;
 }
 
 ::-webkit-scrollbar {

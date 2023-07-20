@@ -23,10 +23,12 @@ $class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
 
 <div class="wfc-overlay wfc-hide"></div>
 <div class="wfc-widget-sidebar <?php echo esc_attr( SGSB_PRO_ACTIVE ? $class_name : '' ); ?> wfc-slide ">
-	<h3 class="wfc-cart-heading">
-		<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
-		<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">×</span>
-	</h3>
+	<div class="qc-cart-heading">
+		<h3 class="wfc-cart-heading">
+			<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
+			<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">×</span>
+		</h3>
+	</div>
 	<div class="sgsb-widget-shopping-cart-content-wrapper">
 		<div class="sgsb-widget-shopping-cart-content"></div>
 		<div class="sgsb-page-loader sgsb-fly-cart-loader">
