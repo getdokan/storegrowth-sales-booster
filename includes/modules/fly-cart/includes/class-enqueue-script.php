@@ -142,16 +142,15 @@ class Enqueue_Script {
 
 		$custom_css = '
 			.wfc-widget-sidebar {
-				width: 500px;
+				width: 580px;
 				height: 100%;
 				position: fixed;
-				padding: 30px 35px;
+				padding: 30px 0px;
 				top: 0;
 				right: 0;
 				z-index: 1001;
 				box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
 				transition: 0.5s;
-				overflow: auto;
 			}
 				.wfc-overlay {
 				position: fixed;
@@ -166,7 +165,7 @@ class Enqueue_Script {
 				display: none
 			}
 			.wfc-slide{
-				right: -500px;
+				right: -600px;
 			}';
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
