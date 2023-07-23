@@ -41,7 +41,7 @@ class Enqueue_Script {
 		}
 
 		wp_enqueue_style(
-			'sgsb-stock-cd-custom-style',
+			'sgsb-cd-timer-custom-style',
 			sgsb_modules_url( 'countdown-timer/assets/scripts/wpbs-style.css' ),
 			array(),
 			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/wpbs-style.css' ) )
@@ -112,7 +112,7 @@ class Enqueue_Script {
 			}
 		";
 
-		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
+		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );
 	}
 
 }
