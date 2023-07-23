@@ -1,11 +1,11 @@
 <?php
 /**
- * Enqueue_Script class for `Stock Countdown` module.
+ * Enqueue_Script class for `Countdown Timer` module.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Countdown_Timer;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
 
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add styles and scripts files of `Stock Countdown` module inside this class.
+ * Add styles and scripts files of `Countdown Timer` module inside this class.
  */
 class Enqueue_Script {
 
@@ -42,32 +42,32 @@ class Enqueue_Script {
 
 		wp_enqueue_style(
 			'sgsb-stock-cd-custom-style',
-			sgsb_modules_url( 'stock-countdown/assets/scripts/wpbs-style.css' ),
+			sgsb_modules_url( 'countdown-timer/assets/scripts/wpbs-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'stock-countdown/assets/scripts/wpbs-style.css' ) )
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/wpbs-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wpbsc_jqmeter',
-			sgsb_modules_url( 'stock-countdown/assets/scripts/jqmeter.min.js' ),
+			sgsb_modules_url( 'countdown-timer/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'stock-countdown/assets/scripts/jqmeter.min.js' ) ),
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/jqmeter.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'sgsb-jquery-countdown',
-			sgsb_modules_url( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ),
+			sgsb_modules_url( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'stock-countdown/assets/scripts/jquery.countdown.min.js' ) ),
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'wpbsc_custom_script',
-			sgsb_modules_url( 'stock-countdown/assets/scripts/custom.js' ),
+			sgsb_modules_url( 'countdown-timer/assets/scripts/custom.js' ),
 			array( 'jquery', 'wpbsc_jqmeter' ),
-			filemtime( sgsb_modules_path( 'stock-countdown/assets/scripts/custom.js' ) ),
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/custom.js' ) ),
 			true
 		);
 
@@ -84,11 +84,11 @@ class Enqueue_Script {
 			return;
 		}
 
-		$settings_file = require sgsb_modules_path( 'stock-countdown/assets/build/settings.asset.php' );
+		$settings_file = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sgsb-stock-countdown-settings',
-			sgsb_modules_url( 'stock-countdown/assets/build/settings.js' ),
+			'sgsb-countdown-timer-settings',
+			sgsb_modules_url( 'countdown-timer/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
@@ -100,7 +100,7 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sgsb_stock_countdown_settings' );
+		$settings = get_option( 'sgsb_countdown_timer_settings' );
 
 		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
 		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );

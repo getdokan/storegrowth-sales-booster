@@ -1,11 +1,11 @@
 <?php
 /**
- * File for Stock_Countdown_Module class.
+ * File for Countdown_Timer_Module class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Countdown_Timer;
 
 use STOREGROWTH\SPSB\Interfaces\Module_Skeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * `Stock Countdown` module initiator class.
+ * `Countdown Timer` module initiator class.
  */
-class Stock_Countdown_Module implements Module_Skeleton {
+class Countdown_Timer_Module implements Module_Skeleton {
 
 	use Singleton;
 
@@ -28,7 +28,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_id() {
-		return 'stock-countdown';
+		return 'countdown-timer';
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown.svg' );
+		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Stock Countdown';
+		return 'Countdown Timer';
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Stock_Countdown_Module implements Module_Skeleton {
 	 * @return void
 	 */
 	public function init() {
-		// Include necessary classes for stock countdown module.
+		// Include necessary classes for countdown timer module.
 		require_once __DIR__ . '/includes/functions.php';
 		require_once __DIR__ . '/includes/class-enqueue-script.php';
 		require_once __DIR__ . '/includes/class-common-hooks.php';
@@ -106,10 +106,10 @@ class Stock_Countdown_Module implements Module_Skeleton {
 		 *
 		 * @since 1.0.0
 		 */
-		do_action( 'storegrowth_stock_countdown_module_init' );
+		do_action( 'storegrowth_countdown_timer_module_init' );
 	}
 
 }
 
 // Create object and return.
-return Stock_Countdown_Module::instance();
+return Countdown_Timer_Module::instance();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper funcitons for stock countdown module.
+ * Helper funcitons for countdown timer module.
  *
  * @package SBFW
  */

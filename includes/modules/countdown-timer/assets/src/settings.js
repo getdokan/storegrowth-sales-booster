@@ -7,9 +7,9 @@ import { StockOutlined } from '@ant-design/icons';
  */
 addFilter( 'sgsb_routes', 'sgsb', (routes) => {
   routes.push({
-    path: "/stock-countdown",
+    path: "/countdown-timer",
     element: <StockCountdown />,
-    name: 'stock-countdown',
+    name: 'countdown-timer',
   });
 
   return routes;
@@ -20,8 +20,8 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
  */
  addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push( {
-    label: <Link to="/stock-countdown">Stock Countdown</Link>,
-    key: 'stock-countdown',
+    label: <Link to="/countdown-timer">Countdown Timer</Link>,
+    key: 'countdown-timer',
     icon: <StockOutlined />,
   } );
 

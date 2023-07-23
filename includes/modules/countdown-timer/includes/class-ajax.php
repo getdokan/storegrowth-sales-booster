@@ -1,11 +1,11 @@
 <?php
 /**
- * Ajax class for `Stock Countdown` module.
+ * Ajax class for `Countdown Timer` module.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\Stock_Countdown;
+namespace STOREGROWTH\SPSB\Modules\Countdown_Timer;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
 
@@ -25,8 +25,8 @@ class Ajax {
 	 * Constructor of Ajax class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_sgsb_stock_countdown_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sgsb_stock_countdown_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_sgsb_countdown_timer_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_sgsb_countdown_timer_get_settings', array( $this, 'get_settings' ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Ajax {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `sgsb_sanitize_form_fields`.
 		$form_data = array_map( 'sgsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
 
-		update_option( 'sgsb_stock_countdown_settings', $form_data );
+		update_option( 'sgsb_countdown_timer_settings', $form_data );
 
 		wp_send_json_success();
 	}
@@ -53,7 +53,7 @@ class Ajax {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = get_option( 'sgsb_stock_countdown_settings', array() );
+		$form_data = get_option( 'sgsb_countdown_timer_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

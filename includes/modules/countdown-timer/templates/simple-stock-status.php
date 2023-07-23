@@ -9,17 +9,17 @@ if ( ! sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 
-$settings                         = get_option( 'sgsb_stock_countdown_settings' );
+$settings                         = get_option( 'sgsb_countdown_timer_settings' );
 $enable_countdown_in_product_page = sgsb_find_option_setting( $settings, 'product_page_countdown_enable', true );
 
 if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
 }
 
-$start_date = get_post_meta( $product->get_id(), '_sgsb_stock_countdown_discount_start', true );
-$end_date   = get_post_meta( $product->get_id(), '_sgsb_stock_countdown_discount_end', true );
+$start_date = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_start', true );
+$end_date   = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_end', true );
 
-$discount_amount = get_post_meta( $product->get_id(), '_sgsb_stock_countdown_discount_amount', true );
+$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
 
 $heading_text = sgsb_find_option_setting( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );

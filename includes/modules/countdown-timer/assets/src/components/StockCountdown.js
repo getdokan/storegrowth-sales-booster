@@ -39,7 +39,7 @@ function StockCountdown() {
     setButtonLoading(true);
 
     let data = {
-      action: 'sgsb_stock_countdown_save_settings',
+      action: 'sgsb_countdown_timer_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
@@ -51,7 +51,7 @@ function StockCountdown() {
     }).success(() => {
       setButtonLoading(false);
       notification['success']({
-        message     : 'Stock Countdown',
+        message     : 'Countdown Timer',
         description : 'Stock count down data updated successfully.',
       });
     });
@@ -64,7 +64,7 @@ function StockCountdown() {
       url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sgsb_stock_countdown_get_settings',
+        action: 'sgsb_countdown_timer_get_settings',
         _ajax_nonce: sgsbAdmin.nonce,
       }
     }).success((response) => {

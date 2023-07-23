@@ -14677,7 +14677,7 @@ function StockCountdown() {
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'sgsb_stock_countdown_save_settings',
+      action: 'sgsb_countdown_timer_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
@@ -14688,7 +14688,7 @@ function StockCountdown() {
     }).success(() => {
       setButtonLoading(false);
       antd__WEBPACK_IMPORTED_MODULE_2__["default"].success({
-        message: 'Stock Countdown',
+        message: 'Countdown Timer',
         description: 'Stock count down data updated successfully.'
       });
     });
@@ -14700,7 +14700,7 @@ function StockCountdown() {
       url: sgsbAdmin.ajax_url,
       method: 'POST',
       data: {
-        action: 'sgsb_stock_countdown_get_settings',
+        action: 'sgsb_countdown_timer_get_settings',
         _ajax_nonce: sgsbAdmin.nonce
       }
     }).success(response => {
@@ -41680,9 +41680,9 @@ __webpack_require__.r(__webpack_exports__);
 
 (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sgsb_routes', 'sgsb', routes => {
   routes.push({
-    path: "/stock-countdown",
+    path: "/countdown-timer",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockCountdown__WEBPACK_IMPORTED_MODULE_2__["default"], null),
-    name: 'stock-countdown'
+    name: 'countdown-timer'
   });
   return routes;
 });
@@ -41693,9 +41693,9 @@ __webpack_require__.r(__webpack_exports__);
 (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
-      to: "/stock-countdown"
-    }, "Stock Countdown"),
-    key: 'stock-countdown',
+      to: "/countdown-timer"
+    }, "Countdown Timer"),
+    key: 'countdown-timer',
     icon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   });
   return items;
