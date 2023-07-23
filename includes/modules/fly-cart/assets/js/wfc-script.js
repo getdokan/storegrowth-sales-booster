@@ -9,27 +9,27 @@
     item: "li.product",
     target: ".wfc-cart-icon .wfc-icon",
     button: ".product_type_simple.add_to_cart_button",
-    shake: true
+    shake: true,
   });
 
   /**
    * Set Fly Cart Contents.
    */
   function setCartContents(htmlResponse) {
-    $('.sgsb-widget-shopping-cart-content').html(htmlResponse);
+    $(".sgsb-widget-shopping-cart-content").html(htmlResponse);
 
-    setTimeout( function() {
-      $('.sgsb-fly-cart-loader').addClass('wfc-hide');
-    }, 500 );
+    setTimeout(function () {
+      $(".sgsb-fly-cart-loader").addClass("wfc-hide");
+    }, 500);
 
-    jQuery(document.body).trigger('wc_fragment_refresh');
+    jQuery(document.body).trigger("wc_fragment_refresh");
   }
 
   /**
    * Get Cart Contents.
    */
   function getCartContents() {
-    $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
+    $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
     $.ajax({
       url: sgsbFrontend.ajaxUrl,
       method: "POST",
@@ -38,7 +38,7 @@
         _ajax_nonce: sgsbFrontend.nonce,
         method: "get_cart_contents",
       },
-      success: setCartContents
+      success: setCartContents,
     });
   }
 
@@ -46,176 +46,160 @@
    * Update product quantity.
    */
   function updateProductQuantity(operator) {
-    var inputElm = $(this).parent().find('input.qty');
+    var inputElm = $(this).parent().find("input.qty");
     var inputVal = Number(inputElm.val());
-    var newVal = operator === 'plus' ? inputVal + 1 : inputVal - 1;
+    var newVal = operator === "plus" ? inputVal + 1 : inputVal - 1;
 
     if (newVal < 1) {
       return;
     }
 
     // Update input value & trigger the 'input' event.
-    inputElm.val(newVal).trigger('input');
+    inputElm.val(newVal).trigger("input");
   }
 
   // For sidebar.
   jQuery(document).ready(function () {
-    jQuery('.wfc-open-btn').on('click', function () {
-      jQuery('.wfc-overlay').removeClass('wfc-hide');
-      jQuery('.wfc-widget-sidebar').removeClass('wfc-slide');
+    jQuery(".wfc-open-btn").on("click", function () {
+      jQuery(".wfc-overlay").removeClass("wfc-hide");
+      jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
       getCartContents();
     });
-    jQuery('.wfc-overlay').on('click', function () {
-      jQuery(this).addClass('wfc-hide');
-      jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
+    jQuery(".wfc-overlay").on("click", function () {
+      jQuery(this).addClass("wfc-hide");
+      jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
     });
-    jQuery(document).on('click', '.sgsb-cart-widget-close', function (event) {
+    jQuery(document).on("click", ".sgsb-cart-widget-close", function (event) {
       event.preventDefault();
-      jQuery('.wfc-overlay').addClass('wfc-hide');
-      jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
+      jQuery(".wfc-overlay").addClass("wfc-hide");
+      jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
     });
 
-    if(document.getElementById('wpadminbar')){
-        jQuery('.wfc-widget-sidebar').css('margin-top', '32px');
+    if (document.getElementById("wpadminbar")) {
+      jQuery(".wfc-widget-sidebar").css("margin-top", "32px");
     }
 
     // Handle cart form submit.
     $(document).on(
-      'submit',
-      'form.sgsb-woocommerce-cart-form',
+      "submit",
+      "form.sgsb-woocommerce-cart-form",
       function (event) {
         event.preventDefault();
-        $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
+        $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
 
         $.ajax({
           url: event.target.action,
           method: "POST",
           data: $(this).serialize(),
-          success: setCartContents
+          success: setCartContents,
         });
       }
     );
 
     // On plus icon click.
     $(document).on(
-      'click',
-      '.sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon',
+      "click",
+      ".sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon",
       function () {
-        updateProductQuantity.bind(this, 'plus').call();
+        updateProductQuantity.bind(this, "plus").call();
       }
     );
 
     // On minus icon click.
     $(document).on(
-      'click',
-      '.sgsb-fly-cart-table .product-quantity button.sgsb-minus-icon',
+      "click",
+      ".sgsb-fly-cart-table .product-quantity button.sgsb-minus-icon",
       function () {
-        updateProductQuantity.bind(this, 'minus').call();
+        updateProductQuantity.bind(this, "minus").call();
       }
     );
 
     // Restrict the input of other than numeric amd leading zero
-    $(document).on('input', 'input.qty', function () {
-      $(this).val(function (_, value) {
-        return value.replace(/^0*(?!$)/, ''); // Remove leading zeros if not the only character
-      });
-    }).on('keypress', 'input.qty', function (e) {
-      if (e.which === 48 && this.value === '0') {
-        return false; // Prevent input of additional leading zeros
-      }
-      if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) {
-        return false; // Prevent input of non-numeric characters
-      }
-    });
-    
-     
-    
-    // On input change fire up the submit 
-    $(document).on('input', 'input.qty', function() {
-        var inputValue = $(this).val();
-        clearTimeout(timeoutId);
-        // Set a new timeout to submit the form after 800 milliseconds
-        timeoutId = setTimeout(function() {
-        if (inputValue >= 1 && $(this)[0].getAttribute('value') !== inputValue) {
-          $('form.sgsb-woocommerce-cart-form').submit();
-        }else{
-          return;
+    $(document)
+      .on("input", "input.qty", function () {
+        $(this).val(function (_, value) {
+          return value.replace(/^0*(?!$)/, ""); // Remove leading zeros if not the only character
+        });
+      })
+      .on("keypress", "input.qty", function (e) {
+        if (e.which === 48 && this.value === "0") {
+          return false; // Prevent input of additional leading zeros
         }
-      }.bind(this), 800);
+        if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) {
+          return false; // Prevent input of non-numeric characters
+        }
+      });
+
+    // On input change fire up the submit
+    $(document).on("input", "input.qty", function () {
+      var inputValue = $(this).val();
+      clearTimeout(timeoutId);
+      // Set a new timeout to submit the form after 800 milliseconds
+      timeoutId = setTimeout(
+        function () {
+          if (
+            inputValue >= 1 &&
+            $(this)[0].getAttribute("value") !== inputValue
+          ) {
+            $("form.sgsb-woocommerce-cart-form").submit();
+          } else {
+            return;
+          }
+        }.bind(this),
+        800
+      );
     });
 
     // Remove product from cart.
     $(document).on(
-      'click',
-      'form.sgsb-woocommerce-cart-form a.sgsb-fly-cart-remove',
+      "click",
+      "form.sgsb-woocommerce-cart-form a.sgsb-fly-cart-remove",
       function (event) {
         event.preventDefault();
-        $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
+        $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
 
         $.ajax({
-          url: $(this).attr('href'),
+          url: $(this).attr("href"),
           method: "GET",
-          success: setCartContents
+          success: setCartContents,
         });
       }
     );
 
-    function openCheckoutPageCallback(href) {
+    // Function to get and show checkout page
+    function get_checkout_page() {
       // Show loader.
-      $('.sgsb-fly-cart-loader').removeClass('wfc-hide');
-      $('.sgsb-widget-shopping-cart-content').html("");
+      $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
+      $(".sgsb-widget-shopping-cart-content").html("");
 
-      let checkoutFrame = document.createElement('iframe');
-      checkoutFrame.classList.add('sgsb-fast-cart-checkout-frame');
-      checkoutFrame.style.height = '80vh';
-
-      let url = new URL(href);
-      url.searchParams.set('sgsb-checkout', 'true');
-
-      checkoutFrame.src = url;
-      $(checkoutFrame).on('load', function() {
-        const iframeDocument = checkoutFrame?.contentWindow?.document;
-        const iframeBody = iframeDocument?.body;
-        const ifrmaeStyle = iframeDocument.createElement('style');
-        ifrmaeStyle.innerHTML = `
-        #wpadminbar,header,.custom-social-proof,footer{
-            display:none !important;
-        }
-        `;
-        iframeBody.style.backgroundColor = $(".wfc-widget-sidebar").css("background-color");
-        iframeDocument.head.appendChild(ifrmaeStyle);
-      });
-
-      checkoutFrame.style.opacity = 0;
-      checkoutFrame.onload = () => {
-        checkoutFrame.isLoaded = true;
-        if (checkoutFrame.isAttached) {
-          checkoutFrame.style.opacity = 1;
+      $.ajax({
+        url: sgsbFrontend.ajaxUrl,
+        method: "POST",
+        data: {
+          action: "sgsb_fly_cart_frontend",
+          _ajax_nonce: sgsbFrontend.nonce,
+          method: "get_checkout_page",
+        },
+        success: function (htmlResponse) {
+          $(".sgsb-widget-shopping-cart-content").html(htmlResponse);
+          // Add any additional handling or modifications here
           // Hide loader.
-          $('.sgsb-fly-cart-loader').addClass('wfc-hide');
-        }
-      };
-
-      checkoutFrame.isAttached = true;
-
-      if (checkoutFrame.isLoaded) {
-        checkoutFrame.style.opacity = 1;
-        // Hide loader.
-        $('.sgsb-fly-cart-loader').addClass('wfc-hide');
-      }
-
-      $('.sgsb-widget-shopping-cart-content').html(checkoutFrame);
-
+          $(".sgsb-fly-cart-loader").addClass("wfc-hide");
+        },
+        error: function () {
+          // Handle error if needed
+          // Hide loader.
+          $(".sgsb-fly-cart-loader").addClass("wfc-hide");
+        },
+      });
     }
-
     // Open checkout page.
     $(document).on(
-      'click',
-      '.wfc-widget-sidebar a.sgsb-cart-widget-checkout-button',
+      "click",
+      ".wfc-widget-sidebar a.sgsb-cart-widget-checkout-button",
       function (event) {
         event.preventDefault();
-
-        openCheckoutPageCallback(event.target.href);
+        get_checkout_page();
       }
     );
   });

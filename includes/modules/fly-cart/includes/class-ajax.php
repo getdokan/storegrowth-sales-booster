@@ -91,4 +91,11 @@ class Ajax {
 
 		include __DIR__ . '/../templates/cart-contents.php';
 	}
+	/**
+	 * Get cart contents
+	 */
+	private function get_checkout_page() {
+
+		include __DIR__ . '/../templates/fast-checkout-side.php';
+	}
 }
