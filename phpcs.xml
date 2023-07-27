@@ -13,6 +13,7 @@
     <exclude-pattern>includes/modules/progressive-discount-banner/assets/*</exclude-pattern>
     <exclude-pattern>includes/modules/sales-pop/assets/*</exclude-pattern>
     <exclude-pattern>includes/modules/countdown-timer/assets/*</exclude-pattern>
+    <exclude-pattern>includes/modules/direct-checkout/assets/*</exclude-pattern>
     <exclude-pattern>includes/modules/upsell-order-bump/assets/*</exclude-pattern>
 
     <!-- Configs -->
