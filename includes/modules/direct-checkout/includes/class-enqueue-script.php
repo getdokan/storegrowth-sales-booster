@@ -35,36 +35,9 @@ class Enqueue_Script {
 	 *
 	 * Enqueue CSS and JS for fly cart.
 	 */
-	public function wp_enqueue_scripts() {
-		if ( ! is_product() && ! is_shop() ) {
-			return;
-		}
+	// public function wp_enqueue_scripts() {
 
-		wp_enqueue_style(
-			'sgsb-stock-cd-custom-style',
-			sgsb_modules_url( 'direct-checkout/assets/scripts/wpbs-style.css' ),
-			array(),
-			filemtime( sgsb_modules_path( 'direct-checkout/assets/scripts/wpbs-style.css' ) )
-		);
-
-		wp_enqueue_script(
-			'wpbsc_jqmeter',
-			sgsb_modules_url( 'direct-checkout/assets/scripts/jqmeter.min.js' ),
-			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'direct-checkout/assets/scripts/jqmeter.min.js' ) ),
-			true
-		);
-
-		wp_enqueue_script(
-			'wpbsc_custom_script',
-			sgsb_modules_url( 'direct-checkout/assets/scripts/custom.js' ),
-			array( 'jquery', 'wpbsc_jqmeter' ),
-			filemtime( sgsb_modules_path( 'direct-checkout/assets/scripts/custom.js' ) ),
-			true
-		);
-
-		$this->inline_styles();
-	}
+	// }
 
 	/**
 	 * Add JS scripts to admin.
@@ -85,25 +58,5 @@ class Enqueue_Script {
 			$settings_file['version'],
 			false
 		);
-	}
-
-	/**
-	 * All inline styles
-	 */
-	private function inline_styles() {
-		// Get settings options.
-		$settings = get_option( 'sgsb_direct_checkout_settings' );
-
-		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
-
-		$custom_css = "
-			.sgsb-stock-counter-and-bar {
-				border-color: {$border_color};
-				background-color: {$widget_bg_color};
-			}
-		";
-
-		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
 	}
 }
