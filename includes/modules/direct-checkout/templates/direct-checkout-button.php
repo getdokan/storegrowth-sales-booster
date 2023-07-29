@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-global $product_id;
-$settings             = get_option( 'sgsb_direct_checkout_settings' );
-$buy_now_button_label = sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' );
+$product_id                   = $product->get_ID();
+$settings                     = get_option( 'sgsb_direct_checkout_settings' );
+$buy_now_button_label         = sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' );
 
 	$classes = implode(
 		' ',

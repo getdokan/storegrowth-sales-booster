@@ -92,7 +92,7 @@ class Direct_Checkout_Module implements Module_Skeleton {
 	 */
 	public function init() {
 		// Include necessary classes for countdown timer module.
-		// require_once __DIR__ . '/includes/functions.php';
+		require_once __DIR__ . '/includes/functions.php';
 		require_once __DIR__ . '/includes/class-enqueue-script.php';
 		require_once __DIR__ . '/includes/class-common-hooks.php';
 		require_once __DIR__ . '/includes/class-ajax.php';
