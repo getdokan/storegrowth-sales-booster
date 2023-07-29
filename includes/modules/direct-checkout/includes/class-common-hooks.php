@@ -25,8 +25,11 @@ class Common_Hooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
-		add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
+		// add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
 		add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
+		// add_filter( 'woocommerce_product_single_add_to_cart_text', 'woocommerce_custom_add_to_cart_text' );
+		add_filter( 'wc_get_template', array( $this, 'test_function' ), 10, 5 );
+		add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
 	}
 
 	/**
@@ -38,6 +41,10 @@ class Common_Hooks {
 		}
 	}
 
+	public function woocommerce_custom_add_to_cart_text() {
+		var_dump( 'runnig' );
+		return __( 'Add to the basket', 'woocommerce' );
+	}
 	/**
 	 * Hook for WooCommerce after add-to-cart button.
 	 */
@@ -58,21 +65,29 @@ class Common_Hooks {
 		return sgsb_find_option_setting( $settings, $option_key, true );
 	}
 
+	public function test_function( $template, $template_name, $args, $template_path, $default_path ) {
+		if ( $template_name == 'loop/add-to-cart.php' ) {
+			$template = __DIR__ . '/../templates/direct-checkout-button.php';
+		}
+		return $template;
+	}
+
+	public function set_template_path( $template, $template_name, $template_path ) {
+		if ( $template_name == 'loop/add-to-cart.php' ) {
+			$template = __DIR__ . '/../templates/direct-checkout-button.php';
+		}
+		return $template;
+	}
 	/**
 	 * Function to display the Buy Now button.
 	 */
 	private function display_buy_now_button() {
-		global $product;
+		// global $product;
 
-		if ( 'simple' !== $product->get_type() || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
-			return;
-		}
+		// if ( 'simple' !== $product->get_type() || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
+		// return;
+		// }
 
-		ob_start();
 		include __DIR__ . '/../templates/direct-checkout-button.php';
-		$output = ob_get_clean();
-
-		// Escape the output before echoing it.
-		echo wp_kses_post( $output );
 	}
 }
