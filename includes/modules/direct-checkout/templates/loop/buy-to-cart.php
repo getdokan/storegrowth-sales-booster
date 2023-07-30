@@ -34,4 +34,4 @@ $product_add_to_cart_text = esc_html( 'simple' === $product->get_type() ? $buy_n
 $html_output = '<a href="' . $product_checkout_url . '" data-quantity="' . $product_quantity . '" class="' . $product_class . '" ' . $product_attributes . '>' . $product_add_to_cart_text . '</a>';
 
 // Output the HTML.
-echo $html_output;
+echo wp_kses_post( $html_output );

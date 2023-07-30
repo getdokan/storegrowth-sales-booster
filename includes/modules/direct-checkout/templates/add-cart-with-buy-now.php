@@ -16,7 +16,7 @@ $buy_now_button_label = sgsb_find_option_setting( $settings, 'buy_now_button_lab
 			array(
 				'button',
 				'product_type_' . $product->get_type(),
-				'add_to_cart_button',
+				'sgsb_buy_now_button',
 			)
 		)
 	);

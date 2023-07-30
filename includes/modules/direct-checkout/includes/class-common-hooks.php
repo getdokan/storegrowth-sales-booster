@@ -42,6 +42,8 @@ class Common_Hooks {
 		} elseif ( 'cart-to-buy-now' === $buy_now_button_setting ) {
 			add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
 			add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+		} else {
+			return;
 		}
 	}
 	/**
