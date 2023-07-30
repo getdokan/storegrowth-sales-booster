@@ -12,14 +12,13 @@ import {
 } from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
-import InputColor from "react-input-color";
 
 function DirectCheckout() {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    buy_now_button_setting: "default-add-to-cart",
+    buy_now_button_setting: "cart-with-buy-now",
     buy_now_button_label: "Buy Now",
     checkout_redirect: "checkout",
     checkout_custom_link: "",
