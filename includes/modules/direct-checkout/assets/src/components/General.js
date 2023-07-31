@@ -1,0 +1,159 @@
+import {
+  Card,
+  Form,
+  Select,
+  Radio,
+  Input,
+  Button,
+  Space,
+  Checkbox,
+} from "antd";
+
+import { useDispatch,useSelect } from "@wordpress/data";
+console.log("====Direct Checkout");
+function General({onFormSave}) {
+  const { setCreateFromData } = useDispatch( 'sgsb_direct_checkout' );
+
+  const { createDirectCheckoutForm, getButtonLoading } = useSelect( ( select ) => ({
+    createDirectCheckoutForm: select( 'sgsb_direct_checkout' ).getCreateFromData(),
+    getButtonLoading: select( 'sgsb_direct_checkout' ).getButtonLoading()
+  }) );
+
+
+  
+  const onFieldChange = ( key, value ) => {
+    setCreateFromData( {
+      ...createDirectCheckoutForm,
+      [ key ]: value,
+    } );
+  };
+
+  const isProStyle = {
+    cursor: sgsbAdmin.isPro ? "pointer" : "not-allowed",
+  };
+
+  const isProFieldChange = (isPro, fieldKey, e) => {
+    isPro ? onFieldChange(fieldKey, e) : "";
+  };
+
+  const upgradeLabel = !sgsbAdmin.isPro ? (
+    <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>
+  ) : null;
+
+  return (
+    <Card>
+      <Form
+        labelCol={{
+          span: 7,
+        }}
+        wrapperCol={{
+          span: 17,
+        }}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Buy Now Button Label"
+          labelAlign="left"
+          extra="This will be the set the Label of the Buy Now Button"
+        >
+          <Input
+            value={createDirectCheckoutForm.buy_now_button_label}
+            onChange={(e) =>
+              onFieldChange("buy_now_button_label", e.target.value)
+            }
+            style={{ width: 400 }}
+            placeholder="Total Sold"
+          />
+        </Form.Item>
+
+        <Form.Item label="Button Layout Setting" labelAlign="left">
+          <Radio.Group
+            onChange={(e) =>
+              onFieldChange("buy_now_button_setting", e.target.value)
+            }
+            value={createDirectCheckoutForm.buy_now_button_setting}
+          >
+            <Space direction="vertical">
+              <Radio value="cart-to-buy-now">"Add to cart" as "Buy Now"</Radio>
+              <Radio value="cart-with-buy-now">
+                <span>"Buy Now" with "Add to cart"</span>
+              </Radio>
+              <Radio value="specific-buy-now">
+                <span>"Buy Now" for specific product"</span>
+              </Radio>
+              <Radio value="default-add-to-cart">
+                <span>Default Add to cart</span>
+              </Radio>
+            </Space>
+          </Radio.Group>
+        </Form.Item>
+
+        <Form.Item label="Buy Now Button Redirect" labelAlign="left">
+          <Select
+            value={createDirectCheckoutForm.checkout_redirect}
+            onChange={(v) => onFieldChange("checkout_redirect", v)}
+            style={{ width: 400 }}
+          >
+            <Select.Option value="checkout">Checkout</Select.Option>
+            <Select.Option value="custom-link">Custom Link</Select.Option>
+          </Select>
+        </Form.Item>
+
+        {createDirectCheckoutForm.checkout_redirect === "custom-link" && (
+          <div>
+            <Form.Item
+              label="custom link"
+              labelAlign="left"
+              extra="The custom link to redirect for checkout the product"
+            >
+              <Input
+                value={createDirectCheckoutForm.checkout_custom_link}
+                onChange={(e) =>
+                  onFieldChange("checkout_custom_link", e.target.value)
+                }
+                style={{ width: 400 }}
+                placeholder="https://www.examplestore.com/checkout
+                "
+              />
+            </Form.Item>
+          </div>
+        )}
+
+        <Form.Item label="Display on Shop Page" labelAlign="left">
+          <Space direction="vertical">
+            <Checkbox
+              checked={createDirectCheckoutForm.shop_page_checkout_enable}
+              value="shop_page_checkout_enable"
+              onChange={(e) =>
+                onFieldChange("shop_page_checkout_enable", e.target.checked)
+              }
+            ></Checkbox>
+          </Space>
+        </Form.Item>
+
+        <Form.Item label="Display on Product Page" labelAlign="left">
+          <Space direction="vertical">
+            <Checkbox
+              checked={createDirectCheckoutForm.product_page_checkout_enable}
+              value="product_page_checkout_enable"
+              onChange={(e) =>
+                onFieldChange("product_page_checkout_enable", e.target.checked)
+              }
+            ></Checkbox>
+          </Space>
+        </Form.Item>
+
+        <Button
+          type="primary"
+          onClick={ () => onFormSave( 'general_settings' ) }
+          className='order-bump-save-change-button'
+          loading={ getButtonLoading }
+        >
+          Save Changes
+        </Button>
+      </Form>
+    </Card>
+  );
+}
+
+export default General;

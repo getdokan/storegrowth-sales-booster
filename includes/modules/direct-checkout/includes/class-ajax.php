@@ -35,17 +35,25 @@ class Ajax {
 	public function save_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		if ( ! isset( $_POST['form_data'] ) ) {
+		if ( ! isset( $_POST['data'] ) ) {
 			wp_send_json_error();
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `sgsb_sanitize_form_fields`.
-		$form_data = array_map( 'sgsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
+		// Decode the JSON data.
+		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
 
-		update_option( 'sgsb_direct_checkout_settings', $form_data );
+		// Ensure the 'createDirectCheckoutForm' key exists in the data.
+		if ( isset( $data['direct_checkout_data'] ) ) {
+			// Get the 'createDirectCheckoutForm' value.xs.
+			$direct_checkout_data = $data['direct_checkout_data'];
 
-		wp_send_json_success();
+			// Update the option with the 'createDirectCheckoutForm' value.
+			update_option( 'sgsb_direct_checkout_settings', $direct_checkout_data );
+
+			wp_send_json_success( maybe_unserialize( get_option( 'sgsb_direct_checkout_settings' ) ) );
+		}
 	}
+
 
 	/**
 	 * Ajax action for get settings.
