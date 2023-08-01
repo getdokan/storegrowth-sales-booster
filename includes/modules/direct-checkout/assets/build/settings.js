@@ -16013,7 +16013,7 @@ function Design(_ref) {
     addonAfter: "px",
     placement: "right"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-    label: "Font Size",
+    label: "Border Radius",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     min: 1,
@@ -16115,19 +16115,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/tabs/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/tabs/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
 /* harmony import */ var _General__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./General */ "./src/components/General.js");
 /* harmony import */ var _Design__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Design */ "./src/components/Design.js");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _LinkGenerator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./LinkGenerator */ "./src/components/LinkGenerator.js");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
 
 const {
   TabPane
-} = antd__WEBPACK_IMPORTED_MODULE_3__["default"];
+} = antd__WEBPACK_IMPORTED_MODULE_4__["default"];
 
 
 function DirectCheckoutLayout(_ref) {
@@ -16139,12 +16141,12 @@ function DirectCheckoutLayout(_ref) {
   const {
     setCreateFromData,
     setButtonLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useDispatch)("sgsb_direct_checkout");
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)("sgsb_direct_checkout");
   let [searchParams, setSearchParams] = useSearchParams();
   const tabName = searchParams.get("tab_name");
   const {
     createDirectCheckoutForm
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(select => ({
     createDirectCheckoutForm: select("sgsb_direct_checkout").getCreateFromData()
   }));
 
@@ -16154,14 +16156,14 @@ function DirectCheckoutLayout(_ref) {
 
   const notificationMessage = type => {
     if (type == "general_settings") {
-      antd__WEBPACK_IMPORTED_MODULE_5__["default"].success({
+      antd__WEBPACK_IMPORTED_MODULE_6__["default"].success({
         message: "General Settings Section",
         description: "General section settings data updated successfully."
       });
     }
 
     if (type == "design") {
-      antd__WEBPACK_IMPORTED_MODULE_5__["default"].success({
+      antd__WEBPACK_IMPORTED_MODULE_6__["default"].success({
         message: "Design Section",
         description: "Design section data updated successfully."
       });
@@ -16195,8 +16197,14 @@ function DirectCheckoutLayout(_ref) {
     children: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Design__WEBPACK_IMPORTED_MODULE_2__["default"], {
       onFormSave: onFormSave
     })
+  }, {
+    key: "link-generator",
+    label: "Link Generator",
+    children: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_LinkGenerator__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      onFormSave: onFormSave
+    })
   }];
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     activeKey: tabName ? tabName : "general",
     onTabClick: changeTab
   }, items.map(item => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TabPane, {
@@ -16337,6 +16345,135 @@ function General(_ref) {
 
 /***/ }),
 
+/***/ "./src/components/LinkGenerator.js":
+/*!*****************************************!*\
+  !*** ./src/components/LinkGenerator.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/select/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+
+
+const {
+  TextArea
+} = antd__WEBPACK_IMPORTED_MODULE_1__["default"];
+
+
+function LinkGenerator(_ref) {
+  let {
+    onFormSave
+  } = _ref;
+  const {
+    setCreateFromData
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)("sgsb_direct_checkout");
+  const {
+    createDirectCheckoutForm,
+    getButtonLoading
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+    createDirectCheckoutForm: select("sgsb_direct_checkout").getCreateFromData(),
+    getButtonLoading: select("sgsb_direct_checkout").getButtonLoading()
+  }));
+
+  const onFieldChange = (key, value) => {
+    setCreateFromData({ ...createDirectCheckoutForm,
+      [key]: value
+    });
+  };
+
+  const options = [];
+
+  for (let i = 10; i < 36; i++) {
+    options.push({
+      label: i.toString(36) + i,
+      value: i.toString(36) + i
+    });
+  }
+
+  console.log(createDirectCheckoutForm);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
+    label: "Products to Add to Cart",
+    labelAlign: "left",
+    extra: "The list of select products tahat will be added to cart"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    mode: "multiple",
+    allowClear: true,
+    style: {
+      width: "100%"
+    },
+    placeholder: "Please select",
+    defaultValue: ["a10", "c12"] // onChange={}
+    ,
+    options: options
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
+    label: "Select Coupons",
+    labelAlign: "left",
+    extra: "Select the coupons that will be applied for"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    mode: "multiple",
+    allowClear: true,
+    style: {
+      width: "100%"
+    },
+    placeholder: "Please select",
+    defaultValue: ["a10", "c12"] // onChange={}
+    ,
+    options: options
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
+    label: "Shipping Method",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    value: createDirectCheckoutForm.checkout_redirect,
+    onChange: v => onFieldChange("checkout_redirect", v),
+    style: {
+      width: 400
+    }
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Option, {
+    value: "checkout"
+  }, "Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Option, {
+    value: "custom-link"
+  }, "Custom Link"))), createDirectCheckoutForm.checkout_redirect === "custom-link" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
+    label: "custom link",
+    labelAlign: "left",
+    extra: "The custom link to redirect for checkout the product"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    value: createDirectCheckoutForm.checkout_custom_link,
+    onChange: e => onFieldChange("checkout_custom_link", e.target.value),
+    style: {
+      width: 400
+    },
+    placeholder: "https://www.examplestore.com/checkout "
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
+    label: "Generated Link",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextArea, {
+    rows: 4,
+    value: createDirectCheckoutForm.generated_link,
+    onChange: e => onFieldChange('generated_link', e.target.value),
+    placeholder: "jellosjaa adlajfka"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    type: "primary",
+    onClick: () => onFormSave("general_settings"),
+    className: "order-bump-save-change-button",
+    loading: getButtonLoading
+  }, "Save Changes"));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LinkGenerator);
+
+/***/ }),
+
 /***/ "./src/store.js":
 /*!**********************!*\
   !*** ./src/store.js ***!
@@ -16365,7 +16502,8 @@ const createDirectCheckoutForm = {
   button_color: "#008dff",
   text_color: "#ffffff",
   font_size: "14",
-  button_border_radius: "5"
+  button_border_radius: "5",
+  generated_link: "example"
 };
 /**
  * Default state.

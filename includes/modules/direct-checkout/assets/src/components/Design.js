@@ -53,7 +53,7 @@ function Design({ onFormSave }) {
         />
       </Form.Item>
 
-      <Form.Item label="Font Size" labelAlign="left">
+      <Form.Item label="Border Radius" labelAlign="left">
         <InputNumber
           min={1}
           defaultValue={createDirectCheckoutForm.button_border_radius}

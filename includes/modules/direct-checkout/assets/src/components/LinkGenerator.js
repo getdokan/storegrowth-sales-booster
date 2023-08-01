@@ -1,5 +1,5 @@
-import { Form, Select, Radio, Input, Button, Space, Checkbox } from "antd";
-
+import { Form, Select, Input, Button, Space, Checkbox } from "antd";
+const { TextArea } = Input;
 import { useDispatch, useSelect } from "@wordpress/data";
 
 function LinkGenerator({ onFormSave }) {
@@ -20,47 +20,52 @@ function LinkGenerator({ onFormSave }) {
       [key]: value,
     });
   };
-
+  const options = [];
+  for (let i = 10; i < 36; i++) {
+    options.push({
+      label: i.toString(36) + i,
+      value: i.toString(36) + i,
+    });
+  }
+  console.log(createDirectCheckoutForm);
   return (
     <>
       <Form.Item
-        label="Buy Now Button Label"
+        label="Products to Add to Cart"
         labelAlign="left"
-        extra="This will be the set the Label of the Buy Now Button"
+        extra="The list of select products tahat will be added to cart"
       >
-        <Input
-          value={createDirectCheckoutForm.buy_now_button_label}
-          onChange={(e) =>
-            onFieldChange("buy_now_button_label", e.target.value)
-          }
-          style={{ width: 400 }}
-          placeholder="Total Sold"
+        <Select
+          mode="multiple"
+          allowClear
+          style={{
+            width: "100%",
+          }}
+          placeholder="Please select"
+          defaultValue={["a10", "c12"]}
+          // onChange={}
+          options={options}
+        />
+      </Form.Item>
+      <Form.Item
+        label="Select Coupons"
+        labelAlign="left"
+        extra="Select the coupons that will be applied for"
+      >
+        <Select
+          mode="multiple"
+          allowClear
+          style={{
+            width: "100%",
+          }}
+          placeholder="Please select"
+          defaultValue={["a10", "c12"]}
+          // onChange={}
+          options={options}
         />
       </Form.Item>
 
-      <Form.Item label="Button Layout Setting" labelAlign="left">
-        <Radio.Group
-          onChange={(e) =>
-            onFieldChange("buy_now_button_setting", e.target.value)
-          }
-          value={createDirectCheckoutForm.buy_now_button_setting}
-        >
-          <Space direction="vertical">
-            <Radio value="cart-to-buy-now">"Add to cart" as "Buy Now"</Radio>
-            <Radio value="cart-with-buy-now">
-              <span>"Buy Now" with "Add to cart"</span>
-            </Radio>
-            <Radio value="specific-buy-now">
-              <span>"Buy Now" for specific product"</span>
-            </Radio>
-            <Radio value="default-add-to-cart">
-              <span>Default Add to cart</span>
-            </Radio>
-          </Space>
-        </Radio.Group>
-      </Form.Item>
-
-      <Form.Item label="Buy Now Button Redirect" labelAlign="left">
+      <Form.Item label="Shipping Method" labelAlign="left">
         <Select
           value={createDirectCheckoutForm.checkout_redirect}
           onChange={(v) => onFieldChange("checkout_redirect", v)}
@@ -91,28 +96,13 @@ function LinkGenerator({ onFormSave }) {
         </div>
       )}
 
-      <Form.Item label="Display on Shop Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.shop_page_checkout_enable}
-            value="shop_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("shop_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
-      </Form.Item>
-
-      <Form.Item label="Display on Product Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.product_page_checkout_enable}
-            value="product_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("product_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
+      <Form.Item label="Generated Link" labelAlign="left">
+      <TextArea
+          rows={ 4 }
+          value={createDirectCheckoutForm.generated_link}
+          onChange={ ( e ) => onFieldChange( 'generated_link', e.target.value ) }
+          placeholder={"jellosjaa adlajfka"}
+        />
       </Form.Item>
 
       <Button

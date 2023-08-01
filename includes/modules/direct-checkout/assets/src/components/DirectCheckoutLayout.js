@@ -1,6 +1,7 @@
 import { Tabs, notification } from "antd";
 import General from "./General";
 import Design from "./Design";
+import LinkGenerator from "./LinkGenerator";
 const { TabPane } = Tabs;
 import { useDispatch, useSelect } from "@wordpress/data";
 
@@ -67,6 +68,11 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
       key: "design",
       label: "Design",
       children: <Design onFormSave={onFormSave}/>,
+    },
+    {
+      key: "link-generator",
+      label: "Link Generator",
+      children: <LinkGenerator onFormSave={onFormSave}/>,
     },
   ];
 

@@ -15,6 +15,7 @@ const createDirectCheckoutForm = {
   text_color: "#ffffff",
   font_size: "14",
   button_border_radius: "5",
+	generated_link:"example",
 };
 
 /**
