@@ -12,12 +12,13 @@ function DirectCheckout({ outlet: Outlet }) {
     ).getCreateFromData(),
   }));
   const layout = {
-    labelCol: {
-      span: 6,
+    labelCol:{
+      span: 7
     },
-    wrapperCol: {
-      span: 18,
+    wrapperCol:{
+      span: 17
     },
+    autoComplete:"off"
   };
   useEffect(() => {
     setPageLoading(true);

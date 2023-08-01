@@ -2,7 +2,7 @@ import { Form, Select, Radio, Input, Button, Space, Checkbox } from "antd";
 
 import { useDispatch, useSelect } from "@wordpress/data";
 
-function General({ onFormSave }) {
+function LinkGenerator({ onFormSave }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
 
   const { createDirectCheckoutForm, getButtonLoading } = useSelect(
@@ -127,4 +127,4 @@ function General({ onFormSave }) {
   );
 }
 
-export default General;
+export default LinkGenerator;

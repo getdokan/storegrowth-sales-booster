@@ -1,5 +1,6 @@
 import { Tabs, notification } from "antd";
 import General from "./General";
+import Design from "./Design";
 const { TabPane } = Tabs;
 import { useDispatch, useSelect } from "@wordpress/data";
 
@@ -38,7 +39,6 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
 
   const onFormSave = (type) => {
     setButtonLoading(true);
-    console.log(sgsbAdmin.ajax_url);
 
     jQuery.post(
       sgsbAdmin.ajax_url,
@@ -57,16 +57,28 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
     );
   };
 
+  const items = [
+    {
+      key: "general",
+      label: "General",
+      children: <General onFormSave={onFormSave} />,
+    },
+    {
+      key: "design",
+      label: "Design",
+      children: <Design onFormSave={onFormSave}/>,
+    },
+  ];
+
+
   return (
     <>
       <Tabs activeKey={tabName ? tabName : "general"} onTabClick={changeTab}>
-        <TabPane tab="General" key="general">
-          <General onFormSave={onFormSave} />
-        </TabPane>
-
-        <TabPane tab="Design" key="design">
-          "Design"
-        </TabPane>
+      {items.map((item) => (
+          <TabPane tab={item.label} key={item.key}>
+            {item.children}
+          </TabPane>
+        ))}
       </Tabs>
     </>
   );

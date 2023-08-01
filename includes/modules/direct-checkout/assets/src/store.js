@@ -11,6 +11,10 @@ const createDirectCheckoutForm = {
   checkout_custom_link: "",
   shop_page_checkout_enable: true,
   product_page_checkout_enable: true,
+  button_color: "#008dff",
+  text_color: "#ffffff",
+  font_size: "14",
+  button_border_radius: "5",
 };
 
 /**
