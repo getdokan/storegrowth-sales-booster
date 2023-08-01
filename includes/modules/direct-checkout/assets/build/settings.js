@@ -16001,7 +16001,7 @@ function Design(_ref) {
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_3__["default"], {
     initialValue: createDirectCheckoutForm.text_color,
-    onChange: e => onFieldChange("button_color", e.hex),
+    onChange: e => onFieldChange("text_color", e.hex),
     placement: "right"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Font Size",

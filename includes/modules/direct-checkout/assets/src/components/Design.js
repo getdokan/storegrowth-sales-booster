@@ -38,7 +38,7 @@ function Design({ onFormSave }) {
       <Form.Item label="Text Color" labelAlign="left">
         <InputColor
           initialValue={createDirectCheckoutForm.text_color}
-          onChange={(e) => onFieldChange("button_color", e.hex)}
+          onChange={(e) => onFieldChange("text_color", e.hex)}
           placement="right"
         />
       </Form.Item>
