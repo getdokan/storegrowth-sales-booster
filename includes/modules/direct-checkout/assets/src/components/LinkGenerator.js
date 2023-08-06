@@ -27,7 +27,7 @@ function LinkGenerator({ onFormSave }) {
       value: i.toString(36) + i,
     });
   }
-  console.log(createDirectCheckoutForm);
+  
   return (
     <>
       <Form.Item

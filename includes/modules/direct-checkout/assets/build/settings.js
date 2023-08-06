@@ -16301,21 +16301,10 @@ function General(_ref) {
       width: 400
     }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
-    value: "checkout"
-  }, "Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
-    value: "custom-link"
-  }, "Custom Link"))), createDirectCheckoutForm.checkout_redirect === "custom-link" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-    label: "custom link",
-    labelAlign: "left",
-    extra: "The custom link to redirect for checkout the product"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    value: createDirectCheckoutForm.checkout_custom_link,
-    onChange: e => onFieldChange("checkout_custom_link", e.target.value),
-    style: {
-      width: 400
-    },
-    placeholder: "https://www.examplestore.com/checkout "
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+    value: "legacy-checkout"
+  }, "Legacy Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
+    value: "quick-cart-checkout"
+  }, "Quick Cart Checkout"))), createDirectCheckoutForm.buy_now_button_setting === "cart-with-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Display on Shop Page",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -16333,7 +16322,7 @@ function General(_ref) {
     checked: createDirectCheckoutForm.product_page_checkout_enable,
     value: "product_page_checkout_enable",
     onChange: e => onFieldChange("product_page_checkout_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
     className: "order-bump-save-change-button",
@@ -16401,7 +16390,6 @@ function LinkGenerator(_ref) {
     });
   }
 
-  console.log(createDirectCheckoutForm);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
     label: "Products to Add to Cart",
     labelAlign: "left",
@@ -16495,8 +16483,7 @@ __webpack_require__.r(__webpack_exports__);
 const createDirectCheckoutForm = {
   buy_now_button_setting: "cart-with-buy-now",
   buy_now_button_label: "Buy Now",
-  checkout_redirect: "checkout",
-  checkout_custom_link: "",
+  checkout_redirect: "legacy-checkout",
   shop_page_checkout_enable: true,
   product_page_checkout_enable: true,
   button_color: "#008dff",

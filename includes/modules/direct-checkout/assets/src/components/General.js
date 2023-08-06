@@ -66,54 +66,41 @@ function General({ onFormSave }) {
           onChange={(v) => onFieldChange("checkout_redirect", v)}
           style={{ width: 400 }}
         >
-          <Select.Option value="checkout">Checkout</Select.Option>
-          <Select.Option value="custom-link">Custom Link</Select.Option>
+          <Select.Option value="legacy-checkout">Legacy Checkout</Select.Option>
+          <Select.Option value="quick-cart-checkout">Quick Cart Checkout</Select.Option>
         </Select>
       </Form.Item>
-
-      {createDirectCheckoutForm.checkout_redirect === "custom-link" && (
+      {createDirectCheckoutForm.buy_now_button_setting ===
+        "cart-with-buy-now" && (
         <div>
-          <Form.Item
-            label="custom link"
-            labelAlign="left"
-            extra="The custom link to redirect for checkout the product"
-          >
-            <Input
-              value={createDirectCheckoutForm.checkout_custom_link}
-              onChange={(e) =>
-                onFieldChange("checkout_custom_link", e.target.value)
-              }
-              style={{ width: 400 }}
-              placeholder="https://www.examplestore.com/checkout
-                "
-            />
+          <Form.Item label="Display on Shop Page" labelAlign="left">
+            <Space direction="vertical">
+              <Checkbox
+                checked={createDirectCheckoutForm.shop_page_checkout_enable}
+                value="shop_page_checkout_enable"
+                onChange={(e) =>
+                  onFieldChange("shop_page_checkout_enable", e.target.checked)
+                }
+              ></Checkbox>
+            </Space>
+          </Form.Item>
+
+          <Form.Item label="Display on Product Page" labelAlign="left">
+            <Space direction="vertical">
+              <Checkbox
+                checked={createDirectCheckoutForm.product_page_checkout_enable}
+                value="product_page_checkout_enable"
+                onChange={(e) =>
+                  onFieldChange(
+                    "product_page_checkout_enable",
+                    e.target.checked
+                  )
+                }
+              ></Checkbox>
+            </Space>
           </Form.Item>
         </div>
       )}
-
-      <Form.Item label="Display on Shop Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.shop_page_checkout_enable}
-            value="shop_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("shop_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
-      </Form.Item>
-
-      <Form.Item label="Display on Product Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.product_page_checkout_enable}
-            value="product_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("product_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
-      </Form.Item>
 
       <Button
         type="primary"

@@ -42,14 +42,10 @@ class Ajax {
 		// Decode the JSON data.
 		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
 
-		// Ensure the 'createDirectCheckoutForm' key exists in the data.
 		if ( isset( $data['direct_checkout_data'] ) ) {
-			// Get the 'createDirectCheckoutForm' value.xs.
 			$direct_checkout_data = $data['direct_checkout_data'];
 
-			// Update the option with the 'createDirectCheckoutForm' value.
 			update_option( 'sgsb_direct_checkout_settings', $direct_checkout_data );
-
 			wp_send_json_success( maybe_unserialize( get_option( 'sgsb_direct_checkout_settings' ) ) );
 		}
 	}
