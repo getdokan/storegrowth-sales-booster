@@ -21,17 +21,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $product;
 $product_id               = $product->get_ID();
+$product_type             = $product->get_type();
+$add_to_cart_text         = $product->add_to_cart_text();
+$is_in_stock              = $product->is_in_stock();
+$permalink                = get_permalink( $product_id );
 $settings                 = get_option( 'sgsb_direct_checkout_settings' );
-$class                    = 'simple' === $product->get_type() ? 'button product_type_simple' : $args['class'];
-$buy_now_button_label     = sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' );
-$product_checkout_url     = esc_url( wc_get_checkout_url() . $product->add_to_cart_url() );
+$class                    = 'simple' === $product_type ? 'button product_type_simple' : $args['class'];
+$buy_now_button_label     = $is_in_stock ? sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' ) : 'Read More';
+$product_checkout_url     = esc_url( $is_in_stock ? ( wc_get_checkout_url() . $product->add_to_cart_url() ) : $permalink );
 $product_quantity         = esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 );
 $product_class            = esc_attr( isset( $args['class'] ) ? $class : 'button' );
 $product_attributes       = isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '';
-$product_add_to_cart_text = esc_html( 'simple' === $product->get_type() ? $buy_now_button_label : $product->add_to_cart_text() );
+$product_add_to_cart_text = esc_html( 'simple' === $product_type ? $buy_now_button_label : $add_to_cart_text );
 
-// Concatenating the HTML directly.
-$html_output = '<a href="' . $product_checkout_url . '" data-quantity="' . $product_quantity . '" class="' . $product_class . '" ' . $product_attributes . '>' . $product_add_to_cart_text . '</a>';
+
+if ( ! $product->is_in_stock() && is_product() ) {
+	$html_output = '<p class="stock out-of-stock">Out Of Stock</p>';
+} else {
+	$html_output = '<a href="' . $product_checkout_url . '" data-quantity="' . $product_quantity . '" class="' . $product_class . '" ' . $product_attributes . '>' . $product_add_to_cart_text . '</a>';
+}
+
 
 // Output the HTML.
 echo wp_kses_post( $html_output );

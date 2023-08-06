@@ -12,7 +12,7 @@ const createDirectCheckoutForm = {
   product_page_checkout_enable: true,
   button_color: "#008dff",
   text_color: "#ffffff",
-  font_size: "14",
+  font_size: "16",
   button_border_radius: "5",
 	generated_link:"example",
 };

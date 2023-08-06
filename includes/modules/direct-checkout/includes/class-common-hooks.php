@@ -75,20 +75,34 @@ class Common_Hooks {
 		return sgsb_find_option_setting( $settings, $option_key, true );
 	}
 
-	public function set_cart_to_checkout_button_template( $template, $template_name, $args, $template_path, $default_path ) {
+		/**
+		 * Check if the Buy Now button should be displayed in the specific template path.
+		 *
+		 * @param string $template The option key to check for.
+		 * @param string $template_name The option key to check for.
+		 * @param array  $args The option key to check for.
+		 * @param string $template_path The option key to check for.
+		 * @param string $default_path The option key to check for.
+		 */
+	public function set_cart_to_checkout_button_template( $template, $template_name, $args, $template_path, $default_path ) { //phpcs:ignore.
 		global $product;
-
-		if ( 'loop/add-to-cart.php' === $template_name && $product ) {
+		if ( 'single-product/add-to-cart/simple.php' === $template_name || 'loop/add-to-cart.php' === $template_name ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
 		}
 		return $template;
 	}
 
-	public function set_template_path( $template, $template_name, $template_path ) {
+			/**
+			 * Check if the Buy Now button should be displayed.
+			 *
+			 * @param string $template The option key to check for.
+			 * @param string $template_name The option key to check for.
+			 * @return string $template Buy Now button should be displayed or not.
+			 */
+	public function set_template_path( $template, $template_name ) {
 		global $product;
-
 		// Override template path.
-		if ( 'loop/add-to-cart.php' === $template_name && $product ) {
+		if ( 'single-product/add-to-cart/simple.php' === $template_name || 'loop/add-to-cart.php' === $template_name ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
 		}
 		return $template;
