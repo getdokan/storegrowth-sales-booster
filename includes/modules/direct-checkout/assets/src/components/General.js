@@ -52,24 +52,40 @@ function General({ onFormSave }) {
             </Radio>
             <Radio value="specific-buy-now">
               <span>"Buy Now" for specific product"</span>
+              {createDirectCheckoutForm.buy_now_button_setting ===
+                "specific-buy-now" && (
+                <div style={{ color: "red" }}>
+                  <span>
+                    Please set the setting from the Woocommerce product tab.
+                  </span>
+                </div>
+              )}
             </Radio>
             <Radio value="default-add-to-cart">
               <span>Default Add to cart</span>
             </Radio>
           </Space>
         </Radio.Group>
+        
       </Form.Item>
-
-      <Form.Item label="Buy Now Button Redirect" labelAlign="left">
+      {createDirectCheckoutForm.buy_now_button_setting !==
+        "default-add-to-cart" && (
+          <div>
+            <Form.Item label="Buy Now Button Redirect" labelAlign="left">
         <Select
           value={createDirectCheckoutForm.checkout_redirect}
           onChange={(v) => onFieldChange("checkout_redirect", v)}
           style={{ width: 400 }}
         >
           <Select.Option value="legacy-checkout">Legacy Checkout</Select.Option>
-          <Select.Option value="quick-cart-checkout">Quick Cart Checkout</Select.Option>
+          <Select.Option value="quick-cart-checkout">
+            Quick Cart Checkout
+          </Select.Option>
         </Select>
       </Form.Item>
+          </div>
+        )}
+      
       {createDirectCheckoutForm.buy_now_button_setting ===
         "cart-with-buy-now" && (
         <div>
