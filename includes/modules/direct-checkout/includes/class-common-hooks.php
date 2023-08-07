@@ -26,7 +26,8 @@ class Common_Hooks {
 	 */
 	private function __construct() {
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
-		add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_radio_metabox' ) );
+		add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_data' ) );
+		add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
 
 		$this->direct_checkout_hooks_init();
 	}
@@ -38,16 +39,23 @@ class Common_Hooks {
 		$settings               = get_option( 'sgsb_direct_checkout_settings' );
 		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 
-		if ( 'cart-with-buy-now' === $buy_now_button_setting ) {
-			add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
-			add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
-		} elseif ( 'cart-to-buy-now' === $buy_now_button_setting ) {
-			add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
-			add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
-		} else {
-			return;
+		switch ( $buy_now_button_setting ) {
+			case 'cart-with-buy-now':
+					add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
+					add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
+				break;
+
+			case 'cart-to-buy-now':
+					add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
+					add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+				break;
+
+			default:
+					// Do nothing or handle other cases if needed.
+				break;
 		}
 	}
+
 	/**
 	 * Hook for WooCommerce after shop loop item.
 	 */
@@ -77,11 +85,11 @@ class Common_Hooks {
 		return sgsb_find_option_setting( $settings, $option_key, true );
 	}
 
-		/**
-		 * Add a tab to the woocommerce product meta field.
-		 *
-		 * @param array $tabs The option key to check for.
-		 */
+	/**
+	 * Add a tab to the woocommerce product meta field.
+	 *
+	 * @param array $tabs The option key to check for.
+	 */
 	public function direct_checkout_product_tab( $tabs ) {
 		// Adds the new tab.
 		$tabs['direct_checkout_tab'] = array(
@@ -94,20 +102,34 @@ class Common_Hooks {
 	/**
 	 * Hook for WooCommerce to add the fields in the products settings tab.
 	 */
-	public function direct_checkout_custom_radio_metabox() {
+	public function direct_checkout_custom_data() {
 		global $post;
 		include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
 	}
 
-		/**
-		 * Check if the Buy Now button should be displayed in the specific template path.
-		 *
-		 * @param string $template The option key to check for.
-		 * @param string $template_name The option key to check for.
-		 * @param array  $args The option key to check for.
-		 * @param string $template_path The option key to check for.
-		 * @param string $default_path The option key to check for.
-		 */
+	/**
+	 * Hook for WooCommerce to save the data of the custom field.
+	 *
+	 * @param int $post_id is used to pass the post id param.
+	 */
+	public function save_direct_checkout_data( $post_id ) {
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['_sgsb_direct_checkout_button_layout'] ) ) {
+			$layout_value = wc_clean( wp_unslash( $_POST['_sgsb_direct_checkout_button_layout'] ) ); //phpcs:ignore
+			update_post_meta( $post_id, '_sgsb_direct_checkout_button_layout', $layout_value );
+		}
+	}
+
+	/**
+	 * Check if the Buy Now button should be displayed in the specific template path.
+	 *
+	 * @param string $template The option key to check for.
+	 * @param string $template_name The option key to check for.
+	 * @param array  $args The option key to check for.
+	 * @param string $template_path The option key to check for.
+	 * @param string $default_path The option key to check for.
+	 */
 	public function set_cart_to_checkout_button_template( $template, $template_name, $args, $template_path, $default_path ) { //phpcs:ignore.
 		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
@@ -115,13 +137,13 @@ class Common_Hooks {
 		return $template;
 	}
 
-			/**
-			 * Check if the Buy Now button should be displayed.
-			 *
-			 * @param string $template The option key to check for.
-			 * @param string $template_name The option key to check for.
-			 * @return string $template Buy Now button should be displayed or not.
-			 */
+	/**
+	 * Check if the Buy Now button should be displayed.
+	 *
+	 * @param string $template The option key to check for.
+	 * @param string $template_name The option key to check for.
+	 * @return string $template Buy Now button should be displayed or not.
+	 */
 	public function set_template_path( $template, $template_name ) {
 		// Override template path.
 		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {

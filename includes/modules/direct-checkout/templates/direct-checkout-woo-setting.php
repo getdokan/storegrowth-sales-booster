@@ -12,8 +12,8 @@
 			<?php
 			woocommerce_wp_radio(
 				array(
-					'id'          => 'custom_product_radio_metabox',
-					'value'       => get_post_meta( $post->ID, 'custom_product_radio_metabox', true ),
+					'id'          => '_sgsb_direct_checkout_button_layout',
+					'value'       => get_post_meta( $post->ID, '_sgsb_direct_checkout_button_layout', true ),
 					'label'       => 'Button Layout Setting',
 					'description' => 'This is the visibility setting of the Direct checkout button',
 					'desc_tip'    => true,

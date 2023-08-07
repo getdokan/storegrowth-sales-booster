@@ -191,5 +191,4 @@ class Common_Hooks {
 
 		return false;
 	}
-
 }
