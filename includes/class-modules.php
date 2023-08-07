@@ -75,6 +75,7 @@ class Modules {
 				'id'          => $module_id,
 				'name'        => $module->get_name(),
 				'icon'        => $module->get_icon(),
+				'banner'        => $module->get_banner(),
 				'description' => $module->get_description(),
 				'category'    => $module->get_module_category(),
 				'status'      => isset( $active_ids[ $module_id ] ),

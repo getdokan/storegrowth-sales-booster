@@ -26348,30 +26348,37 @@ body {
 }
 
 .sales-booster_page_sgsb-modules #wpcontent, .sales-booster_page_sgsb-settings #wpcontent {
-    background: #F9FAFC;
+    background: #F4F7FF;
+    padding-left: 14px !important;
+
+}
+
+.sales-booster_page_sgsb-modules #wpcontent .wrap, .sales-booster_page_sgsb-settings #wpcontent .wrap {
+    /* margin: 0; */
 
 }
 
 .sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
 .sales-booster_page_sgsb-settings #sbooster-settings-page .ant-layout {
-    background: #F9FAFC;
+    background: #F4F7FF;
 }
 
 .sgsb-header.ant-layout-header {
     background-color: #fff;
-    padding: 0 20px;
-    margin: -9px -20px 20px -20px;
-    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    padding: 0;
+    margin: 0;
+
 }
+
 .sgsb-logo {
     font-size: 23px;
 }
 .sgsb-module-card img {
     width: 100%;
     height: auto;
-    max-width: 36px;
 
 }
+
 li.ant-menu-item a:focus {
     outline: 0 none;
     box-shadow: none;
@@ -26438,7 +26445,7 @@ li.ant-menu-item a:focus {
 /* Form end */
 
 .sgsb-module-card {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=settings.css.map*/

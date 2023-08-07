@@ -1,5 +1,5 @@
-import { render, StrictMode } from '@wordpress/element';
 import { register } from '@wordpress/data';
+import { render, StrictMode } from '@wordpress/element';
 import { HashRouter } from 'react-router-dom';
 
 import settingsStore from './settings-store';

@@ -1,15 +1,11 @@
 import { Layout } from 'antd';
 
-import HeaderBar from "../HeaderBar";
-import Modules from "./Modules";
 import PageLoader from "../PageLoader";
+import Modules from "./Modules";
 
 function AppLayout() {
   return (
     <Layout>
-      <HeaderBar />
-
-      {/* <h1 className="sgsb-heading">Sales Booster for WooCommerce</h1> */}
 
       <Layout
           style={{

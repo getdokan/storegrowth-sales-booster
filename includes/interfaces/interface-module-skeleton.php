@@ -29,6 +29,13 @@ interface Module_Skeleton {
 	 *
 	 * @return string
 	 */
+	public function get_banner();
+
+	/**
+	 * Icon for a module.
+	 *
+	 * @return string
+	 */
 	public function get_icon();
 
 	/**

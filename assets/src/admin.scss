@@ -2,18 +2,22 @@
 $white-color: #ffffff;
 
 .sgsb-header {
-  height: 100px;
+  padding: 0 20px !important;
   display: inline-flex;
   align-items: center;
 
-  .sgsb-logo {
-    background: url("../images/logo.svg");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-    width: 212px;
-    height: 56px;
-  }
+}
+
+.sgsb-logo {
+  // background: url("../images/logo.svg");
+  // background-repeat: no-repeat;
+  // background-size: contain;
+  // background-position: center;
+  // width: 164px;
+  // height: 36px;
+  margin: 24px auto 10px;
+  text-align: center;
+
 }
 
 .sgsb-heading[class] {
@@ -26,10 +30,23 @@ $white-color: #ffffff;
 /*=============================
 Module Card Style
 =============================*/
+#sbooster-modules-page {
+  .ant-layout-header {
+   padding: 0;
+
+  }
+
+  .ant-layout-header, .ant-layout-sider {
+    background: #ffffff;
+
+  }
+
+}
+
 .site-card-wrapper {
   .sgsb-module-card {
-    border-radius: 8px;
-    border: 1px solid #ecedf0;
+    border-radius: 10px;
+    background: #FFF;
 
     .ant-card-body {
       padding: 0;
@@ -42,9 +59,8 @@ Module Card Style
         border-radius: 8px;
         height: auto;
         line-height: inherit;
-        padding: 15px 18px 11px 15px;
-        padding-top: 11px !important;
-        border: 1px solid #ecedf0;
+        padding: 8px 18px 7px 15px !important;
+        border: 1px solid #B2DDFF;
         position: relative;
 
         .anticon {
@@ -69,46 +85,75 @@ Module Card Style
     }
 
     .ant-switch {
-      background: #d7dbdf;
-      width: 54px;
-      height: 29px;
+      background: #638DC1;
+      width: 46px;
+      height: 25px;
       margin-left: -10px;
 
       .ant-switch-handle {
-        top: 5px;
-        left: 5px;
+        top: 3.5px;
+        left: 4px;
       }
 
       &.ant-switch-checked {
-        background: #02ac6e;
+        background: #2C81FF;
 
         .ant-switch-handle {
-          left: calc(100% - 18px - 5px);
+          left: calc(100% - 18px - 4px);
         }
       }
     }
 
     .module-thumb {
-      background: #f9fafc;
-      border-radius: 8px;
+      border-radius: 35px;
+      background: #E7F3FF;
       padding: 14px;
-      margin-right: 7px;
+      margin-right: 11px;
       width: 64px;
       height: 64px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
     }
     .module-name {
-      font-weight: 500;
-      font-size: 24px;
+      color: #073B4C;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
       line-height: 29px;
+
     }
+
     .module-desc {
-      color: #66656d;
+      color: #757C7E;
       font-weight: 400;
       font-size: 16px;
       line-height: 28px;
-      padding: 0 23px 7px;
-      height: 62px;
-      overflow: hidden;
+      padding: 17px 40px 51px 23px;
+      min-height: 152px;
+
+    }
+
+    .sgsb__module-footer {
+      background: #DDF0FF;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+
+      .footer-btn[class] {
+        color: #073B4C;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 8px;
+        border: 1px solid #B2DDFF;
+        background: #FFF;
+
+        &.setting-btn {
+          color: #0875FF;
+        }
+
+      }
+
     }
   }
 }
@@ -142,15 +187,39 @@ Pagination Style
 }
 
 .sgsb-search-section {
-  margin-bottom: 14px;
+
+  .search-bar {
+    padding-right: 10px;
+
+    &.active {
+      input {
+        display: block;
+        width: 250px;
+        transition: .3s linear 0s;
+        
+      }
+
+      .ant-input-group-addon {
+        border-left-width: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+      }
+    }
+
+  }
 
   input[class] {
-    background: #ecedf0;
+    background: #F6F9FF;
     border-radius: 8px;
     border: 0;
-    height: 54px;
-    width: 250px;
+    height: 46px;
+    width: 0;
     outline: none;
+    display: none;
+    border: 1px solid #B2DDFF;
+    border-right-width: 0;
+    transition: .3s linear 0s;
 
     &:focus {
       box-shadow: none;
@@ -158,14 +227,19 @@ Pagination Style
   }
 
   .ant-input-group-addon[class] {
-    background-color: #ecedf1;
-    border: 1px solid #ecedf1;
-    padding: 4px 0 0 16px;
+    background-color: #F6F9FF;
+    border: 1px solid #B2DDFF;
+    padding: 4px 10px 0 15px;
     border-radius: 8px;
-    color: #989fab;
-    font-size: 18px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    color: #073B4C;
+    font-size: 20px;
+    cursor: pointer;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   }
 
   .ant-select-selector[class] {
@@ -359,3 +433,359 @@ End Settings Sidebar
   font-weight: bold;
 }
 // upsell order bump css end
+
+
+.sgsb-admin-dashboard {
+  display: flex;
+  flex-flow: row wrap;
+
+  &-sideabr {
+    flex-basis: 200px;
+    background: #ffffff;
+
+    h1 {
+      font-size: 18px;
+      padding: 50px 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      svg {
+        width: 14px;
+
+      }
+    }
+
+    .all-widgets-menu {
+      h4 {
+        color: #073B4C;
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px 20px 20px;
+        gap: 10px;
+
+        span {
+          margin-left: auto;
+          cursor: pointer;
+
+        }
+    
+      }
+
+      ul {
+        padding: 0 20px 0 0;
+
+        li {
+          padding: 12px 0px 12px 44px;
+          position: relative;
+
+          &:hover {
+            a {
+              color: #ffffff;
+
+            }
+          }
+
+          &:before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            width: 18px;
+            height: 18px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+
+          }
+
+          &.fly-cart {
+            &:before {
+              content: "";
+              background: url('../images/menu/quick-cart-icon.svg');
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quick-cart-icon-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.progressive-discount-banner {
+            &:before {
+              content: "";
+              background: url('../images/menu/discount-b-icon.svg');
+              width: 19px;
+              height: 18px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/discount-b-icon-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.sales-pop {
+            &:before {
+              content: "";
+              background: url('../images/menu/sales-pop.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/sales-pop-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.stock-countdown {
+            &:before {
+              content: "";
+              background: url('../images/menu/stock-countdown.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/stock-countdown-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.upsell-order-bump {
+            &:before {
+              content: "";
+              background: url('../images/menu/upsel.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/upsel-white.svg');
+  
+              }
+              
+            }
+          }
+
+        }
+
+        a {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-decoration: none;
+
+        }
+
+        li, a {
+          color: #757D9E;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+
+          &:hover {
+            background: #0875FF;
+            color: #ffffff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+
+          }
+
+        }
+      }
+    }
+
+    .active-widgets {
+      color: #073B4C;
+      font-size: 15px;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 15px;
+      cursor: pointer;
+
+      @media (min-width: 1600px) {
+        font-size: 16px;
+      }
+    }
+
+    .request__feature-block {
+      text-align: center;
+      border-radius: 8px;
+      border: 1px solid #2541AC;
+      background: #2541AC;
+      padding: 57px 3px 25px;
+      margin: 95px 8px 0;
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        bottom: -19px;
+        width: 100%;
+        height: 40px;
+        background: url('../images/slide-layer.svg');
+        left: 0;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+
+      .box-icon {
+        position: absolute;
+        top: -38px;
+        left: 50%;
+        transform: translateX(-50%);
+        
+      }
+
+      .rating {
+        margin-bottom: 22px;
+
+        svg {
+          color: #FEB423;
+
+        }
+      }
+
+      .premium-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+
+      }
+  
+      h4, p, h5 {
+        color: #ffffff;
+
+      }
+
+      h5 {
+        font-size: 14px;
+        font-weight: 600;
+
+      }
+
+      h4 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 27px;
+        margin-bottom: 4px;
+
+      }
+
+      p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 21px;
+        margin-bottom: 20px;
+
+      }
+
+      .ant-btn {
+        border-radius: 6px;
+        background: #0875FF;
+        padding: 0 16px;
+        border: 0;
+
+      }
+    }
+
+   
+
+  }
+
+  &-module {
+    flex-basis: 83%;
+    max-width: 100%;
+
+    .ant-alert-warning {
+      margin: 13px 0px 0 14px;
+
+    }
+
+    &-top-bar {
+      background: #ffffff;
+      padding: 20px 0;
+      margin-bottom: 0;
+
+      .help-btn {
+        margin: 0px 30px 0 10px;
+    
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 210px;
+          height: 46px;
+          border-radius: 8px;
+          gap: 15px;
+          padding: 0;
+
+          span {
+            font-size: 18px;
+            font-weight: 700;
+
+          }
+    
+        }
+      }
+
+    }
+
+    @media (min-width: 1300px) and (max-width: 1550px) {
+      &-box-content {
+        padding: 6px 0 0 14px;
+
+        .sgsb__module-footer {
+          padding: 15px !important;
+
+          .switch-btn[class] {
+            float: left !important;
+            padding-left: 10px;
+
+          }
+        }
+  
+      }
+    }
+
+  }
+}
+
+#sbooster-settings-page {
+  .sgsb-header {
+    display: inline-block;
+
+    .sgsb-logo {
+      margin: 15px auto 10px;
+      display: inline-block;
+
+    }
+  }
+}

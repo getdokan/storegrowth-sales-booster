@@ -41,6 +41,15 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Banner for a module.
+	 *
+	 * @return string
+	 */
+	public function get_banner() {
+		return sgsb_modules_url( 'progressive-discount-banner/assets/images/progressive-module-banner-image.svg' );
+	}
+
+	/**
 	 * Unique name for a module.
 	 *
 	 * @return string
