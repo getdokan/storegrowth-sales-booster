@@ -25,6 +25,8 @@ class Common_Hooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
+		add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
+		add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_radio_metabox' ) );
 
 		$this->direct_checkout_hooks_init();
 	}
@@ -56,7 +58,7 @@ class Common_Hooks {
 	}
 
 	/**
-	 * Hook for WooCommerce after add-to-cart button.
+	 * Hook for WooCommerce after add-to-cart button in the single product page.
 	 */
 	public function show_direct_checkout_button_product() {
 		if ( $this->should_display_buy_now_button( 'product_page_checkout_enable' ) ) {
@@ -76,6 +78,28 @@ class Common_Hooks {
 	}
 
 		/**
+		 * Add a tab to the woocommerce product meta field.
+		 *
+		 * @param array $tabs The option key to check for.
+		 */
+	public function direct_checkout_product_tab( $tabs ) {
+		// Adds the new tab.
+		$tabs['direct_checkout_tab'] = array(
+			'label'  => __( 'Direct Checkout', 'storegrowth-sales-booster' ),
+			'target' => 'sgsb-direct-checkout-data',
+		);
+		return $tabs;
+	}
+
+	/**
+	 * Hook for WooCommerce to add the fields in the products settings tab.
+	 */
+	public function direct_checkout_custom_radio_metabox() {
+		global $post;
+		include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
+	}
+
+		/**
 		 * Check if the Buy Now button should be displayed in the specific template path.
 		 *
 		 * @param string $template The option key to check for.
@@ -85,8 +109,7 @@ class Common_Hooks {
 		 * @param string $default_path The option key to check for.
 		 */
 	public function set_cart_to_checkout_button_template( $template, $template_name, $args, $template_path, $default_path ) { //phpcs:ignore.
-		global $product;
-		if ( 'single-product/add-to-cart/simple.php' === $template_name || 'loop/add-to-cart.php' === $template_name ) {
+		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
 		}
 		return $template;
@@ -100,9 +123,8 @@ class Common_Hooks {
 			 * @return string $template Buy Now button should be displayed or not.
 			 */
 	public function set_template_path( $template, $template_name ) {
-		global $product;
 		// Override template path.
-		if ( 'single-product/add-to-cart/simple.php' === $template_name || 'loop/add-to-cart.php' === $template_name ) {
+		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
 		}
 		return $template;
