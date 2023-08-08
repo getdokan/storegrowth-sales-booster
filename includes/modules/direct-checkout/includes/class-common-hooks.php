@@ -175,7 +175,7 @@ class Common_Hooks {
 		$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 
 		if (
-			( ! empty( $direct_checkout_button_layout ) && 'specific-buy-now' === $buy_now_button_setting )
+			( 'cart-with-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
 			|| 'cart-with-buy-now' === $buy_now_button_setting
 		) {
 			if ( 'simple' === $product->get_type() && $product->is_purchasable() && $product->is_in_stock() ) {
