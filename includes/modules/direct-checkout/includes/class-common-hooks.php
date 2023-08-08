@@ -47,8 +47,7 @@ class Common_Hooks {
 					add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
 
 					// Cart button as buy now button.
-					// add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
-					// add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+					add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
 			}
 		} elseif ( 'cart-to-buy-now' === $buy_now_button_setting ) {
 			// Modify cart to checkout button template.
@@ -142,26 +141,23 @@ class Common_Hooks {
 	 * @param string $default_path The option key to check for.
 	 */
 	public function set_cart_to_checkout_button_template( $template, $template_name, $args, $template_path, $default_path ) { //phpcs:ignore.
-		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
-			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
+		$product_id                    = get_the_ID();
+		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
+		$settings                      = get_option( 'sgsb_direct_checkout_settings' );
+		$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+
+		if (
+			( 'cart-to-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
+			|| 'cart-to-buy-now' === $buy_now_button_setting
+		) {
+			if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
+				$template = __DIR__ . '/../templates/add-cart-buy-now.php';
+			}
+			return $template;
 		}
 		return $template;
 	}
 
-	/**
-	 * Check if the Buy Now button should be displayed.
-	 *
-	 * @param string $template The option key to check for.
-	 * @param string $template_name The option key to check for.
-	 * @return string $template Buy Now button should be displayed or not.
-	 */
-	public function set_template_path( $template, $template_name ) {
-		// Override template path .
-		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
-			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
-		}
-		return $template;
-	}
 
 	/**
 	 * Function to display the Buy Now button.

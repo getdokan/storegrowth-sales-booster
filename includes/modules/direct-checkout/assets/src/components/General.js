@@ -66,57 +66,57 @@ function General({ onFormSave }) {
             </Radio>
           </Space>
         </Radio.Group>
-        
       </Form.Item>
       {createDirectCheckoutForm.buy_now_button_setting !==
         "default-add-to-cart" && (
-          <div>
-            <Form.Item label="Buy Now Button Redirect" labelAlign="left">
-        <Select
-          value={createDirectCheckoutForm.checkout_redirect}
-          onChange={(v) => onFieldChange("checkout_redirect", v)}
-          style={{ width: 400 }}
-        >
-          <Select.Option value="legacy-checkout">Legacy Checkout</Select.Option>
-          <Select.Option value="quick-cart-checkout">
-            Quick Cart Checkout
-          </Select.Option>
-        </Select>
-      </Form.Item>
-          </div>
-        )}
-      
-      {createDirectCheckoutForm.buy_now_button_setting ===
-        "cart-with-buy-now" && (
         <div>
-          <Form.Item label="Display on Shop Page" labelAlign="left">
-            <Space direction="vertical">
-              <Checkbox
-                checked={createDirectCheckoutForm.shop_page_checkout_enable}
-                value="shop_page_checkout_enable"
-                onChange={(e) =>
-                  onFieldChange("shop_page_checkout_enable", e.target.checked)
-                }
-              ></Checkbox>
-            </Space>
-          </Form.Item>
-
-          <Form.Item label="Display on Product Page" labelAlign="left">
-            <Space direction="vertical">
-              <Checkbox
-                checked={createDirectCheckoutForm.product_page_checkout_enable}
-                value="product_page_checkout_enable"
-                onChange={(e) =>
-                  onFieldChange(
-                    "product_page_checkout_enable",
-                    e.target.checked
-                  )
-                }
-              ></Checkbox>
-            </Space>
+          <Form.Item label="Buy Now Button Redirect" labelAlign="left">
+            <Select
+              value={createDirectCheckoutForm.checkout_redirect}
+              onChange={(v) => onFieldChange("checkout_redirect", v)}
+              style={{ width: 400 }}
+            >
+              <Select.Option value="legacy-checkout">
+                Legacy Checkout
+              </Select.Option>
+              <Select.Option value="quick-cart-checkout">
+                Quick Cart Checkout
+              </Select.Option>
+            </Select>
           </Form.Item>
         </div>
       )}
+      {createDirectCheckoutForm.buy_now_button_setting ===
+          "specific-buy-now" && (
+          <div style={{ color: "red",maxWidth:"400px" }}>
+            <span>
+              The function of displaying in shop and product page only applicable for ("Buy Now" with "Add to cart")
+            </span>
+          </div>
+        )}
+      <Form.Item label="Display on Shop Page" labelAlign="left">
+        <Space direction="vertical">
+          <Checkbox
+            checked={createDirectCheckoutForm.shop_page_checkout_enable}
+            value="shop_page_checkout_enable"
+            onChange={(e) =>
+              onFieldChange("shop_page_checkout_enable", e.target.checked)
+            }
+          ></Checkbox>
+        </Space>
+      </Form.Item>
+
+      <Form.Item label="Display on Product Page" labelAlign="left">
+        <Space direction="vertical">
+          <Checkbox
+            checked={createDirectCheckoutForm.product_page_checkout_enable}
+            value="product_page_checkout_enable"
+            onChange={(e) =>
+              onFieldChange("product_page_checkout_enable", e.target.checked)
+            }
+          ></Checkbox>
+        </Space>
+      </Form.Item>
 
       <Button
         type="primary"

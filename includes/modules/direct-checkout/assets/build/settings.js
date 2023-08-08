@@ -16308,7 +16308,12 @@ function General(_ref) {
     value: "legacy-checkout"
   }, "Legacy Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
     value: "quick-cart-checkout"
-  }, "Quick Cart Checkout")))), createDirectCheckoutForm.buy_now_button_setting === "cart-with-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, "Quick Cart Checkout")))), createDirectCheckoutForm.buy_now_button_setting === "specific-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      color: "red",
+      maxWidth: "400px"
+    }
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "The function of displaying in shop and product page only applicable for (\"Buy Now\" with \"Add to cart\")")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
     label: "Display on Shop Page",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -16326,7 +16331,7 @@ function General(_ref) {
     checked: createDirectCheckoutForm.product_page_checkout_enable,
     value: "product_page_checkout_enable",
     onChange: e => onFieldChange("product_page_checkout_enable", e.target.checked)
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
     className: "order-bump-save-change-button",
