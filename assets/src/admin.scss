@@ -443,7 +443,7 @@ End Settings Sidebar
     flex-basis: 200px;
     background: #ffffff;
 
-    h1 {
+    h3 {
       font-size: 18px;
       padding: 50px 20px 40px;
       display: flex;
@@ -653,6 +653,17 @@ End Settings Sidebar
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
+      }
+
+      .ant-image {
+        position: initial;
+        display: inherit;
+
+        .ant-image-img {
+          width: inherit;
+
+        }
+
       }
 
       .box-icon {

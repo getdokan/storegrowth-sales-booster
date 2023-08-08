@@ -26798,14 +26798,14 @@ End Settings Sidebar
   flex-basis: 200px;
   background: #ffffff;
 }
-.sgsb-admin-dashboard-sideabr h1 {
+.sgsb-admin-dashboard-sideabr h3 {
   font-size: 18px;
   padding: 50px 20px 40px;
   display: flex;
   align-items: center;
   gap: 7px;
 }
-.sgsb-admin-dashboard-sideabr h1 svg {
+.sgsb-admin-dashboard-sideabr h3 svg {
   width: 14px;
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu h4 {
@@ -26939,6 +26939,13 @@ End Settings Sidebar
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+.sgsb-admin-dashboard-sideabr .request__feature-block .ant-image {
+  position: initial;
+  display: inherit;
+}
+.sgsb-admin-dashboard-sideabr .request__feature-block .ant-image .ant-image-img {
+  width: inherit;
 }
 .sgsb-admin-dashboard-sideabr .request__feature-block .box-icon {
   position: absolute;

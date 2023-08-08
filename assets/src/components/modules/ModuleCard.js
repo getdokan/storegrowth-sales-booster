@@ -1,6 +1,6 @@
 import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
-import { Button, Card, Col, Row, Space, Switch } from "antd";
+import { Button, Card, Col, Image, Row, Space, Switch } from "antd";
 import { Ajax } from '../../ajax';
 
 function ModuleSwitch({ module }) {
@@ -52,7 +52,12 @@ function ModuleCard( { module } ) {
       >
         <Row>
           <div className='module-banner'>
-            <img width="410" src={module.banner} />
+            <Image
+              preview={false}
+              width={329}
+              src={module.banner}
+            />
+            
           </div>
         </Row>
         <Row justify="space-between" align="middle"
@@ -64,7 +69,11 @@ function ModuleCard( { module } ) {
           <Col span={20}>
             <Space align='center'>
               <div className='module-thumb'>
-                <img width="37" src={module.icon} />
+                <Image
+                  preview={false}
+                  width={37}
+                  src={module.icon}
+                />
               </div>
               <div className='module-name'>
                 {module.name}
