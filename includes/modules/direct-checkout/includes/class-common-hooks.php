@@ -25,9 +25,6 @@ class Common_Hooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
-		add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_data' ) );
-		add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
 
 		$this->direct_checkout_hooks_init();
 	}
@@ -38,21 +35,27 @@ class Common_Hooks {
 	public function direct_checkout_hooks_init() {
 		$settings               = get_option( 'sgsb_direct_checkout_settings' );
 		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+		if ( 'cart-with-buy-now' === $buy_now_button_setting || 'specific-buy-now' === $buy_now_button_setting ) {
+			// Show direct checkout button on shop loop item and product page.
+			add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
+			add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
 
-		switch ( $buy_now_button_setting ) {
-			case 'cart-with-buy-now':
-					add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
-					add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
-				break;
+			if ( 'specific-buy-now' === $buy_now_button_setting ) {
+					// Woocommerce product data settings meta.
+					add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
+					add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_data' ) );
+					add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
 
-			case 'cart-to-buy-now':
-					add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
-					add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
-				break;
-
-			default:
-					// Do nothing or handle other cases if needed.
-				break;
+					// Cart button as buy now button.
+					// add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
+					// add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+			}
+		} elseif ( 'cart-to-buy-now' === $buy_now_button_setting ) {
+			// Modify cart to checkout button template.
+			add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
+			add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+		} else {
+			return;
 		}
 	}
 
@@ -91,11 +94,19 @@ class Common_Hooks {
 	 * @param array $tabs The option key to check for.
 	 */
 	public function direct_checkout_product_tab( $tabs ) {
+
+		$product_id = get_the_ID();
+		$product    = wc_get_product( $product_id );
+
 		// Adds the new tab.
-		$tabs['direct_checkout_tab'] = array(
-			'label'  => __( 'Direct Checkout', 'storegrowth-sales-booster' ),
-			'target' => 'sgsb-direct-checkout-data',
-		);
+		if ( $product->is_type( 'simple' ) ) {
+			// Adds the new tab.
+			$tabs['direct_checkout_tab'] = array(
+				'label'  => __( 'Direct Checkout', 'storegrowth-sales-booster' ),
+				'target' => 'sgsb-direct-checkout-data',
+			);
+		}
+
 		return $tabs;
 	}
 
@@ -103,8 +114,8 @@ class Common_Hooks {
 	 * Hook for WooCommerce to add the fields in the products settings tab.
 	 */
 	public function direct_checkout_custom_data() {
-		global $post;
-		include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
+				global $post;
+				include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
 	}
 
 	/**
@@ -145,7 +156,7 @@ class Common_Hooks {
 	 * @return string $template Buy Now button should be displayed or not.
 	 */
 	public function set_template_path( $template, $template_name ) {
-		// Override template path.
+		// Override template path .
 		if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
 			$template = __DIR__ . '/../templates/add-cart-buy-now.php';
 		}
@@ -157,9 +168,19 @@ class Common_Hooks {
 	 */
 	private function display_buy_now_button() {
 		global $product;
-		if ( 'simple' !== $product->get_type() || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
-			return;
+
+		$product_id                    = get_the_ID();
+		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
+		$settings                      = get_option( 'sgsb_direct_checkout_settings' );
+		$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+
+		if (
+			( ! empty( $direct_checkout_button_layout ) && 'specific-buy-now' === $buy_now_button_setting )
+			|| 'cart-with-buy-now' === $buy_now_button_setting
+		) {
+			if ( 'simple' === $product->get_type() && $product->is_purchasable() && $product->is_in_stock() ) {
+					include __DIR__ . '/../templates/add-cart-with-buy-now.php';
+			}
 		}
-		include __DIR__ . '/../templates/add-cart-with-buy-now.php';
 	}
 }
