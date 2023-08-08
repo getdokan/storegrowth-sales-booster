@@ -87,6 +87,16 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
 							}
 
+							$product_categories = get_the_terms( $product_id, 'product_cat' );
+							// var_dump( print_r( $product_categories ) );
+							// Check if categories exist and loop through them.
+							if ( $product_categories && ! is_wp_error( $product_categories ) ) {
+								foreach ( $product_categories as $product_category ) {
+									// Display the category name.
+									echo '<div class="sgsb-product-category">' . esc_html( $product_category->name ) . '</div>';
+								}
+							}
+
 							?>
 						</div>
 

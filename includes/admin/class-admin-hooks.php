@@ -43,5 +43,4 @@ class Admin_Hooks {
 
 		return array_merge( $action_links, $links );
 	}
-
 }
