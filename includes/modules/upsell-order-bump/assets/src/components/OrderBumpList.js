@@ -165,7 +165,7 @@ function OrderBumpList( { navigate } ) {
   
   if (sgsbAdmin.isPro) {
     data = bumpListData.map(mapBumpData);
-    console.log(data);
+    
   } else {
     data = bumpListData.slice(-2).map(mapBumpData);
   }
@@ -173,7 +173,6 @@ function OrderBumpList( { navigate } ) {
   
 
   const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
-  console.log(sgsbAdmin.isPro);
   return (
     <>
       {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>Upgrade to premeuim to create more than two order bumps.</span>}
