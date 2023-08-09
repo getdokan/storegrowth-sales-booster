@@ -1,10 +1,10 @@
-import { Layout, Alert } from 'antd';
-import { useRoutes, Outlet, useNavigate,useParams, useSearchParams } from 'react-router-dom';
 import { applyFilters } from '@wordpress/hooks';
+import { Alert, Layout } from 'antd';
+import { Outlet, useNavigate, useParams, useRoutes, useSearchParams } from 'react-router-dom';
 
 import HeaderBar from "../HeaderBar";
-import Sidebar from "./Sidebar";
 import PageLoader from "../PageLoader";
+import Sidebar from "./Sidebar";
 
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);

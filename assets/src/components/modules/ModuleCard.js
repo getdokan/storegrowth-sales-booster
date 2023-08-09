@@ -1,8 +1,6 @@
 import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
-import { Card, Row, Col, Space } from "antd";
-import { Switch, Button, Divider } from "antd";
-import { SettingOutlined, FileTextOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Image, Row, Space, Switch } from "antd";
 import { Ajax } from '../../ajax';
 
 function ModuleSwitch({ module }) {
@@ -28,7 +26,7 @@ function ModuleSwitch({ module }) {
 }
 
 function ModuleCard( { module } ) {
-  const [size, setSize] = useState(16);
+  const [size, setSize] = useState(8);
   const {id} = module;
 
   let docSlug = id;
@@ -40,12 +38,28 @@ function ModuleCard( { module } ) {
   }
 
   return (
-    <Col span={8}>
+    <Col 
+      span={8}
+      style={{
+        padding: '8px'
+      }}
+    >
       <Card
         bordered={false}
         className="sgsb-module-card"
         
+        
       >
+        <Row>
+          <div className='module-banner'>
+            <Image
+              preview={false}
+              width={329}
+              src={module.banner}
+            />
+            
+          </div>
+        </Row>
         <Row justify="space-between" align="middle"
           style={{
             padding: '24px',
@@ -55,18 +69,18 @@ function ModuleCard( { module } ) {
           <Col span={20}>
             <Space align='center'>
               <div className='module-thumb'>
-                <img src={module.icon} />
+                <Image
+                  preview={false}
+                  width={37}
+                  src={module.icon}
+                />
               </div>
               <div className='module-name'>
                 {module.name}
               </div>
             </Space>
           </Col>
-          <Col span={3} style={{ float: 'right' }}>
-            <ModuleSwitch module={module} />
-          </Col>
         </Row>
-        <Divider orientation="left/right" />
         <Row>
           <Col span={24}>
             <div className='module-desc'>{module.description}</div>
@@ -74,34 +88,36 @@ function ModuleCard( { module } ) {
         </Row>
         <Row
           style={{
-            padding: '24px'
+            padding: '19px'
           }}
+          className="sgsb__module-footer"
         >
           <Space align='center' size={size}>
             {
               module.status && (
                 <Button
-                  className='setting-btn'
+                  className='setting-btn footer-btn'
                   type="default"
                   shape="default"
                   href={ `admin.php?page=sgsb-settings#/${module?.id}` }
                 >
-                  <SettingOutlined />
                   Settings
                 </Button>
               )
             }
            
             <Button
-              className='doc-btn'
+              className='doc-btn footer-btn'
               type="default"
               shape="default"
               href={`https://storegrowth.io/docs/${docSlug}/`}
               target='_blank'
             >
-              <FileTextOutlined />
               Documentation
             </Button>
+            <Col span={3} style={{ float: 'right' }} className='switch-btn'>
+              <ModuleSwitch module={module} />
+            </Col>
           </Space>
         </Row>
       </Card>

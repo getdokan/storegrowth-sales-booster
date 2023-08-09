@@ -41,6 +41,15 @@ class Stock_Bar_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Banner for a module.
+	 *
+	 * @return string
+	 */
+	public function get_banner() {
+		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown-module-banner.svg' );
+	}
+
+	/**
 	 * Unique name for a module.
 	 *
 	 * @return string

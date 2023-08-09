@@ -45,6 +45,15 @@ class Upsell_Order_Bump_Module implements Module_Skeleton {
 	}
 
 	/**
+	 * Banner for a module.
+	 *
+	 * @return string
+	 */
+	public function get_banner() {
+		return sgsb_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-module-banner.svg' );
+	}
+
+	/**
 	 * Unique name for a module.
 	 *
 	 * @return string

@@ -1,7 +1,7 @@
-import { Layout, Menu } from 'antd';
-import { Link, useLocation, Navigate, matchRoutes } from 'react-router-dom';
-import { applyFilters } from '@wordpress/hooks';
 import { useEffect, useState } from '@wordpress/element';
+import { applyFilters } from '@wordpress/hooks';
+import { Layout, Menu } from 'antd';
+import { Link, matchRoutes, Navigate, useLocation } from 'react-router-dom';
 
 function Sidebar({ routes }) {
   let sidebarItems = applyFilters( 'sidebar_menu_items', [], Link );
