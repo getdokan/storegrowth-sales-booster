@@ -52,6 +52,10 @@ span.instock {
 .sgsb-stock-stock-bar {
     padding: 10px 25px 7px;
 }
+.sgsb-stock-counter-and-bar {
+	border-color: #cccccc;
+	background-color:#ffffff;
+}
 .sgsb-stock-counter-item {
 	text-align: center;
 	color: #989FAB;

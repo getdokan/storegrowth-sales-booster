@@ -94,17 +94,11 @@ class Enqueue_Script {
 		// Get settings options.
 		$settings = get_option( 'sgsb_stock_bar_settings' );
 
-		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
-		$bar_height      = sgsb_find_option_setting( $settings, 'stockbar_height', '5' );
-		$bg_color        = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#444444' );
-		$fg_color        = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#c3d168' );
+		$bar_height = sgsb_find_option_setting( $settings, 'stockbar_height', '5' );
+		$bg_color   = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#444444' );
+		$fg_color   = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#c3d168' );
 
 		$custom_css = "
-			.sgsb-stock-counter-and-bar {
-				border-color: {$border_color};
-				background-color: {$widget_bg_color};
-			}
 			.sgsb-stock-progress {
 				width: 0;
 				height: {$bar_height}px;
