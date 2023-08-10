@@ -15587,40 +15587,41 @@ __webpack_require__.r(__webpack_exports__);
 function StockCountdown() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb");
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    widget_background_color: '#ffffff',
-    border_color: '#cccccc',
-    stockbar_bg_color: '#444444',
-    stockbar_fg_color: '#c3d168',
+    widget_background_color: "#ffffff",
+    border_color: "#cccccc",
+    stockbar_bg_color: "#444444",
+    stockbar_fg_color: "#c3d168",
     stockbar_height: 5,
     shop_page_stock_bar_enable: false,
     shop_page_countdown_enable: false,
     product_page_stock_bar_enable: true,
     product_page_countdown_enable: true,
-    countdown_heading: 'Last chance! [discount]% OFF',
-    stock_display_format: 'above',
-    total_sell_count_text: 'Total Sold',
-    available_item_count_text: 'Available Item'
+    variation_page_stock_bar_enable: false,
+    countdown_heading: "Last chance! [discount]% OFF",
+    stock_display_format: "above",
+    total_sell_count_text: "Total Sold",
+    available_item_count_text: "Available Item"
   });
 
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'sgsb_stock_bar_save_settings',
+      action: "sgsb_stock_bar_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: data
     }).success(() => {
       setButtonLoading(false);
       antd__WEBPACK_IMPORTED_MODULE_2__["default"].success({
-        message: 'Stock Bar',
-        description: 'Stock count down data updated successfully.'
+        message: "Stock Bar",
+        description: "Stock count down data updated successfully."
       });
     });
   };
@@ -15629,9 +15630,9 @@ function StockCountdown() {
     setPageLoading(true);
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: {
-        action: 'sgsb_stock_bar_get_settings',
+        action: "sgsb_stock_bar_get_settings",
         _ajax_nonce: sgsbAdmin.nonce
       }
     }).success(response => {
@@ -15655,7 +15656,7 @@ function StockCountdown() {
   };
 
   const isProStyle = {
-    cursor: sgsbAdmin.isPro ? 'pointer' : 'not-allowed'
+    cursor: sgsbAdmin.isPro ? "pointer" : "not-allowed"
   };
 
   const isProFieldChange = (isPro, fieldKey, e) => {
@@ -15678,7 +15679,7 @@ function StockCountdown() {
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
     initialValue: formData.stockbar_bg_color,
-    onChange: e => onFieldChange('stockbar_bg_color', e.hex),
+    onChange: e => onFieldChange("stockbar_bg_color", e.hex),
     placement: "right"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Foreground Color",
@@ -15687,7 +15688,7 @@ function StockCountdown() {
     style: isProStyle
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
     initialValue: formData.stockbar_fg_color,
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'stockbar_fg_color', e.hex) : "",
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "stockbar_fg_color", e.hex) : "",
     placement: "right"
   })), upgradeLabel), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Stock Bar Height",
@@ -15699,7 +15700,7 @@ function StockCountdown() {
     min: 1,
     addonAfter: "px",
     value: formData.stockbar_height,
-    onChange: sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, 'stockbar_height', v) : '',
+    onChange: sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, "stockbar_height", v) : "",
     style: {
       width: 100
     }
@@ -15711,7 +15712,7 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     disabled: !sgsbAdmin.isPro,
     value: formData.stock_display_format,
-    onChange: sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, 'stock_display_format', v) : '',
+    onChange: sgsbAdmin.isPro ? v => isProFieldChange(sgsbAdmin.isPro, "stock_display_format", v) : "",
     style: {
       width: 400
     }
@@ -15726,7 +15727,7 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     disabled: !sgsbAdmin.isPro,
     value: formData.total_sell_count_text,
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'total_sell_count_text', e.target.value) : '',
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "total_sell_count_text", e.target.value) : "",
     style: {
       width: 400
     },
@@ -15738,7 +15739,7 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     disabled: !sgsbAdmin.isPro,
     value: formData.available_item_count_text,
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'available_item_count_text', e.target.value) : '',
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "available_item_count_text", e.target.value) : "",
     style: {
       width: 400
     },
@@ -15752,7 +15753,7 @@ function StockCountdown() {
     disabled: !sgsbAdmin.isPro,
     checked: formData.shop_page_stock_bar_enable,
     value: "shop_page_stock_bar_enable",
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'shop_page_stock_bar_enable', e.target.checked) : ''
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "shop_page_stock_bar_enable", e.target.checked) : ""
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Display on Product Page",
     labelAlign: "left"
@@ -15761,8 +15762,18 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     checked: formData.product_page_stock_bar_enable,
     value: "product_page_stock_bar_enable",
-    onChange: e => onFieldChange('product_page_stock_bar_enable', e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    onChange: e => onFieldChange("product_page_stock_bar_enable", e.target.checked)
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+    label: "Display on Variation Product Page",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    disabled: !sgsbAdmin.isPro,
+    checked: formData.variation_page_stock_bar_enable,
+    value: "variation_page_stock_bar_enable",
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "variation_page_stock_bar_enable", e.target.checked) : ""
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
     type: "primary",
     onClick: () => onFormSave(),
     loading: buttonLoading

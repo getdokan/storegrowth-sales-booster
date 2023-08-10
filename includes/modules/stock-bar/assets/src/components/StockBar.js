@@ -28,6 +28,7 @@ function StockCountdown() {
     shop_page_countdown_enable: false,
     product_page_stock_bar_enable: true,
     product_page_countdown_enable: true,
+    variation_page_stock_bar_enable: false,
     countdown_heading: "Last chance! [discount]% OFF",
     stock_display_format: "above",
     total_sell_count_text: "Total Sold",
@@ -265,6 +266,26 @@ function StockCountdown() {
           </Space>
         </Form.Item>
 
+        <Form.Item label="Display on Variation Product Page" labelAlign="left">
+          <Space direction="vertical">
+            <Checkbox
+              disabled={!sgsbAdmin.isPro}
+              checked={formData.variation_page_stock_bar_enable}
+              value="variation_page_stock_bar_enable"
+              onChange={
+                sgsbAdmin.isPro
+                  ? (e) =>
+                      isProFieldChange(
+                        sgsbAdmin.isPro,
+                        "variation_page_stock_bar_enable",
+                        e.target.checked
+                      )
+                  : ""
+              }
+            ></Checkbox>
+          </Space>
+          <div>{upgradeLabel}</div>
+        </Form.Item>
         <Button
           type="primary"
           onClick={() => onFormSave()}
