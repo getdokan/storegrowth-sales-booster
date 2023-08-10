@@ -96,15 +96,29 @@ class Enqueue_Script {
 
 		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
 		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
+		$bar_height      = sgsb_find_option_setting( $settings, 'stockbar_height', '5' );
+		$bg_color        = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#444444' );
+		$fg_color        = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#c3d168' );
 
 		$custom_css = "
 			.sgsb-stock-counter-and-bar {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
+			.sgsb-stock-progress {
+				width: 0;
+				height: {$bar_height}px;
+				background-color: {$fg_color};
+				border-radius: 5px;
+			}
+			.sgsb-stock-progress-bar {
+				width: 100%;
+				background-color: {$bg_color};
+				border-radius: 5px;
+				margin-top: 5px;
+			}
 		";
 
 		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
 	}
-
 }

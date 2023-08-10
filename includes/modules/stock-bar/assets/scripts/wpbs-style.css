@@ -90,3 +90,30 @@ span.total-sale {
 .single-product .summary .sgsb-stock-counter-and-bar {
     margin-right: 2.81vw;
 }
+
+.sgsb-stock-progress-bar-section{
+	margin-bottom: 10px;
+	padding: 10px 25px 7px;
+}
+
+.sgsb-stock-progress-bar {
+	width: 100%;
+	background-color: #e2e2e2;
+	border-radius: 5px;
+	margin-top: 5px;
+}
+.sgsb-stock-progress-available-title{
+	float: right;
+}
+.sgsb-stock-progress-sold-title,
+.sgsb-stock-progress-available-title {
+	color: #656565;
+}
+.sgsb-stock-progress-count {
+	color: #000;
+	font-weight: 700;
+}
+
+.stock.in-stock + .sgsb-stock-progress-bar-section {
+	margin-top: 7px;
+}
