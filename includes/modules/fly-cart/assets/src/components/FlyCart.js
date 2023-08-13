@@ -224,14 +224,14 @@ function FlyCart() {
 
   const [formData, updateFormData] = useState({
     icon_position: "bottom-right",
-    icon_name: "flaticon-shopping-cart-3",
+    icon_name: "flaticon-shopping-cart-2",
     icon_color: "#2ecc71",
     buttons_bg_color: "#2ecc71",
     widget_bg_color: "#fff",
     layout: "side",
     show_product_image: true,
     show_quantity_picker: true,
-    show_delete_button: true,
+    show_remove_icon: true,
     show_product_price: true,
     show_coupon: true,
   });
