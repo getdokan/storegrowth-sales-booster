@@ -100,8 +100,7 @@ class Stock_Bar_Module implements Module_Skeleton {
 	 * @return void
 	 */
 	public function init() {
-		// Include necessary classes for countdown timer module.
-		require_once __DIR__ . '/includes/functions.php';
+		// Include necessary classes for stock bar.
 		require_once __DIR__ . '/includes/class-enqueue-script.php';
 		require_once __DIR__ . '/includes/class-common-hooks.php';
 		require_once __DIR__ . '/includes/class-ajax.php';
@@ -117,7 +116,6 @@ class Stock_Bar_Module implements Module_Skeleton {
 		 */
 		do_action( 'storegrowth_stock_bar_module_init' );
 	}
-
 }
 
 // Create object and return.
