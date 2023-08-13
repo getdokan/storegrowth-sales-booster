@@ -11238,7 +11238,9 @@ function ModuleCard(_ref2) {
   }
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    span: 8,
+    xs: 24,
+    xl: 8,
+    md: 12,
     style: {
       padding: '8px'
     }

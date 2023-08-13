@@ -46,7 +46,7 @@ class Direct_Checkout_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown-module-banner.svg' );
+		return sgsb_modules_url( 'direct-checkout/assets/images/countdown-timer-module-banner.svg' );
 	}
 
 	/**

@@ -46,7 +46,7 @@ class Stock_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'stock-countdown/assets/images/stock-countdown-module-banner.svg' );
+		return sgsb_modules_url( 'stock-bar/assets/images/countdown-timer-module-banner.svg' );
 	}
 
 	/**

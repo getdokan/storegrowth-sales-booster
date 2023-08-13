@@ -84,11 +84,24 @@ Module Card Style
       }
     }
 
+    .switch-btn {
+      @media (min-width: 768px) and (max-width: 1024px) {
+        float: none !important;
+        
+      }
+
+    }
+
     .ant-switch {
       background: #638DC1;
       width: 46px;
       height: 25px;
       margin-left: -10px;
+
+      @media (min-width: 768px) and (max-width: 1024px) {
+        margin-left: 0 !important;
+        
+      }
 
       .ant-switch-handle {
         top: 3.5px;
@@ -139,6 +152,21 @@ Module Card Style
       background: #DDF0FF;
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
+
+      @media ( min-width: 768px ) and ( max-width: 1024px ) {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+
+        & > div {
+          gap : 3px !important;
+
+        }
+
+        a {
+          font-size: 11px !important;
+        }
+        
+      }
 
       .footer-btn[class] {
         color: #073B4C;
@@ -439,9 +467,40 @@ End Settings Sidebar
   display: flex;
   flex-flow: row wrap;
 
+  @media ( max-width: 767px ) {
+    display: block;
+
+  }
+
+  @media ( min-width: 1500px ) {
+    gap: 20px;
+    
+  }
+
+  @media ( min-width: 768px ) and ( max-width: 1024px ) {
+    gap: 10px;
+    
+  }
+
+  @media ( min-width: 1500px ) and ( max-width: 2000px ) {
+    gap: 20px;
+    
+  }
+
   &-sideabr {
     flex-basis: 200px;
     background: #ffffff;
+
+    @media ( min-width: 1500px ) {
+      flex-basis: 320px;
+      
+    }
+
+    @media ( max-width: 767px ) {
+      padding-top: 2px;
+      margin-bottom: 40px;
+      
+    }
 
     h3 {
       font-size: 18px;
@@ -555,10 +614,10 @@ End Settings Sidebar
             }
           }
 
-          &.stock-countdown {
+          &.countdown-timer {
             &:before {
               content: "";
-              background: url('../images/menu/stock-countdown.svg');
+              background: url('../images/menu/countdown-timer.svg');
               width: 19px;
 
             }
@@ -566,7 +625,7 @@ End Settings Sidebar
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/stock-countdown-white.svg');
+                background: url('../images/menu/countdown-timer-white.svg');
   
               }
               
@@ -574,6 +633,42 @@ End Settings Sidebar
           }
 
           &.upsell-order-bump {
+            &:before {
+              content: "";
+              background: url('../images/menu/upsel.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/upsel-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.direct-checkout {
+            &:before {
+              content: "";
+              background: url('../images/menu/upsel.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/upsel-white.svg');
+  
+              }
+              
+            }
+          }
+
+          &.stock-bar {
             &:before {
               content: "";
               background: url('../images/menu/upsel.svg');
@@ -735,6 +830,39 @@ End Settings Sidebar
     flex-basis: 83%;
     max-width: 100%;
 
+    @media ( min-width: 1500px ) and ( max-width: 2000px ) {
+      flex-basis: 74%;
+
+      &-box-content {
+        padding-left: 0 !important;
+
+      }
+      
+    }
+
+    @media ( min-width: 768px ) and ( max-width: 1024px ) {
+      flex-basis: 71%;
+
+      .module-banner {
+        .ant-image {
+          width: 100% !important;
+
+        }
+      }
+
+    }
+
+    @media ( min-width: 1440px ) and ( max-width: 2000px ) {
+
+      .module-banner {
+        .ant-image {
+          width: 100% !important;
+
+        }
+      }
+
+    }
+
     .ant-alert-warning {
       margin: 13px 0px 0 14px;
 
@@ -744,6 +872,11 @@ End Settings Sidebar
       background: #ffffff;
       padding: 20px 0;
       margin-bottom: 0;
+
+      @media ( max-width: 767px ) {
+        margin-bottom: 30px;
+        
+      }
 
       .help-btn {
         margin: 0px 30px 0 10px;
@@ -764,6 +897,48 @@ End Settings Sidebar
 
           }
     
+        }
+      }
+
+    }
+
+    @media ( max-width: 767px ) {
+      &-box-content {
+        display: block;
+
+        & > div {
+          max-width: 100% !important;
+
+        }
+
+        .module-banner {
+          .ant-image {
+            width: 100% !important;
+
+          }
+        }
+
+        .sgsb-module-card {
+          .ant-card-body {
+            & > div {
+              display: block;
+
+            }
+          }
+        }
+      }
+    }
+
+    @media ( min-width: 1440px ) and ( max-width: 2000px ) {
+
+      &-box-content {
+        .sgsb-module-card {
+          .ant-card-body {
+            & > div {
+              display: block;
+
+            }
+          }
         }
       }
 

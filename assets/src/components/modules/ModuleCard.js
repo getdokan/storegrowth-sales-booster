@@ -38,8 +38,10 @@ function ModuleCard( { module } ) {
   }
 
   return (
-    <Col 
-      span={8}
+    <Col
+      xs={24}
+      xl={8}
+      md={12}
       style={{
         padding: '8px'
       }}
