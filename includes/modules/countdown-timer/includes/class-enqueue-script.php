@@ -48,14 +48,6 @@ class Enqueue_Script {
 		);
 
 		wp_enqueue_script(
-			'wpbsc_jqmeter',
-			sgsb_modules_url( 'countdown-timer/assets/scripts/jqmeter.min.js' ),
-			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/jqmeter.min.js' ) ),
-			true
-		);
-
-		wp_enqueue_script(
 			'sgsb-jquery-countdown',
 			sgsb_modules_url( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
@@ -66,7 +58,7 @@ class Enqueue_Script {
 		wp_enqueue_script(
 			'wpbsc_custom_script',
 			sgsb_modules_url( 'countdown-timer/assets/scripts/custom.js' ),
-			array( 'jquery', 'wpbsc_jqmeter' ),
+			array( 'jquery', 'sgsb-jquery-countdown' ),
 			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/custom.js' ) ),
 			true
 		);
@@ -106,7 +98,7 @@ class Enqueue_Script {
 		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
 
 		$custom_css = "
-			.sgsb-stock-counter-and-bar {
+			.sgsb-countdown-timer{
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
@@ -114,5 +106,4 @@ class Enqueue_Script {
 
 		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );
 	}
-
 }

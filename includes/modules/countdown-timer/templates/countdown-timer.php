@@ -25,31 +25,31 @@ $heading_text = sgsb_find_option_setting( $settings, 'countdown_heading', 'Last 
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
 
 ?>
-<div class="sgsb-stock-counter-and-bar">
+<div class="sgsb-countdown-timer">
 
-	<div class="sgsb-stock-counter-wrapper">
+	<div class="sgsb-countdown-timer-wrapper">
 		<?php if ( $heading_text ) : ?>
-		<p class="sgsb-stock-counter-heading"><?php echo wp_kses_post( $heading ); ?></p>
+		<p class="sgsb-countdown-timer-heading"><?php echo wp_kses_post( $heading ); ?></p>
 		<?php endif; ?>
 
-		<div class="sgsb-stock-counter-items" data-end-date="<?php echo esc_attr( $end_date ); ?>">
-			<div class="sgsb-stock-counter-item">
-				<strong class="sgsb-stock-counter-item-days">00</strong>
+		<div class="sgsb-countdown-timer-items" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+			<div class="sgsb-countdown-timer-item">
+				<strong class="sgsb-countdown-timer-item-days">00</strong>
 				<span>Days</span>
 			</div>
 			<span class="sgsb-colon">:</span>
-			<div class="sgsb-stock-counter-item">
-				<strong class="sgsb-stock-counter-item-hours">00</strong>
+			<div class="sgsb-countdown-timer-item">
+				<strong class="sgsb-countdown-timer-item-hours">00</strong>
 				<span>Hours</span>
 			</div>
 			<span class="sgsb-colon">:</span>
-			<div class="sgsb-stock-counter-item">
-				<strong class="sgsb-stock-counter-item-minutes">00</strong>
+			<div class="sgsb-countdown-timer-item">
+				<strong class="sgsb-countdown-timer-item-minutes">00</strong>
 				<span>Min</span>
 			</div>
 			<span class="sgsb-colon">:</span>
-			<div class="sgsb-stock-counter-item">
-				<strong class="sgsb-stock-counter-item-seconds">00</strong>
+			<div class="sgsb-countdown-timer-item">
+				<strong class="sgsb-countdown-timer-item-seconds">00</strong>
 				<span>Sec</span>
 			</div>
 		</div>
