@@ -14661,17 +14661,9 @@ function StockCountdown() {
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     widget_background_color: '#ffffff',
     border_color: '#cccccc',
-    progressbar_bg_color: '#444444',
-    progressbar_fg_color: '#c3d168',
-    progressbar_height: 5,
-    shop_page_progress_bar_enable: false,
     shop_page_countdown_enable: false,
-    product_page_progress_bar_enable: true,
     product_page_countdown_enable: true,
-    countdown_heading: 'Last chance! [discount]% OFF',
-    stock_display_format: 'above',
-    total_sell_count_text: 'Total Sold',
-    available_item_count_text: 'Available Item'
+    countdown_heading: 'Last chance! [discount]% OFF'
   });
 
   const onFormSave = type => {
