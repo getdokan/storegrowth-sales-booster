@@ -98,7 +98,7 @@ class Enqueue_Script {
 		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
 
 		$custom_css = "
-			.sgsb-stock-counter-and-bar {
+			.sgsb-countdown-timer{
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
