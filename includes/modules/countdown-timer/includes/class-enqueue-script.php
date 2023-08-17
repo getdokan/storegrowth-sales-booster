@@ -94,14 +94,17 @@ class Enqueue_Script {
 		// Get settings options.
 		$settings = get_option( 'sgsb_countdown_timer_settings' );
 
-		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color    = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
+		$widget_bg_color    = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
+		$border_color       = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
+		$heading_text_color = sgsb_find_option_setting( $settings, 'heading_text_color', '#000000' );
 
 		$custom_css = "
 			.sgsb-countdown-timer{
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
+			.sgsb-countdown-timer-heading{
+				color: {$heading_text_color};
 		";
 
 		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );

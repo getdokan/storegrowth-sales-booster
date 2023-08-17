@@ -14663,7 +14663,8 @@ function StockCountdown() {
     border_color: '#cccccc',
     shop_page_countdown_enable: false,
     product_page_countdown_enable: true,
-    countdown_heading: 'Last chance! [discount]% OFF'
+    countdown_heading: 'Last chance! [discount]% OFF',
+    heading_text_color: '#000000'
   });
 
   const onFormSave = type => {
@@ -14747,6 +14748,13 @@ function StockCountdown() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
     initialValue: formData.border_color,
     onChange: e => onFieldChange('border_color', e.hex),
+    placement: "right"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+    label: "Heading Text Color",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    initialValue: formData.heading_text_color,
+    onChange: e => onFieldChange('heading_text_color', e.hex),
     placement: "right"
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Countdown Heading",
