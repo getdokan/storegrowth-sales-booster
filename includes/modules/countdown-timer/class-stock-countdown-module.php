@@ -55,7 +55,7 @@ class Countdown_Timer_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Countdown Timer';
+		return 'Sales Countdown';
 	}
 
 	/**
