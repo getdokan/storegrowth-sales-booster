@@ -38,8 +38,10 @@ function ModuleCard( { module } ) {
   }
 
   return (
-    <Col 
-      span={8}
+    <Col
+      xs={24}
+      xl={8}
+      md={12}
       style={{
         padding: '8px'
       }}
@@ -93,28 +95,30 @@ function ModuleCard( { module } ) {
           className="sgsb__module-footer"
         >
           <Space align='center' size={size}>
+           <div className='doc-btn'>
             {
-              module.status && (
-                <Button
-                  className='setting-btn footer-btn'
-                  type="default"
-                  shape="default"
-                  href={ `admin.php?page=sgsb-settings#/${module?.id}` }
-                >
-                  Settings
-                </Button>
-              )
-            }
-           
-            <Button
-              className='doc-btn footer-btn'
-              type="default"
-              shape="default"
-              href={`https://storegrowth.io/docs/${docSlug}/`}
-              target='_blank'
-            >
-              Documentation
-            </Button>
+                module.status && (
+                  <Button
+                    className='setting-btn footer-btn'
+                    type="default"
+                    shape="default"
+                    href={ `admin.php?page=sgsb-settings#/${module?.id}` }
+                  >
+                    Settings
+                  </Button>
+                )
+              }
+            
+              <Button
+                className='doc-btn footer-btn'
+                type="default"
+                shape="default"
+                href={`https://storegrowth.io/docs/${docSlug}/`}
+                target='_blank'
+              >
+                Documentation
+              </Button>
+           </div>
             <Col span={3} style={{ float: 'right' }} className='switch-btn'>
               <ModuleSwitch module={module} />
             </Col>

@@ -719,24 +719,6 @@ var StarFilled = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896"
 
 /***/ }),
 
-/***/ "./node_modules/@ant-design/icons-svg/es/asn/UpOutlined.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/@ant-design/icons-svg/es/asn/UpOutlined.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-// This icon file is generated automatically.
-var UpOutlined = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 00140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z" } }] }, "name": "up", "theme": "outlined" };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UpOutlined);
-
-
-/***/ }),
-
 /***/ "./node_modules/@ant-design/icons-svg/es/asn/ZoomInOutlined.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/@ant-design/icons-svg/es/asn/ZoomInOutlined.js ***!
@@ -1888,41 +1870,6 @@ StarFilled.displayName = 'StarFilled';
 
 /***/ }),
 
-/***/ "./node_modules/@ant-design/icons/es/icons/UpOutlined.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@ant-design/icons/es/icons/UpOutlined.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ant_design_icons_svg_es_asn_UpOutlined__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ant-design/icons-svg/es/asn/UpOutlined */ "./node_modules/@ant-design/icons-svg/es/asn/UpOutlined.js");
-/* harmony import */ var _components_AntdIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/AntdIcon */ "./node_modules/@ant-design/icons/es/components/AntdIcon.js");
-
-// GENERATE BY ./scripts/generate.ts
-// DON NOT EDIT IT MANUALLY
-
-
-
-
-var UpOutlined = function UpOutlined(props, ref) {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(_components_AntdIcon__WEBPACK_IMPORTED_MODULE_2__["default"], (0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__["default"])((0,_babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props), {}, {
-    ref: ref,
-    icon: _ant_design_icons_svg_es_asn_UpOutlined__WEBPACK_IMPORTED_MODULE_3__["default"]
-  }));
-};
-
-UpOutlined.displayName = 'UpOutlined';
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.forwardRef(UpOutlined));
-
-/***/ }),
-
 /***/ "./node_modules/@ant-design/icons/es/icons/ZoomInOutlined.js":
 /*!*******************************************************************!*\
   !*** ./node_modules/@ant-design/icons/es/icons/ZoomInOutlined.js ***!
@@ -3024,6 +2971,84 @@ var SvgLogo = function SvgLogo(props) {
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNi4wLjMsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAxNTA1LjM1IDIzNC4zNiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTUwNS4zNSAyMzQuMzY7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxnPg0KCQk8cGF0aCBmaWxsPSIjMUQ5QkZGIiBkPSJNNTkuNjMsMTE3LjMzSDBjMCw0My43NywyNC4wNCw4MS45LDU5LjYzLDEwMS45OGMxNi40NCw5LjI3LDM1LjMzLDE0LjY4LDU1LjQ3LDE1LjAxVjExNy4zM0g1OS42M3oiLz4NCgkJPHBhdGggZmlsbD0iIzA4NzVGRiIgZD0iTTExNS4wOSw1Ni42Mkg1OS42M3Y2MC43MWg1NS40N3YxMTYuOThjMC42NSwwLjAxLDEuMjksMC4wNSwxLjk0LDAuMDVjMjAuOTIsMCw0MC41NS01LjUyLDU3LjU1LTE1LjE0DQoJCQlWMTE3LjMzVjU2LjYySDExNS4wOXoiLz4NCgkJPHBhdGggZmlsbD0iIzFCNDlGNiIgZD0iTTExOS4yNiwwdjU2LjYyaDU1LjMydjYwLjcxdjEwMS44OWMzNS41LTIwLjEsNTkuNDgtNTguMTgsNTkuNDgtMTAxLjg5VjBIMTE5LjI2eiIvPg0KCTwvZz4NCgk8Zz4NCgkJPGc+DQoJCQk8cGF0aCBmaWxsPSIjMTAyRjUwIiBkPSJNMzg0LjA0LDEyMy44NWMtNC4zNS0zLjUxLTkuMTgtNi4zOS0xNC4zNC04LjU0Yy02LjIxLTIuNjEtMTIuNjYtNC42MS0xOS4yNi02DQoJCQkJYy00LjQ4LTAuODYtOC44OC0yLjA4LTEzLjE3LTMuNjJjLTMuMTUtMS4wOS02LjEtMi42Ny04Ljc1LTQuNjhjLTIuMDUtMS42My0zLjctMy43Mi00LjgxLTYuMDljLTEuMDctMi4zOS0xLjYtNC45Ny0xLjU3LTcuNTgNCgkJCQljLTAuMDYtMy41NywxLjA3LTcuMDcsMy4yNC05LjkyYzIuMzQtMi45NSw1LjQzLTUuMjEsOC45NC02LjU3YzQuMjYtMS42NSw4LjgtMi40NiwxMy4zNi0yLjM2YzQuMy0wLjAzLDguNTYsMC43NCwxMi41OCwyLjI1DQoJCQkJYzMuOTgsMS41NCw3LjY0LDMuOCwxMC44LDYuNjhjMy40NywzLjIsNi40NCw2Ljg5LDguODUsMTAuOTRsMTQuOTItMTQuNzNjLTIuOTEtNS4xMS02Ljc4LTkuNjItMTEuNC0xMy4yNg0KCQkJCWMtNC42OC0zLjY3LTEwLjAxLTYuNDMtMTUuNy04LjE1Yy02LjMtMS45LTEyLjg3LTIuODItMTkuNDUtMi43NGMtNi4zMy0wLjA1LTEyLjYzLDAuOS0xOC42NiwyLjg0DQoJCQkJYy01LjQ2LDEuNzQtMTAuNTYsNC40OC0xNS4wNCw4LjA2Yy00LjE1LDMuMzUtNy41Niw3LjUzLTEwLjAxLDEyLjI4Yy0yLjQzLDQuNzUtMy42OCwxMC0zLjY0LDE1LjMyDQoJCQkJYy0wLjA3LDUuMTksMC43OSwxMC4zNiwyLjU2LDE1LjI0YzEuNzEsNC41NCw0LjM3LDguNjYsNy44MSwxMi4wOWMzLjg1LDMuNzQsOC4zNSw2Ljc0LDEzLjI4LDguODUNCgkJCQljNS45MiwyLjU4LDEyLjExLDQuNDgsMTguNDYsNS42OWMzLjk5LDAuNjgsNy45MywxLjYzLDExLjc5LDIuODZjMy4xMSwwLjk4LDYuMSwyLjI1LDguOTQsMy44MmMyLjMsMS4yNiw0LjM5LDIuODQsNi4yNCw0LjY4DQoJCQkJYzEuNTksMS42NCwyLjgxLDMuNTcsMy42Miw1LjdjMC44LDIuMTQsMS4yLDQuNCwxLjE4LDYuNjljMC4wMSwzLjQ1LTEuMjUsNi43OS0zLjU0LDkuMzdjLTIuNjEsMi45NC01LjkyLDUuMTctOS42Miw2LjQ4DQoJCQkJYy00LjM0LDEuNjMtOC45MywyLjQzLTEzLjU2LDIuMzZjLTcuMzUsMC4yLTE0LjYzLTEuNjMtMjEuMDItNS4yOWMtNS44OC0zLjU0LTEyLjA0LTkuOS0xOC40Ni0xOS4wNmwtMTQuNTQsMTYuNjkNCgkJCQljMy44MSw1LjY0LDguNDksMTAuNjUsMTMuODYsMTQuODRjNS4xNyw0LDExLjAzLDcuMDIsMTcuMjgsOC45M2M2LjcyLDIuMDMsMTMuNzEsMy4wMiwyMC43MywyLjk1DQoJCQkJYzkuMTcsMC4yMywxOC4yOS0xLjU1LDI2LjctNS4yMWM3LjA5LTMuMTQsMTMuMTEtOC4zLDE3LjI5LTE0LjgyYzQuMTktNi44NSw2LjI5LTE0Ljc3LDYuMDktMjIuOA0KCQkJCWMwLjAxLTQuNTctMS4wNi05LjA4LTMuMTItMTMuMTZDMzkwLjc1LDEzMC42MiwzODcuNzMsMTI2Ljg2LDM4NC4wNCwxMjMuODV6Ii8+DQoJCQk8cGF0aCBmaWxsPSIjMTAyRjUwIiBkPSJNNDUzLjk4LDU5LjRoLTIwLjI0djI2LjM0aC0yMS40MnYxOS42NWgyMS40MnY4My40OWgyMC4yNHYtODMuNDloMjMuOTdWODUuNzRoLTIzLjk3VjU5LjR6Ii8+DQoJCQk8cGF0aCBmaWxsPSIjMTAyRjUwIiBkPSJNNTY4LjYxLDkwLjU1Yy04LjIzLTQuNTgtMTcuNDktNi45OC0yNi45MS02Ljk4Yy05LjQyLDAtMTguNjgsMi40LTI2LjkyLDYuOTgNCgkJCQljLTcuODMsNC41Ny0xNC4zMSwxMS4xNC0xOC43NSwxOS4wNmMtNC41MSw4LjUtNi44NywxNy45OC02Ljg3LDI3LjYxYzAsOS42MiwyLjM2LDE5LjEsNi44NywyNy42MQ0KCQkJCWM0LjQzLDcuOSwxMC45MiwxNC40OSwxOC43NSwxOS4wNWM4LjI0LDQuNTgsMTcuNSw2Ljk5LDI2LjkyLDYuOTljOS40MiwwLDE4LjY4LTIuNDEsMjYuOTEtNi45OQ0KCQkJCWM3Ljg0LTQuNTYsMTQuMzEtMTEuMTQsMTguNzUtMTkuMDVjNC41Mi04LjUxLDYuODktMTcuOTgsNi44OS0yNy42MXMtMi4zNy0xOS4xMS02Ljg5LTI3LjYxDQoJCQkJQzU4Mi45MiwxMDEuNjksNTc2LjQ1LDk1LjEyLDU2OC42MSw5MC41NXogTTU2OS42OSwxNTUuMThjLTIuNiw1LjE0LTYuNTIsOS40OS0xMS4zOCwxMi41OWMtNC45MywzLjEzLTEwLjY3LDQuNzYtMTYuNTEsNC42OA0KCQkJCWMtNS44NywwLjA2LTExLjYzLTEuNTctMTYuNi00LjY4Yy00LjkxLTMuMDctOC44OC03LjQzLTExLjUtMTIuNTljLTIuNTgtNS42NC0zLjkyLTExLjc3LTMuOTItMTcuOTcNCgkJCQljMC02LjE5LDEuMzQtMTIuMzIsMy45Mi0xNy45NmMyLjYyLTUuMTYsNi42LTkuNTEsMTEuNS0xMi41OWM1LTMsMTAuNzEtNC41OSwxNi41NS00LjYxYzUuODMtMC4wMSwxMS41NSwxLjU1LDE2LjU3LDQuNTINCgkJCQljNC44NywzLjA0LDguODEsNy4zNiwxMS4zOCwxMi40OWMyLjgyLDUuNjMsNC4xOCwxMS44OCwzLjk0LDE4LjE4QzU3My44NSwxNDMuNDcsNTcyLjUsMTQ5LjYzLDU2OS42OSwxNTUuMTh6Ii8+DQoJCQk8cGF0aCBmaWxsPSIjMTAyRjUwIiBkPSJNNjY4LjE4LDgzLjUyYy00LjksMC4wMi05LjczLDEuMjQtMTQuMDUsMy41NWMtNC41OSwyLjQtOC42Niw1LjY2LTEyLDkuNjJjLTIuMTcsMi41Mi0zLjk5LDUuMzMtNS40MSw4LjM0DQoJCQkJVjg1LjY5aC0yMC40N3YxMDMuMDhoMjAuNDN2LTU2LjgzYy0wLjA0LTMuNjEsMC43LTcuMjEsMi4xNy0xMC41MWMxLjQtMy4xNSwzLjM3LTYuMDEsNS44LTguNDRjMi40Mi0yLjQzLDUuMjktNC4zNyw4LjQ0LTUuNw0KCQkJCWMzLjItMS4zOCw2LjY1LTIuMDgsMTAuMTMtMi4wN2MxLjg4LDAuMDEsMy43NiwwLjI0LDUuNTksMC42OWMxLjc4LDAuNDMsMy41MiwwLjk5LDUuMiwxLjY3bDUuMzEtMjIuMDENCgkJCQljLTEuNTUtMC42Mi0zLjE2LTEuMDktNC44MS0xLjM3QzY3Mi40Myw4My43Nyw2NzAuMzEsODMuNTUsNjY4LjE4LDgzLjUyeiIvPg0KCQkJPHBhdGggZmlsbD0iIzEwMkY1MCIgZD0iTTc3MS4xNyw5Ny43MmMtNC4yNy00LjQ2LTkuMzctOC4wMy0xNS4wMi0xMC41MWMtNS45MS0yLjU4LTEyLjMtMy44OC0xOC43NS0zLjgyDQoJCQkJYy03LjI0LTAuMDctMTQuNDMsMS4zLTIxLjE0LDQuMDNjLTYuMywyLjU3LTEyLDYuNDUtMTYuNjksMTEuMzhjLTQuNzQsNS4wNC04LjQ1LDEwLjk1LTEwLjk0LDE3LjQNCgkJCQljLTIuNjksNy4wOC00LjAyLDE0LjYxLTMuOTIsMjIuMmMtMC4yLDkuNSwyLjIxLDE4Ljg4LDYuOTYsMjcuMTJjNC42Miw3LjgyLDExLjI4LDE0LjI0LDE5LjI3LDE4LjU3DQoJCQkJYzguNjMsNC42MiwxOC4zMSw2Ljk1LDI4LjEsNi43N2M1LjAyLTAuMDIsMTAuMDEtMC43MiwxNC44NC0yLjA2YzQuOTYtMS4zNiw5Ljc3LTMuMjQsMTQuMzQtNS42MWM0LjIyLTIuMTUsOC4xLTQuOTMsMTEuNDktOC4yNQ0KCQkJCWwtMTAuMjEtMTQuMzVjLTQuMTksMy44Ny05LDctMTQuMjUsOS4yNGMtNC41NCwxLjczLTkuMzgsMi42LTE0LjI0LDIuNTRjLTYuNjIsMC4xNS0xMy4xNi0xLjM0LTE5LjA3LTQuMzINCgkJCQljLTUuMzctMi43NS05LjgtNy4wMi0xMi43Ni0xMi4yOGMtMi4zNC00LjIxLTMuNzgtOC44Ni00LjI1LTEzLjY1aDc4LjlsMC4xOS04LjY0YzAuMjItNi43OS0wLjg4LTEzLjU2LTMuMjMtMTkuOTQNCgkJCQlDNzc4LjcsMTA3LjY4LDc3NS40MiwxMDIuMjksNzcxLjE3LDk3LjcyeiBNNzE5LjY0LDEwNi4wOGM1LjUyLTIuODUsMTEuNjctNC4yNCwxNy44OC00LjAzYzQuMjUtMC4wNCw4LjQ0LDAuOTMsMTIuMjUsMi44NA0KCQkJCWMzLjgsMS45LDcuMDksNC42Nyw5LjYyLDguMWMyLjQ3LDMuMzksMy45Nyw3LjM5LDQuMzIsMTEuNTh2MS4zOWgtNTcuN2MwLjU1LTIuODIsMS40NS01LjU3LDIuNjktOC4xNg0KCQkJCWMyLjMxLTQuOTUsNi4xMy05LjA2LDEwLjkxLTExLjcySDcxOS42NHoiLz4NCgkJCTxwYXRoIGZpbGw9IiMxMDJGNTAiIGQ9Ik05MzYuMDEsMTE5LjEzYy0wLjItMi4xLTAuMzUtMy44NS0wLjUtNS4zaC02My42NXYyNC41NWgzNS4yOGMtMC4wOCwzLjM0LTAuOSw2LjYzLTIuNCw5LjYzDQoJCQkJYy0xLjY3LDMuMy00LjAyLDYuMjItNi44OSw4LjU2Yy0zLjA0LDIuNDctNi41LDQuMzYtMTAuMjIsNS41OWMtNC4wMywxLjM0LTguMjUsMi0xMi40OSwxLjk2Yy01LjkzLDAuMDUtMTEuODEtMS4xMi0xNy4yNy0zLjQzDQoJCQkJYy04LjA0LTMuNDEtMTQuODctOS4xMi0xOS42Ny0xNi40MWMtNC43OS03LjI5LTcuMzEtMTUuODQtNy4yNi0yNC41NmMtMC4wNS01Ljk4LDEuMDUtMTEuOTIsMy4yNS0xNy40OQ0KCQkJCWMyLjA3LTUuMjIsNS4xNy05Ljk3LDkuMTQtMTMuOTVjMy45Mi0zLjkyLDguNTYtNy4wNSwxMy42NS05LjIzYzUuMzgtMi4yNiwxMS4xNy0zLjQsMTYuOTktMy4zNGM0LjMsMCw4LjU3LDAuNjMsMTIuNjcsMS44OA0KCQkJCWM0LjExLDEuMjQsOC4wNSwzLjAyLDExLjY5LDUuM2MzLjgyLDIuNDEsNy4zNyw1LjIsMTAuNiw4LjM1bDE4LjI4LTE5LjI2Yy0zLjkxLTQuNjUtOC41Ni04LjYzLTEzLjc2LTExLjc4DQoJCQkJYy0xMS44Mi03LjI0LTI1LjQzLTExLjA1LTM5LjI4LTExLjAxYy0xMC4wMS0wLjExLTE5Ljk1LDEuNjktMjkuMjksNS4zMWMtOC42NSwzLjM4LTE2LjU2LDguNDEtMjMuMjYsMTQuODINCgkJCQljLTYuNjEsNi4zMy0xMS44MiwxMy45Ni0xNS4zMywyMi40Yy0zLjY2LDguODgtNS40OSwxOC40LTUuNCwyOGMtMC4wOSw5LjYyLDEuNjcsMTkuMTYsNS4yLDI4LjEyDQoJCQkJYzMuMzQsOC40Niw4LjQsMTYuMTUsMTQuODMsMjIuNThjNi41NCw2LjUxLDE0LjMyLDExLjYyLDIyLjg4LDE1LjA1YzkuMjksMy42OCwxOS4xOSw1LjUyLDI5LjE4LDUuNA0KCQkJCWM4LjU4LDAuMDcsMTcuMS0xLjQyLDI1LjE0LTQuNDJjNy40Ny0yLjc5LDE0LjMyLTcuMDQsMjAuMTUtMTIuNDljNS43Mi01LjQzLDEwLjI3LTExLjk5LDEzLjM1LTE5LjI2DQoJCQkJYzMuMjctNy43Nyw0LjktMTYuMTIsNC44Mi0yNC41NWMwLTEuMTgsMC0yLjc4LTAuMDktNC44M0M5MzYuMjYsMTIzLjI3LDkzNi4yLDEyMS4yMyw5MzYuMDEsMTE5LjEzeiIvPg0KCQkJPHBhdGggZmlsbD0iIzEwMkY1MCIgZD0iTTEwMTcuMDYsODIuNzljLTUuMjQsMC0xMC40MSwxLjI4LTE1LjA1LDMuNzNjLTQuODMsMi41My05LjA5LDYuMDYtMTIuNDksMTAuMzINCgkJCQljLTEuMjYsMS41Ni0yLjQsMy4yMS0zLjQyLDQuOTNsLTAuNS0xNi44MmgtMjYuOTF2MTAzLjkyaDI4LjEydi01My44MmMtMC4wMy0zLjEsMC41My02LjE2LDEuNjctOS4wMw0KCQkJCWMxLjA3LTIuNjgsMi42Ny01LjEyLDQuNjgtNy4xOWMxLjk3LTIuMDMsNC4zNC0zLjYxLDYuOTYtNC42OGMyLjc4LTEuMTIsNS43NS0xLjY5LDguNzYtMS42NmMyLjM1LDAsNC42OSwwLjI5LDYuOTgsMC44OA0KCQkJCWMxLjkzLDAuNDYsMy44MSwxLjE1LDUuNTksMi4wNmw3LjQ3LTMwLjY0Yy0xLjcyLTAuNi0zLjUtMS4wNi01LjMtMS4zOEMxMDIxLjQ2LDgzLjAxLDEwMTkuMjcsODIuOCwxMDE3LjA2LDgyLjc5eiIvPg0KCQkJPHBhdGggZmlsbD0iIzEwMkY1MCIgZD0iTTExMTYuOTYsODkuNzdjLTguNzItNC41OS0xOC40NC02Ljk4LTI4LjI5LTYuOThzLTE5LjU3LDIuMzktMjguMjksNi45OGMtOC4xNiw0LjQ5LTE0Ljk2LDExLjEtMTkuNjUsMTkuMTUNCgkJCQljLTQuNyw4LjU1LTcuMTgsMTguMTQtNy4xOCwyNy45YzAsOS43NSwyLjQ3LDE5LjM2LDcuMTgsMjcuOTFjNC43LDguMDMsMTEuNDksMTQuNjQsMTkuNjUsMTkuMTQNCgkJCQljOC43Miw0LjU5LDE4LjQ0LDYuOTgsMjguMjksNi45OHMxOS41Ny0yLjM5LDI4LjI5LTYuOThjOC4xNC00LjQ4LDE0LjktMTEuMSwxOS41Ni0xOS4xNGM0LjYzLTguNTgsNy4wNS0xOC4xNyw3LjA1LTI3LjkxDQoJCQkJcy0yLjQyLTE5LjMzLTcuMDUtMjcuOUMxMTMxLjg2LDEwMC44NiwxMTI1LjEsOTQuMjUsMTExNi45Niw4OS43N3ogTTExMTIuMDMsMTUyLjA1Yy0yLjEzLDQuMzUtNS40Myw4LjAzLTkuNTIsMTAuNjENCgkJCQljLTQuMTIsMi41Ny04Ljg5LDMuODktMTMuNzUsMy44M2MtNC45MSwwLjA4LTkuNzUtMS4yNS0xMy45NC0zLjgzYy00LjExLTIuNjEtNy40NS02LjI3LTkuNjQtMTAuNjENCgkJCQljLTIuMTktNC44LTMuMzMtMTAuMDEtMy4zMy0xNS4yOGMwLTUuMjgsMS4xNC0xMC40OCwzLjMzLTE1LjI4YzIuMjMtNC4zMSw1LjU2LTcuOTcsOS42NC0xMC42YzQuMTUtMi41Nyw4Ljk0LTMuOTMsMTMuODItMy45NQ0KCQkJCWM0Ljg5LTAuMDEsOS42OSwxLjMyLDEzLjg3LDMuODVjNC4wOSwyLjU5LDcuMzksNi4yNSw5LjUyLDEwLjZjMi4zNiw0Ljc5LDMuNDcsMTAuMDgsMy4yNSwxNS40MQ0KCQkJCUMxMTE1LjQ5LDE0Mi4wOSwxMTE0LjM3LDE0Ny4zMiwxMTEyLjAzLDE1Mi4wNXoiLz4NCgkJCTxwYXRoIGZpbGw9IiMxMDJGNTAiIGQ9Ik0xMjU3LjM2LDE0OS4wOGwtMjEuNjMtNDkuMTloLTE2LjUxbC0yMC45NCw0OS40N2wtMTkuMzItNjQuNmwtMjkuMDksMC4yMWwzNC43OCwxMDMuOTJoMjAuMDVsMjIuNDktNTUuMTMNCgkJCQlsMjIuODgsNTUuMTNoMjAuMjRsMzUuMzYtMTAzLjkyaC0yOS4wN0wxMjU3LjM2LDE0OS4wOHoiLz4NCgkJCTxwYXRoIGZpbGw9IiMxMDJGNTAiIGQ9Ik0xMzcwLjMxLDU4LjYyaC0yNy45MXYyNi4zNGgtMTkuNDR2MjQuOTRoMTkuNDR2NzguOTloMjcuOTFWMTA5LjloMjEuNDJWODQuOTZoLTIxLjQyVjU4LjYyeiIvPg0KCQkJPHBhdGggZmlsbD0iIzEwMkY1MCIgZD0iTTE1MDEuMjMsMTAxLjc1Yy0yLjMyLTUuOTMtNi41My0xMC45NC0xMS45OC0xNC4yNGMtNi4wMy0zLjMxLTEyLjg2LTQuOTMtMTkuNzQtNC42OA0KCQkJCWMtNS42OS0wLjAxLTExLjMyLDEuMTktMTYuNSwzLjUzYy01LjA1LDIuMjMtOS42MSw1LjQxLTEzLjQ1LDkuMzdjLTAuODEsMC44NC0xLjU2LDEuNy0yLjI2LDIuNThWNDMuNDloLTI3LjV2MTQ1LjRoMjcuODkNCgkJCQl2LTYyLjQ3Yy0wLjAxLTIuNjUsMC41Ni01LjI3LDEuNjctNy42OGMxLjExLTIuMzQsMi42NS00LjQ2LDQuNTItNi4yNGMxLjk3LTEuODgsNC4zMi0zLjMyLDYuODktNC4yNGMyLjgtMSw1Ljc1LTEuNSw4LjczLTEuNDYNCgkJCQljMy40My0wLjI1LDYuODUsMC40NCw5LjkzLDEuOTZjMi43NCwxLjUyLDQuODYsMy45Niw1Ljk4LDYuODhjMS40MiwzLjc2LDIuMDksNy43NiwxLjk3LDExLjc4djYxLjUxaDI3Ljk3di02My43DQoJCQkJQzE1MDUuNTUsMTE3LjIsMTUwNC4xNSwxMDkuMjIsMTUwMS4yMywxMDEuNzV6Ii8+DQoJCTwvZz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==");
+
+/***/ }),
+
+/***/ "./images/menu/down-arrow-icon.svg":
+/*!*****************************************!*\
+  !*** ./images/menu/down-arrow-icon.svg ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReactComponent": () => (/* binding */ SvgDownArrowIcon),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _path;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+var SvgDownArrowIcon = function SvgDownArrowIcon(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    width: 14,
+    height: 8,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M13 7 9.278 2.657a3 3 0 0 0-4.556 0L1 7",
+    stroke: "#073B4C",
+    strokeWidth: 2,
+    strokeLinecap: "round"
+  })));
+};
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMyA3TDkuMjc3NzcgMi42NTc0QzguMDgwNDggMS4yNjA1NiA1LjkxOTUyIDEuMjYwNTYgNC43MjIyMyAyLjY1NzRMMSA3IiBzdHJva2U9IiMwNzNCNEMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo=");
+
+/***/ }),
+
+/***/ "./images/menu/up-arrow-icon.svg":
+/*!***************************************!*\
+  !*** ./images/menu/up-arrow-icon.svg ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReactComponent": () => (/* binding */ SvgUpArrowIcon),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _path;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+var SvgUpArrowIcon = function SvgUpArrowIcon(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    width: 14,
+    height: 8,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "m1 1 3.722 4.343a3 3 0 0 0 4.556 0L13 1",
+    stroke: "#073B4C",
+    strokeWidth: 2,
+    strokeLinecap: "round"
+  })));
+};
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDE0IDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNC43MjIyMyA1LjM0MjZDNS45MTk1MiA2LjczOTQ0IDguMDgwNDggNi43Mzk0NCA5LjI3Nzc3IDUuMzQyNkwxMyAxIiBzdHJva2U9IiMwNzNCNEMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo=");
 
 /***/ }),
 
@@ -11238,7 +11263,9 @@ function ModuleCard(_ref2) {
   }
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    span: 8,
+    xs: 24,
+    xl: 8,
+    md: 12,
     style: {
       padding: '8px'
     }
@@ -11282,6 +11309,8 @@ function ModuleCard(_ref2) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     align: "center",
     size: size
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "doc-btn"
   }, module.status && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     className: "setting-btn footer-btn",
     type: "default",
@@ -11293,7 +11322,7 @@ function ModuleCard(_ref2) {
     shape: "default",
     href: `https://storegrowth.io/docs/${docSlug}/`,
     target: "_blank"
-  }, "Documentation"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Documentation")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     span: 3,
     style: {
       float: 'right'
@@ -11369,25 +11398,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ant_design_icons__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @ant-design/icons */ "./node_modules/@ant-design/icons/es/icons/DownOutlined.js");
-/* harmony import */ var _ant_design_icons__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @ant-design/icons */ "./node_modules/@ant-design/icons/es/icons/UpOutlined.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/row/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/col/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/alert/index.js");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/pagination/index.js");
-/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
+/* harmony import */ var nanoid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! nanoid */ "./node_modules/nanoid/index.browser.js");
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../ajax */ "./src/ajax.js");
 /* harmony import */ var _ModuleCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModuleCard */ "./src/components/modules/ModuleCard.js");
 /* harmony import */ var _ModuleSearch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModuleSearch */ "./src/components/modules/ModuleSearch.js");
 /* harmony import */ var _images_dashboard_icon_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../images/dashboard-icon.svg */ "./images/dashboard-icon.svg");
 /* harmony import */ var _images_help_icon_svg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../images/help-icon.svg */ "./images/help-icon.svg");
 /* harmony import */ var _images_logo_svg__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../images/logo.svg */ "./images/logo.svg");
-/* harmony import */ var _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../images/widget-icon.svg */ "./images/widget-icon.svg");
-/* harmony import */ var _PremiumBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./PremiumBox */ "./src/components/modules/PremiumBox.js");
+/* harmony import */ var _images_menu_down_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../images/menu/down-arrow-icon.svg */ "./images/menu/down-arrow-icon.svg");
+/* harmony import */ var _images_menu_up_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../images/menu/up-arrow-icon.svg */ "./images/menu/up-arrow-icon.svg");
+/* harmony import */ var _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../images/widget-icon.svg */ "./images/widget-icon.svg");
+/* harmony import */ var _PremiumBox__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./PremiumBox */ "./src/components/modules/PremiumBox.js");
+
 
 
 
@@ -11479,7 +11509,7 @@ function Modules() {
     } = _ref;
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_3__["default"], {
       module: module,
-      key: (0,nanoid__WEBPACK_IMPORTED_MODULE_10__.nanoid)()
+      key: (0,nanoid__WEBPACK_IMPORTED_MODULE_12__.nanoid)()
     })));
   };
 
@@ -11507,24 +11537,30 @@ function Modules() {
     className: "sgsb-admin-dashboard-sideabr"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-logo"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     preview: false,
     width: 164,
     src: _images_logo_svg__WEBPACK_IMPORTED_MODULE_7__["default"]
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     preview: false,
     width: 19,
     src: _images_dashboard_icon_svg__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), "Dashboard"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "all-widgets-menu"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     preview: false,
     width: 18,
-    src: _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_8__["default"]
+    src: _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), "All Widgets", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     onClick: toggleMenuClass,
     className: "ant-menu-title-content"
-  }, activeClass ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_12__["default"], null) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_13__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
+  }, activeClass ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _images_menu_up_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_9__["default"],
+    width: "12"
+  }) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: _images_menu_down_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_8__["default"],
+    width: "12"
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
     className: activeClass ? 'widgets-menu ant-menu-hidden' : 'widgets-menu'
   }, allModules.map(module => {
     return !module.status ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
@@ -11535,7 +11571,7 @@ function Modules() {
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_9__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_11__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module-top-bar"
@@ -11556,7 +11592,7 @@ function Modules() {
     href: "https://invizo.io/support/",
     target: "_blank",
     type: "primary"
-  }, "Need Help?", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, "Need Help?", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     preview: false,
     width: 22,
     src: _images_help_icon_svg__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -11573,7 +11609,8 @@ function Modules() {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb__module-pagination",
     style: {
-      paddingTop: '30px'
+      paddingTop: '80px',
+      paddingLeft: '16px'
     }
   }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
     defaultCurrent: 1,
