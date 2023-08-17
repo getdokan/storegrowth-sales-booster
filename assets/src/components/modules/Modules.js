@@ -1,4 +1,3 @@
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { Alert, Button, Col, Image, Pagination, Row } from 'antd';
@@ -11,6 +10,8 @@ import ModuleSearch from './ModuleSearch';
 import dashboardIcon from '../../../images/dashboard-icon.svg';
 import helpIcon from '../../../images/help-icon.svg';
 import logo from '../../../images/logo.svg';
+import downArrowIocn from '../../../images/menu/down-arrow-icon.svg';
+import upArrowIocn from '../../../images/menu/up-arrow-icon.svg';
 import widgetIcon from '../../../images/widget-icon.svg';
 import PremiumBox from './PremiumBox';
 
@@ -148,7 +149,7 @@ function Modules() {
             All Widgets
             <span onClick={toggleMenuClass} className="ant-menu-title-content">
               {
-                activeClass ? <DownOutlined /> : <UpOutlined />
+                activeClass ? <img src={upArrowIocn} width="12" /> : <img src={downArrowIocn} width="12" />
               }
             </span>
           </h4>
@@ -217,7 +218,9 @@ function Modules() {
 
         <div className='sgsb__module-pagination'
           style={{
-            paddingTop: '30px'
+            paddingTop: '80px',
+            paddingLeft: '16px'
+            
           }}
           >
           {

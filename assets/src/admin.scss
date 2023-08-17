@@ -153,6 +153,27 @@ Module Card Style
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
 
+      .ant-space {
+        .ant-space-item {
+          .doc-btn {
+            display: flex;
+            gap: 10px;
+            
+          }
+
+          .switch-btn {
+            float: none !important;
+          }
+        }
+      }
+
+      .ant-space {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+      }
+
       @media ( min-width: 768px ) and ( max-width: 1024px ) {
         padding-left: 6px !important;
         padding-right: 6px !important;
@@ -195,6 +216,12 @@ Pagination Style
     height: 47px;
     line-height: 45px;
     border-radius: 4px;
+    border: 1px solid #B2DDFF;
+
+    .ant-pagination-item-link {
+      border: 0;
+
+    }
   }
 
   .ant-pagination-item {
@@ -473,17 +500,17 @@ End Settings Sidebar
   }
 
   @media ( min-width: 1500px ) {
-    gap: 20px;
+    // gap: 20px;
     
   }
 
   @media ( min-width: 768px ) and ( max-width: 1024px ) {
-    gap: 10px;
+    // gap: 10px;
     
   }
 
   @media ( min-width: 1500px ) and ( max-width: 2000px ) {
-    gap: 20px;
+    // gap: 20px;
     
   }
 
@@ -525,11 +552,31 @@ End Settings Sidebar
         justify-content: space-between;
         padding: 0 12px 20px 20px;
         gap: 10px;
+        position: relative;
+
+        &:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+
+        }
 
         span {
           margin-left: auto;
           cursor: pointer;
 
+        }
+
+        .ant-menu-title-content {
+          img {
+            margin-left: -16px;
+            
+          }
         }
     
       }
@@ -747,7 +794,14 @@ End Settings Sidebar
         left: 0;
         background-repeat: no-repeat;
         background-size: contain;
-        background-position: center;
+        background-position: bottom;
+
+        @media ( min-width: 1441px ) and ( max-width: 2000px ) {
+          background-size: cover;
+          left: -1.4px;
+          bottom: -31px;
+
+        }
       }
 
       .ant-image {
@@ -834,7 +888,8 @@ End Settings Sidebar
       flex-basis: 74%;
 
       &-box-content {
-        padding-left: 0 !important;
+        // padding-left: 0 !important;
+        padding: 30px 0 0 30px;
 
       }
       
@@ -848,6 +903,17 @@ End Settings Sidebar
           width: 100% !important;
 
         }
+      }
+
+      .doc-btn {
+        gap: 2px !important;
+
+      }
+
+      &-box-content {
+        // padding-left: 0 !important;
+        padding: 8px 0 0 8px
+
       }
 
     }

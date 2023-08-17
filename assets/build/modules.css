@@ -26566,6 +26566,18 @@ Module Card Style
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+.site-card-wrapper .sgsb-module-card .sgsb__module-footer .ant-space .ant-space-item .doc-btn {
+  display: flex;
+  gap: 10px;
+}
+.site-card-wrapper .sgsb-module-card .sgsb__module-footer .ant-space .ant-space-item .switch-btn {
+  float: none !important;
+}
+.site-card-wrapper .sgsb-module-card .sgsb__module-footer .ant-space {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 @media (min-width: 768px) and (max-width: 1024px) {
   .site-card-wrapper .sgsb-module-card .sgsb__module-footer {
     padding-left: 6px !important;
@@ -26598,6 +26610,10 @@ Pagination Style
   height: 47px;
   line-height: 45px;
   border-radius: 4px;
+  border: 1px solid #B2DDFF;
+}
+.sgsb__module-pagination li .ant-pagination-item-link {
+  border: 0;
 }
 .sgsb__module-pagination .ant-pagination-item a:hover {
   color: #fff;
@@ -26821,21 +26837,6 @@ End Settings Sidebar
     display: block;
   }
 }
-@media (min-width: 1500px) {
-  .sgsb-admin-dashboard {
-    gap: 20px;
-  }
-}
-@media (min-width: 768px) and (max-width: 1024px) {
-  .sgsb-admin-dashboard {
-    gap: 10px;
-  }
-}
-@media (min-width: 1500px) and (max-width: 2000px) {
-  .sgsb-admin-dashboard {
-    gap: 20px;
-  }
-}
 .sgsb-admin-dashboard-sideabr {
   flex-basis: 200px;
   background: #ffffff;
@@ -26870,10 +26871,24 @@ End Settings Sidebar
   justify-content: space-between;
   padding: 0 12px 20px 20px;
   gap: 10px;
+  position: relative;
+}
+.sgsb-admin-dashboard-sideabr .all-widgets-menu h4:before {
+  content: "";
+  position: absolute;
+  background: #0875FF;
+  width: 3px;
+  height: 28px;
+  right: 3px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu h4 span {
   margin-left: auto;
   cursor: pointer;
+}
+.sgsb-admin-dashboard-sideabr .all-widgets-menu h4 .ant-menu-title-content img {
+  margin-left: -16px;
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu ul {
   padding: 0 20px 0 0;
@@ -27009,7 +27024,14 @@ End Settings Sidebar
   left: 0;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  background-position: bottom;
+}
+@media (min-width: 1441px) and (max-width: 2000px) {
+  .sgsb-admin-dashboard-sideabr .request__feature-block:before {
+    background-size: cover;
+    left: -1.4px;
+    bottom: -31px;
+  }
 }
 .sgsb-admin-dashboard-sideabr .request__feature-block .ant-image {
   position: initial;
@@ -27070,7 +27092,7 @@ End Settings Sidebar
     flex-basis: 74%;
   }
   .sgsb-admin-dashboard-module-box-content {
-    padding-left: 0 !important;
+    padding: 30px 0 0 30px;
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -27079,6 +27101,12 @@ End Settings Sidebar
   }
   .sgsb-admin-dashboard-module .module-banner .ant-image {
     width: 100% !important;
+  }
+  .sgsb-admin-dashboard-module .doc-btn {
+    gap: 2px !important;
+  }
+  .sgsb-admin-dashboard-module-box-content {
+    padding: 8px 0 0 8px;
   }
 }
 @media (min-width: 1440px) and (max-width: 2000px) {
