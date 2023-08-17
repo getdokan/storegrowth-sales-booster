@@ -210,7 +210,7 @@ function Modules() {
           )
         }
 
-        <Row gutter={16} className='sgsb-admin-dashboard-module-box-content'>
+        <Row className='sgsb-admin-dashboard-module-box-content'>
 
           <ModuleList modules={selectFilter.modules} />
 
@@ -219,7 +219,7 @@ function Modules() {
         <div className='sgsb__module-pagination'
           style={{
             paddingTop: '80px',
-            paddingLeft: '16px'
+            paddingLeft: '22px'
             
           }}
           >

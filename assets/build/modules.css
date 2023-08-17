@@ -26566,6 +26566,11 @@ Module Card Style
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+@media (max-width: 767px) {
+  .site-card-wrapper .sgsb-module-card .sgsb__module-footer {
+    padding: 19px 8px 19px !important;
+  }
+}
 .site-card-wrapper .sgsb-module-card .sgsb__module-footer .ant-space .ant-space-item .doc-btn {
   display: flex;
   gap: 10px;
@@ -26578,18 +26583,6 @@ Module Card Style
   justify-content: space-between;
   width: 100%;
 }
-@media (min-width: 768px) and (max-width: 1024px) {
-  .site-card-wrapper .sgsb-module-card .sgsb__module-footer {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-  }
-  .site-card-wrapper .sgsb-module-card .sgsb__module-footer > div {
-    gap: 3px !important;
-  }
-  .site-card-wrapper .sgsb-module-card .sgsb__module-footer a {
-    font-size: 11px !important;
-  }
-}
 .site-card-wrapper .sgsb-module-card .sgsb__module-footer .footer-btn[class] {
   color: #073B4C;
   font-size: 16px;
@@ -26598,8 +26591,9 @@ Module Card Style
   border: 1px solid #B2DDFF;
   background: #FFF;
 }
-.site-card-wrapper .sgsb-module-card .sgsb__module-footer .footer-btn[class].setting-btn {
+.site-card-wrapper .sgsb-module-card .sgsb__module-footer .footer-btn[class]:hover {
   color: #0875FF;
+  border: 1px solid #B2DDFF;
 }
 
 /*=============================
@@ -26622,15 +26616,26 @@ Pagination Style
 .sgsb__module-pagination .ant-pagination-item.ant-pagination-item-active a {
   color: #fff;
   background: #008dff;
+  border-radius: 4px;
 }
 
 .sgsb-search-section .search-bar {
   padding-right: 10px;
 }
+@media (max-width: 520px) {
+  .sgsb-search-section .search-bar {
+    margin-bottom: 20px;
+  }
+}
 .sgsb-search-section .search-bar.active input {
   display: block;
   width: 250px;
   transition: 0.3s linear 0s;
+}
+@media (max-width: 520px) {
+  .sgsb-search-section .search-bar.active input {
+    width: 73%;
+  }
 }
 .sgsb-search-section .search-bar.active .ant-input-group-addon {
   border-left-width: 0;
@@ -26831,6 +26836,7 @@ End Settings Sidebar
 .sgsb-admin-dashboard {
   display: flex;
   flex-flow: row wrap;
+  background: #f4f7fe;
 }
 @media (max-width: 767px) {
   .sgsb-admin-dashboard {
@@ -26888,7 +26894,7 @@ End Settings Sidebar
   cursor: pointer;
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu h4 .ant-menu-title-content img {
-  margin-left: -16px;
+  margin-left: -24px;
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu ul {
   padding: 0 20px 0 0;
@@ -27014,6 +27020,11 @@ End Settings Sidebar
   margin: 95px 8px 0;
   position: relative;
 }
+@media (min-width: 320px) and (max-width: 520px) {
+  .sgsb-admin-dashboard-sideabr .request__feature-block {
+    margin-bottom: 60px;
+  }
+}
 .sgsb-admin-dashboard-sideabr .request__feature-block:before {
   content: "";
   position: absolute;
@@ -27025,6 +27036,12 @@ End Settings Sidebar
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
+}
+@media (min-width: 320px) and (max-width: 520px) {
+  .sgsb-admin-dashboard-sideabr .request__feature-block:before {
+    background-size: cover;
+    bottom: -31px;
+  }
 }
 @media (min-width: 1441px) and (max-width: 2000px) {
   .sgsb-admin-dashboard-sideabr .request__feature-block:before {
@@ -27087,6 +27104,28 @@ End Settings Sidebar
   flex-basis: 83%;
   max-width: 100%;
 }
+.sgsb-admin-dashboard-module-box-content {
+  background: #f4f7fe;
+  border-top-left-radius: 15px;
+  margin-top: -2px;
+  position: relative;
+  margin-left: -1px;
+}
+.sgsb-admin-dashboard-module-box-content:after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  width: 18px;
+  height: 10px;
+  top: -4px;
+  left: -8px;
+  transform: rotate(-49deg);
+}
+@media (max-width: 767px) {
+  .sgsb-admin-dashboard-module-box-content:after {
+    display: none;
+  }
+}
 @media (min-width: 1500px) and (max-width: 2000px) {
   .sgsb-admin-dashboard-module {
     flex-basis: 74%;
@@ -27101,9 +27140,6 @@ End Settings Sidebar
   }
   .sgsb-admin-dashboard-module .module-banner .ant-image {
     width: 100% !important;
-  }
-  .sgsb-admin-dashboard-module .doc-btn {
-    gap: 2px !important;
   }
   .sgsb-admin-dashboard-module-box-content {
     padding: 8px 0 0 8px;
@@ -27144,7 +27180,7 @@ End Settings Sidebar
   font-size: 18px;
   font-weight: 700;
 }
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .sgsb-admin-dashboard-module-box-content {
     display: block;
   }

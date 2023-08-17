@@ -37,7 +37,7 @@ class Stock_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar.svg' );
+		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Stock_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'stock-bar/assets/images/countdown-timer-module-banner.svg' );
+		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-feature-image.svg' );
 	}
 
 	/**

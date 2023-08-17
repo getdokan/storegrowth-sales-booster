@@ -153,6 +153,11 @@ Module Card Style
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
 
+      @media (max-width: 767px) {
+        padding: 19px 8px 19px !important;
+
+      }
+
       .ant-space {
         .ant-space-item {
           .doc-btn {
@@ -175,16 +180,16 @@ Module Card Style
       }
 
       @media ( min-width: 768px ) and ( max-width: 1024px ) {
-        padding-left: 6px !important;
-        padding-right: 6px !important;
+        // padding-left: 6px !important;
+        // padding-right: 6px !important;
 
         & > div {
-          gap : 3px !important;
+          // gap : 3px !important;
 
         }
 
         a {
-          font-size: 11px !important;
+          // font-size: 11px !important;
         }
         
       }
@@ -197,8 +202,10 @@ Module Card Style
         border: 1px solid #B2DDFF;
         background: #FFF;
 
-        &.setting-btn {
+        &:hover {
           color: #0875FF;
+          border: 1px solid #B2DDFF;
+
         }
 
       }
@@ -236,6 +243,8 @@ Pagination Style
       a {
         color: #fff;
         background: #008dff;
+        border-radius: 4px;
+
       }
     }
   }
@@ -246,11 +255,21 @@ Pagination Style
   .search-bar {
     padding-right: 10px;
 
+    @media ( max-width: 520px ) {
+      margin-bottom: 20px;
+
+    }
+
     &.active {
       input {
         display: block;
         width: 250px;
         transition: .3s linear 0s;
+
+        @media ( max-width: 520px ) {
+          width: 73%;
+          
+        }
         
       }
 
@@ -493,6 +512,7 @@ End Settings Sidebar
 .sgsb-admin-dashboard {
   display: flex;
   flex-flow: row wrap;
+  background: #f4f7fe;
 
   @media ( max-width: 767px ) {
     display: block;
@@ -574,7 +594,7 @@ End Settings Sidebar
 
         .ant-menu-title-content {
           img {
-            margin-left: -16px;
+            margin-left: -24px;
             
           }
         }
@@ -784,6 +804,11 @@ End Settings Sidebar
       margin: 95px 8px 0;
       position: relative;
 
+      @media ( min-width: 320px ) and ( max-width: 520px ) {
+        margin-bottom: 60px;
+
+      }
+
       &:before {
         content: "";
         position: absolute;
@@ -795,6 +820,12 @@ End Settings Sidebar
         background-repeat: no-repeat;
         background-size: contain;
         background-position: bottom;
+
+        @media ( min-width: 320px ) and ( max-width: 520px ) {
+          background-size: cover;
+          bottom: -31px;
+
+        }
 
         @media ( min-width: 1441px ) and ( max-width: 2000px ) {
           background-size: cover;
@@ -884,12 +915,38 @@ End Settings Sidebar
     flex-basis: 83%;
     max-width: 100%;
 
+    &-box-content {
+      background: #f4f7fe;
+      border-top-left-radius: 15px;
+      margin-top: -2px;
+      position: relative;
+      margin-left: -1px;
+
+      &:after {
+        content: "";
+        position: absolute;
+        background: #fff;
+        width: 18px;
+        height: 10px;
+        top: -4px;
+        left: -8px;
+        transform: rotate(-49deg);
+
+        @media ( max-width: 767px ) {
+          display: none;
+
+        }
+      }
+
+    }
+
     @media ( min-width: 1500px ) and ( max-width: 2000px ) {
       flex-basis: 74%;
 
       &-box-content {
         // padding-left: 0 !important;
         padding: 30px 0 0 30px;
+
 
       }
       
@@ -906,13 +963,13 @@ End Settings Sidebar
       }
 
       .doc-btn {
-        gap: 2px !important;
+        // gap: 2px !important;
 
       }
 
       &-box-content {
         // padding-left: 0 !important;
-        padding: 8px 0 0 8px
+        padding: 8px 0 0 8px;
 
       }
 
@@ -968,7 +1025,7 @@ End Settings Sidebar
 
     }
 
-    @media ( max-width: 767px ) {
+    @media ( max-width: 991px ) {
       &-box-content {
         display: block;
 

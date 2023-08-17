@@ -11174,7 +11174,7 @@ __webpack_require__.r(__webpack_exports__);
 function AppLayout() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
     style: {
-      paddingTop: '4px'
+      padding: '0'
     }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Content, {
     style: {
@@ -11265,7 +11265,7 @@ function ModuleCard(_ref2) {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     xs: 24,
     xl: 8,
-    md: 12,
+    md: 24,
     style: {
       padding: '8px'
     }
@@ -11602,7 +11602,6 @@ function Modules() {
     showIcon: true,
     closable: true
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    gutter: 16,
     className: "sgsb-admin-dashboard-module-box-content"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ModuleList, {
     modules: selectFilter.modules
@@ -11610,7 +11609,7 @@ function Modules() {
     className: "sgsb__module-pagination",
     style: {
       paddingTop: '80px',
-      paddingLeft: '16px'
+      paddingLeft: '22px'
     }
   }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
     defaultCurrent: 1,
