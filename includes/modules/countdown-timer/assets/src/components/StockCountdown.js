@@ -24,6 +24,7 @@ function StockCountdown() {
     shop_page_countdown_enable: false,
     product_page_countdown_enable: true,
     countdown_heading: 'Last chance! [discount]% OFF',
+    heading_text_color: '#000000'
   });
 
 
@@ -117,6 +118,17 @@ const upgradeLabel = !sgsbAdmin.isPro ? (
           <InputColor
             initialValue={formData.border_color}
             onChange={(e) => onFieldChange('border_color', e.hex)}
+            placement="right"
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Heading Text Color"
+          labelAlign="left"
+        >
+          <InputColor
+            initialValue={formData.heading_text_color}
+            onChange={(e) => onFieldChange('heading_text_color', e.hex)}
             placement="right"
           />
         </Form.Item>
