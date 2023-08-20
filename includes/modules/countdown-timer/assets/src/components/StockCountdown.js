@@ -3,7 +3,7 @@ import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import Selector from "./Selector";
 import InputColor from "react-input-color";
-// import SVGIcon from "./SVGIcon";
+
 import Layout1 from "../../images/layout/layout-1.svg";
 import "../styles/countdown-timer.css";
 

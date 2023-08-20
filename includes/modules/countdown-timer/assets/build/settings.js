@@ -15387,7 +15387,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // import SVGIcon from "./SVGIcon";
 
 
 
