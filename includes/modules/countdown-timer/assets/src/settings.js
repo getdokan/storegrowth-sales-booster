@@ -20,7 +20,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
  */
  addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
   items.push( {
-    label: <Link to="/countdown-timer">Countdown Timer</Link>,
+    label: <Link to="/countdown-timer">Sales Countdown</Link>,
     key: 'countdown-timer',
     icon: <StockOutlined />,
   } );

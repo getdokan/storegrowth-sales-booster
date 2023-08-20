@@ -15528,23 +15528,11 @@ function StockCountdown() {
   const options = [{
     theme: "ct-layout-1",
     label: "ct-layout-1",
-    svg: _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
-    data: "Additional data for option 1"
+    svg: _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
     theme: "ct-layout-2",
     label: "ct-layout-2",
-    svg: _images_layout_layout_2_svg__WEBPACK_IMPORTED_MODULE_4__["default"],
-    data: "Additional data for option 1"
-  }, {
-    theme: "ct-layout-3",
-    label: "ct-layout-3",
-    svg: _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
-    data: "Additional data for option 1"
-  }, {
-    theme: "ct-layout-4",
-    label: "ct-layout-4",
-    svg: _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__["default"],
-    data: "Additional data for option 1"
+    svg: _images_layout_layout_2_svg__WEBPACK_IMPORTED_MODULE_4__["default"]
   }];
 
   const onFormSave = type => {
@@ -45134,7 +45122,7 @@ __webpack_require__.r(__webpack_exports__);
   items.push({
     label: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Link, {
       to: "/countdown-timer"
-    }, "Countdown Timer"),
+    }, "Sales Countdown"),
     key: 'countdown-timer',
     icon: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ant_design_icons__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   });

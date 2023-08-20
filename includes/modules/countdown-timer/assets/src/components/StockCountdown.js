@@ -27,25 +27,11 @@ function StockCountdown() {
       theme: "ct-layout-1",
       label: "ct-layout-1",
       svg: Layout1,
-      data: "Additional data for option 1",
     },
     {
       theme: "ct-layout-2",
       label: "ct-layout-2",
       svg: Layout2,
-      data: "Additional data for option 1",
-    },
-    {
-      theme: "ct-layout-3",
-      label: "ct-layout-3",
-      svg: Layout1,
-      data: "Additional data for option 1",
-    },
-    {
-      theme: "ct-layout-4",
-      label: "ct-layout-4",
-      svg: Layout1,
-      data: "Additional data for option 1",
     },
   ];
 
