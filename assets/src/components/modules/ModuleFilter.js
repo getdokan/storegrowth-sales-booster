@@ -1,5 +1,5 @@
-import React from 'react';
 import { useState } from '@wordpress/element';
+import React from 'react';
 
 function ModuleFilter({ onFilterChange, categories }) {
     const [isActive, setActive] = useState("false");

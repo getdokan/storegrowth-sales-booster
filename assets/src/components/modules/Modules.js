@@ -13,6 +13,7 @@ import logo from '../../../images/logo.svg';
 import downArrowIocn from '../../../images/menu/down-arrow-icon.svg';
 import upArrowIocn from '../../../images/menu/up-arrow-icon.svg';
 import widgetIcon from '../../../images/widget-icon.svg';
+import ModuleFilter from './ModuleFilter';
 import PremiumBox from './PremiumBox';
 
 
@@ -165,7 +166,8 @@ function Modules() {
         </div>
 
         {/* <li className='active-widgets'>Active Widgets <Switch onChange={onChange} defaultChecked /></li> */}
-            
+        <ModuleFilter onFilterChange={handleFilterChange} />
+        
         <PremiumBox />
         
       </div>
