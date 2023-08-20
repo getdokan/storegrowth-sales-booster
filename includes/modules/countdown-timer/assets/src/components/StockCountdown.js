@@ -5,6 +5,7 @@ import Selector from "./Selector";
 import InputColor from "react-input-color";
 
 import Layout1 from "../../images/layout/layout-1.svg";
+import Layout2 from "../../images/layout/layout-2.svg";
 import "../styles/countdown-timer.css";
 
 function StockCountdown() {
@@ -31,7 +32,7 @@ function StockCountdown() {
     {
       theme: "ct-layout-2",
       label: "ct-layout-2",
-      svg: Layout1,
+      svg: Layout2,
       data: "Additional data for option 1",
     },
     {
@@ -196,7 +197,7 @@ function StockCountdown() {
             ></Checkbox>
           </Space>
         </Form.Item>
-        <Form.Item label="Theme selector" labelAlign="left">
+        <Form.Item label="Layout" labelAlign="left">
           <Space direction="vertical">
             <div className="sgsb-countdown-theme">
               {options.map((option, index) => (

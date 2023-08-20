@@ -3,7 +3,7 @@
 .selector {
   cursor: pointer;
   transition: border-color 0.3s ease;
-  background: aliceblue;
+  /* background: aliceblue; */
   border-radius: 10px;
 }
 
