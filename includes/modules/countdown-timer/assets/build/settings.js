@@ -14624,6 +14624,46 @@ Schema.validators = validators;
 
 /***/ }),
 
+/***/ "./src/components/Selector.js":
+/*!************************************!*\
+  !*** ./src/components/Selector.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function Selector(_ref) {
+  let {
+    option,
+    onSelect,
+    isSelected
+  } = _ref;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `selector ${isSelected ? "selected" : ""}`,
+    onClick: () => onSelect(option)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `image-wrapper ${isSelected ? "bordered" : ""}`
+  }, option.image && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: option.image,
+    alt: option.label
+  }), option.svg && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    dangerouslySetInnerHTML: {
+      __html: option.svg
+    }
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, option.label));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Selector);
+
+/***/ }),
+
 /***/ "./src/components/StockCountdown.js":
 /*!******************************************!*\
   !*** ./src/components/StockCountdown.js ***!
@@ -14637,16 +14677,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/card/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/checkbox/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/card/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/checkbox/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_input_color__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-input-color */ "./node_modules/react-input-color/dist/index.esm.js");
+/* harmony import */ var _Selector__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Selector */ "./src/components/Selector.js");
+/* harmony import */ var react_input_color__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-input-color */ "./node_modules/react-input-color/dist/index.esm.js");
+/* harmony import */ var _countdown_timer_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./countdown-timer.css */ "./src/components/countdown-timer.css");
+
+
 
 
 
@@ -14656,33 +14700,66 @@ __webpack_require__.r(__webpack_exports__);
 function StockCountdown() {
   const {
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb");
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    widget_background_color: '#ffffff',
-    border_color: '#cccccc',
+    widget_background_color: "#ffffff",
+    border_color: "#cccccc",
     shop_page_countdown_enable: false,
     product_page_countdown_enable: true,
-    countdown_heading: 'Last chance! [discount]% OFF',
-    heading_text_color: '#000000'
+    countdown_heading: "Last chance! [discount]% OFF",
+    heading_text_color: "#000000",
+    selectedTheme: "theme-1"
   });
+  const options = [{
+    theme: "theme-1",
+    label: "Option 1",
+    image: "https://via.placeholder.com/50",
+    data: "Additional data for option 1"
+  }, {
+    theme: "theme-2",
+    label: "Option 2",
+    svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
+    data: "Additional data for option 2"
+  }, {
+    theme: "theme-2",
+    label: "Option 2",
+    svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
+    data: "Additional data for option 2"
+  }, {
+    theme: "theme-2",
+    label: "Option 2",
+    svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
+    data: "Additional data for option 2"
+  }, {
+    theme: "theme-2",
+    label: "Option 2",
+    svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
+    data: "Additional data for option 2"
+  }, {
+    theme: "theme-2",
+    label: "Option 2",
+    svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
+    data: "Additional data for option 2"
+  } // Add more options as needed
+  ];
 
   const onFormSave = type => {
     setButtonLoading(true);
     let data = {
-      action: 'sgsb_countdown_timer_save_settings',
+      action: "sgsb_countdown_timer_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData
     };
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: data
     }).success(() => {
       setButtonLoading(false);
-      antd__WEBPACK_IMPORTED_MODULE_2__["default"].success({
-        message: 'Countdown Timer',
-        description: 'Stock count down data updated successfully.'
+      antd__WEBPACK_IMPORTED_MODULE_4__["default"].success({
+        message: "Countdown Timer",
+        description: "Stock count down data updated successfully."
       });
     });
   };
@@ -14691,9 +14768,9 @@ function StockCountdown() {
     setPageLoading(true);
     jQuery.ajax({
       url: sgsbAdmin.ajax_url,
-      method: 'POST',
+      method: "POST",
       data: {
-        action: 'sgsb_countdown_timer_get_settings',
+        action: "sgsb_countdown_timer_get_settings",
         _ajax_nonce: sgsbAdmin.nonce
       }
     }).success(response => {
@@ -14710,6 +14787,10 @@ function StockCountdown() {
     getSettings();
   }, []);
 
+  const handleSelect = theme => {
+    onFieldChange("selectedTheme", theme);
+  };
+
   const onFieldChange = (key, value) => {
     setFormData({ ...formData,
       [key]: value
@@ -14717,7 +14798,7 @@ function StockCountdown() {
   };
 
   const isProStyle = {
-    cursor: sgsbAdmin.isPro ? 'pointer' : 'not-allowed'
+    cursor: sgsbAdmin.isPro ? "pointer" : "not-allowed"
   };
 
   const isProFieldChange = (isPro, fieldKey, e) => {
@@ -14727,7 +14808,8 @@ function StockCountdown() {
   const upgradeLabel = !sgsbAdmin.isPro ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "sgsb-field-upgrade-pro-label"
   }, "(Upgrade to premium)") : null;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  console.log(formData);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     labelCol: {
       span: 7
     },
@@ -14735,58 +14817,72 @@ function StockCountdown() {
       span: 17
     },
     autoComplete: "off"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Widget Background Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_7__["default"], {
     initialValue: formData.widget_background_color,
-    onChange: e => onFieldChange('widget_background_color', e.hex),
+    onChange: e => onFieldChange("widget_background_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Border Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_7__["default"], {
     initialValue: formData.border_color,
-    onChange: e => onFieldChange('border_color', e.hex),
+    onChange: e => onFieldChange("border_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Heading Text Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_7__["default"], {
     initialValue: formData.heading_text_color,
-    onChange: e => onFieldChange('heading_text_color', e.hex),
+    onChange: e => onFieldChange("heading_text_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Countdown Heading",
     labelAlign: "left",
     extra: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "[discount] will be replace with your actual discount percentage.", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), " e.g. Last chance! [discount]% OFF")
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     value: formData.countdown_heading,
-    onChange: e => onFieldChange('countdown_heading', e.target.value),
+    onChange: e => onFieldChange("countdown_heading", e.target.value),
     style: {
       width: 400
     },
     placeholder: "Last chance! [discount]% OFF"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Shop Page Display",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     disabled: !sgsbAdmin.isPro,
     checked: formData.shop_page_countdown_enable,
     value: "shop_page_countdown_enable",
-    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, 'shop_page_countdown_enable', e.target.checked) : ''
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+    onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "shop_page_countdown_enable", e.target.checked) : ""
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
     label: "Product Page Display",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     checked: formData.product_page_countdown_enable,
     value: "product_page_countdown_enable",
-    onChange: e => onFieldChange('product_page_countdown_enable', e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    onChange: e => onFieldChange("product_page_countdown_enable", e.target.checked)
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+    label: "Theme selector",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "sgsb-countdown-theme"
+  }, options.map((option, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Selector__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    key: index,
+    option: option,
+    onSelect: () => handleSelect(option.theme) // Pass the theme
+    ,
+    isSelected: option.theme === formData.selectedTheme // Compare with selectedOptionIndex in formData
+
+  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
     type: "primary",
     onClick: () => onFormSave(),
     loading: buttonLoading
@@ -19660,6 +19756,19 @@ function memoizeOne(resultFn, isEqual) {
 }
 
 
+
+
+/***/ }),
+
+/***/ "./src/components/countdown-timer.css":
+/*!********************************************!*\
+  !*** ./src/components/countdown-timer.css ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
 
 
 /***/ }),

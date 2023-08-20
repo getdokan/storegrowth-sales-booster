@@ -77,6 +77,7 @@ class Enqueue_Script {
 		}
 
 		$settings_file = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
+		$style_file    = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
 			'sgsb-countdown-timer-settings',
@@ -84,6 +85,13 @@ class Enqueue_Script {
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
+		);
+
+		wp_enqueue_style(
+			'sgsb-countdown-timer-style',
+			sgsb_modules_url( 'countdown-timer/assets/build/settings.css' ),
+			array(),
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/build/settings.css' ) )
 		);
 	}
 

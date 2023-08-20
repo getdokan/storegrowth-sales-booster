@@ -1,7 +1,7 @@
 function Selector({ option, onSelect, isSelected }) {
   return (
     <div
-      className={`selector ${isSelected ? "selected" : ""}`}
+      className={`selector ${isSelected ? "selected" : ""}` }
       onClick={() => onSelect(option)}
     >
       <div className={`image-wrapper ${isSelected ? "bordered" : ""}`}>
