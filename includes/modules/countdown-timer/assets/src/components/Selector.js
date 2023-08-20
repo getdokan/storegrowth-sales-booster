@@ -7,8 +7,9 @@ function Selector({ option, onSelect, isSelected }) {
       <div className={`image-wrapper ${isSelected ? "bordered" : ""}`}>
         {option.image && <img src={option.image} alt={option.label} />}
         {option.svg && <div dangerouslySetInnerHTML={{ __html: option.svg }} />}
+        <p>{option.label}</p>
       </div>
-      <p>{option.label}</p>
+      
     </div>
   );
 }

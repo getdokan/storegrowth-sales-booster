@@ -14657,7 +14657,7 @@ function Selector(_ref) {
     dangerouslySetInnerHTML: {
       __html: option.svg
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, option.label));
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, option.label)));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Selector);
@@ -14722,22 +14722,22 @@ function StockCountdown() {
     svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
     data: "Additional data for option 2"
   }, {
-    theme: "theme-2",
+    theme: "theme-3",
     label: "Option 2",
     svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
     data: "Additional data for option 2"
   }, {
-    theme: "theme-2",
+    theme: "theme-4",
     label: "Option 2",
     svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
     data: "Additional data for option 2"
   }, {
-    theme: "theme-2",
+    theme: "theme-5",
     label: "Option 2",
     svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
     data: "Additional data for option 2"
   }, {
-    theme: "theme-2",
+    theme: "theme-6",
     label: "Option 2",
     svg: '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
     data: "Additional data for option 2"
