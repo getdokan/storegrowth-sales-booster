@@ -50,46 +50,11 @@ function Modules() {
     
   };
 
-  // static filter category
-  // const CATEGORIES = [
-  //   "Quick Cart", 
-  //   "Discount Banner", 
-  //   "Upsell", 
-  //   "Stock",
-  //   "Sales"
-  // ]
-
   useEffect(() => {
     if (allModules) {
       setSelectFilter({ modules: allModules });
     }
   }, [allModules]);
-
-  // handle filter func
-  // const handleFilterChange = (event) => {
-  //   setSelectFilter(prevState => {
-  //     let filters = new Set(prevState.filters)
-  //     let modules = allModules
-      
-      
-  //     if (event.target.checked) {
-  //       filters.add(event.target.value)
-  //     } else {
-  //       filters.delete(event.target.value)
-  //     }
-      
-  //     if (filters.size) {
-  //       modules = modules.filter(module => {
-  //         return filters.has(module.category)
-  //       })
-  //     }
-      
-  //     return {
-  //       filters,
-  //       modules,
-  //     }
-  //   })
-  // }
 
   // Module List
   const ModuleList = ({ modules }) =>{
@@ -102,10 +67,7 @@ function Modules() {
     )
   }
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-  };
-
+  // handle active module of settings url
   const [ activeModule, setActiveModule ] = useState(false)
   const [ activeClass, setActiveClass ] = useState(false)
 
@@ -116,10 +78,35 @@ function Modules() {
     }, 4000)
   }
 
+  // handle active class
   const toggleMenuClass = () => {
     setActiveClass( ( prevIsActive ) => !prevIsActive );
     
   }
+
+  // handle module filter of active
+  const handleActiveModuleFilter = (event) => {
+
+    setSelectFilter((prevState) =>{
+      let filters = new Set(prevState.filters)
+      let modules = allModules
+
+      event == true ? filters.add(event) : filters.delete(event);
+
+      if ( filters.size ) {
+        modules = modules.filter(module => {
+          return filters.has(module.status)
+
+        })
+      }
+
+      return {
+        modules,
+      }
+
+    })
+
+  };
 
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
@@ -165,8 +152,7 @@ function Modules() {
           </ul>
         </div>
 
-        {/* <li className='active-widgets'>Active Widgets <Switch onChange={onChange} defaultChecked /></li> */}
-        <ModuleFilter onFilterChange={handleFilterChange} />
+        <ModuleFilter onFilterChange={handleActiveModuleFilter} />
         
         <PremiumBox />
         
@@ -193,7 +179,7 @@ function Modules() {
                 </div>
                 {/* <ModuleFilter 
                   categories={CATEGORIES}
-                  onFilterChange={handleFilterChange}
+                  onFilterChange={handleActiveModuleFilter}
                 /> */}
 
               </Row>

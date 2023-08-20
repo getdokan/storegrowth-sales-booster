@@ -1,32 +1,18 @@
 import { useState } from '@wordpress/element';
+import { Switch } from 'antd';
 import React from 'react';
 
-function ModuleFilter({ onFilterChange, categories }) {
-    const [isActive, setActive] = useState("false");
+function ModuleFilter({ onFilterChange }) {
+    const [filterEnabled, setFilterEnabled] = useState(false);
 
-    const handleToggle = () => {
-      setActive(!isActive);
+    const handleSwitchChange = (checked) => {
+      setFilterEnabled(checked);
+      onFilterChange(checked);
     };
 
     return (
-      <div className={isActive ? "module-filter" : 'module-filter active'}>
-        <button role="button" onClick={handleToggle} class="select-dropdown__button">
-          <span>Select </span>
-        </button>
-        <ul className='dropdown__list'>
-          {categories.map(category => (
-            <li key={category}>
-              <label>
-                <input 
-                  onChange={onFilterChange}
-                  type="checkbox"
-                  value={category} />
-                {category}
-              </label>
-            </li>
-          ))}
-
-        </ul>
+      <div className={'module-filter active'}>
+        <li className='active-widgets'>Active Widgets <Switch onChange={handleSwitchChange} checked={filterEnabled} defaultChecked /></li>
       </div>
     );
 }

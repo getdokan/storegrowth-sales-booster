@@ -540,6 +540,7 @@ End Settings Sidebar
 
     @media ( min-width: 1500px ) {
       flex-basis: 320px;
+      padding: 0 22px;
       
     }
 
@@ -555,6 +556,11 @@ End Settings Sidebar
       display: flex;
       align-items: center;
       gap: 7px;
+
+      @media ( min-width: 1500px ) {
+        padding: 50px 8px 40px;
+        
+      }
 
       svg {
         width: 14px;
@@ -573,6 +579,11 @@ End Settings Sidebar
         padding: 0 12px 20px 20px;
         gap: 10px;
         position: relative;
+
+        @media ( min-width: 1500px ) {
+          padding: 0 12px 20px 8px;
+          
+        }
 
         &:before {
           content: "";
@@ -608,6 +619,11 @@ End Settings Sidebar
           padding: 12px 0px 12px 44px;
           position: relative;
 
+          @media ( min-width: 1500px ) {
+            padding: 12px 0px 12px 34px;
+            
+          }
+
           &:hover {
             a {
               color: #ffffff;
@@ -624,6 +640,11 @@ End Settings Sidebar
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
+            
+            @media ( min-width: 1500px ) {
+              left: 8px;
+              
+            }
 
           }
 
@@ -720,7 +741,7 @@ End Settings Sidebar
           &.direct-checkout {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url('../images/menu/direct-checkout.svg');
               width: 19px;
 
             }
@@ -728,7 +749,7 @@ End Settings Sidebar
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
+                background: url('../images/menu/direct-checkout-white.svg');
   
               }
               
@@ -738,7 +759,7 @@ End Settings Sidebar
           &.stock-bar {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url('../images/menu/stock-bar.svg');
               width: 19px;
 
             }
@@ -746,7 +767,7 @@ End Settings Sidebar
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
+                background: url('../images/menu/stock-bar-white.svg');
   
               }
               
@@ -915,6 +936,104 @@ End Settings Sidebar
     flex-basis: 83%;
     max-width: 100%;
 
+    @media ( min-width: 1200px ) and (max-width: 1400px) {
+      flex-basis: 80%;
+
+    }
+
+    @media (min-width: 1800px) {
+      .sgsb__module-pagination {
+        padding-left: 38px !important;
+
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sgsb__module-pagination {
+        padding-left: 8px !important;
+
+      }
+    }
+
+    @media ( min-width: 1200px ) and (max-width: 1439px) {
+      .module-desc[class] {
+        min-height: 208px;
+
+      }
+
+    }
+
+    @media ( min-width: 992px ) and (max-width: 1199px) {
+      .sgsb-module-card {
+        .ant-card-body {
+          & > div {
+            &.ant-row {
+              display: block;
+            }
+          }
+        }
+      }
+
+    }
+
+    @media ( min-width: 1200px ) and (max-width: 1300px) {
+      .sgsb-module-card {
+        .sgsb__module-footer[class] {
+          padding: 8px !important;
+
+          .doc-btn {
+            gap: 3px !important;
+
+          }
+
+          .footer-btn[class] {
+            font-size: 10px;
+            
+          }
+
+        }
+      }
+      
+    }
+
+    @media ( min-width: 1301px ) and (max-width: 1439px) {
+      .sgsb-module-card {
+        .sgsb__module-footer[class] {
+          padding: 8px !important;
+
+          .footer-btn[class] {
+            font-size: 12px;
+
+          }
+
+        }
+      }
+      
+    }
+
+    @media ( min-width: 1025px ) and (max-width: 1199px) {
+      flex-basis: 76%;
+
+      .sgsb-module-card {
+        .ant-card-body {
+          & > div {
+            &.ant-row {
+              display: block;
+            }
+          }
+        }
+      }
+
+    }
+
+
+    .module-banner[class] {
+      .ant-image[class] {
+        width: 100% !important;
+
+      }
+    }
+
     &-box-content {
       background: #f4f7fe;
       border-top-left-radius: 15px;
@@ -934,6 +1053,17 @@ End Settings Sidebar
 
         @media ( max-width: 767px ) {
           display: none;
+
+        }
+      }
+
+      .module-banner {
+        img {
+          height: 165px;
+          width: 100%;
+          object-fit: cover;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
 
         }
       }

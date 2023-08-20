@@ -11350,38 +11350,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/switch/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
 
+
 function ModuleFilter(_ref) {
   let {
-    onFilterChange,
-    categories
+    onFilterChange
   } = _ref;
-  const [isActive, setActive] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)("false");
+  const [filterEnabled, setFilterEnabled] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
 
-  const handleToggle = () => {
-    setActive(!isActive);
+  const handleSwitchChange = checked => {
+    setFilterEnabled(checked);
+    onFilterChange(checked);
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: isActive ? "module-filter" : 'module-filter active'
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    role: "button",
-    onClick: handleToggle,
-    class: "select-dropdown__button"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Select ")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
-    className: "dropdown__list"
-  }, categories.map(category => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-    key: category
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    onChange: onFilterChange,
-    type: "checkbox",
-    value: category
-  }), category)))));
+    className: 'module-filter active'
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+    className: "active-widgets"
+  }, "Active Widgets ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    onChange: handleSwitchChange,
+    checked: filterEnabled,
+    defaultChecked: true
+  })));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ModuleFilter);
@@ -11517,15 +11513,7 @@ function Modules() {
   const hanglePageItem = pageNumber => {
     setMinValue((pageNumber - 1) * perPageItem);
     setMaxValue(pageNumber * perPageItem);
-  }; // static filter category
-  // const CATEGORIES = [
-  //   "Quick Cart", 
-  //   "Discount Banner", 
-  //   "Upsell", 
-  //   "Stock",
-  //   "Sales"
-  // ]
-
+  };
 
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (allModules) {
@@ -11533,28 +11521,7 @@ function Modules() {
         modules: allModules
       });
     }
-  }, [allModules]); // handle filter func
-  // const handleFilterChange = (event) => {
-  //   setSelectFilter(prevState => {
-  //     let filters = new Set(prevState.filters)
-  //     let modules = allModules
-  //     if (event.target.checked) {
-  //       filters.add(event.target.value)
-  //     } else {
-  //       filters.delete(event.target.value)
-  //     }
-  //     if (filters.size) {
-  //       modules = modules.filter(module => {
-  //         return filters.has(module.category)
-  //       })
-  //     }
-  //     return {
-  //       filters,
-  //       modules,
-  //     }
-  //   })
-  // }
-  // Module List
+  }, [allModules]); // Module List
 
   const ModuleList = _ref => {
     let {
@@ -11564,11 +11531,8 @@ function Modules() {
       module: module,
       key: (0,nanoid__WEBPACK_IMPORTED_MODULE_13__.nanoid)()
     })));
-  };
+  }; // handle active module of settings url
 
-  const onChange = checked => {
-    console.log(`switch to ${checked}`);
-  };
 
   const [activeModule, setActiveModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [activeClass, setActiveClass] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
@@ -11578,10 +11542,30 @@ function Modules() {
     setTimeout(() => {
       setActiveModule(false);
     }, 4000);
-  };
+  }; // handle active class
+
 
   const toggleMenuClass = () => {
     setActiveClass(prevIsActive => !prevIsActive);
+  }; // handle module filter of active
+
+
+  const handleActiveModuleFilter = event => {
+    setSelectFilter(prevState => {
+      let filters = new Set(prevState.filters);
+      let modules = allModules;
+      event == true ? filters.add(event) : filters.delete(event);
+
+      if (filters.size) {
+        modules = modules.filter(module => {
+          return filters.has(module.status);
+        });
+      }
+
+      return {
+        modules
+      };
+    });
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -11625,7 +11609,7 @@ function Modules() {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    onFilterChange: handleFilterChange
+    onFilterChange: handleActiveModuleFilter
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
