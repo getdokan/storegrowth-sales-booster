@@ -1,9 +1,11 @@
-import { Card, Form, Input, Button, Space, Checkbox, notification } from "antd";
+import { Card, Form, Input, Button, Space, Checkbox, notification,Image } from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import Selector from "./Selector";
 import InputColor from "react-input-color";
-import "./countdown-timer.css";
+// import SVGIcon from "./SVGIcon";
+import Layout1 from "../../images/layout/layout-1.svg";
+import "../styles/countdown-timer.css";
 
 function StockCountdown() {
   const { setPageLoading } = useDispatch("sgsb");
@@ -16,52 +18,34 @@ function StockCountdown() {
     product_page_countdown_enable: true,
     countdown_heading: "Last chance! [discount]% OFF",
     heading_text_color: "#000000",
-    selectedTheme: "theme-1",
+    selectedTheme: "ct-layout-1",
   });
 
   const options = [
     {
-      theme: "theme-1",
-      label: "Option 1",
-      image: "https://via.placeholder.com/50",
+      theme: "ct-layout-1",
+      label: "ct-layout-1",
+      svg: Layout1,
       data: "Additional data for option 1",
     },
     {
-      theme: "theme-2",
-      label: "Option 2",
-      svg:
-        '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
-      data: "Additional data for option 2",
+      theme: "ct-layout-2",
+      label: "ct-layout-2",
+      svg: Layout1,
+      data: "Additional data for option 1",
     },
     {
-      theme: "theme-3",
-      label: "Option 2",
-      svg:
-        '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
-      data: "Additional data for option 2",
+      theme: "ct-layout-3",
+      label: "ct-layout-3",
+      svg: Layout1,
+      data: "Additional data for option 1",
     },
     {
-      theme: "theme-4",
-      label: "Option 2",
-      svg:
-        '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
-      data: "Additional data for option 2",
+      theme: "ct-layout-4",
+      label: "ct-layout-4",
+      svg: Layout1,
+      data: "Additional data for option 1",
     },
-    {
-      theme: "theme-5",
-      label: "Option 2",
-      svg:
-        '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
-      data: "Additional data for option 2",
-    },
-    {
-      theme: "theme-6",
-      label: "Option 2",
-      svg:
-        '<svg width="50" height="50"><circle cx="25" cy="25" r="20" fill="blue" /></svg>',
-      data: "Additional data for option 2",
-    },
-    // Add more options as needed
   ];
 
   const onFormSave = (type) => {
@@ -131,7 +115,7 @@ function StockCountdown() {
   const upgradeLabel = !sgsbAdmin.isPro ? (
     <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>
   ) : null;
-  console.log(formData);
+  // console.log(formData);
   return (
     <Card>
       <Form
@@ -150,7 +134,6 @@ function StockCountdown() {
             placement="right"
           />
         </Form.Item>
-
         <Form.Item label="Border Color" labelAlign="left">
           <InputColor
             initialValue={formData.border_color}
@@ -158,7 +141,6 @@ function StockCountdown() {
             placement="right"
           />
         </Form.Item>
-
         <Form.Item label="Heading Text Color" labelAlign="left">
           <InputColor
             initialValue={formData.heading_text_color}
@@ -166,7 +148,6 @@ function StockCountdown() {
             placement="right"
           />
         </Form.Item>
-
         <Form.Item
           label="Countdown Heading"
           labelAlign="left"
@@ -184,7 +165,6 @@ function StockCountdown() {
             placeholder="Last chance! [discount]% OFF"
           />
         </Form.Item>
-
         <Form.Item label="Shop Page Display" labelAlign="left">
           <Space direction="vertical">
             <Checkbox
@@ -205,7 +185,6 @@ function StockCountdown() {
           </Space>
           <div>{upgradeLabel}</div>
         </Form.Item>
-
         <Form.Item label="Product Page Display" labelAlign="left">
           <Space direction="vertical">
             <Checkbox
@@ -217,7 +196,6 @@ function StockCountdown() {
             ></Checkbox>
           </Space>
         </Form.Item>
-
         <Form.Item label="Theme selector" labelAlign="left">
           <Space direction="vertical">
             <div className="sgsb-countdown-theme">
@@ -232,7 +210,6 @@ function StockCountdown() {
             </div>
           </Space>
         </Form.Item>
-
         <Button
           type="primary"
           onClick={() => onFormSave()}

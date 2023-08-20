@@ -7,9 +7,9 @@
   border-radius: 10px;
 }
 
-.selector.selected {
+/* .selector.selected {
   border-color: blue;
-}
+} */
 
 .image-wrapper {
   border: 2px solid transparent;
@@ -20,7 +20,7 @@
 }
 
 .selector.selected .image-wrapper {
-  border-color: blue;
+  border-color: #40a9ff;
   border-radius: 10px;
 }
 

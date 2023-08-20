@@ -1,6 +1,6 @@
-/*!****************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/components/countdown-timer.css ***!
-  \****************************************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/styles/countdown-timer.css ***!
+  \************************************************************************************************************************************************************************************/
 /* Template selector css start */
 /* Selector Component CSS */
 .selector {
@@ -10,9 +10,9 @@
   border-radius: 10px;
 }
 
-.selector.selected {
+/* .selector.selected {
   border-color: blue;
-}
+} */
 
 .image-wrapper {
   border: 2px solid transparent;
@@ -23,7 +23,7 @@
 }
 
 .selector.selected .image-wrapper {
-  border-color: blue;
+  border-color: #40a9ff;
   border-radius: 10px;
 }
 
