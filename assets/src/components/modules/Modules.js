@@ -177,10 +177,6 @@ function Modules() {
                     />
                   </Button>
                 </div>
-                {/* <ModuleFilter 
-                  categories={CATEGORIES}
-                  onFilterChange={handleActiveModuleFilter}
-                /> */}
 
               </Row>
             </Col>

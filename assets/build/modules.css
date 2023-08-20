@@ -27159,21 +27159,6 @@ End Settings Sidebar
   position: relative;
   margin-left: -1px;
 }
-.sgsb-admin-dashboard-module-box-content:after {
-  content: "";
-  position: absolute;
-  background: #fff;
-  width: 18px;
-  height: 10px;
-  top: -4px;
-  left: -8px;
-  transform: rotate(-49deg);
-}
-@media (max-width: 767px) {
-  .sgsb-admin-dashboard-module-box-content:after {
-    display: none;
-  }
-}
 .sgsb-admin-dashboard-module-box-content .module-banner img {
   height: 165px;
   width: 100%;
@@ -27218,6 +27203,37 @@ End Settings Sidebar
   background: #ffffff;
   padding: 20px 0;
   margin-bottom: 0;
+  position: relative;
+}
+.sgsb-admin-dashboard-module-top-bar:after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+  width: 36px;
+  height: 16px;
+  bottom: -4px;
+  left: -15px;
+  transform: rotate(-58deg);
+}
+@media (max-width: 767px) {
+  .sgsb-admin-dashboard-module-top-bar:after {
+    display: none;
+  }
+}
+.sgsb-admin-dashboard-module-top-bar:before {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+  width: 36px;
+  height: 16px;
+  bottom: -6px;
+  left: -15px;
+  transform: rotate(-32deg);
+}
+@media (max-width: 767px) {
+  .sgsb-admin-dashboard-module-top-bar:before {
+    display: none;
+  }
 }
 @media (max-width: 767px) {
   .sgsb-admin-dashboard-module-top-bar {
