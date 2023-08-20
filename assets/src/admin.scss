@@ -558,7 +558,7 @@ End Settings Sidebar
       gap: 7px;
 
       @media ( min-width: 1500px ) {
-        padding: 50px 8px 40px;
+        // padding: 50px 8px 40px;
         
       }
 
@@ -581,7 +581,7 @@ End Settings Sidebar
         position: relative;
 
         @media ( min-width: 1500px ) {
-          padding: 0 12px 20px 8px;
+          // padding: 0 12px 20px 8px;
           
         }
 
@@ -620,7 +620,7 @@ End Settings Sidebar
           position: relative;
 
           @media ( min-width: 1500px ) {
-            padding: 12px 0px 12px 34px;
+            // padding: 12px 0px 12px 34px;
             
           }
 
@@ -642,7 +642,7 @@ End Settings Sidebar
             background-position: center;
             
             @media ( min-width: 1500px ) {
-              left: 8px;
+              // left: 8px;
               
             }
 
@@ -933,13 +933,13 @@ End Settings Sidebar
   }
 
   &-module {
-    flex-basis: 83%;
-    max-width: 100%;
+    flex: 3;
+    position: relative;
 
-    @media ( min-width: 1200px ) and (max-width: 1400px) {
-      flex-basis: 80%;
+    // @media ( min-width: 1200px ) and (max-width: 1400px) {
+    //   flex-basis: 80%;
 
-    }
+    // }
 
     @media (min-width: 1800px) {
       .sgsb__module-pagination {
@@ -1012,7 +1012,7 @@ End Settings Sidebar
     }
 
     @media ( min-width: 1025px ) and (max-width: 1199px) {
-      flex-basis: 76%;
+      // flex-basis: 76%;
 
       .sgsb-module-card {
         .ant-card-body {
@@ -1071,7 +1071,7 @@ End Settings Sidebar
     }
 
     @media ( min-width: 1500px ) and ( max-width: 2000px ) {
-      flex-basis: 80%;
+      // flex-basis: 80%;
 
       &-box-content {
         // padding-left: 0 !important;
@@ -1084,7 +1084,7 @@ End Settings Sidebar
     }
 
     @media ( min-width: 2001px ) {
-      flex-basis: 83%;
+      // flex-basis: 83%;
 
       &-box-content {
         // padding-left: 0 !important;
@@ -1112,7 +1112,7 @@ End Settings Sidebar
     }
 
     @media ( min-width: 768px ) and ( max-width: 1024px ) {
-      flex-basis: 71%;
+      // flex-basis: 71%;
 
       .module-banner {
         .ant-image {

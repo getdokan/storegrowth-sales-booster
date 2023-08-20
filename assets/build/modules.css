@@ -26866,11 +26866,6 @@ End Settings Sidebar
   align-items: center;
   gap: 7px;
 }
-@media (min-width: 1500px) {
-  .sgsb-admin-dashboard-sideabr h3 {
-    padding: 50px 8px 40px;
-  }
-}
 .sgsb-admin-dashboard-sideabr h3 svg {
   width: 14px;
 }
@@ -26884,11 +26879,6 @@ End Settings Sidebar
   padding: 0 12px 20px 20px;
   gap: 10px;
   position: relative;
-}
-@media (min-width: 1500px) {
-  .sgsb-admin-dashboard-sideabr .all-widgets-menu h4 {
-    padding: 0 12px 20px 8px;
-  }
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu h4:before {
   content: "";
@@ -26914,11 +26904,6 @@ End Settings Sidebar
   padding: 12px 0px 12px 44px;
   position: relative;
 }
-@media (min-width: 1500px) {
-  .sgsb-admin-dashboard-sideabr .all-widgets-menu ul li {
-    padding: 12px 0px 12px 34px;
-  }
-}
 .sgsb-admin-dashboard-sideabr .all-widgets-menu ul li:hover a {
   color: #ffffff;
 }
@@ -26931,11 +26916,6 @@ End Settings Sidebar
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-}
-@media (min-width: 1500px) {
-  .sgsb-admin-dashboard-sideabr .all-widgets-menu ul li:before {
-    left: 8px;
-  }
 }
 .sgsb-admin-dashboard-sideabr .all-widgets-menu ul li.fly-cart:before {
   content: "";
@@ -27122,13 +27102,8 @@ End Settings Sidebar
   border: 0;
 }
 .sgsb-admin-dashboard-module {
-  flex-basis: 83%;
-  max-width: 100%;
-}
-@media (min-width: 1200px) and (max-width: 1400px) {
-  .sgsb-admin-dashboard-module {
-    flex-basis: 80%;
-  }
+  flex: 3;
+  position: relative;
 }
 @media (min-width: 1800px) {
   .sgsb-admin-dashboard-module .sgsb__module-pagination {
@@ -27170,9 +27145,6 @@ End Settings Sidebar
   }
 }
 @media (min-width: 1025px) and (max-width: 1199px) {
-  .sgsb-admin-dashboard-module {
-    flex-basis: 76%;
-  }
   .sgsb-admin-dashboard-module .sgsb-module-card .ant-card-body > div.ant-row {
     display: block;
   }
@@ -27211,17 +27183,11 @@ End Settings Sidebar
   border-top-right-radius: 10px;
 }
 @media (min-width: 1500px) and (max-width: 2000px) {
-  .sgsb-admin-dashboard-module {
-    flex-basis: 80%;
-  }
   .sgsb-admin-dashboard-module-box-content {
     padding: 30px 0 0 30px;
   }
 }
 @media (min-width: 2001px) {
-  .sgsb-admin-dashboard-module {
-    flex-basis: 83%;
-  }
   .sgsb-admin-dashboard-module-box-content {
     padding: 30px 0 0 30px;
   }
@@ -27233,9 +27199,6 @@ End Settings Sidebar
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
-  .sgsb-admin-dashboard-module {
-    flex-basis: 71%;
-  }
   .sgsb-admin-dashboard-module .module-banner .ant-image {
     width: 100% !important;
   }
