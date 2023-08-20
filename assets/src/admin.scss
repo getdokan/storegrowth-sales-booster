@@ -538,7 +538,7 @@ End Settings Sidebar
     flex-basis: 200px;
     background: #ffffff;
 
-    @media ( min-width: 1500px ) {
+    @media ( min-width: 1800px ) {
       flex-basis: 320px;
       padding: 0 22px;
       
@@ -1071,15 +1071,44 @@ End Settings Sidebar
     }
 
     @media ( min-width: 1500px ) and ( max-width: 2000px ) {
-      flex-basis: 74%;
+      flex-basis: 80%;
 
       &-box-content {
         // padding-left: 0 !important;
         padding: 30px 0 0 30px;
 
+      }
+
+      
+      
+    }
+
+    @media ( min-width: 2001px ) {
+      flex-basis: 83%;
+
+      &-box-content {
+        // padding-left: 0 !important;
+        padding: 30px 0 0 30px;
+
+        .sgsb-module-card {
+          .ant-card-body {
+            & > div {
+              &.ant-row {
+                display: block;
+              }
+            }
+          }
+        }
+
+        .module-banner {
+          .ant-image {
+            width: 100% !important;
+  
+          }
+        }
+
 
       }
-      
     }
 
     @media ( min-width: 768px ) and ( max-width: 1024px ) {
