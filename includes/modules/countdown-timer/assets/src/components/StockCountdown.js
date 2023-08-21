@@ -129,27 +129,34 @@ function StockCountdown() {
         }}
         autoComplete="off"
       >
-        <Form.Item label="Widget Background Color" labelAlign="left">
-          <InputColor
-            initialValue={formData.widget_background_color}
-            onChange={(e) => onFieldChange("widget_background_color", e.hex)}
-            placement="right"
-          />
-        </Form.Item>
-        <Form.Item label="Border Color" labelAlign="left">
-          <InputColor
-            initialValue={formData.border_color}
-            onChange={(e) => onFieldChange("border_color", e.hex)}
-            placement="right"
-          />
-        </Form.Item>
-        <Form.Item label="Heading Text Color" labelAlign="left">
-          <InputColor
-            initialValue={formData.heading_text_color}
-            onChange={(e) => onFieldChange("heading_text_color", e.hex)}
-            placement="right"
-          />
-        </Form.Item>
+        {formData.selected_theme === "ct-custom" && (
+          <div>
+            <Form.Item label="Widget Background Color" labelAlign="left">
+              <InputColor
+                initialValue={formData.widget_background_color}
+                onChange={(e) =>
+                  onFieldChange("widget_background_color", e.hex)
+                }
+                placement="right"
+              />
+            </Form.Item>
+            <Form.Item label="Border Color" labelAlign="left">
+              <InputColor
+                initialValue={formData.border_color}
+                onChange={(e) => onFieldChange("border_color", e.hex)}
+                placement="right"
+              />
+            </Form.Item>
+            <Form.Item label="Heading Text Color" labelAlign="left">
+              <InputColor
+                initialValue={formData.heading_text_color}
+                onChange={(e) => onFieldChange("heading_text_color", e.hex)}
+                placement="right"
+              />
+            </Form.Item>
+          </div>
+        )}
+
         <Form.Item
           label="Countdown Heading"
           labelAlign="left"
@@ -198,7 +205,7 @@ function StockCountdown() {
             ></Checkbox>
           </Space>
         </Form.Item>
-        <Form.Item label="Layout" labelAlign="left">
+        <Form.Item label="Theme" labelAlign="left">
           <Space direction="vertical">
             <div className="sgsb-countdown-theme">
               {options.map((option, index) => (

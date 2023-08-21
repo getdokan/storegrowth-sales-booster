@@ -15656,7 +15656,7 @@ function StockCountdown() {
       span: 17
     },
     autoComplete: "off"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
+  }, formData.selected_theme === "ct-custom" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Widget Background Color",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -15677,7 +15677,7 @@ function StockCountdown() {
     initialValue: formData.heading_text_color,
     onChange: e => onFieldChange("heading_text_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Countdown Heading",
     labelAlign: "left",
     extra: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "[discount] will be replace with your actual discount percentage.", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), " e.g. Last chance! [discount]% OFF")
@@ -15708,7 +15708,7 @@ function StockCountdown() {
     value: "product_page_countdown_enable",
     onChange: e => onFieldChange("product_page_countdown_enable", e.target.checked)
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
-    label: "Layout",
+    label: "Theme",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
     direction: "vertical"
