@@ -5159,6 +5159,48 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
+/***/ "./images/layout/custom.svg":
+/*!**********************************!*\
+  !*** ./images/layout/custom.svg ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReactComponent": () => (/* binding */ SvgCustom),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _rect, _path;
+
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+var SvgCustom = function SvgCustom(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    width: 520,
+    height: 193,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _rect || (_rect = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    width: 520,
+    height: 193,
+    rx: 6,
+    fill: "#EBF6FF"
+  })), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M162.327 121.84c-3.313 0-6.3-.513-8.96-1.54-2.66-1.073-4.923-2.637-6.79-4.69-1.866-2.1-3.313-4.69-4.34-7.77-1.026-3.127-1.54-6.767-1.54-10.92 0-4.107.514-7.747 1.54-10.92 1.027-3.22 2.474-5.903 4.34-8.05a17.936 17.936 0 0 1 6.79-4.97c2.66-1.12 5.647-1.68 8.96-1.68 4.527 0 8.26.933 11.2 2.8 2.94 1.82 5.297 4.713 7.07 8.68l-9.17 4.76c-.653-2.053-1.68-3.687-3.08-4.9-1.353-1.26-3.36-1.89-6.02-1.89-3.126 0-5.646 1.027-7.56 3.08-1.866 2.007-2.8 4.947-2.8 8.82v7.84c0 3.873.934 6.837 2.8 8.89 1.914 2.007 4.434 3.01 7.56 3.01 2.614 0 4.69-.7 6.23-2.1a13.083 13.083 0 0 0 3.5-5.18l8.68 5.04c-1.82 3.733-4.223 6.627-7.21 8.68-2.94 2.007-6.673 3.01-11.2 3.01Zm45.996-7h-.35a11.84 11.84 0 0 1-1.33 2.66 8.346 8.346 0 0 1-2.03 2.24c-.84.653-1.843 1.167-3.01 1.54-1.12.373-2.427.56-3.92.56-3.78 0-6.65-1.237-8.61-3.71-1.913-2.52-2.87-6.113-2.87-10.78v-23.1h10.36v22.19c0 2.24.397 3.967 1.19 5.18.793 1.213 2.147 1.82 4.06 1.82a8.41 8.41 0 0 0 2.38-.35 7.256 7.256 0 0 0 2.1-.98 5.62 5.62 0 0 0 1.47-1.68c.373-.653.56-1.423.56-2.31V84.25h10.36V121h-10.36v-6.16Zm31.459 7c-3.546 0-6.533-.56-8.96-1.68-2.426-1.167-4.596-2.8-6.51-4.9l6.09-6.16c1.307 1.447 2.754 2.59 4.34 3.43 1.587.84 3.384 1.26 5.39 1.26 2.054 0 3.477-.303 4.27-.91.794-.653 1.19-1.517 1.19-2.59 0-1.727-1.236-2.753-3.71-3.08l-3.99-.49c-8.26-1.027-12.39-4.807-12.39-11.34 0-1.773.327-3.383.98-4.83a10.999 10.999 0 0 1 2.87-3.78c1.26-1.073 2.754-1.89 4.48-2.45 1.774-.607 3.757-.91 5.95-.91 1.914 0 3.594.14 5.04.42 1.494.233 2.8.607 3.92 1.12a12.337 12.337 0 0 1 3.15 1.82 26.7 26.7 0 0 1 2.87 2.38l-5.95 6.09a12.909 12.909 0 0 0-3.99-2.73c-1.446-.7-2.94-1.05-4.48-1.05-1.773 0-3.033.28-3.78.84-.746.56-1.12 1.307-1.12 2.24 0 .98.257 1.75.77 2.31.56.513 1.587.887 3.08 1.12l4.13.56c8.074 1.073 12.11 4.76 12.11 11.06 0 1.773-.373 3.407-1.12 4.9-.746 1.493-1.82 2.8-3.22 3.92-1.353 1.073-3.01 1.913-4.97 2.52-1.913.607-4.06.91-6.44.91Zm34.147-.84c-3.594 0-6.324-.91-8.19-2.73-1.82-1.82-2.73-4.48-2.73-7.98V92.3h-5.18v-8.05h2.59c1.4 0 2.356-.327 2.87-.98.513-.7.77-1.68.77-2.94v-6.02h9.31v9.94h7.28v8.05h-7.28v20.65h6.72V121h-6.16Zm27.553.84c-2.706 0-5.133-.443-7.28-1.33a14.848 14.848 0 0 1-5.39-3.85c-1.446-1.68-2.566-3.71-3.36-6.09-.793-2.38-1.19-5.04-1.19-7.98 0-2.94.397-5.6 1.19-7.98.794-2.38 1.914-4.387 3.36-6.02a14.845 14.845 0 0 1 5.39-3.85c2.147-.887 4.574-1.33 7.28-1.33 2.707 0 5.11.443 7.21 1.33 2.147.887 3.944 2.17 5.39 3.85 1.494 1.633 2.637 3.64 3.43 6.02.794 2.38 1.19 5.04 1.19 7.98 0 2.94-.396 5.6-1.19 7.98-.793 2.38-1.936 4.41-3.43 6.09-1.446 1.68-3.243 2.963-5.39 3.85-2.1.887-4.503 1.33-7.21 1.33Zm0-8.19c2.054 0 3.64-.63 4.76-1.89 1.12-1.26 1.68-3.057 1.68-5.39v-7.49c0-2.333-.56-4.13-1.68-5.39-1.12-1.26-2.706-1.89-4.76-1.89-2.053 0-3.64.63-4.76 1.89-1.12 1.26-1.68 3.057-1.68 5.39v7.49c0 2.333.56 4.13 1.68 5.39 1.12 1.26 2.707 1.89 4.76 1.89Zm23.602 7.35V84.25h10.36v6.23h.42a10.982 10.982 0 0 1 3.36-4.97c1.587-1.4 3.757-2.1 6.51-2.1 2.52 0 4.667.63 6.44 1.89 1.773 1.26 3.057 3.103 3.85 5.53h.21a9.857 9.857 0 0 1 1.47-2.87c.7-.933 1.54-1.727 2.52-2.38a12.544 12.544 0 0 1 3.29-1.54c1.213-.42 2.52-.63 3.92-.63 3.547 0 6.253 1.26 8.12 3.78 1.913 2.52 2.87 6.113 2.87 10.78V121h-10.36V98.81c0-4.667-1.68-7-5.04-7-1.54 0-2.94.443-4.2 1.33-1.26.887-1.89 2.24-1.89 4.06V121h-10.36V98.81c0-4.667-1.68-7-5.04-7-.747 0-1.493.117-2.24.35-.7.187-1.353.513-1.96.98a5.79 5.79 0 0 0-1.4 1.75c-.327.653-.49 1.423-.49 2.31V121h-10.36Z",
+    fill: "#073B4C"
+  })));
+};
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTIwIiBoZWlnaHQ9IjE5MyIgdmlld0JveD0iMCAwIDUyMCAxOTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MjAiIGhlaWdodD0iMTkzIiByeD0iNiIgZmlsbD0iI0VCRjZGRiIvPgo8cGF0aCBkPSJNMTYyLjMyNyAxMjEuODRDMTU5LjAxNCAxMjEuODQgMTU2LjAyNyAxMjEuMzI3IDE1My4zNjcgMTIwLjNDMTUwLjcwNyAxMTkuMjI3IDE0OC40NDQgMTE3LjY2MyAxNDYuNTc3IDExNS42MUMxNDQuNzExIDExMy41MSAxNDMuMjY0IDExMC45MiAxNDIuMjM3IDEwNy44NEMxNDEuMjExIDEwNC43MTMgMTQwLjY5NyAxMDEuMDczIDE0MC42OTcgOTYuOTJDMTQwLjY5NyA5Mi44MTMzIDE0MS4yMTEgODkuMTczMyAxNDIuMjM3IDg2QzE0My4yNjQgODIuNzggMTQ0LjcxMSA4MC4wOTY3IDE0Ni41NzcgNzcuOTVDMTQ4LjQ0NCA3NS43NTY3IDE1MC43MDcgNzQuMSAxNTMuMzY3IDcyLjk4QzE1Ni4wMjcgNzEuODYgMTU5LjAxNCA3MS4zIDE2Mi4zMjcgNzEuM0MxNjYuODU0IDcxLjMgMTcwLjU4NyA3Mi4yMzMzIDE3My41MjcgNzQuMUMxNzYuNDY3IDc1LjkyIDE3OC44MjQgNzguODEzMyAxODAuNTk3IDgyLjc4TDE3MS40MjcgODcuNTRDMTcwLjc3NCA4NS40ODY3IDE2OS43NDcgODMuODUzMyAxNjguMzQ3IDgyLjY0QzE2Ni45OTQgODEuMzggMTY0Ljk4NyA4MC43NSAxNjIuMzI3IDgwLjc1QzE1OS4yMDEgODAuNzUgMTU2LjY4MSA4MS43NzY3IDE1NC43NjcgODMuODNDMTUyLjkwMSA4NS44MzY3IDE1MS45NjcgODguNzc2NyAxNTEuOTY3IDkyLjY1VjEwMC40OUMxNTEuOTY3IDEwNC4zNjMgMTUyLjkwMSAxMDcuMzI3IDE1NC43NjcgMTA5LjM4QzE1Ni42ODEgMTExLjM4NyAxNTkuMjAxIDExMi4zOSAxNjIuMzI3IDExMi4zOUMxNjQuOTQxIDExMi4zOSAxNjcuMDE3IDExMS42OSAxNjguNTU3IDExMC4yOUMxNzAuMTQ0IDEwOC44NDMgMTcxLjMxMSAxMDcuMTE3IDE3Mi4wNTcgMTA1LjExTDE4MC43MzcgMTEwLjE1QzE3OC45MTcgMTEzLjg4MyAxNzYuNTE0IDExNi43NzcgMTczLjUyNyAxMTguODNDMTcwLjU4NyAxMjAuODM3IDE2Ni44NTQgMTIxLjg0IDE2Mi4zMjcgMTIxLjg0Wk0yMDguMzIzIDExNC44NEgyMDcuOTczQzIwNy42NDYgMTE1Ljc3MyAyMDcuMjAzIDExNi42NiAyMDYuNjQzIDExNy41QzIwNi4xMyAxMTguMzQgMjA1LjQ1MyAxMTkuMDg3IDIwNC42MTMgMTE5Ljc0QzIwMy43NzMgMTIwLjM5MyAyMDIuNzcgMTIwLjkwNyAyMDEuNjAzIDEyMS4yOEMyMDAuNDgzIDEyMS42NTMgMTk5LjE3NiAxMjEuODQgMTk3LjY4MyAxMjEuODRDMTkzLjkwMyAxMjEuODQgMTkxLjAzMyAxMjAuNjAzIDE4OS4wNzMgMTE4LjEzQzE4Ny4xNiAxMTUuNjEgMTg2LjIwMyAxMTIuMDE3IDE4Ni4yMDMgMTA3LjM1Vjg0LjI1SDE5Ni41NjNWMTA2LjQ0QzE5Ni41NjMgMTA4LjY4IDE5Ni45NiAxMTAuNDA3IDE5Ny43NTMgMTExLjYyQzE5OC41NDYgMTEyLjgzMyAxOTkuOSAxMTMuNDQgMjAxLjgxMyAxMTMuNDRDMjAyLjYwNiAxMTMuNDQgMjAzLjQgMTEzLjMyMyAyMDQuMTkzIDExMy4wOUMyMDQuOTg2IDExMi44NTcgMjA1LjY4NiAxMTIuNTMgMjA2LjI5MyAxMTIuMTFDMjA2LjkgMTExLjY0MyAyMDcuMzkgMTExLjA4MyAyMDcuNzYzIDExMC40M0MyMDguMTM2IDEwOS43NzcgMjA4LjMyMyAxMDkuMDA3IDIwOC4zMjMgMTA4LjEyVjg0LjI1SDIxOC42ODNWMTIxSDIwOC4zMjNWMTE0Ljg0Wk0yMzkuNzgyIDEyMS44NEMyMzYuMjM2IDEyMS44NCAyMzMuMjQ5IDEyMS4yOCAyMzAuODIyIDEyMC4xNkMyMjguMzk2IDExOC45OTMgMjI2LjIyNiAxMTcuMzYgMjI0LjMxMiAxMTUuMjZMMjMwLjQwMiAxMDkuMUMyMzEuNzA5IDExMC41NDcgMjMzLjE1NiAxMTEuNjkgMjM0Ljc0MiAxMTIuNTNDMjM2LjMyOSAxMTMuMzcgMjM4LjEyNiAxMTMuNzkgMjQwLjEzMiAxMTMuNzlDMjQyLjE4NiAxMTMuNzkgMjQzLjYwOSAxMTMuNDg3IDI0NC40MDIgMTEyLjg4QzI0NS4xOTYgMTEyLjIyNyAyNDUuNTkyIDExMS4zNjMgMjQ1LjU5MiAxMTAuMjlDMjQ1LjU5MiAxMDguNTYzIDI0NC4zNTYgMTA3LjUzNyAyNDEuODgyIDEwNy4yMUwyMzcuODkyIDEwNi43MkMyMjkuNjMyIDEwNS42OTMgMjI1LjUwMiAxMDEuOTEzIDIyNS41MDIgOTUuMzhDMjI1LjUwMiA5My42MDY3IDIyNS44MjkgOTEuOTk2NyAyMjYuNDgyIDkwLjU1QzIyNy4xODIgODkuMDU2NyAyMjguMTM5IDg3Ljc5NjcgMjI5LjM1MiA4Ni43N0MyMzAuNjEyIDg1LjY5NjcgMjMyLjEwNiA4NC44OCAyMzMuODMyIDg0LjMyQzIzNS42MDYgODMuNzEzMyAyMzcuNTg5IDgzLjQxIDIzOS43ODIgODMuNDFDMjQxLjY5NiA4My40MSAyNDMuMzc2IDgzLjU1IDI0NC44MjIgODMuODNDMjQ2LjMxNiA4NC4wNjMzIDI0Ny42MjIgODQuNDM2NyAyNDguNzQyIDg0Ljk1QzI0OS45MDkgODUuNDE2NyAyNTAuOTU5IDg2LjAyMzMgMjUxLjg5MiA4Ni43N0MyNTIuODcyIDg3LjQ3IDI1My44MjkgODguMjYzMyAyNTQuNzYyIDg5LjE1TDI0OC44MTIgOTUuMjRDMjQ3LjY0NiA5NC4wNzMzIDI0Ni4zMTYgOTMuMTYzMyAyNDQuODIyIDkyLjUxQzI0My4zNzYgOTEuODEgMjQxLjg4MiA5MS40NiAyNDAuMzQyIDkxLjQ2QzIzOC41NjkgOTEuNDYgMjM3LjMwOSA5MS43NCAyMzYuNTYyIDkyLjNDMjM1LjgxNiA5Mi44NiAyMzUuNDQyIDkzLjYwNjcgMjM1LjQ0MiA5NC41NEMyMzUuNDQyIDk1LjUyIDIzNS42OTkgOTYuMjkgMjM2LjIxMiA5Ni44NUMyMzYuNzcyIDk3LjM2MzMgMjM3Ljc5OSA5Ny43MzY3IDIzOS4yOTIgOTcuOTdMMjQzLjQyMiA5OC41M0MyNTEuNDk2IDk5LjYwMzMgMjU1LjUzMiAxMDMuMjkgMjU1LjUzMiAxMDkuNTlDMjU1LjUzMiAxMTEuMzYzIDI1NS4xNTkgMTEyLjk5NyAyNTQuNDEyIDExNC40OUMyNTMuNjY2IDExNS45ODMgMjUyLjU5MiAxMTcuMjkgMjUxLjE5MiAxMTguNDFDMjQ5LjgzOSAxMTkuNDgzIDI0OC4xODIgMTIwLjMyMyAyNDYuMjIyIDEyMC45M0MyNDQuMzA5IDEyMS41MzcgMjQyLjE2MiAxMjEuODQgMjM5Ljc4MiAxMjEuODRaTTI3My45MjkgMTIxQzI3MC4zMzUgMTIxIDI2Ny42MDUgMTIwLjA5IDI2NS43MzkgMTE4LjI3QzI2My45MTkgMTE2LjQ1IDI2My4wMDkgMTEzLjc5IDI2My4wMDkgMTEwLjI5VjkyLjNIMjU3LjgyOVY4NC4yNUgyNjAuNDE5QzI2MS44MTkgODQuMjUgMjYyLjc3NSA4My45MjMzIDI2My4yODkgODMuMjdDMjYzLjgwMiA4Mi41NyAyNjQuMDU5IDgxLjU5IDI2NC4wNTkgODAuMzNWNzQuMzFIMjczLjM2OVY4NC4yNUgyODAuNjQ5VjkyLjNIMjczLjM2OVYxMTIuOTVIMjgwLjA4OVYxMjFIMjczLjkyOVpNMzAxLjQ4MiAxMjEuODRDMjk4Ljc3NiAxMjEuODQgMjk2LjM0OSAxMjEuMzk3IDI5NC4yMDIgMTIwLjUxQzI5Mi4xMDIgMTE5LjYyMyAyOTAuMzA2IDExOC4zNCAyODguODEyIDExNi42NkMyODcuMzY2IDExNC45OCAyODYuMjQ2IDExMi45NSAyODUuNDUyIDExMC41N0MyODQuNjU5IDEwOC4xOSAyODQuMjYyIDEwNS41MyAyODQuMjYyIDEwMi41OUMyODQuMjYyIDk5LjY1IDI4NC42NTkgOTYuOTkgMjg1LjQ1MiA5NC42MUMyODYuMjQ2IDkyLjIzIDI4Ny4zNjYgOTAuMjIzMyAyODguODEyIDg4LjU5QzI5MC4zMDYgODYuOTEgMjkyLjEwMiA4NS42MjY3IDI5NC4yMDIgODQuNzRDMjk2LjM0OSA4My44NTMzIDI5OC43NzYgODMuNDEgMzAxLjQ4MiA4My40MUMzMDQuMTg5IDgzLjQxIDMwNi41OTIgODMuODUzMyAzMDguNjkyIDg0Ljc0QzMxMC44MzkgODUuNjI2NyAzMTIuNjM2IDg2LjkxIDMxNC4wODIgODguNTlDMzE1LjU3NiA5MC4yMjMzIDMxNi43MTkgOTIuMjMgMzE3LjUxMiA5NC42MUMzMTguMzA2IDk2Ljk5IDMxOC43MDIgOTkuNjUgMzE4LjcwMiAxMDIuNTlDMzE4LjcwMiAxMDUuNTMgMzE4LjMwNiAxMDguMTkgMzE3LjUxMiAxMTAuNTdDMzE2LjcxOSAxMTIuOTUgMzE1LjU3NiAxMTQuOTggMzE0LjA4MiAxMTYuNjZDMzEyLjYzNiAxMTguMzQgMzEwLjgzOSAxMTkuNjIzIDMwOC42OTIgMTIwLjUxQzMwNi41OTIgMTIxLjM5NyAzMDQuMTg5IDEyMS44NCAzMDEuNDgyIDEyMS44NFpNMzAxLjQ4MiAxMTMuNjVDMzAzLjUzNiAxMTMuNjUgMzA1LjEyMiAxMTMuMDIgMzA2LjI0MiAxMTEuNzZDMzA3LjM2MiAxMTAuNSAzMDcuOTIyIDEwOC43MDMgMzA3LjkyMiAxMDYuMzdWOTguODhDMzA3LjkyMiA5Ni41NDY3IDMwNy4zNjIgOTQuNzUgMzA2LjI0MiA5My40OUMzMDUuMTIyIDkyLjIzIDMwMy41MzYgOTEuNiAzMDEuNDgyIDkxLjZDMjk5LjQyOSA5MS42IDI5Ny44NDIgOTIuMjMgMjk2LjcyMiA5My40OUMyOTUuNjAyIDk0Ljc1IDI5NS4wNDIgOTYuNTQ2NyAyOTUuMDQyIDk4Ljg4VjEwNi4zN0MyOTUuMDQyIDEwOC43MDMgMjk1LjYwMiAxMTAuNSAyOTYuNzIyIDExMS43NkMyOTcuODQyIDExMy4wMiAyOTkuNDI5IDExMy42NSAzMDEuNDgyIDExMy42NVpNMzI1LjA4NCAxMjFWODQuMjVIMzM1LjQ0NFY5MC40OEgzMzUuODY0QzMzNi41MTcgODguNTIgMzM3LjYzNyA4Ni44NjMzIDMzOS4yMjQgODUuNTFDMzQwLjgxMSA4NC4xMSAzNDIuOTgxIDgzLjQxIDM0NS43MzQgODMuNDFDMzQ4LjI1NCA4My40MSAzNTAuNDAxIDg0LjA0IDM1Mi4xNzQgODUuM0MzNTMuOTQ3IDg2LjU2IDM1NS4yMzEgODguNDAzMyAzNTYuMDI0IDkwLjgzSDM1Ni4yMzRDMzU2LjU2MSA4OS44MDMzIDM1Ny4wNTEgODguODQ2NyAzNTcuNzA0IDg3Ljk2QzM1OC40MDQgODcuMDI2NyAzNTkuMjQ0IDg2LjIzMzMgMzYwLjIyNCA4NS41OEMzNjEuMjA0IDg0LjkyNjcgMzYyLjMwMSA4NC40MTMzIDM2My41MTQgODQuMDRDMzY0LjcyNyA4My42MiAzNjYuMDM0IDgzLjQxIDM2Ny40MzQgODMuNDFDMzcwLjk4MSA4My40MSAzNzMuNjg3IDg0LjY3IDM3NS41NTQgODcuMTlDMzc3LjQ2NyA4OS43MSAzNzguNDI0IDkzLjMwMzMgMzc4LjQyNCA5Ny45N1YxMjFIMzY4LjA2NFY5OC44MUMzNjguMDY0IDk0LjE0MzMgMzY2LjM4NCA5MS44MSAzNjMuMDI0IDkxLjgxQzM2MS40ODQgOTEuODEgMzYwLjA4NCA5Mi4yNTMzIDM1OC44MjQgOTMuMTRDMzU3LjU2NCA5NC4wMjY3IDM1Ni45MzQgOTUuMzggMzU2LjkzNCA5Ny4yVjEyMUgzNDYuNTc0Vjk4LjgxQzM0Ni41NzQgOTQuMTQzMyAzNDQuODk0IDkxLjgxIDM0MS41MzQgOTEuODFDMzQwLjc4NyA5MS44MSAzNDAuMDQxIDkxLjkyNjcgMzM5LjI5NCA5Mi4xNkMzMzguNTk0IDkyLjM0NjcgMzM3Ljk0MSA5Mi42NzMzIDMzNy4zMzQgOTMuMTRDMzM2Ljc3NCA5My42MDY3IDMzNi4zMDcgOTQuMTkgMzM1LjkzNCA5NC44OUMzMzUuNjA3IDk1LjU0MzMgMzM1LjQ0NCA5Ni4zMTMzIDMzNS40NDQgOTcuMlYxMjFIMzI1LjA4NFoiIGZpbGw9IiMwNzNCNEMiLz4KPC9zdmc+Cg==");
+
+/***/ }),
+
 /***/ "./images/layout/layout-1.svg":
 /*!************************************!*\
   !*** ./images/layout/layout-1.svg ***!
@@ -15487,20 +15529,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/card/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/checkbox/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/notification/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/card/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/form/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/space/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/checkbox/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Selector__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Selector */ "./src/components/Selector.js");
-/* harmony import */ var react_input_color__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-input-color */ "./node_modules/react-input-color/dist/index.esm.js");
+/* harmony import */ var react_input_color__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-input-color */ "./node_modules/react-input-color/dist/index.esm.js");
 /* harmony import */ var _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../images/layout/layout-1.svg */ "./images/layout/layout-1.svg");
 /* harmony import */ var _images_layout_layout_2_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../images/layout/layout-2.svg */ "./images/layout/layout-2.svg");
-/* harmony import */ var _styles_countdown_timer_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../styles/countdown-timer.css */ "./src/styles/countdown-timer.css");
+/* harmony import */ var _images_layout_custom_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../images/layout/custom.svg */ "./images/layout/custom.svg");
+/* harmony import */ var _styles_countdown_timer_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../styles/countdown-timer.css */ "./src/styles/countdown-timer.css");
+
 
 
 
@@ -15523,9 +15567,13 @@ function StockCountdown() {
     product_page_countdown_enable: true,
     countdown_heading: "Last chance! [discount]% OFF",
     heading_text_color: "#000000",
-    selectedTheme: "ct-layout-1"
+    selected_theme: "ct-custom"
   });
   const options = [{
+    theme: "ct-custom",
+    label: "ct-custom",
+    svg: _images_layout_custom_svg__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
     theme: "ct-layout-1",
     label: "ct-layout-1",
     svg: _images_layout_layout_1_svg__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -15548,7 +15596,7 @@ function StockCountdown() {
       data: data
     }).success(() => {
       setButtonLoading(false);
-      antd__WEBPACK_IMPORTED_MODULE_6__["default"].success({
+      antd__WEBPACK_IMPORTED_MODULE_7__["default"].success({
         message: "Countdown Timer",
         description: "Stock count down data updated successfully."
       });
@@ -15579,7 +15627,7 @@ function StockCountdown() {
   }, []);
 
   const handleSelect = theme => {
-    onFieldChange("selectedTheme", theme);
+    onFieldChange("selected_theme", theme);
   };
 
   const onFieldChange = (key, value) => {
@@ -15600,7 +15648,7 @@ function StockCountdown() {
     className: "sgsb-field-upgrade-pro-label"
   }, "(Upgrade to premium)") : null; // console.log(formData);
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     labelCol: {
       span: 7
     },
@@ -15608,61 +15656,61 @@ function StockCountdown() {
       span: 17
     },
     autoComplete: "off"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Widget Background Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_10__["default"], {
     initialValue: formData.widget_background_color,
     onChange: e => onFieldChange("widget_background_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Border Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_10__["default"], {
     initialValue: formData.border_color,
     onChange: e => onFieldChange("border_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Heading Text Color",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_10__["default"], {
     initialValue: formData.heading_text_color,
     onChange: e => onFieldChange("heading_text_color", e.hex),
     placement: "right"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Countdown Heading",
     labelAlign: "left",
     extra: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "[discount] will be replace with your actual discount percentage.", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), " e.g. Last chance! [discount]% OFF")
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
     value: formData.countdown_heading,
     onChange: e => onFieldChange("countdown_heading", e.target.value),
     style: {
       width: 400
     },
     placeholder: "Last chance! [discount]% OFF"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Shop Page Display",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     disabled: !sgsbAdmin.isPro,
     checked: formData.shop_page_countdown_enable,
     value: "shop_page_countdown_enable",
     onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "shop_page_countdown_enable", e.target.checked) : ""
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Product Page Display",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
     checked: formData.product_page_countdown_enable,
     value: "product_page_countdown_enable",
     onChange: e => onFieldChange("product_page_countdown_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Item, {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Item, {
     label: "Layout",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_12__["default"], {
     direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-countdown-theme"
@@ -15671,9 +15719,9 @@ function StockCountdown() {
     option: option,
     onSelect: () => handleSelect(option.theme) // Pass the theme
     ,
-    isSelected: option.theme === formData.selectedTheme // Compare with selectedOptionIndex in formData
+    isSelected: option.theme === formData.selected_theme // Compare with selectedOptionIndex in formData
 
-  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_14__["default"], {
     type: "primary",
     onClick: () => onFormSave(),
     loading: buttonLoading

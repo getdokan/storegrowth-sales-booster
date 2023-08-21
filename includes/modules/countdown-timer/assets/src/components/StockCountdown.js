@@ -1,4 +1,13 @@
-import { Card, Form, Input, Button, Space, Checkbox, notification,Image } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Space,
+  Checkbox,
+  notification,
+  Image,
+} from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import Selector from "./Selector";
@@ -6,6 +15,7 @@ import InputColor from "react-input-color";
 
 import Layout1 from "../../images/layout/layout-1.svg";
 import Layout2 from "../../images/layout/layout-2.svg";
+import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
 
 function StockCountdown() {
@@ -19,10 +29,15 @@ function StockCountdown() {
     product_page_countdown_enable: true,
     countdown_heading: "Last chance! [discount]% OFF",
     heading_text_color: "#000000",
-    selectedTheme: "ct-layout-1",
+    selected_theme: "ct-custom",
   });
 
   const options = [
+    {
+      theme: "ct-custom",
+      label: "ct-custom",
+      svg: Custom,
+    },
     {
       theme: "ct-layout-1",
       label: "ct-layout-1",
@@ -84,7 +99,7 @@ function StockCountdown() {
   }, []);
 
   const handleSelect = (theme) => {
-    onFieldChange("selectedTheme", theme);
+    onFieldChange("selected_theme", theme);
   };
 
   const onFieldChange = (key, value) => {
@@ -191,7 +206,7 @@ function StockCountdown() {
                   key={index}
                   option={option}
                   onSelect={() => handleSelect(option.theme)} // Pass the theme
-                  isSelected={option.theme === formData.selectedTheme} // Compare with selectedOptionIndex in formData
+                  isSelected={option.theme === formData.selected_theme} // Compare with selectedOptionIndex in formData
                 />
               ))}
             </div>

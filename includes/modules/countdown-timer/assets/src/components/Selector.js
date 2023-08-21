@@ -10,7 +10,7 @@ function Selector({ option, onSelect, isSelected }) {
         {option.svg && (
           <Image
             className="box-icon"
-            preview={false}
+            preview={false} 
             src={option.svg}
           />
         )}
