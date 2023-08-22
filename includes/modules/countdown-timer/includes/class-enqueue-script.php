@@ -77,6 +77,7 @@ class Enqueue_Script {
 		}
 
 		$settings_file = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
+		$style_file    = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
 			'sgsb-countdown-timer-settings',
@@ -84,6 +85,13 @@ class Enqueue_Script {
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
+		);
+
+		wp_enqueue_style(
+			'sgsb-countdown-timer-style',
+			sgsb_modules_url( 'countdown-timer/assets/build/settings.css' ),
+			array(),
+			filemtime( sgsb_modules_path( 'countdown-timer/assets/build/settings.css' ) )
 		);
 	}
 
@@ -97,15 +105,19 @@ class Enqueue_Script {
 		$widget_bg_color    = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
 		$border_color       = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
 		$heading_text_color = sgsb_find_option_setting( $settings, 'heading_text_color', '#000000' );
-
-		$custom_css = "
-			.sgsb-countdown-timer{
+		$selected_theme     = sgsb_find_option_setting( $settings, 'selected_theme', 'ct-custom' );
+		if ( 'ct-custom' === $selected_theme ) {
+			$custom_css = "
+			.sgsb-countdown-timer.ct-custom{
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
-			.sgsb-countdown-timer-heading{
+			.sgsb-countdown-timer-heading.ct-custom{
 				color: {$heading_text_color};
 		";
+		} else {
+			$custom_css = '';
+		}
 
 		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );
 	}

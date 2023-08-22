@@ -2,91 +2,115 @@
 @import url(../fonts/inter-medium/stylesheet.css);
 @import url(../fonts/Inter-semibold/stylesheet.css);
 @import url(../fonts/inter-bold/stylesheet.css);
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
 
-.sgsb-stock-progressbar-status {
-	width: 100%;
-	margin-bottom: 5px;
-}
-.sgsb-stock-progressbar-status::after {
-	display: table;
-	content: " ";
-	clear: both;
-}
-.sgsb-stock-progressbar-status span {
-	display: block;
-}
-span.total-sold {
-	float: left;
-	color: #1B1B50;
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 17px;
-}
-span.instock {
-	float: right;
-	margin-top: -5px;
-}
-.jqmeter-container .outer-therm {
-	margin-top: 0;
-	margin-bottom: 8px;
-}
+
 .sgsb-countdown-timer {
-	border: 1px solid #fff;
-	padding: 15px 10px 10px;
+	width: fit-content;
+	padding: 15px 40px 10px;
 	margin-bottom: 25px;
 	border-radius: 8px;
 }
+.sgsb-countdown-timer-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .sgsb-countdown-timer-heading {
 	margin: 0 0 10px 0;
 	text-align: center;
-	font-size: 26px;
+	font-size: 40px;
+	font-weight: 800;
 	line-height: 1.2;
 }
+
 .sgsb-countdown-timer-items {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 10px;
 }
-.sgsb-stock-progress-bar {
-    padding: 10px 25px 7px;
-}
+
 .sgsb-countdown-timer-item {
 	text-align: center;
-	color: #989FAB;
 	font-size: 12px;
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	height: 64px;
 	width: 64px;
-	border: 1px solid #ECEDF0;
 	border-radius: 8px;
 	padding: 14px 0;
 	font-family: 'Inter';
 }
+
 .sgsb-countdown-timer-item strong {
 	display: block;
 	font-size: 24px;
 	line-height: .75;
-	color: #1B1B50;
 	font-weight: 500;
 }
-.sgsb-stock-progressbar-status-below {
-	text-align: center;
-}
-.sgsb-stock-progress-bar-format-below {
-	padding-top: 5px;
-}
+
 .sgsb-colon{
 	margin: 0 14px;
 	line-height: 4;
+}
+
+/* custom layout style start*/
+.sgsb-countdown-timer.ct-custom{
+	border: 1px solid transparent;
+}
+.sgsb-countdown-timer-item.ct-custom{
+	color: #989FAB;
+	border: 1px solid #ECEDF0;
+}
+
+.sgsb-colon.ct-custom {
 	color: #008DFF;
 }
-span.total-sale {
-    display: inline;
-    font-weight: 600;
+
+.sgsb-countdown-timer-item.ct-custom strong {
+	color: #1B1B50;
 }
-.single-product .summary .sgsb-countdown-timer-and-bar {
-    margin-right: 2.81vw;
+/* custom layout style end*/
+
+/* layout-1 styles start*/
+.sgsb-countdown-timer-item.ct-layout-1{
+	color: #989FAB;
+	border: 1px solid #ECEDF0;
 }
+
+.sgsb-countdown-timer-heading.ct-layout-1{
+	color: #008DFF ;
+}
+
+.sgsb-colon.ct-layout-1 {
+	color: #008DFF;
+}
+
+.sgsb-countdown-timer-item.ct-layout-1 strong {
+	color: #1B1B50;
+}
+/* layout-1 styles end*/
+
+/* layout-2 styles start */
+.sgsb-countdown-timer.ct-layout-2 {
+	background: linear-gradient(180deg, aliceblue 70%, #FFFF 0%) !important;
+}
+
+.sgsb-countdown-timer-items.ct-layout-2 {
+border-radius: 6px;
+color: #fff;
+background: var(--gradient, linear-gradient(90deg, #32DBBE 0%, #008DFF 100%));
+box-shadow: 0px 12px 48px 0px rgba(27, 27, 80, 0.10);
+width: fit-content;
+
+}
+
+.sgsb-countdown-timer-heading.ct-layout-2 {
+background: linear-gradient(90deg, #32DBBE 0%, #008DFF 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+font-family: "Merienda" !important;
+}
+
+/* layout2  styles end */

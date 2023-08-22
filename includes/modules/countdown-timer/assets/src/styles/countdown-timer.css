@@ -1,0 +1,30 @@
+/* Template selector css start */
+/* Selector Component CSS */
+.selector {
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  box-shadow: rgb(24 144 255 / 20%) 0px 2px 12px 0px;
+  border-radius: 10px;
+}
+
+
+.image-wrapper {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+  width: 200px; /* Add a fixed width */
+}
+
+.selector.selected .image-wrapper {
+  border-color: #40a9ff;
+  border-radius: 10px;
+}
+
+
+.sgsb-countdown-theme{
+  display: flex;
+  gap: 1.5em;
+  flex-wrap: wrap;
+}
+/* Template Selector Css end */
