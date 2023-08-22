@@ -15646,8 +15646,7 @@ function StockCountdown() {
 
   const upgradeLabel = !sgsbAdmin.isPro ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "sgsb-field-upgrade-pro-label"
-  }, "(Upgrade to premium)") : null; // console.log(formData);
-
+  }, "(Upgrade to premium)") : null;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     labelCol: {
       span: 7

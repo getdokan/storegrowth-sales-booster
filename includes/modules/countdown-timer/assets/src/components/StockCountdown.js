@@ -6,7 +6,6 @@ import {
   Space,
   Checkbox,
   notification,
-  Image,
 } from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
@@ -37,6 +36,7 @@ function StockCountdown() {
       theme: "ct-custom",
       label: "ct-custom",
       svg: Custom,
+
     },
     {
       theme: "ct-layout-1",
@@ -117,7 +117,6 @@ function StockCountdown() {
   const upgradeLabel = !sgsbAdmin.isPro ? (
     <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>
   ) : null;
-  // console.log(formData);
   return (
     <Card>
       <Form
