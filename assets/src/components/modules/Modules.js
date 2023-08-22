@@ -86,7 +86,6 @@ function Modules() {
 
   // handle module filter of active
   const handleActiveModuleFilter = (event) => {
-
     setSelectFilter((prevState) =>{
       let filters = new Set(prevState.filters)
       let modules = allModules
@@ -101,7 +100,7 @@ function Modules() {
       }
 
       return {
-        modules,
+        modules
       }
 
     })
@@ -134,7 +133,7 @@ function Modules() {
               width={18}
               src={widgetIcon}
             />
-            All Widgets
+            All Modules
             <span onClick={toggleMenuClass} className="ant-menu-title-content">
               {
                 activeClass ? <img src={upArrowIocn} width="12" /> : <img src={downArrowIocn} width="12" />
@@ -214,6 +213,7 @@ function Modules() {
                 defaultPageSize={perPageItem}
                 onChange={ hanglePageItem }
                 total={allModules.length}
+                hideOnSinglePage={false}
               />
             )
           }

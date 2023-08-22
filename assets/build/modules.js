@@ -11373,7 +11373,7 @@ function ModuleFilter(_ref) {
     className: 'module-filter active'
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     className: "active-widgets"
-  }, "Active Widgets ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Active Modules ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onChange: handleSwitchChange,
     checked: filterEnabled,
     defaultChecked: true
@@ -11588,7 +11588,7 @@ function Modules() {
     preview: false,
     width: 18,
     src: _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_10__["default"]
-  }), "All Widgets", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }), "All Modules", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     onClick: toggleMenuClass,
     className: "ant-menu-title-content"
   }, activeClass ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
@@ -11654,7 +11654,8 @@ function Modules() {
     defaultCurrent: 1,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
-    total: allModules.length
+    total: allModules.length,
+    hideOnSinglePage: false
   }))));
 }
 

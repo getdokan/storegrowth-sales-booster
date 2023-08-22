@@ -12,7 +12,7 @@ function ModuleFilter({ onFilterChange }) {
 
     return (
       <div className={'module-filter active'}>
-        <li className='active-widgets'>Active Widgets <Switch onChange={handleSwitchChange} checked={filterEnabled} defaultChecked /></li>
+        <li className='active-widgets'>Active Modules <Switch onChange={handleSwitchChange} checked={filterEnabled} defaultChecked /></li>
       </div>
     );
 }
