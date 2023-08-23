@@ -11,37 +11,33 @@
 	content: " ";
 	clear: both;
 }
-.sgsb-stock-stockbar-status span {
-	display: block;
-}
-span.total-sold {
-	float: left;
-	color: #1B1B50;
-	font-family: 'Inter';
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 17px;
-}
-span.instock {
-	float: right;
-	margin-top: -5px;
-}
+
 .jqmeter-container .outer-therm {
 	margin-top: 0;
 	margin-bottom: 8px;
 }
 
-.sgsb-stock-stock-bar {
-	border: 2px solid #DDE6F9;
+.sgsb-stock-progress {
+	width: 0;
+	border-radius: 5px;
+}
+
+.sgsb-stock-progress-bar {
+	width: 100%;
+	border-radius: 5px;
+	margin-top: 5px;
+}
+
+.sgsb-stock-progress-bar-section {
 	padding: 15px 15px 15px;
 	border-radius: 10px;
 	margin-bottom: 20px;
 }
 
-span.total-sale {
-    display: inline;
-    font-weight: 600;
+.sgsb-stock-progress-title {
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 4px;
 }
 
 .sgsb-stock-progress-available-title{

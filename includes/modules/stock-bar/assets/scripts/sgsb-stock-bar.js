@@ -19,7 +19,7 @@ jQuery(document).ready(function ($) {
       displayTotal: false,
     });
   });
-
+  
   showStockProgress();
   $("form.variations_form").on("show_variation", function (event, variation) {
     showStockProgress();

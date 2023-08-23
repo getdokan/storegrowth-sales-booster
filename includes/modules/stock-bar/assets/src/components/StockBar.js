@@ -2,7 +2,6 @@ import {
   Card,
   Form,
   Select,
-  Typography,
   Input,
   Button,
   InputNumber,
@@ -19,17 +18,15 @@ function StockCountdown() {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    widget_background_color: "#ffffff",
-    border_color: "#cccccc",
-    stockbar_bg_color: "#444444",
-    stockbar_fg_color: "#c3d168",
-    stockbar_height: 5,
+    stockbar_border_color: "#dde6f9",
+    stockbar_bg_color: "#e7efff",
+    stockbar_fg_color: "#0875ff",
+    stockbar_height: 10,
     shop_page_stock_bar_enable: false,
     shop_page_countdown_enable: false,
     product_page_stock_bar_enable: true,
     product_page_countdown_enable: true,
     variation_page_stock_bar_enable: false,
-    countdown_heading: "Last chance! [discount]% OFF",
     stock_display_format: "above",
     total_sell_count_text: "Total Sold",
     available_item_count_text: "Available Item",
@@ -138,6 +135,14 @@ function StockCountdown() {
           {upgradeLabel}
         </Form.Item>
 
+        <Form.Item label="Border Color" labelAlign="left">
+          <InputColor
+            initialValue={formData.stockbar_border_color}
+            onChange={(e) => onFieldChange("stockbar_border_color", e.hex)}
+            placement="right"
+          />
+        </Form.Item>
+
         <Form.Item label="Stock Bar Height" labelAlign="left">
           <div style={isProStyle}>
             <InputNumber
@@ -181,57 +186,53 @@ function StockCountdown() {
           {upgradeLabel}
         </Form.Item>
 
-        {formData.stock_display_format === "above" && (
-          <div>
-            <Form.Item
-              label="Total Sell Count Text"
-              labelAlign="left"
-              extra="It will be placed left side of the above of the Stock Bar. e.g. Total Sold"
-            >
-              <Input
-                disabled={!sgsbAdmin.isPro}
-                value={formData.total_sell_count_text}
-                onChange={
-                  sgsbAdmin.isPro
-                    ? (e) =>
-                        isProFieldChange(
-                          sgsbAdmin.isPro,
-                          "total_sell_count_text",
-                          e.target.value
-                        )
-                    : ""
-                }
-                style={{ width: 400 }}
-                placeholder="Total Sold"
-              />
-              <div>{upgradeLabel}</div>
-            </Form.Item>
+        <Form.Item
+          label="Total Sell Count Text"
+          labelAlign="left"
+          extra="It will be placed left side of the above of the Stock Bar. e.g. Total Sold"
+        >
+          <Input
+            disabled={!sgsbAdmin.isPro}
+            value={formData.total_sell_count_text}
+            onChange={
+              sgsbAdmin.isPro
+                ? (e) =>
+                    isProFieldChange(
+                      sgsbAdmin.isPro,
+                      "total_sell_count_text",
+                      e.target.value
+                    )
+                : ""
+            }
+            style={{ width: 400 }}
+            placeholder="Total Sold"
+          />
+          <div>{upgradeLabel}</div>
+        </Form.Item>
 
-            <Form.Item
-              label="Available Item Count Text"
-              labelAlign="left"
-              extra="It will be placed right side of the above of the Stock Bar. e.g. Available Item"
-            >
-              <Input
-                disabled={!sgsbAdmin.isPro}
-                value={formData.available_item_count_text}
-                onChange={
-                  sgsbAdmin.isPro
-                    ? (e) =>
-                        isProFieldChange(
-                          sgsbAdmin.isPro,
-                          "available_item_count_text",
-                          e.target.value
-                        )
-                    : ""
-                }
-                style={{ width: 400 }}
-                placeholder="Available Item"
-              />
-              <div>{upgradeLabel}</div>
-            </Form.Item>
-          </div>
-        )}
+        <Form.Item
+          label="Available Item Count Text"
+          labelAlign="left"
+          extra="It will be placed right side of the above of the Stock Bar. e.g. Available Item"
+        >
+          <Input
+            disabled={!sgsbAdmin.isPro}
+            value={formData.available_item_count_text}
+            onChange={
+              sgsbAdmin.isPro
+                ? (e) =>
+                    isProFieldChange(
+                      sgsbAdmin.isPro,
+                      "available_item_count_text",
+                      e.target.value
+                    )
+                : ""
+            }
+            style={{ width: 400 }}
+            placeholder="Available Item"
+          />
+          <div>{upgradeLabel}</div>
+        </Form.Item>
 
         <Form.Item label="Display on Shop Page" labelAlign="left">
           <Space direction="vertical">

@@ -15590,17 +15590,15 @@ function StockCountdown() {
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb");
   const [buttonLoading, setButtonLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [formData, setFormData] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    widget_background_color: "#ffffff",
-    border_color: "#cccccc",
-    stockbar_bg_color: "#444444",
-    stockbar_fg_color: "#c3d168",
-    stockbar_height: 5,
+    stockbar_border_color: "#dde6f9",
+    stockbar_bg_color: "#e7efff",
+    stockbar_fg_color: "#0875ff",
+    stockbar_height: 10,
     shop_page_stock_bar_enable: false,
     shop_page_countdown_enable: false,
     product_page_stock_bar_enable: true,
     product_page_countdown_enable: true,
     variation_page_stock_bar_enable: false,
-    countdown_heading: "Last chance! [discount]% OFF",
     stock_display_format: "above",
     total_sell_count_text: "Total Sold",
     available_item_count_text: "Available Item"
@@ -15691,6 +15689,13 @@ function StockCountdown() {
     onChange: sgsbAdmin.isPro ? e => isProFieldChange(sgsbAdmin.isPro, "stockbar_fg_color", e.hex) : "",
     placement: "right"
   })), upgradeLabel), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+    label: "Border Color",
+    labelAlign: "left"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_input_color__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    initialValue: formData.stockbar_border_color,
+    onChange: e => onFieldChange("stockbar_border_color", e.hex),
+    placement: "right"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Stock Bar Height",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -15720,7 +15725,7 @@ function StockCountdown() {
     value: "above"
   }, "Above Stock Bar"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"].Option, {
     value: "below"
-  }, "Below Stock Bar"))), upgradeLabel), formData.stock_display_format === "above" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  }, "Below Stock Bar"))), upgradeLabel), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Total Sell Count Text",
     labelAlign: "left",
     extra: "It will be placed left side of the above of the Stock Bar. e.g. Total Sold"
@@ -15744,7 +15749,7 @@ function StockCountdown() {
       width: 400
     },
     placeholder: "Available Item"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, upgradeLabel)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Item, {
     label: "Display on Shop Page",
     labelAlign: "left"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
