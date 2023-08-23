@@ -42,13 +42,13 @@ class Enqueue_Script {
 
 		wp_enqueue_style(
 			'sgsb-stock-cd-custom-style',
-			sgsb_modules_url( 'stock-bar/assets/scripts/wpbs-style.css' ),
+			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/wpbs-style.css' ) )
+			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ) )
 		);
 
 		wp_enqueue_script(
-			'wpbsc_jqmeter',
+			'stockbar_jqmeter',
 			sgsb_modules_url( 'stock-bar/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
 			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/jqmeter.min.js' ) ),
@@ -56,10 +56,10 @@ class Enqueue_Script {
 		);
 
 		wp_enqueue_script(
-			'wpbsc_custom_script',
-			sgsb_modules_url( 'stock-bar/assets/scripts/custom.js' ),
-			array( 'jquery', 'wpbsc_jqmeter' ),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/custom.js' ) ),
+			'stockbar_custom_script',
+			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ),
+			array( 'jquery', 'stockbar_jqmeter' ),
+			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ) ),
 			true
 		);
 
