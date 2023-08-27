@@ -11370,13 +11370,12 @@ function ModuleFilter(_ref) {
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: 'module-filter active'
+    className: "module-filter active"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
     className: "active-widgets"
-  }, "Active Modules ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Active Modules", " ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onChange: handleSwitchChange,
-    checked: filterEnabled,
-    defaultChecked: true
+    checked: filterEnabled
   })));
 }
 
@@ -11486,14 +11485,21 @@ function Modules() {
   const {
     updateModules,
     setPageLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)('sgsb');
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb");
   const [searchModule, setSearchModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const [selectFilter, setSelectFilter] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     modules: []
   });
+  const [filterActiveModules, setFilterActiveModules] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+
+  const handlefilterChange = checked => {
+    setFilterActiveModules(checked);
+  };
+
+  console.log(filterActiveModules);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setPageLoading(true);
-    (0,_ajax__WEBPACK_IMPORTED_MODULE_2__.Ajax)('get_all_modules').success(response => {
+    (0,_ajax__WEBPACK_IMPORTED_MODULE_2__.Ajax)("get_all_modules").success(response => {
       // Update to WP data.
       updateModules(response);
       setPageLoading(false);
@@ -11503,12 +11509,16 @@ function Modules() {
   const {
     allModules
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
-    allModules: select('sgsb').getModules()
+    allModules: select("sgsb").getModules()
   })); // pagination
 
   const perPageItem = 6;
   const [minValue, setMinValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
   const [maxValue, setMaxValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(perPageItem);
+  const totalItems = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return filterActiveModules ? allModules.filter(module => module.status).length // Count only active modules
+    : allModules.length; // Count all modules
+  }, [filterActiveModules, allModules]);
 
   const hanglePageItem = pageNumber => {
     setMinValue((pageNumber - 1) * perPageItem);
@@ -11527,7 +11537,8 @@ function Modules() {
     let {
       modules
     } = _ref;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).filter(module => filterActiveModules ? module.status : true) // Filter based on the filterActiveModules state
+    .slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_3__["default"], {
       module: module,
       key: (0,nanoid__WEBPACK_IMPORTED_MODULE_13__.nanoid)()
     })));
@@ -11547,25 +11558,6 @@ function Modules() {
 
   const toggleMenuClass = () => {
     setActiveClass(prevIsActive => !prevIsActive);
-  }; // handle module filter of active
-
-
-  const handleActiveModuleFilter = event => {
-    setSelectFilter(prevState => {
-      let filters = new Set(prevState.filters);
-      let modules = allModules;
-      event == true ? filters.add(event) : filters.delete(event);
-
-      if (filters.size) {
-        modules = modules.filter(module => {
-          return filters.has(module.status);
-        });
-      }
-
-      return {
-        modules
-      };
-    });
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -11598,18 +11590,20 @@ function Modules() {
     src: _images_menu_down_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_8__["default"],
     width: "12"
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
-    className: activeClass ? 'widgets-menu ant-menu-hidden' : 'widgets-menu'
+    className: activeClass ? "widgets-menu ant-menu-hidden" : "widgets-menu"
   }, allModules.map(module => {
     return !module.status ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
       className: module.id,
+      key: module.id,
       onClick: handleActiveModule
     }, module.name) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-      className: module.id
+      className: module.id,
+      key: module.id
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
-    onFilterChange: handleActiveModuleFilter
+    onFilterChange: handlefilterChange
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -11647,14 +11641,14 @@ function Modules() {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb__module-pagination",
     style: {
-      paddingTop: '80px',
-      paddingLeft: '22px'
+      paddingTop: "80px",
+      paddingLeft: "22px"
     }
   }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
     defaultCurrent: 1,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
-    total: allModules.length,
+    total: totalItems,
     hideOnSinglePage: false
   }))));
 }
