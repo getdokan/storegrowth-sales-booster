@@ -42,13 +42,13 @@ class Enqueue_Script {
 
 		wp_enqueue_style(
 			'sgsb-stock-cd-custom-style',
-			sgsb_modules_url( 'stock-bar/assets/scripts/wpbs-style.css' ),
+			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/wpbs-style.css' ) )
+			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ) )
 		);
 
 		wp_enqueue_script(
-			'wpbsc_jqmeter',
+			'stockbar_jqmeter',
 			sgsb_modules_url( 'stock-bar/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
 			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/jqmeter.min.js' ) ),
@@ -56,10 +56,10 @@ class Enqueue_Script {
 		);
 
 		wp_enqueue_script(
-			'wpbsc_custom_script',
-			sgsb_modules_url( 'stock-bar/assets/scripts/custom.js' ),
-			array( 'jquery', 'wpbsc_jqmeter' ),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/custom.js' ) ),
+			'stockbar_custom_script',
+			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ),
+			array( 'jquery', 'stockbar_jqmeter' ),
+			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ) ),
 			true
 		);
 
@@ -94,22 +94,21 @@ class Enqueue_Script {
 		// Get settings options.
 		$settings = get_option( 'sgsb_stock_bar_settings' );
 
-		$bar_height = sgsb_find_option_setting( $settings, 'stockbar_height', '5' );
-		$bg_color   = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#444444' );
-		$fg_color   = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#c3d168' );
+		$bar_height   = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
+		$bg_color     = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );
+		$fg_color     = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );
+		$border_color = sgsb_find_option_setting( $settings, 'stockbar_border_color', '#dde6f9' );
 
 		$custom_css = "
+			.sgsb-stock-progress-bar-section {
+				border: 2px solid {$border_color};
+			}
 			.sgsb-stock-progress {
-				width: 0;
 				height: {$bar_height}px;
 				background-color: {$fg_color};
-				border-radius: 5px;
 			}
 			.sgsb-stock-progress-bar {
-				width: 100%;
 				background-color: {$bg_color};
-				border-radius: 5px;
-				margin-top: 5px;
 			}
 		";
 

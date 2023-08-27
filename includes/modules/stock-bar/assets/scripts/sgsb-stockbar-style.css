@@ -1,0 +1,54 @@
+@import url(../fonts/inter-regular/stylesheet.css);
+@import url(../fonts/inter-medium/stylesheet.css);
+@import url(../fonts/Inter-semibold/stylesheet.css);
+@import url(../fonts/inter-bold/stylesheet.css);
+
+.sgsb-stock-stockbar-status {
+	width: 100%;
+}
+.sgsb-stock-stockbar-status::after {
+	display: table;
+	content: " ";
+	clear: both;
+}
+
+.jqmeter-container .outer-therm {
+	margin-top: 0;
+	margin-bottom: 8px;
+}
+
+.sgsb-stock-progress {
+	width: 0;
+	border-radius: 5px;
+}
+
+.sgsb-stock-progress-bar {
+	width: 100%;
+	border-radius: 5px;
+	margin-top: 5px;
+}
+
+.sgsb-stock-progress-bar-section {
+	padding: 15px 15px 15px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+}
+
+.sgsb-stock-progress-title {
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 4px;
+}
+
+.sgsb-stock-progress-available-title{
+	float: right;
+}
+.sgsb-stock-progress-sold-title,
+.sgsb-stock-progress-available-title {
+	color: #656565;
+}
+.sgsb-stock-progress-count {
+	color: #000;
+	font-weight: 700;
+}
+
