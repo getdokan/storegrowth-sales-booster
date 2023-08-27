@@ -1,5 +1,5 @@
 import { useDispatch, useSelect } from "@wordpress/data";
-import { useEffect, useState,useMemo } from "@wordpress/element";
+import { useEffect, useState, useMemo } from "@wordpress/element";
 import { Alert, Button, Col, Image, Pagination, Row } from "antd";
 import { nanoid } from "nanoid";
 
@@ -17,16 +17,59 @@ import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
 
 function Modules() {
+  // pagination
+  const perPageItem = 6;
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(perPageItem);
   const { updateModules, setPageLoading } = useDispatch("sgsb");
   const [searchModule, setSearchModule] = useState("");
   const [selectFilter, setSelectFilter] = useState({
     modules: [],
   });
   const [filterActiveModules, setFilterActiveModules] = useState(false);
+
+  // handle active module of settings url
+  const [activeModule, setActiveModule] = useState(false);
+  const [activeClass, setActiveClass] = useState(false);
+
+  // Get from WP data.
+  const { allModules } = useSelect((select) => ({
+    allModules: select("sgsb").getModules(),
+  }));
+
   const handlefilterChange = (checked) => {
     setFilterActiveModules(checked);
   };
-  
+
+  const hanglePageItem = (pageNumber) => {
+    setMinValue((pageNumber - 1) * perPageItem);
+    setMaxValue(pageNumber * perPageItem);
+  };
+
+  const handleActiveModule = () => {
+    setActiveModule(true);
+    setTimeout(() => {
+      setActiveModule(false);
+    }, 4000);
+  };
+
+  // handle active class
+  const toggleMenuClass = () => {
+    setActiveClass((prevIsActive) => !prevIsActive);
+  };
+
+  const totalItems = useMemo(() => {
+    return filterActiveModules
+      ? allModules.filter((module) => module.status).length // Count only active modules
+      : allModules.length; // Count all modules
+  }, [filterActiveModules, allModules]);
+
+  useEffect(() => {
+    if (allModules) {
+      setSelectFilter({ modules: allModules });
+    }
+  }, [allModules]);
+
   useEffect(() => {
     setPageLoading(true);
     Ajax("get_all_modules").success((response) => {
@@ -35,33 +78,6 @@ function Modules() {
       setPageLoading(false);
     });
   }, []);
-
-  // Get from WP data.
-  const { allModules } = useSelect((select) => ({
-    allModules: select("sgsb").getModules(),
-  }));
-
-  // pagination
-  const perPageItem = 6;
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(perPageItem);
-
-  const totalItems = useMemo(() => {
-    return filterActiveModules
-      ? allModules.filter((module) => module.status).length // Count only active modules
-      : allModules.length; // Count all modules
-  }, [filterActiveModules, allModules]);
-
-  const hanglePageItem = (pageNumber) => {
-    setMinValue((pageNumber - 1) * perPageItem);
-    setMaxValue(pageNumber * perPageItem);
-  };
-
-  useEffect(() => {
-    if (allModules) {
-      setSelectFilter({ modules: allModules });
-    }
-  }, [allModules]);
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -77,23 +93,6 @@ function Modules() {
       </>
     );
   };
-
-  // handle active module of settings url
-  const [activeModule, setActiveModule] = useState(false);
-  const [activeClass, setActiveClass] = useState(false);
-
-  const handleActiveModule = () => {
-    setActiveModule(true);
-    setTimeout(() => {
-      setActiveModule(false);
-    }, 4000);
-  };
-
-  // handle active class
-  const toggleMenuClass = () => {
-    setActiveClass((prevIsActive) => !prevIsActive);
-  };
-
 
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
@@ -125,7 +124,11 @@ function Modules() {
           >
             {allModules.map((module) => {
               return !module.status ? (
-                <li className={module.id} key={module.id} onClick={handleActiveModule}>
+                <li
+                  className={module.id}
+                  key={module.id}
+                  onClick={handleActiveModule}
+                >
                   {module.name}
                 </li>
               ) : (

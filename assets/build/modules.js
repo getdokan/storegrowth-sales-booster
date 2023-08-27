@@ -11482,6 +11482,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Modules() {
+  // pagination
+  const perPageItem = 6;
+  const [minValue, setMinValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
+  const [maxValue, setMaxValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(perPageItem);
   const {
     updateModules,
     setPageLoading
@@ -11490,62 +11494,25 @@ function Modules() {
   const [selectFilter, setSelectFilter] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     modules: []
   });
-  const [filterActiveModules, setFilterActiveModules] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [filterActiveModules, setFilterActiveModules] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // handle active module of settings url
 
-  const handlefilterChange = checked => {
-    setFilterActiveModules(checked);
-  };
-
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    setPageLoading(true);
-    (0,_ajax__WEBPACK_IMPORTED_MODULE_2__.Ajax)("get_all_modules").success(response => {
-      // Update to WP data.
-      updateModules(response);
-      setPageLoading(false);
-    });
-  }, []); // Get from WP data.
+  const [activeModule, setActiveModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [activeClass, setActiveClass] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // Get from WP data.
 
   const {
     allModules
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     allModules: select("sgsb").getModules()
-  })); // pagination
+  }));
 
-  const perPageItem = 6;
-  const [minValue, setMinValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
-  const [maxValue, setMaxValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(perPageItem);
-  const totalItems = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
-    return filterActiveModules ? allModules.filter(module => module.status).length // Count only active modules
-    : allModules.length; // Count all modules
-  }, [filterActiveModules, allModules]);
+  const handlefilterChange = checked => {
+    setFilterActiveModules(checked);
+  };
 
   const hanglePageItem = pageNumber => {
     setMinValue((pageNumber - 1) * perPageItem);
     setMaxValue(pageNumber * perPageItem);
   };
-
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (allModules) {
-      setSelectFilter({
-        modules: allModules
-      });
-    }
-  }, [allModules]); // Module List
-
-  const ModuleList = _ref => {
-    let {
-      modules
-    } = _ref;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).filter(module => filterActiveModules ? module.status : true) // Filter based on the filterActiveModules state
-    .slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      module: module,
-      key: (0,nanoid__WEBPACK_IMPORTED_MODULE_13__.nanoid)()
-    })));
-  }; // handle active module of settings url
-
-
-  const [activeModule, setActiveModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [activeClass, setActiveClass] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
 
   const handleActiveModule = () => {
     setActiveModule(true);
@@ -11557,6 +11524,37 @@ function Modules() {
 
   const toggleMenuClass = () => {
     setActiveClass(prevIsActive => !prevIsActive);
+  };
+
+  const totalItems = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return filterActiveModules ? allModules.filter(module => module.status).length // Count only active modules
+    : allModules.length; // Count all modules
+  }, [filterActiveModules, allModules]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (allModules) {
+      setSelectFilter({
+        modules: allModules
+      });
+    }
+  }, [allModules]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setPageLoading(true);
+    (0,_ajax__WEBPACK_IMPORTED_MODULE_2__.Ajax)("get_all_modules").success(response => {
+      // Update to WP data.
+      updateModules(response);
+      setPageLoading(false);
+    });
+  }, []); // Module List
+
+  const ModuleList = _ref => {
+    let {
+      modules
+    } = _ref;
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, modules.filter(module => module.name.toLowerCase().includes(searchModule)).filter(module => filterActiveModules ? module.status : true) // Filter based on the filterActiveModules state
+    .slice(minValue, maxValue).map(module => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleCard__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      module: module,
+      key: (0,nanoid__WEBPACK_IMPORTED_MODULE_13__.nanoid)()
+    })));
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
