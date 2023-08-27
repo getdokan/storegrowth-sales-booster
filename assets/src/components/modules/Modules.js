@@ -21,13 +21,14 @@ function Modules() {
   const perPageItem = 6;
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(perPageItem);
+
   const { updateModules, setPageLoading } = useDispatch("sgsb");
   const [searchModule, setSearchModule] = useState("");
   const [selectFilter, setSelectFilter] = useState({
     modules: [],
   });
   const [filterActiveModules, setFilterActiveModules] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
   // handle active module of settings url
   const [activeModule, setActiveModule] = useState(false);
   const [activeClass, setActiveClass] = useState(false);
@@ -42,8 +43,23 @@ function Modules() {
   };
 
   const hanglePageItem = (pageNumber) => {
-    setMinValue((pageNumber - 1) * perPageItem);
-    setMaxValue(pageNumber * perPageItem);
+    if (filterActiveModules) {
+      // Pagination calculation based on active modules
+      const startIndex = (pageNumber - 1) * perPageItem;
+      const endIndex = startIndex + perPageItem;
+
+      setMinValue(startIndex);
+      setMaxValue(endIndex);
+      setCurrentPage(pageNumber);
+    } else {
+      // Pagination calculation based on all modules (preserves the current page)
+      const startIndex = (pageNumber - 1) * perPageItem;
+      const endIndex = startIndex + perPageItem;
+
+      setMinValue(startIndex);
+      setMaxValue(endIndex);
+      setCurrentPage(pageNumber);
+    }
   };
 
   const handleActiveModule = () => {
@@ -78,6 +94,41 @@ function Modules() {
       setPageLoading(false);
     });
   }, []);
+
+  // Handle changes in filterActiveModules
+  useEffect(() => {
+    // Calculate the number of active modules
+    const activeModuleCount = allModules.filter(
+      (module) => module.status
+    ).length;
+
+    if (filterActiveModules) {
+      // If filterActiveModules is true, recalculate pagination based on active modules
+      const newMaxValue = currentPage * perPageItem;
+      const newMinValue = newMaxValue - perPageItem;
+
+      // Update pagination data
+      setMaxValue(newMaxValue);
+      setMinValue(newMinValue);
+
+      // If active modules are less than currentPage * perPageItem, reset currentPage
+      activeModuleCount <= perPageItem
+        ? setCurrentPage(1)
+        : setCurrentPage(currentPage);
+
+    } else {
+      // If filterActiveModules is false, reset pagination to show the first page
+      setCurrentPage(currentPage);
+
+      // Calculate new min and max values based on all modules
+      const newMaxValue = currentPage * perPageItem;
+      const newMinValue = newMaxValue - perPageItem;
+
+      // Update pagination data
+      setMaxValue(newMaxValue);
+      setMinValue(newMinValue);
+    }
+  }, [allModules, filterActiveModules, currentPage, perPageItem]);
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -197,6 +248,7 @@ function Modules() {
           {allModules.length > perPageItem && (
             <Pagination
               defaultCurrent={1}
+              current={currentPage}
               defaultPageSize={perPageItem}
               onChange={hanglePageItem}
               total={totalItems}

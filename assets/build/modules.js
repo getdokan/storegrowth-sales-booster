@@ -11494,7 +11494,8 @@ function Modules() {
   const [selectFilter, setSelectFilter] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)({
     modules: []
   });
-  const [filterActiveModules, setFilterActiveModules] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // handle active module of settings url
+  const [filterActiveModules, setFilterActiveModules] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [currentPage, setCurrentPage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(1); // handle active module of settings url
 
   const [activeModule, setActiveModule] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [activeClass, setActiveClass] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false); // Get from WP data.
@@ -11510,8 +11511,21 @@ function Modules() {
   };
 
   const hanglePageItem = pageNumber => {
-    setMinValue((pageNumber - 1) * perPageItem);
-    setMaxValue(pageNumber * perPageItem);
+    if (filterActiveModules) {
+      // Pagination calculation based on active modules
+      const startIndex = (pageNumber - 1) * perPageItem;
+      const endIndex = startIndex + perPageItem;
+      setMinValue(startIndex);
+      setMaxValue(endIndex);
+      setCurrentPage(pageNumber);
+    } else {
+      // Pagination calculation based on all modules (preserves the current page)
+      const startIndex = (pageNumber - 1) * perPageItem;
+      const endIndex = startIndex + perPageItem;
+      setMinValue(startIndex);
+      setMaxValue(endIndex);
+      setCurrentPage(pageNumber);
+    }
   };
 
   const handleActiveModule = () => {
@@ -11544,7 +11558,32 @@ function Modules() {
       updateModules(response);
       setPageLoading(false);
     });
-  }, []); // Module List
+  }, []); // Handle changes in filterActiveModules
+
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // Calculate the number of active modules
+    const activeModuleCount = allModules.filter(module => module.status).length;
+
+    if (filterActiveModules) {
+      // If filterActiveModules is true, recalculate pagination based on active modules
+      const newMaxValue = currentPage * perPageItem;
+      const newMinValue = newMaxValue - perPageItem; // Update pagination data
+
+      setMaxValue(newMaxValue);
+      setMinValue(newMinValue); // If active modules are less than currentPage * perPageItem, reset currentPage
+
+      activeModuleCount <= perPageItem ? setCurrentPage(1) : setCurrentPage(currentPage);
+    } else {
+      // If filterActiveModules is false, reset pagination to show the first page
+      setCurrentPage(currentPage); // Calculate new min and max values based on all modules
+
+      const newMaxValue = currentPage * perPageItem;
+      const newMinValue = newMaxValue - perPageItem; // Update pagination data
+
+      setMaxValue(newMaxValue);
+      setMinValue(newMinValue);
+    }
+  }, [allModules, filterActiveModules, currentPage, perPageItem]); // Module List
 
   const ModuleList = _ref => {
     let {
@@ -11643,6 +11682,7 @@ function Modules() {
     }
   }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
     defaultCurrent: 1,
+    current: currentPage,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
     total: totalItems,
