@@ -9,7 +9,7 @@ function AppLayout() {
 
       <Layout
           style={{
-            paddingTop: '4px',
+            padding: '0',
           }}
         >
         <Layout.Content

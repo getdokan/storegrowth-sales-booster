@@ -41,7 +41,7 @@ function ModuleCard( { module } ) {
     <Col
       xs={24}
       xl={8}
-      md={12}
+      md={24}
       style={{
         padding: '8px'
       }}

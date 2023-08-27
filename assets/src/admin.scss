@@ -153,6 +153,11 @@ Module Card Style
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
 
+      @media (max-width: 767px) {
+        padding: 19px 8px 19px !important;
+
+      }
+
       .ant-space {
         .ant-space-item {
           .doc-btn {
@@ -175,16 +180,16 @@ Module Card Style
       }
 
       @media ( min-width: 768px ) and ( max-width: 1024px ) {
-        padding-left: 6px !important;
-        padding-right: 6px !important;
+        // padding-left: 6px !important;
+        // padding-right: 6px !important;
 
         & > div {
-          gap : 3px !important;
+          // gap : 3px !important;
 
         }
 
         a {
-          font-size: 11px !important;
+          // font-size: 11px !important;
         }
         
       }
@@ -197,8 +202,10 @@ Module Card Style
         border: 1px solid #B2DDFF;
         background: #FFF;
 
-        &.setting-btn {
+        &:hover {
           color: #0875FF;
+          border: 1px solid #B2DDFF;
+
         }
 
       }
@@ -236,6 +243,8 @@ Pagination Style
       a {
         color: #fff;
         background: #008dff;
+        border-radius: 4px;
+
       }
     }
   }
@@ -246,11 +255,21 @@ Pagination Style
   .search-bar {
     padding-right: 10px;
 
+    @media ( max-width: 520px ) {
+      margin-bottom: 20px;
+
+    }
+
     &.active {
       input {
         display: block;
         width: 250px;
         transition: .3s linear 0s;
+
+        @media ( max-width: 520px ) {
+          width: 73%;
+          
+        }
         
       }
 
@@ -493,6 +512,7 @@ End Settings Sidebar
 .sgsb-admin-dashboard {
   display: flex;
   flex-flow: row wrap;
+  background: #f4f7fe;
 
   @media ( max-width: 767px ) {
     display: block;
@@ -518,8 +538,9 @@ End Settings Sidebar
     flex-basis: 200px;
     background: #ffffff;
 
-    @media ( min-width: 1500px ) {
+    @media ( min-width: 1800px ) {
       flex-basis: 320px;
+      padding: 0 22px;
       
     }
 
@@ -535,6 +556,11 @@ End Settings Sidebar
       display: flex;
       align-items: center;
       gap: 7px;
+
+      @media ( min-width: 1500px ) {
+        // padding: 50px 8px 40px;
+        
+      }
 
       svg {
         width: 14px;
@@ -553,6 +579,11 @@ End Settings Sidebar
         padding: 0 12px 20px 20px;
         gap: 10px;
         position: relative;
+
+        @media ( min-width: 1500px ) {
+          // padding: 0 12px 20px 8px;
+          
+        }
 
         &:before {
           content: "";
@@ -574,7 +605,7 @@ End Settings Sidebar
 
         .ant-menu-title-content {
           img {
-            margin-left: -16px;
+            margin-left: -24px;
             
           }
         }
@@ -587,6 +618,11 @@ End Settings Sidebar
         li {
           padding: 12px 0px 12px 44px;
           position: relative;
+
+          @media ( min-width: 1500px ) {
+            // padding: 12px 0px 12px 34px;
+            
+          }
 
           &:hover {
             a {
@@ -604,6 +640,11 @@ End Settings Sidebar
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
+            
+            @media ( min-width: 1500px ) {
+              // left: 8px;
+              
+            }
 
           }
 
@@ -700,7 +741,7 @@ End Settings Sidebar
           &.direct-checkout {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url('../images/menu/direct-checkout.svg');
               width: 19px;
 
             }
@@ -708,7 +749,7 @@ End Settings Sidebar
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
+                background: url('../images/menu/direct-checkout-white.svg');
   
               }
               
@@ -718,7 +759,7 @@ End Settings Sidebar
           &.stock-bar {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url('../images/menu/stock-bar.svg');
               width: 19px;
 
             }
@@ -726,7 +767,7 @@ End Settings Sidebar
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
+                background: url('../images/menu/stock-bar-white.svg');
   
               }
               
@@ -784,6 +825,11 @@ End Settings Sidebar
       margin: 95px 8px 0;
       position: relative;
 
+      @media ( min-width: 320px ) and ( max-width: 520px ) {
+        margin-bottom: 60px;
+
+      }
+
       &:before {
         content: "";
         position: absolute;
@@ -795,6 +841,12 @@ End Settings Sidebar
         background-repeat: no-repeat;
         background-size: contain;
         background-position: bottom;
+
+        @media ( min-width: 320px ) and ( max-width: 520px ) {
+          background-size: cover;
+          bottom: -31px;
+
+        }
 
         @media ( min-width: 1441px ) and ( max-width: 2000px ) {
           background-size: cover;
@@ -881,22 +933,186 @@ End Settings Sidebar
   }
 
   &-module {
-    flex-basis: 83%;
-    max-width: 100%;
+    flex: 3;
+    position: relative;
+
+    // @media ( min-width: 1200px ) and (max-width: 1400px) {
+    //   flex-basis: 80%;
+
+    // }
+
+    @media (min-width: 1800px) {
+      .sgsb__module-pagination {
+        padding-left: 38px !important;
+
+      }
+    }
+
+    @media (max-width: 767px) {
+      .sgsb__module-pagination {
+        padding-left: 8px !important;
+
+      }
+    }
+
+    @media ( min-width: 1200px ) and (max-width: 1439px) {
+      .module-desc[class] {
+        min-height: 208px;
+
+      }
+
+    }
+
+    @media ( min-width: 992px ) and (max-width: 1199px) {
+      .sgsb-module-card {
+        .ant-card-body {
+          & > div {
+            &.ant-row {
+              display: block;
+            }
+          }
+        }
+      }
+
+    }
+
+    @media ( min-width: 1200px ) and (max-width: 1300px) {
+      .sgsb-module-card {
+        .sgsb__module-footer[class] {
+          padding: 8px !important;
+
+          .doc-btn {
+            gap: 3px !important;
+
+          }
+
+          .footer-btn[class] {
+            font-size: 10px;
+            
+          }
+
+        }
+      }
+      
+    }
+
+    @media ( min-width: 1301px ) and (max-width: 1439px) {
+      .sgsb-module-card {
+        .sgsb__module-footer[class] {
+          padding: 8px !important;
+
+          .footer-btn[class] {
+            font-size: 12px;
+
+          }
+
+        }
+      }
+      
+    }
+
+    @media ( min-width: 1025px ) and (max-width: 1199px) {
+      // flex-basis: 76%;
+
+      .sgsb-module-card {
+        .ant-card-body {
+          & > div {
+            &.ant-row {
+              display: block;
+            }
+          }
+        }
+      }
+
+    }
+
+
+    .module-banner[class] {
+      .ant-image[class] {
+        width: 100% !important;
+
+      }
+    }
+
+    &-box-content {
+      background: #f4f7fe;
+      border-top-left-radius: 15px;
+      margin-top: -2px;
+      position: relative;
+      margin-left: -1px;
+
+      // &:after {
+      //   content: "";
+      //   position: absolute;
+      //   background: #fff;
+      //   width: 18px;
+      //   height: 10px;
+      //   top: -4px;
+      //   left: -8px;
+      //   transform: rotate(-49deg);
+
+      //   @media ( max-width: 767px ) {
+      //     display: none;
+
+      //   }
+      // }
+
+      .module-banner {
+        img {
+          height: 165px;
+          width: 100%;
+          object-fit: cover;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+
+        }
+      }
+
+    }
 
     @media ( min-width: 1500px ) and ( max-width: 2000px ) {
-      flex-basis: 74%;
+      // flex-basis: 80%;
 
       &-box-content {
         // padding-left: 0 !important;
         padding: 30px 0 0 30px;
 
       }
+
+      
       
     }
 
+    @media ( min-width: 2001px ) {
+      // flex-basis: 83%;
+
+      &-box-content {
+        // padding-left: 0 !important;
+        padding: 30px 0 0 30px;
+
+        .sgsb-module-card {
+          .ant-card-body {
+            & > div {
+              &.ant-row {
+                display: block;
+              }
+            }
+          }
+        }
+
+        .module-banner {
+          .ant-image {
+            width: 100% !important;
+  
+          }
+        }
+
+
+      }
+    }
+
     @media ( min-width: 768px ) and ( max-width: 1024px ) {
-      flex-basis: 71%;
+      // flex-basis: 71%;
 
       .module-banner {
         .ant-image {
@@ -906,13 +1122,13 @@ End Settings Sidebar
       }
 
       .doc-btn {
-        gap: 2px !important;
+        // gap: 2px !important;
 
       }
 
       &-box-content {
         // padding-left: 0 !important;
-        padding: 8px 0 0 8px
+        padding: 8px 0 0 8px;
 
       }
 
@@ -938,6 +1154,39 @@ End Settings Sidebar
       background: #ffffff;
       padding: 20px 0;
       margin-bottom: 0;
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        background: #ffffff;
+        width: 36px;
+        height: 16px;
+        bottom: -4px;
+        left: -15px;
+        transform: rotate(-58deg);
+
+        @media ( max-width: 767px ) {
+          display: none;
+
+        }
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        background: #ffffff;
+        width: 36px;
+        height: 16px;
+        bottom: -6px;
+        left: -15px;
+        transform: rotate(-32deg);
+
+        @media ( max-width: 767px ) {
+          display: none;
+
+        }
+      }
 
       @media ( max-width: 767px ) {
         margin-bottom: 30px;
@@ -968,7 +1217,7 @@ End Settings Sidebar
 
     }
 
-    @media ( max-width: 767px ) {
+    @media ( max-width: 991px ) {
       &-box-content {
         display: block;
 
