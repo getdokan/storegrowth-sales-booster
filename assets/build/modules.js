@@ -11496,7 +11496,6 @@ function Modules() {
     setFilterActiveModules(checked);
   };
 
-  console.log(filterActiveModules);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setPageLoading(true);
     (0,_ajax__WEBPACK_IMPORTED_MODULE_2__.Ajax)("get_all_modules").success(response => {

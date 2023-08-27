@@ -26,7 +26,7 @@ function Modules() {
   const handlefilterChange = (checked) => {
     setFilterActiveModules(checked);
   };
-console.log(filterActiveModules);
+  
   useEffect(() => {
     setPageLoading(true);
     Ajax("get_all_modules").success((response) => {
