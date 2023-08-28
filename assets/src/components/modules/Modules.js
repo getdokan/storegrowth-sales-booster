@@ -110,12 +110,12 @@ function Modules() {
       // Update pagination data
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
+      // setCurrentPage(currentPage);
 
       // If active modules are less than currentPage * perPageItem, reset currentPage
       activeModuleCount <= perPageItem
         ? setCurrentPage(1)
         : setCurrentPage(currentPage);
-
     } else {
       // If filterActiveModules is false, reset pagination to show the first page
       setCurrentPage(currentPage);
@@ -129,6 +129,10 @@ function Modules() {
       setMinValue(newMinValue);
     }
   }, [allModules, filterActiveModules, currentPage, perPageItem]);
+
+  const moduleLength = allModules.filter((module) =>
+    filterActiveModules ? module.status : true
+  ).length;
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -224,7 +228,6 @@ function Modules() {
             </Col>
           </Row>
         </div>
-
         {activeModule && (
           <Alert
             description="This module is not active. Please active first to view settings"
@@ -245,7 +248,7 @@ function Modules() {
             paddingLeft: "22px",
           }}
         >
-          {allModules.length > perPageItem && (
+          {moduleLength > 0 ? (
             <Pagination
               defaultCurrent={1}
               current={currentPage}
@@ -253,6 +256,13 @@ function Modules() {
               onChange={hanglePageItem}
               total={totalItems}
               hideOnSinglePage={false}
+            />
+          ) : (filterActiveModules &&
+            <Alert
+              message="Error"
+              description="There is no available active module"
+              type="error"
+              showIcon
             />
           )}
         </div>

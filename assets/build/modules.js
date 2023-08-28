@@ -11570,7 +11570,8 @@ function Modules() {
       const newMinValue = newMaxValue - perPageItem; // Update pagination data
 
       setMaxValue(newMaxValue);
-      setMinValue(newMinValue); // If active modules are less than currentPage * perPageItem, reset currentPage
+      setMinValue(newMinValue); // setCurrentPage(currentPage);
+      // If active modules are less than currentPage * perPageItem, reset currentPage
 
       activeModuleCount <= perPageItem ? setCurrentPage(1) : setCurrentPage(currentPage);
     } else {
@@ -11583,7 +11584,8 @@ function Modules() {
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
     }
-  }, [allModules, filterActiveModules, currentPage, perPageItem]); // Module List
+  }, [allModules, filterActiveModules, currentPage, perPageItem]);
+  const moduleLength = allModules.filter(module => filterActiveModules ? module.status : true).length; // Module List
 
   const ModuleList = _ref => {
     let {
@@ -11680,13 +11682,18 @@ function Modules() {
       paddingTop: "80px",
       paddingLeft: "22px"
     }
-  }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }, moduleLength > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
     defaultCurrent: 1,
     current: currentPage,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
     total: totalItems,
     hideOnSinglePage: false
+  }) : filterActiveModules && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
+    message: "Error",
+    description: "There is no available active module",
+    type: "error",
+    showIcon: true
   }))));
 }
 
