@@ -38,7 +38,14 @@ function Modules() {
     allModules: select("sgsb").getModules(),
   }));
 
+  const activeModuleLength = allModules.filter((module) =>
+  filterActiveModules ? module.status : true
+).length;
+
   const handlefilterChange = (checked) => {
+    setCurrentPage(1);
+    setMinValue(0);
+    setMaxValue(perPageItem);
     setFilterActiveModules(checked);
   };
 
@@ -76,8 +83,8 @@ function Modules() {
 
   const totalItems = useMemo(() => {
     return filterActiveModules
-      ? allModules.filter((module) => module.status).length // Count only active modules
-      : allModules.length; // Count all modules
+      ? allModules.filter((module) => module.status).length
+      : allModules.length;
   }, [filterActiveModules, allModules]);
 
   useEffect(() => {
@@ -95,44 +102,23 @@ function Modules() {
     });
   }, []);
 
-  // Handle changes in filterActiveModules
   useEffect(() => {
-    // Calculate the number of active modules
-    const activeModuleCount = allModules.filter(
-      (module) => module.status
-    ).length;
 
     if (filterActiveModules) {
       // If filterActiveModules is true, recalculate pagination based on active modules
-      const newMaxValue = currentPage * perPageItem;
+      const newCurrentPage = Math.ceil(activeModuleLength/perPageItem);
+      const updatedCurrentPage = currentPage>newCurrentPage?(currentPage-1):currentPage
+      const newMaxValue = updatedCurrentPage * perPageItem;
       const newMinValue = newMaxValue - perPageItem;
-
+     
       // Update pagination data
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
-      // setCurrentPage(currentPage);
+      setCurrentPage(updatedCurrentPage);
 
-      // If active modules are less than currentPage * perPageItem, reset currentPage
-      activeModuleCount <= perPageItem
-        ? setCurrentPage(1)
-        : setCurrentPage(currentPage);
-    } else {
-      // If filterActiveModules is false, reset pagination to show the first page
-      setCurrentPage(currentPage);
+    } 
+  }, [allModules, perPageItem]);
 
-      // Calculate new min and max values based on all modules
-      const newMaxValue = currentPage * perPageItem;
-      const newMinValue = newMaxValue - perPageItem;
-
-      // Update pagination data
-      setMaxValue(newMaxValue);
-      setMinValue(newMinValue);
-    }
-  }, [allModules, filterActiveModules, currentPage, perPageItem]);
-
-  const moduleLength = allModules.filter((module) =>
-    filterActiveModules ? module.status : true
-  ).length;
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -248,7 +234,7 @@ function Modules() {
             paddingLeft: "22px",
           }}
         >
-          {moduleLength > 0 ? (
+          {activeModuleLength > 0 ? (
             <Pagination
               defaultCurrent={1}
               current={currentPage}
@@ -257,13 +243,15 @@ function Modules() {
               total={totalItems}
               hideOnSinglePage={false}
             />
-          ) : (filterActiveModules &&
-            <Alert
-              message="Error"
-              description="There is no available active module"
-              type="error"
-              showIcon
-            />
+          ) : (
+            filterActiveModules && (
+              <Alert
+                message="Error"
+                description="There is no available active module"
+                type="error"
+                showIcon
+              />
+            )
           )}
         </div>
       </div>
