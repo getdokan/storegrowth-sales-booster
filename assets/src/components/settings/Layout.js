@@ -22,10 +22,7 @@ function ModuleSettings({ routes }) {
       <Layout>
         <HeadBar />
         <Layout.Content
-          style={{
-            paddingLeft: 25,
-            minHeight: 550,
-          }}
+          className="sgsb-module-setting-layout"
         >
           {element}
         </Layout.Content>

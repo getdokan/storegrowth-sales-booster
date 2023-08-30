@@ -5910,10 +5910,7 @@ function ModuleSettings(_ref) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], {
     routes: routes
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_HeadBar__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Content, {
-    style: {
-      paddingLeft: 25,
-      minHeight: 550
-    }
+    className: "sgsb-module-setting-layout"
   }, element)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PageLoader__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 } // If not module is active.
 

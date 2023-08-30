@@ -422,6 +422,15 @@ Pagination Style
 /*===============================
 Settings Sidebar
 ===============================*/
+main.ant-layout-content.sgsb-module-setting-layout {
+  padding: 25px 0px 0px 25px;
+  background: #F4F7FF;
+  border-top-left-radius: 15px;
+  z-index: 2;
+  margin-left: -2px;
+  margin-top: -1px;
+}
+
 .sgsb-admin-setting-dashboard {
   background: #f4f7fe;
 
