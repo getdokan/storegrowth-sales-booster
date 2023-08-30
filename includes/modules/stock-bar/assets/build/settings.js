@@ -49042,7 +49042,8 @@ __webpack_require__.r(__webpack_exports__);
   routes.push({
     path: "/stock-bar",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockBar__WEBPACK_IMPORTED_MODULE_2__["default"], null),
-    name: 'stock-bar'
+    name: 'stock-bar',
+    label: "Stock Bar"
   });
   return routes;
 });

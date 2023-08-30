@@ -42327,7 +42327,8 @@ __webpack_require__.r(__webpack_exports__);
   routes.push({
     path: "/fly-cart",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_FlyCart__WEBPACK_IMPORTED_MODULE_2__["default"], null),
-    name: 'fly-cart'
+    name: 'fly-cart',
+    label: 'Quick Cart'
   });
   return routes;
 });

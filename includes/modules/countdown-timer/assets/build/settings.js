@@ -45157,7 +45157,8 @@ __webpack_require__.r(__webpack_exports__);
   routes.push({
     path: "/countdown-timer",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StockCountdown__WEBPACK_IMPORTED_MODULE_2__["default"], null),
-    name: 'countdown-timer'
+    name: 'countdown-timer',
+    label: 'Sales Countdown'
   });
   return routes;
 });

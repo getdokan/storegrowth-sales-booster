@@ -10,6 +10,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
     path: "/fly-cart",
     element: <FlyCart />,
     name: 'fly-cart',
+    label:'Quick Cart',
   } );
 
   return routes;

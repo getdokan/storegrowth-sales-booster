@@ -10,6 +10,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
     path: "/countdown-timer",
     element: <StockCountdown />,
     name: 'countdown-timer',
+    label: 'Sales Countdown'
   });
 
   return routes;

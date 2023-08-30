@@ -45080,6 +45080,7 @@ __webpack_require__.r(__webpack_exports__);
   routes.push({
     path: "/sales-pop",
     name: 'sales-pop',
+    label: "Sales Pop",
     exact: true,
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_SalesPop__WEBPACK_IMPORTED_MODULE_3__["default"], {
       outlet: outlet,

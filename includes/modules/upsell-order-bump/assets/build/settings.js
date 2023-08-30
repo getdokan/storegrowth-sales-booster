@@ -22805,12 +22805,10 @@ function OrderBumpList(_ref3) {
   let data;
   if (sgsbAdmin.isPro) {
     data = bumpListData.map(mapBumpData);
-    console.log(data);
   } else {
     data = bumpListData.slice(-2).map(mapBumpData);
   }
   const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
-  console.log(sgsbAdmin.isPro);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, isDisableBumpCreation && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "sgsb-order-bumps-limit-warning-message"
   }, "Upgrade to premeuim to create more than two order bumps."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -66166,6 +66164,7 @@ __webpack_require__.r(__webpack_exports__);
     path: "/upsell-order-bump",
     exact: true,
     name: 'upsell-order-bump',
+    label: "Upsell Order Bump",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_OrderBump__WEBPACK_IMPORTED_MODULE_2__["default"], {
       outlet: outlet,
       navigate: navigate,

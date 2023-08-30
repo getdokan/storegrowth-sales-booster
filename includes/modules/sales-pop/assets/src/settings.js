@@ -17,6 +17,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams, useSearch
 	routes.push( {
 		path: "/sales-pop",
 		name: 'sales-pop',
+		label: "Sales Pop",
 		exact:true,
 		element: <SalesPop 
 		outlet={outlet} 

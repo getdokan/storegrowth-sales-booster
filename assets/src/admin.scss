@@ -32,11 +32,12 @@ Module Card Style
 =============================*/
 #sbooster-modules-page {
   .ant-layout-header {
-   padding: 0;
+    padding: 0;
 
   }
 
-  .ant-layout-header, .ant-layout-sider {
+  .ant-layout-header,
+  .ant-layout-sider {
     background: #ffffff;
 
   }
@@ -87,7 +88,7 @@ Module Card Style
     .switch-btn {
       @media (min-width: 768px) and (max-width: 1024px) {
         float: none !important;
-        
+
       }
 
     }
@@ -100,7 +101,7 @@ Module Card Style
 
       @media (min-width: 768px) and (max-width: 1024px) {
         margin-left: 0 !important;
-        
+
       }
 
       .ant-switch-handle {
@@ -129,6 +130,7 @@ Module Card Style
       justify-content: center;
 
     }
+
     .module-name {
       color: #073B4C;
       font-size: 20px;
@@ -163,7 +165,7 @@ Module Card Style
           .doc-btn {
             display: flex;
             gap: 10px;
-            
+
           }
 
           .switch-btn {
@@ -179,11 +181,11 @@ Module Card Style
 
       }
 
-      @media ( min-width: 768px ) and ( max-width: 1024px ) {
+      @media (min-width: 768px) and (max-width: 1024px) {
         // padding-left: 6px !important;
         // padding-right: 6px !important;
 
-        & > div {
+        &>div {
           // gap : 3px !important;
 
         }
@@ -191,7 +193,7 @@ Module Card Style
         a {
           // font-size: 11px !important;
         }
-        
+
       }
 
       .footer-btn[class] {
@@ -255,7 +257,7 @@ Pagination Style
   .search-bar {
     padding-right: 10px;
 
-    @media ( max-width: 520px ) {
+    @media (max-width: 520px) {
       margin-bottom: 20px;
 
     }
@@ -266,11 +268,11 @@ Pagination Style
         width: 250px;
         transition: .3s linear 0s;
 
-        @media ( max-width: 520px ) {
+        @media (max-width: 520px) {
           width: 73%;
-          
+
         }
-        
+
       }
 
       .ant-input-group-addon {
@@ -420,60 +422,366 @@ Pagination Style
 /*===============================
 Settings Sidebar
 ===============================*/
-.sgsb__settings-sidebar {
-  background: $white-color;
+.sgsb-admin-setting-dashboard {
+  background: #f4f7fe;
 
-  .ant-layout-sider-children[class] {
-    background: $white-color;
-    border: 1px solid #ecedf0;
-    border-radius: 8px;
+  @media (max-width: 767px) {
+    display: block;
 
-    ul {
-      background: none;
-      padding: 4px 18px;
+  }
 
-      li {
-        padding: 6px;
-        padding-left: 18px !important;
-        height: 46px;
+  @media (min-width: 1500px) {
+    // gap: 20px;
 
-        .ant-menu-item-icon {
-          display: none;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    // gap: 10px;
+
+  }
+
+  @media (min-width: 1500px) and (max-width: 2000px) {
+    // gap: 20px;
+
+  }
+
+  &-sideabr {
+    background: #ffffff;
+
+    @media (min-width: 1800px) {
+      // padding: 0 22px;
+
+    }
+
+    @media (max-width: 767px) {
+      padding-top: 2px;
+      margin-bottom: 40px;
+
+    }
+
+    h3 {
+      font-size: 18px;
+      padding: 50px 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      @media (min-width: 1500px) {
+        // padding: 50px 8px 40px;
+
+      }
+
+      svg {
+        width: 14px;
+
+      }
+    }
+
+    .all-widgets-menu {
+      h4 {
+        color: #073B4C;
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px 20px 20px;
+        gap: 10px;
+        position: relative;
+
+        @media (min-width: 1500px) {
+          // padding: 0 12px 20px 8px;
+
+        }
+
+        &:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+
+        }
+
+        span {
+          margin-left: auto;
+          cursor: pointer;
+
         }
 
         .ant-menu-title-content {
-          margin-left: 0;
+          img {
+            margin-left: -24px;
+
+          }
+        }
+
+      }
+
+      ul {
+        padding: 0 20px 0 0;
+        @media (min-width: 1800px) {
+          // padding: 0 22px;
+          padding: 0 42px 0 0;
+    
+        }
+        .sgsb-selected-module {
+          background: #0875FF;
+          color: #ffffff !important;
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+
+        li {
+          padding: 12px 0px 12px 44px;
+          position: relative;
+
+          @media (min-width: 1500px) {
+            // padding: 12px 0px 12px 34px;
+
+          }
+
+          &:hover {
+            a {
+              color: #ffffff;
+
+            }
+          }
+
+          &:before {
+            content: "";
+            position: absolute;
+            left: 18px;
+            width: 18px;
+            height: 18px;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+
+            @media (min-width: 1500px) {
+              // left: 8px;
+
+            }
+
+          }
+
+          &.fly-cart {
+            &:before {
+              content: "";
+              background: url('../images/menu/quick-cart-icon.svg');
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quick-cart-icon-white.svg');
+
+              }
+
+            }
+          }
+
+          &.progressive-discount-banner {
+            &:before {
+              content: "";
+              background: url('../images/menu/discount-b-icon.svg');
+              width: 19px;
+              height: 18px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/discount-b-icon-white.svg');
+
+              }
+
+            }
+          }
+
+          &.sales-pop {
+            &:before {
+              content: "";
+              background: url('../images/menu/sales-pop.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/sales-pop-white.svg');
+
+              }
+
+            }
+          }
+
+          &.countdown-timer {
+            &:before {
+              content: "";
+              background: url('../images/menu/countdown-timer.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/countdown-timer-white.svg');
+
+              }
+
+            }
+          }
+
+          &.upsell-order-bump {
+            &:before {
+              content: "";
+              background: url('../images/menu/upsel.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/upsel-white.svg');
+
+              }
+
+            }
+          }
+
+          &.direct-checkout {
+            &:before {
+              content: "";
+              background: url('../images/menu/direct-checkout.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/direct-checkout-white.svg');
+
+              }
+
+            }
+          }
+
+          &.stock-bar {
+            &:before {
+              content: "";
+              background: url('../images/menu/stock-bar.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/stock-bar-white.svg');
+
+              }
+
+            }
+          }
+
         }
 
         a {
-          font-size: 16px;
-          font-weight: 500;
-          color: #1b1b50;
+          color: #757D9E;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-decoration: none;
+          outline: none;
+
+          &:hover {
+            color: #ffffff;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
         }
 
-        &.ant-menu-item-selected {
-          background: #008dff;
-          border-radius: 8px;
-
+        li.sgsb-selected-module {
           a {
-            color: $white-color;
+            color: #ffffff; // Set the color to white when the anchor is within a selected module
+          }
+          &.fly-cart::before {
+            background: url('../images/menu/quick-cart-icon-white.svg');
+          }
+        
+          &.progressive-discount-banner::before {
+            background: url('../images/menu/discount-b-icon-white.svg');
+          }
+        
+          &.sales-pop::before {
+            background: url('../images/menu/sales-pop-white.svg');
+          }
+          &.direct-checkout::before {
+            background: url('../images/menu/direct-checkout-white.svg');
+          }
+          &.stock-bar::before {
+            background: url('../images/menu/stock-bar-white.svg');
+            
+          }
+          &.upsell-order-bump::before {
+            background: url('../images/menu/upsel-white.svg');
+          }
+          &.countdown-timer::before {
+            background: url('../images/menu/countdown-timer-white.svg');
+          }
+        
+        }
+
+        li {
+          color: #757D9E;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+
+          &:hover {
+            background: #0875FF;
+            color: #ffffff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+
           }
 
-          &:after {
-            display: none;
-          }
         }
       }
     }
 
-    h3 {
-      font-size: 20px;
-      color: #080814;
-      border-bottom: 1px solid #ecedf0;
-      padding: 18px 24px;
-    }
+  }
+
+}
+
+.sgsb__settings-sidebar {
+  background: $white-color;
+
+  @media (min-width: 1800px) {
+    width: 320px !important;
+    flex: 0 0 320px !important;
+    max-width: 320px !important;
+    min-width: 320px !important;
+
+  }
+
+  .ant-layout-sider-children[class] {
+    background: $white-color;
   }
 }
+
 /*===============================
 End Settings Sidebar
 ===============================*/
@@ -502,10 +810,11 @@ End Settings Sidebar
 
 // progressive discount banner css end
 // upsell order bump css start
-.sgsb-order-bumps-limit-warning-message{
+.sgsb-order-bumps-limit-warning-message {
   color: #1890ff;
   font-weight: bold;
 }
+
 // upsell order bump css end
 
 
@@ -514,40 +823,40 @@ End Settings Sidebar
   flex-flow: row wrap;
   background: #f4f7fe;
 
-  @media ( max-width: 767px ) {
+  @media (max-width: 767px) {
     display: block;
 
   }
 
-  @media ( min-width: 1500px ) {
+  @media (min-width: 1500px) {
     // gap: 20px;
-    
+
   }
 
-  @media ( min-width: 768px ) and ( max-width: 1024px ) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     // gap: 10px;
-    
+
   }
 
-  @media ( min-width: 1500px ) and ( max-width: 2000px ) {
+  @media (min-width: 1500px) and (max-width: 2000px) {
     // gap: 20px;
-    
+
   }
 
   &-sideabr {
     flex-basis: 200px;
     background: #ffffff;
 
-    @media ( min-width: 1800px ) {
+    @media (min-width: 1800px) {
       flex-basis: 320px;
       padding: 0 22px;
-      
+
     }
 
-    @media ( max-width: 767px ) {
+    @media (max-width: 767px) {
       padding-top: 2px;
       margin-bottom: 40px;
-      
+
     }
 
     h3 {
@@ -557,9 +866,9 @@ End Settings Sidebar
       align-items: center;
       gap: 7px;
 
-      @media ( min-width: 1500px ) {
+      @media (min-width: 1500px) {
         // padding: 50px 8px 40px;
-        
+
       }
 
       svg {
@@ -580,9 +889,9 @@ End Settings Sidebar
         gap: 10px;
         position: relative;
 
-        @media ( min-width: 1500px ) {
+        @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
-          
+
         }
 
         &:before {
@@ -606,10 +915,10 @@ End Settings Sidebar
         .ant-menu-title-content {
           img {
             margin-left: -24px;
-            
+
           }
         }
-    
+
       }
 
       ul {
@@ -619,9 +928,9 @@ End Settings Sidebar
           padding: 12px 0px 12px 44px;
           position: relative;
 
-          @media ( min-width: 1500px ) {
+          @media (min-width: 1500px) {
             // padding: 12px 0px 12px 34px;
-            
+
           }
 
           &:hover {
@@ -640,10 +949,10 @@ End Settings Sidebar
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
-            
-            @media ( min-width: 1500px ) {
+
+            @media (min-width: 1500px) {
               // left: 8px;
-              
+
             }
 
           }
@@ -659,9 +968,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/quick-cart-icon-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -678,9 +987,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/discount-b-icon-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -696,9 +1005,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/sales-pop-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -714,9 +1023,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/countdown-timer-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -732,9 +1041,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/upsel-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -750,9 +1059,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/direct-checkout-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -768,9 +1077,9 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/stock-bar-white.svg');
-  
+
               }
-              
+
             }
           }
 
@@ -783,7 +1092,8 @@ End Settings Sidebar
 
         }
 
-        li, a {
+        li,
+        a {
           color: #757D9E;
           font-size: 14px;
           font-weight: 500;
@@ -825,7 +1135,7 @@ End Settings Sidebar
       margin: 95px 8px 0;
       position: relative;
 
-      @media ( min-width: 320px ) and ( max-width: 520px ) {
+      @media (min-width: 320px) and (max-width: 520px) {
         margin-bottom: 60px;
 
       }
@@ -842,13 +1152,13 @@ End Settings Sidebar
         background-size: contain;
         background-position: bottom;
 
-        @media ( min-width: 320px ) and ( max-width: 520px ) {
+        @media (min-width: 320px) and (max-width: 520px) {
           background-size: cover;
           bottom: -31px;
 
         }
 
-        @media ( min-width: 1441px ) and ( max-width: 2000px ) {
+        @media (min-width: 1441px) and (max-width: 2000px) {
           background-size: cover;
           left: -1.4px;
           bottom: -31px;
@@ -872,7 +1182,7 @@ End Settings Sidebar
         top: -38px;
         left: 50%;
         transform: translateX(-50%);
-        
+
       }
 
       .rating {
@@ -891,8 +1201,10 @@ End Settings Sidebar
         gap: 9px;
 
       }
-  
-      h4, p, h5 {
+
+      h4,
+      p,
+      h5 {
         color: #ffffff;
 
       }
@@ -928,7 +1240,7 @@ End Settings Sidebar
       }
     }
 
-   
+
 
   }
 
@@ -955,7 +1267,7 @@ End Settings Sidebar
       }
     }
 
-    @media ( min-width: 1200px ) and (max-width: 1439px) {
+    @media (min-width: 1200px) and (max-width: 1439px) {
       .module-desc[class] {
         min-height: 208px;
 
@@ -963,10 +1275,10 @@ End Settings Sidebar
 
     }
 
-    @media ( min-width: 992px ) and (max-width: 1199px) {
+    @media (min-width: 992px) and (max-width: 1199px) {
       .sgsb-module-card {
         .ant-card-body {
-          & > div {
+          &>div {
             &.ant-row {
               display: block;
             }
@@ -976,7 +1288,7 @@ End Settings Sidebar
 
     }
 
-    @media ( min-width: 1200px ) and (max-width: 1300px) {
+    @media (min-width: 1200px) and (max-width: 1300px) {
       .sgsb-module-card {
         .sgsb__module-footer[class] {
           padding: 8px !important;
@@ -988,15 +1300,15 @@ End Settings Sidebar
 
           .footer-btn[class] {
             font-size: 10px;
-            
+
           }
 
         }
       }
-      
+
     }
 
-    @media ( min-width: 1301px ) and (max-width: 1439px) {
+    @media (min-width: 1301px) and (max-width: 1439px) {
       .sgsb-module-card {
         .sgsb__module-footer[class] {
           padding: 8px !important;
@@ -1008,15 +1320,15 @@ End Settings Sidebar
 
         }
       }
-      
+
     }
 
-    @media ( min-width: 1025px ) and (max-width: 1199px) {
+    @media (min-width: 1025px) and (max-width: 1199px) {
       // flex-basis: 76%;
 
       .sgsb-module-card {
         .ant-card-body {
-          & > div {
+          &>div {
             &.ant-row {
               display: block;
             }
@@ -1070,7 +1382,7 @@ End Settings Sidebar
 
     }
 
-    @media ( min-width: 1500px ) and ( max-width: 2000px ) {
+    @media (min-width: 1500px) and (max-width: 2000px) {
       // flex-basis: 80%;
 
       &-box-content {
@@ -1079,11 +1391,11 @@ End Settings Sidebar
 
       }
 
-      
-      
+
+
     }
 
-    @media ( min-width: 2001px ) {
+    @media (min-width: 2001px) {
       // flex-basis: 83%;
 
       &-box-content {
@@ -1092,7 +1404,7 @@ End Settings Sidebar
 
         .sgsb-module-card {
           .ant-card-body {
-            & > div {
+            &>div {
               &.ant-row {
                 display: block;
               }
@@ -1103,7 +1415,7 @@ End Settings Sidebar
         .module-banner {
           .ant-image {
             width: 100% !important;
-  
+
           }
         }
 
@@ -1111,7 +1423,7 @@ End Settings Sidebar
       }
     }
 
-    @media ( min-width: 768px ) and ( max-width: 1024px ) {
+    @media (min-width: 768px) and (max-width: 1024px) {
       // flex-basis: 71%;
 
       .module-banner {
@@ -1134,7 +1446,7 @@ End Settings Sidebar
 
     }
 
-    @media ( min-width: 1440px ) and ( max-width: 2000px ) {
+    @media (min-width: 1440px) and (max-width: 2000px) {
 
       .module-banner {
         .ant-image {
@@ -1155,6 +1467,7 @@ End Settings Sidebar
       padding: 20px 0;
       margin-bottom: 0;
       position: relative;
+      height: auto;
 
       &:after {
         content: "";
@@ -1166,7 +1479,7 @@ End Settings Sidebar
         left: -15px;
         transform: rotate(-58deg);
 
-        @media ( max-width: 767px ) {
+        @media (max-width: 767px) {
           display: none;
 
         }
@@ -1182,20 +1495,20 @@ End Settings Sidebar
         left: -15px;
         transform: rotate(-32deg);
 
-        @media ( max-width: 767px ) {
+        @media (max-width: 767px) {
           display: none;
 
         }
       }
 
-      @media ( max-width: 767px ) {
+      @media (max-width: 767px) {
         margin-bottom: 30px;
-        
+
       }
 
       .help-btn {
         margin: 0px 30px 0 10px;
-    
+
         a {
           display: flex;
           align-items: center;
@@ -1211,17 +1524,17 @@ End Settings Sidebar
             font-weight: 700;
 
           }
-    
+
         }
       }
 
     }
 
-    @media ( max-width: 991px ) {
+    @media (max-width: 991px) {
       &-box-content {
         display: block;
 
-        & > div {
+        &>div {
           max-width: 100% !important;
 
         }
@@ -1235,7 +1548,7 @@ End Settings Sidebar
 
         .sgsb-module-card {
           .ant-card-body {
-            & > div {
+            &>div {
               display: block;
 
             }
@@ -1244,12 +1557,12 @@ End Settings Sidebar
       }
     }
 
-    @media ( min-width: 1440px ) and ( max-width: 2000px ) {
+    @media (min-width: 1440px) and (max-width: 2000px) {
 
       &-box-content {
         .sgsb-module-card {
           .ant-card-body {
-            & > div {
+            &>div {
               display: block;
 
             }
@@ -1272,7 +1585,7 @@ End Settings Sidebar
 
           }
         }
-  
+
       }
     }
 
