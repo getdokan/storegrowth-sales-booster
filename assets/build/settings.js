@@ -5902,10 +5902,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/layout/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/layout/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var _images_dashboard_icon_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../images/dashboard-icon.svg */ "./images/dashboard-icon.svg");
 /* harmony import */ var _images_logo_svg__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../images/logo.svg */ "./images/logo.svg");
 /* harmony import */ var _images_menu_down_arrow_icon_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../images/menu/down-arrow-icon.svg */ "./images/menu/down-arrow-icon.svg");
@@ -5926,21 +5926,12 @@ function Sidebar(_ref) {
   let {
     routes
   } = _ref;
-  let sidebarItems = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)("sidebar_menu_items", [], react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link);
-  let firstItem = sidebarItems[0] || false;
-  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useLocation)(); // Redirect to the first menu if it is the index page.
-
-  if (location.pathname === "/" && firstItem) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Navigate, {
-      to: `/${firstItem.key}`,
-      replace: true
-    });
-  }
-
+  // let sidebarItems = applyFilters("sidebar_menu_items", [], Link);
+  let firstItem = routes[0] || false;
+  const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useLocation)();
   const [activeClass, setActiveClass] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [{
-    route: currentRoute
-  }] = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_8__.matchRoutes)(routes, location);
+  const matchResult = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.matchRoutes)(routes, location);
+  const currentRoute = matchResult ? matchResult[0].route : null;
   const [selectedMenu, setSelectedMenu] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentRoute === null || currentRoute === void 0 ? void 0 : currentRoute.name);
 
   const toggleMenuClass = () => {
@@ -5958,9 +5949,17 @@ function Sidebar(_ref) {
     if (linkElement) {
       linkElement.click();
     }
-  };
+  }; // Redirect to the first menu if it is the index page.
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"].Sider, {
+
+  if (location.pathname === "/" && firstItem) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Navigate, {
+      to: `${firstItem.path}`,
+      replace: true
+    });
+  }
+
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Sider, {
     className: "site-layout-background sgsb__settings-sidebar",
     style: {
       minHeight: "100vh"
@@ -5969,17 +5968,17 @@ function Sidebar(_ref) {
     className: "sgsb-admin-setting-dashboard-sideabr"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-logo"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     preview: false,
     width: 164,
     src: _images_logo_svg__WEBPACK_IMPORTED_MODULE_3__["default"]
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     preview: false,
     width: 19,
     src: _images_dashboard_icon_svg__WEBPACK_IMPORTED_MODULE_2__["default"]
   }), "Dashboard"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "all-widgets-menu"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     preview: false,
     width: 18,
     src: _images_widget_icon_svg__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -5999,7 +5998,7 @@ function Sidebar(_ref) {
     onClick: () => handleLiClick(route.name) // Handle the click event on <li>
     ,
     className: selectedMenu === route.name ? `sgsb-selected-module ${route.name}` : `${route.name}`
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Link, {
     className: selectedMenu === route.name ? "sgsb-selected-link" : "",
     "data-route-name": route.name,
     to: route.path

@@ -10,19 +10,12 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 
 function Sidebar({ routes }) {
-  let sidebarItems = applyFilters("sidebar_menu_items", [], Link);
-  let firstItem = sidebarItems[0] || false;
-
+  // let sidebarItems = applyFilters("sidebar_menu_items", [], Link);
+  let firstItem = routes[0] || false;
   const location = useLocation();
-
-  // Redirect to the first menu if it is the index page.
-  if (location.pathname === "/" && firstItem) {
-    return <Navigate to={`/${firstItem.key}`} replace={true} />;
-  }
-
   const [activeClass, setActiveClass] = useState(false);
-  const [{ route: currentRoute }] = matchRoutes(routes, location);
-
+  const matchResult = matchRoutes(routes, location);
+  const currentRoute = matchResult ? matchResult[0].route : null;
   const [selectedMenu, setSelectedMenu] = useState(currentRoute?.name);
 
   const toggleMenuClass = () => {
@@ -42,6 +35,11 @@ function Sidebar({ routes }) {
       linkElement.click();
     }
   };
+
+  // Redirect to the first menu if it is the index page.
+  if (location.pathname === "/" && firstItem) {
+    return <Navigate to={`${firstItem.path}`} replace={true} />;
+  }
 
   return (
     <Layout.Sider
