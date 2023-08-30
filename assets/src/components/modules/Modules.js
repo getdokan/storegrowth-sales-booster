@@ -39,8 +39,8 @@ function Modules() {
   }));
 
   const activeModuleLength = allModules.filter((module) =>
-  filterActiveModules ? module.status : true
-).length;
+    filterActiveModules ? module.status : true
+  ).length;
 
   const handlefilterChange = (checked) => {
     setCurrentPage(1);
@@ -103,22 +103,20 @@ function Modules() {
   }, []);
 
   useEffect(() => {
-
     if (filterActiveModules) {
       // If filterActiveModules is true, recalculate pagination based on active modules
-      const newCurrentPage = Math.ceil(activeModuleLength/perPageItem);
-      const updatedCurrentPage = currentPage>newCurrentPage?(currentPage-1):currentPage
+      const newCurrentPage = Math.ceil(activeModuleLength / perPageItem);
+      const updatedCurrentPage =
+        currentPage > newCurrentPage ? currentPage - 1 : currentPage;
       const newMaxValue = updatedCurrentPage * perPageItem;
       const newMinValue = newMaxValue - perPageItem;
-     
+
       // Update pagination data
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
       setCurrentPage(updatedCurrentPage);
-
-    } 
+    }
   }, [allModules, perPageItem]);
-
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -182,8 +180,9 @@ function Modules() {
             })}
           </ul>
         </div>
-
-        <ModuleFilter onFilterChange={handlefilterChange} />
+        {(activeModuleLength===0) && (
+          <ModuleFilter onFilterChange={handlefilterChange} />
+        )}
 
         <PremiumBox />
       </div>

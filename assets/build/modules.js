@@ -11629,7 +11629,7 @@ function Modules() {
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }))), activeModuleLength === 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
     onFilterChange: handlefilterChange
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
