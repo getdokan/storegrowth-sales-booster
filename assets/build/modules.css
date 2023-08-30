@@ -27416,10 +27416,12 @@ End Settings Sidebar
     margin-bottom: 30px;
   }
 }
-.sgsb-admin-dashboard-module-top-bar .help-btn {
+.sgsb-admin-dashboard-module-top-bar .help-btn,
+.sgsb-admin-dashboard-module-top-bar .premium-btn {
   margin: 0px 30px 0 10px;
 }
-.sgsb-admin-dashboard-module-top-bar .help-btn a {
+.sgsb-admin-dashboard-module-top-bar .help-btn a,
+.sgsb-admin-dashboard-module-top-bar .premium-btn a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27429,9 +27431,14 @@ End Settings Sidebar
   gap: 15px;
   padding: 0;
 }
-.sgsb-admin-dashboard-module-top-bar .help-btn a span {
+.sgsb-admin-dashboard-module-top-bar .help-btn a span,
+.sgsb-admin-dashboard-module-top-bar .premium-btn a span {
   font-size: 18px;
   font-weight: 700;
+}
+.sgsb-admin-dashboard-module-top-bar .premium-btn a {
+  border: none;
+  background: var(--premium-color, #FFAC27);
 }
 @media (max-width: 991px) {
   .sgsb-admin-dashboard-module-box-content {

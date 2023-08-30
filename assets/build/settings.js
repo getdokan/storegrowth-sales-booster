@@ -2309,6 +2309,43 @@ function pad2(c) {
 
 /***/ }),
 
+/***/ "./images/cap-icon.svg":
+/*!*****************************!*\
+  !*** ./images/cap-icon.svg ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ReactComponent": () => (/* binding */ SvgCapIcon),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+var _path;
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+var SvgCapIcon = function SvgCapIcon(props) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({
+    width: 19,
+    height: 19,
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, props), _path || (_path = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    d: "M18.252 7.129a.533.533 0 0 1-.014.158l-1.172 4.688a.533.533 0 0 1-.514.404l-7.031.035H2.486a.533.533 0 0 1-.517-.404L.797 7.304a.532.532 0 0 1-.014-.162 1.12 1.12 0 1 1 1.454-1.067c0 .347-.159.658-.408.863l1.467 1.479c.371.373.886.588 1.412.588a2 2 0 0 0 1.59-.791l2.411-3.195a1.12 1.12 0 1 1 1.91-.79c0 .298-.12.57-.311.77 0 .002.001.002.002.003l2.394 3.204c.373.5.97.799 1.593.799.532 0 1.031-.207 1.407-.583l1.476-1.476a1.117 1.117 0 0 1 .701-1.99A1.12 1.12 0 0 1 19 6.075c0 .486-.313.9-.748 1.054Zm-1.3 6.954a.533.533 0 0 0-.533-.533H2.64a.533.533 0 0 0-.532.533v1.279c0 .294.239.532.533.532h13.78a.533.533 0 0 0 .532-.532v-1.279Z",
+    fill: "#fff"
+  })));
+};
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkiIGhlaWdodD0iMTkiIHZpZXdCb3g9IjAgMCAxOSAxOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4LjI1MjQgNy4xMjg4NUMxOC4yNTUzIDcuMTgxMTMgMTguMjUxNSA3LjIzNDMzIDE4LjIzODQgNy4yODcxN0wxNy4wNjY0IDExLjk3NUMxNy4wMDczIDEyLjIxMTIgMTYuNzk1NiAxMi4zNzczIDE2LjU1MjMgMTIuMzc4NUw5LjUyMDUzIDEyLjQxNEM5LjUxOTYgMTIuNDE0IDkuNTE4NzUgMTIuNDE0IDkuNTE3ODMgMTIuNDE0SDIuNDg1OThDMi4yNDEzNiAxMi40MTQgMi4wMjgyMSAxMi4yNDc0IDEuOTY5MTEgMTIuMDFMMC43OTcxNDggNy4zMDQ0M0MwLjc4MzY1MiA3LjI1MDE3IDAuNzc5NzQ2IDcuMTk1NDggMC43ODMxNTUgNy4xNDE4NUMwLjMyOTc4MyA2Ljk5OTAxIDAgNi41NzQ3NiAwIDYuMDc0OEMwIDUuNDU3OTIgMC41MDE4MTMgNC45NTYxIDEuMTE4NjkgNC45NTYxQzEuNzM1NTcgNC45NTYxIDIuMjM3MzggNS40NTc5MiAyLjIzNzM4IDYuMDc0OEMyLjIzNzM4IDYuNDIyMTkgMi4wNzgyMSA2LjczMzAxIDEuODI4OTcgNi45MzgzNUwzLjI5NjI3IDguNDE2NzNDMy42NjcxMSA4Ljc5MDQxIDQuMTgxNyA5LjAwNDYzIDQuNzA4MTYgOS4wMDQ2M0M1LjMzMDY1IDkuMDA0NjMgNS45MjQxNiA4LjcwOTAxIDYuMjk3OTEgOC4yMTM3M0w4LjcwOTMyIDUuMDE4NjFDOC41MDY3NCA0LjgxNjE4IDguMzgxMzEgNC41MzY0NyA4LjM4MTMxIDQuMjI4MDdDOC4zODEzMSAzLjYxMTE5IDguODgzMTIgMy4xMDkzOCA5LjUgMy4xMDkzOEMxMC4xMTY5IDMuMTA5MzggMTAuNjE4NyAzLjYxMTE5IDEwLjYxODcgNC4yMjgwN0MxMC42MTg3IDQuNTI3MjQgMTAuNDk5OSA0Ljc5ODc4IDEwLjMwNzkgNC45OTk3MkMxMC4zMDg2IDUuMDAwNTcgMTAuMzA5NCA1LjAwMTI4IDEwLjMxIDUuMDAyMkwxMi43MDM5IDguMjA2MTNDMTMuMDc3NSA4LjcwNjE3IDEzLjY3MzIgOS4wMDQ3IDE0LjI5NzQgOS4wMDQ3QzE0LjgyODcgOS4wMDQ3IDE1LjMyODMgOC43OTc4IDE1LjcwNCA4LjQyMjA2TDE3LjE4MDUgNi45NDU1M0MxNi45MjYxIDYuNzQwMjYgMTYuNzYyNiA2LjQyNjQ2IDE2Ljc2MjYgNi4wNzQ4QzE2Ljc2MjYgNS40NTc5MiAxNy4yNjQ0IDQuOTU2MSAxNy44ODEzIDQuOTU2MUMxOC40OTgyIDQuOTU2MSAxOSA1LjQ1NzkyIDE5IDYuMDc0OEMxOSA2LjU2MTQxIDE4LjY4NzEgNi45NzUyOSAxOC4yNTI0IDcuMTI4ODVaTTE2Ljk1MiAxNC4wODMyQzE2Ljk1MiAxMy43ODkgMTYuNzEzNSAxMy41NTA1IDE2LjQxOTMgMTMuNTUwNUgyLjYzOTlDMi4zNDU3IDEzLjU1MDUgMi4xMDcxOSAxMy43ODkgMi4xMDcxOSAxNC4wODMyVjE1LjM2MTdDMi4xMDcxOSAxNS42NTU5IDIuMzQ1NyAxNS44OTQ0IDIuNjM5OSAxNS44OTQ0SDE2LjQxOTNDMTYuNzEzNSAxNS44OTQ0IDE2Ljk1MiAxNS42NTU5IDE2Ljk1MiAxNS4zNjE3VjE0LjA4MzJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K");
+
+/***/ }),
+
 /***/ "./images/dashboard-icon.svg":
 /*!***********************************!*\
   !*** ./images/dashboard-icon.svg ***!
@@ -5781,35 +5818,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/layout/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/row/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/col/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/layout/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/row/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "./node_modules/antd/es/image/index.js");
 /* harmony import */ var _images_help_icon_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../images/help-icon.svg */ "./images/help-icon.svg");
+/* harmony import */ var _images_cap_icon_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../images/cap-icon.svg */ "./images/cap-icon.svg");
+
 
 
 
 
 
 function HeadBar() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Header, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"].Header, {
     className: "sgsb-admin-dashboard-module-top-bar"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     align: "middle",
     justify: "espace-betweennd"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
     span: 24
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
     justify: "end"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "help-btn"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    className: "premium-btn"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     width: "210px",
     href: "https://invizo.io/support/",
     target: "_blank",
     type: "primary"
-  }, "Need Help?", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, "Get Premium", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    preview: false,
+    width: 22,
+    src: _images_cap_icon_svg__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "help-btn"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    width: "210px",
+    href: "https://invizo.io/support/",
+    target: "_blank",
+    type: "primary"
+  }, "Need Help?", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     preview: false,
     width: 22,
     src: _images_help_icon_svg__WEBPACK_IMPORTED_MODULE_1__["default"]

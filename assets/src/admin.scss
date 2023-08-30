@@ -523,11 +523,13 @@ Settings Sidebar
 
       ul {
         padding: 0 20px 0 0;
+
         @media (min-width: 1800px) {
           // padding: 0 22px;
           padding: 0 42px 0 0;
-    
+
         }
+
         .sgsb-selected-module {
           background: #0875FF;
           color: #ffffff !important;
@@ -717,31 +719,36 @@ Settings Sidebar
           a {
             color: #ffffff; // Set the color to white when the anchor is within a selected module
           }
+
           &.fly-cart::before {
             background: url('../images/menu/quick-cart-icon-white.svg');
           }
-        
+
           &.progressive-discount-banner::before {
             background: url('../images/menu/discount-b-icon-white.svg');
           }
-        
+
           &.sales-pop::before {
             background: url('../images/menu/sales-pop-white.svg');
           }
+
           &.direct-checkout::before {
             background: url('../images/menu/direct-checkout-white.svg');
           }
+
           &.stock-bar::before {
             background: url('../images/menu/stock-bar-white.svg');
-            
+
           }
+
           &.upsell-order-bump::before {
             background: url('../images/menu/upsel-white.svg');
           }
+
           &.countdown-timer::before {
             background: url('../images/menu/countdown-timer-white.svg');
           }
-        
+
         }
 
         li {
@@ -1506,7 +1513,8 @@ End Settings Sidebar
 
       }
 
-      .help-btn {
+      .help-btn,
+      .premium-btn {
         margin: 0px 30px 0 10px;
 
         a {
@@ -1524,6 +1532,14 @@ End Settings Sidebar
             font-weight: 700;
 
           }
+
+        }
+      }
+
+      .premium-btn {
+        a {
+          border: none;
+          background: var(--premium-color, #FFAC27);
 
         }
       }
