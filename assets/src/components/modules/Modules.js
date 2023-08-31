@@ -38,9 +38,13 @@ function Modules() {
     allModules: select("sgsb").getModules(),
   }));
 
+  //check the both active and deactivatd module length
   const activeModuleLength = allModules.filter((module) =>
     filterActiveModules ? module.status : true
   ).length;
+
+  // check only tha activated modules
+  const activatedModules = allModules.filter((module) => module.status).length;
 
   const handlefilterChange = (checked) => {
     setCurrentPage(1);
@@ -180,8 +184,10 @@ function Modules() {
             })}
           </ul>
         </div>
-        {(activeModuleLength===0) && (
+        {activatedModules > 0 ? (
           <ModuleFilter onFilterChange={handlefilterChange} />
+        ) : (
+          ""
         )}
 
         <PremiumBox />
@@ -245,9 +251,9 @@ function Modules() {
           ) : (
             filterActiveModules && (
               <Alert
-                message="Error"
+                message="Info"
                 description="There is no available active module"
-                type="error"
+                type="warning"
                 showIcon
               />
             )

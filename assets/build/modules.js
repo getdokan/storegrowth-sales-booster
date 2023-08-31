@@ -11504,8 +11504,11 @@ function Modules() {
     allModules
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     allModules: select("sgsb").getModules()
-  }));
-  const activeModuleLength = allModules.filter(module => filterActiveModules ? module.status : true).length;
+  })); //check the both active and deactivatd module length
+
+  const activeModuleLength = allModules.filter(module => filterActiveModules ? module.status : true).length; // check only tha activated modules
+
+  const activatedModules = allModules.filter(module => module.status).length;
 
   const handlefilterChange = checked => {
     setCurrentPage(1);
@@ -11629,9 +11632,9 @@ function Modules() {
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
-  }))), activeModuleLength === 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }))), activatedModules > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
     onFilterChange: handlefilterChange
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }) : "", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module-top-bar"
@@ -11679,9 +11682,9 @@ function Modules() {
     total: totalItems,
     hideOnSinglePage: false
   }) : filterActiveModules && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
-    message: "Error",
+    message: "Info",
     description: "There is no available active module",
-    type: "error",
+    type: "warning",
     showIcon: true
   }))));
 }
