@@ -1,8 +1,14 @@
-import { applyFilters } from '@wordpress/hooks';
-import { Alert, Layout } from 'antd';
-import { Outlet, useNavigate, useParams, useRoutes, useSearchParams } from 'react-router-dom';
+import { applyFilters } from "@wordpress/hooks";
+import { Alert, Layout } from "antd";
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useRoutes,
+  useSearchParams,
+} from "react-router-dom";
 
-import HeaderBar from "../HeaderBar";
+import HeadBar from "./HeadBar";
 import PageLoader from "../PageLoader";
 import Sidebar from "./Sidebar";
 
@@ -14,16 +20,13 @@ function ModuleSettings({ routes }) {
       <Sidebar routes={routes} />
 
       <Layout>
+        <HeadBar />
         <Layout.Content
-          style={{
-            paddingLeft: 25,
-            minHeight: 550,
-          }}
+          className="sgsb-module-setting-layout"
         >
           {element}
         </Layout.Content>
       </Layout>
-
       <PageLoader />
     </Layout>
   );
@@ -42,14 +45,17 @@ function NoModuleActive() {
 function AppLayout() {
   let navigate = useNavigate();
 
-  let routes = applyFilters( 'sgsb_routes', [], Outlet, navigate, useParams, useSearchParams );
+  let routes = applyFilters(
+    "sgsb_routes",
+    [],
+    Outlet,
+    navigate,
+    useParams,
+    useSearchParams
+  );
 
   return (
     <Layout>
-      <HeaderBar />
-
-      <h1 className="sgsb-heading" style={ { marginBottom: '15px' } }>Sales Booster Settings</h1>
-
       {!routes.length ? <NoModuleActive /> : <ModuleSettings routes={routes} />}
     </Layout>
   );

@@ -10,6 +10,7 @@ addFilter('sgsb_routes', 'sgsb', (routes) => {
 		path: '/progressive-discount-banner',
 		element: <DiscountBannerLayout />,
 		name: 'progressive-discount-banner',
+		label: 'Free Shipping Bar',
 	});
 
 	return routes;

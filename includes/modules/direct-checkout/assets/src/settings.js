@@ -18,6 +18,7 @@ addFilter(
     routes.push({
       path: "/direct-checkout",
       name: "direct-checkout",
+      label:"Direct Checkout",
       exact: true,
       element: (
         <DirectCheckout

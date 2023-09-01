@@ -10,6 +10,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes) => {
     path: "/stock-bar",
     element: <StockBar />,
     name: 'stock-bar',
+    label: "Stock Bar",
   });
 
   return routes;

@@ -3,13 +3,14 @@ import { render, StrictMode } from '@wordpress/element';
 import { HashRouter } from 'react-router-dom';
 
 import settingsStore from './settings-store';
-
+// import moduleStore from './modules-store';
 import Layout from "./components/settings/Layout";
 
 import 'antd/dist/antd.css';
 import './admin.css';
 
 register( settingsStore );
+// register( moduleStore );
 
 render(
   <StrictMode>

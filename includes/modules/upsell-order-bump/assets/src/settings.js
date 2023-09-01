@@ -19,6 +19,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams) => {
     path: "/upsell-order-bump",
     exact:true,
     name: 'upsell-order-bump',
+    label:"Upsell Order Bump",
     element: <OrderBump outlet={outlet} navigate={navigate} useParams={useParams} />,
     children: [
       {

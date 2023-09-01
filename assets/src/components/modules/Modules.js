@@ -38,7 +38,18 @@ function Modules() {
     allModules: select("sgsb").getModules(),
   }));
 
+  //check the both active and deactivatd module length
+  const activeModuleLength = allModules.filter((module) =>
+    filterActiveModules ? module.status : true
+  ).length;
+
+  // check only tha activated modules
+  const activatedModules = allModules.filter((module) => module.status).length;
+
   const handlefilterChange = (checked) => {
+    setCurrentPage(1);
+    setMinValue(0);
+    setMaxValue(perPageItem);
     setFilterActiveModules(checked);
   };
 
@@ -76,8 +87,8 @@ function Modules() {
 
   const totalItems = useMemo(() => {
     return filterActiveModules
-      ? allModules.filter((module) => module.status).length // Count only active modules
-      : allModules.length; // Count all modules
+      ? allModules.filter((module) => module.status).length
+      : allModules.length;
   }, [filterActiveModules, allModules]);
 
   useEffect(() => {
@@ -95,40 +106,21 @@ function Modules() {
     });
   }, []);
 
-  // Handle changes in filterActiveModules
   useEffect(() => {
-    // Calculate the number of active modules
-    const activeModuleCount = allModules.filter(
-      (module) => module.status
-    ).length;
-
     if (filterActiveModules) {
       // If filterActiveModules is true, recalculate pagination based on active modules
-      const newMaxValue = currentPage * perPageItem;
+      const newCurrentPage = Math.ceil(activeModuleLength / perPageItem);
+      const updatedCurrentPage =
+        currentPage > newCurrentPage ? currentPage - 1 : currentPage;
+      const newMaxValue = updatedCurrentPage * perPageItem;
       const newMinValue = newMaxValue - perPageItem;
 
       // Update pagination data
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
-
-      // If active modules are less than currentPage * perPageItem, reset currentPage
-      activeModuleCount <= perPageItem
-        ? setCurrentPage(1)
-        : setCurrentPage(currentPage);
-
-    } else {
-      // If filterActiveModules is false, reset pagination to show the first page
-      setCurrentPage(currentPage);
-
-      // Calculate new min and max values based on all modules
-      const newMaxValue = currentPage * perPageItem;
-      const newMinValue = newMaxValue - perPageItem;
-
-      // Update pagination data
-      setMaxValue(newMaxValue);
-      setMinValue(newMinValue);
+      setCurrentPage(updatedCurrentPage);
     }
-  }, [allModules, filterActiveModules, currentPage, perPageItem]);
+  }, [allModules, perPageItem]);
 
   // Module List
   const ModuleList = ({ modules }) => {
@@ -192,8 +184,11 @@ function Modules() {
             })}
           </ul>
         </div>
-
-        <ModuleFilter onFilterChange={handlefilterChange} />
+        {activatedModules > 0 ? (
+          <ModuleFilter onFilterChange={handlefilterChange} />
+        ) : (
+          ""
+        )}
 
         <PremiumBox />
       </div>
@@ -224,7 +219,6 @@ function Modules() {
             </Col>
           </Row>
         </div>
-
         {activeModule && (
           <Alert
             description="This module is not active. Please active first to view settings"
@@ -245,7 +239,7 @@ function Modules() {
             paddingLeft: "22px",
           }}
         >
-          {allModules.length > perPageItem && (
+          {activeModuleLength > 0 ? (
             <Pagination
               defaultCurrent={1}
               current={currentPage}
@@ -254,6 +248,15 @@ function Modules() {
               total={totalItems}
               hideOnSinglePage={false}
             />
+          ) : (
+            filterActiveModules && (
+              <Alert
+                message="Info"
+                description="There is no available active module"
+                type="warning"
+                showIcon
+              />
+            )
           )}
         </div>
       </div>

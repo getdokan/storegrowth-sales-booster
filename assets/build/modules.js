@@ -11504,9 +11504,16 @@ function Modules() {
     allModules
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
     allModules: select("sgsb").getModules()
-  }));
+  })); //check the both active and deactivatd module length
+
+  const activeModuleLength = allModules.filter(module => filterActiveModules ? module.status : true).length; // check only tha activated modules
+
+  const activatedModules = allModules.filter(module => module.status).length;
 
   const handlefilterChange = checked => {
+    setCurrentPage(1);
+    setMinValue(0);
+    setMaxValue(perPageItem);
     setFilterActiveModules(checked);
   };
 
@@ -11541,8 +11548,7 @@ function Modules() {
   };
 
   const totalItems = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
-    return filterActiveModules ? allModules.filter(module => module.status).length // Count only active modules
-    : allModules.length; // Count all modules
+    return filterActiveModules ? allModules.filter(module => module.status).length : allModules.length;
   }, [filterActiveModules, allModules]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (allModules) {
@@ -11558,32 +11564,20 @@ function Modules() {
       updateModules(response);
       setPageLoading(false);
     });
-  }, []); // Handle changes in filterActiveModules
-
+  }, []);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    // Calculate the number of active modules
-    const activeModuleCount = allModules.filter(module => module.status).length;
-
     if (filterActiveModules) {
       // If filterActiveModules is true, recalculate pagination based on active modules
-      const newMaxValue = currentPage * perPageItem;
-      const newMinValue = newMaxValue - perPageItem; // Update pagination data
-
-      setMaxValue(newMaxValue);
-      setMinValue(newMinValue); // If active modules are less than currentPage * perPageItem, reset currentPage
-
-      activeModuleCount <= perPageItem ? setCurrentPage(1) : setCurrentPage(currentPage);
-    } else {
-      // If filterActiveModules is false, reset pagination to show the first page
-      setCurrentPage(currentPage); // Calculate new min and max values based on all modules
-
-      const newMaxValue = currentPage * perPageItem;
+      const newCurrentPage = Math.ceil(activeModuleLength / perPageItem);
+      const updatedCurrentPage = currentPage > newCurrentPage ? currentPage - 1 : currentPage;
+      const newMaxValue = updatedCurrentPage * perPageItem;
       const newMinValue = newMaxValue - perPageItem; // Update pagination data
 
       setMaxValue(newMaxValue);
       setMinValue(newMinValue);
+      setCurrentPage(updatedCurrentPage);
     }
-  }, [allModules, filterActiveModules, currentPage, perPageItem]); // Module List
+  }, [allModules, perPageItem]); // Module List
 
   const ModuleList = _ref => {
     let {
@@ -11638,9 +11632,9 @@ function Modules() {
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: `admin.php?page=sgsb-settings#/${module.id} `
     }, module.name));
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }))), activatedModules > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_ModuleFilter__WEBPACK_IMPORTED_MODULE_11__["default"], {
     onFilterChange: handlefilterChange
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }) : "", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_PremiumBox__WEBPACK_IMPORTED_MODULE_12__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "sgsb-admin-dashboard-module-top-bar"
@@ -11680,13 +11674,18 @@ function Modules() {
       paddingTop: "80px",
       paddingLeft: "22px"
     }
-  }, allModules.length > perPageItem && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }, activeModuleLength > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
     defaultCurrent: 1,
     current: currentPage,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
     total: totalItems,
     hideOnSinglePage: false
+  }) : filterActiveModules && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
+    message: "Info",
+    description: "There is no available active module",
+    type: "warning",
+    showIcon: true
   }))));
 }
 

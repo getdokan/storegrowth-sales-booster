@@ -49836,6 +49836,7 @@ __webpack_require__.r(__webpack_exports__);
   routes.push({
     path: "/direct-checkout",
     name: "direct-checkout",
+    label: "Direct Checkout",
     exact: true,
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_DirectCheckout__WEBPACK_IMPORTED_MODULE_3__["default"], {
       outlet: outlet,
