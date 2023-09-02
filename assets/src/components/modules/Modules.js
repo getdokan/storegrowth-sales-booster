@@ -122,6 +122,22 @@ function Modules() {
     }
   }, [allModules, perPageItem]);
 
+  /**
+   *
+   * Side Effect loading for if deactivated modules page if the modules are being deactivate and
+   * and set the setFilterActiveModules to false
+   *
+   */
+
+  useEffect(() => {
+    if (activatedModules === 0) {
+      setCurrentPage(1);
+      setMinValue(0);
+      setMaxValue(perPageItem);
+      setFilterActiveModules(false);
+    }
+  }, [activatedModules]);
+
   // Module List
   const ModuleList = ({ modules }) => {
     return (
@@ -239,25 +255,14 @@ function Modules() {
             paddingLeft: "22px",
           }}
         >
-          {activeModuleLength > 0 ? (
-            <Pagination
-              defaultCurrent={1}
-              current={currentPage}
-              defaultPageSize={perPageItem}
-              onChange={hanglePageItem}
-              total={totalItems}
-              hideOnSinglePage={false}
-            />
-          ) : (
-            filterActiveModules && (
-              <Alert
-                message="Info"
-                description="There is no available active module"
-                type="warning"
-                showIcon
-              />
-            )
-          )}
+          <Pagination
+            defaultCurrent={1}
+            current={currentPage}
+            defaultPageSize={perPageItem}
+            onChange={hanglePageItem}
+            total={totalItems}
+            hideOnSinglePage={false}
+          />
         </div>
       </div>
     </div>
