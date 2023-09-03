@@ -46,7 +46,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'fly-cart/assets/images/cart-module-banner.svg' );
+		return sgsb_modules_url( 'fly-cart/assets/images/quick-cart-module-img.svg' );
 	}
 
 	/**
