@@ -3,7 +3,7 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import TextDesign from './TextDesign';
 import BasicDesign from './BasicDesign';
 
-function Desgin( { onFormSave, upgradeTeaser } ) {
+function Design( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
@@ -132,4 +132,4 @@ function Desgin( { onFormSave, upgradeTeaser } ) {
   );
 }
 
-export default Desgin;
+export default Design;
