@@ -26762,8 +26762,7 @@ Pagination Style
 Settings Sidebar
 ===============================*/
 main.ant-layout-content.sgsb-module-setting-layout {
-  padding: 25px 0px 0px 25px;
-  background: #F4F7FF;
+  background: #f6f9ff;
   border-top-left-radius: 15px;
   z-index: 2;
   margin-left: -2px;
@@ -26771,7 +26770,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 }
 
 .sgsb-admin-setting-dashboard {
-  background: #f4f7fe;
+  background: #f6f9ff;
 }
 @media (max-width: 767px) {
   .sgsb-admin-setting-dashboard {
@@ -27487,6 +27486,126 @@ End Settings Sidebar
 #sbooster-settings-page .sgsb-header .sgsb-logo {
   margin: 15px auto 10px;
   display: inline-block;
+}
+#sbooster-settings-page .panel-header .header-content {
+  margin: 0;
+  color: #073B4C;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  padding: 24px 0 24px 30px;
+}
+#sbooster-settings-page .panel-header .header-divider {
+  margin: 0;
+  color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container,
+#sbooster-settings-page .panel-row {
+  min-height: 100vh;
+}
+#sbooster-settings-page .panel-container .panel-column,
+#sbooster-settings-page .panel-row .panel-column {
+  height: auto;
+  margin-top: 18px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel,
+#sbooster-settings-page .panel-row .panel-column .settings-panel {
+  margin-right: 32px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card {
+  border-radius: 5px;
+  border-color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body {
+  width: 100%;
+  display: flex;
+  padding: 18px;
+  align-items: center;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-heading {
+  margin: 0;
+  margin-right: 10px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field {
+  margin-left: auto;
+  background: #DFE6F3;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.ant-switch-checked,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.ant-switch-checked {
+  background: #0875FF;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field:not(.ant-switch-checked) .ant-switch-inner,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field:not(.ant-switch-checked) .ant-switch-inner {
+  color: #73829D;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field:not(.ant-switch-checked) .ant-switch-handle:before,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field:not(.ant-switch-checked) .ant-switch-handle:before {
+  background: #ABB8D0;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .settings-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .settings-heading {
+  color: #073B4C;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .settings-tooltip,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .settings-tooltip {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  background: #DFE6F3;
+  justify-content: center;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .sgsb-field-upgrade-pro-label,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .sgsb-field-upgrade-pro-label {
+  display: flex;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel.full-width,
+#sbooster-settings-page .panel-row .panel-column .settings-panel.full-width {
+  margin: 0;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .section-divider,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .section-divider {
+  margin: 50px 0;
+  color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container .panel-column .preview-panel,
+#sbooster-settings-page .panel-row .panel-column .preview-panel {
+  margin-left: 32px;
+}
+#sbooster-settings-page .panel-container .ant-tabs-nav,
+#sbooster-settings-page .panel-row .ant-tabs-nav {
+  margin-bottom: 36px;
+}
+#sbooster-settings-page .panel-container .ant-tabs-nav .ant-tabs-tab-btn,
+#sbooster-settings-page .panel-row .ant-tabs-nav .ant-tabs-tab-btn {
+  color: #7f9aa5;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+#sbooster-settings-page .panel-container .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn,
+#sbooster-settings-page .panel-row .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #0875FF;
+}
+#sbooster-settings-page .panel-container .ant-tabs-nav:before,
+#sbooster-settings-page .panel-row .ant-tabs-nav:before {
+  border-color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container {
+  padding: 0 30px;
+}
+#sbooster-settings-page .panel-container .row-divider {
+  margin: 0;
+  height: auto;
+  margin-left: -1px;
 }
 
 /*# sourceMappingURL=modules.css.map*/

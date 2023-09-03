@@ -25,8 +25,6 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_FILE' ) ) {
 	define( 'STOREGROWTH_PLUGIN_FILE', __FILE__ );
 }
 
-
-
 /**
  * Define plugin directory URL.
  */
