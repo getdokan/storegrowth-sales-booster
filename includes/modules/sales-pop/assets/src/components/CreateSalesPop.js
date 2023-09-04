@@ -1,11 +1,15 @@
-import { Form, Select, Switch, Input, Button } from 'antd';
+import { Button } from 'antd';
 
-const { TextArea } = Input;
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import { noop } from '../helper';
+import { __ } from "@wordpress/i18n";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
+import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
 
-const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic"}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
+const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
 function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -39,7 +43,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   virtualCountriesOptions = isCountriesSelectionReachedlimit ? virtualCountriesOptions.filter(item => selectedVirtualCountries.includes(item.value)) : virtualCountriesOptions;
 
   const virtualName = createPopupForm.virtual_name;
-  const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "").split(",")?.length;
+  const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "")?.split(",")?.length;
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
@@ -53,79 +57,53 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   
   return (
     <>
-
-      <Form.Item
-        extra="Working with External/Affiliate Products. Product link is product url"
-        label="External Link"
-        labelAlign='left'
-      >
-        <Switch
-          disabled={ upgradeTeaser }
-          checked={ !!externalLink }
-          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'external_link', v ) }
+      <SettingsSection>
+        <Switcher
+          name={ 'external_link' }
+          changeHandler={ onFieldChange }
+          isEnabled={ !!externalLink }
+          needUpgrade={ upgradeTeaser }
+          isEnable={ Boolean( createPopupForm.enable ) }
+          title={ __( 'External Link', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Working with External/Affiliate Products. Product link is product url', 'storegrowth-sales-booster' ) }
         />
-        <p>{upgradeTeaser}</p>
-      </Form.Item>
-
-      <Form.Item
-        label="Product Show Random"
-        labelAlign='left'
-      >
-        <Switch
-          checked={ (createPopupForm.product_random == 'true' || createPopupForm.product_random == true) ? true : false }
-          onChange={ ( v ) => onFieldChange( 'product_random', v ) }
+        <Switcher
+          name={ 'product_random' }
+          changeHandler={ onFieldChange }
+          isEnable={ Boolean( createPopupForm.product_random ) }
+          title={ __( 'Product Show Random', 'storegrowth-sales-booster' ) }
         />
-      </Form.Item>
-
-      <Form.Item
-        label="Select Popup Products"
-        labelAlign='left'
-      >
-        {isProductsSelectReachedlimit && <WarningMessage /> }
-        <Select
-          allowClear
-          placeholder="Search for products"
+        <SelectBox
+          name={ 'popup_products' }
+          changeHandler={ onFieldChange }
           options={ productListForSelect }
-          onChange={ ( v ) => onFieldChange( 'popup_products', v ) }
-          mode="multiple"
-          filterOption={ true }
-          optionFilterProp="label"
-          value={ selectedPopupProducts.map( Number ) }
+          fieldValue={ selectedPopupProducts.map( Number ) }
+          title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
         />
-
-      </Form.Item>
-
-      <Form.Item
-        label="Virtual First Name"
-        labelAlign='left'
-        extra="Please use comma(,) separator to insert multiple name"
-      >
         {(isFirstNameReachedLimit || isFirstNameExceededLimit) && <WarningMessage warningColor={isFirstNameExceededLimit ? "#f00" : false} />}
-        <TextArea
-          rows={ 4 }
-          value={ virtualName }
-          onChange={ ( v ) => {
-            onFieldChange( 'virtual_name', v.target.value ) 
-        }}
-          placeholder='Name1, Name2, Name3'
+        <TextAreaBox
+          areaRows={ 3 }
+          name={ 'virtual_name' }
+          fieldValue={ virtualName }
+          changeHandler={ onFieldChange }
+          title={ __( 'Virtual First Name', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Name1, Name2, Name3', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Please use comma(,) separator to insert multiple name', 'storegrowth-sales-booster' ) }
         />
-      </Form.Item>
-
-      <Form.Item
-        label="Virtual Location"
-        labelAlign='left'
-        extra="Please write each location on a separate line, following the format: 'city', 'state', 'country'. Use commas to separate the city, state, and country. If you don't have a state, leave an empty comma in its place (e.g. city,,country). If you don't have a city, leave an empty comma in its place (e.g. ,state,country)."
-        rules={ [
-          { message: 'Please Write your virtual locations' },
-        ] }
-      >
-        <TextArea
-          rows={ 4 }
-          value={virtualLocationsValue}
-          onChange={ ( e ) => onFieldChange( 'virtual_locations', e.target.value ) }
-          placeholder={virtualLocationPlaceHolder}
+        <TextAreaBox
+          areaRows={ 3 }
+          name={ 'virtual_locations' }
+          changeHandler={ onFieldChange }
+          fieldValue={ virtualLocationsValue}
+          placeholder={virtualLocationPlaceHolder }
+          title={ __( 'Virtual Location', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'New York City, New York, USA\n' +
+              'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster' ) }
         />
-      </Form.Item>
+        <SectionSpacer />
+      </SettingsSection>
 
       <Button
         type="primary"
