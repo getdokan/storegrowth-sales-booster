@@ -598,17 +598,20 @@ main.ant-layout-content.sgsb-module-setting-layout {
           &.progressive-discount-banner {
             &:before {
               content: "";
-              background: url('../images/menu/discount-b-icon.svg');
-              width: 19px;
+              background: url('../images/menu/free-shipping-bar-icon.svg');
+              width: 20px;
               height: 18px;
+              background-repeat: no-repeat;
 
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/discount-b-icon-white.svg');
-
+                background: url('../images/menu/free-shipping-bar-icon-white.svg');
+                width: 20px;
+                height: 18px;
+                background-repeat: no-repeat;
               }
 
             }
@@ -733,7 +736,10 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
 
           &.progressive-discount-banner::before {
-            background: url('../images/menu/discount-b-icon-white.svg');
+            background: url('../images/menu/free-shipping-bar-icon-white.svg');
+            width: 20px;
+            height: 18px;
+            background-repeat: no-repeat;
           }
 
           &.sales-pop::before {
@@ -992,17 +998,20 @@ End Settings Sidebar
           &.progressive-discount-banner {
             &:before {
               content: "";
-              background: url('../images/menu/discount-b-icon.svg');
-              width: 19px;
+              background: url('../images/menu/free-shipping-bar-icon.svg');
+              width: 20px;
               height: 18px;
+              background-repeat: no-repeat;
 
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/discount-b-icon-white.svg');
-
+                background: url('../images/menu/free-shipping-bar-icon-white.svg');
+                width: 20px;
+                height: 18px;
+                background-repeat: no-repeat;
               }
 
             }

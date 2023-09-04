@@ -46,7 +46,7 @@ class Direct_Checkout_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout-module-banner.svg' );
+		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout-module-img.svg' );
 	}
 
 	/**
