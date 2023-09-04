@@ -1,5 +1,6 @@
 const UpgradeCrown = () => {
     return (
+        // Render upgrade to pro preview by using this component.
         <div className="sgsb-field-upgrade-pro-label">
             <svg width="18" height="14" fill="none">
                 <path

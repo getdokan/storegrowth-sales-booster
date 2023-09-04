@@ -1,15 +1,16 @@
-import { Select, Typography } from 'antd';
+import { Typography, Input } from "antd";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
 
+const { TextArea } = Input;
 const { Title } = Typography;
 
-const SelectBox = ( {
+const TextAreaBox = ( {
     name,
     title,
     tooltip,
-    options,
+    areaRows,
     fieldValue,
     changeHandler,
     placeHolderText,
@@ -17,9 +18,9 @@ const SelectBox = ( {
     needUpgrade = false
 } ) => {
     return (
-        // Make settings select component with card preview.
+        // Make settings switcher component with card preview.
         <FieldWrapper colSpan={ colSpan }>
-            <div className={ `card-heading` }>
+            <div className={ `card-heading full-height` }>
                 {/* Handle switcher title. */}
                 <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
                 {/* Handle switcher tooltip. */}
@@ -28,18 +29,17 @@ const SelectBox = ( {
                 { needUpgrade && <UpgradeCrown /> }
             </div>
 
-            {/* Handle settings select field by using dynamic props */}
-            <Select
-                allowClear
-                mode="multiple"
-                options={ options }
-                value={ fieldValue }
-                style={{ width: '100%' }}
+            {/* Handle settings textarea field by using dynamic props */}
+            <TextArea
+                rows={ areaRows }
+                disabled={ needUpgrade }
                 placeholder={ placeHolderText }
-                onChange={ ( v ) => changeHandler( name, v ) }
+                value={ fieldValue ? fieldValue : '' }
+                className={ `settings-field textarea-field` }
+                onChange={ ( event ) => changeHandler( name, event.target.value ) }
             />
         </FieldWrapper>
     );
 }
 
-export default SelectBox;
+export default TextAreaBox;

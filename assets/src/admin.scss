@@ -1667,6 +1667,15 @@ End Settings Sidebar
           border-radius: 5px;
           border-color: #DDE6F9;
 
+          .card-heading {
+            display: flex;
+            min-width: 323px;
+
+            &.full-height {
+              height: 90px;
+            }
+          }
+
           .ant-card-body {
             width: 100%;
             display: flex;
@@ -1681,6 +1690,12 @@ End Settings Sidebar
             .settings-field {
               margin-left: auto;
               background: #DFE6F3;
+
+              &.textarea-field {
+                padding: 10px 16px;
+                background: #fbfcff;
+                border: 1px solid #DDE6F9;
+              }
 
               &.ant-switch-checked {
                 background: #0875FF;
@@ -1710,6 +1725,8 @@ End Settings Sidebar
             width: 24px;
             height: 24px;
             display: flex;
+            cursor: pointer;
+            margin-right: 10px;
             align-items: center;
             border-radius: 50px;
             background: #DFE6F3;
@@ -1718,6 +1735,7 @@ End Settings Sidebar
 
           .sgsb-field-upgrade-pro-label {
             display: flex;
+            align-items: center;
           }
         }
 
