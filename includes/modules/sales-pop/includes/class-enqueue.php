@@ -138,7 +138,7 @@ class Enqueue {
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
 					'image_folder' => sgsb_modules_url( 'upsell-order-bump/assets/images' ),
-					'product_list' => $this->prodcut_list(),
+					'product_list' => $this->product_list(),
 				)
 			);
 		}
@@ -160,7 +160,7 @@ class Enqueue {
 	/**
 	 * Product list for pop up selection.
 	 */
-	public function prodcut_list() {
+	public function product_list() {
 		$args = array(
 			'post_type'      => 'product',
 			'posts_per_page' => -1,

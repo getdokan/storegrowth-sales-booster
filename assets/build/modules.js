@@ -11577,7 +11577,22 @@ function Modules() {
       setMinValue(newMinValue);
       setCurrentPage(updatedCurrentPage);
     }
-  }, [allModules, perPageItem]); // Module List
+  }, [allModules, perPageItem]);
+  /**
+   *
+   * Side Effect loading for if deactivated modules page if the modules are being deactivate and
+   * and set the setFilterActiveModules to false
+   *
+   */
+
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (activatedModules === 0) {
+      setCurrentPage(1);
+      setMinValue(0);
+      setMaxValue(perPageItem);
+      setFilterActiveModules(false);
+    }
+  }, [activatedModules]); // Module List
 
   const ModuleList = _ref => {
     let {
@@ -11674,18 +11689,13 @@ function Modules() {
       paddingTop: "80px",
       paddingLeft: "22px"
     }
-  }, activeModuleLength > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_19__["default"], {
     defaultCurrent: 1,
     current: currentPage,
     defaultPageSize: perPageItem,
     onChange: hanglePageItem,
     total: totalItems,
     hideOnSinglePage: false
-  }) : filterActiveModules && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_18__["default"], {
-    message: "Info",
-    description: "There is no available active module",
-    type: "warning",
-    showIcon: true
   }))));
 }
 
