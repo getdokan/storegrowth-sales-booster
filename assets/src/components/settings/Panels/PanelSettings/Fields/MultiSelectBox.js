@@ -5,19 +5,20 @@ import FieldWrapper from "./FieldWrapper";
 
 const { Title } = Typography;
 
-const SelectBox = ( {
+const MultiSelectBox = ({
     name,
     title,
     tooltip,
     options,
     fieldValue,
     changeHandler,
+    placeHolderText,
     colSpan = 24,
     needUpgrade = false
 } ) => {
     return (
-        // Make settings select component with card preview.
-        <FieldWrapper colSpan={ colSpan } align={ 'center' }>
+        // Make settings multi-select component with card preview.
+        <FieldWrapper colSpan={ colSpan }>
             <Col span={9}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
@@ -29,18 +30,20 @@ const SelectBox = ( {
                 </div>
             </Col>
             <Col span={15}>
-                {/* Handle settings select field by using dynamic props */}
+                {/* Handle settings multi-select field by using dynamic props */}
                 <Select
+                    allowClear
+                    mode="multiple"
                     options={ options }
                     value={ fieldValue }
-                    style={{ width: 120 }}
-                    disabled={ needUpgrade }
+                    style={{ width: '100%' }}
+                    placeholder={ placeHolderText }
+                    className={ `settings-field select-field` }
                     onChange={ ( v ) => changeHandler( name, v ) }
-                    className={ `settings-field single-select-field` }
                 />
             </Col>
         </FieldWrapper>
     );
 }
 
-export default SelectBox;
+export default MultiSelectBox;

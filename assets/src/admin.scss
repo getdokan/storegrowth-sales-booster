@@ -1664,23 +1664,26 @@ End Settings Sidebar
         margin-right: 32px;
 
         .sgsb-settings-card {
+          height: 100%;
           border-radius: 5px;
           border-color: #DDE6F9;
 
           .card-heading {
+            height: 100%;
             display: flex;
-            min-width: 323px;
-
-            &.full-height {
-              height: 90px;
-            }
+            align-items: center;
           }
 
           .ant-card-body {
             width: 100%;
+            height: 100%;
             display: flex;
             padding: 18px;
             align-items: center;
+
+            .textarea-heading {
+              margin-top: 5px;
+            }
 
             .settings-heading {
               margin: 0;
@@ -1688,13 +1691,60 @@ End Settings Sidebar
             }
 
             .settings-field {
-              margin-left: auto;
+              float: right;
               background: #DFE6F3;
 
+              &.select-field {
+                border-radius: 5px;
+
+                .ant-select-selection-search-input {
+                  box-shadow: none;
+                }
+
+                .ant-select-selector {
+                  padding: 5px 10px;
+                  border-radius: 5px;
+                  border-color: #DDE6F9;
+
+                  .ant-select-selection-overflow {
+                    gap: 2px;
+                  }
+
+                  .ant-select-selection-item {
+                    color: #073B4C;
+                    background: #F6F9FF;
+                  }
+                }
+              }
+
+              &.number-field {
+                border-radius: 5px;
+              }
+
               &.textarea-field {
+                color: #073B4C;
                 padding: 10px 16px;
+                border-radius: 5px;
                 background: #fbfcff;
                 border: 1px solid #DDE6F9;
+
+                &.field-gap {
+                  margin-bottom: 15px;
+                }
+              }
+
+              &.single-select-field {
+                width: 170px !important;
+                border-color: #DDE6F9;
+                background: #F6F9FF;
+                border-radius: 5px;
+
+                .ant-select-selector {
+                  border-color: #DDE6F9;
+                  border-radius: 5px;
+                  background: #F6F9FF;
+                  color: #073B4C;
+                }
               }
 
               &.ant-switch-checked {
@@ -1733,9 +1783,22 @@ End Settings Sidebar
             justify-content: center;
           }
 
+          .textarea-content {
+            p {
+              margin: 0;
+              color: #073B4C;
+              font-size: 14px;
+              line-height: 1.8;
+            }
+          }
+
           .sgsb-field-upgrade-pro-label {
             display: flex;
             align-items: center;
+          }
+
+          .ant-row {
+            width: 100%;
           }
         }
 
