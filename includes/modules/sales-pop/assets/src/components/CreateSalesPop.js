@@ -6,7 +6,7 @@ import { __ } from "@wordpress/i18n";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import MultiSelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
@@ -73,7 +73,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           isEnable={ Boolean( createPopupForm.product_random ) }
           title={ __( 'Product Show Random', 'storegrowth-sales-booster' ) }
         />
-        <SelectBox
+        <MultiSelectBox
           name={ 'popup_products' }
           changeHandler={ onFieldChange }
           options={ productListForSelect }

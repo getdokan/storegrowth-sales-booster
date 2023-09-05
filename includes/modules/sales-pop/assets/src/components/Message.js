@@ -1,9 +1,11 @@
-import { Form, Input, Button, Typography } from 'antd';
+import { Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { noop } from '../helper';
-
-const { TextArea } = Input;
+import { __ } from "@wordpress/i18n";
+import {addFilter} from "@wordpress/hooks";
+import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
 function Message( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -20,28 +22,41 @@ function Message( { onFormSave, upgradeTeaser } ) {
     } );
   };
 
+  /**
+   * Add textarea settings content after textarea field.
+   *
+   * @since 1.0.0
+   *
+   * @return string
+   */
+  addFilter(
+    'sgsb_after_textarea_settings',
+    'sgsb_after_textarea_settings_callback',
+    () => {
+      return (
+        <div className={ `textarea-content` }>
+          <p>{ '{product_title} = ' + __( 'Title of Product', 'storegrowth-sales-booster' ) }</p>
+          <p>{ '{virtual_name} = ' + __( 'Name of purchaser', 'storegrowth-sales-booster' ) }</p>
+          <p>{ '{location} = ' + __( 'Where from bought the product', 'storegrowth-sales-booster' ) }</p>
+          <p>{ '{time} = ' + __( 'When Product Purchased', 'storegrowth-sales-booster' ) }</p>
+        </div>
+      );
+    }
+  );
+
   return (
     <>
-      <br />
-      <Form.Item
-        label="Message Popup"
-        labelAlign='left'
-        className='form-input-distance'
-      >
-        <TextArea
-          disabled={ upgradeTeaser }
-          rows={ 4 }
-          value={ createPopupForm.message_popup }
-          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'message_popup', v.target.value ) }
-          placeholder='Enter Message Popup'
+      <SettingsSection>
+        <TextAreaBox
+          areaRows={ 4 }
+          name={ 'message_popup' }
+          needUpgrade={ upgradeTeaser }
+          fieldValue={ createPopupForm.message_popup }
+          changeHandler={ upgradeTeaser ? noop : onFieldChange }
+          title={ __( 'Message Popup', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Enter Message Popup', 'storegrowth-sales-booster' ) }
         />
-        {upgradeTeaser}
-      </Form.Item>
-      <p>{ '{product_title} = Title of Product' }</p>
-      <p>{ '{virtual_name} = Name of purchaser' }</p>
-      <p>{ '{location} = Where from bought the product' }</p>
-      <p>{ '{time} = When Product Purchased' }</p>
-
+      </SettingsSection>
 
       <Button
         type="primary"

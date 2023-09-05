@@ -92,7 +92,7 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
 
   const tabPanels = [
     {
-      key: 'salesPop',
+      key: 'general',
       title: __( 'Sales Pop Setting', 'storegrowth-sales-booster' ),
       panel: <General onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
     },
@@ -114,16 +114,16 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
     {
       key: 'message',
       title: __( 'Message', 'storegrowth-sales-booster' ),
-      panel: <Message onFormSave={ onFormSave } upgradeTeaser={ upgradeTeaser } />,
+      panel: <Message onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
     },
     {
       key: 'time',
       title: __( 'Time', 'storegrowth-sales-booster' ),
-      panel: <Time onFormSave={ onFormSave } upgradeTeaser={ upgradeTeaser } />,
+      panel: <Time onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
     },
   ];
 
-  const excludeTabs = [ 'salesPop', 'products', 'message', 'time' ];
+  const excludeTabs = [ 'general', 'products', 'message', 'time' ];
   const showPreview = ! excludeTabs?.includes( tabName );
 
   return (
@@ -134,12 +134,12 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={ showPreview ? 14 : 24 }
+            colSpan={ showPreview && tabName ? 14 : 24 }
             tabPanels={ tabPanels }
             changeHandler={ changeTab }
             activeTab={ tabName ? tabName : 'general' }
           />
-          { showPreview && (
+          { showPreview && tabName && (
             <PanelPreview colSpan={ 10 }>
               <Preview />
             </PanelPreview>
