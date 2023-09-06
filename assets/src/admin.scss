@@ -423,8 +423,7 @@ Pagination Style
 Settings Sidebar
 ===============================*/
 main.ant-layout-content.sgsb-module-setting-layout {
-  padding: 25px 0px 0px 25px;
-  background: #F4F7FF;
+  background: #f6f9ff;
   border-top-left-radius: 15px;
   z-index: 2;
   margin-left: -2px;
@@ -432,7 +431,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 }
 
 .sgsb-admin-setting-dashboard {
-  background: #f4f7fe;
+  background: #f6f9ff;
 
   @media (max-width: 767px) {
     display: block;
@@ -1634,6 +1633,219 @@ End Settings Sidebar
       margin: 15px auto 10px;
       display: inline-block;
 
+    }
+  }
+
+  .panel-header {
+    .header-content {
+      margin: 0;
+      color: #073B4C;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32px;
+      padding: 24px 0 24px 30px;
+    }
+
+    .header-divider {
+      margin: 0;
+      color: #DDE6F9;
+    }
+  }
+
+  .panel-container,
+  .panel-row {
+    min-height: 100vh;
+
+    .panel-column {
+      height: auto;
+      margin-top: 18px;
+
+      .settings-panel {
+        margin-right: 32px;
+
+        .sgsb-settings-card {
+          height: 100%;
+          border-radius: 5px;
+          border-color: #DDE6F9;
+
+          .card-heading {
+            height: 100%;
+            display: flex;
+            align-items: center;
+          }
+
+          .ant-card-body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 18px;
+            align-items: center;
+
+            .textarea-heading {
+              margin-top: 5px;
+            }
+
+            .settings-heading {
+              margin: 0;
+              margin-right: 10px;
+            }
+
+            .settings-field {
+              float: right;
+              background: #DFE6F3;
+
+              &.select-field {
+                border-radius: 5px;
+
+                .ant-select-selection-search-input {
+                  box-shadow: none;
+                }
+
+                .ant-select-selector {
+                  padding: 5px 10px;
+                  border-radius: 5px;
+                  border-color: #DDE6F9;
+
+                  .ant-select-selection-overflow {
+                    gap: 2px;
+                  }
+
+                  .ant-select-selection-item {
+                    color: #073B4C;
+                    background: #F6F9FF;
+                  }
+                }
+              }
+
+              &.number-field {
+                border-radius: 5px;
+              }
+
+              &.textarea-field {
+                color: #073B4C;
+                padding: 10px 16px;
+                border-radius: 5px;
+                background: #fbfcff;
+                border: 1px solid #DDE6F9;
+
+                &.field-gap {
+                  margin-bottom: 15px;
+                }
+              }
+
+              &.single-select-field {
+                width: 170px !important;
+                border-color: #DDE6F9;
+                background: #F6F9FF;
+                border-radius: 5px;
+
+                .ant-select-selector {
+                  border-color: #DDE6F9;
+                  border-radius: 5px;
+                  background: #F6F9FF;
+                  color: #073B4C;
+                }
+              }
+
+              &.ant-switch-checked {
+                background: #0875FF;
+              }
+
+              &:not(.ant-switch-checked) {
+                .ant-switch-inner {
+                  color: #73829D;
+                }
+                .ant-switch-handle {
+                  &:before {
+                    background: #ABB8D0;
+                  }
+                }
+              }
+            }
+          }
+
+          .settings-heading {
+            color: #073B4C;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 20px;
+          }
+
+          .settings-tooltip {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            cursor: pointer;
+            margin-right: 10px;
+            align-items: center;
+            border-radius: 50px;
+            background: #DFE6F3;
+            justify-content: center;
+          }
+
+          .textarea-content {
+            p {
+              margin: 0;
+              color: #073B4C;
+              font-size: 14px;
+              line-height: 1.8;
+            }
+          }
+
+          .sgsb-field-upgrade-pro-label {
+            display: flex;
+            align-items: center;
+          }
+
+          .ant-row {
+            width: 100%;
+          }
+        }
+
+        &.full-width {
+          margin: 0;
+        }
+
+        .section-divider {
+          margin: 50px 0;
+          color: #DDE6F9;
+        }
+      }
+
+      .preview-panel {
+        margin-left: 32px;
+      }
+    }
+
+    .ant-tabs-nav {
+      margin-bottom: 36px;
+
+      .ant-tabs-tab-btn {
+        color: #7f9aa5;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 18px;
+      }
+
+      .ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: #0875FF;
+        }
+      }
+
+      &:before {
+        border-color: #DDE6F9;
+      }
+    }
+  }
+
+  .panel-container {
+    padding: 0 30px;
+
+    .row-divider {
+      margin: 0;
+      height: auto;
+      margin-left: -1px;
     }
   }
 }
