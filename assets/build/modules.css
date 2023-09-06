@@ -27525,15 +27525,27 @@ End Settings Sidebar
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card {
+  height: 100%;
   border-radius: 5px;
   border-color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .card-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .card-heading {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body {
   width: 100%;
+  height: 100%;
   display: flex;
   padding: 18px;
   align-items: center;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textarea-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textarea-heading {
+  margin-top: 5px;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-heading,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-heading {
@@ -27542,8 +27554,61 @@ End Settings Sidebar
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field {
-  margin-left: auto;
+  float: right;
   background: #DFE6F3;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field {
+  border-radius: 5px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selection-search-input,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selection-search-input {
+  box-shadow: none;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border-color: #DDE6F9;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector .ant-select-selection-overflow,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector .ant-select-selection-overflow {
+  gap: 2px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector .ant-select-selection-item,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field .ant-select-selector .ant-select-selection-item {
+  color: #073B4C;
+  background: #F6F9FF;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.number-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.number-field {
+  border-radius: 5px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field {
+  color: #073B4C;
+  padding: 10px 16px;
+  border-radius: 5px;
+  background: #fbfcff;
+  border: 1px solid #DDE6F9;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap {
+  margin-bottom: 15px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.single-select-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.single-select-field {
+  width: 170px !important;
+  border-color: #DDE6F9;
+  background: #F6F9FF;
+  border-radius: 5px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.single-select-field .ant-select-selector,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.single-select-field .ant-select-selector {
+  border-color: #DDE6F9;
+  border-radius: 5px;
+  background: #F6F9FF;
+  color: #073B4C;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.ant-switch-checked,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.ant-switch-checked {
@@ -27569,14 +27634,28 @@ End Settings Sidebar
   width: 24px;
   height: 24px;
   display: flex;
+  cursor: pointer;
+  margin-right: 10px;
   align-items: center;
   border-radius: 50px;
   background: #DFE6F3;
   justify-content: center;
 }
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .textarea-content p,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .textarea-content p {
+  margin: 0;
+  color: #073B4C;
+  font-size: 14px;
+  line-height: 1.8;
+}
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .sgsb-field-upgrade-pro-label,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .sgsb-field-upgrade-pro-label {
   display: flex;
+  align-items: center;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-row,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-row {
+  width: 100%;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel.full-width,
 #sbooster-settings-page .panel-row .panel-column .settings-panel.full-width {
