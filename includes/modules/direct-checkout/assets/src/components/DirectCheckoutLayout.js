@@ -1,11 +1,22 @@
-import { Tabs, notification } from "antd";
+import { __ } from "@wordpress/i18n";
+import { notification } from "antd";
 import General from "./General";
 import Design from "./Design";
-import LinkGenerator from "./LinkGenerator";
-const { TabPane } = Tabs;
+import Preview from "./Preview";
 import { useDispatch, useSelect } from "@wordpress/data";
 
+import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+
 function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
+  const isProEnabled = sgsbAdmin.isPro;
+  const upgradeTeaser = !isProEnabled && (
+    <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>
+  );
+
   const { setCreateFromData, setButtonLoading } = useDispatch(
     "sgsb_direct_checkout"
   );
@@ -58,34 +69,42 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
     );
   };
 
-  const items = [
+  const excludeTabs = [];
+  const showPreview = !excludeTabs?.includes(tabName);
+
+  const tabPanels = [
     {
       key: "general",
-      label: "General",
-      children: <General onFormSave={onFormSave} />,
+      title: __("Checkout Setting", "storegrowth-sales-booster"),
+      panel: <General onFormSave={onFormSave} upgradeTeaser={!isProEnabled} />,
     },
     {
       key: "design",
-      label: "Design",
-      children: <Design onFormSave={onFormSave}/>,
-    },
-    {
-      key: "link-generator",
-      label: "Link Generator",
-      children: <LinkGenerator onFormSave={onFormSave}/>,
+      title: __("Design", "storegrowth-sales-booster"),
+      panel: <Design onFormSave={onFormSave} />,
     },
   ];
 
-
   return (
     <>
-      <Tabs activeKey={tabName ? tabName : "general"} onTabClick={changeTab}>
-      {items.map((item) => (
-          <TabPane tab={item.label} key={item.key}>
-            {item.children}
-          </TabPane>
-        ))}
-      </Tabs>
+      <PanelHeader
+        title={__("Direct Checkout Setting", "storegrowth-sales-booster")}
+      />
+      <PanelContainer>
+        <PanelRow>
+          <PanelSettings
+            colSpan={showPreview && tabName ? 14 : 24}
+            tabPanels={tabPanels}
+            changeHandler={changeTab}
+            activeTab={tabName ? tabName : "general"}
+          />
+          {showPreview && tabName && (
+            <PanelPreview colSpan={10}>
+              <Preview />
+            </PanelPreview>
+          )}
+        </PanelRow>
+      </PanelContainer>
     </>
   );
 }
