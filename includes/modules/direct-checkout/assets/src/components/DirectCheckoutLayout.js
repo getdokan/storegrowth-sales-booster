@@ -20,9 +20,8 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
   const { setCreateFromData, setButtonLoading } = useDispatch(
     "sgsb_direct_checkout"
   );
-  let [searchParams, setSearchParams] = useSearchParams();
-
-  const tabName = searchParams.get("tab_name");
+  let [searchParams, setSearchParams] = useSearchParams("general");
+  const tabName = searchParams.get("tab_name") || "general";
   const { createDirectCheckoutForm } = useSelect((select) => ({
     createDirectCheckoutForm: select(
       "sgsb_direct_checkout"
@@ -96,7 +95,7 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
             colSpan={showPreview && tabName ? 14 : 24}
             tabPanels={tabPanels}
             changeHandler={changeTab}
-            activeTab={tabName ? tabName : "general"}
+            activeTab={tabName}
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={10}>

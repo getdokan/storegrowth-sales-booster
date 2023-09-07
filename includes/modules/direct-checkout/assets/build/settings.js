@@ -17269,8 +17269,8 @@ function DirectCheckoutLayout(_ref) {
     setCreateFromData,
     setButtonLoading
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)("sgsb_direct_checkout");
-  let [searchParams, setSearchParams] = useSearchParams();
-  const tabName = searchParams.get("tab_name");
+  let [searchParams, setSearchParams] = useSearchParams("general");
+  const tabName = searchParams.get("tab_name") || "general";
   const {
     createDirectCheckoutForm
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(select => ({
@@ -17329,7 +17329,7 @@ function DirectCheckoutLayout(_ref) {
     colSpan: showPreview && tabName ? 14 : 24,
     tabPanels: tabPanels,
     changeHandler: changeTab,
-    activeTab: tabName ? tabName : "general"
+    activeTab: tabName
   }), showPreview && tabName && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelPreview__WEBPACK_IMPORTED_MODULE_9__["default"], {
     colSpan: 10
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Preview__WEBPACK_IMPORTED_MODULE_4__["default"], null)))));
