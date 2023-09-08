@@ -2,6 +2,11 @@ import { Select, Col, Row, InputNumber, Switch} from 'antd';
 import InputColor from 'react-input-color';
 
 import { noop } from '../helper';
+import { __ } from '@wordpress/i18n';
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
 
 const BasicDesign = (props) => {
 
@@ -147,41 +152,29 @@ const BasicDesign = (props) => {
 				</Col>
 
 			</Row>
-			<br />
-			<Row gutter={30}>
-				<Col span={6}>
-					Link image to product page<br />
-					<Switch 
-                        disabled = {upgradeTeaser}
-						onChange = {upgradeTeaser ? noop : (v) => props.onFieldChange('link_image_to_product', v) }
-						checked  = {(props.createPopupForm.link_image_to_product=='true' || props.createPopupForm.link_image_to_product== true)?true:false} 
-					/>
-                    <p>{upgradeTeaser}</p>
-				</Col>
-
-				<Col span={6}>
-					Open product link in new tab<br />
-					<Switch 
-                        disabled = {upgradeTeaser}
-                        onChange={upgradeTeaser ? noop : (v) => props.onFieldChange('open_product_link_in_new_tab', v) }
-						checked={(
-                            props.createPopupForm.open_product_link_in_new_tab=='true'
-						|| 
-						    props.createPopupForm.open_product_link_in_new_tab== true
-						)?true:false} 
-					/>
-                    <p>{upgradeTeaser}</p>
-				</Col>
-
-				<Col span={6}>
-					Show close button<br />
-					<Switch 
-						checked  = {(props.createPopupForm.show_close_button=='true' || props.createPopupForm.show_close_button== true)?true:false} 
-						onChange = {(v) => props.onFieldChange('show_close_button', v)} 
-					/>
-				</Col>
-			</Row>
-            <br/><br/>
+			<SectionSpacer />
+            <SettingsSection>
+                <Switcher
+                    needUpgrade={ upgradeTeaser }
+                    changeHandler={ props.onFieldChange }
+                    name={ 'open_product_link_in_new_tab' }
+                    isEnable={ Boolean( props.createPopupForm.open_product_link_in_new_tab ) }
+                    title={ __( 'Link image to product page', 'storegrowth-sales-booster' ) }
+                />
+                <Switcher
+                    needUpgrade={ upgradeTeaser }
+                    name={ 'link_image_to_product' }
+                    changeHandler={ props.onFieldChange }
+                    isEnable={ Boolean( props.createPopupForm.link_image_to_product ) }
+                    title={ __( 'Link image to product page', 'storegrowth-sales-booster' ) }
+                />
+                <Switcher
+                    name={ 'show_close_button' }
+                    changeHandler={ props.onFieldChange }
+                    isEnable={ Boolean( props.createPopupForm.show_close_button ) }
+                    title={ __( 'Show close button', 'storegrowth-sales-booster' ) }
+                />
+            </SettingsSection>
 		</>
 	)
 }

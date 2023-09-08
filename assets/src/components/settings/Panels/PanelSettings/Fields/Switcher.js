@@ -18,7 +18,7 @@ const Switcher = ( {
     return (
         // Make settings switcher component with card preview.
         <FieldWrapper colSpan={ colSpan }>
-            <Col span={9}>
+            <Col span={15}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
@@ -29,7 +29,7 @@ const Switcher = ( {
                 </div>
             </Col>
 
-            <Col span={15}>
+            <Col span={9}>
                 {/* Handle settings switcher field by using dynamic props */}
                 <Switch
                     checked={ isEnable }

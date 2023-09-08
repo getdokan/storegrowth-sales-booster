@@ -95,7 +95,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
 
       {/* city text */ }
       <TextDesign
-        upgradeTeaser={upgradeTeaser}
+        upgradeTeaser={ upgradeTeaser }
         createPopupForm={ createPopupForm }
         onFieldChange={ onFieldChange }
         textTitle='City Text'

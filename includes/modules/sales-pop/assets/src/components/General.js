@@ -25,12 +25,14 @@ function General( { onFormSave, upgradeTeaser } ) {
     <>
       <SettingsSection>
         <Switcher
+          colSpan={ 12 }
           name={ 'enable' }
           changeHandler={ onFieldChange }
           title={ __( 'Enable Popup', 'storegrowth-sales-booster' ) }
           isEnable={ (createPopupForm.enable == 'true' || createPopupForm.enable == true) ? true : false }
         />
         <Switcher
+          colSpan={ 12 }
           name={ 'mobile_view' }
           needUpgrade={ upgradeTeaser }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }

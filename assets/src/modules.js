@@ -4,7 +4,7 @@ import { HashRouter } from 'react-router-dom';
 
 import store from './modules-store';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/reset.css';
 import './admin.css';
 import './admin.scss';
 import Layout from "./components/modules/Layout";

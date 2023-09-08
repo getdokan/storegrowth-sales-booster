@@ -104,7 +104,7 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
     {
       key: 'design',
       title: __( 'Design', 'storegrowth-sales-booster' ),
-      panel: <Design onFormSave={ onFormSave } upgradeTeaser={ upgradeTeaser } />,
+      panel: <Design onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
     },
     {
       key: 'products',
