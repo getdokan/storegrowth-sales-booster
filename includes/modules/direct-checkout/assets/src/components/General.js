@@ -2,6 +2,7 @@ import { Form, Select, Radio, Input, Button, Space, Checkbox } from "antd";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
+import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
 function General({ onFormSave }) {
@@ -23,6 +24,29 @@ function General({ onFormSave }) {
     });
   };
 
+  const checkboxesOption = [
+    {
+      label: `"Add to cart" as "Buy Now"`,
+      value: "cart-to-buy-now",
+      needUpgrade: true,
+    },
+    {
+      label: `"Buy Now" with "Add to cart"`,
+      value: "cart-with-buy-now",
+      needUpgrade: false,
+    },
+    {
+      label: `"Buy Now" for specific product"`,
+      value: "specific-buy-now",
+      needUpgrade: true,
+    },
+    {
+      label: `Default Add to cart`,
+      value: "default-add-to-cart",
+      needUpgrade: false,
+    },
+  ];
+
   return (
     <>
       <SettingsSection>
@@ -39,37 +63,16 @@ function General({ onFormSave }) {
             "storegrowth-sales-booster"
           )}
         />
+        <CheckboxGroup
+          name={"buy_now_button_setting"}
+          options={checkboxesOption}
+          selectedOptions={createDirectCheckoutForm.buy_now_button_setting}
+          handleCheckboxChange={onFieldChange}
+          isSingleMode={true}
+          title={__("Button Layout Setting", "storegrowth-sales-booster")}
+        />
       </SettingsSection>
 
-      <Form.Item label="Button Layout Setting" labelAlign="left">
-        <Radio.Group
-          onChange={(e) =>
-            onFieldChange("buy_now_button_setting", e.target.value)
-          }
-          value={createDirectCheckoutForm.buy_now_button_setting}
-        >
-          <Space direction="vertical">
-            <Radio value="cart-to-buy-now">"Add to cart" as "Buy Now"</Radio>
-            <Radio value="cart-with-buy-now">
-              <span>"Buy Now" with "Add to cart"</span>
-            </Radio>
-            <Radio value="specific-buy-now">
-              <span>"Buy Now" for specific product"</span>
-              {createDirectCheckoutForm.buy_now_button_setting ===
-                "specific-buy-now" && (
-                <div style={{ color: "red" }}>
-                  <span>
-                    Please set the setting from the Woocommerce product tab.
-                  </span>
-                </div>
-              )}
-            </Radio>
-            <Radio value="default-add-to-cart">
-              <span>Default Add to cart</span>
-            </Radio>
-          </Space>
-        </Radio.Group>
-      </Form.Item>
       {createDirectCheckoutForm.buy_now_button_setting !==
         "default-add-to-cart" && (
         <div>
