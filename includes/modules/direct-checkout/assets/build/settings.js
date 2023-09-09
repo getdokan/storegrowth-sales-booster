@@ -16994,6 +16994,181 @@ const PanelRow = _ref => {
 
 /***/ }),
 
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js":
+/*!**********************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js ***!
+  \**********************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/card/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/row/index.js");
+
+
+const FieldWrapper = _ref => {
+  let {
+    colSpan,
+    children,
+    align = 'top'
+  } = _ref;
+  return (
+    // Settings field wrapper component with card preview.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      className: "gutter-row",
+      span: colSpan
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      className: `sgsb-settings-card`
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      justify: "center",
+      align: align
+    }, children)))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (FieldWrapper);
+
+/***/ }),
+
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js":
+/*!*******************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js ***!
+  \*******************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/input/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/typography/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var _SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../SettingsTooltip */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UpgradeCrown */ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js");
+/* harmony import */ var _FieldWrapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FieldWrapper */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js");
+
+
+
+
+
+
+const {
+  TextArea
+} = antd__WEBPACK_IMPORTED_MODULE_5__["default"];
+const {
+  Title
+} = antd__WEBPACK_IMPORTED_MODULE_6__["default"];
+const TextInput = _ref => {
+  let {
+    name,
+    title,
+    tooltip,
+    areaRows,
+    fieldValue,
+    changeHandler,
+    placeHolderText,
+    colSpan = 24,
+    needUpgrade = false
+  } = _ref;
+  return (
+    // Make settings textarea component with card preview.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      colSpan: colSpan
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      span: 9
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `card-heading textinput-heading`
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
+      level: 3,
+      className: `settings-heading`
+    }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      content: tooltip
+    }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      span: 15
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      rows: areaRows,
+      disabled: needUpgrade,
+      placeholder: placeHolderText,
+      value: fieldValue ? fieldValue : '',
+      className: `settings-field textinput-field`,
+      onChange: event => changeHandler(name, event.target.value)
+    })))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (TextInput);
+
+/***/ }),
+
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js":
+/*!******************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js ***!
+  \******************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/row/index.js");
+
+
+const SettingsSection = _ref => {
+  let {
+    children
+  } = _ref;
+  return (
+    // Used settings gutter for ensure fields proper spacing.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      gutter: [16, 16]
+    }, children)
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (SettingsSection);
+
+/***/ }),
+
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js":
+/*!******************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js ***!
+  \******************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/tooltip/index.js");
+
+
+const SettingsTooltip = _ref => {
+  let {
+    content
+  } = _ref;
+  return (
+    // Make re-usable tooltip for settings.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      placement: "top",
+      title: content
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `settings-tooltip`
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+      width: "12",
+      height: "13",
+      fill: "none"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+      fill: "#73829d",
+      d: "M10.8.5H1.2a1.18 1.18 0 0 0-.846.354A1.18 1.18 0 0 0 0 1.7v7.2a1.18 1.18 0 0 0 .354.846 1.18 1.18 0 0 0 .846.354h2.4L6 12.5l2.4-2.4h2.4a1.18 1.18 0 0 0 .846-.354c.222-.228.354-.528.354-.846V1.7a1.18 1.18 0 0 0-.354-.846A1.18 1.18 0 0 0 10.8.5zM1.2 8.9V1.7h9.6v7.2H7.902L6 10.802 4.098 8.9m.732-5.976c.324-.216.75-.324 1.284-.324.564 0 1.014.126 1.338.372a1.21 1.21 0 0 1 .486 1.008c0 .264-.09.498-.264.72-.174.216-.402.384-.678.51-.156.09-.258.18-.312.282-.054.108-.084.24-.084.408H5.4c0-.3.06-.504.174-.648.126-.144.33-.312.642-.504a1.19 1.19 0 0 0 .384-.324.79.79 0 0 0 .132-.444c0-.18-.054-.312-.162-.414-.108-.108-.27-.156-.456-.156a.69.69 0 0 0-.414.126c-.096.084-.156.21-.156.378H4.362c-.03-.414.138-.774.468-.99zM5.4 7.7V6.5h1.2v1.2H5.4z"
+    }))))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (SettingsTooltip);
+
+/***/ }),
+
 /***/ "../../../../assets/src/components/settings/Panels/PanelSettings/TabPanels.js":
 /*!************************************************************************************!*\
   !*** ../../../../assets/src/components/settings/Panels/PanelSettings/TabPanels.js ***!
@@ -17030,6 +17205,36 @@ const TabPanels = _ref => {
   );
 };
 /* harmony default export */ __webpack_exports__["default"] = (TabPanels);
+
+/***/ }),
+
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js":
+/*!***************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js ***!
+  \***************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const UpgradeCrown = () => {
+  return (
+    // Render upgrade to pro preview by using this component.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "sgsb-field-upgrade-pro-label"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("svg", {
+      width: "18",
+      height: "14",
+      fill: "none"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
+      d: "M17.292 4.751c.003.05-.001.1-.013.15l-1.11 4.441c-.056.224-.256.381-.487.382l-6.662.034H2.355c-.232 0-.434-.158-.49-.383L.755 4.918c-.013-.051-.016-.103-.013-.154A1.06 1.06 0 0 1 0 3.753a1.06 1.06 0 0 1 1.06-1.06 1.06 1.06 0 0 1 1.06 1.06 1.06 1.06 0 0 1-.387.818l1.39 1.401c.351.354.839.557 1.338.557.59 0 1.152-.28 1.506-.749l2.284-3.027c-.192-.192-.311-.457-.311-.749A1.06 1.06 0 0 1 9 .943a1.06 1.06 0 0 1 1.06 1.06c0 .283-.112.541-.294.731l2.27 3.038c.354.474.918.757 1.51.757a1.87 1.87 0 0 0 1.333-.552l1.399-1.399a1.06 1.06 0 0 1 .664-1.885 1.06 1.06 0 0 1 .352 2.058zM16.06 11.34c0-.279-.226-.505-.505-.505H2.501c-.279 0-.505.226-.505.505v1.211c0 .279.226.505.505.505h13.054c.279 0 .505-.226.505-.505V11.34z",
+      fill: "#0875ff"
+    })))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (UpgradeCrown);
 
 /***/ }),
 
@@ -17166,7 +17371,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/card/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
 
@@ -17212,9 +17416,7 @@ function DirectCheckout(_ref) {
       });
     });
   }, []);
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    className: "tab-pan-wrapper"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Outlet, null)));
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], layout, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Outlet, null));
 }
 /* harmony default export */ __webpack_exports__["default"] = (DirectCheckout);
 
@@ -17348,15 +17550,21 @@ function DirectCheckoutLayout(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/radio/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/select/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/checkbox/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/form/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/radio/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/space/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/select/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/checkbox/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_TextInput__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js");
+
+
+
 
 
 
@@ -17366,11 +17574,11 @@ function General(_ref) {
   } = _ref;
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)("sgsb_direct_checkout");
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)("sgsb_direct_checkout");
   const {
     createDirectCheckoutForm,
     getButtonLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
     createDirectCheckoutForm: select("sgsb_direct_checkout").getCreateFromData(),
     getButtonLoading: select("sgsb_direct_checkout").getButtonLoading()
   }));
@@ -17380,74 +17588,73 @@ function General(_ref) {
       [key]: value
     });
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-    label: "Buy Now Button Label",
-    labelAlign: "left",
-    extra: "This will be the set the Label of the Buy Now Button"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    value: createDirectCheckoutForm.buy_now_button_label,
-    onChange: e => onFieldChange("buy_now_button_label", e.target.value),
-    style: {
-      width: 400
-    },
-    placeholder: "Total Sold"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_4__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_TextInput__WEBPACK_IMPORTED_MODULE_3__["default"]
+  // disabled={needUpgrade}
+  , {
+    name: "buy_now_button_label",
+    placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Buy Now Label", "storegrowth-sales-booster"),
+    fieldValue: createDirectCheckoutForm.buy_now_button_label,
+    className: `settings-field input-field`,
+    changeHandler: onFieldChange,
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Buy Now Button Label", "storegrowth-sales-booster"),
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("This will be the set the Label of the Buy Now Button", "storegrowth-sales-booster")
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
     label: "Button Layout Setting",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"].Group, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Group, {
     onChange: e => onFieldChange("buy_now_button_setting", e.target.value),
     value: createDirectCheckoutForm.buy_now_button_setting
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     value: "cart-to-buy-now"
-  }, "\"Add to cart\" as \"Buy Now\""), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "\"Add to cart\" as \"Buy Now\""), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     value: "cart-with-buy-now"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\"Buy Now\" with \"Add to cart\"")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\"Buy Now\" with \"Add to cart\"")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     value: "specific-buy-now"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\"Buy Now\" for specific product\""), createDirectCheckoutForm.buy_now_button_setting === "specific-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     style: {
       color: "red"
     }
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Please set the setting from the Woocommerce product tab."))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Please set the setting from the Woocommerce product tab."))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
     value: "default-add-to-cart"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Default Add to cart"))))), createDirectCheckoutForm.buy_now_button_setting !== "default-add-to-cart" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Default Add to cart"))))), createDirectCheckoutForm.buy_now_button_setting !== "default-add-to-cart" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
     label: "Buy Now Button Redirect",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     value: createDirectCheckoutForm.checkout_redirect,
     onChange: v => onFieldChange("checkout_redirect", v),
     style: {
       width: 400
     }
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
     value: "legacy-checkout"
-  }, "Legacy Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Option, {
+  }, "Legacy Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"].Option, {
     value: "quick-cart-checkout"
   }, "Quick Cart Checkout")))), createDirectCheckoutForm.buy_now_button_setting === "specific-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     style: {
       color: "red",
       maxWidth: "400px"
     }
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "The function of displaying in shop and product page only applicable for (\"Buy Now\" with \"Add to cart\")")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "The function of displaying in shop and product page only applicable for (\"Buy Now\" with \"Add to cart\")")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
     label: "Display on Shop Page",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     checked: createDirectCheckoutForm.shop_page_checkout_enable,
     value: "shop_page_checkout_enable",
     onChange: e => onFieldChange("shop_page_checkout_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
     label: "Display on Product Page",
     labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    direction: "vertical"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    direction: "vertical"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
     checked: createDirectCheckoutForm.product_page_checkout_enable,
     value: "product_page_checkout_enable",
     onChange: e => onFieldChange("product_page_checkout_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
     className: "order-bump-save-change-button",

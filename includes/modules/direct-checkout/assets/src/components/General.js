@@ -1,6 +1,8 @@
 import { Form, Select, Radio, Input, Button, Space, Checkbox } from "antd";
-
+import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
+import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
 function General({ onFormSave }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
@@ -23,20 +25,21 @@ function General({ onFormSave }) {
 
   return (
     <>
-      <Form.Item
-        label="Buy Now Button Label"
-        labelAlign="left"
-        extra="This will be the set the Label of the Buy Now Button"
-      >
-        <Input
-          value={createDirectCheckoutForm.buy_now_button_label}
-          onChange={(e) =>
-            onFieldChange("buy_now_button_label", e.target.value)
-          }
-          style={{ width: 400 }}
-          placeholder="Total Sold"
+      <SettingsSection>
+        <TextInput
+          // disabled={needUpgrade}
+          name={"buy_now_button_label"}
+          placeHolderText={__("Buy Now Label", "storegrowth-sales-booster")}
+          fieldValue={createDirectCheckoutForm.buy_now_button_label}
+          className={`settings-field input-field`}
+          changeHandler={onFieldChange}
+          title={__("Buy Now Button Label", "storegrowth-sales-booster")}
+          tooltip={__(
+            "This will be the set the Label of the Buy Now Button",
+            "storegrowth-sales-booster"
+          )}
         />
-      </Form.Item>
+      </SettingsSection>
 
       <Form.Item label="Button Layout Setting" labelAlign="left">
         <Radio.Group
@@ -87,13 +90,14 @@ function General({ onFormSave }) {
         </div>
       )}
       {createDirectCheckoutForm.buy_now_button_setting ===
-          "specific-buy-now" && (
-          <div style={{ color: "red",maxWidth:"400px" }}>
-            <span>
-              The function of displaying in shop and product page only applicable for ("Buy Now" with "Add to cart")
-            </span>
-          </div>
-        )}
+        "specific-buy-now" && (
+        <div style={{ color: "red", maxWidth: "400px" }}>
+          <span>
+            The function of displaying in shop and product page only applicable
+            for ("Buy Now" with "Add to cart")
+          </span>
+        </div>
+      )}
       <Form.Item label="Display on Shop Page" labelAlign="left">
         <Space direction="vertical">
           <Checkbox
