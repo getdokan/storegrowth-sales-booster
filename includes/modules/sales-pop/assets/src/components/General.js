@@ -43,11 +43,11 @@ function General( { onFormSave, upgradeTeaser } ) {
 
       <Button
         type="primary"
-        onClick={ () => onFormSave( 'general_settings' ) }
-        className='order-bump-save-change-button'
         loading={ getButtonLoading }
+        className='sgsb-settings-save-button'
+        onClick={ () => onFormSave( 'general_settings' ) }
       >
-        Save Changes
+          { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

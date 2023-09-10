@@ -1719,7 +1719,13 @@ End Settings Sidebar
               }
 
               &.number-field {
+                width: 100%;
                 border-radius: 5px;
+                background: #F6F9FF;
+
+                input {
+                  color: #000;
+                }
               }
 
               &.textarea-field {
@@ -1815,9 +1821,26 @@ End Settings Sidebar
           margin: 50px 0;
           color: #DDE6F9;
         }
+
+        .sgsb-settings-save-button {
+          border: 0;
+          margin: 0;
+          right: 50px;
+          height: auto;
+          bottom: 50px;
+          z-index: 9999;
+          line-height: 1;
+          position: fixed;
+          font-size: 16px;
+          font-weight: 500;
+          padding: 12px 24px;
+          background: #0875FF;
+        }
       }
 
       .preview-panel {
+        top: 40px;
+        position: sticky;
         margin-left: 32px;
       }
     }

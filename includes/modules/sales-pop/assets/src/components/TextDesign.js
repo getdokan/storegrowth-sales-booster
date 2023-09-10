@@ -5,19 +5,20 @@ import ColourPicker from "../../../../../../assets/src/components/settings/Panel
 import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
-const fontSizes = [ ...Array( 14 ).keys() ].map( value => {
-    const pair = value + 12;
+const fontSizes = [ ...Array( 15 ).keys() ].map( value => {
+    const pair = value + 10;
     return { value: pair, label: pair };
 } );
 
 const fontWeights = [
-    { value: 'bold', label: __( 'Bold', 'storegrowth-sales-booster' ) },
-    { value: 'normal', label: __( 'Normal', 'storegrowth-sales-booster' ) },
-]
+    { value: '400', label: __( 'Normal', 'storegrowth-sales-booster' ) },
+    { value: '500', label: __( 'Medium', 'storegrowth-sales-booster' ) },
+    { value: '700', label: __( 'Bold', 'storegrowth-sales-booster' ) },
+];
 
 const TextDesign = (props) => {
+    const { upgradeTeaser } = props;
 
-    const {upgradeTeaser} = props;
 	return (
 		<>
             <SectionHeader

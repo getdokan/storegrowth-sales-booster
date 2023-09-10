@@ -108,11 +108,11 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
       <Button
         type="primary"
         onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
-        className='order-bump-save-change-button'
+        className='sgsb-settings-save-button'
         loading={ getButtonLoading }
         disabled={isFirstNameExceededLimit}
       >
-        Save Changes
+          { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

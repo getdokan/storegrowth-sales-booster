@@ -14,6 +14,7 @@ import PanelRow from "../../../../../../assets/src/components/settings/Panels/Pa
 import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import Preview from "./Preview";
+import Template from "./Template";
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
 
@@ -96,11 +97,11 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
       title: __( 'Sales Pop Setting', 'storegrowth-sales-booster' ),
       panel: <General onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
     },
-    // {
-    //   key: 'template',
-    //   title: __( 'Template', 'storegrowth-sales-booster' ),
-    //     panel: <Fragment></Fragment>,
-    // },
+    {
+      key: 'template',
+      title: __( 'Template', 'storegrowth-sales-booster' ),
+        panel: <Template onFormSave={ onFormSave } />,
+    },
     {
       key: 'design',
       title: __( 'Design', 'storegrowth-sales-booster' ),
@@ -134,14 +135,14 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={ showPreview && tabName ? 14 : 24 }
+            colSpan={ showPreview && tabName ? 15 : 24 }
             tabPanels={ tabPanels }
             changeHandler={ changeTab }
             activeTab={ tabName ? tabName : 'general' }
           />
           { showPreview && tabName && (
-            <PanelPreview colSpan={ 10 }>
-              <Preview />
+            <PanelPreview colSpan={ 9 }>
+              <Preview storeData={ createPopupForm } />
             </PanelPreview>
           ) }
         </PanelRow>

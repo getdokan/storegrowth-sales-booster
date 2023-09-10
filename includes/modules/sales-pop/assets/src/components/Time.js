@@ -98,10 +98,10 @@ function Time( { onFormSave, upgradeTeaser } ) {
         disabled={upgradeTeaser}
         type="primary"
         onClick={ upgradeTeaser ? noop : () => onFormSave( 'general_settings' ) }
-        className='order-bump-save-change-button'
+        className='sgsb-settings-save-button'
         loading={ getButtonLoading }
       >
-        Save Changes
+        { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

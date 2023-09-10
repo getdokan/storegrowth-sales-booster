@@ -61,10 +61,10 @@ function Message( { onFormSave, upgradeTeaser } ) {
       <Button
         type="primary"
         onClick={ () => onFormSave( 'message' ) }
-        className='order-bump-save-change-button'
+        className='sgsb-settings-save-button'
         loading={ getButtonLoading }
       >
-        Save Changes
+          { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

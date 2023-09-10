@@ -17,7 +17,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 <section class="custom-social-proof" style="display: none;">
 	<div class="custom-notification" style="<?php echo isset( $main_div_style ) ? esc_attr( $main_div_style ) : null; ?>">
 		<div class="custom-notification-container" style="<?php do_action( 'sgsb_sales_pop_image_position', $popup_properties['image_position'] ); ?>" >
-			
+
 			<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
 				<?php
 				if ( $popup_properties['link_image_to_product'] ) {
@@ -67,8 +67,9 @@ $image_without_link = '<img id="image_of_product" src="#"
 
 			<?php
 			if ( true === $popup_properties['show_close_button'] ) {
+				$template_no = ! empty( $popup_properties['template'] ) ? absint( $popup_properties['template'] ) : 4;
 				?>
-			<div class="custom-close"></div>
+			<div class="custom-close <?php echo esc_attr( 'template-' . $template_no ); ?>"></div>
 		<?php } ?>
 		</div>	
 	</div>
