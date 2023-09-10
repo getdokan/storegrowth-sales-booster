@@ -16763,12 +16763,14 @@ const CheckboxGroup = _ref => {
     checked: selectedOptions.includes(checkbox.value),
     onChange: () => handleChange(checkbox.value),
     disabled: checkbox.needUpgrade
-  }, checkbox.needUpgrade ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     style: {
       display: "flex",
       gap: "8px"
     }
-  }, checkbox.label, " ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null)) : checkbox.label))))));
+  }, checkbox.needUpgrade ? checkbox.label((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null)) : checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    content: checkbox.tooltip
+  }))))))));
 };
 /* harmony default export */ __webpack_exports__["default"] = (CheckboxGroup);
 
@@ -16812,6 +16814,165 @@ const FieldWrapper = _ref => {
 
 /***/ }),
 
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox.js":
+/*!*******************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox.js ***!
+  \*******************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/typography/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/select/index.js");
+/* harmony import */ var _SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../SettingsTooltip */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js");
+/* harmony import */ var _UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UpgradeCrown */ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js");
+/* harmony import */ var _FieldWrapper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FieldWrapper */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js");
+
+
+
+
+
+const {
+  Title
+} = antd__WEBPACK_IMPORTED_MODULE_4__["default"];
+const SelectBox = _ref => {
+  let {
+    name,
+    title,
+    tooltip,
+    options,
+    fieldValue,
+    changeHandler,
+    colSpan = 24,
+    needUpgrade = false
+  } = _ref;
+  return (
+    // Make settings select component with card preview.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      colSpan: colSpan,
+      align: 'center'
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      span: 9
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `card-heading`
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
+      level: 3,
+      className: `settings-heading`
+    }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      content: tooltip
+    }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      span: 15
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      options: options,
+      value: fieldValue,
+      style: {
+        width: 120
+      },
+      disabled: needUpgrade,
+      onChange: v => changeHandler(name, v),
+      className: `settings-field single-select-field`
+    })))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (SelectBox);
+
+/***/ }),
+
+/***/ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox.js":
+/*!************************************************************************************************!*\
+  !*** ../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox.js ***!
+  \************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/typography/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/checkbox/index.js");
+/* harmony import */ var _SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../SettingsTooltip */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js");
+/* harmony import */ var _UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UpgradeCrown */ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js");
+/* harmony import */ var _FieldWrapper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FieldWrapper */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js");
+
+
+
+
+
+
+/**
+ * A customizable checkbox component for use in settings or configuration forms.
+ *
+ * @component
+ *
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.name - A unique identifier for the checkbox.
+ * @param {boolean} props.checkedValue - The current state of the checkbox.
+ * @param {function} props.changeHandler - A function to handle checkbox state changes.
+ * @param {string} props.title - The title or label for the checkbox.
+ * @param {string} [props.tooltip] - An optional tooltip to provide additional information about the checkbox.
+ * @param {boolean} [props.needUpgrade=false] - Optional. If true, it displays an upgrade icon next to the checkbox.
+ * @param {number} [props.colSpan=24] - Optional. The column span for layout purposes.
+ * @param {number} [props.areaRows] - Optional. The number of rows for the checkbox area.
+ *
+ * @example
+ * // Usage example:
+ * <SingleCheckBox
+ *   name={"shop_page_checkout_enable"}
+ *   checkedValue={settings.shop_page_checkout_enable}
+ *   changeHandler={onFieldChange}
+ *   title={"Display on Shop Page"}
+ *   tooltip={"This will set the Label of the Buy Now Button"}
+ *   needUpgrade={false}
+ * />
+ */
+
+const {
+  Title
+} = antd__WEBPACK_IMPORTED_MODULE_4__["default"];
+const SingleCheckBox = _ref => {
+  let {
+    name,
+    title,
+    tooltip,
+    areaRows,
+    checkedValue,
+    changeHandler,
+    colSpan = 24,
+    needUpgrade = false
+  } = _ref;
+  return (
+    // Make settings textarea component with card preview.
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      colSpan: colSpan
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      span: 9
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: `card-heading checkbox-heading`
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
+      level: 3,
+      className: `settings-heading`
+    }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      content: tooltip
+    }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      span: 15
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      rows: areaRows,
+      disabled: needUpgrade,
+      checked: checkedValue,
+      value: name,
+      className: `settings-field checkbox-field`,
+      onChange: event => changeHandler(name, event.target.checked)
+    })))
+  );
+};
+/* harmony default export */ __webpack_exports__["default"] = (SingleCheckBox);
+
+/***/ }),
+
 /***/ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js":
 /*!*******************************************************************************************!*\
   !*** ../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js ***!
@@ -16822,26 +16983,20 @@ const FieldWrapper = _ref => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/input/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/typography/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/typography/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/col/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/input/index.js");
 /* harmony import */ var _SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../SettingsTooltip */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsTooltip.js");
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UpgradeCrown */ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js");
-/* harmony import */ var _FieldWrapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FieldWrapper */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js");
+/* harmony import */ var _UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../UpgradeCrown */ "../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCrown.js");
+/* harmony import */ var _FieldWrapper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FieldWrapper */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper.js");
 
 
 
 
 
-
-const {
-  TextArea
-} = antd__WEBPACK_IMPORTED_MODULE_5__["default"];
 const {
   Title
-} = antd__WEBPACK_IMPORTED_MODULE_6__["default"];
+} = antd__WEBPACK_IMPORTED_MODULE_4__["default"];
 const TextInput = _ref => {
   let {
     name,
@@ -16856,9 +17011,9 @@ const TextInput = _ref => {
   } = _ref;
   return (
     // Make settings textarea component with card preview.
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], {
       colSpan: colSpan
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
       span: 9
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: `card-heading textinput-heading`
@@ -16867,9 +17022,9 @@ const TextInput = _ref => {
       className: `settings-heading`
     }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
       content: tooltip
-    }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
       span: 15
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
       rows: areaRows,
       disabled: needUpgrade,
       placeholder: placeHolderText,
@@ -17244,9 +17399,6 @@ function DirectCheckoutLayout(_ref) {
     useSearchParams
   } = _ref;
   const isProEnabled = sgsbAdmin.isPro;
-  const upgradeTeaser = !isProEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "sgsb-field-upgrade-pro-label"
-  }, "(Upgrade to premium)");
   const {
     setCreateFromData,
     setButtonLoading
@@ -17330,18 +17482,18 @@ function DirectCheckoutLayout(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/form/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/select/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/space/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/checkbox/index.js");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_TextInput__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput.js");
 /* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_CheckboxGroup__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup.js");
-/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_SingleCheckBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_SelectBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js");
+
+
 
 
 
@@ -17351,7 +17503,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function General(_ref) {
   let {
-    onFormSave
+    onFormSave,
+    upgradeTeaser
   } = _ref;
   const {
     setCreateFromData
@@ -17372,23 +17525,35 @@ function General(_ref) {
   const checkboxesOption = [{
     label: `"Add to cart" as "Buy Now"`,
     value: "cart-to-buy-now",
-    needUpgrade: true
+    needUpgrade: upgradeTeaser,
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Use the add to cart button as the buy now button", "storegrowth-sales-booster")
   }, {
     label: `"Buy Now" with "Add to cart"`,
     value: "cart-with-buy-now",
-    needUpgrade: false
+    needUpgrade: false,
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("", "storegrowth-sales-booster")
   }, {
     label: `"Buy Now" for specific product"`,
     value: "specific-buy-now",
-    needUpgrade: true
+    needUpgrade: upgradeTeaser,
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("This setting can be directly accessed from the woocommerce product meta page", "storegrowth-sales-booster")
   }, {
     label: `Default Add to cart`,
     value: "default-add-to-cart",
-    needUpgrade: false
+    needUpgrade: false,
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("", "storegrowth-sales-booster")
   }];
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_5__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_TextInput__WEBPACK_IMPORTED_MODULE_3__["default"]
-  // disabled={needUpgrade}
-  , {
+
+  // Define select options
+  const selectOptions = [{
+    value: "legacy-checkout",
+    label: "Legacy Checkout"
+  }, {
+    value: "quick-cart-checkout",
+    label: "Quick Cart Checkout"
+  }];
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_7__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_TextInput__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    needUpgrade: upgradeTeaser,
     name: "buy_now_button_label",
     placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Buy Now Label", "storegrowth-sales-booster"),
     fieldValue: createDirectCheckoutForm.buy_now_button_label,
@@ -17403,43 +17568,29 @@ function General(_ref) {
     handleCheckboxChange: onFieldChange,
     isSingleMode: true,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Button Layout Setting", "storegrowth-sales-booster")
-  })), createDirectCheckoutForm.buy_now_button_setting !== "default-add-to-cart" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
-    label: "Buy Now Button Redirect",
-    labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    value: createDirectCheckoutForm.checkout_redirect,
-    onChange: v => onFieldChange("checkout_redirect", v),
-    style: {
-      width: 400
-    }
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"].Option, {
-    value: "legacy-checkout"
-  }, "Legacy Checkout"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"].Option, {
-    value: "quick-cart-checkout"
-  }, "Quick Cart Checkout")))), createDirectCheckoutForm.buy_now_button_setting === "specific-buy-now" && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    style: {
-      color: "red",
-      maxWidth: "400px"
-    }
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "The function of displaying in shop and product page only applicable for (\"Buy Now\" with \"Add to cart\")")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
-    label: "Display on Shop Page",
-    labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    checked: createDirectCheckoutForm.shop_page_checkout_enable,
-    value: "shop_page_checkout_enable",
-    onChange: e => onFieldChange("shop_page_checkout_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
-    label: "Display on Product Page",
-    labelAlign: "left"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    direction: "vertical"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    checked: createDirectCheckoutForm.product_page_checkout_enable,
-    value: "product_page_checkout_enable",
-    onChange: e => onFieldChange("product_page_checkout_enable", e.target.checked)
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_SelectBox__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    name: "checkout_redirect",
+    fieldValue: createDirectCheckoutForm.checkout_redirect,
+    changeHandler: onFieldChange,
+    title: "Checkout Redirect",
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Select the type of checkout redirection", "storegrowth-sales-booster"),
+    options: selectOptions
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_SingleCheckBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    needUpgrade: upgradeTeaser,
+    name: "shop_page_checkout_enable",
+    checkedValue: createDirectCheckoutForm.shop_page_checkout_enable,
+    className: `settings-field checkbox-field`,
+    changeHandler: onFieldChange,
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Display on Shop Page", "storegrowth-sales-booster"),
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("The direct checkout button will show on the shop page", "storegrowth-sales-booster")
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_SingleCheckBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    name: "product_page_checkout_enable",
+    checkedValue: createDirectCheckoutForm.product_page_checkout_enable,
+    className: `settings-field checkbox-field`,
+    changeHandler: onFieldChange,
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Display on Shop Page", "storegrowth-sales-booster"),
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("The direct checkout button will show on the single product page", "storegrowth-sales-booster")
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
     className: "order-bump-save-change-button",

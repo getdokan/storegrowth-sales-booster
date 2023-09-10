@@ -3,9 +3,11 @@ import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
+import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
+import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
-function General({ onFormSave }) {
+function General({ onFormSave, upgradeTeaser }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
 
   const { createDirectCheckoutForm, getButtonLoading } = useSelect(
@@ -28,30 +30,40 @@ function General({ onFormSave }) {
     {
       label: `"Add to cart" as "Buy Now"`,
       value: "cart-to-buy-now",
-      needUpgrade: true,
+      needUpgrade: upgradeTeaser,
+      tooltip: __("Use the add to cart button as the buy now button", "storegrowth-sales-booster"),
     },
     {
       label: `"Buy Now" with "Add to cart"`,
       value: "cart-with-buy-now",
       needUpgrade: false,
+      tooltip: __("", "storegrowth-sales-booster"),
     },
     {
       label: `"Buy Now" for specific product"`,
       value: "specific-buy-now",
-      needUpgrade: true,
+      needUpgrade: upgradeTeaser,
+      tooltip: __("This setting can be directly accessed from the woocommerce product meta page", "storegrowth-sales-booster"),
     },
     {
       label: `Default Add to cart`,
       value: "default-add-to-cart",
       needUpgrade: false,
+      tooltip: __("", "storegrowth-sales-booster"),
     },
+  ];
+
+  // Define select options
+  const selectOptions = [
+    { value: "legacy-checkout", label: "Legacy Checkout" },
+    { value: "quick-cart-checkout", label: "Quick Cart Checkout" },
   ];
 
   return (
     <>
       <SettingsSection>
         <TextInput
-          // disabled={needUpgrade}
+          needUpgrade={upgradeTeaser}
           name={"buy_now_button_label"}
           placeHolderText={__("Buy Now Label", "storegrowth-sales-booster")}
           fieldValue={createDirectCheckoutForm.buy_now_button_label}
@@ -71,59 +83,43 @@ function General({ onFormSave }) {
           isSingleMode={true}
           title={__("Button Layout Setting", "storegrowth-sales-booster")}
         />
+
+        <SelectBox
+          name={"checkout_redirect"}
+          fieldValue={createDirectCheckoutForm.checkout_redirect}
+          changeHandler={onFieldChange}
+          title={"Checkout Redirect"}
+          tooltip={__(
+            "Select the type of checkout redirection",
+            "storegrowth-sales-booster"
+          )}
+          options={selectOptions}
+        />
+
+        <SingleCheckBox
+          needUpgrade={upgradeTeaser}
+          name={"shop_page_checkout_enable"}
+          checkedValue={createDirectCheckoutForm.shop_page_checkout_enable}
+          className={`settings-field checkbox-field`}
+          changeHandler={onFieldChange}
+          title={__("Display on Shop Page", "storegrowth-sales-booster")}
+          tooltip={__(
+            "The direct checkout button will show on the shop page",
+            "storegrowth-sales-booster"
+          )}
+        />
+        <SingleCheckBox
+          name={"product_page_checkout_enable"}
+          checkedValue={createDirectCheckoutForm.product_page_checkout_enable}
+          className={`settings-field checkbox-field`}
+          changeHandler={onFieldChange}
+          title={__("Display on Shop Page", "storegrowth-sales-booster")}
+          tooltip={__(
+            "The direct checkout button will show on the single product page",
+            "storegrowth-sales-booster"
+          )}
+        />
       </SettingsSection>
-
-      {createDirectCheckoutForm.buy_now_button_setting !==
-        "default-add-to-cart" && (
-        <div>
-          <Form.Item label="Buy Now Button Redirect" labelAlign="left">
-            <Select
-              value={createDirectCheckoutForm.checkout_redirect}
-              onChange={(v) => onFieldChange("checkout_redirect", v)}
-              style={{ width: 400 }}
-            >
-              <Select.Option value="legacy-checkout">
-                Legacy Checkout
-              </Select.Option>
-              <Select.Option value="quick-cart-checkout">
-                Quick Cart Checkout
-              </Select.Option>
-            </Select>
-          </Form.Item>
-        </div>
-      )}
-      {createDirectCheckoutForm.buy_now_button_setting ===
-        "specific-buy-now" && (
-        <div style={{ color: "red", maxWidth: "400px" }}>
-          <span>
-            The function of displaying in shop and product page only applicable
-            for ("Buy Now" with "Add to cart")
-          </span>
-        </div>
-      )}
-      <Form.Item label="Display on Shop Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.shop_page_checkout_enable}
-            value="shop_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("shop_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
-      </Form.Item>
-
-      <Form.Item label="Display on Product Page" labelAlign="left">
-        <Space direction="vertical">
-          <Checkbox
-            checked={createDirectCheckoutForm.product_page_checkout_enable}
-            value="product_page_checkout_enable"
-            onChange={(e) =>
-              onFieldChange("product_page_checkout_enable", e.target.checked)
-            }
-          ></Checkbox>
-        </Space>
-      </Form.Item>
 
       <Button
         type="primary"
