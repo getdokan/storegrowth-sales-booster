@@ -1,10 +1,8 @@
 import { Typography, Input, Col } from "antd";
 import SettingsTooltip from "../SettingsTooltip";
-import { applyFilters } from "@wordpress/hooks";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
 
-const { TextArea } = Input;
 const { Title } = Typography;
 
 const TextInput = ( {
