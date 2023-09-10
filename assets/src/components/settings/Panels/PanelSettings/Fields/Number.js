@@ -20,7 +20,7 @@ const Number = ( {
     return (
         // Make settings number component with card preview.
         <FieldWrapper colSpan={ colSpan } align={ 'center' }>
-            <Col span={15}>
+            <Col span={ colSpan < 24 ? 18: 15 }>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
@@ -31,16 +31,16 @@ const Number = ( {
                 </div>
             </Col>
 
-            <Col span={9}>
+            <Col span={ colSpan < 24 ? 6: 9 }>
                 {/* Handle settings number field by using dynamic props */}
                 <InputNumber
                     min={ min }
                     max={ max }
                     disabled={ needUpgrade }
                     placeholder={ placeHolderText }
+                    value={ fieldValue ? fieldValue : '' }
                     className={ `settings-field number-field` }
-                    defaultValue={ fieldValue ? fieldValue : '' }
-                    onChange={ ( event ) => changeHandler( name, event.target.value ) }
+                    onChange={ ( value ) => changeHandler( name, value ) }
                 />
             </Col>
         </FieldWrapper>

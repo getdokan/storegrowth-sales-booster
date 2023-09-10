@@ -64,6 +64,7 @@
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
     $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
     $('#product').text( products[ productAndImage ] );
+    $('#product').css({ fontWeight: popup_all_properties.product_title_font_weight });
 		$("#product_url_title").attr( "href", product_url[ productAndImage ] );
 		var timeVal = Math.floor(Math.random() * 59);
 		$('#time').text( timeVal );

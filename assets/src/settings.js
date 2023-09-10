@@ -6,7 +6,7 @@ import settingsStore from './settings-store';
 // import moduleStore from './modules-store';
 import Layout from "./components/settings/Layout";
 
-import 'antd/dist/antd.css';
+import 'antd/dist/reset.css';
 import './admin.css';
 
 register( settingsStore );

@@ -1,7 +1,11 @@
-import { Form, Input, Switch, Button } from 'antd';
+import { Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { noop } from '../helper';
+import { __ } from "@wordpress/i18n";
+import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 function Time( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -17,7 +21,6 @@ function Time( { onFormSave, upgradeTeaser } ) {
       [ key ]: value,
     } );
   };
-
   
   /** 
    * This is a numeric validator method that allows positive and numeric values and rejects
@@ -32,81 +35,73 @@ function Time( { onFormSave, upgradeTeaser } ) {
 
   return (
     <>
-      <Form.Item
-        label="Loop"
-        labelAlign='left'
-      >
-        <Switch
-          disabled={upgradeTeaser}
-          checked={ (createPopupForm.loop == 'true' || createPopupForm.loop == true) ? true : false }
-          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'loop', v ) }
+      <SettingsSection>
+        <Switcher
+          name={ 'loop' }
+          colSpan={ 12 }
+          needUpgrade={ upgradeTeaser }
+          isEnable={ Boolean( createPopupForm.loop ) }
+          changeHandler={ upgradeTeaser ? noop : onFieldChange }
+          title={ __( 'Loop', 'storegrowth-sales-booster' ) }
         />
-        <p>{upgradeTeaser}</p>
-      </Form.Item>
-
-      <Form.Item
-        label="Next Time Display"
-        labelAlign="left"
-        extra="Time to start next notification(in seconds)"
-      >
-        <Input
-          disabled={upgradeTeaser}
-          onChange={ upgradeTeaser ? noop : ( v ) => handleNumericInputChange( 'next_time_display', v.target.value ) }
-          placeholder="Enter Next Time Display"
-          value={ createPopupForm.next_time_display }
+        <Number
+          min={ 5 }
+          max={ 100 }
+          colSpan={ 12 }
+          name={ 'next_time_display' }
+          needUpgrade={ upgradeTeaser }
+          fieldValue={ createPopupForm.next_time_display }
+          changeHandler={ upgradeTeaser ? noop : handleNumericInputChange }
+          title={ __( 'Next Time Display', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Enter Next Time Display', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Time to start next notification(in seconds)', 'storegrowth-sales-booster' ) }
         />
-        {upgradeTeaser}
-      </Form.Item>
-      <Form.Item
-        label="Notification Per Page"
-        labelAlign="left"
-        extra="Quantity Notifications Per Page"
-      >
-        <Input
-          disabled={ upgradeTeaser }
-          onChange={ upgradeTeaser ? noop : ( v ) => handleNumericInputChange( 'notification_per_page', v.target.value ) }
-          placeholder="Enter Notification Per Page"
-          value={ createPopupForm.notification_per_page }
+        <Number
+          min={ 5 }
+          max={ 100 }
+          colSpan={ 12 }
+          needUpgrade={ upgradeTeaser }
+          name={ 'notification_per_page' }
+          fieldValue={ createPopupForm.notification_per_page }
+          changeHandler={ upgradeTeaser ? noop : handleNumericInputChange }
+          title={ __( 'Notification Per Page', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Enter Notification Per Page', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Quantity Notifications Per Page', 'storegrowth-sales-booster' ) }
         />
-        {upgradeTeaser}
-      </Form.Item>
-
-      <Form.Item
-        label="Initial Time Delay"
-        labelAlign="left"
-        extra="When Your Site Load, Notification will wait this time to show(in seconds)"
-      >
-        <Input
-          disabled={upgradeTeaser}
-          onChange={ upgradeTeaser ? noop : ( v ) => handleNumericInputChange( 'initial_time_delay', v.target.value ) }
-          placeholder="Enter Initial Time Delay"
-          value={ createPopupForm.initial_time_delay }
+        <Number
+          min={ 5 }
+          max={ 100 }
+          colSpan={ 12 }
+          name={ 'initial_time_delay' }
+          needUpgrade={ upgradeTeaser }
+          fieldValue={ createPopupForm.initial_time_delay }
+          changeHandler={ upgradeTeaser ? noop : handleNumericInputChange }
+          title={ __( 'Initial Time Delay', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Enter Initial Time Delay', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'When Your Site Load, Notification will wait this time to show(in seconds)', 'storegrowth-sales-booster' ) }
         />
-        { upgradeTeaser }
-      </Form.Item>
-
-      <Form.Item
-        label="Display Time"
-        labelAlign="left"
-        extra="Time your notification display"
-      >
-        <Input
-          disabled={upgradeTeaser}
-          onChange={ upgradeTeaser ? noop : ( v ) => handleNumericInputChange( 'dispaly_time', v.target.value ) }
-          placeholder="Enter Virtual Time"
-          value={ createPopupForm.dispaly_time }
+        <Number
+          min={ 5 }
+          max={ 100 }
+          colSpan={ 12 }
+          name={ 'dispaly_time' }
+          needUpgrade={ upgradeTeaser }
+          fieldValue={ createPopupForm.dispaly_time }
+          changeHandler={ upgradeTeaser ? noop : handleNumericInputChange }
+          title={ __( 'Display Time', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Enter Virtual Time', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Time your notification display', 'storegrowth-sales-booster' ) }
         />
-        {upgradeTeaser}
-      </Form.Item>
+      </SettingsSection>
 
       <Button
         disabled={upgradeTeaser}
         type="primary"
         onClick={ upgradeTeaser ? noop : () => onFormSave( 'general_settings' ) }
-        className='order-bump-save-change-button'
+        className='sgsb-settings-save-button'
         loading={ getButtonLoading }
       >
-        Save Changes
+        { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

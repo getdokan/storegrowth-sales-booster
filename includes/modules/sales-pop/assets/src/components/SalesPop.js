@@ -41,9 +41,7 @@ function SalesPop({ outlet: Outlet }) {
 
 	return (
 		<Form {...layout}>
-			<Card className='tab-pan-wrapper'>
-				<Outlet/>
-			</Card>
+            <Outlet/>
 		</Form>
 	);
   }

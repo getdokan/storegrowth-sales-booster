@@ -2,6 +2,9 @@ import { Form, Switch, Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { noop } from '../helper';
+import { __ } from '@wordpress/i18n';
+import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
 function General( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -20,34 +23,31 @@ function General( { onFormSave, upgradeTeaser } ) {
 
   return (
     <>
-      <Form.Item
-        label="Enable Popup"
-        labelAlign='left'
-      >
-        <Switch
-          checked={ (createPopupForm.enable == 'true' || createPopupForm.enable == true) ? true : false }
-          onChange={ ( v ) => onFieldChange( 'enable', v ) }
+      <SettingsSection>
+        <Switcher
+          colSpan={ 12 }
+          name={ 'enable' }
+          changeHandler={ onFieldChange }
+          title={ __( 'Enable Popup', 'storegrowth-sales-booster' ) }
+          isEnable={ (createPopupForm.enable == 'true' || createPopupForm.enable == true) ? true : false }
         />
-      </Form.Item>
-      <Form.Item
-        label="Popup in Mobile"
-        labelAlign='left'
-      >
-        <Switch
-          disabled={ upgradeTeaser }
-          checked={ (createPopupForm.mobile_view == 'true' || createPopupForm.mobile_view == true) ? true : false }
-          onChange={ upgradeTeaser ? noop : ( v ) => onFieldChange( 'mobile_view', v ) }
+        <Switcher
+          colSpan={ 12 }
+          name={ 'mobile_view' }
+          needUpgrade={ upgradeTeaser }
+          changeHandler={ upgradeTeaser ? noop : onFieldChange }
+          title={ __( 'Popup in Mobile', 'storegrowth-sales-booster' ) }
+          isEnable={ (createPopupForm.mobile_view == 'true' || createPopupForm.mobile_view == true) ? true : false }
         />
-        <p>{upgradeTeaser}</p>
-      </Form.Item>
+      </SettingsSection>
 
       <Button
         type="primary"
-        onClick={ () => onFormSave( 'general_settings' ) }
-        className='order-bump-save-change-button'
         loading={ getButtonLoading }
+        className='sgsb-settings-save-button'
+        onClick={ () => onFormSave( 'general_settings' ) }
       >
-        Save Changes
+          { __( 'Save', 'storegrowth-sales-booster' ) }
       </Button>
     </>
   );

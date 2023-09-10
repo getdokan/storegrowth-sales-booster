@@ -18,7 +18,7 @@ const SelectBox = ( {
     return (
         // Make settings select component with card preview.
         <FieldWrapper colSpan={ colSpan } align={ 'center' }>
-            <Col span={9}>
+            <Col span={15}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
@@ -28,12 +28,12 @@ const SelectBox = ( {
                     { needUpgrade && <UpgradeCrown /> }
                 </div>
             </Col>
-            <Col span={15}>
+            <Col span={9}>
                 {/* Handle settings select field by using dynamic props */}
                 <Select
                     options={ options }
                     value={ fieldValue }
-                    style={{ width: 120 }}
+                    style={{ width: colSpan === 24 ? 170 : 70 }}
                     disabled={ needUpgrade }
                     onChange={ ( v ) => changeHandler( name, v ) }
                     className={ `settings-field single-select-field` }
