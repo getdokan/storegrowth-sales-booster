@@ -1,12 +1,20 @@
-import { Tabs, notification } from 'antd';
+import { __ } from '@wordpress/i18n';
+import { notification } from 'antd';
 
-const { TabPane } = Tabs;
 import { useDispatch, useSelect } from '@wordpress/data';
 import CreateSalesPop from './CreateSalesPop';
-import Desgin from './Design';
+import Design from './Design';
 import Time from './Time';
 import General from './General';
 import Message from './Message';
+
+import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import Preview from "./Preview";
+import Template from "./Template";
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
 
@@ -83,44 +91,62 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
       );
   }
 
+  const tabPanels = [
+    {
+      key: 'general',
+      title: __( 'Sales Pop Setting', 'storegrowth-sales-booster' ),
+      panel: <General onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+    },
+    {
+      key: 'template',
+      title: __( 'Template', 'storegrowth-sales-booster' ),
+        panel: <Template onFormSave={ onFormSave } />,
+    },
+    {
+      key: 'design',
+      title: __( 'Design', 'storegrowth-sales-booster' ),
+      panel: <Design onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+    },
+    {
+      key: 'products',
+      title: __( 'Products', 'storegrowth-sales-booster' ),
+      panel: <CreateSalesPop onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+    },
+    {
+      key: 'message',
+      title: __( 'Message', 'storegrowth-sales-booster' ),
+      panel: <Message onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+    },
+    {
+      key: 'time',
+      title: __( 'Time', 'storegrowth-sales-booster' ),
+      panel: <Time onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+    },
+  ];
+
+  const excludeTabs = [ 'general', 'products', 'message', 'time' ];
+  const showPreview = ! excludeTabs?.includes( tabName );
+
   return (
     <>
-      <Tabs activeKey={ tabName ? tabName : 'general' } onTabClick={ changeTab }>
-        <TabPane tab="General" key="general">
-          <General 
-            onFormSave={ onFormSave }
-            upgradeTeaser={upgradeTeaser}
+      <PanelHeader
+        title={ __( 'Sales Pop Setting', 'storegrowth-sales-booster' ) }
+      />
+      <PanelContainer>
+        <PanelRow>
+          <PanelSettings
+            colSpan={ showPreview && tabName ? 15 : 24 }
+            tabPanels={ tabPanels }
+            changeHandler={ changeTab }
+            activeTab={ tabName ? tabName : 'general' }
           />
-        </TabPane>
-
-        <TabPane tab="Design" key="design">
-          <Desgin 
-            onFormSave={ onFormSave }
-            upgradeTeaser={upgradeTeaser}
-          />
-        </TabPane>
-
-        <TabPane tab="Products" key="products">
-          <CreateSalesPop 
-            onFormSave={ onFormSave }
-            upgradeTeaser={upgradeTeaser}
-          />
-        </TabPane>
-
-        <TabPane tab="Message" key="message">
-          <Message 
-            onFormSave={ onFormSave }
-            upgradeTeaser={upgradeTeaser}
-          />
-        </TabPane>
-
-        <TabPane tab="Time" key="time">
-          <Time 
-            onFormSave={ onFormSave }
-            upgradeTeaser={upgradeTeaser}
-          />
-        </TabPane>
-      </Tabs>
+          { showPreview && tabName && (
+            <PanelPreview colSpan={ 9 }>
+              <Preview storeData={ createPopupForm } />
+            </PanelPreview>
+          ) }
+        </PanelRow>
+      </PanelContainer>
     </>
   );
 }
