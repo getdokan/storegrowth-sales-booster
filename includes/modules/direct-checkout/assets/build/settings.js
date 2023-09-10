@@ -32085,13 +32085,16 @@ const Number = _ref => {
     min = 1,
     max = 100,
     colSpan = 24,
-    needUpgrade = false
+    needUpgrade = false,
+    addonBefore = "",
+    addonAfter = "",
+    style = {}
   } = _ref;
   return (
     // Make settings number component with card preview.
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_1__["default"], {
       colSpan: colSpan,
-      align: 'center'
+      align: "center"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
       span: colSpan < 24 ? 18 : 15
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -32104,11 +32107,14 @@ const Number = _ref => {
     }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
       span: colSpan < 24 ? 6 : 9
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      style: style,
+      addonBefore: addonBefore,
+      addonAfter: addonAfter,
       min: min,
       max: max,
       disabled: needUpgrade,
       placeholder: placeHolderText,
-      value: fieldValue ? fieldValue : '',
+      value: fieldValue ? fieldValue : "",
       className: `settings-field number-field`,
       onChange: value => changeHandler(name, value)
     })))
@@ -32268,7 +32274,7 @@ const SingleCheckBox = _ref => {
       disabled: needUpgrade,
       checked: checkedValue,
       value: name,
-      className: `settings-field checkbox-field`,
+      className: `settings-field singlecheckbox-field`,
       onChange: event => changeHandler(name, event.target.checked)
     })))
   );
@@ -32530,14 +32536,17 @@ const PanelSettings = _ref => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! antd */ "../../../../node_modules/antd/es/button/index.js");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js");
-/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number.js");
-/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection */ "../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number.js");
+/* harmony import */ var _assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker */ "../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker.js");
+
 
 
 
@@ -32552,11 +32561,11 @@ function Design(_ref) {
   } = _ref;
   const {
     setCreateFromData
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)("sgsb_direct_checkout");
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)("sgsb_direct_checkout");
   const {
     createDirectCheckoutForm,
     getButtonLoading
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => ({
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
     createDirectCheckoutForm: select("sgsb_direct_checkout").getCreateFromData(),
     getButtonLoading: select("sgsb_direct_checkout").getButtonLoading()
   }));
@@ -32566,40 +32575,50 @@ function Design(_ref) {
       [key]: value
     });
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_3__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_2__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SettingsSection__WEBPACK_IMPORTED_MODULE_4__["default"], null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_6__["default"], {
     name: "button_color",
     fieldValue: createDirectCheckoutForm.button_color,
     changeHandler: onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Button Color", "storegrowth-sales-booster")
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_ColorPicker__WEBPACK_IMPORTED_MODULE_6__["default"], {
     name: "text_color",
     fieldValue: createDirectCheckoutForm.text_color,
     changeHandler: onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Text Color", "storegrowth-sales-booster")
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_5__["default"], {
     min: 1,
     max: 100,
-    name: "font_size",
+    addonAfter: "px",
+    style: {
+      width: "100px",
+      textAlign: "center"
+    },
+    name: `font_size`,
     fieldValue: createDirectCheckoutForm.font_size,
     changeHandler: onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Font Size", "storegrowth-sales-booster"),
     placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Font Size", "storegrowth-sales-booster"),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("To set the size of the font", "storegrowth-sales-booster")
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_5__["default"], {
     min: 1,
     max: 100,
+    style: {
+      width: "100px",
+      textAlign: "center"
+    },
+    addonAfter: "px",
     name: "button_border_radius",
     fieldValue: createDirectCheckoutForm.button_border_radius,
     changeHandler: onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Border Radius", "storegrowth-sales-booster"),
     placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Border Radius", "storegrowth-sales-booster"),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("To set the border radius of the button", "storegrowth-sales-booster")
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
-    className: "order-bump-save-change-button",
+    className: "sgsb-settings-save-button",
     loading: getButtonLoading
-  }, "Save Changes"));
+  }, "Save"));
 }
 /* harmony default export */ __webpack_exports__["default"] = (Design);
 
@@ -32904,9 +32923,9 @@ function General(_ref) {
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",
     onClick: () => onFormSave("general_settings"),
-    className: "order-bump-save-change-button",
+    className: "sgsb-settings-save-button",
     loading: getButtonLoading
-  }, "Save Changes"));
+  }, "Save"));
 }
 /* harmony default export */ __webpack_exports__["default"] = (General);
 

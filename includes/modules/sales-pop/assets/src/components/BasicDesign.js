@@ -45,7 +45,6 @@ const BasicDesign = (props) => {
                         <Number
                             min={ 1 }
                             max={ 20 }
-                            colSpan={ 12 }
                             needUpgrade={ upgradeTeaser }
                             name={ `spacing_around_image` }
                             fieldValue={ props.createPopupForm.spacing_around_image }

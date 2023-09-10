@@ -1,4 +1,4 @@
-import { Button} from "antd";
+import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
@@ -31,7 +31,10 @@ function General({ onFormSave, upgradeTeaser }) {
       label: `"Add to cart" as "Buy Now"`,
       value: "cart-to-buy-now",
       needUpgrade: upgradeTeaser,
-      tooltip: __("Use the add to cart button as the buy now button", "storegrowth-sales-booster"),
+      tooltip: __(
+        "Use the add to cart button as the buy now button",
+        "storegrowth-sales-booster"
+      ),
     },
     {
       label: `"Buy Now" with "Add to cart"`,
@@ -43,7 +46,10 @@ function General({ onFormSave, upgradeTeaser }) {
       label: `"Buy Now" for specific product"`,
       value: "specific-buy-now",
       needUpgrade: upgradeTeaser,
-      tooltip: __("This setting can be directly accessed from the woocommerce product meta page", "storegrowth-sales-booster"),
+      tooltip: __(
+        "This setting can be directly accessed from the woocommerce product meta page",
+        "storegrowth-sales-booster"
+      ),
     },
     {
       label: `Default Add to cart`,
@@ -124,10 +130,10 @@ function General({ onFormSave, upgradeTeaser }) {
       <Button
         type="primary"
         onClick={() => onFormSave("general_settings")}
-        className="order-bump-save-change-button"
+        className="sgsb-settings-save-button"
         loading={getButtonLoading}
       >
-        Save Changes
+        Save
       </Button>
     </>
   );

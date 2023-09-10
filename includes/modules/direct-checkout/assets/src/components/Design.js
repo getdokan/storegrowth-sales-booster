@@ -1,5 +1,6 @@
-import {Button} from "antd";
+import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
+import { Fragment } from "react";
 import { useDispatch, useSelect } from "@wordpress/data";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
@@ -25,7 +26,7 @@ function Design({ onFormSave, upgradeTeaser }) {
   };
 
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <ColourPicker
           name={"button_color"}
@@ -44,7 +45,12 @@ function Design({ onFormSave, upgradeTeaser }) {
         <Number
           min={1}
           max={100}
-          name={"font_size"}
+          addonAfter={"px"}
+          style={{
+            width: "100px",
+            textAlign: "center",
+          }}
+          name={`font_size`}
           fieldValue={createDirectCheckoutForm.font_size}
           changeHandler={onFieldChange}
           title={__("Font Size", "storegrowth-sales-booster")}
@@ -54,10 +60,15 @@ function Design({ onFormSave, upgradeTeaser }) {
             "storegrowth-sales-booster"
           )}
         />
-        
+
         <Number
           min={1}
           max={100}
+          style={{
+            width: "100px",
+            textAlign: "center",
+          }}
+          addonAfter={"px"}
           name={"button_border_radius"}
           fieldValue={createDirectCheckoutForm.button_border_radius}
           changeHandler={onFieldChange}
@@ -73,12 +84,12 @@ function Design({ onFormSave, upgradeTeaser }) {
       <Button
         type="primary"
         onClick={() => onFormSave("general_settings")}
-        className="order-bump-save-change-button"
+        className="sgsb-settings-save-button"
         loading={getButtonLoading}
       >
-        Save Changes
+        Save
       </Button>
-    </>
+    </Fragment>
   );
 }
 

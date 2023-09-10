@@ -66,7 +66,7 @@ const SingleCheckBox = ({
           disabled={needUpgrade}
           checked = {checkedValue}
           value={name}
-          className={`settings-field checkbox-field`}
+          className={`settings-field singlecheckbox-field`}
           onChange={(event) => changeHandler(name, event.target.checked)}
         >
         </Checkbox>

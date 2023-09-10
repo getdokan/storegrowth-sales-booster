@@ -1697,6 +1697,21 @@ End Settings Sidebar
               float: right;
               background: #DFE6F3;
 
+              &.singlecheckbox-field {
+                background: none;
+
+                .ant-checkbox-inner {
+                  width: 30px;
+                  height: 30px;
+
+                  &:after {
+                    inset-inline-start: 30.5%;
+                    width: 7.714286px;
+                    height: 13.142857px;
+                  }
+                }
+              }
+
               &.select-field {
                 border-radius: 5px;
 
