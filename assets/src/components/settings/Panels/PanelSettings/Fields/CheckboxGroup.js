@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox, Col, Space, Typography } from "antd";
+import { Checkbox, Col, Space, Tooltip, Typography } from "antd";
 import FieldWrapper from "./FieldWrapper";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
@@ -88,13 +88,16 @@ const CheckboxGroup = ({
                 onChange={() => handleChange(checkbox.value)}
                 disabled={checkbox.needUpgrade}
               >
-                {checkbox.needUpgrade ? (
-                  <span style={{ display: "flex", gap: "8px" }}>
-                    {checkbox.label} <UpgradeCrown />
-                  </span>
-                ) : (
-                  checkbox.label
-                )}
+                <span style={{ display: "flex", gap: "8px" }}>
+                  {checkbox.needUpgrade
+                    ? checkbox.label(<UpgradeCrown />)
+                    : checkbox.label}
+                  {checkbox.tooltip === "" ? (
+                    ""
+                  ) : (
+                    <SettingsTooltip content={checkbox.tooltip} />
+                  )}
+                </span>
               </Checkbox>
             </label>
           ))}
