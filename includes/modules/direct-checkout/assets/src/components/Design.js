@@ -1,12 +1,11 @@
-import {
-  Form,
-  Button,
-  InputNumber,
-} from "antd";
-import InputColor from "react-input-color";
+import {Button} from "antd";
+import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 
-function Design({ onFormSave }) {
+function Design({ onFormSave, upgradeTeaser }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
 
   const { createDirectCheckoutForm, getButtonLoading } = useSelect(
@@ -27,41 +26,49 @@ function Design({ onFormSave }) {
 
   return (
     <>
-      <Form.Item label="Button Color" labelAlign="left">
-        <InputColor
-          initialValue={createDirectCheckoutForm.button_color}
-          onChange={(e) => onFieldChange("button_color", e.hex)}
-          placement="right"
+      <SettingsSection>
+        <ColourPicker
+          name={"button_color"}
+          fieldValue={createDirectCheckoutForm.button_color}
+          changeHandler={onFieldChange}
+          title={__("Button Color", "storegrowth-sales-booster")}
         />
-      </Form.Item>
 
-      <Form.Item label="Text Color" labelAlign="left">
-        <InputColor
-          initialValue={createDirectCheckoutForm.text_color}
-          onChange={(e) => onFieldChange("text_color", e.hex)}
-          placement="right"
+        <ColourPicker
+          name={"text_color"}
+          fieldValue={createDirectCheckoutForm.text_color}
+          changeHandler={onFieldChange}
+          title={__("Text Color", "storegrowth-sales-booster")}
         />
-      </Form.Item>
 
-      <Form.Item label="Font Size" labelAlign="left">
-        <InputNumber
+        <Number
           min={1}
-          defaultValue={createDirectCheckoutForm.font_size}
-          onChange={(e) => onFieldChange("font_size", e)}
-          addonAfter={"px"}
-          placement="right"
+          max={100}
+          name={"font_size"}
+          fieldValue={createDirectCheckoutForm.font_size}
+          changeHandler={onFieldChange}
+          title={__("Font Size", "storegrowth-sales-booster")}
+          placeHolderText={__("Font Size", "storegrowth-sales-booster")}
+          tooltip={__(
+            "To set the size of the font",
+            "storegrowth-sales-booster"
+          )}
         />
-      </Form.Item>
-
-      <Form.Item label="Border Radius" labelAlign="left">
-        <InputNumber
+        
+        <Number
           min={1}
-          defaultValue={createDirectCheckoutForm.button_border_radius}
-          onChange={(e) => onFieldChange("button_border_radius", e)}
-          addonAfter={"px"}
-          placement="right"
+          max={100}
+          name={"button_border_radius"}
+          fieldValue={createDirectCheckoutForm.button_border_radius}
+          changeHandler={onFieldChange}
+          title={__("Border Radius", "storegrowth-sales-booster")}
+          placeHolderText={__("Border Radius", "storegrowth-sales-booster")}
+          tooltip={__(
+            "To set the border radius of the button",
+            "storegrowth-sales-booster"
+          )}
         />
-      </Form.Item>
+      </SettingsSection>
 
       <Button
         type="primary"

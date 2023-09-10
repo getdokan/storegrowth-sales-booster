@@ -77,7 +77,7 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
     {
       key: "design",
       title: __("Design", "storegrowth-sales-booster"),
-      panel: <Design onFormSave={onFormSave} />,
+      panel: <Design onFormSave={onFormSave} upgradeTeaser={!isProEnabled} />,
     },
   ];
 

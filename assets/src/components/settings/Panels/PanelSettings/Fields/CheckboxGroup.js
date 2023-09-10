@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox, Col, Space, Tooltip, Typography } from "antd";
+import { Checkbox, Col, Space,Typography } from "antd";
 import FieldWrapper from "./FieldWrapper";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
