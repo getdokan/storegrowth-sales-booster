@@ -26,7 +26,7 @@ $add_to_cart_text         = $product->add_to_cart_text();
 $is_in_stock              = $product->is_in_stock();
 $permalink                = get_permalink( $product_id );
 $settings                 = get_option( 'sgsb_direct_checkout_settings' );
-$class                    = 'simple' === $product_type ? 'button product_type_simple' : $args['class'];
+$class                    = 'simple' === $product_type ? 'button product_type_simple sgsb_buy_now_button' : $args['class'];
 $buy_now_button_label     = $is_in_stock ? sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' ) : 'Read More';
 $product_checkout_url     = esc_url( $is_in_stock ? ( wc_get_checkout_url() . $product->add_to_cart_url() ) : $permalink );
 $product_quantity         = esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 );

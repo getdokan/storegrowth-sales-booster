@@ -1,6 +1,6 @@
-/*!**************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/antd/dist/reset.css ***!
-  \**************************************************************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!../node_modules/antd/dist/reset.css ***!
+  \*****************************************************************************************************************************************************************************************/
 /* stylelint-disable */
 html,
 body {
@@ -252,9 +252,9 @@ mark {
   background-color: #feffe6;
 }
 
-/*!*******************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/admin.css ***!
-  \*******************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/admin.css ***!
+  \*********************************************************************************************************************************************************************/
 /*
 	Custom CSS
 */
@@ -367,9 +367,9 @@ li.ant-menu-item a:focus {
 .sgsb-module-card {
     margin-bottom: 10px;
 }
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************/
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/admin.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 /* variable color */
 .sgsb-header {
   padding: 0 20px !important;
@@ -1465,7 +1465,9 @@ End Settings Sidebar
   align-items: center;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textarea-heading,
-#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textarea-heading {
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textinput-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textarea-heading,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .textinput-heading {
   margin-top: 5px;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-heading,
@@ -1477,6 +1479,21 @@ End Settings Sidebar
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field {
   float: right;
   background: #DFE6F3;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field {
+  background: none;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field .ant-checkbox-inner,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field .ant-checkbox-inner {
+  width: 30px;
+  height: 30px;
+}
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field .ant-checkbox-inner:after,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.singlecheckbox-field .ant-checkbox-inner:after {
+  inset-inline-start: 30.5%;
+  width: 7.714286px;
+  height: 13.142857px;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field,
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.select-field {
@@ -1511,16 +1528,18 @@ End Settings Sidebar
 #sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.number-field input {
   color: #000;
 }
-#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field,
-#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field {
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field, #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textinput-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textinput-field {
   color: #073B4C;
   padding: 10px 16px;
   border-radius: 5px;
   background: #fbfcff;
   border: 1px solid #DDE6F9;
 }
-#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap,
-#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap {
+#sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap, #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textinput-field.field-gap,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textarea-field.field-gap,
+#sbooster-settings-page .panel-row .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.textinput-field.field-gap {
   margin-bottom: 15px;
 }
 #sbooster-settings-page .panel-container .panel-column .settings-panel .sgsb-settings-card .ant-card-body .settings-field.single-select-field,

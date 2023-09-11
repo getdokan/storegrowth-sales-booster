@@ -41,9 +41,7 @@ function DirectCheckout({ outlet: Outlet }) {
   }, []);
   return (
     <Form {...layout}>
-      <Card className="tab-pan-wrapper">
         <Outlet />
-      </Card>
     </Form>
   );
 }

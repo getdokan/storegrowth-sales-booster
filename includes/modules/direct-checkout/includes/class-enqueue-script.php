@@ -79,19 +79,15 @@ class Enqueue_Script {
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', '5' );
 
 		$custom_css = "
-		.button.product_type_simple {
+		.button.product_type_simple.sgsb_buy_now_button, 
+		.button.product_type_simple.sgsb_buy_now_button_product_page {
 			background-color: {$button_color} !important;
 			border-radius: {$button_border_radius}px;
 			font-size: {$font_size}px !important;
 			color: {$text_color} !important;
 			margin-bottom: 10px !important;
 		}
-		.single_add_to_cart_button.button.alt {
-			background-color: {$button_color} !important;
-			border-radius: {$button_border_radius}px;
-			font-size: {$font_size}px !important;
-			color: {$text_color} !important;
-		}
+	
 			";
 
 		wp_add_inline_style( 'sgsb-button-style', $custom_css );

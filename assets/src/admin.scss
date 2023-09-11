@@ -1682,9 +1682,11 @@ End Settings Sidebar
             padding: 18px;
             align-items: center;
 
-            .textarea-heading {
+            .textarea-heading,
+            .textinput-heading {
               margin-top: 5px;
             }
+
 
             .settings-heading {
               margin: 0;
@@ -1694,6 +1696,21 @@ End Settings Sidebar
             .settings-field {
               float: right;
               background: #DFE6F3;
+
+              &.singlecheckbox-field {
+                background: none;
+
+                .ant-checkbox-inner {
+                  width: 30px;
+                  height: 30px;
+
+                  &:after {
+                    inset-inline-start: 30.5%;
+                    width: 7.714286px;
+                    height: 13.142857px;
+                  }
+                }
+              }
 
               &.select-field {
                 border-radius: 5px;
@@ -1728,7 +1745,8 @@ End Settings Sidebar
                 }
               }
 
-              &.textarea-field {
+              &.textarea-field,
+              &.textinput-field {
                 color: #073B4C;
                 padding: 10px 16px;
                 border-radius: 5px;
@@ -1766,6 +1784,7 @@ End Settings Sidebar
                 .ant-switch-inner-unchecked {
                   color: #73829D;
                 }
+
                 .ant-switch-handle {
                   &:before {
                     background: #ABB8D0;
