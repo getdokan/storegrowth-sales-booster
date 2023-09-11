@@ -32918,7 +32918,7 @@ function General(_ref) {
     checkedValue: createDirectCheckoutForm.product_page_checkout_enable,
     className: `settings-field checkbox-field`,
     changeHandler: onFieldChange,
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Display on Shop Page", "storegrowth-sales-booster"),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Display on Product Page", "storegrowth-sales-booster"),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("The direct checkout button will show on the single product page", "storegrowth-sales-booster")
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",

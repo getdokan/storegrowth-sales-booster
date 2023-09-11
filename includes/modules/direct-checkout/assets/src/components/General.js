@@ -119,7 +119,7 @@ function General({ onFormSave, upgradeTeaser }) {
           checkedValue={createDirectCheckoutForm.product_page_checkout_enable}
           className={`settings-field checkbox-field`}
           changeHandler={onFieldChange}
-          title={__("Display on Shop Page", "storegrowth-sales-booster")}
+          title={__("Display on Product Page", "storegrowth-sales-booster")}
           tooltip={__(
             "The direct checkout button will show on the single product page",
             "storegrowth-sales-booster"
