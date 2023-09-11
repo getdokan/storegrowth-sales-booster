@@ -26,8 +26,20 @@ const { Title } = Typography;
  *   name="exampleSetting"
  *   title="Example Setting"
  *   options={[
- *     { label: "Option 1", value: "option1", needUpgrade: false },
- *     { label: "Option 2", value: "option2", needUpgrade: true },
+ *     {
+      label: `"Add to cart" as "Buy Now"`,
+      value: "cart-to-buy-now",
+      needUpgrade: upgradeTeaser,
+      tooltip: __(
+        "Use the add to cart button as the buy now button",
+        "storegrowth-sales-booster"
+      ),
+    },
+    {
+      label: `"Buy Now" with "Add to cart"`,
+      value: "cart-with-buy-now",
+      tooltip: __("", "storegrowth-sales-booster"),
+    },
  *     // Add more options as needed
  *   ]}
  *   selectedOptions={selectedOptions}
@@ -55,7 +67,7 @@ const CheckboxGroup = ({
   options,
   selectedOptions,
   handleCheckboxChange,
-  isSingleMode,
+  isSingleMode = false,
   colSpan = 24,
 }) => {
   const handleChange = (option) => {
@@ -69,6 +81,7 @@ const CheckboxGroup = ({
     }
   };
 
+  const noop = () => {};
   return (
     <FieldWrapper colSpan={colSpan}>
       <Col span={9}>
@@ -82,21 +95,20 @@ const CheckboxGroup = ({
       <Col span={15}>
         <Space direction="vertical">
           {options.map((checkbox) => (
-            <label key={checkbox.value}>
+            <label key={checkbox.value} style={{ display: "flex", gap: "4px" }}>
               <Checkbox
                 checked={selectedOptions.includes(checkbox.value)}
-                onChange={() => handleChange(checkbox.value)}
-                disabled={checkbox.needUpgrade}
+                onChange={
+                  checkbox.needUpgrade !== undefined && checkbox.needUpgrade
+                    ? noop
+                    : () => handleChange(checkbox.value)
+                }
+                disabled={
+                  checkbox.needUpgrade !== undefined && checkbox.needUpgrade
+                }
               >
                 <span style={{ display: "flex", gap: "8px" }}>
-                  {checkbox.needUpgrade ? (
-                    <>
-                      {checkbox.label}
-                      <UpgradeCrown />
-                    </>
-                  ) : (
-                    checkbox.label
-                  )}
+                  {checkbox.label}
                   {checkbox.tooltip === "" ? (
                     ""
                   ) : (
@@ -104,6 +116,7 @@ const CheckboxGroup = ({
                   )}
                 </span>
               </Checkbox>
+              {checkbox.needUpgrade ? <UpgradeCrown /> : ""}
             </label>
           ))}
         </Space>
