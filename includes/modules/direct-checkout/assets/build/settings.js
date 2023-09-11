@@ -31872,8 +31872,20 @@ const {
  *   name="exampleSetting"
  *   title="Example Setting"
  *   options={[
- *     { label: "Option 1", value: "option1", needUpgrade: false },
- *     { label: "Option 2", value: "option2", needUpgrade: true },
+ *     {
+      label: `"Add to cart" as "Buy Now"`,
+      value: "cart-to-buy-now",
+      needUpgrade: upgradeTeaser,
+      tooltip: __(
+        "Use the add to cart button as the buy now button",
+        "storegrowth-sales-booster"
+      ),
+    },
+    {
+      label: `"Buy Now" with "Add to cart"`,
+      value: "cart-with-buy-now",
+      tooltip: __("", "storegrowth-sales-booster"),
+    },
  *     // Add more options as needed
  *   ]}
  *   selectedOptions={selectedOptions}
@@ -31902,7 +31914,7 @@ const CheckboxGroup = _ref => {
     options,
     selectedOptions,
     handleCheckboxChange,
-    isSingleMode,
+    isSingleMode = false,
     colSpan = 24
   } = _ref;
   const handleChange = option => {
@@ -31913,6 +31925,7 @@ const CheckboxGroup = _ref => {
       handleCheckboxChange(name, updatedOptions);
     }
   };
+  const noop = () => {};
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_2__["default"], {
     colSpan: colSpan
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -31927,19 +31940,23 @@ const CheckboxGroup = _ref => {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
     direction: "vertical"
   }, options.map(checkbox => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
-    key: checkbox.value
+    key: checkbox.value,
+    style: {
+      display: "flex",
+      gap: "4px"
+    }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     checked: selectedOptions.includes(checkbox.value),
-    onChange: () => handleChange(checkbox.value),
-    disabled: checkbox.needUpgrade
+    onChange: checkbox.needUpgrade !== undefined && checkbox.needUpgrade ? noop : () => handleChange(checkbox.value),
+    disabled: checkbox.needUpgrade !== undefined && checkbox.needUpgrade
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     style: {
       display: "flex",
       gap: "8px"
     }
-  }, checkbox.needUpgrade ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, checkbox.label, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null)) : checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
     content: checkbox.tooltip
-  }))))))));
+  }))), checkbox.needUpgrade ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null) : "")))));
 };
 /* harmony default export */ __webpack_exports__["default"] = (CheckboxGroup);
 
@@ -32852,6 +32869,7 @@ function General(_ref) {
       [key]: value
     });
   };
+  const noop = () => {};
   const checkboxesOption = [{
     label: `"Add to cart" as "Buy Now"`,
     value: "cart-to-buy-now",
@@ -32860,7 +32878,6 @@ function General(_ref) {
   }, {
     label: `"Buy Now" with "Add to cart"`,
     value: "cart-with-buy-now",
-    needUpgrade: false,
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("", "storegrowth-sales-booster")
   }, {
     label: `"Buy Now" for specific product"`,
@@ -32870,7 +32887,6 @@ function General(_ref) {
   }, {
     label: `Default Add to cart`,
     value: "default-add-to-cart",
-    needUpgrade: false,
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("", "storegrowth-sales-booster")
   }];
 
@@ -32888,7 +32904,7 @@ function General(_ref) {
     placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Buy Now Label", "storegrowth-sales-booster"),
     fieldValue: createDirectCheckoutForm.buy_now_button_label,
     className: `settings-field input-field`,
-    changeHandler: onFieldChange,
+    changeHandler: upgradeTeaser ? noop : onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Buy Now Button Label", "storegrowth-sales-booster"),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("This will be the set the Label of the Buy Now Button", "storegrowth-sales-booster")
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_CheckboxGroup__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -32910,7 +32926,7 @@ function General(_ref) {
     name: "shop_page_checkout_enable",
     checkedValue: createDirectCheckoutForm.shop_page_checkout_enable,
     className: `settings-field checkbox-field`,
-    changeHandler: onFieldChange,
+    changeHandler: upgradeTeaser ? noop : onFieldChange,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Display on Shop Page", "storegrowth-sales-booster"),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("The direct checkout button will show on the shop page", "storegrowth-sales-booster")
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_SingleCheckBox__WEBPACK_IMPORTED_MODULE_5__["default"], {

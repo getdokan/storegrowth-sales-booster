@@ -26,6 +26,7 @@ function General({ onFormSave, upgradeTeaser }) {
     });
   };
 
+  const noop = () => {};
   const checkboxesOption = [
     {
       label: `"Add to cart" as "Buy Now"`,
@@ -39,7 +40,6 @@ function General({ onFormSave, upgradeTeaser }) {
     {
       label: `"Buy Now" with "Add to cart"`,
       value: "cart-with-buy-now",
-      needUpgrade: false,
       tooltip: __("", "storegrowth-sales-booster"),
     },
     {
@@ -54,7 +54,6 @@ function General({ onFormSave, upgradeTeaser }) {
     {
       label: `Default Add to cart`,
       value: "default-add-to-cart",
-      needUpgrade: false,
       tooltip: __("", "storegrowth-sales-booster"),
     },
   ];
@@ -74,7 +73,7 @@ function General({ onFormSave, upgradeTeaser }) {
           placeHolderText={__("Buy Now Label", "storegrowth-sales-booster")}
           fieldValue={createDirectCheckoutForm.buy_now_button_label}
           className={`settings-field input-field`}
-          changeHandler={onFieldChange}
+          changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Buy Now Button Label", "storegrowth-sales-booster")}
           tooltip={__(
             "This will be the set the Label of the Buy Now Button",
@@ -107,7 +106,7 @@ function General({ onFormSave, upgradeTeaser }) {
           name={"shop_page_checkout_enable"}
           checkedValue={createDirectCheckoutForm.shop_page_checkout_enable}
           className={`settings-field checkbox-field`}
-          changeHandler={onFieldChange}
+          changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Display on Shop Page", "storegrowth-sales-booster")}
           tooltip={__(
             "The direct checkout button will show on the shop page",
