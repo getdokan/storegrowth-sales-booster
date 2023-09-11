@@ -31937,7 +31937,7 @@ const CheckboxGroup = _ref => {
       display: "flex",
       gap: "8px"
     }
-  }, checkbox.needUpgrade ? checkbox.label((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null)) : checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, checkbox.needUpgrade ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, checkbox.label, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null)) : checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
     content: checkbox.tooltip
   }))))))));
 };
