@@ -1,3 +1,4 @@
+import { __ } from '@wordpress/i18n';
 import { Form, notification, Collapse, Button, Modal } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
@@ -281,14 +282,14 @@ function CreateBump({navigate, useParams}) {
                 </h3>
             )
         }
-        <Button 
-          type      = "primary" 
-          htmlType  = "submit" 
-          className = 'order-bump-save-change-button'
-          onClick   = {()=>onFormSave()}
-          loading   = {buttonLoading}    
+        <Button
+          htmlType  = "submit"
+          type      = "primary"
+          loading   = { buttonLoading }
+          onClick   = { () => onFormSave() }
+          className = 'sgsb-settings-save-button'
         >
-            Save Changes
+          { __( 'Save Changes', 'storegrowth-sales-booster' ) }
         </Button>
 
         {/* <Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>

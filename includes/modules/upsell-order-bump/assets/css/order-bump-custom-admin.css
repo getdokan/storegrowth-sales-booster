@@ -45,3 +45,44 @@
 }
 
 
+/* Start Order Bump List Table Styles. */
+.create-upsell-order-bump-button {
+    border: 0;
+    width: 126px;
+    height: auto;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 24px;
+    line-height: 20px;
+    background-color: #CCE3FF;
+    border-radius: 5px !important;
+}
+
+.create-upsell-order-bump-button,
+.create-upsell-order-bump-button:hover {
+    color: #073B4C !important;
+}
+
+.upsell-order-list-table .ant-table-container {
+    /*border-radius: 5px;*/
+}
+
+.upsell-order-list-table .ant-table-thead .ant-table-cell {
+    color: #073B4C;
+    font-size: 16px;
+    background: #FFF;
+    font-weight: 500;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row {
+    background: #f7f9ff !important;
+}
+
+.upsell-order-list-table .ant-table-container,
+.upsell-order-list-table .ant-table-content .ant-table-cell {
+    border-color: #DDE6F9 !important;
+}
+
+/* End Order Bump List Table Styles. */
+
+

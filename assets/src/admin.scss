@@ -834,7 +834,10 @@ End Settings Sidebar
 // upsell order bump css start
 .sgsb-order-bumps-limit-warning-message {
   color: #1890ff;
+  display: block;
+  font-size: 18px;
   font-weight: bold;
+  margin: 0 0 25px 5px;
 }
 
 // upsell order bump css end
@@ -1640,11 +1643,14 @@ End Settings Sidebar
   .panel-header {
     .header-content {
       margin: 0;
+      display: flex;
       color: #073B4C;
       font-size: 24px;
       font-weight: 600;
       line-height: 32px;
+      align-items: center;
       padding: 24px 0 24px 30px;
+      justify-content: space-between;
     }
 
     .header-divider {
@@ -1912,6 +1918,10 @@ End Settings Sidebar
       margin: 0;
       height: auto;
       margin-left: -1px;
+    }
+
+    &.space-top {
+      margin-top: 36px;
     }
   }
 }

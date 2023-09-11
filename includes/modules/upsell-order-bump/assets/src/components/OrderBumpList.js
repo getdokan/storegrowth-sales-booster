@@ -1,7 +1,8 @@
+import { __ } from '@wordpress/i18n';
 import { Table, Button, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import {  convertBumpItemHtmlEntitiesToTexts } from '../helper';
+import { convertBumpItemHtmlEntitiesToTexts } from '../helper';
 
 const deleteBump = stateUpdateCallback => id  => {
     stateUpdateCallback( true );
@@ -163,34 +164,29 @@ function OrderBumpList( { navigate } ) {
   
   let data;
   
-  if (sgsbAdmin.isPro) {
-    data = bumpListData.map(mapBumpData);
-    
+  if ( sgsbAdmin.isPro ) {
+    data = bumpListData.map( mapBumpData );
   } else {
-    data = bumpListData.slice(-2).map(mapBumpData);
+    data = bumpListData.slice( -2 ).map( mapBumpData );
   }
-  
-  
 
   const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
+
+  console.log( data );
+
   return (
-    <>
-      {isDisableBumpCreation && <span className='sgsb-order-bumps-limit-warning-message'>Upgrade to premeuim to create more than two order bumps.</span>}
-      <Button
-        type="primary"
-        shape="round"
-        onClick={ () => navigate( "/upsell-order-bump/create-bump" ) }
-        style={ { float: 'right', marginBottom: '10px' } }
-        disabled={isDisableBumpCreation}
-      >
-        + CREATE NEW
-      </Button>
+    <div className={ `upsell-order-list-table` }>
+      { isDisableBumpCreation && (
+        <span className='sgsb-order-bumps-limit-warning-message'>
+          { __( 'Upgrade to premium to create more than two order bumps.', 'storegrowth-sales-booster' ) }
+        </span>
+      ) }
       <Table
         columns={ columns }
         dataSource={ data }
         bordered
       />
-    </>
+    </div>
   )
 
 }
