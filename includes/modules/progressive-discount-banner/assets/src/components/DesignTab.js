@@ -1,77 +1,67 @@
-import {
-	Form,
-	Select,
-	Switch,
-	Typography,
-	Input,
-	Button,
-	InputNumber,
-	notification
-} from 'antd';
-import InputColor from 'react-input-color';
+import { Fragment } from "react";
+import { __ } from "@wordpress/i18n";
+import { Button } from "antd";
+import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 
 function DesignTab(props) {
-	const { formData, onFieldChange, onFormSave, buttonLoading } = props;
+  const { formData, onFieldChange, onFormSave, buttonLoading } = props;
+  const barPositions = [
+    {
+      value: "top",
+      label: __("Top", "storegrowth-sales-booster"),
+    },
+    {
+      value: "bottom",
+      label: __("Bottom", "storegrowth-sales-booster"),
+    },
+  ];
 
-	return (
-		<Form
-			labelCol={{
-				span: 7,
-			}}
-			wrapperCol={{
-				span: 18,
-			}}
-			autoComplete="off"
-		>
-			<Form.Item label="Bar Position" labelAlign="left">
-				<Select
-					value={formData.bar_position}
-					style={{ width: 200 }}
-					onChange={(v) => onFieldChange('bar_position', v)}
-				>
-					<Select.Option value="top">Top</Select.Option>
-					<Select.Option value="bottom">Bottom</Select.Option>
-				</Select>
-			</Form.Item>
-
-      <Form.Item
-        label="Background Color"
-        labelAlign="left"
-      >
-        <InputColor
-          initialValue={formData.background_color}
-          onChange={(e) => onFieldChange('background_color', e.hex)}
-          placement="right"
+  return (
+    <Fragment>
+      <SettingsSection>
+        <SelectBox
+          name={`bar_position`}
+          options={[...barPositions]}
+          fieldValue={formData.bar_position}
+          changeHandler={onFieldChange}
+          title={__("Bar Position", "storegrowth-sales-booster")}
         />
-      </Form.Item>
 
-      <Form.Item
-        label="Text Color"
-        labelAlign="left"
-      >
-        <InputColor
-          initialValue={formData.text_color}
-          onChange={(e) => onFieldChange('text_color', e.hex)}
-          placement="right"
+        <ColourPicker
+          name={"background_color"}
+          colSpan={12}
+          fieldValue={formData.background_color}
+          changeHandler={onFieldChange}
+          title={__("Background Color", "storegrowth-sales-booster")}
         />
-      </Form.Item>
-
-      <Form.Item
-        label="Icon Color"
-        labelAlign="left"
-      >
-        <InputColor
-          initialValue={formData.icon_color}
-          onChange={(e) => onFieldChange('icon_color', e.hex)}
-          placement="right"
+        <ColourPicker
+          name={"text_color"}
+          colSpan={12}
+          fieldValue={formData.text_color}
+          changeHandler={onFieldChange}
+          title={__("Text Color", "storegrowth-sales-booster")}
         />
-      </Form.Item>
+        <ColourPicker
+          name={"icon_color"}
+          colSpan={12}
+          fieldValue={formData.icon_color}
+          changeHandler={onFieldChange}
+          title={__("Icon Color", "storegrowth-sales-booster")}
+        />
+      </SettingsSection>
 
-			<Button type="primary" onClick={onFormSave} loading={buttonLoading}>
-				Save Changes
-			</Button>
-		</Form>
-	);
+      <Button
+        type="primary"
+        onClick={onFormSave}
+        loading={buttonLoading}
+        className="sgsb-settings-save-button"
+      >
+        Save
+      </Button>
+    </Fragment>
+  );
 }
 
 export default DesignTab;

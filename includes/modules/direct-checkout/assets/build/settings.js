@@ -32180,7 +32180,7 @@ const SelectBox = _ref => {
     // Make settings select component with card preview.
     (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_3__["default"], {
       colSpan: colSpan,
-      align: 'center'
+      align: "center"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
       span: 15
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -32196,7 +32196,7 @@ const SelectBox = _ref => {
       options: options,
       value: fieldValue,
       style: {
-        width: colSpan === 24 ? 170 : 70
+        width: colSpan === 24 ? 170 : "fit-content"
       },
       disabled: needUpgrade,
       onChange: v => changeHandler(name, v),

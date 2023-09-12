@@ -2,22 +2,13 @@ import { Form, Select, Input, InputNumber } from "antd";
 import { RemovableIconPicker } from "./RemovableIconPicker";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
-
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 
 function DiscountBanner(props) {
   const { formData, onFieldChange, onIconChange } = props;
 
-  const FreeShippingExtra = (
-    <div>
-      You need to set up free shipping on{" "}
-      <a href="admin.php?page=wc-settings&tab=shipping">
-        WooCommerce Shipping Settings
-      </a>{" "}
-      page.
-    </div>
-  );
 
   const discountTypes = [
     {
@@ -29,139 +20,137 @@ function DiscountBanner(props) {
       label: __("Discount Amount", "storegrowth-sales-booster"),
     },
   ];
-
+  const discountModes = [
+    {
+      value: "fixed-amount",
+      label: __("Fixed Amount", "storegrowth-sales-booster"),
+    },
+    {
+      value: "percentage",
+      label: __("Percentage", "storegrowth-sales-booster"),
+    },
+  ];
+  const { discount_amount_mode } = formData;
+  const discount_mode_text =
+    discount_amount_mode === "fixed-amount" ? "Amount" : "Percentage";
+  const discount_mode_symbol =
+    discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
   return (
     <Fragment>
-        <SelectBox
-          name={`discount_type`}
-          options={[...discountTypes]}
-          // needUpgrade={upgradeTeaser}
-          fieldValue={formData.discount_type}
-          changeHandler={onFieldChange}
-          title={__("Discount Type", "storegrowth-sales-booster")}
-        />
+      <SelectBox
+        name={`discount_type`}
+        options={[...discountTypes]}
+        fieldValue={formData.discount_type}
+        changeHandler={onFieldChange}
+        title={__("Discount Type", "storegrowth-sales-booster")}
+        tooltip={__(
+          `Choose 'Free Shipping' for shipping discounts or 'Discount Amount' for product price reductions.`,
+          "storegrowth-sales-booster"
+        )}
+      />
+      {formData.discount_type === "discount-amount" && (
+        <Fragment>
+          <SelectBox
+            colSpan={12}
+            name={`discount_amount_mode`}
+            options={[...discountModes]}
+            fieldValue={formData.discount_amount_mode}
+            changeHandler={onFieldChange}
+            title={__("Discount Mode", "storegrowth-sales-booster")}
+          />
+          <Number
+            colSpan={12}
+            min={1}
+            max={100}
+            style={{
+              width: "100px",
+            }}
+            addonBefore={`${discount_mode_symbol}`}
+            name={`discount_amount_value`}
+            changeHandler={onFieldChange}
+            fieldValue={formData.discount_amount_value}
+            title={__(
+              `Discount ${discount_mode_text}`,
+              "storegrowth-sales-booster"
+            )}
+            placeHolderText={__(
+              "Require minimum amount in customer cart to avail this discount.",
+              "storegrowth-sales-booster"
+            )}
+          />
+        </Fragment>
+      )}
 
-        <Form.Item
-          label="Discount Type"
-          labelAlign="left"
-          extra={
-            formData.discount_type === "free-shipping"
-              ? FreeShippingExtra
-              : null
+      <Number
+        min={1}
+        max={100}
+        addonBefore={`${sgsbAdmin.currencySymbol}`}
+        name={`cart_minimum_amount`}
+        changeHandler={onFieldChange}
+        fieldValue={formData.cart_minimum_amount}
+        title={__("Cart Minimum Amount", "storegrowth-sales-booster")}
+        placeHolderText={__(
+          "Require minimum amount in customer cart to avail this discount.",
+          "storegrowth-sales-booster"
+        )}
+        tooltip={__(
+          "Require minimum amount in customer cart to avail this discount.",
+          "storegrowth-sales-booster"
+        )}
+      />
+
+      <TextAreaBox
+        areaRows={3}
+        colSpan={24}
+        name={"progressive_banner_text"}
+        fieldValue={formData.progressive_banner_text}
+        changeHandler={onFieldChange}
+        title={__("Banner Text", "storegrowth-sales-booster")}
+        placeHolderText={__(
+          `Add more [amount] to get free shipping.`,
+          "storegrowth-sales-booster"
+        )}
+        tooltip={__(
+          "This banner will be shown to customers when the cart amount is less than the required minimum amount. [amount] will be replaced with the real amount.",
+          "storegrowth-sales-booster"
+        )}
+      />
+      <TextAreaBox
+        areaRows={3}
+        colSpan={24}
+        name={"goal_completion_text"}
+        fieldValue={formData.goal_completion_text}
+        changeHandler={onFieldChange}
+        title={__("Goal Completion Text", "storegrowth-sales-booster")}
+        placeHolderText={__(
+          `You have successfully acquired free shipping.`,
+          "storegrowth-sales-booster"
+        )}
+        tooltip={__(
+          "This banner will be shown to customers when the cart amount exceeds the required minimum amount.",
+          "storegrowth-sales-booster"
+        )}
+      />
+
+      <Form.Item label="Progressive Banner Icon" labelAlign="left">
+        <RemovableIconPicker
+          onClear={(v) =>
+            onIconChange(
+              "progressive_banner_icon_name",
+              "progressive_banner_icon_html",
+              ""
+            )
           }
-        >
-          <Select
-            value={formData.discount_type}
-            style={{ width: 200 }}
-            onChange={(v) => onFieldChange("discount_type", v)}
-          >
-            <Select.Option value="free-shipping">Free Shipping</Select.Option>
-            <Select.Option value="discount-amount">
-              Discount Amount
-            </Select.Option>
-          </Select>
-        </Form.Item>
-
-        {formData.discount_type === "discount-amount" && (
-          <Form.Item label="Discount Amount Mode" labelAlign="left">
-            <Select
-              value={formData.discount_amount_mode}
-              style={{ width: 200 }}
-              onChange={(v) => onFieldChange("discount_amount_mode", v)}
-            >
-              <Select.Option value="fixed-amount">Fixed Amount</Select.Option>
-              <Select.Option value="percentage">Percentage</Select.Option>
-            </Select>
-          </Form.Item>
-        )}
-
-        {formData.discount_type === "discount-amount" && (
-          <Form.Item
-            label={
-              formData.discount_amount_mode == "percentage"
-                ? "Discount Percentage"
-                : "Discount Amount"
-            }
-            labelAlign="left"
-          >
-            <InputNumber
-              addonAfter={
-                formData.discount_amount_mode == "percentage" ? "%" : null
-              }
-              addonBefore={
-                formData.discount_amount_mode == "fixed-amount"
-                  ? sgsbAdmin.currencySymbol
-                  : null
-              }
-              min={0}
-              value={formData.discount_amount_value}
-              onChange={(v) => onFieldChange("discount_amount_value", v)}
-              style={{ width: 150 }}
-            />
-          </Form.Item>
-        )}
-
-        <Form.Item
-          label="Cart Minimum Amount"
-          labelAlign="left"
-          extra="Require minimum amount in customer cart to avail this discount."
-        >
-          <InputNumber
-            min={0}
-            addonBefore={sgsbAdmin.currencySymbol}
-            value={formData.cart_minimum_amount}
-            onChange={(v) => onFieldChange("cart_minimum_amount", v)}
-            style={{ width: 150 }}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Progressive Banner Text"
-          labelAlign="left"
-          extra="This banner will be shown to customers when the cart amount is less than the required minimum amount. [amount] will be replaced with the real amount."
-        >
-          <Input
-            value={formData.progressive_banner_text}
-            onChange={(e) =>
-              onFieldChange("progressive_banner_text", e.target.value)
-            }
-            placeholder="Add more [amount] to get free shipping."
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Goal Completion Text"
-          labelAlign="left"
-          extra="This banner will be shown to customers when the cart amount exceeds the required minimum amount."
-        >
-          <Input
-            value={formData.goal_completion_text}
-            onChange={(e) =>
-              onFieldChange("goal_completion_text", e.target.value)
-            }
-            placeholder="You have successfully acquired free shipping."
-          />
-        </Form.Item>
-
-        <Form.Item label="Progressive Banner Icon" labelAlign="left">
-          <RemovableIconPicker
-            onClear={(v) =>
-              onIconChange(
-                "progressive_banner_icon_name",
-                "progressive_banner_icon_html",
-                ""
-              )
-            }
-            onChange={(v) =>
-              onIconChange(
-                "progressive_banner_icon_name",
-                "progressive_banner_icon_html",
-                v
-              )
-            }
-            value={formData.progressive_banner_icon_name}
-          />
-        </Form.Item>
+          onChange={(v) =>
+            onIconChange(
+              "progressive_banner_icon_name",
+              "progressive_banner_icon_html",
+              v
+            )
+          }
+          value={formData.progressive_banner_icon_name}
+        />
+      </Form.Item>
     </Fragment>
   );
 }
