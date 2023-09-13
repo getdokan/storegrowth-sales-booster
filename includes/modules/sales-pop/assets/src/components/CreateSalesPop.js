@@ -102,7 +102,6 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
               'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
           tooltip={ __( 'Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster' ) }
         />
-        <SectionSpacer />
       </SettingsSection>
 
       <Button

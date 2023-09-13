@@ -1,7 +1,7 @@
-const PanelContainer = ( { children, classes } ) => {
+const PanelContainer = ( { children } ) => {
     return (
         // Render settings panel container.
-        <div className={ `panel-container ${ classes }` }>
+        <div className={ `panel-container` }>
             { children }
         </div>
     );

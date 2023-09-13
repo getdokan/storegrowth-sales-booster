@@ -32545,7 +32545,7 @@ const PanelSettings = _ref => {
 
 /***/ "./src/components/Design.js":
 /*!**********************************!*\
-  !*** ./src/components/Design.js ***!
+  !*** ./src/components/DesignSection.js ***!
   \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 

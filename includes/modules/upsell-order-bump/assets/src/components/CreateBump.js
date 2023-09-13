@@ -7,11 +7,20 @@ import OfferSection from './OfferSection';
 import BasicInfo from './BasicInfo';
 import DesignChangeArea from './appearance/template/design-area/DesignChangeArea';
 import ContentBump from './appearance/ContentBump';
-import OverViewArea from './appearance/template/overview-area/OverViewArea';
+import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
+import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
+import PanelSettings from "sales-booster/src/components/settings/Panels/PanelSettings";
+import General from "sales-booster-sales-pop/src/components/General";
+import Template from "sales-booster-sales-pop/src/components/Template";
+import Design from "sales-booster-sales-pop/src/components/Design";
+import CreateSalesPop from "sales-booster-sales-pop/src/components/CreateSalesPop";
+import Message from "sales-booster-sales-pop/src/components/Message";
+import Time from "sales-booster-sales-pop/src/components/Time";
+import DesignSection from "./DesignSection";
 
 const { Panel } = Collapse;
 
-function CreateBump({navigate, useParams}) {
+function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -52,6 +61,10 @@ function CreateBump({navigate, useParams}) {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const changeTab = ( key ) => {
+    navigate( "/upsell-order-bump/create-bump?tab_name=" + key );
   };
 
   if( action_name == 'delete' ) {
@@ -241,16 +254,51 @@ function CreateBump({navigate, useParams}) {
     return <h2>Upgrade to premeuim to create more than two order bumps.</h2>;
   }
 
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const tabName = searchParams.get( 'tab_name' );
+
+  const tabPanels = [
+    {
+      key: 'basic',
+      title: __( 'Basic Information', 'storegrowth-sales-booster' ),
+      // panel: <General onFormSave={ onFormSave } upgradeTeaser={ !sgsbAdmin.isPro } />,
+      panel: <BasicInfo clearErrors={ clearErrors } />,
+    },
+    {
+      key: 'design',
+      title: __( 'Design Section', 'storegrowth-sales-booster' ),
+      // panel: <General onFormSave={ onFormSave } upgradeTeaser={ !sgsbAdmin.isPro } />,
+      panel: <DesignSection />,
+    },
+  ];
+
+  const excludeTabs = [ 'basic' ];
+  const showPreview = ! excludeTabs?.includes( tabName );
+
   return (
     <>
       <Form {...layout} >
+        <PanelRow>
+          <PanelSettings
+            colSpan={ showPreview && tabName ? 12 : 24 }
+            tabPanels={ tabPanels }
+            changeHandler={ changeTab }
+            activeTab={ tabName ? tabName : 'basic' }
+          />
+          { showPreview && tabName && (
+            <PanelPreview colSpan={ 12 }>
+              {/*<Preview storeData={ createPopupForm } />*/}
+            </PanelPreview>
+          ) }
+        </PanelRow>
+
         <Collapse defaultActiveKey="1">
           <Panel header="Basic Informarion form" key="1">
-            <BasicInfo clearErrors={clearErrors} />
+            {/*<BasicInfo clearErrors={clearErrors} />*/}
           </Panel>
 
           <Panel header="Offer Section Form" key="2">
-            <OfferSection clearErrors={clearErrors} />
+            {/*<OfferSection clearErrors={ clearErrors } />*/}
           </Panel>
 
           <Panel header="Design Section" key="4">
@@ -289,7 +337,7 @@ function CreateBump({navigate, useParams}) {
           onClick   = { () => onFormSave() }
           className = 'sgsb-settings-save-button'
         >
-          { __( 'Save Changes', 'storegrowth-sales-booster' ) }
+          { __( 'Save', 'storegrowth-sales-booster' ) }
         </Button>
 
         {/* <Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>

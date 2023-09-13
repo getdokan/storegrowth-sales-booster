@@ -32761,14 +32761,15 @@ const {
 } = antd__WEBPACK_IMPORTED_MODULE_1__["default"];
 const PanelHeader = _ref => {
   let {
-    title
+    title,
+    children
   } = _ref;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `panel-header`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
     level: 3,
     className: `header-content`
-  }, title), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, title, " ", children), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: `header-divider`
   }));
 };
@@ -33004,7 +33005,7 @@ const MultiSelectBox = _ref => {
       className: `card-heading`
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
       level: 3,
-      className: `settings-heading`
+      className: `settings-heading space-top`
     }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
       content: tooltip
     }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_2__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -33014,6 +33015,8 @@ const MultiSelectBox = _ref => {
       mode: "multiple",
       options: options,
       value: fieldValue,
+      filterOption: true,
+      optionFilterProp: "label",
       style: {
         width: '100%'
       },
@@ -33288,7 +33291,7 @@ const TextAreaBox = _ref => {
       className: `card-heading textarea-heading`
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
       level: 3,
-      className: `settings-heading`
+      className: `settings-heading space-top`
     }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_1__["default"], {
       content: tooltip
     }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_3__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -33612,6 +33615,7 @@ const BasicDesign = props => {
   }), Boolean(props.createPopupForm.image_style) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_8__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_Number__WEBPACK_IMPORTED_MODULE_9__["default"], {
     min: 1,
     max: 20,
+    colSpan: 12,
     needUpgrade: upgradeTeaser,
     name: `spacing_around_image`,
     fieldValue: props.createPopupForm.spacing_around_image,
@@ -33830,7 +33834,7 @@ function CreateSalesPop(_ref2) {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Virtual Location', 'storegrowth-sales-booster'),
     placeHolderText: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('New York City, New York, USA\n' + 'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster'),
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster')
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_SectionSpacer__WEBPACK_IMPORTED_MODULE_7__["default"], null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_8__["default"], {
     type: "primary",
     onClick: () => !isFirstNameExceededLimit && onFormSave('product'),
     className: "sgsb-settings-save-button",
@@ -33844,7 +33848,7 @@ function CreateSalesPop(_ref2) {
 
 /***/ "./src/components/Design.js":
 /*!**********************************!*\
-  !*** ./src/components/Design.js ***!
+  !*** ./src/components/DesignSection.js ***!
   \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -34180,9 +34184,6 @@ function PopupLayout(_ref) {
     useSearchParams
   } = _ref;
   const isProEnabled = sgsbAdmin.isPro;
-  const upgradeTeaser = !isProEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "sgsb-field-upgrade-pro-label"
-  }, "(Upgrade to premium)");
   const {
     setCreateFromData,
     setButtonLoading

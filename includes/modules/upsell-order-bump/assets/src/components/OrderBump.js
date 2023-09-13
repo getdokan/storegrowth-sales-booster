@@ -35,7 +35,7 @@ function OrderBump({ outlet: Outlet, navigate }) {
             <PanelHeader title={ __( 'Order Bumps List', 'storegrowth-sales-booster' ) }>
                 <CreateBumpButton navigate={ navigate } />
             </PanelHeader>
-            <PanelContainer classes={ `space-top` }>
+            <PanelContainer>
                 <Outlet />
             </PanelContainer>
             {/*<PanelContainer>*/}

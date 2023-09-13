@@ -1697,6 +1697,10 @@ End Settings Sidebar
             .settings-heading {
               margin: 0;
               margin-right: 10px;
+
+              &.space-top {
+                margin-top: 5px;
+              }
             }
 
             .settings-field {
@@ -1749,19 +1753,31 @@ End Settings Sidebar
                 input {
                   color: #000;
                 }
+
+                &.combine-field {
+                  padding: 5px;
+                  border-color: #DDE6F9;
+                }
               }
 
               &.textarea-field,
               &.textinput-field {
                 color: #073B4C;
-                padding: 10px 16px;
                 border-radius: 5px;
-                background: #fbfcff;
+                background: #F6F9FF;
                 border: 1px solid #DDE6F9;
 
                 &.field-gap {
                   margin-bottom: 15px;
                 }
+              }
+
+              &.textarea-field {
+                padding: 10px 16px;
+              }
+
+              &.textinput-field {
+                padding: 6px 10px;
               }
 
               &.single-select-field {
@@ -1774,6 +1790,25 @@ End Settings Sidebar
                   border-radius: 5px;
                   background: #F6F9FF;
                   color: #073B4C;
+                }
+
+                &.combine-select,
+                &.search-single-select {
+                  .ant-select-selector {
+                    height: auto;
+                    padding: 5px 10px;
+
+                    .ant-select-selection-search {
+                      display: flex;
+                      align-items: center;
+
+                      input.ant-select-selection-search-input {
+                        &:focus {
+                          box-shadow: none;
+                        }
+                      }
+                    }
+                  }
                 }
               }
 
@@ -1847,19 +1882,31 @@ End Settings Sidebar
           color: #DDE6F9;
         }
 
-        .sgsb-settings-save-button {
-          border: 0;
-          margin: 0;
-          right: 50px;
-          height: auto;
-          bottom: 50px;
-          z-index: 9999;
-          line-height: 1;
-          position: fixed;
-          font-size: 16px;
-          font-weight: 500;
-          padding: 12px 24px;
-          background: #0875FF;
+        .sgsb-collapse-settings {
+          overflow: hidden;
+          border-color: #DDE6F9;
+          border-radius: 5px;
+
+          .ant-collapse-item {
+            border-color: #DDE6F9;
+            border-radius: 0;
+          }
+
+          .ant-collapse-header {
+            border-radius: 0;
+            background: #FFF;
+            padding: 10px 16px;
+
+            .ant-collapse-header-text {
+              color: #073B4C;
+            }
+          }
+
+          .ant-collapse-content {
+            border-radius: 0;
+            background: #f7f9ff;
+            border-color: #DDE6F9;
+          }
         }
       }
 
@@ -1909,6 +1956,21 @@ End Settings Sidebar
         margin-top: 2px;
       }
     }
+
+    .sgsb-settings-save-button {
+      border: 0;
+      margin: 0;
+      right: 50px;
+      height: auto;
+      bottom: 50px;
+      z-index: 9999;
+      line-height: 1;
+      position: fixed;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 12px 24px;
+      background: #0875FF;
+    }
   }
 
   .panel-container {
@@ -1920,7 +1982,7 @@ End Settings Sidebar
       margin-left: -1px;
     }
 
-    &.space-top {
+    .space-top {
       margin-top: 36px;
     }
   }

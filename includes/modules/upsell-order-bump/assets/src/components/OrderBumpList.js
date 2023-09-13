@@ -172,8 +172,6 @@ function OrderBumpList( { navigate } ) {
 
   const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
 
-  console.log( data );
-
   return (
     <div className={ `upsell-order-list-table` }>
       { isDisableBumpCreation && (
@@ -182,9 +180,10 @@ function OrderBumpList( { navigate } ) {
         </span>
       ) }
       <Table
-        columns={ columns }
-        dataSource={ data }
         bordered
+        dataSource={ data }
+        columns={ columns }
+        className={ `space-top` }
       />
     </div>
   )
