@@ -1,21 +1,20 @@
-import {
-  Form,
-  Select,
-  Switch,
-  Typography,
-  Input,
-  Button,
-  InputNumber,
-} from "antd";
+import { Button } from "antd";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
 import DiscountBanner from "./DiscountBanner";
 import DefaultBanner from "./DefaultBanner";
 function SettingsTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading, onIconChange } =
-    props;
+  const {
+    formData,
+    onFieldChange,
+    onFormSave,
+    buttonLoading,
+    onIconChange,
+    upgradeTeaser,
+  } = props;
 
   const FreeShippingExtra = (
     <div>
@@ -28,7 +27,7 @@ function SettingsTab(props) {
   );
 
   return (
-    <Fragment>
+    <>
       <SettingsSection>
         <Switcher
           name={"default_banner"}
@@ -44,15 +43,17 @@ function SettingsTab(props) {
             "storegrowth-sales-booster"
           )}
         />
-
-        {formData.default_banner && (
-          <DefaultBanner
-            formData={formData}
-            onFieldChange={onFieldChange}
-            onIconChange={onIconChange}
-          />
-        )}
-
+      </SettingsSection>
+      {formData.default_banner && (
+        <DefaultBanner
+          formData={formData}
+          onFieldChange={onFieldChange}
+          onIconChange={onIconChange}
+          upgradeTeaser={upgradeTeaser}
+        />
+      )}
+      <SectionSpacer />
+      <SettingsSection>
         <Switcher
           name={"discount_banner"}
           changeHandler={onFieldChange}
@@ -63,33 +64,31 @@ function SettingsTab(props) {
               ? true
               : false
           }
-          tooltip={__(
-            FreeShippingExtra,
-            "storegrowth-sales-booster"
-          )}
+          tooltip={__(FreeShippingExtra, "storegrowth-sales-booster")}
         />
-        {formData.discount_banner && (
-          <DiscountBanner
-            formData={formData}
-            onFieldChange={onFieldChange}
-            onIconChange={onIconChange}
-          />
-        )}
-        <Button
-          type="primary"
-          onClick={onFormSave}
-          loading={buttonLoading}
-          className="sgsb-settings-save-button"
-        >
-          Save
-        </Button>
-
-        <p className="ant-form-item-explain" style={{ margin: "15px 0 0 0" }}>
-          Note: Please clear your cart in order to see the updates when you
-          update these settings.
-        </p>
       </SettingsSection>
-    </Fragment>
+      {formData.discount_banner && (
+        <DiscountBanner
+          formData={formData}
+          onFieldChange={onFieldChange}
+          onIconChange={onIconChange}
+          upgradeTeaser={upgradeTeaser}
+        />
+      )}
+      <Button
+        type="primary"
+        onClick={onFormSave}
+        loading={buttonLoading}
+        className="sgsb-settings-save-button"
+      >
+        Save
+      </Button>
+
+      <p className="ant-form-item-explain" style={{ margin: "15px 0 0 0" }}>
+        Note: Please clear your cart in order to see the updates when you update
+        these settings.
+      </p>
+    </>
   );
 }
 

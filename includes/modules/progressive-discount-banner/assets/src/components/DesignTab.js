@@ -1,34 +1,62 @@
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { Button } from "antd";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
 function DesignTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading } = props;
-  const barPositions = [
+  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser } =
+    props;
+
+  const fontFamily = [
     {
-      value: "top",
-      label: __("Top", "storegrowth-sales-booster"),
+      value: "poppins",
+      label: __("Poppins", "storegrowth-sales-booster"),
     },
     {
-      value: "bottom",
-      label: __("Bottom", "storegrowth-sales-booster"),
+      value: "dm-sans",
+      label: __("DM Sans", "storegrowth-sales-booster"),
     },
   ];
 
   return (
     <Fragment>
       <SettingsSection>
-        <SelectBox
-          name={`bar_position`}
-          options={[...barPositions]}
-          fieldValue={formData.bar_position}
+        <Number
+          min={1}
+          max={100}
+          style={{
+            width: "100px",
+          }}
+          name={`banner_height`}
           changeHandler={onFieldChange}
-          title={__("Bar Position", "storegrowth-sales-booster")}
+          fieldValue={formData.banner_height}
+          needUpgrade={upgradeTeaser}
+          title={__(`Banner Height`, "storegrowth-sales-booster")}
         />
-
+        <SelectBox
+          name={`font_family`}
+          options={[...fontFamily]}
+          fieldValue={formData.font_family}
+          changeHandler={onFieldChange}
+          title={__("Font Family", "storegrowth-sales-booster")}
+          tooltip={__("Select your desired font family", "storegrowth-sales-booster")}
+        />
+        <Number
+          min={1}
+          max={100}
+          style={{
+            width: "100px",
+          }}
+          name={`font_size`}
+          changeHandler={onFieldChange}
+          fieldValue={formData.font_size}
+          needUpgrade={upgradeTeaser}
+          title={__(`Font Size`, "storegrowth-sales-booster")}
+        />
         <ColourPicker
           name={"background_color"}
           colSpan={12}
@@ -49,6 +77,20 @@ function DesignTab(props) {
           fieldValue={formData.icon_color}
           changeHandler={onFieldChange}
           title={__("Icon Color", "storegrowth-sales-booster")}
+        />
+        <ColourPicker
+          name={"button_color"}
+          colSpan={12}
+          fieldValue={formData.button_color}
+          changeHandler={onFieldChange}
+          title={__("Button Color", "storegrowth-sales-booster")}
+        />
+        <ColourPicker
+          name={"button_text_color"}
+          colSpan={12}
+          fieldValue={formData.button_text_color}
+          changeHandler={onFieldChange}
+          title={__("Button Text Color", "storegrowth-sales-booster")}
         />
       </SettingsSection>
 

@@ -31914,8 +31914,13 @@ const CheckboxGroup = _ref => {
     options,
     selectedOptions,
     handleCheckboxChange,
+    displayDirection = "vertical",
     isSingleMode = false,
-    colSpan = 24
+    colSpan = 24,
+    headColSpan = 15,
+    checkboxColSpan = 9,
+    tooltip,
+    needUpgrade = false
   } = _ref;
   const handleChange = option => {
     if (isSingleMode) {
@@ -31929,16 +31934,18 @@ const CheckboxGroup = _ref => {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_FieldWrapper__WEBPACK_IMPORTED_MODULE_2__["default"], {
     colSpan: colSpan
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    span: 9
+    span: headColSpan
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `card-heading checkboxinput-heading`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, {
     level: 3,
     className: `settings-heading`
-  }, title))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    span: 15
+  }, title), tooltip && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    content: tooltip
+  }), needUpgrade && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    span: checkboxColSpan
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    direction: "vertical"
+    direction: displayDirection
   }, options.map(checkbox => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     key: checkbox.value,
     style: {
@@ -31954,7 +31961,7 @@ const CheckboxGroup = _ref => {
       display: "flex",
       gap: "8px"
     }
-  }, checkbox.label, checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, checkbox.label, checkbox.tooltip === undefined || checkbox.tooltip === "" ? "" : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_SettingsTooltip__WEBPACK_IMPORTED_MODULE_3__["default"], {
     content: checkbox.tooltip
   }))), checkbox.needUpgrade ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UpgradeCrown__WEBPACK_IMPORTED_MODULE_4__["default"], null) : "")))));
 };

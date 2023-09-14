@@ -1684,4 +1684,15 @@ End Settings Sidebar
   margin-left: -1px;
 }
 
+.ant-select-selector {
+  width: 100%;
+  height: 40px !important;
+  padding: 5px 11px !important;
+  border-color: #DDE6F9 !important;
+}
+
+.trigger-radio-selected {
+  background-color: #F6F9FF;
+}
+
 /*# sourceMappingURL=modules.css.map*/

@@ -1,14 +1,14 @@
-import { Form, Select, Input, InputNumber } from "antd";
+import { Form} from "antd";
 import { RemovableIconPicker } from "./RemovableIconPicker";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 
 function DiscountBanner(props) {
   const { formData, onFieldChange, onIconChange } = props;
-
 
   const discountTypes = [
     {
@@ -36,7 +36,7 @@ function DiscountBanner(props) {
   const discount_mode_symbol =
     discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
   return (
-    <Fragment>
+    <SettingsSection>
       <SelectBox
         name={`discount_type`}
         options={[...discountTypes]}
@@ -71,10 +71,6 @@ function DiscountBanner(props) {
             fieldValue={formData.discount_amount_value}
             title={__(
               `Discount ${discount_mode_text}`,
-              "storegrowth-sales-booster"
-            )}
-            placeHolderText={__(
-              "Require minimum amount in customer cart to avail this discount.",
               "storegrowth-sales-booster"
             )}
           />
@@ -151,7 +147,7 @@ function DiscountBanner(props) {
           value={formData.progressive_banner_icon_name}
         />
       </Form.Item>
-    </Fragment>
+    </SettingsSection>
   );
 }
 

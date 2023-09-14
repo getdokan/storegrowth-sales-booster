@@ -37,16 +37,38 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     progressive_banner_text: "",
     goal_completion_text: "",
     bar_position: "top",
+    bar_type: "normal",
     background_color: "#008DFF",
     text_color: "#ffffff",
     icon_color: "#ffffff",
+    button_color:"#ffffff",
+    button_text_color:"#000000",
     default_banner_icon_name: "",
     default_banner_icon_html: "",
     progressive_banner_icon_name: "",
     progressive_banner_icon_html: "",
+    button_view: ["button-desktop-enable"],
+    banner_device_view:[],
+    ac_button_text: "Click Here",
+    button_action:"ba-url-redirect",
+    redirect_url:"",
+    new_tab_enable:false,
+    banner_show_option:"banner-show-everywhere",
+    slected_page_option:[],
+    user_type:"both",
+    banner_trigger:"after-few-seconds",
+    banner_delay:7,
+    scroll_banner_delay:7,
+    countdown_start_date:"",
+    countdown_end_date:"",
+    countdown_show_enable:false,
+    banner_height:60,
+    font_family:"poppins",
+    font_size:20,
   });
 
   const isProEnabled = sgsbAdmin.isPro;
+  
   const getSettings = () => {
     setPageLoading(true);
 
@@ -103,7 +125,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     const data = {
       action: "sgsb_pd_banner_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
-      form_data: formData,
+      form_data: JSON.stringify({'shipping_bar_data':formData}),
     };
 
     jQuery
@@ -152,6 +174,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("design")}
           upgradeTeaser={!isProEnabled}
+          buttonLoading={buttonLoading}
         />
       ),
     },
@@ -166,13 +189,13 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={showPreview && tabName ? 15 : 24}
+            colSpan={showPreview && tabName ? 12 : 24}
             tabPanels={tabPanels}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
           />
           {showPreview && tabName && (
-            <PanelPreview colSpan={9}>
+            <PanelPreview colSpan={12}>
               <Preview />
             </PanelPreview>
           )}

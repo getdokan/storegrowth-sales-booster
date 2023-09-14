@@ -35,35 +35,18 @@ class Ajax {
 	public function save_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		if ( ! isset( $_POST['form_data'] ) ) {
-			wp_send_json_error();
-		}
+		$form_data = isset( $_POST['form_data'] ) ? json_decode( wp_unslash( $_POST['form_data'] ), true ) : array();
 
-		if ( ! is_array( $_POST['form_data'] ) ) {
-			wp_send_json_error();
-		}
+		$bar_data = isset( $form_data['shipping_bar_data'] ) ? $form_data['shipping_bar_data'] : array();
 
-		$form_data      = array();
 		$icon_validator = array(
 			'default_banner_icon_html',
 			'progressive_banner_icon_html',
 		);
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		foreach ( $_POST['form_data'] as $form_key => $form_value ) {
-			if ( in_array( $form_key, $icon_validator, true ) ) {
-				$form_data[ $form_key ] = sgsb_sanitize_svg_icon_fields( $form_value );
-			} else {
-				$form_data[ $form_key ] = sgsb_sanitize_form_fields( $form_value );
-			}
-		}
+		update_option( 'sgsb_progressive_discount_banner_settings', $bar_data );
 
-		$get_form_data = sgsb_pd_banner_get_settings();
-		$merged_data   = array_merge( $get_form_data, $form_data );
-
-		update_option( 'sgsb_progressive_discount_banner_settings', $merged_data );
-
-		wp_send_json_success( $merged_data );
+		wp_send_json_success( maybe_unserialize( get_option( 'sgsb_progressive_discount_banner_settings' ) ) );
 	}
 
 	/**
@@ -74,5 +57,4 @@ class Ajax {
 
 		wp_send_json_success( sgsb_pd_banner_get_settings() );
 	}
-
 }

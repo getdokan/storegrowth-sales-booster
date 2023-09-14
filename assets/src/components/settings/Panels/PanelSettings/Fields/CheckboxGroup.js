@@ -67,8 +67,13 @@ const CheckboxGroup = ({
   options,
   selectedOptions,
   handleCheckboxChange,
+  displayDirection = "vertical",
   isSingleMode = false,
   colSpan = 24,
+  headColSpan = 15,
+  checkboxColSpan = 9,
+  tooltip,
+  needUpgrade = false,
 }) => {
   const handleChange = (option) => {
     if (isSingleMode) {
@@ -84,16 +89,20 @@ const CheckboxGroup = ({
   const noop = () => {};
   return (
     <FieldWrapper colSpan={colSpan}>
-      <Col span={9}>
+      <Col span={headColSpan}>
         <div className={`card-heading checkboxinput-heading`}>
           {/* Handle switcher title. */}
           <Title level={3} className={`settings-heading`}>
             {title}
           </Title>
+          {/* Handle switcher tooltip. */}
+          {tooltip && <SettingsTooltip content={tooltip} />}
+          {/* Handle switcher upgrade icon. */}
+          {needUpgrade && <UpgradeCrown />}
         </div>
       </Col>
-      <Col span={15}>
-        <Space direction="vertical">
+      <Col span={checkboxColSpan}>
+        <Space direction={displayDirection}>
           {options.map((checkbox) => (
             <label key={checkbox.value} style={{ display: "flex", gap: "4px" }}>
               <Checkbox
@@ -109,7 +118,7 @@ const CheckboxGroup = ({
               >
                 <span style={{ display: "flex", gap: "8px" }}>
                   {checkbox.label}
-                  {checkbox.tooltip === "" ? (
+                  {checkbox.tooltip === undefined || checkbox.tooltip === "" ? (
                     ""
                   ) : (
                     <SettingsTooltip content={checkbox.tooltip} />
