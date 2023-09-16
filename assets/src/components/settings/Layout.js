@@ -53,7 +53,8 @@ function AppLayout() {
     useParams,
     useSearchParams
   );
-
+    console.log("=========main route====");
+    console.log(routes);
   return (
     <Layout>
       {!routes.length ? <NoModuleActive /> : <ModuleSettings routes={routes} />}

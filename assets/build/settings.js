@@ -16288,6 +16288,8 @@ function NoModuleActive() {
 function AppLayout() {
   let navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
   let routes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.applyFilters)("sgsb_routes", [], react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Outlet, navigate, react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams, react_router_dom__WEBPACK_IMPORTED_MODULE_8__.useSearchParams);
+  console.log("=========main route====");
+  console.log(routes);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(antd__WEBPACK_IMPORTED_MODULE_6__["default"], null, !routes.length ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(NoModuleActive, null) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ModuleSettings, {
     routes: routes
   }));
@@ -16332,6 +16334,8 @@ function Sidebar(_ref) {
   let {
     routes
   } = _ref;
+  console.log("=======Routes======");
+  console.log(routes);
   // let sidebarItems = applyFilters("sidebar_menu_items", [], Link);
   let firstItem = routes[0] || false;
   const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useLocation)();

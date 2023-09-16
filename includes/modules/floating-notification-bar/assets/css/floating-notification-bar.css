@@ -1,0 +1,48 @@
+body.show_floating_notification_bar .sgsb-floating-notification-bar-wrapper{
+    display: block;
+    transition: 0.5s;
+}
+
+body:not(.show_floating_notification_bar){
+    padding-top: 0;
+}
+
+.sgsb-floating-notification-bar-wrapper {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #008DFF;
+    color: #fff;
+    z-index: 999;
+    height: auto;
+    padding: 8px 0px;
+}
+.sgsb-floating-notification-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 97%;
+    margin:auto;
+    height: 100%;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
+    margin-top: 8px;
+    fill: #fff;
+    width: 25px;
+    height: 25px;
+}
+
+.sgsb-floating-notification-bar-text{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.sgsb-floating-notification-bar-remove {
+    cursor: pointer;
+}
+
