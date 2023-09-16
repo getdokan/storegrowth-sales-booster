@@ -83,11 +83,15 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get style options.
-		$settings     = sgsb_floating_notification_bar_get_settings();
-		$bar_position = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
-		$text_color   = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
-		$icon_color   = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$settings          = sgsb_floating_notification_bar_get_settings();
+		$bar_position      = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
+		$bg_color          = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
+		$text_color        = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
+		$icon_color        = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$banner_height     = sgsb_find_option_setting( $settings, 'banner_height', 60 );
+		$font_size         = sgsb_find_option_setting( $settings, 'font_size', 20 );
+		$button_color      = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
+		$button_text_color = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
 
 		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
 			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
@@ -103,23 +107,30 @@ class Enqueue_Script {
 			';
 		} else {
 			$css = '
-				body.admin-bar .sgsb-floating-notification-bar-wrapper {
-					top: 100px;
-				}
-				body {
-					padding-top: 100px;
-				}
-			';
+			body.admin-bar .sgsb-floating-notification-bar-wrapper {
+					top: ' . ( 32 ) . 'px;
+			}
+			body {
+					padding-top: ' . ( $banner_height + 10 ) . 'px;
+			}
+	';
 		}
 
 		$css .= "
 			.sgsb-floating-notification-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
+				height: {$banner_height}px;
 			}
 			.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
 				fill: {$icon_color};
 			}
+			.sgsb-floating-notification-bar-text{
+				font-size: {$font_size}px;
+			}
+			.fn-bar-action-button {
+				background-color: {$button_color};
+    		color: {$button_text_color};
 		";
 
 		wp_add_inline_style( 'sgsb-floating-notification-bar-style', $css );
