@@ -106,8 +106,6 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 		}
 		$default_data = array(
 			'default_banner_text'     => 'Shop more than $100 to get free shipping.',
-			'progressive_banner_text' => 'Add more [amount] to get free shipping.',
-			'goal_completion_text'    => 'You have successfully acquired free shipping.',
 		);
 		delete_option( 'sgsb_floating_notification_bar_settings' );
 		$result = update_option( 'sgsb_floating_notification_bar_settings', $default_data );
@@ -122,17 +120,14 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 	 * @return void
 	 */
 	public function init() {
-		$this->set_initial_banner_data();
 		require_once __DIR__ . '/includes/functions.php';
 		require_once __DIR__ . '/includes/class-ajax.php';
 		require_once __DIR__ . '/includes/class-common-hooks.php';
 		require_once __DIR__ . '/includes/class-enqueue-script.php';
-		require_once __DIR__ . '/includes/class-woocommerce-discount.php';
 
 		Ajax::instance();
 		Common_Hooks::instance();
 		Enqueue_Script::instance();
-		Woocommerce_Discount::instance();
 	}
 }
 

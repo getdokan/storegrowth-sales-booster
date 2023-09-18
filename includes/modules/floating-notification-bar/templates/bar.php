@@ -5,11 +5,7 @@
  * @package SBFW
  */
 
-$banner_type_to_show = sgsb_floating_notification_bar_get_banner_type_to_show();
 
-if ( ! $banner_type_to_show ) {
-	return;
-}
 
 $settings      = sgsb_floating_notification_bar_get_settings();
 $banner_text   = sgsb_floating_notification_bar_get_banner_text( $settings );

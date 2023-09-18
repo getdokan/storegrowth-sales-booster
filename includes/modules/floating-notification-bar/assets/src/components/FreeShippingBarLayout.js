@@ -27,8 +27,8 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const [formData, setFormData] = useState({
-    default_banner: false,
-    default_banner_text: "",
+    default_banner: true,
+    default_banner_text: "Shop More Than $100 to get Free Shipping",
     discount_banner: false,
     discount_type: "free-shipping",
     discount_amount_mode: "fixed-amount",

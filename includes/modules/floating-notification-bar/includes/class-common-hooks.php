@@ -34,7 +34,6 @@ class Common_Hooks {
 		if ( ! isset( $_GET['sgsb-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
-			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
 		}
 		// phpcs:enable
 	}
@@ -58,17 +57,5 @@ class Common_Hooks {
 	 */
 	public function wp_footer() {
 		sgsb_floating_notification_bar_get_bar_content();
-	}
-
-	/**
-	 * Add content to cart fragment.
-	 *
-	 * @param array $fragments WooCommerce fragments.
-	 */
-	public function woocommerce_add_to_cart_fragments( $fragments ) {
-
-		$fragments['div.sgsb-pd-banner-bar-wrapper'] = sgsb_floating_notification_bar_get_bar_content( false );
-
-		return $fragments;
 	}
 }

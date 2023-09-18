@@ -85,6 +85,7 @@ class Enqueue_Script {
 		// Get style options.
 		$settings          = sgsb_floating_notification_bar_get_settings();
 		$bar_position      = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
+		$bar_type          = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
 		$bg_color          = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
 		$text_color        = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$icon_color        = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
@@ -104,12 +105,15 @@ class Enqueue_Script {
 					top: auto;
 					bottom: 0;
 				}
+				body.admin-bar .sgsb-floating-notification-bar-wrapper {
+					top: ' . ( 0 ) . 'px;
+			}
+			body {
+				padding-top: ' . ( 0 ) . 'px;
+		}
 			';
 		} else {
 			$css = '
-			body.admin-bar .sgsb-floating-notification-bar-wrapper {
-					top: ' . ( 32 ) . 'px;
-			}
 			body {
 					padding-top: ' . ( $banner_height + 10 ) . 'px;
 			}
@@ -131,8 +135,19 @@ class Enqueue_Script {
 			.fn-bar-action-button {
 				background-color: {$button_color};
     		color: {$button_text_color};
+			}
 		";
-
+		if ( 'normal' === $bar_type ) {
+			$css .= '
+			.sgsb-floating-notification-bar-wrapper{
+				position: absolute;
+			}';
+		} else {
+			$css .= '
+			.sgsb-floating-notification-bar-wrapper{
+				position: fixed;
+			}';
+		}
 		wp_add_inline_style( 'sgsb-floating-notification-bar-style', $css );
 	}
 }

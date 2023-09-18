@@ -35,7 +35,7 @@ class Ajax {
 	public function save_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = isset( $_POST['form_data'] ) ? json_decode( wp_unslash( $_POST['form_data'] ), true ) : array();
+		$form_data = isset( $_POST['form_data'] ) ? json_decode( wp_unslash( $_POST['form_data'] ), true ) : array(); 
 
 		$bar_data = isset( $form_data['shipping_bar_data'] ) ? $form_data['shipping_bar_data'] : array();
 

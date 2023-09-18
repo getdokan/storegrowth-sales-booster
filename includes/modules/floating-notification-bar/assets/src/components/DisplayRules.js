@@ -65,7 +65,7 @@ const DisplayRules = (props) => {
           options={bannerDeviceOption}
           selectedOptions={formData.banner_device_view}
           handleCheckboxChange={onFieldChange}
-          title={__("Show Button", "storegrowth-sales-booster")}
+          title={__("Show Banner", "storegrowth-sales-booster")}
           needUpgrade={upgradeTeaser}
           tooltip={__("Banner Dispaly in Devices", "storegrowth_sales_booster")}
           headColSpan={16}

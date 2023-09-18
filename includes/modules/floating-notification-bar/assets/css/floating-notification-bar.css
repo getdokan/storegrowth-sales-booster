@@ -62,3 +62,9 @@ body:not(.show_floating_notification_bar){
     background-color: #0056b3; /* Change the background color on hover */
 }
 
+body.admin-bar .sgsb-floating-notification-bar-wrapper {
+    top: 32px;
+}
+body {
+    padding-top: 70px;
+}

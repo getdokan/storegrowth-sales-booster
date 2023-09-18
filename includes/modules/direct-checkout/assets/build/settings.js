@@ -32920,7 +32920,9 @@ function General(_ref) {
     selectedOptions: createDirectCheckoutForm.buy_now_button_setting,
     handleCheckboxChange: onFieldChange,
     isSingleMode: true,
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Button Layout Setting", "storegrowth-sales-booster")
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Button Layout Setting", "storegrowth-sales-booster"),
+    headColSpan: 9,
+    checkboxColSpan: 15
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_src_components_settings_Panels_PanelSettings_Fields_SelectBox__WEBPACK_IMPORTED_MODULE_6__["default"], {
     name: "checkout_redirect",
     fieldValue: createDirectCheckoutForm.checkout_redirect,

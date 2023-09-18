@@ -1,33 +1,28 @@
 import { Checkbox, DatePicker } from "antd";
 import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
-import dayjs from "dayjs"; // Ensure correct import
+import dayjs from "dayjs";
 
 const Countdown = (props) => {
   const { upgradeTeaser, onFieldChange, formData } = props;
 
   // Reusable function for rendering conditional DatePicker
-  const renderConditionalDatePicker = (title, fieldKey, disabledDateFn, defaultDate, isStartDate) => (
+  const renderConditionalDatePicker = (
+    title,
+    fieldKey,
+    disabledDateFn,
+    defaultDate,
+    isStartDate
+  ) => (
     <div style={{ display: "block" }}>
       <h4>{title}</h4>
       <DatePicker
         style={{
           width: "150px",
         }}
-        onChange={(date) =>
-          onFieldChange(
-            fieldKey,
-            dayjs(date)
-              .set("hour", isStartDate ? 0 : 23)
-              .set("minute", isStartDate ? 0 : 59)
-              .set("second", isStartDate ? 0 : 59)
-              .format("YYYY-MM-DD HH:mm:ss")
-          )
-        }
+        onChange={(date, dateString) => onFieldChange(fieldKey, dateString)}
         disabledDate={disabledDateFn}
-        defaultValue={
-          defaultDate ? dayjs(defaultDate, "YYYY-MM-DD") : null
-        }
+        defaultValue={dayjs(defaultDate, "YYYY-MM-DD")} // Set the default value using dayjs and the specified format
         format="YYYY-MM-DD" // Set the display format to include time
       />
     </div>
