@@ -1,4 +1,4 @@
-import {Button, Row, Col, Image} from 'antd';
+import { Row, Col, Image } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { __ } from '@wordpress/i18n';
@@ -6,14 +6,16 @@ import ProductOne from "../../images/productOne.svg";
 import ProductTwo from "../../images/productTwo.svg";
 import ProductThree from "../../images/productThree.svg";
 import ProductFour from "../../images/productFour.svg";
-import React from "react";
+import React, { Fragment } from "react";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import {createPopupForm} from "../helper";
 
 const Template = ( { onFormSave } ) => {
     const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
-    const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-        createPopupForm: select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-        getButtonLoading: select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
+        createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
+        getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
     }) );
 
     const productContent = [
@@ -61,7 +63,7 @@ const Template = ( { onFormSave } ) => {
     // Handle template settings on template option change.
     const onFieldChange = ( index ) => {
         setCreateFromData( {
-            ...createPopupForm,
+            ...createPopupFormData,
             ...commonStyles,
             template: index + 1,
             popup_border_radius: templateStyles?.popup_border_radius?.[ index ],
@@ -69,8 +71,12 @@ const Template = ( { onFormSave } ) => {
         } );
     };
 
+    const onFormReset = () => {
+        setCreateFromData( { ...createPopupForm } );
+    }
+
     return (
-        <>
+        <Fragment>
             <Row gutter={ [ 16, 16 ] } style={ { marginBottom: 40, position: 'relative' } }>
                 { templateStyles && [ ...Array( 4 ).keys() ].map( index => (
                     <Col onClick={ () => onFieldChange( index ) } key={ index } colSpan={ 12 } style={ { width: '50%' } }>
@@ -81,7 +87,7 @@ const Template = ( { onFormSave } ) => {
                                 background: commonStyles?.background_color,
                                 padding: commonStyles?.spacing_around_image,
                                 borderRadius: templateStyles?.popup_border_radius?.[ index ],
-                                border: `1px solid ${ ( createPopupForm?.template === ( index + 1 ) ) ? '#0875FF' : '#DDE6F9' }`,
+                                border: `1px solid ${ ( createPopupFormData?.template === ( index + 1 ) ) ? '#0875FF' : '#DDE6F9' }`,
                             } }
                             className="custom-notification-content-wrapper"
                         >
@@ -249,15 +255,12 @@ const Template = ( { onFormSave } ) => {
                 ) ) }
             </Row>
 
-            <Button
-                type="primary"
-                loading={ getButtonLoading }
-                className='sgsb-settings-save-button'
-                onClick={ () => onFormSave( 'general_settings' ) }
-            >
-                { __( 'Save', 'storegrowth-sales-booster' ) }
-            </Button>
-        </>
+            <ActionsHandler
+                resetHandler={ onFormReset }
+                loadingHandler={ getButtonLoading }
+                saveHandler={ () => onFormSave( 'general_settings' ) }
+            />
+        </Fragment>
     );
 }
 

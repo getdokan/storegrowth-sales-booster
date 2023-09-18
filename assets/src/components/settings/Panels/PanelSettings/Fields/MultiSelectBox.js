@@ -2,6 +2,7 @@ import { Select, Typography, Col } from 'antd';
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
+import {__} from "@wordpress/i18n";
 
 const { Title } = Typography;
 
@@ -41,6 +42,7 @@ const MultiSelectBox = ({
                     placeholder={ placeHolderText }
                     className={ `settings-field select-field` }
                     onChange={ ( v ) => changeHandler( name, v ) }
+                    notFoundContent={ __( 'Current not getting any options', 'storegrowth-sales-booster' ) }
                 />
             </Col>
         </FieldWrapper>

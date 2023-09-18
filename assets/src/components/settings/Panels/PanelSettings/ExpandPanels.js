@@ -5,8 +5,9 @@ const ExpandPanels = ( { panels } ) => {
         <>
             { panels && panels?.length > 0 && (
                 <Space
+                    size={ [0, 20] }
                     direction='vertical'
-                    style={{ width: '100%' }}
+                    style={{ width: '100%', marginBottom: 100 }}
                 >
                     { panels?.map( panel => (
                         <Collapse

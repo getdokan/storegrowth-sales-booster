@@ -35,10 +35,14 @@
 }
 
 .offer-main-wrap .dynamic-offer-text{
+    gap: 4px;
     width: 100%;
+    display: flex;
     min-height: 30px;
     font-weight: bold;
-    margin-bottom: 20px;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
 }
 
 .offer-main-wrap .product-image-and-title{
@@ -73,6 +77,9 @@
     font-size: 15px;
     margin-top: 20px;
     clear: both;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .offer-main-wrap .product-checkbox-and-excitement-message .custom-checkbox{

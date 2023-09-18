@@ -780,6 +780,10 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
 
         }
+
+        &.ant-menu-hidden {
+          display: none;
+        }
       }
     }
 
@@ -959,6 +963,11 @@ End Settings Sidebar
           }
 
           &:hover {
+            background: #0875FF;
+            color: #ffffff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+
             a {
               color: #ffffff;
 
@@ -1118,6 +1127,9 @@ End Settings Sidebar
           padding-bottom: 12px;
           text-decoration: none;
 
+          &:focus {
+            box-shadow: none;
+          }
         }
 
         li,
@@ -1127,14 +1139,10 @@ End Settings Sidebar
           font-weight: 500;
           cursor: pointer;
 
-          &:hover {
-            background: #0875FF;
-            color: #ffffff;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
+        }
 
-          }
-
+        &.ant-menu-hidden {
+          display: none;
         }
       }
     }
@@ -1752,11 +1760,16 @@ End Settings Sidebar
 
                 input {
                   color: #000;
+                  text-align: center;
                 }
 
                 &.combine-field {
                   padding: 5px;
                   border-color: #DDE6F9;
+
+                  input {
+                    text-align: left;
+                  }
                 }
               }
 
@@ -1906,6 +1919,23 @@ End Settings Sidebar
             border-radius: 0;
             background: #f7f9ff;
             border-color: #DDE6F9;
+
+            .content-bump-label {
+              color: #073B4C;
+              display: block;
+              font-size: 16px;
+              font-weight: 500;
+              line-height: 20px;
+              margin-bottom: 12px;
+            }
+
+            #fixed-bump,
+            #discount-bump {
+              color: #073B4C;
+              padding: 6px 10px;
+              border-radius: 5px;
+              border: 1px solid #DDE6F9;
+            }
           }
         }
       }
@@ -1957,19 +1987,39 @@ End Settings Sidebar
       }
     }
 
-    .sgsb-settings-save-button {
-      border: 0;
-      margin: 0;
+    .sgsb-settings-actions {
+      gap: 10px;
       right: 50px;
-      height: auto;
       bottom: 50px;
       z-index: 9999;
-      line-height: 1;
+      display: flex;
       position: fixed;
-      font-size: 16px;
-      font-weight: 500;
-      padding: 12px 24px;
-      background: #0875FF;
+      align-items: center;
+
+      .sgsb-settings-save-button {
+        border: 0;
+        margin: 0;
+        height: auto;
+        z-index: 9999;
+        line-height: 1;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 12px 24px;
+        background: #0875FF;
+      }
+
+      .sgsb-settings-reset-button {
+        height: auto;
+        z-index: 9999;
+        color: #073B4C;
+        line-height: 1;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 12px 24px;
+        background: #f6f9ff;
+        border: 1px solid #DDE6F9;
+      }
     }
   }
 

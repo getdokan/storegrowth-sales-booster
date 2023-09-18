@@ -7,71 +7,116 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import MultiSelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
-import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
+import {createPopupForm, noop} from "../helper";
+import {Fragment} from "react";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
 function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
-  const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupForm: select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading: select( 'sgsb_order_sales_pop' ).getButtonLoading()
+  const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
+    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {
     setCreateFromData( {
-      ...createPopupForm,
+      ...createPopupFormData,
       [ key ]: value,
     } );
   };
 
+  const onFormReset = () => {
+    setCreateFromData( { ...createPopupForm } );
+  }
+
+  const productSources = [
+    { value: 0, label: __( 'Get from Billing', 'storegrowth-sales-booster' ) },
+    { value: 1, label: __( 'Select Products', 'storegrowth-sales-booster' ) },
+    { value: 2, label: __( 'Latest Products', 'storegrowth-sales-booster' ) },
+    { value: 3, label: __( 'Select Categories', 'storegrowth-sales-booster' ) },
+    { value: 4, label: __( 'Recent Viewed Products', 'storegrowth-sales-booster' ) },
+  ];
+
+  const product_categories = Object.entries( sales_pop_data.product_list.categoryListForSelect )?.map(
+    ( [ value, label ] ) => ( { value: parseInt( value ), label } )
+  );
+
   const max_option_count_in_free = 5;
-
-  const externalLink = createPopupForm.external_link;
+  const externalLink = createPopupFormData.external_link;
   const externalProductsIds = sales_pop_data.product_list.externalProductsIds;
-  const allProductListForSelect = sales_pop_data.product_list.productListForSelect;
 
-  const selectedPopupProducts = createPopupForm.popup_products;
+  let allProductListForSelect = [];
+  if ( createPopupFormData?.product_source === 3 ) {
+    const categoryProductIds = Object.entries(
+        sales_pop_data.product_list.categoryProductIdsForSelect ).map(
+        ( [ categoryId, categoryProductIds ] ) => createPopupFormData.target_categories.includes( parseInt( categoryId ) ) && categoryProductIds
+    );
+
+    const uniqueCategoryProductIds = [];
+    categoryProductIds.forEach( productIdsArray => Boolean( productIdsArray ) ?
+      productIdsArray?.forEach( productId => ! uniqueCategoryProductIds?.includes( productId ) ? uniqueCategoryProductIds?.push( productId ) : '' ) : ''
+    )
+
+    allProductListForSelect = sales_pop_data.product_list.productListForSelect?.[ createPopupFormData?.product_source ]?.filter(
+      product => uniqueCategoryProductIds?.includes( parseInt( product?.value ) )
+    );
+  } else {
+    allProductListForSelect = sales_pop_data.product_list.productListForSelect?.[ createPopupFormData?.product_source ];
+  }
+
+  const selectedPopupProducts = createPopupFormData.popup_products;
   const isProductsSelectReachedlimit = selectedPopupProducts.length >= max_option_count_in_free;
   let productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
   productListForSelect = isProductsSelectReachedlimit ? productListForSelect.filter(item => selectedPopupProducts.includes(item.value)) : productListForSelect;
 
-  const selectedVirtualCountries = createPopupForm.virtual_countries;
+  const selectedVirtualCountries = createPopupFormData.virtual_countries;
   const isCountriesSelectionReachedlimit = selectedVirtualCountries?.length >= max_option_count_in_free;
-  let virtualCountriesOptions = createPopupForm.countries;
+  let virtualCountriesOptions = createPopupFormData.countries;
+
   virtualCountriesOptions = isCountriesSelectionReachedlimit ? virtualCountriesOptions.filter(item => selectedVirtualCountries.includes(item.value)) : virtualCountriesOptions;
 
-  const virtualName = createPopupForm.virtual_name;
+  const virtualName = createPopupFormData.virtual_name;
   const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "")?.split(",")?.length;
   const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
   const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
 
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
 
-  const virtualLocationsFormVal = createPopupForm?.virtual_locations;
+  const virtualLocationsFormVal = createPopupFormData?.virtual_locations;
   const virtualLocationsValue =
     !virtualLocationsFormVal && "" !== virtualLocationsFormVal
       ? virtualLocationPlaceHolder
       : virtualLocationsFormVal;
   
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <Switcher
           name={ 'external_link' }
-          changeHandler={ onFieldChange }
-          isEnabled={ !!externalLink }
           needUpgrade={ upgradeTeaser }
-          isEnable={ Boolean( createPopupForm.enable ) }
+          changeHandler={ onFieldChange }
+          isEnable={ Boolean( createPopupFormData.external_link ) }
           title={ __( 'External Link', 'storegrowth-sales-booster' ) }
           tooltip={ __( 'Working with External/Affiliate Products. Product link is product url', 'storegrowth-sales-booster' ) }
         />
         <Switcher
           name={ 'product_random' }
           changeHandler={ onFieldChange }
-          isEnable={ Boolean( createPopupForm.product_random ) }
+          isEnable={ Boolean( createPopupFormData.product_random ) }
           title={ __( 'Product Show Random', 'storegrowth-sales-booster' ) }
+        />
+        <SelectBox
+          fieldWidth={ `100%` }
+          name={ `product_source` }
+          changeHandler={ onFieldChange }
+          options={ [ ...productSources ] }
+          classes={ `search-single-select` }
+          fieldValue={ createPopupFormData.product_source }
+          title={ __( 'Product Source', 'storegrowth-sales-booster' ) }
         />
         <MultiSelectBox
           name={ 'popup_products' }
@@ -81,6 +126,16 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
         />
+        { createPopupFormData?.product_source === 3 && (
+          <MultiSelectBox
+            name={ 'target_categories' }
+            changeHandler={ onFieldChange }
+            fieldValue={ createPopupFormData.target_categories.map( Number ) }
+            options={ product_categories }
+            title={ __( 'Select Target Categories', 'storegrowth-sales-booster' ) }
+            placeHolderText={ __( 'Search for Categories', 'storegrowth-sales-booster' ) }
+          />
+        ) }
         {(isFirstNameReachedLimit || isFirstNameExceededLimit) && <WarningMessage warningColor={isFirstNameExceededLimit ? "#f00" : false} />}
         <TextAreaBox
           areaRows={ 3 }
@@ -96,7 +151,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           name={ 'virtual_locations' }
           changeHandler={ onFieldChange }
           fieldValue={ virtualLocationsValue}
-          placeholder={virtualLocationPlaceHolder }
+          placeholder={ virtualLocationPlaceHolder }
           title={ __( 'Virtual Location', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'New York City, New York, USA\n' +
               'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
@@ -104,16 +159,13 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
         />
       </SettingsSection>
 
-      <Button
-        type="primary"
-        onClick={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
-        className='sgsb-settings-save-button'
-        loading={ getButtonLoading }
-        disabled={isFirstNameExceededLimit}
-      >
-          { __( 'Save', 'storegrowth-sales-booster' ) }
-      </Button>
-    </>
+      <ActionsHandler
+        resetHandler={ onFormReset }
+        loadingHandler={ getButtonLoading }
+        isDisabled={ isFirstNameExceededLimit }
+        saveHandler={ () => !isFirstNameExceededLimit && onFormSave( 'product' ) }
+      />
+    </Fragment>
   );
 }
 

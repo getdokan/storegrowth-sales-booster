@@ -1,24 +1,17 @@
 import { __ } from '@wordpress/i18n';
-import { Form, notification, Collapse, Button, Modal } from 'antd';
+import { Form, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
 import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities } from '../helper';
-import OfferSection from './OfferSection';
 import BasicInfo from './BasicInfo';
-import DesignChangeArea from './appearance/template/design-area/DesignChangeArea';
-import ContentBump from './appearance/ContentBump';
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
 import PanelSettings from "sales-booster/src/components/settings/Panels/PanelSettings";
-import General from "sales-booster-sales-pop/src/components/General";
-import Template from "sales-booster-sales-pop/src/components/Template";
-import Design from "sales-booster-sales-pop/src/components/Design";
-import CreateSalesPop from "sales-booster-sales-pop/src/components/CreateSalesPop";
-import Message from "sales-booster-sales-pop/src/components/Message";
-import Time from "sales-booster-sales-pop/src/components/Time";
 import DesignSection from "./DesignSection";
-
-const { Panel } = Collapse;
+import Preview from "./Preview";
+import { createBumpForm } from "../helper";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import OverViewArea from "./appearance/template/overview-area/OverViewArea";
 
 function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
@@ -153,6 +146,15 @@ function CreateBump({navigate, useParams, useSearchParams}) {
       
     }
 
+    if ( !createBumpData.offer_product_description ) {
+      notification['error'] ( {
+        message: __( 'Please add offer product short description', 'storegrowth-sales-booster' ),
+      } );
+
+      return null;
+
+    }
+
     if( createBumpData.offer_type.length ==0 ) {
       notification['error'] ( {
         message: 'Please select offer type',
@@ -244,6 +246,10 @@ function CreateBump({navigate, useParams, useSearchParams}) {
 
   }
 
+  const onFormReset = () => {
+    setCreateFromData( { ...createBumpForm } );
+  }
+
   const clearErrors = () => setDuplicateDataError({});
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
@@ -261,14 +267,12 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     {
       key: 'basic',
       title: __( 'Basic Information', 'storegrowth-sales-booster' ),
-      // panel: <General onFormSave={ onFormSave } upgradeTeaser={ !sgsbAdmin.isPro } />,
       panel: <BasicInfo clearErrors={ clearErrors } />,
     },
     {
       key: 'design',
       title: __( 'Design Section', 'storegrowth-sales-booster' ),
-      // panel: <General onFormSave={ onFormSave } upgradeTeaser={ !sgsbAdmin.isPro } />,
-      panel: <DesignSection />,
+      panel: <DesignSection createBumpData={ createBumpData } />,
     },
   ];
 
@@ -287,65 +291,45 @@ function CreateBump({navigate, useParams, useSearchParams}) {
           />
           { showPreview && tabName && (
             <PanelPreview colSpan={ 12 }>
-              {/*<Preview storeData={ createPopupForm } />*/}
+              <Preview storeData={ createBumpData } />
             </PanelPreview>
           ) }
         </PanelRow>
 
-        <Collapse defaultActiveKey="1">
-          <Panel header="Basic Informarion form" key="1">
-            {/*<BasicInfo clearErrors={clearErrors} />*/}
-          </Panel>
-
-          <Panel header="Offer Section Form" key="2">
-            {/*<OfferSection clearErrors={ clearErrors } />*/}
-          </Panel>
-
-          <Panel header="Design Section" key="4">
-            <Collapse >
-              <Panel header="Template Section" key="4">
-                <DesignChangeArea onFormSave = {onFormSave} buttonLoading = {buttonLoading} />
-              </Panel>
-              <Panel header="Content Section" key="5">
-                <ContentBump onFormSave = {onFormSave} buttonLoading = {buttonLoading} />
-              </Panel>
-
-            </Collapse>
-          </Panel>
-        
-        </Collapse>
         {
-            ( isDuplicateCatsFound || isDuplicateProductsFound ) && (
-                <h3 style={{color:"Red"}}>
-                    Error!!! another bump with the given offer product for the specified schedule already exists for the selected {" "}
-                    {
-                    (isDuplicateCatsFound && isDuplicateProductsFound) 
-                        ? "categories & products" 
-                        : isDuplicateProductsFound 
-                            ? "products"
-                            : "categories"
-                    }
-                    .<br/>
-                    Please change your inputs and then try again.
-                </h3>
-            )
+          ( isDuplicateCatsFound || isDuplicateProductsFound ) && (
+            <h3 style={{ color:"Red", marginTop: 30, marginBottom: 30 }}>
+              {
+                __(
+                  'Error!!! another bump with the given offer product for the specified schedule already exists for the selected ',
+                  'storegrowth-sales-booster'
+                )
+              }
+              {
+                ( isDuplicateCatsFound && isDuplicateProductsFound )
+                  ? __( 'categories & products', 'storegrowth-sales-booster' )
+                  : isDuplicateProductsFound
+                    ? __( 'products', 'storegrowth-sales-booster' )
+                    : __( 'categories', 'storegrowth-sales-booster' )
+              }
+              .<br/>
+              { __( 'Please change your inputs and then try again.',  'storegrowth-sales-booster' ) }
+            </h3>
+          )
         }
-        <Button
-          htmlType  = "submit"
-          type      = "primary"
-          loading   = { buttonLoading }
-          onClick   = { () => onFormSave() }
-          className = 'sgsb-settings-save-button'
-        >
-          { __( 'Save', 'storegrowth-sales-booster' ) }
-        </Button>
 
-        {/* <Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>
-          Bump Overview
-        </Button>
-        <Modal title="Bump Overview Section" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <OverViewArea/>
-        </Modal> */}
+        <ActionsHandler
+          saveHandler={ onFormSave }
+          resetHandler={ onFormReset }
+          loadingHandler={ buttonLoading }
+        />
+
+        {/*<Button type="info" onClick={showModal} style={{marginLeft:'5px'}}>*/}
+        {/*  Bump Overview*/}
+        {/*</Button>*/}
+        {/*<Modal title="Bump Overview Section" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>*/}
+        {/*  <OverViewArea/>*/}
+        {/*</Modal>*/}
       </Form>
     </>
   );

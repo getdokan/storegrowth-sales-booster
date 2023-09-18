@@ -1,26 +1,31 @@
-import { Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import { noop } from '../helper';
 import { __ } from "@wordpress/i18n";
 import {addFilter} from "@wordpress/hooks";
+import { createPopupForm, noop } from '../helper';
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import { Fragment } from "react";
 
 function Message( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
-  const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupForm: select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading: select( 'sgsb_order_sales_pop' ).getButtonLoading()
+  const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
+    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {
     setCreateFromData( {
-      ...createPopupForm,
+      ...createPopupFormData,
       [ key ]: value,
     } );
   };
+
+  const onFormReset = () => {
+    setCreateFromData( { ...createPopupForm } );
+  }
 
   /**
    * Add textarea settings content after textarea field.
@@ -45,28 +50,25 @@ function Message( { onFormSave, upgradeTeaser } ) {
   );
 
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <TextAreaBox
           areaRows={ 4 }
           name={ 'message_popup' }
           needUpgrade={ upgradeTeaser }
-          fieldValue={ createPopupForm.message_popup }
+          fieldValue={ createPopupFormData.message_popup }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Message Popup', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Enter Message Popup', 'storegrowth-sales-booster' ) }
         />
       </SettingsSection>
 
-      <Button
-        type="primary"
-        onClick={ () => onFormSave( 'message' ) }
-        className='sgsb-settings-save-button'
-        loading={ getButtonLoading }
-      >
-          { __( 'Save', 'storegrowth-sales-booster' ) }
-      </Button>
-    </>
+      <ActionsHandler
+        resetHandler={ onFormReset }
+        loadingHandler={ getButtonLoading }
+        saveHandler={ () => onFormSave( 'message' ) }
+      />
+    </Fragment>
   );
 }
 

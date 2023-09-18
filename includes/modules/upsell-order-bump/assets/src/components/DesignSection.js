@@ -1,18 +1,20 @@
+import { __ } from "@wordpress/i18n";
+import ContentSection from "./appearance/ContentSection";
+import TemplateSection from "./appearance/TemplateSection";
 import ExpandPanels from "sales-booster/src/components/settings/Panels/PanelSettings/ExpandPanels";
-import {__} from "@wordpress/i18n";
 
-const DesignSection = () => {
+const DesignSection = ( { createBumpData } ) => {
     const panels = [
         {
             key: 1,
             label: __( 'Template Section', 'storegrowth-sales-booster' ),
-            children: 'Hello World One'
+            children: <TemplateSection />,
         },
         {
             key: 2,
             label: __( 'Content Section', 'storegrowth-sales-booster' ),
-            children: 'Hello World Two'
-        },
+            children: <ContentSection />,
+        }
     ];
 
     return (

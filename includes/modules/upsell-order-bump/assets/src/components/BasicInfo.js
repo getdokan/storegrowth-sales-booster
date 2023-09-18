@@ -107,14 +107,21 @@ const BasicInfo = ( { clearErrors } ) => {
           changeHandler={ onFieldChange }
           options={ simpleProductForOffer }
           classes={ `search-single-select` }
-          title={ __( 'Offer Product', 'storegrowth-sales-booster' ) }
+          title={ __( 'Offer Product Title', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Search for offer product', 'storegrowth-sales-booster' ) }
           fieldValue={ parseInt( createBumpData.offer_product ) ? parseInt( createBumpData.offer_product ) : null }
-          filterOption={ ( inputValue, option ) => option.props.children
-            .toString()
-            .toLowerCase()
-            .includes( inputValue.toLowerCase() )
+          filterOption={ ( inputValue, option ) => option.label
+            ?.toString()
+            ?.toLowerCase()
+            ?.includes( inputValue.toLowerCase() )
           }
+        />
+        <TextInput
+          changeHandler={ onFieldChange }
+          name={ `offer_product_description` }
+          fieldValue={ createBumpData.offer_product_description }
+          title={ __( 'Offer Product Description', 'storegrowth-sales-booster' ) }
+          placeHolderText={ __( 'Add your offer product description', 'storegrowth-sales-booster' ) }
         />
         <Col className="gutter-row" span={ 24 }>
           <Card className={ `sgsb-settings-card` }>

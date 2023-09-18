@@ -161,35 +161,243 @@ class Enqueue {
 	 * Product list for pop up selection.
 	 */
 	public function product_list() {
-		$args = array(
-			'post_type'      => 'product',
-			'posts_per_page' => -1,
+		// Set product list from sources.
+		$latest_products        = $this->get_latest_product_list();
+		$billing_products       = $this->get_billing_product_list();
+		$selection_products     = $this->get_selection_product_list();
+		$recent_viewed_products = $this->get_recently_viewed_product_list();
+
+		// Make products array for select popup products from product source.
+		$products_array = array(
+			$billing_products,
+			$selection_products,
+			$latest_products,
+			$selection_products, // Use selection products as category products for getting all products and processing from frontend.
+			$recent_viewed_products,
 		);
 
-		$products                = get_posts( $args );
 		$product_info            = array();
 		$product_list_for_select = array();
 		$product_title_by_id     = array();
 		$external_products_ids   = array();
 
-		foreach ( $products as $product ) {
-			$product_id                = $product->ID;
-			$product_list_for_select[] = array(
-				'value' => $product_id,
-				'label' => $product->post_title,
-			);
+		for ( $index = 0; $index < 5; $index++ ) {
+			// Set current source products.
+			$products = ! empty( $products_array[ $index ] ) ? $products_array[ $index ] : array();
+			if ( empty( $products ) ) {
+				$product_list_for_select[ $index ][] = $products;
+				continue;
+			}
 
-			$product_title_by_id[ $product_id ] = $product->post_title;
-			$product_obj                        = wc_get_product( $product_id );
-			if ( $product_obj && $product_obj->is_type( 'external' ) ) {
-				$external_products_ids[] = $product_id;
+			foreach ( $products as $product ) {
+				$product_id                          = $product->ID;
+				$product_list_for_select[ $index ][] = array(
+					'value' => $product_id,
+					'label' => $product->post_title,
+				);
+
+				$product_obj = wc_get_product( $product_id );
+				if ( ! array_key_exists( $product_id, $product_title_by_id ) ) {
+					$product_title_by_id[ $product_id ] = $product->post_title;
+				}
+
+				if (
+					$product_obj &&
+					$product_obj->is_type( 'external' ) &&
+					! in_array( $product_id, $external_products_ids, true )
+				) {
+					$external_products_ids[] = $product_id;
+				}
 			}
 		}
 
-		$product_info['productListForSelect'] = $product_list_for_select;
-		$product_info['productTitleById']     = $product_title_by_id;
-		$product_info['externalProductsIds']  = $external_products_ids;
+		// Set upsell product information & passed in frontend.
+		$product_info['productTitleById']            = $product_title_by_id;
+		$product_info['externalProductsIds']         = $external_products_ids;
+		$product_info['productListForSelect']        = $product_list_for_select;
+		$product_info['categoryListForSelect']       = $this->category_list();
+		$product_info['categoryProductIdsForSelect'] = $this->get_category_product_list();
 
 		return $product_info;
+	}
+
+	/**
+	 * Retrieve billing product list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array|int[]|\WP_Post[]
+	 */
+	public function get_billing_product_list() {
+		// Get all orders.
+		$orders = wc_get_orders(
+			array(
+				'limit' => -1,
+			)
+		);
+
+		if ( empty( $orders ) ) {
+			return array();
+		}
+
+		// Initialize an empty array to store the billing product list IDs.
+		$ordered_product_ids = array();
+
+		// Loop through each order.
+		foreach ( $orders as $order ) {
+			foreach ( $order->get_items() as $item ) {
+				$product_id = $item->get_product_id();
+
+				// Check if the product ID is already in the list.
+				if ( ! in_array( $product_id, $ordered_product_ids, true ) ) {
+					$ordered_product_ids[] = $product_id;
+				}
+			}
+		}
+
+		$ordered_products = array();
+		if ( ! empty( $ordered_product_ids ) ) {
+			$args = array(
+				'posts_per_page' => -1,
+				'post_type'      => 'product',
+				'post__in'       => $ordered_product_ids, // Limit posts to ordered product IDs.
+			);
+
+			$ordered_products = get_posts( $args );
+		}
+
+		// Return billing products.
+		return $ordered_products;
+	}
+
+	/**
+	 * Retrieve select product list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int[]|\WP_Post[]
+	 */
+	public function get_selection_product_list() {
+		$args = array(
+			'post_type'      => 'product',
+			'posts_per_page' => -1,
+		);
+
+		return get_posts( $args );
+	}
+
+	/**
+	 * Retrieve latest product list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int[]|\WP_Post[]
+	 */
+	public function get_latest_product_list() {
+		$args = array(
+			'post_type'      => 'product',
+			'posts_per_page' => 10, // Adjust the number of products to display as needed.
+			'orderby'        => 'date', // Sort by date.
+			'order'          => 'DESC', // Show the latest products first.
+		);
+
+		return get_posts( $args );
+	}
+
+	/**
+	 * Retrieve recently viewed product list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array|int[]|\WP_Post[]
+	 */
+	public function get_recently_viewed_product_list() {
+		if ( isset( $_COOKIE['woocommerce_recently_viewed'] ) ) {
+			$recently_viewed = sanitize_text_field( wp_unslash( $_COOKIE['woocommerce_recently_viewed'] ) );
+			$product_ids     = array_reverse( explode( '|', $recently_viewed ) );
+
+			// Remove duplicates.
+			$product_ids = array_unique( $product_ids );
+
+			// Limit the number of products.
+			$product_ids = array_slice( $product_ids, 0, 10 );
+
+			if ( empty( $product_ids ) ) {
+				return array(); // No products found.
+			}
+
+			// Fetch product objects.
+			$args = array(
+				'posts_per_page' => -1,
+				'post_type'      => 'product',
+				'post__in'       => $product_ids, // Limit posts to ordered product IDs.
+			);
+
+			return get_posts( $args );
+		}
+
+		return array(); // Return an empty array if no products are found.
+	}
+
+	/**
+	 * Retrieve category product list.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function get_category_product_list() {
+		// Get all product categories.
+		$categories = $this->category_list();
+
+		// Create an empty array to store the category name as the key and products as the value.
+		$category_products = array();
+
+		// Loop through the categories.
+		foreach ( $categories as $category_id => $category_name ) {
+			// Get the products in the current category.
+			$args = array(
+				'post_type'      => 'product',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'product_cat',
+						'field'    => 'term_id',
+						'terms'    => $category_id,
+					),
+				),
+			);
+
+			$products = get_posts( $args );
+			// Assign products to the category id.
+			$category_products[ $category_id ] = $products;
+		}
+
+		return $category_products;
+	}
+
+	/**
+	 * Get category list data.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array
+	 */
+	public function category_list() {
+		$cat_args = array(
+			'order'      => 'asc',
+			'orderby'    => 'name',
+			'hide_empty' => false,
+		);
+
+		$category_data      = array();
+		$product_categories = get_terms( 'product_cat', $cat_args );
+		// Retrieve category lists as id, name pair.
+		foreach ( $product_categories as $category ) {
+			$category_data[ $category->term_id ] = $category->name;
+		}
+
+		return $category_data;
 	}
 }
