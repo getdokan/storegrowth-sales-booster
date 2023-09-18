@@ -71,5 +71,4 @@ class Common_Hooks {
 
 		return $fragments;
 	}
-
 }

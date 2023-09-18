@@ -1,4 +1,4 @@
-import { Tabs, notification } from "antd";
+import { notification } from "antd";
 import { __ } from "@wordpress/i18n";
 import {
   useEffect,
@@ -19,7 +19,11 @@ import PanelRow from "../../../../../../assets/src/components/settings/Panels/Pa
 import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 
-function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
+function FloatingNotificationBarLayout({
+  outlet: Outlet,
+  navigate,
+  useSearchParams,
+}) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -27,15 +31,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const [formData, setFormData] = useState({
-    default_banner: true,
     default_banner_text: "Shop More Than $100 to get Free Shipping",
-    discount_banner: false,
-    discount_type: "free-shipping",
-    discount_amount_mode: "fixed-amount",
-    discount_amount_value: "",
-    cart_minimum_amount: "",
-    progressive_banner_text: "",
-    goal_completion_text: "",
     bar_position: "top",
     bar_type: "normal",
     background_color: "#008DFF",
@@ -45,8 +41,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     button_text_color: "#000000",
     default_banner_icon_name: "",
     default_banner_icon_html: "",
-    progressive_banner_icon_name: "",
-    progressive_banner_icon_html: "",
     button_view: ["button-desktop-enable"],
     banner_device_view: [],
     ac_button_text: "Click Here",
@@ -184,7 +178,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   return (
     <Fragment>
       <PanelHeader
-        title={__("Discount Banner Setting", "storegrowth-sales-booster")}
+        title={__("Floating Notification Bar Setting", "storegrowth-sales-booster")}
       />
       <PanelContainer>
         <PanelRow>
@@ -205,4 +199,4 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   );
 }
 
-export default FreeShippingBarLayout;
+export default FloatingNotificationBarLayout;

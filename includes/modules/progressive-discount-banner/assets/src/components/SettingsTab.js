@@ -1,11 +1,7 @@
 import { Button } from "antd";
-import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
 import DiscountBanner from "./DiscountBanner";
-import DefaultBanner from "./DefaultBanner";
+
 function SettingsTab(props) {
   const {
     formData,
@@ -28,53 +24,13 @@ function SettingsTab(props) {
 
   return (
     <>
-      <SettingsSection>
-        <Switcher
-          name={"default_banner"}
-          changeHandler={onFieldChange}
-          title={__("Default Banner", "storegrowth-sales-booster")}
-          isEnable={
-            formData.default_banner == "true" || formData.default_banner == true
-              ? true
-              : false
-          }
-          tooltip={__(
-            "Use this setting to enter text for a standard banner. You can display important messages, announcements, or promotions to engage your website visitors. ",
-            "storegrowth-sales-booster"
-          )}
-        />
-      </SettingsSection>
-      {formData.default_banner && (
-        <DefaultBanner
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onIconChange={onIconChange}
-          upgradeTeaser={upgradeTeaser}
-        />
-      )}
-      <SectionSpacer />
-      <SettingsSection>
-        <Switcher
-          name={"discount_banner"}
-          changeHandler={onFieldChange}
-          title={__("Free Shipping Banner", "storegrowth-sales-booster")}
-          isEnable={
-            formData.discount_banner == "true" ||
-            formData.discount_banner == true
-              ? true
-              : false
-          }
-          tooltip={__(FreeShippingExtra, "storegrowth-sales-booster")}
-        />
-      </SettingsSection>
-      {formData.discount_banner && (
-        <DiscountBanner
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onIconChange={onIconChange}
-          upgradeTeaser={upgradeTeaser}
-        />
-      )}
+      <DiscountBanner
+        formData={formData}
+        onFieldChange={onFieldChange}
+        onIconChange={onIconChange}
+        upgradeTeaser={upgradeTeaser}
+      />
+
       <Button
         type="primary"
         onClick={onFormSave}

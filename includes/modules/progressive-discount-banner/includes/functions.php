@@ -12,31 +12,7 @@ function sgsb_pd_banner_get_settings() {
 	return get_option( 'sgsb_progressive_discount_banner_settings', array() );
 }
 
-/**
- * Check we need to show the banner
- *
- * @return null|string
- */
-function sgsb_pd_banner_get_banner_type_to_show() {
-	$settings = sgsb_pd_banner_get_settings();
 
-	$default_banner  = sgsb_find_option_setting( $settings, 'default_banner', false );
-	$discount_banner = sgsb_find_option_setting( $settings, 'discount_banner', false );
-
-	$is_cart_empty = wc()->cart->is_empty();
-
-	// If cart is not empty and discount banner is enable.
-	if ( ! $is_cart_empty && $discount_banner ) {
-		return 'discount_banner';
-	}
-
-	// If default banner is enable.
-	if ( $default_banner ) {
-		return 'default_banner';
-	}
-
-	return null;
-}
 
 /**
  * Get banner text.
@@ -45,12 +21,6 @@ function sgsb_pd_banner_get_banner_type_to_show() {
  * @return string
  */
 function sgsb_pd_banner_get_banner_text( $settings ) {
-	$banner_type_to_show = sgsb_pd_banner_get_banner_type_to_show();
-
-	// Return default banner text.
-	if ( 'discount_banner' !== $banner_type_to_show ) {
-		return sgsb_find_option_setting( $settings, 'default_banner_text' );
-	}
 
 	$minimum_amount = sgsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
 	$cart_amount    = wc()->cart->get_subtotal();
@@ -91,12 +61,5 @@ function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
  * @param array $settings Admin settings.
  */
 function sgsb_pd_banner_get_banner_icon( $settings ) {
-	$banner_type_to_show = sgsb_pd_banner_get_banner_type_to_show();
-
-	// Return default banner text.
-	if ( 'discount_banner' !== $banner_type_to_show ) {
-		return sgsb_find_option_setting( $settings, 'default_banner_icon_html' );
-	}
-
 	return sgsb_find_option_setting( $settings, 'progressive_banner_icon_html' );
 }

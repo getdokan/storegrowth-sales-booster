@@ -78,20 +78,6 @@ function DesignTab(props) {
           changeHandler={onFieldChange}
           title={__("Icon Color", "storegrowth-sales-booster")}
         />
-        <ColourPicker
-          name={"button_color"}
-          colSpan={12}
-          fieldValue={formData.button_color}
-          changeHandler={onFieldChange}
-          title={__("Button Color", "storegrowth-sales-booster")}
-        />
-        <ColourPicker
-          name={"button_text_color"}
-          colSpan={12}
-          fieldValue={formData.button_text_color}
-          changeHandler={onFieldChange}
-          title={__("Button Text Color", "storegrowth-sales-booster")}
-        />
       </SettingsSection>
 
       <Button

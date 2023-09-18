@@ -6,10 +6,31 @@ import SelectBox from "../../../../../../assets/src/components/settings/Panels/P
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-
+import DisplayRules from "./DisplayRules";
 function DiscountBanner(props) {
-  const { formData, onFieldChange, onIconChange } = props;
+  const { formData, onFieldChange, onIconChange ,upgradeTeaser} = props;
 
+  const barPositions = [
+    {
+      value: "top",
+      label: __("Top", "storegrowth-sales-booster"),
+    },
+    {
+      value: "bottom",
+      label: __("Bottom", "storegrowth-sales-booster"),
+    },
+  ];
+  const barTypes = [
+    {
+      value: "normal",
+      label: __("Normal", "storegrowth-sales-booster"),
+    },
+    {
+      value: "sticky",
+      label: __("Sticky", "storegrowth-sales-booster"),
+    },
+  ];
+  
   const discountTypes = [
     {
       value: "free-shipping",
@@ -37,6 +58,21 @@ function DiscountBanner(props) {
     discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
   return (
     <SettingsSection>
+       <SelectBox
+          name={`bar_position`}
+          options={[...barPositions]}
+          fieldValue={formData.bar_position}
+          changeHandler={onFieldChange}
+          title={__("Bar Position", "storegrowth-sales-booster")}
+          
+        />
+        <SelectBox
+          name={`bar_type`}
+          options={[...barTypes]}
+          fieldValue={formData.bar_type}
+          changeHandler={onFieldChange}
+          title={__("Bar Type", "storegrowth-sales-booster")}
+        />
       <SelectBox
         name={`discount_type`}
         options={[...discountTypes]}
@@ -127,7 +163,12 @@ function DiscountBanner(props) {
           "storegrowth-sales-booster"
         )}
       />
-
+      <DisplayRules
+        upgradeTeaser={upgradeTeaser}
+        onFieldChange={onFieldChange}
+        formData={formData}
+        textTitle="Display Rules"
+      />
       <Form.Item label="Progressive Banner Icon" labelAlign="left">
         <RemovableIconPicker
           onClear={(v) =>

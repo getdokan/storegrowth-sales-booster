@@ -1,5 +1,5 @@
 import { addFilter } from "@wordpress/hooks";
-import FreeShippingBarLayout from "./components/FreeShippingBarLayout";
+import FloatingNotificationBarLayout from "./components/FloatingNotificationBarLayout";
 import { InsertRowAboveOutlined } from "@ant-design/icons";
 
 /**
@@ -14,7 +14,7 @@ addFilter(
       label: "Floating Notification Bar",
       path: "/floating-notification-bar",
       element: (
-        <FreeShippingBarLayout
+        <FloatingNotificationBarLayout
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
@@ -32,7 +32,9 @@ addFilter(
  */
 addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
   items.push({
-    label: <Link to="/floating-notification-bar">Floating Notification Bar</Link>,
+    label: (
+      <Link to="/floating-notification-bar">Floating Notification Bar</Link>
+    ),
     key: "floating-notification-bar",
     icon: <InsertRowAboveOutlined />,
   });

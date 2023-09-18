@@ -27,9 +27,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const [formData, setFormData] = useState({
-    default_banner: false,
-    default_banner_text: "",
-    discount_banner: false,
     discount_type: "free-shipping",
     discount_amount_mode: "fixed-amount",
     discount_amount_value: "",
@@ -41,27 +38,15 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     background_color: "#008DFF",
     text_color: "#ffffff",
     icon_color: "#ffffff",
-    button_color:"#ffffff",
-    button_text_color:"#000000",
-    default_banner_icon_name: "",
-    default_banner_icon_html: "",
     progressive_banner_icon_name: "",
     progressive_banner_icon_html: "",
-    button_view: ["button-desktop-enable"],
     banner_device_view:[],
-    ac_button_text: "Click Here",
-    button_action:"ba-url-redirect",
-    redirect_url:"",
-    new_tab_enable:false,
     banner_show_option:"banner-show-everywhere",
     slected_page_option:[],
     user_type:"both",
     banner_trigger:"after-few-seconds",
     banner_delay:7,
     scroll_banner_delay:7,
-    countdown_start_date:"",
-    countdown_end_date:"",
-    countdown_show_enable:false,
     banner_height:60,
     font_family:"poppins",
     font_size:20,
@@ -184,7 +169,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   return (
     <Fragment>
       <PanelHeader
-        title={__("Discount Banner Setting", "storegrowth-sales-booster")}
+        title={__("Free Shipping Bar Setting", "storegrowth-sales-booster")}
       />
       <PanelContainer>
         <PanelRow>
