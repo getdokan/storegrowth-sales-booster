@@ -9,7 +9,6 @@ const TextInput = ( {
     name,
     title,
     tooltip,
-    areaRows,
     fieldValue,
     changeHandler,
     placeHolderText,
@@ -23,7 +22,7 @@ const TextInput = ( {
             <Col span={9}>
                 <div className={ `card-heading textinput-heading` }>
                     {/* Handle switcher title. */}
-                    <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
+                    <Title level={ 3 } className={ `settings-heading space-top` }>{ title }</Title>
                     {/* Handle switcher tooltip. */}
                     { tooltip && <SettingsTooltip content={ tooltip } /> }
                     {/* Handle switcher upgrade icon. */}
@@ -34,7 +33,6 @@ const TextInput = ( {
             <Col span={15}>
                 {/* Handle settings textarea field by using dynamic props */}
                 <Input
-                    rows={ areaRows }
                     disabled={ needUpgrade }
                     placeholder={ placeHolderText }
                     value={ fieldValue ? fieldValue : '' }

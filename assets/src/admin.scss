@@ -780,6 +780,10 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
 
         }
+
+        &.ant-menu-hidden {
+          display: none;
+        }
       }
     }
 
@@ -834,7 +838,10 @@ End Settings Sidebar
 // upsell order bump css start
 .sgsb-order-bumps-limit-warning-message {
   color: #1890ff;
+  display: block;
+  font-size: 18px;
   font-weight: bold;
+  margin: 0 0 25px 5px;
 }
 
 // upsell order bump css end
@@ -956,6 +963,11 @@ End Settings Sidebar
           }
 
           &:hover {
+            background: #0875FF;
+            color: #ffffff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+
             a {
               color: #ffffff;
 
@@ -1115,6 +1127,9 @@ End Settings Sidebar
           padding-bottom: 12px;
           text-decoration: none;
 
+          &:focus {
+            box-shadow: none;
+          }
         }
 
         li,
@@ -1124,14 +1139,10 @@ End Settings Sidebar
           font-weight: 500;
           cursor: pointer;
 
-          &:hover {
-            background: #0875FF;
-            color: #ffffff;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
+        }
 
-          }
-
+        &.ant-menu-hidden {
+          display: none;
         }
       }
     }
@@ -1640,11 +1651,14 @@ End Settings Sidebar
   .panel-header {
     .header-content {
       margin: 0;
+      display: flex;
       color: #073B4C;
       font-size: 24px;
       font-weight: 600;
       line-height: 32px;
+      align-items: center;
       padding: 24px 0 24px 30px;
+      justify-content: space-between;
     }
 
     .header-divider {
@@ -1691,6 +1705,10 @@ End Settings Sidebar
             .settings-heading {
               margin: 0;
               margin-right: 10px;
+
+              &.space-top {
+                margin-top: 5px;
+              }
             }
 
             .settings-field {
@@ -1742,20 +1760,37 @@ End Settings Sidebar
 
                 input {
                   color: #000;
+                  text-align: center;
+                }
+
+                &.combine-field {
+                  padding: 5px;
+                  border-color: #DDE6F9;
+
+                  input {
+                    text-align: left;
+                  }
                 }
               }
 
               &.textarea-field,
               &.textinput-field {
                 color: #073B4C;
-                padding: 10px 16px;
                 border-radius: 5px;
-                background: #fbfcff;
+                background: #F6F9FF;
                 border: 1px solid #DDE6F9;
 
                 &.field-gap {
                   margin-bottom: 15px;
                 }
+              }
+
+              &.textarea-field {
+                padding: 10px 16px;
+              }
+
+              &.textinput-field {
+                padding: 6px 10px;
               }
 
               &.single-select-field {
@@ -1768,6 +1803,25 @@ End Settings Sidebar
                   border-radius: 5px;
                   background: #F6F9FF;
                   color: #073B4C;
+                }
+
+                &.combine-select,
+                &.search-single-select {
+                  .ant-select-selector {
+                    height: auto;
+                    padding: 5px 10px;
+
+                    .ant-select-selection-search {
+                      display: flex;
+                      align-items: center;
+
+                      input.ant-select-selection-search-input {
+                        &:focus {
+                          box-shadow: none;
+                        }
+                      }
+                    }
+                  }
                 }
               }
 
@@ -1841,19 +1895,48 @@ End Settings Sidebar
           color: #DDE6F9;
         }
 
-        .sgsb-settings-save-button {
-          border: 0;
-          margin: 0;
-          right: 50px;
-          height: auto;
-          bottom: 50px;
-          z-index: 9999;
-          line-height: 1;
-          position: fixed;
-          font-size: 16px;
-          font-weight: 500;
-          padding: 12px 24px;
-          background: #0875FF;
+        .sgsb-collapse-settings {
+          overflow: hidden;
+          border-color: #DDE6F9;
+          border-radius: 5px;
+
+          .ant-collapse-item {
+            border-color: #DDE6F9;
+            border-radius: 0;
+          }
+
+          .ant-collapse-header {
+            border-radius: 0;
+            background: #FFF;
+            padding: 10px 16px;
+
+            .ant-collapse-header-text {
+              color: #073B4C;
+            }
+          }
+
+          .ant-collapse-content {
+            border-radius: 0;
+            background: #f7f9ff;
+            border-color: #DDE6F9;
+
+            .content-bump-label {
+              color: #073B4C;
+              display: block;
+              font-size: 16px;
+              font-weight: 500;
+              line-height: 20px;
+              margin-bottom: 12px;
+            }
+
+            #fixed-bump,
+            #discount-bump {
+              color: #073B4C;
+              padding: 6px 10px;
+              border-radius: 5px;
+              border: 1px solid #DDE6F9;
+            }
+          }
         }
       }
 
@@ -1903,6 +1986,41 @@ End Settings Sidebar
         margin-top: 2px;
       }
     }
+
+    .sgsb-settings-actions {
+      gap: 10px;
+      right: 50px;
+      bottom: 50px;
+      z-index: 9999;
+      display: flex;
+      position: fixed;
+      align-items: center;
+
+      .sgsb-settings-save-button {
+        border: 0;
+        margin: 0;
+        height: auto;
+        z-index: 9999;
+        line-height: 1;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 12px 24px;
+        background: #0875FF;
+      }
+
+      .sgsb-settings-reset-button {
+        height: auto;
+        z-index: 9999;
+        color: #073B4C;
+        line-height: 1;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 12px 24px;
+        background: #f6f9ff;
+        border: 1px solid #DDE6F9;
+      }
+    }
   }
 
   .panel-container {
@@ -1912,6 +2030,10 @@ End Settings Sidebar
       margin: 0;
       height: auto;
       margin-left: -1px;
+    }
+
+    .space-top {
+      margin-top: 36px;
     }
   }
 }

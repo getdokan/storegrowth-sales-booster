@@ -19,7 +19,6 @@ import Template from "./Template";
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
 
   const isProEnabled = sgsbAdmin.isPro;
-  const upgradeTeaser = !isProEnabled && <span className="sgsb-field-upgrade-pro-label">(Upgrade to premium)</span>;
 
   const { setCreateFromData, setButtonLoading } = useDispatch( 'sgsb_order_sales_pop' );
   let [ searchParams, setSearchParams ] = useSearchParams();

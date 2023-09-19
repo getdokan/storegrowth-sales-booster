@@ -63,58 +63,86 @@
 
 .offer-main-wrap{
   width: 100%;
-  padding: 20px;
-  border-radius: 16px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 15px;
   margin-bottom: 48px;
 }
 
 .offer-main-wrap .dynamic-offer-text{
+  gap: 4px;
   width: 100%;
+  display: flex;
   min-height: 33px;
   font-weight: bold;
-  margin-bottom: 15px;
   text-align: center;
-  padding: 16px 75px;
-  border-radius: 16px;
+  padding: 15px 75px;
+  border-radius: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  justify-content: center;
 }
 
 .offer-main-wrap .product-image-and-title{
   width: 100%;
-  min-height: 160px;
-  padding: 5px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
+  line-height: normal;
+  justify-content: space-between;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-image-title{
   display: flex;
   align-items: center;
   gap: 15px;
+  flex: 3;
+}
+
+.offer-main-wrap .product-image-and-title .product-checkbox-and-excitement-message{
+  flex: .8;
+  gap: 10px;
+  display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  align-items: center;
 }
 
 .offer-main-wrap .product-image-and-title .offer-price{
+  flex: 1.5;
   font-weight: 800;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-image img{
   width: 120px;
-  border-radius:16px;
+  border-radius: 10px;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-title{
+  gap: 15px;
   padding: 5px;
-  margin-bottom: 10px;
+  display: grid;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-title h3{
+  margin: 0;
   font-weight: bold;
 }
 
+.offer-main-wrap .product-image-and-title .offer-product-title p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .offer-main-wrap .product-checkbox-and-excitement-message .custom-checkbox{
-  height: 18px;
-  width: 18px;
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+
+.offer-main-wrap .product-checkbox-and-excitement-message label {
+  cursor: pointer;
 }
 
 .offer-main-wrap .product-description{

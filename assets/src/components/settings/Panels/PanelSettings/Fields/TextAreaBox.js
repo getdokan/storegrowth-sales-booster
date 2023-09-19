@@ -30,7 +30,7 @@ const TextAreaBox = ( {
             <Col span={9}>
                 <div className={ `card-heading textarea-heading` }>
                     {/* Handle switcher title. */}
-                    <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
+                    <Title level={ 3 } className={ `settings-heading space-top` }>{ title }</Title>
                     {/* Handle switcher tooltip. */}
                     { tooltip && <SettingsTooltip content={ tooltip } /> }
                     {/* Handle switcher upgrade icon. */}

@@ -1,7 +1,6 @@
 import React from "react";
 import { Image } from "antd";
 import { __ } from "@wordpress/i18n";
-import ProductImg from '../../images/productOne.svg';
 import ProductOne from "../../images/productOne.svg";
 import ProductTwo from "../../images/productTwo.svg";
 import ProductThree from "../../images/productThree.svg";
