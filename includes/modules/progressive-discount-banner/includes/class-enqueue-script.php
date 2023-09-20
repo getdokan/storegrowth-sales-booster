@@ -83,12 +83,13 @@ class Enqueue_Script {
 	 */
 	private function inline_styles() {
 		// Get style options.
-		$settings     = sgsb_pd_banner_get_settings();
-		$bar_position = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
-		$text_color   = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
-		$icon_color   = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
-
+		$settings      = sgsb_pd_banner_get_settings();
+		$bar_position  = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
+		$bg_color      = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
+		$text_color    = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
+		$icon_color    = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$banner_height = sgsb_find_option_setting( $settings, 'banner_height', 60 );
+		$bar_type      = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
 		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
 			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
 			return false;
@@ -97,17 +98,20 @@ class Enqueue_Script {
 		if ( 'bottom' === $bar_position ) {
 			$css = '
 				.sgsb-pd-banner-bar-wrapper {
-					top: auto;
+					top: auto !important;
 					bottom: 0;
+				}
+				body.admin-bar .sgsb-pd-banner-bar-wrapper {
+					top: ' . ( 0 ) . 'px;
+				}
+				body {
+					padding-top: ' . ( 0 ) . 'px;
 				}
 			';
 		} else {
 			$css = '
-				body.admin-bar .sgsb-pd-banner-bar-wrapper {
-					top: 32px;
-				}
 				body {
-					padding-top: 57px;
+					padding-top:' . ( $banner_height + 10 ) . 'px;
 				}
 			';
 		}
@@ -116,13 +120,32 @@ class Enqueue_Script {
 			.sgsb-pd-banner-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
+				height: {$banner_height}px;
 			}
 			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
 				fill: {$icon_color};
 			}
 		";
 
+		if ( 'sticky' === $bar_type ) {
+			$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: fixed;
+			}';
+		} elseif ( 'normal' === $bar_type ) {
+			if ( 'bottom' === $bar_position ) {
+				$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: inherit;
+			}';
+			} else {
+				$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: fixed;
+			}';
+			}
+		}
+
 		wp_add_inline_style( 'sgsb-pd-banner-style', $css );
 	}
-
 }

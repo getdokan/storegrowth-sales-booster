@@ -17,7 +17,7 @@ body:not(.show_discount_banner){
     background-color: #008DFF;
     color: #fff;
     z-index: 999;
-    height: auto;
+    /* height: 60px; */
     padding: 8px 0px;
 }
 .sgsb-pd-banner-bar {
@@ -46,3 +46,10 @@ body:not(.show_discount_banner){
     cursor: pointer;
 }
 
+body.admin-bar .sgsb-pd-banner-bar-wrapper {
+    top: 32px;
+}
+
+body {
+    padding-top: 70px;
+}
