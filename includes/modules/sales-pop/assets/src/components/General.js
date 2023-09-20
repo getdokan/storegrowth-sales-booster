@@ -1,17 +1,18 @@
-import { Form, Switch, Button } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import { noop } from '../helper';
+import { createPopupForm, noop } from '../helper';
 import { __ } from '@wordpress/i18n';
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import { Fragment } from "react";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 function General( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
-  const { createPopupForm, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupForm: select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading: select( 'sgsb_order_sales_pop' ).getButtonLoading()
+  const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
+    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {
@@ -21,15 +22,19 @@ function General( { onFormSave, upgradeTeaser } ) {
     } );
   };
 
+  const onFormReset = () => {
+    setCreateFromData( { ...createPopupForm } );
+  }
+
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <Switcher
           colSpan={ 12 }
           name={ 'enable' }
           changeHandler={ onFieldChange }
           title={ __( 'Enable Popup', 'storegrowth-sales-booster' ) }
-          isEnable={ (createPopupForm.enable == 'true' || createPopupForm.enable == true) ? true : false }
+          isEnable={ (createPopupFormData.enable == 'true' || createPopupFormData.enable == true) ? true : false }
         />
         <Switcher
           colSpan={ 12 }
@@ -37,19 +42,15 @@ function General( { onFormSave, upgradeTeaser } ) {
           needUpgrade={ upgradeTeaser }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Popup in Mobile', 'storegrowth-sales-booster' ) }
-          isEnable={ (createPopupForm.mobile_view == 'true' || createPopupForm.mobile_view == true) ? true : false }
+          isEnable={ (createPopupFormData.mobile_view == 'true' || createPopupFormData.mobile_view == true) ? true : false }
         />
       </SettingsSection>
-
-      <Button
-        type="primary"
-        loading={ getButtonLoading }
-        className='sgsb-settings-save-button'
-        onClick={ () => onFormSave( 'general_settings' ) }
-      >
-          { __( 'Save', 'storegrowth-sales-booster' ) }
-      </Button>
-    </>
+      <ActionsHandler
+        resetHandler={ onFormReset }
+        loadingHandler={ getButtonLoading }
+        saveHandler={ () => onFormSave( 'general_settings' ) }
+      />
+    </Fragment>
   );
 }
 

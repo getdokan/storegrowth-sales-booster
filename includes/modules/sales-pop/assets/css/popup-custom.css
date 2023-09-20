@@ -4,8 +4,8 @@
 	transition: top 1.2s ease;	
 }
 .custom-social-proof .custom-notification {
-	min-width: 330px;
-	max-height: 93px;
+    width: 400px;
+	min-height: 93px;
 	border: 0;
 	text-align: left;
 	z-index: 99999;

@@ -14,7 +14,7 @@ register( OrderBumpStore );
 /**
  * Add routes to sidebar.
  */
-addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams) => {
+addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams,useSearchParams) => {
   routes.push( {
     path: "/upsell-order-bump",
     exact:true,
@@ -28,15 +28,15 @@ addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams) => {
       },
       {
         path: "create-bump",
-        element: <CreateBump navigate={navigate} useParams={useParams} />
+        element: <CreateBump navigate={navigate} useParams={useParams} useSearchParams={useSearchParams} />
       },
       {
         path: ":bump_id",
-        element: <CreateBump navigate={navigate} useParams={useParams} />
+        element: <CreateBump navigate={navigate} useParams={useParams} useSearchParams={useSearchParams} />
       },
       {
         path: ":action_name/:bump_id",
-        element: <CreateBump navigate={navigate} useParams={useParams} />
+        element: <CreateBump navigate={navigate} useParams={useParams} useSearchParams={useSearchParams} />
       },
     ]
   } );
