@@ -3,3 +3,5 @@ node_modules
 vendor
 .idea
 lerna-debug.log
+assets/build/
+includes/modules/*/assets/build/

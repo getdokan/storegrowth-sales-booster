@@ -5,12 +5,6 @@
  * @package SBFW
  */
 
-$banner_type_to_show = sgsb_pd_banner_get_banner_type_to_show();
-
-if ( ! $banner_type_to_show ) {
-	return;
-}
-
 $settings    = sgsb_pd_banner_get_settings();
 $banner_text = sgsb_pd_banner_get_banner_text( $settings );
 $banner_icon = sgsb_pd_banner_get_banner_icon( $settings );

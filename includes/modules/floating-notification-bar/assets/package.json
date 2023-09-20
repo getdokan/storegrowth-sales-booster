@@ -1,5 +1,5 @@
 {
-  "name": "sales-booster-free-shipping-bar",
+  "name": "sales-booster-floating-notification-bar",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -18,6 +18,6 @@
     "nanoid": "^3.3.4",
     "@wordpress/i18n": "^4.24.0",
     "react-fa-icon-picker": "^1.0.3",
-    "moment": "^2.29.1"
+    "dayjs": "^1.11.9"
   }
 }

@@ -1,7 +1,9 @@
 import { Button } from "antd";
+import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import DiscountBanner from "./DiscountBanner";
-
+import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import DefaultBanner from "./DefaultBanner";
 function SettingsTab(props) {
   const {
     formData,
@@ -24,7 +26,7 @@ function SettingsTab(props) {
 
   return (
     <>
-      <DiscountBanner
+      <DefaultBanner
         formData={formData}
         onFieldChange={onFieldChange}
         onIconChange={onIconChange}

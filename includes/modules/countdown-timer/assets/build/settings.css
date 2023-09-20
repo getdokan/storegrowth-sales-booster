@@ -1,1 +1,0 @@
-.selector{border-radius:10px;box-shadow:0 2px 12px 0 rgba(24,144,255,.2);cursor:pointer}.image-wrapper,.selector{transition:border-color .3s ease}.image-wrapper{border:2px solid transparent;border-radius:10px;overflow:hidden;width:200px}.selector.selected .image-wrapper{border-color:#40a9ff;border-radius:10px}.sgsb-countdown-theme{display:flex;flex-wrap:wrap;gap:1.5em}

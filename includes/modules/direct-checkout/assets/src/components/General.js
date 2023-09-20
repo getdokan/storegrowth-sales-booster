@@ -87,6 +87,8 @@ function General({ onFormSave, upgradeTeaser }) {
           handleCheckboxChange={onFieldChange}
           isSingleMode={true}
           title={__("Button Layout Setting", "storegrowth-sales-booster")}
+          headColSpan = {9}
+          checkboxColSpan = {15}
         />
 
         <SelectBox
