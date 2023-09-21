@@ -134,6 +134,7 @@ class Enqueue_Script {
 		$banner_height = sgsb_find_option_setting( $settings, 'banner_height', 60 );
 		$bar_type      = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
 		$font_family   = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
+		$font_size     = sgsb_find_option_setting( $settings, 'font_size', 20 );
 		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
@@ -172,6 +173,7 @@ class Enqueue_Script {
 				fill: {$icon_color};
 			}
 			.sgsb-pd-banner-text{
+				font-size: {$font_size}px;
 				font-family: {$selected_font};
 			}
 		";

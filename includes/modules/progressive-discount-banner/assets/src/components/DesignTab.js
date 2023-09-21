@@ -6,7 +6,7 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-
+import Templates from "./Templates";
 function DesignTab(props) {
   const {
     formData,
@@ -16,7 +16,6 @@ function DesignTab(props) {
     upgradeTeaser,
     fontFamily,
   } = props;
-
 
   return (
     <Fragment>
@@ -78,7 +77,7 @@ function DesignTab(props) {
           title={__("Icon Color", "storegrowth-sales-booster")}
         />
       </SettingsSection>
-
+      <Templates textTitle={__("Templates", "storegrowth-sales-booster")} />
       <Button
         type="primary"
         onClick={onFormSave}
