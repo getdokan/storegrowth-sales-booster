@@ -39,7 +39,7 @@ const Preview = ({ formData, fontFamily }) => {
             }}
           />
         </div>
-        <p
+        <span
           className="sgsb-pd-banner-text"
           style={{
             textAlign: "center",
@@ -48,7 +48,7 @@ const Preview = ({ formData, fontFamily }) => {
           }}
         >
           {dynamicText}
-        </p>
+        </span>
         <div className="sgsb-pd-banner-bar-remove">
           <Image src={RemoveCross} />
         </div>
