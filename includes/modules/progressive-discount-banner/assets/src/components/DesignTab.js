@@ -8,19 +8,15 @@ import Number from "../../../../../../assets/src/components/settings/Panels/Pane
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
 function DesignTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser } =
-    props;
+  const {
+    formData,
+    onFieldChange,
+    onFormSave,
+    buttonLoading,
+    upgradeTeaser,
+    fontFamily,
+  } = props;
 
-  const fontFamily = [
-    {
-      value: "poppins",
-      label: __("Poppins", "storegrowth-sales-booster"),
-    },
-    {
-      value: "dm-sans",
-      label: __("DM Sans", "storegrowth-sales-booster"),
-    },
-  ];
 
   return (
     <Fragment>
@@ -43,7 +39,10 @@ function DesignTab(props) {
           fieldValue={formData.font_family}
           changeHandler={onFieldChange}
           title={__("Font Family", "storegrowth-sales-booster")}
-          tooltip={__("Select your desired font family", "storegrowth-sales-booster")}
+          tooltip={__(
+            "Select your desired font family",
+            "storegrowth-sales-booster"
+          )}
         />
         <Number
           min={1}

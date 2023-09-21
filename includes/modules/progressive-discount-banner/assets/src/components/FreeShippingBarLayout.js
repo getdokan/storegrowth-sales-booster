@@ -52,6 +52,29 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     font_size: 20,
   });
 
+  const fontFamily = [
+    {
+      value: "poppins",
+      label: __("Poppins", "storegrowth-sales-booster"),
+    },
+    {
+      value: "roboto",
+      label: __("Roboto", "storegrowth-sales-booster"),
+    },
+    {
+      value: "lato",
+      label: __("Lato", "storegrowth-sales-booster"),
+    },
+    {
+      value: "montserrat",
+      label: __("Montserrat", "storegrowth-sales-booster"),
+    },
+    {
+      value: "ibm_plex_sans",
+      label: __("IBM Plex Sans", "storegrowth-sales-booster"),
+    },
+  ];
+
   const isProEnabled = sgsbAdmin.isPro;
 
   const getSettings = () => {
@@ -160,6 +183,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           onFormSave={() => onFormSave("design")}
           upgradeTeaser={!isProEnabled}
           buttonLoading={buttonLoading}
+          fontFamily={fontFamily}
         />
       ),
     },
@@ -181,7 +205,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview formData={formData} />
+              <Preview formData={formData} fontFamily={fontFamily} />
             </PanelPreview>
           )}
         </PanelRow>

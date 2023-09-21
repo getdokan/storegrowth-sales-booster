@@ -1,3 +1,29 @@
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('../../../../../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+  @font-face {
+    font-family: 'Lato';
+    src: url('../../../../../assets/fonts/Lato/Lato-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('../../../../../assets/fonts/Montserrat/Montserrat-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+  @font-face {
+    font-family: 'Poppins';
+    src: url('../../../../../assets/fonts/Poppins/Poppins-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+  @font-face {
+    font-family: 'Roboto';
+    src: url('../../../../../assets/fonts/Roboto/Roboto-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+
 body.show_discount_banner .sgsb-pd-banner-bar-wrapper{
     display: block;
     transition: 0.5s;
