@@ -40,20 +40,20 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     icon_color: "#ffffff",
     progressive_banner_icon_name: "",
     progressive_banner_icon_html: "",
-    banner_device_view:[],
-    banner_show_option:"banner-show-everywhere",
-    slected_page_option:[],
-    user_type:"both",
-    banner_trigger:"after-few-seconds",
-    banner_delay:7,
-    scroll_banner_delay:7,
-    banner_height:60,
-    font_family:"poppins",
-    font_size:20,
+    banner_device_view: [],
+    banner_show_option: "banner-show-everywhere",
+    slected_page_option: [],
+    user_type: "both",
+    banner_trigger: "after-few-seconds",
+    banner_delay: 7,
+    scroll_banner_delay: 7,
+    banner_height: 60,
+    font_family: "poppins",
+    font_size: 20,
   });
 
   const isProEnabled = sgsbAdmin.isPro;
-  
+
   const getSettings = () => {
     setPageLoading(true);
 
@@ -110,7 +110,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     const data = {
       action: "sgsb_pd_banner_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
-      form_data: JSON.stringify({'shipping_bar_data':formData}),
+      form_data: JSON.stringify({ shipping_bar_data: formData }),
     };
 
     jQuery
@@ -181,7 +181,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview />
+              <Preview formData={formData} />
             </PanelPreview>
           )}
         </PanelRow>
