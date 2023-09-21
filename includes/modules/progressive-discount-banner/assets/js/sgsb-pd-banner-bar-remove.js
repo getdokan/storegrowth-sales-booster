@@ -1,4 +1,5 @@
 (function ($) {
+  console.log(sgsbLocalizedData);
   const addClassToBodyToHanleBannerVisibility = () => {
     document.body.classList.add("show_discount_banner");
   };

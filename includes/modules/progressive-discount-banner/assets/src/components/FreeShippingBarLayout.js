@@ -25,8 +25,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
 
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
-
-  const [formData, setFormData] = useState({
+  const initialShipData = {
     discount_type: "free-shipping",
     discount_amount_mode: "fixed-amount",
     discount_amount_value: "",
@@ -50,8 +49,14 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     banner_height: 60,
     font_family: "poppins",
     font_size: 20,
-  });
+  };
 
+ 
+  const [formData, setFormData] = useState({ ...initialShipData });
+
+  const onFormReset = () => {
+    setFormData({ ...initialShipData });
+  };
   const fontFamily = [
     {
       value: "poppins",
@@ -170,6 +175,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           buttonLoading={buttonLoading}
           onIconChange={onIconChange}
           upgradeTeaser={!isProEnabled}
+          onFormReset={onFormReset}
         />
       ),
     },

@@ -133,8 +133,9 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 		Common_Hooks::instance();
 		Enqueue_Script::instance();
 		Woocommerce_Discount::instance();
-	}
 
+		do_action( 'storegrowth_progressive_discount_banner_module_init' );
+	}
 }
 
 // Create object and return.

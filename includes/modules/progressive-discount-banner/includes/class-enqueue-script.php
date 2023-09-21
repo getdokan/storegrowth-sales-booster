@@ -55,6 +55,11 @@ class Enqueue_Script {
 			filemtime( sgsb_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
+		$settings       = sgsb_pd_banner_get_settings();
+		$localized_data = $settings;
+
+		// Use wp_localize_script to pass the data to your script.
+		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsbLocalizedData', $localized_data );
 
 		$this->inline_styles();
 	}
