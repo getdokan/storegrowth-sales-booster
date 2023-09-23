@@ -29,9 +29,9 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     discount_type: "free-shipping",
     discount_amount_mode: "fixed-amount",
     discount_amount_value: "",
-    cart_minimum_amount: "",
-    progressive_banner_text: "",
-    goal_completion_text: "",
+    cart_minimum_amount: 10,
+    progressive_banner_text: "Add more [amount] to get free shipping.",
+    goal_completion_text: "You have successfully acquired free Shipping.",
     bar_position: "top",
     bar_type: "normal",
     background_color: "#008DFF",
@@ -39,7 +39,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     icon_color: "#ffffff",
     progressive_banner_icon_name: "",
     progressive_banner_icon_html: "",
-    banner_device_view: [],
+    banner_device_view: ["banner-show-desktop"],
     banner_show_option: "banner-show-everywhere",
     slected_page_option: [],
     user_type: "both",
@@ -51,12 +51,15 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     font_size: 20,
   };
 
- 
   const [formData, setFormData] = useState({ ...initialShipData });
 
   const onFormReset = () => {
     setFormData({ ...initialShipData });
   };
+
+  console.log("======== THe Banner Data =======");
+  console.log(formData);
+
   const fontFamily = [
     {
       value: "poppins",

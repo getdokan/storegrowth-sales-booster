@@ -55,11 +55,13 @@ class Enqueue_Script {
 			filemtime( sgsb_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
-		$settings       = sgsb_pd_banner_get_settings();
-		$localized_data = $settings;
+		$settings             = sgsb_pd_banner_get_settings();
+		$deafault_device_view = array( 'banner-show-desktop' );
+		$device_view          = sgsb_find_option_setting( $settings, 'banner_device_view', $deafault_device_view );
+		$localized_fsb_data   = array( 'banner_device_view' => $device_view );
 
 		// Use wp_localize_script to pass the data to your script.
-		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsbLocalizedData', $localized_data );
+		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsbLocalizedData', $localized_fsb_data );
 
 		$this->inline_styles();
 	}
@@ -90,8 +92,8 @@ class Enqueue_Script {
 	 * value to the 'value' property of each object. If a match is found, it returns
 	 * the corresponding 'label' property; otherwise, it returns an empty string.
 	 *
-	 * @param mixed[] $objectArray An array of objects where each object has 'value' and 'label' properties.
-	 * @param mixed   $value       The value to search for within the array of objects.
+	 * @param mixed[] $value An array of objects where each object has 'value' and 'label' properties.
+	 * @param mixed   $object_array       The value to search for within the array of objects.
 	 *
 	 * @return string The label corresponding to the provided value, or an empty string if not found.
 	 */
@@ -141,11 +143,6 @@ class Enqueue_Script {
 		$font_family   = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
 		$font_size     = sgsb_find_option_setting( $settings, 'font_size', 20 );
 		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
-
-		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
-			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
-			return false;
-		}
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '

@@ -42,6 +42,7 @@ function sgsb_pd_banner_get_banner_text( $settings ) {
  * @return string
  */
 function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
+
 	$path = __DIR__ . '/../templates/bar.php';
 
 	if ( ! $is_echo ) {
