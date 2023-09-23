@@ -57,9 +57,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     setFormData({ ...initialShipData });
   };
 
-  console.log("======== THe Banner Data =======");
-  console.log(formData);
-
   const fontFamily = [
     {
       value: "poppins",
