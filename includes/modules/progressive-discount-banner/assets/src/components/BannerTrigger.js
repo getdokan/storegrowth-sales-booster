@@ -71,7 +71,7 @@ const BannerTrigger = (props) => {
                         option.value === "after-few-seconds"
                           ? "banner_delay"
                           : "scroll_banner_delay",
-                        event.target.value
+                        event
                       )
                 }
                 placeholder={`sec`}

@@ -55,13 +55,10 @@ class Enqueue_Script {
 			filemtime( sgsb_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
-		$settings             = sgsb_pd_banner_get_settings();
-		$deafault_device_view = array( 'banner-show-desktop' );
-		$device_view          = sgsb_find_option_setting( $settings, 'banner_device_view', $deafault_device_view );
-		$localized_fsb_data   = array( 'banner_device_view' => $device_view );
+		$localized_fsb_data = sgsb_pd_banner_get_settings();
 
 		// Use wp_localize_script to pass the data to your script.
-		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsbLocalizedData', $localized_fsb_data );
+		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsb_fsb_data', $localized_fsb_data );
 
 		$this->inline_styles();
 	}
