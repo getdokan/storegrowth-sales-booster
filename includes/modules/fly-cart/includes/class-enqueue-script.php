@@ -109,10 +109,11 @@ class Enqueue_Script {
 	 */
 	private function qc_basic_inline_styles() {
 		// Get style options.
-		$settings        = get_option( 'sgsb_fly_cart_settings' );
-		$wfc_color       = sgsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
-		$wfc_btn_bgcolor = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
-		$widget_bg_color = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
+		$settings         = get_option( 'sgsb_fly_cart_settings' );
+		$wfc_color        = sgsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
+		$widget_bg_color  = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
+		$wfc_btn_bgcolor  = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
+		$shop_btn_bgcolor = sgsb_find_option_setting( $settings, 'shopping_button_bg_color', '#073B4C' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -120,14 +121,22 @@ class Enqueue_Script {
 			}
 			.wfc-cart-icon .wfc-cart-countlocation {
 				background-color: {$wfc_color};
+				color: {$wfc_btn_bgcolor};
 			}
 			.wfc-widget-sidebar {
 				background-color: {$widget_bg_color};
+				padding: 26px 0 !important;
 			}
 			.sgsb-cart-widget-buttons a {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
+			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
+			    background-color: {$shop_btn_bgcolor};
+			}
+			.sgsb-apply-coupon {
+                background: {$wfc_btn_bgcolor}
+            }
 		";
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
