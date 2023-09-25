@@ -9,17 +9,19 @@ function HeadBar() {
         <Row align="middle" justify="espace-betweennd">
           <Col span={24}>
             <Row justify="end">
-              <div className="premium-btn">
-                <Button
-                  width="210px"
-                  href="https://invizo.io/support/"
-                  target="_blank"
-                  type="primary"
-                >
-                  Get Premium
-                  <Image preview={false} width={22} src={crownIcon} />
-                </Button>
-              </div>
+              {!sgsbAdmin.isPro && (
+                <div className="premium-btn">
+                  <Button
+                    width="210px"
+                    href="https://invizo.io/support/"
+                    target="_blank"
+                    type="primary"
+                  >
+                    Get Premium
+                    <Image preview={false} width={22} src={crownIcon} />
+                  </Button>
+                </div>
+              )}
               <div className="help-btn">
                 <Button
                   width="210px"
