@@ -1,4 +1,4 @@
-import { Form} from "antd";
+import { Form } from "antd";
 import { RemovableIconPicker } from "./RemovableIconPicker";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
@@ -8,7 +8,7 @@ import TextAreaBox from "../../../../../../assets/src/components/settings/Panels
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import DisplayRules from "./DisplayRules";
 function DiscountBanner(props) {
-  const { formData, onFieldChange, onIconChange ,upgradeTeaser} = props;
+  const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
 
   const barPositions = [
     {
@@ -30,7 +30,7 @@ function DiscountBanner(props) {
       label: __("Sticky", "storegrowth-sales-booster"),
     },
   ];
-  
+
   const discountTypes = [
     {
       value: "free-shipping",
@@ -58,21 +58,20 @@ function DiscountBanner(props) {
     discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
   return (
     <SettingsSection>
-       <SelectBox
-          name={`bar_position`}
-          options={[...barPositions]}
-          fieldValue={formData.bar_position}
-          changeHandler={onFieldChange}
-          title={__("Bar Position", "storegrowth-sales-booster")}
-          
-        />
-        <SelectBox
-          name={`bar_type`}
-          options={[...barTypes]}
-          fieldValue={formData.bar_type}
-          changeHandler={onFieldChange}
-          title={__("Bar Type", "storegrowth-sales-booster")}
-        />
+      <SelectBox
+        name={`bar_position`}
+        options={[...barPositions]}
+        fieldValue={formData.bar_position}
+        changeHandler={onFieldChange}
+        title={__("Bar Position", "storegrowth-sales-booster")}
+      />
+      <SelectBox
+        name={`bar_type`}
+        options={[...barTypes]}
+        fieldValue={formData.bar_type}
+        changeHandler={onFieldChange}
+        title={__("Bar Type", "storegrowth-sales-booster")}
+      />
       <SelectBox
         name={`discount_type`}
         options={[...discountTypes]}
@@ -87,7 +86,6 @@ function DiscountBanner(props) {
       {formData.discount_type === "discount-amount" && (
         <Fragment>
           <SelectBox
-            colSpan={12}
             name={`discount_amount_mode`}
             options={[...discountModes]}
             fieldValue={formData.discount_amount_mode}
@@ -95,7 +93,6 @@ function DiscountBanner(props) {
             title={__("Discount Mode", "storegrowth-sales-booster")}
           />
           <Number
-            colSpan={12}
             min={1}
             max={100}
             style={{

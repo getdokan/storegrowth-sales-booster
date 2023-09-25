@@ -1,16 +1,26 @@
 import { Radio, InputNumber } from "antd";
 import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
+import { useState, useEffect } from "react";
 
 const BannerTrigger = (props) => {
   const { upgradeTeaser, onFieldChange, formData } = props;
   const noop = () => {};
+  
+  // Initialize defaultTriggerValue from formData.banner_trigger
+  const [defaultTriggerValue, setDefaultTriggerValue] = useState(formData.banner_trigger);
+
+  // Update defaultTriggerValue when formData changes
+  useEffect(() => {
+    setDefaultTriggerValue(formData.banner_trigger);
+  }, [formData]);
+
   // Hardcoded options
   const triggerOptions = [
     { value: "after-few-seconds", label: "After a few Seconds" },
     { value: "after-scroll", label: "After Scroll" },
   ];
-  const banner_trigger_value = formData.banner_trigger
+
   return (
     <>
       <EmptyField
@@ -26,14 +36,14 @@ const BannerTrigger = (props) => {
             width: "100%",
           }}
           disabled={upgradeTeaser}
-          onChange={upgradeTeaser ? noop : (event)=>{
+          onChange={upgradeTeaser ? noop : (event) => {
             onFieldChange("banner_trigger", event.target.value);
           }}
-          defaultValue={formData.banner_trigger}
+          value={defaultTriggerValue}
         >
           {triggerOptions.map((option) => (
             <div
-              className={option.value===banner_trigger_value?"trigger-radio-selected":""}
+              className={option.value === defaultTriggerValue ? "trigger-radio-selected" : ""}
               key={option.value}
               style={{
                 display: "flex",
@@ -48,6 +58,7 @@ const BannerTrigger = (props) => {
             >
               <Radio value={option.value}>{option.label}</Radio>
               <InputNumber
+                min={0}
                 // Hardcoded input field names and values
                 disabled={upgradeTeaser}
                 style={{

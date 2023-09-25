@@ -74,6 +74,7 @@ const CheckboxGroup = ({
   checkboxColSpan = 9,
   tooltip,
   needUpgrade = false,
+  showProIcon = true
 }) => {
   const handleChange = (option) => {
     if (isSingleMode) {
@@ -125,7 +126,7 @@ const CheckboxGroup = ({
                   )}
                 </span>
               </Checkbox>
-              {checkbox.needUpgrade ? <UpgradeCrown /> : ""}
+              {(checkbox.needUpgrade && showProIcon) ? <UpgradeCrown /> : ""}
             </label>
           ))}
         </Space>

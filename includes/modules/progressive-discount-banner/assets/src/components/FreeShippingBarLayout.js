@@ -190,6 +190,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           upgradeTeaser={!isProEnabled}
           buttonLoading={buttonLoading}
           fontFamily={fontFamily}
+          onFormReset={onFormReset}
         />
       ),
     },

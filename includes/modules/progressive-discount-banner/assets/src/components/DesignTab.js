@@ -6,6 +6,8 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+
 import Templates from "./Templates";
 function DesignTab(props) {
   const {
@@ -15,6 +17,7 @@ function DesignTab(props) {
     buttonLoading,
     upgradeTeaser,
     fontFamily,
+    onFormReset,
   } = props;
 
   return (
@@ -77,15 +80,16 @@ function DesignTab(props) {
           title={__("Icon Color", "storegrowth-sales-booster")}
         />
       </SettingsSection>
-      <Templates textTitle={__("Templates", "storegrowth-sales-booster")} />
-      <Button
-        type="primary"
-        onClick={onFormSave}
-        loading={buttonLoading}
-        className="sgsb-settings-save-button"
-      >
-        Save
-      </Button>
+      <Templates textTitle={__("Templates", "storegrowth-sales-booster")
+    } 
+    formData={formData}
+    />
+
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={buttonLoading}
+        saveHandler={onFormSave}
+      />
     </Fragment>
   );
 }

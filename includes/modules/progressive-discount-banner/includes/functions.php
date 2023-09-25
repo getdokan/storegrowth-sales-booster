@@ -42,19 +42,23 @@ function sgsb_pd_banner_get_banner_text( $settings ) {
  * @return string
  */
 function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
+	$path = apply_filters( 'free_shipping_bar_content_pro', __DIR__ . '/../templates/bar.php' );
 
-	$path = __DIR__ . '/../templates/bar.php';
+	if ( ! $path ) {
+			return;
+	}
 
 	if ( ! $is_echo ) {
-		ob_start();
-
-		include $path;
-
-		return ob_get_clean();
+			ob_start();
 	}
 
 	include $path;
+
+	if ( ! $is_echo ) {
+			return ob_get_clean();
+	}
 }
+
 
 /**
  * Get banner icon.
