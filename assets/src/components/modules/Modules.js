@@ -205,8 +205,7 @@ function Modules() {
         ) : (
           ""
         )}
-
-        <PremiumBox />
+        {!sgsbAdmin.isPro && <PremiumBox />}
       </div>
       <div className="sgsb-admin-dashboard-module">
         <div className="sgsb-admin-dashboard-module-top-bar">
