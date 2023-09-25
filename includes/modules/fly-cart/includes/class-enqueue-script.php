@@ -184,6 +184,15 @@ class Enqueue_Script {
 	 * Enqueue frontend JS
 	 */
 	private function frontend_widget_script() {
+		// Get checkout redirection data.
+		$qcart_settings        = get_option( 'sgsb_fly_cart_settings' );
+		$dir_checkout_settings = get_option( 'sgsb_direct_checkout_settings' );
+
+		$is_add_to_qcart_redirect = sgsb_find_option_setting( $qcart_settings, 'enable_add_to_cart_redirect', true );
+		$checkout_redirect        = sgsb_find_option_setting( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
+
+		$is_checkout_redirect = ( $checkout_redirect === 'quick-cart-checkout' );
+
 		wp_enqueue_script(
 			'wfc-script',
 			sgsb_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
@@ -196,8 +205,11 @@ class Enqueue_Script {
 			'wfc-script',
 			'sgsbFrontend',
 			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'sgsb_frontend_ajax' ),
+				'checkoutRedirect'  => $is_checkout_redirect,
+				'quickCartRedirect' => $is_add_to_qcart_redirect,
+				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
+				'nonce'             => wp_create_nonce( 'sgsb_frontend_ajax' ),
+				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 			)
 		);
 	}

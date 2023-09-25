@@ -19,18 +19,19 @@ function FlyCart( { navigate, useSearchParams } ) {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const quickCartState = {
-    layout                   : "side",
-    icon_name                : "shopping-cart-icon-1",
-    icon_color               : "#FFF",
-    show_coupon              : true,
-    icon_position            : "bottom-right",
-    widget_bg_color          : "#EAF0FD",
-    buttons_bg_color         : "#0875FF",
-    show_remove_icon         : true,
-    show_product_image       : true,
-    show_product_price       : true,
-    show_quantity_picker     : true,
-    shopping_button_bg_color : "#073B4C",
+    layout                      : "side",
+    icon_name                   : "shopping-cart-icon-1",
+    icon_color                  : "#FFF",
+    show_coupon                 : true,
+    icon_position               : "bottom-right",
+    widget_bg_color             : "#EAF0FD",
+    buttons_bg_color            : "#0875FF",
+    show_remove_icon            : true,
+    show_product_image          : true,
+    show_product_price          : true,
+    show_quantity_picker        : true,
+    shopping_button_bg_color    : "#073B4C",
+    enable_add_to_cart_redirect : true,
   };
 
   const [formData, updateFormData] = useState( { ...quickCartState } );

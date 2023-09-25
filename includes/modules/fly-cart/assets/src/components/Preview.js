@@ -7,8 +7,7 @@ import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSett
 
 const { Title } = Typography;
 
-    const Preview = ( { storeData } ) => {
-
+const Preview = ( { storeData } ) => {
     return (
         <Fragment>
             <div

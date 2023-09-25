@@ -38,6 +38,7 @@ const GeneralSettings = ({
         { name: 'show_quantity_picker', title: __( 'Show Quantity Picker', 'storegrowth-sales-booster' ) },
         { name: 'show_product_price', title: __( 'Show product price', 'storegrowth-sales-booster' ) },
         { name: 'show_coupon', title: __( 'Show coupon', 'storegrowth-sales-booster' ), needUpgrade: !sgsbAdmin.isPro },
+        { name: 'enable_add_to_cart_redirect', title: __( 'Add to quick cart', 'storegrowth-sales-booster' ), needUpgrade: !sgsbAdmin.isPro },
     ];
 
     return (

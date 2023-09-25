@@ -37,11 +37,11 @@ const ContentGroup = ( {
             >
                 { options && options?.map( ( option, index ) => (
                     <Col
-                        span={ option?.needUpgrade ? 24 : 12 }
+                        span={ 12 }
                         className="gutter-row"
                         style={ {
                             paddingLeft: ( index % 2 === 0 ) ? 0 : 6,
-                            paddingRight: ( index % 2 !== 0 ) ? 0 : ( option?.needUpgrade ? 0 : 6 ),
+                            paddingRight: ( index % 2 !== 0 ) ? 0 : 6,
                         } }
                     >
                         <Card

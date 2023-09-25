@@ -7,27 +7,27 @@
 // self-invoking
 ;(function ($, window, document, undefined) {
     $.fn.flyto = function ( options ) {
-        
+
     // Establish default settings
-        
+
         var settings = $.extend({
             item      : '.flyto-item',
             target    : '.flyto-target',
             button    : '.flyto-btn',
             shake     : true
         }, options);
-        
-        
+
+
         return this.each(function () {
-            var 
+            var
                 $this    = $(this),
                 flybtn   = $this.find(settings.button),
                 target   = $(settings.target),
                 itemList = $this.find(settings.item);
-            
+
         flybtn.on('click', function () {
-            
-            
+
+
             var iconwidth = $('.wfc-cart-icon span');
             var _this = $(this),
                 eltoDrag = _this.parents('li.product').find("img").eq(0);
@@ -56,7 +56,7 @@
                     'top': target.offset().top - 50,
                     'opacity': '0'
             }, 1200, 'easeInOutExpo');
-            
+
             if (settings.shake) {
             setTimeout(function () {
                 target.effect("shake", {
@@ -65,7 +65,7 @@
             }, 1800);
             }
 
-    
+
             imgclone.animate({
                 'width': 0,
                 'height': 0
@@ -74,7 +74,7 @@
             });
         }
         });
-        
+
         });
     }
 })(jQuery, window, document);

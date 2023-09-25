@@ -41,7 +41,6 @@ const CartContent = ({
                     {needUpgrade && (
                         <span className={ `upgrade-content` } >
                             <UpgradeCrown />
-                            { __( 'Upgrade To Premium', 'storegrowth-sales-booster' ) }
                         </span>
                     ) }
                 </div>

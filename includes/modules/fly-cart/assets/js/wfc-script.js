@@ -58,13 +58,24 @@
     inputElm.val(newVal).trigger('input');
   }
 
-  // For sidebar.
-  jQuery(document).ready(function () {
-    jQuery('.wfc-open-btn').on('click', function () {
+  const triggerQuickCartPopup = ( targetDom ) => {
+    jQuery( targetDom ).on( 'click', function ( event ) {
+      event.preventDefault();
       jQuery('.wfc-overlay').removeClass('wfc-hide');
       jQuery('.wfc-widget-sidebar').removeClass('wfc-slide');
-      getCartContents();
+        getCartContents();
     });
+  }
+
+  const triggerAddToQuickCart = () => {
+    jQuery( '.product' ).on( 'click', '.add_to_cart_button', () => {
+      setTimeout( () => $( '.wfc-open-btn' ).click(), 2000 );
+    } );
+  }
+
+  // For sidebar.
+  jQuery(document).ready(function () {
+    triggerQuickCartPopup( '.wfc-open-btn' );
     jQuery('.wfc-overlay').on('click', function () {
       jQuery(this).addClass('wfc-hide');
       jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
@@ -75,8 +86,17 @@
       jQuery('.wfc-widget-sidebar').addClass('wfc-slide');
     });
 
+    const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
+    // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
+    if ( Boolean( checkoutRedirect ) ) {
+      triggerQuickCartPopup( '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page' );
+    }
+
+    // Trigger quick cart if quick cart redirection enabled.
+    if ( Boolean( isPro ) && Boolean( quickCartRedirect ) ) triggerAddToQuickCart();
+
     if(document.getElementById('wpadminbar')){
-        jQuery('.wfc-widget-sidebar').css('margin-top', '32px');
+      jQuery('.wfc-widget-sidebar').css('margin-top', '32px');
     }
 
     // Handle cart form submit.
@@ -218,5 +238,10 @@
         openCheckoutPageCallback(event.target.href);
       }
     );
+
+    if ( Boolean( isPro ) ) {
+      // Pass quick cart data to pro.
+      window.qcart = { checkoutRedirect, quickCartRedirect, addToQuickCart: triggerAddToQuickCart };
+    }
   });
 })(jQuery);

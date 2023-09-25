@@ -1992,8 +1992,6 @@ End Settings Sidebar
 
             &.disabled-settings {
               .ant-card-body {
-                padding: 14px;
-
                 .ant-col-2 {
                   display: inline-flex;
 
@@ -2009,12 +2007,8 @@ End Settings Sidebar
                 }
 
                 .checkbox-heading {
-                  gap: 20px;
+                  gap: 10px;
                   display: flex;
-
-                  .content-field-heading {
-                    margin: 0;
-                  }
 
                   .upgrade-content {
                     gap: 10px;
@@ -2084,6 +2078,7 @@ End Settings Sidebar
 
       .preview-panel {
         top: 40px;
+        display: block;
         position: sticky;
         margin-left: 32px;
       }
