@@ -42,7 +42,7 @@
     const bannerExists = () => {
       $(".sgsb-pd-banner-bar-wrapper").length === 0;
     };
-    
+
     function isMobileDevice() {
       // You can define your own criteria here, such as screen width
       // For example, consider devices with a screen width less than 768px as "mobile"
@@ -51,7 +51,7 @@
 
     $(document).ready(function () {
       // Check if the class exists in the DOM
-      if ($(".sgsb-pd-banner-bar-wrapper").length === 0) {
+      if (!bannerExists()) {
         paddingRemoverBody();
       }
     });
@@ -69,16 +69,17 @@
         paddingRemoverBody();
       } else {
         if (
-          (!banner_hidden_time || parseInt(banner_hidden_time) < now) &&
-          bannerExists()
+          (!banner_hidden_time || parseInt(banner_hidden_time) < now)
         ) {
           // Banner Triggering delayer.
           if (banner_trigger === "after-few-seconds") {
+            console.log("THis is Runnig after few seconds");
             bannerHide();
             setTimeout(function () {
               bannerShow();
             }, banner_delay * 1000);
           } else {
+            console.log("THis is Runnig after scroll");
             bannerHide();
             $(window).on("scroll", function () {
               if ($(window).scrollTop() > scrollThreshold) {

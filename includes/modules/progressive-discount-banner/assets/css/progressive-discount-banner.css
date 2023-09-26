@@ -35,7 +35,7 @@ body:not(.show_discount_banner){
 
 .sgsb-pd-banner-bar-wrapper {
     display: none;
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
     text-align: center;

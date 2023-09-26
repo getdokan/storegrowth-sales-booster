@@ -191,7 +191,7 @@ class Enqueue_Script {
 			} else {
 				$css .= '
 			.sgsb-pd-banner-bar-wrapper{
-				position: fixed;
+				position: absolute;
 			}';
 			}
 		}
