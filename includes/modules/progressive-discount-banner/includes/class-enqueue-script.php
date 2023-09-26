@@ -55,6 +55,10 @@ class Enqueue_Script {
 			filemtime( sgsb_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
+		$localized_fsb_data = sgsb_pd_banner_get_settings();
+
+		// Use wp_localize_script to pass the data to your script.
+		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsb_fsb_data', $localized_fsb_data );
 
 		$this->inline_styles();
 	}
@@ -79,35 +83,81 @@ class Enqueue_Script {
 	}
 
 	/**
+	 * Retrieves the label corresponding to a given value from an array of objects.
+	 *
+	 * This function iterates through the array of objects and matches the provided
+	 * value to the 'value' property of each object. If a match is found, it returns
+	 * the corresponding 'label' property; otherwise, it returns an empty string.
+	 *
+	 * @param mixed[] $value An array of objects where each object has 'value' and 'label' properties.
+	 * @param mixed   $object_array       The value to search for within the array of objects.
+	 *
+	 * @return string The label corresponding to the provided value, or an empty string if not found.
+	 */
+	private function get_label_by_value( $value, $object_array ) {
+		foreach ( $object_array as $object ) {
+			if ( $object['value'] === $value ) {
+				return $object['label'];
+			}
+		}
+		return '';
+	}
+
+	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
+		$font_family_arr = array(
+			array(
+				'value' => 'poppins',
+				'label' => 'Poppins',
+			),
+			array(
+				'value' => 'roboto',
+				'label' => 'Roboto',
+			),
+			array(
+				'value' => 'lato',
+				'label' => 'Lato',
+			),
+			array(
+				'value' => 'montserrat',
+				'label' => 'Montserrat',
+			),
+			array(
+				'value' => 'ibm_plex_sans',
+				'label' => 'IBM Plex Sans',
+			),
+		);
 		// Get style options.
-		$settings     = sgsb_pd_banner_get_settings();
-		$bar_position = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
-		$text_color   = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
-		$icon_color   = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
-
-		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
-			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
-			return false;
-		}
+		$settings      = sgsb_pd_banner_get_settings();
+		$bar_position  = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
+		$bg_color      = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
+		$text_color    = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
+		$icon_color    = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$banner_height = sgsb_find_option_setting( $settings, 'banner_height', 60 );
+		$bar_type      = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
+		$font_family   = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
+		$font_size     = sgsb_find_option_setting( $settings, 'font_size', 20 );
+		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
 				.sgsb-pd-banner-bar-wrapper {
-					top: auto;
+					top: auto !important;
 					bottom: 0;
+				}
+				body.admin-bar .sgsb-pd-banner-bar-wrapper {
+					top: ' . ( 0 ) . 'px;
+				}
+				body {
+					padding-top: ' . ( 0 ) . 'px;
 				}
 			';
 		} else {
 			$css = '
-				body.admin-bar .sgsb-pd-banner-bar-wrapper {
-					top: 32px;
-				}
 				body {
-					padding-top: 57px;
+					padding-top:' . ( $banner_height + 10 ) . 'px;
 				}
 			';
 		}
@@ -116,13 +166,36 @@ class Enqueue_Script {
 			.sgsb-pd-banner-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
+				height: {$banner_height}px;
 			}
 			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
 				fill: {$icon_color};
 			}
+			.sgsb-pd-banner-text{
+				font-size: {$font_size}px;
+				font-family: {$selected_font};
+			}
 		";
+
+		if ( 'sticky' === $bar_type ) {
+			$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: fixed;
+			}';
+		} elseif ( 'normal' === $bar_type ) {
+			if ( 'bottom' === $bar_position ) {
+				$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: inherit;
+			}';
+			} else {
+				$css .= '
+			.sgsb-pd-banner-bar-wrapper{
+				position: absolute;
+			}';
+			}
+		}
 
 		wp_add_inline_style( 'sgsb-pd-banner-style', $css );
 	}
-
 }

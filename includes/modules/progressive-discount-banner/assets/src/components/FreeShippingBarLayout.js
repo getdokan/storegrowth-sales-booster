@@ -25,14 +25,13 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
 
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
-
-  const [formData, setFormData] = useState({
+  const initialShipData = {
     discount_type: "free-shipping",
     discount_amount_mode: "fixed-amount",
     discount_amount_value: "",
-    cart_minimum_amount: "",
-    progressive_banner_text: "",
-    goal_completion_text: "",
+    cart_minimum_amount: 10,
+    progressive_banner_text: "Add more [amount] to get free shipping.",
+    goal_completion_text: "You have successfully acquired free Shipping.",
     bar_position: "top",
     bar_type: "normal",
     background_color: "#008DFF",
@@ -40,20 +39,49 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     icon_color: "#ffffff",
     progressive_banner_icon_name: "",
     progressive_banner_icon_html: "",
-    banner_device_view:[],
-    banner_show_option:"banner-show-everywhere",
-    slected_page_option:[],
-    user_type:"both",
-    banner_trigger:"after-few-seconds",
-    banner_delay:7,
-    scroll_banner_delay:7,
-    banner_height:60,
-    font_family:"poppins",
-    font_size:20,
-  });
+    banner_device_view: ["banner-show-desktop"],
+    banner_show_option: "banner-show-everywhere",
+    slected_page_option: [],
+    user_type: "both",
+    banner_trigger: "after-few-seconds",
+    banner_delay: 7,
+    scroll_banner_delay: 7,
+    banner_height: 60,
+    font_family: "poppins",
+    font_size: 20,
+  };
+
+  const [formData, setFormData] = useState({ ...initialShipData });
+
+  const onFormReset = () => {
+    setFormData({ ...initialShipData });
+  };
+
+  const fontFamily = [
+    {
+      value: "poppins",
+      label: __("Poppins", "storegrowth-sales-booster"),
+    },
+    {
+      value: "roboto",
+      label: __("Roboto", "storegrowth-sales-booster"),
+    },
+    {
+      value: "lato",
+      label: __("Lato", "storegrowth-sales-booster"),
+    },
+    {
+      value: "montserrat",
+      label: __("Montserrat", "storegrowth-sales-booster"),
+    },
+    {
+      value: "ibm_plex_sans",
+      label: __("IBM Plex Sans", "storegrowth-sales-booster"),
+    },
+  ];
 
   const isProEnabled = sgsbAdmin.isPro;
-  
+
   const getSettings = () => {
     setPageLoading(true);
 
@@ -110,7 +138,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     const data = {
       action: "sgsb_pd_banner_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
-      form_data: JSON.stringify({'shipping_bar_data':formData}),
+      form_data: JSON.stringify({ shipping_bar_data: formData }),
     };
 
     jQuery
@@ -147,6 +175,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           buttonLoading={buttonLoading}
           onIconChange={onIconChange}
           upgradeTeaser={!isProEnabled}
+          onFormReset={onFormReset}
         />
       ),
     },
@@ -160,6 +189,8 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           onFormSave={() => onFormSave("design")}
           upgradeTeaser={!isProEnabled}
           buttonLoading={buttonLoading}
+          fontFamily={fontFamily}
+          onFormReset={onFormReset}
         />
       ),
     },
@@ -181,7 +212,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview />
+              <Preview formData={formData} fontFamily={fontFamily} />
             </PanelPreview>
           )}
         </PanelRow>

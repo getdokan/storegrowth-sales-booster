@@ -57,7 +57,14 @@ class Common_Hooks {
 	 * Output bar html
 	 */
 	public function wp_footer() {
-		sgsb_pd_banner_get_bar_content();
+		$settings             = sgsb_pd_banner_get_settings();
+		$deafault_device_view = array( 'banner-show-desktop' );
+		$device_view          = sgsb_find_option_setting( $settings, 'banner_device_view', $deafault_device_view );
+
+		if ( empty( $device_view ) ) {
+			return;} else {
+				sgsb_pd_banner_get_bar_content();
+			}
 	}
 
 	/**

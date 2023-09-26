@@ -110,7 +110,6 @@ class Sales_Pop_Module implements Module_Skeleton {
 
 		do_action( 'storegrowth_sales_pop_module_init' );
 	}
-
 }
 
 // Create object and return.
