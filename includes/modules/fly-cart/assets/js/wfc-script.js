@@ -63,7 +63,7 @@
       event.preventDefault();
       jQuery('.wfc-overlay').removeClass('wfc-hide');
       jQuery('.wfc-widget-sidebar').removeClass('wfc-slide');
-        getCartContents();
+      getCartContents();
     });
   }
 
@@ -89,7 +89,24 @@
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
     if ( Boolean( checkoutRedirect ) ) {
-      triggerQuickCartPopup( '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page' );
+      jQuery( '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page' ).on( 'click', function ( event ) {
+        event.preventDefault();
+        const productId = event?.target?.href?.split( 'add-to-cart=' )?.[1];
+        jQuery.ajax({
+          url     : wc_add_to_cart_params.ajax_url,
+          type    : 'POST',
+          data    : {
+            'action'     : 'woocommerce_add_to_cart',
+            'product_id' : productId,
+          },
+          success : ( response ) => {
+            jQuery('.wfc-overlay').removeClass('wfc-hide');
+            jQuery('.wfc-widget-sidebar').removeClass('wfc-slide');
+            getCartContents();
+          },
+          error   : ( error ) => console.log( error )
+        });
+      });
     }
 
     // Trigger quick cart if quick cart redirection enabled.
