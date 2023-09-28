@@ -6,21 +6,19 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
+import Templates from "./Templates";
 function DesignTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser } =
-    props;
-
-  const fontFamily = [
-    {
-      value: "poppins",
-      label: __("Poppins", "storegrowth-sales-booster"),
-    },
-    {
-      value: "dm-sans",
-      label: __("DM Sans", "storegrowth-sales-booster"),
-    },
-  ];
+  const {
+    formData,
+    onFieldChange,
+    onFormSave,
+    buttonLoading,
+    upgradeTeaser,
+    fontFamily,
+    onFormReset,
+  } = props;
 
   return (
     <Fragment>
@@ -43,7 +41,10 @@ function DesignTab(props) {
           fieldValue={formData.font_family}
           changeHandler={onFieldChange}
           title={__("Font Family", "storegrowth-sales-booster")}
-          tooltip={__("Select your desired font family", "storegrowth-sales-booster")}
+          tooltip={__(
+            "Select your desired font family",
+            "storegrowth-sales-booster"
+          )}
         />
         <Number
           min={1}
@@ -79,15 +80,16 @@ function DesignTab(props) {
           title={__("Icon Color", "storegrowth-sales-booster")}
         />
       </SettingsSection>
+      <Templates textTitle={__("Templates", "storegrowth-sales-booster")
+    } 
+    formData={formData}
+    />
 
-      <Button
-        type="primary"
-        onClick={onFormSave}
-        loading={buttonLoading}
-        className="sgsb-settings-save-button"
-      >
-        Save
-      </Button>
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={buttonLoading}
+        saveHandler={onFormSave}
+      />
     </Fragment>
   );
 }

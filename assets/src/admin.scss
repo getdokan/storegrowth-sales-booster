@@ -1,6 +1,22 @@
 /* variable color */
 $white-color: #ffffff;
 
+@mixin font-face($font-family, $font-path) {
+  @font-face {
+    font-family: #{$font-family};
+    src: url(#{$font-path});
+    /* Other font properties like font-weight and font-style can also be defined here */
+  }
+}
+
+// Usage
+@include font-face('IBM Plex Sans', '../fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
+@include font-face('Lato', '../fonts/Lato/Lato-Regular.ttf');
+@include font-face('Montserrat', '../fonts/Montserrat/Montserrat-Regular.ttf');
+@include font-face('Poppins', '../fonts/Poppins/Poppins-Regular.ttf');
+@include font-face('Roboto', '../fonts/Roboto/Roboto-Regular.ttf');
+
+
 .sgsb-header {
   padding: 0 20px !important;
   display: inline-flex;
@@ -2177,8 +2193,6 @@ End Settings Sidebar
 
 .ant-select-selector {
   width: 100%;
-  height: 40px !important;
-  padding: 5px 11px !important;
   border-color: #DDE6F9 !important;
 }
 

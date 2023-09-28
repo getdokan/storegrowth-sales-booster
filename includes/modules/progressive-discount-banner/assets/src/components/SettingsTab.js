@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import DiscountBanner from "./DiscountBanner";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 function SettingsTab(props) {
   const {
@@ -10,17 +11,9 @@ function SettingsTab(props) {
     buttonLoading,
     onIconChange,
     upgradeTeaser,
+    onFormReset
   } = props;
 
-  const FreeShippingExtra = (
-    <div>
-      You need to set up free shipping on{" "}
-      <a href="admin.php?page=wc-settings&tab=shipping">
-        WooCommerce Shipping Settings
-      </a>{" "}
-      page.
-    </div>
-  );
 
   return (
     <>
@@ -31,15 +24,11 @@ function SettingsTab(props) {
         upgradeTeaser={upgradeTeaser}
       />
 
-      <Button
-        type="primary"
-        onClick={onFormSave}
-        loading={buttonLoading}
-        className="sgsb-settings-save-button"
-      >
-        Save
-      </Button>
-
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={buttonLoading}
+        saveHandler={onFormSave}
+      />
       <p className="ant-form-item-explain" style={{ margin: "15px 0 0 0" }}>
         Note: Please clear your cart in order to see the updates when you update
         these settings.
