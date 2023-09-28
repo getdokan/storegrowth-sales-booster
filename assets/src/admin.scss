@@ -1,6 +1,6 @@
 /* variable color */
 $white-color: #ffffff;
-
+@import "./components/dashboard/styles/overview.scss";
 @mixin font-face($font-family, $font-path) {
   @font-face {
     font-family: #{$font-family};
@@ -8,6 +8,7 @@ $white-color: #ffffff;
     /* Other font properties like font-weight and font-style can also be defined here */
   }
 }
+
 
 // Usage
 @include font-face('IBM Plex Sans', '../fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
