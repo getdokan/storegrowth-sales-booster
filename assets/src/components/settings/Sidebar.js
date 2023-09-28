@@ -10,7 +10,6 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 
 function Sidebar({ routes }) {
-
   // let sidebarItems = applyFilters("sidebar_menu_items", [], Link);
   let firstItem = routes[0] || false;
   const location = useLocation();

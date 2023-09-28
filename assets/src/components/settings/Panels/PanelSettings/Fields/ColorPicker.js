@@ -52,7 +52,7 @@ const ColourPicker = ( {
     return (
         // Make settings color-picker component with card preview.
         <FieldWrapper colSpan={ colSpan } align={ 'center' }>
-            <Col span={9}>
+            <Col span={15}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading` }>{ title }</Title>
@@ -62,7 +62,7 @@ const ColourPicker = ( {
                     { needUpgrade && <UpgradeCrown /> }
                 </div>
             </Col>
-            <Col span={15}>
+            <Col span={9}>
                 {/* Handle settings color-picker field by using dynamic props */}
                 <ColorPicker
                     value={ fieldValue }

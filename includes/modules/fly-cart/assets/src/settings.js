@@ -1,14 +1,14 @@
 import { addFilter } from '@wordpress/hooks';
-import FlyCart from './components/FlyCart';
+import FlyCart from './components';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 /**
  * Add routes to sidebar.
  */
-addFilter( 'sgsb_routes', 'sgsb', (routes) => {
+addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate, useParams, useSearchParams) => {
   routes.push( {
     path: "/fly-cart",
-    element: <FlyCart />,
+    element: <FlyCart navigate={ navigate } useSearchParams={ useSearchParams } />,
     name: 'fly-cart',
     label:'Quick Cart',
   } );
