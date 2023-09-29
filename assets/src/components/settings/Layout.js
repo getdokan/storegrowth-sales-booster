@@ -11,6 +11,7 @@ import {
 import HeadBar from "./HeadBar";
 import PageLoader from "../PageLoader";
 import Sidebar from "./Sidebar";
+import {__} from "@wordpress/i18n";
 
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
@@ -46,8 +47,15 @@ function AppLayout() {
   let navigate = useNavigate();
 
   let routes = applyFilters(
-    "sgsb_routes",
-    [],
+    'sgsb_routes',
+    [
+      {
+        name    : 'dashboard',
+        path    : '/dashboard',
+        label   : __( 'Dashboard', 'storegrowth-sales-booster' ),
+          element : <div>Hello World</div>,
+      },
+    ],
     Outlet,
     navigate,
     useParams,

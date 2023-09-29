@@ -485,11 +485,37 @@ main.ant-layout-content.sgsb-module-setting-layout {
     }
 
     h3 {
-      font-size: 18px;
-      padding: 50px 20px 40px;
       display: flex;
+      padding: 50px 20px 40px;
       align-items: center;
-      gap: 7px;
+
+      a {
+        gap: 7px;
+        display: flex;
+        color: #1d2327;
+        font-size: 18px;
+        box-shadow: none;
+        align-items: center;
+
+        &:hover {
+          &:before {
+            content: "";
+            position: absolute;
+            background: #0875FF;
+            width: 3px;
+            height: 28px;
+            right: 3px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+
+          svg {
+            rect {
+              fill: #0875FF;
+            }
+          }
+        }
+      }
 
       @media (min-width: 1500px) {
         // padding: 50px 8px 40px;
@@ -498,7 +524,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
       svg {
         width: 14px;
-
       }
     }
 
@@ -519,18 +544,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
         }
 
-        &:before {
-          content: "";
-          position: absolute;
-          background: #0875FF;
-          width: 3px;
-          height: 28px;
-          right: 3px;
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
-
-        }
-
         span {
           margin-left: auto;
           cursor: pointer;
@@ -540,7 +553,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         .ant-menu-title-content {
           img {
             margin-left: -24px;
-
+            display: flex;
           }
         }
 
@@ -804,6 +817,21 @@ main.ant-layout-content.sgsb-module-setting-layout {
       }
     }
 
+    h3,
+    .all-widgets-menu h4 {
+      &.active-menu{
+        &:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+        }
+      }
+    }
   }
 
 }
