@@ -1902,6 +1902,16 @@ End Settings Sidebar
           }
         }
 
+        .radio-template-field {
+          width: 100%;
+
+          label.ant-radio-button-wrapper {
+            height: 62px;
+            display: block;
+            padding: 0;
+          }
+        }
+
         &.full-width {
           margin: 0;
         }
