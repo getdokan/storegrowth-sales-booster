@@ -9,7 +9,6 @@ import widgetIcon from '../../../images/widget-icon.svg';
 import { __ } from '@wordpress/i18n';
 
 function Sidebar({ routes }) {
-
   // let sidebarItems = applyFilters('sidebar_menu_items', [], Link);
   let firstItem = routes[0] || false;
   const location = useLocation();

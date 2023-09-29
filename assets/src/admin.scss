@@ -1775,6 +1775,23 @@ End Settings Sidebar
                 }
               }
 
+              &.single-content-field {
+                background: transparent;
+
+                .ant-checkbox {
+                  .ant-checkbox-inner {
+                    width: 18px;
+                    height: 18px;
+
+                    &:after {
+                      margin-left: 1px;
+                      width: 5.714286px;
+                      height: 9.142857px;
+                    }
+                  }
+                }
+              }
+
               &.select-field {
                 border-radius: 5px;
 
@@ -1877,6 +1894,76 @@ End Settings Sidebar
               &.color-picker-field {
                 border: 0;
                 background: transparent;
+
+                .ant-color-picker-color-block-inner {
+                  border-color: #DDE6F9;
+                }
+              }
+
+              &.radio-field {
+                gap: 12px;
+                height: 36px;
+                display: inline-grid;
+                grid-auto-flow: column;
+                background: transparent;
+
+                label.ant-radio-button-wrapper {
+                  height: 100%;
+                  padding: 0 12px;
+                  border-radius: 5px;
+                  border: 1px solid #DDE6F9;
+
+                  &.ant-radio-button-wrapper-checked {
+                    border-color: #0875FF;
+                  }
+
+                  &:before {
+                    width: 0;
+                  }
+
+                  &:hover {
+                    background: #0875FF;
+                    border-color: #0875FF;
+
+                    .radio-icon {
+                      path {
+                        fill: #FFF !important;
+                      }
+                    }
+                  }
+                }
+
+                &.radio-img-field {
+                  height: 100%;
+                  margin-top: 20px;
+
+                  label.ant-radio-button-wrapper {
+                    color: #073B4C;
+                    font-size: 14px;
+
+                    .layout-img {
+                      img {
+                        margin: 12px 0 2px;
+                      }
+                    }
+
+                    .option-name {
+                      gap: 10px;
+                      display: flex;
+                      align-items: center;
+                    }
+
+                    &:hover,
+                    &.ant-radio-button-wrapper-checked {
+                      border: 1px solid #0875FF;
+                      background: transparent;
+                    }
+
+                    &.ant-radio-button-wrapper-disabled {
+                      border: 1px solid #dde6f9;
+                    }
+                  }
+                }
               }
 
               &:not(.ant-switch-checked) {
@@ -1898,6 +1985,13 @@ End Settings Sidebar
             font-size: 16px;
             font-weight: 500;
             line-height: 20px;
+
+            &.content-field-heading {
+              margin: 0;
+              font-weight: 400;
+              line-height: 1.4;
+              margin-left: 12px;
+            }
           }
 
           .settings-tooltip {
@@ -1928,6 +2022,48 @@ End Settings Sidebar
 
           .ant-row {
             width: 100%;
+          }
+
+          &.content-group-settings {
+            .ant-card-body {
+              padding: 14px 18px;
+            }
+
+            .checkbox-heading {
+              label {
+                font-size: 14px;
+              }
+            }
+
+            &.disabled-settings {
+              .ant-card-body {
+                .ant-col-2 {
+                  display: inline-flex;
+
+                  .ant-checkbox-input {
+                    display: none;
+                  }
+
+                  .ant-checkbox-inner {
+                    &:after {
+                      display: none;
+                    }
+                  }
+                }
+
+                .checkbox-heading {
+                  gap: 10px;
+                  display: flex;
+
+                  .upgrade-content {
+                    gap: 10px;
+                    display: flex;
+                    color: #073B4C;
+                    font-weight: 500;
+                  }
+                }
+              }
+            }
           }
         }
 
@@ -1987,6 +2123,7 @@ End Settings Sidebar
 
       .preview-panel {
         top: 40px;
+        display: block;
         position: sticky;
         margin-left: 32px;
       }
