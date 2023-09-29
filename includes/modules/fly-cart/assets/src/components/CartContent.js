@@ -1,7 +1,6 @@
 import { Checkbox, Col } from "antd";
 import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsTooltip";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
-import { __ } from '@wordpress/i18n';
 import { Fragment } from "react";
 
 const CartContent = ({

@@ -1699,6 +1699,48 @@ End Settings Sidebar
           border-radius: 5px;
           border-color: #DDE6F9;
 
+          .disabled-settings {
+            overflow: hidden;
+            position: relative;
+
+            &:hover {
+              .pro-content-overlay {
+                display: flex;
+              }
+            }
+          }
+
+          .pro-content-overlay {
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            align-items: center;
+            background: #00000080;
+            justify-content: center;
+
+            .upgrade-button {
+              gap: 10px;
+              color: #fff;
+              font-size: 13px;
+              font-weight: 600;
+              padding: 9px 15px;
+              border-radius: 5px;
+              align-items: center;
+              background: #FFAC27;
+              display: inline-flex;
+
+              .overlay-btn-crown {
+                svg {
+                  path {
+                    fill: #fff;
+                  }
+                }
+              }
+            }
+          }
+
           .card-heading {
             height: 100%;
             display: flex;
@@ -1987,8 +2029,19 @@ End Settings Sidebar
           }
 
           .sgsb-field-upgrade-pro-label {
+            gap: 10px;
             display: flex;
             align-items: center;
+
+            span.sgsb-pro-badge {
+              font-size: 10px;
+              font-weight: 600;
+              line-height: 1;
+              background: #FFAC27;
+              color: white;
+              border-radius: 10px;
+              padding: 4px 7px;
+            }
           }
 
           .ant-row {

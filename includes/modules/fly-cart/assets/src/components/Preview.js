@@ -319,7 +319,7 @@ const Preview = ( { storeData } ) => {
                                         } }
                                     >
                                         { __( 'Promo Code', 'storegrowth-sales-booster' ) }
-                                        { !sgsbAdmin.isPro && <UpgradeCrown /> }
+                                        { !sgsbAdmin.isPro && <UpgradeCrown proBadge={ false } /> }
                                     </label>
                                     <div
                                         className='coupon-field'
