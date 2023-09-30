@@ -11,6 +11,7 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import DisplayRules from "./DisplayRules";
 import Countdown from "./Countdown";
 import CuponCode from "./CuponCode";
+import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
 
 function DefaultBanner(props) {
   const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
@@ -57,10 +58,11 @@ function DefaultBanner(props) {
     <>
       <SettingsSection>
         <SelectBox
+          needUpgrade={upgradeTeaser}
           name={`bar_position`}
           options={[...barPositions]}
           fieldValue={formData.bar_position}
-          changeHandler={onFieldChange}
+          changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Bar Position", "storegrowth-sales-booster")}
         />
         <SelectBox
@@ -131,13 +133,20 @@ function DefaultBanner(props) {
                   placeholder="http://example.com"
                 />
                 <Checkbox
+                  disabled={upgradeTeaser}
                   value={"new_tab_enable"}
                   checked={formData.new_tab_enable}
-                  onChange={(event) =>
-                    onFieldChange("new_tab_enable", event.target.checked)
+                  onChange={
+                    upgradeTeaser
+                      ? noop
+                      : (event) =>
+                          onFieldChange("new_tab_enable", event.target.checked)
                   }
                 >
-                  Open in New Tab
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    Open in New Tab
+                    {upgradeTeaser && <UpgradeCrown />}
+                  </div>
                 </Checkbox>
               </>
             )}
@@ -147,6 +156,7 @@ function DefaultBanner(props) {
           upgradeTeaser={upgradeTeaser}
           onFieldChange={onFieldChange}
           formData={formData}
+          noop={noop}
         />
         <CuponCode
           upgradeTeaser={upgradeTeaser}

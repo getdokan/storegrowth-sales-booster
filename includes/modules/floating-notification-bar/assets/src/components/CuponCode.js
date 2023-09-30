@@ -22,9 +22,11 @@ const CuponCode = ({
     >
       <Switch
         checked={formData.show_cupon}
-        disabled={needUpgrade}
+        disabled={upgradeTeaser}
         className={`settings-field switcher-field`}
-        onChange={(value) => onFieldChange("show_cupon", value)}
+        onChange={
+          upgradeTeaser ? noop : (value) => onFieldChange("show_cupon", value)
+        }
         checkedChildren={__("Enable", "storegrowth-sales-booster")}
         unCheckedChildren={__("Disable", "storegrowth-sales-booster")}
       />
@@ -36,10 +38,14 @@ const CuponCode = ({
             // the coupon data is coming from the localize data.
             options={sgsb_fnb_coupon_data}
             value={formData.cupon_code}
-            disabled={needUpgrade}
+            disabled={upgradeTeaser}
             showSearch={true}
             // placeholder={placeHolderText}
-            onChange={(event) => onFieldChange("cupon_code",event)}
+            onChange={
+              upgradeTeaser
+                ? noop
+                : (event) => onFieldChange("cupon_code", event)
+            }
             filterOption={filterOption ? filterOption : true}
             style={{ width: "100%", marginTop: "5px" }}
           />
