@@ -55,7 +55,10 @@ class Enqueue_Script {
 			filemtime( sgsb_modules_path( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
+		$localized_fnb_data = sgsb_floating_notification_bar_get_settings();
 
+		// Use wp_localize_script to pass the data to your script.
+		wp_localize_script( 'sgsb-floating-notification-bar-remove', 'sgsb_fnb_data', $localized_fnb_data );
 		$this->inline_styles();
 	}
 
@@ -75,13 +78,60 @@ class Enqueue_Script {
 				$settings_file['version'],
 				false
 			);
+
+					$localized_fnb_data = available_coupon_codes();
+
+			// Use wp_localize_script to pass the data to your script.
+			wp_localize_script( 'sgsb-floating-notification-bar-settings', 'sgsb_fnb_coupon_data', $localized_fnb_data );
 		}
 	}
 
+		/**
+		 * Retrieves the label corresponding to a given value from an array of objects.
+		 *
+		 * This function iterates through the array of objects and matches the provided
+		 * value to the 'value' property of each object. If a match is found, it returns
+		 * the corresponding 'label' property; otherwise, it returns an empty string.
+		 *
+		 * @param mixed[] $value An array of objects where each object has 'value' and 'label' properties.
+		 * @param mixed   $object_array       The value to search for within the array of objects.
+		 *
+		 * @return string The label corresponding to the provided value, or an empty string if not found.
+		 */
+	private function get_label_by_value( $value, $object_array ) {
+		foreach ( $object_array as $object ) {
+			if ( $object['value'] === $value ) {
+				return $object['label'];
+			}
+		}
+		return '';
+	}
 	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
+		$font_family_arr = array(
+			array(
+				'value' => 'poppins',
+				'label' => 'Poppins',
+			),
+			array(
+				'value' => 'roboto',
+				'label' => 'Roboto',
+			),
+			array(
+				'value' => 'lato',
+				'label' => 'Lato',
+			),
+			array(
+				'value' => 'montserrat',
+				'label' => 'Montserrat',
+			),
+			array(
+				'value' => 'ibm_plex_sans',
+				'label' => 'IBM Plex Sans',
+			),
+		);
 		// Get style options.
 		$settings          = sgsb_floating_notification_bar_get_settings();
 		$bar_position      = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
@@ -93,16 +143,13 @@ class Enqueue_Script {
 		$font_size         = sgsb_find_option_setting( $settings, 'font_size', 20 );
 		$button_color      = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
 		$button_text_color = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
-
-		if ( ( ! isset( $settings['default_banner'] ) && ! isset( $settings['discount_banner'] ) )
-			|| ( ! $settings['default_banner'] && ! $settings['discount_banner'] ) ) {
-			return false;
-		}
+		$font_family       = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
+		$selected_font     = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
 				.sgsb-floating-notification-bar-wrapper {
-					top: auto;
+					top: auto !important;
 					bottom: 0;
 				}
 				body.admin-bar .sgsb-floating-notification-bar-wrapper {
@@ -131,23 +178,32 @@ class Enqueue_Script {
 			}
 			.sgsb-floating-notification-bar-text{
 				font-size: {$font_size}px;
+				font-family: {$selected_font};
 			}
 			.fn-bar-action-button {
 				background-color: {$button_color};
     		color: {$button_text_color};
 			}
 		";
-		if ( 'normal' === $bar_type ) {
-			$css .= '
-			.sgsb-floating-notification-bar-wrapper{
-				position: absolute;
-			}';
-		} else {
+		if ( 'sticky' === $bar_type ) {
 			$css .= '
 			.sgsb-floating-notification-bar-wrapper{
 				position: fixed;
 			}';
+		} elseif ( 'normal' === $bar_type ) {
+			if ( 'bottom' === $bar_position ) {
+				$css .= '
+			.sgsb-floating-notification-bar-wrapper{
+				position: inherit;
+			}';
+			} else {
+				$css .= '
+			.sgsb-floating-notification-bar-wrapper{
+				position: absolute;
+			}';
+			}
 		}
+
 		wp_add_inline_style( 'sgsb-floating-notification-bar-style', $css );
 	}
 }

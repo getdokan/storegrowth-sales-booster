@@ -29,8 +29,7 @@ function FloatingNotificationBarLayout({
 
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
-
-  const [formData, setFormData] = useState({
+  const initialFloatingBarData = {
     default_banner_text: "Shop More Than $100 to get Free Shipping",
     bar_position: "top",
     bar_type: "normal",
@@ -42,7 +41,7 @@ function FloatingNotificationBarLayout({
     default_banner_icon_name: "",
     default_banner_icon_html: "",
     button_view: ["button-desktop-enable"],
-    banner_device_view: [],
+    banner_device_view: ["banner-show-desktop"],
     ac_button_text: "Click Here",
     button_action: "ba-url-redirect",
     redirect_url: "",
@@ -59,7 +58,39 @@ function FloatingNotificationBarLayout({
     banner_height: 60,
     font_family: "poppins",
     font_size: 20,
+    show_cupon: true,
+    cupon_code: "",
+  };
+  const [formData, setFormData] = useState({
+    ...initialFloatingBarData,
   });
+
+  const onFormReset = () => {
+    setFormData({ ...initialFloatingBarData });
+  };
+
+  const fontFamily = [
+    {
+      value: "poppins",
+      label: __("Poppins", "storegrowth-sales-booster"),
+    },
+    {
+      value: "roboto",
+      label: __("Roboto", "storegrowth-sales-booster"),
+    },
+    {
+      value: "lato",
+      label: __("Lato", "storegrowth-sales-booster"),
+    },
+    {
+      value: "montserrat",
+      label: __("Montserrat", "storegrowth-sales-booster"),
+    },
+    {
+      value: "ibm_plex_sans",
+      label: __("IBM Plex Sans", "storegrowth-sales-booster"),
+    },
+  ];
 
   const isProEnabled = sgsbAdmin.isPro;
 
@@ -156,6 +187,7 @@ function FloatingNotificationBarLayout({
           buttonLoading={buttonLoading}
           onIconChange={onIconChange}
           upgradeTeaser={!isProEnabled}
+          onFormReset={onFormReset}
         />
       ),
     },
@@ -169,6 +201,8 @@ function FloatingNotificationBarLayout({
           onFormSave={() => onFormSave("design")}
           upgradeTeaser={!isProEnabled}
           buttonLoading={buttonLoading}
+          onFormReset={onFormReset}
+          fontFamily={fontFamily}
         />
       ),
     },
@@ -178,7 +212,10 @@ function FloatingNotificationBarLayout({
   return (
     <Fragment>
       <PanelHeader
-        title={__("Floating Notification Bar Setting", "storegrowth-sales-booster")}
+        title={__(
+          "Floating Notification Bar Setting",
+          "storegrowth-sales-booster"
+        )}
       />
       <PanelContainer>
         <PanelRow>

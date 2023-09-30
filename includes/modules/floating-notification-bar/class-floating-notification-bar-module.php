@@ -55,7 +55,7 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Floating Notification Bar';
+		return 'Floating Bar';
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 			return;
 		}
 		$default_data = array(
-			'default_banner_text'     => 'Shop more than $100 to get free shipping.',
+			'default_banner_text' => 'Shop more than $100 to get free shipping.',
 		);
 		delete_option( 'sgsb_floating_notification_bar_settings' );
 		$result = update_option( 'sgsb_floating_notification_bar_settings', $default_data );
@@ -128,6 +128,8 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 		Ajax::instance();
 		Common_Hooks::instance();
 		Enqueue_Script::instance();
+
+		do_action( 'storegrowth_floating_bar_module_init' );
 	}
 }
 

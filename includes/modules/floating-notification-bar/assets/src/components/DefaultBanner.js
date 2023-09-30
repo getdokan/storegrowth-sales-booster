@@ -10,11 +10,10 @@ import EmptyField from "../../../../../../assets/src/components/settings/Panels/
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import DisplayRules from "./DisplayRules";
 import Countdown from "./Countdown";
+import CuponCode from "./CuponCode";
 
 function DefaultBanner(props) {
   const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
-  console.log("======= form Data ========");
-  console.log(formData);
   const noop = () => {};
   const buttonActionOptions = [
     { value: "ba-url-redirect", label: "Url Redirect" },
@@ -63,7 +62,6 @@ function DefaultBanner(props) {
           fieldValue={formData.bar_position}
           changeHandler={onFieldChange}
           title={__("Bar Position", "storegrowth-sales-booster")}
-          
         />
         <SelectBox
           name={`bar_type`}
@@ -116,7 +114,6 @@ function DefaultBanner(props) {
           >
             <Select
               defaultValue={formData.button_action}
-             
               options={buttonActionOptions}
               onChange={(event) => onFieldChange("button_action", event)}
             />
@@ -125,9 +122,8 @@ function DefaultBanner(props) {
                 <Input
                   value={formData.redirect_url}
                   style={{
-                    padding:"5px",
-                    border:"1px solid #DDE6F9"
-                   
+                    padding: "5px",
+                    border: "1px solid #DDE6F9",
                   }}
                   onChange={(event) =>
                     onFieldChange("redirect_url", event.target.value)
@@ -151,6 +147,12 @@ function DefaultBanner(props) {
           upgradeTeaser={upgradeTeaser}
           onFieldChange={onFieldChange}
           formData={formData}
+        />
+        <CuponCode
+          upgradeTeaser={upgradeTeaser}
+          formData={formData}
+          onFieldChange={onFieldChange}
+          noop={noop}
         />
       </SettingsSection>
 

@@ -10,6 +10,8 @@ const BannerTrigger = (props) => {
     { value: "after-few-seconds", label: "After a few Seconds" },
     { value: "after-scroll", label: "After Scroll" },
   ];
+
+
   const banner_trigger_value = formData.banner_trigger
   return (
     <>
@@ -29,7 +31,7 @@ const BannerTrigger = (props) => {
           onChange={upgradeTeaser ? noop : (event)=>{
             onFieldChange("banner_trigger", event.target.value);
           }}
-          defaultValue={formData.banner_trigger}
+          value={formData.banner_trigger}
         >
           {triggerOptions.map((option) => (
             <div
@@ -49,6 +51,7 @@ const BannerTrigger = (props) => {
               <Radio value={option.value}>{option.label}</Radio>
               <InputNumber
                 // Hardcoded input field names and values
+                min={0}
                 disabled={upgradeTeaser}
                 style={{
                   width: "20%",
@@ -71,7 +74,7 @@ const BannerTrigger = (props) => {
                         option.value === "after-few-seconds"
                           ? "banner_delay"
                           : "scroll_banner_delay",
-                        event.target.value
+                        event
                       )
                 }
                 placeholder={`sec`}
