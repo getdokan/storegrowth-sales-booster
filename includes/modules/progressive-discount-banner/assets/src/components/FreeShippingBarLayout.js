@@ -37,6 +37,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
       discount_type                : "free-shipping",
       banner_height                : 60,
       banner_trigger               : "after-few-seconds",
+      close_icon_color             : "#ffffff",
       background_color             : "#0875FF",
       banner_device_view           : ["banner-show-desktop"],
       banner_show_option           : "banner-show-everywhere",

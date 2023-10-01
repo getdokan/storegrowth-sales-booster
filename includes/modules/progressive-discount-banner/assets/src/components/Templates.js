@@ -27,10 +27,11 @@ const Templates = ( {
 
     return (
         <Fragment>
-            <SectionHeader title={ __( 'Templates', 'storegrowth-sales-booster' ) } />
+            <SectionHeader title={ __( 'Template', 'storegrowth-sales-booster' ) } />
             <SettingsSection>
                 <RadioTemplate
                     options={ templates }
+                    classes={ `free-shipping-bar-templates` }
                     // name,
                     // classes,
                     // options,

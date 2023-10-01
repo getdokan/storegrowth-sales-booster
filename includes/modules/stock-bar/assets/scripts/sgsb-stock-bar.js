@@ -2,7 +2,7 @@
 
 jQuery(document).ready(function ($) {
   // Stock progress bar.
-  $(".jqmeter-container").each(function () {
+  $(".jqmeter-container").each(function (event) {
     var goal = $(this).parent().attr("total-stock");
     var raised = $(this).parent().attr("total-sale");
     var height = $(this).parent().data("height") + "px";
@@ -15,9 +15,9 @@ jQuery(document).ready(function ($) {
       width: "100%",
       height: height,
       bgColor: bgColor,
-      barColor: barColor,
       displayTotal: false,
     });
+    $( this ).find( '.inner-therm' ).css( { background: barColor } );
   });
   
   showStockProgress();

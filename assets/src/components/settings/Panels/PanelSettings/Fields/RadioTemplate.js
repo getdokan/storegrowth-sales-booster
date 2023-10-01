@@ -17,8 +17,8 @@ const RadioTemplate = ( {
                 onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
             >
                 {/* Handle settings radio field by using dynamic props */}
-                { options && options?.length > 0 && options?.map( option => (
-                    <Row justify="center" align={ `middle` } gutter={ [ 0, 10 ] }>
+                <Row justify="center" align={ `middle` } gutter={ [ 0, 16 ] }>
+                    { options && options?.length > 0 && options?.map( option => (
                         <Col span={ 24 }>
                             <Radio.Button
                                 value={ option?.key }
@@ -27,8 +27,8 @@ const RadioTemplate = ( {
                                 { option.component }
                             </Radio.Button>
                         </Col>
-                    </Row>
-                ) ) }
+                    ) ) }
+                </Row>
             </Radio.Group>
         </Col>
     );

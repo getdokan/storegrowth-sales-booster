@@ -80,6 +80,13 @@ function DesignTab(props) {
                     changeHandler={onFieldChange}
                     title={__('Icon Color', 'storegrowth-sales-booster')}
                 />
+                <ColourPicker
+                    name={'close_icon_color'}
+                    colSpan={12}
+                    changeHandler={onFieldChange}
+                    fieldValue={formData.close_icon_color}
+                    title={__('Close Button Color', 'storegrowth-sales-booster')}
+                />
             </SettingsSection>
 
             <Templates formData={ formData } />
