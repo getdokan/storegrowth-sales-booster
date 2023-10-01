@@ -45,7 +45,7 @@ const SingleCheckBox = ({
 }) => {
   return (
     // Make settings checkbox component with card preview.
-    <FieldWrapper colSpan={colSpan}>
+    <FieldWrapper colSpan={colSpan} upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
       <Col span={15}>
         <div className={`card-heading checkbox-heading`}>
           {/* Handle checkbox title. */}
@@ -66,7 +66,7 @@ const SingleCheckBox = ({
           disabled={needUpgrade}
           checked = {checkedValue}
           value={name}
-          className={`settings-field singlecheckbox-field`}
+          className={`settings-field singlecheckbox-field ${ needUpgrade ? 'disabled-settings' : '' }`}
           onChange={(event) => changeHandler(name, event.target.checked)}
         >
         </Checkbox>

@@ -2,6 +2,7 @@ import {Select, Typography, Col, InputNumber} from 'antd';
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -22,7 +23,7 @@ const SelectBox = ( {
 } ) => {
     return (
         // Make settings select component with card preview.
-        <FieldWrapper colSpan={ colSpan } align={ 'center' }>
+        <FieldWrapper colSpan={ colSpan } align={ 'center' } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={ fieldWidth ? 9 : 15 }>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
@@ -47,6 +48,7 @@ const SelectBox = ( {
                     style={{ width: fieldWidth ? fieldWidth : ( colSpan === 24 ? 170 : 70 ) }}
                 />
             </Col>
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

@@ -2,6 +2,7 @@ import FieldWrapper from "./FieldWrapper";
 import { Col, InputNumber, Typography } from "antd";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -22,7 +23,7 @@ const Number = ({
 }) => {
   return (
     // Make settings number component with card preview.
-    <FieldWrapper colSpan={colSpan} align={"center"}>
+    <FieldWrapper colSpan={colSpan} align={"center"} upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
       <Col span={colSpan < 24 ? 18 : 15}>
         <div className={`card-heading`}>
           {/* Handle switcher title. */}
@@ -51,6 +52,7 @@ const Number = ({
           onChange={(value) => changeHandler(name, value)}
         />
       </Col>
+      { needUpgrade && <UpgradeOverlay /> }
     </FieldWrapper>
   );
 };

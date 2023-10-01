@@ -18,8 +18,8 @@ const TextInput = ( {
 
     return (
         // Make settings textarea component with card preview.
-        <FieldWrapper colSpan={ colSpan }>
-            <Col span={9}>
+        <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
+            <Col span={14}>
                 <div className={ `card-heading textinput-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading space-top` }>{ title }</Title>
@@ -30,7 +30,7 @@ const TextInput = ( {
                 </div>
             </Col>
 
-            <Col span={15}>
+            <Col span={10}>
                 {/* Handle settings textarea field by using dynamic props */}
                 <Input
                     disabled={ needUpgrade }

@@ -2,6 +2,7 @@ import FieldWrapper from "./FieldWrapper";
 import UpgradeCrown from "../UpgradeCrown";
 import {Typography, Col, Radio, Row} from 'antd';
 import SettingsTooltip from "../SettingsTooltip";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -39,13 +40,14 @@ const RadioBox = ( {
                 >
                     {/* Handle settings radio field by using dynamic props */}
                     { options && options?.length > 0 && options?.map( option => (
-                        <Col span={ 12 }>
+                        <Col span={ 12 } style={ { maxWidth: '100%', position: 'relative' } } className={ `${ option?.disabled ? 'disabled-settings' : ''  }` }>
                             <Radio.Button
                                 value={ option?.key }
                                 disabled={ option?.disabled }
                             >
                                 { option?.value }
                             </Radio.Button>
+                            { option?.disabled && <UpgradeOverlay /> }
                         </Col>
                     ) ) }
                 </Radio.Group>

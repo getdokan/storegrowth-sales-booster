@@ -3,6 +3,7 @@ import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import { __ } from '@wordpress/i18n';
 import FieldWrapper from "./FieldWrapper";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -17,7 +18,7 @@ const Switcher = ( {
 } ) => {
     return (
         // Make settings switcher component with card preview.
-        <FieldWrapper colSpan={ colSpan }>
+        <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={15}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
@@ -40,6 +41,8 @@ const Switcher = ( {
                     unCheckedChildren={ __( 'Disable', 'storegrowth-sales-booster' ) }
                 />
             </Col>
+
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

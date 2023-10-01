@@ -1699,9 +1699,11 @@ End Settings Sidebar
           border-radius: 5px;
           border-color: #DDE6F9;
 
+          &.upgrade-settings .ant-card-body,
           .disabled-settings {
             overflow: hidden;
             position: relative;
+            border-radius: 5px;
 
             &:hover {
               .pro-content-overlay {
@@ -1710,10 +1712,24 @@ End Settings Sidebar
             }
           }
 
+          .disabled-settings {
+            .ant-checkbox-input {
+              display: none;
+            }
+
+            .ant-checkbox-inner {
+              &:after {
+                display: none;
+              }
+            }
+          }
+
           .pro-content-overlay {
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 9999;
             display: none;
             position: absolute;
             align-items: center;
@@ -2205,6 +2221,7 @@ End Settings Sidebar
       .sgsb-settings-save-button {
         border: 0;
         margin: 0;
+        color: #FFF;
         height: auto;
         z-index: 9999;
         line-height: 1;
