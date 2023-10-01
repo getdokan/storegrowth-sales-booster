@@ -6,7 +6,7 @@ const StockBarTwo = ( { activeTemplate } ) => {
             className='sgsb-stock-bar'
             style={ {
                 height       : '100%',
-                border       : `1px solid #${ activeTemplate ? '008DFF' : 'BDE5D7' }`,
+                border       : `2px solid #${ activeTemplate ? '008DFF' : 'BDE5D7' }`,
                 padding      : 16,
                 overflow     : 'hidden',
                 background   : '#fff',

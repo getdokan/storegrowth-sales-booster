@@ -26,30 +26,31 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
   const initialShipData = {
-      bar_type                     : "normal",
-      user_type                    : "both",
-      font_size                    : 20,
-      text_color                   : "#ffffff",
-      icon_color                   : "#ffffff",
-      font_family                  : "poppins",
-      banner_delay                 : 7,
-      bar_position                 : "top",
-      discount_type                : "free-shipping",
-      banner_height                : 60,
-      banner_trigger               : "after-few-seconds",
-      close_icon_color             : "#ffffff",
-      background_color             : "#0875FF",
-      banner_device_view           : ["banner-show-desktop"],
-      banner_show_option           : "banner-show-everywhere",
-      scroll_banner_delay          : 7,
-      cart_minimum_amount          : 10,
-      slected_page_option          : [],
-      goal_completion_text         : "You have successfully acquired free Shipping.",
-      discount_amount_mode         : "fixed-amount",
-      discount_amount_value        : "",
-      progressive_banner_text      : "Add more [amount] to get FREE SHIPPING.",
-      progressive_banner_icon_name : "",
-      progressive_banner_icon_html : "",
+    bar_type                     : "normal",
+    user_type                    : "both",
+    font_size                    : 20,
+    text_color                   : "#ffffff",
+    icon_color                   : "#ffffff",
+    font_family                  : "poppins",
+    banner_delay                 : 7,
+    bar_position                 : "top",
+    bar_template                 : 'shipping_bar_one',
+    discount_type                : "free-shipping",
+    banner_height                : 60,
+    banner_trigger               : "after-few-seconds",
+    close_icon_color             : "#ffffff",
+    background_color             : "#0875FF",
+    banner_device_view           : ["banner-show-desktop"],
+    banner_show_option           : "banner-show-everywhere",
+    scroll_banner_delay          : 7,
+    cart_minimum_amount          : 10,
+    slected_page_option          : [],
+    goal_completion_text         : "You have successfully acquired free Shipping.",
+    discount_amount_mode         : "fixed-amount",
+    discount_amount_value        : "",
+    progressive_banner_text      : "Add more [amount] to get FREE SHIPPING.",
+    progressive_banner_icon_name : "",
+    progressive_banner_icon_html : "",
   };
 
   const [formData, setFormData] = useState({ ...initialShipData });
@@ -186,6 +187,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
       panel: (
         <DesignTab
           formData={formData}
+          setFormData={setFormData}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("design")}
           upgradeTeaser={!isProEnabled}

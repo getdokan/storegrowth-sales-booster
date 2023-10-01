@@ -2,14 +2,14 @@ import React from 'react';
 
 const Preview = ({ formData, fontFamily }) => {
     const bannerStyle = {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: formData.banner_height,
-        color: formData.text_color,
-        padding: '2px 20px',
-        borderRadius: '5px',
-        backgroundColor: formData.background_color,
+        color           : formData.text_color,
+        height          : formData.banner_height,
+        display         : 'flex',
+        padding         : '2px 20px',
+        alignItems      : 'center',
+        borderRadius    : '5px',
+        justifyContent  : 'space-between',
+        backgroundColor : formData.background_color,
     };
 
     const cart_min_amount =

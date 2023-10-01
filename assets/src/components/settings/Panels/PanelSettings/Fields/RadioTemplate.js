@@ -14,7 +14,6 @@ const RadioTemplate = ( {
                 buttonStyle='solid'
                 value={ fieldValue }
                 className={ `settings-field radio-template-field ${ classes }` }
-                onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
             >
                 {/* Handle settings radio field by using dynamic props */}
                 <Row justify="center" align={ `middle` } gutter={ [ 0, 16 ] }>
@@ -23,6 +22,7 @@ const RadioTemplate = ( {
                             <Radio.Button
                                 value={ option?.key }
                                 disabled={ option?.disabled }
+                                onClick={ () => changeHandler( name, option?.key ) }
                             >
                                 { option.component }
                             </Radio.Button>

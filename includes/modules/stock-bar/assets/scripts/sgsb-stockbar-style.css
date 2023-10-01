@@ -13,8 +13,7 @@
 }
 
 .jqmeter-container .outer-therm {
-	margin-top: 0;
-	margin-bottom: 8px;
+	margin: 0;
 }
 
 .sgsb-stock-progress {
@@ -29,15 +28,18 @@
 }
 
 .sgsb-stock-progress-bar-section {
-	padding: 15px 15px 15px;
-	border-radius: 10px;
+    gap: 16px;
+    display: grid;
+    background: #fff;
+	border-radius: 6px;
 	margin-bottom: 20px;
+    padding: 15px 15px 15px;
 }
 
 .sgsb-stock-progress-title {
-	display: flex;
+    display: flex;
+    line-height: 1;
 	justify-content: space-between;
-	padding-bottom: 4px;
 }
 
 .sgsb-stock-progress-available-title{
@@ -45,10 +47,11 @@
 }
 .sgsb-stock-progress-sold-title,
 .sgsb-stock-progress-available-title {
-	color: #656565;
+    font-size: 14px;
+	color: #073b4c;
 }
 .sgsb-stock-progress-count {
 	color: #000;
-	font-weight: 700;
+	font-weight: 600;
 }
 

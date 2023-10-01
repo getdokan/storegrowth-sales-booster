@@ -13,6 +13,7 @@ import SectionHeader from 'sales-booster/src/components/settings/Panels/SectionH
 function DesignTab(props) {
     const {
         formData,
+        setFormData,
         onFieldChange,
         onFormSave,
         buttonLoading,
@@ -89,7 +90,7 @@ function DesignTab(props) {
                 />
             </SettingsSection>
 
-            <Templates formData={ formData } />
+            <Templates formData={ formData } setFormData={ setFormData } />
 
             <ActionsHandler
                 resetHandler={onFormReset}

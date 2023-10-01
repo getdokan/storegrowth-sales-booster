@@ -7,7 +7,7 @@ const Preview = ( { formData } ) => {
           className='sgsb-stock-bar'
           style={ {
               height       : '100%',
-              border       : `1px solid ${ formData?.stockbar_border_color }`,
+              border       : `2px solid ${ formData?.stockbar_border_color }`,
               padding      : 16,
               overflow     : 'hidden',
               background   : '#fff',
