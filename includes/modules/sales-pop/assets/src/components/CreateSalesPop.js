@@ -11,6 +11,7 @@ import {createPopupForm, noop} from "../helper";
 import {Fragment} from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import VisibilityControl from './VisibilityControl';
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
 
@@ -39,6 +40,37 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
     { value: 2, label: __( 'Latest Products', 'storegrowth-sales-booster' ) },
     { value: 3, label: __( 'Select Categories', 'storegrowth-sales-booster' ) },
     { value: 4, label: __( 'Recent Viewed Products', 'storegrowth-sales-booster' ) },
+  ];
+
+  const pageOptions = [
+    { value: "is_front_page", label: "Front Page" },
+    { value: "is_home", label: "Blog Page" },
+    { value: "is_singular", label: "All Post,Pages and Post Types" },
+    { value: "is_page", label: "All Post" },
+    { value: "is_attachment", label: "All Pages" },
+    { value: "is_search", label: "Search Page" },
+    { value: "is_404", label: "404 Error Page" },
+    { value: "is_archive", label: "All Archives" },
+    { value: "is_category", label: "All Category Archives" },
+    { value: "is_tag", label: "All Tag Archives" },
+  ];
+
+  const userOption = [
+    { value: "logged_in", label: "Logged In" },
+    { value: "not_logged_in", label: "Not Logged In" },
+    { value: "both", label: "Everyone" },
+  ];
+
+  const bannerPageShowOption = [
+    {
+      label: `Show Everywhere`,
+      value: "banner-show-everywhere",
+    },
+    {
+      label: `Show on Selected`,
+      value: "banner-show-selected",
+      tooltip: __("", "storegrowth-sales-booster"),
+    },
   ];
 
   const product_categories = Object.entries( sales_pop_data.product_list.categoryListForSelect )?.map(
@@ -158,7 +190,16 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           tooltip={ __( 'Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster' ) }
         />
       </SettingsSection>
-
+      <VisibilityControl
+      title={__("Visibility Control", "storegrowth-sales-booster")}
+      upgradeTeaser={upgradeTeaser}
+      formData ={createPopupFormData}
+      bannerPageShowOption={bannerPageShowOption}
+      pageOptions={pageOptions}
+      userOption={userOption}
+      onFieldChange={onFieldChange}
+      noop={noop}
+      />
       <ActionsHandler
         resetHandler={ onFormReset }
         loadingHandler={ getButtonLoading }

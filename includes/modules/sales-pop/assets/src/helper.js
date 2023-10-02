@@ -82,4 +82,7 @@ export const createPopupForm = {
     virtual_locations            : `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`,
     screen_width                 : window.screen.width,
     screen_height                : window.screen.height,
+    banner_show_option           : "banner-show-everywhere",
+    slected_page_option          : [],
+    user_type                    : "both",
 };
