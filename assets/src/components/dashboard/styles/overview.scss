@@ -14,14 +14,14 @@
     .dashboad-tab-singel-overview,
     .dashboad-tab-singel-pricing,
     .dashboad-tab-singel-faqs {
-      padding: 0px 10px;
+      color: #073B4C;
       border: 1px solid #DDE6F9;
-      background-color: #007bff;
-      color: #ffffff;
-      font-weight: 700;
-      border-radius: 5px;
-      height: 45px;
       cursor: pointer;
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 5px;
+      background-color: transparent;
 
       a {
         text-decoration: none;

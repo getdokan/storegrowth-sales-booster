@@ -934,11 +934,38 @@ End Settings Sidebar
     }
 
     h3 {
-      font-size: 18px;
-      padding: 50px 20px 40px;
       display: flex;
+      position: relative;
+      padding: 50px 20px 40px;
       align-items: center;
-      gap: 7px;
+
+      a {
+        gap: 7px;
+        display: flex;
+        color: #1d2327;
+        font-size: 18px;
+        box-shadow: none;
+        align-items: center;
+
+        &:hover {
+          &:before {
+            content: "";
+            position: absolute;
+            background: #0875FF;
+            width: 3px;
+            height: 28px;
+            right: 3px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+
+          svg {
+            rect {
+              fill: #0875FF;
+            }
+          }
+        }
+      }
 
       @media (min-width: 1500px) {
         // padding: 50px 8px 40px;
@@ -947,7 +974,6 @@ End Settings Sidebar
 
       svg {
         width: 14px;
-
       }
     }
 
@@ -968,18 +994,6 @@ End Settings Sidebar
 
         }
 
-        &:before {
-          content: "";
-          position: absolute;
-          background: #0875FF;
-          width: 3px;
-          height: 28px;
-          right: 3px;
-          border-top-left-radius: 10px;
-          border-bottom-left-radius: 10px;
-
-        }
-
         span {
           margin-left: auto;
           cursor: pointer;
@@ -989,7 +1003,7 @@ End Settings Sidebar
         .ant-menu-title-content {
           img {
             margin-left: -24px;
-
+            display: flex;
           }
         }
 
@@ -997,6 +1011,19 @@ End Settings Sidebar
 
       ul {
         padding: 0 20px 0 0;
+
+        @media (min-width: 1800px) {
+          // padding: 0 22px;
+          padding: 0 42px 0 0;
+
+        }
+
+        .sgsb-selected-module {
+          background: #0875FF;
+          color: #ffffff !important;
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
 
         li {
           padding: 12px 0px 12px 44px;
@@ -1008,11 +1035,6 @@ End Settings Sidebar
           }
 
           &:hover {
-            background: #0875FF;
-            color: #ffffff;
-            border-top-right-radius: 8px;
-            border-bottom-right-radius: 8px;
-
             a {
               color: #ffffff;
 
@@ -1168,26 +1190,95 @@ End Settings Sidebar
         }
 
         a {
+          color: #757D9E;
           padding-top: 12px;
           padding-bottom: 12px;
           text-decoration: none;
+          outline: none;
+
+          &:hover {
+            color: #ffffff;
+          }
 
           &:focus {
+            outline: none;
             box-shadow: none;
           }
         }
 
-        li,
-        a {
+        li.sgsb-selected-module {
+          a {
+            color: #ffffff; // Set the color to white when the anchor is within a selected module
+          }
+
+          &.fly-cart::before {
+            background: url('../images/menu/quick-cart-icon-white.svg');
+          }
+
+          &.progressive-discount-banner::before {
+            background: url('../images/menu/free-shipping-bar-icon-white.svg');
+            width: 20px;
+            height: 18px;
+            background-repeat: no-repeat;
+          }
+
+          &.sales-pop::before {
+            background: url('../images/menu/sales-pop-white.svg');
+          }
+
+          &.direct-checkout::before {
+            background: url('../images/menu/direct-checkout-white.svg');
+          }
+
+          &.stock-bar::before {
+            background: url('../images/menu/stock-bar-white.svg');
+
+          }
+
+          &.upsell-order-bump::before {
+            background: url('../images/menu/upsel-white.svg');
+          }
+
+          &.countdown-timer::before {
+            background: url('../images/menu/countdown-timer-white.svg');
+          }
+
+        }
+
+        li {
           color: #757D9E;
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
 
+          &:hover {
+            background: #0875FF;
+            color: #ffffff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+
+          }
+
         }
 
         &.ant-menu-hidden {
           display: none;
+        }
+      }
+    }
+
+    h3,
+    .all-widgets-menu h4 {
+      &.active-menu{
+        &:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
         }
       }
     }

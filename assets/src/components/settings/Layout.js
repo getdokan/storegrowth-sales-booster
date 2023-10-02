@@ -8,10 +8,11 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
+import React from "react";
 import HeadBar from "./HeadBar";
-import PageLoader from "../PageLoader";
 import Sidebar from "./Sidebar";
-import {__} from "@wordpress/i18n";
+import PageLoader from "../PageLoader";
+import dashboardRoutes from "../dashboard/DashboardRoutes";
 
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
@@ -48,14 +49,7 @@ function AppLayout() {
 
   let routes = applyFilters(
     'sgsb_routes',
-    [
-      {
-        name    : 'dashboard',
-        path    : '/dashboard',
-        label   : __( 'Dashboard', 'storegrowth-sales-booster' ),
-          element : <div>Hello World</div>,
-      },
-    ],
+    [ ...dashboardRoutes ],
     Outlet,
     navigate,
     useParams,

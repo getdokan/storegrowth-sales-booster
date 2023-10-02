@@ -15,6 +15,8 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
+import {Link} from "react-router-dom";
+import {__} from "@wordpress/i18n";
 
 function Modules() {
   // pagination
@@ -160,9 +162,21 @@ function Modules() {
           <Image preview={false} width={164} src={logo} />
         </div>
 
-        <h3>
-          <Image preview={false} width={19} src={dashboardIcon} />
-          Dashboard
+        <h3 className={ `${ activeModule === 'dashboard' ? 'active-menu' : '' }` }>
+          <a
+            className={ activeModule === 'dashboard' ? 'sgsb-selected-link' : '' }
+            href={ `${ window.location.origin + window.location.pathname }?page=sgsb-settings#/dashboard/overview` }
+          >
+            {/*<Image preview={ false } width={ 19 } src={ dashboardIcon } />*/}
+              <svg width='19' height='19' viewBox='0 0 19 19' fill='none'>
+                <rect width='8' height='8' rx='2' fill={ activeModule === 'dashboard' ? '#0875FF' : '#073B4C' } />
+                <rect x='11' width='8' height='8' rx='4' fill={ activeModule === 'dashboard' ? '#0875FF' : '#073B4C' } />
+                <rect y='11' width='8' height='8' rx='2' fill={ activeModule === 'dashboard' ? '#0875FF' : '#073B4C' } />
+                <rect x='11' y='11' width='8' height='8' rx='2' fill={ activeModule === 'dashboard' ? '#0875FF' : '#073B4C' } />
+              </svg>
+
+              { __( 'Dashboard', 'storegrowth-sales-booster' ) }
+          </a>
         </h3>
         <div className="all-widgets-menu">
           <h4>

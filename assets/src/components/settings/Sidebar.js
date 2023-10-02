@@ -54,7 +54,7 @@ function Sidebar({ routes }) {
 
         <h3 className={ `${ selectedMenu === 'dashboard' ? 'active-menu' : '' }` }>
           <Link
-            to={ `/dashboard` }
+            to={ `/dashboard/overview` }
             data-route-name={ `dashboard` }
             className={ selectedMenu === 'dashboard' ? 'sgsb-selected-link' : '' }
           >
