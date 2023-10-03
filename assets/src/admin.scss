@@ -632,6 +632,27 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
             }
           }
+          &.floating-notification-bar {
+            &:before {
+              content: "";
+              background: url('../images/menu/floating-bar.svg');
+              width: 20px;
+              height: 18px;
+              background-repeat: no-repeat;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/floating-bar-white.svg');
+                width: 20px;
+                height: 18px;
+                background-repeat: no-repeat;
+              }
+
+            }
+          }
 
           &.sales-pop {
             &:before {
@@ -753,6 +774,13 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
           &.progressive-discount-banner::before {
             background: url('../images/menu/free-shipping-bar-icon-white.svg');
+            width: 20px;
+            height: 18px;
+            background-repeat: no-repeat;
+          }
+
+          &.floating-notification-bar::before {
+            background: url('../images/menu/floating-bar-white.svg');
             width: 20px;
             height: 18px;
             background-repeat: no-repeat;
@@ -1038,6 +1066,27 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/free-shipping-bar-icon-white.svg');
+                width: 20px;
+                height: 18px;
+                background-repeat: no-repeat;
+              }
+
+            }
+          }
+          &.floating-notification-bar {
+            &:before {
+              content: "";
+              background: url('../images/menu/floating-bar.svg');
+              width: 20px;
+              height: 18px;
+              background-repeat: no-repeat;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/floating-bar-white.svg');
                 width: 20px;
                 height: 18px;
                 background-repeat: no-repeat;

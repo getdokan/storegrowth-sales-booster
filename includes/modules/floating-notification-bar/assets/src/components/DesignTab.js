@@ -1,26 +1,15 @@
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import { Button } from "antd";
-
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
 function DesignTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser } =
+  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser ,onFormReset,fontFamily} =
     props;
 
-  const fontFamily = [
-    {
-      value: "poppins",
-      label: __("Poppins", "storegrowth-sales-booster"),
-    },
-    {
-      value: "dm-sans",
-      label: __("DM Sans", "storegrowth-sales-booster"),
-    },
-  ];
 
   return (
     <Fragment>
@@ -94,14 +83,11 @@ function DesignTab(props) {
         />
       </SettingsSection>
 
-      <Button
-        type="primary"
-        onClick={onFormSave}
-        loading={buttonLoading}
-        className="sgsb-settings-save-button"
-      >
-        Save
-      </Button>
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={buttonLoading}
+        saveHandler={onFormSave}
+      />
     </Fragment>
   );
 }

@@ -11,7 +11,7 @@ addFilter(
   (routes, outlet, navigate, useParams, useSearchParams) => {
     routes.push({
       name: "floating-notification-bar",
-      label: "Floating Notification Bar",
+      label: "Floating Bar",
       path: "/floating-notification-bar",
       element: (
         <FloatingNotificationBarLayout
@@ -33,7 +33,7 @@ addFilter(
 addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
   items.push({
     label: (
-      <Link to="/floating-notification-bar">Floating Notification Bar</Link>
+      <Link to="/floating-notification-bar">Floating Bar</Link>
     ),
     key: "floating-notification-bar",
     icon: <InsertRowAboveOutlined />,

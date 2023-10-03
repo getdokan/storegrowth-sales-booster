@@ -10,11 +10,11 @@ import EmptyField from "../../../../../../assets/src/components/settings/Panels/
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import DisplayRules from "./DisplayRules";
 import Countdown from "./Countdown";
+import CuponCode from "./CuponCode";
+import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
 
 function DefaultBanner(props) {
   const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
-  console.log("======= form Data ========");
-  console.log(formData);
   const noop = () => {};
   const buttonActionOptions = [
     { value: "ba-url-redirect", label: "Url Redirect" },
@@ -58,12 +58,12 @@ function DefaultBanner(props) {
     <>
       <SettingsSection>
         <SelectBox
+          needUpgrade={upgradeTeaser}
           name={`bar_position`}
           options={[...barPositions]}
           fieldValue={formData.bar_position}
-          changeHandler={onFieldChange}
+          changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Bar Position", "storegrowth-sales-booster")}
-          
         />
         <SelectBox
           name={`bar_type`}
@@ -116,7 +116,6 @@ function DefaultBanner(props) {
           >
             <Select
               defaultValue={formData.button_action}
-             
               options={buttonActionOptions}
               onChange={(event) => onFieldChange("button_action", event)}
             />
@@ -125,9 +124,8 @@ function DefaultBanner(props) {
                 <Input
                   value={formData.redirect_url}
                   style={{
-                    padding:"5px",
-                    border:"1px solid #DDE6F9"
-                   
+                    padding: "5px",
+                    border: "1px solid #DDE6F9",
                   }}
                   onChange={(event) =>
                     onFieldChange("redirect_url", event.target.value)
@@ -135,13 +133,20 @@ function DefaultBanner(props) {
                   placeholder="http://example.com"
                 />
                 <Checkbox
+                  disabled={upgradeTeaser}
                   value={"new_tab_enable"}
                   checked={formData.new_tab_enable}
-                  onChange={(event) =>
-                    onFieldChange("new_tab_enable", event.target.checked)
+                  onChange={
+                    upgradeTeaser
+                      ? noop
+                      : (event) =>
+                          onFieldChange("new_tab_enable", event.target.checked)
                   }
                 >
-                  Open in New Tab
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    Open in New Tab
+                    {upgradeTeaser && <UpgradeCrown />}
+                  </div>
                 </Checkbox>
               </>
             )}
@@ -151,6 +156,13 @@ function DefaultBanner(props) {
           upgradeTeaser={upgradeTeaser}
           onFieldChange={onFieldChange}
           formData={formData}
+          noop={noop}
+        />
+        <CuponCode
+          upgradeTeaser={upgradeTeaser}
+          formData={formData}
+          onFieldChange={onFieldChange}
+          noop={noop}
         />
       </SettingsSection>
 

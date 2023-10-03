@@ -2,9 +2,8 @@ import { Checkbox, DatePicker } from "antd";
 import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 import dayjs from "dayjs";
-
 const Countdown = (props) => {
-  const { upgradeTeaser, onFieldChange, formData } = props;
+  const { upgradeTeaser, onFieldChange, formData, noop } = props;
 
   // Reusable function for rendering conditional DatePicker
   const renderConditionalDatePicker = (
@@ -12,7 +11,9 @@ const Countdown = (props) => {
     fieldKey,
     disabledDateFn,
     defaultDate,
-    isStartDate
+    isStartDate,
+    upgradeTeaser = false,
+    noop
   ) => (
     <div style={{ display: "block" }}>
       <h4>{title}</h4>
@@ -20,9 +21,10 @@ const Countdown = (props) => {
         style={{
           width: "150px",
         }}
-        onChange={(date, dateString) => onFieldChange(fieldKey, dateString)}
+        disabled={upgradeTeaser}
+        onChange={upgradeTeaser?noop:(date, dateString) => onFieldChange(fieldKey, dateString)}
         disabledDate={disabledDateFn}
-        defaultValue={dayjs(defaultDate, "YYYY-MM-DD")} // Set the default value using dayjs and the specified format
+        value={defaultDate ? dayjs(defaultDate, "YYYY-MM-DD") : undefined}
         format="YYYY-MM-DD" // Set the display format to include time
       />
     </div>
@@ -54,21 +56,29 @@ const Countdown = (props) => {
           "countdown_start_date",
           disabledStartDate,
           formData.countdown_start_date,
-          true // Indicate that this is the start date
+          true, // Indicate that this is the start date
+          upgradeTeaser,
+          noop
         )}
         {renderConditionalDatePicker(
           "End Date",
           "countdown_end_date",
           disabledEndDate,
           formData.countdown_end_date,
-          false // Indicate that this is the end date
+          false ,// Indicate that this is the end date
+          upgradeTeaser,
+          noop
         )}
       </div>
       <Checkbox
+        disabled={upgradeTeaser}
         value={"countdown_show_enable"}
         checked={formData.countdown_show_enable}
-        onChange={(event) =>
-          onFieldChange("countdown_show_enable", event.target.checked)
+        onChange={
+          upgradeTeaser
+            ? noop
+            : (event) =>
+                onFieldChange("countdown_show_enable", event.target.checked)
         }
       >
         Show Countdown
