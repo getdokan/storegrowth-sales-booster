@@ -1699,31 +1699,6 @@ End Settings Sidebar
           border-radius: 5px;
           border-color: #DDE6F9;
 
-          &.upgrade-settings .ant-card-body,
-          .disabled-settings {
-            overflow: hidden;
-            position: relative;
-            border-radius: 5px;
-
-            &:hover {
-              .pro-content-overlay {
-                display: flex;
-              }
-            }
-          }
-
-          .disabled-settings {
-            .ant-checkbox-input {
-              display: none;
-            }
-
-            .ant-checkbox-inner {
-              &:after {
-                display: none;
-              }
-            }
-          }
-
           .pro-content-overlay {
             top: 0;
             left: 0;
@@ -1753,6 +1728,54 @@ End Settings Sidebar
                     fill: #fff;
                   }
                 }
+              }
+            }
+          }
+
+          &.upgrade-settings .ant-card-body,
+          .disabled-settings {
+            overflow: hidden;
+            position: relative;
+            border-radius: 5px;
+
+            &:hover {
+              .pro-content-overlay {
+                display: flex;
+              }
+            }
+          }
+
+          .disabled-settings {
+            .ant-checkbox-input {
+              display: none;
+            }
+
+            .ant-checkbox-inner {
+              &:after {
+                display: none;
+              }
+            }
+          }
+
+          .disabled-checkbox {
+            position: relative;
+
+            .pro-content-overlay {
+              width: 120%;
+              height: 150%;
+              overflow: hidden;
+              border-radius: 5px;
+              margin: -2% 0 0 -4%;
+
+              .upgrade-button {
+                font-size: 12px;
+                padding: 4px 12px;
+              }
+            }
+
+            &:hover {
+              .pro-content-overlay {
+                display: flex;
               }
             }
           }
