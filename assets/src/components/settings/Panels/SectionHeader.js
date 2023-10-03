@@ -10,7 +10,7 @@ const SectionHeader = ( { title, showUpgrade } ) => {
             <Title level={ 4 } className={ `section-heading` }>
                 { title }
             </Title>
-            { showUpgrade && <UpgradeCrown /> }
+            { showUpgrade && <UpgradeCrown proBadge={ false } /> }
         </div>
     );
 }

@@ -44,29 +44,29 @@ const SingleCheckBox = ({
   needUpgrade = false,
 }) => {
   return (
-    // Make settings textarea component with card preview.
-    <FieldWrapper colSpan={colSpan}>
-      <Col span={9}>
+    // Make settings checkbox component with card preview.
+    <FieldWrapper colSpan={colSpan} upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
+      <Col span={15}>
         <div className={`card-heading checkbox-heading`}>
-          {/* Handle switcher title. */}
+          {/* Handle checkbox title. */}
           <Title level={3} className={`settings-heading`}>
             {title}
           </Title>
-          {/* Handle switcher tooltip. */}
+          {/* Handle checkbox tooltip. */}
           {tooltip && <SettingsTooltip content={tooltip} />}
-          {/* Handle switcher upgrade icon. */}
+          {/* Handle checkbox settings upgrade icon. */}
           {needUpgrade && <UpgradeCrown />}
         </div>
       </Col>
 
-      <Col span={15}>
-        {/* Handle settings textarea field by using dynamic props */}
+      <Col span={9}>
+        {/* Handle settings checkbox field by using dynamic props */}
         <Checkbox
           rows={areaRows}
           disabled={needUpgrade}
           checked = {checkedValue}
           value={name}
-          className={`settings-field singlecheckbox-field`}
+          className={`settings-field singlecheckbox-field ${ needUpgrade ? 'disabled-settings' : '' }`}
           onChange={(event) => changeHandler(name, event.target.checked)}
         >
         </Checkbox>

@@ -3,6 +3,7 @@ import SettingsTooltip from "../SettingsTooltip";
 import { applyFilters } from "@wordpress/hooks";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -26,7 +27,7 @@ const TextAreaBox = ( {
 
     return (
         // Make settings textarea component with card preview.
-        <FieldWrapper colSpan={ colSpan }>
+        <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={9}>
                 <div className={ `card-heading textarea-heading` }>
                     {/* Handle switcher title. */}
@@ -50,6 +51,8 @@ const TextAreaBox = ( {
                 />
                 { renderAreaContent }
             </Col>
+
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

@@ -44,8 +44,12 @@ class Sales_POP {
 
 		if ( isset( $popup_properties['enable'] ) && $popup_properties['enable'] ) {
 			include __DIR__ . '/../templates/popup-style.php';
-			include __DIR__ . '/../templates/popup.php';
+			$path = apply_filters( 'sgsb_sales_pop_visbility_controller', __DIR__ . '/../templates/popup.php' );
+			if ( ! $path ) {
+				return;
+			}
+
+			include $path;
 		}
 	}
-
 }

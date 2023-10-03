@@ -78,13 +78,15 @@ const DisplayRules = (props) => {
         />
         {/* Empty Field Component */}
         <EmptyField
-          needUpgrade={upgradeTeaser}
-          title={__("Page Targeting", "storegrowth-sales-booster")}
-          tooltip={__(
+          needUpgrade={ upgradeTeaser }
+          title={ __( "Page Targeting", "storegrowth-sales-booster" ) }
+          tooltip={ __(
             `Add page targeting to ensure the welcome bar only appears or doesn't appear for the selected pages only`,
             "storegrowth-sales-booster"
-          )}
-          colSpan={24}
+          ) }
+          colSpan={ 24 }
+          leftCol={ 12 }
+          rightCol={ 12 }
         >
           <div
             style={{

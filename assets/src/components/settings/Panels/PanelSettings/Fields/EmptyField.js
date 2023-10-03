@@ -2,6 +2,7 @@ import { Typography, Col } from "antd";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
+import UpgradeOverlay from "../UpgradeOverlay";
 const noop = () => {};
 const { Title } = Typography;
 
@@ -11,12 +12,12 @@ const EmptyField = ({
   colSpan = 24,
   needUpgrade = false,
   children,
-  leftCol=9,
-  rightCol =15
+  leftCol=10,
+  rightCol =14
 }) => {
   return (
     // Make settings textarea component with card preview.
-    <FieldWrapper colSpan={colSpan}>
+    <FieldWrapper colSpan={colSpan} upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
       <Col span={leftCol}>
         <div className={`card-heading textarea-heading`}>
           {/* Handle switcher title. */}
@@ -34,6 +35,8 @@ const EmptyField = ({
         {/* Handle settings textarea field by using dynamic props */}
         {children}
       </Col>
+
+      { needUpgrade && <UpgradeOverlay /> }
     </FieldWrapper>
   );
 };

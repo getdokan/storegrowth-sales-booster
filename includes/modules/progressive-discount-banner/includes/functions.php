@@ -39,7 +39,7 @@ function sgsb_pd_banner_get_banner_text( $settings ) {
  * Get bar template.
  *
  * @param bool $is_echo Set print or return.
- * @return string
+ * @return void
  */
 function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
 	$path = apply_filters( 'free_shipping_bar_content_pro', __DIR__ . '/../templates/bar.php' );
@@ -68,3 +68,5 @@ function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
 function sgsb_pd_banner_get_banner_icon( $settings ) {
 	return sgsb_find_option_setting( $settings, 'progressive_banner_icon_html' );
 }
+
+

@@ -3,6 +3,7 @@ import { Checkbox, Col, Space, Typography } from "antd";
 import FieldWrapper from "./FieldWrapper";
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
+import UpgradeOverlay from "../UpgradeOverlay";
 const { Title } = Typography;
 
 /**
@@ -89,7 +90,7 @@ const CheckboxGroup = ({
 
   const noop = () => {};
   return (
-    <FieldWrapper colSpan={colSpan}>
+    <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
       <Col span={headColSpan}>
         <div className={`card-heading checkboxinput-heading`}>
           {/* Handle switcher title. */}
@@ -131,6 +132,7 @@ const CheckboxGroup = ({
           ))}
         </Space>
       </Col>
+      { needUpgrade && <UpgradeOverlay /> }
     </FieldWrapper>
   );
 };
