@@ -26,7 +26,7 @@ function GeneralSettingsTab(props) {
           changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Display on Shop Page", "storegrowth-sales-booster")}
           tooltip={__(
-            "The sales countdown will show on the shop page",
+            "The stock countdown bar will show on the shop page",
             "storegrowth-sales-booster"
           )}
         />
@@ -37,7 +37,7 @@ function GeneralSettingsTab(props) {
           changeHandler={onFieldChange}
           title={__("Display on Product Page", "storegrowth-sales-booster")}
           tooltip={__(
-            "The sales countdown will show on the shop page",
+            "The stock countdown bar will show on the single product page",
             "storegrowth-sales-booster"
           )}
         />
@@ -52,7 +52,7 @@ function GeneralSettingsTab(props) {
             "storegrowth-sales-booster"
           )}
           tooltip={__(
-            "The sales countdown will show on the shop page",
+            "The stock countdown bar will show on the variations product page",
             "storegrowth-sales-booster"
           )}
         />
