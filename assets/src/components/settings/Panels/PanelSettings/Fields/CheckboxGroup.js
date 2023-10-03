@@ -106,7 +106,7 @@ const CheckboxGroup = ({
       <Col span={checkboxColSpan}>
         <Space direction={displayDirection}>
           {options.map((checkbox) => (
-            <label key={checkbox.value} style={{ display: "flex", gap: "4px" }}>
+            <label className={ `${ checkbox.needUpgrade ? 'disabled-checkbox' : '' }` } key={checkbox.value} style={{ display: "flex", gap: "4px" }}>
               <Checkbox
                 checked={selectedOptions.includes(checkbox.value)}
                 onChange={
@@ -127,7 +127,8 @@ const CheckboxGroup = ({
                   )}
                 </span>
               </Checkbox>
-              {(checkbox.needUpgrade && showProIcon) ? <UpgradeCrown /> : ""}
+              {(checkbox.needUpgrade && showProIcon) ? <UpgradeCrown proBadge={ false } /> : ""}
+              { checkbox.needUpgrade && <UpgradeOverlay /> }
             </label>
           ))}
         </Space>
