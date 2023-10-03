@@ -1,8 +1,11 @@
 import React from "react";
-import { Collapse, Image } from "antd";
+import { Collapse, Image,Col } from "antd";
 import AccorUP from "../../../images/accor-up.svg";
 import AccorDown from "../../../images/accor-donw.svg";
 import DashboardTabs from "./DashboardTabs";
+import Promotion from "./Promotion";
+import PanelContainer from "../settings/Panels/PanelContainer";
+import PanelRow from "../settings/Panels/PanelRow";
 const text = `
   A dog is a type of domesticated animal.
   Known for its loyalty and faithfulness,
@@ -36,12 +39,21 @@ const Faq = () => {
         background: "#ffffff",
         borderRadius: "5px",
         border: "1px solid #DDE6F9",
-        padding: "26px",
+        padding: "5px",
 
     };
 
     return (
-        <div className="dashboard">
+        <div className="site-card-wrapper sgsb-admin-dashboard">
+        <div className="sgsb-admin-dashboard-module">
+          <div
+            className="sgsb-dasboard-container"
+            style={{ padding: "30px 0px 0px 0px" }}
+          >
+            <PanelContainer>
+              <PanelRow>
+                <Col span={18}>
+                <div className="dashboard">
             {/* Render dashboard tabs. */}
             <DashboardTabs />
 
@@ -66,6 +78,16 @@ const Faq = () => {
                 </div>
             </div>
         </div>
+                </Col>
+                <Col span={6}>
+                  <Promotion />
+                </Col>
+              </PanelRow>
+            </PanelContainer>
+          </div>
+        </div>
+      </div>
+       
     );
 };
 

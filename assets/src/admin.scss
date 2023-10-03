@@ -1,6 +1,7 @@
 /* variable color */
 $white-color: #ffffff;
 @import "./components/dashboard/styles/overview.scss";
+
 @mixin font-face($font-family, $font-path) {
   @font-face {
     font-family: #{$font-family};
@@ -819,7 +820,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
     h3,
     .all-widgets-menu h4 {
-      &.active-menu{
+      &.active-menu {
         &:before {
           content: "";
           position: absolute;
@@ -895,7 +896,7 @@ End Settings Sidebar
 .sgsb-admin-dashboard {
   display: flex;
   flex-flow: row wrap;
-  background: #f4f7fe;
+  // background: #f4f7fe;
 
   @media (max-width: 767px) {
     display: block;
@@ -1269,7 +1270,7 @@ End Settings Sidebar
 
     h3,
     .all-widgets-menu h4 {
-      &.active-menu{
+      &.active-menu {
         &:before {
           content: "";
           position: absolute;
@@ -2318,4 +2319,9 @@ End Settings Sidebar
 
 .trigger-radio-selected {
   background-color: #F6F9FF;
+}
+
+.inrto-section-img-backgroud {
+  background: url("../src/components/dashboard/images/intro-section-img-backgroundImg.svg");
+  background-repeat: no-repeat;
 }
