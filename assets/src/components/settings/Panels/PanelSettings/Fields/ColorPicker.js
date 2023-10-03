@@ -2,6 +2,7 @@ import { Typography, Col, ColorPicker } from 'antd';
 import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
+import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -51,7 +52,7 @@ const ColourPicker = ( {
 
     return (
         // Make settings color-picker component with card preview.
-        <FieldWrapper colSpan={ colSpan } align={ 'center' }>
+        <FieldWrapper colSpan={ colSpan } align={ 'center' } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={15}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
@@ -72,6 +73,7 @@ const ColourPicker = ( {
                     onChange={ ( v, hex ) => changeHandler( name, hex ) }
                 />
             </Col>
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

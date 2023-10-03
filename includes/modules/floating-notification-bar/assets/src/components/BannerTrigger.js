@@ -22,6 +22,8 @@ const BannerTrigger = (props) => {
           `Choose when you'd like the welcome bar to appear on your site`,
           "storegrowth-sales-booster"
         )}
+        leftCol={ 12 }
+        rightCol={ 12 }
       >
         <Radio.Group
           style={{

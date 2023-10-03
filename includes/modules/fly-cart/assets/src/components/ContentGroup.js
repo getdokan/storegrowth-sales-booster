@@ -3,6 +3,7 @@ import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSett
 import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsTooltip";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
 import CartContent from "./CartContent";
+import UpgradeOverlay from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -45,8 +46,8 @@ const ContentGroup = ( {
                         } }
                     >
                         <Card
-                            style={ { background: formData?.[ option?.name ] && !option?.needUpgrade ? '#F4F7FF' : '#FFF' } }
                             className={ `sgsb-settings-card content-group-settings ${ option?.needUpgrade ? 'disabled-settings' : '' }` }
+                            style={ { background: formData?.[ option?.name ] && !option?.needUpgrade ? '#F4F7FF' : '#FFF' } }
                         >
                             <Row justify={ `start` } align={ `middle` }>
                                 <CartContent
@@ -59,6 +60,7 @@ const ContentGroup = ( {
                                     className={ `settings-field checkbox-field` }
                                 />
                             </Row>
+                            { option?.needUpgrade && <UpgradeOverlay /> }
                         </Card>
                     </Col>
                 ) ) }

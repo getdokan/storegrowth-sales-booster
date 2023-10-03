@@ -1748,6 +1748,64 @@ End Settings Sidebar
           border-radius: 5px;
           border-color: #DDE6F9;
 
+          &.upgrade-settings .ant-card-body,
+          .disabled-settings {
+            overflow: hidden;
+            position: relative;
+            border-radius: 5px;
+
+            &:hover {
+              .pro-content-overlay {
+                display: flex;
+              }
+            }
+          }
+
+          .disabled-settings {
+            .ant-checkbox-input {
+              display: none;
+            }
+
+            .ant-checkbox-inner {
+              &:after {
+                display: none;
+              }
+            }
+          }
+
+          .pro-content-overlay {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: none;
+            position: absolute;
+            align-items: center;
+            background: #00000080;
+            justify-content: center;
+
+            .upgrade-button {
+              gap: 10px;
+              color: #fff;
+              font-size: 13px;
+              font-weight: 600;
+              padding: 9px 15px;
+              border-radius: 5px;
+              align-items: center;
+              background: #FFAC27;
+              display: inline-flex;
+
+              .overlay-btn-crown {
+                svg {
+                  path {
+                    fill: #fff;
+                  }
+                }
+              }
+            }
+          }
+
           .card-heading {
             height: 100%;
             display: flex;
@@ -2036,8 +2094,19 @@ End Settings Sidebar
           }
 
           .sgsb-field-upgrade-pro-label {
+            gap: 10px;
             display: flex;
             align-items: center;
+
+            span.sgsb-pro-badge {
+              font-size: 10px;
+              font-weight: 600;
+              line-height: 1;
+              background: #FFAC27;
+              color: white;
+              border-radius: 10px;
+              padding: 4px 7px;
+            }
           }
 
           .ant-row {
@@ -2201,6 +2270,7 @@ End Settings Sidebar
       .sgsb-settings-save-button {
         border: 0;
         margin: 0;
+        color: #FFF;
         height: auto;
         z-index: 9999;
         line-height: 1;
