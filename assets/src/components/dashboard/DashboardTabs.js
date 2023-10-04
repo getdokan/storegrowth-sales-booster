@@ -21,11 +21,10 @@ const DashboardTabs = () => {
         <ul className="dashboad-tab">
             { routes.map( ( route ) => (
                 <li
-                    key={ route.path }
-                    style={ location.pathname === route.path ? activeNavStyle : {} }
+                    key={ route.path } 
                     className={`dashboad-tab-singel-${ route.label.toLowerCase() }`}
                 >
-                    <Link to={ route.path }>{ route.label }</Link>
+                    <Link  style={ location.pathname === route.path ? activeNavStyle : {} } to={ route.path }>{ route.label }</Link>
                 </li>
             ))}
         </ul>

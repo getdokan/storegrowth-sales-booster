@@ -44,6 +44,15 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
+			__( 'Dashboard - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Dashboard', 'storegrowth-sales-booster' ),
+			'manage_options',
+			'sgsb-dashboard',
+			array( $this, 'dashboard_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
 			__( 'Modules - Sales Booster', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
@@ -76,5 +85,14 @@ class Admin_Menu {
 	 */
 	public function settings_callback() {
 		echo '<div class="wrap"><div id="sbooster-settings-page"></div></div>';
+	}
+
+	/**
+	 * Display Dashboard page content.
+	 */
+	public function dashboard_callback() {
+		$redirect_url = admin_url( 'admin.php?page=sgsb-settings#/dashboard/overview' );
+		wp_safe_redirect( $redirect_url );
+		exit;
 	}
 }

@@ -1,16 +1,18 @@
-import { useEffect, useState } from '@wordpress/element';
-import { Layout, Menu, Image } from 'antd';
-import { Link, matchRoutes, Navigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "@wordpress/element";
+import { Layout, Menu, Image } from "antd";
+import { Link, matchRoutes, Navigate, useLocation } from "react-router-dom";
 
-import logo from '../../../images/logo.svg';
-import downArrowIocn from '../../../images/menu/down-arrow-icon.svg';
-import upArrowIocn from '../../../images/menu/up-arrow-icon.svg';
-import widgetIcon from '../../../images/widget-icon.svg';
-import { __ } from '@wordpress/i18n';
+import logo from "../../../images/logo.svg";
+import downArrowIocn from "../../../images/menu/down-arrow-icon.svg";
+import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
+import widgetIcon from "../../../images/widget-icon.svg";
+import { __ } from "@wordpress/i18n";
 
 function Sidebar({ routes }) {
   // let sidebarItems = applyFilters('sidebar_menu_items', [], Link);
-  let firstItem = routes[0] || false;
+  const filteredRoute = routes.filter((item) => item.name !== "dashboard");
+  let firstItem = filteredRoute[0] || false;
+
   const location = useLocation();
   const [activeClass, setActiveClass] = useState(false);
   const matchResult = matchRoutes(routes, location);
@@ -34,79 +36,110 @@ function Sidebar({ routes }) {
       linkElement.click();
     }
   };
-
   // Redirect to the first menu if it is the index page.
-  if (location.pathname === '/' && firstItem) {
+  if (location.pathname === "/" && filteredRoute.length!==0) {
     return <Navigate to={`${firstItem.path}`} replace={true} />;
+  }
+  else if(location.pathname === "/" && filteredRoute.length===0){
+    window.location.href = "admin.php?page=sgsb-modules"; 
   }
 
   return (
     <Layout.Sider
-      className='site-layout-background sgsb__settings-sidebar'
+      className="site-layout-background sgsb__settings-sidebar"
       style={{
-        minHeight: '100vh',
+        minHeight: "100vh",
       }}
     >
-      <div className='sgsb-admin-setting-dashboard-sideabr'>
-        <div className='sgsb-logo'>
+      <div className="sgsb-admin-setting-dashboard-sideabr">
+        <div className="sgsb-logo">
           <Image preview={false} width={164} src={logo} />
         </div>
 
-        <h3 className={ `${ selectedMenu === 'dashboard' ? 'active-menu' : '' }` }>
+        <h3 className={`${selectedMenu === "dashboard" ? "active-menu" : ""}`}>
           <Link
-            to={ `/dashboard/overview` }
-            data-route-name={ `dashboard` }
-            className={ selectedMenu === 'dashboard' ? 'sgsb-selected-link' : '' }
+            to={`/dashboard/overview`}
+            data-route-name={`dashboard`}
+            className={selectedMenu === "dashboard" ? "sgsb-selected-link" : ""}
           >
             {/*<Image preview={ false } width={ 19 } src={ dashboardIcon } />*/}
-            <svg width='19' height='19' viewBox='0 0 19 19' fill='none'>
-              <rect width='8' height='8' rx='2' fill={ selectedMenu === 'dashboard' ? '#0875FF' : '#073B4C' } />
-              <rect x='11' width='8' height='8' rx='4' fill={ selectedMenu === 'dashboard' ? '#0875FF' : '#073B4C' } />
-              <rect y='11' width='8' height='8' rx='2' fill={ selectedMenu === 'dashboard' ? '#0875FF' : '#073B4C' } />
-              <rect x='11' y='11' width='8' height='8' rx='2' fill={ selectedMenu === 'dashboard' ? '#0875FF' : '#073B4C' } />
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
+              <rect
+                width="8"
+                height="8"
+                rx="2"
+                fill={selectedMenu === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                x="11"
+                width="8"
+                height="8"
+                rx="4"
+                fill={selectedMenu === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                y="11"
+                width="8"
+                height="8"
+                rx="2"
+                fill={selectedMenu === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                x="11"
+                y="11"
+                width="8"
+                height="8"
+                rx="2"
+                fill={selectedMenu === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
             </svg>
 
-            { __( 'Dashboard', 'storegrowth-sales-booster' ) }
+            {__("Dashboard", "storegrowth-sales-booster")}
           </Link>
         </h3>
-        <div className='all-widgets-menu'>
-          <h4 className={ `${ selectedMenu !== 'dashboard' ? 'active-menu' : '' }` }>
-            <Image preview={ false } width={ 18 } src={ widgetIcon } />
-            { __( 'All Modules', 'storegrowth-sales-booster' ) }
-            <span onClick={toggleMenuClass} className='ant-menu-title-content'>
+        <div className="all-widgets-menu">
+          <h4
+            className={`${selectedMenu !== "dashboard" ? "active-menu" : ""}`}
+          >
+            <Image preview={false} width={18} src={widgetIcon} />
+            {__("All Modules", "storegrowth-sales-booster")}
+            <span onClick={toggleMenuClass} className="ant-menu-title-content">
               {activeClass ? (
-                <img src={upArrowIocn} width='12' />
+                <img src={upArrowIocn} width="12" />
               ) : (
-                <img src={downArrowIocn} width='12' />
+                <img src={downArrowIocn} width="12" />
               )}
             </span>
           </h4>
           <ul
             className={
-              activeClass ? 'widgets-menu ant-menu-hidden' : 'widgets-menu'
+              activeClass ? "widgets-menu ant-menu-hidden" : "widgets-menu"
             }
           >
-            {routes.map((route) => route?.name !== 'dashboard' && (
-              <li
-                key={route.name}
-                onClick={() => handleLiClick(route.name)} // Handle the click event on <li>
-                className={
-                  selectedMenu === route.name
-                    ? `sgsb-selected-module ${route.name}`
-                    : `${route.name}`
-                }
-              >
-                <Link
-                  className={
-                    selectedMenu === route.name ? 'sgsb-selected-link' : ''
-                  }
-                  data-route-name={route.name}
-                  to={route.path}
-                >
-                  {route.label}
-                </Link>
-              </li>
-            ))}
+            {routes.map(
+              (route) =>
+                route?.name !== "dashboard" && (
+                  <li
+                    key={route.name}
+                    onClick={() => handleLiClick(route.name)} // Handle the click event on <li>
+                    className={
+                      selectedMenu === route.name
+                        ? `sgsb-selected-module ${route.name}`
+                        : `${route.name}`
+                    }
+                  >
+                    <Link
+                      className={
+                        selectedMenu === route.name ? "sgsb-selected-link" : ""
+                      }
+                      data-route-name={route.name}
+                      to={route.path}
+                    >
+                      {route.label}
+                    </Link>
+                  </li>
+                )
+            )}
           </ul>
         </div>
       </div>

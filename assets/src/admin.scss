@@ -560,13 +560,24 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
       }
 
-      ul {
+      .widgets-menu {
         padding: 0 20px 0 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
 
         @media (min-width: 1800px) {
           // padding: 0 22px;
           padding: 0 42px 0 0;
 
+        }
+
+        &.ant-menu-hidden {
+          max-height: 0; // Hide immediately when hidden class is applied
+        }
+      
+        &:not(.ant-menu-hidden) {
+          max-height: 500px; // Show immediately when hidden class is removed
         }
 
         .sgsb-selected-module {
@@ -812,9 +823,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
         }
 
-        &.ant-menu-hidden {
-          display: none;
-        }
       }
     }
 
@@ -937,7 +945,7 @@ End Settings Sidebar
     h3 {
       display: flex;
       position: relative;
-      padding: 50px 20px 40px;
+      padding: 50px 20px 30px;
       align-items: center;
 
       a {
@@ -980,6 +988,7 @@ End Settings Sidebar
 
     .all-widgets-menu {
       h4 {
+        cursor: pointer;
         color: #073B4C;
         font-size: 16px;
         font-weight: 600;
@@ -1010,13 +1019,24 @@ End Settings Sidebar
 
       }
 
-      ul {
+      .widgets-menu {
         padding: 0 20px 0 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
 
         @media (min-width: 1800px) {
           // padding: 0 22px;
           padding: 0 42px 0 0;
 
+        }
+
+        &.ant-menu-hidden {
+          max-height: 0; // Hide immediately when hidden class is applied
+        }
+      
+        &:not(.ant-menu-hidden) {
+          max-height: 500px; // Show immediately when hidden class is removed
         }
 
         .sgsb-selected-module {
@@ -1262,10 +1282,8 @@ End Settings Sidebar
 
         }
 
-        &.ant-menu-hidden {
-          display: none;
-        }
       }
+
     }
 
     h3,
@@ -1291,7 +1309,7 @@ End Settings Sidebar
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 15px;
+      padding: 20px 20px 40px 20px;
       cursor: pointer;
 
       @media (min-width: 1600px) {
