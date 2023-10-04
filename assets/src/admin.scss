@@ -1841,6 +1841,11 @@ End Settings Sidebar
               &.singlecheckbox-field {
                 background: none;
 
+                .ant-checkbox-input:disabled {
+                  border: none;
+                  background: transparent;
+                }
+
                 .ant-checkbox-inner {
                   width: 30px;
                   height: 30px;
@@ -2152,6 +2157,28 @@ End Settings Sidebar
                   }
                 }
               }
+            }
+          }
+        }
+
+        .radio-template-field {
+          width: 100%;
+
+          label.ant-radio-button-wrapper {
+            display: block;
+            padding: 0;
+          }
+
+          &.free-shipping-bar-templates {
+            label.ant-radio-button-wrapper {
+              height: 62px;
+            }
+          }
+
+          &.stock-bar-templates {
+            label.ant-radio-button-wrapper {
+              height: auto;
+              border: none;
             }
           }
         }

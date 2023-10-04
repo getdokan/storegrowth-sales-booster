@@ -6,10 +6,12 @@ import Number from "sales-booster/src/components/settings/Panels/PanelSettings/F
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import Templates from "./Templates";
 
 function DesignTab(props) {
   const {
     formData,
+    setFormData,
     onFieldChange,
     onFormSave,
     buttonLoading,
@@ -25,7 +27,7 @@ function DesignTab(props) {
     },
     {
       value: "below",
-      label: __("Above Stock Bar", "storegrowth-sales-booster"),
+      label: __("Below Stock Bar", "storegrowth-sales-booster"),
     },
   ];
 
@@ -110,12 +112,18 @@ function DesignTab(props) {
           )}
           needUpgrade={upgradeTeaser}
         />
-        <ActionsHandler
-          resetHandler={onFormReset}
-          loadingHandler={buttonLoading}
-          saveHandler={onFormSave}
-        />
       </SettingsSection>
+
+      <Templates
+        formData={ formData }
+        setFormData={ setFormData }
+      />
+
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={buttonLoading}
+        saveHandler={onFormSave}
+      />
     </Fragment>
   );
 }

@@ -135,6 +135,7 @@ class Enqueue_Script {
 		$bg_color      = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
 		$text_color    = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$icon_color    = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$close_color   = sgsb_find_option_setting( $settings, 'close_icon_color', '#ffffff' );
 		$banner_height = sgsb_find_option_setting( $settings, 'banner_height', 60 );
 		$bar_type      = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
 		$font_family   = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
@@ -170,6 +171,9 @@ class Enqueue_Script {
 			}
 			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
 				fill: {$icon_color};
+			}
+			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-remove svg path {
+			    fill: {$close_color};
 			}
 			.sgsb-pd-banner-text{
 				font-size: {$font_size}px;

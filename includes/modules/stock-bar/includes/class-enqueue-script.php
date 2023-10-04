@@ -105,7 +105,7 @@ class Enqueue_Script {
 			}
 			.sgsb-stock-progress {
 				height: {$bar_height}px;
-				background-color: {$fg_color};
+				background: {$fg_color};
 			}
 			.sgsb-stock-progress-bar {
 				background-color: {$bg_color};

@@ -21,18 +21,19 @@ function StockBarLayout({ navigate, useSearchParams }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const initalStockBarData = {
-    stockbar_border_color: "#dde6f9",
-    stockbar_bg_color: "#e7efff",
-    stockbar_fg_color: "#0875ff",
-    stockbar_height: 10,
-    shop_page_stock_bar_enable: false,
-    shop_page_countdown_enable: false,
-    product_page_stock_bar_enable: true,
-    product_page_countdown_enable: true,
-    variation_page_stock_bar_enable: false,
-    stock_display_format: "above",
-    total_sell_count_text: "Total Sold",
-    available_item_count_text: "Available Item",
+    stockbar_height                 : 10,
+    stockbar_bg_color               : "#EBF6FF",
+    stockbar_fg_color               : "#008DFF",
+    stockbar_template               : 'stock_bar_one',
+    stock_display_format            : 'above',
+    stockbar_border_color           : '#DDE6F9',
+    total_sell_count_text           : __( 'Total Sold', 'storegrowth-sales-booster' ),
+    available_item_count_text       : __( 'Available Item', 'storegrowth-sales-booster' ),
+    shop_page_stock_bar_enable      : false,
+    shop_page_countdown_enable      : false,
+    product_page_stock_bar_enable   : true,
+    product_page_countdown_enable   : true,
+    variation_page_stock_bar_enable : false,
   };
   const [formData, setFormData] = useState({
     ...initalStockBarData,
@@ -121,13 +122,13 @@ function StockBarLayout({ navigate, useSearchParams }) {
       title: __("Stock Bar Setting", "storegrowth-sales-booster"),
       panel: (
         <GeneralSettingsTab
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("general_settings")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          noop={noop}
+          formData={ formData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'general_settings' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          noop={ noop }
         />
       ),
     },
@@ -136,13 +137,14 @@ function StockBarLayout({ navigate, useSearchParams }) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          noop={noop}
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( "design" ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          noop={ noop }
         />
       ),
     },
@@ -163,7 +165,7 @@ function StockBarLayout({ navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview />
+              <Preview formData={ formData } />
             </PanelPreview>
           )}
         </PanelRow>
