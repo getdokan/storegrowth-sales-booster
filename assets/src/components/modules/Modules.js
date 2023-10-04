@@ -15,6 +15,8 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
+import { Link } from "react-router-dom";
+import { __ } from "@wordpress/i18n";
 
 function Modules() {
   // pagination
@@ -32,6 +34,7 @@ function Modules() {
   // handle active module of settings url
   const [activeModule, setActiveModule] = useState(false);
   const [activeClass, setActiveClass] = useState(false);
+
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
@@ -160,25 +163,69 @@ function Modules() {
           <Image preview={false} width={164} src={logo} />
         </div>
 
-        <h3>
-          <Image preview={false} width={19} src={dashboardIcon} />
-          Dashboard
+        <h3 className={`${activeModule === "dashboard" ? "active-menu" : ""}`}>
+          <a
+            className={activeModule === "dashboard" ? "sgsb-selected-link" : ""}
+            href={`${
+              window.location.origin + window.location.pathname
+            }?page=sgsb-settings#/dashboard/overview`}
+          >
+            {/*<Image preview={ false } width={ 19 } src={ dashboardIcon } />*/}
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
+              <rect
+                width="8"
+                height="8"
+                rx="2"
+                fill={activeModule === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                x="11"
+                width="8"
+                height="8"
+                rx="4"
+                fill={activeModule === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                y="11"
+                width="8"
+                height="8"
+                rx="2"
+                fill={activeModule === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+              <rect
+                x="11"
+                y="11"
+                width="8"
+                height="8"
+                rx="2"
+                fill={activeModule === "dashboard" ? "#0875FF" : "#073B4C"}
+              />
+            </svg>
+
+            {__("Dashboard", "storegrowth-sales-booster")}
+          </a>
         </h3>
+        {activatedModules > 0 ? (
+          <ModuleFilter onFilterChange={handlefilterChange} />
+        ) : (
+          ""
+        )}
         <div className="all-widgets-menu">
-          <h4>
+          <h4 onClick={toggleMenuClass}>
             <Image preview={false} width={18} src={widgetIcon} />
             All Modules
-            <span onClick={toggleMenuClass} className="ant-menu-title-content">
+            <span  className="ant-menu-title-content">
               {activeClass ? (
-                <img src={upArrowIocn} width="12" />
-              ) : (
                 <img src={downArrowIocn} width="12" />
+              ) : (
+                <img src={upArrowIocn} width="12" />
+                
               )}
             </span>
           </h4>
           <ul
             className={
-              activeClass ? "widgets-menu ant-menu-hidden" : "widgets-menu"
+              activeClass ? "widgets-menu " : "widgets-menu ant-menu-hidden"
             }
           >
             {allModules.map((module) => {
@@ -200,11 +247,7 @@ function Modules() {
             })}
           </ul>
         </div>
-        {activatedModules > 0 ? (
-          <ModuleFilter onFilterChange={handlefilterChange} />
-        ) : (
-          ""
-        )}
+
         {!sgsbAdmin.isPro && <PremiumBox />}
       </div>
       <div className="sgsb-admin-dashboard-module">

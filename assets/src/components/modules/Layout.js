@@ -6,7 +6,6 @@ import Modules from "./Modules";
 function AppLayout() {
   return (
     <Layout>
-
       <Layout
           style={{
             padding: '0',

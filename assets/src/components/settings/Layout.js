@@ -8,9 +8,11 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
+import React from "react";
 import HeadBar from "./HeadBar";
-import PageLoader from "../PageLoader";
 import Sidebar from "./Sidebar";
+import PageLoader from "../PageLoader";
+import dashboardRoutes from "../dashboard/DashboardRoutes";
 
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
@@ -46,8 +48,8 @@ function AppLayout() {
   let navigate = useNavigate();
 
   let routes = applyFilters(
-    "sgsb_routes",
-    [],
+    'sgsb_routes',
+    [ ...dashboardRoutes ],
     Outlet,
     navigate,
     useParams,
