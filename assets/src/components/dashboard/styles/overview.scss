@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&display=swap');
+
 //Dashboard Container
 .dashboard {
+  font-family: 'IBM Plex Sans';
 
   //Dashboard tab container
   .dashboad-tab {
@@ -68,6 +73,13 @@
 
         .intro-section-text {
           padding: 53px 0px 0px 40px;
+
+          h1 {
+            color: #073B4C;
+            font-family: 'IBM Plex Sans';
+            font-size: 30px;
+            font-weight: 700;
+          }
 
           .music-player-background-is-the-background {
             background-color: rgba(255, 190, 100, 0.2);
@@ -274,7 +286,7 @@
 
       h2 {
         font-size: 28px;
-        font-weight: 500;
+        font-weight: 600;
         text-align: center;
       }
 
@@ -489,7 +501,7 @@
         h4 {
           margin: 0px;
           font-size: 28px;
-          font-weight: 600;
+          font-weight: 500;
           color: #073B4C;
         }
       }
