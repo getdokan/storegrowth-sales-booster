@@ -273,6 +273,7 @@ Pagination Style
 .sgsb-search-section {
 
   .search-bar {
+    
     padding-right: 10px;
 
     @media (max-width: 520px) {
@@ -284,11 +285,21 @@ Pagination Style
       input {
         display: block;
         width: 250px;
+        border-right: none;
         transition: .3s linear 0s;
 
         @media (max-width: 520px) {
           width: 73%;
 
+        }
+
+        .ant-input-group-wrapper{
+          span{
+            &.ant-input-wrapper{
+              display: flex;
+            }
+          }
+          
         }
 
       }
@@ -299,8 +310,11 @@ Pagination Style
         border-bottom-left-radius: 0;
 
       }
+
+  
     }
 
+    
   }
 
   input[class] {
@@ -330,7 +344,7 @@ Pagination Style
     cursor: pointer;
     width: 46px;
     height: 46px;
-    display: flex;
+    // display: flex;
     align-items: center;
     justify-content: center;
 
@@ -575,7 +589,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         &.ant-menu-hidden {
           max-height: 0; // Hide immediately when hidden class is applied
         }
-      
+
         &:not(.ant-menu-hidden) {
           max-height: 500px; // Show immediately when hidden class is removed
         }
@@ -658,6 +672,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
             }
           }
+
           &.floating-notification-bar {
             &:before {
               content: "";
@@ -1062,7 +1077,7 @@ End Settings Sidebar
         &.ant-menu-hidden {
           max-height: 0; // Hide immediately when hidden class is applied
         }
-      
+
         &:not(.ant-menu-hidden) {
           max-height: 500px; // Show immediately when hidden class is removed
         }
@@ -1145,6 +1160,7 @@ End Settings Sidebar
 
             }
           }
+
           &.floating-notification-bar {
             &:before {
               content: "";
@@ -2512,3 +2528,4 @@ End Settings Sidebar
   background: url("../src/components/dashboard/images/intro-section-img-backgroundImg.svg");
   background-repeat: no-repeat;
 }
+
