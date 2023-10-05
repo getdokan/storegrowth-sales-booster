@@ -575,7 +575,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         &.ant-menu-hidden {
           max-height: 0; // Hide immediately when hidden class is applied
         }
-      
+
         &:not(.ant-menu-hidden) {
           max-height: 500px; // Show immediately when hidden class is removed
         }
@@ -658,6 +658,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
             }
           }
+
           &.floating-notification-bar {
             &:before {
               content: "";
@@ -917,14 +918,43 @@ End Settings Sidebar
 }
 
 // progressive discount banner css end
-// upsell order bump css start
-.sgsb-order-bumps-limit-warning-message {
-  color: #1890ff;
-  display: block;
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0 0 25px 5px;
+// Premium warning message card
+.sgsb-upgrade-premium-notice-card {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  align-items: center;
+  padding: 9px 9px 9px 20px;
+  border-radius: 5px;
+  background: #E0F6E5;
+
+  .sgsb-premium-limit-warning-message {
+    color: #073B4C;
+    display: block;
+    font-size: 16px;
+  }
+
+  .premium-btn {
+    :where(.css-dev-only-do-not-override-18iikkb).ant-btn-primary {
+      color: #fff;
+      background-color: #ffac27;
+    }
+
+    :where(.css-dev-only-do-not-override-18iikkb).ant-btn {
+      font-size: 16px;
+      align-items: center;
+      border-radius: 8px;
+      display: flex;
+      gap: 10px;
+      height: 40px;
+      justify-content: center;
+      font-weight: 700;
+      padding: 14px;
+    }
+  }
 }
+
+
 
 // upsell order bump css end
 
@@ -1062,7 +1092,7 @@ End Settings Sidebar
         &.ant-menu-hidden {
           max-height: 0; // Hide immediately when hidden class is applied
         }
-      
+
         &:not(.ant-menu-hidden) {
           max-height: 500px; // Show immediately when hidden class is removed
         }
@@ -1145,6 +1175,7 @@ End Settings Sidebar
 
             }
           }
+
           &.floating-notification-bar {
             &:before {
               content: "";
@@ -2494,7 +2525,7 @@ End Settings Sidebar
     }
 
     .space-top {
-      margin-top: 36px;
+      margin-top: 30px;
     }
   }
 }
