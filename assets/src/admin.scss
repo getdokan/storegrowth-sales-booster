@@ -935,21 +935,29 @@ End Settings Sidebar
   }
 
   .premium-btn {
-    :where(.css-dev-only-do-not-override-18iikkb).ant-btn-primary {
-      color: #fff;
-      background-color: #ffac27;
-    }
 
-    :where(.css-dev-only-do-not-override-18iikkb).ant-btn {
-      font-size: 16px;
+    a {
+      display: inline-flex;
       align-items: center;
-      border-radius: 8px;
-      display: flex;
-      gap: 10px;
       height: 40px;
-      justify-content: center;
-      font-weight: 700;
-      padding: 14px;
+      border-radius: 5px;
+      gap: 10px;
+      padding: 12px 14px;
+
+      span {
+        font-size: 16px;
+        font-weight: 700;
+
+      }
+
+    }
+  }
+
+  .premium-btn {
+    a {
+      border: none;
+      background: var(--premium-color, #FFAC27);
+
     }
   }
 }
