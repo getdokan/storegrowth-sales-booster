@@ -7,10 +7,12 @@ import ColourPicker from "../../../../../../assets/src/components/settings/Panel
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 import "../styles/countdown-timer.css";
+import Templates from "./Templates";
 
-function DesignTab(props) {
+function DesignTab( props ) {
   const {
     formData,
+    setFormData,
     onFieldChange,
     onFormSave,
     upgradeTeaser,
@@ -50,6 +52,8 @@ function DesignTab(props) {
           saveHandler={onFormSave}
         />
       </SettingsSection>
+
+      <Templates formData={ formData } setFormData={ setFormData } />
 
       <Form.Item label="Theme" labelAlign="left">
         <div className="sgsb-countdown-theme">

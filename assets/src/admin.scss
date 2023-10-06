@@ -2169,6 +2169,8 @@ End Settings Sidebar
             padding: 0;
           }
 
+          &.notify-bar-templates,
+          &.countdown-timer-templates,
           &.free-shipping-bar-templates {
             label.ant-radio-button-wrapper {
               height: 62px;
@@ -2179,6 +2181,15 @@ End Settings Sidebar
             label.ant-radio-button-wrapper {
               height: auto;
               border: none;
+            }
+          }
+
+          &.countdown-timer-templates {
+            label.ant-radio-button-wrapper {
+              height: 162px;
+              overflow: hidden;
+              border-radius: 8px;
+              border: 1px solid #0875ff33;
             }
           }
         }

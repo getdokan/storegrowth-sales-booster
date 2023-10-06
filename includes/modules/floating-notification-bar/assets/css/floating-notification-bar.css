@@ -80,13 +80,14 @@ body:not(.show_floating_notification_bar) {
 /* CSS for the button-like anchor */
 .fn-bar-action-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #ffff;
     color: #000;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
     font-weight: 600;
+    line-height: 1;
 }
 
 .fn-bar-action-button:hover {
@@ -136,7 +137,9 @@ body {
     gap: 20px;
 }
 .sgsb-fn-bar-countdown .sgsb-fn-bar-countdown-value {
+    gap: 8px;
     display: flex;
+    line-height: 1;
     flex-direction: column;
 }
 .sgsb-countdown-content{
@@ -146,7 +149,7 @@ body {
 .sgsb-fn-bar-data-content {
     display: flex;
     flex-flow: wrap;
-    gap: 30px;
+    gap: 48px;
     justify-content: space-around;
     align-items: center;
 }

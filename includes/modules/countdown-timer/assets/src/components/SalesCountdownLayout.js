@@ -42,13 +42,13 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
     },
   ];
   const initialSalesCountdownData = {
-    widget_background_color: "#ffffff",
-    border_color: "#cccccc",
-    shop_page_countdown_enable: false,
-    product_page_countdown_enable: true,
-    countdown_heading: "Last chance! [discount]% OFF",
-    heading_text_color: "#000000",
-    selected_theme: "ct-custom",
+    border_color                  : '#cccccc',
+    selected_theme                : 'ct-layout-1',
+    countdown_heading             : '[discount]% OFF',
+    heading_text_color            : '#000000',
+    widget_background_color       : '#ffffff',
+    shop_page_countdown_enable    : false,
+    product_page_countdown_enable : true,
   };
 
   const [formData, setFormData] = useState({
@@ -157,15 +157,16 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          handleSelect={handleSelect}
-          noop={noop}
-          options={options}
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'design' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          handleSelect={ handleSelect }
+          noop={ noop }
+          options={ options }
         />
       ),
     },

@@ -10,7 +10,7 @@
 $settings      = sgsb_floating_notification_bar_get_settings();
 $banner_text   = sgsb_floating_notification_bar_get_banner_text( $settings );
 $banner_icon   = sgsb_floating_notification_bar_get_banner_icon( $settings );
-$button_text   = sgsb_find_option_setting( $settings, 'ac_button_text', 'Click Here' );
+$button_text   = sgsb_find_option_setting( $settings, 'ac_button_text', 'Shop Now' );
 $button_action = sgsb_find_option_setting( $settings, 'button_action', 'ba-url-redirect' );
 $redirect_url  = sgsb_find_option_setting( $settings, 'redirect_url', '#' );
 
