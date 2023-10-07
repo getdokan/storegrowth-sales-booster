@@ -52,7 +52,16 @@ function sgsb_floating_notification_bar_get_bar_content( $is_echo = true ) {
  * @param array $settings Admin settings.
  */
 function sgsb_floating_notification_bar_get_banner_icon( $settings ) {
-		return sgsb_find_option_setting( $settings, 'default_banner_icon_html' );
+		return sgsb_find_option_setting( $settings, 'default_banner_icon_name' );
+}
+
+/**
+ * Get banner custom icon src.
+ *
+ * @param array $settings Admin settings.
+ */
+function sgsb_floating_notification_bar_get_custom_banner_icon( $settings ) {
+    return sgsb_find_option_setting( $settings, 'default_banner_custom_icon' );
 }
 
 /**

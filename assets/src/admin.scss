@@ -2047,6 +2047,43 @@ End Settings Sidebar
                     }
                   }
                 }
+
+                .clear-upload {
+                  top: 0;
+                  right: 0;
+                  height: 100%;
+                  line-height: 1;
+                  position: absolute;
+
+                  .clear-icon {
+                    width: 16px;
+                    color: #fff;
+                    height: 16px;
+                    display: flex;
+                    font-size: 12px;
+                    background: #0875FF;
+                    border-radius: 100%;
+                    justify-content: center;
+                    transform: translate(50%, -50%);
+                  }
+                }
+
+                &.custom-field {
+                  label.ant-radio-button-wrapper{
+                    &:hover {
+                      border-color: #DDE6F9;
+                      background: transparent;
+                    }
+
+                    .clear-upload {
+                      &:hover {
+                        .clear-icon {
+                          background: #ef4444;
+                        }
+                      }
+                    }
+                  }
+                }
               }
 
               &:not(.ant-switch-checked) {
@@ -2058,6 +2095,32 @@ End Settings Sidebar
                   &:before {
                     background: #ABB8D0;
                   }
+                }
+              }
+            }
+
+            .media-button {
+              gap: 10px;
+              height: 100%;
+              display: flex;
+              color: #b6bdc0;
+              font-size: 14px;
+              border-radius: 5px;
+              align-items: center;
+              justify-content: center;
+
+              &:hover,
+              &.active {
+                color: #fff !important;
+                background: #1677ff;
+
+                g {
+                  opacity: 1;
+                }
+
+                path {
+                  fill: #fff !important;
+                  fill-opacity: 1;
                 }
               }
             }

@@ -66,7 +66,15 @@ function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
  * @param array $settings Admin settings.
  */
 function sgsb_pd_banner_get_banner_icon( $settings ) {
-	return sgsb_find_option_setting( $settings, 'progressive_banner_icon_html' );
+	return sgsb_find_option_setting( $settings, 'progressive_banner_icon_name' );
 }
 
+/**
+ * Get banner custom icon src.
+ *
+ * @param array $settings Admin settings.
+ */
+function sgsb_pd_banner_get_banner_custom_icon( $settings ) {
+	return sgsb_find_option_setting( $settings, 'progressive_banner_custom_icon' );
+}
 
