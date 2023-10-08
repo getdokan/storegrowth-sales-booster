@@ -42,10 +42,10 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
     },
   ];
   const initialSalesCountdownData = {
-    border_color                  : '#cccccc',
+    border_color                  : '#1677FF',
     selected_theme                : 'ct-layout-1',
     countdown_heading             : '[discount]% OFF',
-    heading_text_color            : '#000000',
+    heading_text_color            : '#008dff',
     widget_background_color       : '#ffffff',
     shop_page_countdown_enable    : false,
     product_page_countdown_enable : true,
@@ -186,7 +186,7 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview />
+              <Preview formData={ formData } />
             </PanelPreview>
           )}
         </PanelRow>

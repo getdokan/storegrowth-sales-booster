@@ -2230,6 +2230,11 @@ End Settings Sidebar
           label.ant-radio-button-wrapper {
             display: block;
             padding: 0;
+
+            &.ant-radio-button-wrapper-checked {
+              background: #fff;
+              border-color: #1677ff !important;
+            }
           }
 
           &.notify-bar-templates,

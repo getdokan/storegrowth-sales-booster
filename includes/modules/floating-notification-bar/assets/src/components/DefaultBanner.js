@@ -93,6 +93,14 @@ function DefaultBanner(props) {
       });
     };
 
+    const onBarChange = ( key, value ) => {
+      setFormData( {
+        ...formData,
+        [ key ]: value,
+        default_banner_custom_icon : '',
+      } );
+    };
+
   return (
     <Fragment>
       <SettingsSection>
@@ -126,7 +134,7 @@ function DefaultBanner(props) {
         <RadioBox
           uploadOption={ true }
           options={ [ ...iconOptions ] }
-          changeHandler={ onFieldChange }
+          changeHandler={ onBarChange }
           uploadHandler={ handleMediaUpload }
           name={ `default_banner_icon_name` }
           iconRemoveHandler={ handleSelectionRemove }

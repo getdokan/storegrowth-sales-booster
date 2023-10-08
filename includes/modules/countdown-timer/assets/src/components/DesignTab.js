@@ -55,18 +55,18 @@ function DesignTab( props ) {
 
       <Templates formData={ formData } setFormData={ setFormData } />
 
-      <Form.Item label="Theme" labelAlign="left">
-        <div className="sgsb-countdown-theme">
-          {options.map((option, index) => (
-            <Selector
-              key={index}
-              option={option}
-              onSelect={() => handleSelect(option.theme)}
-              isSelected={option.theme === formData.selected_theme}
-            />
-          ))}
-        </div>
-      </Form.Item>
+      {/*<Form.Item label="Theme" labelAlign="left">*/}
+      {/*  <div className="sgsb-countdown-theme">*/}
+      {/*    {options.map((option, index) => (*/}
+      {/*      <Selector*/}
+      {/*        key={index}*/}
+      {/*        option={option}*/}
+      {/*        onSelect={() => handleSelect(option.theme)}*/}
+      {/*        isSelected={option.theme === formData.selected_theme}*/}
+      {/*      />*/}
+      {/*    ))}*/}
+      {/*  </div>*/}
+      {/*</Form.Item>*/}
     </Fragment>
   );
 }

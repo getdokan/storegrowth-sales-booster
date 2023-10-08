@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import NotifyBarOne from "./Templates/NotifyBarOne";
-import {applyFilters} from "@wordpress/hooks";
+import { applyFilters } from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
 
 const Templates = ( { formData, setFormData } ) => {
@@ -42,7 +42,6 @@ const Templates = ( { formData, setFormData } ) => {
     );
 
     const onTemplateChange = ( name, value ) => {
-        console.log( name, value );
         setFormData( {
             ...formData,
             ...templateStyles?.[ value ]

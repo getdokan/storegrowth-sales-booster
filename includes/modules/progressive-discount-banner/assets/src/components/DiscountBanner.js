@@ -99,6 +99,14 @@ function DiscountBanner(props) {
         });
     };
 
+    const onBarChange = ( key, value ) => {
+        setFormData( {
+            ...formData,
+            [ key ]: value,
+            progressive_banner_custom_icon : '',
+        } );
+    };
+
     return (
         <Fragment>
             <SettingsSection>
@@ -174,8 +182,8 @@ function DiscountBanner(props) {
 
                 <RadioBox
                     uploadOption={ true }
+                    changeHandler={ onBarChange }
                     options={ [ ...iconOptions ] }
-                    changeHandler={ onFieldChange }
                     uploadHandler={ handleMediaUpload }
                     name={ `progressive_banner_icon_name` }
                     iconRemoveHandler={ handleSelectionRemove }

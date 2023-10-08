@@ -10,7 +10,7 @@ import CountDownTwo from "./Templates/CountDownTwo";
 const Templates = ( { formData, setFormData } ) => {
     let templates = [
         { key: 'ct-layout-1', component: <CountDownOne /> },
-        { key: 'ct-layout-3', component: <CountDownTwo /> },
+        { key: 'ct-layout-2', component: <CountDownTwo /> },
     ];
 
     // List of sales countdown templates.
@@ -21,34 +21,16 @@ const Templates = ( { formData, setFormData } ) => {
 
     let templateStyles = {
         'ct-layout-1' : {
-            font_size               : 20,
-            text_color              : '#ffffff',
-            icon_color              : '#ffffff',
-            font_family             : 'poppins',
-            button_color            : '#ffffff',
-            bar_template            : 'shipping_bar_one',
-            banner_height           : 60,
-            ac_button_text          : __( 'Shop Now', 'storegrowth-sales-booster' ),
-            close_icon_color        : '#ffffff',
-            background_color        : '#0875FF',
-            button_text_color       : '#000000',
-            cart_minimum_amount     : 10,
-            progressive_banner_text : __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ),
+            border_color            : '#1677FF',
+            selected_theme          : 'ct-layout-1',
+            heading_text_color      : '#008dff',
+            widget_background_color : '#FFF',
         },
         'ct-layout-2' : {
-            font_size               : 20,
-            text_color              : '#ffffff',
-            icon_color              : '#ffffff',
-            font_family             : 'poppins',
-            button_color            : '#ffffff',
-            bar_template            : 'shipping_bar_one',
-            banner_height           : 60,
-            ac_button_text          : __( 'Shop Now', 'storegrowth-sales-booster' ),
-            close_icon_color        : '#ffffff',
-            background_color        : '#0875FF',
-            button_text_color       : '#000000',
-            cart_minimum_amount     : 10,
-            progressive_banner_text : __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ),
+            border_color            : '#0875FF33',
+            selected_theme          : 'ct-layout-2',
+            heading_text_color      : '#008dff',
+            widget_background_color : '#eff8ff',
         },
     };
 
@@ -59,7 +41,6 @@ const Templates = ( { formData, setFormData } ) => {
     );
 
     const onTemplateChange = ( name, value ) => {
-        console.log( name, value );
         setFormData( {
             ...formData,
             ...templateStyles?.[ value ]
