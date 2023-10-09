@@ -1,16 +1,15 @@
-import React from "react";
-import { __ } from "@wordpress/i18n";
+import React from 'react';
+import { __ } from '@wordpress/i18n';
 
-const ShippingBarOne = () => {
+const NotifyBarOne = () => {
     return (
         <div
             style={{
-                gap             : '63px',
                 color           : '#ffffff',
                 width           : '100%',
                 height          : 60,
                 display         : 'flex',
-                padding         : '20px',
+                padding         : '18px',
                 fontSize        : '16px',
                 position        : 'absolute',
                 textAlign       : 'center',
@@ -69,13 +68,122 @@ const ShippingBarOne = () => {
                     style={{
                         fontSize   : 20,
                         fontWeight : '500',
-                        fontFamily : "Poppins",
+                        fontFamily : 'Poppins',
                         position   : 'relative',
                     }}
                 >
-                    { __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ) }
+                    { __( 'Christmas Sales', 'storegrowth-sales-booster' ) }
                 </div>
             </div>
+            <div
+                className='sgsb-fn-bar-countdown'
+                style={ {
+                    gap        : 10,
+                    display    : 'flex',
+                    fontSize   : 14,
+                    fontWeight : 700,
+                } }
+            >
+                <div
+                    className='sgsb-fn-bar-countdown-value'
+                    style={ {
+                        gap           : 8,
+                        display       : 'flex',
+                        lineHeight    : 1,
+                        flexDirection : 'column',
+                    } }
+                >
+                    <span className='sgsb-countdown-value days'>
+                        { __( '21', 'storegrowth-sales-booster' ) }
+                    </span>
+                    <span
+                        className='sgsb-countdown-content'
+                        style={ {
+                            fontSize   : 10,
+                            fontWeight : 400,
+                        } }
+                    >
+                        { __( 'DAY', 'storegrowth-sales-booster' ) }
+                    </span>
+                </div>
+                <div
+                    className='sgsb-fn-bar-countdown-value'
+                    style={ {
+                        gap           : 8,
+                        lineHeight    : 1,
+                        display       : 'flex',
+                        flexDirection : 'column',
+                    } }
+                >
+                    { __( '10', 'storegrowth-sales-booster' ) }
+                    <span
+                        className='sgsb-countdown-content'
+                        style={ {
+                            fontSize   : 10,
+                            fontWeight : 400,
+                        } }
+                    >
+                        { __( 'HRS', 'storegrowth-sales-booster' ) }
+                    </span>
+                </div>
+                <div
+                    className='sgsb-fn-bar-countdown-value'
+                    style={ {
+                        gap           : 8,
+                        lineHeight    : 1,
+                        display       : 'flex',
+                        flexDirection : 'column',
+                    } }
+                >
+                    <span className='sgsb-countdown-value minutes'>
+                        { __( '36', 'storegrowth-sales-booster' ) }
+                    </span>
+                    <span
+                        className='sgsb-countdown-content'
+                        style={ {
+                            fontSize   : 10,
+                            fontWeight : 400,
+                        } }
+                    >
+                        { __( 'MIN', 'storegrowth-sales-booster' ) }
+                    </span>
+                </div>
+                <div
+                    className='sgsb-fn-bar-countdown-value'
+                    style={ {
+                        gap           : 8,
+                        lineHeight    : 1,
+                        display       : 'flex',
+                        flexDirection : 'column',
+                    } }
+                >
+                    <span className='sgsb-countdown-value seconds'>
+                        { __( '20', 'storegrowth-sales-booster' ) }
+                    </span>
+                    <span
+                        className='sgsb-countdown-content'
+                        style={ {
+                            fontSize   : 10,
+                            fontWeight : 400,
+                        } }
+                    >
+                        SEC
+                    </span>
+                </div>
+            </div>
+            <span
+                className='fn-bar-action-button'
+                style={ {
+                    color           : '#073B4C',
+                    padding         : '1px 12px',
+                    fontSize        : 12,
+                    fontWeight      : 600,
+                    borderRadius    : '5px',
+                    backgroundColor : '#fff',
+                } }
+            >
+                { __( 'Shop Now', 'storegrowth-sales-booster' ) }
+            </span>
             <svg
                 width='16'
                 height='16'
@@ -107,4 +215,4 @@ const ShippingBarOne = () => {
     );
 }
 
-export default ShippingBarOne;
+export default NotifyBarOne;

@@ -6,11 +6,16 @@
 
 
 .sgsb-countdown-timer {
-	width: fit-content;
+	width: 100%;
 	padding: 15px 40px 10px;
 	margin-bottom: 25px;
 	border-radius: 8px;
 }
+
+.products .sgsb-countdown-timer {
+    padding: 12px 40px 5px;
+}
+
 .sgsb-countdown-timer-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -21,14 +26,22 @@
 	margin: 0 0 10px 0;
 	text-align: center;
 	font-size: 40px;
-	font-weight: 800;
+	font-weight: 600;
 	line-height: 1.2;
+}
+
+.products .sgsb-countdown-timer-heading  {
+    font-size: 20px;
 }
 
 .sgsb-countdown-timer-items {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 10px;
+}
+
+.products .sgsb-countdown-timer-items {
+    height: 50px;
 }
 
 .sgsb-countdown-timer-item {
@@ -43,16 +56,33 @@
 	font-family: 'Inter';
 }
 
+.products .sgsb-countdown-timer-item {
+    width: 44px;
+    height: 44px;
+    font-size: 8px;
+    padding-top: 12px;
+}
+
 .sgsb-countdown-timer-item strong {
 	display: block;
 	font-size: 24px;
 	line-height: .75;
 	font-weight: 500;
+	margin-bottom: 6px;
+}
+
+.products .sgsb-countdown-timer-item strong {
+    font-size: 14px;
+    margin-bottom: 6px;
 }
 
 .sgsb-colon{
 	margin: 0 14px;
 	line-height: 4;
+}
+
+.products .sgsb-colon {
+    margin: 0 3px;
 }
 
 /* custom layout style start*/
@@ -75,8 +105,13 @@
 
 /* layout-1 styles start*/
 .sgsb-countdown-timer-item.ct-layout-1{
-	color: #989FAB;
+    color: #989FAB;
 	border: 1px solid #ECEDF0;
+}
+
+.products .sgsb-countdown-timer-item.ct-layout-1 {
+    width: 45px;
+    height: 50px;
 }
 
 .sgsb-countdown-timer-heading.ct-layout-1{
@@ -85,6 +120,10 @@
 
 .sgsb-colon.ct-layout-1 {
 	color: #008DFF;
+}
+
+.products .sgsb-colon.ct-layout-1 {
+    margin: -4px 4px 0;
 }
 
 .sgsb-countdown-timer-item.ct-layout-1 strong {

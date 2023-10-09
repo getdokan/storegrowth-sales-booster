@@ -4,6 +4,7 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 function SettingsTab(props) {
   const {
     formData,
+    setFormData,
     onFieldChange,
     onFormSave,
     buttonLoading,
@@ -16,6 +17,7 @@ function SettingsTab(props) {
     <>
       <DefaultBanner
         formData={formData}
+        setFormData={setFormData}
         onFieldChange={onFieldChange}
         onIconChange={onIconChange}
         upgradeTeaser={upgradeTeaser}
