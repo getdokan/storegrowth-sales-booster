@@ -2,41 +2,41 @@ import { __ } from "@wordpress/i18n";
 import { Fragment } from "react";
 import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ShippingBarOne from "./Templates/ShippingBarOne";
+import CountDownOne from "./Templates/CountDownOne";
 import {applyFilters} from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
+import CountDownTwo from "./Templates/CountDownTwo";
 
 const Templates = ( { formData, setFormData } ) => {
     let templates = [
-        { key: 'shipping_bar_one', component: <ShippingBarOne /> },
+        { key: 'ct-layout-1', component: <CountDownOne /> },
+        { key: 'ct-layout-2', component: <CountDownTwo /> },
     ];
 
-    // List of shipping bar templates.
+    // List of sales countdown templates.
     templates = applyFilters(
-        "sgsb_shipping_bar_templates",
+        "sgsb_sales_countdown_timer_templates",
         templates,
     );
 
     let templateStyles = {
-        shipping_bar_one: {
-            font_size                      : 20,
-            text_color                     : "#ffffff",
-            icon_color                     : "#ffffff",
-            font_family                    : "poppins",
-            bar_template                   : 'shipping_bar_one',
-            banner_height                  : 60,
-            close_icon_color               : "#ffffff",
-            background_color               : "#0875FF",
-            cart_minimum_amount            : 10,
-            progressive_banner_text        : __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ),
-            progressive_banner_icon_name   : 'shipping-bar-icon-1',
-            progressive_banner_custom_icon : '',
+        'ct-layout-1' : {
+            border_color            : '#1677FF',
+            selected_theme          : 'ct-layout-1',
+            heading_text_color      : '#008dff',
+            widget_background_color : '#FFF',
+        },
+        'ct-layout-2' : {
+            border_color            : '#0875FF33',
+            selected_theme          : 'ct-layout-2',
+            heading_text_color      : '#008dff',
+            widget_background_color : '#eff8ff',
         },
     };
 
-    // Shipping bar template styles.
+    // Sales countdown template styles.
     templateStyles = applyFilters(
-        "sgsb_shipping_bar_template_styles",
+        "sgsb_countdown_timer_template_styles",
         templateStyles,
     );
 
@@ -53,10 +53,10 @@ const Templates = ( { formData, setFormData } ) => {
             <SettingsSection>
                 <RadioTemplate
                     options={ templates }
-                    name={ `bar_template` }
+                    name={ `selected_theme` }
                     changeHandler={ onTemplateChange }
-                    fieldValue={ formData?.bar_template }
-                    classes={ `free-shipping-bar-templates` }
+                    fieldValue={ formData?.selected_theme }
+                    classes={ `countdown-timer-templates` }
                 />
             </SettingsSection>
         </Fragment>

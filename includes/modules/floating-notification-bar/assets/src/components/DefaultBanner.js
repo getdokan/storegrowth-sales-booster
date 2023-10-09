@@ -12,9 +12,12 @@ import DisplayRules from "./DisplayRules";
 import Countdown from "./Countdown";
 import CuponCode from "./CuponCode";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
+import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
+import {wpMedia} from "sales-booster/src/utils/helper";
+import BarIcon from "./BarIcon";
 
 function DefaultBanner(props) {
-  const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
+  const { formData, setFormData, onFieldChange, onIconChange, upgradeTeaser } = props;
   const noop = () => {};
   const buttonActionOptions = [
     { value: "ba-url-redirect", label: "Url Redirect" },
@@ -54,8 +57,52 @@ function DefaultBanner(props) {
     },
   ];
 
+    const iconStyleNames = [
+      'notify-bar-icon-1',
+      'notify-bar-icon-2',
+      'notify-bar-icon-3',
+    ];
+
+    const iconOptions = iconStyleNames?.map( iconStyleName => (
+      { key: iconStyleName, value: <BarIcon activeIcon={ formData?.default_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
+    ) );
+
+    const handleMediaUpload = () => {
+      wpMedia( {
+        fileType: 'image',
+        selectMultiple: false,
+        callback: handleAttachmentData,
+      } );
+    };
+
+    const handleAttachmentData = ( media ) => {
+      if ( !Boolean( media?.url ) ) return;
+
+      setFormData({
+        ...formData,
+        default_banner_icon_name   : '',
+        default_banner_custom_icon : media?.url,
+      });
+    };
+
+    const handleSelectionRemove = () => {
+      setFormData({
+        ...formData,
+        default_banner_custom_icon : '',
+        default_banner_icon_name   : iconStyleNames?.[0],
+      });
+    };
+
+    const onBarChange = ( key, value ) => {
+      setFormData( {
+        ...formData,
+        [ key ]: value,
+        default_banner_custom_icon : '',
+      } );
+    };
+
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <SelectBox
           needUpgrade={upgradeTeaser}
@@ -83,6 +130,17 @@ function DefaultBanner(props) {
             `Shop more than ${sgsbAdmin.currencySymbol}100 to get free shipping.`,
             "storegrowth-sales-booster"
           )}
+        />
+        <RadioBox
+          uploadOption={ true }
+          options={ [ ...iconOptions ] }
+          changeHandler={ onBarChange }
+          uploadHandler={ handleMediaUpload }
+          name={ `default_banner_icon_name` }
+          iconRemoveHandler={ handleSelectionRemove }
+          fieldValue={ formData.default_banner_icon_name }
+          customValue={ formData.default_banner_custom_icon }
+          title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
         />
         <CheckboxGroup
           displayDirection={"horizontal"}
@@ -173,28 +231,28 @@ function DefaultBanner(props) {
         textTitle="Display Rules"
       />
 
-      <Form>
-        <Form.Item label="Default Banner Icon" labelAlign="left">
-          <RemovableIconPicker
-            onClear={(v) =>
-              onIconChange(
-                "default_banner_icon_name",
-                "default_banner_icon_html",
-                ""
-              )
-            }
-            onChange={(v) =>
-              onIconChange(
-                "default_banner_icon_name",
-                "default_banner_icon_html",
-                v
-              )
-            }
-            value={formData.default_banner_icon_name}
-          />
-        </Form.Item>
-      </Form>
-    </>
+      {/*<Form>*/}
+      {/*  <Form.Item label="Default Banner Icon" labelAlign="left">*/}
+      {/*    <RemovableIconPicker*/}
+      {/*      onClear={(v) =>*/}
+      {/*        onIconChange(*/}
+      {/*          "default_banner_icon_name",*/}
+      {/*          "default_banner_icon_html",*/}
+      {/*          ""*/}
+      {/*        )*/}
+      {/*      }*/}
+      {/*      onChange={(v) =>*/}
+      {/*        onIconChange(*/}
+      {/*          "default_banner_icon_name",*/}
+      {/*          "default_banner_icon_html",*/}
+      {/*          v*/}
+      {/*        )*/}
+      {/*      }*/}
+      {/*      value={formData.default_banner_icon_name}*/}
+      {/*    />*/}
+      {/*  </Form.Item>*/}
+      {/*</Form>*/}
+    </Fragment>
   );
 }
 

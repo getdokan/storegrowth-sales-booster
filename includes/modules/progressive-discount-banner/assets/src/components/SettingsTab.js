@@ -2,10 +2,12 @@ import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import DiscountBanner from "./DiscountBanner";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import {Fragment} from "react";
 
 function SettingsTab(props) {
   const {
     formData,
+    setFormData,
     onFieldChange,
     onFormSave,
     buttonLoading,
@@ -16,9 +18,10 @@ function SettingsTab(props) {
 
 
   return (
-    <>
+    <Fragment>
       <DiscountBanner
         formData={formData}
+        setFormData={setFormData}
         onFieldChange={onFieldChange}
         onIconChange={onIconChange}
         upgradeTeaser={upgradeTeaser}
@@ -33,7 +36,7 @@ function SettingsTab(props) {
         Note: Please clear your cart in order to see the updates when you update
         these settings.
       </p>
-    </>
+    </Fragment>
   );
 }
 

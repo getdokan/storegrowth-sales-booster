@@ -20,6 +20,8 @@ $total_sales = intval( $product->get_total_sales() );
 $stock       = intval( $product->get_stock_quantity() );
 $total_stock = $stock + $total_sales;
 
+error_log( print_r( $stock, 1 ) );
+
 $bar_height          = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
 $bg_color            = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );
 $fg_color            = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );

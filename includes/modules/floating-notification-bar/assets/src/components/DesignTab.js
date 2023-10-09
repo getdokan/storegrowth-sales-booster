@@ -1,15 +1,15 @@
-import { Fragment } from "react";
-import { __ } from "@wordpress/i18n";
-import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
-import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import { Fragment } from 'react';
+import { __ } from '@wordpress/i18n';
+import ActionsHandler from 'sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler';
+import SettingsSection from '../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection';
+import ColourPicker from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker';
+import Number from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number';
+import SelectBox from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox';
+import Templates from "./Templates";
 
 function DesignTab(props) {
-  const { formData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser ,onFormReset,fontFamily} =
+  const { formData, setFormData, onFieldChange, onFormSave, buttonLoading, upgradeTeaser ,onFormReset, fontFamily } =
     props;
-
 
   return (
     <Fragment>
@@ -18,70 +18,79 @@ function DesignTab(props) {
           min={1}
           max={100}
           style={{
-            width: "100px",
+            width: '100px',
           }}
           name={`banner_height`}
           changeHandler={onFieldChange}
           fieldValue={formData.banner_height}
           needUpgrade={upgradeTeaser}
-          title={__(`Banner Height`, "storegrowth-sales-booster")}
+          title={__(`Banner Height`, 'storegrowth-sales-booster')}
         />
         <SelectBox
           name={`font_family`}
           options={[...fontFamily]}
           fieldValue={formData.font_family}
           changeHandler={onFieldChange}
-          title={__("Font Family", "storegrowth-sales-booster")}
-          tooltip={__("Select your desired font family", "storegrowth-sales-booster")}
+          title={__('Font Family', 'storegrowth-sales-booster')}
+          tooltip={__('Select your desired font family', 'storegrowth-sales-booster')}
         />
         <Number
           min={1}
           max={100}
           style={{
-            width: "100px",
+            width: '100px',
           }}
           name={`font_size`}
           changeHandler={onFieldChange}
           fieldValue={formData.font_size}
           needUpgrade={upgradeTeaser}
-          title={__(`Font Size`, "storegrowth-sales-booster")}
+          title={__(`Font Size`, 'storegrowth-sales-booster')}
         />
         <ColourPicker
-          name={"background_color"}
+          name={'background_color'}
           colSpan={12}
           fieldValue={formData.background_color}
           changeHandler={onFieldChange}
-          title={__("Background Color", "storegrowth-sales-booster")}
+          title={__('Background Color', 'storegrowth-sales-booster')}
         />
         <ColourPicker
-          name={"text_color"}
+          name={'text_color'}
           colSpan={12}
           fieldValue={formData.text_color}
           changeHandler={onFieldChange}
-          title={__("Text Color", "storegrowth-sales-booster")}
+          title={__('Text Color', 'storegrowth-sales-booster')}
         />
         <ColourPicker
-          name={"icon_color"}
+          name={'icon_color'}
           colSpan={12}
           fieldValue={formData.icon_color}
           changeHandler={onFieldChange}
-          title={__("Icon Color", "storegrowth-sales-booster")}
+          title={__('Icon Color', 'storegrowth-sales-booster')}
         />
         <ColourPicker
-          name={"button_color"}
+          name={'button_color'}
           colSpan={12}
           fieldValue={formData.button_color}
           changeHandler={onFieldChange}
-          title={__("Button Color", "storegrowth-sales-booster")}
+          title={__('Button Color', 'storegrowth-sales-booster')}
         />
         <ColourPicker
-          name={"button_text_color"}
+          name={'button_text_color'}
           colSpan={12}
           fieldValue={formData.button_text_color}
           changeHandler={onFieldChange}
-          title={__("Button Text Color", "storegrowth-sales-booster")}
+          title={__('Button Text Color', 'storegrowth-sales-booster')}
+        />
+        <ColourPicker
+          colSpan={ 12 }
+          name={ 'close_icon_color' }
+          changeHandler={ onFieldChange }
+          fieldValue={ formData.close_icon_color }
+          title={ __( 'Close Icon Color', 'storegrowth-sales-booster' ) }
         />
       </SettingsSection>
+
+      <Templates formData={ formData } setFormData={ setFormData } />
 
       <ActionsHandler
         resetHandler={onFormReset}

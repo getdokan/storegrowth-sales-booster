@@ -7,9 +7,16 @@ import Number from "../../../../../../assets/src/components/settings/Panels/Pane
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import DisplayRules from "./DisplayRules";
+// import SectionSpacer from "sales-booster/src/components/settings/Panels/PanelSettings/SectionSpacer";
+// import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
+// import UploadIcon from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/UploadIcon";
+// import CartIcon from "sales-booster-quick-cart/src/components/CartIcon";
+import BarIcon from "./BarIcon";
+import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
+import {wpMedia} from "sales-booster/src/utils/helper";
 
 function DiscountBanner(props) {
-    const { formData, onFieldChange, onIconChange, upgradeTeaser } = props;
+    const { formData, setFormData, onFieldChange, onIconChange, upgradeTeaser } = props;
 
     const barPositions = [
         {
@@ -55,6 +62,50 @@ function DiscountBanner(props) {
     const { discount_amount_mode } = formData;
     const discount_mode_text = discount_amount_mode === "fixed-amount" ? "Amount" : "Percentage";
     const discount_mode_symbol = discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
+
+    const iconStyleNames = [
+        'shipping-bar-icon-1',
+        'shipping-bar-icon-2',
+        'shipping-bar-icon-3',
+    ];
+
+    const iconOptions = iconStyleNames?.map( iconStyleName => (
+        { key: iconStyleName, value: <BarIcon activeIcon={ formData?.progressive_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
+    ) );
+
+    const handleMediaUpload = () => {
+        wpMedia( {
+            fileType: 'image',
+            selectMultiple: false,
+            callback: handleAttachmentData,
+        } );
+    };
+
+    const handleAttachmentData = ( media ) => {
+        if ( !Boolean( media?.url ) ) return;
+
+        setFormData({
+            ...formData,
+            progressive_banner_icon_name   : '',
+            progressive_banner_custom_icon : media?.url,
+        });
+    };
+
+    const handleSelectionRemove = () => {
+        setFormData({
+            ...formData,
+            progressive_banner_custom_icon : '',
+            progressive_banner_icon_name   : iconStyleNames?.[0],
+        });
+    };
+
+    const onBarChange = ( key, value ) => {
+        setFormData( {
+            ...formData,
+            [ key ]: value,
+            progressive_banner_custom_icon : '',
+        } );
+    };
 
     return (
         <Fragment>
@@ -124,6 +175,18 @@ function DiscountBanner(props) {
                     )}
                 />
 
+                <RadioBox
+                    uploadOption={ true }
+                    changeHandler={ onBarChange }
+                    options={ [ ...iconOptions ] }
+                    uploadHandler={ handleMediaUpload }
+                    name={ `progressive_banner_icon_name` }
+                    iconRemoveHandler={ handleSelectionRemove }
+                    fieldValue={ formData.progressive_banner_icon_name }
+                    customValue={ formData.progressive_banner_custom_icon }
+                    title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
+                />
+
                 <TextAreaBox
                     areaRows={3}
                     colSpan={24}
@@ -140,6 +203,7 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
+
                 <TextAreaBox
                     areaRows={3}
                     colSpan={24}
@@ -164,25 +228,25 @@ function DiscountBanner(props) {
                     formData={formData}
                     textTitle="Display Rules"
                 />
-                <Form.Item label="Progressive Banner Icon" labelAlign="left">
-                    <RemovableIconPicker
-                        onClear={(v) =>
-                            onIconChange(
-                                "progressive_banner_icon_name",
-                                "progressive_banner_icon_html",
-                                ""
-                            )
-                        }
-                        onChange={(v) =>
-                            onIconChange(
-                                "progressive_banner_icon_name",
-                                "progressive_banner_icon_html",
-                                v
-                            )
-                        }
-                        value={formData.progressive_banner_icon_name}
-                    />
-                </Form.Item>
+                {/*<Form.Item label="Progressive Banner Icon" labelAlign="left">*/}
+                {/*    <RemovableIconPicker*/}
+                {/*        onClear={(v) =>*/}
+                {/*            onIconChange(*/}
+                {/*                "progressive_banner_icon_name",*/}
+                {/*                "progressive_banner_icon_html",*/}
+                {/*                ""*/}
+                {/*            )*/}
+                {/*        }*/}
+                {/*        onChange={(v) =>*/}
+                {/*            onIconChange(*/}
+                {/*                "progressive_banner_icon_name",*/}
+                {/*                "progressive_banner_icon_html",*/}
+                {/*                v*/}
+                {/*            )*/}
+                {/*        }*/}
+                {/*        value={formData.progressive_banner_icon_name}*/}
+                {/*    />*/}
+                {/*</Form.Item>*/}
             </SettingsSection>
         </Fragment>
     );

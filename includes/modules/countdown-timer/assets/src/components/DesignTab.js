@@ -7,10 +7,12 @@ import ColourPicker from "../../../../../../assets/src/components/settings/Panel
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 import "../styles/countdown-timer.css";
+import Templates from "./Templates";
 
-function DesignTab(props) {
+function DesignTab( props ) {
   const {
     formData,
+    setFormData,
     onFieldChange,
     onFormSave,
     upgradeTeaser,
@@ -51,18 +53,20 @@ function DesignTab(props) {
         />
       </SettingsSection>
 
-      <Form.Item label="Theme" labelAlign="left">
-        <div className="sgsb-countdown-theme">
-          {options.map((option, index) => (
-            <Selector
-              key={index}
-              option={option}
-              onSelect={() => handleSelect(option.theme)}
-              isSelected={option.theme === formData.selected_theme}
-            />
-          ))}
-        </div>
-      </Form.Item>
+      <Templates formData={ formData } setFormData={ setFormData } />
+
+      {/*<Form.Item label="Theme" labelAlign="left">*/}
+      {/*  <div className="sgsb-countdown-theme">*/}
+      {/*    {options.map((option, index) => (*/}
+      {/*      <Selector*/}
+      {/*        key={index}*/}
+      {/*        option={option}*/}
+      {/*        onSelect={() => handleSelect(option.theme)}*/}
+      {/*        isSelected={option.theme === formData.selected_theme}*/}
+      {/*      />*/}
+      {/*    ))}*/}
+      {/*  </div>*/}
+      {/*</Form.Item>*/}
     </Fragment>
   );
 }

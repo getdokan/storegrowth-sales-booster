@@ -37,6 +37,9 @@
     color: #2ecc71;
     cursor: pointer;
 }
+.wfc-cart-icon .wfc-icon svg{
+    padding: 10px !important;
+}
 
 .wfc-icon:before,
 .wfc-icon:after {
@@ -195,6 +198,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
     margin-top: 2px;
     align-items: center;
     justify-content: center;
+    color: rgb(7, 59, 76);
 }
 .sgsb-fly-cart-table .product-quantity button.sgsb-minus-icon {
     font-size: 30px;

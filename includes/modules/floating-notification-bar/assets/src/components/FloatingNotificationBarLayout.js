@@ -1,65 +1,67 @@
-import { notification } from "antd";
-import { __ } from "@wordpress/i18n";
+import { notification } from 'antd';
+import { __ } from '@wordpress/i18n';
 import {
   useEffect,
   useState,
   renderToString,
   createElement,
-} from "@wordpress/element";
-import { useDispatch } from "@wordpress/data";
-import { IconPickerItem } from "react-fa-icon-picker";
-import { Fragment } from "react";
-import SettingsTab from "./SettingsTab";
-import DesignTab from "./DesignTab";
-import Preview from "./Preview";
+} from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
+import { IconPickerItem } from 'react-fa-icon-picker';
+import { Fragment } from 'react';
+import SettingsTab from './SettingsTab';
+import DesignTab from './DesignTab';
+import Preview from './Preview';
 
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
-import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
-import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
-import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
-import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import PanelHeader from '../../../../../../assets/src/components/settings/Panels/PanelHeader';
+import PanelContainer from '../../../../../../assets/src/components/settings/Panels/PanelContainer';
+import PanelRow from '../../../../../../assets/src/components/settings/Panels/PanelRow';
+import PanelPreview from '../../../../../../assets/src/components/settings/Panels/PanelPreview';
+import PanelSettings from '../../../../../../assets/src/components/settings/Panels/PanelSettings';
 
 function FloatingNotificationBarLayout({
   outlet: Outlet,
   navigate,
   useSearchParams,
 }) {
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setPageLoading } = useDispatch('sgsb');
   const [buttonLoading, setButtonLoading] = useState(false);
 
-  let [searchParams, setSearchParams] = useSearchParams("general");
-  const tabName = searchParams.get("tab_name") || "general";
+  let [searchParams, setSearchParams] = useSearchParams('general');
+  const tabName = searchParams.get('tab_name') || 'general';
   const initialFloatingBarData = {
-    default_banner_text: "Shop More Than $100 to get Free Shipping",
-    bar_position: "top",
-    bar_type: "normal",
-    background_color: "#008DFF",
-    text_color: "#ffffff",
-    icon_color: "#ffffff",
-    button_color: "#ffffff",
-    button_text_color: "#000000",
-    default_banner_icon_name: "",
-    default_banner_icon_html: "",
-    button_view: ["button-desktop-enable"],
-    banner_device_view: ["banner-show-desktop"],
-    ac_button_text: "Click Here",
-    button_action: "ba-url-redirect",
-    redirect_url: "",
-    new_tab_enable: false,
-    banner_show_option: "banner-show-everywhere",
-    slected_page_option: [],
-    user_type: "both",
-    banner_trigger: "after-few-seconds",
-    banner_delay: 7,
-    scroll_banner_delay: 7,
-    countdown_start_date: "",
-    countdown_end_date: "",
-    countdown_show_enable: false,
-    banner_height: 60,
-    font_family: "poppins",
-    font_size: 20,
-    show_cupon: true,
-    cupon_code: "",
+    bar_type                   : 'normal',
+    user_type                  : 'both',
+    font_size                  : 20,
+    cupon_code                 : '',
+    text_color                 : '#ffffff',
+    icon_color                 : '#ffffff',
+    show_cupon                 : true,
+    button_view                : ['button-desktop-enable'],
+    font_family                : 'poppins',
+    banner_delay               : 7,
+    button_color               : '#ffffff',
+    bar_position               : 'top',
+    redirect_url               : '',
+    button_action              : 'ba-url-redirect',
+    banner_height              : 60,
+    banner_trigger             : 'after-few-seconds',
+    new_tab_enable             : false,
+    ac_button_text             : 'Shop Now',
+    notify_template            : 'notify_bar_one',
+    close_icon_color           : '#ffffff',
+    background_color           : '#0875ff',
+    button_text_color          : '#000000',
+    banner_show_option         : 'banner-show-everywhere',
+    countdown_end_date         : '',
+    banner_device_view         : ['banner-show-desktop'],
+    scroll_banner_delay        : 7,
+    slected_page_option        : [],
+    default_banner_text        : 'Shop More Than $100 to get Free Shipping',
+    countdown_start_date       : '',
+    countdown_show_enable      : false,
+    default_banner_icon_name   : 'notify-bar-icon-1',
+    default_banner_custom_icon : '',
   };
   const [formData, setFormData] = useState({
     ...initialFloatingBarData,
@@ -71,24 +73,24 @@ function FloatingNotificationBarLayout({
 
   const fontFamily = [
     {
-      value: "poppins",
-      label: __("Poppins", "storegrowth-sales-booster"),
+      value: 'poppins',
+      label: __('Poppins', 'storegrowth-sales-booster'),
     },
     {
-      value: "roboto",
-      label: __("Roboto", "storegrowth-sales-booster"),
+      value: 'roboto',
+      label: __('Roboto', 'storegrowth-sales-booster'),
     },
     {
-      value: "lato",
-      label: __("Lato", "storegrowth-sales-booster"),
+      value: 'lato',
+      label: __('Lato', 'storegrowth-sales-booster'),
     },
     {
-      value: "montserrat",
-      label: __("Montserrat", "storegrowth-sales-booster"),
+      value: 'montserrat',
+      label: __('Montserrat', 'storegrowth-sales-booster'),
     },
     {
-      value: "ibm_plex_sans",
-      label: __("IBM Plex Sans", "storegrowth-sales-booster"),
+      value: 'ibm_plex_sans',
+      label: __('IBM Plex Sans', 'storegrowth-sales-booster'),
     },
   ];
 
@@ -100,9 +102,9 @@ function FloatingNotificationBarLayout({
     jQuery
       .ajax({
         url: sgsbAdmin.ajax_url,
-        method: "POST",
+        method: 'POST',
         data: {
-          action: "sgsb_floating_notification_bar_get_settings",
+          action: 'sgsb_floating_notification_bar_get_settings',
           _ajax_nonce: sgsbAdmin.nonce,
         },
       })
@@ -125,21 +127,21 @@ function FloatingNotificationBarLayout({
     });
   };
   const changeTab = (key) => {
-    navigate("/floating-notification-bar?tab_name=" + key);
+    navigate('/floating-notification-bar?tab_name=' + key);
   };
 
   const notificationMessage = (type) => {
-    if (type == "banner_settings") {
-      notification["success"]({
-        message: "Banner Settings Section",
-        description: "Banner settings section data updated successfully.",
+    if (type == 'banner_settings') {
+      notification['success']({
+        message: 'Banner Settings Section',
+        description: 'Banner settings section data updated successfully.',
       });
     }
 
-    if (type == "design") {
-      notification["success"]({
-        message: "Design Section",
-        description: "Design section data updated successfully.",
+    if (type == 'design') {
+      notification['success']({
+        message: 'Design Section',
+        description: 'Design section data updated successfully.',
       });
     }
   };
@@ -148,7 +150,7 @@ function FloatingNotificationBarLayout({
     setButtonLoading(true);
 
     const data = {
-      action: "sgsb_floating_notification_bar_save_settings",
+      action: 'sgsb_floating_notification_bar_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: JSON.stringify({ shipping_bar_data: formData }),
     };
@@ -156,7 +158,7 @@ function FloatingNotificationBarLayout({
     jQuery
       .ajax({
         url: sgsbAdmin.ajax_url,
-        method: "POST",
+        method: 'POST',
         data,
       })
       .success(() => {
@@ -177,13 +179,14 @@ function FloatingNotificationBarLayout({
 
   const tabPanels = [
     {
-      key: "general",
-      title: __("Banner Setting", "storegrowth-sales-booster"),
+      key: 'general',
+      title: __('Banner Setting', 'storegrowth-sales-booster'),
       panel: (
         <SettingsTab
           formData={formData}
+          setFormData={setFormData}
           onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("banner_settings")}
+          onFormSave={() => onFormSave('banner_settings')}
           buttonLoading={buttonLoading}
           onIconChange={onIconChange}
           upgradeTeaser={!isProEnabled}
@@ -192,17 +195,18 @@ function FloatingNotificationBarLayout({
       ),
     },
     {
-      key: "design",
-      title: __("Design", "storegrowth-sales-booster"),
+      key: 'design',
+      title: __('Design', 'storegrowth-sales-booster'),
       panel: (
         <DesignTab
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          fontFamily={fontFamily}
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'design' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          fontFamily={ fontFamily }
         />
       ),
     },
@@ -213,8 +217,8 @@ function FloatingNotificationBarLayout({
     <Fragment>
       <PanelHeader
         title={__(
-          "Floating Notification Bar Setting",
-          "storegrowth-sales-booster"
+          'Floating Notification Bar Setting',
+          'storegrowth-sales-booster'
         )}
       />
       <PanelContainer>
@@ -223,11 +227,11 @@ function FloatingNotificationBarLayout({
             colSpan={showPreview && tabName ? 12 : 24}
             tabPanels={tabPanels}
             changeHandler={changeTab}
-            activeTab={tabName ? tabName : "general"}
+            activeTab={tabName ? tabName : 'general'}
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview />
+              <Preview formData={ formData } fontFamily={ fontFamily } />
             </PanelPreview>
           )}
         </PanelRow>

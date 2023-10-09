@@ -71,6 +71,7 @@ class Enqueue_Script {
 		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
 			$settings_file = require sgsb_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
 
+			wp_enqueue_media();
 			wp_enqueue_script(
 				'sgsb-floating-notification-bar-settings',
 				sgsb_modules_url( 'floating-notification-bar/assets/build/settings.js' ),
