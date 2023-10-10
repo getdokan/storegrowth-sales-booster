@@ -145,11 +145,7 @@ function DiscountBanner(props) {
                             title={__("Discount Mode", "storegrowth-sales-booster")}
                         />
                         <Number
-                            min={1}
-                            max={100}
-                            style={{
-                                width: "100px",
-                            }}
+                            min={0}
                             addonBefore={`${discount_mode_symbol}`}
                             name={`discount_amount_value`}
                             changeHandler={onFieldChange}
@@ -163,8 +159,7 @@ function DiscountBanner(props) {
                 )}
 
                 <Number
-                    min={1}
-                    max={100}
+                    min={0}
                     addonBefore={`${sgsbAdmin.currencySymbol}`}
                     name={`cart_minimum_amount`}
                     changeHandler={onFieldChange}
