@@ -13,13 +13,14 @@ const TextInput = ( {
     changeHandler,
     placeHolderText,
     colSpan = 24,
+    fullWidth = false,
     needUpgrade = false
 } ) => {
 
     return (
         // Make settings textarea component with card preview.
         <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
-            <Col span={14}>
+            <Col span={ fullWidth ? 9 : 14 }>
                 <div className={ `card-heading textinput-heading` }>
                     {/* Handle switcher title. */}
                     <Title level={ 3 } className={ `settings-heading space-top` }>{ title }</Title>
@@ -30,7 +31,7 @@ const TextInput = ( {
                 </div>
             </Col>
 
-            <Col span={10}>
+            <Col span={ fullWidth ? 15 : 10 }>
                 {/* Handle settings textarea field by using dynamic props */}
                 <Input
                     disabled={ needUpgrade }

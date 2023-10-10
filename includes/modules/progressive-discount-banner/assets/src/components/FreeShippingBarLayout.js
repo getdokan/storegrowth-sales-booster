@@ -216,7 +216,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview formData={formData} fontFamily={fontFamily} />
+              <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
             </PanelPreview>
           )}
         </PanelRow>

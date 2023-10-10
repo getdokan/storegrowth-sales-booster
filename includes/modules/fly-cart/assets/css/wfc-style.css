@@ -455,6 +455,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 }
 
 .sgsb-cart-widget-buttons a:hover{
+    color: #fff;
     background: rgb(0 111 201) !important;
 }
 .product-remove span{

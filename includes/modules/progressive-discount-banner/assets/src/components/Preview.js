@@ -2,7 +2,7 @@ import React from 'react';
 import BarIcon from "./BarIcon";
 import {__} from "@wordpress/i18n";
 
-const Preview = ({ formData, fontFamily }) => {
+const Preview = ( { isProActive, formData, fontFamily } ) => {
     const bannerStyle = {
         color           : formData.text_color,
         height          : formData.banner_height,
@@ -33,19 +33,23 @@ const Preview = ({ formData, fontFamily }) => {
         <div className='sgsb-pd-banner-bar-wrapper'>
             <div className='sgsb-pd-banner-bar' style={bannerStyle}>
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
-                    { formData?.progressive_banner_custom_icon ? (
-                        <img
-                            width='32'
-                            height='32'
-                            src={ formData?.progressive_banner_custom_icon }
-                            alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
-                        />
-                    ) : (
-                        <BarIcon
-                            preview={ true }
-                            activeIcon={ formData?.progressive_banner_icon_name }
-                            iconName={ formData?.progressive_banner_icon_name }
-                        />
+                    { isProActive && (
+                        <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
+                            { formData?.progressive_banner_custom_icon ? (
+                                <img
+                                    width='32'
+                                    height='32'
+                                    src={ formData?.progressive_banner_custom_icon }
+                                    alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
+                                />
+                            ) : (
+                                <BarIcon
+                                    preview={ true }
+                                    activeIcon={ formData?.progressive_banner_icon_name }
+                                    iconName={ formData?.progressive_banner_icon_name }
+                                />
+                            ) }
+                        </div>
                     ) }
                 </div>
                 <span

@@ -4,7 +4,6 @@
  *
  * @package Bump design for front.
  */
-
 ?>
 
 <div class='template-overview-area'>
@@ -47,10 +46,25 @@
 					<?php echo esc_attr( $bump_info->offer_product_title ); ?>
 					</h3>
 
-					<p style="color:<?php echo esc_attr( $bump_info->product_description_text_color ); ?>">
-					<?php echo esc_attr( $bump_info->offer_product_description ); ?>
-					</p>
+					<?php
+					// Get WooCommerce category names as CSV.
+					$category_names = '';
+					foreach ( $bump_info->target_categories as $category_id ) {
+						$category = get_term_by( 'id', $category_id, 'product_cat' );
+						if ( $category && ! is_wp_error( $category ) ) {
+							$category_names .= $category->name . ',';
+						}
+					}
 
+					// Remove trailing comma.
+					$category_names = rtrim( $category_names, ',' );
+					?>
+
+					<?php if ( ! empty( $category_names ) ) : ?>
+						<p style="color:<?php echo esc_attr( $bump_info->product_description_text_color ); ?>">
+							<?php echo esc_html( $category_names ); ?>
+						</p>
+					<?php endif; ?>
 			</div>
 			</div>
 			<div class="offer-price" style = "

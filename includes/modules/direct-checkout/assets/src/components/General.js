@@ -92,15 +92,16 @@ function General({ onFormSave, upgradeTeaser }) {
         />
 
         <SelectBox
-          name={"checkout_redirect"}
-          fieldValue={createDirectCheckoutForm.checkout_redirect}
-          changeHandler={onFieldChange}
-          title={"Checkout Redirect"}
-          tooltip={__(
+          name={ "checkout_redirect" }
+          fieldValue={ createDirectCheckoutForm.checkout_redirect }
+          changeHandler={ upgradeTeaser ? 'legacy-checkout' : onFieldChange }
+          title={ "Checkout Redirect" }
+          needUpgrade={ upgradeTeaser }
+          tooltip={ __(
             "Select the type of checkout redirection",
             "storegrowth-sales-booster"
-          )}
-          options={selectOptions}
+          ) }
+          options={ selectOptions }
         />
 
         <SingleCheckBox

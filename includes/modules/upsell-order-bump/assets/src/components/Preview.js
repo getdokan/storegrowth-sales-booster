@@ -88,7 +88,7 @@ const Preview = ( { storeData } ) => {
                             color: `${ storeData?.product_description_text_color }`,
                         } }
                     >
-                        { __( storeData.offer_product_description ? storeData.offer_product_description : 'Men\'s Shoe', 'storegrowth-sales-booster' ) }
+                        { __(  'Men\'s Shoe', 'storegrowth-sales-booster' ) }
                     </p>
                 </div>
                 <div
