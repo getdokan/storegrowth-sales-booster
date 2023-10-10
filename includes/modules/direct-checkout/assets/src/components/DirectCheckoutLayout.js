@@ -96,7 +96,7 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={10}>
-              <Preview />
+              <Preview storeData={createDirectCheckoutForm} />
             </PanelPreview>
           )}
         </PanelRow>
