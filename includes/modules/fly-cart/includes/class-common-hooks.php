@@ -60,7 +60,7 @@ class Common_Hooks {
 
 		$settings      = get_option( 'sgsb_fly_cart_settings' );
 		$icon_position = sgsb_find_option_setting( $settings, 'icon_position', 'bottom-right' );
-		$icon_name     = sgsb_find_option_setting( $settings, 'icon_name', 'flaticon-shopping-cart-3' );
+		$icon_name     = sgsb_find_option_setting( $settings, 'icon_name', 'shopping-cart-icon-1' );
 
 		include __DIR__ . '/../templates/fly-cart.php';
 	}

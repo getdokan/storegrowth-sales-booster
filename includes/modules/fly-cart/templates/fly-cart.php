@@ -14,7 +14,7 @@ $class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
 
 $cart_icon_color      = sgsb_find_option_setting( $settings, 'icon_color', '#FFF' );
 $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
-
+error_log( print_r( $icon_name, 1 ) );
 ?>
 <div class="wfc-cart-icon <?php echo esc_attr( $icon_position ); ?>">
 	<span class="wfc-open-btn wfc-icon <?php echo esc_attr( $icon_name ); ?>">
