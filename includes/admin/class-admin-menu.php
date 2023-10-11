@@ -26,6 +26,28 @@ class Admin_Menu {
 	 */
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
+		add_filter( 'submenu_file', array( $this, 'highlight_admin_submenu' ) );
+	}
+
+	/**
+	 * Highlight the proper top level submenu.
+	 *
+	 * @global obj $current_screen
+	 *
+	 * @param string $submenu_file Specify sub menu uri.
+	 *
+	 * @return string
+	 */
+	public function highlight_admin_submenu( $submenu_file ) {
+		global $current_screen;
+
+//        error_log( print_r( $current_screen->id, 1 ) );
+
+		if ( $current_screen->id === 'sales-booster_page_sgsb-dashboard' ) {
+			$submenu_file = 'admin.php?page=sgsb-settings#/dashboard/overview';
+		}
+
+		return $submenu_file;
 	}
 
 	/**
@@ -47,7 +69,7 @@ class Admin_Menu {
 			__( 'Dashboard - Sales Booster', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'sgsb-dashboard',
+			'sgsb-settings#/dashboard/overview',
 			array( $this, 'dashboard_callback' )
 		);
 
@@ -95,4 +117,5 @@ class Admin_Menu {
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
+
 }
