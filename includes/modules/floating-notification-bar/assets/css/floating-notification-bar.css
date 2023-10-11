@@ -117,7 +117,7 @@ body {
     /* Adjust the transition duration and timing function as needed */
 }
 
-.sgsb-coupon-container .sgsb-coupon-code{
+.sgsb-coupon-container .sgsb-coupon-code {
     color: #FFF;
     font-size: 20px;
     font-weight: 700;
@@ -136,20 +136,51 @@ body {
     font-weight: 800;
     gap: 20px;
 }
+
 .sgsb-fn-bar-countdown .sgsb-fn-bar-countdown-value {
     gap: 8px;
     display: flex;
     line-height: 1;
     flex-direction: column;
 }
-.sgsb-countdown-content{
+
+.sgsb-countdown-content {
     font-size: 12px;
     font-weight: 400;
 }
+
 .sgsb-fn-bar-data-content {
     display: flex;
     flex-flow: wrap;
     gap: 48px;
     justify-content: space-around;
     align-items: center;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1024px) {
+    .sgsb-floating-notification-bar-wrapper {
+        height: auto !important;
+    }
+    .sgsb-floating-notification-bar{
+        padding:20px 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sgsb-floating-notification-bar-wrapper {
+        height: auto !important;
+    }
+
+    body.admin-bar .sgsb-floating-notification-bar-wrapper {
+        top: 46px;
+    }
+
+    .sgsb-fn-bar-data-content{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .sgsb-floating-notification-bar{
+        padding:20px 20px;
+    }
 }

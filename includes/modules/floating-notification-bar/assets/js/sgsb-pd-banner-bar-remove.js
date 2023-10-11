@@ -3,6 +3,7 @@
 
   if (typeof sgsb_fnb_data !== "undefined") {
     let banner_device_view = sgsb_fnb_data.banner_device_view;
+    let bar_position = sgsb_fnb_data.bar_position;
     let banner_delay = sgsb_fnb_data.banner_delay;
     let scroll_banner_delay = sgsb_fnb_data.scroll_banner_delay;
     let banner_trigger = sgsb_fnb_data.banner_trigger;
@@ -34,8 +35,13 @@
     // Add the padding
     const paddingAdderBody = () => {
       document.body.classList.add("body-padding-transition");
-
-      return (document.body.style.paddingTop = `${body_top_padding}px`);
+      if('top'===bar_position){
+        if(isMobileDevice){
+          let offsetHeight = $('.sgsb-floating-notification-bar-wrapper').height();
+          return (document.body.style.paddingTop = `${offsetHeight+10}px`);
+        }
+        return (document.body.style.paddingTop = `${body_top_padding}px`);
+      }
     };
 
     const bannerShow = () => {
@@ -127,11 +133,14 @@
       // Function to handle copying to clipboard
       function copyToClipboard(text) {
         if (navigator.clipboard) {
-          navigator.clipboard.writeText(text).then(function() {
-            console.log('Text successfully copied to clipboard');
-          }).catch(function(err) {
-            console.error('Unable to copy text to clipboard: ', err);
-          });
+          navigator.clipboard
+            .writeText(text)
+            .then(function () {
+              console.log("Text successfully copied to clipboard");
+            })
+            .catch(function (err) {
+              console.error("Unable to copy text to clipboard: ", err);
+            });
         } else {
           // Fallback to document.execCommand("copy") if Clipboard API is not supported
           var input = document.createElement("input");
@@ -140,12 +149,14 @@
           input.select();
           document.execCommand("copy");
           document.body.removeChild(input);
-          console.log('Text successfully copied to clipboard using execCommand');
+          console.log(
+            "Text successfully copied to clipboard using execCommand"
+          );
         }
       }
-    
-      $(".sgsb-coupon-code").on('mouseenter',
-        function () {
+
+      $(".sgsb-coupon-code")
+        .on("mouseenter", function () {
           var couponText = $(this).text();
           var tempInput = $("<input>");
           $("body").append(tempInput);
@@ -153,14 +164,12 @@
           copyToClipboard(coupon_code);
           tempInput.remove();
           $(this).text("Click to Copy");
-        }
-      ).on("mouseleave",
-        function () {
+        })
+        .on("mouseleave", function () {
           // Restore the coupon code text
           $(this).text(coupon_code);
-        }
-      );
-    
+        });
+
       // Click event to copy to clipboard
       $(".sgsb-coupon-code").click(function () {
         // var couponText = $(this).text(); // Get the coupon code text
@@ -168,7 +177,6 @@
         $(this).text("Copied");
       });
     });
-    
 
     // Button hidden functionality
     $(document).ready(function () {
@@ -185,50 +193,53 @@
     });
 
     //Countdown timer
-    $(document).ready(function() {
-      const startDateString = countdown_start_date+" 00:00:00"; // Replace with your start date string
-      const endDateString = countdown_end_date+" 23:59:59";   // Replace with your end date string
-      
+    $(document).ready(function () {
+      const startDateString = countdown_start_date + " 00:00:00"; // Replace with your start date string
+      const endDateString = countdown_end_date + " 23:59:59"; // Replace with your end date string
+
       const startDate = new Date(startDateString);
       const endDate = new Date(endDateString);
-      
+
       const now = new Date();
-      
+
       if (now >= startDate && now <= endDate) {
         updateCountdown(endDate);
-        
-        const countdownInterval = setInterval(function() {
+
+        const countdownInterval = setInterval(function () {
           updateCountdown(endDate);
         }, 1000);
       } else if (now < startDate) {
         //countdown not started yet and the template removed.
         $(".sgsb-fn-bar-countdown").remove();
-        
       } else {
         console.log("Countdown has ended.");
       }
-    
+
       function updateCountdown(endDate) {
         const timeLeft = endDate - new Date();
-    
+
         if (timeLeft <= 0) {
           clearInterval(countdownInterval);
           return;
         }
-    
+
         const seconds = Math.floor((timeLeft / 1000) % 60);
         const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
         const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    
+
         $(".sgsb-countdown-value.days").text(days.toString().padStart(2, "0"));
-        $(".sgsb-countdown-value.hours").text(hours.toString().padStart(2, "0"));
-        $(".sgsb-countdown-value.minutes").text(minutes.toString().padStart(2, "0"));
-        $(".sgsb-countdown-value.seconds").text(seconds.toString().padStart(2, "0"));
+        $(".sgsb-countdown-value.hours").text(
+          hours.toString().padStart(2, "0")
+        );
+        $(".sgsb-countdown-value.minutes").text(
+          minutes.toString().padStart(2, "0")
+        );
+        $(".sgsb-countdown-value.seconds").text(
+          seconds.toString().padStart(2, "0")
+        );
       }
     });
-    
-    
   } else {
     console.log("banner_device_view is undefined or empty.");
   }

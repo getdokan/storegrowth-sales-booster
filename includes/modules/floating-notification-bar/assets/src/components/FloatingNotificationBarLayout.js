@@ -217,7 +217,7 @@ function FloatingNotificationBarLayout({
     <Fragment>
       <PanelHeader
         title={__(
-          'Floating Notification Bar Setting',
+          'Floating Bar Setting',
           'storegrowth-sales-booster'
         )}
       />
