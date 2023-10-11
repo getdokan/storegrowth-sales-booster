@@ -14,8 +14,7 @@
     let coupon_code = sgsb_fnb_data.cupon_code.toUpperCase();
     let body_top_padding = parseInt(banner_height) + 10;
     const fn_banner_hidden_time = localStorage.getItem("fn_banner_hidden_time");
-    console.log("=======Button Data======");
-    console.log(sgsb_fnb_data);
+
     const now = Date.now();
     const scrollThreshold = banner_height;
 
@@ -149,9 +148,6 @@
           input.select();
           document.execCommand("copy");
           document.body.removeChild(input);
-          console.log(
-            "Text successfully copied to clipboard using execCommand"
-          );
         }
       }
 
@@ -212,7 +208,7 @@
         //countdown not started yet and the template removed.
         $(".sgsb-fn-bar-countdown").remove();
       } else {
-        console.log("Countdown has ended.");
+        return;
       }
 
       function updateCountdown(endDate) {
@@ -241,6 +237,6 @@
       }
     });
   } else {
-    console.log("banner_device_view is undefined or empty.");
+    console.lo("banner_device_view is undefined or empty.");
   }
 })(jQuery);
