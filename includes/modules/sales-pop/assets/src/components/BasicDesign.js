@@ -73,13 +73,13 @@ const BasicDesign = (props) => {
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Image Position', 'storegrowth-sales-booster' ) }
                         />
-                        <SelectBox
+                        <Number
+                            min={ 1 }
                             colSpan={ 12 }
-                            name={ `popup_image_width` }
-                            options={ [ ...imageWidth ] }
                             needUpgrade={ upgradeTeaser }
-                            fieldValue={ props.createPopupForm.popup_image_width }
+                            name={ `popup_image_width` }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
+                            fieldValue={ props.createPopupForm.popup_image_width }
                             title={ __( 'Image Width', 'storegrowth-sales-booster' ) }
                         />
                     </Fragment>
@@ -97,7 +97,7 @@ const BasicDesign = (props) => {
                             needUpgrade={ upgradeTeaser }
                             fieldValue={ props.createPopupForm.background_color }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
-                            title={ __( 'Color', 'storegrowth-sales-booster' ) }
+                            title={ __( 'Background Color', 'storegrowth-sales-booster' ) }
                         />
                         <SelectBox
                             name={ `popup_position` }

@@ -50,7 +50,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
           title={ __( 'Loop', 'storegrowth-sales-booster' ) }
         />
         <Number
-          min={ 5 }
+          min={ 1 }
           colSpan={ 12 }
           name={ 'next_time_display' }
           needUpgrade={ upgradeTeaser }
@@ -61,7 +61,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
           tooltip={ __( 'Time to start next notification(in seconds)', 'storegrowth-sales-booster' ) }
         />
         <Number
-          min={ 5 }
+          min={ 1 }
           colSpan={ 12 }
           needUpgrade={ upgradeTeaser }
           name={ 'notification_per_page' }
@@ -72,7 +72,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
           tooltip={ __( 'Quantity Notifications Per Page', 'storegrowth-sales-booster' ) }
         />
         <Number
-          min={ 5 }
+          min={ 1 }
           colSpan={ 12 }
           name={ 'initial_time_delay' }
           needUpgrade={ upgradeTeaser }
@@ -83,7 +83,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
           tooltip={ __( 'When Your Site Load, Notification will wait this time to show(in seconds)', 'storegrowth-sales-booster' ) }
         />
         <Number
-          min={ 5 }
+          min={ 1 }
           colSpan={ 12 }
           name={ 'dispaly_time' }
           needUpgrade={ upgradeTeaser }
