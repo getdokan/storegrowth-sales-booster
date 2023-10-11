@@ -6,13 +6,14 @@ import CheckboxGroup from "../../../../../../assets/src/components/settings/Pane
 import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import {createDirectCheckoutForm} from "../helper"
 
 function General({ onFormSave, upgradeTeaser }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
-
-  const { createDirectCheckoutForm, getButtonLoading } = useSelect(
+  const { createDirectCheckoutFormData, getButtonLoading } = useSelect(
     (select) => ({
-      createDirectCheckoutForm: select(
+      createDirectCheckoutFormData: select(
         "sgsb_direct_checkout"
       ).getCreateFromData(),
       getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
@@ -26,7 +27,12 @@ function General({ onFormSave, upgradeTeaser }) {
     });
   };
 
+  const onFormReset = () => {
+    setCreateFromData({ ...createDirectCheckoutForm });
+  };
+  
   const noop = () => {};
+
   const checkboxesOption = [
     {
       label: `"Add to cart" as "Buy Now"`,
@@ -71,7 +77,7 @@ function General({ onFormSave, upgradeTeaser }) {
           needUpgrade={upgradeTeaser}
           name={"buy_now_button_label"}
           placeHolderText={__("Buy Now Label", "storegrowth-sales-booster")}
-          fieldValue={createDirectCheckoutForm.buy_now_button_label}
+          fieldValue={createDirectCheckoutFormData.buy_now_button_label}
           className={`settings-field input-field`}
           changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Buy Now Button Label", "storegrowth-sales-booster")}
@@ -83,17 +89,17 @@ function General({ onFormSave, upgradeTeaser }) {
         <CheckboxGroup
           name={"buy_now_button_setting"}
           options={checkboxesOption}
-          selectedOptions={createDirectCheckoutForm.buy_now_button_setting}
+          selectedOptions={createDirectCheckoutFormData.buy_now_button_setting}
           handleCheckboxChange={onFieldChange}
           isSingleMode={true}
           title={__("Button Layout Setting", "storegrowth-sales-booster")}
-          headColSpan = {9}
-          checkboxColSpan = {15}
+          headColSpan={9}
+          checkboxColSpan={15}
         />
 
         <SelectBox
           name={"checkout_redirect"}
-          fieldValue={createDirectCheckoutForm.checkout_redirect}
+          fieldValue={createDirectCheckoutFormData.checkout_redirect}
           changeHandler={onFieldChange}
           title={"Checkout Redirect"}
           tooltip={__(
@@ -106,7 +112,7 @@ function General({ onFormSave, upgradeTeaser }) {
         <SingleCheckBox
           needUpgrade={upgradeTeaser}
           name={"shop_page_checkout_enable"}
-          checkedValue={createDirectCheckoutForm.shop_page_checkout_enable}
+          checkedValue={createDirectCheckoutFormData.shop_page_checkout_enable}
           className={`settings-field checkbox-field`}
           changeHandler={upgradeTeaser ? noop : onFieldChange}
           title={__("Display on Shop Page", "storegrowth-sales-booster")}
@@ -117,7 +123,7 @@ function General({ onFormSave, upgradeTeaser }) {
         />
         <SingleCheckBox
           name={"product_page_checkout_enable"}
-          checkedValue={createDirectCheckoutForm.product_page_checkout_enable}
+          checkedValue={createDirectCheckoutFormData.product_page_checkout_enable}
           className={`settings-field checkbox-field`}
           changeHandler={onFieldChange}
           title={__("Display on Product Page", "storegrowth-sales-booster")}
@@ -127,15 +133,11 @@ function General({ onFormSave, upgradeTeaser }) {
           )}
         />
       </SettingsSection>
-
-      <Button
-        type="primary"
-        onClick={() => onFormSave("general_settings")}
-        className="sgsb-settings-save-button"
-        loading={getButtonLoading}
-      >
-        Save
-      </Button>
+      <ActionsHandler
+        resetHandler={onFormReset}
+        loadingHandler={getButtonLoading}
+        saveHandler={() => onFormSave("general_settings")}
+      />
     </>
   );
 }
