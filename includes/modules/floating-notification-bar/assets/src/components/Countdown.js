@@ -18,9 +18,6 @@ const Countdown = (props) => {
     <div style={{ display: "block" }}>
       <h4>{title}</h4>
       <DatePicker
-        style={{
-          width: "150px",
-        }}
         disabled={upgradeTeaser}
         onChange={upgradeTeaser?noop:(date, dateString) => onFieldChange(fieldKey, dateString)}
         disabledDate={disabledDateFn}
@@ -49,6 +46,7 @@ const Countdown = (props) => {
           justifyContent: "space-between",
           gap: "10px",
           marginBottom: "20px",
+          flexFlow:"wrap"
         }}
       >
         {renderConditionalDatePicker(

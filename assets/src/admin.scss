@@ -2020,6 +2020,28 @@ End Settings Sidebar
               }
             }
           }
+          .single-disabled-checkbox {
+            position: relative;
+
+            .pro-content-overlay {
+              width: 105%;
+              height: 150%;
+              overflow: hidden;
+              border-radius: 5px;
+              margin: -2% 0 0 -4%;
+
+              .upgrade-button {
+                font-size: 12px;
+                padding: 4px 12px;
+              }
+            }
+
+            &:hover {
+              .pro-content-overlay {
+                display: flex;
+              }
+            }
+          }
 
           .card-heading {
             height: 100%;
