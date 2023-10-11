@@ -26,10 +26,12 @@ const DisplayRules = (props) => {
     {
       label: `Desktop`,
       value: "banner-show-desktop",
+      needUpgrade:upgradeTeaser
     },
     {
       label: `Mobile`,
       value: "banner-show-mobile",
+      needUpgrade:upgradeTeaser
     },
   ];
 
@@ -70,6 +72,7 @@ const DisplayRules = (props) => {
           tooltip={__("Banner Dispaly in Devices", "storegrowth_sales_booster")}
           headColSpan={16}
           checkboxColSpan={8}
+          showProIcon={false}
         />
         <BannerTrigger
           upgradeTeaser={upgradeTeaser}

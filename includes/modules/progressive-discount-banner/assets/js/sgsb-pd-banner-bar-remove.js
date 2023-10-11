@@ -73,13 +73,11 @@
         ) {
           // Banner Triggering delayer.
           if (banner_trigger === "after-few-seconds") {
-            console.log("THis is Runnig after few seconds");
             bannerHide();
             setTimeout(function () {
               bannerShow();
             }, banner_delay * 1000);
           } else {
-            console.log("THis is Runnig after scroll");
             bannerHide();
             $(window).on("scroll", function () {
               if ($(window).scrollTop() > scrollThreshold) {
@@ -110,6 +108,6 @@
       });
     });
   } else {
-    console.log("banner_device_view is undefined or empty.");
+    console.error("banner_device_view is undefined or empty.");
   }
 })(jQuery);

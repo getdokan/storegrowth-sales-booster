@@ -4,7 +4,7 @@ import SettingsSection from "../../../../../../assets/src/components/settings/Pa
 import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-
+import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 const fontSizes = [ ...Array( 15 ).keys() ].map( value => {
     const pair = value + 10;
     return { value: pair, label: pair };
@@ -34,14 +34,14 @@ const TextDesign = (props) => {
                     changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                     title={ __( 'Color', 'storegrowth-sales-booster' ) }
                 />
-                <SelectBox
+                <Number
+                    min={ 1 }
                     colSpan={ 12 }
-                    name={ props.fontSizeName }
-                    options={ [ ...fontSizes ] }
-                    fieldValue={ props.fontSize }
                     needUpgrade={ upgradeTeaser }
+                    name={ props.fontSizeName }
+                    fieldValue={ props.fontSize }
                     changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
-                    title={ __( 'Font size', 'storegrowth-sales-booster' ) }
+                    title={  __( 'Font size', 'storegrowth-sales-booster' ) }
                 />
                 <SelectBox
                     name={ props.fontWeightName }
