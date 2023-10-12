@@ -64,7 +64,7 @@ class Stock_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add stock status bar to your products.';
+		return 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.';
 	}
 
 	/**

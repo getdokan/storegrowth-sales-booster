@@ -65,12 +65,9 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1>Documentation</h1>
-                            <p>
-                              Lorem Ipsum is simply dummy text
-                              <br /> of the printing and typesetting Lorem
-                              <br /> Ipsum been the industry standard
-                              <br /> dummy the 1500s.
+                            <h1 className="documenttion-section-heading">Documentation</h1>
+                            <p className="documentation-section-content">
+                            Access our comprehensive documentation for easy, step-by-step guidance on using every feature of our plugin. Get answers quickly and make the most of our powerful tools.
                             </p>
                             <a href="#">Read More</a>
                           </div>
@@ -88,12 +85,9 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1>Email Support</h1>
-                            <p>
-                              Lorem Ipsum is simply dummy text
-                              <br /> of the printing and typesetting Lorem
-                              <br /> Ipsum been the industry standard
-                              <br /> dummy the 1500s.
+                            <h1 className="documenttion-section-heading">Email Support</h1>
+                            <p className="documentation-section-content">
+                            Stuck or have questions? Reach out to our responsive email support. Our team is here to help you with any inquiries or issues you might encounter. We're just an email away!
                             </p>
                             <a href="#">Contact Us</a>
                           </div>
@@ -109,15 +103,10 @@ const Overview = () => {
                       </div>
 
                       <h1>Have Any Thoughts or Feature Request?</h1>
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur. Habitasse fames
-                        id suspendisse
-                        <br /> nec euismod pellentesque aliquam volutpat
-                        elementum cras id dictum suspendisse
-                        <br /> cras in ridiculus netus eget enim pellentesque.
-                        Scelerisque.
+                      <p className="feature-requests-content">
+                        Your insights matter! Help us shape the future of our plugin by sharing your feature requests. We're eager to hear your ideas and work together to make our plugin even better. Your feedback is invaluable, and we appreciate your contribution to improving the plugin to meet your needs.
                       </p>
-                      <span>
+                      <span className="feature-requests-submit-button">
                         <a href="#">Submit Request</a>
                       </span>
                     </div>

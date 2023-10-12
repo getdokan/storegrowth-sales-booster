@@ -64,7 +64,7 @@ class Countdown_Timer_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add stock status bar and Countdown timer to your products.';
+		return 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.';
 	}
 
 	/**

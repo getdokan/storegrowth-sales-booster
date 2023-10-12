@@ -64,7 +64,7 @@ class Floating_Notification_Bar_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add multi-announcements progressive bar for special discounts.';
+		return 'Captivate with announcements. Customizable bars draw attention to special offers, discounts, and important news.';
 	}
 
 	/**

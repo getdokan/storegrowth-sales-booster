@@ -66,7 +66,7 @@ class Sales_Pop_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Sales Pop convinces visitors to start buying from your brand with confidence and trust.';
+		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
 	}
 
 	/**
