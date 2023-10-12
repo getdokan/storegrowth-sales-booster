@@ -44,9 +44,8 @@
     };
 
     const bannerShow = () => {
-      $(".sgsb-floating-notification-bar-wrapper").fadeIn(1000, function () {
-        paddingAdderBody();
-      });
+      $(".sgsb-floating-notification-bar-wrapper").fadeIn(1000);
+      paddingAdderBody();
     };
 
     const bannerHide = () => {

@@ -3,6 +3,7 @@
 
   if (typeof sgsb_fsb_data !== "undefined") {
     let banner_device_view = sgsb_fsb_data.banner_device_view;
+    let bar_position = sgsb_fsb_data.bar_position;
     let banner_delay = sgsb_fsb_data.banner_delay;
     let scroll_banner_delay = sgsb_fsb_data.scroll_banner_delay;
     let banner_trigger = sgsb_fsb_data.banner_trigger;
@@ -27,12 +28,17 @@
 
     // Add the padding
     const paddingAdderBody = () => {
-      return (document.body.style.paddingTop = `${body_top_padding}px`);
+      document.body.classList.add("body-padding-transition");
+      if("top" ===bar_position){
+        return (document.body.style.paddingTop = `${body_top_padding}px`);
+      }else{
+        return (document.body.style.paddingBottom = `${body_top_padding}px`);
+      }
     };
 
     const bannerShow = () => {
-      paddingAdderBody();
       $(".sgsb-pd-banner-bar-wrapper").fadeIn(1000);
+      paddingAdderBody();
     };
 
     const bannerHide = () => {
