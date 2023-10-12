@@ -38,12 +38,33 @@ class Enqueue_Script {
 	public function wp_enqueue_scripts() {
 		wp_enqueue_style(
 			'sgsb-button-style',
-			sgsb_modules_url( 'direct-checkout/assets/scripts/sgsb-dc-style.css' ),
+			sgsb_modules_url( 'direct-checkout/assets/css/sgsb-dc-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'direct-checkout/assets/scripts/sgsb-dc-style.css' ) )
+			filemtime( sgsb_modules_path( 'direct-checkout/assets/css/sgsb-dc-style.css' ) )
 		);
 
 		$this->dc_button_inline_styles();
+
+		wp_enqueue_script(
+			'sgsb-dc-script',
+			sgsb_modules_url( 'direct-checkout/assets/js/sgsb-dc-script.js' ),
+			array( 'jquery' ),
+			filemtime( sgsb_modules_path( 'direct-checkout/assets/js/sgsb-dc-script.js' ) ),
+			true
+		);
+
+		$dir_checkout_settings = get_option( 'sgsb_direct_checkout_settings' );
+		$checkout_redirect     = sgsb_find_option_setting( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
+		$is_checkout_redirect  = ( $checkout_redirect === 'quick-cart-checkout' );
+
+		wp_localize_script(
+			'sgsb-dc-script',
+			'sgsbDcFrontend',
+			array(
+				'isQuickCartCheckout' => $is_checkout_redirect,
+				'isPro'               => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+			)
+		);
 	}
 
 	/**
