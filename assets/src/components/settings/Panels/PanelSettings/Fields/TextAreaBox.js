@@ -17,7 +17,9 @@ const TextAreaBox = ( {
     changeHandler,
     placeHolderText,
     colSpan = 24,
-    needUpgrade = false
+    needUpgrade = false,
+    upgradeOverlay =true,
+    inputRestrictor =false
 } ) => {
     // Render textarea content after settings field, if needed.
     const renderAreaContent = applyFilters(
@@ -27,7 +29,7 @@ const TextAreaBox = ( {
 
     return (
         // Make settings textarea component with card preview.
-        <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
+        <FieldWrapper colSpan={ colSpan } upgradeClass={ (needUpgrade&&upgradeOverlay) ? `upgrade-settings` : '' }>
             <Col span={9}>
                 <div className={ `card-heading textarea-heading` }>
                     {/* Handle switcher title. */}
@@ -43,16 +45,17 @@ const TextAreaBox = ( {
                 {/* Handle settings textarea field by using dynamic props */}
                 <TextArea
                     rows={ areaRows }
-                    disabled={ needUpgrade }
+                    disabled={ needUpgrade && upgradeOverlay }
                     placeholder={ placeHolderText }
                     value={ fieldValue ? fieldValue : '' }
                     className={ `${ renderAreaContent !== '' ? 'field-gap' : '' } settings-field textarea-field` }
-                    onChange={ ( event ) => changeHandler( name, event.target.value ) }
+                    onChange={ ( event ) => {inputRestrictor?
+                    (event.nativeEvent.inputType==="deleteContentBackward"?changeHandler( name, event.target.value ):""):
+                    changeHandler( name, event.target.value )} }
                 />
                 { renderAreaContent }
             </Col>
-
-            { needUpgrade && <UpgradeOverlay /> }
+            <UpgradeOverlay /> 
         </FieldWrapper>
     );
 }
