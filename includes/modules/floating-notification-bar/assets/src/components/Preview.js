@@ -3,7 +3,7 @@ import {extractedTitle} from "sales-booster/src/utils/helper";
 import {__} from "@wordpress/i18n";
 import BarIcon from "./BarIcon";
 
-const Preview = ( { formData, fontFamily } ) => {
+const Preview = ( { isProActive, formData, fontFamily } ) => {
 
     const bannerStyle = {
         color           : formData.text_color,
@@ -27,22 +27,24 @@ const Preview = ( { formData, fontFamily } ) => {
         <div className='sgsb-pd-banner-bar-wrapper'>
             <div className='sgsb-pd-banner-bar' style={ bannerStyle }>
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
-                        { formData?.default_banner_custom_icon ? (
-                            <img
-                                width='32'
-                                height='32'
-                                src={ formData?.default_banner_custom_icon }
-                                alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
-                            />
-                        ) : (
-                            <BarIcon
-                                preview={ true }
-                                activeIcon={ formData?.default_banner_icon_name }
-                                iconName={ formData?.default_banner_icon_name }
-                            />
-                        ) }
-                    </div>
+                    { isProActive && (
+                        <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
+                            { formData?.default_banner_custom_icon ? (
+                                <img
+                                    width='32'
+                                    height='32'
+                                    src={ formData?.default_banner_custom_icon }
+                                    alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
+                                />
+                            ) : (
+                                <BarIcon
+                                    preview={ true }
+                                    activeIcon={ formData?.default_banner_icon_name }
+                                    iconName={ formData?.default_banner_icon_name }
+                                />
+                            ) }
+                        </div>
+                    ) }
                 </div>
                 <span
                     className='sgsb-pd-banner-text'

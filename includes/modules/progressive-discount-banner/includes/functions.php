@@ -45,17 +45,17 @@ function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
 	$path = apply_filters( 'free_shipping_bar_content_pro', __DIR__ . '/../templates/bar.php' );
 
 	if ( ! $path ) {
-			return;
+		return;
 	}
 
 	if ( ! $is_echo ) {
-			ob_start();
+		ob_start();
 	}
 
 	include $path;
 
 	if ( ! $is_echo ) {
-			return ob_get_clean();
+        return ob_get_clean();
 	}
 }
 

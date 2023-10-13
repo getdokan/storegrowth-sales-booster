@@ -6,6 +6,7 @@ import DashboardTabs from "./DashboardTabs";
 import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
+import {__} from "@wordpress/i18n";
 
 const Pricing = () => {
   return (
@@ -29,7 +30,7 @@ const Pricing = () => {
                         <div className="sg_pro_btm">
                           <div className="sg_pro_btm_left">
                             <div className="sg_pro_top">
-                              <h2>Comparison With StoreGrowth PRO</h2>
+                              <h3>{ __( 'Comparison With StoreGrowth PRO', 'storegrowth-sales-booster' ) }</h3>
                             </div>
                             <div className="sg_comparison_table">
                               <div className="sg_pro_chart">

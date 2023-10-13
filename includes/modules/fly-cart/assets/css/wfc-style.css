@@ -53,9 +53,9 @@
     position: absolute ;
     top: -10px;
     right: -10px;
-    background: #2ecc71;
+    background: #fff;
     border-radius: 50%;
-    color: #fff;
+    color: #0875FF;
     line-height: 25px;
     font-size: 12px;
     outline: 0;
@@ -455,6 +455,7 @@ tr.woocommerce-cart-form__cart-item.cart_item {
 }
 
 .sgsb-cart-widget-buttons a:hover{
+    color: #fff;
     background: rgb(0 111 201) !important;
 }
 .product-remove span{

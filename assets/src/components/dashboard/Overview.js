@@ -9,6 +9,8 @@ import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import IntroModules from "./images/intro-section-img.svg";
+import {__} from "@wordpress/i18n";
+import SectionSpacer from "../settings/Panels/PanelSettings/SectionSpacer";
 const Overview = () => {
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
@@ -35,9 +37,13 @@ const Overview = () => {
                               <CaretRightFilled className="fa-solid fa-play music-player"/>
                             </div>
                           </div>
-                          <h1>
-                            Your First <br /> Impression With <br /> StoreGrowth
-                          </h1>
+                          <h3>
+                              { __( 'Your First', 'storegrowth-sales-booster' ) }
+                              <br />
+                              { __( 'Impression With', 'storegrowth-sales-booster' ) }
+                              <br />
+                              { __( 'StoreGrowth', 'storegrowth-sales-booster' ) }
+                          </h3>
                         </div>
 
                         <div className="inrto-section-img-backgroud">
@@ -65,9 +71,12 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1 className="documenttion-section-heading">Documentation</h1>
-                            <p className="documentation-section-content">
-                            Access our comprehensive documentation for easy, step-by-step guidance on using every feature of our plugin. Get answers quickly and make the most of our powerful tools.
+                            <h1>Documentation</h1>
+                            <p>
+                              Lorem Ipsum is simply dummy text
+                              <br /> of the printing and typesetting Lorem
+                              <br /> Ipsum been the industry standard
+                              <br /> dummy the 1500s.
                             </p>
                             <a href="#">Read More</a>
                           </div>
@@ -85,9 +94,12 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1 className="documenttion-section-heading">Email Support</h1>
-                            <p className="documentation-section-content">
-                            Stuck or have questions? Reach out to our responsive email support. Our team is here to help you with any inquiries or issues you might encounter. We're just an email away!
+                            <h1>Email Support</h1>
+                            <p>
+                              Lorem Ipsum is simply dummy text
+                              <br /> of the printing and typesetting Lorem
+                              <br /> Ipsum been the industry standard
+                              <br /> dummy the 1500s.
                             </p>
                             <a href="#">Contact Us</a>
                           </div>
@@ -103,8 +115,13 @@ const Overview = () => {
                       </div>
 
                       <h1>Have Any Thoughts or Feature Request?</h1>
-                      <p className="feature-requests-content">
-                        Your insights matter! Help us shape the future of our plugin by sharing your feature requests. We're eager to hear your ideas and work together to make our plugin even better. Your feedback is invaluable, and we appreciate your contribution to improving the plugin to meet your needs.
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur. Habitasse fames
+                        id suspendisse
+                        <br /> nec euismod pellentesque aliquam volutpat
+                        elementum cras id dictum suspendisse
+                        <br /> cras in ridiculus netus eget enim pellentesque.
+                        Scelerisque.
                       </p>
                       <span className="feature-requests-submit-button">
                         <a href="#">Submit Request</a>

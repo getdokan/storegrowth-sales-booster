@@ -7,6 +7,7 @@ import Layout from "./components/settings/Layout";
 
 import 'antd/dist/reset.css';
 import './admin.css';
+import { menuFix } from "./utils/helper";
 
 register( settingsStore );
 // register( moduleStore );
@@ -19,3 +20,5 @@ render(
   </StrictMode>,
   document.getElementById( "sbooster-settings-page" )
 );
+
+menuFix( 'sales-booster-for-woocommerce' );

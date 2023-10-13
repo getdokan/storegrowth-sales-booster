@@ -79,3 +79,9 @@ body.admin-bar .sgsb-pd-banner-bar-wrapper {
 body {
     padding-top: 70px;
 }
+
+.body-padding-transition {
+  padding-top: 20px;
+  transition: padding-top 0.5s linear;
+}
+

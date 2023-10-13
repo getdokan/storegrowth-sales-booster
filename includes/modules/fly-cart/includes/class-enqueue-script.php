@@ -110,9 +110,9 @@ class Enqueue_Script {
 	private function qc_basic_inline_styles() {
 		// Get style options.
 		$settings         = get_option( 'sgsb_fly_cart_settings' );
-		$wfc_color        = sgsb_find_option_setting( $settings, 'icon_color', '#2ecc71' );
+		$wfc_color        = sgsb_find_option_setting( $settings, 'icon_color', '#fff' );
 		$widget_bg_color  = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
-		$wfc_btn_bgcolor  = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#2ecc71' );
+		$wfc_btn_bgcolor  = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
 		$shop_btn_bgcolor = sgsb_find_option_setting( $settings, 'shopping_button_bg_color', '#073B4C' );
 
 		$custom_css = "

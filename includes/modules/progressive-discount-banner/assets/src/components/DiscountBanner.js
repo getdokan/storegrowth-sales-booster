@@ -177,14 +177,15 @@ function DiscountBanner(props) {
 
                 <RadioBox
                     uploadOption={ true }
-                    changeHandler={ onBarChange }
+                    needUpgrade={ upgradeTeaser }
                     options={ [ ...iconOptions ] }
-                    uploadHandler={ handleMediaUpload }
                     name={ `progressive_banner_icon_name` }
-                    iconRemoveHandler={ handleSelectionRemove }
-                    fieldValue={ formData.progressive_banner_icon_name }
-                    customValue={ formData.progressive_banner_custom_icon }
+                    changeHandler={ upgradeTeaser ? '' : onBarChange }
+                    uploadHandler={ upgradeTeaser ? '' : handleMediaUpload }
+                    iconRemoveHandler={ upgradeTeaser ? '' : handleSelectionRemove }
                     title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
+                    customValue={ formData.progressive_banner_custom_icon }
+                    fieldValue={ formData.progressive_banner_icon_name }
                 />
 
                 <TextAreaBox

@@ -83,7 +83,6 @@ export const createBumpForm = {
     offer_description_font_size: '14',
     offer_image_url: bump_save_url.image_folder+'/icon.png',
     offer_product_title:"Please select your offer product",
-    offer_product_description:"",
     offer_product_id: 0,
     offer_discount_title:'% off only for you!',
     offer_fixed_price_title:'$ Just Only',
