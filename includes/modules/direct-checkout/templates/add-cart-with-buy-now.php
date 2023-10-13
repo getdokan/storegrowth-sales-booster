@@ -24,6 +24,6 @@ $product_page         = is_product() ? '_product_page' : '';
 
 	?>
 
-<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>?add-to-cart=<?php echo absint( $product_id ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
+<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" data-id="<?php echo absint( $product_id ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
 	<?php echo esc_html( sprintf( '%1$s', $buy_now_button_label ) ); ?>
 </a>

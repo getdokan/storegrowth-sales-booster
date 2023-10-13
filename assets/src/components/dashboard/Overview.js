@@ -9,6 +9,8 @@ import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import IntroModules from "./images/intro-section-img.svg";
+import {__} from "@wordpress/i18n";
+import SectionSpacer from "../settings/Panels/PanelSettings/SectionSpacer";
 const Overview = () => {
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
@@ -35,9 +37,13 @@ const Overview = () => {
                               <CaretRightFilled className="fa-solid fa-play music-player"/>
                             </div>
                           </div>
-                          <h1>
-                            Your First <br /> Impression With <br /> StoreGrowth
-                          </h1>
+                          <h3>
+                              { __( 'Your First', 'storegrowth-sales-booster' ) }
+                              <br />
+                              { __( 'Impression With', 'storegrowth-sales-booster' ) }
+                              <br />
+                              { __( 'StoreGrowth', 'storegrowth-sales-booster' ) }
+                          </h3>
                         </div>
 
                         <div className="inrto-section-img-backgroud">
@@ -64,8 +70,7 @@ const Overview = () => {
                                 alt="documentation-icon"
                               />
                             </div>
-
-                            <h1>Documentation</h1>
+                            <h3>{ __( 'Documentation', 'storegrowth-sales-booster' ) }</h3>
                             <p>
                               Lorem Ipsum is simply dummy text
                               <br /> of the printing and typesetting Lorem
@@ -88,7 +93,7 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1>Email Support</h1>
+                            <h3>{ __( 'Email Support', 'storegrowth-sales-booster' ) }</h3>
                             <p>
                               Lorem Ipsum is simply dummy text
                               <br /> of the printing and typesetting Lorem
@@ -108,7 +113,7 @@ const Overview = () => {
                         <Image preview={false} src={RequestIcon} />
                       </div>
 
-                      <h1>Have Any Thoughts or Feature Request?</h1>
+                      <h3>{ __( 'Have Any Thoughts or Feature Request?', 'storegrowth-sales-booster' ) }</h3>
                       <p>
                         Lorem ipsum dolor sit amet consectetur. Habitasse fames
                         id suspendisse

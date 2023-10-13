@@ -134,14 +134,15 @@ function DefaultBanner(props) {
         />
         <RadioBox
           uploadOption={ true }
+          needUpgrade={ upgradeTeaser }
           options={ [ ...iconOptions ] }
-          changeHandler={ onBarChange }
-          uploadHandler={ handleMediaUpload }
           name={ `default_banner_icon_name` }
-          iconRemoveHandler={ handleSelectionRemove }
-          fieldValue={ formData.default_banner_icon_name }
-          customValue={ formData.default_banner_custom_icon }
+          changeHandler={ upgradeTeaser ? '' : onBarChange }
+          uploadHandler={ upgradeTeaser ? '' : handleMediaUpload }
+          iconRemoveHandler={ upgradeTeaser ? '' : handleSelectionRemove }
           title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
+          customValue={ formData.default_banner_custom_icon }
+          fieldValue={ formData.default_banner_icon_name }
         />
         <CheckboxGroup
           displayDirection={"horizontal"}

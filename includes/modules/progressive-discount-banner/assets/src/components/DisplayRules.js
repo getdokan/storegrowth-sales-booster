@@ -70,6 +70,7 @@ const DisplayRules = (props) => {
           title={__("Show Banner", "storegrowth-sales-booster")}
           needUpgrade={upgradeTeaser}
           tooltip={__("Banner Dispaly in Devices", "storegrowth_sales_booster")}
+          showSingleCheckOverlay={false}
           headColSpan={16}
           checkboxColSpan={8}
           showProIcon={false}

@@ -4,7 +4,7 @@ import {Button, Typography, Col, Radio, Row} from 'antd';
 import SettingsTooltip from '../SettingsTooltip';
 import UpgradeOverlay from '../UpgradeOverlay';
 import {__} from '@wordpress/i18n';
-import {Fragment} from "react";
+import React, {Fragment} from "react";
 import {wpMedia} from "../../../../../utils/helper";
 
 const { Title } = Typography;
@@ -28,7 +28,7 @@ const RadioBox = ( {
 
     return (
         // Make settings radio component with card preview.
-        <FieldWrapper colSpan={ colSpan } align={ 'center' }>
+        <FieldWrapper colSpan={ colSpan } align={ 'center' } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={ fieldWidth ? 24 : 9 }>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}
@@ -135,6 +135,7 @@ const RadioBox = ( {
                     ) }
                 </Col>
             ) }
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

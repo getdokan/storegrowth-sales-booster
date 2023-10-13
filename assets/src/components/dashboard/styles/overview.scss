@@ -32,6 +32,7 @@
         background-color: transparent;
         text-decoration: none;
         color: inherit;
+        display: block;
       }
 
       a:focus {
@@ -56,7 +57,7 @@
   }
 
   .dashboad-content {
-    margin-top: 50px;
+    margin: 50px 0 80px;
     width: 90%;
 
     // Intro Section
@@ -74,11 +75,13 @@
         .intro-section-text {
           padding: 53px 0px 0px 40px;
 
-          h1 {
+          h3 {
             color: #073B4C;
             font-family: 'IBM Plex Sans';
             font-size: 30px;
             font-weight: 700;
+            line-height: 1.3em;
+            margin-top: 10px;
           }
 
           .music-player-background-is-the-background {
@@ -163,8 +166,9 @@
               }
             }
 
-            h1 {
+            h3 {
               color: #073B4C;
+              font-size: 24px;
               margin-top: 40px;
               font-weight: 600;
               margin-bottom: 0px;
@@ -222,7 +226,7 @@
 
       }
 
-      h1 {
+      h3 {
         color: #073B4C;
         font-size: 22px;
         font-weight: 600;
@@ -284,7 +288,7 @@
       flex-direction: column;
       gap: 40px;
 
-      h2 {
+      h3 {
         font-size: 28px;
         font-weight: 600;
         text-align: center;

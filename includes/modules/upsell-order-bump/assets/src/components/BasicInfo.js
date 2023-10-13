@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import {Row, Col, Typography, Select, Card, InputNumber} from 'antd';
+import { Row, Col, Typography, Select, Card, InputNumber } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
@@ -10,6 +10,7 @@ import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelS
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
 import {noop} from "sales-booster-sales-pop/src/helper";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import { Fragment } from "react";
 
 const { Title } = Typography;
 
@@ -63,9 +64,10 @@ const BasicInfo = ( { clearErrors } ) => {
   ];
 
   return (
-    <>
+    <Fragment>
       <SettingsSection>
         <TextInput
+          fullWidth={ true }
           name={ `name_of_order_bump` }
           changeHandler={ onFieldChange }
           fieldValue={ createBumpData.name_of_order_bump }
@@ -116,13 +118,6 @@ const BasicInfo = ( { clearErrors } ) => {
             ?.includes( inputValue.toLowerCase() )
           }
         />
-        <TextInput
-          changeHandler={ onFieldChange }
-          name={ `offer_product_description` }
-          fieldValue={ createBumpData.offer_product_description }
-          title={ __( 'Offer Product Description', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Add your offer product description', 'storegrowth-sales-booster' ) }
-        />
         <Col className="gutter-row" span={ 24 }>
           <Card className={ `sgsb-settings-card` }>
             <Row>
@@ -157,7 +152,7 @@ const BasicInfo = ( { clearErrors } ) => {
           </Card>
         </Col>
       </SettingsSection>
-    </>
+    </Fragment>
   );
 };
 

@@ -146,15 +146,6 @@ function CreateBump({navigate, useParams, useSearchParams}) {
       
     }
 
-    if ( !createBumpData.offer_product_description ) {
-      notification['error'] ( {
-        message: __( 'Please add offer product short description', 'storegrowth-sales-booster' ),
-      } );
-
-      return null;
-
-    }
-
     if( createBumpData.offer_type.length ==0 ) {
       notification['error'] ( {
         message: 'Please select offer type',

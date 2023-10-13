@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
@@ -98,15 +97,16 @@ function General({ onFormSave, upgradeTeaser }) {
         />
 
         <SelectBox
-          name={"checkout_redirect"}
-          fieldValue={createDirectCheckoutFormData.checkout_redirect}
-          changeHandler={onFieldChange}
-          title={"Checkout Redirect"}
+          name={ "checkout_redirect" }
+          fieldValue={ createDirectCheckoutFormData.checkout_redirect }
+          changeHandler={ upgradeTeaser ? '' : onFieldChange }
+          title={ __( 'Checkout Redirect', 'storegrowth-sales-boooster' ) }
+          needUpgrade={ upgradeTeaser }
           tooltip={__(
             "Select the type of checkout redirection",
             "storegrowth-sales-booster"
-          )}
-          options={selectOptions}
+          ) }
+          options={ selectOptions }
         />
 
         <SingleCheckBox

@@ -88,10 +88,10 @@
 
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
-    if ( Boolean( checkoutRedirect ) ) {
+    if ( isPro && Boolean( checkoutRedirect ) ) {
       jQuery( '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page' ).on( 'click', function ( event ) {
         event.preventDefault();
-        const productId = event?.target?.href?.split( 'add-to-cart=' )?.[1];
+        const productId = jQuery( event?.target ).data( 'id' );
         jQuery.ajax({
           url     : wc_add_to_cart_params.ajax_url,
           type    : 'POST',
