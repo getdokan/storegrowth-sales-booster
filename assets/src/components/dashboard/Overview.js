@@ -71,7 +71,7 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1>Documentation</h1>
+                            <h3>{ __( 'Documentation', 'storegrowth-sales-booster' ) }</h3>
                             <p>
                               Lorem Ipsum is simply dummy text
                               <br /> of the printing and typesetting Lorem
@@ -94,7 +94,7 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h1>Email Support</h1>
+                            <h3>{ __( 'Email Support', 'storegrowth-sales-booster' ) }</h3>
                             <p>
                               Lorem Ipsum is simply dummy text
                               <br /> of the printing and typesetting Lorem
@@ -114,7 +114,7 @@ const Overview = () => {
                         <Image preview={false} src={RequestIcon} />
                       </div>
 
-                      <h1>Have Any Thoughts or Feature Request?</h1>
+                      <h3>{ __( 'Have Any Thoughts or Feature Request?', 'storegrowth-sales-booster' ) }</h3>
                       <p>
                         Lorem ipsum dolor sit amet consectetur. Habitasse fames
                         id suspendisse
