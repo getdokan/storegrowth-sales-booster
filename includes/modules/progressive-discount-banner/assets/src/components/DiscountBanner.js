@@ -63,6 +63,8 @@ function DiscountBanner(props) {
     const discount_mode_text = discount_amount_mode === "fixed-amount" ? "Amount" : "Percentage";
     const discount_mode_symbol = discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
 
+    const noop = () => {};
+
     const iconStyleNames = [
         'shipping-bar-icon-1',
         'shipping-bar-icon-2',
@@ -176,13 +178,12 @@ function DiscountBanner(props) {
                 />
 
                 <RadioBox
-                    uploadOption={ true }
-                    needUpgrade={ upgradeTeaser }
+                    uploadOption={ upgradeTeaser ? 'pro' : true }
                     options={ [ ...iconOptions ] }
                     name={ `progressive_banner_icon_name` }
-                    changeHandler={ upgradeTeaser ? '' : onBarChange }
-                    uploadHandler={ upgradeTeaser ? '' : handleMediaUpload }
-                    iconRemoveHandler={ upgradeTeaser ? '' : handleSelectionRemove }
+                    changeHandler={ onBarChange }
+                    uploadHandler={ upgradeTeaser ? noop : handleMediaUpload }
+                    iconRemoveHandler={ upgradeTeaser ? noop : handleSelectionRemove }
                     title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
                     customValue={ formData.progressive_banner_custom_icon }
                     fieldValue={ formData.progressive_banner_icon_name }

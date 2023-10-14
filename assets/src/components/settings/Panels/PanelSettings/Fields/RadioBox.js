@@ -80,7 +80,7 @@ const RadioBox = ( {
                     {/* Render media upload button for custom selection */}
                     { uploadOption && (
                         <Fragment>
-                            { customValue && (
+                            { uploadOption !== 'pro' && customValue && (
                                 <Radio.Group
                                     buttonStyle='solid'
                                     value={ fieldValue }
@@ -103,7 +103,7 @@ const RadioBox = ( {
                             ) }
                             <Button
                                 onClick={ uploadHandler }
-                                className={ `media-button ${ customValue ? 'active' : '' }` }
+                                className={ `media-button ${ uploadOption !== 'pro' && customValue ? 'active' : '' }` }
                             >
                                 <svg width='14' height='16' viewBox='0 0 14 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
                                     <g opacity='0.3'>
@@ -130,6 +130,8 @@ const RadioBox = ( {
                                     </g>
                                 </svg>
                                 { __( 'Upload', 'storegrowth-sales-booster' ) }
+                                { uploadOption === 'pro' && <UpgradeCrown proCrown={ false } /> }
+                                { uploadOption === 'pro' && <UpgradeOverlay /> }
                             </Button>
                         </Fragment>
                     ) }

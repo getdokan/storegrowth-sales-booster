@@ -3,6 +3,7 @@ import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
 import UpgradeOverlay from "../UpgradeOverlay";
+import React from "react";
 
 const { Title } = Typography;
 
@@ -37,7 +38,6 @@ const SelectBox = ( {
             <Col span={ fieldWidth ? 15 : 9 }>
                 {/* Handle settings select field by using dynamic props */}
                 <Select
-                    options={ options }
                     value={ fieldValue }
                     disabled={ needUpgrade }
                     showSearch={ showSearch }
@@ -46,7 +46,15 @@ const SelectBox = ( {
                     filterOption={ filterOption ? filterOption : true }
                     className={ `settings-field single-select-field ${ classes }` }
                     style={{ width: fieldWidth ? fieldWidth : ( colSpan === 24 ? 170 : 70 ) }}
-                />
+                >
+                    { options && options.map( option => (
+                        <Select.Option key={ option?.value }>
+                            { option?.label }
+                            { option?.disabled && <UpgradeCrown /> }
+                            { option?.disabled && <UpgradeOverlay /> }
+                        </Select.Option>
+                    ) ) }
+                </Select>
             </Col>
             { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
