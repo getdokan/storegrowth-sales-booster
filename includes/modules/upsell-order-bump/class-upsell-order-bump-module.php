@@ -68,7 +68,7 @@ class Upsell_Order_Bump_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Upsell Order Bump Plugin will help you to promote your selected product very rapidly.';
+		return 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.';
 	}
 
 	/**

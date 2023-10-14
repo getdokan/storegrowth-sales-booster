@@ -13,7 +13,7 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import VisibilityControl from './VisibilityControl';
 
-const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: cannot select more than 5 items in this version</span>;
+const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: Upgrade to add more than 5 names</span>;
 
 function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -101,7 +101,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   }
 
   const selectedPopupProducts = createPopupFormData.popup_products;
-  const isProductsSelectReachedlimit = selectedPopupProducts.length >= max_option_count_in_free;
+  const isProductsSelectReachedlimit = upgradeTeaser?selectedPopupProducts.length >= max_option_count_in_free:false;
   let productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
   productListForSelect = isProductsSelectReachedlimit ? productListForSelect.filter(item => selectedPopupProducts.includes(item.value)) : productListForSelect;
 
@@ -113,8 +113,8 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
 
   const virtualName = createPopupFormData.virtual_name;
   const virtualNameLength = Array.isArray(virtualName) ? virtualName?.length : (virtualName || "")?.split(",")?.length;
-  const isFirstNameReachedLimit = virtualNameLength >= max_option_count_in_free;
-  const isFirstNameExceededLimit = virtualNameLength >= max_option_count_in_free + 1;
+  const isFirstNameReachedLimit = upgradeTeaser?virtualNameLength >= max_option_count_in_free:false;
+  const isFirstNameExceededLimit = upgradeTeaser?virtualNameLength >= max_option_count_in_free + 1:false;
 
   const virtualLocationPlaceHolder = `New York City, New York, USA\nBernau, Freistaat Bayern, Germany`;
 
@@ -155,6 +155,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           changeHandler={ onFieldChange }
           options={ productListForSelect }
           fieldValue={ selectedPopupProducts.map( Number ) }
+          needUpgrade={isProductsSelectReachedlimit?upgradeTeaser:false}
           title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
         />
@@ -173,6 +174,9 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           areaRows={ 3 }
           name={ 'virtual_name' }
           fieldValue={ virtualName }
+          upgradeOverlay={false}
+          needUpgrade={isFirstNameExceededLimit}
+          inputRestrictor={isFirstNameExceededLimit}
           changeHandler={ onFieldChange }
           title={ __( 'Virtual First Name', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Name1, Name2, Name3', 'storegrowth-sales-booster' ) }

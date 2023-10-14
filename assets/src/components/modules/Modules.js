@@ -20,6 +20,7 @@ import { __ } from "@wordpress/i18n";
 
 function Modules() {
   // pagination
+  const proPluginActivated = sgsbAdmin.isPro;
   const perPageItem = 6;
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(perPageItem);
@@ -33,7 +34,7 @@ function Modules() {
   const [currentPage, setCurrentPage] = useState(1);
   // handle active module of settings url
   const [activeModule, setActiveModule] = useState(false);
-  const [activeClass, setActiveClass] = useState(false);
+  const [activeClass, setActiveClass] = useState(proPluginActivated);
 
 
   // Get from WP data.
@@ -248,7 +249,7 @@ function Modules() {
           </ul>
         </div>
 
-        {!sgsbAdmin.isPro && <PremiumBox />}
+        {!proPluginActivated && <PremiumBox />}
       </div>
       <div className="sgsb-admin-dashboard-module">
         <div className="sgsb-admin-dashboard-module-top-bar">

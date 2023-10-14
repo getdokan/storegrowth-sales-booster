@@ -64,7 +64,7 @@ class Direct_Checkout_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add stock status bar to your products.';
+		return 'Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience';
 	}
 
 	/**

@@ -64,7 +64,7 @@ class Fly_Cart_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Empowers your site with the superpower of adding products to the cart without reloading the page.';
+		return 'Streamline shopping effortlessly. Add and review items without leaving your page, simplifying the experience.';
 	}
 
 	/**

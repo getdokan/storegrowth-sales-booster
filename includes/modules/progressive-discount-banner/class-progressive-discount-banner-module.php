@@ -64,7 +64,7 @@ class Progressive_Discount_Banner_Module implements Module_Skeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Easily add multi-announcements progressive bar for special discounts.';
+		return 'Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more.';
 	}
 
 	/**
