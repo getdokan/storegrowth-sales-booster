@@ -102,7 +102,6 @@ function General({ onFormSave, upgradeTeaser }) {
           fieldValue={ upgradeTeaser ? 'legacy-checkout' : createDirectCheckoutFormData.checkout_redirect }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Checkout Redirect', 'storegrowth-sales-boooster' ) }
-          // needUpgrade={ upgradeTeaser }
           tooltip={__(
             "Select the type of checkout redirection",
             "storegrowth-sales-booster"
