@@ -73,10 +73,7 @@ const Overview = () => {
 
                             <h3>{ __( 'Documentation', 'storegrowth-sales-booster' ) }</h3>
                             <p>
-                              Lorem Ipsum is simply dummy text
-                              <br /> of the printing and typesetting Lorem
-                              <br /> Ipsum been the industry standard
-                              <br /> dummy the 1500s.
+                            Access our comprehensive documentation for easy, step-by-step guidance on using every feature of our plugin. Get answers quickly and make the most of our powerful tools.
                             </p>
                             <a href="#">Read More</a>
                           </div>
@@ -96,10 +93,7 @@ const Overview = () => {
 
                             <h3>{ __( 'Email Support', 'storegrowth-sales-booster' ) }</h3>
                             <p>
-                              Lorem Ipsum is simply dummy text
-                              <br /> of the printing and typesetting Lorem
-                              <br /> Ipsum been the industry standard
-                              <br /> dummy the 1500s.
+                            Stuck or have questions? Reach out to our responsive email support. Our team is here to help you with any inquiries or issues you might encounter. We're just an email away!
                             </p>
                             <a href="#">Contact Us</a>
                           </div>
@@ -116,12 +110,7 @@ const Overview = () => {
 
                       <h3>{ __( 'Have Any Thoughts or Feature Request?', 'storegrowth-sales-booster' ) }</h3>
                       <p>
-                        Lorem ipsum dolor sit amet consectetur. Habitasse fames
-                        id suspendisse
-                        <br /> nec euismod pellentesque aliquam volutpat
-                        elementum cras id dictum suspendisse
-                        <br /> cras in ridiculus netus eget enim pellentesque.
-                        Scelerisque.
+                      Your insights matter! Help us shape the future of our plugin by sharing your feature requests. We're eager to hear your ideas and work together to make our plugin even better. Your feedback is invaluable, and we appreciate your contribution to improving the plugin to meet your needs.
                       </p>
                       <span className="feature-requests-submit-button">
                         <a href="#">Submit Request</a>
