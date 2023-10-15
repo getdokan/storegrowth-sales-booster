@@ -15,14 +15,15 @@
   /**
    * Set Fly Cart Contents.
    */
-  function setCartContents(htmlResponse) {
-    $('.sgsb-widget-shopping-cart-content').html(htmlResponse);
+  function setCartContents( response ) {
+    $( '.sgsb-widget-shopping-cart-content' ).html( response?.data?.htmlResponse );
+    $( '.wfc-cart-icon .wfc-cart-countlocation' ).html( response?.data?.cartCountLocation );
 
     setTimeout( function() {
-      $('.sgsb-fly-cart-loader').addClass('wfc-hide');
+      $( '.sgsb-fly-cart-loader' ).addClass( 'wfc-hide' );
     }, 500 );
 
-    jQuery(document.body).trigger('wc_fragment_refresh');
+    jQuery( document.body ).trigger( 'wc_fragment_refresh' );
   }
 
   /**

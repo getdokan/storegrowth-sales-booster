@@ -133,13 +133,12 @@ function DefaultBanner(props) {
           )}
         />
         <RadioBox
-          uploadOption={ true }
-          needUpgrade={ upgradeTeaser }
+          uploadOption={ upgradeTeaser ? 'pro' : true }
+          changeHandler={ onBarChange }
           options={ [ ...iconOptions ] }
           name={ `default_banner_icon_name` }
-          changeHandler={ upgradeTeaser ? '' : onBarChange }
-          uploadHandler={ upgradeTeaser ? '' : handleMediaUpload }
-          iconRemoveHandler={ upgradeTeaser ? '' : handleSelectionRemove }
+          uploadHandler={ upgradeTeaser ? noop : handleMediaUpload }
+          iconRemoveHandler={ upgradeTeaser ? noop : handleSelectionRemove }
           title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
           customValue={ formData.default_banner_custom_icon }
           fieldValue={ formData.default_banner_icon_name }

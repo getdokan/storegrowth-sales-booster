@@ -65,8 +65,8 @@ function General({ onFormSave, upgradeTeaser }) {
 
   // Define select options
   const selectOptions = [
-    { value: "legacy-checkout", label: "Legacy Checkout" },
-    { value: "quick-cart-checkout", label: "Quick Cart Checkout" },
+    { value: 'legacy-checkout', label: __( 'Legacy Checkout', 'storegrowth-sales-booster' ) },
+    { value: 'quick-cart-checkout', label: __( 'Quick Cart Checkout', 'storegrowth-sales-booster' ), disabled: upgradeTeaser },
   ];
 
   return (
@@ -97,11 +97,11 @@ function General({ onFormSave, upgradeTeaser }) {
         />
 
         <SelectBox
+          fieldWidth={ upgradeTeaser ? 250 : 170 }
           name={ "checkout_redirect" }
-          fieldValue={ createDirectCheckoutFormData.checkout_redirect }
-          changeHandler={ upgradeTeaser ? '' : onFieldChange }
+          fieldValue={ upgradeTeaser ? 'legacy-checkout' : createDirectCheckoutFormData.checkout_redirect }
+          changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Checkout Redirect', 'storegrowth-sales-boooster' ) }
-          needUpgrade={ upgradeTeaser }
           tooltip={__(
             "Select the type of checkout redirection",
             "storegrowth-sales-booster"

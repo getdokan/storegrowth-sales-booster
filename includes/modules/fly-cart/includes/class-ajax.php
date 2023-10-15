@@ -72,14 +72,19 @@ class Ajax {
 	public function fly_cart_frontend() {
 		check_ajax_referer( 'sgsb_frontend_ajax' );
 		if ( ! isset( $_REQUEST['method'] ) ) {
-			wp_die();
+			wp_send_json_error( array( 'message' => __( 'Method Not Found', 'storegrowth-sales-booster' ) ) );
 		}
 		$method = isset( $_REQUEST['method'] ) ? sanitize_key( $_REQUEST['method'] ) : '';
 		if ( method_exists( $this, $method ) ) {
 			$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array(); //phpcs:ignore
 			$data = wp_unslash( $data );
 			$data = array_map( 'sanitize_text_field', $data );
-			call_user_func( array( $this, $method ), $data );
+			wp_send_json_success(
+				array(
+					'cartCountLocation' => esc_html( wc()->cart->get_cart_contents_count() ),
+					'htmlResponse'      => call_user_func( array( $this, $method ), $data ),
+				)
+			);
 		}
 		wp_die();
 	}
@@ -88,7 +93,9 @@ class Ajax {
 	 * Get cart contents
 	 */
 	private function get_cart_contents() {
-
+		ob_start();
 		include __DIR__ . '/../templates/cart-contents.php';
+
+		return ob_get_clean();
 	}
 }

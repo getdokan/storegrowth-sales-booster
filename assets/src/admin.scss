@@ -2343,6 +2343,7 @@ End Settings Sidebar
               display: flex;
               color: #b6bdc0;
               font-size: 14px;
+              position: relative;
               border-radius: 5px;
               align-items: center;
               justify-content: center;
@@ -2359,6 +2360,15 @@ End Settings Sidebar
                 path {
                   fill: #fff !important;
                   fill-opacity: 1;
+                }
+
+                .pro-content-overlay {
+                  display: flex;
+
+                  .upgrade-button {
+                    font-size: 12px;
+                    padding: 9px 13px;
+                  }
                 }
               }
             }
@@ -2650,6 +2660,74 @@ End Settings Sidebar
 
     .space-top {
       margin-top: 30px;
+    }
+  }
+}
+
+.ant-select-dropdown {
+  .ant-select-item.ant-select-item-option {
+    position: relative;
+
+    .ant-select-item-option-content {
+      gap: 10px;
+      display: flex;
+      align-items: center;
+
+      .sgsb-field-upgrade-pro-label {
+        gap: 10px;
+        display: flex;
+        align-items: center;
+
+        span.sgsb-pro-badge {
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 1;
+          background: #FFAC27;
+          color: white;
+          border-radius: 10px;
+          padding: 4px 7px;
+        }
+      }
+
+      .pro-content-overlay {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: none;
+        border-radius: 5px;
+        position: absolute;
+        align-items: center;
+        background: #00000080;
+        justify-content: center;
+
+        .upgrade-button {
+          gap: 10px;
+          color: #fff;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 4px 14px;
+          border-radius: 5px;
+          align-items: center;
+          background: #FFAC27;
+          display: inline-flex;
+
+          .overlay-btn-crown {
+            svg {
+              path {
+                fill: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .pro-content-overlay {
+        display: flex;
+      }
     }
   }
 }

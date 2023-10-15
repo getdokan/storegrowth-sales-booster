@@ -27,24 +27,22 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
         <div className='sgsb-pd-banner-bar-wrapper'>
             <div className='sgsb-pd-banner-bar' style={ bannerStyle }>
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
-                    { isProActive && (
-                        <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
-                            { formData?.default_banner_custom_icon ? (
-                                <img
-                                    width='32'
-                                    height='32'
-                                    src={ formData?.default_banner_custom_icon }
-                                    alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
-                                />
-                            ) : (
-                                <BarIcon
-                                    preview={ true }
-                                    activeIcon={ formData?.default_banner_icon_name }
-                                    iconName={ formData?.default_banner_icon_name }
-                                />
-                            ) }
-                        </div>
-                    ) }
+                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
+                        { isProActive && formData?.default_banner_custom_icon ? (
+                            <img
+                                width='32'
+                                height='32'
+                                src={ formData?.default_banner_custom_icon }
+                                alt={ __( 'Custom Icon', 'storegrowth-sales-booster' ) }
+                            />
+                        ) : (
+                            <BarIcon
+                                preview={ true }
+                                activeIcon={ formData?.default_banner_icon_name }
+                                iconName={ formData?.default_banner_icon_name }
+                            />
+                        ) }
+                    </div>
                 </div>
                 <span
                     className='sgsb-pd-banner-text'
