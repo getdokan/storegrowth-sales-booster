@@ -47,17 +47,17 @@
 					</h3>
 
 					<?php
-					// Get WooCommerce category names as CSV.
-					$category_names = '';
-					foreach ( $bump_info->target_categories as $category_id ) {
-						$category = get_term_by( 'id', $category_id, 'product_cat' );
-						if ( $category && ! is_wp_error( $category ) ) {
-							$category_names .= $category->name . ',';
-						}
+					// Collect offer product categories.
+					$product_id         = $bump_info->offer_product;
+					$product_categories = wp_get_post_terms( $product_id, 'product_cat' );
+
+					$category_names = array();
+					foreach ( $product_categories as $category ) {
+						$category_names[] = $category->name;
 					}
 
-					// Remove trailing comma.
-					$category_names = rtrim( $category_names, ',' );
+					// Get categories csv.
+					$category_names = implode( ', ', $category_names );
 					?>
 
 					<?php if ( ! empty( $category_names ) ) : ?>
