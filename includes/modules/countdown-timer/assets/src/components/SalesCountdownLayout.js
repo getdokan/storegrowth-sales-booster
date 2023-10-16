@@ -136,6 +136,14 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
   const excludeTabs = [];
   const showPreview = !excludeTabs?.includes(tabName);
 
+  const fontUrl = 'https://fonts.googleapis.com/css2?family=Merienda&display=swap';
+
+  const link = document.createElement( 'link' );
+  link.href = fontUrl;
+  link.rel = 'stylesheet';
+
+  document.head.appendChild( link );
+
   const tabPanels = [
     {
       key: "general",

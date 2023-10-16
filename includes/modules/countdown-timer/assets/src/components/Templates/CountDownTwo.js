@@ -2,14 +2,6 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 
 const CountDownTwo = () => {
-    const fontUrl = 'https://fonts.googleapis.com/css2?family=Merienda&display=swap';
-
-    const link = document.createElement( 'link' );
-    link.href = fontUrl;
-    link.rel = 'stylesheet';
-
-    document.head.appendChild( link );
-
     return (
         <div
             className='sgsb-countdown-timer ct-layout-2'
