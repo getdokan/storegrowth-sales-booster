@@ -38,7 +38,7 @@ const BasicInfo = ( { clearErrors } ) => {
     }
   };
 
-  const offerProductId = createBumpData?.offer_product;
+  const offerProductId = parseInt(createBumpData?.offer_product);
   const originalProductListForSelect = products_and_categories.product_list.productListForSelect;
   const productListForSelect = offerProductId ? originalProductListForSelect.filter(item => item.value !== offerProductId) : originalProductListForSelect;
 
@@ -46,7 +46,6 @@ const BasicInfo = ( { clearErrors } ) => {
   const originalSimpleProductForOffer = products_and_categories.product_list.simpleProductForOffer;
   const simpleProductForOffer = Array.isArray(targetProducts) && targetProducts.length !== 0 ?
     originalSimpleProductForOffer.filter(item => !targetProducts.includes(item.value) ) : originalSimpleProductForOffer;
-
   const bumpSchedules = [
     { value: 'daily', label: __( 'Daily', 'storegrowth-sales-booster' ) },
     { value: 'saturday', label: __( 'Saturday', 'storegrowth-sales-booster' ) },
@@ -62,6 +61,11 @@ const BasicInfo = ( { clearErrors } ) => {
     { value: 'discount', label: __( 'Discount%', 'storegrowth-sales-booster' ) },
     { value: 'price', label: __( 'Price', 'storegrowth-sales-booster' ) },
   ];
+
+  function filterByValue(data, key) {
+    const item = data.find(item => item.value === key);
+    return item ? item.label : 'Value not found';
+}
 
   return (
     <Fragment>
@@ -109,9 +113,9 @@ const BasicInfo = ( { clearErrors } ) => {
           changeHandler={ onFieldChange }
           options={ simpleProductForOffer }
           classes={ `search-single-select` }
-          title={ __( 'Offer Product Title', 'storegrowth-sales-booster' ) }
+          title={ __( 'Offer Product', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Search for offer product', 'storegrowth-sales-booster' ) }
-          fieldValue={ parseInt( createBumpData.offer_product ) ? parseInt( createBumpData.offer_product ) : null }
+          fieldValue={ offerProductId ? filterByValue(simpleProductForOffer,offerProductId) : null }
           filterOption={ ( inputValue, option ) => option.label
             ?.toString()
             ?.toLowerCase()
