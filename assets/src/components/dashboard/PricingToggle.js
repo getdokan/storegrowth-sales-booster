@@ -9,14 +9,6 @@ function PricingToggle({ isActive,handleToggle }) {
       htmlFor="toggle2"
       className={`toggle-switch ${isActive ? "yearly" : "lifetime"}`}
     >
-      <input
-        className="toggle-button plantoggle"
-        id="toggle2"
-        type="checkbox"
-        name="toggle"
-        // checked={isActive}
-        defaultChecked={isActive}
-      />
       <span
         onClick={isActive ? null : handleToggle}
         className={`option ${isActive ? "active" : ""}`}
