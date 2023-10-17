@@ -354,6 +354,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-bottom: 50px;
 
         h3 {
           font-size: 28px;
@@ -381,9 +382,9 @@
       }
 
       .sg_package {
-        border: 1px solid #DDE6F9;
+        // border: 1px solid #DDE6F9;
         border-radius: 10px;
-        overflow: hidden;
+        // overflow: hidden;
 
         table {
           width: -webkit-fill-available;
@@ -398,8 +399,8 @@
               background: linear-gradient(to top, #F6F9FF 0%, #F6F9FF 80%, #fff 80%, #fff 100%);
             }
 
-            .bg_3 {
-              background: #F6F9FF;
+            .sg-most-popular-package-coloumn {
+              background: linear-gradient(180deg, #E3EDFF 0%, rgba(241, 245, 254, 0.00) 100%);
             }
           }
 
@@ -410,14 +411,41 @@
           tr,
           th,
           td {
-            border-bottom: 1px solid #EEF3FC;
             text-align: center;
             text-transform: capitalize;
 
+            .sgsb-pricing-table-header {
+              border-bottom: 2px solid #EFF4FF;
+            }
+
+            .sgsb-pricing-table-header-popular {
+              border-bottom: 2px solid #0875FF;
+            }
+
             .sg_package_rate {
+              position: relative;
               display: flex;
               flex-direction: column;
-              gap: 30px;
+              gap: 40px;
+              padding: 20px 0px;
+
+              .sg-package-title {
+                font-size: 18px;
+                font-weight: 600;
+              }
+
+              .sgsb-popular-packages {
+                position: absolute;
+                top: -50px;
+                width: 100%;
+                background: #0875FF;
+                padding: 16px 44px;
+                border-radius: 10px 10px 0px 0px;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: 500;
+                z-index: -1;
+              }
 
               a {
                 text-decoration: none;
@@ -428,20 +456,18 @@
                   text-transform: capitalize;
                   font-size: 14px;
                   font-weight: 500;
-                  padding: 10px 22px;
-                  border-radius: 20px;
+                  padding: 12px 40px;
+                  border-radius: 5px;
                 }
 
-                .span {
-                  background: #FFAC27;
+                .buy-button-normal {
+                  background: #E8F2FF;
+                  border: 1px solid #8DBFFF;
+                  color: #102F50;
                 }
 
-                .span_2 {
+                .buy-button-popular {
                   background: #0875FF;
-                }
-
-                .span_3 {
-                  background: #073B4C;
                 }
 
               }
