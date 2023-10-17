@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, Col } from "antd";
+import { React, useState } from "react";
+import { Col } from "antd";
 import FeatCheck from "../../../images/feature-checked.svg";
 import UnCheck from "../../../images/feature-unchecked.svg";
 import DashboardTabs from "./DashboardTabs";
@@ -7,8 +7,13 @@ import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import { __ } from "@wordpress/i18n";
+import PricingToggle from "./PricingToggle";
 
 const Pricing = () => {
+  const [isYearly, setIsYearly] = useState(true);
+  const handleToggle = () => {
+    setIsYearly(!isYearly);
+  };
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -26,7 +31,7 @@ const Pricing = () => {
                   {/* Render dashboard contents. */}
                   <div className="dashboad-content">
                     <div className="comparison-section">
-                    {/* <div className="sg_pro_offer">
+                      {/* <div className="sg_pro_offer">
                         <div className="sg_pro_btm">
                           <div className="sg_pro_btm_left">
                             <div className="sg_pro_top">
@@ -184,7 +189,18 @@ const Pricing = () => {
                       <div className="sg_pricing_table">
                         <div className="sg_pricing_bottom">
                           <h3>The Package We Provide</h3>
+                          <div className="pricing-table-heading-content">
+                            <span>
+                              Join 100,000+ website owners who use Booster to
+                              increase sales, engage visitors and so much more.
+                            </span>
+                          </div>
+                          <PricingToggle
+                            isActive={isYearly}
+                            handleToggle={handleToggle}
+                          />
                         </div>
+
                         <div className="sg_package">
                           <table>
                             <colgroup>
@@ -209,9 +225,13 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    <h3>
-                                      $49 <span>/ year</span>
-                                    </h3>
+                                    {isYearly ? (
+                                      <h3 className="yearly-price">
+                                        $49 <span>/ year</span>
+                                      </h3>
+                                    ) : (
+                                      <h3 className="lifitime-price">$150</h3>
+                                    )}
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header-popular">
@@ -227,9 +247,13 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    <h3>
-                                      $89 <span>/ year</span>
-                                    </h3>
+                                    {isYearly ? (
+                                      <h3>
+                                        $89 <span>/ year</span>
+                                      </h3>
+                                    ) : (
+                                      <h3>$250</h3>
+                                    )}
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header">
@@ -242,9 +266,13 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    <h3>
-                                      $159 <span>/ year</span>
-                                    </h3>
+                                    {isYearly ? (
+                                      <h3>
+                                        $159 <span>/ year</span>
+                                      </h3>
+                                    ) : (
+                                      <h3>$500</h3>
+                                    )}
                                   </div>
                                 </th>
                               </tr>
@@ -252,57 +280,59 @@ const Pricing = () => {
                             <tbody>
                               <tr>
                                 {/* <td>website</td> */}
-                                <td>01</td>
-                                <td>09</td>
-                                <td>03</td>
+                                <td className="site-activation-number">
+                                  Activation on 1 Site
+                                </td>
+                                <td className="site-activation-number">
+                                  Activation on 20 Site
+                                </td>
+                                <td className="site-activation-number">
+                                  Activation on 50 Site
+                                </td>
                               </tr>
                               <tr>
                                 {/* <td>ready demo</td> */}
-                                <td>05</td>
-                                <td>03</td>
-                                <td>06</td>
+                                <td>Support & Updates for 1 year</td>
+                                <td>Support & Updates for 1 year</td>
+                                <td>Support & Updates for 1 year</td>
                               </tr>
                               <tr>
                                 {/* <td>domain</td> */}
-                                <td>08</td>
-                                <td>01</td>
-                                <td>05</td>
+                                <td>25% Renewal Discount</td>
+                                <td>25% Renewal Discount</td>
+                                <td>25% Renewal Discount</td>
                               </tr>
                               <tr>
                                 {/* <td>color scheme</td> */}
-                                <td>01</td>
-                                <td>05</td>
-                                <td>10</td>
+                                <td>Custom Notification</td>
+                                <td>Custom Notification</td>
+                                <td>Custom Notification</td>
                               </tr>
                               <tr>
-                                {/* <td>action</td> */}
-                                <td>02</td>
-                                <td>07</td>
-                                <td>03</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
                               </tr>
-                              {/* <tr>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_1">buy now</span>
-                                    </a>
-                                  </div>
-                                </td>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_2">buy now</span>
-                                    </a>
-                                  </div>
-                                </td>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_3">buy now</span>
-                                    </a>
-                                  </div>
-                                </td>
-                              </tr> */}
+                              <tr>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                              </tr>
+                              <tr>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                              </tr>
+                              <tr>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                              </tr>
+                              <tr>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                                <td>MailChimp Integrations</td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
