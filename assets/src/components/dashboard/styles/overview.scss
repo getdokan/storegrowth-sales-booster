@@ -350,12 +350,28 @@
       flex-direction: column;
       gap: 10px;
 
-      .sg_pricing_bottom {
+      .sgsb-pricing-heading {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap:30px;
-        margin-bottom: 70px;
+        gap: 30px;
+        margin-bottom: 20px;
+
+        .gaurantee-badge {
+          position: absolute;
+          width: 100px;
+          right: 230px;
+          bottom: 62px;
+        }
+
+        .loop-arrow {
+          width: 10vw;
+          transform: rotate(16deg);
+          position: absolute;
+          bottom: 14px;
+          right: 123px;
+        }
 
         h3 {
           font-size: 28px;
@@ -481,12 +497,12 @@
                 }
 
               }
-              
+
               h3 {
                 font-size: 32px;
                 font-weight: 600;
                 text-transform: capitalize;
-                height:25px;
+                height: 25px;
                 margin: 0;
 
                 span {
@@ -745,33 +761,38 @@
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  height:74px;
-  color: #102F50; /* Default text color for unselected options */
+  height: 74px;
+  color: #102F50;
+
+  /* Default text color for unselected options */
   &.active {
-    color: #fff; /* Text color for the active (selected) option */
-    background-color: #102F50; 
+    color: #fff;
+    /* Text color for the active (selected) option */
+    background-color: #102F50;
     height: 80%;
     border-radius: 50px;
   }
 }
 
 /* Style for the checked state */
-.toggle-button:checked + .option {
+.toggle-button:checked+.option {
   // color: #fff; /* Text color for the selected option */
   transition: transform 0.5s, opacity 0.3s;
   // opacity: 0.8;
 }
 
-.toggle-button{
-  &.plantoggle{
+.toggle-button {
+  &.plantoggle {
     display: none;
   }
 }
 
-.toggle-button:checked + .option:last-child {
-  background-color: transparent; /* Set background to transparent */
+.toggle-button:checked+.option:last-child {
+  background-color: transparent;
+  /* Set background to transparent */
 }
 
-.yearly-price, .lifetime-price {
+.yearly-price,
+.lifetime-price {
   transition: color 0.5s, opacity 0.5s;
 }

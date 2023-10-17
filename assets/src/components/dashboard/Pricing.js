@@ -1,13 +1,16 @@
 import { React, useState } from "react";
-import { Col } from "antd";
+import { Col, Image } from "antd";
 import FeatCheck from "../../../images/feature-checked.svg";
 import UnCheck from "../../../images/feature-unchecked.svg";
+import LoopArrow from "../dashboard/images/gaurantee-arrow.svg";
+import GaraunteeBadge from "../../../images/gaurentee-bagde.svg";
 import DashboardTabs from "./DashboardTabs";
 import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import { __ } from "@wordpress/i18n";
 import PricingToggle from "./PricingToggle";
+import Gaurantee from "./Gaurantee";
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(true);
@@ -187,7 +190,7 @@ const Pricing = () => {
                       </div> */}
                       {/* Package Table */}
                       <div className="sg_pricing_table">
-                        <div className="sg_pricing_bottom">
+                        <div className="sgsb-pricing-heading">
                           <h3>The Package We Provide</h3>
                           <div className="pricing-table-heading-content">
                             <span>
@@ -198,6 +201,16 @@ const Pricing = () => {
                           <PricingToggle
                             isActive={isYearly}
                             handleToggle={handleToggle}
+                          />
+                          <Image
+                            className="gaurantee-badge"
+                            src={GaraunteeBadge}
+                            preview={false}
+                          />
+                          <Image
+                            className="loop-arrow"
+                            src={LoopArrow}
+                            preview={false}
                           />
                         </div>
 
