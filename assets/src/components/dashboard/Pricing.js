@@ -137,7 +137,7 @@ const Pricing = () => {
                                     </a>
                                     {isYearly ? (
                                       <h3 className="yearly-price">
-                                        ${prices.developer} <span>/ month</span>
+                                        ${prices.developer} <span>/ year</span>
                                       </h3>
                                     ) : (
                                       <h3 className="monthly-price">${Math.round(prices.developer/12)}<span>/ month</span></h3>
