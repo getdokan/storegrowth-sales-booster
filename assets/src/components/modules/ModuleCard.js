@@ -28,14 +28,16 @@ function ModuleSwitch({ module }) {
 function ModuleCard( { module } ) {
   const [size, setSize] = useState(8);
   const {id} = module;
-
-  let docSlug = id;
-  if(id === "progressive-discount-banner"){
-    docSlug = "discount-banner"
-  }
-  if(id === "fly-cart"){
-    docSlug = "quick-cart"
-  }
+  console.log("========== Modules path ===========");
+  console.log(module);
+  const idToDocSlugMapping = {
+    "progressive-discount-banner": "free-shipping-bar",
+    "fly-cart": "quick-cart",
+    "floating-notification-bar": "floating-bar",
+    "countdown-timer": "sales-countdown",
+  };
+  
+  let docSlug = idToDocSlugMapping[id] || id;
 
   return (
     <Col

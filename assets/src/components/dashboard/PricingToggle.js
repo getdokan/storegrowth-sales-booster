@@ -13,13 +13,13 @@ function PricingToggle({ isActive,handleToggle }) {
         onClick={isActive ? null : handleToggle}
         className={`option ${isActive ? "active" : ""}`}
       >
-        Yearly
+        Monthly
       </span>
       <span
         onClick={!isActive ? null : handleToggle}
         className={`option ${!isActive ? "active" : ""}`}
       >
-        Lifetime
+        Yearly
       </span>
     </label>
   );

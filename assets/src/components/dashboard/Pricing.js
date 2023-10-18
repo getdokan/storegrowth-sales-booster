@@ -10,9 +10,15 @@ import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import { __ } from "@wordpress/i18n";
 import PricingToggle from "./PricingToggle";
-import Gaurantee from "./Gaurantee";
 
 const Pricing = () => {
+  const prices = {
+    idivisual: 99,
+    bussiness: 299,
+    developer: 199,
+  };
+
+  const purchaseSlug="https://storegrowth.io"
   const [isYearly, setIsYearly] = useState(true);
   const handleToggle = () => {
     setIsYearly(!isYearly);
@@ -231,120 +237,127 @@ const Pricing = () => {
                                 <th className="sgsb-pricing-table-header">
                                   <div className="sg_package_rate">
                                     <span className="sg-package-title">
-                                      Personal Package
+                                      Individual
                                     </span>
-                                    <a href="#">
+                                    <a href={purchaseSlug} target="_blank">
                                       <span className="buy-button-normal">
                                         get started
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3 className="yearly-price">
-                                        $49 <span>/ year</span>
+                                      <h3 className="monthly-price">
+                                        ${Math.round(prices.idivisual/12)} <span>/ month</span>
                                       </h3>
                                     ) : (
-                                      <h3 className="lifitime-price">$150</h3>
+                                      <h3 className="yearly-price">${prices.idivisual}<span>/ year</span></h3>
                                     )}
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header-popular">
                                   <div className="sg_package_rate">
                                     <span className="sgsb-popular-packages">
-                                      most popular
+                                      best value
                                     </span>
                                     <span className="sg-package-title">
-                                      Agency Package
+                                      Business
                                     </span>
-                                    <a href="#">
+                                    <a href={purchaseSlug} target="_blank">
                                       <span className="buy-button-popular">
                                         get started
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3>
-                                        $89 <span>/ year</span>
+                                      <h3 className="monthly-price">
+                                        ${Math.round(prices.bussiness/12)} <span>/ month</span>
                                       </h3>
                                     ) : (
-                                      <h3>$250</h3>
+                                      <h3 className="yearly-price">${prices.bussiness}<span>/ year</span></h3>
                                     )}
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header">
                                   <div className="sg_package_rate">
                                     <span className="sg-package-title">
-                                      Lifetime Package
+                                      Developer
                                     </span>
-                                    <a href="#">
+                                    <a href={purchaseSlug} target="_blank">
                                       <span className="buy-button-normal">
                                         get started
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3>
-                                        $159 <span>/ year</span>
+                                      <h3 className="monthly-price">
+                                        ${Math.round(prices.developer/12)} <span>/ month</span>
                                       </h3>
                                     ) : (
-                                      <h3>$500</h3>
+                                      <h3 className="yearly-price">${prices.developer}<span>/ year</span></h3>
                                     )}
                                   </div>
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr className="pricing-table-data-highlight">
                                 {/* <td>website</td> */}
-                                <td className="site-activation-number">
-                                  Activation on 1 Site
-                                </td>
-                                <td className="site-activation-number">
-                                  Activation on 20 Site
-                                </td>
-                                <td className="site-activation-number">
-                                  Activation on 50 Site
-                                </td>
+                                <td>Activation on 1 Site</td>
+                                <td>Activation on 50 Site</td>
+                                <td>Activation on 5 Site</td>
                               </tr>
-                              <tr>
-                                {/* <td>ready demo</td> */}
-                                <td>Support & Updates for 1 year</td>
-                                <td>Support & Updates for 1 year</td>
-                                <td>Support & Updates for 1 year</td>
-                              </tr>
-                              <tr>
-                                {/* <td>domain</td> */}
+                              <tr className="pricing-table-data-highlight">
                                 <td>25% Renewal Discount</td>
                                 <td>25% Renewal Discount</td>
                                 <td>25% Renewal Discount</td>
                               </tr>
                               <tr>
+                                <td>1 year blazed fast support</td>
+                                <td>1 year blazed fast support</td>
+                                <td>1 year blazed fast support</td>
+                              </tr>
+                              <tr className="pricing-table-data-highlight">
                                 {/* <td>color scheme</td> */}
-                                <td>Custom Notification</td>
-                                <td>Custom Notification</td>
-                                <td>Custom Notification</td>
+                                <td>All Pro Features</td>
+                                <td>All Pro Features</td>
+                                <td>All Pro Features</td>
                               </tr>
                               <tr>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
+                                <td>Quick Cart</td>
+                                <td>Quick Cart</td>
+                                <td>Quick Cart</td>
                               </tr>
                               <tr>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
+                                <td>Sales Pop </td>
+                                <td>Sales Pop </td>
+                                <td>Sales Pop </td>
                               </tr>
                               <tr>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
+                                <td>Upsell Order Bump </td>
+                                <td>Upsell Order Bump </td>
+                                <td>Upsell Order Bump </td>
                               </tr>
                               <tr>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
+                                <td>Stock Bar </td>
+                                <td>Stock Bar </td>
+                                <td>Stock Bar </td>
                               </tr>
                               <tr>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
-                                <td>MailChimp Integrations</td>
+                                <td>Sales Countdown</td>
+                                <td>Sales Countdown</td>
+                                <td>Sales Countdown</td>
+                              </tr>
+                              <tr>
+                                <td>Floating Bar</td>
+                                <td>Floating Bar</td>
+                                <td>Floating Bar</td>
+                              </tr>
+                              <tr>
+                                <td>Direct Checkout</td>
+                                <td>Direct Checkout</td>
+                                <td>Direct Checkout</td>
+                              </tr>
+                              <tr>
+                                <td>Free Shipping Bar</td>
+                                <td>Free Shipping Bar</td>
+                                <td>Free Shipping Bar</td>
                               </tr>
                             </tbody>
                           </table>
