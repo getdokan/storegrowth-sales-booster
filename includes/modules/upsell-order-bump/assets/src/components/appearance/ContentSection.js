@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from '@wordpress/data';
 
-const ContentSection = () => {
+const ContentSection = ( { triggerBumpUpdate } ) => {
     const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
 
     const { createBumpData } = useSelect( ( select ) => ( {
@@ -11,6 +11,7 @@ const ContentSection = () => {
     } ) );
 
     const onFieldChange = ( key, value ) => {
+        triggerBumpUpdate( true );
         setCreateFromData( {
             ...createBumpData,
             [ key ]: value

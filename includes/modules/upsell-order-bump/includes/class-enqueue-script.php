@@ -171,12 +171,19 @@ class Enqueue_Script {
 			);
 
 			$_product      = wc_get_product( $product->ID );
+			$sale_price    = $_product->get_sale_price();
 			$regular_price = $_product->get_regular_price();
+
+			// Prepare product price & render with label.
+			$price           = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
+			$currency_symbol = html_entity_decode( get_woocommerce_currency_symbol() );
+			$_product_price  = ' (' . $currency_symbol . $price . ')';
 
 			if ( $regular_price ) {
 				$simple_product_for_offer[] = array(
+					'price' => $price,
 					'value' => $product->ID,
-					'label' => $product->post_title,
+					'label' => $product->post_title . $_product_price,
 				);
 			}
 

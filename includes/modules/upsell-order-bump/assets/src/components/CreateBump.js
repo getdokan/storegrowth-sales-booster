@@ -17,6 +17,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [bumpUpdate, setBumpUpdate] = useState(false);
   const { setPageLoading } = useDispatch( 'sgsb' );
   const [buttonLoading, setButtonLoading] = useState(false);
   const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
@@ -206,7 +207,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
                 break;
             }
         }
-        if(duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ){
+        if( !Boolean( bumpUpdate ) && ( duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ) ){
             setDuplicateDataError(duplicateErrs);
             return false;
         }
@@ -258,12 +259,12 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     {
       key: 'basic',
       title: __( 'Basic Information', 'storegrowth-sales-booster' ),
-      panel: <BasicInfo clearErrors={ clearErrors } />,
+      panel: <BasicInfo clearErrors={ clearErrors } triggerBumpUpdate={ setBumpUpdate } />,
     },
     {
       key: 'design',
       title: __( 'Design Section', 'storegrowth-sales-booster' ),
-      panel: <DesignSection createBumpData={ createBumpData } />,
+      panel: <DesignSection triggerBumpUpdate={ setBumpUpdate } />,
     },
   ];
 
