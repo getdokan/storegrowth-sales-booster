@@ -250,7 +250,7 @@ const Pricing = () => {
                                 <th className="sgsb-pricing-table-header-popular">
                                   <div className="sg_package_rate">
                                     <span className="sgsb-popular-packages">
-                                      most popular packages
+                                      most popular
                                     </span>
                                     <span className="sg-package-title">
                                       Agency Package
