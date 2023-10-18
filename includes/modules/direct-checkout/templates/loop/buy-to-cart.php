@@ -28,7 +28,7 @@ $permalink                = get_permalink( $product_id );
 $settings                 = get_option( 'sgsb_direct_checkout_settings' );
 $class                    = 'simple' === $product_type ? 'button product_type_simple sgsb_buy_now_button' : $args['class'];
 $buy_now_button_label     = $is_in_stock ? sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' ) : 'Read More';
-$product_checkout_url     = esc_url( $is_in_stock ? ( wc_get_checkout_url() . $product->add_to_cart_url() ) : $permalink );
+$product_checkout_url     = esc_url( $is_in_stock ? wc_get_checkout_url() : $permalink );
 $product_quantity         = esc_attr( isset( $args['quantity'] ) ? $args['quantity'] : 1 );
 $product_class            = esc_attr( isset( $args['class'] ) ? $class : 'button' );
 $product_attributes       = isset( $args['attributes'] ) ? wc_implode_html_attributes( $args['attributes'] ) : '';

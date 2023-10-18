@@ -2741,6 +2741,12 @@ End Settings Sidebar
   background-color: #F6F9FF;
 }
 
+.ant-radio-input {
+  &:disabled {
+    opacity: 0 !important;
+  }
+}
+
 .inrto-section-img-backgroud {
   background: url("../src/components/dashboard/images/intro-section-img-backgroundImg.svg");
   background-repeat: no-repeat;

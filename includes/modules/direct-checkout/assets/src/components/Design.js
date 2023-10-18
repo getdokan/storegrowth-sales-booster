@@ -25,7 +25,7 @@ function Design({ onFormSave, upgradeTeaser }) {
 
   const onFieldChange = (key, value) => {
     setCreateFromData({
-      ...createDirectCheckoutForm,
+      ...createDirectCheckoutFormData,
       [key]: value,
     });
   };

@@ -1,6 +1,7 @@
 import { Radio, InputNumber } from "antd";
 import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
+import { Fragment } from "react";
 
 const BannerTrigger = (props) => {
   const { upgradeTeaser, onFieldChange, formData } = props;
@@ -11,10 +12,9 @@ const BannerTrigger = (props) => {
     { value: "after-scroll", label: "After Scroll" },
   ];
 
-
   const banner_trigger_value = formData.banner_trigger
   return (
-    <>
+    <Fragment>
       <EmptyField
         needUpgrade={upgradeTeaser}
         title={__("Trigger", "storegrowth-sales-booster")}
@@ -85,7 +85,7 @@ const BannerTrigger = (props) => {
           ))}
         </Radio.Group>
       </EmptyField>
-    </>
+    </Fragment>
   );
 };
 

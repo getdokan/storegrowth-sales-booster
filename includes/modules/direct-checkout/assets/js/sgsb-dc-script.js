@@ -13,8 +13,11 @@
       // Check quick cart checkout availability first.
       if ( sgsbDcFrontend?.isPro && sgsbDcFrontend?.isQuickCartCheckout ) return;
 
-      const productId = $( event?.target ).data( 'id' ),
+      let productId = $( event?.target ).data( 'id' ),
         checkOutUrl = event?.target?.href;
+
+      // Collect data id from product id.
+      productId = typeof productId === 'undefined' ? $( event?.target ).data( 'product_id' ) : productId;
 
       jQuery.ajax({
         url     : wc_add_to_cart_params.ajax_url,
@@ -24,9 +27,10 @@
           'product_id' : productId,
         },
         success : ( response ) => {
-          if ( response?.cart_hash ) {
-            window.location = checkOutUrl;
-          }
+            console.log( response?.cart_hash );
+          // if ( response?.cart_hash ) {
+            window.location.href = checkOutUrl;
+          // }
         },
         error   : ( error ) => console.log( error )
       });
