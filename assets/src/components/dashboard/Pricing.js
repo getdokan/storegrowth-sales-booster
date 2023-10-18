@@ -17,7 +17,10 @@ const Pricing = () => {
     bussiness: 299,
     developer: 199,
   };
-
+ const toggleContent = {
+    leftContent: "Yearly",
+    rightContent: "Monthly"
+  }
   const purchaseSlug="https://storegrowth.io"
   const [isYearly, setIsYearly] = useState(true);
   const handleToggle = () => {
@@ -51,6 +54,7 @@ const Pricing = () => {
                             </span>
                           </div>
                           <PricingToggle
+                            toggleContent={toggleContent}
                             isActive={isYearly}
                             handleToggle={handleToggle}
                           />
@@ -91,11 +95,11 @@ const Pricing = () => {
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3 className="monthly-price">
-                                        ${Math.round(prices.idivisual/12)} <span>/ month</span>
+                                      <h3 className="yearly-price">
+                                        ${prices.idivisual} <span>/ year</span>
                                       </h3>
                                     ) : (
-                                      <h3 className="yearly-price">${prices.idivisual}<span>/ year</span></h3>
+                                      <h3 className="monthly-price">${Math.round(prices.idivisual/12)}<span>/ month</span></h3>
                                     )}
                                   </div>
                                 </th>
@@ -113,11 +117,11 @@ const Pricing = () => {
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3 className="monthly-price">
-                                        ${Math.round(prices.bussiness/12)} <span>/ month</span>
+                                      <h3 className="yearly-price">
+                                        ${prices.bussiness} <span>/ year</span>
                                       </h3>
                                     ) : (
-                                      <h3 className="yearly-price">${prices.bussiness}<span>/ year</span></h3>
+                                      <h3 className="monthly-price">${Math.round(prices.bussiness/12)}<span>/ month</span></h3>
                                     )}
                                   </div>
                                 </th>
@@ -132,11 +136,11 @@ const Pricing = () => {
                                       </span>
                                     </a>
                                     {isYearly ? (
-                                      <h3 className="monthly-price">
-                                        ${Math.round(prices.developer/12)} <span>/ month</span>
+                                      <h3 className="yearly-price">
+                                        ${prices.developer} <span>/ month</span>
                                       </h3>
                                     ) : (
-                                      <h3 className="yearly-price">${prices.developer}<span>/ year</span></h3>
+                                      <h3 className="monthly-price">${Math.round(prices.developer/12)}<span>/ month</span></h3>
                                     )}
                                   </div>
                                 </th>

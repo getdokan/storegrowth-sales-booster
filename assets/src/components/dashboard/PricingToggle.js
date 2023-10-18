@@ -1,7 +1,7 @@
 import React from "react";
 // import './PricingToggle.css';
 
-function PricingToggle({ isActive,handleToggle }) {
+function PricingToggle({ isActive,handleToggle,toggleContent }) {
   
 
   return (
@@ -13,13 +13,13 @@ function PricingToggle({ isActive,handleToggle }) {
         onClick={isActive ? null : handleToggle}
         className={`option ${isActive ? "active" : ""}`}
       >
-        Monthly
+        {toggleContent?.leftContent}
       </span>
       <span
         onClick={!isActive ? null : handleToggle}
         className={`option ${!isActive ? "active" : ""}`}
       >
-        Yearly
+        {toggleContent?.rightContent}
       </span>
     </label>
   );
