@@ -149,9 +149,9 @@ const Pricing = () => {
                             <tbody>
                               <tr className="pricing-table-data-highlight">
                                 {/* <td>website</td> */}
-                                <td>Activation on 1 Site</td>
-                                <td>Activation on 50 Site</td>
-                                <td>Activation on 5 Site</td>
+                                <td>1 site Activation</td>
+                                <td>50 site Activation</td>
+                                <td>5 site Activation</td>
                               </tr>
                               <tr className="pricing-table-data-highlight">
                                 <td>25% Renewal Discount</td>
