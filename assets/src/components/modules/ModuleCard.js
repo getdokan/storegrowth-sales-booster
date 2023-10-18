@@ -28,8 +28,6 @@ function ModuleSwitch({ module }) {
 function ModuleCard( { module } ) {
   const [size, setSize] = useState(8);
   const {id} = module;
-  console.log("========== Modules path ===========");
-  console.log(module);
   const idToDocSlugMapping = {
     "progressive-discount-banner": "free-shipping-bar",
     "fly-cart": "quick-cart",
