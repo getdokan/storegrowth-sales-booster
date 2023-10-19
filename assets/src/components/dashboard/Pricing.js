@@ -17,15 +17,32 @@ const Pricing = () => {
     bussiness: 299,
     developer: 199,
   };
- const toggleContent = {
+  const siteActivation = {
+    idivisual: 1,
+    bussiness: 50,
+    developer: 10,
+  };
+  const toggleContent = {
     leftContent: "Yearly",
-    rightContent: "Monthly"
-  }
-  const purchaseSlug="https://storegrowth.io"
+    rightContent: "Monthly",
+  };
+  const billingText = "(billed annualy)";
+  const purchaseSlug = "https://storegrowth.io";
+  const modules = [
+    "Quick Cart",
+    "Sales Pop",
+    "Upsell Order Bump",
+    "Stock Bar",
+    "Sales Countdown",
+    "Floating Bar",
+    "Direct Checkout",
+    "Free Shipping Bar",
+  ];
   const [isYearly, setIsYearly] = useState(true);
   const handleToggle = () => {
     setIsYearly(!isYearly);
   };
+
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -94,13 +111,22 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    {isYearly ? (
-                                      <h3 className="yearly-price">
-                                        ${prices.idivisual} <span>/ year</span>
-                                      </h3>
-                                    ) : (
-                                      <h3 className="monthly-price">${Math.round(prices.idivisual/12)}<span>/ month</span></h3>
-                                    )}
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.idivisual}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.idivisual / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header-popular">
@@ -116,13 +142,22 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    {isYearly ? (
-                                      <h3 className="yearly-price">
-                                        ${prices.bussiness} <span>/ year</span>
-                                      </h3>
-                                    ) : (
-                                      <h3 className="monthly-price">${Math.round(prices.bussiness/12)}<span>/ month</span></h3>
-                                    )}
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.bussiness}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.bussiness / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
                                   </div>
                                 </th>
                                 <th className="sgsb-pricing-table-header">
@@ -135,23 +170,37 @@ const Pricing = () => {
                                         get started
                                       </span>
                                     </a>
-                                    {isYearly ? (
-                                      <h3 className="yearly-price">
-                                        ${prices.developer} <span>/ year</span>
-                                      </h3>
-                                    ) : (
-                                      <h3 className="monthly-price">${Math.round(prices.developer/12)}<span>/ month</span></h3>
-                                    )}
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.developer}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.developer / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
                                   </div>
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr className="pricing-table-data-highlight">
-                                {/* <td>website</td> */}
-                                <td>1 site Activation</td>
-                                <td>50 site Activation</td>
-                                <td>5 site Activation</td>
+                                <td>
+                                  {siteActivation.idivisual} site Activation
+                                </td>
+                                <td>
+                                  {siteActivation.bussiness} site Activation
+                                </td>
+                                <td>
+                                  {siteActivation.developer} site Activation
+                                </td>
                               </tr>
                               <tr className="pricing-table-data-highlight">
                                 <td>25% Renewal Discount</td>
@@ -169,46 +218,13 @@ const Pricing = () => {
                                 <td>All Pro Features</td>
                                 <td>All Pro Features</td>
                               </tr>
-                              <tr>
-                                <td>Quick Cart</td>
-                                <td>Quick Cart</td>
-                                <td>Quick Cart</td>
-                              </tr>
-                              <tr>
-                                <td>Sales Pop </td>
-                                <td>Sales Pop </td>
-                                <td>Sales Pop </td>
-                              </tr>
-                              <tr>
-                                <td>Upsell Order Bump </td>
-                                <td>Upsell Order Bump </td>
-                                <td>Upsell Order Bump </td>
-                              </tr>
-                              <tr>
-                                <td>Stock Bar </td>
-                                <td>Stock Bar </td>
-                                <td>Stock Bar </td>
-                              </tr>
-                              <tr>
-                                <td>Sales Countdown</td>
-                                <td>Sales Countdown</td>
-                                <td>Sales Countdown</td>
-                              </tr>
-                              <tr>
-                                <td>Floating Bar</td>
-                                <td>Floating Bar</td>
-                                <td>Floating Bar</td>
-                              </tr>
-                              <tr>
-                                <td>Direct Checkout</td>
-                                <td>Direct Checkout</td>
-                                <td>Direct Checkout</td>
-                              </tr>
-                              <tr>
-                                <td>Free Shipping Bar</td>
-                                <td>Free Shipping Bar</td>
-                                <td>Free Shipping Bar</td>
-                              </tr>
+                              {modules.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{item}</td>
+                                  <td>{item}</td>
+                                  <td>{item}</td>
+                                </tr>
+                              ))}
                             </tbody>
                           </table>
                         </div>

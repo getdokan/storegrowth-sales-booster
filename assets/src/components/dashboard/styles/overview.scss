@@ -453,7 +453,6 @@
               display: flex;
               flex-direction: column;
               gap: 50px;
-              padding: 20px 0px;
 
               .sg-package-title {
                 font-size: 18px;
@@ -498,19 +497,28 @@
 
               }
 
-              h3 {
-                font-size: 32px;
-                font-weight: 600;
-                text-transform: capitalize;
-                height: 25px;
-                margin: 0;
+              .sgsb-pricing-data-content {
+                h3 {
+                  font-size: 32px;
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  height: 25px;
+                  margin: 0;
 
-                span {
-                  font-size: 16px;
+                  span {
+                    font-size: 16px;
+                    font-weight: 400;
+                    opacity: 0.4;
+                  }
+                }
+
+                .sgsb-billing-type {
+                  line-height: 30px;
                   font-weight: 400;
-                  opacity: 0.4;
+                  opacity: 0.6;
                 }
               }
+
             }
 
             .sg_buy a {
