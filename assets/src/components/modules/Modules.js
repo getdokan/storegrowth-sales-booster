@@ -36,7 +36,6 @@ function Modules() {
   const [activeModule, setActiveModule] = useState(false);
   const [activeClass, setActiveClass] = useState(proPluginActivated);
 
-
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
     allModules: select("sgsb").getModules(),
@@ -215,12 +214,11 @@ function Modules() {
           <h4 onClick={toggleMenuClass}>
             <Image preview={false} width={18} src={widgetIcon} />
             All Modules
-            <span  className="ant-menu-title-content">
+            <span className="ant-menu-title-content">
               {activeClass ? (
                 <img src={downArrowIocn} width="12" />
               ) : (
                 <img src={upArrowIocn} width="12" />
-                
               )}
             </span>
           </h4>
@@ -231,13 +229,15 @@ function Modules() {
           >
             {allModules.map((module) => {
               return !module.status ? (
-                <li
-                  className={module.id}
-                  key={module.id}
-                  onClick={handleActiveModule}
-                >
-                  {module.name}
-                </li>
+                !filterActiveModules && (
+                  <li
+                    className={module.id}
+                    key={module.id}
+                    onClick={handleActiveModule}
+                  >
+                    {module.name}
+                  </li>
+                )
               ) : (
                 <li className={module.id} key={module.id}>
                   <a href={`admin.php?page=sgsb-settings#/${module.id} `}>
