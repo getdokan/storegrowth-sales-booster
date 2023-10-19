@@ -36,7 +36,7 @@ function FloatingNotificationBarLayout({
     cupon_code                 : '',
     text_color                 : '#ffffff',
     icon_color                 : '#ffffff',
-    show_cupon                 : true,
+    show_cupon                 : false,
     button_view                : ['button-desktop-enable'],
     font_family                : 'poppins',
     banner_delay               : 7,

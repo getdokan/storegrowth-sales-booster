@@ -56,7 +56,7 @@ const BannerTrigger = (props) => {
                 min={0}
                 disabled={upgradeTeaser}
                 style={{
-                  width: "20%",
+                  width: "40px",
                   borderColor: "#DDE6F9",
                 }}
                 name={
