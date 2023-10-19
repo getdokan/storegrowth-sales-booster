@@ -116,7 +116,8 @@ function DiscountBanner(props) {
                     name={`bar_position`}
                     options={[...barPositions]}
                     fieldValue={formData.bar_position}
-                    changeHandler={onFieldChange}
+                    changeHandler={upgradeTeaser?noop:onFieldChange}
+                    needUpgrade={upgradeTeaser}
                     title={__("Bar Position", "storegrowth-sales-booster")}
                 />
                 <SelectBox
