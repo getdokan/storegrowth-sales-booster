@@ -1,14 +1,48 @@
-import React from "react";
-import { Image, Col } from "antd";
+import { React, useState } from "react";
+import { Col, Image } from "antd";
 import FeatCheck from "../../../images/feature-checked.svg";
 import UnCheck from "../../../images/feature-unchecked.svg";
+import LoopArrow from "../dashboard/images/gaurantee-arrow.svg";
+import GaraunteeBadge from "../../../images/gaurentee-bagde.svg";
 import DashboardTabs from "./DashboardTabs";
 import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
-import {__} from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
+import PricingToggle from "./PricingToggle";
 
 const Pricing = () => {
+  const prices = {
+    idivisual: 99,
+    bussiness: 299,
+    developer: 199,
+  };
+  const siteActivation = {
+    idivisual: 1,
+    bussiness: 50,
+    developer: 10,
+  };
+  const toggleContent = {
+    leftContent: "Yearly",
+    rightContent: "Monthly",
+  };
+  const billingText = "(billed annualy)";
+  const purchaseSlug = "https://storegrowth.io";
+  const modules = [
+    "Quick Cart",
+    "Sales Pop",
+    "Upsell Order Bump",
+    "Stock Bar",
+    "Sales Countdown",
+    "Floating Bar",
+    "Direct Checkout",
+    "Free Shipping Bar",
+  ];
+  const [isYearly, setIsYearly] = useState(true);
+  const handleToggle = () => {
+    setIsYearly(!isYearly);
+  };
+
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -26,270 +60,171 @@ const Pricing = () => {
                   {/* Render dashboard contents. */}
                   <div className="dashboad-content">
                     <div className="comparison-section">
-                      <div className="sg_pro_offer">
-                        <div className="sg_pro_btm">
-                          <div className="sg_pro_btm_left">
-                            <div className="sg_pro_top">
-                              <h3>{ __( 'Comparison With StoreGrowth PRO', 'storegrowth-sales-booster' ) }</h3>
-                            </div>
-                            <div className="sg_comparison_table">
-                              <div className="sg_pro_chart">
-                                <h5>
-                                  StoreGrowth <span>free</span>
-                                </h5>
-                                <ul className="sg-feature-list">
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={FeatCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={FeatCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      preview={false}
-                                      src={UnCheck}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  {/* Add more list items as needed */}
-                                </ul>
-                              </div>
-                              <div className="sg_pro_chart_2">
-                                <h5>
-                                  StoreGrowth <span>pro</span>
-                                </h5>
-                                <ul className="sg-feature-list">
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  <li>
-                                    <Image
-                                      src={FeatCheck}
-                                      preview={false}
-                                      alt="chek"
-                                    />
-                                    Frontend order management
-                                  </li>
-                                  {/* Add more list items as needed */}
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
                       {/* Package Table */}
                       <div className="sg_pricing_table">
-                        <div className="sg_pricing_bottom">
+                        <div className="sgsb-pricing-heading">
                           <h3>The Package We Provide</h3>
-                          <a href="#">
-                            <span>most popular</span>
-                          </a>
+                          <div className="pricing-table-heading-content">
+                            <span>
+                              Join 100,000+ website owners who use Booster to
+                              increase sales, engage visitors and so much more.
+                            </span>
+                          </div>
+                          <PricingToggle
+                            toggleContent={toggleContent}
+                            isActive={isYearly}
+                            handleToggle={handleToggle}
+                          />
+                          <Image
+                            className="gaurantee-badge"
+                            src={GaraunteeBadge}
+                            preview={false}
+                          />
+                          <Image
+                            className="loop-arrow"
+                            src={LoopArrow}
+                            preview={false}
+                          />
                         </div>
+
                         <div className="sg_package">
                           <table>
                             <colgroup>
-                              <col span="1" className="bg" />
+                              {/* <col span="1" className="bg" /> */}
                               <col span="1" className="bg_2" />
-                              <col span="1" className="bg_3" />
+                              <col
+                                span="1"
+                                className="sg-most-popular-package-coloumn"
+                              />
                               <col span="1" className="bg_4" />
                             </colgroup>
                             <thead>
                               <tr className="row_1">
-                                <th style={{ borderBottom: "none" }}></th>
-                                <th style={{ borderBottom: "none" }}>
+                                {/* <th style={{ borderBottom: "none" }}></th> */}
+                                <th className="sgsb-pricing-table-header">
                                   <div className="sg_package_rate">
-                                    <h3>
-                                      $49 <span>/ year</span>
-                                    </h3>
-                                    <a href="#">
-                                      <span className="span">starter</span>
-                                    </a>
-                                  </div>
-                                </th>
-                                <th style={{ borderBottom: "none" }}>
-                                  <div className="sg_package_rate">
-                                    <h3>
-                                      $89 <span>/ year</span>
-                                    </h3>
-                                    <a href="#">
-                                      <span className="span_2">
-                                        professional
+                                    <span className="sg-package-title">
+                                      Individual
+                                    </span>
+                                    <a href={purchaseSlug} target="_blank">
+                                      <span className="buy-button-normal">
+                                        get started
                                       </span>
                                     </a>
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.idivisual}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.idivisual / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
                                   </div>
                                 </th>
-                                <th style={{ borderBottom: "none" }}>
+                                <th className="sgsb-pricing-table-header-popular">
                                   <div className="sg_package_rate">
-                                    <h3>
-                                      $159 <span>/ year</span>
-                                    </h3>
-                                    <a href="#">
-                                      <span className="span_3">business</span>
+                                    <span className="sgsb-popular-packages">
+                                      best value
+                                    </span>
+                                    <span className="sg-package-title">
+                                      Business
+                                    </span>
+                                    <a href={purchaseSlug} target="_blank">
+                                      <span className="buy-button-popular">
+                                        get started
+                                      </span>
                                     </a>
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.bussiness}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.bussiness / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </th>
+                                <th className="sgsb-pricing-table-header">
+                                  <div className="sg_package_rate">
+                                    <span className="sg-package-title">
+                                      Developer
+                                    </span>
+                                    <a href={purchaseSlug} target="_blank">
+                                      <span className="buy-button-normal">
+                                        get started
+                                      </span>
+                                    </a>
+                                    <div className="sgsb-pricing-data-content">
+                                      {isYearly ? (
+                                        <h3 className="yearly-price">
+                                          ${prices.developer}
+                                          <span>/ year</span>
+                                        </h3>
+                                      ) : (
+                                        <h3 className="monthly-price">
+                                          ${Math.round(prices.developer / 12)}
+                                          <span>/ month</span>
+                                        </h3>
+                                      )}
+                                      <span className="sgsb-billing-type">
+                                        {billingText}
+                                      </span>
+                                    </div>
                                   </div>
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>website</td>
-                                <td>01</td>
-                                <td>09</td>
-                                <td>03</td>
-                              </tr>
-                              <tr>
-                                <td>ready demo</td>
-                                <td>05</td>
-                                <td>03</td>
-                                <td>06</td>
-                              </tr>
-                              <tr>
-                                <td>domain</td>
-                                <td>08</td>
-                                <td>01</td>
-                                <td>05</td>
-                              </tr>
-                              <tr>
-                                <td>color scheme</td>
-                                <td>01</td>
-                                <td>05</td>
-                                <td>10</td>
-                              </tr>
-                              <tr>
-                                <td>action</td>
-                                <td>02</td>
-                                <td>07</td>
-                                <td>03</td>
-                              </tr>
-                              <tr>
-                                <td style={{ borderBottom: "none" }}></td>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_1">buy now</span>
-                                    </a>
-                                  </div>
+                              <tr className="pricing-table-data-highlight">
+                                <td>
+                                  {siteActivation.idivisual} site Activation
                                 </td>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_2">buy now</span>
-                                    </a>
-                                  </div>
+                                <td>
+                                  {siteActivation.bussiness} site Activation
                                 </td>
-                                <td style={{ borderBottom: "none" }}>
-                                  <div className="sg_buy">
-                                    <a href="#">
-                                      <span className="buy_3">buy now</span>
-                                    </a>
-                                  </div>
+                                <td>
+                                  {siteActivation.developer} site Activation
                                 </td>
                               </tr>
+                              <tr className="pricing-table-data-highlight">
+                                <td>25% Renewal Discount</td>
+                                <td>25% Renewal Discount</td>
+                                <td>25% Renewal Discount</td>
+                              </tr>
+                              <tr>
+                                <td>1 year blazed fast support</td>
+                                <td>1 year blazed fast support</td>
+                                <td>1 year blazed fast support</td>
+                              </tr>
+                              <tr className="pricing-table-data-highlight">
+                                {/* <td>color scheme</td> */}
+                                <td>All Pro Features</td>
+                                <td>All Pro Features</td>
+                                <td>All Pro Features</td>
+                              </tr>
+                              {modules.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{item}</td>
+                                  <td>{item}</td>
+                                  <td>{item}</td>
+                                </tr>
+                              ))}
                             </tbody>
                           </table>
                         </div>

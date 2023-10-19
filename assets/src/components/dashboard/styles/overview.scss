@@ -350,19 +350,42 @@
       flex-direction: column;
       gap: 10px;
 
-      .sg_pricing_bottom {
+      .sgsb-pricing-heading {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 30px;
+        margin-bottom: 20px;
+
+        .gaurantee-badge {
+          position: absolute;
+          width: 7vw;
+          right: 15vw;
+          bottom: 70px;
+        }
+
+        .loop-arrow {
+          width: 10vw;
+          transform: rotate(16deg);
+          position: absolute;
+          bottom: 14px;
+          right: 123px;
+        }
 
         h3 {
           font-size: 28px;
           font-weight: 600;
           text-transform: capitalize;
           text-align: center;
-          padding-bottom: 50px;
+          // padding-bottom: 50px;
           margin: 0;
-          padding-top: 10px;
+          padding: 20px;
+        }
+
+        .pricing-table-heading-content {
+          max-width: 380px;
+          text-align: center;
         }
 
         a {
@@ -381,13 +404,12 @@
       }
 
       .sg_package {
-        border: 1px solid #DDE6F9;
+        // border: 1px solid #DDE6F9;
         border-radius: 10px;
-        overflow: hidden;
+        // overflow: hidden;
 
         table {
           width: -webkit-fill-available;
-          height: 612px;
           border-radius: 10px;
           background: #fff;
           border-spacing: 0px;
@@ -398,8 +420,8 @@
               background: linear-gradient(to top, #F6F9FF 0%, #F6F9FF 80%, #fff 80%, #fff 100%);
             }
 
-            .bg_3 {
-              background: #F6F9FF;
+            .sg-most-popular-package-coloumn {
+              background: linear-gradient(180deg, #E3EDFF 0%, rgba(241, 245, 254, 0.00) 100%);
             }
           }
 
@@ -410,14 +432,45 @@
           tr,
           th,
           td {
-            border-bottom: 1px solid #EEF3FC;
             text-align: center;
             text-transform: capitalize;
+            padding: 15px 0px;
+
+            .sgsb-pricing-table-header {
+              border-bottom: 2px solid #EFF4FF;
+            }
+
+            &.pricing-table-data-highlight {
+              font-weight: 700;
+            }
+
+            .sgsb-pricing-table-header-popular {
+              border-bottom: 2px solid #0875FF;
+            }
 
             .sg_package_rate {
+              position: relative;
               display: flex;
               flex-direction: column;
-              gap: 30px;
+              gap: 50px;
+
+              .sg-package-title {
+                font-size: 18px;
+                font-weight: 600;
+              }
+
+              .sgsb-popular-packages {
+                position: absolute;
+                top: -64px;
+                width: 100%;
+                background: #0875FF;
+                padding: 16px 0px;
+                border-radius: 10px 10px 0px 0px;
+                color: #ffffff;
+                font-size: 16px;
+                font-weight: 500;
+                z-index: -1;
+              }
 
               a {
                 text-decoration: none;
@@ -428,36 +481,44 @@
                   text-transform: capitalize;
                   font-size: 14px;
                   font-weight: 500;
-                  padding: 10px 22px;
-                  border-radius: 20px;
+                  padding: 12px 10%;
+                  border-radius: 5px;
                 }
 
-                .span {
-                  background: #FFAC27;
+                .buy-button-normal {
+                  background: #E8F2FF;
+                  border: 1px solid #8DBFFF;
+                  color: #102F50;
                 }
 
-                .span_2 {
+                .buy-button-popular {
                   background: #0875FF;
                 }
 
-                .span_3 {
-                  background: #073B4C;
-                }
-
               }
 
-              h3 {
-                font-size: 32px;
-                font-weight: 600;
-                text-transform: capitalize;
-                margin: 0;
+              .sgsb-pricing-data-content {
+                h3 {
+                  font-size: 32px;
+                  font-weight: 600;
+                  text-transform: capitalize;
+                  height: 25px;
+                  margin: 0;
 
-                span {
-                  font-size: 16px;
+                  span {
+                    font-size: 16px;
+                    font-weight: 400;
+                    opacity: 0.4;
+                  }
+                }
+
+                .sgsb-billing-type {
+                  line-height: 30px;
                   font-weight: 400;
-                  opacity: 0.4;
+                  opacity: 0.6;
                 }
               }
+
             }
 
             .sg_buy a {
@@ -549,7 +610,7 @@
       font-size: 20px;
       font-weight: 600;
       text-transform: capitalize;
-      line-height: 0;
+      // line-height: 0;
       margin-top: 22px
     }
 
@@ -678,4 +739,68 @@
 
   }
 
+}
+
+// Pricing toggle switch style
+/* PricingToggle.css */
+.toggle-switch {
+  position: relative;
+  width: 240px;
+  height: 60px;
+  background-color: #ffffff;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0px 6px;
+  border: 1px solid #102f501b;
+  transition: background-color 0.3s;
+}
+
+.toggle-button {
+  display: none;
+}
+
+/* Styling for Yearly and Lifetime options */
+.option {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 74px;
+  color: #102F50;
+
+  /* Default text color for unselected options */
+  &.active {
+    color: #fff;
+    /* Text color for the active (selected) option */
+    background-color: #102F50;
+    height: 80%;
+    border-radius: 50px;
+  }
+}
+
+/* Style for the checked state */
+.toggle-button:checked+.option {
+  // color: #fff; /* Text color for the selected option */
+  transition: transform 0.5s, opacity 0.3s;
+  // opacity: 0.8;
+}
+
+.toggle-button {
+  &.plantoggle {
+    display: none;
+  }
+}
+
+.toggle-button:checked+.option:last-child {
+  background-color: transparent;
+  /* Set background to transparent */
+}
+
+.yearly-price,
+.lifetime-price {
+  transition: color 0.5s, opacity 0.5s;
 }

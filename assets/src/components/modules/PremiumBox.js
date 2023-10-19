@@ -19,10 +19,10 @@ function PremiumBox() {
         support and boost your
         website’s visibility.
         </p>
-        <h5>Reviews from real users</h5>
+        {/* <h5>Reviews from real users</h5>
         <div className='rating'>
             <Rate disabled defaultValue={5} />
-        </div>
+        </div> */}
         <Button className='premium-btn' type="primary" href='https://storegrowth.io/' target='_blank' size='large'>
             Get Premium 
             <Image
