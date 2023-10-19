@@ -1,7 +1,8 @@
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState, useMemo } from "@wordpress/element";
-import { Alert, Button, Col, Image, Pagination, Row } from "antd";
+import { Alert, Button, Col, Image, Pagination, Row, Modal } from "antd";
 import { nanoid } from "nanoid";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 
 import { Ajax } from "../../ajax";
 import ModuleCard from "./ModuleCard";
@@ -15,8 +16,9 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { __ } from "@wordpress/i18n";
+import ActivationAlert from "./ActivationAlert";
 
 function Modules() {
   // pagination
@@ -35,7 +37,7 @@ function Modules() {
   // handle active module of settings url
   const [activeModule, setActiveModule] = useState(false);
   const [activeClass, setActiveClass] = useState(proPluginActivated);
-
+  const [activeModalData, setActiveModalData] = useState("");
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
@@ -77,11 +79,25 @@ function Modules() {
     }
   };
 
-  const handleActiveModule = () => {
-    setActiveModule(true);
-    setTimeout(() => {
-      setActiveModule(false);
-    }, 4000);
+  //Modal alert handler
+  const [modalButtonLoad, setModalButtonLoad] = useState(false);
+  const handleModalAlert = (module) => {
+    setActiveModule(!activeModule);
+    setActiveModalData(module);
+  };
+
+  const handleModuleActivation = (module) => {
+    console.log(`The module name is: ${module?.name}`);
+    setModalButtonLoad(!modalButtonLoad);
+    Ajax("update_module_status", {
+      module_id: module.id,
+      status: true,
+    }).success((response) => {
+      if (response.success) {
+        const sgsbSettingsURL = `admin.php?page=sgsb-settings#${module.id}`;
+        window.location.href = sgsbSettingsURL;
+      }
+    });
   };
 
   // handle active class
@@ -215,12 +231,11 @@ function Modules() {
           <h4 onClick={toggleMenuClass}>
             <Image preview={false} width={18} src={widgetIcon} />
             All Modules
-            <span  className="ant-menu-title-content">
+            <span className="ant-menu-title-content">
               {activeClass ? (
                 <img src={downArrowIocn} width="12" />
               ) : (
                 <img src={upArrowIocn} width="12" />
-                
               )}
             </span>
           </h4>
@@ -234,7 +249,7 @@ function Modules() {
                 <li
                   className={module.id}
                   key={module.id}
-                  onClick={handleActiveModule}
+                  onClick={() => handleModalAlert(module)}
                 >
                   {module.name}
                 </li>
@@ -279,11 +294,12 @@ function Modules() {
           </Row>
         </div>
         {activeModule && (
-          <Alert
-            description="This module is not active. Please active first to view settings"
-            type="warning"
-            showIcon
-            closable
+          <ActivationAlert
+            activeModule={activeModule}
+            activeModalData={activeModalData}
+            modalButtonLoad={modalButtonLoad}
+            handleModalAlert={handleModalAlert}
+            handleModuleActivation={handleModuleActivation}
           />
         )}
 
