@@ -274,7 +274,7 @@ Pagination Style
 .sgsb-search-section {
 
   .search-bar {
-    
+
     padding-right: 10px;
 
     @media (max-width: 520px) {
@@ -294,13 +294,13 @@ Pagination Style
 
         }
 
-        .ant-input-group-wrapper{
-          span{
-            &.ant-input-wrapper{
+        .ant-input-group-wrapper {
+          span {
+            &.ant-input-wrapper {
               display: flex;
             }
           }
-          
+
         }
 
       }
@@ -312,10 +312,10 @@ Pagination Style
 
       }
 
-  
+
     }
 
-    
+
   }
 
   input[class] {
@@ -2021,6 +2021,7 @@ End Settings Sidebar
               }
             }
           }
+
           .single-disabled-checkbox {
             position: relative;
 
@@ -2307,7 +2308,7 @@ End Settings Sidebar
                 }
 
                 &.custom-field {
-                  label.ant-radio-button-wrapper{
+                  label.ant-radio-button-wrapper {
                     &:hover {
                       border-color: #DDE6F9;
                       background: transparent;
@@ -2746,3 +2747,16 @@ End Settings Sidebar
   background-repeat: no-repeat;
 }
 
+// Modal styles
+.modal-content-wrapper {
+  text-align: center;
+  padding: 5px;
+
+  h3 {
+    &.modal-content-heading {
+      font-size: 20px;
+      font-weight: 700;
+      color: #102F50;
+    }
+  }
+}
