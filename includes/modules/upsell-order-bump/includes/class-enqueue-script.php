@@ -174,16 +174,37 @@ class Enqueue_Script {
 			$sale_price    = $_product->get_sale_price();
 			$regular_price = $_product->get_regular_price();
 
-			// Prepare product price & render with label.
-			$price           = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
+			// Prepare woocommerce price data.
+			$price = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
+			$price = str_replace(
+				array( '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">', '</span>', '</bdi>' ),
+				'',
+				html_entity_decode( wc_price( $price ) )
+			);
+
+			// Render woocommerce price with currency symbol.
+			$_product_price  = ' (' . $price . ')';
 			$currency_symbol = html_entity_decode( get_woocommerce_currency_symbol() );
-			$_product_price  = ' (' . $currency_symbol . $price . ')';
+
+			// Offer product categories.
+			// Collect offer product categories.
+			$product_categories = wp_get_post_terms( $product->ID, 'product_cat' );
+
+			$category_names = array();
+			foreach ( $product_categories as $category ) {
+				$category_names[] = $category->name;
+			}
+
+			// Get categories csv.
+			$category_names = implode( ', ', $category_names );
 
 			if ( $regular_price ) {
 				$simple_product_for_offer[] = array(
-					'price' => $price,
-					'value' => $product->ID,
-					'label' => $product->post_title . $_product_price,
+					'price'            => $price,
+					'value'            => $product->ID,
+					'currency'         => $currency_symbol,
+					'offer_categories' => $category_names,
+					'label'            => $product->post_title . $_product_price,
 				);
 			}
 

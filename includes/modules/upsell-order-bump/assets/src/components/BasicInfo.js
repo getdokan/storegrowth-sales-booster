@@ -5,10 +5,6 @@ import TextInput from "sales-booster/src/components/settings/Panels/PanelSetting
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
-import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper";
-import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsTooltip";
-import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
-import {noop} from "sales-booster-sales-pop/src/helper";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import { Fragment } from "react";
 
@@ -52,16 +48,25 @@ const BasicInfo = ( { clearErrors, triggerBumpUpdate } ) => {
   const onFieldChange = ( key, value ) => {
     clearErrors();
     // Handle offer amount validation with actual price.
-    if ( key === 'offer_amount' && createBumpData.offer_type === 'price' ) {
+    if ( key === 'offer_amount' ) {
       const product = simpleProductForOffer.find( item => item?.value === offerProductId );
-      if ( parseInt( product?.price ) < value ) {
+      const productPrice = product?.price?.replace( product?.currency, '' );
+      if ( createBumpData.offer_type === 'price' && parseInt( productPrice ) < value ) {
         return notification['error'] ( {
           message: __( 'Offer price can\'t be greater than product price!', 'storegrowth-sales-booster' ),
         } );
       }
+
+      if ( createBumpData.offer_type === 'discount' && value > 100 ) {
+        return notification['error'] ( {
+          message: __( 'Discount offer can\'t be greater than 100 percent!', 'storegrowth-sales-booster' ),
+        } );
+      }
     }
 
-    triggerBumpUpdate( true );
+    // Trigger bump update need.
+    if ( key === 'offer_amount' || key === 'offer_type' ) triggerBumpUpdate( true );
+
     if ( key === 'offer_product' ) {
       setCreateFromData( {
         ...createBumpData,

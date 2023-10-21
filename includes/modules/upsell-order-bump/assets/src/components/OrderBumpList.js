@@ -5,6 +5,7 @@ import { useEffect, useState } from "@wordpress/element";
 import { convertBumpItemHtmlEntitiesToTexts } from "../helper";
 import { Fragment } from "react";
 import UpgradeCard from "../../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
+import OfferProductContent from "./OfferProductContent";
 
 const deleteBump = (stateUpdateCallback) => (id) => {
   stateUpdateCallback(true);
@@ -184,7 +185,7 @@ function OrderBumpList({ navigate }) {
       align: "left",
     },
     {
-      title: "Target Product(s) and Cetegories",
+      title: "Target Product(s) and Categories",
       dataIndex: "product_category",
     },
     {
@@ -230,7 +231,7 @@ function OrderBumpList({ navigate }) {
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),
-      offers: offerProduct,
+      offers: <OfferProductContent offerProduct={ offerProduct } bumpItem={ item } />,
       action: <ActionButton navigate={navigate} bump_id={item.id} />,
     };
   }
