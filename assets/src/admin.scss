@@ -2751,12 +2751,56 @@ End Settings Sidebar
 .modal-content-wrapper {
   text-align: center;
   padding: 5px;
+  display: flex;
+  gap:20px;
+  flex-direction: column;
 
   h3 {
     &.modal-content-heading {
-      font-size: 20px;
+      font-size: 32px;
       font-weight: 700;
       color: #102F50;
+      margin-bottom: 0;
+    }
+  }
+
+  .modal-content {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  .modal-controller-action-button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    .modal-cancel-button {
+      color: #FF0834;
+      border: 1px solid #FF0834;
+
+      &:hover {
+        background-color: #FFF0F3 !important;
+        color: #FF0834;
+        border: 1px solid #FF0834;
+      }
+    }
+
+    .modal-submit-button {
+      color: #0875FF;
+      border: 1px solid #0875FF;
+
+      &:hover {
+        background-color: #ECF4FF;
+        color: #0875FF;
+        border: 1px solid #0875FF;
+      }
+    }
+
+    .modal-submit-button,
+    .modal-cancel-button {
+      padding: 8px 24px;
+      height: auto;
+      font-size: 14px;
     }
   }
 }
