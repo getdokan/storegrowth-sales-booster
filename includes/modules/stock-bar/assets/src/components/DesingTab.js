@@ -38,14 +38,14 @@ function DesignTab(props) {
           name={"stockbar_bg_color"}
           fieldValue={formData.stockbar_bg_color}
           changeHandler={onFieldChange}
-          title={__("Background Color", "storegrowth-sales-booster")}
+          title={__("Foreground Color", "storegrowth-sales-booster")}
         />
         <ColourPicker
           needUpgrade={upgradeTeaser}
           name={"stockbar_fg_color"}
           fieldValue={formData.stockbar_fg_color}
           changeHandler={upgradeTeaser ? noop : onFieldChange}
-          title={__("Foreground Color", "storegrowth-sales-booster")}
+          title={__("Bar Color", "storegrowth-sales-booster")}
         />
         <ColourPicker
           name={"stockbar_border_color"}

@@ -1,43 +1,36 @@
 import React from "react";
 import { Button, Modal } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 const ActivationAlert = ({
   activeModule,
   activeModalData,
   modalButtonLoad,
   handleModalAlert,
-  handleModuleActivation
+  handleModuleActivation,
 }) => {
   return (
     <div>
       <Modal
+        style={{
+          left: "8%",
+          maxWidth: 500,
+        }}
         centered={true}
         open={activeModule}
-        onCancel={handleModalAlert}
-        footer={[
-          <Button
-            loading={modalButtonLoad}
-            key="submit"
-            style={{
-              color: "green",
-              border: "1px solid green",
-            }}
-            onClick={() => handleModuleActivation(activeModalData)}
-          >
-            Yes
-          </Button>,
-          <Button key="back" danger onClick={handleModalAlert}>
-            Cancel
-          </Button>,
-        ]}
+        closeIcon={false}
+        footer={null}
+        width={null}
       >
         <div className="modal-content-wrapper">
-          <h3 className="modal-content-heading">
-            <ExclamationCircleFilled
+          <div className="modal-content-heading-icon">
+            <ExclamationCircleOutlined
               style={{
-                color: "orange",
+                fontSize: 43,
+                color: "#FFBCC8",
               }}
-            />{" "}
+            />
+          </div>
+          <h3 className="modal-content-heading">
             {`Do you want to active ${activeModalData?.name}?`}
           </h3>
           <p className="modal-content">
@@ -45,6 +38,24 @@ const ActivationAlert = ({
             module, you will be redirected to the module settings page where you
             can set up this module's features..
           </p>
+          <div className="modal-controller-action-button">
+            <Button
+              className="modal-submit-button"
+              loading={modalButtonLoad}
+              key="submit"
+              onClick={() => handleModuleActivation(activeModalData)}
+            >
+              Yes
+            </Button>
+
+            <Button
+              className="modal-cancel-button"
+              key="back"
+              onClick={modalButtonLoad ? null : handleModalAlert}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </Modal>
     </div>
