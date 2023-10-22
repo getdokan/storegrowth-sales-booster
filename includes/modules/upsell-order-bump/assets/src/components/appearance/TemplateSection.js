@@ -7,7 +7,7 @@ import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSett
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import {Fragment} from "react";
 
-const TemplateSection = () => {
+const TemplateSection = ( { triggerBumpUpdate } ) => {
     const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
 
     const { createBumpData } = useSelect( ( select ) => ( {
@@ -15,6 +15,7 @@ const TemplateSection = () => {
     } ) );
 
     const onFieldChange = ( key, value ) => {
+        triggerBumpUpdate( true );
         setCreateFromData( {
             ...createBumpData,
             [ key ]: value

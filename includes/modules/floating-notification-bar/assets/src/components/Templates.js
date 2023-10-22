@@ -19,19 +19,18 @@ const Templates = ( { formData, setFormData } ) => {
 
     let templateStyles = {
         notify_bar_one: {
-            font_size               : 20,
-            text_color              : '#ffffff',
-            icon_color              : '#ffffff',
-            font_family             : 'poppins',
-            button_color            : '#ffffff',
-            bar_template            : 'shipping_bar_one',
-            banner_height           : 60,
-            ac_button_text          : __( 'Shop Now', 'storegrowth-sales-booster' ),
-            close_icon_color        : '#ffffff',
-            background_color        : '#0875FF',
-            button_text_color       : '#000000',
-            cart_minimum_amount     : 10,
-            progressive_banner_text : __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ),
+            font_size                  : 20,
+            text_color                 : '#ffffff',
+            icon_color                 : '#ffffff',
+            font_family                : 'poppins',
+            button_color               : '#ffffff',
+            banner_height              : 60,
+            ac_button_text             : __( 'Shop Now', 'storegrowth-sales-booster' ),
+            close_icon_color           : '#ffffff',
+            background_color           : '#0875FF',
+            button_text_color          : '#000000',
+            default_banner_icon_name   : 'notify-bar-icon-1',
+            default_banner_custom_icon : '',
         },
     };
 

@@ -8,6 +8,16 @@ const { Title } = Typography;
 const Preview = ( { storeData } ) => {
     const offerAmount = storeData?.offer_amount ? storeData?.offer_amount : '(?)';
 
+    const product = products_and_categories?.product_list?.simpleProductForOffer
+        ?.find( simpleProduct => simpleProduct?.value === parseInt( storeData.offer_product ) );
+    let discountedPrice = parseInt( storeData?.offer_amount )?.toFixed( 2 );
+
+    if ( storeData?.offer_type === 'discount' ) {
+        const productPrice = parseInt( product?.price?.replace( product?.currency, '' ) ),
+            discountPercent = ( parseInt( storeData?.offer_amount + '%' ) / 100 );
+        discountedPrice = ( productPrice - ( productPrice * discountPercent ) )?.toFixed( 2 );
+    }
+
     return (
         <div
             style={ {
@@ -61,7 +71,8 @@ const Preview = ( { storeData } ) => {
             >
                 <Image
                     preview={ false }
-                    src={ PreviewImg }
+                    style={ { width: 76, height: 76, borderRadius: 7 } }
+                    src={ typeof product !== 'undefined' ? storeData?.offer_image_url : PreviewImg }
                     alt={ __( 'Product Image', 'storegrowth-sales-booster' ) }
                 />
                 <div
@@ -78,7 +89,7 @@ const Preview = ( { storeData } ) => {
                             fontSize: `${ storeData?.product_description_font_size }px`,
                         } }
                     >
-                        { __( 'Nike Air Max Plus', 'storegrowth-sales-booster' ) }
+                        { typeof product !== 'undefined' ? storeData?.offer_product_title : __( 'Nike Air Max Plus', 'storegrowth-sales-booster' ) }
                     </Title>
                     <p
                         className={ `product-category` }
@@ -88,7 +99,7 @@ const Preview = ( { storeData } ) => {
                             color: `${ storeData?.product_description_text_color }`,
                         } }
                     >
-                        { __(  'Men\'s Shoe', 'storegrowth-sales-booster' ) }
+                        { product?.offer_categories ? product?.offer_categories : __(  'Men\'s Shoe', 'storegrowth-sales-booster' ) }
                     </p>
                 </div>
                 <div
@@ -100,7 +111,7 @@ const Preview = ( { storeData } ) => {
                         fontSize: `${ storeData?.product_description_font_size }px`,
                     } }
                 >
-                    { __( '$87.00', 'storegrowth-sales-booster' ) }
+                    { !isNaN( discountedPrice ) ? ( product?.currency + discountedPrice ) : __( '$87.00', 'storegrowth-sales-booster' ) }
                 </div>
                 <div
                     className={ `product-selection-icon` }

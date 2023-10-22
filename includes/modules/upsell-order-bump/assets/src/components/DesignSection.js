@@ -3,17 +3,17 @@ import ContentSection from "./appearance/ContentSection";
 import TemplateSection from "./appearance/TemplateSection";
 import ExpandPanels from "sales-booster/src/components/settings/Panels/PanelSettings/ExpandPanels";
 
-const DesignSection = ( { createBumpData } ) => {
+const DesignSection = ( { triggerBumpUpdate } ) => {
     const panels = [
         {
             key: 1,
             label: __( 'Template Section', 'storegrowth-sales-booster' ),
-            children: <TemplateSection />,
+            children: <TemplateSection triggerBumpUpdate={ triggerBumpUpdate } />,
         },
         {
             key: 2,
             label: __( 'Content Section', 'storegrowth-sales-booster' ),
-            children: <ContentSection />,
+            children: <ContentSection triggerBumpUpdate={ triggerBumpUpdate } />,
         }
     ];
 

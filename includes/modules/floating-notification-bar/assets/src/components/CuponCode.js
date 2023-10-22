@@ -16,11 +16,12 @@ const CuponCode = ({
 
   return (
     <EmptyField
-      title={__("Cupon Code", "storegrowth-sales-booster")}
-      tooltip={__("Cupon code selector", "storegrowth-sales-booster")}
+      title={__("Coupon Code", "storegrowth-sales-booster")}
+      tooltip={__("Coupon code selector", "storegrowth-sales-booster")}
       needUpgrade={upgradeTeaser}
     >
       <Switch
+        style={ { marginTop: 7 } }
         checked={formData.show_cupon}
         disabled={upgradeTeaser}
         className={`settings-field switcher-field`}

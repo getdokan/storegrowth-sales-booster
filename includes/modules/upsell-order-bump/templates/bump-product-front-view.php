@@ -65,7 +65,7 @@
 							<?php echo esc_html( $category_names ); ?>
 						</p>
 					<?php endif; ?>
-			</div>
+				</div>
 			</div>
 			<div class="offer-price" style = "
 				<?php

@@ -34,21 +34,21 @@ function General({ onFormSave, upgradeTeaser }) {
 
   const checkboxesOption = [
     {
-      label: `"Add to cart" as "Buy Now"`,
+      label: `"Add to cart" as "${createDirectCheckoutFormData.buy_now_button_label}"`,
       value: "cart-to-buy-now",
       needUpgrade: upgradeTeaser,
       tooltip: __(
-        "Use the add to cart button as the buy now button",
+        `Use the add to cart button as the ${createDirectCheckoutFormData.buy_now_button_label} button`,
         "storegrowth-sales-booster"
       ),
     },
     {
-      label: `"Buy Now" with "Add to cart"`,
+      label: `"${createDirectCheckoutFormData.buy_now_button_label}" with "Add to cart"`,
       value: "cart-with-buy-now",
       tooltip: __("", "storegrowth-sales-booster"),
     },
     {
-      label: `"Buy Now" for specific product"`,
+      label: `"${createDirectCheckoutFormData.buy_now_button_label}" for specific product"`,
       value: "specific-buy-now",
       needUpgrade: upgradeTeaser,
       tooltip: __(

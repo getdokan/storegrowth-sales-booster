@@ -9,7 +9,6 @@ const ActionsHandler = ( { resetHandler, saveHandler, loadingHandler, isDisabled
                 type      = 'secondary'
                 disabled  = { isDisabled }
                 onClick   = { resetHandler }
-                loading   = { loadingHandler }
                 className = 'sgsb-settings-reset-button'
             >
                 { __( 'Reset', 'storegrowth-sales-booster' ) }

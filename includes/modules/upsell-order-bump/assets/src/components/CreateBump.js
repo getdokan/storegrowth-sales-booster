@@ -17,6 +17,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [bumpUpdate, setBumpUpdate] = useState(false);
   const { setPageLoading } = useDispatch( 'sgsb' );
   const [buttonLoading, setButtonLoading] = useState(false);
   const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
@@ -181,7 +182,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     const newTargetSchedules = createBumpData.bump_schedule;
     
     for (const bumpItem of filteredBumpsData) {
-        if(bumpItem.offer_product !== newOfferProduct){
+        if( parseInt( bumpItem.offer_product ) !== parseInt( newOfferProduct ) ){
             continue;
         }
         let isSameScheduleExist = false;
@@ -206,9 +207,16 @@ function CreateBump({navigate, useParams, useSearchParams}) {
                 break;
             }
         }
-        if(duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ){
-            setDuplicateDataError(duplicateErrs);
-            return false;
+        if( ( duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ) ){
+            if ( window.location.hash === '#/upsell-order-bump/create-bump' ) {
+                setDuplicateDataError(duplicateErrs);
+                return false;
+            }
+
+            if ( !Boolean( bumpUpdate ) ) {
+                setDuplicateDataError(duplicateErrs);
+                return false;
+            }
         }
     }
     
@@ -258,12 +266,12 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     {
       key: 'basic',
       title: __( 'Basic Information', 'storegrowth-sales-booster' ),
-      panel: <BasicInfo clearErrors={ clearErrors } />,
+      panel: <BasicInfo clearErrors={ clearErrors } triggerBumpUpdate={ setBumpUpdate } />,
     },
     {
       key: 'design',
       title: __( 'Design Section', 'storegrowth-sales-booster' ),
-      panel: <DesignSection createBumpData={ createBumpData } />,
+      panel: <DesignSection triggerBumpUpdate={ setBumpUpdate } />,
     },
   ];
 
@@ -287,26 +295,13 @@ function CreateBump({navigate, useParams, useSearchParams}) {
           ) }
         </PanelRow>
 
-        {
-          ( isDuplicateCatsFound || isDuplicateProductsFound ) && (
-            <h3 style={{ color:"Red", marginTop: 30, marginBottom: 30 }}>
-              {
-                __(
-                  'Error!!! another bump with the given offer product for the specified schedule already exists for the selected ',
-                  'storegrowth-sales-booster'
-                )
-              }
-              {
-                ( isDuplicateCatsFound && isDuplicateProductsFound )
-                  ? __( 'categories & products', 'storegrowth-sales-booster' )
-                  : isDuplicateProductsFound
-                    ? __( 'products', 'storegrowth-sales-booster' )
-                    : __( 'categories', 'storegrowth-sales-booster' )
-              }
-              .<br/>
-              { __( 'Please change your inputs and then try again.',  'storegrowth-sales-booster' ) }
-            </h3>
-          )
+        { ( isDuplicateCatsFound || isDuplicateProductsFound ) &&
+          notification['error'] ( {
+            message: __(
+              `Error!!! another bump with the given offer product for the specified schedule already exists for the selected ${ ( isDuplicateCatsFound && isDuplicateProductsFound ) ? 'categories & products' : isDuplicateProductsFound ? 'products' : 'categories' }. Please change your inputs and then try again.`,
+              'storegrowth-sales-booster'
+            ),
+          } )
         }
 
         <ActionsHandler

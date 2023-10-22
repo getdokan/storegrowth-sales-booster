@@ -1,42 +1,20 @@
 import { __ } from "@wordpress/i18n";
-import { Row, Col, Typography, Select, Card, InputNumber } from 'antd';
+import { Row, Col, Typography, Select, Card, InputNumber, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
-import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper";
-import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsTooltip";
-import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
-import {noop} from "sales-booster-sales-pop/src/helper";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import { Fragment } from "react";
 
 const { Title } = Typography;
 
-const BasicInfo = ( { clearErrors } ) => {
+const BasicInfo = ( { clearErrors, triggerBumpUpdate } ) => {
   const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
   const { createBumpData } = useSelect( select => ( {
     createBumpData: select( 'sgsb_order_bump' ).getCreateFromData()
   } ) );
-
-  const onFieldChange = ( key, value ) => {
-    clearErrors();
-    if ( key === 'offer_product' ) {
-      setCreateFromData( {
-        ...createBumpData,
-        [ key ]                     : value,
-        offer_image_url             : products_and_categories.product_list_for_view[value].image_url,
-        offer_product_title         : products_and_categories.product_list_for_view[value].post_title,
-        offer_product_regular_price : products_and_categories.product_list_for_view[value].regular_price
-      } );
-    } else {
-      setCreateFromData({
-        ...createBumpData,
-        [ key ]: value
-      });
-    }
-  };
 
   const offerProductId = parseInt(createBumpData?.offer_product);
   const originalProductListForSelect = products_and_categories.product_list.productListForSelect;
@@ -62,10 +40,48 @@ const BasicInfo = ( { clearErrors } ) => {
     { value: 'price', label: __( 'Price', 'storegrowth-sales-booster' ) },
   ];
 
-  function filterByValue(data, key) {
+  const filterByValue = ( data, key ) => {
     const item = data.find(item => item.value === key);
     return item ? item.label : 'Value not found';
-}
+  }
+
+  const onFieldChange = ( key, value ) => {
+    clearErrors();
+    // Handle offer amount validation with actual price.
+    if ( key === 'offer_amount' ) {
+      const product = simpleProductForOffer.find( item => item?.value === offerProductId );
+      const productPrice = product?.price?.replace( product?.currency, '' );
+      if ( createBumpData.offer_type === 'price' && parseInt( productPrice ) < value ) {
+        return notification['error'] ( {
+          message: __( 'Offer price can\'t be greater than product price!', 'storegrowth-sales-booster' ),
+        } );
+      }
+
+      if ( createBumpData.offer_type === 'discount' && value > 100 ) {
+        return notification['error'] ( {
+          message: __( 'Discount offer can\'t be greater than 100 percent!', 'storegrowth-sales-booster' ),
+        } );
+      }
+    }
+
+    // Trigger bump update need.
+    if ( key === 'offer_amount' || key === 'offer_type' ) triggerBumpUpdate( true );
+
+    if ( key === 'offer_product' ) {
+      setCreateFromData( {
+        ...createBumpData,
+        [ key ]                     : value,
+        offer_image_url             : products_and_categories.product_list_for_view[value].image_url,
+        offer_product_title         : products_and_categories.product_list_for_view[value].post_title,
+        offer_product_regular_price : products_and_categories.product_list_for_view[value].regular_price
+      } );
+    } else {
+      setCreateFromData({
+        ...createBumpData,
+        [ key ]: value
+      });
+    }
+  };
 
   return (
     <Fragment>
