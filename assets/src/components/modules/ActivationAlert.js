@@ -13,7 +13,7 @@ const ActivationAlert = ({
       <Modal
         style={{
           left:"8%",
-          maxWidth: 720,
+          maxWidth: 500,
         }}
         centered={true}
         open={activeModule}
@@ -25,7 +25,7 @@ const ActivationAlert = ({
           <div className="modal-content-heading-icon">
             <ExclamationCircleOutlined
               style={{
-                fontSize: 53,
+                fontSize: 43,
                 color: "#FFBCC8",
               }}
             />
