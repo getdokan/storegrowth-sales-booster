@@ -12,7 +12,7 @@ const ActivationAlert = ({
     <div>
       <Modal
         style={{
-          left:"8%",
+          left: "8%",
           maxWidth: 500,
         }}
         centered={true}
@@ -51,7 +51,7 @@ const ActivationAlert = ({
             <Button
               className="modal-cancel-button"
               key="back"
-              onClick={handleModalAlert}
+              onClick={modalButtonLoad ? null : handleModalAlert}
             >
               Cancel
             </Button>
