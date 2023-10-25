@@ -174,7 +174,7 @@ function DefaultBanner(props) {
             }}
           >
             <Select
-              defaultValue={formData.button_action}
+              value={formData.button_action}
               options={buttonActionOptions}
               onChange={(event) => onFieldChange("button_action", event)}
             />

@@ -13,7 +13,6 @@ const NotifyBarOne = () => {
                 fontSize        : '16px',
                 position        : 'absolute',
                 textAlign       : 'center',
-                fontFamily      : 'Inter',
                 alignItems      : 'center',
                 borderRadius    : '5px',
                 flexDirection   : 'row',

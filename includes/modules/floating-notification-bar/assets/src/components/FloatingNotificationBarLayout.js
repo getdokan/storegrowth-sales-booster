@@ -43,7 +43,7 @@ function FloatingNotificationBarLayout({
     button_color               : '#ffffff',
     bar_position               : 'top',
     redirect_url               : '',
-    button_action              : 'ba-url-redirect',
+    button_action              : 'ba-close',
     banner_height              : 60,
     banner_trigger             : 'after-few-seconds',
     new_tab_enable             : false,

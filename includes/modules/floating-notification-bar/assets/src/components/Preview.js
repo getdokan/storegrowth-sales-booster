@@ -40,6 +40,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                                 preview={ true }
                                 activeIcon={ formData?.default_banner_icon_name }
                                 iconName={ formData?.default_banner_icon_name }
+                                iconColor={formData?.icon_color}
                             />
                         ) }
                     </div>

@@ -140,6 +140,7 @@ class Enqueue_Script {
 		$bg_color          = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
 		$text_color        = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$icon_color        = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
+		$close_icon_color  = sgsb_find_option_setting( $settings, 'close_icon_color', '#ffffff' );
 		$banner_height     = sgsb_find_option_setting( $settings, 'banner_height', 60 );
 		$font_size         = sgsb_find_option_setting( $settings, 'font_size', 20 );
 		$button_color      = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
@@ -176,6 +177,9 @@ class Enqueue_Script {
 			}
 			.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
 				fill: {$icon_color};
+			}
+			.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-remove svg {
+				fill: {$close_icon_color};
 			}
 			.sgsb-floating-notification-bar-text{
 				font-size: {$font_size}px;
