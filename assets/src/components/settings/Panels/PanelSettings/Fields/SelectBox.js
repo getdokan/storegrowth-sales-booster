@@ -48,10 +48,10 @@ const SelectBox = ( {
                     style={{ width: fieldWidth ? fieldWidth : ( colSpan === 24 ? 170 : 70 ) }}
                 >
                     { options && options.map( option => (
-                        <Select.Option key={ option?.value }>
+                        <Select.Option key={ option?.value } disabled={option?.disabled}>
                             { option?.label }
-                            { option?.disabled && <UpgradeCrown /> }
-                            { option?.disabled && <UpgradeOverlay /> }
+                            { option?.needUpgrade && <UpgradeCrown /> }
+                            { option?.needUpgrade && <UpgradeOverlay /> }
                         </Select.Option>
                     ) ) }
                 </Select>
