@@ -254,7 +254,7 @@ const Preview = ( { formData } ) => {
                                     fontSize      : 12,
                                     textAlign     : 'center',
                                     paddingTop    : 12,
-                                    fontFamily    : 'Inter',
+                                    
                                     borderRadius  : 8,
                                     letterSpacing : 2,
                                     textTransform : 'uppercase',
@@ -288,7 +288,7 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    fontFamily    : 'Inter',
+                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -323,7 +323,7 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    fontFamily    : 'Inter',
+                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -358,7 +358,7 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    fontFamily    : 'Inter',
+                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
