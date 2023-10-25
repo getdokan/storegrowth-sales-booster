@@ -7,17 +7,41 @@ import downArrowIocn from "../../../images/menu/down-arrow-icon.svg";
 import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import { __ } from "@wordpress/i18n";
+import {Ajax} from "../../ajax";
+import ActivationAlert from "../modules/ActivationAlert";
 
 function Sidebar({ routes }) {
-  // let sidebarItems = applyFilters('sidebar_menu_items', [], Link);
   const filteredRoute = routes.filter((item) => item.name !== "dashboard");
   let firstItem = filteredRoute[0] || false;
 
   const location = useLocation();
-  const [activeClass, setActiveClass] = useState(false);
-  const matchResult = matchRoutes(routes, location);
+  const [ activeClass, setActiveClass ] = useState( false );
+  const matchResult = matchRoutes( routes, location );
   const currentRoute = matchResult ? matchResult[0].route : null;
-  const [selectedMenu, setSelectedMenu] = useState(currentRoute?.name);
+  const [ selectedMenu, setSelectedMenu ] = useState( currentRoute?.name );
+  const [ allRoutes, setAllRoutes ] = useState( routes );
+
+  const [activeModule, setActiveModule] = useState(false);
+  const [activeModalData, setActiveModalData] = useState("");
+  const [modalButtonLoad, setModalButtonLoad] = useState(false);
+
+  const handleModalAlert = (module) => {
+    setActiveModule(!activeModule);
+    setActiveModalData(module);
+  };
+
+  const handleModuleActivation = (module) => {
+    setModalButtonLoad(!modalButtonLoad);
+    Ajax("update_module_status", {
+      module_id: module.name,
+      status: true,
+    }).success((response) => {
+      if (response.success) {
+        const sgsbSettingsURL = `admin.php?page=sgsb-settings#/${module.name}`;
+        window.location.href = sgsbSettingsURL;
+      }
+    });
+  };
 
   const toggleMenuClass = () => {
     setActiveClass((prevIsActive) => !prevIsActive);
@@ -43,6 +67,25 @@ function Sidebar({ routes }) {
   else if(location.pathname === "/" && filteredRoute.length===0){
     window.location.href = "admin.php?page=sgsb-modules"; 
   }
+
+  useEffect(() => {
+    Ajax("get_all_modules").success((response) => {
+      const dashboardRoutes = [];
+      const availableRoutes = allRoutes.map( availableRoute => availableRoute?.name );
+      response?.map( route => {
+        if ( !availableRoutes?.includes( route?.id ) ) {
+          dashboardRoutes.push( {
+            name   : route?.id,
+            path   : `/${route?.id}`,
+            label  : route?.name,
+            status : route?.status,
+          } );
+        }
+      } );
+
+      setAllRoutes( [ ...allRoutes, ...dashboardRoutes ] );
+    });
+  }, []);
 
   return (
     <Layout.Sider
@@ -116,12 +159,12 @@ function Sidebar({ routes }) {
               activeClass ? "widgets-menu ant-menu-hidden" : "widgets-menu"
             }
           >
-            {routes.map(
+            {allRoutes.map(
               (route) =>
                 route?.name !== "dashboard" && (
                   <li
                     key={route.name}
-                    onClick={() => handleLiClick(route.name)} // Handle the click event on <li>
+                    onClick={() => !route?.status ? handleModalAlert( route ) : handleLiClick(route.name)} // Handle the click event on <li>
                     className={
                       selectedMenu === route.name
                         ? `sgsb-selected-module ${route.name}`
@@ -142,6 +185,15 @@ function Sidebar({ routes }) {
             )}
           </ul>
         </div>
+        {activeModule && (
+          <ActivationAlert
+            activeModule={activeModule}
+            activeModalData={activeModalData}
+            modalButtonLoad={modalButtonLoad}
+            handleModalAlert={handleModalAlert}
+            handleModuleActivation={handleModuleActivation}
+          />
+        )}
       </div>
     </Layout.Sider>
   );
