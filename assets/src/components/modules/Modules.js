@@ -87,7 +87,6 @@ function Modules() {
   };
 
   const handleModuleActivation = (module) => {
-    console.log(`The module name is: ${module?.name}`);
     setModalButtonLoad(!modalButtonLoad);
     Ajax("update_module_status", {
       module_id: module.id,
