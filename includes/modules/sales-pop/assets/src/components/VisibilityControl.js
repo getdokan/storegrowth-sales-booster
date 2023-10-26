@@ -15,13 +15,15 @@ const VisibilityControl = ({
   return (
     <div>
       <EmptyField
-        needUpgrade={upgradeTeaser}
-        title={title}
-        tooltip={__(
+        needUpgrade={ upgradeTeaser }
+        title={ title }
+        tooltip={ __(
           `Add page targeting to ensure the welcome bar only appears or doesn't appear for the selected pages only`,
           "storegrowth-sales-booster"
-        )}
-        colSpan={24}
+        ) }
+        colSpan={ 24 }
+        rightCol={ 15 }
+        leftCol={ 9 }
       >
         <div
           style={{
