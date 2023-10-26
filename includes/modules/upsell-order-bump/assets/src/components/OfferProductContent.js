@@ -3,12 +3,13 @@ import { __ } from "@wordpress/i18n";
 const OfferProductContent = ( { offerProduct, bumpItem } ) => {
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find( simpleProduct => simpleProduct?.value === parseInt( bumpItem.offer_product ) );
-    let discountedPrice = parseInt( bumpItem?.offer_amount )?.toFixed( 2 );
+    let discountedPrice = parseFloat( bumpItem?.offer_amount )?.toFixed( 2 );
 
     if ( bumpItem?.offer_type === 'discount' ) {
-        const productPrice = parseInt( product?.price?.replace( product?.currency, '' ) ),
-            discountPercent = ( parseInt( bumpItem?.offer_amount + '%' ) / 100 );
-        discountedPrice = ( productPrice - ( productPrice * discountPercent ) )?.toFixed( 2 );
+        const productPrice = parseFloat(product?.price?.replace(product?.currency, ''));
+        const discountPercent = parseFloat(bumpItem?.offer_amount + '%') / 100;
+        discountedPrice = (productPrice - productPrice * discountPercent).toFixed(2);
+
     }
 
     return (
