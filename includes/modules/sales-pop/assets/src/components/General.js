@@ -17,7 +17,7 @@ function General( { onFormSave, upgradeTeaser } ) {
 
   const onFieldChange = ( key, value ) => {
     setCreateFromData( {
-      ...createPopupForm,
+      ...createPopupFormData,
       [ key ]: value,
     } );
   };
