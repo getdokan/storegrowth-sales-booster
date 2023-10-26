@@ -147,7 +147,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           changeHandler={ onFieldChange }
           options={ [ ...productSources ] }
           classes={ `search-single-select` }
-          fieldValue={ createPopupFormData.product_source }
+          fieldValue={ productSources?.[ createPopupFormData.product_source ] }
           title={ __( 'Product Source', 'storegrowth-sales-booster' ) }
         />
         <MultiSelectBox
@@ -155,7 +155,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           changeHandler={ onFieldChange }
           options={ productListForSelect }
           fieldValue={ selectedPopupProducts.map( Number ) }
-          needUpgrade={isProductsSelectReachedlimit?upgradeTeaser:false}
+          needUpgrade={ isProductsSelectReachedlimit? upgradeTeaser : false }
           title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
         />
@@ -195,14 +195,14 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
         />
       </SettingsSection>
       <VisibilityControl
-      title={__("Visibility Control", "storegrowth-sales-booster")}
-      upgradeTeaser={upgradeTeaser}
-      formData ={createPopupFormData}
-      bannerPageShowOption={bannerPageShowOption}
-      pageOptions={pageOptions}
-      userOption={userOption}
-      onFieldChange={onFieldChange}
-      noop={noop}
+        title={__("Visibility Control", "storegrowth-sales-booster")}
+        upgradeTeaser={upgradeTeaser}
+        formData ={createPopupFormData}
+        bannerPageShowOption={bannerPageShowOption}
+        pageOptions={pageOptions}
+        userOption={userOption}
+        onFieldChange={onFieldChange}
+        noop={noop}
       />
       <ActionsHandler
         resetHandler={ onFormReset }

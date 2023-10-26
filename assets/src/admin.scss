@@ -2224,7 +2224,7 @@ End Settings Sidebar
 
               &.radio-field {
                 gap: 12px;
-                height: 36px;
+                min-height: 36px;
                 display: inline-grid;
                 grid-auto-flow: column;
                 background: transparent;
@@ -2323,6 +2323,10 @@ End Settings Sidebar
                     }
                   }
                 }
+
+                @media (max-width: 1440px) {
+                  grid-template-rows: repeat(3, 38px);
+                }
               }
 
               &:not(.ant-switch-checked) {
@@ -2348,6 +2352,12 @@ End Settings Sidebar
               border-radius: 5px;
               align-items: center;
               justify-content: center;
+
+              span {
+                @media (max-width: 1440px) {
+                   display: none;
+                }
+              }
 
               &:hover,
               &.active {
