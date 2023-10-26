@@ -31,7 +31,7 @@ function OverViewArea(props) {
         </div>
         <hr style={{marginBottom:createBumpData.box_top_margin+"px"}}/>
         <div className="offer-main-wrap" 
-        style={createBumpData.box_border_style!='no_border'?{border:"2px "+ createBumpData.box_border_style+ " " + createBumpData.box_border_color}:{border:""}}>
+        style={createBumpData.box_border_style !== 'no_border'? {border:"2px "+ createBumpData.box_border_style+ " " + createBumpData.box_border_color} : {border:""}}>
             <div className="dynamic-offer-text" 
             style={{
                 background : createBumpData.discount_background_color, 
