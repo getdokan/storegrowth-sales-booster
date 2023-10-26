@@ -66,9 +66,9 @@ function DiscountBanner(props) {
     const noop = () => {};
 
     const iconStyleNames = [
-        'notify-bar-icon-1',
-        'notify-bar-icon-2',
-        'notify-bar-icon-3',
+        'shipping-bar-icon-1',
+        'shipping-bar-icon-2',
+        'shipping-bar-icon-3',
     ];
 
     const iconOptions = iconStyleNames?.map( iconStyleName => (
