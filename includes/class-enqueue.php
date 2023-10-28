@@ -26,14 +26,14 @@ class Enqueue {
 	 *
 	 * @var string
 	 */
-	private $modules_page_hook = 'sales-booster_page_sgsb-modules';
+	private $modules_page_hook = 'storegrowth_page_sgsb-modules';
 
 	/**
 	 * Module settings page slug.
 	 *
 	 * @var string
 	 */
-	private $settings_page_hook = 'sales-booster_page_sgsb-settings';
+	private $settings_page_hook = 'storegrowth_page_sgsb-settings';
 
 	/**
 	 * Constructor of Enqueue class.

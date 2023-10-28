@@ -68,7 +68,7 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
 			$settings_file = require sgsb_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
 
 			wp_enqueue_media();

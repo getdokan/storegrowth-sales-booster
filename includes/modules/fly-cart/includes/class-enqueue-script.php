@@ -85,7 +85,7 @@ class Enqueue_Script {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 

@@ -119,7 +119,7 @@ class Enqueue {
 	public function admin_enqueue_scripts( $screen ) {
 		$popup_properties = maybe_unserialize( get_option( 'sgsb_popup_products', true ) );
 
-		if ( 'sales-booster_page_sgsb-settings' === $screen ) {
+		if ( 'storegrowth_page_sgsb-settings' === $screen ) {
 			add_action( 'admin_head', array( $this, 'admin_css' ) );
 			$settings_file = require sgsb_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 
