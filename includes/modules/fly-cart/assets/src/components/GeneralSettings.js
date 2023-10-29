@@ -3,12 +3,16 @@ import LayoutOption from "./LayoutOption";
 import SideCartLayout from '../../images/side-cart-layout.svg';
 import CenteredPopupLayout from '../../images/centered-popup-layout.svg';
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
 import ContentGroup from "./ContentGroup";
 
 const GeneralSettings = ({
+    onFormSave,
     formData,
     onFieldChange,
+    onFormReset,
+    buttonLoading
 }) => {
     const layoutContents = [
         {
@@ -58,6 +62,11 @@ const GeneralSettings = ({
                 options={ [ ...contentOptions ] }
                 title={ __( 'Cart Contents:', 'storegrowth-sales-booster' ) }
             />
+        <ActionsHandler
+          saveHandler={ () => onFormSave('general_settings')  }
+          resetHandler={ onFormReset }
+          loadingHandler={ buttonLoading }
+        />
         </SettingsSection>
     );
 }
