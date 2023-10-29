@@ -79,7 +79,7 @@
   // For sidebar.
   jQuery(document).ready(function () {
     // Dynamic Height Calculation
-    let adminBarHeight = document.getElementById("wpadminbar") ? 0 : 40;
+    let adminBarHeight = document.getElementById("wpadminbar") ? 20 : 40;
     let extraHeight = sgsbFrontend?.cartLayoutType === "center" ? 150 : 82;
     function setDynamicHeight() {
       var deductableHeight =
