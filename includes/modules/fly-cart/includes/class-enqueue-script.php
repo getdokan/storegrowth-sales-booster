@@ -125,7 +125,6 @@ class Enqueue_Script {
 			}
 			.wfc-widget-sidebar {
 				background-color: {$widget_bg_color};
-				padding: 26px 0 !important;
 			}
 			.sgsb-cart-widget-buttons a {
 				background-color: {$wfc_btn_bgcolor};
@@ -150,32 +149,14 @@ class Enqueue_Script {
 	private function qc_side_cart_styles() {
 
 		$custom_css = '
-			.wfc-widget-sidebar {
-				width: 580px;
-				height: 100%;
-				position: fixed;
-				padding: 30px 0px;
-				top: 0;
-				right: 0;
-				z-index: 1001;
-				box-shadow: -2px 0px 9px 0px rgba(184,184,184,1);
-				transition: 0.5s;
-			}
-				.wfc-overlay {
-				position: fixed;
-				width: 100%;
-				height: 100%;
-				background-color: rgba(255, 255, 255, 0.83);
-				top: 0;
-				left: 0;
-				z-index: 1000;
-			}
-			.wfc-hide {
-				display: none
-			}
-			.wfc-slide{
-				right: -600px;
-			}';
+		.wfc-widget-sidebar {
+			top: 0;
+			right: 0;
+		}
+		.sgsb-widget-shopping-cart-content-wrapper{
+			width:540px;
+		}
+			';
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
 	}
@@ -185,13 +166,13 @@ class Enqueue_Script {
 	 */
 	private function frontend_widget_script() {
 		// Get checkout redirection data.
-		$qcart_settings        = get_option( 'sgsb_fly_cart_settings' );
-		$dir_checkout_settings = get_option( 'sgsb_direct_checkout_settings' );
-
+		$qcart_settings           = get_option( 'sgsb_fly_cart_settings' );
+		$dir_checkout_settings    = get_option( 'sgsb_direct_checkout_settings' );
+		$cart_layout_type         = sgsb_find_option_setting( $qcart_settings, 'layout', 'side' );
 		$is_add_to_qcart_redirect = sgsb_find_option_setting( $qcart_settings, 'enable_add_to_cart_redirect', true );
 		$checkout_redirect        = sgsb_find_option_setting( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
 
-		$is_checkout_redirect = ( $checkout_redirect === 'quick-cart-checkout' );
+		$is_checkout_redirect = ( 'quick-cart-checkout' === $checkout_redirect );
 
 		wp_enqueue_script(
 			'wfc-script',
@@ -207,6 +188,7 @@ class Enqueue_Script {
 			array(
 				'checkoutRedirect'  => $is_checkout_redirect,
 				'quickCartRedirect' => $is_add_to_qcart_redirect,
+				'cartLayoutType'    => $cart_layout_type,
 				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 				'nonce'             => wp_create_nonce( 'sgsb_frontend_ajax' ),
 				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
