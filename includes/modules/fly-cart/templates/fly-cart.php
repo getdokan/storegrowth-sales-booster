@@ -24,7 +24,7 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 				fill='none'
 				class='radio-icon'
 				viewBox='0 0 100 100'
-				style='width: 55px; height: 50px; padding: 16px; border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
+				style='  border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
 			>
 				<g>
 					<polygon
@@ -68,7 +68,7 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 				fill='none'
 				class='radio-icon'
 				viewBox='0 0 100 100'
-				style='width: 55px; height: 50px; padding: 16px; border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
+				style='border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
 			>
 				<g>
 					<path
@@ -89,7 +89,7 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 				fill='none'
 				class='radio-icon'
 				viewBox='0 0 100 100'
-				style='width: 55px; height: 50px; padding: 16px; border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
+				style='  border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
 			>
 				<g>
 					<path
@@ -110,7 +110,7 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 				fill='none'
 				class='radio-icon'
 				viewBox='0 0 100 100'
-				style='width: 55px; height: 50px; padding: 16px; border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
+				style='  border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'
 			>
 				<g>
 					<path

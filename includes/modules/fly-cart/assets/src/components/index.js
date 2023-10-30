@@ -10,7 +10,7 @@ import PanelContainer from "sales-booster/src/components/settings/Panels/PanelCo
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
 import PanelSettings from "sales-booster/src/components/settings/Panels/PanelSettings";
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
-import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+
 import { Fragment } from "react";
 import Preview from "./Preview";
 
@@ -143,9 +143,10 @@ function FlyCart( { navigate, useSearchParams } ) {
       title: __( 'General Setting', 'storegrowth-sales-booster' ),
       panel: <GeneralSettings
         formData={ formData }
-        onFormSave={ onFormSave }
+        onFormSave={ onFormSave}
         buttonLoading={ buttonLoading }
         onFieldChange={ onFieldChange }
+        onFormReset={onFormReset}
       />,
     },
     {
@@ -153,9 +154,10 @@ function FlyCart( { navigate, useSearchParams } ) {
       title: __( 'Design', 'storegrowth-sales-booster' ),
       panel: <DesignSettings
         formData={ formData }
-        onFormSave={ onFormSave }
+        onFormSave={ () => onFormSave('design') }
         onFieldChange={ onFieldChange }
         buttonLoading={ buttonLoading }
+        onFormReset={onFormReset}
       />,
     },
   ];
@@ -177,11 +179,6 @@ function FlyCart( { navigate, useSearchParams } ) {
             <Preview storeData={ formData } />
           </PanelPreview>
         </PanelRow>
-        <ActionsHandler
-          saveHandler={ onFormSave }
-          resetHandler={ onFormReset }
-          loadingHandler={ buttonLoading }
-        />
       </PanelContainer>
     </Fragment>
   );

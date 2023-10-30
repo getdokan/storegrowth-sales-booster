@@ -3,6 +3,7 @@ import { Button, Form, Input, Select, Typography } from "antd";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
 import CartIcon from "./CartIcon";
 
@@ -11,6 +12,7 @@ const DesignSettings = ({
     onFieldChange,
     onFormSave,
     buttonLoading,
+    onFormReset
 }) => {
     const iconPositions = [
         { value: 'top-left', label: __( 'Top Left', 'storegrowth-sales-booster' ) },
@@ -70,6 +72,11 @@ const DesignSettings = ({
                 fieldValue={ formData.widget_bg_color }
                 title={ __( 'Widget Background Color', 'storegrowth-sales-booster' ) }
             />
+        <ActionsHandler
+          saveHandler={ onFormSave }
+          resetHandler={ onFormReset }
+          loadingHandler={ buttonLoading }
+        />
         </SettingsSection>
     );
 }
