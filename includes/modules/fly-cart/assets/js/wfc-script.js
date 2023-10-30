@@ -3,12 +3,12 @@
 
   //Variable to set Timeout
   var timeoutId;
-
   // For flyout.
-  $(".products").flyto({
+  let flyToSelector = ".products-block-post-template, .products";
+  $(flyToSelector).flyto({
     item: "li.product",
     target: ".wfc-cart-icon .wfc-icon",
-    button: ".product_type_simple.add_to_cart_button",
+    button: ".add_to_cart_button.product_type_simple",
     shake: true,
   });
 
@@ -109,10 +109,10 @@
       jQuery(".wfc-overlay").addClass("wfc-hide");
       jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
     });
-
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
     if (isPro && Boolean(checkoutRedirect)) {
+      
       jQuery(".sgsb_buy_now_button, .sgsb_buy_now_button_product_page").on(
         "click",
         function (event) {
