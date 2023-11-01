@@ -133,9 +133,9 @@ class Enqueue_Script {
 			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
 			    background-color: {$shop_btn_bgcolor};
 			}
-			.sgsb-apply-coupon {
-                background: {$wfc_btn_bgcolor}
-            }
+			.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
+                background: {$wfc_btn_bgcolor} !important;
+      }
 		";
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
