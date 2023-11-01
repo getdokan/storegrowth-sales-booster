@@ -117,6 +117,7 @@
     let elements = document.getElementsByClassName("theme-twentytwentythree");
 
     function setDynamicHeight() {
+      
       let windowHeight = $(window).innerHeight();
       let windowWidth = $(window).innerWidth();
       let isMobileHeight = windowHeight < 769 ? 80 : 150;
