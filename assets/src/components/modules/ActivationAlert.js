@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 const ActivationAlert = ({
+  isDashboard,
   activeModule,
   activeModalData,
   modalButtonLoad,
@@ -31,10 +32,10 @@ const ActivationAlert = ({
             />
           </div>
           <h3 className="modal-content-heading">
-            {`Do you want to active ${activeModalData?.name}?`}
+            {`Do you want to active ${ isDashboard ? activeModalData?.label : activeModalData?.name }?`}
           </h3>
           <p className="modal-content">
-            After activating the <strong>{activeModalData?.name}</strong>{" "}
+            After activating the <strong>{ isDashboard ? activeModalData?.label : activeModalData?.name }</strong>{" "}
             module, you will be redirected to the module settings page where you
             can set up this module's features..
           </p>

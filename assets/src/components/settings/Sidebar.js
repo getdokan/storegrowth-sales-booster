@@ -193,11 +193,12 @@ function Sidebar({ routes }) {
                 </div>
                 {activeModule && (
                     <ActivationAlert
-                        activeModule={activeModule}
-                        activeModalData={activeModalData}
-                        modalButtonLoad={modalButtonLoad}
-                        handleModalAlert={handleModalAlert}
-                        handleModuleActivation={handleModuleActivation}
+                        isDashboard={ true }
+                        activeModule={ activeModule }
+                        activeModalData={ activeModalData }
+                        modalButtonLoad={ modalButtonLoad }
+                        handleModalAlert={ handleModalAlert }
+                        handleModuleActivation={ handleModuleActivation }
                     />
                 )}
             </div>
