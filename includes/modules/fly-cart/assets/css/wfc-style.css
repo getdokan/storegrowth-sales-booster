@@ -372,8 +372,17 @@
 .wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
     letter-spacing: 0px !important;
     text-transform: capitalize !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 10px 18px !important;
 }
-
+.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon:hover {
+    text-decoration: none !important;
+    background-color: rgb(0 111 201) !important;
+}
+.wfc-widget-sidebar .sgsb-coupon .header-text{
+    font-family: inherit;
+}
 .wfc-widget-sidebar .promocode-form input.coupon-input-text:focus {
     border-style: none !important;
 }
