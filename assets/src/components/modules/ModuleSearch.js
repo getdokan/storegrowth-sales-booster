@@ -7,9 +7,7 @@ function ModuleSearch({onChange}) {
 
     const [isActive, setIsActive] = useState(false);
 
-    const handleSearchClass = () => {
-        setIsActive((prevIsActive) => !prevIsActive);
-    }
+    const handleSearchClass = () => setIsActive((prevIsActive) => !prevIsActive);
 
     return (
         <div className={isActive ? 'search-bar active' : 'search-bar'}>

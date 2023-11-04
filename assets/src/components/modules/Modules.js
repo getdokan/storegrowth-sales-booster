@@ -163,7 +163,7 @@ function Modules() {
     return (
       <>
         {modules
-          .filter((module) => module.name.toLowerCase().includes(searchModule))
+          .filter((module) => module.name.toLowerCase().includes(searchModule.toLowerCase()))
           .filter((module) => (filterActiveModules ? module.status : true)) // Filter based on the filterActiveModules state
           .slice(minValue, maxValue)
           .map((module) => (

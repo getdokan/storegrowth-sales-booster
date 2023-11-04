@@ -2570,6 +2570,50 @@ End Settings Sidebar
         display: block;
         position: sticky;
         margin-left: 32px;
+
+        .product-coupon {
+          position: relative;
+
+          .pro-content-overlay {
+            top: -3px;
+            left: -13px;
+            width: 105%;
+            height: 120%;
+            z-index: 9999;
+            display: none;
+            border-radius: 5px;
+            position: absolute;
+            align-items: center;
+            background: #00000080;
+            justify-content: center;
+
+            .upgrade-button {
+              gap: 10px;
+              color: #fff;
+              font-size: 13px;
+              font-weight: 600;
+              padding: 9px 15px;
+              border-radius: 5px;
+              align-items: center;
+              background: #FFAC27;
+              display: inline-flex;
+
+              .overlay-btn-crown {
+                svg {
+                  path {
+                    fill: #fff;
+                  }
+                }
+              }
+            }
+          }
+
+          &:hover {
+            .pro-content-overlay {
+              display: flex;
+            }
+          }
+        }
       }
     }
 
