@@ -4,6 +4,7 @@ import { Image, Typography } from 'antd';
 import PreviewImg from '../../images/qcart-preview.svg';
 import CartIcon from "./CartIcon";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
+import UpgradeOverlay from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeOverlay";
 
 const { Title } = Typography;
 
@@ -364,6 +365,7 @@ const Preview = ( { storeData } ) => {
                                             { __( 'Apply Now', 'storegrowth-sales-booster' ) }
                                         </div>
                                     </div>
+                                    { !sgsbAdmin.isPro && <UpgradeOverlay /> }
                                 </div>
                             ) }
                             <div className='cart_totals '>
