@@ -55,6 +55,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                 >
                     { extractedTitle( formData?.default_banner_text, 12 ) }
                 </span>
+                { formData.countdown_show_enable && 
                 <div
                     className='sgsb-fn-bar-countdown'
                     style={ {
@@ -151,6 +152,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                     </span>
                     </div>
                 </div>
+                }
                 <span
                     className='fn-bar-action-button'
                     style={ {

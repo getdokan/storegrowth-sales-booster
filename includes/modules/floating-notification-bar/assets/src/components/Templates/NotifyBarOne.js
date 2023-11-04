@@ -1,7 +1,7 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 
-const NotifyBarOne = () => {
+const NotifyBarOne = ({coutdownEnable}) => {
     return (
         <div
             style={{
@@ -70,6 +70,7 @@ const NotifyBarOne = () => {
                     { __( 'Christmas Sales', 'storegrowth-sales-booster' ) }
                 </div>
             </div>
+            {coutdownEnable &&
             <div
                 className='sgsb-fn-bar-countdown'
                 style={ {
@@ -166,6 +167,7 @@ const NotifyBarOne = () => {
                     </span>
                 </div>
             </div>
+            }
             <span
                 className='fn-bar-action-button'
                 style={ {
