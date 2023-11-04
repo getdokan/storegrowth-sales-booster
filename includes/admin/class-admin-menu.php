@@ -41,22 +41,21 @@ class Admin_Menu {
 	public function highlight_admin_submenu( $submenu_file ) {
 		global $current_screen;
 
-//        error_log( print_r( $current_screen->id, 1 ) );
-
-		if ( $current_screen->id === 'sales-booster_page_sgsb-dashboard' ) {
+		if ( 'storegrowth_page_sgsb-dashboard' === $current_screen->id ) {
 			$submenu_file = 'admin.php?page=sgsb-settings#/dashboard/overview';
 		}
 
 		return $submenu_file;
 	}
 
+
 	/**
 	 * Register a custom menu page.
 	 */
 	public function register_admin_menu() {
 		add_menu_page(
-			__( 'Sales Booster', 'storegrowth-sales-booster' ),
-			__( 'Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'StoreGrowth', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'sales-booster-for-woocommerce',
 			array( $this, 'modules_callback' ),
@@ -66,7 +65,7 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Dashboard - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Dashboard - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'sgsb-settings#/dashboard/overview',
@@ -75,7 +74,7 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'sgsb-modules',
@@ -84,14 +83,14 @@ class Admin_Menu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Settings - Sales Booster', 'storegrowth-sales-booster' ),
+			__( 'Settings - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'sgsb-settings',
 			array( $this, 'settings_callback' )
 		);
 
-		// Remove own submenu of `Sales Booster`.
+		// Remove own submenu of `StoreGrowth`.
 		remove_submenu_page( 'sales-booster-for-woocommerce', 'sales-booster-for-woocommerce' );
 	}
 
@@ -117,5 +116,4 @@ class Admin_Menu {
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
-
 }

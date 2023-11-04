@@ -40,7 +40,7 @@ class Enqueue_Script {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( 'sales-booster_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
 
 			$settings_file                   = require sgsb_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';

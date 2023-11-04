@@ -10,19 +10,19 @@ body {
     line-height: 1.4em;
 }
 
-.sales-booster_page_sgsb-modules #wpcontent, .sales-booster_page_sgsb-settings #wpcontent {
+.storegrowth_page_sgsb-modules #wpcontent, .storegrowth_page_sgsb-settings #wpcontent {
     background: #F4F7FF;
     padding-left: 14px !important;
 
 }
 
-.sales-booster_page_sgsb-modules #wpcontent .wrap, .sales-booster_page_sgsb-settings #wpcontent .wrap {
+.storegrowth_page_sgsb-modules #wpcontent .wrap, .storegrowth_page_sgsb-settings #wpcontent .wrap {
     /* margin: 0; */
 
 }
 
-.sales-booster_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
-.sales-booster_page_sgsb-settings #sbooster-settings-page .ant-layout {
+.storegrowth_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
+.storegrowth_page_sgsb-settings #sbooster-settings-page .ant-layout {
     background: #F4F7FF;
 }
 
