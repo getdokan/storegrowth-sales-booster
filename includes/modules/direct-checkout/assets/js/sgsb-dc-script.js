@@ -20,7 +20,7 @@
       productId = typeof productId === 'undefined' ? $( event?.target ).data( 'product_id' ) : productId;
 
       jQuery.ajax({
-        url     : wc_add_to_cart_params.ajax_url,
+        url     : sgsbDcFrontend?.ajax_url,
         type    : 'POST',
         data    : {
           'action'     : 'woocommerce_add_to_cart',

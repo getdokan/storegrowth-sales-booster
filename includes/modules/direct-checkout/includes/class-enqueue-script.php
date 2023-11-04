@@ -61,7 +61,10 @@ class Enqueue_Script {
 			'sgsbDcFrontend',
 			array(
 				'isQuickCartCheckout' => $is_checkout_redirect,
-				'isPro'               => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+				'isPro'               => is_plugin_active(
+					'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php',
+				),
+				'ajax_url'            => '/wp-admin/admin-ajax.php',
 			)
 		);
 	}
