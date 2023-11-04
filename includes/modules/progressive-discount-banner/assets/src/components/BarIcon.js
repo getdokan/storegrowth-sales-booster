@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 const BarIcon = ( { activeIcon, iconName, svgStyle, iconColor, preview = false } ) => {
     return (
         <Fragment>
-            { iconName === 'notify-bar-icon-1' && (
+            { iconName === 'shipping-bar-icon-1' && (
                 <svg
                     width={ `${ preview ? 32 : 20 }` }
                     height={ `${ preview ? 32 : 20 }` }
@@ -36,7 +36,7 @@ const BarIcon = ( { activeIcon, iconName, svgStyle, iconColor, preview = false }
                 </svg>
             ) }
 
-            { iconName === 'notify-bar-icon-2' && (
+            { iconName === 'shipping-bar-icon-2' && (
                 <svg
                     width={ `${ preview ? 32 : 22 }` }
                     height={ `${ preview ? 32 : 22 }` }
@@ -69,7 +69,7 @@ const BarIcon = ( { activeIcon, iconName, svgStyle, iconColor, preview = false }
                 </svg>
             ) }
 
-            { iconName === 'notify-bar-icon-3' && (
+            { iconName === 'shipping-bar-icon-3' && (
                 <svg
                     width={ `${ preview ? 32 : 22 }` }
                     height={ `${ preview ? 32 : 22 }` }

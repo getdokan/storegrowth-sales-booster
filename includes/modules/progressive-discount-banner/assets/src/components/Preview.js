@@ -46,6 +46,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                                 preview={ true }
                                 activeIcon={ formData?.progressive_banner_icon_name }
                                 iconName={ formData?.progressive_banner_icon_name }
+                                iconColor={formData?.icon_color}
                             />
                         ) }
                     </div>
