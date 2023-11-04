@@ -78,10 +78,16 @@ function Sidebar({ routes }) {
         // Set active routes for settings panel.
         setAllRoutes( [ ...allRoutes?.filter( route => route?.status !== false ) ] );
         setSelectedMenu(routeName);
-        const linkElement = document.querySelector(
-            `a[data-route-name='${routeName}']`
-        );
+        const $ = jQuery,
+            linkElement = $( `a[data-route-name='${routeName}']` );
+
         if (linkElement) {
+            const menuRoot = $( '#toplevel_page_sales-booster-for-woocommerce' );
+
+            // Set dashboard menu deactivate & settings menu active.
+            $( 'ul.wp-submenu li', menuRoot ).removeClass( 'current' );
+            menuRoot.find( `li:last-child` ).addClass( 'current' );
+
             linkElement.click();
         }
     };
@@ -168,25 +174,25 @@ function Sidebar({ routes }) {
                         {allRoutes.map(
                             (route) =>
                                 route?.name !== "dashboard" && (
-                                    <li
-                                        key={route.name}
-                                        onClick={() => route?.status === false ? handleModalAlert( route ) : handleLiClick(route.name)} // Handle the click event on <li>
+                                    <Link
                                         className={
-                                            selectedMenu === route.name
-                                                ? `sgsb-selected-module ${route.name}`
-                                                : `${route.name}`
+                                            selectedMenu === route.name ? "sgsb-selected-link" : ""
                                         }
+                                        data-route-name={route.name}
+                                        to={ route?.status !== false ? route.path : '#' }
                                     >
-                                        <Link
+                                        <li
+                                            key={route.name}
+                                            onClick={() => route?.status === false ? handleModalAlert( route ) : handleLiClick(route.name)} // Handle the click event on <li>
                                             className={
-                                                selectedMenu === route.name ? "sgsb-selected-link" : ""
+                                                selectedMenu === route.name
+                                                    ? `sgsb-selected-module ${route.name}`
+                                                    : `${route.name}`
                                             }
-                                            data-route-name={route.name}
-                                            to={ route?.status !== false ? route.path : '#' }
                                         >
                                             {route.label}
-                                        </Link>
-                                    </li>
+                                        </li>
+                                    </Link>
                                 )
                         )}
                     </ul>
