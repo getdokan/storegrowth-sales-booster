@@ -52,7 +52,7 @@
     if (cartCollatoralClass.length > 0) {
       cartCollatoralClass.find(".shipping-coupon").remove();
       cartCollatoralClass
-        .find(".cart_totals ")
+        .find(".cart_totals")
         .find(".wc-proceed-to-checkout a:not(.sgsb-cart-widget-buttons a)")
         .remove();
     }
@@ -96,6 +96,7 @@
       jQuery(".wfc-overlay").removeClass("wfc-hide");
       jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
       getCartContents();
+      setDynamicHeight();
     });
   };
 
@@ -105,49 +106,43 @@
     });
   };
 
-  //Class Remover
-  $(document).ready(function () {});
+  /**
+   * Dynamic Height Width.
+   */
+  function setDynamicHeight() {
+    let wpadminbar = $("#wpadminbar");
+    let adminBarHeight = wpadminbar.length ? wpadminbar.height() : 0;
+    let elements = $(".theme-twentytwentythree");
+    let windowHeight = $(window).innerHeight();
+    let windowWidth = $(window).innerWidth();
+    let isMobileHeight = windowHeight < 769 ? 80 : 150;
+    let isSmallScreen = windowWidth < 426;
+    let themeChecker = elements.length > 0 ? 41 : 0;
+
+    let extraHeight =
+      sgsbFrontend?.cartLayoutType === "center" ? isMobileHeight : 0;
+    let deductableHeight =
+      $(".qc-cart-heading").height() + adminBarHeight + 41 + extraHeight;
+
+    $(".sgsb-widget-shopping-cart-content-wrapper").css(
+      "height",
+      windowHeight - deductableHeight
+    );
+
+    if (isSmallScreen) {
+      $(".sgsb-widget-shopping-cart-content-wrapper").css(
+        "width",
+        windowWidth - themeChecker
+      );
+    }
+
+    $(".wfc-widget-sidebar").css("margin-top", adminBarHeight);
+  }
+  $(document).ready(function () { });
 
   // For sidebar.
   jQuery(document).ready(function () {
-    // Dynamic Height Calculation
-    let adminBarHeight = document.getElementById("wpadminbar")
-      ? $("#wpadminbar").height()
-      : 0;
-    let elements = document.getElementsByClassName("theme-twentytwentythree");
-
-    function setDynamicHeight() {
-      
-      let windowHeight = $(window).innerHeight();
-      let windowWidth = $(window).innerWidth();
-      let isMobileHeight = windowHeight < 769 ? 80 : 150;
-      let isSmallScreen = windowWidth < 426;
-      let themeChecker = elements.length > 0 ? 41 : 0;
-
-      let extraHeight =
-        sgsbFrontend?.cartLayoutType === "center" ? isMobileHeight : 0;
-      let deductableHeight =
-        $(".qc-cart-heading").height() + adminBarHeight + 41 + extraHeight;
-
-      $(".sgsb-widget-shopping-cart-content-wrapper").css(
-        "height",
-        windowHeight - deductableHeight
-      );
-
-      if (isSmallScreen) {
-        $(".sgsb-widget-shopping-cart-content-wrapper").css(
-          "width",
-          windowWidth - themeChecker
-        );
-      }
-
-      $(".wfc-widget-sidebar").css("margin-top", adminBarHeight);
-    }
-
-    // Call the function on document ready
-    setDynamicHeight();
-
-    // Attach the function to the window resize event
+    
     $(window).resize(function () {
       setDynamicHeight();
     });

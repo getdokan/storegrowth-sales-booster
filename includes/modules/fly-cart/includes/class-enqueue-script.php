@@ -131,10 +131,10 @@ class Enqueue_Script {
 				border-color: {$wfc_btn_bgcolor};
 			}
 			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
-			    background-color: {$shop_btn_bgcolor};
+			  background-color: {$shop_btn_bgcolor};
 			}
 			.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
-                background: {$wfc_btn_bgcolor} !important;
+        background: {$wfc_btn_bgcolor} !important;
       }
 		";
 
