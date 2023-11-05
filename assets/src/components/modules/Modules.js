@@ -110,6 +110,11 @@ function Modules() {
       : allModules.length;
   }, [filterActiveModules, allModules]);
 
+  const handleLiClick = (routeName) => {
+    const link = `admin.php?page=sgsb-settings#${routeName}`;
+    window.location.href = link;
+  };
+
   useEffect(() => {
     if (allModules) {
       setSelectFilter({ modules: allModules });
@@ -253,10 +258,12 @@ function Modules() {
                   {module.name}
                 </li>
               ) : (
-                <li className={module.id} key={module.id}>
-                  <a href={`admin.php?page=sgsb-settings#/${module.id} `}>
-                    {module.name}
-                  </a>
+                <li
+                  className={module.id}
+                  key={module.id}
+                  onClick={() => handleLiClick(module.id)}
+                >
+                  {module.name}
                 </li>
               );
             })}
