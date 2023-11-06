@@ -59,7 +59,6 @@ const TemplateSection = ( { triggerBumpUpdate } ) => {
                     fieldValue={ createBumpData.box_top_margin }
                     title={ __('Top Margin', 'storegrowth-sales-booster' ) }
                 />
-                {console.log(createBumpData)}
                 <Number
                     min={ 0 }
                     max={ 20 }
