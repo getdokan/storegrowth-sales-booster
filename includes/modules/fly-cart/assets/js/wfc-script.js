@@ -16,11 +16,12 @@
    * Set Fly Cart Contents.
    */
   function setCartContents(response) {
-    $(".sgsb-widget-shopping-cart-content").html(response?.data?.htmlResponse);
+    let parentElement = $(".sgsb-widget-shopping-cart-content");
+    parentElement.html(response?.data?.htmlResponse);
     $(".wfc-cart-icon .wfc-cart-countlocation").html(
       response?.data?.cartCountLocation
     );
-
+    elementClassRemover();
     setTimeout(function () {
       $(".sgsb-fly-cart-loader").addClass("wfc-hide");
     }, 500);
@@ -28,6 +29,34 @@
     jQuery(document.body).trigger("wc_fragment_refresh");
   }
 
+  function elementClassRemover() {
+    let parentElement = $(".sgsb-widget-shopping-cart-content");
+    let cartCollatoralClass = $(".sgsb-cart-collaterals");
+    let cartFormElement = $("form.sgsb-woocommerce-cart-form");
+
+    if (parentElement.length > 0) {
+      parentElement
+        .find("div.kadence-woo-cart-form-wrap")
+        .removeClass("kadence-woo-cart-form-wrap");
+    }
+    if (cartFormElement.length > 0) {
+      cartFormElement.find("div.cart-summary").remove();
+      cartFormElement
+        .find(".woocommerce-content-box")
+        .find("h2")
+        .remove()
+        .end()
+        .removeClass("woocommerce-content-box full-width clearfix");
+    }
+
+    if (cartCollatoralClass.length > 0) {
+      cartCollatoralClass.find(".shipping-coupon").remove();
+      cartCollatoralClass
+        .find(".cart_totals")
+        .find(".wc-proceed-to-checkout a:not(.sgsb-cart-widget-buttons a)")
+        .remove();
+    }
+  }
   /**
    * Get Cart Contents.
    */
@@ -67,6 +96,7 @@
       jQuery(".wfc-overlay").removeClass("wfc-hide");
       jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
       getCartContents();
+      setDynamicHeight();
     });
   };
 
@@ -76,25 +106,43 @@
     });
   };
 
-  // For sidebar.
-  jQuery(document).ready(function () {
-    // Dynamic Height Calculation
-    let adminBarHeight = document.getElementById("wpadminbar") ? 20 : 40;
-    let extraHeight = sgsbFrontend?.cartLayoutType === "center" ? 150 : 82;
-    function setDynamicHeight() {
-      var deductableHeight =
-        $(".qc-cart-heading").height() + extraHeight - adminBarHeight;
-      var windowHeight = $(window).innerHeight();
+  /**
+   * Dynamic Height Width.
+   */
+  function setDynamicHeight() {
+    let wpadminbar = $("#wpadminbar");
+    let adminBarHeight = wpadminbar.length ? wpadminbar.height() : 0;
+    let elements = $(".theme-twentytwentythree");
+    let windowHeight = $(window).innerHeight();
+    let windowWidth = $(window).innerWidth();
+    let isMobileHeight = windowHeight < 769 ? 80 : 150;
+    let isSmallScreen = windowWidth < 426;
+    let themeChecker = elements.length > 0 ? 41 : 0;
+
+    let extraHeight =
+      sgsbFrontend?.cartLayoutType === "center" ? isMobileHeight : 0;
+    let deductableHeight =
+      $(".qc-cart-heading").height() + adminBarHeight + 41 + extraHeight;
+
+    $(".sgsb-widget-shopping-cart-content-wrapper").css(
+      "height",
+      windowHeight - deductableHeight
+    );
+
+    if (isSmallScreen) {
       $(".sgsb-widget-shopping-cart-content-wrapper").css(
-        "height",
-        windowHeight - deductableHeight
+        "width",
+        windowWidth - themeChecker
       );
     }
 
-    // Call the function on document ready
-    setDynamicHeight();
+    $(".wfc-widget-sidebar").css("margin-top", adminBarHeight);
+  }
+  $(document).ready(function () { });
 
-    // Attach the function to the window resize event
+  // For sidebar.
+  jQuery(document).ready(function () {
+    
     $(window).resize(function () {
       setDynamicHeight();
     });
@@ -112,7 +160,6 @@
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
     if (isPro && Boolean(checkoutRedirect)) {
-      
       jQuery(".sgsb_buy_now_button, .sgsb_buy_now_button_product_page").on(
         "click",
         function (event) {
