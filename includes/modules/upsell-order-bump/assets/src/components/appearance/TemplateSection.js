@@ -41,15 +41,17 @@ const TemplateSection = ( { triggerBumpUpdate } ) => {
                     fieldValue={ createBumpData.box_border_style }
                     title={ __( 'Overview Border', 'storegrowth-sales-booster' ) }
                     placeHolderText={ __( 'Change Overview Border', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The Style of the order bump border.', 'storegrowth-sales-booster' ) }
                 />
                 <ColourPicker
                     name={ `box_border_color` }
                     changeHandler={ onFieldChange }
                     fieldValue={ createBumpData.box_border_color }
                     title={ __( 'Border Color', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The color of the order bump color.', 'storegrowth-sales-booster' ) }
                 />
                 <Number
-                    min={ 1 }
+                    min={ 0 }
                     max={ 20 }
                     style={ { width: 100 } }
                     name={ `box_top_margin` }
@@ -57,8 +59,9 @@ const TemplateSection = ( { triggerBumpUpdate } ) => {
                     fieldValue={ createBumpData.box_top_margin }
                     title={ __('Top Margin', 'storegrowth-sales-booster' ) }
                 />
+                {console.log(createBumpData)}
                 <Number
-                    min={ 1 }
+                    min={ 0 }
                     max={ 20 }
                     style={ { width: 100 } }
                     name={ `box_bottom_margin` }
@@ -76,12 +79,14 @@ const TemplateSection = ( { triggerBumpUpdate } ) => {
                     name={ `discount_background_color` }
                     fieldValue={ createBumpData.discount_background_color }
                     title={ __( 'Background Color', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The background color of the discount heading.', 'storegrowth-sales-booster' ) }
                 />
                 <ColourPicker
                     name={ `discount_text_color` }
                     changeHandler={ onFieldChange }
                     fieldValue={ createBumpData.discount_text_color }
                     title={ __( 'Text Color', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The text color of the discount text.', 'storegrowth-sales-booster' ) }
                 />
                 <Number
                     min={ 12 }
@@ -102,6 +107,7 @@ const TemplateSection = ( { triggerBumpUpdate } ) => {
                     name={ `product_description_text_color` }
                     fieldValue={ createBumpData.product_description_text_color }
                     title={ __( 'Text Color', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The text color of the product.', 'storegrowth-sales-booster' ) }
                 />
                 <Number
                     min={ 14 }
