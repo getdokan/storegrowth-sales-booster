@@ -16,7 +16,6 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
-import { Link, Navigate } from "react-router-dom";
 import { __ } from "@wordpress/i18n";
 import ActivationAlert from "./ActivationAlert";
 
@@ -111,7 +110,7 @@ function Modules() {
   }, [filterActiveModules, allModules]);
 
   const handleLiClick = (routeName) => {
-    const link = `admin.php?page=sgsb-settings#${routeName}`;
+    const link = `admin.php?page=sgsb-settings#/${routeName}`;
     window.location.href = link;
   };
 
