@@ -55,7 +55,7 @@ class Enqueue_Script {
 
 		$dir_checkout_settings = get_option( 'sgsb_direct_checkout_settings' );
 		$checkout_redirect     = sgsb_find_option_setting( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
-		$is_checkout_redirect  = ( $checkout_redirect === 'quick-cart-checkout' );
+		$is_checkout_redirect  = ( 'quick-cart-checkout' === $checkout_redirect );
 		wp_localize_script(
 			'sgsb-dc-script',
 			'sgsbDcFrontend',
@@ -89,7 +89,7 @@ class Enqueue_Script {
 			false
 		);
 		$sgsb_active_module_ids  = get_option( 'sgsb_active_module_ids' );
-		$is_quick_cart_activated = array_key_exists( 'fly-cart', $sgsb_active_module_ids );
+		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $sgsb_active_module_ids );
 		wp_localize_script(
 			'sgsb-direct-checkout-settings',
 			'sgsbAdminQuickCartValidate',

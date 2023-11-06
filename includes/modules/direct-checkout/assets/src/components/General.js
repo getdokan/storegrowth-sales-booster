@@ -18,9 +18,7 @@ function General({ onFormSave, upgradeTeaser }) {
       getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
     })
   );
-  const isQuickCartActive = sgsbAdminQuickCartValidate.isQuickCartActivated
-    ? false
-    : true;
+  const isQuickCartActive = sgsbAdminQuickCartValidate.isQuickCartActivated;
   const onFieldChange = (key, value) => {
     setCreateFromData({
       ...createDirectCheckoutFormData,
@@ -74,7 +72,7 @@ function General({ onFormSave, upgradeTeaser }) {
     {
       value: "quick-cart-checkout",
       label: __("Quick Cart Checkout", "storegrowth-sales-booster"),
-      needUpgrade:upgradeTeaser,
+      needUpgrade: upgradeTeaser,
       disabled: isQuickCartActive,
     },
   ];
