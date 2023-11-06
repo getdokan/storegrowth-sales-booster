@@ -176,15 +176,11 @@ class Enqueue_Script {
 
 			// Prepare woocommerce price data.
 			$price = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
-			$price = str_replace(
-				array( '<span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">', '</span>', '</bdi>' ),
-				'',
-				html_entity_decode( wc_price( $price ) )
-			);
+			$price = wp_strip_all_tags( html_entity_decode( wc_price( $price ) ) );
 
 			// Render woocommerce price with currency symbol.
 			$_product_price  = ' (' . $price . ')';
-			$currency_symbol = html_entity_decode( get_woocommerce_currency_symbol() );
+			$currency_symbol = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
 
 			// Offer product categories.
 			// Collect offer product categories.
