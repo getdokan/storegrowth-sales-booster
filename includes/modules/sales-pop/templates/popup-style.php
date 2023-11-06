@@ -36,7 +36,7 @@ $image_style         = "border-radius:$image_border_radius" . 'px';
 $time_color       = $popup_properties['time_text_color'];
 $time_font_size   = $popup_properties['time_text_font_size'] . 'px';
 $time_font_weight = $popup_properties['time_text_font_weight'];
-$time_style       = "color:$time_color;font-size:$time_font_size;font-weight:$name_font_weight";
+$time_style       = "color:$time_color;font-size:$time_font_size;font-weight:$time_font_weight";
 
 // Image spacing.
 $image_spacing = $popup_properties['spacing_around_image'];

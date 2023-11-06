@@ -60,6 +60,7 @@ function Message( { onFormSave, upgradeTeaser } ) {
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Message Popup', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'Enter Message Popup', 'storegrowth-sales-booster' ) }
+          renderTextAreaContent={true}
         />
       </SettingsSection>
 

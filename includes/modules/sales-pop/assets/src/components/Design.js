@@ -116,7 +116,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
           />
 
           {/* name text */ }
-          <TextDesign
+          {/* <TextDesign
             createPopupForm={ createPopupFormData }
             onFieldChange={ onFieldChange }
             textTitle='Shop Name Text'
@@ -126,7 +126,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.name_text_font_size }
             fontWeightName='name_text_font_weight'
             fontWeight={ createPopupFormData.name_text_font_weight }
-          />
+          /> */}
         </Fragment>
       ) }
 
