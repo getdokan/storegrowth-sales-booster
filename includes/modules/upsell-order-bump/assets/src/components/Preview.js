@@ -8,13 +8,17 @@ const { Title } = Typography;
 const Preview = ( { storeData } ) => {
     const offerAmount = storeData?.offer_amount ? storeData?.offer_amount : '(?)';
     const product_image_url = products_and_categories?.product_list_for_view[storeData.offer_product]?.image_url;
+    const addCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find( simpleProduct => simpleProduct?.value === parseInt( storeData.offer_product ) );
-    let discountedPrice = parseInt( storeData?.offer_amount )?.toFixed( 2 );
+    let discountedPrice = parseFloat( storeData?.offer_amount )?.toFixed( 2 );
 
     if ( storeData?.offer_type === 'discount' ) {
-        const productPrice = parseInt( product?.price?.replace( product?.currency, '' ) ),
-            discountPercent = ( parseInt( storeData?.offer_amount + '%' ) / 100 );
+        const currencySymbol = product?.currency;
+        const productPrice = parseFloat( product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), '')),
+            discountPercent = ( parseFloat( storeData?.offer_amount + '%' ) / 100 );
         discountedPrice = ( productPrice - ( productPrice * discountPercent ) )?.toFixed( 2 );
     }
 
@@ -112,7 +116,7 @@ const Preview = ( { storeData } ) => {
                         fontSize: `${ storeData?.product_description_font_size }px`,
                     } }
                 >
-                    { !isNaN( discountedPrice ) ? ( product?.currency + discountedPrice ) : __( '$87.00', 'storegrowth-sales-booster' ) }
+                    { !isNaN(discountedPrice) ? ( product?.currency + addCommas(discountedPrice) ) : __( '$87.00', 'storegrowth-sales-booster' ) }
                 </div>
                 <div
                     className={ `product-selection-icon` }

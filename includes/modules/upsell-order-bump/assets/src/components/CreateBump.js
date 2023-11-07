@@ -265,7 +265,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     },
     {
       key: 'design',
-      title: __( 'Design Section', 'storegrowth-sales-booster' ),
+      title: __( 'Design', 'storegrowth-sales-booster' ),
       panel: <DesignSection triggerBumpUpdate={ setBumpUpdate } />,
     },
   ];
