@@ -30,7 +30,7 @@ function ActionButton({ navigate, bump_id }) {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   return (
-    <Fragment style={{ display: "flex", gap: 8 }}>
+    <Fragment>
       <Button
         shape="round"
         size="small"
