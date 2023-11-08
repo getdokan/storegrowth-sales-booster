@@ -65,10 +65,11 @@ const BasicInfo = ({ clearErrors, triggerBumpUpdate }) => {
       const product = simpleProductForOffer.find(
         (item) => item?.value === offerProductId
       );
-      const productPrice = product?.price?.replace(product?.currency, "");
+      const currencySymbol = product?.currency;
+      const productPrice = product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), '');
       if (
         createBumpData.offer_type === "price" &&
-        parseInt(productPrice) < value
+        parseFloat(productPrice) < value
       ) {
         return notification["error"]({
           message: __(
