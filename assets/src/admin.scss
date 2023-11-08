@@ -2696,7 +2696,6 @@ End Settings Sidebar
 
   .panel-container {
     padding: 0 30px;
-    overflow: hidden;
     position: relative;
 
     .row-divider {
@@ -2709,33 +2708,42 @@ End Settings Sidebar
       margin-top: 30px;
     }
 
-    .touch-preview-container {
+    .touch-preview-panel {
       top: 0;
       right: 0;
-      display: flex;
+      z-index: 1;
       margin-top: 12px;
       position: absolute;
-      align-items: center;
 
-      .preview-button {
-        width: 50px;
-        height: 40px;
+      .touch-preview-container {
         display: flex;
-        background: #0875FF;
         align-items: center;
-        align-self: self-start;
-        justify-content: center;
-        border-radius: 20px 0 0 20px;
-        box-shadow: 0 0 8px 4px #00000014;
-      }
 
-      .touch-preview {
-        width: 400px;
-        padding: 20px;
-        border-radius: 0;
-        background: white;
-        min-height: 100vh;
-        box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.0784313725);
+        .preview-button {
+          width: 50px;
+          height: 40px;
+          display: flex;
+          background: #0875FF;
+          align-items: center;
+          align-self: self-start;
+          justify-content: center;
+          border-radius: 20px 0 0 20px;
+          box-shadow: 0 0 8px 4px #00000014;
+        }
+
+        .touch-preview {
+          padding: 20px;
+          background: white;
+          min-height: 100vh;
+          border-bottom-left-radius: 20px;
+          box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.0784313725);
+        }
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .touch-preview-panel {
+        display: none;
       }
     }
 
@@ -2750,12 +2758,6 @@ End Settings Sidebar
       }
 
       .row-divider {
-        display: none;
-      }
-    }
-
-    @media screen and (min-width: 1024px) {
-      .touch-preview-container {
         display: none;
       }
     }

@@ -12,6 +12,7 @@ import Preview from "./Preview";
 import { createBumpForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import OverViewArea from "./appearance/template/overview-area/OverViewArea";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
@@ -294,6 +295,11 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             </PanelPreview>
           ) }
         </PanelRow>
+
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 400 }>
+          <Preview storeData={ createBumpData } />
+        </TouchPreview>
 
         { ( isDuplicateCatsFound || isDuplicateProductsFound ) &&
           notification['error'] ( {

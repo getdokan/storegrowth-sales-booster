@@ -18,6 +18,7 @@ import PanelContainer from "../../../../../../assets/src/components/settings/Pan
 import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
 import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
   const { setPageLoading } = useDispatch("sgsb");
@@ -220,6 +221,10 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
             </PanelPreview>
           )}
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 550 }>
+          <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+        </TouchPreview>
       </PanelContainer>
     </Fragment>
   );
