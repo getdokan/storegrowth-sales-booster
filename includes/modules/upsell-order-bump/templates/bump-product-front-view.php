@@ -27,12 +27,14 @@
 				</svg>
 			<?php
 			echo 'discount' === $offer_type ? '&nbsp;' . esc_attr( $offer_amount . $bump_info->offer_discount_title ) : esc_attr( $offer_amount ) . '.00' . esc_attr( $bump_info->offer_fixed_price_title );
+			$fallback_image_url = esc_url( plugin_dir_url( __FILE__ ) . '../assets/images/bump-preview.svg' );
+			$image_url          = 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;
 			?>
 			</div>
 			<div class="product-image-and-title">
 				<div class="offer-product-image-title">
 				<div class="offer-product-image">
-					<img src="<?php echo esc_attr( $bump_info->offer_image_url ); ?>" width='70' alt="" />	
+					<img src="<?php echo esc_attr( $image_url ); ?>" width='70' alt="" />	
 				</div>
 				<div class="offer-product-title" 
 				style = "

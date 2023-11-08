@@ -71,7 +71,7 @@
 
 .offer-main-wrap .dynamic-offer-text{
   gap: 4px;
-  width: 100%;
+  max-width: 100%;
   display: flex;
   min-height: 33px;
   font-weight: bold;
@@ -114,7 +114,7 @@
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-image img{
-  width: 120px;
+  max-width: 100%;
   border-radius: 10px;
 }
 
