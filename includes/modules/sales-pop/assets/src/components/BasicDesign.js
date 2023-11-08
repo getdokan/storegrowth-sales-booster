@@ -39,6 +39,7 @@ const BasicDesign = (props) => {
                     changeHandler={ props.onFieldChange }
                     isEnable={ Boolean( props.createPopupForm.image_style ) }
                     title={ __( 'Image Style', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Will be able to achieve the control of the image style in the popup.', 'storegrowth-sales-booster' ) }
                 />
                 { Boolean( props.createPopupForm.image_style ) && (
                     <Fragment>
@@ -51,6 +52,7 @@ const BasicDesign = (props) => {
                             fieldValue={ props.createPopupForm.spacing_around_image }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Image Spacing', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Apply spacing around the image.', 'storegrowth-sales-booster' ) }
                             placeHolderText={ __( 'Enter the gap of popup image content', 'storegrowth-sales-booster' ) }
                         />
                         <Number
@@ -62,6 +64,7 @@ const BasicDesign = (props) => {
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             fieldValue={ props.createPopupForm.popup_image_border_radius }
                             title={ __( 'Image Radius', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Apply radius around the image.', 'storegrowth-sales-booster' ) }
                             placeHolderText={ __( 'Enter border radius of popup', 'storegrowth-sales-booster' ) }
                         />
                         <SelectBox
@@ -72,6 +75,7 @@ const BasicDesign = (props) => {
                             fieldValue={ props.createPopupForm.image_position }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Image Position', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Define the position of the image in the popup it can be either ‘left’ or ‘right’.', 'storegrowth-sales-booster' ) }
                         />
                         <Number
                             min={ 1 }
@@ -81,6 +85,7 @@ const BasicDesign = (props) => {
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             fieldValue={ props.createPopupForm.popup_image_width }
                             title={ __( 'Image Width', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Change the width size of the image.', 'storegrowth-sales-booster' ) }
                         />
                     </Fragment>
                 ) }
@@ -89,6 +94,7 @@ const BasicDesign = (props) => {
                     changeHandler={ props.onFieldChange }
                     title={ __( 'Popup Style', 'storegrowth-sales-booster' ) }
                     isEnable={ Boolean( props.createPopupForm.popup_style ) }
+                    tooltip={ __( 'Will be able to achieve the control of the popup style in the popup.', 'storegrowth-sales-booster' ) }
                 />
                 { Boolean( props.createPopupForm.popup_style ) && (
                     <Fragment>
@@ -98,6 +104,7 @@ const BasicDesign = (props) => {
                             fieldValue={ props.createPopupForm.background_color }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Background Color', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Set a background color for the pop up', 'storegrowth-sales-booster' ) }
                         />
                         <SelectBox
                             name={ `popup_position` }
@@ -106,6 +113,7 @@ const BasicDesign = (props) => {
                             fieldValue={ props.createPopupForm.popup_position }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Popup Position', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Set the position of the popup in the store.', 'storegrowth-sales-booster' ) }
                         />
                         <Number
                             min={ 1 }
@@ -116,6 +124,7 @@ const BasicDesign = (props) => {
                             fieldValue={ props.createPopupForm.popup_border_radius }
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Border radius', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Set border radius for the popup.', 'storegrowth-sales-booster' ) }
                             placeHolderText={ __( 'Enter border radius of popup', 'storegrowth-sales-booster' ) }
                         />
                         <Number
@@ -128,6 +137,7 @@ const BasicDesign = (props) => {
                             changeHandler={ upgradeTeaser ? noop : props.onFieldChange }
                             title={ __( 'Popup Width', 'storegrowth-sales-booster' ) }
                             placeHolderText={ __( 'Enter popup with', 'storegrowth-sales-booster' ) }
+                            tooltip={ __( 'Set the width of the popup.', 'storegrowth-sales-booster' ) }
                         />
                     </Fragment>
                 ) }
@@ -140,6 +150,7 @@ const BasicDesign = (props) => {
                     name={ 'open_product_link_in_new_tab' }
                     isEnable={ Boolean( props.createPopupForm.open_product_link_in_new_tab ) }
                     title={ __( 'Open product link in new tab', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'By clicking on the product the link will open in the new tab.', 'storegrowth-sales-booster' ) }
                 />
                 <Switcher
                     needUpgrade={ upgradeTeaser }
@@ -147,18 +158,21 @@ const BasicDesign = (props) => {
                     changeHandler={ props.onFieldChange }
                     isEnable={ Boolean( props.createPopupForm.link_image_to_product ) }
                     title={ __( 'Link image to product page', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The image will have an embedded link that will take to the product page.', 'storegrowth-sales-booster' ) }
                 />
                 <Switcher
                     name={ 'show_close_button' }
                     changeHandler={ props.onFieldChange }
                     isEnable={ Boolean( props.createPopupForm.show_close_button ) }
                     title={ __( 'Show close button', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The visibility control of the close button.', 'storegrowth-sales-booster' ) }
                 />
                 <Switcher
                     name={ 'text_style' }
                     changeHandler={ props.onFieldChange }
                     isEnable={ Boolean( props.createPopupForm.text_style ) }
                     title={ __( 'Text Style', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'By enabling  to control the styling of the text in the sales pop.', 'storegrowth-sales-booster' ) }
                 />
             </SettingsSection>
 		</>

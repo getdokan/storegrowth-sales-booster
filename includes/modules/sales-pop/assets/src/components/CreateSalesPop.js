@@ -1,5 +1,3 @@
-import { Button } from 'antd';
-
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { __ } from "@wordpress/i18n";
@@ -12,6 +10,7 @@ import {Fragment} from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import VisibilityControl from './VisibilityControl';
+import OrderProductCount from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: Upgrade to add more than 5 names</span>;
 
@@ -23,23 +22,13 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
     getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
   }) );
 
-  const onFieldChange = ( key, value ) => {
-    setCreateFromData( {
-      ...createPopupFormData,
-      [ key ]: value,
-    } );
-  };
-
   const onFormReset = () => {
     setCreateFromData( { ...createPopupForm } );
   }
 
   const productSources = [
-    { value: 0, label: __( 'Get from Billing', 'storegrowth-sales-booster' ) },
+    { value: 0, label: __( 'Latest Orders', 'storegrowth-sales-booster' ) },
     { value: 1, label: __( 'Select Products', 'storegrowth-sales-booster' ) },
-    { value: 2, label: __( 'Latest Products', 'storegrowth-sales-booster' ) },
-    { value: 3, label: __( 'Select Categories', 'storegrowth-sales-booster' ) },
-    { value: 4, label: __( 'Recent Viewed Products', 'storegrowth-sales-booster' ) },
   ];
 
   const pageOptions = [
@@ -72,10 +61,6 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
       tooltip: __("", "storegrowth-sales-booster"),
     },
   ];
-
-  const product_categories = Object.entries( sales_pop_data.product_list.categoryListForSelect )?.map(
-    ( [ value, label ] ) => ( { value: parseInt( value ), label } )
-  );
 
   const max_option_count_in_free = 5;
   const externalLink = createPopupFormData.external_link;
@@ -123,6 +108,27 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
     !virtualLocationsFormVal && "" !== virtualLocationsFormVal
       ? virtualLocationPlaceHolder
       : virtualLocationsFormVal;
+
+    const onFieldChange = ( key, value ) => {
+      const formData = {
+        ...createPopupFormData,
+        [ key ]: value,
+      };
+
+      // Handle number of orders for latest product.
+      if ( key === 'number_of_orders' ) {
+        formData.popup_products = productListForSelect?.slice(0, value)
+          ?.map( product => product?.value );
+      }
+
+      // Reset source infos when source changed.
+      if ( key === 'product_source' ) {
+        formData.popup_products = [];
+        formData.number_of_orders = 0;
+      }
+
+      setCreateFromData( { ...formData } );
+    };
   
   return (
     <Fragment>
@@ -140,6 +146,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           changeHandler={ onFieldChange }
           isEnable={ Boolean( createPopupFormData.product_random ) }
           title={ __( 'Product Show Random', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Selected products will show randomly instead of showing sequentially.', 'storegrowth-sales-booster' ) }
         />
         <SelectBox
           fieldWidth={ `100%` }
@@ -149,24 +156,32 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           classes={ `search-single-select` }
           fieldValue={ productSources?.[ createPopupFormData.product_source ] }
           title={ __( 'Product Source', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'The source of the products that are to be shown in the sales pop.', 'storegrowth-sales-booster' ) }
         />
-        <MultiSelectBox
-          name={ 'popup_products' }
-          changeHandler={ onFieldChange }
-          options={ productListForSelect }
-          fieldValue={ selectedPopupProducts.map( Number ) }
-          needUpgrade={ isProductsSelectReachedlimit? upgradeTeaser : false }
-          title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
-        />
-        { createPopupFormData?.product_source === 3 && (
-          <MultiSelectBox
-            name={ 'target_categories' }
+        { parseInt( createPopupFormData?.product_source ) === 0 && (
+          <OrderProductCount
+            min={ 0 }
+            name={ `number_of_orders` }
+            fieldValue={ createPopupFormData.number_of_orders }
+            max={ productListForSelect?.length }
+            disabled={ !productListForSelect?.length }
             changeHandler={ onFieldChange }
-            fieldValue={ createPopupFormData.target_categories.map( Number ) }
-            options={ product_categories }
-            title={ __( 'Select Target Categories', 'storegrowth-sales-booster' ) }
-            placeHolderText={ __( 'Search for Categories', 'storegrowth-sales-booster' ) }
+            title={  __( 'Number of Orders', 'storegrowth-sales-booster' ) }
+            style={ { width: 100, padding: '4px 0' } }
+            tooltip={ __( 'Number of latest orders that are to be shown in the sales pop.', 'storegrowth-sales-booster' ) }
+          />
+        ) }
+
+        { parseInt( createPopupFormData?.product_source ) === 1 && (
+          <MultiSelectBox
+            name={ 'popup_products' }
+            changeHandler={ onFieldChange }
+            options={ productListForSelect }
+            fieldValue={ selectedPopupProducts?.map( Number ) }
+            needUpgrade={ isProductsSelectReachedlimit? upgradeTeaser : false }
+            title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }
+            placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
+            tooltip={ __( 'The selected products that are to be shown in the sales pop.', 'storegrowth-sales-booster' ) }
           />
         ) }
         {(isFirstNameReachedLimit || isFirstNameExceededLimit) && <WarningMessage warningColor={isFirstNameExceededLimit ? "#f00" : false} />}
@@ -190,7 +205,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
           placeholder={ virtualLocationPlaceHolder }
           title={ __( 'Virtual Location', 'storegrowth-sales-booster' ) }
           placeHolderText={ __( 'New York City, New York, USA\n' +
-              'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
+            'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
           tooltip={ __( 'Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster' ) }
         />
       </SettingsSection>

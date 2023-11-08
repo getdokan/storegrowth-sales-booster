@@ -22,8 +22,9 @@ const TextDesign = (props) => {
 	return (
 		<>
             <SectionHeader
+                tooltip={ props?.tooltip }
                 showUpgrade={ upgradeTeaser }
-                title={ __( props.textTitle, 'storegrowth-sales-booster' ) }
+                title={ __( props?.textTitle, 'storegrowth-sales-booster' ) }
             />
             <SettingsSection>
                 <ColourPicker

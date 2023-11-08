@@ -53,7 +53,7 @@
 				return notification_count % product_image.length;
 			}
 		}
-			
+
 	function popupContentGenerator() {
 		var nameRandom            = Math.floor( virtual_name.length*Math.random() );
 		var countryRandom         = Math.floor( countryArray.length*Math.random() );
@@ -62,9 +62,9 @@
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
 		$('#country').html( countryArray[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
-    $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
-    $('#product').text( products[ productAndImage ] );
-    $('#product').css({ fontWeight: popup_all_properties.product_title_font_weight });
+        $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
+        $('#product').text( products[ productAndImage ] );
+        $('#product').css({ fontWeight: popup_all_properties.product_title_font_weight });
 		$("#product_url_title").attr( "href", product_url[ productAndImage ] );
 		var timeVal = Math.floor(Math.random() * 59);
 		$('#time').text( timeVal );
@@ -91,12 +91,19 @@
 			$(".custom-social-proof").css('left', '20px');
 			$(".custom-social-proof").css('transition', 'bottom 1.2s ease');
 		}
-		notification_count++;
-		setTimeout( popDownContentGenerator, display_time*1000 );
-	}
-	
-	function popDownContentGenerator() {
 
+		notification_count++;
+        // Handle popup rendering if recurring disabled.
+        if ( !popup_all_properties?.loop && notification_count === ( popup_all_properties?.popup_products?.length + 1 ) ) {
+            $(".custom-social-proof").remove();
+            return;
+        }
+
+        setTimeout( popDownContentGenerator, display_time*1000 );
+	}
+
+
+    function popDownContentGenerator() {
 		if ( popup_position == 'right_top' || popup_position == 'left_top') {
 			$(".custom-social-proof").css('top', '-150px');
 		}
@@ -107,13 +114,13 @@
 		}
 
 		if ( notification_count > notification_per_page) {
-			return ;
-		} else{
-			setTimeout( popupContentGenerator, next_time_display*1000 ); 
+			return;
 		}
+
+        setTimeout( popupContentGenerator, next_time_display*1000 );
 	}
 
-	var testMessage = message_popup.replaceAll(/\s+/g,' ').trim();
+    var testMessage = message_popup.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replace('{product_title}', $("#popup_title").html());
 	var testMessage = testMessage.replace('{virtual_name}', $("#popup_virtual_name").html());
 	var testMessage = testMessage.replace('{location}',$("#popup_location").html());
