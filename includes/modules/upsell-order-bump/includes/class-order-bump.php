@@ -68,7 +68,7 @@ class Order_Bump {
 			$_product      = wc_get_product( $offer_product_id );
 			$regular_price = $_product->get_regular_price();
 			if ( 'discount' === $offer_type ) {
-				$offer_price = ceil( intval( $regular_price ) - intval( $regular_price * $offer_amount ) / 100 );
+				$offer_price = ( $regular_price - ( $regular_price * $offer_amount / 100 ) );
 			} else {
 				$offer_price = $offer_amount;
 			}

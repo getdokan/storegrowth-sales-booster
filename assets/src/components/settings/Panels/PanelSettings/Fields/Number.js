@@ -48,7 +48,7 @@ const Number = ({
           max={max}
           placeholder={placeHolderText}
           disabled={needUpgrade || disabled}
-          value={fieldValue ? fieldValue : ""}
+          value={fieldValue ? fieldValue : 0}
           className={`settings-field number-field`}
           onChange={(value) => changeHandler(name, value)}
         />
