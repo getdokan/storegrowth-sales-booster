@@ -17,6 +17,7 @@ import Layout1 from "../../images/layout/layout-1.svg";
 import Layout2 from "../../images/layout/layout-2.svg";
 import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function SalesCountdownLayout({ navigate, useSearchParams }) {
   const isProEnabled = sgsbAdmin.isPro;
@@ -198,6 +199,10 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
             </PanelPreview>
           )}
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview>
+          <Preview formData={ formData } />
+        </TouchPreview>
       </PanelContainer>
     </Fragment>
   );
