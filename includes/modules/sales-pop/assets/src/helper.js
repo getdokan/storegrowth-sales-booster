@@ -67,6 +67,7 @@ export const createPopupForm = {
     external_link                : false,
     product_random               : false,
     product_source               : '1',
+    number_of_orders             : 0,
     virtual_name                 : [],
     virtual_time				 : 1,
     address                      : ['real'],

@@ -30,9 +30,9 @@ const Preview = ( { storeData } ) => {
                 display: 'grid',
                 borderRadius: 10,
                 background: '#FFF',
-                marginTop: storeData?.box_top_margin,
-                marginBottom: storeData?.box_bottom_margin,
-                border: `1px ${ storeData?.box_border_style } ${ storeData?.box_border_color }`,
+                marginTop: parseInt( storeData?.box_top_margin ),
+                marginBottom: parseInt( storeData?.box_bottom_margin ),
+                border: storeData?.box_border_style !== 'no_border' ? `1px ${ storeData?.box_border_style } ${ storeData?.box_border_color }` : 0,
             } }
             className='bump-preview-wrapper'
         >

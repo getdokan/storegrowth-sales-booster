@@ -162,18 +162,13 @@ class Enqueue {
 	 */
 	public function product_list() {
 		// Set product list from sources.
-		$latest_products        = $this->get_latest_product_list();
-		$billing_products       = $this->get_billing_product_list();
-		$selection_products     = $this->get_selection_product_list();
-		$recent_viewed_products = $this->get_recently_viewed_product_list();
+		$billing_products   = $this->get_billing_product_list();
+		$selection_products = $this->get_selection_product_list();
 
 		// Make products array for select popup products from product source.
 		$products_array = array(
 			$billing_products,
 			$selection_products,
-			$latest_products,
-			$selection_products, // Use selection products as category products for getting all products and processing from frontend.
-			$recent_viewed_products,
 		);
 
 		$product_info            = array();
@@ -181,7 +176,7 @@ class Enqueue {
 		$product_title_by_id     = array();
 		$external_products_ids   = array();
 
-		for ( $index = 0; $index < 5; $index++ ) {
+		for ( $index = 0; $index < 3; $index++ ) {
 			// Set current source products.
 			$products = ! empty( $products_array[ $index ] ) ? $products_array[ $index ] : array();
 			if ( empty( $products ) ) {
@@ -212,11 +207,11 @@ class Enqueue {
 		}
 
 		// Set upsell product information & passed in frontend.
-		$product_info['productTitleById']            = $product_title_by_id;
-		$product_info['externalProductsIds']         = $external_products_ids;
-		$product_info['productListForSelect']        = $product_list_for_select;
-		$product_info['categoryListForSelect']       = $this->category_list();
-		$product_info['categoryProductIdsForSelect'] = $this->get_category_product_list();
+		$product_info['productTitleById']     = $product_title_by_id;
+		$product_info['externalProductsIds']  = $external_products_ids;
+		$product_info['productListForSelect'] = $product_list_for_select;
+        $product_info['categoryListForSelect']       = $this->category_list();
+        $product_info['categoryProductIdsForSelect'] = $this->get_category_product_list();
 
 		return $product_info;
 	}
@@ -232,7 +227,8 @@ class Enqueue {
 		// Get all orders.
 		$orders = wc_get_orders(
 			array(
-				'limit' => -1,
+				'limit'  => -1,
+				'status' => array( 'processing', 'completed', 'on-hold' ),
 			)
 		);
 

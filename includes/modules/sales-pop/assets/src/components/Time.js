@@ -48,6 +48,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
           isEnable={ Boolean( createPopupFormData.loop ) }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Loop', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'The product source will loop around in the sales pop.', 'storegrowth-sales-booster' ) }
         />
         <Number
           min={ 1 }

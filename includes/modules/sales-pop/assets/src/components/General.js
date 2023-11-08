@@ -35,6 +35,7 @@ function General( { onFormSave, upgradeTeaser } ) {
           changeHandler={ onFieldChange }
           title={ __( 'Enable Popup', 'storegrowth-sales-booster' ) }
           isEnable={ (createPopupFormData.enable == 'true' || createPopupFormData.enable == true) ? true : false }
+          tooltip={ __( 'By enabling the sales pop will show in the store.', 'storegrowth-sales-booster' ) }
         />
         <Switcher
           colSpan={ 12 }
@@ -42,6 +43,7 @@ function General( { onFormSave, upgradeTeaser } ) {
           needUpgrade={ upgradeTeaser }
           changeHandler={ upgradeTeaser ? noop : onFieldChange }
           title={ __( 'Popup in Mobile', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'By enabling the pop up will be visible in the mobile devices.', 'storegrowth-sales-booster' ) }
           isEnable={ (createPopupFormData.mobile_view == 'true' || createPopupFormData.mobile_view == true) ? true : false }
         />
       </SettingsSection>

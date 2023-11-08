@@ -4,7 +4,7 @@ const SettingsTooltip = ( { content } ) => {
     return (
         // Make re-usable tooltip for settings.
         <Tooltip placement="top" title={ content }>
-            <div className={ `settings-tooltip` }>
+            <div className={ `settings-tooltip` } style={ { display: 'flex' } }>
                 <svg width="12" height="13" fill="none">
                     <path
                         fill="#73829d"
