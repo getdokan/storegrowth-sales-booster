@@ -6,7 +6,7 @@ import SingleCheckBox from "../../../../../../assets/src/components/settings/Pan
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
-import {createDirectCheckoutForm} from "../helper"
+import { createDirectCheckoutForm } from "../helper";
 
 function General({ onFormSave, upgradeTeaser }) {
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
@@ -18,10 +18,10 @@ function General({ onFormSave, upgradeTeaser }) {
       getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
     })
   );
-
+  const isQuickCartActive = sgsbAdminQuickCartValidate.isQuickCartActivated;
   const onFieldChange = (key, value) => {
     setCreateFromData({
-      ...createDirectCheckoutForm,
+      ...createDirectCheckoutFormData,
       [key]: value,
     });
   };
@@ -29,7 +29,7 @@ function General({ onFormSave, upgradeTeaser }) {
   const onFormReset = () => {
     setCreateFromData({ ...createDirectCheckoutForm });
   };
-  
+
   const noop = () => {};
 
   const checkboxesOption = [
@@ -65,8 +65,16 @@ function General({ onFormSave, upgradeTeaser }) {
 
   // Define select options
   const selectOptions = [
-    { value: 'legacy-checkout', label: __( 'Legacy Checkout', 'storegrowth-sales-booster' ) },
-    { value: 'quick-cart-checkout', label: __( 'Quick Cart Checkout', 'storegrowth-sales-booster' ), disabled: upgradeTeaser },
+    {
+      value: "legacy-checkout",
+      label: __("Legacy Checkout", "storegrowth-sales-booster"),
+    },
+    {
+      value: "quick-cart-checkout",
+      label: __("Quick Cart Checkout", "storegrowth-sales-booster"),
+      needUpgrade: upgradeTeaser,
+      disabled: isQuickCartActive,
+    },
   ];
 
   return (
@@ -97,16 +105,20 @@ function General({ onFormSave, upgradeTeaser }) {
         />
 
         <SelectBox
-          fieldWidth={ upgradeTeaser ? 250 : 170 }
-          name={ "checkout_redirect" }
-          fieldValue={ upgradeTeaser ? 'legacy-checkout' : createDirectCheckoutFormData.checkout_redirect }
-          changeHandler={ upgradeTeaser ? noop : onFieldChange }
-          title={ __( 'Checkout Redirect', 'storegrowth-sales-boooster' ) }
+          fieldWidth={upgradeTeaser ? 250 : 170}
+          name={"checkout_redirect"}
+          fieldValue={
+            upgradeTeaser
+              ? "legacy-checkout"
+              : createDirectCheckoutFormData.checkout_redirect
+          }
+          changeHandler={upgradeTeaser ? noop : onFieldChange}
+          title={__("Checkout Redirect", "storegrowth-sales-boooster")}
           tooltip={__(
             "Select the type of checkout redirection",
             "storegrowth-sales-booster"
-          ) }
-          options={ selectOptions }
+          )}
+          options={selectOptions}
         />
 
         <SingleCheckBox
@@ -123,7 +135,9 @@ function General({ onFormSave, upgradeTeaser }) {
         />
         <SingleCheckBox
           name={"product_page_checkout_enable"}
-          checkedValue={createDirectCheckoutFormData.product_page_checkout_enable}
+          checkedValue={
+            createDirectCheckoutFormData.product_page_checkout_enable
+          }
           className={`settings-field checkbox-field`}
           changeHandler={onFieldChange}
           title={__("Display on Product Page", "storegrowth-sales-booster")}
