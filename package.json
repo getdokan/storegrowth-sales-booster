@@ -43,5 +43,8 @@
     "fs": "^0.0.1-security",
     "jszip": "^3.10.1",
     "lerna": "^7.2.0"
+  },
+  "dependencies": {
+    "colorette": "^2.0.20"
   }
 }

@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import archiver from "archiver";
+import { green, blue } from 'colorette';
 
 async function recursiveReadDir(dir, excludedFiles) {
   let results = [];
@@ -70,10 +71,11 @@ async function archive() {
   });
 
   const output = fs.createWriteStream(outputPath);
-
   // Listen for close event to know when the archiving is done
   output.on("close", function () {
-    console.log(`Zip created successfully as ${outputFilename}. Size ${formatSize(archive.pointer())}`);
+    console.log(green(`Zip created successfully as ${outputFilename} `) +
+    " " +
+    blue(`Size ${formatSize(archive.pointer())}`));
     renameZipFileWithVersion(outputFilename);
   });
 
@@ -117,7 +119,7 @@ async function renameZipFileWithVersion(originalFileName) {
 
   try {
     await fs.promises.rename(path.resolve("../", currentFilename), newPath);
-    console.log(`Zip file renamed to ${newName}`);
+    console.log(`Zip file renamed to `+ blue(`${newName}`));
   } catch (err) {
     console.error("Error renaming the zip file:", err);
   }
