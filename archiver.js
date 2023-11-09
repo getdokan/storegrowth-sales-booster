@@ -49,7 +49,8 @@ function formatSize(size) {
 
 async function archive() {
   const folderPath = path.resolve(); // Use __dirname to get the directory of the script
-  const outputFilename = "storegrowth-sales-booster.zip";
+  const rootPathName = path.basename(folderPath);
+  const outputFilename = `${rootPathName}.zip`;
   const outputPath = path.resolve("../", outputFilename);
 
   // List of files and directories to exclude
@@ -73,7 +74,7 @@ async function archive() {
   // Listen for close event to know when the archiving is done
   output.on("close", function () {
     console.log(`Zip created successfully as ${outputFilename}. Size ${formatSize(archive.pointer())}`);
-    renameZipFileWithVersion();
+    renameZipFileWithVersion(outputFilename);
   });
 
   archive.pipe(output);
@@ -100,10 +101,10 @@ async function archive() {
   archive.finalize();
 }
 
-async function renameZipFileWithVersion() {
-  const currentFilename = "storegrowth-sales-booster.zip"; 
+async function renameZipFileWithVersion(originalFileName) {
+  let currentFilename = originalFileName; 
   let packageVersion = "unknown";
-
+  const filenameWithoutExtension = currentFilename.replace(/\.[^.]*$/, "");
   try {
     const packageJson = JSON.parse(await fs.promises.readFile("package.json"));
     packageVersion = packageJson.version;
@@ -111,7 +112,7 @@ async function renameZipFileWithVersion() {
     console.error("Error reading package.json:", err);
   }
 
-  const newName = `storegrowth-sales-booster-v${packageVersion}.zip`;
+  const newName = `${filenameWithoutExtension}-v${packageVersion}.zip`;
   const newPath = path.resolve("../", newName);
 
   try {
