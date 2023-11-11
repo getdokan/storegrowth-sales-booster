@@ -52,7 +52,7 @@ const Faq = () => {
           >
             <PanelContainer>
               <PanelRow>
-                <Col span={18}>
+                <Col span={18} className={ `dashboard-faq-page` }>
                 <div className="dashboard">
             {/* Render dashboard tabs. */}
             <DashboardTabs />
@@ -79,7 +79,7 @@ const Faq = () => {
             </div>
         </div>
                 </Col>
-                <Col span={6}>
+                <Col span={6} className={ `dashboard-faq-page` }>
                   <Promotion />
                 </Col>
               </PanelRow>

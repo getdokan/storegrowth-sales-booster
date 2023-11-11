@@ -1554,10 +1554,43 @@ End Settings Sidebar
       }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
+      .dashboard-overview-page {
+        max-width: 64%;
+      }
+
       .sgsb__module-pagination {
         padding-left: 8px !important;
 
+      }
+
+      .dashboard-faq-page {
+        .sgsb-promotion-block {
+          .request__feature-block {
+            margin: 120px 0px 0;
+
+            h4 {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+
+      .dashboard-pricing-page {
+        .dashboad-content,
+        .sg_pricing_table {
+          margin-top: 20px;
+        }
+
+        .sgsb-promotion-block {
+          .request__feature-block {
+            margin: 120px 0px 0;
+
+            h4 {
+              font-size: 16px;
+            }
+          }
+        }
       }
     }
 
@@ -1570,6 +1603,10 @@ End Settings Sidebar
     }
 
     @media (min-width: 992px) and (max-width: 1199px) {
+      .dashboard-overview-page {
+        max-width: 68%;
+      }
+
       .sgsb-module-card {
         .ant-card-body {
           &>div {
@@ -1580,6 +1617,12 @@ End Settings Sidebar
         }
       }
 
+      .dashboard-pricing-page {
+        .dashboad-content,
+        .sg_pricing_table {
+          margin-top: 20px;
+        }
+      }
     }
 
     @media (min-width: 1200px) and (max-width: 1300px) {
@@ -2759,6 +2802,16 @@ End Settings Sidebar
 
       .row-divider {
         display: none;
+      }
+
+      .sales-pop-template {
+        width: 70% !important;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .sales-pop-template {
+        width: 100% !important;
       }
     }
   }

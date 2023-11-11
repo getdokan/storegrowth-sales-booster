@@ -52,7 +52,7 @@ const Pricing = () => {
         >
           <PanelContainer>
             <PanelRow>
-              <Col span={18}>
+              <Col span={18} className={ `dashboard-pricing-page` }>
                 <div className="dashboard">
                   {/* Render dashboard tabs. */}
                   <DashboardTabs />
@@ -233,7 +233,7 @@ const Pricing = () => {
                   </div>
                 </div>
               </Col>
-              <Col span={6}>
+              <Col span={6} className={ `dashboard-pricing-page` }>
                 <Promotion />
               </Col>
             </PanelRow>
