@@ -33,7 +33,7 @@ const SettingInstruction = () => {
         <div>
           <button
             style={{
-              backgroundColor: "#3498db",
+              backgroundColor: "#0875ff",
               color: "#fff",
               padding: "10px 20px",
               border: "none",
