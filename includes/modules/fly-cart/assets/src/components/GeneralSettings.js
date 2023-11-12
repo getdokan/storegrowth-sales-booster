@@ -50,7 +50,7 @@ const GeneralSettings = ({
             <RadioBox
                 name={ `layout` }
                 fieldWidth={ true }
-                classes={ `radio-img-field` }
+                classes={ `radio-img-field quick-cart-layout` }
                 fieldValue={ formData.layout }
                 changeHandler={ onFieldChange }
                 options={ [ ...layoutOptions ] }

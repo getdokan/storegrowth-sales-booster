@@ -1577,6 +1577,7 @@ End Settings Sidebar
       }
 
       .dashboard-pricing-page {
+
         .dashboad-content,
         .sg_pricing_table {
           margin-top: 20px;
@@ -1618,6 +1619,7 @@ End Settings Sidebar
       }
 
       .dashboard-pricing-page {
+
         .dashboad-content,
         .sg_pricing_table {
           margin-top: 20px;
@@ -2298,10 +2300,22 @@ End Settings Sidebar
                     }
                   }
                 }
-
+                &.radio-icon-field{
+                  &.quick-icon-layout {
+                    @media (max-width: 1440px) {
+                      grid-template-rows: repeat(1, auto);
+                    }
+                }
+              }
                 &.radio-img-field {
                   height: 100%;
                   margin-top: 20px;
+
+                  &.quick-cart-layout {
+                    @media (max-width: 1440px) {
+                      grid-template-rows: repeat(1, auto);
+                    }
+                  }
 
                   label.ant-radio-button-wrapper {
                     color: #073B4C;
@@ -2399,7 +2413,7 @@ End Settings Sidebar
 
               span {
                 @media (max-width: 1440px) {
-                   display: none;
+                  display: none;
                 }
               }
 
