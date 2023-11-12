@@ -2167,7 +2167,7 @@ End Settings Sidebar
                 .ant-select-selector {
                   padding: 5px 10px;
                   border-radius: 5px;
-                  border-color: #DDE6F9;
+                  border-color: #0a4cda;
 
                   .ant-select-selection-overflow {
                     gap: 2px;
@@ -2177,6 +2177,7 @@ End Settings Sidebar
                     color: #073B4C;
                     background: #F6F9FF;
                   }
+
                 }
               }
 
@@ -2824,6 +2825,9 @@ End Settings Sidebar
         width: 100% !important;
       }
     }
+  }
+  input[type="search"]:focus{
+    box-shadow: none !important;
   }
 }
 

@@ -35,6 +35,7 @@ const CuponCode = ({
         <div style={{ marginTop: 40 }}>
           <span>Select Coupon</span>
           <Select
+            className="coupon-code-input-field"
             suffixIcon={<SearchOutlined />}
             // the coupon data is coming from the localize data.
             options={sgsb_fnb_coupon_data}

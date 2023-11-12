@@ -7,10 +7,11 @@ import { applyFilters } from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
 
 const Templates = ( { formData, setFormData } ) => {
+    let coutdownEnable = formData.countdown_show_enable;
     let templates = [
-        { key: 'notify_bar_one', component: <NotifyBarOne /> },
+        { key: 'notify_bar_one', component: <NotifyBarOne coutdownEnable={coutdownEnable} /> },
     ];
-
+    
     // List of shipping bar templates.
     templates = applyFilters(
         "sgsb_floating_notification_bar_templates",
