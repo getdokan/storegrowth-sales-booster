@@ -13,6 +13,7 @@ import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPrev
 
 import { Fragment } from "react";
 import Preview from "./Preview";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function FlyCart( { navigate, useSearchParams } ) {
   const { setPageLoading } = useDispatch("sgsb");
@@ -179,6 +180,10 @@ function FlyCart( { navigate, useSearchParams } ) {
             <Preview storeData={ formData } />
           </PanelPreview>
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 580 }>
+          <Preview storeData={ formData } />
+        </TouchPreview>
       </PanelContainer>
     </Fragment>
   );

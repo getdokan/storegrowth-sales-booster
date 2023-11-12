@@ -8,10 +8,9 @@
 
   //Dashboard tab container
   .dashboad-tab {
+    gap: 50px;
     list-style: none;
-    width: 50%;
     display: flex;
-    justify-content: space-between;
     padding: 0px;
     margin-bottom: 0px;
     margin: 0px;
@@ -592,6 +591,171 @@
     }
 
   }
+
+  @media (max-width: 1024px) {
+    .dashboad-tab {
+      gap: 35px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .dashboad-content {
+      margin-top: 30px;
+
+      .intro-section{
+        margin-top: 0;
+
+        .intro-section-text {
+          h3 {
+            font-size: 24px !important;
+            margin-top: 16px !important;
+          }
+        }
+      }
+
+      .info-section {
+        margin-top: 30px;
+
+        .info-section-containt {
+          display: block;
+
+          .documentation-section {
+            width: 100%;
+
+            .documentation-section-containt {
+              margin: 30px 35px;
+
+              h3 {
+                margin-top: 30px;
+              }
+
+              p {
+                margin-top: 20px;
+                margin-bottom: 35px;
+              }
+            }
+
+            &:first-child {
+              margin-bottom: 30px;
+            }
+          }
+        }
+      }
+
+      .request-features {
+        padding: 40px 35px;
+
+        h3 {
+          line-height: 1.5;
+          text-align: center;
+        }
+      }
+
+      .faqs_wrapper {
+        .ant-collapse-content-box {
+          width: 100%;
+        }
+
+        .faqs-heading {
+          margin-top: 30px;
+        }
+      }
+
+      .sg_pricing_table {
+        .sgsb-pricing-heading {
+          .gaurantee-badge {
+            right: 13vw;
+            bottom: 60px;
+          }
+
+          .loop-arrow {
+            right: 100px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .dashboad-content {
+      .intro-section {
+        .intro-section-text {
+          h3 {
+            font-size: 22px !important;
+            margin-top: 20px !important;
+          }
+        }
+      }
+
+      .faqs_wrapper {
+        .faqs-heading {
+          h4 {
+            font-size: 24px;
+          }
+        }
+
+        .ant-collapse-header {
+          font-size: 20px;
+        }
+
+        .ant-collapse-content {
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .sg_pricing_table {
+        .sgsb-pricing-heading {
+          h3 {
+            font-size: 24px;
+          }
+
+          .gaurantee-badge {
+            right: 15vw;
+          }
+        }
+
+        .sgsb-pricing-table-header,
+        .sgsb-pricing-table-header-popular {
+          .sg-package-title {
+            font-size: 16px !important;
+          }
+
+          .buy-button-normal,
+          .buy-button-popular {
+            font-size: 13px !important;
+            padding: 8px 8% !important;
+          }
+
+          .sgsb-pricing-data-content {
+            .yearly-price,
+            .monthly-price {
+              font-size: 24px !important;
+            }
+          }
+        }
+
+        td {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 430px) {
+    .dashboad-tab {
+      gap: 45px;
+      display: block;
+
+      .dashboad-tab-singel-overview,
+      .dashboad-tab-singel-pricing,
+      .dashboad-tab-singel-faqs {
+        display: flex;
+        margin-bottom: 10px;
+      }
+    }
+  }
 }
 
 // Promotion block design
@@ -623,7 +787,6 @@
     }
   }
 
-
   .request__feature-block {
     text-align: center;
     border-radius: 8px;
@@ -632,11 +795,6 @@
     padding: 57px 20px 25px;
     margin: 120px 8px 0;
     position: relative;
-
-    @media (min-width: 320px) and (max-width: 520px) {
-      margin-bottom: 60px;
-
-    }
 
     &:before {
       content: "";
@@ -649,19 +807,6 @@
       background-repeat: no-repeat;
       background-size: contain;
       background-position: bottom;
-
-      @media (min-width: 320px) and (max-width: 520px) {
-        background-size: cover;
-        bottom: -31px;
-
-      }
-
-      @media (min-width: 1441px) and (max-width: 2000px) {
-        background-size: cover;
-        left: -1.4px;
-        bottom: -31px;
-
-      }
     }
 
     .ant-image {
@@ -739,6 +884,69 @@
 
   }
 
+  @media (min-width: 320px) and (max-width: 520px) {
+    .request__feature-block {
+      margin-bottom: 60px;
+
+      &:before {
+        background-size: cover;
+        bottom: -31px;
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .sg_pro_btm_btm {
+      .ant-image {
+        width: 150px !important;
+      }
+    }
+
+    .request__feature-block {
+      margin-top: 82px;
+      padding: 50px 14px 25px;
+
+      h4 {
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 12px;
+      }
+
+      .ant-btn {
+        gap: 5px;
+        height: 32px;
+        padding: 0 6px;
+
+        span {
+          font-size: 12px;
+        }
+
+        .ant-image {
+          width: 14px !important;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sg_pro_btm_btm {
+      .ant-image {
+        width: 130px !important;
+      }
+    }
+  }
+
+  @media (min-width: 1441px) and (max-width: 2000px) {
+    .request__feature-block {
+      &:before {
+        background-size: cover;
+        left: -1.4px;
+        bottom: -31px;
+      }
+    }
+  }
 }
 
 // Pricing toggle switch style

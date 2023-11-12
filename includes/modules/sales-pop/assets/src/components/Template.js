@@ -79,7 +79,7 @@ const Template = ( { onFormSave } ) => {
         <Fragment>
             <Row gutter={ [ 16, 16 ] } style={ { marginBottom: 40, position: 'relative' } }>
                 { templateStyles && [ ...Array( 4 ).keys() ].map( index => (
-                    <Col onClick={ () => onFieldChange( index ) } key={ index } colSpan={ 12 } style={ { width: '50%' } }>
+                    <Col className={ `sales-pop-template` } onClick={ () => onFieldChange( index ) } key={ index } colSpan={ 12 } style={ { width: '50%' } }>
                         <div
                             style={ {
                                 cursor: 'pointer',

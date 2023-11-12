@@ -21,7 +21,7 @@ const Overview = () => {
         >
           <PanelContainer>
             <PanelRow>
-              <Col span={18}>
+              <Col span={18} className={ `dashboard-overview-page` }>
                 <div className="dashboard">
                   {/* Render dashboard tabs. */}
                   <DashboardTabs />
@@ -120,7 +120,7 @@ const Overview = () => {
                   </div>
                 </div>
               </Col>
-              <Col span={6}>
+              <Col span={6} className={ `dashboard-overview-page` }>
                 <Promotion />
               </Col>
             </PanelRow>
