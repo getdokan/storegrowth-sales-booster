@@ -166,7 +166,7 @@
           event.preventDefault();
           const productId = jQuery(event?.target).data("id");
           jQuery.ajax({
-            url: wc_add_to_cart_params.ajax_url,
+            url: sgsbFrontend.ajaxUrl,
             type: "POST",
             data: {
               action: "woocommerce_add_to_cart",
