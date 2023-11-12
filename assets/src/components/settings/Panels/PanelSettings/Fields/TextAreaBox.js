@@ -19,7 +19,8 @@ const TextAreaBox = ( {
     colSpan = 24,
     needUpgrade = false,
     upgradeOverlay =true,
-    inputRestrictor =false
+    inputRestrictor =false,
+    renderTextAreaContent =false
 } ) => {
     // Render textarea content after settings field, if needed.
     const renderAreaContent = applyFilters(
@@ -48,12 +49,12 @@ const TextAreaBox = ( {
                     disabled={ needUpgrade && upgradeOverlay }
                     placeholder={ placeHolderText }
                     value={ fieldValue ? fieldValue : '' }
-                    className={ `${ renderAreaContent !== '' ? 'field-gap' : '' } settings-field textarea-field` }
+                    className={ `${ renderTextAreaContent !== '' ? 'field-gap' : '' } settings-field textarea-field` }
                     onChange={ ( event ) => {inputRestrictor?
                     (event.nativeEvent.inputType==="deleteContentBackward"?changeHandler( name, event.target.value ):""):
                     changeHandler( name, event.target.value )} }
                 />
-                { renderAreaContent }
+                { renderTextAreaContent && renderAreaContent }
             </Col>
             <UpgradeOverlay /> 
         </FieldWrapper>

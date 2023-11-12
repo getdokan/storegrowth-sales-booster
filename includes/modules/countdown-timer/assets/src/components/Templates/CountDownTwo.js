@@ -60,7 +60,6 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            fontFamily    : 'Inter',
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -94,7 +93,7 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            fontFamily    : 'Inter',
+                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -128,7 +127,7 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            fontFamily    : 'Inter',
+                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -162,7 +161,7 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            fontFamily    : 'Inter',
+                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',

@@ -45,6 +45,7 @@ const DesignSettings = ({
                 name={ `icon_name` }
                 options={ [ ...iconOptions ] }
                 changeHandler={ onFieldChange }
+                classes={ `radio-icon-field quick-icon-layout` }
                 fieldValue={ formData.icon_name }
                 title={ __( `Cart Icon`, 'storegrowth-sales-booster' ) }
             />

@@ -15,6 +15,7 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import Preview from "./Preview";
 import Template from "./Template";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
 
@@ -145,6 +146,10 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
             </PanelPreview>
           ) }
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 350 }>
+          <Preview storeData={ createPopupForm } />
+        </TouchPreview>
       </PanelContainer>
     </>
   );

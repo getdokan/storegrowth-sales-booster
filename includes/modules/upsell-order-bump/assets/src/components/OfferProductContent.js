@@ -1,14 +1,18 @@
 import { __ } from "@wordpress/i18n";
 
 const OfferProductContent = ( { offerProduct, bumpItem } ) => {
+    const addCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find( simpleProduct => simpleProduct?.value === parseInt( bumpItem.offer_product ) );
-    let discountedPrice = parseInt( bumpItem?.offer_amount )?.toFixed( 2 );
-
+    let discountedPrice = parseFloat( bumpItem?.offer_amount )?.toFixed( 2 );
+    
     if ( bumpItem?.offer_type === 'discount' ) {
-        const productPrice = parseInt( product?.price?.replace( product?.currency, '' ) ),
-            discountPercent = ( parseInt( bumpItem?.offer_amount + '%' ) / 100 );
-        discountedPrice = ( productPrice - ( productPrice * discountPercent ) )?.toFixed( 2 );
+        const currencySymbol = product?.currency;
+        const productPrice = parseFloat(product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), ''));
+        const discountPercent = parseFloat(bumpItem?.offer_amount + '%') / 100;
+        discountedPrice = (productPrice - productPrice * discountPercent).toFixed(2);
     }
 
     return (
@@ -20,7 +24,7 @@ const OfferProductContent = ( { offerProduct, bumpItem } ) => {
             </span>
             <br/>
             <span style={ { marginBottom: 12, display: 'inline-block' } }>
-                { __( 'Discounted price: ', 'storegrowth-sales-booster' ) + product?.currency + discountedPrice }
+                { __( 'Discounted price: ', 'storegrowth-sales-booster' ) + product?.currency + addCommas(discountedPrice) }
             </span>
         </div>
     );

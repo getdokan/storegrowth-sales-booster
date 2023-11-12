@@ -4,6 +4,7 @@ import BasicDesign from './BasicDesign';
 import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createPopupForm } from "../helper";
+import {__} from "@wordpress/i18n";
 
 function Design( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -46,6 +47,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.normal_text_font_size }
             fontWeightName='normal_text_font_weight'
             fontWeight={ createPopupFormData.normal_text_font_weight }
+            tooltip={ __( 'Modify  the text style of the normal text in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* product name text*/ }
@@ -59,6 +61,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.product_title_font_size }
             fontWeightName='product_title_font_weight'
             fontWeight={ createPopupFormData.product_title_font_weight }
+            tooltip={ __( 'Modify the text style in the product name sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* time text*/ }
@@ -72,6 +75,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.time_text_font_size }
             fontWeightName='time_text_font_weight'
             fontWeight={ createPopupFormData.time_text_font_weight }
+            tooltip={ __( 'Modify the text style of the time in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* country text*/ }
@@ -85,6 +89,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.country_text_font_size }
             fontWeightName='country_text_font_weight'
             fontWeight={ createPopupFormData.country_text_font_weight }
+            tooltip={ __( 'Modify the text style of the country name in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* state text */ }
@@ -99,6 +104,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.state_text_font_size }
             fontWeightName='state_text_font_weight'
             fontWeight={ createPopupFormData.state_text_font_weight }
+            tooltip={ __( 'Modify the text style of the state name in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* city text */ }
@@ -113,10 +119,11 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.city_text_font_size }
             fontWeightName='city_text_font_weight'
             fontWeight={ createPopupFormData.city_text_font_weight }
+            tooltip={ __( 'Modify the text style of the city name in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
           {/* name text */ }
-          <TextDesign
+          {/* <TextDesign
             createPopupForm={ createPopupFormData }
             onFieldChange={ onFieldChange }
             textTitle='Shop Name Text'
@@ -126,7 +133,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
             fontSize={ createPopupFormData.name_text_font_size }
             fontWeightName='name_text_font_weight'
             fontWeight={ createPopupFormData.name_text_font_weight }
-          />
+          /> */}
         </Fragment>
       ) }
 

@@ -131,11 +131,11 @@ class Enqueue_Script {
 				border-color: {$wfc_btn_bgcolor};
 			}
 			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
-			    background-color: {$shop_btn_bgcolor};
+			  background-color: {$shop_btn_bgcolor};
 			}
-			.sgsb-apply-coupon {
-                background: {$wfc_btn_bgcolor}
-            }
+			.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
+        background: {$wfc_btn_bgcolor} !important;
+      }
 		";
 
 		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
@@ -154,7 +154,7 @@ class Enqueue_Script {
 			right: 0;
 		}
 		.sgsb-widget-shopping-cart-content-wrapper{
-			width:540px;
+			width:600px;
 		}
 			';
 

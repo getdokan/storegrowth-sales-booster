@@ -12,6 +12,7 @@ import PanelSettings from "../../../../../../assets/src/components/settings/Pane
 import GeneralSettingsTab from "./GeneralSettingsTab";
 import DesignTab from "./DesingTab";
 import Preview from "./Preview";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function StockBarLayout({ navigate, useSearchParams }) {
   const isProEnabled = sgsbAdmin.isPro;
@@ -169,6 +170,10 @@ function StockBarLayout({ navigate, useSearchParams }) {
             </PanelPreview>
           )}
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 350 }>
+          <Preview formData={ formData } />
+        </TouchPreview>
       </PanelContainer>
     </Fragment>
   );

@@ -18,6 +18,7 @@ import PanelContainer from '../../../../../../assets/src/components/settings/Pan
 import PanelRow from '../../../../../../assets/src/components/settings/Panels/PanelRow';
 import PanelPreview from '../../../../../../assets/src/components/settings/Panels/PanelPreview';
 import PanelSettings from '../../../../../../assets/src/components/settings/Panels/PanelSettings';
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function FloatingNotificationBarLayout({
   outlet: Outlet,
@@ -43,7 +44,7 @@ function FloatingNotificationBarLayout({
     button_color               : '#ffffff',
     bar_position               : 'top',
     redirect_url               : '',
-    button_action              : 'ba-url-redirect',
+    button_action              : 'ba-close',
     banner_height              : 60,
     banner_trigger             : 'after-few-seconds',
     new_tab_enable             : false,
@@ -235,6 +236,10 @@ function FloatingNotificationBarLayout({
             </PanelPreview>
           )}
         </PanelRow>
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 580 }>
+          <Preview isProActive={ isProEnabled } formData={ formData } fontFamily={ fontFamily } />
+        </TouchPreview>
       </PanelContainer>
     </Fragment>
   );

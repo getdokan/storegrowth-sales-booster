@@ -1,84 +1,112 @@
 import { __ } from "@wordpress/i18n";
-import { Row, Col, Typography, Select, Card, InputNumber, notification } from 'antd';
-import { useDispatch, useSelect } from '@wordpress/data';
+import {
+  Col,
+  notification,
+} from "antd";
+import { useDispatch, useSelect } from "@wordpress/data";
+import { Fragment } from "react";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-import { Fragment } from "react";
+import OfferField from "./OfferField";
 
-const { Title } = Typography;
 
-const BasicInfo = ( { clearErrors, triggerBumpUpdate } ) => {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
-  const { createBumpData } = useSelect( select => ( {
-    createBumpData: select( 'sgsb_order_bump' ).getCreateFromData()
-  } ) );
+const BasicInfo = ({ clearErrors, triggerBumpUpdate }) => {
+  const { setCreateFromData } = useDispatch("sgsb_order_bump");
+  const { createBumpData } = useSelect((select) => ({
+    createBumpData: select("sgsb_order_bump").getCreateFromData(),
+  }));
 
   const offerProductId = parseInt(createBumpData?.offer_product);
-  const originalProductListForSelect = products_and_categories.product_list.productListForSelect;
-  const productListForSelect = offerProductId ? originalProductListForSelect.filter(item => item.value !== offerProductId) : originalProductListForSelect;
+  const originalProductListForSelect =
+    products_and_categories.product_list.productListForSelect;
+  const productListForSelect = offerProductId
+    ? originalProductListForSelect.filter(
+        (item) => item.value !== offerProductId
+      )
+    : originalProductListForSelect;
 
   const targetProducts = createBumpData.target_products;
-  const originalSimpleProductForOffer = products_and_categories.product_list.simpleProductForOffer;
-  const simpleProductForOffer = Array.isArray(targetProducts) && targetProducts.length !== 0 ?
-    originalSimpleProductForOffer.filter(item => !targetProducts.includes(item.value) ) : originalSimpleProductForOffer;
+  const originalSimpleProductForOffer =
+    products_and_categories.product_list.simpleProductForOffer;
+  const simpleProductForOffer =
+    Array.isArray(targetProducts) && targetProducts.length !== 0
+      ? originalSimpleProductForOffer.filter(
+          (item) => !targetProducts.includes(item.value)
+        )
+      : originalSimpleProductForOffer;
   const bumpSchedules = [
-    { value: 'daily', label: __( 'Daily', 'storegrowth-sales-booster' ) },
-    { value: 'saturday', label: __( 'Saturday', 'storegrowth-sales-booster' ) },
-    { value: 'sunday', label: __( 'Sunday', 'storegrowth-sales-booster' ) },
-    { value: 'monday', label: __( 'Monday', 'storegrowth-sales-booster' ) },
-    { value: 'tuesday', label: __( 'Tuesday', 'storegrowth-sales-booster' ) },
-    { value: 'wednesday', label: __( 'Wednesday', 'storegrowth-sales-booster' ) },
-    { value: 'thursday', label: __( 'Thursday', 'storegrowth-sales-booster' ) },
-    { value: 'friday', label: __( 'Friday', 'storegrowth-sales-booster' ) },
+    { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
+    { value: "saturday", label: __("Saturday", "storegrowth-sales-booster") },
+    { value: "sunday", label: __("Sunday", "storegrowth-sales-booster") },
+    { value: "monday", label: __("Monday", "storegrowth-sales-booster") },
+    { value: "tuesday", label: __("Tuesday", "storegrowth-sales-booster") },
+    { value: "wednesday", label: __("Wednesday", "storegrowth-sales-booster") },
+    { value: "thursday", label: __("Thursday", "storegrowth-sales-booster") },
+    { value: "friday", label: __("Friday", "storegrowth-sales-booster") },
   ];
 
   const offerOptions = [
-    { value: 'discount', label: __( 'Discount%', 'storegrowth-sales-booster' ) },
-    { value: 'price', label: __( 'Price', 'storegrowth-sales-booster' ) },
+    { value: "discount", label: __("Discount%", "storegrowth-sales-booster") },
+    { value: "price", label: __("Price", "storegrowth-sales-booster") },
   ];
 
-  const filterByValue = ( data, key ) => {
-    const item = data.find(item => item.value === key);
-    return item ? item.label : 'Value not found';
-  }
+  const filterByValue = (data, key) => {
+    const item = data.find((item) => item.value === key);
+    return item ? item.label : "Value not found";
+  };
 
-  const onFieldChange = ( key, value ) => {
+  const onFieldChange = (key, value) => {
     clearErrors();
     // Handle offer amount validation with actual price.
-    if ( key === 'offer_amount' ) {
-      const product = simpleProductForOffer.find( item => item?.value === offerProductId );
-      const productPrice = product?.price?.replace( product?.currency, '' );
-      if ( createBumpData.offer_type === 'price' && parseInt( productPrice ) < value ) {
-        return notification['error'] ( {
-          message: __( 'Offer price can\'t be greater than product price!', 'storegrowth-sales-booster' ),
-        } );
+    if (key === "offer_amount") {
+      const product = simpleProductForOffer.find(
+        (item) => item?.value === offerProductId
+      );
+      const currencySymbol = product?.currency;
+      const productPrice = product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), '');
+      if (
+        createBumpData.offer_type === "price" &&
+        parseFloat(productPrice) < value
+      ) {
+        return notification["error"]({
+          message: __(
+            "Offer price can't be greater than product price!",
+            "storegrowth-sales-booster"
+          ),
+        });
       }
 
-      if ( createBumpData.offer_type === 'discount' && value > 100 ) {
-        return notification['error'] ( {
-          message: __( 'Discount offer can\'t be greater than 100 percent!', 'storegrowth-sales-booster' ),
-        } );
+      if (createBumpData.offer_type === "discount" && value > 100) {
+        return notification["error"]({
+          message: __(
+            "Discount offer can't be greater than 100 percent!",
+            "storegrowth-sales-booster"
+          ),
+        });
       }
     }
 
     // Trigger bump update need.
-    if ( key === 'offer_amount' || key === 'offer_type' ) triggerBumpUpdate( true );
+    if (key === "offer_amount" || key === "offer_type") triggerBumpUpdate(true);
 
-    if ( key === 'offer_product' ) {
-      setCreateFromData( {
+    if (key === "offer_product") {
+      setCreateFromData({
         ...createBumpData,
-        [ key ]                     : value,
-        offer_image_url             : products_and_categories.product_list_for_view[value].image_url,
-        offer_product_title         : products_and_categories.product_list_for_view[value].post_title,
-        offer_product_regular_price : products_and_categories.product_list_for_view[value].regular_price
-      } );
+        [key]: value,
+        offer_image_url:
+          products_and_categories.product_list_for_view[value].image_url,
+        offer_product_title:
+          products_and_categories.product_list_for_view[value].post_title,
+        offer_product_regular_price:
+          products_and_categories.product_list_for_view[value].regular_price,
+      });
     } else {
       setCreateFromData({
         ...createBumpData,
-        [ key ]: value
+        [key]: value,
       });
     }
   };
@@ -87,89 +115,99 @@ const BasicInfo = ( { clearErrors, triggerBumpUpdate } ) => {
     <Fragment>
       <SettingsSection>
         <TextInput
-          fullWidth={ true }
-          name={ `name_of_order_bump` }
-          changeHandler={ onFieldChange }
-          fieldValue={ createBumpData.name_of_order_bump }
-          title={ __( 'Name of Order Bump', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Enter Order Bump Name', 'storegrowth-sales-booster' ) }
+          fullWidth={true}
+          name={`name_of_order_bump`}
+          changeHandler={onFieldChange}
+          fieldValue={createBumpData.name_of_order_bump}
+          title={__("Name of Order Bump", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Enter Order Bump Name",
+            "storegrowth-sales-booster"
+          )}
         />
         <MultiSelectBox
-          name={ 'target_products' }
-          changeHandler={ onFieldChange }
-          options={ productListForSelect }
-          fieldValue={ createBumpData.target_products.map( Number ) }
-          title={ __( 'Select Target Product(s)', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Search for products', 'storegrowth-sales-booster' ) }
+          name={"target_products"}
+          changeHandler={onFieldChange}
+          options={productListForSelect}
+          fieldValue={createBumpData.target_products.map(Number)}
+          title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Search for products",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The target product indicates for which specific products the upsell order bump option will be displayed.",
+            "storegrowth-sales-booster"
+          )}
         />
         <MultiSelectBox
-          name={ 'target_categories' }
-          changeHandler={ onFieldChange }
-          fieldValue={ createBumpData.target_categories.map( Number ) }
-          options={ products_and_categories.category_list.catForSelect }
-          title={ __( 'Select Target Categories', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Search for Categories', 'storegrowth-sales-booster' ) }
+          name={"target_categories"}
+          changeHandler={onFieldChange}
+          fieldValue={createBumpData.target_categories.map(Number)}
+          options={products_and_categories.category_list.catForSelect}
+          title={__("Select Target Categories", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Search for Categories",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
+            "storegrowth-sales-booster"
+          )}
         />
         <MultiSelectBox
-          name={ 'bump_schedule' }
-          options={ bumpSchedules }
-          changeHandler={ onFieldChange }
-          fieldValue={ createBumpData.bump_schedule }
-          title={ __( 'Order Bump Schedule', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Please select bump schedule', 'storegrowth-sales-booster' ) }
+          name={"bump_schedule"}
+          options={bumpSchedules}
+          changeHandler={onFieldChange}
+          fieldValue={createBumpData.bump_schedule}
+          title={__("Order Bump Schedule", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Please select bump schedule",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The schedule can be daily or on specific days of the week.",
+            "storegrowth-sales-booster"
+          )}
         />
       </SettingsSection>
-      <SectionHeader title={ __( 'Offer Section', 'storegrowth-sales-booster' ) } />
+      <SectionHeader title={__("Offer Section", "storegrowth-sales-booster")} />
       <SettingsSection>
         <SelectBox
-          colSpan={ 24 }
-          showSearch={ true }
-          fieldWidth={ '100%' }
-          name={ `offer_product` }
-          changeHandler={ onFieldChange }
-          options={ simpleProductForOffer }
-          classes={ `search-single-select` }
-          title={ __( 'Offer Product', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Search for offer product', 'storegrowth-sales-booster' ) }
-          fieldValue={ offerProductId ? filterByValue(simpleProductForOffer,offerProductId) : null }
-          filterOption={ ( inputValue, option ) => option.label
-            ?.toString()
-            ?.toLowerCase()
-            ?.includes( inputValue.toLowerCase() )
+          colSpan={24}
+          showSearch={true}
+          fieldWidth={"100%"}
+          name={`offer_product`}
+          changeHandler={onFieldChange}
+          options={simpleProductForOffer}
+          classes={`search-single-select`}
+          title={__("Offer Product", "storegrowth-sales-booster")}
+          tooltip={__(
+            "The specific product that will be available in the order bump with an offer.",
+            "storegrowth-sales-booster"
+          )}
+          placeHolderText={__(
+            "Search for offer product",
+            "storegrowth-sales-booster"
+          )}
+          fieldValue={
+            offerProductId
+              ? filterByValue(simpleProductForOffer, offerProductId)
+              : null
+          }
+          filterOption={(inputValue, option) =>
+            option.label
+              ?.toString()
+              ?.toLowerCase()
+              ?.includes(inputValue.toLowerCase())
           }
         />
-        <Col className="gutter-row" span={ 24 }>
-          <Card className={ `sgsb-settings-card` }>
-            <Row>
-              <Col span={ 9 }>
-                <div className={ `card-heading` }>
-                  <Title level={ 3 } className={ `settings-heading` }>
-                    { __( 'Offer Price/Discount', 'storegrowth-sales-booster' ) }
-                  </Title>
-                </div>
-              </Col>
-              <Col span={15}>
-                <Row gutter={10} style={{ margin: 0 }}>
-                  <Col span={6} style={{ paddingLeft: 0 }}>
-                    <Select
-                      style={{ width: '100%' }}
-                      options={ offerOptions }
-                      value={ createBumpData.offer_type }
-                      onChange={ ( v ) => onFieldChange( 'offer_type', v ) }
-                      className={ `settings-field single-select-field combine-select` }
-                    />
-                  </Col>
-                  <Col span={18} style={{ paddingRight: 0 }}>
-                    <InputNumber
-                      value={ createBumpData.offer_amount }
-                      className={ `settings-field number-field combine-field` }
-                      onChange={ ( value ) => onFieldChange( 'offer_amount', value ) }
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Card>
+        <Col className="gutter-row" span={24}>
+          <OfferField
+            createBumpData={createBumpData}
+            offerOptions={offerOptions}
+            onFieldChange={onFieldChange}
+          />
         </Col>
       </SettingsSection>
     </Fragment>

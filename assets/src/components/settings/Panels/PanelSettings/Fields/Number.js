@@ -10,6 +10,7 @@ const Number = ({
   name,
   title,
   tooltip,
+  disabled,
   fieldValue,
   changeHandler,
   placeHolderText,
@@ -45,9 +46,9 @@ const Number = ({
           addonAfter={addonAfter}
           min={min}
           max={max}
-          disabled={needUpgrade}
           placeholder={placeHolderText}
-          value={fieldValue ? fieldValue : ""}
+          disabled={needUpgrade || disabled}
+          value={fieldValue ? fieldValue : 0}
           className={`settings-field number-field`}
           onChange={(value) => changeHandler(name, value)}
         />

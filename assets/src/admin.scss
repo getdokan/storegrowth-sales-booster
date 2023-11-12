@@ -1560,10 +1560,44 @@ End Settings Sidebar
       }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
+      .dashboard-overview-page {
+        max-width: 64%;
+      }
+
       .sgsb__module-pagination {
         padding-left: 8px !important;
 
+      }
+
+      .dashboard-faq-page {
+        .sgsb-promotion-block {
+          .request__feature-block {
+            margin: 120px 0px 0;
+
+            h4 {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+
+      .dashboard-pricing-page {
+
+        .dashboad-content,
+        .sg_pricing_table {
+          margin-top: 20px;
+        }
+
+        .sgsb-promotion-block {
+          .request__feature-block {
+            margin: 120px 0px 0;
+
+            h4 {
+              font-size: 16px;
+            }
+          }
+        }
       }
     }
 
@@ -1576,6 +1610,10 @@ End Settings Sidebar
     }
 
     @media (min-width: 992px) and (max-width: 1199px) {
+      .dashboard-overview-page {
+        max-width: 68%;
+      }
+
       .sgsb-module-card {
         .ant-card-body {
           &>div {
@@ -1586,6 +1624,13 @@ End Settings Sidebar
         }
       }
 
+      .dashboard-pricing-page {
+
+        .dashboad-content,
+        .sg_pricing_table {
+          margin-top: 20px;
+        }
+      }
     }
 
     @media (min-width: 1200px) and (max-width: 1300px) {
@@ -1927,7 +1972,7 @@ End Settings Sidebar
       font-weight: 600;
       line-height: 32px;
       align-items: center;
-      padding: 24px 0 24px 30px;
+      padding: 24px 30px 24px 30px;
       justify-content: space-between;
     }
 
@@ -2136,7 +2181,7 @@ End Settings Sidebar
                 .ant-select-selector {
                   padding: 5px 10px;
                   border-radius: 5px;
-                  border-color: #DDE6F9;
+                  border-color: #0a4cda;
 
                   .ant-select-selection-overflow {
                     gap: 2px;
@@ -2146,6 +2191,7 @@ End Settings Sidebar
                     color: #073B4C;
                     background: #F6F9FF;
                   }
+
                 }
               }
 
@@ -2236,7 +2282,7 @@ End Settings Sidebar
 
               &.radio-field {
                 gap: 12px;
-                height: 36px;
+                min-height: 36px;
                 display: inline-grid;
                 grid-auto-flow: column;
                 background: transparent;
@@ -2266,10 +2312,22 @@ End Settings Sidebar
                     }
                   }
                 }
-
+                &.radio-icon-field{
+                  &.quick-icon-layout {
+                    @media (max-width: 1440px) {
+                      grid-template-rows: repeat(1, auto);
+                    }
+                }
+              }
                 &.radio-img-field {
                   height: 100%;
                   margin-top: 20px;
+
+                  &.quick-cart-layout {
+                    @media (max-width: 1440px) {
+                      grid-template-rows: repeat(1, auto);
+                    }
+                  }
 
                   label.ant-radio-button-wrapper {
                     color: #073B4C;
@@ -2335,6 +2393,10 @@ End Settings Sidebar
                     }
                   }
                 }
+
+                @media (max-width: 1440px) {
+                  grid-template-rows: repeat(3, 38px);
+                }
               }
 
               &:not(.ant-switch-checked) {
@@ -2360,6 +2422,12 @@ End Settings Sidebar
               border-radius: 5px;
               align-items: center;
               justify-content: center;
+
+              span {
+                @media (max-width: 1440px) {
+                  display: none;
+                }
+              }
 
               &:hover,
               &.active {
@@ -2708,6 +2776,7 @@ End Settings Sidebar
 
   .panel-container {
     padding: 0 30px;
+    position: relative;
 
     .row-divider {
       margin: 0;
@@ -2718,6 +2787,73 @@ End Settings Sidebar
     .space-top {
       margin-top: 30px;
     }
+
+    .touch-preview-panel {
+      top: 0;
+      right: 0;
+      z-index: 1;
+      margin-top: 12px;
+      position: absolute;
+
+      .touch-preview-container {
+        display: flex;
+        align-items: center;
+
+        .preview-button {
+          width: 50px;
+          height: 40px;
+          display: flex;
+          background: #0875FF;
+          align-items: center;
+          align-self: self-start;
+          justify-content: center;
+          border-radius: 20px 0 0 20px;
+          box-shadow: 0 0 8px 4px #00000014;
+        }
+
+        .touch-preview {
+          padding: 20px;
+          background: white;
+          min-height: 100vh;
+          border-bottom-left-radius: 20px;
+          box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.0784313725);
+        }
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      .touch-preview-panel {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 1023px) {
+      .panel-column {
+        flex: 100%;
+        max-width: 100%;
+
+        .preview-panel {
+          display: none;
+        }
+      }
+
+      .row-divider {
+        display: none;
+      }
+
+      .sales-pop-template {
+        width: 70% !important;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .sales-pop-template {
+        width: 100% !important;
+      }
+    }
+  }
+  input[type="search"]:focus{
+    box-shadow: none !important;
   }
 }
 

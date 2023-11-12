@@ -12,6 +12,7 @@ import Preview from "./Preview";
 import { createBumpForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import OverViewArea from "./appearance/template/overview-area/OverViewArea";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
@@ -253,11 +254,6 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   const isDuplicateCatsFound = duplicateDataError?.duplicateTargetCats?.length > 0;
   const isDuplicateProductsFound = duplicateDataError?.duplicateTargetProducts?.length > 0;
 
-  const offer_product = createBumpData.offer_product;
-
-  if((!bump_id || !offer_product) && allBumpsData?.length >= 2 && !sgsbAdmin.isPro){
-    return <h2>Upgrade to premeuim to create more than two order bumps.</h2>;
-  }
 
   const [ searchParams, setSearchParams ] = useSearchParams();
   const tabName = searchParams.get( 'tab_name' );
@@ -270,7 +266,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     },
     {
       key: 'design',
-      title: __( 'Design Section', 'storegrowth-sales-booster' ),
+      title: __( 'Design', 'storegrowth-sales-booster' ),
       panel: <DesignSection triggerBumpUpdate={ setBumpUpdate } />,
     },
   ];
@@ -294,6 +290,11 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             </PanelPreview>
           ) }
         </PanelRow>
+
+        {/* Render preview panel for responsive preview. */}
+        <TouchPreview previewWidth={ 400 }>
+          <Preview storeData={ createBumpData } />
+        </TouchPreview>
 
         { ( isDuplicateCatsFound || isDuplicateProductsFound ) &&
           notification['error'] ( {

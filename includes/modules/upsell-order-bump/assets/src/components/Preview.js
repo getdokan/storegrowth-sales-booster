@@ -7,14 +7,18 @@ const { Title } = Typography;
 
 const Preview = ( { storeData } ) => {
     const offerAmount = storeData?.offer_amount ? storeData?.offer_amount : '(?)';
-
+    const product_image_url = products_and_categories?.product_list_for_view[storeData.offer_product]?.image_url;
+    const addCommas = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find( simpleProduct => simpleProduct?.value === parseInt( storeData.offer_product ) );
-    let discountedPrice = parseInt( storeData?.offer_amount )?.toFixed( 2 );
+    let discountedPrice = parseFloat( storeData?.offer_amount )?.toFixed( 2 );
 
     if ( storeData?.offer_type === 'discount' ) {
-        const productPrice = parseInt( product?.price?.replace( product?.currency, '' ) ),
-            discountPercent = ( parseInt( storeData?.offer_amount + '%' ) / 100 );
+        const currencySymbol = product?.currency;
+        const productPrice = parseFloat( product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), '')),
+            discountPercent = ( parseFloat( storeData?.offer_amount + '%' ) / 100 );
         discountedPrice = ( productPrice - ( productPrice * discountPercent ) )?.toFixed( 2 );
     }
 
@@ -26,9 +30,9 @@ const Preview = ( { storeData } ) => {
                 display: 'grid',
                 borderRadius: 10,
                 background: '#FFF',
-                marginTop: storeData?.box_top_margin,
-                marginBottom: storeData?.box_bottom_margin,
-                border: `1px ${ storeData?.box_border_style } ${ storeData?.box_border_color }`,
+                marginTop: parseInt( storeData?.box_top_margin ),
+                marginBottom: parseInt( storeData?.box_bottom_margin ),
+                border: storeData?.box_border_style !== 'no_border' ? `1px ${ storeData?.box_border_style } ${ storeData?.box_border_color }` : 0,
             } }
             className='bump-preview-wrapper'
         >
@@ -69,10 +73,11 @@ const Preview = ( { storeData } ) => {
                     alignItems: 'center',
                 } }
             >
+                
                 <Image
                     preview={ false }
                     style={ { width: 76, height: 76, borderRadius: 7 } }
-                    src={ typeof product !== 'undefined' ? storeData?.offer_image_url : PreviewImg }
+                    src={ product_image_url || PreviewImg }
                     alt={ __( 'Product Image', 'storegrowth-sales-booster' ) }
                 />
                 <div
@@ -111,7 +116,7 @@ const Preview = ( { storeData } ) => {
                         fontSize: `${ storeData?.product_description_font_size }px`,
                     } }
                 >
-                    { !isNaN( discountedPrice ) ? ( product?.currency + discountedPrice ) : __( '$87.00', 'storegrowth-sales-booster' ) }
+                    { !isNaN(discountedPrice) ? ( product?.currency + addCommas(discountedPrice) ) : __( '$87.00', 'storegrowth-sales-booster' ) }
                 </div>
                 <div
                     className={ `product-selection-icon` }

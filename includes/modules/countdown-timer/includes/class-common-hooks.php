@@ -57,7 +57,7 @@ class Common_Hooks {
 		if ( ! $this->is_external_product() ) {
 			// Adds the new tab.
 			$tabs['countdown_timer_tab'] = array(
-				'label'  => __( 'Countdown Timer', 'storegrowth-sales-booster' ),
+				'label'  => __( 'Sales Countdown', 'storegrowth-sales-booster' ),
 				'target' => 'sgsb-countdown-timer-tab',
 			);
 		}
