@@ -13,7 +13,7 @@ import SelectBox from "sales-booster/src/components/settings/Panels/PanelSetting
 import OfferField from "./OfferField";
 
 
-const BasicInfo = ({ clearErrors, triggerBumpUpdate }) => {
+const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_order_bump");
   const { createBumpData } = useSelect((select) => ({
     createBumpData: select("sgsb_order_bump").getCreateFromData(),
@@ -88,9 +88,6 @@ const BasicInfo = ({ clearErrors, triggerBumpUpdate }) => {
         });
       }
     }
-
-    // Trigger bump update need.
-    if (key === "offer_amount" || key === "offer_type") triggerBumpUpdate(true);
 
     if (key === "offer_product") {
       setCreateFromData({
