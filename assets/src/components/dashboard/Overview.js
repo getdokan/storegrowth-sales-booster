@@ -10,8 +10,15 @@ import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import IntroModules from "./images/intro-section-img.svg";
 import {__} from "@wordpress/i18n";
-import SectionSpacer from "../settings/Panels/PanelSettings/SectionSpacer";
+
 const Overview = () => {
+  const baseUrlStore = "https://storegrowth.io";
+  const baseUrlInvizo = "https://invizo.io"
+  const links ={
+    doc : "/documentation",
+    featureRequest: "/support",
+    support:"/support"
+  }
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -75,7 +82,7 @@ const Overview = () => {
                             <p>
                             Access our comprehensive documentation for easy, step-by-step guidance on using every feature of our plugin. Get answers quickly and make the most of our powerful tools.
                             </p>
-                            <a href="#">Read More</a>
+                            <a href={baseUrlStore+links?.doc} target="_blank">Read More</a>
                           </div>
                         </div>
                         {/* close-documentation-section */}
@@ -95,7 +102,7 @@ const Overview = () => {
                             <p>
                             Stuck or have questions? Reach out to our responsive email support. Our team is here to help you with any inquiries or issues you might encounter. We're just an email away!
                             </p>
-                            <a href="#">Contact Us</a>
+                            <a href={baseUrlInvizo+links?.support} target="_blank">Contact Us</a>
                           </div>
                         </div>
                         {/* close-email-section */}
@@ -113,7 +120,7 @@ const Overview = () => {
                       Your insights matter! Help us shape the future of our plugin by sharing your feature requests. We're eager to hear your ideas and work together to make our plugin even better. Your feedback is invaluable, and we appreciate your contribution to improving the plugin to meet your needs.
                       </p>
                       <span className="feature-requests-submit-button">
-                        <a href="#">Submit Request</a>
+                        <a href={baseUrlInvizo+links?.featureRequest} target="_blank">Submit Request</a>
                       </span>
                     </div>
                     {/* close-request-features */}
