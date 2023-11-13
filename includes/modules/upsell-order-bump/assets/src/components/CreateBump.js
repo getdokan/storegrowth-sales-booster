@@ -18,7 +18,6 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [bumpUpdate, setBumpUpdate] = useState(false);
   const { setPageLoading } = useDispatch( 'sgsb' );
   const [buttonLoading, setButtonLoading] = useState(false);
   const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
@@ -213,36 +212,33 @@ function CreateBump({navigate, useParams, useSearchParams}) {
                 setDuplicateDataError(duplicateErrs);
                 return false;
             }
-
-            if ( !Boolean( bumpUpdate ) ) {
-                setDuplicateDataError(duplicateErrs);
-                return false;
-            }
         }
     }
-    
-    setButtonLoading( true );
-    const bumpDataParsedToEntities = convertBumpItemTextDatasToHtmlEntities(createBumpData);
-    let $ = jQuery;
-    $.post( bump_save_url.ajax_url, { 
-      'action'    : 'bump_create',
-      'data'      : bumpDataParsedToEntities,
-      '_ajax_nonce' : bump_save_url.ajd_nonce
 
-      }, function ( data ) {
-      setCreateFromData( {
-        ...bumpDataParsedToEntities,
-        offer_product_id: data
-      } );
-      setButtonLoading( false );
+    // Check if bump order not duplicate then saved.
+    if ( ! ( isDuplicateCatsFound || isDuplicateProductsFound ) ) {
+      setButtonLoading( true );
+      const bumpDataParsedToEntities = convertBumpItemTextDatasToHtmlEntities(createBumpData);
+      let $ = jQuery;
+      $.post( bump_save_url.ajax_url, {
+          'action'    : 'bump_create',
+          'data'      : bumpDataParsedToEntities,
+          '_ajax_nonce' : bump_save_url.ajd_nonce
+        }, function ( data ) {
+        setCreateFromData( {
+                ...bumpDataParsedToEntities,
+                offer_product_id: data
+            } );
+        setButtonLoading( false );
 
-      notification['success']({
-        message     : 'Order Bump Creation',
-        description : 'Data for order bump creation saved successfully',
+        notification['success']({
+                message     : 'Order Bump Creation',
+                description : 'Data for order bump creation saved successfully',
+            });
+
+        navigate( "/upsell-order-bump" );
       });
-
-      navigate( "/upsell-order-bump" );
-    });
+    }
 
   }
 
@@ -262,12 +258,12 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     {
       key: 'basic',
       title: __( 'Basic Information', 'storegrowth-sales-booster' ),
-      panel: <BasicInfo clearErrors={ clearErrors } triggerBumpUpdate={ setBumpUpdate } />,
+      panel: <BasicInfo clearErrors={ clearErrors } />,
     },
     {
       key: 'design',
       title: __( 'Design', 'storegrowth-sales-booster' ),
-      panel: <DesignSection triggerBumpUpdate={ setBumpUpdate } />,
+      panel: <DesignSection />,
     },
   ];
 
