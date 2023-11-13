@@ -66,9 +66,9 @@
     $(document).ready(function () {
       const isMobile = isMobileDevice();
       const shouldHideMobile =
-        banner_device_view.includes("banner-show-mobile") && isMobile;
+        banner_device_view?.includes("banner-show-mobile") && isMobile;
       const shouldHideDesktop =
-        banner_device_view.includes("banner-show-desktop") && !isMobile;
+        banner_device_view?.includes("banner-show-desktop") && !isMobile;
 
       if (!shouldHideMobile && !shouldHideDesktop) {
         $(".sgsb-pd-banner-bar-wrapper").remove();

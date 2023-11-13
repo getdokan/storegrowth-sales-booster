@@ -41,7 +41,7 @@ function DirectCheckout({ outlet: Outlet }) {
   }, []);
   return (
     <Form {...layout}>
-        <Outlet />
+      <Outlet />
     </Form>
   );
 }

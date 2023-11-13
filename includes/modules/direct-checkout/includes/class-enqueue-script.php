@@ -99,9 +99,9 @@ class Enqueue_Script {
 		);
 	}
 
-		/**
-		 * All inline styles
-		 */
+	/**
+	 * All inline styles
+	 */
 	private function dc_button_inline_styles() {
 		// Get style options.
 		$settings             = get_option( 'sgsb_direct_checkout_settings' );
@@ -110,6 +110,11 @@ class Enqueue_Script {
 		$font_size            = sgsb_find_option_setting( $settings, 'font_size', '16' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', '5' );
 
+		$theme             = wp_get_theme();
+        $is_avada_theme    = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
+        $is_ocean_wp_theme = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
+		$button_margin     = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
+
 		$custom_css = "
 		.button.product_type_simple.sgsb_buy_now_button, 
 		.button.product_type_simple.sgsb_buy_now_button_product_page {
@@ -117,10 +122,33 @@ class Enqueue_Script {
 			border-radius: {$button_border_radius}px;
 			font-size: {$font_size}px !important;
 			color: {$text_color} !important;
-			margin-bottom: 10px !important;
+			margin: {$button_margin} !important;
+		} ";
+
+		if ( $is_avada_theme ) {
+			$custom_css .= '
+			.products .product-buttons-container {
+			    display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+			}
+			.product_type_simple.add_to_cart_button {
+			    order: 1;
+			}
+            .button.product_type_simple.sgsb_buy_now_button {
+                order: 3;
+                padding: 10px 20px;
+                margin: 12px 0 0 0 !important;
+            }
+            .button.product_type_simple.sgsb_buy_now_button::before {
+                content: "";
+            }
+            .show_details_button {
+                order: 2;
+                margin-left: auto;
+            }
+            ';
 		}
-	
-			";
 
 		wp_add_inline_style( 'sgsb-button-style', $custom_css );
 	}
