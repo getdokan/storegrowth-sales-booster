@@ -2,6 +2,12 @@ import React, {Fragment} from 'react'
 import {__} from "@wordpress/i18n";
 
 const Preview = ( { formData } ) => {
+
+    const dynamicText = formData.countdown_heading.replace(
+        '[discount]',
+        50
+    );
+    
     return (
         <Fragment>
             { formData?.selected_theme === 'ct-layout-1' && (
@@ -35,7 +41,7 @@ const Preview = ( { formData } ) => {
                                 lineHeight : 1.2,
                             } }
                         >
-                            { __( '50% OFF', 'storegrowth-sales-booster' ) }
+                            { __( dynamicText, 'storegrowth-sales-booster' ) }
                         </p>
                         <div
                             data-end-date='2023-10-10 23:59:59'
@@ -230,7 +236,7 @@ const Preview = ( { formData } ) => {
                                 webkitBackgroundClip : 'text',
                             } }
                         >
-                            { __( '50% OFF', 'storegrowth-sales-booster' ) }
+                            { __( dynamicText, 'storegrowth-sales-booster' ) }
                         </p>
                         <div
                             className='sgsb-countdown-timer-items ct-layout-2'

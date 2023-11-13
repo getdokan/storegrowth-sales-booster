@@ -16,7 +16,6 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
-import { Link, Navigate } from "react-router-dom";
 import { __ } from "@wordpress/i18n";
 import ActivationAlert from "./ActivationAlert";
 
@@ -109,6 +108,11 @@ function Modules() {
       ? allModules.filter((module) => module.status).length
       : allModules.length;
   }, [filterActiveModules, allModules]);
+
+  const handleLiClick = (routeName) => {
+    const link = `admin.php?page=sgsb-settings#/${routeName}`;
+    window.location.href = link;
+  };
 
   useEffect(() => {
     if (allModules) {
@@ -253,10 +257,12 @@ function Modules() {
                   {module.name}
                 </li>
               ) : (
-                <li className={module.id} key={module.id}>
-                  <a href={`admin.php?page=sgsb-settings#/${module.id} `}>
-                    {module.name}
-                  </a>
+                <li
+                  className={module.id}
+                  key={module.id}
+                  onClick={() => handleLiClick(module.id)}
+                >
+                  {module.name}
                 </li>
               );
             })}

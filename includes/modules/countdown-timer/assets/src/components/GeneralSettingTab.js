@@ -6,6 +6,7 @@ import "../styles/countdown-timer.css";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import SettingInstruction from "./SettingInstruction";
 
 function GeneralSettingTab(props) {
   const {
@@ -59,6 +60,7 @@ function GeneralSettingTab(props) {
             "storegrowth-sales-booster"
           )}
         />
+        <SettingInstruction/>
         <ActionsHandler
           resetHandler={onFormReset}
           loadingHandler={buttonLoading}

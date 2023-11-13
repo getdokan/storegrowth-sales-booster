@@ -959,6 +959,9 @@ End Settings Sidebar
       gap: 10px;
       padding: 12px 14px;
 
+      &:focus {
+        color: #ffffff;
+      }
       span {
         font-size: 16px;
         font-weight: 700;
@@ -973,6 +976,9 @@ End Settings Sidebar
       border: none;
       background: var(--premium-color, #FFAC27);
 
+      &:focus {
+        color: #ffffff;
+      }
     }
   }
 }
@@ -1859,6 +1865,9 @@ End Settings Sidebar
           gap: 15px;
           padding: 0;
 
+          &:focus {
+            color: #ffffff;
+          }
           span {
             font-size: 18px;
             font-weight: 700;
@@ -1872,7 +1881,10 @@ End Settings Sidebar
         a {
           border: none;
           background: var(--premium-color, #FFAC27);
-
+          
+          &:focus {
+            color: #ffffff;
+          }
         }
       }
 
