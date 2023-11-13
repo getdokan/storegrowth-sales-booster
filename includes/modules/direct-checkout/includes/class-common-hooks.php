@@ -198,7 +198,6 @@ class Common_Hooks {
 	private function display_buy_now_button() {
 		global $product;
 
-		// ob_start();
 		$product_id                    = get_the_ID();
 		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
 		$settings                      = get_option( 'sgsb_direct_checkout_settings' );
@@ -212,10 +211,5 @@ class Common_Hooks {
 				include __DIR__ . '/../templates/add-cart-with-buy-now.php';
 			}
 		}
-
-		// $output_buffer = ob_get_contents();
-		// ob_end_clean();
-		//
-		// return $output_buffer;
 	}
 }
