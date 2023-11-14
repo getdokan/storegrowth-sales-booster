@@ -37,7 +37,7 @@ class Common_Hooks {
 		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 		if ( 'cart-with-buy-now' === $buy_now_button_setting || 'specific-buy-now' === $buy_now_button_setting ) {
 			// Show direct checkout button on shop loop item and product page.
-			add_action( 'woocommerce_after_shop_loop_item', array( $this, 'show_direct_checkout_button_shop' ), 15 );
+			add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'show_direct_checkout_button_shop' ), 15 );
 			add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
 
 			if ( 'specific-buy-now' === $buy_now_button_setting ) {
@@ -60,12 +60,25 @@ class Common_Hooks {
 	}
 
 	/**
-	 * Hook for WooCommerce after shop loop item.
+	 * Hook for WooCommerce loop add to cart link.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $add_to_cart Add to cart link.
+	 *
+	 * @return string
 	 */
-	public function show_direct_checkout_button_shop() {
+	public function show_direct_checkout_button_shop( $add_to_cart ) {
 		if ( $this->should_display_buy_now_button( 'shop_page_checkout_enable' ) ) {
+			ob_start();
 			$this->display_buy_now_button();
+			$buy_now_button = ob_get_contents();
+			ob_end_clean();
+
+			$add_to_cart .= $buy_now_button;
 		}
+
+		return $add_to_cart;
 	}
 
 	/**
@@ -178,9 +191,10 @@ class Common_Hooks {
 		}
 		return $template;
 	}
-		/**
-		 * Function to display the Buy Now button.
-		 */
+
+	/**
+	 * Function to display the Buy Now button.
+	 */
 	private function display_buy_now_button() {
 		global $product;
 

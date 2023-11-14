@@ -11,7 +11,7 @@
     let button_view = sgsb_fnb_data.button_view;
     let countdown_start_date = sgsb_fnb_data.countdown_start_date;
     let countdown_end_date = sgsb_fnb_data.countdown_end_date;
-    let coupon_code = sgsb_fnb_data.cupon_code.toUpperCase();
+    let coupon_code = sgsb_fnb_data?.cupon_code?.toUpperCase();
     let body_top_padding = parseInt(banner_height) + 10;
     const fn_banner_hidden_time = localStorage.getItem("fn_banner_hidden_time");
 
