@@ -19,11 +19,8 @@ function PremiumBox() {
         support and boost your
         website’s visibility.
         </p>
-        {/* <h5>Reviews from real users</h5>
-        <div className='rating'>
-            <Rate disabled defaultValue={5} />
-        </div> */}
-        <Button className='premium-btn' type="primary" href='https://storegrowth.io/' target='_blank' size='large'>
+        
+        <Button className='premium-btn' type="primary" href='admin.php?page=sgsb-settings#/dashboard/pricing' size='large'>
             Get Premium 
             <Image
                 preview={false}

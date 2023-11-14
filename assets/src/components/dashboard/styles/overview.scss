@@ -856,6 +856,11 @@
       align-items: center;
       justify-content: center;
       gap: 9px;
+
+      &:focus{
+        color: #ffffff;
+        box-shadow: none;
+      }
     }
 
     h4,

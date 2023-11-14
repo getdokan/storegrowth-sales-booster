@@ -3,18 +3,19 @@ import { Button, Col, Image, Row } from "antd";
 import helpIcon from "../../../images/help-icon.svg";
 import crownIcon from "../../../images/cap-icon.svg";
 function HeadBar() {
+  const pricingPath = window.location.hash === '#/dashboard/pricing';
+
   return (
     <Layout.Header className="sgsb-admin-dashboard-module-top-bar">
       <div>
         <Row align="middle" justify="espace-betweennd">
           <Col span={24}>
             <Row justify="end">
-              {!sgsbAdmin.isPro && (
+              {(!sgsbAdmin.isPro && !pricingPath) && (
                 <div className="premium-btn">
                   <Button
                     width="210px"
-                    href="https://invizo.io/support/"
-                    target="_blank"
+                    href="#/dashboard/pricing"
                     type="primary"
                   >
                     Get Premium

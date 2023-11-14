@@ -961,6 +961,7 @@ End Settings Sidebar
 
       &:focus {
         color: #ffffff;
+        box-shadow: none;
       }
       span {
         font-size: 16px;
@@ -978,6 +979,7 @@ End Settings Sidebar
 
       &:focus {
         color: #ffffff;
+        box-shadow: none;
       }
     }
   }
@@ -1500,6 +1502,11 @@ End Settings Sidebar
         justify-content: center;
         gap: 9px;
 
+        &:focus{
+          color: #ffffff;
+          box-shadow: none;
+        }
+
       }
 
       h4,
@@ -1867,6 +1874,7 @@ End Settings Sidebar
 
           &:focus {
             color: #ffffff;
+            box-shadow: none;
           }
           span {
             font-size: 18px;
@@ -1884,6 +1892,7 @@ End Settings Sidebar
           
           &:focus {
             color: #ffffff;
+            box-shadow: none;
           }
         }
       }
