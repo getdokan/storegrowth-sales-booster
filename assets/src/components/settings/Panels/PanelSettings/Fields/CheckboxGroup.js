@@ -77,6 +77,7 @@ const CheckboxGroup = ({
   needUpgrade = false,
   showProIcon = true,
   showSingleCheckOverlay = true,
+  children,
 }) => {
   const handleChange = (option) => {
     if (isSingleMode) {
@@ -91,7 +92,10 @@ const CheckboxGroup = ({
 
   const noop = () => {};
   return (
-    <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
+    <FieldWrapper
+      colSpan={colSpan}
+      upgradeClass={needUpgrade ? `upgrade-settings` : ""}
+    >
       <Col span={headColSpan}>
         <div className={`card-heading checkboxinput-heading`}>
           {/* Handle switcher title. */}
@@ -107,7 +111,11 @@ const CheckboxGroup = ({
       <Col span={checkboxColSpan}>
         <Space direction={displayDirection}>
           {options.map((checkbox) => (
-            <label className={ `${ checkbox.needUpgrade ? 'disabled-checkbox' : '' }` } key={checkbox.value} style={{ display: "flex", gap: "4px" }}>
+            <label
+              className={`${checkbox.needUpgrade ? "disabled-checkbox" : ""}`}
+              key={checkbox.value}
+              style={{ display: "flex", gap: "4px" }}
+            >
               <Checkbox
                 checked={selectedOptions.includes(checkbox.value)}
                 onChange={
@@ -115,9 +123,7 @@ const CheckboxGroup = ({
                     ? noop
                     : () => handleChange(checkbox.value)
                 }
-                disabled={
-                  checkbox.needUpgrade !== undefined && checkbox.needUpgrade
-                }
+                disabled={checkbox?.disabled || checkbox?.needUpgrade}
               >
                 <span style={{ display: "flex", gap: "8px" }}>
                   {checkbox.label}
@@ -128,13 +134,20 @@ const CheckboxGroup = ({
                   )}
                 </span>
               </Checkbox>
-              {(checkbox.needUpgrade && showProIcon) ? <UpgradeCrown proBadge={ false } /> : ""}
-              { checkbox.needUpgrade && showSingleCheckOverlay && <UpgradeOverlay /> }
+              {checkbox.needUpgrade && showProIcon ? (
+                <UpgradeCrown proBadge={false} />
+              ) : (
+                ""
+              )}
+              {checkbox.needUpgrade && showSingleCheckOverlay && (
+                <UpgradeOverlay />
+              )}
             </label>
           ))}
         </Space>
+        {children}
       </Col>
-      { needUpgrade && <UpgradeOverlay /> }
+      {needUpgrade && <UpgradeOverlay />}
     </FieldWrapper>
   );
 };

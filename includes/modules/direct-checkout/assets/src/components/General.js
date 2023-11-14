@@ -9,6 +9,9 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import { createDirectCheckoutForm } from "../helper";
 
 function General({ onFormSave, upgradeTeaser }) {
+  const modulePageRedirect = () => {
+    window.location.href = "/wp-admin/admin.php?page=sgsb-modules";
+  };
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
   const { createDirectCheckoutFormData, getButtonLoading } = useSelect(
     (select) => ({
@@ -32,7 +35,20 @@ function General({ onFormSave, upgradeTeaser }) {
 
   const noop = () => {};
 
-  const checkboxesOption = [
+  const fancyTextStyle = {
+    color: "#3498db",
+    fontWeight: "bold",
+    textAlign: "center",
+    padding: "10px",
+    border: "1px solid #bdc3c7",
+    borderRadius: "4px",
+  };
+
+  const redTextStyle = {
+    color: "red",
+  };
+
+  const buttonLayoutOptions = [
     {
       label: `"Add to cart" as "${createDirectCheckoutFormData.buy_now_button_label}"`,
       value: "cart-to-buy-now",
@@ -64,14 +80,22 @@ function General({ onFormSave, upgradeTeaser }) {
   ];
 
   // Define select options
-  const selectOptions = [
+  const checkoutPageOptions = [
     {
-      value: "legacy-checkout",
       label: __("Legacy Checkout", "storegrowth-sales-booster"),
+      value: "legacy-checkout",
+      tooltip: __(
+        "The Chekout will redirect to the default checkout page.",
+        "storegrowth-sales-booster"
+      ),
     },
     {
-      value: "quick-cart-checkout",
       label: __("Quick Cart Checkout", "storegrowth-sales-booster"),
+      value: "quick-cart-checkout",
+      tooltip: __(
+        "The checkout will redirect to Qucik Cart module cart chekout page.",
+        "storegrowth-sales-booster"
+      ),
       needUpgrade: upgradeTeaser,
       disabled: isQuickCartActive,
     },
@@ -95,7 +119,7 @@ function General({ onFormSave, upgradeTeaser }) {
         />
         <CheckboxGroup
           name={"buy_now_button_setting"}
-          options={checkboxesOption}
+          options={buttonLayoutOptions}
           selectedOptions={createDirectCheckoutFormData.buy_now_button_setting}
           handleCheckboxChange={onFieldChange}
           isSingleMode={true}
@@ -103,23 +127,47 @@ function General({ onFormSave, upgradeTeaser }) {
           headColSpan={9}
           checkboxColSpan={15}
         />
-
-        <SelectBox
-          fieldWidth={upgradeTeaser ? 250 : 170}
+        <CheckboxGroup
           name={"checkout_redirect"}
-          fieldValue={
-            upgradeTeaser
-              ? "legacy-checkout"
-              : createDirectCheckoutFormData.checkout_redirect
-          }
-          changeHandler={upgradeTeaser ? noop : onFieldChange}
-          title={__("Checkout Redirect", "storegrowth-sales-boooster")}
-          tooltip={__(
-            "Select the type of checkout redirection",
-            "storegrowth-sales-booster"
+          options={checkoutPageOptions}
+          selectedOptions={createDirectCheckoutFormData.checkout_redirect}
+          handleCheckboxChange={onFieldChange}
+          isSingleMode={true}
+          title={__("Checkout Redirect", "storegrowth-sales-booster")}
+          headColSpan={9}
+          checkboxColSpan={15}
+        >
+          {isQuickCartActive && !upgradeTeaser && (
+            <div
+              style={{
+                marginTop: 10,
+                ...fancyTextStyle,
+              }}
+            >
+              <p>
+                Please Activate the{" "}
+                <span style={redTextStyle}>Quick Cart Module</span> to use the
+                <span style={redTextStyle}> Quick Cart Checkout</span>{" "}
+                Redirection.
+              </p>
+              <div>
+                <button
+                  style={{
+                    backgroundColor: "#1677ff",
+                    color: "#fff",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  onClick={modulePageRedirect}
+                >
+                  Modules Page
+                </button>
+              </div>
+            </div>
           )}
-          options={selectOptions}
-        />
+        </CheckboxGroup>
 
         <SingleCheckBox
           needUpgrade={upgradeTeaser}
