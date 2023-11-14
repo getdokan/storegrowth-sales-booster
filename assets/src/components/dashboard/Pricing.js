@@ -68,12 +68,12 @@ const Pricing = () => {
                       {/* Package Table */}
                       <div className="sg_pricing_table">
                         <div className="sgsb-pricing-heading">
-                          <h3>The Package We Provide</h3>
+                          <h3>Choose Your Plan</h3>
                           <div className="pricing-table-heading-content">
-                            <span>
+                            {/* <span>
                               Join 100,000+ website owners who use Booster to
                               increase sales, engage visitors and so much more.
-                            </span>
+                            </span> */}
                           </div>
                           <PricingToggle
                             toggleContent={toggleContent}
