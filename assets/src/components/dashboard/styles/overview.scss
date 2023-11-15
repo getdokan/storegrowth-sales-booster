@@ -180,6 +180,10 @@
               font-weight: 600;
               text-decoration-line: underline;
               text-underline-offset: 0.1em;
+              
+              &:focus{
+                box-shadow: none;
+              }
             }
           }
         }
@@ -787,6 +791,11 @@
       font-weight: 400;
       text-transform: capitalize;
       margin-top: 15px;
+
+      a:focus {
+        outline: none;
+        box-shadow: none;
+      }
     }
   }
 
@@ -857,7 +866,7 @@
       justify-content: center;
       gap: 9px;
 
-      &:focus{
+      &:focus {
         color: #ffffff;
         box-shadow: none;
       }
