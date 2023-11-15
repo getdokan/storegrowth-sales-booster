@@ -106,17 +106,44 @@ class Enqueue_Script {
 		$border_color       = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
 		$heading_text_color = sgsb_find_option_setting( $settings, 'heading_text_color', '#000000' );
 		$selected_theme     = sgsb_find_option_setting( $settings, 'selected_theme', 'ct-custom' );
-		if ( 'ct-custom' === $selected_theme ) {
+
+		// Check current theme status.
+		$theme                = wp_get_theme();
+		$is_twenty_one_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
+		$is_twenty_four_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+
+		if ( 'ct-layout-1' === $selected_theme ) {
 			$custom_css = "
-			.sgsb-countdown-timer.ct-custom{
+			.sgsb-countdown-timer.ct-custom {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
-			.sgsb-countdown-timer-heading.ct-custom{
+			.sgsb-countdown-timer-heading.ct-custom {
 				color: {$heading_text_color};
+            }
 		";
 		} else {
 			$custom_css = '';
+		}
+
+		if ( $is_twenty_one_theme ) {
+			$custom_css .= '
+                .sgsb-countdown-timer {
+                    margin-top: 18px;
+                }
+            ';
+		}
+
+		if ( $is_twenty_four_theme ) {
+			$custom_css .= '
+                .sgsb-countdown-timer {
+                    padding-left: 0px;
+                    padding-right: 0px; 
+                }
+                .sgsb-countdown-timer-item {
+                    height: 40px;
+                }
+            ';
 		}
 
 		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );
