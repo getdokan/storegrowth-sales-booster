@@ -68,7 +68,7 @@
         justify-content: space-between;
 
         .intro-section-text {
-          padding: 53px 0px 0px 40px;
+          padding: 40px 0px 0px 40px;
 
           h3 {
             color: #073b4c;
@@ -180,6 +180,10 @@
               font-weight: 600;
               text-decoration-line: underline;
               text-underline-offset: 0.1em;
+              
+              &:focus{
+                box-shadow: none;
+              }
             }
           }
         }
@@ -240,6 +244,7 @@
         border: 1px solid #f37a50;
         display: flex;
         align-items: center;
+        justify-content: center;
         margin-top: 30px;
 
         &:hover {
@@ -258,7 +263,10 @@
         text-align: center;
         text-decoration: none;
         width: 134px;
-        margin-left: 26px;
+
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
 
@@ -465,6 +473,11 @@
                 text-decoration: none;
                 margin: 0;
 
+                &:focus {
+                  box-shadow: none;
+                  outline: none;
+                }
+
                 span {
                   color: #fff;
                   text-transform: capitalize;
@@ -595,7 +608,7 @@
     .dashboad-content {
       margin-top: 30px;
 
-      .intro-section{
+      .intro-section {
         margin-top: 0;
 
         .intro-section-text {
@@ -722,6 +735,7 @@
           }
 
           .sgsb-pricing-data-content {
+
             .yearly-price,
             .monthly-price {
               font-size: 24px !important;
@@ -777,6 +791,11 @@
       font-weight: 400;
       text-transform: capitalize;
       margin-top: 15px;
+
+      a:focus {
+        outline: none;
+        box-shadow: none;
+      }
     }
   }
 
@@ -846,6 +865,11 @@
       align-items: center;
       justify-content: center;
       gap: 9px;
+
+      &:focus {
+        color: #ffffff;
+        box-shadow: none;
+      }
     }
 
     h4,

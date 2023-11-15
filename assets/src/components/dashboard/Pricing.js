@@ -27,7 +27,12 @@ const Pricing = () => {
     rightContent: "Monthly",
   };
   const billingText = "(billed annualy)";
-  const purchaseSlug = "https://storegrowth.io";
+  const purchaseSlug = "https://invizo.io/buy";
+  const purchaseType = {
+    individual: "/storegrowth-pro-individual",
+    developer: "/storegrowth-pro-developer",
+    business: "/storegrowth-pro-business",
+  };
   const modules = [
     "Quick Cart",
     "Sales Pop",
@@ -52,7 +57,7 @@ const Pricing = () => {
         >
           <PanelContainer>
             <PanelRow>
-              <Col span={18} className={ `dashboard-pricing-page` }>
+              <Col span={18} className={`dashboard-pricing-page`}>
                 <div className="dashboard">
                   {/* Render dashboard tabs. */}
                   <DashboardTabs />
@@ -63,12 +68,12 @@ const Pricing = () => {
                       {/* Package Table */}
                       <div className="sg_pricing_table">
                         <div className="sgsb-pricing-heading">
-                          <h3>The Package We Provide</h3>
+                          <h3>Choose Your Plan</h3>
                           <div className="pricing-table-heading-content">
-                            <span>
+                            {/* <span>
                               Join 100,000+ website owners who use Booster to
                               increase sales, engage visitors and so much more.
-                            </span>
+                            </span> */}
                           </div>
                           <PricingToggle
                             toggleContent={toggleContent}
@@ -106,7 +111,7 @@ const Pricing = () => {
                                     <span className="sg-package-title">
                                       Individual
                                     </span>
-                                    <a href={purchaseSlug} target="_blank">
+                                    <a href={purchaseSlug+purchaseType?.individual} target="_blank">
                                       <span className="buy-button-normal">
                                         get started
                                       </span>
@@ -137,7 +142,7 @@ const Pricing = () => {
                                     <span className="sg-package-title">
                                       Business
                                     </span>
-                                    <a href={purchaseSlug} target="_blank">
+                                    <a href={purchaseSlug+purchaseType?.business} target="_blank">
                                       <span className="buy-button-popular">
                                         get started
                                       </span>
@@ -165,7 +170,7 @@ const Pricing = () => {
                                     <span className="sg-package-title">
                                       Developer
                                     </span>
-                                    <a href={purchaseSlug} target="_blank">
+                                    <a href={purchaseSlug+purchaseType?.developer} target="_blank">
                                       <span className="buy-button-normal">
                                         get started
                                       </span>
@@ -233,7 +238,7 @@ const Pricing = () => {
                   </div>
                 </div>
               </Col>
-              <Col span={6} className={ `dashboard-pricing-page` }>
+              <Col span={6} className={`dashboard-pricing-page`}>
                 <Promotion />
               </Col>
             </PanelRow>
