@@ -3,6 +3,7 @@ import { __ } from "@wordpress/i18n";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import SingleCheckBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import SettingInstruction from "./SettingInstruction";
 
 function GeneralSettingsTab(props) {
   const {
@@ -56,7 +57,7 @@ function GeneralSettingsTab(props) {
             "storegrowth-sales-booster"
           )}
         />
-
+        <SettingInstruction />
         <ActionsHandler
           resetHandler={onFormReset}
           loadingHandler={buttonLoading}

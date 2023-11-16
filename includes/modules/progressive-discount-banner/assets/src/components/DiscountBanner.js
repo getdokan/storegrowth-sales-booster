@@ -7,13 +7,10 @@ import Number from "../../../../../../assets/src/components/settings/Panels/Pane
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import DisplayRules from "./DisplayRules";
-// import SectionSpacer from "sales-booster/src/components/settings/Panels/PanelSettings/SectionSpacer";
-// import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
-// import UploadIcon from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/UploadIcon";
-// import CartIcon from "sales-booster-quick-cart/src/components/CartIcon";
 import BarIcon from "./BarIcon";
 import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
 import {wpMedia} from "sales-booster/src/utils/helper";
+import SettingInstruction from "./SettingInstruction";
 
 function DiscountBanner(props) {
     const { formData, setFormData, onFieldChange, onIconChange, upgradeTeaser } = props;
@@ -138,6 +135,11 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
+
+                {formData.discount_type === "free-shipping" && 
+                    <SettingInstruction/>
+                }
+
                 {formData.discount_type === "discount-amount" && (
                     <Fragment>
                         <SelectBox
