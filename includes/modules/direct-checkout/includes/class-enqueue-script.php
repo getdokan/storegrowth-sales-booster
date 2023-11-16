@@ -110,10 +110,13 @@ class Enqueue_Script {
 		$font_size            = sgsb_find_option_setting( $settings, 'font_size', '16' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', '5' );
 
-		$theme             = wp_get_theme();
-        $is_avada_theme    = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
-        $is_ocean_wp_theme = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
-		$button_margin     = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
+		$theme                = wp_get_theme();
+		$is_avada_theme       = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
+		$is_ocean_wp_theme    = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
+		$is_elementor_theme   = ! empty( $theme->name ) ? $theme->name === 'Hello Elementor' : false;
+		$is_twenty_one_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
+		$is_twenty_four_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+		$button_margin        = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
 
 		$custom_css = "
 		.button.product_type_simple.sgsb_buy_now_button, 
@@ -122,7 +125,7 @@ class Enqueue_Script {
 			border-radius: {$button_border_radius}px;
 			font-size: {$font_size}px !important;
 			color: {$text_color} !important;
-			margin: {$button_margin} !important;
+			margin: {$button_margin};
 		} ";
 
 		if ( $is_avada_theme ) {
@@ -147,6 +150,38 @@ class Enqueue_Script {
                 order: 2;
                 margin-left: auto;
             }
+            ';
+		}
+
+		if ( $is_elementor_theme ) {
+			$custom_css .= '
+                .sgsb-fly-cart-table .product-remove a {
+                    margin-right: 0 !important;
+                }
+            ';
+		}
+
+		if ( $is_twenty_four_theme ) {
+			$custom_css .= '
+                .button.sgsb_buy_now_button {
+                    display: block;
+                    padding-left: 1rem;
+                    padding-top: 0.6rem;
+                    padding-right: 1rem;
+                    padding-bottom: 0.6rem;
+                    margin: 0 auto !important;
+                }
+                .button.sgsb_buy_now_button_product_page {
+                    float: none !important;
+                }
+            ';
+		}
+
+		if ( $is_twenty_one_theme ) {
+			$custom_css .= '
+                .button.sgsb_buy_now_button {
+                    margin: 16px 0 0 0 !important;
+                }
             ';
 		}
 

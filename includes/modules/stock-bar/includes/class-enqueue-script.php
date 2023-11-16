@@ -99,6 +99,9 @@ class Enqueue_Script {
 		$fg_color     = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );
 		$border_color = sgsb_find_option_setting( $settings, 'stockbar_border_color', '#dde6f9' );
 
+		$theme               = wp_get_theme();
+		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
+
 		$custom_css = "
 			.sgsb-stock-progress-bar-section {
 				border: 2px solid {$border_color};
@@ -111,6 +114,14 @@ class Enqueue_Script {
 				background-color: {$bg_color};
 			}
 		";
+
+		if ( $is_twenty_one_theme ) {
+			$custom_css .= '
+                .sgsb-stock-counter-and-bar {
+                    margin-top: 18px;
+                }
+            ';
+		}
 
 		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
 	}

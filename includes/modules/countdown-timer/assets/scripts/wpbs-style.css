@@ -153,3 +153,24 @@ font-family: "Merienda" !important;
 }
 
 /* layout2  styles end */
+
+@media (max-width: 430px) {
+    .sgsb-countdown-timer-items {
+        align-items: center;
+
+        .sgsb-countdown-timer-item {
+            font-size: 6px;
+            padding-top: 7px;
+
+            &.ct-layout-1 {
+                width: 37px;
+                height: 40px;
+            }
+
+            &.ct-layout-2 {
+                width: 38px;
+                height: 38px;
+            }
+        }
+    }
+}
