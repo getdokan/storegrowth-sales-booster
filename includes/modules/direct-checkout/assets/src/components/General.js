@@ -3,10 +3,10 @@ import { useDispatch, useSelect } from "@wordpress/data";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createDirectCheckoutForm } from "../helper";
+import SettingInstruction from "./SettingInstruction";
 
 function General({ onFormSave, upgradeTeaser }) {
   const modulePageRedirect = () => {
@@ -127,6 +127,10 @@ function General({ onFormSave, upgradeTeaser }) {
           headColSpan={9}
           checkboxColSpan={15}
         />
+
+        {createDirectCheckoutFormData.buy_now_button_setting ===
+          "specific-buy-now" && <SettingInstruction />}
+
         <CheckboxGroup
           name={"checkout_redirect"}
           options={checkoutPageOptions}
