@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import Overview from './Overview';
 import Pricing from './Pricing';
 import Faq from './Faq';
+import License from './License';
 import React from 'react';
 
 const dashboardRoutes = [
@@ -24,5 +25,14 @@ const dashboardRoutes = [
         element : <Faq />,
     },
 ];
+
+if (sgsbAdmin.isPro) {
+    dashboardRoutes.push({
+        name    : 'dashboard',
+        path    : '/dashboard/license',
+        label   : __( 'License', 'storegrowth-sales-booster' ),
+        element : <License />,
+    });
+}
 
 export default dashboardRoutes;

@@ -1,17 +1,23 @@
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "antd";
+
 
 const DashboardTabs = () => {
     const location = useLocation();
-
     const routes = [
         { path: '/dashboard/overview', label: __( 'Overview', 'storegrowth-sales-booster' ) },
         { path: '/dashboard/pricing', label: __( 'Pricing', 'storegrowth-sales-booster' ) },
         { path: '/dashboard/faq', label: __( 'FAQs', 'storegrowth-sales-booster' ) },
     ];
+    if (sgsbAdmin.isPro) {
+        routes.push({ 
+            path: '/dashboard/license', 
+            label: __( 'License', 'storegrowth-sales-booster' ) 
+        });
+    }
 
+    
     const activeNavStyle = {
         color      : '#FFF',
         background : '#0875FF',

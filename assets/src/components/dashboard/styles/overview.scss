@@ -17,7 +17,8 @@
 
     .dashboad-tab-singel-overview,
     .dashboad-tab-singel-pricing,
-    .dashboad-tab-singel-faqs {
+    .dashboad-tab-singel-faqs,
+    .dashboad-tab-singel-license {
       a {
         color: #073b4c;
         border: 1px solid #dde6f9;
@@ -40,7 +41,8 @@
 
     .dashboad-tab-singel-overview span,
     .dashboad-tab-singel-pricing span,
-    .dashboad-tab-singel-faqs span {
+    .dashboad-tab-singel-faqs span,
+    .dashboad-tab-singel-license span {
       font-size: 18px;
       font-weight: 600;
       color: #073b4c;
@@ -180,8 +182,8 @@
               font-weight: 600;
               text-decoration-line: underline;
               text-underline-offset: 0.1em;
-              
-              &:focus{
+
+              &:focus {
                 box-shadow: none;
               }
             }
@@ -596,6 +598,98 @@
         }
       }
     }
+
+    //License Container
+    .license-container {
+      margin-top: 40px;
+      background-color: white;
+      border: 1px solid #dde6f9;
+      border-radius: 10px;
+      box-shadow: 0px 25px 20px 0px rgba(45, 73, 109, 0.03);
+      padding: 30px;
+
+      .activated {
+        background-color: #0875ff1a;
+      }
+
+      .deactivated {
+        background-color: #fff1f3;
+      }
+
+      .license-content-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .license-content-body {
+          display: flex;
+          gap: 26px;
+          flex-basis: 66%;
+          max-width: 70%;
+
+          .license-icon {
+            height: fit-content;
+            padding: 18px;
+            border-radius: 50px;
+
+            .lock-deactivated {
+              color: #d92d20;
+            }
+
+            .lock-activated {
+              color: #0875ff;
+            }
+
+            span {
+              font-size: xxx-large;
+            }
+          }
+
+          .license-content {
+            .license-heading {
+              font-size: 20px;
+
+              h3 {
+                font-weight: 700;
+              }
+            }
+
+            .license-description {
+              color: #667085;
+
+              font-weight: 400;
+              line-height: 1.5;
+              margin: 0;
+              padding: 0;
+
+              p {
+                font-size: 16px;
+              }
+            }
+          }
+
+        }
+      }
+
+      .license-key-input-form {
+        max-width: 80%;
+        padding: 14px;
+        border-radius: 6px;
+
+        input,
+        button {
+          height: 42px;
+          border: none;
+
+          &:focus {
+            box-shadow: 0 0 0 0px #2271b1;
+          }
+        }
+
+      }
+    }
+
+
   }
 
   @media (max-width: 1024px) {
@@ -757,7 +851,8 @@
 
       .dashboad-tab-singel-overview,
       .dashboad-tab-singel-pricing,
-      .dashboad-tab-singel-faqs {
+      .dashboad-tab-singel-faqs,
+      .dashboad-tab-singel-license {
         display: flex;
         margin-bottom: 10px;
       }
