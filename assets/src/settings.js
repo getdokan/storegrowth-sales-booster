@@ -10,7 +10,6 @@ import './admin.css';
 import { menuFix } from "./utils/helper";
 
 register( settingsStore );
-// register( moduleStore );
 
 render(
   <StrictMode>

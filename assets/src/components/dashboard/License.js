@@ -1,11 +1,13 @@
 import React from "react";
 import { LockFilled } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-import DashboardTabs from "./DashboardTabs";
-import PanelContainer from "../settings/Panels/PanelContainer";
 import { __ } from "@wordpress/i18n";
 
 const License = () => {
+  const {
+    sgsbPanelContainer: PanelContainer,
+    sgsbDasboardTabs: DashboardTabs,
+  } = window;
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -26,7 +28,7 @@ const License = () => {
                       <div className="license-content-container">
                         <div className="license-content-body">
                           <div className="license-icon deactivated">
-                            <LockFilled className="lock-deactivated"/>
+                            <LockFilled className="lock-deactivated" />
                           </div>
                           <div className="license-content">
                             <div className="license-heading">

@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
+import { applyFilters } from "@wordpress/hooks";
 import Overview from './Overview';
 import Pricing from './Pricing';
 import Faq from './Faq';
 import License from './License';
 import React from 'react';
 
-const dashboardRoutes = [
+let dashboardRoutes = [
     {
         name    : 'dashboard',
         path    : '/dashboard/overview',
@@ -26,13 +27,6 @@ const dashboardRoutes = [
     },
 ];
 
-if (sgsbAdmin.isPro) {
-    dashboardRoutes.push({
-        name    : 'dashboard',
-        path    : '/dashboard/license',
-        label   : __( 'License', 'storegrowth-sales-booster' ),
-        element : <License />,
-    });
-}
+dashboardRoutes = applyFilters('sgsb_dashboard_route_components', dashboardRoutes);
 
 export default dashboardRoutes;

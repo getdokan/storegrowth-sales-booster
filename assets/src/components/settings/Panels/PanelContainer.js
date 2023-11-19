@@ -7,4 +7,6 @@ const PanelContainer = ( { children } ) => {
     );
 }
 
+window.SgsbPanelContainer = PanelContainer;
+
 export default PanelContainer;

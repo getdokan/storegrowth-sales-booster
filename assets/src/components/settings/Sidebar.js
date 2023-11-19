@@ -8,39 +8,39 @@ import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import { __ } from "@wordpress/i18n";
 import ActivationAlert from "../modules/ActivationAlert";
-import {Ajax} from "../../ajax";
+import { Ajax } from "../../ajax";
 
 function Sidebar({ routes }) {
     const filteredRoute = routes.filter((item) => item.name !== "dashboard");
     let firstItem = filteredRoute[0] || false;
 
     const location = useLocation();
-    const [ activeClass, setActiveClass ] = useState( false );
-    const matchResult = matchRoutes( routes, location );
+    const [activeClass, setActiveClass] = useState(false);
+    const matchResult = matchRoutes(routes, location);
     const currentRoute = matchResult ? matchResult[0].route : null;
 
-    const [ selectedMenu, setSelectedMenu ] = useState( currentRoute?.name );
-    const [ allRoutes, setAllRoutes ] = useState( routes );
+    const [selectedMenu, setSelectedMenu] = useState(currentRoute?.name);
+    const [allRoutes, setAllRoutes] = useState(routes);
 
-    const [ activeModule, setActiveModule ] = useState( false );
-    const [ activeModalData, setActiveModalData ] = useState( "" );
-    const [ modalButtonLoad, setModalButtonLoad ] = useState( false );
+    const [activeModule, setActiveModule] = useState(false);
+    const [activeModalData, setActiveModalData] = useState("");
+    const [modalButtonLoad, setModalButtonLoad] = useState(false);
 
-    const handleModalAlert = ( module ) => {
-        setActiveModule( !activeModule );
-        setActiveModalData( module );
+    const handleModalAlert = (module) => {
+        setActiveModule(!activeModule);
+        setActiveModalData(module);
     };
 
-    const handleModuleActivation = ( module ) => {
-        setModalButtonLoad( !modalButtonLoad );
+    const handleModuleActivation = (module) => {
+        setModalButtonLoad(!modalButtonLoad);
         Ajax("update_module_status", {
             module_id: module.name,
             status: true,
-        }).success( ( response ) => {
-            if ( response.success ) {
+        }).success((response) => {
+            if (response.success) {
                 // Set active routes for settings panel.
-                setAllRoutes( [ ...allRoutes?.filter( route => route?.name === module?.name || route?.status !== false ) ] );
-                const sgsbSettingsURL = `admin.php?page=sgsb-settings#/${ module.name }`;
+                setAllRoutes([...allRoutes?.filter(route => route?.name === module?.name || route?.status !== false)]);
+                const sgsbSettingsURL = `admin.php?page=sgsb-settings#/${module.name}`;
                 window.location.href = sgsbSettingsURL;
                 window.location.reload();
             }
@@ -48,23 +48,23 @@ function Sidebar({ routes }) {
     };
 
     useEffect(() => {
-        Ajax("get_all_modules").success( ( response ) => {
+        Ajax("get_all_modules").success((response) => {
             const dashboardRoutes = [];
-            const availableRoutes = allRoutes.map( availableRoute => availableRoute?.name );
-            response?.map( route => {
-                if ( currentRoute?.name === 'dashboard' && !availableRoutes?.includes( route?.id ) ) {
-                    dashboardRoutes.push( {
-                        name   : route?.id,
-                        path   : `/${route?.id}`,
-                        label  : route?.name,
-                        status : route?.status,
-                    } );
+            const availableRoutes = allRoutes.map(availableRoute => availableRoute?.name);
+            response?.map(route => {
+                if (currentRoute?.name === 'dashboard' && !availableRoutes?.includes(route?.id)) {
+                    dashboardRoutes.push({
+                        name: route?.id,
+                        path: `/${route?.id}`,
+                        label: route?.name,
+                        status: route?.status,
+                    });
                 }
-            } );
+            });
 
-            setAllRoutes( [ ...allRoutes, ...dashboardRoutes ] );
+            setAllRoutes([...allRoutes, ...dashboardRoutes]);
         });
-    }, [ currentRoute?.name ]);
+    }, [currentRoute?.name]);
 
     const toggleMenuClass = () => {
         setActiveClass((prevIsActive) => !prevIsActive);
@@ -76,26 +76,26 @@ function Sidebar({ routes }) {
 
     const handleLiClick = (routeName) => {
         // Set active routes for settings panel.
-        setAllRoutes( [ ...allRoutes?.filter( route => route?.status !== false ) ] );
+        setAllRoutes([...allRoutes?.filter(route => route?.status !== false)]);
         setSelectedMenu(routeName);
         const $ = jQuery,
-            linkElement = $( `a[data-route-name='${routeName}']` );
+            linkElement = $(`a[data-route-name='${routeName}']`);
 
         if (linkElement) {
-            const menuRoot = $( '#toplevel_page_sales-booster-for-woocommerce' );
+            const menuRoot = $('#toplevel_page_sales-booster-for-woocommerce');
 
             // Set dashboard menu deactivate & settings menu active.
-            $( 'ul.wp-submenu li', menuRoot ).removeClass( 'current' );
-            menuRoot.find( `li:last-child` ).addClass( 'current' );
+            $('ul.wp-submenu li', menuRoot).removeClass('current');
+            menuRoot.find(`li:last-child`).addClass('current');
 
             linkElement.click();
         }
     };
     // Redirect to the first menu if it is the index page.
-    if (location.pathname === "/" && filteredRoute.length!==0) {
+    if (location.pathname === "/" && filteredRoute.length !== 0) {
         return <Navigate to={`${firstItem.path}`} replace={true} />;
     }
-    else if(location.pathname === "/" && filteredRoute.length===0){
+    else if (location.pathname === "/" && filteredRoute.length === 0) {
         window.location.href = "admin.php?page=sgsb-modules";
     }
 
@@ -159,12 +159,12 @@ function Sidebar({ routes }) {
                         <Image preview={false} width={18} src={widgetIcon} />
                         {__("All Modules", "storegrowth-sales-booster")}
                         <span onClick={toggleMenuClass} className="ant-menu-title-content">
-              {activeClass ? (
-                  <img src={upArrowIocn} width="12" />
-              ) : (
-                  <img src={downArrowIocn} width="12" />
-              )}
-            </span>
+                            {activeClass ? (
+                                <img src={upArrowIocn} width="12" />
+                            ) : (
+                                <img src={downArrowIocn} width="12" />
+                            )}
+                        </span>
                     </h4>
                     <ul
                         className={
@@ -175,15 +175,16 @@ function Sidebar({ routes }) {
                             (route) =>
                                 route?.name !== "dashboard" && (
                                     <Link
+                                        key={route.name}
                                         className={
                                             selectedMenu === route.name ? "sgsb-selected-link" : ""
                                         }
                                         data-route-name={route.name}
-                                        to={ route?.status !== false ? route.path : '#' }
+                                        to={route?.status !== false ? route.path : '#'}
                                     >
                                         <li
-                                            key={route.name}
-                                            onClick={() => route?.status === false ? handleModalAlert( route ) : handleLiClick(route.name)} // Handle the click event on <li>
+
+                                            onClick={() => route?.status === false ? handleModalAlert(route) : handleLiClick(route.name)} // Handle the click event on <li>
                                             className={
                                                 selectedMenu === route.name
                                                     ? `sgsb-selected-module ${route.name}`
@@ -199,12 +200,12 @@ function Sidebar({ routes }) {
                 </div>
                 {activeModule && (
                     <ActivationAlert
-                        isDashboard={ true }
-                        activeModule={ activeModule }
-                        activeModalData={ activeModalData }
-                        modalButtonLoad={ modalButtonLoad }
-                        handleModalAlert={ handleModalAlert }
-                        handleModuleActivation={ handleModuleActivation }
+                        isDashboard={true}
+                        activeModule={activeModule}
+                        activeModalData={activeModalData}
+                        modalButtonLoad={modalButtonLoad}
+                        handleModalAlert={handleModalAlert}
+                        handleModuleActivation={handleModuleActivation}
                     />
                 )}
             </div>
