@@ -1,7 +1,5 @@
 import { React, useState } from "react";
 import { Col, Image } from "antd";
-import FeatCheck from "../../../images/feature-checked.svg";
-import UnCheck from "../../../images/feature-unchecked.svg";
 import LoopArrow from "../dashboard/images/gaurantee-arrow.svg";
 import GaraunteeBadge from "../../../images/gaurentee-bagde.svg";
 import DashboardTabs from "./DashboardTabs";

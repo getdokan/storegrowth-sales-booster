@@ -17,7 +17,8 @@
 
     .dashboad-tab-singel-overview,
     .dashboad-tab-singel-pricing,
-    .dashboad-tab-singel-faqs {
+    .dashboad-tab-singel-faqs,
+    .dashboad-tab-singel-license {
       a {
         color: #073b4c;
         border: 1px solid #dde6f9;
@@ -40,7 +41,8 @@
 
     .dashboad-tab-singel-overview span,
     .dashboad-tab-singel-pricing span,
-    .dashboad-tab-singel-faqs span {
+    .dashboad-tab-singel-faqs span,
+    .dashboad-tab-singel-license span {
       font-size: 18px;
       font-weight: 600;
       color: #073b4c;
@@ -180,8 +182,8 @@
               font-weight: 600;
               text-decoration-line: underline;
               text-underline-offset: 0.1em;
-              
-              &:focus{
+
+              &:focus {
                 box-shadow: none;
               }
             }
@@ -596,6 +598,11 @@
         }
       }
     }
+
+    //License Container
+    
+
+
   }
 
   @media (max-width: 1024px) {
@@ -757,7 +764,8 @@
 
       .dashboad-tab-singel-overview,
       .dashboad-tab-singel-pricing,
-      .dashboad-tab-singel-faqs {
+      .dashboad-tab-singel-faqs,
+      .dashboad-tab-singel-license {
         display: flex;
         margin-bottom: 10px;
       }

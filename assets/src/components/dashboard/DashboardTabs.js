@@ -1,16 +1,17 @@
 import { __ } from "@wordpress/i18n";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "antd";
+import { applyFilters } from "@wordpress/hooks";
 
 const DashboardTabs = () => {
     const location = useLocation();
-
-    const routes = [
+    let routes = [
         { path: '/dashboard/overview', label: __( 'Overview', 'storegrowth-sales-booster' ) },
         { path: '/dashboard/pricing', label: __( 'Pricing', 'storegrowth-sales-booster' ) },
         { path: '/dashboard/faq', label: __( 'FAQs', 'storegrowth-sales-booster' ) },
     ];
+
+    routes = applyFilters( "sgsb_dashboard_routes", routes );
 
     const activeNavStyle = {
         color      : '#FFF',
@@ -19,7 +20,7 @@ const DashboardTabs = () => {
 
     return (
         <ul className="dashboad-tab">
-            { routes.map( ( route ) => (
+            { routes && routes?.map( ( route ) => (
                 <li
                     key={ route.path } 
                     className={`dashboad-tab-singel-${ route.label.toLowerCase() }`}
@@ -30,5 +31,7 @@ const DashboardTabs = () => {
         </ul>
     );
 }
+
+window.SgsbDashboardTabs = DashboardTabs;
 
 export default DashboardTabs;
