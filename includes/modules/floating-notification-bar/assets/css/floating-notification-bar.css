@@ -29,7 +29,6 @@
 }
 
 body.show_floating_notification_bar .sgsb-floating-notification-bar-wrapper {
-    display: block;
     transition: 0.5s;
 }
 
@@ -46,7 +45,7 @@ body:not(.show_floating_notification_bar) {
     width: 100%;
     background-color: #008DFF;
     color: #fff;
-    z-index: 999;
+    z-index: 99999;
     /* height: auto; */
     padding: 8px 0px;
 }
