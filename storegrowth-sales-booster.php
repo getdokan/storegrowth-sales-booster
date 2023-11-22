@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: StoreGrowth - Sales Booster
- * Description: Take your WooCommerce store to new heights with StoreGrowth, the must-have addon designed to skyrocket your sales. Whether you're just starting out or running a thriving online shop, StoreGrowth offers a comprehensive set of essential modules to optimize your store's performance and maximize conversions. With our free version, you'll gain access to five powerful modules that will supercharge your sales strategy. From advanced inventory management to persuasive marketing tools, StoreGrowth is your secret weapon for success. Get started with StoreGrowth today and unlock the full potential of your WooCommerce store.
+ * Plugin Name: StoreGrowth - Sales Booster for WooCommerce
+ * Description: The ultimate plugin for  WooCommerce store to enhance customer experience and maximize revenue.
  * Version:     1.0.0
  * Author:      Invizo
  * Author URI:  https://invizo.io/

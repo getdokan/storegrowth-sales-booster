@@ -59,11 +59,14 @@ async function archive() {
     ".git",
     ".gitignore",
     "node_modules",
+    "vendor",
     "package.json",
     "lerna-debug.log",
     "lerna.json",
     "package-lock.json",
     "archiver.js",
+    "composer.json",
+    "composer.lock"
   ];
 
   const archive = archiver("zip", {
@@ -74,8 +77,8 @@ async function archive() {
   // Listen for close event to know when the archiving is done
   output.on("close", function () {
     console.log(green(`Zip created successfully as ${outputFilename} `) +
-    " " +
-    blue(`Size ${formatSize(archive.pointer())}`));
+      " " +
+      blue(`Size ${formatSize(archive.pointer())}`));
     renameZipFileWithVersion(outputFilename);
   });
 
@@ -104,7 +107,7 @@ async function archive() {
 }
 
 async function renameZipFileWithVersion(originalFileName) {
-  let currentFilename = originalFileName; 
+  let currentFilename = originalFileName;
   let packageVersion = "unknown";
   const filenameWithoutExtension = currentFilename.replace(/\.[^.]*$/, "");
   try {
@@ -119,7 +122,7 @@ async function renameZipFileWithVersion(originalFileName) {
 
   try {
     await fs.promises.rename(path.resolve("../", currentFilename), newPath);
-    console.log(`Zip file renamed to `+ blue(`${newName}`));
+    console.log(`Zip file renamed to ` + blue(`${newName}`));
   } catch (err) {
     console.error("Error renaming the zip file:", err);
   }
