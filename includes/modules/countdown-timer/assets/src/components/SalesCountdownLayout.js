@@ -148,7 +148,7 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
   const tabPanels = [
     {
       key: "general",
-      title: __("Coutdown Setting", "storegrowth-sales-booster"),
+      title: __("Countdown Setting", "storegrowth-sales-booster"),
       panel: (
         <GeneralSettingTab
           formData={formData}

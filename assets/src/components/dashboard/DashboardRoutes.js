@@ -3,7 +3,6 @@ import { applyFilters } from "@wordpress/hooks";
 import Overview from './Overview';
 import Pricing from './Pricing';
 import Faq from './Faq';
-import License from './License';
 import React from 'react';
 
 let dashboardRoutes = [

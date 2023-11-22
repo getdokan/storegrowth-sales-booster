@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Col } from "antd";
-import { CaretRightFilled } from '@ant-design/icons';
+import { CaretRightFilled } from "@ant-design/icons";
 import DocIcon from "../../../images/documentation-icon.svg";
 import EmailIcon from "../../../images/email-icon.svg";
 import RequestIcon from "../../../images/request-icon.svg";
@@ -9,16 +9,16 @@ import Promotion from "./Promotion";
 import PanelContainer from "../settings/Panels/PanelContainer";
 import PanelRow from "../settings/Panels/PanelRow";
 import IntroModules from "./images/intro-section-img.svg";
-import {__} from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
 
 const Overview = () => {
   const baseUrlStore = "https://storegrowth.io";
-  const baseUrlInvizo = "https://invizo.io"
-  const links ={
-    doc : "/documentation",
-    featureRequest: "/support",
-    support:"/support"
-  }
+  const baseUrlInvizo = "https://";
+  const links = {
+    doc: "/documentation",
+    featureRequest: "support.invizo.io",
+    support: "support.invizo.io",
+  };
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
@@ -28,7 +28,7 @@ const Overview = () => {
         >
           <PanelContainer>
             <PanelRow>
-              <Col span={18} className={ `dashboard-overview-page` }>
+              <Col span={18} className={`dashboard-overview-page`}>
                 <div className="dashboard">
                   {/* Render dashboard tabs. */}
                   <DashboardTabs />
@@ -41,15 +41,15 @@ const Overview = () => {
                         <div className="intro-section-text">
                           <div className="music-player-background-is-the-background">
                             <div className="music-player-background">
-                              <CaretRightFilled className="fa-solid fa-play music-player"/>
+                              <CaretRightFilled className="fa-solid fa-play music-player" />
                             </div>
                           </div>
                           <h3>
-                              { __( 'Your First', 'storegrowth-sales-booster' ) }
-                              <br />
-                              { __( 'Impression With', 'storegrowth-sales-booster' ) }
-                              <br />
-                              { __( 'StoreGrowth', 'storegrowth-sales-booster' ) }
+                            {__("Your First", "storegrowth-sales-booster")}
+                            <br />
+                            {__("Impression With", "storegrowth-sales-booster")}
+                            <br />
+                            {__("StoreGrowth", "storegrowth-sales-booster")}
                           </h3>
                         </div>
 
@@ -78,11 +78,18 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h3>{ __( 'Documentation', 'storegrowth-sales-booster' ) }</h3>
+                            <h3>
+                              {__("Documentation", "storegrowth-sales-booster")}
+                            </h3>
                             <p>
-                            Access our comprehensive documentation for easy, step-by-step guidance on using every feature of our plugin. Get answers quickly and make the most of our powerful tools.
+                              Access our comprehensive documentation for easy,
+                              step-by-step guidance on using every feature of
+                              our plugin. Get answers quickly and make the most
+                              of our powerful tools.
                             </p>
-                            <a href={baseUrlStore+links?.doc} target="_blank">Read More</a>
+                            <a href={baseUrlStore + links?.doc} target="_blank">
+                              Read More
+                            </a>
                           </div>
                         </div>
                         {/* close-documentation-section */}
@@ -98,11 +105,21 @@ const Overview = () => {
                               />
                             </div>
 
-                            <h3>{ __( 'Email Support', 'storegrowth-sales-booster' ) }</h3>
+                            <h3>
+                              {__("Email Support", "storegrowth-sales-booster")}
+                            </h3>
                             <p>
-                            Stuck or have questions? Reach out to our responsive email support. Our team is here to help you with any inquiries or issues you might encounter. We're just an email away!
+                              Stuck or have questions? Reach out to our
+                              responsive email support. Our team is here to help
+                              you with any inquiries or issues you might
+                              encounter. We're just an email away!
                             </p>
-                            <a href={baseUrlInvizo+links?.support} target="_blank">Contact Us</a>
+                            <a
+                              href={baseUrlInvizo + links?.support}
+                              target="_blank"
+                            >
+                              Contact Us
+                            </a>
                           </div>
                         </div>
                         {/* close-email-section */}
@@ -115,19 +132,34 @@ const Overview = () => {
                         <Image preview={false} src={RequestIcon} />
                       </div>
 
-                      <h3>{ __( 'Have Any Thoughts or Feature Request?', 'storegrowth-sales-booster' ) }</h3>
+                      <h3>
+                        {__(
+                          "Have Any Thoughts or Feature Request?",
+                          "storegrowth-sales-booster"
+                        )}
+                      </h3>
                       <p>
-                      Your insights matter! Help us shape the future of our plugin by sharing your feature requests. We're eager to hear your ideas and work together to make our plugin even better. Your feedback is invaluable, and we appreciate your contribution to improving the plugin to meet your needs.
+                        Your insights matter! Help us shape the future of our
+                        plugin by sharing your feature requests. We're eager to
+                        hear your ideas and work together to make our plugin
+                        even better. Your feedback is invaluable, and we
+                        appreciate your contribution to improving the plugin to
+                        meet your needs.
                       </p>
                       <span className="feature-requests-submit-button">
-                        <a href={baseUrlInvizo+links?.featureRequest} target="_blank">Submit Request</a>
+                        <a
+                          href={baseUrlInvizo + links?.featureRequest}
+                          target="_blank"
+                        >
+                          Submit Request
+                        </a>
                       </span>
                     </div>
                     {/* close-request-features */}
                   </div>
                 </div>
               </Col>
-              <Col span={6} className={ `dashboard-overview-page` }>
+              <Col span={6} className={`dashboard-overview-page`}>
                 <Promotion />
               </Col>
             </PanelRow>

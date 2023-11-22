@@ -138,11 +138,10 @@
 
     $(".wfc-widget-sidebar").css("margin-top", adminBarHeight);
   }
-  $(document).ready(function () { });
+  $(document).ready(function () {});
 
   // For sidebar.
   jQuery(document).ready(function () {
-    
     $(window).resize(function () {
       setDynamicHeight();
     });
@@ -175,6 +174,7 @@
             success: (response) => {
               jQuery(".wfc-overlay").removeClass("wfc-hide");
               jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
+              setDynamicHeight();
               getCartContents();
             },
             error: (error) => console.log(error),

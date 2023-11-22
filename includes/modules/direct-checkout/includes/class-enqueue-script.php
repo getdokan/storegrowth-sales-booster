@@ -110,15 +110,16 @@ class Enqueue_Script {
 		$font_size            = sgsb_find_option_setting( $settings, 'font_size', '16' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', '5' );
 
-		$theme                = wp_get_theme();
-		$is_avada_theme       = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
-		$is_ocean_wp_theme    = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
-		$is_elementor_theme   = ! empty( $theme->name ) ? $theme->name === 'Hello Elementor' : false;
-		$is_twenty_one_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
-		$is_twenty_four_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
-		$button_margin        = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
-
-		$custom_css = "
+		$theme                 = wp_get_theme();
+		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
+		$is_ocean_wp_theme     = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
+		$is_elementor_theme    = ! empty( $theme->name ) ? $theme->name === 'Hello Elementor' : false;
+		$is_twenty_one_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
+		$is_twenty_two_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Two' : false;
+		$is_twenty_three_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Three' : false;
+		$is_twenty_four_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+		$button_margin         = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
+		$custom_css            = "
 		.button.product_type_simple.sgsb_buy_now_button, 
 		.button.product_type_simple.sgsb_buy_now_button_product_page {
 			background-color: {$button_color} !important;
@@ -181,6 +182,14 @@ class Enqueue_Script {
 			$custom_css .= '
                 .button.sgsb_buy_now_button {
                     margin: 16px 0 0 0 !important;
+                }
+            ';
+		}
+		if ( $is_twenty_two_theme || $is_twenty_three_theme ) {
+			$custom_css .= '
+                .button.product_type_simple.sgsb_buy_now_button {
+										display:block;
+                    margin: auto;
                 }
             ';
 		}
