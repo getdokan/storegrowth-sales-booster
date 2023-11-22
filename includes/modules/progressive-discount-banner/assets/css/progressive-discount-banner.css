@@ -74,6 +74,7 @@ body:not(.show_discount_banner){
 
 body.admin-bar .sgsb-pd-banner-bar-wrapper {
     top: 32px;
+    max-width: 100%;
 }
 
 body {

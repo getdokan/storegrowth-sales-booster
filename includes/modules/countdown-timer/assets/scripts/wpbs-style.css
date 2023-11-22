@@ -29,10 +29,11 @@
 	font-weight: 600;
 	line-height: 1.2;
 }
-
+.products-block-post-template .sgsb-countdown-timer-heading,
 .products .sgsb-countdown-timer-heading  {
     font-size: 20px;
 }
+
 
 .sgsb-countdown-timer-items {
 	display: flex;
@@ -40,6 +41,7 @@
 	margin-bottom: 10px;
 }
 
+.products-block-post-template.sgsb-countdown-timer-items,
 .products .sgsb-countdown-timer-items {
     height: 50px;
 }
@@ -56,6 +58,7 @@
 	font-family: 'Inter';
 }
 
+.products-block-post-template .sgsb-countdown-timer-item,
 .products .sgsb-countdown-timer-item {
     width: 44px;
     height: 44px;
@@ -71,6 +74,7 @@
 	margin-bottom: 6px;
 }
 
+.products-block-post-template .sgsb-countdown-timer-item strong 
 .products .sgsb-countdown-timer-item strong {
     font-size: 14px;
     margin-bottom: 6px;
@@ -81,6 +85,7 @@
 	line-height: 4;
 }
 
+.products-block-post-template .sgsb-colon,
 .products .sgsb-colon {
     margin: 0 3px;
 }
@@ -109,6 +114,7 @@
 	border: 1px solid #ECEDF0;
 }
 
+.products-block-post-template .sgsb-countdown-timer-item.ct-layout-1 
 .products .sgsb-countdown-timer-item.ct-layout-1 {
     width: 45px;
     height: 50px;
@@ -122,6 +128,7 @@
 	color: #008DFF;
 }
 
+.products-block-post-template .sgsb-colon.ct-layout-1,
 .products .sgsb-colon.ct-layout-1 {
     margin: -4px 4px 0;
 }

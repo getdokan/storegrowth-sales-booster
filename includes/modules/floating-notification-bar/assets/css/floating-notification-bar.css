@@ -104,6 +104,7 @@ body:not(.show_floating_notification_bar) {
 
 body.admin-bar .sgsb-floating-notification-bar-wrapper {
     top: 32px;
+    max-width: 100%;
 }
 
 body {
