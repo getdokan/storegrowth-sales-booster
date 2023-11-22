@@ -65,6 +65,8 @@ async function archive() {
     "lerna.json",
     "package-lock.json",
     "archiver.js",
+    "composer.json",
+    "composer.lock"
   ];
 
   const archive = archiver("zip", {
