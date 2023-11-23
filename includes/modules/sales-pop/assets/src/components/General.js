@@ -1,13 +1,14 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import { createPopupForm, noop } from '../helper';
+import { Fragment } from "react";
 import { __ } from '@wordpress/i18n';
+import { applyFilters } from '@wordpress/hooks';
+import { createPopupForm, noop } from '../helper';
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
-function General( { onFormSave, upgradeTeaser } ) {
+function General( { onFormSave } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
@@ -24,7 +25,7 @@ function General( { onFormSave, upgradeTeaser } ) {
 
   const onFormReset = () => {
     setCreateFromData( { ...createPopupForm } );
-  }
+  };
 
   return (
     <Fragment>
@@ -37,15 +38,14 @@ function General( { onFormSave, upgradeTeaser } ) {
           isEnable={ (createPopupFormData.enable == 'true' || createPopupFormData.enable == true) ? true : false }
           tooltip={ __( 'By enabling the sales pop will show in the store.', 'storegrowth-sales-booster' ) }
         />
-        <Switcher
-          colSpan={ 12 }
-          name={ 'mobile_view' }
-          needUpgrade={ upgradeTeaser }
-          changeHandler={ upgradeTeaser ? noop : onFieldChange }
-          title={ __( 'Popup in Mobile', 'storegrowth-sales-booster' ) }
-          tooltip={ __( 'By enabling the pop up will be visible in the mobile devices.', 'storegrowth-sales-booster' ) }
-          isEnable={ (createPopupFormData.mobile_view == 'true' || createPopupFormData.mobile_view == true) ? true : false }
-        />
+
+        {/* Rendered all necessary sales pop settings after popup enable settings. */}
+        { applyFilters(
+          'sgsb_after_sales_pop_enable_settings',
+          '',
+          createPopupFormData,
+          onFieldChange
+        ) }
       </SettingsSection>
       <ActionsHandler
         resetHandler={ onFormReset }
