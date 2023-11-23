@@ -95,7 +95,7 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
     {
       key: 'general',
       title: __( 'Sales Pop Setting', 'storegrowth-sales-booster' ),
-      panel: <General onFormSave={ onFormSave } upgradeTeaser={ !isProEnabled } />,
+      panel: <General onFormSave={ onFormSave } />,
     },
     {
       key: 'template',
