@@ -10,11 +10,11 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Supercharge Your WooCommerce Store with StoreGrowth - The Ultimate Sales Booster Suite!
+Supercharge your WooCommerce store with StoreGrowth, the ultimate sales booster suite!
 
-Best WooCommerce Sales Booster: 8+ Advanced Tools for Live Sales notifications, Floating notification Bar, Free Shipping, Upsell Bump, Quick Cart, Direct Checkout, Stock Countdown Alerts, and Sales Countdown Timer!
+Unlock the full potential of your online store and skyrocket your sales using our comprehensive set of 8+ advanced tools. From live sales notifications and a floating notification bar to free shipping incentives, upsell bumps, quick cart, direct checkout, stock countdown alerts, and a sales countdown timer – StoreGrowth has it all. Elevate your WooCommerce experience and create an unbeatable shopping journey for your customers. Boost conversions, increase average order value, and take your online business to new heights with StoreGrowth!
 
-Unlock the full potential of your online store and skyrocket your sales with StoreGrowth. Our plugin offers a comprehensive set of 8 powerful sales booster tools designed to create an unbeatable shopping experience for your customers.
+[youtube https://youtu.be/q9gWD7iUHX0?si=3C8l7l6o_JFfymg2]
 
 **Live Sales Notifications:** Instantly build trust and credibility by showcasing real-time purchases. Let your customers see what others are buying, triggering the Fear of Missing Out (FOMO) effect and encouraging them to make a purchase.
 
