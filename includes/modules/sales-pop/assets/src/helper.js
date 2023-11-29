@@ -1,5 +1,3 @@
-import { applyFilters } from '@wordpress/hooks';
-
 export const noop = () => {};
 
 /**

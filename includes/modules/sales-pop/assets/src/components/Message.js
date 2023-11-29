@@ -1,10 +1,8 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { __ } from "@wordpress/i18n";
-import {addFilter} from "@wordpress/hooks";
-import { createPopupForm, noop } from '../helper';
-import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import {addFilter, applyFilters} from "@wordpress/hooks";
+import { createPopupForm } from '../helper';
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { Fragment } from "react";
 
@@ -15,13 +13,6 @@ function Message( { onFormSave, upgradeTeaser } ) {
     createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
     getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
   }) );
-
-  const onFieldChange = ( key, value ) => {
-    setCreateFromData( {
-      ...createPopupFormData,
-      [ key ]: value,
-    } );
-  };
 
   const onFormReset = () => {
     setCreateFromData( { ...createPopupForm } );
@@ -51,19 +42,13 @@ function Message( { onFormSave, upgradeTeaser } ) {
 
   return (
     <Fragment>
-      <SettingsSection>
-        <TextAreaBox
-          areaRows={ 4 }
-          name={ 'message_popup' }
-          needUpgrade={ upgradeTeaser }
-          fieldValue={ createPopupFormData.message_popup }
-          changeHandler={ upgradeTeaser ? noop : onFieldChange }
-          title={ __( 'Message Popup', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __( 'Enter Message Popup', 'storegrowth-sales-booster' ) }
-          tooltip={ __( 'The base message template that is to be shown in the sales pop.', 'storegrowth-sales-booster' ) }
-          renderTextAreaContent={true}
-        />
-      </SettingsSection>
+      {/* Rendered sales pop time panel settings. */}
+      { applyFilters(
+        'sgsb_sales_pop_message_panel_settings',
+        '',
+        createPopupFormData,
+        setCreateFromData
+      ) }
 
       <ActionsHandler
         resetHandler={ onFormReset }

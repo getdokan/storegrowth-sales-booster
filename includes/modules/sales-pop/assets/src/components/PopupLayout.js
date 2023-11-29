@@ -1,5 +1,5 @@
-import { __ } from '@wordpress/i18n';
 import { notification } from 'antd';
+import { __ } from '@wordpress/i18n';
 
 import { useDispatch, useSelect } from '@wordpress/data';
 import CreateSalesPop from './CreateSalesPop';
@@ -135,10 +135,10 @@ function PopupLayout( { outlet: Outlet, navigate, useSearchParams } ) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={ showPreview && tabName ? 15 : 24 }
             tabPanels={ tabPanels }
             changeHandler={ changeTab }
             activeTab={ tabName ? tabName : 'general' }
+            colSpan={ showPreview && tabName ? 15 : 24 }
           />
           { showPreview && tabName && (
             <PanelPreview colSpan={ 9 }>
