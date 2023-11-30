@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth - Sales Booster for WooCommerce
  * Description: The ultimate plugin for  WooCommerce store to enhance customer experience and maximize revenue.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Invizo
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+
