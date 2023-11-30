@@ -1,5 +1,5 @@
 === StoreGrowth - Sales Booster For WooCommerce | Live Sales Notifications, Upsell Bump, Quick Cart, Direct Checkout, Stock Countdown and more ===
-Contributors: mehedi_csit
+Contributors: mehedi_csit, invizo
 Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown
 Requires at least: 5.4
 Tested up to: 6.4.1
