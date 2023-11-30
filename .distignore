@@ -1,0 +1,14 @@
+/.wordpress-org
+/.git
+/.github
+/node_modules
+
+.distignore
+.gitignore
+package.json
+package-lock.json
+lerna.json
+lerna-debug.log
+composer.json
+composer.lock
+archiver.js
