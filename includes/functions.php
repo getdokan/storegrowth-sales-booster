@@ -30,7 +30,7 @@ if ( ! function_exists( 'sgsb_modules_url' ) ) {
 	 * @param string $path Module internal path.
 	 */
 	function sgsb_modules_url( $path ) {
-		return STOREGROWTH_PLUGIN_DIR_URL . 'Includes/Modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_URL . 'includes/Modules/' . $path;
 	}
 }
 
@@ -41,7 +41,7 @@ if ( ! function_exists( 'sgsb_modules_path' ) ) {
 	 * @param string $path Module internal path.
 	 */
 	function sgsb_modules_path( $path ) {
-		return STOREGROWTH_PLUGIN_DIR_PATH . 'Includes/Modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_PATH . 'includes/Modules/' . $path;
 	}
 }
 
