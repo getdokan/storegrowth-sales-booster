@@ -7,7 +7,7 @@ import TextAreaBox from "../settings/Panels/PanelSettings/Fields/TextAreaBox";
 
 const noop = () => {};
 
-// Handle sales pop modules pro settings prompts.
+// Handle sales pop Modules pro settings prompts.
 addFilter(
     'sgsb_after_sales_pop_enable_settings',
     'sgsb_after_sales_pop_enable_settings_callback',
