@@ -30,18 +30,18 @@ if ( ! function_exists( 'sgsb_modules_url' ) ) {
 	 * @param string $path Module internal path.
 	 */
 	function sgsb_modules_url( $path ) {
-		return STOREGROWTH_PLUGIN_DIR_URL . 'includes/modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_URL . 'Includes/Modules/' . $path;
 	}
 }
 
 if ( ! function_exists( 'sgsb_modules_path' ) ) {
 	/**
-	 * Get modules path.
+	 * Get Modules path.
 	 *
 	 * @param string $path Module internal path.
 	 */
 	function sgsb_modules_path( $path ) {
-		return STOREGROWTH_PLUGIN_DIR_PATH . 'includes/modules/' . $path;
+		return STOREGROWTH_PLUGIN_DIR_PATH . 'Includes/Modules/' . $path;
 	}
 }
 
@@ -150,7 +150,7 @@ if ( ! function_exists( 'storegrowth_sales_booster_start_plugin_tracking' ) ) {
 
         $tracker->set_notice_options(
             array(
-                'notice'       => __( '<strong>Unlock Exclusive Benefits!</strong>Help us make <strong> StoreGrowth - sales booster for woocommerce</strong> even better by granting permission to track non-sensitive usage data. if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
+                'notice'       => __( 'Want to help make <strong>StoreGrowth</strong> even more awesome? Be the first to get access to <strong>StoreGrowth PRO</strong> with a huge <strong>50% Early Bird Discount</strong> if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
                 'extra_notice' => __(
                     'We collect non-sensitive diagnostic data and plugin usage information. 
         Your site URL, WordPress & PHP version, plugins & themes and email address to send you the 
