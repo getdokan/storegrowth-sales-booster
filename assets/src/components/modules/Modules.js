@@ -48,7 +48,7 @@ function Modules() {
     filterActiveModules ? module.status : true
   ).length;
 
-  // check only tha activated modules
+  // check only tha activated Modules
   const activatedModules = allModules.filter((module) => module.status).length;
 
   const handlefilterChange = (checked) => {
@@ -60,7 +60,7 @@ function Modules() {
 
   const hanglePageItem = (pageNumber) => {
     if (filterActiveModules) {
-      // Pagination calculation based on active modules
+      // Pagination calculation based on active Modules
       const startIndex = (pageNumber - 1) * perPageItem;
       const endIndex = startIndex + perPageItem;
 
@@ -68,7 +68,7 @@ function Modules() {
       setMaxValue(endIndex);
       setCurrentPage(pageNumber);
     } else {
-      // Pagination calculation based on all modules (preserves the current page)
+      // Pagination calculation based on all Modules (preserves the current page)
       const startIndex = (pageNumber - 1) * perPageItem;
       const endIndex = startIndex + perPageItem;
 
@@ -131,7 +131,7 @@ function Modules() {
 
   useEffect(() => {
     if (filterActiveModules) {
-      // If filterActiveModules is true, recalculate pagination based on active modules
+      // If filterActiveModules is true, recalculate pagination based on active Modules
       const newCurrentPage = Math.ceil(activeModuleLength / perPageItem);
       const updatedCurrentPage =
         currentPage > newCurrentPage ? currentPage - 1 : currentPage;
@@ -147,7 +147,7 @@ function Modules() {
 
   /**
    *
-   * Side Effect loading for if deactivated modules page if the modules are being deactivate and
+   * Side Effect loading for if deactivated Modules page if the Modules are being deactivate and
    * and set the setFilterActiveModules to false
    *
    */
