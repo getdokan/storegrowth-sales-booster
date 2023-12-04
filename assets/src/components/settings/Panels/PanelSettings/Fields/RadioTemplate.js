@@ -17,8 +17,8 @@ const RadioTemplate = ( {
             >
                 {/* Handle settings radio field by using dynamic props */}
                 <Row justify="center" align={ `middle` } gutter={ [ 0, 16 ] }>
-                    { options && options?.length > 0 && options?.map( option => (
-                        <Col span={ 24 }>
+                    { options && options?.length > 0 && options?.map( (option,index) => (
+                        <Col key={index} span={ 24 }>
                             <Radio.Button
                                 value={ option?.key }
                                 disabled={ option?.disabled }
