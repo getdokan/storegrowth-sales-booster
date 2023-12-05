@@ -4,4 +4,4 @@ vendor
 .idea
 lerna-debug.log
 assets/build/
-includes/Modules/*/assets/build/
+Includes/Modules/*/assets/build/

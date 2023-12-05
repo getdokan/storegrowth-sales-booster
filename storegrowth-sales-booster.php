@@ -51,7 +51,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
  * Define The Template's Folder Constant
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path(STOREGROWTH_PLUGIN_FILE) . 'includes/Modules/');
+	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path(STOREGROWTH_PLUGIN_FILE) . 'Includes/Modules/');
 }
 
 /**
