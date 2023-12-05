@@ -1,0 +1,20 @@
+.button.product_type_simple.sgsb_buy_now_button ,
+.button.product_type_simple.sgsb_buy_now_button_product_page
+{
+  border:none;
+  width: fit-content;
+}
+.button.product_type_simple.sgsb_buy_now_button:hover ,
+.button.product_type_simple.sgsb_buy_now_button_product_page:hover
+{
+  text-decoration: none;
+}
+
+button.product_type_simple {
+  margin-bottom: 10px !important;
+}
+
+form.cart .sgsb_buy_now_button_product_page {
+  padding: 10px 20px;
+  margin-left: 20px !important;
+}

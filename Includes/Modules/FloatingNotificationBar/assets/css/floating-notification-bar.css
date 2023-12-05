@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('../../../../../assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../../../../../assets/fonts/Lato/Lato-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../../../../assets/fonts/Montserrat/Montserrat-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../../../../../assets/fonts/Poppins/Poppins-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../../../../../assets/fonts/Roboto/Roboto-Regular.ttf');
+    /* Other font properties like font-weight and font-style can also be defined here */
+}
+
+body.show_floating_notification_bar .sgsb-floating-notification-bar-wrapper {
+    transition: 0.5s;
+}
+
+body:not(.show_floating_notification_bar) {
+    padding-top: 0;
+}
+
+.sgsb-floating-notification-bar-wrapper {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    text-align: center;
+    width: 100%;
+    background-color: #008DFF;
+    color: #fff;
+    z-index: 99999;
+    /* height: auto; */
+    padding: 8px 0px;
+}
+
+.sgsb-floating-notification-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 97%;
+    margin: auto;
+    height: 100%;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
+    margin-top: 8px;
+    fill: #fff;
+    width: 25px;
+    height: 25px;
+}
+
+.sgsb-floating-notification-bar-text {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sgsb-floating-notification-bar-remove {
+    cursor: pointer;
+}
+
+/* CSS for the button-like anchor */
+.fn-bar-action-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #ffff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.fn-bar-action-button:hover {
+    background-color: blue;
+    /* Background color on hover */
+    color: white;
+    /* Text color on hover */
+}
+
+.fn-bar-action-button:hover {
+    background-color: #0056b3;
+    /* Change the background color on hover */
+}
+
+body.admin-bar .sgsb-floating-notification-bar-wrapper {
+    top: 32px;
+    max-width: 100%;
+}
+
+body {
+    padding-top: 70px;
+}
+
+.body-padding-transition {
+    padding-top: 20px;
+    /* Adjust the padding value as needed */
+    transition: padding-top 0.5s linear;
+    /* Adjust the transition duration and timing function as needed */
+}
+
+.sgsb-coupon-container .sgsb-coupon-code {
+    color: #FFF;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.sgsb-coupon-container {
+    padding: 7px;
+    border: 1px dashed white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.sgsb-fn-bar-countdown {
+    display: flex;
+    font-size: 18px;
+    font-weight: 800;
+    gap: 20px;
+}
+
+.sgsb-fn-bar-countdown .sgsb-fn-bar-countdown-value {
+    gap: 8px;
+    display: flex;
+    line-height: 1;
+    flex-direction: column;
+}
+
+.sgsb-countdown-content {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.sgsb-fn-bar-data-content {
+    display: flex;
+    flex-flow: wrap;
+    gap: 48px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1024px) {
+    .sgsb-floating-notification-bar-wrapper {
+        height: auto !important;
+    }
+    .sgsb-floating-notification-bar{
+        padding:20px 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sgsb-floating-notification-bar-wrapper {
+        height: auto !important;
+    }
+
+    body.admin-bar .sgsb-floating-notification-bar-wrapper {
+        top: 46px;
+    }
+
+    .sgsb-fn-bar-data-content{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .sgsb-floating-notification-bar{
+        padding:20px 20px;
+    }
+}
