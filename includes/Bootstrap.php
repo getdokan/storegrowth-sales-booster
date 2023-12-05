@@ -66,8 +66,6 @@ class Bootstrap {
 	 * Load module classes
 	 */
 	private function load_module_classes() {
-//		require_once __DIR__ . '/interfaces/ModuleSkeleton.php';
-
 		Modules::instance();
 	}
 }
