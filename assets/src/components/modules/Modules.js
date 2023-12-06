@@ -153,7 +153,7 @@ function Modules() {
    */
 
   useEffect(() => {
-    if (activatedModules === 0) {
+    if (activatedModules === 0 && filterActiveModules ) {
       setCurrentPage(1);
       setMinValue(0);
       setMaxValue(perPageItem);
