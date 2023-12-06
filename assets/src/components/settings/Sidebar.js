@@ -96,7 +96,7 @@ function Sidebar({ routes }) {
         return <Navigate to={`${firstItem.path}`} replace={true} />;
     }
     else if (location.pathname === "/" && filteredRoute.length === 0) {
-        window.location.href = "admin.php?page=sgsb-Modules";
+        window.location.href = "admin.php?page=sgsb-modules";
     }
 
     return (

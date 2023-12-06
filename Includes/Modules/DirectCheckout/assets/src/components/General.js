@@ -10,7 +10,7 @@ import SettingInstruction from "./SettingInstruction";
 
 function General({ onFormSave, upgradeTeaser }) {
   const modulePageRedirect = () => {
-    window.location.href = "/wp-admin/admin.php?page=sgsb-Modules";
+    window.location.href = "/wp-admin/admin.php?page=sgsb-modules";
   };
   const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
   const { createDirectCheckoutFormData, getButtonLoading } = useSelect(
