@@ -1,25 +1,25 @@
-import React from "react";
-import { Select } from "antd";
-import { __ } from "@wordpress/i18n";
-import EmptyField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
-const VisibilityControl = ({
-  title,
-  upgradeTeaser,
-  formData,
-  bannerPageShowOption,
-  pageOptions,
-  userOption,
-  onFieldChange,
-  noop
-}) => {
+import React from 'react';
+import { Select } from 'antd';
+import { __ } from '@wordpress/i18n';
+import EmptyField from 'sales-booster/src/components/settings/Panels/PanelSettings/Fields/EmptyField';
+
+const VisibilityControl = () => {
+  const bannerPageShowOption = [
+    { label: `Show Everywhere`, value: 'banner-show-everywhere' },
+  ];
+
+  const userOption = [
+    { value: 'both', label: 'Everyone' },
+  ];
+
   return (
-    <div>
+    <div style={ { width: '100%' } }>
       <EmptyField
-        needUpgrade={ upgradeTeaser }
-        title={ title }
+        needUpgrade={ true }
+        title={ __( 'Visibility Control', 'storegrowth-sales-booster' ) }
         tooltip={ __(
           `Add page targeting to ensure the welcome bar only appears or doesn't appear for the selected pages only`,
-          "storegrowth-sales-booster"
+          'storegrowth-sales-booster'
         ) }
         colSpan={ 24 }
         rightCol={ 15 }
@@ -27,57 +27,28 @@ const VisibilityControl = ({
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
           }}
         >
           {/* Banner Showing Options */}
           <Select
-            value={formData.banner_show_option}
+            value={ 'banner-show-everywhere' }
             style={{
-              width: "100%",
+              width: '100%',
             }}
-            disabled={upgradeTeaser}
-            options={bannerPageShowOption}
-            onChange={
-              upgradeTeaser
-                ? noop
-                : (event) => onFieldChange("banner_show_option", event)
-            }
+            disabled={ true }
+            options={ bannerPageShowOption }
           />
-          {formData.banner_show_option === "banner-show-selected" && (
-            <>
-              {/* Banner Showing page lists */}
-              <Select
-                disabled={upgradeTeaser}
-                mode="multiple"
-                defaultValue={formData.slected_page_option}
-                style={{
-                  width: "100%",
-                }}
-                options={pageOptions}
-                onChange={
-                  upgradeTeaser
-                    ? noop
-                    : (event) => onFieldChange("slected_page_option", event)
-                }
-              />
-            </>
-          )}
-          {/* User types that will be availabel to seee the pages */}
+          {/* User types that will be available to see the pages */}
           <Select
-            disabled={upgradeTeaser}
-            defaultValue={formData.user_type}
+            disabled={ true }
+            options={ userOption }
+            defaultValue={ 'both' }
             style={{
-              width: "100%",
+              width: '100%',
             }}
-            options={userOption}
-            onChange={
-              upgradeTeaser
-                ? noop
-                : (event) => onFieldChange("user_type", event)
-            }
           />
         </div>
       </EmptyField>

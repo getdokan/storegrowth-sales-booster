@@ -1,15 +1,15 @@
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { __ } from "@wordpress/i18n";
+import { applyFilters } from '@wordpress/hooks';
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import MultiSelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
-import {createPopupForm, noop} from "../helper";
-import {Fragment} from "react";
+import { createPopupForm } from "../helper";
+import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-import VisibilityControl from './VisibilityControl';
 import OrderProductCount from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: Upgrade to add more than 5 names</span>;
@@ -31,39 +31,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
     { value: 1, label: __( 'Select Products', 'storegrowth-sales-booster' ) },
   ];
 
-  const pageOptions = [
-    { value: "is_front_page", label: "Front Page" },
-    { value: "is_home", label: "Blog Page" },
-    { value: "is_singular", label: "All Post,Pages and Post Types" },
-    { value: "is_page", label: "All Post" },
-    { value: "is_attachment", label: "All Pages" },
-    { value: "is_search", label: "Search Page" },
-    { value: "is_404", label: "404 Error Page" },
-    { value: "is_archive", label: "All Archives" },
-    { value: "is_category", label: "All Category Archives" },
-    { value: "is_tag", label: "All Tag Archives" },
-  ];
-
-  const userOption = [
-    { value: "logged_in", label: "Logged In" },
-    { value: "not_logged_in", label: "Not Logged In" },
-    { value: "both", label: "Everyone" },
-  ];
-
-  const bannerPageShowOption = [
-    {
-      label: `Show Everywhere`,
-      value: "banner-show-everywhere",
-    },
-    {
-      label: `Show on Selected`,
-      value: "banner-show-selected",
-      tooltip: __("", "storegrowth-sales-booster"),
-    },
-  ];
-
   const max_option_count_in_free = 5;
-  const externalLink = createPopupFormData.external_link;
   const externalProductsIds = sales_pop_data.product_list.externalProductsIds;
 
   let allProductListForSelect = [];
@@ -87,7 +55,15 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
 
   const selectedPopupProducts = createPopupFormData.popup_products;
   const isProductsSelectReachedlimit = upgradeTeaser?selectedPopupProducts.length >= max_option_count_in_free:false;
-  let productListForSelect = externalLink ? allProductListForSelect : allProductListForSelect.filter(item => !externalProductsIds.includes(item.value));
+
+  // Handle selection available product list.
+  let productListForSelect = applyFilters(
+    'sgsb_sales_pop_selection_available_product_list',
+    allProductListForSelect.filter( item => !externalProductsIds.includes( item.value ) ),
+    allProductListForSelect,
+    createPopupFormData
+  );
+
   productListForSelect = isProductsSelectReachedlimit ? productListForSelect.filter(item => selectedPopupProducts.includes(item.value)) : productListForSelect;
 
   const selectedVirtualCountries = createPopupFormData.virtual_countries;
@@ -133,14 +109,13 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
   return (
     <Fragment>
       <SettingsSection>
-        <Switcher
-          name={ 'external_link' }
-          needUpgrade={ upgradeTeaser }
-          changeHandler={ onFieldChange }
-          isEnable={ Boolean( createPopupFormData.external_link ) }
-          title={ __( 'External Link', 'storegrowth-sales-booster' ) }
-          tooltip={ __( 'Working with External/Affiliate Products. Product link is product url', 'storegrowth-sales-booster' ) }
-        />
+        {/* Rendered all necessary sales pop settings before product settings. */}
+        { applyFilters(
+          'sgsb_prepend_sales_pop_product_settings',
+          '',
+          createPopupFormData,
+          onFieldChange
+        ) }
         <Switcher
           name={ 'product_random' }
           changeHandler={ onFieldChange }
@@ -208,17 +183,15 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
             'Bernau, Freistaat Bayern, Germany', 'storegrowth-sales-booster' ) }
           tooltip={ __( 'Please write each location on a separate line, following the format: \'city\', \'state\', \'country\'. Use commas to separate the city, state, and country. If you don\'t have a state, leave an empty comma in its place (e.g. city,,country). If you don\'t have a city, leave an empty comma in its place (e.g. ,state,country).', 'storegrowth-sales-booster' ) }
         />
+
+        {/* Rendered all necessary sales pop settings after product settings. */}
+        { applyFilters(
+          'sgsb_append_sales_pop_product_settings',
+          '',
+          createPopupFormData,
+          onFieldChange
+        ) }
       </SettingsSection>
-      <VisibilityControl
-        title={__("Visibility Control", "storegrowth-sales-booster")}
-        upgradeTeaser={upgradeTeaser}
-        formData ={createPopupFormData}
-        bannerPageShowOption={bannerPageShowOption}
-        pageOptions={pageOptions}
-        userOption={userOption}
-        onFieldChange={onFieldChange}
-        noop={noop}
-      />
       <ActionsHandler
         resetHandler={ onFormReset }
         loadingHandler={ getButtonLoading }
