@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
-import SettingsSection from "../../settings/Panels/PanelSettings/SettingsSection";
-import SectionHeader from "../../settings/Panels/SectionHeader";
-import CheckboxGroup from "../../settings/Panels/PanelSettings/Fields/CheckboxGroup";
+import SettingsSection from "../../../settings/Panels/PanelSettings/SettingsSection";
+import SectionHeader from "../../../settings/Panels/SectionHeader";
+import CheckboxGroup from "../../../settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import BannerTrigger from "sales-booster-free-shipping-bar/src/components/BannerTrigger";
 import PageTarget from "sales-booster-free-shipping-bar/src/components/PageTarget";
 

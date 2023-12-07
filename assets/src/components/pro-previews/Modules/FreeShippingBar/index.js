@@ -1,9 +1,9 @@
 import { __ } from "@wordpress/i18n";
-import { addFilter } from "@wordpress/hooks";
-import InputNumber from "../../settings/Panels/PanelSettings/Fields/Number";
-import SelectBox from "../../settings/Panels/PanelSettings/Fields/SelectBox";
-import RadioBox from "../../settings/Panels/PanelSettings/Fields/RadioBox";
 import DisplayRules from "./DisplayRules";
+import { addFilter } from "@wordpress/hooks";
+import RadioBox from "../../../settings/Panels/PanelSettings/Fields/RadioBox";
+import InputNumber from "../../../settings/Panels/PanelSettings/Fields/Number";
+import SelectBox from "../../../settings/Panels/PanelSettings/Fields/SelectBox";
 
 const noop = () => {};
 

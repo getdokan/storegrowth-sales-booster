@@ -4,7 +4,8 @@ import BasicDesign from './BasicDesign';
 import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createPopupForm } from "../helper";
-import {__} from "@wordpress/i18n";
+import { __ } from "@wordpress/i18n";
+import { applyFilters } from '@wordpress/hooks';
 
 function Design( { onFormSave, upgradeTeaser } ) {
   const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
@@ -35,20 +36,13 @@ function Design( { onFormSave, upgradeTeaser } ) {
 
       { Boolean( createPopupFormData?.text_style ) && (
         <Fragment>
-          {/* normal text */ }
-          <TextDesign
-            upgradeTeaser={upgradeTeaser}
-            createPopupForm={ createPopupFormData }
-            onFieldChange={ onFieldChange }
-            textTitle='Normal Text'
-            fontName='normal_text_color'
-            fontColor={ createPopupFormData.normal_text_color }
-            fontSizeName='normal_text_font_size'
-            fontSize={ createPopupFormData.normal_text_font_size }
-            fontWeightName='normal_text_font_weight'
-            fontWeight={ createPopupFormData.normal_text_font_weight }
-            tooltip={ __( 'Modify  the text style of the normal text in the sales pop.', 'storegrowth-sales-booster' ) }
-          />
+          {/* Rendered sales pop before section settings. */}
+          { applyFilters(
+            'sgsb_prepend_sales_pop_section_settings',
+            '',
+            createPopupFormData,
+            onFieldChange
+          ) }
 
           {/* product name text*/ }
           <TextDesign
@@ -92,48 +86,13 @@ function Design( { onFormSave, upgradeTeaser } ) {
             tooltip={ __( 'Modify the text style of the country name in the sales pop.', 'storegrowth-sales-booster' ) }
           />
 
-          {/* state text */ }
-          <TextDesign
-            upgradeTeaser={upgradeTeaser}
-            createPopupForm={ createPopupFormData }
-            onFieldChange={ onFieldChange }
-            textTitle='State Text'
-            fontName='state_text_color'
-            fontColor={ createPopupFormData.state_text_color }
-            fontSizeName='state_text_font_size'
-            fontSize={ createPopupFormData.state_text_font_size }
-            fontWeightName='state_text_font_weight'
-            fontWeight={ createPopupFormData.state_text_font_weight }
-            tooltip={ __( 'Modify the text style of the state name in the sales pop.', 'storegrowth-sales-booster' ) }
-          />
-
-          {/* city text */ }
-          <TextDesign
-            upgradeTeaser={ upgradeTeaser }
-            createPopupForm={ createPopupFormData }
-            onFieldChange={ onFieldChange }
-            textTitle='City Text'
-            fontName='city_text_color'
-            fontColor={ createPopupFormData.city_text_color }
-            fontSizeName='city_text_font_size'
-            fontSize={ createPopupFormData.city_text_font_size }
-            fontWeightName='city_text_font_weight'
-            fontWeight={ createPopupFormData.city_text_font_weight }
-            tooltip={ __( 'Modify the text style of the city name in the sales pop.', 'storegrowth-sales-booster' ) }
-          />
-
-          {/* name text */ }
-          {/* <TextDesign
-            createPopupForm={ createPopupFormData }
-            onFieldChange={ onFieldChange }
-            textTitle='Shop Name Text'
-            fontName='name_text_color'
-            fontColor={ createPopupFormData.name_text_color }
-            fontSizeName='name_text_font_size'
-            fontSize={ createPopupFormData.name_text_font_size }
-            fontWeightName='name_text_font_weight'
-            fontWeight={ createPopupFormData.name_text_font_weight }
-          /> */}
+          {/* Rendered sales pop before section settings. */}
+          { applyFilters(
+            'sgsb_append_sales_pop_section_settings',
+            '',
+            createPopupFormData,
+            onFieldChange
+          ) }
         </Fragment>
       ) }
 
