@@ -41,18 +41,13 @@ function DesignTab(props) {
                         'storegrowth-sales-booster'
                     )}
                 />
-                <Number
-                    min={1}
-                    max={100}
-                    style={{
-                        width: '100px',
-                    }}
-                    name={`font_size`}
-                    changeHandler={onFieldChange}
-                    fieldValue={formData.font_size}
-                    needUpgrade={upgradeTeaser}
-                    title={__(`Font Size`, 'storegrowth-sales-booster')}
-                />
+                { applyFilters(
+                    'sgsb_free_shipping_bar_font_size',
+                    '',
+                    formData,
+                    onFieldChange
+                ) }
+                
                 <ColourPicker
                     name={'background_color'}
                     colSpan={12}

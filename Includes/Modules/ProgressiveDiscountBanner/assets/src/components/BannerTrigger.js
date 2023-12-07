@@ -1,20 +1,9 @@
 import { Radio, InputNumber } from "antd";
 import { __ } from "@wordpress/i18n";
-import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
-import { useState, useEffect } from "react";
 
-const BannerTrigger = (props) => {
-  const { upgradeTeaser, onFieldChange, formData } = props;
-  const noop = () => {};
-  
-  // Initialize defaultTriggerValue from formData.banner_trigger
-  const [defaultTriggerValue, setDefaultTriggerValue] = useState(formData.banner_trigger);
+import EmptyField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 
-  // Update defaultTriggerValue when formData changes
-  useEffect(() => {
-    setDefaultTriggerValue(formData.banner_trigger);
-  }, [formData]);
-
+const BannerTrigger = () => {
   // Hardcoded options
   const triggerOptions = [
     { value: "after-few-seconds", label: "After a few Seconds" },
@@ -24,7 +13,7 @@ const BannerTrigger = (props) => {
   return (
     <>
       <EmptyField
-        needUpgrade={upgradeTeaser}
+        needUpgrade={true}
         title={__("Trigger", "storegrowth-sales-booster")}
         tooltip={__(
           `Choose when you'd like the welcome bar to appear on your site`,
@@ -35,15 +24,16 @@ const BannerTrigger = (props) => {
           style={{
             width: "100%",
           }}
-          disabled={upgradeTeaser}
-          onChange={upgradeTeaser ? noop : (event) => {
-            onFieldChange("banner_trigger", event.target.value);
-          }}
-          value={defaultTriggerValue}
+          disabled={true}
+          value={"after-few-seconds"}
         >
           {triggerOptions.map((option) => (
             <div
-              className={option.value === defaultTriggerValue ? "trigger-radio-selected" : ""}
+              className={
+                option.value === "after-few-seconds"
+                  ? "trigger-radio-selected"
+                  : ""
+              }
               key={option.value}
               style={{
                 display: "flex",
@@ -60,31 +50,13 @@ const BannerTrigger = (props) => {
               <InputNumber
                 min={0}
                 // Hardcoded input field names and values
-                disabled={upgradeTeaser}
+                disabled={true}
                 style={{
                   width: "20%",
                   borderColor: "#DDE6F9",
                 }}
-                name={
-                  option.value === "after-few-seconds"
-                    ? "banner_delay"
-                    : "scroll_banner_delay"
-                }
-                value={
-                  option.value === "after-few-seconds"
-                    ? formData.banner_delay
-                    : formData.scroll_banner_delay
-                }
-                onChange={(event) =>
-                  upgradeTeaser
-                    ? noop
-                    : onFieldChange(
-                        option.value === "after-few-seconds"
-                          ? "banner_delay"
-                          : "scroll_banner_delay",
-                        event
-                      )
-                }
+                name={"banner_delay"}
+                value={7}
                 placeholder={`sec`}
               />
             </div>

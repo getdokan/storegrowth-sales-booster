@@ -5,9 +5,9 @@ import SelectBox from "../../../../../../assets/src/components/settings/Panels/P
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import DisplayRules from "./DisplayRules";
+// import DisplayRules from "sales-booster/src/components/pro-previews/free-shipping-bar/DisplayRules";
+// import DisplayRules from "./DisplayRules";
 import BarIcon from "./BarIcon";
-import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
 import {wpMedia} from "sales-booster/src/utils/helper";
 import SettingInstruction from "./SettingInstruction";
 
@@ -166,15 +166,15 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
-                {/* { applyFilters(
+                { applyFilters(
                     'sgsb_free_shipping_bar_icon_radio_box',
                     '',
-                    formData,
-                    onFieldChange,
                     iconOptions,
-                ) } */}
+                    formData,
+                    onBarChange
+                ) }
 
-                <RadioBox
+                {/* <RadioBox
                     uploadOption={ upgradeTeaser ? 'pro' : true }
                     options={ [ ...iconOptions ] }
                     name={ `progressive_banner_icon_name` }
@@ -184,7 +184,7 @@ function DiscountBanner(props) {
                     title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
                     customValue={ formData.progressive_banner_custom_icon }
                     fieldValue={ formData.progressive_banner_icon_name }
-                />
+                /> */}
 
                 <TextAreaBox
                     areaRows={3}
@@ -221,12 +221,12 @@ function DiscountBanner(props) {
                 />
             </SettingsSection>
             <SettingsSection>
-                <DisplayRules
-                    upgradeTeaser={upgradeTeaser}
-                    onFieldChange={onFieldChange}
-                    formData={formData}
-                    textTitle="Display Rules"
-                />
+            { applyFilters(
+                    'sgsb_free_shipping_bar_display_rules_settings',
+                    '',
+                    formData,
+                    onFieldChange
+                ) }
             </SettingsSection>
         </Fragment>
     );

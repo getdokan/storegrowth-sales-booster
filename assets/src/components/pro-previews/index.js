@@ -9,7 +9,7 @@ import ColourPicker from "../settings/Panels/PanelSettings/Fields/ColorPicker";
 import SelectBox from "../settings/Panels/PanelSettings/Fields/SelectBox";
 import TextInput from "../settings/Panels/PanelSettings/Fields/TextInput";
 import VisibilityControl from "sales-booster-sales-pop/src/components/VisibilityControl";
-import RadioBox from "../settings/Panels/PanelSettings/Fields/RadioBox";
+import "./free-shipping-bar/index.js"
 
 const noop = () => {};
 
@@ -20,13 +20,16 @@ addFilter(
   (component) => {
     return (
       <Switcher
-        colSpan={ 12 }
-        isEnable={ false }
-        needUpgrade={ true }
-        name={ 'mobile_view' }
-        changeHandler={ noop }
-        title={ __( 'Popup in Mobile', 'storegrowth-sales-booster' ) }
-        tooltip={ __( 'By enabling the pop up will be visible in the mobile devices.', 'storegrowth-sales-booster' ) }
+        colSpan={12}
+        isEnable={false}
+        needUpgrade={true}
+        name={"mobile_view"}
+        changeHandler={noop}
+        title={__("Popup in Mobile", "storegrowth-sales-booster")}
+        tooltip={__(
+          "By enabling the pop up will be visible in the mobile devices.",
+          "storegrowth-sales-booster"
+        )}
       />
     );
   }
@@ -37,12 +40,15 @@ addFilter(
   (component) => {
     return (
       <Switcher
-        isEnable={ false }
-        needUpgrade={ true }
-        changeHandler={ noop }
-        name={ 'external_link' }
-        title={ __( 'External Link', 'storegrowth-sales-booster' ) }
-        tooltip={ __( 'Working with External/Affiliate Products. Product link is product url', 'storegrowth-sales-booster' ) }
+        isEnable={false}
+        needUpgrade={true}
+        changeHandler={noop}
+        name={"external_link"}
+        title={__("External Link", "storegrowth-sales-booster")}
+        tooltip={__(
+          "Working with External/Affiliate Products. Product link is product url",
+          "storegrowth-sales-booster"
+        )}
       />
     );
   }
@@ -61,21 +67,21 @@ addFilter(
     return (
       <SettingsSection>
         <TextAreaBox
-          areaRows={ 4 }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          name={ 'message_popup' }
-          renderTextAreaContent={ true }
-          fieldValue={ `virtual_name}\n{product_title}\nFrom {location}\n{time}` }
-          title={ __('Message Popup', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __(
-            'Enter Message Popup',
-            'storegrowth-sales-booster'
-          ) }
-          tooltip={ __(
-            'The base message template that is to be shown in the sales pop.',
-            'storegrowth-sales-booster'
-          ) }
+          areaRows={4}
+          needUpgrade={true}
+          changeHandler={noop}
+          name={"message_popup"}
+          renderTextAreaContent={true}
+          fieldValue={`virtual_name}\n{product_title}\nFrom {location}\n{time}`}
+          title={__("Message Popup", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Enter Message Popup",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The base message template that is to be shown in the sales pop.",
+            "storegrowth-sales-booster"
+          )}
         />
       </SettingsSection>
     );
@@ -88,84 +94,84 @@ addFilter(
     return (
       <SettingsSection>
         <Switcher
-          colSpan={ 12 }
-          name={ 'loop' }
-          isEnable={ false }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          title={ __( 'Loop', 'storegrowth-sales-booster' ) }
-          tooltip={ __(
-            'The product source will loop around in the sales pop.',
-            'storegrowth-sales-booster'
-          ) }
+          colSpan={12}
+          name={"loop"}
+          isEnable={false}
+          needUpgrade={true}
+          changeHandler={noop}
+          title={__("Loop", "storegrowth-sales-booster")}
+          tooltip={__(
+            "The product source will loop around in the sales pop.",
+            "storegrowth-sales-booster"
+          )}
         />
         <InputNumber
-          min={ 1 }
-          colSpan={ 12 }
-          fieldValue={ 5 }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          name={ 'next_time_display' }
-          title={ __( 'Next Time Display', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __(
-            'Enter Next Time Display',
-            'storegrowth-sales-booster'
-          ) }
-          tooltip={ __(
-            'Time to start next notification(in seconds)',
-            'storegrowth-sales-booster'
-          ) }
+          min={1}
+          colSpan={12}
+          fieldValue={5}
+          needUpgrade={true}
+          changeHandler={noop}
+          name={"next_time_display"}
+          title={__("Next Time Display", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Enter Next Time Display",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "Time to start next notification(in seconds)",
+            "storegrowth-sales-booster"
+          )}
         />
         <InputNumber
-          min={ 1 }
-          colSpan={ 12 }
-          fieldValue={ 5 }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          name={ 'notification_per_page' }
-          title={ __('Notification Per Page', 'storegrowth-sales-booster' ) }
-          tooltip={ __(
-            'Quantity Notifications Per Page',
-            'storegrowth-sales-booster'
-          ) }
-          placeHolderText={ __(
-            'Enter Notification Per Page',
-            'storegrowth-sales-booster'
-          ) }
+          min={1}
+          colSpan={12}
+          fieldValue={5}
+          needUpgrade={true}
+          changeHandler={noop}
+          name={"notification_per_page"}
+          title={__("Notification Per Page", "storegrowth-sales-booster")}
+          tooltip={__(
+            "Quantity Notifications Per Page",
+            "storegrowth-sales-booster"
+          )}
+          placeHolderText={__(
+            "Enter Notification Per Page",
+            "storegrowth-sales-booster"
+          )}
         />
         <InputNumber
-          min={ 1 }
-          colSpan={ 12 }
-          fieldValue={ 5 }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          name={ 'initial_time_delay' }
-          title={ __( 'Initial Time Delay', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __(
-            'Enter Initial Time Delay',
-            'storegrowth-sales-booster'
-          ) }
-          tooltip={ __(
-            'When Your Site Load, Notification will wait this time to show(in seconds)',
-            'storegrowth-sales-booster'
-          ) }
+          min={1}
+          colSpan={12}
+          fieldValue={5}
+          needUpgrade={true}
+          changeHandler={noop}
+          name={"initial_time_delay"}
+          title={__("Initial Time Delay", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Enter Initial Time Delay",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "When Your Site Load, Notification will wait this time to show(in seconds)",
+            "storegrowth-sales-booster"
+          )}
         />
         <InputNumber
-          min={ 1 }
-          colSpan={ 12 }
-          fieldValue={ 5 }
-          needUpgrade={ true }
-          changeHandler={ noop }
-          name={ "dispaly_time" }
-          title={ __( 'Display Time', 'storegrowth-sales-booster' ) }
-          placeHolderText={ __(
-            'Enter Virtual Time',
-            'storegrowth-sales-booster'
-          ) }
-          tooltip={ __(
-            'Time your notification display',
-            'storegrowth-sales-booster'
-          ) }
+          min={1}
+          colSpan={12}
+          fieldValue={5}
+          needUpgrade={true}
+          changeHandler={noop}
+          name={"dispaly_time"}
+          title={__("Display Time", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Enter Virtual Time",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "Time your notification display",
+            "storegrowth-sales-booster"
+          )}
         />
       </SettingsSection>
     );
@@ -303,73 +309,6 @@ addFilter(
           needUpgrade={true}
         />
       </>
-    );
-  }
-);
-
-// Handle Free Shipping Bar Modules pro settings prompts.
-
-addFilter(
-  "sgsb_free_shipping_bar_position_settings",
-  "sgsb_free_shipping_bar_position_settings_callback",
-  (component) => {
-    const barPositions = [
-      {
-        value: "top",
-        label: __("Top", "storegrowth-sales-booster"),
-      },
-    ];
-    return (
-      <SelectBox
-        name={`bar_position`}
-        options={[...barPositions]}
-        fieldValue={'top'}
-        changeHandler={noop}
-        needUpgrade={true}
-        title={__("Bar Position", "storegrowth-sales-booster")}
-      />
-    );
-  }
-);
-
-addFilter(
-  "sgsb_free_shipping_bar_icon_radio_box",
-  "sgsb_free_shipping_bar_icon_radio_callback",
-  (component) => {
-    return (
-      <RadioBox
-      uploadOption={ upgradeTeaser ? 'pro' : true }
-      options={ [ ...iconOptions ] }
-      name={ `progressive_banner_icon_name` }
-      changeHandler={ onBarChange }
-      uploadHandler={ upgradeTeaser ? noop : handleMediaUpload }
-      iconRemoveHandler={ upgradeTeaser ? noop : handleSelectionRemove }
-      title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
-      customValue={ formData.progressive_banner_custom_icon }
-      fieldValue={ formData.progressive_banner_icon_name }
-  />
-    );
-  }
-);
-
-addFilter(
-  "sgsb_free_shipping_bar_height_settings",
-  "sgsb_free_shipping_bar_height_settings_callback",
-  (component) => {
-    return (
-      <InputNumber
-        min={1}
-        max={100}
-        style={{
-          width: '100px',
-        }}
-        name={`banner_height`}
-        changeHandler={ noop }
-        fieldValue={ 60 }
-        needUpgrade={ true }
-        title={__(`Banner Height`, 'storegrowth-sales-booster')}
-      />
-      
     );
   }
 );
