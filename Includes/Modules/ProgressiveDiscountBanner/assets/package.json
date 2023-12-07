@@ -17,7 +17,6 @@
     "antd": "^5.5.0",
     "nanoid": "^3.3.4",
     "@wordpress/i18n": "^4.24.0",
-    "react-fa-icon-picker": "^1.0.3",
     "moment": "^2.29.1"
   }
 }

@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { __ } from '@wordpress/i18n';
-import { Button } from 'antd';
-
+import { applyFilters } from '@wordpress/hooks';
 import SettingsSection from '../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection';
 import ColourPicker from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker';
 import Number from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number';
@@ -9,7 +8,7 @@ import SelectBox from '../../../../../../assets/src/components/settings/Panels/P
 import ActionsHandler from 'sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler';
 
 import Templates from './Templates';
-import SectionHeader from 'sales-booster/src/components/settings/Panels/SectionHeader';
+
 function DesignTab(props) {
     const {
         formData,
@@ -25,18 +24,12 @@ function DesignTab(props) {
     return (
         <Fragment>
             <SettingsSection>
-                <Number
-                    min={1}
-                    max={100}
-                    style={{
-                        width: '100px',
-                    }}
-                    name={`banner_height`}
-                    changeHandler={onFieldChange}
-                    fieldValue={formData.banner_height}
-                    needUpgrade={upgradeTeaser}
-                    title={__(`Banner Height`, 'storegrowth-sales-booster')}
-                />
+            { applyFilters(
+                    'sgsb_free_shipping_bar_height_settings',
+                    '',
+                    formData,
+                    onFieldChange
+                ) }
                 <SelectBox
                     name={`font_family`}
                     options={[...fontFamily]}

@@ -11,7 +11,6 @@ function SettingsTab(props) {
     onFieldChange,
     onFormSave,
     buttonLoading,
-    onIconChange,
     upgradeTeaser,
     onFormReset
   } = props;
@@ -23,7 +22,6 @@ function SettingsTab(props) {
         formData={formData}
         setFormData={setFormData}
         onFieldChange={onFieldChange}
-        onIconChange={onIconChange}
         upgradeTeaser={upgradeTeaser}
       />
 

@@ -1,7 +1,6 @@
-import { Form } from "antd";
-import { RemovableIconPicker } from "./RemovableIconPicker";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
+import { applyFilters } from '@wordpress/hooks';
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
@@ -13,18 +12,8 @@ import {wpMedia} from "sales-booster/src/utils/helper";
 import SettingInstruction from "./SettingInstruction";
 
 function DiscountBanner(props) {
-    const { formData, setFormData, onFieldChange, onIconChange, upgradeTeaser } = props;
+    const { formData, setFormData, onFieldChange, upgradeTeaser } = props;
 
-    const barPositions = [
-        {
-            value: "top",
-            label: __("Top", "storegrowth-sales-booster"),
-        },
-        {
-            value: "bottom",
-            label: __("Bottom", "storegrowth-sales-booster"),
-        },
-    ];
     const barTypes = [
         {
             value: "normal",
@@ -109,14 +98,12 @@ function DiscountBanner(props) {
     return (
         <Fragment>
             <SettingsSection>
-                <SelectBox
-                    name={`bar_position`}
-                    options={[...barPositions]}
-                    fieldValue={formData.bar_position}
-                    changeHandler={upgradeTeaser?noop:onFieldChange}
-                    needUpgrade={upgradeTeaser}
-                    title={__("Bar Position", "storegrowth-sales-booster")}
-                />
+            { applyFilters(
+                    'sgsb_free_shipping_bar_position_settings',
+                    '',
+                    formData,
+                    onFieldChange
+                ) }
                 <SelectBox
                     name={`bar_type`}
                     options={[...barTypes]}
@@ -179,6 +166,13 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
+                {/* { applyFilters(
+                    'sgsb_free_shipping_bar_icon_radio_box',
+                    '',
+                    formData,
+                    onFieldChange,
+                    iconOptions,
+                ) } */}
 
                 <RadioBox
                     uploadOption={ upgradeTeaser ? 'pro' : true }
@@ -233,25 +227,6 @@ function DiscountBanner(props) {
                     formData={formData}
                     textTitle="Display Rules"
                 />
-                {/*<Form.Item label="Progressive Banner Icon" labelAlign="left">*/}
-                {/*    <RemovableIconPicker*/}
-                {/*        onClear={(v) =>*/}
-                {/*            onIconChange(*/}
-                {/*                "progressive_banner_icon_name",*/}
-                {/*                "progressive_banner_icon_html",*/}
-                {/*                ""*/}
-                {/*            )*/}
-                {/*        }*/}
-                {/*        onChange={(v) =>*/}
-                {/*            onIconChange(*/}
-                {/*                "progressive_banner_icon_name",*/}
-                {/*                "progressive_banner_icon_html",*/}
-                {/*                v*/}
-                {/*            )*/}
-                {/*        }*/}
-                {/*        value={formData.progressive_banner_icon_name}*/}
-                {/*    />*/}
-                {/*</Form.Item>*/}
             </SettingsSection>
         </Fragment>
     );

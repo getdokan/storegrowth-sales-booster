@@ -1,13 +1,10 @@
-import { Tabs, notification } from "antd";
+import { notification } from "antd";
 import { __ } from "@wordpress/i18n";
 import {
   useEffect,
   useState,
-  renderToString,
-  createElement,
 } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
-import { IconPickerItem } from "react-fa-icon-picker";
 import { Fragment } from "react";
 import SettingsTab from "./SettingsTab";
 import DesignTab from "./DesignTab";
@@ -156,16 +153,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
       });
   };
 
-  const onIconChange = (icon_name, html_name, value) => {
-    let iconHtml = createElement(IconPickerItem, { icon: value });
-
-    setFormData({
-      ...formData,
-      [icon_name]: value,
-      [html_name]: value ? renderToString(iconHtml) : value,
-    });
-  };
-
   const tabPanels = [
     {
       key: "general",
@@ -177,7 +164,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("banner_settings")}
           buttonLoading={buttonLoading}
-          onIconChange={onIconChange}
           upgradeTeaser={!isProEnabled}
           onFormReset={onFormReset}
         />
