@@ -5,10 +5,7 @@ import SelectBox from "../../../../../../assets/src/components/settings/Panels/P
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-// import DisplayRules from "sales-booster/src/components/pro-previews/free-shipping-bar/DisplayRules";
-// import DisplayRules from "./DisplayRules";
 import BarIcon from "./BarIcon";
-import {wpMedia} from "sales-booster/src/utils/helper";
 import SettingInstruction from "./SettingInstruction";
 
 function DiscountBanner(props) {
@@ -61,31 +58,6 @@ function DiscountBanner(props) {
         { key: iconStyleName, value: <BarIcon activeIcon={ formData?.progressive_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
     ) );
 
-    const handleMediaUpload = () => {
-        wpMedia( {
-            fileType: 'image',
-            selectMultiple: false,
-            callback: handleAttachmentData,
-        } );
-    };
-
-    const handleAttachmentData = ( media ) => {
-        if ( !Boolean( media?.url ) ) return;
-
-        setFormData({
-            ...formData,
-            progressive_banner_icon_name   : '',
-            progressive_banner_custom_icon : media?.url,
-        });
-    };
-
-    const handleSelectionRemove = () => {
-        setFormData({
-            ...formData,
-            progressive_banner_custom_icon : '',
-            progressive_banner_icon_name   : iconStyleNames?.[0],
-        });
-    };
 
     const onBarChange = ( key, value ) => {
         setFormData( {
@@ -171,7 +143,8 @@ function DiscountBanner(props) {
                     '',
                     iconOptions,
                     formData,
-                    onBarChange
+                    onBarChange,
+                    setFormData
                 ) }
 
                 {/* <RadioBox
