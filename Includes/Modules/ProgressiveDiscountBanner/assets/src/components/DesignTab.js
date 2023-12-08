@@ -16,7 +16,6 @@ function DesignTab(props) {
         onFieldChange,
         onFormSave,
         buttonLoading,
-        upgradeTeaser,
         fontFamily,
         onFormReset,
     } = props;
@@ -47,7 +46,7 @@ function DesignTab(props) {
                     formData,
                     onFieldChange
                 ) }
-                
+
                 <ColourPicker
                     name={'background_color'}
                     colSpan={12}

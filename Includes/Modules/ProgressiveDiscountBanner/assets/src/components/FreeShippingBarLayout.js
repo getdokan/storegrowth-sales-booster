@@ -164,7 +164,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("banner_settings")}
           buttonLoading={buttonLoading}
-          upgradeTeaser={!isProEnabled}
           onFormReset={onFormReset}
         />
       ),
@@ -178,7 +177,6 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
           setFormData={setFormData}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
           buttonLoading={buttonLoading}
           fontFamily={fontFamily}
           onFormReset={onFormReset}
