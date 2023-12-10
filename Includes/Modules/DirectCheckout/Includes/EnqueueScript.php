@@ -89,7 +89,7 @@ class EnqueueScript {
 			false
 		);
 		$sgsb_active_module_ids  = get_option( 'sgsb_active_module_ids' );
-		$is_quick_cart_activated = ! array_key_exists( 'FlyCart', $sgsb_active_module_ids );
+		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $sgsb_active_module_ids );
 		wp_localize_script(
 			'sgsb-direct-checkout-settings',
 			'sgsbAdminQuickCartValidate',

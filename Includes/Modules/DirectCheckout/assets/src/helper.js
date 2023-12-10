@@ -1,7 +1,9 @@
+import { __ } from '@wordpress/i18n';
+
 export const createDirectCheckoutForm = {
-  buy_now_button_setting: "cart-with-buy-now",
-  buy_now_button_label: "Buy Now",
-  checkout_redirect: "legacy-checkout",
+  buy_now_button_setting: __( 'cart-with-buy-now', 'storegrowth-sales-booster' ),
+  buy_now_button_label: __( 'Buy Now', 'storegrowth-sales-booster' ),
+  checkout_redirect: 'legacy-checkout',
   shop_page_checkout_enable: true,
   product_page_checkout_enable: true,
   button_color: "#008dff",
