@@ -9,7 +9,7 @@ import BarIcon from "./BarIcon";
 import SettingInstruction from "./SettingInstruction";
 
 function DiscountBanner(props) {
-    const { formData, setFormData, onFieldChange, upgradeTeaser } = props;
+    const { formData, setFormData, onFieldChange } = props;
 
     const barTypes = [
         {
@@ -146,18 +146,6 @@ function DiscountBanner(props) {
                     onBarChange,
                     setFormData
                 ) }
-
-                {/* <RadioBox
-                    uploadOption={ upgradeTeaser ? 'pro' : true }
-                    options={ [ ...iconOptions ] }
-                    name={ `progressive_banner_icon_name` }
-                    changeHandler={ onBarChange }
-                    uploadHandler={ upgradeTeaser ? noop : handleMediaUpload }
-                    iconRemoveHandler={ upgradeTeaser ? noop : handleSelectionRemove }
-                    title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
-                    customValue={ formData.progressive_banner_custom_icon }
-                    fieldValue={ formData.progressive_banner_icon_name }
-                /> */}
 
                 <TextAreaBox
                     areaRows={3}
