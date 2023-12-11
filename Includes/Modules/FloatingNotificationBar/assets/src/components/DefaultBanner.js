@@ -1,5 +1,5 @@
-import { Form, Select, Input, Checkbox } from "antd";
-import { RemovableIconPicker } from "./RemovableIconPicker";
+import { Select, Input, Checkbox } from "antd";
+import {applyFilters} from "@wordpress/hooks"
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
@@ -8,17 +8,15 @@ import SelectBox from "../../../../../../assets/src/components/settings/Panels/P
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import DisplayRules from "./DisplayRules";
 import Countdown from "./Countdown";
 import CuponCode from "./CuponCode";
 import UpgradeOverlay from "../../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeOverlay";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
-import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
-import {wpMedia} from "sales-booster/src/utils/helper";
+
 import BarIcon from "./BarIcon";
 
 function DefaultBanner(props) {
-  const { formData, setFormData, onFieldChange, onIconChange, upgradeTeaser } = props;
+  const { formData, setFormData, onFieldChange, upgradeTeaser } = props;
   const noop = () => {};
   const buttonActionOptions = [
     { value: "ba-url-redirect", label: "Url Redirect" },
@@ -37,16 +35,6 @@ function DefaultBanner(props) {
     },
   ];
 
-  const barPositions = [
-    {
-      value: "top",
-      label: __("Top", "storegrowth-sales-booster"),
-    },
-    {
-      value: "bottom",
-      label: __("Bottom", "storegrowth-sales-booster"),
-    },
-  ];
   const barTypes = [
     {
       value: "normal",
@@ -68,32 +56,6 @@ function DefaultBanner(props) {
       { key: iconStyleName, value: <BarIcon activeIcon={ formData?.default_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
     ) );
 
-    const handleMediaUpload = () => {
-      wpMedia( {
-        fileType: 'image',
-        selectMultiple: false,
-        callback: handleAttachmentData,
-      } );
-    };
-
-    const handleAttachmentData = ( media ) => {
-      if ( !Boolean( media?.url ) ) return;
-
-      setFormData({
-        ...formData,
-        default_banner_icon_name   : '',
-        default_banner_custom_icon : media?.url,
-      });
-    };
-
-    const handleSelectionRemove = () => {
-      setFormData({
-        ...formData,
-        default_banner_custom_icon : '',
-        default_banner_icon_name   : iconStyleNames?.[0],
-      });
-    };
-
     const onBarChange = ( key, value ) => {
       setFormData( {
         ...formData,
@@ -105,14 +67,13 @@ function DefaultBanner(props) {
   return (
     <Fragment>
       <SettingsSection>
-        <SelectBox
-          needUpgrade={upgradeTeaser}
-          name={`bar_position`}
-          options={[...barPositions]}
-          fieldValue={formData.bar_position}
-          changeHandler={upgradeTeaser ? noop : onFieldChange}
-          title={__("Bar Position", "storegrowth-sales-booster")}
-        />
+      { applyFilters(
+          'sgsb_floating_notification_bar_position_settings',
+          '',
+          formData,
+          onFieldChange
+        ) }
+
         <SelectBox
           name={`bar_type`}
           options={[...barTypes]}
@@ -132,17 +93,14 @@ function DefaultBanner(props) {
             "storegrowth-sales-booster"
           )}
         />
-        <RadioBox
-          uploadOption={ upgradeTeaser ? 'pro' : true }
-          changeHandler={ onBarChange }
-          options={ [ ...iconOptions ] }
-          name={ `default_banner_icon_name` }
-          uploadHandler={ upgradeTeaser ? noop : handleMediaUpload }
-          iconRemoveHandler={ upgradeTeaser ? noop : handleSelectionRemove }
-          title={ __( `Banner Icon`, 'storegrowth-sales-booster' ) }
-          customValue={ formData.default_banner_custom_icon }
-          fieldValue={ formData.default_banner_icon_name }
-        />
+        { applyFilters(
+                    'sgsb_floating_notification_bar_icon_radio_box',
+                    '',
+                    iconOptions,
+                    formData,
+                    onBarChange,
+                    setFormData
+          ) }
         <CheckboxGroup
           displayDirection={"horizontal"}
           name={"button_view"}
@@ -161,59 +119,7 @@ function DefaultBanner(props) {
           changeHandler={onFieldChange}
           title={__("Button Text", "storegrowth-sales-booster")}
         />
-        <EmptyField
-          title={__("Button Action", "storegrowth-sales-booster")}
-          tooltip={__("Actions of the button", "storegrowth-sales-booster")}
-          colSpan={24}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <Select
-              value={formData.button_action}
-              options={buttonActionOptions}
-              onChange={(event) => onFieldChange("button_action", event)}
-            />
-            {formData.button_action === "ba-url-redirect" && (
-              <>
-                <Input
-                  value={formData.redirect_url}
-                  style={{
-                    padding: "5px",
-                    border: "1px solid #DDE6F9",
-                  }}
-                  onChange={(event) =>
-                    onFieldChange("redirect_url", event.target.value)
-                  }
-                  placeholder="http://example.com"
-                />
-                <label className={ `${ upgradeTeaser ? 'single-disabled-checkbox' : '' }` }>
-                <Checkbox
-                  disabled={upgradeTeaser}
-                  value={"new_tab_enable"}
-                  checked={formData.new_tab_enable}
-                  onChange={
-                    upgradeTeaser
-                      ? noop
-                      : (event) =>
-                          onFieldChange("new_tab_enable", event.target.checked)
-                  }
-                >
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    Open in New Tab
-                    {upgradeTeaser && <UpgradeCrown />}
-                  </div>
-                </Checkbox>
-                { upgradeTeaser && <UpgradeOverlay /> }
-              </label>
-              </>
-            )}
-          </div>
-        </EmptyField>
+       
         <Countdown
           upgradeTeaser={upgradeTeaser}
           onFieldChange={onFieldChange}
@@ -227,35 +133,12 @@ function DefaultBanner(props) {
           noop={noop}
         />
       </SettingsSection>
-
-      <DisplayRules
-        upgradeTeaser={upgradeTeaser}
-        onFieldChange={onFieldChange}
-        formData={formData}
-        textTitle="Display Rules"
-      />
-
-      {/*<Form>*/}
-      {/*  <Form.Item label="Default Banner Icon" labelAlign="left">*/}
-      {/*    <RemovableIconPicker*/}
-      {/*      onClear={(v) =>*/}
-      {/*        onIconChange(*/}
-      {/*          "default_banner_icon_name",*/}
-      {/*          "default_banner_icon_html",*/}
-      {/*          ""*/}
-      {/*        )*/}
-      {/*      }*/}
-      {/*      onChange={(v) =>*/}
-      {/*        onIconChange(*/}
-      {/*          "default_banner_icon_name",*/}
-      {/*          "default_banner_icon_html",*/}
-      {/*          v*/}
-      {/*        )*/}
-      {/*      }*/}
-      {/*      value={formData.default_banner_icon_name}*/}
-      {/*    />*/}
-      {/*  </Form.Item>*/}
-      {/*</Form>*/}
+      { applyFilters(
+                    'sgsb_floating_notification_bar_display_rules_settings',
+                    '',
+                    formData,
+                    onFieldChange
+      ) }
     </Fragment>
   );
 }

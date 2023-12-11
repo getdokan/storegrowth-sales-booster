@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { __ } from '@wordpress/i18n';
+import {applyFilters} from '@wordpress/hooks'
 import ActionsHandler from 'sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler';
 import SettingsSection from '../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection';
 import ColourPicker from '../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker';
@@ -14,18 +15,12 @@ function DesignTab(props) {
   return (
     <Fragment>
       <SettingsSection>
-        <Number
-          min={1}
-          max={100}
-          style={{
-            width: '100px',
-          }}
-          name={`banner_height`}
-          changeHandler={onFieldChange}
-          fieldValue={formData.banner_height}
-          needUpgrade={upgradeTeaser}
-          title={__(`Banner Height`, 'storegrowth-sales-booster')}
-        />
+      { applyFilters(
+          'sgsb_floating_notification_bar_height_settings',
+          '',
+          formData,
+          onFieldChange
+        ) }
         <SelectBox
           name={`font_family`}
           options={[...fontFamily]}
@@ -34,6 +29,12 @@ function DesignTab(props) {
           title={__('Font Family', 'storegrowth-sales-booster')}
           tooltip={__('Select your desired font family', 'storegrowth-sales-booster')}
         />
+        { applyFilters(
+          'sgsb_floating_notification_bar_font_size',
+          '',
+          formData,
+          onFieldChange
+        ) }
         <Number
           min={1}
           max={100}

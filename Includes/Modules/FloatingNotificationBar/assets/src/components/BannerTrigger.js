@@ -3,41 +3,36 @@ import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 import { Fragment } from "react";
 
-const BannerTrigger = (props) => {
-  const { upgradeTeaser, onFieldChange, formData } = props;
-  const noop = () => {};
+const BannerTrigger = () => {
   // Hardcoded options
   const triggerOptions = [
     { value: "after-few-seconds", label: "After a few Seconds" },
     { value: "after-scroll", label: "After Scroll" },
   ];
-
-  const banner_trigger_value = formData.banner_trigger
   return (
     <Fragment>
-      <EmptyField
-        needUpgrade={upgradeTeaser}
+          <EmptyField
+        needUpgrade={true}
         title={__("Trigger", "storegrowth-sales-booster")}
         tooltip={__(
           `Choose when you'd like the welcome bar to appear on your site`,
           "storegrowth-sales-booster"
         )}
-        leftCol={ 12 }
-        rightCol={ 12 }
       >
         <Radio.Group
           style={{
             width: "100%",
           }}
-          disabled={upgradeTeaser}
-          onChange={upgradeTeaser ? noop : (event)=>{
-            onFieldChange("banner_trigger", event.target.value);
-          }}
-          value={formData.banner_trigger}
+          disabled={true}
+          value={"after-few-seconds"}
         >
           {triggerOptions.map((option) => (
             <div
-              className={option.value===banner_trigger_value?"trigger-radio-selected":""}
+              className={
+                option.value === "after-few-seconds"
+                  ? "trigger-radio-selected"
+                  : ""
+              }
               key={option.value}
               style={{
                 display: "flex",
@@ -52,33 +47,15 @@ const BannerTrigger = (props) => {
             >
               <Radio value={option.value}>{option.label}</Radio>
               <InputNumber
-                // Hardcoded input field names and values
                 min={0}
-                disabled={upgradeTeaser}
+                // Hardcoded input field names and values
+                disabled={true}
                 style={{
-                  width: "40px",
+                  width: "20%",
                   borderColor: "#DDE6F9",
                 }}
-                name={
-                  option.value === "after-few-seconds"
-                    ? "banner_delay"
-                    : "scroll_banner_delay"
-                }
-                value={
-                  option.value === "after-few-seconds"
-                    ? formData.banner_delay
-                    : formData.scroll_banner_delay
-                }
-                onChange={(event) =>
-                  upgradeTeaser
-                    ? noop
-                    : onFieldChange(
-                        option.value === "after-few-seconds"
-                          ? "banner_delay"
-                          : "scroll_banner_delay",
-                        event
-                      )
-                }
+                name={"banner_delay"}
+                value={7}
                 placeholder={`sec`}
               />
             </div>

@@ -7,7 +7,7 @@ import SelectBox from "../../../settings/Panels/PanelSettings/Fields/SelectBox";
 
 const noop = () => {};
 
-// Handle Free Shipping Bar Modules pro settings prompts.
+// Handle Floating Notification Bar Modules pro settings prompts.
 
 addFilter(
   "sgsb_floating_notification_bar_position_settings",
@@ -40,13 +40,13 @@ addFilter(
       <RadioBox
         uploadOption={"pro"}
         options={[...iconOptions]}
-        name={`progressive_banner_icon_name`}
+        name={`default_banner_icon_name`}
         changeHandler={onBarChange}
         uploadHandler={noop}
         iconRemoveHandler={noop}
         title={__(`Banner Icon`, "storegrowth-sales-booster")}
         customValue={""}
-        fieldValue={formData.progressive_banner_icon_name}
+        fieldValue={formData.default_banner_icon_name}
       />
     );
   }
