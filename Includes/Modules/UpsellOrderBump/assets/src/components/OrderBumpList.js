@@ -1,4 +1,5 @@
 import { __ } from "@wordpress/i18n";
+import { applyFilters } from '@wordpress/hooks';
 import { Table, Button, notification} from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState } from "@wordpress/element";
@@ -236,15 +237,17 @@ function OrderBumpList({ navigate }) {
     };
   }
 
-  let data;
+  let data = applyFilters(
+    'sgsb_upsell_order_bump_data',
+    bumpListData.slice(-2).map(mapBumpData),
+    bumpListData,
+    mapBumpData
+  );
 
-  if (sgsbAdmin.isPro) {
-    data = bumpListData.map(mapBumpData);
-  } else {
-    data = bumpListData.slice(-2).map(mapBumpData);
-  }
-
-  const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
+  const isDisableBumpCreation = applyFilters(
+    'sgsb_control_upsell_order_bump_data',
+    bumpListData?.length >= 2
+  );
 
   return (
     <div className={`upsell-order-list-table`}>

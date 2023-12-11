@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import LayoutOption from "./LayoutOption";
+import { applyFilters } from '@wordpress/hooks';
 import SideCartLayout from '../../images/side-cart-layout.svg';
 import CenteredPopupLayout from '../../images/centered-popup-layout.svg';
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
@@ -14,19 +15,19 @@ const GeneralSettings = ({
     onFormReset,
     buttonLoading
 }) => {
-    const layoutContents = [
+    let layoutContents = [
         {
             key  : 'side',
             icon : SideCartLayout,
             name : __( 'Side Cart', 'storegrowth-sales-booster' )
         },
-        {
-            key      : 'center',
-            icon     : CenteredPopupLayout,
-            name     : __( 'Centered Popup', 'storegrowth-sales-booster' ),
-            disabled : !sgsbAdmin.isPro,
-        }
     ];
+
+    layoutContents = applyFilters(
+        'sgsb_quick_cart_layout_settings',
+        layoutContents,
+        CenteredPopupLayout
+    );
 
     const layoutOptions = layoutContents?.map( layout => (
         {
@@ -36,14 +37,14 @@ const GeneralSettings = ({
         }
     ) );
 
-    const contentOptions = [
+    let contentOptions = [
         { name: 'show_product_image', title: __( 'Show Product Image', 'storegrowth-sales-booster' ) },
         { name: 'show_remove_icon', title: __( 'Show Remove Icon', 'storegrowth-sales-booster' ) },
         { name: 'show_quantity_picker', title: __( 'Show Quantity Picker', 'storegrowth-sales-booster' ) },
         { name: 'show_product_price', title: __( 'Show product price', 'storegrowth-sales-booster' ) },
-        { name: 'show_coupon', title: __( 'Show coupon', 'storegrowth-sales-booster' ), needUpgrade: !sgsbAdmin.isPro },
-        { name: 'enable_add_to_cart_redirect', title: __( 'Cart panel auto-opens', 'storegrowth-sales-booster' ), needUpgrade: !sgsbAdmin.isPro },
     ];
+
+    contentOptions = applyFilters( 'sgsb_quick_cart_content_settings', contentOptions );
 
     return (
         <SettingsSection>

@@ -1,6 +1,7 @@
 import React, {Fragment} from 'react';
 import { __ } from "@wordpress/i18n";
 import { Image, Typography } from 'antd';
+import { applyFilters } from '@wordpress/hooks';
 import PreviewImg from '../../images/qcart-preview.svg';
 import CartIcon from "./CartIcon";
 import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
@@ -306,68 +307,13 @@ const Preview = ( { storeData } ) => {
                         </div>
 
                         <div className='sgsb-cart-collaterals cart-collaterals'>
-                            { storeData?.show_coupon && (
-                                <div className='product-coupon'>
-                                    <label
-                                        className={ 'promo-label' }
-                                        style={ {
-                                            gap: 8,
-                                            fontSize: 15,
-                                            fontWeight: 500,
-                                            marginBottom: 4,
-                                            display: 'flex',
-                                            color: '#073B4C',
-                                        } }
-                                    >
-                                        { __( 'Promo Code', 'storegrowth-sales-booster' ) }
-                                        { !sgsbAdmin.isPro && <UpgradeCrown proBadge={ false } /> }
-                                    </label>
-                                    <div
-                                        className='coupon-field'
-                                        style={ {
-                                            gap: 10,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        } }
-                                    >
-                                        <input
-                                            disabled
-                                            type='text'
-                                            placeholder={ __( 'Type here', 'storegrowth-sales-booster' ) }
-                                            style={ {
-                                                flex: 2,
-                                                fontSize: 14,
-                                                width: '100%',
-                                                paddingTop: 6,
-                                                fontWeight: 300,
-                                                borderRadius: 6,
-                                                paddingLeft: 16,
-                                                paddingRight: 16,
-                                                paddingBottom: 6,
-                                                background: '#fff',
-                                                fontStyle: 'italic',
-                                            } }
-                                        />
-                                        <div
-                                            className={ 'coupon-button' }
-                                            style={ {
-                                                fontSize: 14,
-                                                color: '#FFF',
-                                                paddingTop: 10,
-                                                borderRadius: 6,
-                                                paddingLeft: 18,
-                                                fontWeight: 600,
-                                                paddingRight: 18,
-                                                paddingBottom: 10,
-                                                background: storeData?.buttons_bg_color,
-                                            } }
-                                        >
-                                            { __( 'Apply Now', 'storegrowth-sales-booster' ) }
-                                        </div>
-                                    </div>
-                                    { !sgsbAdmin.isPro && <UpgradeOverlay /> }
-                                </div>
+                            {/* Render contents before cart total preview. */}
+                            { applyFilters(
+                                'sgsb_before_quick_cart_total_preview',
+                                '',
+                                storeData
                             ) }
+
                             <div className='cart_totals '>
                                 <div className='shop_table shop_table_responsive'>
                                     <div
