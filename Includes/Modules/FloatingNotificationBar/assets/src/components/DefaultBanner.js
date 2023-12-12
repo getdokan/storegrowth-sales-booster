@@ -1,27 +1,20 @@
-import { Select, Input, Checkbox } from "antd";
-import {applyFilters} from "@wordpress/hooks"
+import { applyFilters } from "@wordpress/hooks";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
-import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import Countdown from "./Countdown";
-import CuponCode from "./CuponCode";
-import UpgradeOverlay from "../../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeOverlay";
-import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
-
+import Countdown from "sales-booster/src/components/pro-previews/Modules/FloatingNotificationBar/Countdown";
+import CuponCode from "sales-booster/src/components/pro-previews/Modules/FloatingNotificationBar/CuponCode";
+import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BarIcon from "./BarIcon";
+import ButtonAction from "./ButtonAction";
 
 function DefaultBanner(props) {
   const { formData, setFormData, onFieldChange, upgradeTeaser } = props;
   const noop = () => {};
-  const buttonActionOptions = [
-    { value: "ba-url-redirect", label: "Url Redirect" },
-    { value: "ba-close", label: "Banner Close" },
-  ];
+
   const checkboxesOption = [
     {
       label: `Desktop`,
@@ -46,33 +39,39 @@ function DefaultBanner(props) {
     },
   ];
 
-    const iconStyleNames = [
-      'notify-bar-icon-1',
-      'notify-bar-icon-2',
-      'notify-bar-icon-3',
-    ];
+  const iconStyleNames = [
+    "notify-bar-icon-1",
+    "notify-bar-icon-2",
+    "notify-bar-icon-3",
+  ];
 
-    const iconOptions = iconStyleNames?.map( iconStyleName => (
-      { key: iconStyleName, value: <BarIcon activeIcon={ formData?.default_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
-    ) );
+  const iconOptions = iconStyleNames?.map((iconStyleName) => ({
+    key: iconStyleName,
+    value: (
+      <BarIcon
+        activeIcon={formData?.default_banner_icon_name === iconStyleName}
+        iconName={iconStyleName}
+      />
+    ),
+  }));
 
-    const onBarChange = ( key, value ) => {
-      setFormData( {
-        ...formData,
-        [ key ]: value,
-        default_banner_custom_icon : '',
-      } );
-    };
+  const onBarChange = (key, value) => {
+    setFormData({
+      ...formData,
+      [key]: value,
+      default_banner_custom_icon: "",
+    });
+  };
 
   return (
     <Fragment>
       <SettingsSection>
-      { applyFilters(
-          'sgsb_floating_notification_bar_position_settings',
-          '',
+        {applyFilters(
+          "sgsb_floating_notification_bar_position_settings",
+          "",
           formData,
           onFieldChange
-        ) }
+        )}
 
         <SelectBox
           name={`bar_type`}
@@ -93,14 +92,14 @@ function DefaultBanner(props) {
             "storegrowth-sales-booster"
           )}
         />
-        { applyFilters(
-                    'sgsb_floating_notification_bar_icon_radio_box',
-                    '',
-                    iconOptions,
-                    formData,
-                    onBarChange,
-                    setFormData
-          ) }
+        {applyFilters(
+          "sgsb_floating_notification_bar_icon_radio_box",
+          "",
+          iconOptions,
+          formData,
+          onBarChange,
+          setFormData
+        )}
         <CheckboxGroup
           displayDirection={"horizontal"}
           name={"button_view"}
@@ -119,26 +118,20 @@ function DefaultBanner(props) {
           changeHandler={onFieldChange}
           title={__("Button Text", "storegrowth-sales-booster")}
         />
-       
-        <Countdown
-          upgradeTeaser={upgradeTeaser}
-          onFieldChange={onFieldChange}
-          formData={formData}
-          noop={noop}
-        />
-        <CuponCode
-          upgradeTeaser={upgradeTeaser}
-          formData={formData}
-          onFieldChange={onFieldChange}
-          noop={noop}
-        />
+        <ButtonAction formData={formData} onFieldChange={onFieldChange} />
+        {applyFilters(
+          "sgsb_floating_notification_bar_coupon_coundown",
+          "",
+          formData,
+          onFieldChange,
+        )}
       </SettingsSection>
-      { applyFilters(
-                    'sgsb_floating_notification_bar_display_rules_settings',
-                    '',
-                    formData,
-                    onFieldChange
-      ) }
+      {applyFilters(
+        "sgsb_floating_notification_bar_display_rules_settings",
+        "",
+        formData,
+        onFieldChange
+      )}
     </Fragment>
   );
 }

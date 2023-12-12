@@ -35,18 +35,6 @@ function DesignTab(props) {
           formData,
           onFieldChange
         ) }
-        <Number
-          min={1}
-          max={100}
-          style={{
-            width: '100px',
-          }}
-          name={`font_size`}
-          changeHandler={onFieldChange}
-          fieldValue={formData.font_size}
-          needUpgrade={upgradeTeaser}
-          title={__(`Font Size`, 'storegrowth-sales-booster')}
-        />
         <ColourPicker
           name={'background_color'}
           colSpan={12}

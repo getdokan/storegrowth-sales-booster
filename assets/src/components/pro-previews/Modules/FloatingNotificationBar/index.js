@@ -1,9 +1,14 @@
 import { __ } from "@wordpress/i18n";
 import DisplayRules from "./DisplayRules";
+import { Checkbox } from "antd";
 import { addFilter } from "@wordpress/hooks";
 import RadioBox from "../../../settings/Panels/PanelSettings/Fields/RadioBox";
 import InputNumber from "../../../settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../settings/Panels/PanelSettings/Fields/SelectBox";
+import UpgradeOverlay from "../../../settings/Panels/PanelSettings/UpgradeOverlay";
+import UpgradeCrown from "../../../settings/Panels/PanelSettings/UpgradeCrown";
+import Countdown from "./Countdown";
+import CuponCode from "./CuponCode";
 
 const noop = () => {};
 
@@ -98,5 +103,35 @@ addFilter(
   "sgsb_floating_notification_bar_display_rules_settings_callback",
   (component) => {
     return <DisplayRules />;
+  }
+);
+addFilter(
+  "sgsb_floating_notification_bar_button_redirection",
+  "sgsb_floating_notification_bar_button_redirection_callback",
+  (component) => {
+    return (
+      <label className={"single-disabled-checkbox"}>
+        <Checkbox disabled={true} value={"new_tab_enable"} checked={false}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            Open in New Tab
+            {<UpgradeCrown />}
+          </div>
+        </Checkbox>
+        {<UpgradeOverlay />}
+      </label>
+    );
+  }
+);
+
+addFilter(
+  "sgsb_floating_notification_bar_coupon_coundown",
+  "sgsb_floating_notification_bar_coupon_coundown_callback",
+  (component) => {
+    return (
+      <>
+        <Countdown />
+        <CuponCode />
+      </>
+    );
   }
 );

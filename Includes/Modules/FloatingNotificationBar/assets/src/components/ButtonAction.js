@@ -1,10 +1,16 @@
 import { Select, Input, Checkbox } from "antd";
 import { __ } from "@wordpress/i18n";
+import {applyFilters} from "@wordpress/hooks"
 import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
-import UpgradeOverlay from "../../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeOverlay";
-import UpgradeCrown from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCrown";
 
-const ButtonAction = () => {
+
+const ButtonAction = ({formData,onFieldChange}) => {
+
+  const buttonActionOptions = [
+    { value: "ba-url-redirect", label: "Url Redirect" },
+    { value: "ba-close", label: "Banner Close" },
+  ];
+
   return (
     <EmptyField
     title={__("Button Action", "storegrowth-sales-booster")}
@@ -36,25 +42,12 @@ const ButtonAction = () => {
             }
             placeholder="http://example.com"
           />
-          <label className={ `${ upgradeTeaser ? 'single-disabled-checkbox' : '' }` }>
-          <Checkbox
-            disabled={upgradeTeaser}
-            value={"new_tab_enable"}
-            checked={formData.new_tab_enable}
-            onChange={
-              upgradeTeaser
-                ? noop
-                : (event) =>
-                    onFieldChange("new_tab_enable", event.target.checked)
-            }
-          >
-            <div style={{ display: "flex", gap: "10px" }}>
-              Open in New Tab
-              {upgradeTeaser && <UpgradeCrown />}
-            </div>
-          </Checkbox>
-          { upgradeTeaser && <UpgradeOverlay /> }
-        </label>
+          { applyFilters(
+          'sgsb_floating_notification_bar_button_redirection',
+          '',
+          formData,
+          onFieldChange
+          ) }
         </>
       )}
     </div>
