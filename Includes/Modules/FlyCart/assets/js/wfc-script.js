@@ -183,9 +183,6 @@
       );
     }
 
-    // Trigger quick cart if quick cart redirection enabled.
-    if (Boolean(isPro) && Boolean(quickCartRedirect)) triggerAddToQuickCart();
-
     if (document.getElementById("wpadminbar")) {
       jQuery(".wfc-widget-sidebar").css("margin-top", "20px");
     }

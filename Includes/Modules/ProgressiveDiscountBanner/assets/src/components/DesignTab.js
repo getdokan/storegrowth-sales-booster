@@ -23,12 +23,13 @@ function DesignTab(props) {
     return (
         <Fragment>
             <SettingsSection>
-            { applyFilters(
+                { applyFilters(
                     'sgsb_free_shipping_bar_height_settings',
                     '',
                     formData,
                     onFieldChange
                 ) }
+
                 <SelectBox
                     name={`font_family`}
                     options={[...fontFamily]}
@@ -40,6 +41,7 @@ function DesignTab(props) {
                         'storegrowth-sales-booster'
                     )}
                 />
+
                 { applyFilters(
                     'sgsb_free_shipping_bar_font_size',
                     '',

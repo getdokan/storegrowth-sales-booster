@@ -70,7 +70,7 @@ function DiscountBanner(props) {
     return (
         <Fragment>
             <SettingsSection>
-            { applyFilters(
+                { applyFilters(
                     'sgsb_free_shipping_bar_position_settings',
                     '',
                     formData,
@@ -138,6 +138,7 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
+
                 { applyFilters(
                     'sgsb_free_shipping_bar_icon_radio_box',
                     '',
@@ -183,11 +184,11 @@ function DiscountBanner(props) {
             </SettingsSection>
             <SettingsSection>
             { applyFilters(
-                    'sgsb_free_shipping_bar_display_rules_settings',
-                    '',
-                    formData,
-                    onFieldChange
-                ) }
+                'sgsb_free_shipping_bar_display_rules_settings',
+                '',
+                formData,
+                onFieldChange
+            ) }
             </SettingsSection>
         </Fragment>
     );
