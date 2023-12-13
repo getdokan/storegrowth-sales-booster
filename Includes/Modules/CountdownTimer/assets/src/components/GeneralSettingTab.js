@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-
+import { applyFilters } from "@wordpress/hooks";
 import "../styles/countdown-timer.css";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
@@ -37,18 +37,13 @@ function GeneralSettingTab(props) {
           )}
         />
 
-        <SingleCheckBox
-          needUpgrade={upgradeTeaser}
-          name={"shop_page_countdown_enable"}
-          checkedValue={formData.shop_page_countdown_enable}
-          className={`settings-field checkbox-field`}
-          changeHandler={upgradeTeaser ? noop : onFieldChange}
-          title={__("Shop Page Display", "storegrowth-sales-booster")}
-          tooltip={__(
-            "The sales countdown will show on the shop page",
-            "storegrowth-sales-booster"
-          )}
-        />
+        {applyFilters(
+          "sgsb_shop_sales_countdown_enable_settings",
+          "",
+          formData,
+          onFieldChange,
+        )}
+        
         <SingleCheckBox
           name={"product_page_countdown_enable"}
           checkedValue={formData.product_page_countdown_enable}
