@@ -52,7 +52,7 @@ addFilter(
 addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
   items.push({
     label: <Link to="/direct-checkout?tab_name=general">Direct Checkout</Link>,
-    key: "DirectCheckout",
+    key: "direct-checkout",
     icon: <StockOutlined />,
   });
 

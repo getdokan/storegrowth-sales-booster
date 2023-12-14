@@ -5,8 +5,6 @@ import RadioBox from "../../../settings/Panels/PanelSettings/Fields/RadioBox";
 import InputNumber from "../../../settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "../../../settings/Panels/PanelSettings/Fields/SelectBox";
 
-const noop = () => {};
-
 // Handle Free Shipping Bar Modules pro settings prompts.
 
 addFilter(
@@ -24,7 +22,6 @@ addFilter(
         name={`bar_position`}
         options={[...barPositions]}
         fieldValue={"top"}
-        changeHandler={noop}
         needUpgrade={true}
         title={__("Bar Position", "storegrowth-sales-booster")}
       />
@@ -42,8 +39,6 @@ addFilter(
         options={[...iconOptions]}
         name={`progressive_banner_icon_name`}
         changeHandler={onBarChange}
-        uploadHandler={noop}
-        iconRemoveHandler={noop}
         title={__(`Banner Icon`, "storegrowth-sales-booster")}
         customValue={""}
         fieldValue={formData.progressive_banner_icon_name}
@@ -64,7 +59,6 @@ addFilter(
           width: "100px",
         }}
         name={`banner_height`}
-        changeHandler={noop}
         fieldValue={60}
         needUpgrade={true}
         title={__(`Banner Height`, "storegrowth-sales-booster")}
@@ -84,7 +78,6 @@ addFilter(
           width: "100px",
         }}
         name={`font_size`}
-        changeHandler={noop}
         fieldValue={20}
         needUpgrade={true}
         title={__(`Font Size`, "storegrowth-sales-booster")}

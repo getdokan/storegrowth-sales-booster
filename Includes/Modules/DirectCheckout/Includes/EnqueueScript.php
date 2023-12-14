@@ -156,7 +156,7 @@ class EnqueueScript {
 
 		if ( $is_elementor_theme ) {
 			$custom_css .= '
-                .sgsb-FlyCart-table .product-remove a {
+                .sgsb-fly-cart-table .product-remove a {
                     margin-right: 0 !important;
                 }
             ';

@@ -5,24 +5,21 @@ import TextAreaBox from "../../../../../../assets/src/components/settings/Panels
 import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
-import Countdown from "sales-booster/src/components/pro-previews/Modules/FloatingNotificationBar/Countdown";
-import CuponCode from "sales-booster/src/components/pro-previews/Modules/FloatingNotificationBar/CuponCode";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BarIcon from "./BarIcon";
 import ButtonAction from "./ButtonAction";
 
 function DefaultBanner(props) {
-  const { formData, setFormData, onFieldChange, upgradeTeaser } = props;
-  const noop = () => {};
+  const { formData, setFormData, onFieldChange } = props;
 
   const checkboxesOption = [
     {
-      label: `Desktop`,
+      label: __("Desktop", "storegrowth-sales-booster"),
       value: "button-desktop-enable",
       tooltip: __("", "storegrowth-sales-booster"),
     },
     {
-      label: `Mobile`,
+      label: __("Mobile", "storegrowth-sales-booster"),
       value: "button-mobile-enable",
       tooltip: __("", "storegrowth-sales-booster"),
     },
@@ -123,7 +120,7 @@ function DefaultBanner(props) {
           "sgsb_floating_notification_bar_coupon_coundown",
           "",
           formData,
-          onFieldChange,
+          onFieldChange
         )}
       </SettingsSection>
       {applyFilters(

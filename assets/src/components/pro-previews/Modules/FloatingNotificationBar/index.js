@@ -1,6 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import DisplayRules from "./DisplayRules";
 import { Checkbox } from "antd";
+import {Fragment} from 'react'
 import { addFilter } from "@wordpress/hooks";
 import RadioBox from "../../../settings/Panels/PanelSettings/Fields/RadioBox";
 import InputNumber from "../../../settings/Panels/PanelSettings/Fields/Number";
@@ -9,8 +10,6 @@ import UpgradeOverlay from "../../../settings/Panels/PanelSettings/UpgradeOverla
 import UpgradeCrown from "../../../settings/Panels/PanelSettings/UpgradeCrown";
 import Countdown from "./Countdown";
 import CuponCode from "./CuponCode";
-
-const noop = () => {};
 
 // Handle Floating Notification Bar Modules pro settings prompts.
 
@@ -29,7 +28,6 @@ addFilter(
         name={`bar_position`}
         options={[...barPositions]}
         fieldValue={"top"}
-        changeHandler={noop}
         needUpgrade={true}
         title={__("Bar Position", "storegrowth-sales-booster")}
       />
@@ -47,8 +45,6 @@ addFilter(
         options={[...iconOptions]}
         name={`default_banner_icon_name`}
         changeHandler={onBarChange}
-        uploadHandler={noop}
-        iconRemoveHandler={noop}
         title={__(`Banner Icon`, "storegrowth-sales-booster")}
         customValue={""}
         fieldValue={formData.default_banner_icon_name}
@@ -69,7 +65,6 @@ addFilter(
           width: "100px",
         }}
         name={`banner_height`}
-        changeHandler={noop}
         fieldValue={60}
         needUpgrade={true}
         title={__(`Banner Height`, "storegrowth-sales-booster")}
@@ -89,7 +84,6 @@ addFilter(
           width: "100px",
         }}
         name={`font_size`}
-        changeHandler={noop}
         fieldValue={20}
         needUpgrade={true}
         title={__(`Font Size`, "storegrowth-sales-booster")}
@@ -113,7 +107,7 @@ addFilter(
       <label className={"single-disabled-checkbox"}>
         <Checkbox disabled={true} value={"new_tab_enable"} checked={false}>
           <div style={{ display: "flex", gap: "10px" }}>
-            Open in New Tab
+            {__("Open in New Tab",'storegrowth-sales-booster')}
             {<UpgradeCrown />}
           </div>
         </Checkbox>
@@ -128,10 +122,10 @@ addFilter(
   "sgsb_floating_notification_bar_coupon_coundown_callback",
   (component) => {
     return (
-      <>
+      <Fragment>
         <Countdown />
         <CuponCode />
-      </>
+      </Fragment>
     );
   }
 );

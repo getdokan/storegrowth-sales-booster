@@ -55,7 +55,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Sales Pop';
+		return 'Sales Notification';
 	}
 
 	/**

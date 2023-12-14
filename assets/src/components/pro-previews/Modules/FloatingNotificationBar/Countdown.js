@@ -1,9 +1,9 @@
 import { Checkbox, DatePicker } from "antd";
 import { __ } from "@wordpress/i18n";
 import EmptyField from "../../../settings/Panels/PanelSettings/Fields/EmptyField";
-import dayjs from "dayjs";
+
 const Countdown = (props) => {
-  
+
   // Reusable function for rendering conditional DatePicker
   const renderConditionalDatePicker = (
     title

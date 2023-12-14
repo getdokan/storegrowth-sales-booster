@@ -1,6 +1,6 @@
 <?php
 /**
- * Woocommerce Discount class for Progressive Discount Banner.
+ * WoocommerceDiscount class for Progressive Discount Banner.
  *
  * @package SBFW
  */

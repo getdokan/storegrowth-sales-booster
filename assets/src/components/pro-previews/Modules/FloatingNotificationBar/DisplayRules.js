@@ -1,28 +1,28 @@
 import { __ } from "@wordpress/i18n";
+import {Fragment} from 'react';
 import SettingsSection from "../../../settings/Panels/PanelSettings/SettingsSection";
 import SectionHeader from "../../../settings/Panels/SectionHeader";
 import CheckboxGroup from "../../../settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import BannerTrigger from "sales-booster-floating-notification-bar/src/components/BannerTrigger";
 import PageTarget from "sales-booster-floating-notification-bar/src/components/PageTarget";
 
-
 const DisplayRules = () => {
 
   const bannerDeviceOption = [
     {
-      label: `Desktop`,
+      label: __(`Desktop`,"storegrowth-sales-booster"),
       value: "banner-show-desktop",
       needUpgrade: true,
     },
     {
-      label: `Mobile`,
+      label: __(`Mobile`,"storegrowth-sales-booster"),
       value: "banner-show-mobile",
       needUpgrade: true,
     },
   ];
 
   return (
-    <>
+    <Fragment>
       <SectionHeader
         title={__("Display Rules", "storegrowth-sales-booster")}
       />
@@ -44,7 +44,7 @@ const DisplayRules = () => {
         <BannerTrigger/>
         <PageTarget/>
       </SettingsSection>
-    </>
+    </Fragment>
   );
 };
 

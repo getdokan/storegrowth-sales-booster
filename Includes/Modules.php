@@ -46,18 +46,18 @@ class Modules {
 			return $this->modules;
 		}
 
-		$list_modules = glob(__DIR__ . '/Modules/*/*.php');
+		$list_modules = glob( __DIR__ . '/Modules/*/*.php' );
 
 		foreach ( $list_modules as $module_file ) {
-            // Handle modules namespaces for dynamic autoload.
-            $module_class     = str_replace( '.php', '', basename( $module_file ) );
-            $class_namespace  = str_replace( 'Module', '', $module_class );
-            $module_namespace = "STOREGROWTH\\SPSB\\Modules\\{$class_namespace}\\{$module_class}";
+			// Handle modules namespaces for dynamic autoload.
+			$module_class     = str_replace( '.php', '', basename( $module_file ) );
+			$class_namespace  = str_replace( 'Module', '', $module_class );
+			$module_namespace = "STOREGROWTH\\SPSB\\Modules\\{$class_namespace}\\{$module_class}";
 
-            // Hold modules instance & store it.
-            $module = $module_namespace::instance();
+			// Hold modules instance & store it.
+			$module = $module_namespace::instance();
 
-            $this->modules[ $module->get_id() ] = $module;
+			$this->modules[ $module->get_id() ] = $module;
 		}
 
 		return $this->modules;
@@ -81,7 +81,7 @@ class Modules {
 				'id'          => $module_id,
 				'name'        => $module->get_name(),
 				'icon'        => $module->get_icon(),
-				'banner'        => $module->get_banner(),
+				'banner'      => $module->get_banner(),
 				'description' => $module->get_description(),
 				'category'    => $module->get_module_category(),
 				'status'      => isset( $active_ids[ $module_id ] ),

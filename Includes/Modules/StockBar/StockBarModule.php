@@ -1,6 +1,6 @@
 <?php
 /**
- * File for Stock Bar_Module class.
+ * File for StockBarModule class.
  *
  * @package SBFW
  */

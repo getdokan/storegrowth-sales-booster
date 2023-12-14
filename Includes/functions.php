@@ -9,7 +9,7 @@ use STOREGROWTH\SPSB\Admin\WPInsightsStoreGrowthSalesBooster;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 if ( ! function_exists( 'sgsb_assets_url' ) ) {
@@ -135,34 +135,34 @@ if ( ! function_exists( 'sgsb_sanitize_svg_icon_fields' ) ) {
 
 if ( ! function_exists( 'storegrowth_sales_booster_start_plugin_tracking' ) ) {
 
-    /**
-     * This function allows you to track usage of your plugin
-     */
-    function storegrowth_sales_booster_start_plugin_tracking() {
-        $tracker = WPInsightsStoreGrowthSalesBooster::get_instance(
-            plugin_dir_path( __FILE__ ),
-            array(
-                'opt_in'       => true,
-                'goodbye_form' => true,
-                'item_id'      => 'cdabb75e4451684da3a3',
-            )
-        );
+	/**
+	 * This function allows you to track usage of your plugin
+	 */
+	function storegrowth_sales_booster_start_plugin_tracking() {
+		$tracker = WPInsightsStoreGrowthSalesBooster::get_instance(
+			plugin_dir_path( __FILE__ ),
+			array(
+				'opt_in'       => true,
+				'goodbye_form' => true,
+				'item_id'      => 'cdabb75e4451684da3a3',
+			)
+		);
 
-        $tracker->set_notice_options(
-            array(
-                'notice'       => __( 'Want to help make <strong>StoreGrowth</strong> even more awesome? Be the first to get access to <strong>StoreGrowth PRO</strong> with a huge <strong>50% Early Bird Discount</strong> if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
-                'extra_notice' => __(
-                    'We collect non-sensitive diagnostic data and plugin usage information. 
+		$tracker->set_notice_options(
+			array(
+				'notice'       => __( 'Want to help make <strong>StoreGrowth</strong> even more awesome? Be the first to get access to <strong>StoreGrowth PRO</strong> with a huge <strong>50% Early Bird Discount</strong> if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
+				'extra_notice' => __(
+					'We collect non-sensitive diagnostic data and plugin usage information. 
         Your site URL, WordPress & PHP version, plugins & themes and email address to send you the 
         discount coupon. This data lets us make sure this plugin always stays compatible with the most 
         popular plugins and themes. No spam, I promise.',
-                    'storegrowth-sales-booster'
-                ),
-            )
-        );
+					'storegrowth-sales-booster'
+				),
+			)
+		);
 
-        $tracker->init();
-    }
+		$tracker->init();
+	}
 
-    storegrowth_sales_booster_start_plugin_tracking();
+	storegrowth_sales_booster_start_plugin_tracking();
 }

@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { Fragment } from 'react';
 import { addFilter } from '@wordpress/hooks';
 import InputNumber from '../../../settings/Panels/PanelSettings/Fields/Number';
 import SelectBox from '../../../settings/Panels/PanelSettings/Fields/SelectBox';
@@ -23,8 +24,8 @@ addFilter(
                     'storegrowth-sales-booster'
                 ) }
             />
-         );
-     }
+        );
+    }
 );
 addFilter( 
     'sgsb_variation_product_stock_bar_enable_settings',
@@ -59,8 +60,8 @@ addFilter(
                 name={ 'stockbar_fg_color' }
                 title={ __( 'Bar Color', 'storegrowth-sales-booster' ) }
             />
-         );
-     }
+        );
+    }
 );
 addFilter( 
     'sgsb_design_panel_stock_bar_settings',
@@ -74,7 +75,7 @@ addFilter(
         ];
 
         return ( 
-            <>
+            <Fragment>
                 <InputNumber
                     min={ 1 }
                     max={ 100 }
@@ -129,7 +130,7 @@ addFilter(
                     ) }
                     needUpgrade={ true }
                 />
-            </>
-         );
-     }
+            </Fragment>
+        );
+    }
 );

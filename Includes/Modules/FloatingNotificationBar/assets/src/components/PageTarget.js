@@ -5,12 +5,14 @@ import EmptyField from "sales-booster/src/components/settings/Panels/PanelSettin
 const PageTarget = () => {
   const bannerPageShowOption = [
     {
-      label: `Show Everywhere`,
+      label: __("Show Everywhere", "storegrowth-sales-booster"),
       value: "banner-show-everywhere",
     },
   ];
 
-  const userOption = [{ value: "both", label: "Everyone" }];
+  const userOption = [
+    { value: "both", label: __("Everyone", "storegrowth-sales-booster") },
+  ];
 
   return (
     <EmptyField

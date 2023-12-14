@@ -6,8 +6,8 @@ import EmptyField from "sales-booster/src/components/settings/Panels/PanelSettin
 const BannerTrigger = () => {
   // Hardcoded options
   const triggerOptions = [
-    { value: "after-few-seconds", label: "After a few Seconds" },
-    { value: "after-scroll", label: "After Scroll" },
+    { value: "after-few-seconds", label: __("After a few Seconds","storegrowth-sales-booster") },
+    { value: "after-scroll", label: __("After Scroll","storegrowth-sales-booster") },
   ];
 
   return (

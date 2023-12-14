@@ -1,8 +1,8 @@
 {
   "name": "storegrowth-sales-booster",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
-  "description": "=== StoreGrowth - Sales Booster === Contributors: mehedi_csit Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown Requires at least: 5.4 Tested up to: 6.2.2 Stable tag: 1.0.0 Requires PHP: 7.4 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
+  "description": "=== StoreGrowth - Sales Booster === Contributors: Invizo Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown Requires at least: 5.4 Tested up to: 6.2.2 Stable tag: 1.0.0 Requires PHP: 7.4 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
   "main": "index.js",
   "scripts": {
     "start": "lerna run start",
@@ -15,7 +15,7 @@
     "watch:quick-cart": "lerna run start --scope='sales-booster-quick-cart'",
     "watch:free-shipping-bar": "lerna run start --scope='sales-booster-free-shipping-bar'",
     "watch:floating-notification-bar": "lerna run start --scope='sales-booster-floating-notification-bar'",
-    "watch:sales-pop": "lerna run start --scope='sales-booster-sales-pop'",
+    "watch:sales-notification": "lerna run start --scope='sales-booster-sales-notification'",
     "watch:stock-bar": "lerna run start --scope='sales-booster-stock-bar'",
     "watch:upsell-order-bump": "lerna run start --scope='sales-booster-upsell-order-bump'",
     "build:sales-booster": "lerna run build --scope='sales-booster'",
@@ -35,7 +35,7 @@
   "workspaces": {
     "packages": [
       "assets",
-      "includes/modules/*/assets"
+      "includes/Modules/*/assets"
     ]
   },
   "devDependencies": {

@@ -41,14 +41,14 @@ class CommonHooks {
 			add_action( 'woocommerce_after_add_to_cart_button', array( $this, 'show_direct_checkout_button_product' ) );
 
 			if ( 'specific-buy-now' === $buy_now_button_setting ) {
-                // Woocommerce product data settings meta.
-                add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
-                add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_data' ) );
-                add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
+				// Woocommerce product data settings meta.
+				add_filter( 'woocommerce_product_data_tabs', array( $this, 'direct_checkout_product_tab' ) );
+				add_action( 'woocommerce_product_data_panels', array( $this, 'direct_checkout_custom_data' ) );
+				add_action( 'woocommerce_process_product_meta', array( $this, 'save_direct_checkout_data' ) );
 
-                // Cart button as buy now button.
-                add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
-                add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
+				// Cart button as buy now button.
+				add_filter( 'wc_get_template', array( $this, 'set_cart_to_checkout_button_template' ), 10, 5 );
+				add_filter( 'woocommerce_locate_template', array( $this, 'set_template_path' ), 10, 3 );
 			}
 		} elseif ( 'cart-to-buy-now' === $buy_now_button_setting ) {
 			// Modify cart to checkout button template.
@@ -126,10 +126,10 @@ class CommonHooks {
 	/**
 	 * Hook for WooCommerce to add the fields in the products settings tab.
 	 */
-    public function direct_checkout_custom_data() {
-        global $post;
-        include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
-    }
+	public function direct_checkout_custom_data() {
+		global $post;
+		include __DIR__ . '/../templates/direct-checkout-woo-setting.php';
+	}
 
 	/**
 	 * Hook for WooCommerce to save the data of the custom field.
@@ -172,13 +172,14 @@ class CommonHooks {
 		return $template;
 	}
 
-    /**
-     * Check if the Buy Now button should be displayed.
-     *
-     * @param string $template The option key to check for.
-     * @param string $template_name The option key to check for.
-     * @return string $template Buy Now button should be displayed or not.
-     */
+	/**
+	 * Check if the Buy Now button should be displayed.
+	 *
+	 * @param string $template The option key to check for.
+	 * @param string $template_name The option key to check for.
+	 *
+	 * @return string $template Buy Now button should be displayed or not.
+	 */
 	public function set_template_path( $template, $template_name ) {
 		$settings               = get_option( 'sgsb_direct_checkout_settings' );
 		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );

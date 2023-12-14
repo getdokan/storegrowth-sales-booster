@@ -31,7 +31,7 @@ addFilter(
         buttonLayoutOptions?.splice(
             0, 0,
             {
-                label       : `"Add to cart" as "Buy Now"`,
+                label       : __(`"Add to cart" as "Buy Now"`,"storegrowth-sales-booster"),
                 value       : 'cart-to-buy-now',
                 needUpgrade : true,
                 tooltip     : __(
@@ -43,7 +43,7 @@ addFilter(
         buttonLayoutOptions?.splice(
             2, 0,
             {
-                label       : `"Buy Now" for specific product"`,
+                label       : __(`"Buy Now" for specific product"`,"storegrowth-sales-booster"),
                 value       : 'specific-buy-now',
                 needUpgrade : true,
                 tooltip     : __(

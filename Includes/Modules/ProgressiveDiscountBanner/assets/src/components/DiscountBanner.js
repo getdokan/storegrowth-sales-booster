@@ -46,7 +46,6 @@ function DiscountBanner(props) {
     const discount_mode_text = discount_amount_mode === "fixed-amount" ? "Amount" : "Percentage";
     const discount_mode_symbol = discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
 
-    const noop = () => {};
 
     const iconStyleNames = [
         'shipping-bar-icon-1',
@@ -183,12 +182,12 @@ function DiscountBanner(props) {
                 />
             </SettingsSection>
             <SettingsSection>
-            { applyFilters(
-                'sgsb_free_shipping_bar_display_rules_settings',
-                '',
-                formData,
-                onFieldChange
-            ) }
+                { applyFilters(
+                    'sgsb_free_shipping_bar_display_rules_settings',
+                    '',
+                    formData,
+                    onFieldChange
+                ) }
             </SettingsSection>
         </Fragment>
     );

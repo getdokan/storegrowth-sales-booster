@@ -15,7 +15,7 @@
             target    : '.flyto-target',
             button    : '.flyto-btn',
             shake     : true
-        }, options);
+            }, options);
 
 
         return this.each(function () {
@@ -31,12 +31,13 @@
             var iconwidth = $('.wfc-cart-icon span');
             var _this = $(this),
                 eltoDrag = _this.parents('li.product').find("img").eq(0);
-        if (eltoDrag) {
-            var imgclone = eltoDrag.clone()
-                .offset({
-                top: eltoDrag.offset().top,
-                left: eltoDrag.offset().left
-            })
+            if (eltoDrag) {
+                var imgclone = eltoDrag
+                    .clone()
+                    .offset({
+                    top: eltoDrag.offset().top,
+                    left: eltoDrag.offset().left
+                })
                 .css({
                     'opacity': '0.5',
                     'position': 'absolute',
@@ -58,11 +59,11 @@
             }, 1200, 'easeInOutExpo');
 
             if (settings.shake) {
-            setTimeout(function () {
-                target.effect("shake", {
-                    times: 2
-                }, 200);
-            }, 1800);
+                setTimeout(function () {
+                    target.effect("shake", {
+                        times: 2
+                    }, 200);
+                }, 1800);
             }
 
 

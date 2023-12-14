@@ -80,7 +80,7 @@ class EnqueueScript {
 		$style_file    = require sgsb_modules_path( 'CountdownTimer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sgsb-Countdown_Timer-settings',
+			'sgsb-countdown-timer-settings',
 			sgsb_modules_url( 'CountdownTimer/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
@@ -88,7 +88,7 @@ class EnqueueScript {
 		);
 
 		wp_enqueue_style(
-			'sgsb-Countdown_Timer-style',
+			'sgsb-countdown-timer-style',
 			sgsb_modules_url( 'CountdownTimer/assets/build/settings.css' ),
 			array(),
 			filemtime( sgsb_modules_path( 'CountdownTimer/assets/build/settings.css' ) )
@@ -114,11 +114,11 @@ class EnqueueScript {
 
 		if ( 'ct-layout-1' === $selected_theme ) {
 			$custom_css = "
-			.sgsb-Countdown_Timer.ct-custom {
+			.sgsb-countdown-timer.ct-custom {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
-			.sgsb-Countdown_Timer-heading.ct-custom {
+			.sgsb-countdown-timer-heading.ct-custom {
 				color: {$heading_text_color};
             }
 		";
@@ -128,7 +128,7 @@ class EnqueueScript {
 
 		if ( $is_twenty_one_theme ) {
 			$custom_css .= '
-                .sgsb-Countdown_Timer {
+                .sgsb-countdown-timer {
                     margin-top: 18px;
                 }
             ';
@@ -136,11 +136,11 @@ class EnqueueScript {
 
 		if ( $is_twenty_four_theme ) {
 			$custom_css .= '
-                .sgsb-Countdown_Timer {
+                .sgsb-countdown-timer {
                     padding-left: 0px;
                     padding-right: 0px; 
                 }
-                .sgsb-Countdown_Timer-item {
+                .sgsb-countdown-timer-item {
                     height: 40px;
                 }
             ';
