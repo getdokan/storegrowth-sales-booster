@@ -359,7 +359,7 @@ if ( ! class_exists( 'WPInsightsStoreGrowthSalesBooster' ) ) :
 			// Collect the email if the correct option has been set
 			if ( $this->marketing ) {
 				if ( ! function_exists( 'wp_get_current_user' ) ) {
-					include ABSPATH . 'wp-Includes/pluggable.php';
+					include ABSPATH . 'wp-includes/pluggable.php';
 				}
 				$current_user = wp_get_current_user();
 				$email        = $current_user->user_email;
@@ -374,7 +374,7 @@ if ( ! class_exists( 'WPInsightsStoreGrowthSalesBooster' ) ) :
 			 * Collect all active and inactive plugins
 			 */
 			if ( ! function_exists( 'get_plugins' ) ) {
-				include ABSPATH . '/wp-admin/Includes/plugin.php';
+				include ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 			$plugins        = array_keys( get_plugins() );
 			$active_plugins = is_network_admin() ? array_keys( get_site_option( 'active_sitewide_plugins', array() ) ) : get_option( 'active_plugins', array() );
@@ -432,7 +432,7 @@ if ( ! class_exists( 'WPInsightsStoreGrowthSalesBooster' ) ) :
 		 */
 		public function plugin_data() {
 			if ( ! function_exists( 'get_plugin_data' ) ) {
-				include ABSPATH . '/wp-admin/Includes/plugin.php';
+				include ABSPATH . '/wp-admin/includes/plugin.php';
 			}
 			$plugin = get_plugin_data( $this->plugin_file );
 			return $plugin;
