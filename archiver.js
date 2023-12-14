@@ -59,7 +59,6 @@ async function archive() {
     ".git",
     ".gitignore",
     "node_modules",
-    "vendor",
     "package.json",
     "lerna-debug.log",
     "lerna.json",
