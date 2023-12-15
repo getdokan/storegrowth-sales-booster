@@ -7,10 +7,9 @@ const CreateBumpButton = ({ navigate }) => {
     const { bumpListData } = useSelect((select) => ({
         bumpListData: select("sgsb_order_bump").getBumpData(),
     }));
-
-    const isBumpListPage = window.location.hash.replace(/^#/, '') === "/upsell-order-bump";
+    const hash = window.location.hash.replace(/^#/, ''); // Remove the leading '#'
+    const isBumpListPage = hash === 'upsell-order-bump' || hash === '/upsell-order-bump';    
     const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
-
     const buttonProps = {
         shape: "round",
         disabled: isBumpListPage ? isDisableBumpCreation : false,
@@ -25,8 +24,8 @@ const CreateBumpButton = ({ navigate }) => {
 
     return (
         <div className="upsell-order-bump-action-buttons">
-            {!isBumpListPage && renderButton(__("Bump List", "storegrowth-sales-booster"), () => navigate("/upsell-order-bump"))}
-            {isBumpListPage && renderButton(__("Create New", "storegrowth-sales-booster"), () => navigate("/upsell-order-bump/create-bump"))}
+            {!isBumpListPage && renderButton(__("Bump List", "storegrowth-sales-booster"), () => navigate("upsell-order-bump"))}
+            {isBumpListPage && renderButton(__("Create New", "storegrowth-sales-booster"), () => navigate("upsell-order-bump/create-bump"))}
         </div>
     );
 };
