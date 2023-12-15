@@ -7,7 +7,7 @@ import InputNumber from '../../../settings/Panels/PanelSettings/Fields/Number';
 import TextAreaBox from '../../../settings/Panels/PanelSettings/Fields/TextAreaBox';
 import SettingsSection from '../../../settings/Panels/PanelSettings/SettingsSection';
 import ColourPicker from "../../../settings/Panels/PanelSettings/Fields/ColorPicker";
-import VisibilityControl from 'sales-booster-sales-pop/src/components/VisibilityControl';
+import VisibilityControl from 'sales-booster-sales-notification/src/components/VisibilityControl';
 
 // Handle sales pop modules pro settings prompts.
 addFilter(
