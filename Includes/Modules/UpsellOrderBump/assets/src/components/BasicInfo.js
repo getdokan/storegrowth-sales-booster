@@ -193,7 +193,7 @@ const BasicInfo = ({ clearErrors }) => {
               : null
           }
           filterOption={(inputValue, option) =>
-            option.label
+            option?.children?.[0]
               ?.toString()
               ?.toLowerCase()
               ?.includes(inputValue.toLowerCase())
