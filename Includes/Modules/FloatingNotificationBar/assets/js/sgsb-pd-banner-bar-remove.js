@@ -117,7 +117,7 @@
         function () {
           $(".sgsb-floating-notification-bar-wrapper").css(
             "transform",
-            "translateY(-100%)"
+            "translateY(-200%)"
           );
           paddingRemoverBody();
           setTimeout(removeClassToBodyToHandleBannerVisibility, 500);

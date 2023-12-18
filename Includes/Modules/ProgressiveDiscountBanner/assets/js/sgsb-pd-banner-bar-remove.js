@@ -107,7 +107,7 @@
       }
 
       $(document).on("click", ".sgsb-pd-banner-bar-remove", function () {
-        $(".sgsb-pd-banner-bar-wrapper").css("transform", "translateY(-100%)");
+        $(".sgsb-pd-banner-bar-wrapper").css("transform", "translateY(-200%)");
         paddingRemoverBody();
         setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
