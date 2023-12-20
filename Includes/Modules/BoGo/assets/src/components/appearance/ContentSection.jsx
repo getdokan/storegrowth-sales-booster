@@ -2,6 +2,7 @@ import { Input } from "antd";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
+import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper";
 
 const ContentSection = () => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -19,6 +20,7 @@ const ContentSection = () => {
 
   return (
     <Fragment>
+      <FieldWrapper>
       {createBogoData?.offer_type === "price" ? (
         <Fragment>
           {/* Render fixed bump offer box settings. */}
@@ -56,6 +58,7 @@ const ContentSection = () => {
           />
         </Fragment>
       )}
+      </FieldWrapper>
     </Fragment>
   );
 };

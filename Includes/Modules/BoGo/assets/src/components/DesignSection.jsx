@@ -10,11 +10,11 @@ const DesignSection = () => {
             label: __( 'Template Section', 'storegrowth-sales-booster' ),
             children: <TemplateSection />,
         },
-        {
-            key: 2,
-            label: __( 'Content Section', 'storegrowth-sales-booster' ),
-            children: <ContentSection />,
-        }
+        // {
+        //     key: 2,
+        //     label: __( 'Content Section', 'storegrowth-sales-booster' ),
+        //     children: <ContentSection />,
+        // }
     ];
 
     return (

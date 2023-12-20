@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import { useSelect } from "@wordpress/data";
 
-const CreateBumpButton = ({ navigate }) => {
+const CreateBogoButton = ({ navigate }) => {
   const { bumpListData } = useSelect((select) => ({
     bumpListData: select("sgsb_bogo").getBogoData(),
   }));
@@ -46,4 +46,4 @@ const CreateBumpButton = ({ navigate }) => {
   );
 };
 
-export default CreateBumpButton;
+export default CreateBogoButton;

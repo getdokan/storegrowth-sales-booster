@@ -9,6 +9,8 @@ import SectionHeader from "sales-booster/src/components/settings/Panels/SectionH
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 import OfferField from "./OfferField";
+import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
+import Number from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -21,8 +23,8 @@ const BasicInfo = ({ clearErrors }) => {
     products_and_categories.product_list.productListForSelect;
   const productListForSelect = offerProductId
     ? originalProductListForSelect.filter(
-        (item) => item.value !== offerProductId
-      )
+      (item) => item.value !== offerProductId
+    )
     : originalProductListForSelect;
 
   const targetProducts = createBogoData.target_products;
@@ -31,8 +33,8 @@ const BasicInfo = ({ clearErrors }) => {
   const simpleProductForOffer =
     Array.isArray(targetProducts) && targetProducts.length !== 0
       ? originalSimpleProductForOffer.filter(
-          (item) => !targetProducts.includes(item.value)
-        )
+        (item) => !targetProducts.includes(item.value)
+      )
       : originalSimpleProductForOffer;
   const bumpSchedules = [
     { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
@@ -109,12 +111,12 @@ const BasicInfo = ({ clearErrors }) => {
   };
 
   const dealOptions = [
-    { key: 'bxgy', value: "Buy X Get Y" },
-    { key: 'bxgx', value: "Buy X Get X" },
+    { key: "bxgy", value: "Buy X Get Y" },
+    { key: "bxgx", value: "Buy X Get X" },
   ];
   const dealCategories = [
-    { key: 'products', value: "Products" },
-    { key: 'categories', value: "Categories" },
+    { key: "products", value: "Products" },
+    { key: "categories", value: "Categories" },
   ];
   return (
     <Fragment>
@@ -124,32 +126,57 @@ const BasicInfo = ({ clearErrors }) => {
           name={`name_of_order_bump`}
           changeHandler={onFieldChange}
           fieldValue={createBogoData.name_of_order_bump}
-          title={__("Name of Order Bump", "storegrowth-sales-booster")}
+          title={__("Name of BOGO", "storegrowth-sales-booster")}
           placeHolderText={__(
-            "Enter Order Bump Name",
+            "Enter BOGO Name",
             "storegrowth-sales-booster"
           )}
         />
         <TextRadioBox
-            name={`bogo-deal-tyle`}
-            title={__("Deal Type",'storegrowth-sales-booster')}
-            classes={""}
-            tooltip={__("this is an example","storegrowth-sales-booster")}
-            options={[...dealOptions]}
-            // fieldWidth={true}
-            // fieldValue={}
-            // changeHandler={}
+          name={`bogo_deal_type`}
+          title={__("Deal Type", "storegrowth-sales-booster")}
+          classes={""}
+          tooltip={__("this is an example", "storegrowth-sales-booster")}
+          options={[...dealOptions]}
+          // fieldWidth={true}
+          fieldValue={createBogoData?.bogo_deal_type}
+          changeHandler={onFieldChange}
         />
-
         <TextRadioBox
-            name={`bogo-deal-categories`}
-            title={__("Deal Categories",'storegrowth-sales-booster')}
-            classes={""}
-            tooltip={__("this is an example","storegrowth-sales-booster")}
-            options={[...dealCategories]}
-            // fieldWidth={true}
-            // fieldValue={}
-            // changeHandler={}
+          name={`bogo_deal_categories`}
+          title={__("Deal Categories", "storegrowth-sales-booster")}
+          classes={""}
+          tooltip={__("this is an example", "storegrowth-sales-booster")}
+          options={[...dealCategories]}
+          // fieldWidth={true}
+          fieldValue={createBogoData?.bogo_deal_categories}
+          changeHandler={onFieldChange}
+        />
+        <Number
+          name={"add_cart_min_product"}
+          title={__("Minimum add to cart", "storegrowth-sales-booster")}
+          tooltip={__("Minimum add to cart", "storegrowth-sales-booster")}
+          fieldValue={createBogoData?.add_cart_min_product}
+          changeHandler={onFieldChange}
+          
+        />
+        <DateField
+          name={"offer_start_date"}
+          title={__("Offer Start", "storegrowth-sales-booster")}
+          tooltip={__("Offer Start", "storegrowth-sales-booster")}
+          fieldValue={createBogoData?.offer_start_date}
+          changeHandler={onFieldChange}
+          fullWidth={true}
+        />
+        <DateField
+          name={"offer_end_date"}
+          title={__("Offer End", "storegrowth-sales-booster")}
+          tooltip={__("Offer End", "storegrowth-sales-booster")}
+          fieldValue={createBogoData?.offer_end_date}
+          endDateDisable={true}
+          startDateValue={createBogoData?.offer_start_date}
+          changeHandler={onFieldChange}
+          fullWidth={true}
         />
         <MultiSelectBox
           name={"target_products"}

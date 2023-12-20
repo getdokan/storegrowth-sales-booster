@@ -15,6 +15,7 @@ import Preview from "./Preview";
 import { createBumpForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
+import ContentSection from "./appearance/ContentSection";
 
 function CreateBogo({ navigate, useParams, useSearchParams }) {
   const [allBumpsData, setallBumpsData] = useState([]);
@@ -288,6 +289,11 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       key: "design",
       title: __("Design", "storegrowth-sales-booster"),
       panel: <DesignSection />,
+    },
+    {
+      key: "content",
+      title: __("Content", "storegrowth-sales-booster"),
+      panel: <ContentSection />,
     },
   ];
 
