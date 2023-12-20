@@ -18,6 +18,7 @@
     "watch:sales-notification": "lerna run start --scope='sales-booster-sales-notification'",
     "watch:stock-bar": "lerna run start --scope='sales-booster-stock-bar'",
     "watch:upsell-order-bump": "lerna run start --scope='sales-booster-upsell-order-bump'",
+    "watch:bogo": "lerna run start --scope='sales-booster-bogo'",
     "build:sales-booster": "lerna run build --scope='sales-booster'",
     "build:sales-countdown": "lerna run build --scope='sales-booster-sales-countdown'",
     "build:direct-checkout": "lerna run build --scope='sales-booster-direct-checkout'",
@@ -27,6 +28,7 @@
     "build:sales-pop": "lerna run build --scope='sales-booster-sales-pop'",
     "build:stock-bar": "lerna run build --scope='sales-booster-stock-bar'",
     "build:upsell-order-bump": "lerna run build --scope='sales-booster-upsell-order-bump'",
+    "build:bogo": "lerna run build --scope='sales-booster-bogo'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
