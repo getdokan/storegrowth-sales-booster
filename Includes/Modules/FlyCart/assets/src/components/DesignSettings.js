@@ -18,6 +18,8 @@ const DesignSettings = ({
         { value: 'top-right', label: __( 'Top Right', 'storegrowth-sales-booster' ) },
         { value: 'bottom-left', label: __( 'Bottom Left', 'storegrowth-sales-booster' ) },
         { value: 'bottom-right', label: __( 'Bottom Right', 'storegrowth-sales-booster' ) },
+        { value: 'left-center', label: __( 'Center Left', 'storegrowth-sales-booster' ) },
+        { value: 'right-center', label: __( 'Center Right', 'storegrowth-sales-booster' ) },
     ];
 
     const iconStyleNames = [
@@ -25,6 +27,9 @@ const DesignSettings = ({
         'shopping-cart-icon-2',
         'shopping-cart-icon-3',
         'shopping-cart-icon-4',
+        //add two more iconStyleNames 
+        'shopping-cart-icon-5',
+        'shopping-cart-icon-6',
     ];
 
     const iconOptions = iconStyleNames?.map( iconStyleName => (

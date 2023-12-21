@@ -35,6 +35,15 @@
     left: 60px;
 }
 
+.wfc-cart-icon.left-center {
+    top: 50%;
+    left: 60px;
+}
+.wfc-cart-icon.right-center {
+    top: 50%;
+    right: 60px;
+}
+
 .wfc-cart-icon .wfc-icon {
     cursor: pointer;
 }
