@@ -13,7 +13,6 @@ $main_div_border_radius = $popup_properties['popup_border_radius'] ? $popup_prop
 $main_div_background    = $popup_properties['background_color'] ? $popup_properties['background_color'] : 'white';
 $main_div_style         = 'width: ' . $main_div_width . 'px; border-radius: ' . $main_div_border_radius . 'px; background: ' . $main_div_background;
 
-
 // Normal Text style.
 $normal_text_color       = $popup_properties['normal_text_color'];
 $normal_text_font_size   = $popup_properties['normal_text_font_size'] . 'px';
@@ -27,10 +26,10 @@ $name_font_weight = $popup_properties['name_text_font_weight'];
 $name_style       = "color:$name_color;font-size:$name_font_size;font-weight:$name_font_weight";
 
 // Image style.
-$image_width         = ceil( $main_div_width * $popup_properties['popup_image_width'] / 100 );
+$image_width         = $popup_properties['popup_image_width'];
 $image_width         = $image_width ? $image_width : 100;
 $image_border_radius = $popup_properties['popup_image_border_radius'] ? $popup_properties['popup_image_border_radius'] : 0;
-$image_style         = "border-radius:$image_border_radius" . 'px';
+$image_style         = "width:{$image_width}px; border-radius:$image_border_radius" . 'px';
 
 // Time style.
 $time_color       = $popup_properties['time_text_color'];
