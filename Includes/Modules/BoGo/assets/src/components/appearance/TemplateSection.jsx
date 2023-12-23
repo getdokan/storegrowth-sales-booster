@@ -32,7 +32,7 @@ const TemplateSection = () => {
     <Fragment>
       {/* Render bump offer box settings section. */}
       <SectionHeader
-        title={__("Bump Offer Box", "storegrowth-sales-booster")}
+        title={__("BOGO Offer Box", "storegrowth-sales-booster")}
       />
       <SettingsSection>
         <SelectBox
@@ -82,7 +82,7 @@ const TemplateSection = () => {
 
       {/* Render discount settings section. */}
       <SectionHeader
-        title={__("Discount Section", "storegrowth-sales-booster")}
+        title={__("Message Section", "storegrowth-sales-booster")}
       />
       <SettingsSection>
         <ColourPicker

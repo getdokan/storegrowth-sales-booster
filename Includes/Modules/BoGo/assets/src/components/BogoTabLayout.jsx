@@ -37,7 +37,7 @@ function BogoTabLayout({ navigate, useSearchParams }) {
   };
 
   const onFormSave = () => {
-    if (!createBogoData.name_of_order_bump) {
+    if (!createBogoData.name_of_order_bogo) {
       notification["error"]({
         message: "Please enter name of order bump",
       });

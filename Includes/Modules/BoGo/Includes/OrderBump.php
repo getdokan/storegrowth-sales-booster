@@ -25,7 +25,7 @@ class OrderBump {
 	 * Constructor of Woocommerce_Functionality class.
 	 */
 	public function __construct() {
-		add_action( 'woocommerce_review_order_before_submit', array( $this, 'bump_product_frontend_view' ) );
+		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'bump_product_frontend_view' ) );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_custom_price_to_cart_item' ) );
 	}
 

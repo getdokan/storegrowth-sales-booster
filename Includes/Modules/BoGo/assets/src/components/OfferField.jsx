@@ -1,4 +1,5 @@
-import React from "react";
+import { Fragment } from "react";
+import { useEffect } from '@wordpress/element';
 import { __ } from "@wordpress/i18n";
 import { Row, Col, Select, Card, InputNumber, Typography } from "antd";
 
@@ -6,8 +7,20 @@ import SettingsTooltip from "sales-booster/src/components/settings/Panels/PanelS
 const { Title } = Typography;
 
 const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
+  const isOfferFree = createBogoData.offer_type === "free";
+
+  const handleOfferTypeChange = (value) => {
+    onFieldChange("offer_type", value);
+  };
+
+  useEffect(() => {
+    if (isOfferFree) {
+      onFieldChange("offer_amount", 0);
+    }
+  }, [createBogoData.offer_type]);
+
   return (
-    <>
+    <Fragment>
       <Card className={`sgsb-settings-card`}>
         <Row>
           <Col span={9}>
@@ -27,7 +40,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
                   style={{ width: "100%" }}
                   options={offerOptions}
                   value={createBogoData.offer_type}
-                  onChange={(v) => onFieldChange("offer_type", v)}
+                  onChange={handleOfferTypeChange}
                   className={`settings-field single-select-field combine-select`}
                 />
               </Col>
@@ -36,13 +49,14 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
                   value={createBogoData.offer_amount}
                   className={`settings-field number-field combine-field`}
                   onChange={(value) => onFieldChange("offer_amount", value)}
+                  disabled={isOfferFree}
                 />
               </Col>
             </Row>
           </Col>
         </Row>
       </Card>
-    </>
+    </Fragment>
   );
 };
 

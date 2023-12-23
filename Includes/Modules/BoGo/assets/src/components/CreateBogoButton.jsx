@@ -36,7 +36,7 @@ const CreateBogoButton = ({ navigate }) => {
     <div className="bogo-action-buttons">
       {!isCreateNew &&
         renderButton(__("BOGO List", "storegrowth-sales-booster"), () =>
-          navigate("bogo")
+          navigate("bogo?tab_name=lists")
         )}
       {isCreateNew &&
         renderButton(__("Create New", "storegrowth-sales-booster"), () =>

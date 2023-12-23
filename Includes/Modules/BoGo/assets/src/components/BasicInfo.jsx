@@ -10,7 +10,7 @@ import SelectBox from "sales-booster/src/components/settings/Panels/PanelSetting
 import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 import OfferField from "./OfferField";
 import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
-import Number from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
+import { InputNumber } from "sales-booster/src/components/settings/Panels";
 
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -48,8 +48,8 @@ const BasicInfo = ({ clearErrors }) => {
   ];
 
   const offerOptions = [
+    { value: "free", label: __("Free", "storegrowth-sales-booster") },
     { value: "discount", label: __("Discount%", "storegrowth-sales-booster") },
-    { value: "price", label: __("Price", "storegrowth-sales-booster") },
   ];
 
   const filterByValue = (data, key) => {
@@ -123,9 +123,9 @@ const BasicInfo = ({ clearErrors }) => {
       <SettingsSection>
         <TextInput
           fullWidth={true}
-          name={`name_of_order_bump`}
+          name={`name_of_order_bogo`}
           changeHandler={onFieldChange}
-          fieldValue={createBogoData.name_of_order_bump}
+          fieldValue={createBogoData.name_of_order_bogo}
           title={__("Name of BOGO", "storegrowth-sales-booster")}
           placeHolderText={__(
             "Enter BOGO Name",
@@ -134,7 +134,7 @@ const BasicInfo = ({ clearErrors }) => {
         />
         <TextRadioBox
           name={`bogo_deal_type`}
-          title={__("Deal Type", "storegrowth-sales-booster")}
+          title={__("BOGO Deal Type", "storegrowth-sales-booster")}
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster")}
           options={[...dealOptions]}
@@ -143,22 +143,68 @@ const BasicInfo = ({ clearErrors }) => {
           changeHandler={onFieldChange}
         />
         <TextRadioBox
-          name={`bogo_deal_categories`}
-          title={__("Deal Categories", "storegrowth-sales-booster")}
+          name={`select_bogo_pro_cat`}
+          title={__("Select BOGO Type", "storegrowth-sales-booster")}
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster")}
           options={[...dealCategories]}
           // fieldWidth={true}
-          fieldValue={createBogoData?.bogo_deal_categories}
+          fieldValue={createBogoData?.select_bogo_pro_cat}
           changeHandler={onFieldChange}
         />
-        <Number
+
+        {(createBogoData?.select_bogo_pro_cat === "categories") ?
+          (<MultiSelectBox
+            name={"target_categories"}
+            changeHandler={onFieldChange}
+            fieldValue={createBogoData.target_categories.map(Number)}
+            options={products_and_categories.category_list.catForSelect}
+            title={__("Select Target Categories", "storegrowth-sales-booster")}
+            placeHolderText={__(
+              "Search for Categories",
+              "storegrowth-sales-booster"
+            )}
+            tooltip={__(
+              "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
+              "storegrowth-sales-booster"
+            )}
+          />) : (<MultiSelectBox
+            name={"target_products"}
+            changeHandler={onFieldChange}
+            options={productListForSelect}
+            fieldValue={createBogoData.target_products.map(Number)}
+            title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+            placeHolderText={__(
+              "Search for products",
+              "storegrowth-sales-booster"
+            )}
+            tooltip={__(
+              "The target product indicates for which specific products the upsell order bump option will be displayed.",
+              "storegrowth-sales-booster"
+            )}
+          />)
+        }
+        <InputNumber
           name={"add_cart_min_product"}
           title={__("Minimum add to cart", "storegrowth-sales-booster")}
           tooltip={__("Minimum add to cart", "storegrowth-sales-booster")}
           fieldValue={createBogoData?.add_cart_min_product}
           changeHandler={onFieldChange}
-          
+        />
+        <MultiSelectBox
+          name={"bump_schedule"}
+          options={bumpSchedules}
+          changeHandler={onFieldChange}
+          fieldValue={createBogoData.bump_schedule}
+          title={__("BOGO Schedule", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Please select bump schedule",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The schedule can be daily or on specific days of the week.",
+            "storegrowth-sales-booster"
+          )}
         />
         <DateField
           name={"offer_start_date"}
@@ -177,51 +223,6 @@ const BasicInfo = ({ clearErrors }) => {
           startDateValue={createBogoData?.offer_start_date}
           changeHandler={onFieldChange}
           fullWidth={true}
-        />
-        <MultiSelectBox
-          name={"target_products"}
-          changeHandler={onFieldChange}
-          options={productListForSelect}
-          fieldValue={createBogoData.target_products.map(Number)}
-          title={__("Select Target Product(s)", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Search for products",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "The target product indicates for which specific products the upsell order bump option will be displayed.",
-            "storegrowth-sales-booster"
-          )}
-        />
-        <MultiSelectBox
-          name={"target_categories"}
-          changeHandler={onFieldChange}
-          fieldValue={createBogoData.target_categories.map(Number)}
-          options={products_and_categories.category_list.catForSelect}
-          title={__("Select Target Categories", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Search for Categories",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
-            "storegrowth-sales-booster"
-          )}
-        />
-        <MultiSelectBox
-          name={"bump_schedule"}
-          options={bumpSchedules}
-          changeHandler={onFieldChange}
-          fieldValue={createBogoData.bump_schedule}
-          title={__("Order Bump Schedule", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Please select bump schedule",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "The schedule can be daily or on specific days of the week.",
-            "storegrowth-sales-booster"
-          )}
         />
       </SettingsSection>
       <SectionHeader title={__("Offer Section", "storegrowth-sales-booster")} />

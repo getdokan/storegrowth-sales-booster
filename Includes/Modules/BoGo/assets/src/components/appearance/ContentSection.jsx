@@ -1,8 +1,7 @@
-import { Input } from "antd";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { useDispatch, useSelect } from "@wordpress/data";
-import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper";
+import { SettingsSection, TextAreaBox } from "sales-booster/src/components/settings/Panels";
 
 const ContentSection = () => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -20,45 +19,32 @@ const ContentSection = () => {
 
   return (
     <Fragment>
-      <FieldWrapper>
-      {createBogoData?.offer_type === "price" ? (
-        <Fragment>
-          {/* Render fixed bump offer box settings. */}
-          <label htmlFor={`fixed-bump`} className={`content-bump-label`}>
-            {__("For Fixed Price", "storegrowth-sales-booster")}
-          </label>
-          <Input
-            id={`fixed-bump`}
-            value={createBogoData.offer_fixed_price_title}
-            onChange={(v) =>
-              onFieldChange("offer_fixed_price_title", v.target.value)
-            }
-            placeholder={__(
-              "Add fixed price title please",
-              "storegrowth-sales-booster"
-            )}
-          />
-        </Fragment>
-      ) : (
-        <Fragment>
-          {/* Render discount bump offer box settings. */}
-          <label className={`content-bump-label`} htmlFor={`discount-bump`}>
-            {__("For Discount %", "storegrowth-sales-booster")}
-          </label>
-          <Input
-            id={`discount-bump`}
-            value={createBogoData.offer_discount_title}
-            onChange={(v) =>
-              onFieldChange("offer_discount_title", v.target.value)
-            }
-            placeholder={__(
-              "Add discount title please",
-              "storegrowth-sales-booster"
-            )}
-          />
-        </Fragment>
-      )}
-      </FieldWrapper>
+      <SettingsSection>
+        <TextAreaBox
+          areaRows={3}
+          name={'bogo_shop_page_message'}
+          fieldValue={createBogoData?.bogo_shop_page_message}
+          // upgradeOverlay={false}
+          // needUpgrade={isFirstNameExceededLimit}
+          // inputRestrictor={isFirstNameExceededLimit}
+          changeHandler={onFieldChange}
+          title={__('Shop Page Message', 'storegrowth-sales-booster')}
+          placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
+          tooltip={__('example text', 'storegrowth-sales-booster')}
+        />
+        <TextAreaBox
+          areaRows={3}
+          name={'bogo_product_page_message'}
+          fieldValue={createBogoData?.bogo_product_page_message}
+          // upgradeOverlay={false}
+          // needUpgrade={isFirstNameExceededLimit}
+          // inputRestrictor={isFirstNameExceededLimit}
+          changeHandler={onFieldChange}
+          title={__('Shop Page Message', 'storegrowth-sales-booster')}
+          placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
+          tooltip={__('example text', 'storegrowth-sales-booster')}
+        />
+      </SettingsSection>
     </Fragment>
   );
 };

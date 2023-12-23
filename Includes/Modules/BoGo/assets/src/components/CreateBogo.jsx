@@ -128,7 +128,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   };
 
   const onFormSave = () => {
-    if (!createBogoData.name_of_order_bump) {
+    if (!createBogoData.name_of_order_bogo) {
       notification["error"]({
         message: "Please enter name of order bump",
       });
@@ -170,8 +170,8 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
       return null;
     }
-
-    if (!createBogoData.offer_amount) {
+    
+    if (createBogoData.offer_type!=="free" && !createBogoData.offer_amount) {
       notification["error"]({
         message: "Please select offer amount",
       });

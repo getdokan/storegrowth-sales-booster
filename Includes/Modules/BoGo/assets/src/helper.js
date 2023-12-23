@@ -1,7 +1,7 @@
 export const isString = (value) => typeof value === "string";
 
 export const bogoPropertiesToWorkForHtmlEntity = [
-  "name_of_order_bump",
+  "name_of_order_bogo",
   "offer_description",
   "offer_discount_title",
   "offer_fixed_price_title",
@@ -58,7 +58,7 @@ export const convertBogoItemHtmlEntitiesToTexts = (bogoItem) => {
  * Default data of create bump.
  */
 export const createBumpForm = {
-  name_of_order_bump: "",
+  name_of_order_bogo: "",
   target_products: [],
   target_categories: [],
   bump_schedule: ["daily"],

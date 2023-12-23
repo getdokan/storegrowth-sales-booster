@@ -6,6 +6,7 @@ import { Switch } from 'antd';
 import { useEffect, useState } from "@wordpress/element";
 import { convertBogoItemHtmlEntitiesToTexts } from "../helper";
 import { Fragment } from "react";
+import { nanoid } from 'nanoid';
 import UpgradeCard from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCard";
 import OfferProductContent from "./OfferProductContent";
 
@@ -140,7 +141,7 @@ function TargetProductAndCategory({ catList, productList }) {
           {__("Target Products", "storegrowth-sales-booster")} <br />
           <div className={`table-products`} style={{ marginTop: 8 }}>
             {productList?.split(",")?.map((product) => (
-              <span className={`product-pills`}>{product}</span>
+              <span key={nanoid()} className={`product-pills`}>{product}</span>
             ))}
           </div>
         </div>
@@ -151,7 +152,7 @@ function TargetProductAndCategory({ catList, productList }) {
           {__("Target Categories", "storegrowth-sales-booster")} <br />
           <div className={`table-categories`} style={{ marginTop: 8 }}>
             {catList?.split(",")?.map((category) => (
-              <span className={`category-pills`}>{category}</span>
+              <span key={nanoid()} className={`category-pills`}>{category}</span>
             ))}
           </div>
         </div>
@@ -167,7 +168,6 @@ function BogoList({ navigate }) {
   const { bumpListData } = useSelect((select) => ({
     bumpListData: select("sgsb_bogo").getBogoData(),
   }));
-
   useEffect(() => {
     setPageLoading(true);
 
@@ -241,8 +241,8 @@ function BogoList({ navigate }) {
 
     let offerProduct = productInfoById[item.offer_product];
     return {
-      key: item,
-      name: item.name_of_order_bump,
+      key: item.id,
+      name: item.name_of_order_bogo,
       status: <ActionToggler />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
