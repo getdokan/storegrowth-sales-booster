@@ -1,0 +1,251 @@
+<?php
+/**
+ * Template for simple product BoGo.
+ *
+ * @package SBFW
+ */
+
+namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
+?>
+
+<!-- Start BOGO Tab Content -->
+<div id='bogo_product_data' class='panel woocommerce_options_panel'>
+    <div class='options_group'>
+        <?php
+        global $post;
+
+        $bogo_settings       = Helper::sgsb_get_product_bogo_settings( $post->ID );
+        $is_enable_bogo      = ! empty( $bogo_settings['_sgsb_bogo_enabled'] ) ? esc_html( $bogo_settings['_sgsb_bogo_enabled'] ) : 'no';
+        $different_deal_type = ! empty( $bogo_settings['_sgsb_bogo_deal_type'] ) ? esc_html( $bogo_settings['_sgsb_bogo_deal_type'] ) : 'same';
+
+        // Add a nonce field for BOGO settings panel.
+        wp_nonce_field( 'sgsb_bogo_settings', '_sgsb_bogo_settings_nonce' );
+
+        // Enable/Disable for BOGO
+        woocommerce_wp_checkbox( array(
+            'id'    => '_sgsb_bogo_enabled',
+            'value' => $is_enable_bogo,
+            'label' => __( 'Enable BOGO', 'storegrowth-sales-booster' ),
+        ) );
+        ?>
+
+        <div id="bogo_settings_fields">
+            <?php
+            $offered_product_id = ! empty( $bogo_settings['_sgsb_get_product_field'] ) ? esc_html( $bogo_settings['_sgsb_get_product_field'] ) : '';
+
+            woocommerce_wp_select( array(
+                'id'      => '_sgsb_bogo_deal_type',
+                'value'   => $different_deal_type,
+                'label'   => __( 'Deal Type', 'storegrowth-sales-booster' ),
+                'options' => array(
+                    'same'      => __( 'Buy X Get X Free', 'storegrowth-sales-booster' ),
+                    'different' => __( 'Buy X Get Y Free', 'storegrowth-sales-booster' ),
+                )
+            ) );
+
+            $current_product     = wc_get_product( $post->ID );
+            $is_variable_product = $current_product->is_type( 'variable' );
+
+            if ( ! $is_variable_product ) : ?>
+                <div class="sgsb-bogo-box-title">
+                    <?php esc_html_e( 'Offered Product', 'storegrowth-sales-booster' ); ?>
+                    <span
+                        class="dashicons dashicons-editor-help sgsb-section-tip"
+                        title="<?php esc_html_e( 'Click this button to submit the form', 'storegrowth-sales-booster' ); ?>"
+                    ></span>
+                </div>
+
+                <p id="different-product-field" class="form-field <?php echo esc_attr( $different_deal_type === 'different' ? 'active-product-field' : 'disable-product-field' ); ?>">
+                    <label for="_sgsb_get_product_field"><?php esc_html_e( 'Get different product', 'storegrowth-sales-booster' ); ?></label>
+                    <select class="select short" id="_sgsb_get_product_field" name="_sgsb_get_product_field" data-allow_clear="true"
+                        data-placeholder="<?php esc_attr_e( 'Select product', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
+                        <option value=""><?php esc_html_e( 'Select product', 'storegrowth-sales-booster' ); ?></option>
+                        <?php
+                        $products = wc_get_products( array(
+                            'status' => 'publish',
+                            'limit'  => -1,
+                        ) );
+
+                        foreach ( $products as $product ) : ?>
+                            <option value="<?php echo esc_attr( $product->get_id() ); ?>" <?php echo ( $product->get_id() == $offered_product_id ) ? 'selected ' : ''; ?>>
+                                <?php echo esc_html( $product->get_name() ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </p>
+
+                <?php
+                $is_bogo_discount    = ! empty( $bogo_settings['_sgsb_bogo_product_offer_type'] ) ? esc_html( $bogo_settings['_sgsb_bogo_product_offer_type'] ) : 'free';
+                $discount_percentage = ! empty( $bogo_settings['_sgsb_bogo_product_discount_percentage'] ) ? esc_html( $bogo_settings['_sgsb_bogo_product_discount_percentage'] ) : 0;
+
+                woocommerce_wp_select( array(
+                    'id'      => '_sgsb_bogo_product_offer_type',
+                    'value'   => $is_bogo_discount,
+                    'label'   => __( 'Offer Type', 'storegrowth-sales-booster' ),
+                    'options' => array(
+                        'free'     => __( 'Free', 'storegrowth-sales-booster' ),
+                        'discount' => __( 'Discount', 'storegrowth-sales-booster' ),
+                    )
+                ) );
+
+                woocommerce_wp_text_input(
+                    array(
+                        'id'                => '_sgsb_bogo_product_discount_percentage',
+                        'value'             => $discount_percentage,
+                        'wrapper_class'     => ( $is_bogo_discount === 'discount' ) ? 'enable_bogo_product_discount' : 'disable_bogo_product_discount',
+                        'label'             => __( 'Discount', 'storegrowth-sales-booster' ),
+                        'description'       => __( 'Enter the product discount percentage here.', 'storegrowth-sales-booster' ),
+                        'placeholder'       => __( 'Percent discount E.g: 10', 'storegrowth-sales-booster' ),
+                        'type'              => 'number',
+                        'custom_attributes' => array(
+                            'min'  => '0',
+                            'step' => 'any',
+                        )
+                    )
+                );
+                ?>
+
+                <hr />
+
+                <p class="form-field">
+                    <label for="_sgsb_get_multiple_product_field"><?php esc_html_e( 'Alternate option of the offered products', 'storegrowth-sales-booster' ); ?></label>
+                    <select class="select short" id="_sgsb_get_multiple_product_field" name="_sgsb_get_multiple_product_field[]" multiple="multiple"
+                        data-placeholder="<?php esc_attr_e( 'Select a product', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
+                        <option value=""><?php esc_html_e( 'Select a product', 'storegrowth-sales-booster' ); ?></option>
+                        <?php
+                        $products = wc_get_products( array(
+                            'status' => 'publish',
+                            'limit'  => -1,
+                        ) );
+
+                        $offer_products = ! empty( $bogo_settings['_sgsb_get_multiple_product_field'] ) ? $bogo_settings['_sgsb_get_multiple_product_field'] : array();
+                        if ( ! is_array( $offer_products ) ) {
+                            $offer_products = array();
+                        }
+                        ?>
+
+                        <?php foreach ( $products as $product ) : ?>
+                            <option value="<?php echo esc_attr( $product->get_id() ); ?>" <?php echo in_array( $product->get_id(), $offer_products ) ? 'selected ' : ''; ?>>
+                                <?php echo esc_html( $product->get_name() ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </p>
+
+                <p class="form-field">
+                    <label for="_sgsb_get_multiple_category_field"><?php esc_html_e( 'Offer this category product as alternate product for this offer', 'storegrowth-sales-booster' ); ?></label>
+                    <select class="select short" id="_sgsb_get_multiple_category_field" name="_sgsb_get_multiple_category_field[]" multiple="multiple"
+                        data-placeholder="<?php esc_attr_e( 'Select a category', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
+                        <option value=""><?php esc_html_e( 'Select a category', 'storegrowth-sales-booster' ); ?></option>
+                        <?php
+                        $categories = get_categories( array(
+                            'taxonomy' => 'product_cat',
+                            'orderby'  => 'name',
+                        ) );
+
+                        $offer_categories = ! empty( $bogo_settings['_sgsb_get_multiple_category_field'] ) ? $bogo_settings['_sgsb_get_multiple_category_field'] : array();
+                        if ( ! is_array( $offer_categories ) ) {
+                            $current_values = array();
+                        }
+                        ?>
+
+                        <?php foreach ( $categories as $category ) : ?>
+                            <option value="<?php echo esc_attr( $category->term_id ); ?>" <?php echo in_array( $category->term_id, $offer_categories ) ? 'selected ' : ''; ?>>
+                                <?php echo esc_html( $category->name ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </p>
+
+                <div class="sgsb-bogo-box-title">
+                    <?php esc_html_e( 'Message shown to describe the deal', 'storegrowth-sales-booster' ); ?>
+                    <span
+                        class="dashicons dashicons-editor-help sgsb-section-tip"
+                        title="<?php esc_html_e( 'Click this button to submit the form', 'storegrowth-sales-booster' ); ?>"
+                    ></span>
+                </div>
+
+                <?php
+                $product_page_msg = ! empty( $bogo_settings['_product_page_message'] ) ? esc_html( $bogo_settings['_product_page_message'] ) : '';
+                $shop_page_msg    = ! empty( $bogo_settings['_shop_page_message'] ) ? esc_html( $bogo_settings['_shop_page_message'] ) : '';
+                $bogo_badge_image = ! empty( $bogo_settings['_bogo_badge_image'] ) ? esc_url( $bogo_settings['_bogo_badge_image'] ) : '';
+                $offer_end_date   = ! empty( $bogo_settings['_sgsb_bogo_offer_end'] ) ? esc_html( $bogo_settings['_sgsb_bogo_offer_end'] ) : '';
+                $offer_start_date = ! empty( $bogo_settings['_sgsb_bogo_offer_start'] ) ? esc_html( $bogo_settings['_sgsb_bogo_offer_start'] ) : '';
+
+                woocommerce_wp_text_input( array(
+                    'id'          => '_product_page_message',
+                    'value'       => $product_page_msg,
+                    'label'       => __( 'Product page message', 'storegrowth-sales-booster' ),
+                    'description' => __( 'Enter custom message one.', 'storegrowth-sales-booster' ),
+                    'desc_tip'    => true,
+                ) );
+
+                woocommerce_wp_text_input( array(
+                    'id'          => '_shop_page_message',
+                    'value'       => $shop_page_msg,
+                    'label'       => __( 'Shop page message', 'storegrowth-sales-booster' ),
+                    'description' => __( 'Enter custom message two.', 'storegrowth-sales-booster' ),
+                    'desc_tip'    => true,
+                ) );
+
+                woocommerce_wp_text_input(
+                    array(
+                        'id'          => '_bogo_badge_image',
+                        'label'       => __( 'Custom Image', 'storegrowth-sales-booster' ),
+                        'placeholder' => 'http://',
+                        'desc_tip'    => 'true',
+                        'description' => __( 'Upload a custom image.', 'storegrowth-sales-booster' ),
+                        'type'        => 'text',
+                        'value'       => $bogo_badge_image,
+                    )
+                );
+                ?>
+
+                <div class="sgsb-bogo-box-title">
+                    <?php esc_html_e( 'Deal start end time', 'storegrowth-sales-booster' ); ?>
+                    <span
+                        class="dashicons dashicons-editor-help sgsb-section-tip"
+                        title="<?php esc_html_e( 'Click this button to submit the form', 'storegrowth-sales-booster' ); ?>"
+                    ></span>
+                </div>
+
+                <div class='sale_price_dates_fields'>
+                    <p class='form-field'>
+                        <label><?php esc_html_e( 'Offer start date', 'storegrowth-sales-booster' ); ?></label>
+                        <input type="text" placeholder="Start&hellip; YYYY-MM-DD"
+                            id="_sgsb_bogo_offer_start" name="_sgsb_bogo_offer_start" maxlength="10"
+                            class="short" value="<?php echo esc_attr( $offer_start_date ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" />
+                    </p>
+                    <p class='form-field'>
+                        <label><?php esc_html_e( 'Offer end date', 'storegrowth-sales-booster' ); ?></label>
+                        <input type="text" placeholder="End&hellip; YYYY-MM-DD"
+                            id="_sgsb_bogo_offer_end" name="_sgsb_bogo_offer_end" maxlength="10"
+                            class="short" value="<?php echo esc_attr( $offer_end_date ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" />
+                    </p>
+                    <input type="hidden" value="sgsb_bogo_date_fields" />
+
+                    <p class="form-field">
+                        <span class="description">
+                            <?php echo esc_html( __( 'The offer will start at 00:00:00 of "Start" date and end at 23:59:59 of "End" date.', 'storegrowth-sales-booster' ) ); ?>
+                        </span>
+                    </p>
+                </div>
+            <?php
+
+            endif;
+
+            /**
+             * Load settings before settings panel end.
+             *
+             * @since 1.0.2
+             *
+             * @param \WC_Product $current_product
+             * @param bool        $is_variable_product
+             * @param array       $bogo_settings
+             */
+            do_action( 'sgsb_after_bogo_settings_panel', $current_product, $is_variable_product, $bogo_settings );
+            ?>
+        </div>
+    </div>
+</div>
+<!-- End BOGO Tab Content -->

@@ -1,0 +1,44 @@
+#bogo_product_data,
+#bogo_settings_fields,
+.disable-product-field,
+.disable_bogo_product_discount {
+    display: none;
+}
+
+.active-product-field,
+.enable_bogo_product_discount {
+    display: block;
+}
+
+.sgsb-bogo-box-title {
+    color: #fff;
+    padding: 10px;
+    font-weight: 700;
+    background: #0875ff;
+}
+
+.sgsb-bogo-box-title .sgsb-section-tip {
+    cursor: pointer;
+}
+
+.sale_price_dates_fields #_sgsb_bogo_offer_end,
+.sale_price_dates_fields #_sgsb_bogo_offer_start {
+    margin-bottom: 0;
+}
+
+#bogo_settings_fields .sgsb-bogo-box-title {
+    margin: 16px 0;
+}
+
+#bogo_settings_fields .sale_price_dates_fields {
+    margin-bottom: 24px;
+}
+
+#bogo_settings_fields .sale_price_dates_fields .form-field:last-child {
+    padding-top: 0 !important;
+}
+
+#bogo_settings_fields .sale_price_dates_fields .form-field,
+#bogo_settings_fields .sale_price_dates_fields .form-field:last-child .description {
+    margin: 0;
+}

@@ -26,22 +26,56 @@ class EnqueueScript {
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
+        add_action( 'init', array( $this, 'register_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
 	}
 
+    /**
+     * Register module assets.
+     *
+     * @since 1.0.2
+     *
+     * @return void
+     */
+    public function register_enqueue_scripts() {
+        wp_register_style(
+            'sgsb-bogo-admin-style',
+            sgsb_modules_url( 'BoGo/assets/css/product-bogo-settings.css' ),
+            null,
+            filemtime( sgsb_modules_path( 'BoGo/assets/css/product-bogo-settings.css' ) )
+        );
+
+        wp_register_script(
+            'sgsb-bogo-admin-script',
+            sgsb_modules_url( 'BoGo/assets/js/product-bogo-settings.js' ),
+            array( 'jquery', 'jquery-ui-datepicker' ),
+            filemtime( sgsb_modules_path( 'BoGo/assets/js/product-bogo-settings.js' ) ),
+            true
+        );
+    }
 
 	/**
 	 * Add JS scripts to admin.
 	 *
 	 * @param string $hook screen name.
+     *
+     * @return void
 	 */
 	public function admin_enqueue_scripts( $hook ) {
+        global $post;
+
+        if ( ( $hook == 'post-new.php' || $hook == 'post.php' ) && 'product' === $post->post_type ) {
+            wp_enqueue_media();
+            wp_enqueue_style( 'sgsb-bogo-admin-style' );
+
+            wp_enqueue_script( 'select2' );
+            wp_enqueue_script( 'sgsb-bogo-admin-script' );
+        }
 
 		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
-
 			$settings_file                   = require sgsb_modules_path( 'BoGo/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
