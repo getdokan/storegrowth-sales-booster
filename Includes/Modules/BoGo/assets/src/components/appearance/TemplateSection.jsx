@@ -30,7 +30,7 @@ const TemplateSection = () => {
 
   return (
     <Fragment>
-      {/* Render bump offer box settings section. */}
+      {/* Render bogo offer box settings section. */}
       <SectionHeader
         title={__("BOGO Offer Box", "storegrowth-sales-booster")}
       />
@@ -46,7 +46,7 @@ const TemplateSection = () => {
             "storegrowth-sales-booster"
           )}
           tooltip={__(
-            "The Style of the order bump border.",
+            "The Style of the order bogo border.",
             "storegrowth-sales-booster"
           )}
         />
@@ -56,7 +56,7 @@ const TemplateSection = () => {
           fieldValue={createBogoData.box_border_color}
           title={__("Border Color", "storegrowth-sales-booster")}
           tooltip={__(
-            "The color of the order bump color.",
+            "The color of the order bogo color.",
             "storegrowth-sales-booster"
           )}
         />

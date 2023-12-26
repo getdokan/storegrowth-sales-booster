@@ -12,15 +12,14 @@ import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
 import PanelSettings from "sales-booster/src/components/settings/Panels/PanelSettings";
 import DesignSection from "./DesignSection";
 import Preview from "./Preview";
-import { createBumpForm } from "../helper";
+import { createBogoForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 import ContentSection from "./appearance/ContentSection";
 
 function CreateBogo({ navigate, useParams, useSearchParams }) {
-  const [allBumpsData, setallBumpsData] = useState([]);
+  const [allBogosData, setallBogosData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
   const { setCreateFromData, resetCreateFromData } = useDispatch("sgsb_bogo");
@@ -34,36 +33,25 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     if (!bogoData?.length > 0) {
       setPageLoading(true);
       jQuery.post(
-        bump_save_url.ajax_url,
+        bogo_save_url.ajax_url,
         {
-          action: "bump_list",
+          action: "bogo_list",
           data: [],
-          _ajax_nonce: bump_save_url.ajd_nonce,
+          _ajax_nonce: bogo_save_url.ajd_nonce,
         },
-        function (bumpDataFromAjax) {
+        function (bogoDataFromAjax) {
           setPageLoading(false);
-          const bumpDataParsed = bumpDataFromAjax.data.map((bogoItem) =>
+          const bogoDataParsed = bogoDataFromAjax.data.map((bogoItem) =>
             convertBogoItemHtmlEntitiesToTexts(bogoItem)
           );
-          setallBumpsData(bumpDataParsed);
+          setallBogosData(bogoDataParsed);
         }
       );
     } else {
-      setallBumpsData(bogoData);
+      setallBogosData(bogoData);
     }
   }, []);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const changeTab = (key) => {
     navigate("/bogo/create-bogo?tab_name=" + key);
@@ -73,16 +61,16 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     setPageLoading(true);
     let $ = jQuery;
     $.post(
-      bump_save_url.ajax_url,
+      bogo_save_url.ajax_url,
       {
-        action: "bump_delete",
+        action: "bogo_delete",
         data: bogo_id,
-        _ajax_nonce: bump_save_url.ajd_nonce,
+        _ajax_nonce: bogo_save_url.ajd_nonce,
       },
       function (data) {
         setPageLoading(false);
         notification["error"]({
-          message: "Order Bump deleted",
+          message: "Order Bogo deleted",
         });
         navigate("/bogo");
       }
@@ -94,11 +82,11 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       setPageLoading(true);
       let $ = jQuery;
       $.post(
-        bump_save_url.ajax_url,
+        bogo_save_url.ajax_url,
         {
-          action: "bump_list",
+          action: "bogo_list",
           data: bogo_id,
-          _ajax_nonce: bump_save_url.ajd_nonce,
+          _ajax_nonce: bogo_save_url.ajd_nonce,
         },
         function (data) {
           setPageLoading(false);
@@ -130,7 +118,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   const onFormSave = () => {
     if (!createBogoData.name_of_order_bogo) {
       notification["error"]({
-        message: "Please enter name of order bump",
+        message: "Please enter name of order bogo",
       });
       return null;
     }
@@ -147,9 +135,9 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (createBogoData.bump_schedule.length == 0) {
+    if (createBogoData.bogo_schedule.length == 0) {
       notification["error"]({
-        message: "Please select bump schedule",
+        message: "Please select bogo schedule",
       });
 
       return null;
@@ -170,8 +158,8 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
       return null;
     }
-    
-    if (createBogoData.offer_type!=="free" && !createBogoData.offer_amount) {
+
+    if (createBogoData.offer_type !== "free" && !createBogoData.offer_amount) {
       notification["error"]({
         message: "Please select offer amount",
       });
@@ -183,10 +171,10 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       typeof bogo_id == "string" &&
       !isNaN(bogo_id) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)
       !isNaN(parseFloat(bogo_id)); // if bogo_id is just whitespaces then fail
-    const intBumpId = isEditingExistingBogoItem && parseInt(bogo_id);
-    const filteredBumpsData = isEditingExistingBogoItem
-      ? allBumpsData.filter((item) => item.id !== intBumpId)
-      : allBumpsData;
+    const intBogoId = isEditingExistingBogoItem && parseInt(bogo_id);
+    const filteredBogosData = isEditingExistingBogoItem
+      ? allBogosData.filter((item) => item.id !== intBogoId)
+      : allBogosData;
 
     const duplicateErrs = {
       duplicateTargetCats: [],
@@ -196,15 +184,15 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     const newOfferProduct = createBogoData.offer_product;
     const newTargetCats = createBogoData.target_categories;
     const newTargetProducts = createBogoData.target_products;
-    const newTargetSchedules = createBogoData.bump_schedule;
+    const newTargetSchedules = createBogoData.bogo_schedule;
 
-    for (const bogoItem of filteredBumpsData) {
+    for (const bogoItem of filteredBogosData) {
       if (parseInt(bogoItem.offer_product) !== parseInt(newOfferProduct)) {
         continue;
       }
       let isSameScheduleExist = false;
       for (const newScheduleItem of newTargetSchedules) {
-        if (bogoItem.bump_schedule.includes(newScheduleItem)) {
+        if (bogoItem.bogo_schedule.includes(newScheduleItem)) {
           isSameScheduleExist = true;
           break;
         }
@@ -235,39 +223,39 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       }
     }
 
-    // Check if bump order not duplicate then saved.
+    // Check if bogo order not duplicate then saved.
     if (!(isDuplicateCatsFound || isDuplicateProductsFound)) {
       setButtonLoading(true);
-      const bumpDataParsedToEntities =
+      const bogoDataParsedToEntities =
         convertBogoItemTextDatasToHtmlEntities(createBogoData);
       let $ = jQuery;
       $.post(
-        bump_save_url.ajax_url,
+        bogo_save_url.ajax_url,
         {
-          action: "bump_create",
-          data: bumpDataParsedToEntities,
-          _ajax_nonce: bump_save_url.ajd_nonce,
+          action: "bogo_create",
+          data: bogoDataParsedToEntities,
+          _ajax_nonce: bogo_save_url.ajd_nonce,
         },
         function (data) {
           setCreateFromData({
-            ...bumpDataParsedToEntities,
+            ...bogoDataParsedToEntities,
             offer_product_id: data,
           });
           setButtonLoading(false);
 
           notification["success"]({
-            message: "Order Bump Creation",
-            description: "Data for order bump creation saved successfully",
+            message: "Order Bogo Creation",
+            description: "Data for order bogo creation saved successfully",
           });
 
-          navigate("/bogo");
+          navigate("/bogo?tab_name=lists");
         }
       );
     }
   };
 
   const onFormReset = () => {
-    setCreateFromData({ ...createBumpForm });
+    setCreateFromData({ ...createBogoForm });
   };
 
   const clearErrors = () => setDuplicateDataError({});
@@ -325,7 +313,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
         {(isDuplicateCatsFound || isDuplicateProductsFound) &&
           notification["error"]({
             message: __(
-              `Error!!! another bump with the given offer product for the specified schedule already exists for the selected ${isDuplicateCatsFound && isDuplicateProductsFound
+              `Error!!! another bogo with the given offer product for the specified schedule already exists for the selected ${isDuplicateCatsFound && isDuplicateProductsFound
                 ? "categories & products"
                 : isDuplicateProductsFound
                   ? "products"

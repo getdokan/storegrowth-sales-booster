@@ -1,4 +1,4 @@
-.bump-template-main-wrapper{
+.bogo-template-main-wrapper{
     width: 100%;
     /* height: 900px; */
     /* background: rgb(185, 179, 190); */
@@ -6,12 +6,12 @@
     /* padding: 0 20px ; */
 }
 
-.bump-template-main-wrapper .demo-template-design-change-area{
+.bogo-template-main-wrapper .demo-template-design-change-area{
     width: 55%;
     float: left;
 }
 
-.bump-template-main-wrapper .template-overview-area{
+.bogo-template-main-wrapper .template-overview-area{
     width: 45%;
     min-height: 800px;
     float: left;

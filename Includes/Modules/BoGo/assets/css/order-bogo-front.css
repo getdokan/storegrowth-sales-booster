@@ -6,12 +6,12 @@
   color:black;
 }
 
-.order-bump-product{
+.order-bogo-product{
   width: 80%;
   margin: auto;
   margin-bottom: 5px;
 }
-.order-bump-product-checkbox{
+.order-bogo-product-checkbox{
   background: rgb(235, 182, 85);
   padding: 6px;
   color:black;
@@ -19,13 +19,13 @@
   margin-bottom: 10px;
 }
 
-.bump-product-image{
+.bogo-product-image{
   width: 30%;
   clear: left;
   float: left;
 }
 
-.bump-product-description{
+.bogo-product-description{
   margin-left: -5%;
   width: 65%;
   float: left;
@@ -33,11 +33,11 @@
   margin-top: -18px;
 }
 
-.bump-content{
+.bogo-content{
   font-size: 14px;
   margin-top: -20px;
 }
-.bump-product-discount-offer{
+.bogo-product-discount-offer{
   margin-top: 12px;
   font-size: 14px;
   color: red;

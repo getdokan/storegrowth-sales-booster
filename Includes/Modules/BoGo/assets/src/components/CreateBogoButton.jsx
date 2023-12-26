@@ -4,8 +4,8 @@ import { __ } from "@wordpress/i18n";
 import { useSelect } from "@wordpress/data";
 
 const CreateBogoButton = ({ navigate }) => {
-  const { bumpListData } = useSelect((select) => ({
-    bumpListData: select("sgsb_bogo").getBogoData(),
+  const { bogoListData } = useSelect((select) => ({
+    bogoListData: select("sgsb_bogo").getBogoData(),
   }));
   const hash = window.location.hash.replace(/^#/, ""); // Remove the leading '#'
   const createNewPatterns = [
@@ -19,10 +19,10 @@ const CreateBogoButton = ({ navigate }) => {
 
   const isCreateNew = createNewPatterns.some((pattern) => pattern === hash);
 
-  const isDisableBumpCreation = bumpListData?.length >= 2 && !sgsbAdmin.isPro;
+  const isDisableBogoCreation = bogoListData?.length >= 2 && !sgsbAdmin.isPro;
   const buttonProps = {
     shape: "square",
-    disabled: isCreateNew ? isDisableBumpCreation : false,
+    disabled: isCreateNew ? isDisableBogoCreation : false,
     className: "create-bogo-button",
   };
 

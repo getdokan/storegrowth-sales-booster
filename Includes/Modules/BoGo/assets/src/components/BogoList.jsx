@@ -13,11 +13,11 @@ import OfferProductContent from "./OfferProductContent";
 const deleteBogo = (stateUpdateCallback) => (id) => {
   stateUpdateCallback(true);
   jQuery.post(
-    bump_save_url.ajax_url,
+    bogo_save_url.ajax_url,
     {
       action: "bogo_delete",
       data: id,
-      _ajax_nonce: bump_save_url.ajd_nonce,
+      _ajax_nonce: bogo_save_url.ajd_nonce,
     },
     function () {
       notification["error"]({
@@ -165,18 +165,18 @@ function BogoList({ navigate }) {
   const { setPageLoading } = useDispatch("sgsb");
   const { setBogoData } = useDispatch("sgsb_bogo");
 
-  const { bumpListData } = useSelect((select) => ({
-    bumpListData: select("sgsb_bogo").getBogoData(),
+  const { bogoListData } = useSelect((select) => ({
+    bogoListData: select("sgsb_bogo").getBogoData(),
   }));
   useEffect(() => {
     setPageLoading(true);
 
     jQuery.post(
-      bump_save_url.ajax_url,
+      bogo_save_url.ajax_url,
       {
-        action: "bump_list",
+        action: "bogo_list",
         data: [],
-        _ajax_nonce: bump_save_url.ajd_nonce,
+        _ajax_nonce: bogo_save_url.ajd_nonce,
       },
       function (bogoDataFromAjax) {
         setPageLoading(false);
@@ -188,7 +188,6 @@ function BogoList({ navigate }) {
       }
     );
   }, []);
-
   const columns = [
     {
       title: "Name",
@@ -255,23 +254,23 @@ function BogoList({ navigate }) {
   }
 
   let data = applyFilters(
-    "sgsb_upsell_order_bump_data",
-    bumpListData.slice(-2).map(mapBogoData),
-    bumpListData,
+    "sgsb_upsell_order_bogo_data",
+    bogoListData.slice(-2).map(mapBogoData),
+    bogoListData,
     mapBogoData
   );
 
-  const isDisableBumpCreation = applyFilters(
-    "sgsb_control_upsell_order_bump_data",
-    bumpListData?.length >= 2
+  const isDisableBogoCreation = applyFilters(
+    "sgsb_control_upsell_order_bogo_data",
+    bogoListData?.length >= 2
   );
 
   return (
     <div className={`upsell-order-list-table`}>
-      {isDisableBumpCreation && (
+      {isDisableBogoCreation && (
         <UpgradeCard
           message={__(
-            "Upgrade to premium to create more than two order bumps.",
+            "Upgrade to premium to create more than two order bogos.",
             "storegrowth-sales-booster"
           )}
         />

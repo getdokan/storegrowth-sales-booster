@@ -1,12 +1,13 @@
 import { createReduxStore } from "@wordpress/data";
-import { createBumpForm } from "./helper";
+import { createBogoForm, iniBogoGlobalSettings } from "./helper";
 
 /**
  * Default state.
  */
 const DEFAULT_STATE = {
-  createBumpForm,
+  createBogoForm,
   bogo_data: [],
+  bogoGeneralSettings: iniBogoGlobalSettings,
 };
 
 /**
@@ -17,13 +18,19 @@ const reducer = (state = DEFAULT_STATE, action) => {
     case "UPDATE_BUMP_CREATE_FORM":
       return {
         ...state,
-        createBumpForm: action.payload,
+        createBogoForm: action.payload,
       };
 
     case "UPDATE_BUMP_LIST":
       return {
         ...state,
         bogo_data: action.payload,
+      };
+
+    case "UPDATE_BOGO_GLOBAL_SETTINGS":
+      return {
+        ...state,
+        bogoGeneralSettings: action.payload,
       };
 
     default:
@@ -45,7 +52,7 @@ const actions = {
   resetCreateFromData() {
     return {
       type: "UPDATE_BUMP_CREATE_FORM",
-      payload: createBumpForm,
+      payload: createBogoForm,
     };
   },
 
@@ -62,6 +69,19 @@ const actions = {
       payload: [],
     };
   },
+  setBogoGlobalSettings(payload) {
+    return {
+      type: "UPDATE_BOGO_GLOBAL_SETTINGS",
+      payload,
+    };
+  },
+
+  resetBogoGlobalSettings() {
+    return {
+      type: "UPDATE_BOGO_GLOBAL_SETTINGS",
+      payload: iniBogoGlobalSettings, // Reset to initial bogoGlobalSettings
+    };
+  },
 };
 
 /**
@@ -69,10 +89,13 @@ const actions = {
  */
 const selectors = {
   getCreateFromData(state) {
-    return state.createBumpForm;
+    return state.createBogoForm;
   },
   getBogoData(state) {
     return state.bogo_data;
+  },
+  getBogoGlobalSettings(state) {
+    return state.bogoGeneralSettings;
   },
 };
 

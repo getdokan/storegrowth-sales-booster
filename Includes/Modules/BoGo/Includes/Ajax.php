@@ -1,6 +1,6 @@
 <?php
 /**
- * Ajax class for `Upsell Order Bump`.
+ * Ajax class for `Upsell Order Bogo`.
  *
  * @package SBFW
  */
@@ -25,48 +25,84 @@ class Ajax {
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
-		add_action( 'wp_ajax_bump_create', array( $this, 'bump_create' ) );
-		add_action( 'wp_ajax_nopriv_bump_create', array( $this, 'bump_create' ) );
+		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );
+		add_action( 'wp_ajax_nopriv_bogo_create', array( $this, 'bogo_create' ) );
 
-		add_action( 'wp_ajax_bump_list', array( $this, 'bump_list' ) );
-		add_action( 'wp_ajax_nopriv_bump_list', array( $this, 'bump_list' ) );
+		add_action( 'wp_ajax_bogo_list', array( $this, 'bogo_list' ) );
+		add_action( 'wp_ajax_nopriv_bogo_list', array( $this, 'bogo_list' ) );
 
-		add_action( 'wp_ajax_bump_delete', array( $this, 'bump_delete' ) );
-		add_action( 'wp_ajax_nopriv_bump_delete', array( $this, 'bump_delete' ) );
+		add_action( 'wp_ajax_bogo_delete', array( $this, 'bogo_delete' ) );
+		add_action( 'wp_ajax_nopriv_bogo_delete', array( $this, 'bogo_delete' ) );
+
+		add_action( 'wp_ajax_sgsb_bogo_general_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_sgsb_bogo_general_get_settings', array( $this, 'get_settings' ) );
 
 		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
 	}
 
 	/**
-	 * Order bump creation.
+	 * Ajax action for save settings
 	 */
-	public function bump_create() {
+	public function save_settings() {
+		check_ajax_referer( 'sgsb_ajax_nonce' );
+
+		if ( ! isset( $_POST['data'] ) ) {
+			wp_send_json_error();
+		}
+		
+		// Decode the JSON data.
+		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
+
+		if ( isset( $data['bogo_general_settings_data'] ) ) {
+			$bogo_general_settings_data = $data['bogo_general_settings_data'];
+
+			update_option( 'sgsb_bogo_general_settings', $bogo_general_settings_data );
+			wp_send_json_success( maybe_unserialize( get_option( 'sgsb_bogo_general_settings' ) ) );
+		}
+	}
+
+
+	/**
+	 * Ajax action for get settings.
+	 */
+	public function get_settings() {
+		check_ajax_referer( 'sgsb_ajax_nonce' );
+
+		$form_data = get_option( 'sgsb_bogo_general_settings', array() );
+
+		wp_send_json_success( $form_data );
+	}
+
+	/**
+	 * Order bogo creation.
+	 */
+	public function bogo_create() {
 		check_ajax_referer( 'ajd_protected' );
 
-		$bump_detail = $this->get_sanitized_create_bump_data();
+		$bogo_detail = $this->get_sanitized_create_bogo_data();
 
 		$my_post = array(
-			'post_title'   => $bump_detail['name_of_order_bump'],
+			'post_title'   => $bogo_detail['name_of_order_bogo'],
 			'post_status'  => 'publish',
 			'post_type'    => 'sgsb_bogo',
-			'post_excerpt' => maybe_serialize( $bump_detail ),
+			'post_excerpt' => maybe_serialize( $bogo_detail ),
 			'post_content' => 'Not defined',
 
 		);
-		if ( 0 === $bump_detail['offer_product_id'] ) {
-			$args_bump = array(
+		if ( 0 === $bogo_detail['offer_product_id'] ) {
+			$args_bogo = array(
 				'post_type'      => 'sgsb_bogo',
 				'posts_per_page' => - 1,
 			);
-			$bump_list = get_posts( $args_bump );
-			if ( is_array( $bump_list ) && count( $bump_list ) >= 2 && ! SGSB_PRO_ACTIVE ) {
-				// don't allow creating more than 2 bumps.
+			$bogo_list = get_posts( $args_bogo );
+			if ( is_array( $bogo_list ) && count( $bogo_list ) >= 2 && ! SGSB_PRO_ACTIVE ) {
+				// don't allow creating more than 2 bogos.
 				return;
 			}
 			echo esc_attr( wp_insert_post( $my_post ) );
-		} elseif ( ! empty( $bump_detail['offer_product_id'] ) ) {
-			$my_post['ID'] = $bump_detail['offer_product_id'];
+		} elseif ( ! empty( $bogo_detail['offer_product_id'] ) ) {
+			$my_post['ID'] = $bogo_detail['offer_product_id'];
 			wp_update_post( $my_post );
 		}
 
@@ -74,44 +110,44 @@ class Ajax {
 	}
 
 	/**
-	 * Order bump list.
+	 * Order bogo list.
 	 */
-	public function bump_list() {
+	public function bogo_list() {
 		check_ajax_referer( 'ajd_protected' );
-		$bump_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
+		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
 
-		if ( $bump_id ) {
-			$bump = get_post( $bump_id );
-			wp_send_json_success( maybe_unserialize( $bump->post_excerpt ) );
+		if ( $bogo_id ) {
+			$bogo = get_post( $bogo_id );
+			wp_send_json_success( maybe_unserialize( $bogo->post_excerpt ) );
 		} else {
-			$args_bump = array(
+			$args_bogo = array(
 				'post_type'      => 'sgsb_bogo',
 				'posts_per_page' => - 1,
 			);
-			$bump_list = get_posts( $args_bump );
-			$bumps     = array();
-			foreach ( $bump_list as $bump ) {
-				$post_excerpt       = maybe_unserialize( $bump->post_excerpt );
-				$post_excerpt['id'] = $bump->ID;
+			$bogo_list = get_posts( $args_bogo );
+			$bogos     = array();
+			foreach ( $bogo_list as $bogo ) {
+				$post_excerpt       = maybe_unserialize( $bogo->post_excerpt );
+				$post_excerpt['id'] = $bogo->ID;
 
-				$bumps[] = $post_excerpt;
+				$bogos[] = $post_excerpt;
 			}
-			wp_send_json_success( $bumps );
+			wp_send_json_success( $bogos );
 		}
 	}
 
 	/**
-	 * Bump product delete.
+	 * Bogo product delete.
 	 */
-	public function bump_delete() {
+	public function bogo_delete() {
 		check_ajax_referer( 'ajd_protected' );
-		$bump_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-		wp_delete_post( $bump_id, true );
+		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
+		wp_delete_post( $bogo_id, true );
 		wp_send_json_success( 'yes' );
 	}
 
 	/**
-	 * Bump product add to cart.
+	 * Bogo product add to cart.
 	 */
 	public function offer_product_add_to_cart() {
 		check_ajax_referer( 'ajd_protected' );
@@ -127,7 +163,7 @@ class Ajax {
 			$all_cart_product_ids[] = $value['product_id'];
 		}
 
-		$bump_price       = isset( $_POST['data']['bump_price'] ) ? floatval( wp_unslash( $_POST['data']['bump_price'] ) ) : null;
+		$bogo_price       = isset( $_POST['data']['bogo_price'] ) ? floatval( wp_unslash( $_POST['data']['bogo_price'] ) ) : null;
 		$checked          = isset( $_POST['data']['checked'] ) ? boolval( wp_unslash( $_POST['data']['checked'] ) ) : null;
 		$offer_product_id = isset( $_POST['data']['offer_product_id'] ) ? intval( wp_unslash( $_POST['data']['offer_product_id'] ) ) : null;
 
@@ -141,7 +177,7 @@ class Ajax {
 				}
 			}
 		} else {
-			$custom_price = $bump_price;
+			$custom_price = $bogo_price;
 			// Cart item data to send & save in order.
 			$cart_item_data = array( 'custom_price' => $custom_price );
 			// Woocommerce function to add product into cart check its documentation also.
@@ -159,11 +195,11 @@ class Ajax {
 	}
 
 	/**
-	 * Sanitize create order bump data.
+	 * Sanitize create order bogo data.
 	 *
 	 * @return array
 	 */
-	private function get_sanitized_create_bump_data() {
+	private function get_sanitized_create_bogo_data() {
 		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return array();
 		}
@@ -178,10 +214,10 @@ class Ajax {
 			$data['target_categories'] = array();
 		}
 
-		$data['name_of_order_bump']                 = sanitize_text_field( $data['name_of_order_bump'] );
+		$data['name_of_order_bogo']                 = sanitize_text_field( $data['name_of_order_bogo'] );
 		$data['target_products']                    = array_map( 'intval', $data['target_products'] );
 		$data['target_categories']                  = array_map( 'intval', $data['target_categories'] );
-		$data['bump_schedule']                      = array_map( 'sanitize_text_field', $data['bump_schedule'] );
+		$data['bogo_schedule']                      = array_map( 'sanitize_text_field', $data['bogo_schedule'] );
 		$data['smart_offer']                        = sanitize_text_field( $data['smart_offer'] );
 		$data['offer_product']                      = intval( $data['offer_product'] );
 		$data['offer_type']                         = sanitize_text_field( $data['offer_type'] );

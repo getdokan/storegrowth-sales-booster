@@ -55,13 +55,20 @@ export const convertBogoItemHtmlEntitiesToTexts = (bogoItem) => {
 };
 
 /**
- * Default data of create bump.
+ * Default data of create bogo.
  */
-export const createBumpForm = {
+export const createBogoForm = {
   name_of_order_bogo: "",
+  bogo_deal_type: "bxgy",
+  select_bogo_pro_cat: "products",
+  add_cart_min_quantity: 1,
+  bogo_product_page_message: "",
+  bogo_shop_page_message: "",
+  offer_start_date: "",
+  offer_end_date: "",
   target_products: [],
   target_categories: [],
-  bump_schedule: ["daily"],
+  bogo_schedule: ["daily"],
   smart_offer: false,
   offer_product: "",
   offer_type: [],
@@ -81,7 +88,7 @@ export const createBumpForm = {
   offer_description_background_color: "#8fa68bff",
   offer_description_text_color: "#000000",
   offer_description_font_size: "14",
-  offer_image_url: bump_save_url.image_folder + "/icon.png",
+  offer_image_url: bogo_save_url.image_folder + "/icon.png",
   offer_product_title: "Please select your offer product",
   offer_product_id: 0,
   offer_discount_title: "% off only for you!",
@@ -90,4 +97,15 @@ export const createBumpForm = {
   selection_title: "Add selection title please",
   offer_description: "Add offer description please",
   offer_product_regular_price: 0,
+};
+/**
+ * Default data of create bogo.
+ */
+export const iniBogoGlobalSettings = {
+  offer_remove_from_cart: false,
+  regular_price_show: false,
+  shop_page_bage_icon: false,
+  global_product_page_bage_icon: false,
+  bogo_category_page_message_enable: false,
+  bogo_category_page_message: "",
 };

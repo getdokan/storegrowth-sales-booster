@@ -104,7 +104,7 @@ class BoGoModule implements ModuleSkeleton {
 	 * @return void
 	 */
 	public function init() {
-		Includes\OrderBump::instance();
+		Includes\OrderBogo::instance();
 		Includes\Ajax::instance();
 		Includes\EnqueueScript::instance();
 	}

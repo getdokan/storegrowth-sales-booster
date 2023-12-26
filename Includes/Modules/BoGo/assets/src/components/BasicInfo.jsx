@@ -36,7 +36,7 @@ const BasicInfo = ({ clearErrors }) => {
         (item) => !targetProducts.includes(item.value)
       )
       : originalSimpleProductForOffer;
-  const bumpSchedules = [
+  const bogoSchedules = [
     { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
     { value: "saturday", label: __("Saturday", "storegrowth-sales-booster") },
     { value: "sunday", label: __("Sunday", "storegrowth-sales-booster") },
@@ -165,7 +165,7 @@ const BasicInfo = ({ clearErrors }) => {
               "storegrowth-sales-booster"
             )}
             tooltip={__(
-              "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
+              "The target categories indicates for which specific categories the upsell order bogo option will be displayed.",
               "storegrowth-sales-booster"
             )}
           />) : (<MultiSelectBox
@@ -179,26 +179,64 @@ const BasicInfo = ({ clearErrors }) => {
               "storegrowth-sales-booster"
             )}
             tooltip={__(
-              "The target product indicates for which specific products the upsell order bump option will be displayed.",
+              "The target product indicates for which specific products the upsell order bogo option will be displayed.",
               "storegrowth-sales-booster"
             )}
           />)
         }
         <InputNumber
-          name={"add_cart_min_product"}
-          title={__("Minimum add to cart", "storegrowth-sales-booster")}
+          min={1}
+          name={"add_cart_min_quantity"}
+          title={__("Select Min Quantity", "storegrowth-sales-booster")}
           tooltip={__("Minimum add to cart", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.add_cart_min_product}
+          fieldValue={createBogoData?.add_cart_min_quantity}
           changeHandler={onFieldChange}
         />
-        <MultiSelectBox
-          name={"bump_schedule"}
-          options={bumpSchedules}
+
+        <SelectBox
+          colSpan={24}
+          showSearch={true}
+          fieldWidth={"100%"}
+          name={`offer_product`}
           changeHandler={onFieldChange}
-          fieldValue={createBogoData.bump_schedule}
+          options={simpleProductForOffer}
+          classes={`search-single-select`}
+          title={__("Offer Product", "storegrowth-sales-booster")}
+          tooltip={__(
+            "The specific product that will be available in the order bogo with an offer.",
+            "storegrowth-sales-booster"
+          )}
+          placeHolderText={__(
+            "Search for offer product",
+            "storegrowth-sales-booster"
+          )}
+          fieldValue={
+            offerProductId
+              ? filterByValue(simpleProductForOffer, offerProductId)
+              : null
+          }
+          filterOption={(inputValue, option) =>
+            option?.children?.[0]
+              ?.toString()
+              ?.toLowerCase()
+              ?.includes(inputValue.toLowerCase())
+          }
+        />
+
+        <OfferField
+          createBogoData={createBogoData}
+          offerOptions={offerOptions}
+          onFieldChange={onFieldChange}
+        />
+        
+        <MultiSelectBox
+          name={"bogo_schedule"}
+          options={bogoSchedules}
+          changeHandler={onFieldChange}
+          fieldValue={createBogoData.bogo_schedule}
           title={__("BOGO Schedule", "storegrowth-sales-booster")}
           placeHolderText={__(
-            "Please select bump schedule",
+            "Please select bogo schedule",
             "storegrowth-sales-booster"
           )}
           tooltip={__(
@@ -224,45 +262,6 @@ const BasicInfo = ({ clearErrors }) => {
           changeHandler={onFieldChange}
           fullWidth={true}
         />
-      </SettingsSection>
-      <SectionHeader title={__("Offer Section", "storegrowth-sales-booster")} />
-      <SettingsSection>
-        <SelectBox
-          colSpan={24}
-          showSearch={true}
-          fieldWidth={"100%"}
-          name={`offer_product`}
-          changeHandler={onFieldChange}
-          options={simpleProductForOffer}
-          classes={`search-single-select`}
-          title={__("Offer Product", "storegrowth-sales-booster")}
-          tooltip={__(
-            "The specific product that will be available in the order bump with an offer.",
-            "storegrowth-sales-booster"
-          )}
-          placeHolderText={__(
-            "Search for offer product",
-            "storegrowth-sales-booster"
-          )}
-          fieldValue={
-            offerProductId
-              ? filterByValue(simpleProductForOffer, offerProductId)
-              : null
-          }
-          filterOption={(inputValue, option) =>
-            option?.children?.[0]
-              ?.toString()
-              ?.toLowerCase()
-              ?.includes(inputValue.toLowerCase())
-          }
-        />
-        <Col className="gutter-row" span={24}>
-          <OfferField
-            createBogoData={createBogoData}
-            offerOptions={offerOptions}
-            onFieldChange={onFieldChange}
-          />
-        </Col>
       </SettingsSection>
     </Fragment>
   );

@@ -24,9 +24,6 @@ const ContentSection = () => {
           areaRows={3}
           name={'bogo_shop_page_message'}
           fieldValue={createBogoData?.bogo_shop_page_message}
-          // upgradeOverlay={false}
-          // needUpgrade={isFirstNameExceededLimit}
-          // inputRestrictor={isFirstNameExceededLimit}
           changeHandler={onFieldChange}
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
@@ -36,9 +33,6 @@ const ContentSection = () => {
           areaRows={3}
           name={'bogo_product_page_message'}
           fieldValue={createBogoData?.bogo_product_page_message}
-          // upgradeOverlay={false}
-          // needUpgrade={isFirstNameExceededLimit}
-          // inputRestrictor={isFirstNameExceededLimit}
           changeHandler={onFieldChange}
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}

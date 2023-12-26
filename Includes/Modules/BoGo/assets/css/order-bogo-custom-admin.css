@@ -6,14 +6,14 @@
 }
 
 
-.order-bump-offer{
+.order-bogo-offer{
     font-size: 16px;
     background: #7979F5;
     height: 50px;
     font-size: 20px;
 }
 
-.order-bump-appearance{
+.order-bogo-appearance{
     font-size: 16px;
     background: #7979F5;
     height: 50px;
@@ -21,11 +21,11 @@
     margin-bottom: 10px;
 }
 
-.order-bump-offer-text, .order-bump-appearance-text{
+.order-bogo-offer-text, .order-bogo-appearance-text{
     font-size: 27px;
 }
 
-.order-bump-offer-section{
+.order-bogo-offer-section{
     background: #EEEEEE;
     height: 35px;
     margin-top: 10px;
@@ -34,19 +34,19 @@
     padding-top: 5px;
 }
 
-.order-bump-offer-section-text{
+.order-bogo-offer-section-text{
     font-size: 16px;
     color: #9b9bf5; 
 }
-.order-bump-save-change-button{
+.order-bogo-save-change-button{
     background: #7979F5;
     border: 1px solid #7979F5;
     margin-top: 20px;
 }
 
 
-/* Start Order Bump List Table Styles. */
-.create-upsell-order-bump-button {
+/* Start Order BoGo List Table Styles. */
+.create-upsell-order-bogo-button {
     border: 0;
     width: 126px;
     height: auto;
@@ -58,8 +58,8 @@
     border-radius: 5px !important;
 }
 
-.create-upsell-order-bump-button,
-.create-upsell-order-bump-button:hover {
+.create-upsell-order-bogo-button,
+.create-upsell-order-bogo-button:hover {
     color: #073B4C !important;
 }
 
@@ -142,6 +142,6 @@
     border-color: #DDE6F9 !important;
 }
 
-/* End Order Bump List Table Styles. */
+/* End Order BoGo List Table Styles. */
 
 
