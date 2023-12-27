@@ -66,6 +66,8 @@ export const createBogoForm = {
   bogo_shop_page_message: "",
   offer_start_date: "",
   offer_end_date: "",
+  default_badge_icon_name: "bogo-icons-1",
+  default_custom_badge_icon: "",
   target_products: [],
   target_categories: [],
   bogo_schedule: ["daily"],
@@ -108,4 +110,6 @@ export const iniBogoGlobalSettings = {
   global_product_page_bage_icon: false,
   bogo_category_page_message_enable: false,
   bogo_category_page_message: "",
+  default_custom_badge_icon: "",
+  default_badge_icon_name: "",
 };

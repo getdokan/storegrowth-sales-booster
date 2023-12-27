@@ -34,7 +34,7 @@ const ContentSection = () => {
           name={'bogo_product_page_message'}
           fieldValue={createBogoData?.bogo_product_page_message}
           changeHandler={onFieldChange}
-          title={__('Shop Page Message', 'storegrowth-sales-booster')}
+          title={__('Product Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
           tooltip={__('example text', 'storegrowth-sales-booster')}
         />

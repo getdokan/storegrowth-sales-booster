@@ -1,10 +1,12 @@
 import { Fragment } from 'react';
+import { applyFilters } from "@wordpress/hooks";
 import { __ } from "@wordpress/i18n";
 import { notification } from "antd";
 import { iniBogoGlobalSettings } from "../helper";
+import BogoIcons from './BogoIcons';
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SettingsSection from 'sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection';
-import { SectionSpacer, Switcher, TextAreaBox } from 'sales-booster/src/components/settings/Panels';
+import { SectionSpacer, Switcher, TextAreaBox, RadioBox } from 'sales-booster/src/components/settings/Panels';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect, useState } from "@wordpress/element";
 
@@ -12,15 +14,39 @@ const GeneralSettings = () => {
   const [getButtonLoading, setButtonLoading] = useState(false);
   const { setBogoGlobalSettings } = useDispatch("sgsb_bogo");
   const { setPageLoading } = useDispatch("sgsb");
-
   const { bogoGlobalSettingsData: currentSettings } = useSelect((select) => ({
     bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
+  }));
+
+  const iconStyleNames = [
+    "bogo-icons-1",
+    "bogo-icons-2",
+    "bogo-icons-3",
+    "bogo-icons-4",
+  ];
+
+  const iconOptions = iconStyleNames?.map((iconStyleName) => ({
+    key: iconStyleName,
+    value: (
+      <BogoIcons
+        activeIcon={currentSettings?.default_badge_icon_name === iconStyleName}
+        iconName={iconStyleName}
+      />
+    ),
   }));
 
   const onFieldChange = (key, value) => {
     setBogoGlobalSettings({
       ...currentSettings,
       [key]: value,
+    });
+  };
+
+  const onBarChange = (key, value) => {
+    setBogoGlobalSettings({
+      ...currentSettings,
+      [key]: value,
+      default_custom_badge_icon: "",
     });
   };
 
@@ -119,6 +145,16 @@ const GeneralSettings = () => {
           isEnable={currentSettings?.bogo_category_page_message_enable}
           tooltip={__('The badge icon will show in the product page.')}
         />
+        
+        {applyFilters(
+          "sgsb_bogo_global_badge_icon_radio_box",
+          "",
+          iconOptions,
+          currentSettings,
+          onBarChange,
+          setBogoGlobalSettings
+        )}
+
         {currentSettings?.bogo_category_page_message_enable &&
           (
             <Fragment>

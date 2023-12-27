@@ -1,10 +1,12 @@
 import { __ } from "@wordpress/i18n";
+import { applyFilters } from "@wordpress/hooks";
 import { useDispatch, useSelect } from "@wordpress/data";
 import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
 import Number from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
+import BogoIcons from "../BogoIcons";
 import { Fragment } from "react";
 
 const TemplateSection = () => {
@@ -21,6 +23,31 @@ const TemplateSection = () => {
     });
   };
 
+  const iconStyleNames = [
+    "bogo-icons-1",
+    "bogo-icons-2",
+    "bogo-icons-3",
+    "bogo-icons-4",
+  ];
+
+  const iconOptions = iconStyleNames?.map((iconStyleName) => ({
+    key: iconStyleName,
+    value: (
+      <BogoIcons
+        activeIcon={createBogoData?.default_badge_icon_name === iconStyleName}
+        iconName={iconStyleName}
+      />
+    ),
+  }));
+
+  const onBarChange = (key, value) => {
+    setCreateFromData({
+      ...createBogoData,
+      [key]: value,
+      default_custom_badge_icon: "",
+    });
+  };
+
   const borders = [
     { value: "dotted", label: __("Dotted", "storegrowth-sales-booster") },
     { value: "dashed", label: __("Dashed", "storegrowth-sales-booster") },
@@ -30,6 +57,16 @@ const TemplateSection = () => {
 
   return (
     <Fragment>
+      <SettingsSection>
+        {applyFilters(
+          "sgsb_bogo_single_badge_icon_radio_box",
+          "",
+          iconOptions,
+          createBogoData,
+          onBarChange,
+          setCreateFromData
+        )}
+      </SettingsSection>
       {/* Render bogo offer box settings section. */}
       <SectionHeader
         title={__("BOGO Offer Box", "storegrowth-sales-booster")}
