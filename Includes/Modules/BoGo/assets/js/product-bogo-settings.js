@@ -46,10 +46,7 @@
         }).open();
     });
 
-    $( '#_sgsb_get_product_field' ).select2({
-        allowClear : true,
-    });
-    $( '#_sgsb_get_multiple_product_field, #_sgsb_get_multiple_category_field, #_sgsb_bogo_available_variable_products' ).select2({
-        multiple : true,
-    });
+    $( '#_sgsb_get_product_field' ).select2({ allowClear : true });
+    $( '#_sgsb_get_multiple_product_field, #_sgsb_get_multiple_category_field, #_sgsb_bogo_available_variable_products, #_sgsb_offer_day_schedule' )
+        .select2({ multiple : true });
 })(jQuery);

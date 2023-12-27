@@ -33,7 +33,12 @@ function ActionToggler() {
     <Fragment>
       <Switch size="small" defaultChecked />
       <div className={`table-categories`} style={{ marginTop: 8 }}>
-        <span className={`category-pills`}>{__("Active", "storegrowth-sales-booster")}</span>
+        <span
+          style={{ padding: 0 }}
+          className={`category-pills`}
+        >
+          {__("Active", "storegrowth-sales-booster")}
+        </span>
       </div>
     </Fragment>)
 }
