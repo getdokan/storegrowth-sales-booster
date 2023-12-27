@@ -22,8 +22,8 @@ const ContentSection = () => {
       <SettingsSection>
         <TextAreaBox
           areaRows={3}
-          name={'bogo_shop_page_message'}
-          fieldValue={createBogoData?.bogo_shop_page_message}
+          name={'shop_page_message'}
+          fieldValue={createBogoData?.shop_page_message}
           changeHandler={onFieldChange}
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
@@ -31,8 +31,8 @@ const ContentSection = () => {
         />
         <TextAreaBox
           areaRows={3}
-          name={'bogo_product_page_message'}
-          fieldValue={createBogoData?.bogo_product_page_message}
+          name={'product_page_message'}
+          fieldValue={createBogoData?.product_page_message}
           changeHandler={onFieldChange}
           title={__('Product Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}

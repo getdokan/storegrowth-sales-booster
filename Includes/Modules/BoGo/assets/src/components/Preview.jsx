@@ -6,19 +6,19 @@ import PreviewImg from '../../images/bump-preview.svg';
 const { Title } = Typography;
 
 const Preview = ({ storeData }) => {
-    const offerAmount = storeData?.offer_amount ? storeData?.offer_amount : '(?)';
+    const offerAmount = storeData?.discount_amount ? storeData?.discount_amount : '(?)';
     const product_image_url = products_and_categories?.product_list_for_view[storeData.offer_product]?.image_url;
     const addCommas = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find(simpleProduct => simpleProduct?.value === parseInt(storeData.offer_product));
-    let discountedPrice = parseFloat(storeData?.offer_amount)?.toFixed(2);
+    let discountedPrice = parseFloat(storeData?.discount_amount)?.toFixed(2);
 
     if (storeData?.offer_type === 'discount') {
         const currencySymbol = product?.currency;
         const productPrice = parseFloat(product?.price?.replace(new RegExp('[' + currencySymbol + ',]', 'g'), '')),
-            discountPercent = (parseFloat(storeData?.offer_amount + '%') / 100);
+            discountPercent = (parseFloat(storeData?.discount_amount + '%') / 100);
         discountedPrice = (productPrice - (productPrice * discountPercent))?.toFixed(2);
     }
 

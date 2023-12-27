@@ -21,11 +21,6 @@
     cursor: pointer;
 }
 
-.sale_price_dates_fields #_sgsb_bogo_offer_end,
-.sale_price_dates_fields #_sgsb_bogo_offer_start {
-    margin-bottom: 0;
-}
-
 #bogo_settings_fields .sgsb-bogo-box-title {
     margin: 16px 0;
 }

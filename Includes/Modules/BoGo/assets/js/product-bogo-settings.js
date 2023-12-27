@@ -1,13 +1,13 @@
 ;( function ( $ ){
     const toggleBogoSettings = () => {
-        if ( $( '#_sgsb_bogo_enabled' ).is( ':checked' ) ) {
+        if ( $( '#bogo_status' ).is( ':checked' ) ) {
             $( '#bogo_settings_fields' ).show();
         } else {
             $( '#bogo_settings_fields' ).hide();
         }
     }
 
-    $( '#_sgsb_bogo_deal_type' ).on( 'change', function ( event ) {
+    $( '#bogo_deal_type' ).on( 'change', function ( event ) {
         if ( event.target.value === 'different' ) {
             $( '#different-product-field' ).show();
         } else {
@@ -15,7 +15,7 @@
         }
     } );
 
-    $( '#_sgsb_bogo_product_offer_type' ).on( 'change', function ( event ) {
+    $( '#offer_type' ).on( 'change', function ( event ) {
         if ( event.target.value === 'discount' ) {
             $( '._sgsb_bogo_product_discount_percentage_field' ).show();
         } else {
@@ -27,7 +27,7 @@
     toggleBogoSettings();
 
     // Run on change of the BOGO enabled checkbox
-    $( '#_sgsb_bogo_enabled' ).on( 'change', function() {
+    $( '#bogo_status' ).on( 'change', function() {
         toggleBogoSettings();
     } );
 

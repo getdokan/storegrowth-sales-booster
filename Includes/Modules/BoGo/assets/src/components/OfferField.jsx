@@ -15,7 +15,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
 
   useEffect(() => {
     if (isOfferFree) {
-      onFieldChange("offer_amount", 0);
+      onFieldChange("discount_amount", 0);
     }
   }, [createBogoData.offer_type]);
 
@@ -47,9 +47,9 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
                 </Col>
                 <Col span={18} style={{ paddingRight: 0 }}>
                   <InputNumber
-                    value={createBogoData.offer_amount}
+                    value={createBogoData.discount_amount}
                     className={`settings-field number-field combine-field`}
-                    onChange={(value) => onFieldChange("offer_amount", value)}
+                    onChange={(value) => onFieldChange("discount_amount", value)}
                     disabled={isOfferFree}
                   />
                 </Col>

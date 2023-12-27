@@ -27,7 +27,7 @@ const BasicInfo = ({ clearErrors }) => {
     )
     : originalProductListForSelect;
 
-  const targetProducts = createBogoData.target_products;
+  const targetProducts = createBogoData.get_alternate_products;
   const originalSimpleProductForOffer =
     products_and_categories.product_list.simpleProductForOffer;
   const simpleProductForOffer =
@@ -60,7 +60,7 @@ const BasicInfo = ({ clearErrors }) => {
   const onFieldChange = (key, value) => {
     clearErrors();
     // Handle offer amount validation with actual price.
-    if (key === "offer_amount") {
+    if (key === "discount_amount") {
       const product = simpleProductForOffer.find(
         (item) => item?.value === offerProductId
       );
@@ -111,13 +111,15 @@ const BasicInfo = ({ clearErrors }) => {
   };
 
   const dealOptions = [
-    { key: "bxgy", value: "Buy X Get Y" },
-    { key: "bxgx", value: "Buy X Get X" },
+    { key: 'same', value: __( 'Buy X Get X', 'storegrowth-sales-booster' ) },
+    { key: 'different', value: __( 'Buy X Get Y', 'storegrowth-sales-booster' ) },
   ];
+
   const dealCategories = [
-    { key: "products", value: "Products" },
-    { key: "categories", value: "Categories" },
+    { key: 'products', value: __( 'Products', 'storegrowth-sales-booster' ) },
+    { key: 'categories', value: __( 'Categories', 'storegrowth-sales-booster' ) },
   ];
+
   return (
     <Fragment>
       <SettingsSection>
@@ -155,9 +157,9 @@ const BasicInfo = ({ clearErrors }) => {
 
         {(createBogoData?.select_bogo_pro_cat === "categories") ?
           (<MultiSelectBox
-            name={"target_categories"}
+            name={"offered_categories"}
             changeHandler={onFieldChange}
-            fieldValue={createBogoData.target_categories.map(Number)}
+            fieldValue={createBogoData.offered_categories.map(Number)}
             options={products_and_categories.category_list.catForSelect}
             title={__("Select Target Categories", "storegrowth-sales-booster")}
             placeHolderText={__(
@@ -169,10 +171,10 @@ const BasicInfo = ({ clearErrors }) => {
               "storegrowth-sales-booster"
             )}
           />) : (<MultiSelectBox
-            name={"target_products"}
+            name={"get_alternate_products"}
             changeHandler={onFieldChange}
             options={productListForSelect}
-            fieldValue={createBogoData.target_products.map(Number)}
+            fieldValue={createBogoData.get_alternate_products.map(Number)}
             title={__("Select Target Product(s)", "storegrowth-sales-booster")}
             placeHolderText={__(
               "Search for products",
@@ -186,10 +188,10 @@ const BasicInfo = ({ clearErrors }) => {
         }
         <InputNumber
           min={1}
-          name={"add_cart_min_quantity"}
+          name={"minimum_quantity_required"}
           title={__("Select Min Quantity", "storegrowth-sales-booster")}
           tooltip={__("Minimum add to cart", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.add_cart_min_quantity}
+          fieldValue={createBogoData?.minimum_quantity_required}
           changeHandler={onFieldChange}
         />
 
@@ -230,10 +232,10 @@ const BasicInfo = ({ clearErrors }) => {
         />
         
         <MultiSelectBox
-          name={"bogo_schedule"}
+          name={"offer_schedule"}
           options={bogoSchedules}
           changeHandler={onFieldChange}
-          fieldValue={createBogoData.bogo_schedule}
+          fieldValue={createBogoData.offer_schedule}
           title={__("BOGO Schedule", "storegrowth-sales-booster")}
           placeHolderText={__(
             "Please select bogo schedule",
@@ -245,20 +247,20 @@ const BasicInfo = ({ clearErrors }) => {
           )}
         />
         <DateField
-          name={"offer_start_date"}
+          name={"offer_start"}
           title={__("Offer Start", "storegrowth-sales-booster")}
           tooltip={__("Offer Start", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.offer_start_date}
+          fieldValue={createBogoData?.offer_start}
           changeHandler={onFieldChange}
           fullWidth={true}
         />
         <DateField
-          name={"offer_end_date"}
+          name={"offer_end"}
           title={__("Offer End", "storegrowth-sales-booster")}
           tooltip={__("Offer End", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.offer_end_date}
+          fieldValue={createBogoData?.offer_end}
           endDateDisable={true}
-          startDateValue={createBogoData?.offer_start_date}
+          startDateValue={createBogoData?.offer_start}
           changeHandler={onFieldChange}
           fullWidth={true}
         />

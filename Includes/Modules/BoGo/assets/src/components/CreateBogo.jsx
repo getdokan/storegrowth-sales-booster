@@ -124,8 +124,8 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     }
 
     if (
-      createBogoData.target_products.length == 0 &&
-      createBogoData.target_categories.length == 0
+      createBogoData.get_alternate_products.length == 0 &&
+      createBogoData.offered_categories.length == 0
     ) {
       notification["error"]({
         message:
@@ -135,7 +135,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (createBogoData.bogo_schedule.length == 0) {
+    if (createBogoData.offer_schedule.length == 0) {
       notification["error"]({
         message: "Please select bogo schedule",
       });
@@ -159,7 +159,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (createBogoData.offer_type !== "free" && !createBogoData.offer_amount) {
+    if (createBogoData.offer_type !== "free" && !createBogoData.discount_amount) {
       notification["error"]({
         message: "Please select offer amount",
       });
@@ -182,9 +182,9 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     };
 
     const newOfferProduct = createBogoData.offer_product;
-    const newTargetCats = createBogoData.target_categories;
-    const newTargetProducts = createBogoData.target_products;
-    const newTargetSchedules = createBogoData.bogo_schedule;
+    const newTargetCats = createBogoData.offered_categories;
+    const newTargetProducts = createBogoData.get_alternate_products;
+    const newTargetSchedules = createBogoData.offer_schedule;
 
     for (const bogoItem of filteredBogosData) {
       if (parseInt(bogoItem.offer_product) !== parseInt(newOfferProduct)) {
@@ -192,7 +192,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       }
       let isSameScheduleExist = false;
       for (const newScheduleItem of newTargetSchedules) {
-        if (bogoItem.bogo_schedule.includes(newScheduleItem)) {
+        if (bogoItem.offer_schedule.includes(newScheduleItem)) {
           isSameScheduleExist = true;
           break;
         }
@@ -201,13 +201,13 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
         continue;
       }
       for (const newCatItem of newTargetCats) {
-        if (bogoItem.target_categories.includes(newCatItem)) {
+        if (bogoItem.offered_categories.includes(newCatItem)) {
           duplicateErrs.duplicateTargetCats.push(newCatItem);
           break;
         }
       }
       for (const newProductItem of newTargetProducts) {
-        if (bogoItem.target_products.includes(newProductItem)) {
+        if (bogoItem.get_alternate_products.includes(newProductItem)) {
           duplicateErrs.duplicateTargetProducts.push(newProductItem);
           break;
         }

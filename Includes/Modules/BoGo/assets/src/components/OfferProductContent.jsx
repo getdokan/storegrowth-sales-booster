@@ -9,14 +9,14 @@ const OfferProductContent = ({ offerProduct, bogoItem }) => {
       (simpleProduct) =>
         simpleProduct?.value === parseInt(bogoItem.offer_product)
     );
-  let discountedPrice = parseFloat(bogoItem?.offer_amount)?.toFixed(2);
+  let discountedPrice = parseFloat(bogoItem?.discount_amount)?.toFixed(2);
 
   if (bogoItem?.offer_type === "discount") {
     const currencySymbol = product?.currency;
     const productPrice = parseFloat(
       product?.price?.replace(new RegExp("[" + currencySymbol + ",]", "g"), "")
     );
-    const discountPercent = parseFloat(bogoItem?.offer_amount + "%") / 100;
+    const discountPercent = parseFloat(bogoItem?.discount_amount + "%") / 100;
     discountedPrice = (productPrice - productPrice * discountPercent).toFixed(
       2
     );

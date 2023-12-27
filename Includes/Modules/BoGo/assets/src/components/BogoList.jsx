@@ -221,7 +221,7 @@ function BogoList({ navigate }) {
   let productInfoById = products_and_categories.product_list.productTitleById;
 
   function mapBogoData(item) {
-    let categories = item.target_categories;
+    let categories = item.offered_categories;
     let catList = "";
 
     for (const key in categories) {
@@ -232,7 +232,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let products = item.target_products;
+    let products = item.get_alternate_products;
     let productList = "";
 
     for (const key in products) {

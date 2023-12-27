@@ -215,9 +215,9 @@ class Ajax {
 		}
 
 		$data['name_of_order_bogo']                 = sanitize_text_field( $data['name_of_order_bogo'] );
-		$data['target_products']                    = array_map( 'intval', $data['target_products'] );
-		$data['target_categories']                  = array_map( 'intval', $data['target_categories'] );
-		$data['bogo_schedule']                      = array_map( 'sanitize_text_field', $data['bogo_schedule'] );
+		$data['target_products']                    = wc_clean( $data['target_products'] );
+		$data['target_categories']                  = wc_clean( $data['target_categories'] );
+		$data['bogo_schedule']                      = wc_clean( $data['bogo_schedule'] );
 		$data['smart_offer']                        = sanitize_text_field( $data['smart_offer'] );
 		$data['offer_product']                      = intval( $data['offer_product'] );
 		$data['offer_type']                         = sanitize_text_field( $data['offer_type'] );
