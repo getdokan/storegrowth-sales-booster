@@ -145,46 +145,49 @@ const BasicInfo = ({ clearErrors }) => {
           changeHandler={onFieldChange}
         />
         <TextRadioBox
-          name={`select_bogo_pro_cat`}
+          name={`bogo_pro_cat_type`}
           title={__("Select BOGO Type", "storegrowth-sales-booster")}
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster")}
           options={[...dealCategories]}
           // fieldWidth={true}
-          fieldValue={createBogoData?.select_bogo_pro_cat}
+          fieldValue={createBogoData?.bogo_pro_cat_type}
           changeHandler={onFieldChange}
         />
-
-        {(createBogoData?.select_bogo_pro_cat === "categories") ?
-          (<MultiSelectBox
-            name={"offered_categories"}
-            changeHandler={onFieldChange}
-            fieldValue={createBogoData.offered_categories.map(Number)}
-            options={products_and_categories.category_list.catForSelect}
-            title={__("Select Target Categories", "storegrowth-sales-booster")}
-            placeHolderText={__(
-              "Search for Categories",
-              "storegrowth-sales-booster"
-            )}
-            tooltip={__(
-              "The target categories indicates for which specific categories the upsell order bogo option will be displayed.",
-              "storegrowth-sales-booster"
-            )}
-          />) : (<MultiSelectBox
-            name={"get_alternate_products"}
-            changeHandler={onFieldChange}
-            options={productListForSelect}
-            fieldValue={createBogoData.get_alternate_products.map(Number)}
-            title={__("Select Target Product(s)", "storegrowth-sales-booster")}
-            placeHolderText={__(
-              "Search for products",
-              "storegrowth-sales-booster"
-            )}
-            tooltip={__(
-              "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-              "storegrowth-sales-booster"
-            )}
-          />)
+        
+        {(createBogoData?.bogo_pro_cat_type === "products") ?
+          (
+            createBogoData?.bogo_deal_type !== "same" && (
+              <MultiSelectBox
+                name={"offered_products"}
+                changeHandler={onFieldChange}
+                options={productListForSelect}
+                fieldValue={createBogoData?.target_products.map(Number)}
+                title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+                placeHolderText={__(
+                  "Search for products",
+                  "storegrowth-sales-booster"
+                )}
+                tooltip={__(
+                  "The target product indicates for which specific products the upsell order bogo option will be displayed.",
+                  "storegrowth-sales-booster"
+                )}
+              />
+            )
+          ) : (
+            <MultiSelectBox
+              name={"offered_categories"}
+              changeHandler={onFieldChange}
+              fieldValue={createBogoData.target_categories.map(Number)}
+              options={products_and_categories.category_list.catForSelect}
+              title={__("Select Target Categories", "storegrowth-sales-booster")}
+              placeHolderText={__("Search for Categories", "storegrowth-sales-booster")}
+              tooltip={__(
+                "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
+                "storegrowth-sales-booster"
+              )}
+            />
+          )
         }
         <InputNumber
           min={1}
@@ -224,13 +227,31 @@ const BasicInfo = ({ clearErrors }) => {
               ?.includes(inputValue.toLowerCase())
           }
         />
+        {createBogoData?.bogo_deal_type === "same" &&
+          <MultiSelectBox
+            name={"get_multiple_product_field"}
+            changeHandler={onFieldChange}
+            fieldValue={createBogoData?.get_multiple_product_field.map(Number)}
+            options={simpleProductForOffer}
+            title={__("Select Alternate Offer Product", "storegrowth-sales-booster")}
+            placeHolderText={__(
+              "Search for Alternate Offer",
+              "storegrowth-sales-booster"
+            )}
+            tooltip={__(
+              "This will show the alternate offer product.",
+              "storegrowth-sales-booster"
+            )}
+          />
+        }
+
 
         <OfferField
           createBogoData={createBogoData}
           offerOptions={offerOptions}
           onFieldChange={onFieldChange}
         />
-        
+
         <MultiSelectBox
           name={"offer_schedule"}
           options={bogoSchedules}

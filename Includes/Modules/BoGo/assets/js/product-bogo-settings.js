@@ -1,4 +1,27 @@
 ;( function ( $ ){
+    let bogoType = $('#_sgsb_bogo_type');
+    let bogoProducts = $('.alt-bogo-products');
+    let bogoCategories = $('.alt-bogo-categories');
+
+    // Function to handle visibility based on selection
+    function toggleVisibility() {
+        if (bogoType.val() === 'products') {
+            bogoProducts.show();
+            bogoCategories.hide();
+        } else if (bogoType.val() === 'categories') {
+            bogoProducts.hide();
+            bogoCategories.show();
+        }
+    }
+
+    // Initial visibility setup based on the default value or user selection
+    toggleVisibility();
+
+    // Event listener for changes in the Bogo Type dropdown
+    bogoType.on('change', function() {
+        toggleVisibility();
+    });
+
     const toggleBogoSettings = () => {
         if ( $( '#bogo_status' ).is( ':checked' ) ) {
             $( '#bogo_settings_fields' ).show();

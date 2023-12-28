@@ -40,7 +40,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
                   <Select
                     style={{ width: "100%" }}
                     options={offerOptions}
-                    value={createBogoData.offer_type}
+                    value={createBogoData?.offer_type}
                     onChange={handleOfferTypeChange}
                     className={`settings-field single-select-field combine-select`}
                   />

@@ -56,7 +56,7 @@ class OrderBogo {
 			}
 			$all_cart_product_ids[] = $value['product_id'];
 		}
-		
+
 		foreach ( $bogo_list as $bogo ) {
 			$bogo_info        = maybe_unserialize( $bogo->post_excerpt );
 			$bogo_info        = (object) $bogo_info;
@@ -211,10 +211,12 @@ class OrderBogo {
 
 		$bogo_enabled = isset( $_POST['_sgsb_bogo_enabled'] ) ? 'yes' : 'no';
 		$deal_type    = isset( $_POST['_sgsb_bogo_deal_type'] ) ? sanitize_text_field( wp_unslash( $_POST['_sgsb_bogo_deal_type'] ) ) : 'same';
+		$bogo_type    = isset( $_POST['_sgsb_bogo_type'] ) ? sanitize_text_field( wp_unslash( $_POST['_sgsb_bogo_type'] ) ) : 'same';
 
 		$bogo_settings_data = array(
 			'_sgsb_bogo_enabled'   => $bogo_enabled,
 			'_sgsb_bogo_deal_type' => $deal_type,
+			'_sgsb_bogo_type'      => $bogo_type,
 		);
 
 		$current_product     = wc_get_product( $post_id );
@@ -223,7 +225,7 @@ class OrderBogo {
 			$offer_type           = isset( $_POST['_sgsb_bogo_product_offer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['_sgsb_bogo_product_offer_type'] ) ) : 'free';
 			$get_product          = isset( $_POST['_sgsb_get_product_field'] ) ? sanitize_text_field( wp_unslash( $_POST['_sgsb_get_product_field'] ) ) : '';
 			$bogo_products        = isset( $_POST['_sgsb_get_multiple_product_field'] ) ? wc_clean( wp_unslash( $_POST['_sgsb_get_multiple_product_field'] ) ) : array();
-            $offer_schedule       = isset( $_POST['_sgsb_offer_day_schedule'] ) ? wc_clean( wp_unslash( $_POST['_sgsb_offer_day_schedule'] ) ) : array( 'daily' );
+			$offer_schedule       = isset( $_POST['_sgsb_offer_day_schedule'] ) ? wc_clean( wp_unslash( $_POST['_sgsb_offer_day_schedule'] ) ) : array( 'daily' );
 			$offer_end_date       = isset( $_POST['_sgsb_bogo_offer_end'] ) ? sanitize_text_field( wp_unslash( $_POST['_sgsb_bogo_offer_end'] ) ) : '';
 			$bogo_categories      = isset( $_POST['_sgsb_get_multiple_category_field'] ) ? wc_clean( wp_unslash( $_POST['_sgsb_get_multiple_category_field'] ) ) : array();
 			$bogo_badge_image     = isset( $_POST['_bogo_badge_image'] ) ? sanitize_url( $_POST['_bogo_badge_image'] ) : '';
@@ -238,7 +240,7 @@ class OrderBogo {
 			$bogo_settings_data['_product_page_message']                  = $product_page_message;
 			$bogo_settings_data['_sgsb_bogo_offer_start']                 = $offer_start_date;
 			$bogo_settings_data['_sgsb_get_product_field']                = $get_product;
-            $bogo_settings_data['_sgsb_bogo_offer_schedule']              = $offer_schedule;
+			$bogo_settings_data['_sgsb_bogo_offer_schedule']              = $offer_schedule;
 			$bogo_settings_data['_sgsb_bogo_product_offer_type']          = $offer_type;
 			$bogo_settings_data['_sgsb_get_multiple_product_field']       = $bogo_products;
 			$bogo_settings_data['_sgsb_get_multiple_category_field']      = $bogo_categories;
