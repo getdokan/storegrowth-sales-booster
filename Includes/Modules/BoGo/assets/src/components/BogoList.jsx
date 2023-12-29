@@ -28,18 +28,44 @@ const deleteBogo = (stateUpdateCallback) => (id) => {
     }
   );
 };
-function ActionToggler() {
+
+const statusHandler = (stateUpdateCallback) => (id) => {
+  console.log("working")
+  console.log(id)
+  // stateUpdateCallback(true);
+  jQuery.post(
+    bogo_save_url.ajax_url,
+    {
+      action: "bogo_status_handler",
+      data: id,
+      _ajax_nonce: bogo_save_url.ajd_nonce,
+    },
+    function () {
+      notification["success"]({
+        message: "Status Updated",
+      });
+      stateUpdateCallback(false);
+      location.reload();
+    }
+  );
+};
+
+
+function ActionToggler({ bogo_id, bogo_enabled }) {
+  const handleSwitchChange = (checked) => {
+    const statusCallback = (status) => setIsChecked(status);
+    const updateStatus = statusHandler(statusCallback);
+
+    // Update the status based on the switch change
+    updateStatus(bogo_id);
+  };
+
+  let isChecked = bogo_enabled === "yes" ? true : false;
   return (
     <Fragment>
-      <Switch size="small" defaultChecked />
-      <div className={`table-categories`} style={{ marginTop: 8 }}>
-        <span
-          style={{ padding: 0 }}
-          className={`category-pills`}
-        >
-          {__("Active", "storegrowth-sales-booster")}
-        </span>
-      </div>
+      <Switch size="small"
+        checked={isChecked}
+        onChange={handleSwitchChange} />
     </Fragment>)
 }
 
@@ -232,7 +258,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let products = item.get_alternate_products;
+    let products = item.offered_products;
     let productList = "";
 
     for (const key in products) {
@@ -247,7 +273,7 @@ function BogoList({ navigate }) {
     return {
       key: item.id,
       name: item.name_of_order_bogo,
-      status: <ActionToggler />,
+      status: <ActionToggler bogo_id={item.id} bogo_enabled={item.bogo_enabled} item={item} />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),

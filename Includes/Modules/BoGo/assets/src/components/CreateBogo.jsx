@@ -124,7 +124,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     }
 
     if (
-      createBogoData.get_alternate_products.length == 0 &&
+      createBogoData.offered_products.length == 0 &&
       createBogoData.offered_categories.length == 0
     ) {
       notification["error"]({
@@ -183,7 +183,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     const newOfferProduct = createBogoData.offer_product;
     const newTargetCats = createBogoData.offered_categories;
-    const newTargetProducts = createBogoData.get_alternate_products;
+    const newTargetProducts = createBogoData.offered_products;
     const newTargetSchedules = createBogoData.offer_schedule;
 
     for (const bogoItem of filteredBogosData) {
@@ -207,7 +207,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
         }
       }
       for (const newProductItem of newTargetProducts) {
-        if (bogoItem.get_alternate_products.includes(newProductItem)) {
+        if (bogoItem.offered_products.includes(newProductItem)) {
           duplicateErrs.duplicateTargetProducts.push(newProductItem);
           break;
         }

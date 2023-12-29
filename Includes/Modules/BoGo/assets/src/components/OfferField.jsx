@@ -17,7 +17,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
     if (isOfferFree) {
       onFieldChange("discount_amount", 0);
     }
-  }, [createBogoData.offer_type]);
+  }, [createBogoData?.offer_type]);
 
   return (
     <Fragment>

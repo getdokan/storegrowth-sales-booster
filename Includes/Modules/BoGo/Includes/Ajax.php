@@ -147,6 +147,16 @@ class Ajax {
 	}
 
 	/**
+	 * Bogo product delete.
+	 */
+	public function bogo_status_handler() {
+		check_ajax_referer( 'ajd_protected' );
+		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
+		wp_delete_post( $bogo_id, true );
+		wp_send_json_success( 'yes' );
+	}
+
+	/**
 	 * Bogo product add to cart.
 	 */
 	public function offer_product_add_to_cart() {

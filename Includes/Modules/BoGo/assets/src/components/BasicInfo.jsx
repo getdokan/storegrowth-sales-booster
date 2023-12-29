@@ -1,11 +1,10 @@
 import { __ } from "@wordpress/i18n";
-import { Col, notification } from "antd";
+import { notification } from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { Fragment } from "react";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
-import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 import OfferField from "./OfferField";
@@ -27,7 +26,7 @@ const BasicInfo = ({ clearErrors }) => {
     )
     : originalProductListForSelect;
 
-  const targetProducts = createBogoData.get_alternate_products;
+  const targetProducts = createBogoData.offered_products;
   const originalSimpleProductForOffer =
     products_and_categories.product_list.simpleProductForOffer;
   const simpleProductForOffer =
@@ -61,26 +60,6 @@ const BasicInfo = ({ clearErrors }) => {
     clearErrors();
     // Handle offer amount validation with actual price.
     if (key === "discount_amount") {
-      const product = simpleProductForOffer.find(
-        (item) => item?.value === offerProductId
-      );
-      const currencySymbol = product?.currency;
-      const productPrice = product?.price?.replace(
-        new RegExp("[" + currencySymbol + ",]", "g"),
-        ""
-      );
-      if (
-        createBogoData.offer_type === "price" &&
-        parseFloat(productPrice) < value
-      ) {
-        return notification["error"]({
-          message: __(
-            "Offer price can't be greater than product price!",
-            "storegrowth-sales-booster"
-          ),
-        });
-      }
-
       if (createBogoData.offer_type === "discount" && value > 100) {
         return notification["error"]({
           message: __(
@@ -89,6 +68,16 @@ const BasicInfo = ({ clearErrors }) => {
           ),
         });
       }
+    }
+
+    if (
+      (key === "offer_product" || key === "get_alternate_products") &&
+      createBogoData?.bogo_pro_cat_type === "products" && // Check if the deal type is 'same'
+      createBogoData?.offered_products.length === 0 // Check if no target products are selected
+    ) {
+      return notification["error"]({
+        message: __("Please select target products first", "storegrowth-sales-booster"),
+      });
     }
 
     if (key === "offer_product") {
@@ -108,16 +97,32 @@ const BasicInfo = ({ clearErrors }) => {
         [key]: value,
       });
     }
+    const selectedTargetProduct = productListForSelect.find(
+      (product) => product && product.value === value
+    );
+
+    if (selectedTargetProduct) {
+      const updatedOfferProducts = originalSimpleProductForOffer.filter(
+        (item) => item.value !== selectedTargetProduct.value
+      );
+
+      setCreateFromData({
+        ...createBogoData,
+        [key]: value,
+        simpleProductForOffer: updatedOfferProducts,
+      });
+    }
+
   };
 
   const dealOptions = [
-    { key: 'same', value: __( 'Buy X Get X', 'storegrowth-sales-booster' ) },
-    { key: 'different', value: __( 'Buy X Get Y', 'storegrowth-sales-booster' ) },
+    { key: 'same', value: __('Buy X Get X', 'storegrowth-sales-booster') },
+    { key: 'different', value: __('Buy X Get Y', 'storegrowth-sales-booster') },
   ];
 
   const dealCategories = [
-    { key: 'products', value: __( 'Products', 'storegrowth-sales-booster' ) },
-    { key: 'categories', value: __( 'Categories', 'storegrowth-sales-booster' ) },
+    { key: 'products', value: __('Products', 'storegrowth-sales-booster') },
+    { key: 'categories', value: __('Categories', 'storegrowth-sales-booster') },
   ];
 
   return (
@@ -140,7 +145,6 @@ const BasicInfo = ({ clearErrors }) => {
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster")}
           options={[...dealOptions]}
-          // fieldWidth={true}
           fieldValue={createBogoData?.bogo_deal_type}
           changeHandler={onFieldChange}
         />
@@ -150,45 +154,38 @@ const BasicInfo = ({ clearErrors }) => {
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster")}
           options={[...dealCategories]}
-          // fieldWidth={true}
           fieldValue={createBogoData?.bogo_pro_cat_type}
           changeHandler={onFieldChange}
         />
-        
-        {(createBogoData?.bogo_pro_cat_type === "products") ?
-          (
-            createBogoData?.bogo_deal_type !== "same" && (
-              <MultiSelectBox
-                name={"offered_products"}
-                changeHandler={onFieldChange}
-                options={productListForSelect}
-                fieldValue={createBogoData?.target_products.map(Number)}
-                title={__("Select Target Product(s)", "storegrowth-sales-booster")}
-                placeHolderText={__(
-                  "Search for products",
-                  "storegrowth-sales-booster"
-                )}
-                tooltip={__(
-                  "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-                  "storegrowth-sales-booster"
-                )}
-              />
-            )
-          ) : (
-            <MultiSelectBox
-              name={"offered_categories"}
-              changeHandler={onFieldChange}
-              fieldValue={createBogoData.target_categories.map(Number)}
-              options={products_and_categories.category_list.catForSelect}
-              title={__("Select Target Categories", "storegrowth-sales-booster")}
-              placeHolderText={__("Search for Categories", "storegrowth-sales-booster")}
-              tooltip={__(
-                "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
-                "storegrowth-sales-booster"
-              )}
-            />
-          )
-        }
+
+        {(createBogoData?.bogo_pro_cat_type === "products") ? (
+          <MultiSelectBox
+            name={"offered_products"}
+            changeHandler={onFieldChange}
+            options={productListForSelect}
+            fieldValue={createBogoData?.offered_products ? createBogoData?.offered_products.map(Number) : []}
+            title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+            placeHolderText={__("Search for products", "storegrowth-sales-booster")}
+            tooltip={__(
+              "The target product indicates for which specific products the upsell order bogo option will be displayed.",
+              "storegrowth-sales-booster"
+            )}
+          />
+        ) : (
+          <MultiSelectBox
+            name={"offered_categories"}
+            changeHandler={onFieldChange}
+            fieldValue={(createBogoData?.offered_categories && Array.isArray(createBogoData.offered_categories)) ? createBogoData.offered_categories.map(Number) : []}
+            options={products_and_categories.category_list.catForSelect}
+            title={__("Select Target Categories", "storegrowth-sales-booster")}
+            placeHolderText={__("Search for Categories", "storegrowth-sales-booster")}
+            tooltip={__(
+              "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
+              "storegrowth-sales-booster"
+            )}
+          />
+        )}
+
         <InputNumber
           min={1}
           name={"minimum_quantity_required"}
@@ -198,53 +195,51 @@ const BasicInfo = ({ clearErrors }) => {
           changeHandler={onFieldChange}
         />
 
-        <SelectBox
-          colSpan={24}
-          showSearch={true}
-          fieldWidth={"100%"}
-          name={`offer_product`}
-          changeHandler={onFieldChange}
-          options={simpleProductForOffer}
-          classes={`search-single-select`}
-          title={__("Offer Product", "storegrowth-sales-booster")}
-          tooltip={__(
-            "The specific product that will be available in the order bogo with an offer.",
-            "storegrowth-sales-booster"
-          )}
-          placeHolderText={__(
-            "Search for offer product",
-            "storegrowth-sales-booster"
-          )}
-          fieldValue={
-            offerProductId
-              ? filterByValue(simpleProductForOffer, offerProductId)
-              : null
-          }
-          filterOption={(inputValue, option) =>
-            option?.children?.[0]
-              ?.toString()
-              ?.toLowerCase()
-              ?.includes(inputValue.toLowerCase())
-          }
-        />
-        {createBogoData?.bogo_deal_type === "same" &&
-          <MultiSelectBox
-            name={"get_multiple_product_field"}
+        {createBogoData?.bogo_deal_type !== "same" &&
+          (<SelectBox
+            colSpan={24}
+            showSearch={true}
+            fieldWidth={"100%"}
+            name={`offer_product`}
             changeHandler={onFieldChange}
-            fieldValue={createBogoData?.get_multiple_product_field.map(Number)}
             options={simpleProductForOffer}
-            title={__("Select Alternate Offer Product", "storegrowth-sales-booster")}
-            placeHolderText={__(
-              "Search for Alternate Offer",
-              "storegrowth-sales-booster"
-            )}
+            classes={`search-single-select`}
+            title={__("Offer Product", "storegrowth-sales-booster")}
             tooltip={__(
-              "This will show the alternate offer product.",
+              "The specific product that will be available in the order bogo with an offer.",
               "storegrowth-sales-booster"
             )}
-          />
-        }
-
+            placeHolderText={__(
+              "Search for offer product",
+              "storegrowth-sales-booster"
+            )}
+            fieldValue={
+              offerProductId
+                ? filterByValue(simpleProductForOffer, offerProductId)
+                : null
+            }
+            filterOption={(inputValue, option) =>
+              option?.children?.[0]
+                ?.toString()
+                ?.toLowerCase()
+                ?.includes(inputValue.toLowerCase())
+            }
+          />)}
+        <MultiSelectBox
+          name={"get_alternate_products"}
+          changeHandler={onFieldChange}
+          fieldValue={createBogoData?.get_alternate_products.map(Number)}
+          options={simpleProductForOffer}
+          title={__("Select Alternate Offer Product", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Search for Alternate Offer",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "This will show the alternate offer product.",
+            "storegrowth-sales-booster"
+          )}
+        />
 
         <OfferField
           createBogoData={createBogoData}
@@ -256,7 +251,7 @@ const BasicInfo = ({ clearErrors }) => {
           name={"offer_schedule"}
           options={bogoSchedules}
           changeHandler={onFieldChange}
-          fieldValue={createBogoData.offer_schedule}
+          fieldValue={createBogoData?.offer_schedule}
           title={__("BOGO Schedule", "storegrowth-sales-booster")}
           placeHolderText={__(
             "Please select bogo schedule",
