@@ -183,33 +183,6 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 					</select>
 				</p>
 
-				<p class="form-field">
-					<label for="_sgsb_get_multiple_category_field"><?php esc_html_e( 'Offer this category product as alternate product for this offer', 'storegrowth-sales-booster' ); ?></label>
-					<select class="select short" id="_sgsb_get_multiple_category_field" name="offered_categories[]" multiple="multiple"
-						data-placeholder="<?php esc_attr_e( 'Select a category', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
-						<option value=""><?php esc_html_e( 'Select a category', 'storegrowth-sales-booster' ); ?></option>
-						<?php
-						$categories = get_categories(
-							array(
-								'taxonomy' => 'product_cat',
-								'orderby'  => 'name',
-							)
-						);
-
-						$offer_categories = ! empty( $bogo_settings['offered_categories'] ) ? $bogo_settings['offered_categories'] : array();
-						if ( ! is_array( $offer_categories ) ) {
-							$offer_categories = array();
-						}
-						?>
-
-						<?php foreach ( $products as $product ) : ?>
-							<option value="<?php echo esc_attr( $product->get_id() ); ?>" <?php echo in_array( $product->get_id(), $offer_products ) ? 'selected ' : ''; ?>>
-								<?php echo esc_html( $product->get_name() ); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-				</p>
-
 				<?php echo apply_filters( 'sgsb_after_bogo_offer_type_field', $bogo_settings ); ?>
 
 				<?php

@@ -1,5 +1,5 @@
 ;( function ( $ ){
-    let bogoType = $('#_sgsb_bogo_type');
+    let bogoType = $('#bogo_type');
     let bogoProducts = $('.alt-bogo-products');
     let bogoCategories = $('.alt-bogo-categories');
 
