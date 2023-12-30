@@ -32,9 +32,12 @@ class Ajax {
 		add_action( 'wp_ajax_nopriv_bogo_list', array( $this, 'bogo_list' ) );
 
 		add_action( 'wp_ajax_bogo_delete', array( $this, 'bogo_delete' ) );
-		add_action( 'wp_ajax_nopriv_bogo_delete', array( $this, 'bogo_delete' ) );
+        add_action( 'wp_ajax_nopriv_bogo_delete', array( $this, 'bogo_delete' ) );
 
-		add_action( 'wp_ajax_sgsb_bogo_general_save_settings', array( $this, 'save_settings' ) );
+        add_action( 'wp_ajax_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
+        add_action( 'wp_ajax_nopriv_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
+
+        add_action( 'wp_ajax_sgsb_bogo_general_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_bogo_general_get_settings', array( $this, 'get_settings' ) );
 
 		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
@@ -150,10 +153,24 @@ class Ajax {
 	 * Bogo product delete.
 	 */
 	public function bogo_status_handler() {
-		check_ajax_referer( 'ajd_protected' );
-		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-		wp_delete_post( $bogo_id, true );
-		wp_send_json_success( 'yes' );
+        check_ajax_referer( 'ajd_protected' );
+        $data          = ! empty( $_POST['data'] ) ? wc_clean( wp_unslash( $_POST['data'] ) ) : array();
+        $post_id       = ! empty( $data['id'] ) ? intval( $data['id'] ) : 0;
+
+        if ( empty( $post_id ) || ! isset( $data['status'] ) ) {
+            return wp_send_json_error( __( 'Offer id & status is required', 'storegrowth-sales-booster' ) );
+        }
+
+        $bogo_post     = get_post( $post_id );
+        $bogo_settings = ! empty( $bogo_post->post_excerpt ) ? maybe_unserialize( $bogo_post->post_excerpt ) : array();
+
+        $bogo_settings['bogo_status'] = filter_var( $data['status'], FILTER_VALIDATE_BOOLEAN ) ? 'yes' : 'no';
+        $bogo_post->post_excerpt      = maybe_serialize( $bogo_settings );
+
+        error_log( print_r( $bogo_settings, 1 ) );
+
+        wp_update_post( $bogo_post );
+        wp_send_json_success( $data['status'] );
 	}
 
 	/**

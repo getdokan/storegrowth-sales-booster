@@ -59,7 +59,7 @@ export const convertBogoItemHtmlEntitiesToTexts = (bogoItem) => {
  */
 export const createBogoForm = {
   name_of_order_bogo: "",
-  bogo_enabled: "yes",
+  bogo_status: "yes",
   bogo_deal_type: "same",
   bogo_pro_cat_type: "products",
   add_cart_min_quantity: 1,

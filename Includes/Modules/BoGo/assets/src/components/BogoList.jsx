@@ -29,43 +29,39 @@ const deleteBogo = (stateUpdateCallback) => (id) => {
   );
 };
 
-const statusHandler = (stateUpdateCallback) => (id) => {
-  console.log("working")
-  console.log(id)
-  // stateUpdateCallback(true);
+const statusHandler = ( id, status, stateUpdateCallback ) => {
   jQuery.post(
     bogo_save_url.ajax_url,
     {
       action: "bogo_status_handler",
-      data: id,
+      data: { id, status },
       _ajax_nonce: bogo_save_url.ajd_nonce,
     },
-    function () {
+    function ( response ) {
       notification["success"]({
-        message: "Status Updated",
+        message: __( "Status Updated", 'storegrowth-sales-booster' ),
       });
-      stateUpdateCallback(false);
-      location.reload();
+      stateUpdateCallback( response.data );
     }
   );
 };
 
 
-function ActionToggler({ bogo_id, bogo_enabled }) {
-  const handleSwitchChange = (checked) => {
-    const statusCallback = (status) => setIsChecked(status);
-    const updateStatus = statusHandler(statusCallback);
+function ActionToggler({ bogo_id, bogo_status }) {
+  const [ isChecked, setIsChecked ] = useState( bogo_status === "yes" );
 
-    // Update the status based on the switch change
-    updateStatus(bogo_id);
-  };
+  const handleSwitchChange = ( checked ) => statusHandler( bogo_id, checked, setIsChecked );
 
-  let isChecked = bogo_enabled === "yes" ? true : false;
   return (
     <Fragment>
       <Switch size="small"
-        checked={isChecked}
+        defaultChecked={isChecked}
         onChange={handleSwitchChange} />
+      <div className={`table-categories`} style={{ marginTop: 8 }}>
+        <span style={{ padding: 0 }} className={`category-pills`}>
+          { __( isChecked ? "Active" : "Deactive", "storegrowth-sales-booster" ) }
+        </span>
+      </div>
     </Fragment>)
 }
 
@@ -273,7 +269,7 @@ function BogoList({ navigate }) {
     return {
       key: item.id,
       name: item.name_of_order_bogo,
-      status: <ActionToggler bogo_id={item.id} bogo_enabled={item.bogo_enabled} item={item} />,
+      status: <ActionToggler bogo_id={item.id} bogo_status={item.bogo_status} item={item} />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),
