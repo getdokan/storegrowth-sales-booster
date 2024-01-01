@@ -17,3 +17,37 @@ function extraProducts(product_id, check_status, offer_price) {
     }
   );
 }
+
+(function ($) {
+    $('.choosen-offer-product').on('click', function(e) {
+        e.preventDefault();
+
+        const selectedProductId = $( this ).data( 'product-id' ),
+            productLinkKey = $( this ).data( 'product-link-key' ),
+            mainProductId = $( this ).data( 'main-product-id' ),
+            offerProductCost = $( this ).data( 'offer-product-cost' );
+
+        $.post(
+            bogo_save_url.ajax_url_for_front,
+            {
+                action      : 'update_offer_product',
+                _ajax_nonce : bogo_save_url.ajd_nonce,
+                data        : {
+                    main_product_id     : mainProductId,
+                    product_link_key    : productLinkKey,
+                    offer_product_cost  : offerProductCost,
+                    selected_product_id : selectedProductId,
+                }
+            },
+            function ( response ) {
+                if ( response.success ) {
+                    alert('Product updated successfully.');
+                    // Optionally, refresh the page to update the cart
+                    location.reload();
+                } else {
+                    alert('Failed to update the product.');
+                }
+            }
+        );
+    });
+})(jQuery);

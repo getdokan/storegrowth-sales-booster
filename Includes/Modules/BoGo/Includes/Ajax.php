@@ -42,7 +42,60 @@ class Ajax {
 
 		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
+
+        add_action( 'wp_ajax_update_offer_product', array( $this, 'handle_update_offer_product' ) );
+        add_action( 'wp_ajax_nopriv_update_offer_product', array( $this, 'handle_update_offer_product' ) );
 	}
+
+    public function handle_update_offer_product() {
+        check_ajax_referer( 'ajd_protected' );
+
+        $data = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
+        if ( empty( $data ) ) {
+            wp_send_json_error( 'Choose able product data can\'t be empty.' );
+        }
+
+        $main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
+        $product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
+        $offer_product_cost  = isset( $data['offer_product_cost'] ) ? intval( $data['offer_product_cost'] ) : 0;
+        $selected_product_id = isset( $data['selected_product_id'] ) ? intval( $data['selected_product_id'] ) : 0;
+
+        if ( !$selected_product_id || !$main_product_id ) {
+            wp_send_json_error( 'Invalid product ID.' );
+        }
+
+        // Logic to remove the existing offer product and add the new one.
+        $offer_product_quantity = 1;
+        foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+            if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer_for'] == $main_product_id ) {
+                $offer_product_quantity = $cart_item['quantity'];
+                WC()->cart->remove_cart_item( $cart_item_key );
+                break;
+            }
+        }
+
+        // Add the selected product as the new offer product
+        WC()->cart->add_to_cart(
+            $selected_product_id,
+            $offer_product_quantity,
+            '',
+            '',
+            array(
+                'bogo_offer'            => true,
+                'bogo_product_for'      => $main_product_id,
+                'bogo_offer_price'      => $offer_product_cost,
+                'linked_to_product_key' => $product_link_key,
+            )
+        );
+
+//        $bogo_settings = get_post_meta( $main_product_id, 'sgsb_product_bogo_settings', true );
+//        $bogo_settings['bogo_deal_type']              = $main_product_id == $selected_product_id ? 'same' : 'different';
+//        $bogo_settings['get_different_product_field'] = $main_product_id == $selected_product_id ? $bogo_settings['get_different_product_field'] : $selected_product_id;
+//
+//        update_post_meta( $main_product_id, 'sgsb_product_bogo_settings', $bogo_settings );
+
+        wp_send_json_success( 'Product updated successfully.' );
+    }
 
 	/**
 	 * Ajax action for save settings
