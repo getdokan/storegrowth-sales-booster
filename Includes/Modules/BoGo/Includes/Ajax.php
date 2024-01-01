@@ -167,8 +167,6 @@ class Ajax {
         $bogo_settings['bogo_status'] = filter_var( $data['status'], FILTER_VALIDATE_BOOLEAN ) ? 'yes' : 'no';
         $bogo_post->post_excerpt      = maybe_serialize( $bogo_settings );
 
-        error_log( print_r( $bogo_settings, 1 ) );
-
         wp_update_post( $bogo_post );
         wp_send_json_success( $data['status'] );
 	}
