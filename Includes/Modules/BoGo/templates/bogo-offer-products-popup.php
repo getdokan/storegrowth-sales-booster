@@ -14,13 +14,13 @@
                     ?>
                     <li>
                         <?php echo $product->get_title(); ?>
-                        <a href="#" class="choosen-offer-product"
+                        <span style="color: red; margin-left: 10px; cursor: pointer;" class="choosen-offer-product"
                             data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
                             data-offer-product-cost="<?php echo esc_attr( $offer_product_cost ); ?>"
                             data-main-product-id="<?php echo esc_attr( $cart_item['bogo_product_for'] ); ?>"
                             data-product-link-key="<?php echo esc_attr( $cart_item['linked_to_product_key'] )?>">
                             <?php esc_html_e( 'Choose', 'storegrowth-sales-booster' ); ?>
-                        </a>
+                        </span>
                     </li>
                 <?php endforeach; ?>
             </ul>

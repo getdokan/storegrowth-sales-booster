@@ -67,7 +67,7 @@ class Ajax {
         // Logic to remove the existing offer product and add the new one.
         $offer_product_quantity = 1;
         foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-            if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer_for'] == $main_product_id ) {
+            if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_product_for'] == $main_product_id ) {
                 $offer_product_quantity = $cart_item['quantity'];
                 WC()->cart->remove_cart_item( $cart_item_key );
                 break;
@@ -87,12 +87,6 @@ class Ajax {
                 'linked_to_product_key' => $product_link_key,
             )
         );
-
-//        $bogo_settings = get_post_meta( $main_product_id, 'sgsb_product_bogo_settings', true );
-//        $bogo_settings['bogo_deal_type']              = $main_product_id == $selected_product_id ? 'same' : 'different';
-//        $bogo_settings['get_different_product_field'] = $main_product_id == $selected_product_id ? $bogo_settings['get_different_product_field'] : $selected_product_id;
-//
-//        update_post_meta( $main_product_id, 'sgsb_product_bogo_settings', $bogo_settings );
 
         wp_send_json_success( 'Product updated successfully.' );
     }

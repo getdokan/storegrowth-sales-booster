@@ -19,9 +19,7 @@ function extraProducts(product_id, check_status, offer_price) {
 }
 
 (function ($) {
-    $('.choosen-offer-product').on('click', function(e) {
-        e.preventDefault();
-
+    $('.choosen-offer-product').on('click', function() {
         const selectedProductId = $( this ).data( 'product-id' ),
             productLinkKey = $( this ).data( 'product-link-key' ),
             mainProductId = $( this ).data( 'main-product-id' ),
@@ -41,7 +39,6 @@ function extraProducts(product_id, check_status, offer_price) {
             },
             function ( response ) {
                 if ( response.success ) {
-                    alert('Product updated successfully.');
                     // Optionally, refresh the page to update the cart
                     location.reload();
                 } else {

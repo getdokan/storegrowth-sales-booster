@@ -43,10 +43,10 @@ class OrderBogo {
     public function handle_cart_update() {
         $product_quantities = array();
         foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-            $item_id       = $cart_item['product_id'];
+            $item_id       = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : intval( $cart_item['product_id'] );
             $item_quantity = $cart_item['quantity'];
-            $product_quantities[ $item_id ] = $item_quantity;
 
+            $product_quantities[ $item_id ] = $item_quantity;
             if ( ! ( isset( $cart_item['bogo_offer'] ) || isset( $cart_item['bogo_product_for'] ) ) ) {
                 continue;
             }
@@ -85,6 +85,7 @@ class OrderBogo {
         if ( isset($bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
             return false;
         }
+
         if ( isset($bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
             return false;
         }
@@ -104,10 +105,23 @@ class OrderBogo {
 
     public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
         // Check if the product being added is a main product and if it has an associated offer product
-        $bogo_settings = get_post_meta( $product_id, 'sgsb_product_bogo_settings', true );
+        $apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
+        $bogo_settings = get_post_meta( $apply_able_product_id, 'sgsb_product_bogo_settings', true );
+
+        if ( ! empty( $variation_id ) ) {
+            $main_product_bogo_settings = get_post_meta( $product_id, 'sgsb_product_bogo_settings', true );
+            $bogo_settings = array_merge( $main_product_bogo_settings, $bogo_settings );
+        }
 
         if ( $this->is_bogo_applicable( $bogo_settings, $quantity ) ) {
-            $this->apply_bogo_product( $bogo_settings, $product_id, $cart_item_key );
+            foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
+                if ( isset( $cart_item['linked_to_product_key'] ) && $cart_item['linked_to_product_key'] === $cart_item_key ) {
+                    WC()->cart->set_quantity( $cart_key, ( $cart_item['quantity'] + 1 ) );
+                    return;
+                }
+            }
+
+            $this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key );
         }
     }
 
@@ -131,9 +145,9 @@ class OrderBogo {
             '',
             '',
             array(
-                'bogo_offer'            => true,
-                'bogo_product_for'      => $product_id,
-                'bogo_offer_price'      => $offer_product_cost,
+                'bogo_offer' => true,
+                'bogo_product_for' => $product_id,
+                'bogo_offer_price' => $offer_product_cost,
                 'linked_to_product_key' => $cart_item_key
             )
         );
@@ -271,15 +285,11 @@ class OrderBogo {
 	 * @return array
 	 */
 	public function add_bogo_product_data_tab( $product_data_tabs ) {
-		global $post;
-
-		if ( Helper::sgsb_is_load_product_bogo_offer( $post->ID ) ) {
-			$product_data_tabs['bogo_tab'] = array(
-				'label'  => __( 'BOGO', 'storegrowth-sales-booster' ),
-				'target' => 'bogo_product_data',
-				'class'  => array( 'usage_limit_options' ),
-			);
-		}
+        $product_data_tabs['bogo_tab'] = array(
+            'label'  => __( 'BOGO', 'storegrowth-sales-booster' ),
+            'target' => 'bogo_product_data',
+            'class'  => array( 'usage_limit_options' ),
+        );
 
 		return $product_data_tabs;
 	}
@@ -292,13 +302,14 @@ class OrderBogo {
 	 * @return void
 	 */
 	public function add_bogo_product_data_fields() {
+        global $post;
+
+        if ( ! Helper::sgsb_is_load_product_bogo_offer( $post->ID ) ) {
+            include __DIR__ . '/../templates/bogo-upgrade-notice.php';
+            return;
+        }
+
 		if ( ! file_exists( __DIR__ . '/../templates/product-bogo-settings.php' ) ) {
-			return;
-		}
-
-		global $post;
-
-		if ( ! Helper::sgsb_is_load_product_bogo_offer( $post->ID ) ) {
 			return;
 		}
 
