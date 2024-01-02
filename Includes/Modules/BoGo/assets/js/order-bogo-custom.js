@@ -47,4 +47,24 @@ function extraProducts(product_id, check_status, offer_price) {
             }
         );
     });
+
+    const disableOfferProductActions = () => {
+        // Make disabled the offered product from cart page.
+        $( '.sgsb-bogo-offer-applied' ).each( function() {
+            $( this ).find( 'input.qty' ).prop( 'disabled', true ).prop( 'readonly', true );
+        });
+
+        // Make disabled the offered product remove option.
+        $( '.sgsb-disable-bogo-offer-removed-option' ).each( function() {
+            $( this ).find( '.remove' ).remove();
+        });
+    }
+
+    // Disable offer product quantity & remove options as per settings.
+    disableOfferProductActions();
+
+    // Re-apply when any AJAX request completes.
+    $(document).ajaxComplete(function() {
+        disableOfferProductActions();
+    });
 })(jQuery);

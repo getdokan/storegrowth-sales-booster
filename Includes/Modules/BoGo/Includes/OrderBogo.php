@@ -152,10 +152,12 @@ class OrderBogo {
 		);
 	}
 
-	function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
+	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
 		// Check if the cart item is an offer product
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-			$class .= ' custom-offer-class'; // Append your custom class
+            $can_remove_offer_product = Helper::sgsb_get_bogo_settings_option( 'offer_remove_from_cart', false );
+            // Append custom class for BOGO offered product.
+			$class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option' : ' sgsb-bogo-offer-applied';
 		}
 
 		return $class;
@@ -183,11 +185,7 @@ class OrderBogo {
 		$all_cart_products       = $woocommerce->cart->get_cart();
 		$all_cart_product_ids    = array();
 		$all_cart_category_ids   = array();
-		$args_bogo               = array(
-			'post_type'      => 'sgsb_bogo',
-			'posts_per_page' => -1,
-		);
-		$bogo_list               = get_posts( $args_bogo );
+		$bogo_list               = Helper::sgsb_get_global_offered_products();
 		$showed_bogo_product_id  = array();
 
 		// foreach ( $all_cart_products as $value ) {
@@ -263,7 +261,6 @@ class OrderBogo {
 		}
 	}
 
-
 	/**
 	 * Product custom price.
 	 *
@@ -289,11 +286,22 @@ class OrderBogo {
 	 * @return array
 	 */
 	public function add_bogo_product_data_tab( $product_data_tabs ) {
+        global $post;
+
+        $product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
+        $product    = wc_get_product( $product_id );
+
+        // Check BOGO tab availability via current product type.
+        $is_available_bogo = $product->is_type( 'simple' ) || $product->is_type( 'variable' );
+        if ( ! $is_available_bogo ) {
+            return $product_data_tabs;
+        }
+
 		$product_data_tabs['bogo_tab'] = array(
 			'label'  => __( 'BOGO', 'storegrowth-sales-booster' ),
-			'target' => 'bogo_product_data',
-			'class'  => array( 'usage_limit_options' ),
-		);
+            'class'  => array( 'usage_limit_options' ),
+            'target' => 'bogo_product_data',
+        );
 
 		return $product_data_tabs;
 	}
@@ -308,10 +316,11 @@ class OrderBogo {
 	public function add_bogo_product_data_fields() {
 		global $post;
 
-		if ( ! Helper::sgsb_is_load_product_bogo_offer( $post->ID ) ) {
-			include __DIR__ . '/../templates/bogo-upgrade-notice.php';
-			return;
-		}
+        $product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
+        if ( ! Helper::sgsb_is_load_product_bogo_offer( $product_id ) ) {
+            include __DIR__ . '/../templates/bogo-upgrade-notice.php';
+            return;
+        }
 
 		if ( ! file_exists( __DIR__ . '/../templates/product-bogo-settings.php' ) ) {
 			return;
