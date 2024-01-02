@@ -17,7 +17,7 @@ const BasicInfo = ({ clearErrors }) => {
     createBogoData: select("sgsb_bogo").getCreateFromData(),
   }));
 
-  const offerProductId = parseInt(createBogoData?.offer_product);
+  const offerProductId = parseInt(createBogoData?.get_different_product_field);
   const originalProductListForSelect =
     products_and_categories.product_list.productListForSelect;
   const productListForSelect = offerProductId
@@ -71,7 +71,7 @@ const BasicInfo = ({ clearErrors }) => {
     }
 
     if (
-      (key === "offer_product" || key === "get_alternate_products") &&
+      (key === "get_different_product_field" || key === "get_alternate_products") &&
       createBogoData?.bogo_pro_cat_type === "products" && // Check if the deal type is 'same'
       createBogoData?.offered_products.length === 0 // Check if no target products are selected
     ) {
@@ -80,7 +80,7 @@ const BasicInfo = ({ clearErrors }) => {
       });
     }
 
-    if (key === "offer_product") {
+    if (key === "get_different_product_field") {
       setCreateFromData({
         ...createBogoData,
         [key]: value,
@@ -171,7 +171,7 @@ const BasicInfo = ({ clearErrors }) => {
             colSpan={24}
             showSearch={true}
             fieldWidth={"100%"}
-            name={`offer_product`}
+            name={`get_different_product_field`}
             changeHandler={onFieldChange}
             options={simpleProductForOffer}
             classes={`search-single-select`}

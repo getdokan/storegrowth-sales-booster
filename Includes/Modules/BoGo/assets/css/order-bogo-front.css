@@ -46,7 +46,7 @@
 
 /* overview from admin */
 
-.template-overview-area{
+.bogo-template-overview-area{
   width: 100%;
   float: left;
 }
@@ -62,6 +62,7 @@
 }
 
 .offer-main-wrap{
+  border: 2px solid #32DBBE;
   width: 100%;
   padding: 15px;
   background: #fff;
@@ -70,13 +71,16 @@
 }
 
 .offer-main-wrap .dynamic-offer-text{
+  background: #E1FFF4;
+  color: #02AC6E;
+  font-size: 13px;
   gap: 4px;
   max-width: 100%;
   display: flex;
   min-height: 33px;
   font-weight: bold;
   text-align: center;
-  padding: 15px 75px;
+  padding: 15px 20px;
   border-radius: 10px;
   align-items: center;
   margin-bottom: 15px;

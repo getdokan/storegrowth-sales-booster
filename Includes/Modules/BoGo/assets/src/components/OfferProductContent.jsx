@@ -7,7 +7,7 @@ const OfferProductContent = ({ offerProduct, bogoItem }) => {
   const product =
     products_and_categories?.product_list?.simpleProductForOffer?.find(
       (simpleProduct) =>
-        simpleProduct?.value === parseInt(bogoItem.offer_product)
+        simpleProduct?.value === parseInt(bogoItem.get_different_product_field)
     );
   let discountedPrice = parseFloat(bogoItem?.discount_amount)?.toFixed(2);
 

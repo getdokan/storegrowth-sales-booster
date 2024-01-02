@@ -143,7 +143,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (!createBogoData.offer_product) {
+    if (!createBogoData.get_different_product_field) {
       notification["error"]({
         message: "Please select offer product",
       });
@@ -181,13 +181,13 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       duplicateTargetProducts: [],
     };
 
-    const newOfferProduct = createBogoData.offer_product;
-    const newTargetCats = createBogoData.offered_categories;
+    const newOfferProduct = createBogoData.get_different_product_field;
+    const newTargetCats = createBogoData?.offered_categories;
     const newTargetProducts = createBogoData.offered_products;
     const newTargetSchedules = createBogoData.offer_schedule;
 
     for (const bogoItem of filteredBogosData) {
-      if (parseInt(bogoItem.offer_product) !== parseInt(newOfferProduct)) {
+      if (parseInt(bogoItem.get_different_product_field) !== parseInt(newOfferProduct)) {
         continue;
       }
       let isSameScheduleExist = false;
@@ -200,12 +200,12 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       if (!isSameScheduleExist) {
         continue;
       }
-      for (const newCatItem of newTargetCats) {
-        if (bogoItem.offered_categories.includes(newCatItem)) {
-          duplicateErrs.duplicateTargetCats.push(newCatItem);
-          break;
-        }
-      }
+      // for (const newCatItem of newTargetCats) {
+      //   if (bogoItem.offered_categories.includes(newCatItem)) {
+      //     duplicateErrs.duplicateTargetCats.push(newCatItem);
+      //     break;
+      //   }
+      // }
       for (const newProductItem of newTargetProducts) {
         if (bogoItem.offered_products.includes(newProductItem)) {
           duplicateErrs.duplicateTargetProducts.push(newProductItem);

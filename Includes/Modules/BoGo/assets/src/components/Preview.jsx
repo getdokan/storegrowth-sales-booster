@@ -7,12 +7,12 @@ const { Title } = Typography;
 
 const Preview = ({ storeData }) => {
     const offerAmount = storeData?.discount_amount ? storeData?.discount_amount : '(?)';
-    const product_image_url = products_and_categories?.product_list_for_view[storeData.offer_product]?.image_url;
+    const product_image_url = products_and_categories?.product_list_for_view[storeData.get_different_product_field]?.image_url;
     const addCommas = (number) => {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const product = products_and_categories?.product_list?.simpleProductForOffer
-        ?.find(simpleProduct => simpleProduct?.value === parseInt(storeData.offer_product));
+        ?.find(simpleProduct => simpleProduct?.value === parseInt(storeData.get_different_product_field));
     let discountedPrice = parseFloat(storeData?.discount_amount)?.toFixed(2);
 
     if (storeData?.offer_type === 'discount') {

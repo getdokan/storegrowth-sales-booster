@@ -29,7 +29,7 @@ const deleteBogo = (stateUpdateCallback) => (id) => {
   );
 };
 
-const statusHandler = ( id, status, stateUpdateCallback ) => {
+const statusHandler = (id, status, stateUpdateCallback) => {
   jQuery.post(
     bogo_save_url.ajax_url,
     {
@@ -37,20 +37,20 @@ const statusHandler = ( id, status, stateUpdateCallback ) => {
       data: { id, status },
       _ajax_nonce: bogo_save_url.ajd_nonce,
     },
-    function ( response ) {
+    function (response) {
       notification["success"]({
-        message: __( "Status Updated", 'storegrowth-sales-booster' ),
+        message: __("Status Updated", 'storegrowth-sales-booster'),
       });
-      stateUpdateCallback( response.data );
+      stateUpdateCallback(response.data);
     }
   );
 };
 
 
 function ActionToggler({ bogo_id, bogo_status }) {
-  const [ isChecked, setIsChecked ] = useState( bogo_status === "yes" );
+  const [isChecked, setIsChecked] = useState(bogo_status === "yes");
 
-  const handleSwitchChange = ( checked ) => statusHandler( bogo_id, checked, setIsChecked );
+  const handleSwitchChange = (checked) => statusHandler(bogo_id, checked, setIsChecked);
 
   return (
     <Fragment>
@@ -59,7 +59,7 @@ function ActionToggler({ bogo_id, bogo_status }) {
         onChange={handleSwitchChange} />
       <div className={`table-categories`} style={{ marginTop: 8 }}>
         <span style={{ padding: 0 }} className={`category-pills`}>
-          { __( isChecked ? "Active" : "Deactive", "storegrowth-sales-booster" ) }
+          {__(isChecked ? "Active" : "Deactive", "storegrowth-sales-booster")}
         </span>
       </div>
     </Fragment>)
@@ -161,6 +161,8 @@ function ActionButton({ navigate, bogo_id }) {
 }
 
 function TargetProductAndCategory({ catList, productList }) {
+  console.log("Product List");
+  console.log(productList);
   return (
     <>
       {productList && (
@@ -254,7 +256,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let products = item.offered_products;
+    let products = [item.offered_products];
     let productList = "";
 
     for (const key in products) {
@@ -265,7 +267,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let offerProduct = productInfoById[item.offer_product];
+    let offerProduct = productInfoById[item.get_different_product_field];
     return {
       key: item.id,
       name: item.name_of_order_bogo,
