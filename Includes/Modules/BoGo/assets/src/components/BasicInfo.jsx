@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { notification } from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
@@ -20,21 +20,32 @@ const BasicInfo = ({ clearErrors }) => {
   const offerProductId = parseInt(createBogoData?.get_different_product_field);
   const originalProductListForSelect =
     products_and_categories.product_list.productListForSelect;
-  const productListForSelect = offerProductId
-    ? originalProductListForSelect.filter(
-      (item) => item.value !== offerProductId
-    )
-    : originalProductListForSelect;
 
-  const targetProducts = createBogoData.offered_products;
+  const [simpleProductForOffer, setSimpleProductForOffer] = useState([]);
+  const [productListForSelect, setProductListForSelect] = useState([]);
+
+  const targetProducts = createBogoData?.offered_products;
   const originalSimpleProductForOffer =
     products_and_categories.product_list.simpleProductForOffer;
-  const simpleProductForOffer =
-    Array.isArray(targetProducts) && targetProducts.length !== 0
-      ? originalSimpleProductForOffer.filter(
-        (item) => !targetProducts.includes(item.value)
-      )
-      : originalSimpleProductForOffer;
+
+    useEffect(() => {
+      if (targetProducts !== "") {
+        const updatedOfferProducts = originalSimpleProductForOffer.filter(
+          item => item.value !== parseInt(targetProducts)
+        );
+        const updatedProductListForSelect = originalProductListForSelect.filter(
+          item => item.value !== offerProductId && item.value !== parseInt(targetProducts)
+        );
+    
+        setSimpleProductForOffer(updatedOfferProducts);
+        setProductListForSelect(updatedProductListForSelect);
+      } else {
+        setSimpleProductForOffer(originalSimpleProductForOffer);
+        setProductListForSelect(originalProductListForSelect);
+      }
+    }, [targetProducts, originalSimpleProductForOffer, originalProductListForSelect, offerProductId]);
+    
+
   const bogoSchedules = [
     { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
     { value: "saturday", label: __("Saturday", "storegrowth-sales-booster") },
@@ -72,7 +83,7 @@ const BasicInfo = ({ clearErrors }) => {
 
     if (
       (key === "get_different_product_field" || key === "get_alternate_products") &&
-      createBogoData?.bogo_pro_cat_type === "products" && // Check if the deal type is 'same'
+      createBogoData?.bogo_type === "products" && // Check if the deal type is 'same'
       createBogoData?.offered_products.length === 0 // Check if no target products are selected
     ) {
       return notification["error"]({
@@ -97,23 +108,9 @@ const BasicInfo = ({ clearErrors }) => {
         [key]: value,
       });
     }
-    const selectedTargetProduct = productListForSelect.find(
-      (product) => product && product.value === value
-    );
-
-    if (selectedTargetProduct) {
-      const updatedOfferProducts = originalSimpleProductForOffer.filter(
-        (item) => item.value !== selectedTargetProduct.value
-      );
-
-      setCreateFromData({
-        ...createBogoData,
-        [key]: value,
-        simpleProductForOffer: updatedOfferProducts,
-      });
-    }
 
   };
+
 
   const dealOptions = [
     { key: 'same', value: __('Buy X Get X', 'storegrowth-sales-booster') },
@@ -154,6 +151,12 @@ const BasicInfo = ({ clearErrors }) => {
             "The target product indicates for which specific products the upsell order bogo option will be displayed.",
             "storegrowth-sales-booster"
           )}
+          filterOption={(inputValue, option) =>
+            option?.children?.[0]
+              ?.toString()
+              ?.toLowerCase()
+              ?.includes(inputValue.toLowerCase())
+          }
         />
 
         <TextRadioBox

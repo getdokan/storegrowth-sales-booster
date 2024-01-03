@@ -155,8 +155,8 @@ class OrderBogo {
 	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
 		// Check if the cart item is an offer product
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-            $can_remove_offer_product = Helper::sgsb_get_bogo_settings_option( 'offer_remove_from_cart', false );
-            // Append custom class for BOGO offered product.
+			$can_remove_offer_product = Helper::sgsb_get_bogo_settings_option( 'offer_remove_from_cart', false );
+			// Append custom class for BOGO offered product.
 			$class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option' : ' sgsb-bogo-offer-applied';
 		}
 
@@ -187,14 +187,11 @@ class OrderBogo {
 		$all_cart_category_ids   = array();
 		$bogo_list               = Helper::sgsb_get_global_offered_products();
 		$showed_bogo_product_id  = array();
+		$is_simple_product       = $product->is_type( 'simple' );
 
-		// foreach ( $all_cart_products as $value ) {
-		// $cat_ids = $value['data']->get_category_ids();
-		// foreach ( $cat_ids as $cat_id ) {
-		// $all_cart_category_ids[] = $cat_id;
-		// }
-		// $all_cart_product_ids[] = $value['product_id'];
-		// }
+		if ( ! $is_simple_product ) {
+			return;
+		}
 
 		if ( $is_custom_field_present && isset( $bogo_custom_field_value->bogo_status ) && 'yes' === $bogo_custom_field_value->bogo_status ) {
 				$bogo_global_info = (object) $bogo_custom_field_value;
@@ -206,14 +203,9 @@ class OrderBogo {
 				$offer_type       = $bogo_info->offer_type;
 				$discount_amount  = $bogo_info->discount_amount;
 				$image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
-
-				$_product      = wc_get_product( $offer_product_id );
-				$regular_price = $_product->get_regular_price();
-			if ( 'discount' === $offer_type ) {
-				$offer_price = ( $regular_price - ( $regular_price * $discount_amount / 100 ) );
-			} else {
-				$offer_price = $discount_amount;
-			}
+				$_product         = wc_get_product( $offer_product_id );
+				$regular_price    = $_product->get_price();
+				$offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
 
 			if (
 				$current_product_id === (int) $target_product && 'yes' === $bogo_status
@@ -231,14 +223,9 @@ class OrderBogo {
 				$offer_type       = $bogo_info->offer_type;
 				$discount_amount  = $bogo_info->discount_amount;
 				$image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
-
-				$_product      = wc_get_product( $offer_product_id );
-				$regular_price = $_product->get_regular_price();
-				if ( 'discount' === $offer_type ) {
-					$offer_price = ( $regular_price - ( $regular_price * $discount_amount / 100 ) );
-				} else {
-					$offer_price = $discount_amount;
-				}
+				$_product         = wc_get_product( $offer_product_id );
+				$regular_price    = $_product->get_price();
+				$offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
 
 				if (
 				$current_product_id === (int) $target_product && 'yes' === $bogo_status
@@ -286,22 +273,22 @@ class OrderBogo {
 	 * @return array
 	 */
 	public function add_bogo_product_data_tab( $product_data_tabs ) {
-        global $post;
+		global $post;
 
-        $product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
-        $product    = wc_get_product( $product_id );
+		$product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
+		$product    = wc_get_product( $product_id );
 
-        // Check BOGO tab availability via current product type.
-        $is_available_bogo = $product->is_type( 'simple' ) || $product->is_type( 'variable' );
-        if ( ! $is_available_bogo ) {
-            return $product_data_tabs;
-        }
+		// Check BOGO tab availability via current product type.
+		$is_available_bogo = $product->is_type( 'simple' ) || $product->is_type( 'variable' );
+		if ( ! $is_available_bogo ) {
+			return $product_data_tabs;
+		}
 
 		$product_data_tabs['bogo_tab'] = array(
 			'label'  => __( 'BOGO', 'storegrowth-sales-booster' ),
-            'class'  => array( 'usage_limit_options' ),
-            'target' => 'bogo_product_data',
-        );
+			'class'  => array( 'usage_limit_options' ),
+			'target' => 'bogo_product_data',
+		);
 
 		return $product_data_tabs;
 	}
@@ -316,11 +303,11 @@ class OrderBogo {
 	public function add_bogo_product_data_fields() {
 		global $post;
 
-        $product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
-        if ( ! Helper::sgsb_is_load_product_bogo_offer( $product_id ) ) {
-            include __DIR__ . '/../templates/bogo-upgrade-notice.php';
-            return;
-        }
+		$product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
+		if ( ! Helper::sgsb_is_load_product_bogo_offer( $product_id ) ) {
+			include __DIR__ . '/../templates/bogo-upgrade-notice.php';
+			return;
+		}
 
 		if ( ! file_exists( __DIR__ . '/../templates/product-bogo-settings.php' ) ) {
 			return;

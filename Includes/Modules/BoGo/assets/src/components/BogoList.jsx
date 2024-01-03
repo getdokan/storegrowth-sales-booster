@@ -161,8 +161,7 @@ function ActionButton({ navigate, bogo_id }) {
 }
 
 function TargetProductAndCategory({ catList, productList }) {
-  console.log("Product List");
-  console.log(productList);
+
   return (
     <>
       {productList && (
