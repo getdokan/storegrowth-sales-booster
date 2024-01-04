@@ -136,18 +136,89 @@ class Helper {
 		}
 		return $offer_price;
 	}
-	// **
-	// * Get offered BOGO lists.
-	// *
-	// * @since 1.0.2
-	// *
-	// * @return array
-	// */
-	// public static function sgsb_get_global_offer_applied_product_ids() {
-	// $bogo_list = self::sgsb_get_global_offered_products();
-	// $offers    = wp_list_pluck( $bogo_list, 'post_excerpt' );
-	//
-	// Convert the serialized data into an array
-	// return array_map( 'maybe_unserialize', $offers );
-	// }
+
+    /**
+     * Get BOGO settings for cart.
+     *
+     * @since 1.0.2
+     *
+     * @param int $product_id
+     *
+     * @return array|mixed|void
+     */
+    public static function sgsb_get_product_bogo_settings_for_cart( $product_id ) {
+        $product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
+        if ( isset( $product_settings['bogo_status'] ) && $product_settings['bogo_status'] === 'yes' ) {
+            return $product_settings;
+        }
+
+        $offers = self::sgsb_get_global_offered_product_list();
+        foreach ( $offers as $offer ) {
+            if ( intval( $offer['offered_products'] ) === $product_id ) {
+                return $offer;
+            }
+        }
+    }
+
+    /**
+     * Get offer product id for BOGO apply.
+     *
+     * @since 1.0.2
+     *
+     * @param array $settings
+     * @param int   $product_id
+     *
+     * @return int|mixed|null
+     */
+    public static function sgsb_get_offer_product_id( $settings, $product_id ) {
+        $deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'same';
+
+        // Return same product as offer for same deal.
+        if ( $deal_type === 'same' ) {
+            return $product_id;
+        }
+
+        // Return buy y product for different deal.
+        if ( ! empty( $settings['get_different_product_field'] ) ) {
+            return intval( $settings['get_different_product_field'] );
+        }
+
+        // Return alternate first product as offer for buy y product.
+        $alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
+        return apply_filters(
+            'sgsb_bogo_offer_product_id_for_cart',
+            ! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
+            $settings,
+            $product_id
+        );
+    }
+
+    /**
+     * Get alternate offer products for BOGO apply.
+     *
+     * @since 1.0.2
+     *
+     * @param int $product_id
+     * @param int $item_id
+     *
+     * @return int|mixed|null
+     */
+    public static function sgsb_get_alternate_offer_products( $product_id, $item_id ) {
+        $variation_id    = 0;
+        $current_product = wc_get_product( $product_id );
+
+        if ( $current_product->is_type( 'variable' ) ) {
+            $variation_id = $product_id;
+            $product_id   = $current_product->get_parent_id();
+        }
+
+        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $product_id );
+        $bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
+
+        // Fetch full product details.
+        $product_ids     = ! empty( $bogo_settings['get_alternate_products'] ) ? $bogo_settings['get_alternate_products'] : array();
+        $product_objects = ! empty( $product_ids ) ? array_map( 'wc_get_product', $product_ids ) : array();
+
+        return apply_filters( 'sgsb_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
+    }
 }

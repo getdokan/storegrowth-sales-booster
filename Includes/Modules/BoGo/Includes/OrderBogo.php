@@ -57,17 +57,16 @@ class OrderBogo {
 
 	public function add_custom_text_for_offer_product( $product_name, $cart_item, $cart_item_key ) {
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-			$bogo_settings   = get_post_meta( $cart_item['bogo_product_for'], 'sgsb_product_bogo_settings', true );
-			$data_attributes = 'data-alternate-products="' . esc_attr( implode( ',', $bogo_settings['get_alternate_products'] ) ) . '" data-offered-categories="' . esc_attr( implode( ',', $bogo_settings['offered_categories'] ) ) . '" data-different-product="' . esc_attr( $bogo_settings['get_different_product_field'] ) . '"';
-			$custom_text     = '<p><a href="#" class="custom-choose-product" ' . $data_attributes . '>Choose Product</a></p>';
+			$bogo_settings = get_post_meta( $cart_item['bogo_product_for'], 'sgsb_product_bogo_settings', true );
+//			$custom_text   = '<p><a href="#" class="custom-choose-product">Choose Product</a></p>';
 
 			if ( file_exists( __DIR__ . '/../templates/bogo-offer-products-popup.php' ) ) {
 				ob_start();
 				include __DIR__ . '/../templates/bogo-offer-products-popup.php';
-				$custom_text .= ob_get_clean();
+                $product_name .= ob_get_clean();
 			}
 
-			return $product_name . $custom_text;
+//			return $product_name . $custom_text;
 		}
 
 		return $product_name;
@@ -90,7 +89,10 @@ class OrderBogo {
 		}
 
 		// Check offer schedule
-		if ( isset( $bogo_settings['offer_schedule'] ) && ! in_array( date( 'l' ), $bogo_settings['offer_schedule'] ) && ! in_array( 'daily', $bogo_settings['offer_schedule'] ) ) {
+		if ( isset( $bogo_settings['offer_schedule'] ) &&
+            ! in_array( strtolower( date( 'l' ) ), $bogo_settings['offer_schedule'] ) &&
+            ! in_array( 'daily', $bogo_settings['offer_schedule'] )
+        ) {
 			return false;
 		}
 
@@ -103,18 +105,17 @@ class OrderBogo {
 	}
 
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
-		// Check if the product being added is a main product and if it has an associated offer product
-		$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
-		$bogo_settings         = get_post_meta( $apply_able_product_id, 'sgsb_product_bogo_settings', true );
+		// Get apply product id.
+		$apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
 
-		if ( ! empty( $variation_id ) ) {
-			$main_product_bogo_settings = get_post_meta( $product_id, 'sgsb_product_bogo_settings', true );
-			$bogo_settings              = array_merge( $main_product_bogo_settings, $bogo_settings );
-		}
+        // Prepare settings for BOGO apply.
+        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
+		$bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
-		if ( $this->is_bogo_applicable( $bogo_settings, $quantity ) ) {
+        // Apply BOGO product if applicable.
+		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $bogo_settings, $quantity ) ) {
 			foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
-				if ( isset( $cart_item['linked_to_product_key'] ) && $cart_item['linked_to_product_key'] === $cart_item_key ) {
+				if ( isset( $cart_item['linked_to_product_key'] ) && sanitize_key( $cart_item['linked_to_product_key'] ) === $cart_item_key ) {
 					WC()->cart->set_quantity( $cart_key, ( $cart_item['quantity'] + 1 ) );
 					return;
 				}
@@ -125,7 +126,7 @@ class OrderBogo {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
-		$offer_product_id = isset( $settings['get_different_product_field'] ) ? $settings['get_different_product_field'] : 0;
+		$offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
 		$product          = wc_get_product( $offer_product_id );
 		if ( ! $product ) {
 			return;
@@ -362,7 +363,7 @@ class OrderBogo {
 			$bogo_products        = isset( $_POST['get_alternate_products'] ) ? wc_clean( wp_unslash( $_POST['get_alternate_products'] ) ) : array();
 			$offer_schedule       = isset( $_POST['offer_schedule'] ) ? wc_clean( wp_unslash( $_POST['offer_schedule'] ) ) : array( 'daily' );
 			$offer_end_date       = isset( $_POST['offer_end'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_end'] ) ) : '';
-			$bogo_categories      = isset( $_POST['get_alternate_categories'] ) ? wc_clean( wp_unslash( $_POST['get_alternate_categories'] ) ) : array();
+			$bogo_categories      = isset( $_POST['offered_categories'] ) ? wc_clean( wp_unslash( $_POST['offered_categories'] ) ) : array();
 			$bogo_badge_image     = isset( $_POST['bogo_badge_image'] ) ? sanitize_url( $_POST['bogo_badge_image'] ) : '';
 			$offer_start_date     = isset( $_POST['offer_start'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_start'] ) ) : '';
 			$product_discount     = isset( $_POST['discount_amount'] ) ? sanitize_text_field( wp_unslash( $_POST['discount_amount'] ) ) : 0;
@@ -377,11 +378,10 @@ class OrderBogo {
 			$bogo_settings_data['discount_amount']             = $product_discount;
 			$bogo_settings_data['bogo_badge_image']            = $bogo_badge_image;
 			$bogo_settings_data['shop_page_message']           = $shop_page_message;
-			$bogo_settings_data['get_alternate_categories']    = $bogo_categories;
-			$bogo_settings_data['product_page_message']        = $product_page_message;
-			$bogo_settings_data['get_alternate_products']      = $bogo_products;
-			$bogo_settings_data['minimum_quantity_required']   = $minimum_quantity;
-			$bogo_settings_data['get_different_product_field'] = $get_product;
+            $bogo_settings_data['product_page_message']        = $product_page_message;
+            $bogo_settings_data['get_alternate_products']      = $bogo_products;
+            $bogo_settings_data['minimum_quantity_required']   = $minimum_quantity;
+            $bogo_settings_data['get_different_product_field'] = $get_product;
 		}
 
 		$bogo_settings_data = apply_filters(
@@ -389,6 +389,7 @@ class OrderBogo {
 			$bogo_settings_data,
 			$is_variable_product
 		);
+
 		update_post_meta( $post_id, 'sgsb_product_bogo_settings', $bogo_settings_data );
 	}
 }

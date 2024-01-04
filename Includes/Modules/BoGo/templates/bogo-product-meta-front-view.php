@@ -6,7 +6,9 @@
  */
 
 // Check if the variables are set before using them.
-if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
+use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
+
+if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	$bogo_message = $bogo_info->product_page_message;
 	$bogo_message = str_replace( '[target_product]', get_the_title( $target_product ), $bogo_message );
 	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
@@ -38,8 +40,21 @@ if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular
 						</h3>
 
 						<?php
-						// Check if $bogo_info->get_different_product_field is set before using it.
-						$product_id = isset( $bogo_info->get_different_product_field ) ? $bogo_info->get_different_product_field : null;
+
+                        $variation_id = 0;
+                        if ( $product->is_type( 'variable' ) ) {
+                            $variation_id   = $target_product;
+                            $target_product = $product->get_parent_id();
+                        }
+
+                        // Get apply product id.
+                        $apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $target_product, $variation_id );
+
+                        // Prepare settings for BOGO apply.
+                        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
+                        $bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $target_product, $variation_id );
+
+                        $product_id = Helper::sgsb_get_offer_product_id( $bogo_settings, $apply_able_product_id );
 
 						if ( $product_id ) {
 							$product_categories = wp_get_post_terms( $product_id, 'product_cat' );

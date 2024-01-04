@@ -164,8 +164,10 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 						<?php
 						$products = wc_get_products(
 							array(
-								'status' => 'publish',
-								'limit'  => -1,
+								'status'  => 'publish',
+								'limit'   => -1,
+                                'exclude' => array( $post->ID ),
+                                'type'    => array( 'simple', 'variable' )
 							)
 						);
 
