@@ -1,12 +1,16 @@
 #bogo_product_data,
 #bogo_settings_fields,
 .disable-product-field,
-.disable_bogo_product_discount {
+.disable_bogo_product_discount,
+.disable_get_multiple_category_field, 
+.disable_get_multiple_product_field{
     display: none;
 }
 
 .active-product-field,
-.enable_bogo_product_discount {
+.enable_bogo_product_discount,
+.enable_get_multiple_category_field, 
+.enable_get_multiple_product_field {
     display: block;
 }
 

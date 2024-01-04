@@ -362,7 +362,7 @@ class OrderBogo {
 			$bogo_products        = isset( $_POST['get_alternate_products'] ) ? wc_clean( wp_unslash( $_POST['get_alternate_products'] ) ) : array();
 			$offer_schedule       = isset( $_POST['offer_schedule'] ) ? wc_clean( wp_unslash( $_POST['offer_schedule'] ) ) : array( 'daily' );
 			$offer_end_date       = isset( $_POST['offer_end'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_end'] ) ) : '';
-			$bogo_categories      = isset( $_POST['offered_categories'] ) ? wc_clean( wp_unslash( $_POST['offered_categories'] ) ) : array();
+			$bogo_categories      = isset( $_POST['get_alternate_categories'] ) ? wc_clean( wp_unslash( $_POST['get_alternate_categories'] ) ) : array();
 			$bogo_badge_image     = isset( $_POST['bogo_badge_image'] ) ? sanitize_url( $_POST['bogo_badge_image'] ) : '';
 			$offer_start_date     = isset( $_POST['offer_start'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_start'] ) ) : '';
 			$product_discount     = isset( $_POST['discount_amount'] ) ? sanitize_text_field( wp_unslash( $_POST['discount_amount'] ) ) : 0;
@@ -377,7 +377,7 @@ class OrderBogo {
 			$bogo_settings_data['discount_amount']             = $product_discount;
 			$bogo_settings_data['bogo_badge_image']            = $bogo_badge_image;
 			$bogo_settings_data['shop_page_message']           = $shop_page_message;
-			$bogo_settings_data['offered_categories']          = $bogo_categories;
+			$bogo_settings_data['get_alternate_categories']    = $bogo_categories;
 			$bogo_settings_data['product_page_message']        = $product_page_message;
 			$bogo_settings_data['get_alternate_products']      = $bogo_products;
 			$bogo_settings_data['minimum_quantity_required']   = $minimum_quantity;
@@ -389,7 +389,6 @@ class OrderBogo {
 			$bogo_settings_data,
 			$is_variable_product
 		);
-
 		update_post_meta( $post_id, 'sgsb_product_bogo_settings', $bogo_settings_data );
 	}
 }

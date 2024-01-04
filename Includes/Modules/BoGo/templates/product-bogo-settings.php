@@ -182,8 +182,7 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 						<?php endforeach; ?>
 					</select>
 				</p>
-
-				<?php echo apply_filters( 'sgsb_after_bogo_offer_type_field', '', $bogo_settings ); ?>
+				<?php  do_action( 'sgsb_after_bogo_offer_type_field', $bogo_settings ); ?>
 
 				<?php
 				$product_page_msg = ! empty( $bogo_settings['product_page_message'] ) ? esc_html( $bogo_settings['product_page_message'] ) : '';
