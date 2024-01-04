@@ -41,11 +41,10 @@
 .bogo-notice {
     padding: 5px 10px;
     background: white;
-    border-left: 5px solid green;
 }
 
 .bogo-notice .bogo-notice-text {
-    width: 800px;
+    width: 90%;
     margin: 24px;
     background: white;
     padding: 10px 10px;

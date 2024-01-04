@@ -107,6 +107,13 @@ class BoGoModule implements ModuleSkeleton {
 		Includes\OrderBogo::instance();
 		Includes\Ajax::instance();
 		Includes\EnqueueScript::instance();
+
+			/**
+		 * Module initialized.
+		 *
+		 * @since 1.0.2
+		 */
+		do_action( 'storegrowth_bogo_module_init' );
 	}
 }
 
