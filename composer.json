@@ -2,8 +2,9 @@
   "name": "invizo/storegrowth",
   "autoload": {
     "psr-4": {
-      "StorePlus\\Inc\\": "includes/"
-    }
+      "STOREGROWTH\\SPSB\\": "Includes/"
+    },
+    "files": [ "Includes/functions.php" ]
   },
   "authors": [
     {

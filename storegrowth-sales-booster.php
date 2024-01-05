@@ -13,10 +13,18 @@
  * @package SGSB
  */
 
+use STOREGROWTH\SPSB\Bootstrap;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	return;
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Define plugin __FILE__
@@ -43,7 +51,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
  * Define The Template's Folder Constant
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'includes/modules/' );
+	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path(STOREGROWTH_PLUGIN_FILE) . 'Includes/Modules/');
 }
 
 /**
@@ -51,7 +59,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
  */
 
 if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
-	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
+	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'CountdownTimer/templates/' );
 }
 
 /**
@@ -59,7 +67,7 @@ if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
  */
 
 if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
-	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
+	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'ProgressiveDiscountBanner/templates/' );
 }
 
 /**
@@ -96,22 +104,16 @@ if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-
 } else {
 	define( 'SGSB_PRO_ACTIVE', false );
 }
-/**
- * Include necessary files to initial load of the plugin.
- */
-if ( ! class_exists( 'STOREGROWTH\SPSB\Bootstrap' ) ) {
-	require_once __DIR__ . '/includes/traits/trait-singleton.php';
-	require_once __DIR__ . '/includes/class-bootstrap.php';
-}
 
 /**
  * Initialize the plugin functionality.
  *
  * @since  1.0.0
- * @return SBFW\Bootstrap
+ *
+ * @return Bootstrap
  */
-function sgsb_plugin() {
-	return STOREGROWTH\SPSB\Bootstrap::instance();
+function sgsb_plugin(): Bootstrap {
+	return Bootstrap::instance();
 }
 
 // Call initialization function.
