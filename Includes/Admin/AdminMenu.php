@@ -90,6 +90,26 @@ class AdminMenu {
 			array( $this, 'settings_callback' )
 		);
 
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
+			__( 'Documentaion', 'storegrowth-sales-booster' ),
+			__( 'Documentaion', 'storegrowth-sales-booster' ),
+			'manage_options',
+			'go-sgsb-docs',
+			array( $this, 'handle_external_redirects' )
+		);
+
+		if ( ! SGSB_PRO_ACTIVE ) {
+			add_submenu_page(
+				'sales-booster-for-woocommerce',
+				__( 'Upgrade to Pro', 'storegrowth-sales-booster' ),
+				'<span class="dashicons dashicons-star-filled" style="font-size: 17px"></span> ' . esc_html__( 'Upgrade to Pro', 'storegrowth-sales-booster' ),
+				'manage_options',
+				'go-sgsb-pro',
+				array( $this, 'handle_external_redirects' )
+			);
+		}
+
 		// Remove own submenu of `StoreGrowth`.
 		remove_submenu_page( 'sales-booster-for-woocommerce', 'sales-booster-for-woocommerce' );
 	}
@@ -115,5 +135,32 @@ class AdminMenu {
 		$redirect_url = admin_url( 'admin.php?page=sgsb-settings#/dashboard/overview' );
 		wp_safe_redirect( $redirect_url );
 		exit;
+	}
+
+	/**
+	 * Redirect to a specific URL.
+	 *
+	 * @param string $url The URL to redirect to.
+	 */
+	private function redirect_to_url( $url ) {
+		if ( ! empty( $url ) ) {
+			wp_redirect( $url );
+			exit;
+		}
+	}
+
+	/**
+	 * Handle external redirects based on the requested page.
+	 */
+	public function handle_external_redirects() {
+		$redirect_pages = array(
+			'go-sgsb-pro'  => 'https://www.storegrowth.io/pricing',
+			'go-sgsb-docs' => 'https://storegrowth.io/docs/',
+		);
+
+		if ( ! empty( $_GET['page'] ) && isset( $redirect_pages[ $_GET['page'] ] ) ) {
+			$redirect_url = $redirect_pages[ $_GET['page'] ];
+			$this->redirect_to_url( $redirect_url );
+		}
 	}
 }
