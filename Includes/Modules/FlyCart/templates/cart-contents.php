@@ -30,7 +30,11 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 <?php do_action( 'woocommerce_before_cart' ); ?>
 
 <form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
-
+	<div class="sgsb-cart-notification-popup">
+		<div class="sgsb-cart-notification-content">
+		<span class="sgsb-cart-notification-message">Stock limit reached</span>
+		</div>
+	</div>
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
 	<table class="sgsb-fly-cart-table" cellspacing="0">

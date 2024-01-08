@@ -947,3 +947,34 @@ iframe.sgsb-fast-cart-checkout-frame {
 ::-webkit-scrollbar-corner {
     background: #000;
 } */
+
+.sgsb-cart-notification-popup {
+    display: none;
+    position: absolute;
+    top: inherit;
+    right: 30px;
+    font-size: 18px;
+    font-weight: 700;
+    background-color: #ffffff87;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    z-index: 9999;
+    animation: showNotification 0.3s ease forwards;
+  }
+  
+  .sgsb-cart-notification-content {
+    color: #f40000;
+  }
+  
+  /* Optional animation for the popup */
+  @keyframes showNotification {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

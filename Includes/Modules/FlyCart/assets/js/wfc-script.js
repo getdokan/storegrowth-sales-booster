@@ -12,6 +12,12 @@
     shake: true,
   });
 
+  function showNotification(message) {
+    var $notificationPopup = $(".sgsb-cart-notification-popup");
+    $notificationPopup.find(".sgsb-cart-notification-message").text(message);
+    $notificationPopup.fadeIn().delay(2500).fadeOut();
+  }
+
   /**
    * Set Fly Cart Contents.
    */
@@ -209,6 +215,15 @@
       "click",
       ".sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon",
       function () {
+        var quantityInput = $(this).siblings(".quantity").find(".qty");
+        var maxValue = quantityInput.attr("max");
+        var currentValue = parseInt(quantityInput.val());
+  
+        if (!isNaN(currentValue) && !isNaN(maxValue) && currentValue >= maxValue) {
+          showNotification("Stock limit reached");
+          return; // Stop further execution if the limit is reached
+        }
+        
         updateProductQuantity.bind(this, "plus").call();
       }
     );
@@ -254,7 +269,7 @@
             return;
           }
         }.bind(this),
-        800
+        100
       );
     });
 
