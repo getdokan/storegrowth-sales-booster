@@ -181,7 +181,7 @@
               jQuery(".wfc-overlay").removeClass("wfc-hide");
               jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
               setDynamicHeight();
-              getCartContents();
+              openCheckoutPageCallback(sgsbFrontend?.checkoutUrl);
             },
             error: (error) => console.log(error),
           });
@@ -218,12 +218,16 @@
         var quantityInput = $(this).siblings(".quantity").find(".qty");
         var maxValue = quantityInput.attr("max");
         var currentValue = parseInt(quantityInput.val());
-  
-        if (!isNaN(currentValue) && !isNaN(maxValue) && currentValue >= maxValue) {
+
+        if (
+          !isNaN(currentValue) &&
+          !isNaN(maxValue) &&
+          currentValue >= maxValue
+        ) {
           showNotification("Stock limit reached");
           return; // Stop further execution if the limit is reached
         }
-        
+
         updateProductQuantity.bind(this, "plus").call();
       }
     );
