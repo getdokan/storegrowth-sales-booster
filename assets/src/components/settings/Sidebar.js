@@ -1,5 +1,5 @@
 import { useEffect, useState } from "@wordpress/element";
-import { Layout, Menu, Image } from "antd";
+import { Layout, Image } from "antd";
 import { Link, matchRoutes, Navigate, useLocation } from "react-router-dom";
 
 import logo from "../../../images/logo.svg";
@@ -52,7 +52,7 @@ function Sidebar({ routes }) {
             const dashboardRoutes = [];
             const availableRoutes = allRoutes.map(availableRoute => availableRoute?.name);
             response?.map(route => {
-                if (currentRoute?.name === 'dashboard' && !availableRoutes?.includes(route?.id)) {
+                if ( !availableRoutes?.includes(route?.id) ) {
                     dashboardRoutes.push({
                         name: route?.id,
                         path: `/${route?.id}`,
@@ -65,7 +65,7 @@ function Sidebar({ routes }) {
             setAllRoutes([...allRoutes, ...dashboardRoutes]);
         });
     }, [currentRoute?.name]);
-
+    
     const toggleMenuClass = () => {
         setActiveClass((prevIsActive) => !prevIsActive);
     };
