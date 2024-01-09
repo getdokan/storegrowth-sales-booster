@@ -70,6 +70,10 @@ function Sidebar({ routes }) {
         setActiveClass((prevIsActive) => !prevIsActive);
     };
 
+    const dashboardRedirect = () => {
+        window.location.href = 'admin.php?page=sgsb-modules';
+    };
+
     useEffect(() => {
         setSelectedMenu(currentRoute?.name);
     }, [currentRoute?.name]);
@@ -154,21 +158,14 @@ function Sidebar({ routes }) {
                 </h3>
                 <div className="all-widgets-menu">
                     <h4
-                        className={`${selectedMenu !== "dashboard" ? "active-menu" : ""}`}
+                        onClick={dashboardRedirect}
                     >
                         <Image preview={false} width={18} src={widgetIcon} />
                         {__("All Modules", "storegrowth-sales-booster")}
-                        <span onClick={toggleMenuClass} className="ant-menu-title-content">
-                            {activeClass ? (
-                                <img src={upArrowIocn} width="12" />
-                            ) : (
-                                <img src={downArrowIocn} width="12" />
-                            )}
-                        </span>
                     </h4>
                     <ul
                         className={
-                            activeClass ? "widgets-menu ant-menu-hidden" : "widgets-menu"
+                            "widgets-menu"
                         }
                     >
                         {allRoutes.map(
