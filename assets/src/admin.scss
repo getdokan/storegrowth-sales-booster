@@ -2337,6 +2337,11 @@ End Settings Sidebar
                       grid-template-rows: repeat(1, auto);
                     }
                   }
+                  &.quick-cart-position {
+                    @media (max-width: 1440px) {
+                      grid-template-rows: repeat(3, auto);
+                    }
+                  }
 
                   label.ant-radio-button-wrapper {
                     color: #073B4C;

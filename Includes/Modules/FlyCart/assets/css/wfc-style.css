@@ -35,14 +35,6 @@
     left: 60px;
 }
 
-.wfc-cart-icon.left-center {
-    top: 50%;
-    left: 60px;
-}
-.wfc-cart-icon.right-center {
-    top: 50%;
-    right: 60px;
-}
 
 .wfc-cart-icon .wfc-icon {
     cursor: pointer;
@@ -88,6 +80,24 @@
     z-index: 1000001;
     box-shadow: -2px 0px 9px 0px rgba(184, 184, 184, 1);
     transition: 1s ease;
+}
+
+.wfc-widget-sidebar .qc-close-nav {
+    position: absolute;
+    left: -22px;
+    top: 45%;
+    background: #0875FF;
+    padding: 20px 4px 24px 4px;
+    border-radius: 4px 0px 0px 4px;
+    cursor:pointer;
+}
+
+.wfc-widget-sidebar .qc-close-nav svg {
+    transform: rotate(-90deg);
+    scale: 1.5;
+}
+.wfc-widget-sidebar .qc-close-nav path {
+    stroke: #fff;
 }
 
 .wfc-overlay {

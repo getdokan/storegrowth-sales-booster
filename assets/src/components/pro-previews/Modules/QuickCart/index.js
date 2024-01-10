@@ -18,6 +18,33 @@ addFilter(
         ];
     }
 );
+
+addFilter(
+    'sgsb_quick_cart_position_settings',
+    'sgsb_quick_cart_position_settings_callback',
+
+    ( positionContents, positionIcon ) => {
+
+        const [CenterLeft,CenterRight]=positionIcon;
+        
+        return [
+            ...positionContents,
+            {
+                key      : 'center-left',
+                icon     : CenterLeft,
+                name     : __( 'Centere Left', 'storegrowth-sales-booster' ),
+                disabled : true,
+            },
+            {
+                key      : 'center-right',
+                icon     : CenterRight,
+                name     : __( 'Centered Right', 'storegrowth-sales-booster' ),
+                disabled : true,
+            }
+        ];
+    }
+);
+
 addFilter(
     'sgsb_quick_cart_content_settings',
     'sgsb_quick_cart_content_settings_callback',
