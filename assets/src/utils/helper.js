@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { Ajax } from '../ajax';
 
 export const menuFix = ( slug ) => {
     const $ = jQuery;
@@ -72,4 +73,27 @@ export const wpMedia = ( {
 
         callback( attachment );
     } );
+}
+
+export const deactivatorHandler= (moduleID)=>{
+    Ajax( 'update_module_status', {
+        module_id: moduleID,
+        status: false
+    }).success((response) => {
+        if (response.success) {
+            const sgsbSettingsURL = `admin.php?page=sgsb-modules`;
+            window.location.href = sgsbSettingsURL;
+        }
+    });
+    
+}
+
+export const removeHashFromURL = (url) => {
+    if (url.startsWith('#/')) {
+      return url.slice(2); // Remove "#/"
+    } else if (url.startsWith('#')) {
+      return url.slice(1); // Remove "#"
+    } else {
+      return url; // No change needed
+    }
 }
