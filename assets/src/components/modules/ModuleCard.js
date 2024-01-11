@@ -118,7 +118,7 @@ function ModuleCard( { module } ) {
               >
                 Documentation
               </Button>
-           </div>
+          </div>
             <Col span={3} style={{ float: 'right' }} className='switch-btn'>
               <ModuleSwitch module={module} />
             </Col>

@@ -963,6 +963,7 @@ End Settings Sidebar
         color: #ffffff;
         box-shadow: none;
       }
+
       span {
         font-size: 16px;
         font-weight: 700;
@@ -1502,7 +1503,7 @@ End Settings Sidebar
         justify-content: center;
         gap: 9px;
 
-        &:focus{
+        &:focus {
           color: #ffffff;
           box-shadow: none;
         }
@@ -1876,6 +1877,7 @@ End Settings Sidebar
             color: #ffffff;
             box-shadow: none;
           }
+
           span {
             font-size: 18px;
             font-weight: 700;
@@ -1889,7 +1891,7 @@ End Settings Sidebar
         a {
           border: none;
           background: var(--premium-color, #FFAC27);
-          
+
           &:focus {
             color: #ffffff;
             box-shadow: none;
@@ -1983,6 +1985,12 @@ End Settings Sidebar
       align-items: center;
       padding: 24px 30px 24px 30px;
       justify-content: space-between;
+
+      .header-content-wrapper {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
     }
 
     .header-divider {
@@ -2321,13 +2329,15 @@ End Settings Sidebar
                     }
                   }
                 }
-                &.radio-icon-field{
+
+                &.radio-icon-field {
                   &.quick-icon-layout {
                     @media (max-width: 1440px) {
                       grid-template-rows: repeat(1, auto);
                     }
                   }
                 }
+
                 &.radio-img-field {
                   height: 100%;
                   margin-top: 20px;
@@ -2861,7 +2871,8 @@ End Settings Sidebar
       }
     }
   }
-  input[type="search"]:focus{
+
+  input[type="search"]:focus {
     box-shadow: none !important;
   }
 }
