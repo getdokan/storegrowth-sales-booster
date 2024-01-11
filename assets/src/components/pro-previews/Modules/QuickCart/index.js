@@ -30,15 +30,15 @@ addFilter(
         return [
             ...positionContents,
             {
-                key      : 'center-left',
-                icon     : CenterLeft,
-                name     : __( 'Centere Left', 'storegrowth-sales-booster' ),
+                key      : 'center-right',
+                icon     : CenterRight,
+                name     : __( 'Centre Right', 'storegrowth-sales-booster' ),
                 disabled : true,
             },
             {
-                key      : 'center-right',
-                icon     : CenterRight,
-                name     : __( 'Centered Right', 'storegrowth-sales-booster' ),
+                key      : 'center-left',
+                icon     : CenterLeft,
+                name     : __( 'Centre Left', 'storegrowth-sales-booster' ),
                 disabled : true,
             }
         ];

@@ -963,6 +963,7 @@ End Settings Sidebar
         color: #ffffff;
         box-shadow: none;
       }
+
       span {
         font-size: 16px;
         font-weight: 700;
@@ -1502,7 +1503,7 @@ End Settings Sidebar
         justify-content: center;
         gap: 9px;
 
-        &:focus{
+        &:focus {
           color: #ffffff;
           box-shadow: none;
         }
@@ -1876,6 +1877,7 @@ End Settings Sidebar
             color: #ffffff;
             box-shadow: none;
           }
+
           span {
             font-size: 18px;
             font-weight: 700;
@@ -1889,7 +1891,7 @@ End Settings Sidebar
         a {
           border: none;
           background: var(--premium-color, #FFAC27);
-          
+
           &:focus {
             color: #ffffff;
             box-shadow: none;
@@ -2321,13 +2323,15 @@ End Settings Sidebar
                     }
                   }
                 }
-                &.radio-icon-field{
+
+                &.radio-icon-field {
                   &.quick-icon-layout {
                     @media (max-width: 1440px) {
                       grid-template-rows: repeat(1, auto);
                     }
                   }
                 }
+
                 &.radio-img-field {
                   height: 100%;
                   margin-top: 20px;
@@ -2337,10 +2341,46 @@ End Settings Sidebar
                       grid-template-rows: repeat(1, auto);
                     }
                   }
+
                   &.quick-cart-position {
                     @media (max-width: 1440px) {
-                      grid-template-rows: repeat(3, auto);
+                      grid-template-rows: repeat(2, auto);
                     }
+
+                    .disabled-settings {
+                      .pro-content-overlay {
+                        .upgrade-button {
+                          gap: 0px;
+                          font-size: 11px;
+                          flex-flow: column;
+                        }
+                      }
+                    }
+
+                    .layout-img {
+                      img {
+                        margin: 12px 0 2px;
+                        max-width: 100px;
+                      }
+                    }
+
+                    .option-name {
+                      gap: 0px;
+                      display: flex;
+                      align-items: center;
+                      flex-flow: column;
+                      margin-bottom: 9px;
+
+                      .sgsb-field-upgrade-pro-label {
+                        gap: 10px;
+                        display: flex;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 28%;
+                      }
+
+                    }
+
                   }
 
                   label.ant-radio-button-wrapper {
@@ -2866,7 +2906,8 @@ End Settings Sidebar
       }
     }
   }
-  input[type="search"]:focus{
+
+  input[type="search"]:focus {
     box-shadow: none !important;
   }
 }
