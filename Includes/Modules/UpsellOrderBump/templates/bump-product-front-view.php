@@ -93,4 +93,5 @@
 				</label>
 			</div>
 		</div>
+		<hr style="margin-bottom:<?php echo esc_attr( $bump_info->box_bottom_margin ); ?>px"/>
 </div>

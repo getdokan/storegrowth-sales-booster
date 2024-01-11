@@ -502,7 +502,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
     h3 {
       display: flex;
-      padding: 50px 20px 40px;
+      padding: 50px 20px 20px;
       align-items: center;
 
       a {
@@ -550,10 +550,22 @@ main.ant-layout-content.sgsb-module-setting-layout {
         font-weight: 600;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 0 12px 20px 20px;
         gap: 10px;
         position: relative;
+        cursor: pointer;
+
+        &:hover:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+      }
+      
 
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
@@ -1034,7 +1046,7 @@ End Settings Sidebar
     h3 {
       display: flex;
       position: relative;
-      padding: 50px 20px 30px;
+      padding: 50px 20px 0px;
       align-items: center;
 
       a {
@@ -1083,10 +1095,21 @@ End Settings Sidebar
         font-weight: 600;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 0 12px 20px 20px;
         gap: 10px;
+        cursor: pointer;
         position: relative;
+
+        &:hover:before {
+          content: "";
+          position: absolute;
+          background: #0875FF;
+          width: 3px;
+          height: 28px;
+          right: 3px;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+      }
 
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
@@ -1420,7 +1443,7 @@ End Settings Sidebar
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 20px 40px 20px;
+      padding: 20px 20px 20px 20px;
       cursor: pointer;
 
       @media (min-width: 1600px) {

@@ -6,7 +6,7 @@
  */
 
 // Main popup div style.
-$main_div_width         = ceil( $popup_properties['screen_width'] * $popup_properties['popup_width'] / 100 );
+$main_div_width         = $popup_properties['popup_width'];
 $main_div_width         = $main_div_width ? $main_div_width : 400;
 $main_div_height        = $main_div_width * 20 / 100;
 $main_div_border_radius = $popup_properties['popup_border_radius'] ? $popup_properties['popup_border_radius'] : 0;

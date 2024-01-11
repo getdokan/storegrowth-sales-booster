@@ -144,7 +144,7 @@
 
 	function handlePopupVisibility() {
 		var windowWidth = $(window).width();
-		var popupWidth						= popup_all_properties.screen_width * popup_all_properties.popup_width/ 100;
+		var popupWidth						=popup_all_properties.popup_width;
 
 		if (windowWidth <= 320) {
 			popupWidth = 300;

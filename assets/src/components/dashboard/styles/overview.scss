@@ -64,10 +64,15 @@
       border: 1px solid #dde6f9;
       border-radius: 10px;
       box-shadow: 0px 25px 20px 0px rgba(45, 73, 109, 0.03);
+      overflow: hidden;
 
       .intro-section-banner {
         display: flex;
         justify-content: space-between;
+
+        iframe {
+          width: -webkit-fill-available;
+        }
 
         .intro-section-text {
           padding: 40px 0px 0px 40px;
@@ -980,68 +985,4 @@
       }
     }
   }
-}
-
-// Pricing toggle switch style
-/* PricingToggle.css */
-.toggle-switch {
-  position: relative;
-  width: 240px;
-  height: 60px;
-  background-color: #ffffff;
-  border-radius: 50px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  overflow: hidden;
-  padding: 0px 6px;
-  border: 1px solid #102f501b;
-  transition: background-color 0.3s;
-}
-
-.toggle-button {
-  display: none;
-}
-
-/* Styling for Yearly and Lifetime options */
-.option {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  height: 74px;
-  color: #102f50;
-
-  /* Default text color for unselected options */
-  &.active {
-    color: #fff;
-    /* Text color for the active (selected) option */
-    background-color: #102f50;
-    height: 80%;
-    border-radius: 50px;
-  }
-}
-
-/* Style for the checked state */
-.toggle-button:checked+.option {
-  // color: #fff; /* Text color for the selected option */
-  transition: transform 0.5s, opacity 0.3s;
-  // opacity: 0.8;
-}
-
-.toggle-button {
-  &.plantoggle {
-    display: none;
-  }
-}
-
-.toggle-button:checked+.option:last-child {
-  background-color: transparent;
-  /* Set background to transparent */
-}
-
-.yearly-price,
-.lifetime-price {
-  transition: color 0.5s, opacity 0.5s;
 }

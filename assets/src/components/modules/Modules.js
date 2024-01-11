@@ -153,7 +153,7 @@ function Modules() {
    */
 
   useEffect(() => {
-    if (activatedModules === 0 && filterActiveModules ) {
+    if (activatedModules === 0 && filterActiveModules) {
       setCurrentPage(1);
       setMinValue(0);
       setMaxValue(perPageItem);
@@ -166,7 +166,9 @@ function Modules() {
     return (
       <>
         {modules
-          .filter((module) => module.name.toLowerCase().includes(searchModule.toLowerCase()))
+          .filter((module) =>
+            module.name.toLowerCase().includes(searchModule.toLowerCase())
+          )
           .filter((module) => (filterActiveModules ? module.status : true)) // Filter based on the filterActiveModules state
           .slice(minValue, maxValue)
           .map((module) => (
@@ -231,22 +233,11 @@ function Modules() {
           ""
         )}
         <div className="all-widgets-menu">
-          <h4 onClick={toggleMenuClass}>
+          <h4 className="active-menu">
             <Image preview={false} width={18} src={widgetIcon} />
             All Modules
-            <span className="ant-menu-title-content">
-              {activeClass ? (
-                <img src={downArrowIocn} width="12" />
-              ) : (
-                <img src={upArrowIocn} width="12" />
-              )}
-            </span>
           </h4>
-          <ul
-            className={
-              activeClass ? "widgets-menu " : "widgets-menu ant-menu-hidden"
-            }
-          >
+          <ul className={"widgets-menu"}>
             {allModules.map((module) => {
               return !module.status ? (
                 <li
