@@ -6,6 +6,7 @@ import { register } from "@wordpress/data";
 
 import BogoStore from "./store";
 import BogoTabLayout from "./components/BogoTabLayout";
+import CreateMessage from "./components/CreateMessage";
 
 register(BogoStore);
 
@@ -22,7 +23,7 @@ addFilter(
       name: "bogo",
       label: "BOGO",
       element: (
-        <BogoLayout outlet={outlet} navigate={navigate} useParams={useParams} />
+        <BogoLayout outlet={outlet} navigate={navigate} useParams={useParams} useSearchParams={useSearchParams} />
       ),
       children: [
         {
@@ -59,6 +60,36 @@ addFilter(
           path: ":action_name/:bogo_id",
           element: (
             <CreateBogo
+              navigate={navigate}
+              useParams={useParams}
+              useSearchParams={useSearchParams}
+            />
+          ),
+        },
+        {
+          path: 'create-message',
+          element: (
+            <CreateMessage
+              navigate={navigate}
+              useParams={useParams}
+              useSearchParams={useSearchParams}
+            />
+          ),
+        },
+        {
+          path: "create-message/:category_id",
+          element: (
+            <CreateMessage
+              navigate={navigate}
+              useParams={useParams}
+              useSearchParams={useSearchParams}
+            />
+          ),
+        },
+        {
+          path: "create-message/:action_name/:category_id",
+          element: (
+            <CreateMessage
               navigate={navigate}
               useParams={useParams}
               useSearchParams={useSearchParams}

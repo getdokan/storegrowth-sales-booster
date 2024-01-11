@@ -4,11 +4,11 @@ import PanelHeader from "sales-booster/src/components/settings/Panels/PanelHeade
 import PanelContainer from "sales-booster/src/components/settings/Panels/PanelContainer";
 import CreateBogoButton from "./CreateBogoButton";
 
-function BogoLayout({ outlet: Outlet, navigate }) {
+function BogoLayout({ outlet: Outlet, navigate, useSearchParams }) {
     return (
         <Fragment>
             <PanelHeader title={__('BOGO Settings', 'storegrowth-sales-booster')}>
-                <CreateBogoButton navigate={navigate} />
+                <CreateBogoButton navigate={navigate} useSearchParams={useSearchParams} />
             </PanelHeader>
             <PanelContainer>
                 <Outlet />

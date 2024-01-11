@@ -37,6 +37,12 @@ class Ajax {
 		add_action( 'wp_ajax_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
 		add_action( 'wp_ajax_nopriv_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
 
+        add_action( 'wp_ajax_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
+        add_action( 'wp_ajax_nopriv_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
+
+        add_action( 'wp_ajax_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
+        add_action( 'wp_ajax_nopriv_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
+
 		add_action( 'wp_ajax_sgsb_bogo_general_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_bogo_general_get_settings', array( $this, 'get_settings' ) );
 
@@ -159,6 +165,33 @@ class Ajax {
 		die();
 	}
 
+    /**
+     * Bogo category message creation.
+     */
+    public function bogo_category_msg_create() {
+        check_ajax_referer( 'ajd_protected' );
+
+        if ( empty( $_POST['data'] ) || empty( $_POST['data']['id'] ) ) {
+            wp_send_json_error( __( 'Category message id can\'nt be empty.' ) );
+        }
+
+        $data          = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
+        $bogo_settings = get_option( 'sgsb_bogo_general_settings', array() );
+        $cat_ids       = ! empty( $bogo_settings['bogo_category_messages'] ) ? wp_list_pluck( $bogo_settings['bogo_category_messages'], 'id' ) : array();
+        if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids ) ) {
+            $index = array_search( $data['editableId'], $cat_ids );
+
+            $bogo_settings['bogo_category_messages'][ $index ]['id']             = $data['id'];
+            $bogo_settings['bogo_category_messages'][ $index ]['message']        = $data['message'];
+            $bogo_settings['bogo_category_messages'][ $index ]['categoryStatus'] = $data['categoryStatus'];
+        } else {
+            $bogo_settings['bogo_category_messages'][] = $data;
+        }
+
+        $status = update_option( 'sgsb_bogo_general_settings', $bogo_settings );
+        wp_send_json_success( $status );
+    }
+
 	/**
 	 * Order bogo list.
 	 */
@@ -185,6 +218,25 @@ class Ajax {
 			wp_send_json_success( $bogos );
 		}
 	}
+
+    /**
+     * Bogo category message list.
+     */
+    public function bogo_category_msg_list() {
+        check_ajax_referer( 'ajd_protected' );
+
+        $bogo_settings = get_option( 'sgsb_bogo_general_settings', array() );
+        if ( empty( $bogo_settings['bogo_category_messages'] ) ) {
+            wp_send_json_error( __( 'Category message not found.' ) );
+        }
+
+        wp_send_json_success(
+            array(
+                'success'          => true,
+                'categoryDataList' => $bogo_settings['bogo_category_messages']
+            )
+        );
+    }
 
 	/**
 	 * Bogo product delete.

@@ -6,7 +6,7 @@ import { iniBogoGlobalSettings } from "../helper";
 import BogoIcons from './BogoIcons';
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SettingsSection from 'sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection';
-import { SectionSpacer, Switcher, TextAreaBox, RadioBox } from 'sales-booster/src/components/settings/Panels';
+import { Switcher } from 'sales-booster/src/components/settings/Panels';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect, useState } from "@wordpress/element";
 
@@ -137,14 +137,6 @@ const GeneralSettings = () => {
           isEnable={currentSettings?.global_product_page_bage_icon}
           tooltip={__('The badge icon will show in the product page.')}
         />
-        <Switcher
-          colSpan={12}
-          name={'bogo_category_page_message_enable'}
-          changeHandler={onFieldChange}
-          title={__('Enable Category Page Message', 'storegrowth-sales-booster')}
-          isEnable={currentSettings?.bogo_category_page_message_enable}
-          tooltip={__('The badge icon will show in the product page.')}
-        />
         
         {applyFilters(
           "sgsb_bogo_global_badge_icon_radio_box",
@@ -154,22 +146,6 @@ const GeneralSettings = () => {
           onBarChange,
           setBogoGlobalSettings
         )}
-
-        {currentSettings?.bogo_category_page_message_enable &&
-          (
-            <Fragment>
-              <SectionSpacer />
-              <TextAreaBox
-                areaRows={3}
-                name={'bogo_product_page_message'}
-                fieldValue={currentSettings?.bogo_product_page_message}
-                changeHandler={onFieldChange}
-                title={__('Category Page Message', 'storegrowth-sales-booster')}
-                placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
-                tooltip={__('example text', 'storegrowth-sales-booster')}
-              />
-            </Fragment>)
-        }
 
       </SettingsSection>
       <ActionsHandler
