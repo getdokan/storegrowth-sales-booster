@@ -157,11 +157,15 @@
       jQuery(this).addClass("wfc-hide");
       jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
     });
-    jQuery(document).on("click", ".sgsb-cart-widget-close", function (event) {
-      event.preventDefault();
-      jQuery(".wfc-overlay").addClass("wfc-hide");
-      jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
-    });
+    jQuery(document).on(
+      "click",
+      ".sgsb-cart-widget-close, .qc-close-nav",
+      function (event) {
+        event.preventDefault();
+        jQuery(".wfc-overlay").addClass("wfc-hide");
+        jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
+      }
+    );
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
     if (isPro && Boolean(checkoutRedirect)) {

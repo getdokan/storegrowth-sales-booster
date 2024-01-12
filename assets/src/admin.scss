@@ -2371,6 +2371,59 @@ End Settings Sidebar
                     }
                   }
 
+                  &.quick-cart-position {
+
+                    grid-template-rows: repeat(2, auto);
+
+                    img {
+                      width: 150px;
+                    }
+
+                    @media (max-width: 1600px) {
+                      .layout-img {
+                        img {
+                          width: 120px;
+                        }
+                      }
+                      .upgrade-button {
+                        gap:0px;
+                        flex-direction: column;
+                      }
+                    }
+
+                    @media (max-width: 1440px) {
+                      .layout-img {
+                        img {
+                          margin: 12px 0 2px;
+                          max-width: 100px;
+                        }
+                      }
+
+                      .upgrade-button {
+                        font-size: 10px;
+                      }
+                    }
+
+
+                    .option-name {
+                      gap: 0px;
+                      display: flex;
+                      align-items: center;
+                      flex-flow: column;
+                      margin-bottom: 9px;
+
+                      .sgsb-field-upgrade-pro-label {
+                        gap: 10px;
+                        display: flex;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 28%;
+                      }
+
+                    }
+
+                  }
+
                   label.ant-radio-button-wrapper {
                     color: #073B4C;
                     font-size: 14px;
