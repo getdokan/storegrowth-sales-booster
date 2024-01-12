@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
-import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
@@ -45,12 +44,16 @@ const DesignSettings = ({
             name : __( 'Bottom Left', 'storegrowth-sales-booster' )
         },
     ];
-    const positionIcon = [CenterLeft,CenterRight];
+
+    const positionIcons = {
+        'center_left': CenterLeft,
+        'center_right': CenterRight,
+    };
 
     positionContents = applyFilters(
         'sgsb_quick_cart_position_settings',
         positionContents,
-        positionIcon
+        positionIcons
     );
 
     const positionOptions = positionContents?.map( layout => (

@@ -2343,26 +2343,38 @@ End Settings Sidebar
                   }
 
                   &.quick-cart-position {
-                    @media (max-width: 1440px) {
-                      grid-template-rows: repeat(2, auto);
+
+                    grid-template-rows: repeat(2, auto);
+
+                    img {
+                      width: 150px;
                     }
 
-                    .disabled-settings {
-                      .pro-content-overlay {
-                        .upgrade-button {
-                          gap: 0px;
-                          font-size: 11px;
-                          flex-flow: column;
+                    @media (max-width: 1600px) {
+                      .layout-img {
+                        img {
+                          width: 120px;
                         }
                       }
-                    }
-
-                    .layout-img {
-                      img {
-                        margin: 12px 0 2px;
-                        max-width: 100px;
+                      .upgrade-button {
+                        gap:0px;
+                        flex-direction: column;
                       }
                     }
+
+                    @media (max-width: 1440px) {
+                      .layout-img {
+                        img {
+                          margin: 12px 0 2px;
+                          max-width: 100px;
+                        }
+                      }
+
+                      .upgrade-button {
+                        font-size: 10px;
+                      }
+                    }
+
 
                     .option-name {
                       gap: 0px;
