@@ -4,7 +4,7 @@ Tags: floating cart, cart popup, add to cart, woocommerce direct checkout, wooco
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Best WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notificatio
 
 == Description == 
 
-= Boost Sales with WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
+= Boost Sales with WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site! =
 
 The [StoreGrowth](https://storegrowth.io/pricing/) plugin is an all-in-one bundle for WooCommerce, offering more than eight modules to enhance sales funnels. It addresses the difficulty of installing multiple plugins by reducing the burden and improving website performance. Compatible with various WordPress themes, it allows full control over design and customization, including a real-time preview of changes. This plugin is designed to attract and encourage visitors to purchase, increasing sales and creating a positive impact on your business.
 
@@ -159,6 +159,12 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.1.2 =
+update readme text
+
+= 1.1.1 =
+fix composer issue
 
 = 1.1.0 =
 Release date: 01/15/2024
