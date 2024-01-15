@@ -23,4 +23,4 @@ jobs:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SLUG: storegrowth-sales-booster
-          VERSION: 1.1.0
+          VERSION: 1.1.1
