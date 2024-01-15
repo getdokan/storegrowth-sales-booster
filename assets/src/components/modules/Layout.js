@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 
 import PageLoader from "../PageLoader";
 import Modules from "./Modules";
+import IniSetupLayout from '../initail-setup/IniSetupLayout';
 
 function AppLayout() {
   return (
@@ -16,6 +17,7 @@ function AppLayout() {
             minHeight: 550,
           }}
         >
+          <IniSetupLayout/>
           <Modules />
         </Layout.Content>
       </Layout>
