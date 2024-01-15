@@ -11,16 +11,5 @@
       "name": "Invizo",
       "email": "info@invizo.io"
     }
-  ],
-  "require-dev": {
-    "wp-coding-standards/wpcs": "dev-develop",
-    "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-    "woocommerce/woocommerce-sniffs": "^0.0.2"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
-  }
+  ]
 }
