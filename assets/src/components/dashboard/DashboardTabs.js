@@ -7,7 +7,6 @@ const DashboardTabs = () => {
     const location = useLocation();
     let routes = [
         { path: '/dashboard/overview', label: __( 'Overview', 'storegrowth-sales-booster' ) },
-        { path: '/dashboard/pricing', label: __( 'Pricing', 'storegrowth-sales-booster' ) },
         { path: '/dashboard/faq', label: __( 'FAQs', 'storegrowth-sales-booster' ) },
     ];
 

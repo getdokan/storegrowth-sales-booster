@@ -48,7 +48,7 @@ const RadioBox = ( {
                 >
                     {/* Handle settings radio field by using dynamic props */}
                     { options && options?.length > 0 && options?.map( option => (
-                        <Col span={ 12 } style={ { maxWidth: '100%', position: 'relative' } } className={ `${ option?.disabled ? 'disabled-settings' : ''  }` }>
+                        <Col key={option.key} span={ 12 } style={ { maxWidth: '100%', position: 'relative' } } className={ `${ option?.disabled ? 'disabled-settings' : ''  }` }>
                             <Radio.Button
                                 value={ option?.key }
                                 disabled={ option?.disabled }
@@ -73,7 +73,7 @@ const RadioBox = ( {
                             onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
                         >
                             { options?.map(
-                                option => <Radio.Button disabled={ option?.disabled } value={ option?.key }>{ option?.value }</Radio.Button>
+                                option => <Radio.Button key={option?.key} disabled={ option?.disabled } value={ option?.key }>{ option?.value }</Radio.Button>
                             ) }
                         </Radio.Group>
                     ) }

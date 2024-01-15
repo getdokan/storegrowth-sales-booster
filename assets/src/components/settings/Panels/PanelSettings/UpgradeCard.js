@@ -10,7 +10,7 @@ const UpgradeCard = ({message}) => {
     <div className="premium-btn">
       <Button
         width="210px"
-        href="https://invizo.io/support/"
+        href="https://storegrowth.io/pricing/"
         target="_blank"
         type="primary"
       >

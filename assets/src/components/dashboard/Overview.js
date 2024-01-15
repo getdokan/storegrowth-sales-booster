@@ -38,28 +38,7 @@ const Overview = () => {
                     {/* intro-section */}
                     <div className="intro-section">
                       <div className="intro-section-banner">
-                        <div className="intro-section-text">
-                          <div className="music-player-background-is-the-background">
-                            <div className="music-player-background">
-                              <CaretRightFilled className="fa-solid fa-play music-player" />
-                            </div>
-                          </div>
-                          <h3>
-                            {__("Your First", "storegrowth-sales-booster")}
-                            <br />
-                            {__("Impression With", "storegrowth-sales-booster")}
-                            <br />
-                            {__("StoreGrowth", "storegrowth-sales-booster")}
-                          </h3>
-                        </div>
-
-                        <div className="inrto-section-img-backgroud">
-                          <Image
-                            preview={false}
-                            src={IntroModules}
-                            alt="intro-img"
-                          />
-                        </div>
+                      <iframe height="315" src="https://www.youtube.com/embed/q9gWD7iUHX0?si=Yp3wdj1yDqTNxBDb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                       </div>
                     </div>
 
