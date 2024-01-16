@@ -1,28 +1,30 @@
-import { Layout } from 'antd';
+import { Layout } from "antd";
+import { useRoutes } from "react-router-dom";
 
 import PageLoader from "../PageLoader";
-import Modules from "./Modules";
-import IniSetupLayout from '../initail-setup/IniSetupLayout';
+import moduleRoutes from "./ModuleRoutes";
+import { removeHashFromURL } from "../../utils/helper";
 
 function AppLayout() {
+  const currentPath = removeHashFromURL(window.location.hash);
+  let element = useRoutes(moduleRoutes);
+
   return (
     <Layout>
       <Layout
-          style={{
-            padding: '0',
-          }}
-        >
+        style={{
+          padding: "0",
+        }}
+      >
         <Layout.Content
           style={{
             minHeight: 550,
           }}
         >
-          <IniSetupLayout/>
-          <Modules />
+          {element}
         </Layout.Content>
       </Layout>
-
-      <PageLoader />
+      {currentPath !== "ini-setup" && <PageLoader />}
     </Layout>
   );
 }

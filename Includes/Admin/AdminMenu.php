@@ -99,6 +99,15 @@ class AdminMenu {
 			array( $this, 'handle_external_redirects' )
 		);
 
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
+			__( 'Initial Setup - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Initial Setup', 'storegrowth-sales-booster' ),
+			'manage_options',
+			'sgsb-modules#/ini-setup',
+			array( $this, 'initial_setup_page_callback' )
+		);
+
 		if ( ! SGSB_PRO_ACTIVE ) {
 			add_submenu_page(
 				'sales-booster-for-woocommerce',
@@ -133,6 +142,15 @@ class AdminMenu {
 	 */
 	public function dashboard_callback() {
 		$redirect_url = admin_url( 'admin.php?page=sgsb-settings#/dashboard/overview' );
+		wp_safe_redirect( $redirect_url );
+		exit;
+	}
+
+	/**
+	 * Display Initail Setup page content.
+	 */
+	public function initial_setup_page_callback() {
+		$redirect_url = admin_url( 'admin.php?page=sgsb-modules#/ini-setup' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}

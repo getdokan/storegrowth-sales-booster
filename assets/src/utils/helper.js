@@ -37,6 +37,24 @@ export const menuFix = ( slug ) => {
             $( el ).parent().addClass( 'current' );
         }
     } );
+
+    menuRoot.on( 'click', 'a', function () {
+        const self = $( this );
+        const uri = self.attr('href');
+        const hash = uri.split('#')[1];
+
+        if("/ini-setup"===hash){
+            console.log("properly getting the hash");
+            $("#wpadminbar , #adminmenumain").remove();
+            $(".wp-toolbar").css({
+            padding: "0", // Replace with your desired background color
+            });
+            $("#wpcontent, #wpfooter").css({
+            marginLeft:"0", // Replace with your desired background color
+            });
+            $(".notice").remove();
+        }
+    } );
 }
 
 export const extractedTitle = ( title, length = 60 ) => {

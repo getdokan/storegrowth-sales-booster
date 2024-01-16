@@ -10,20 +10,19 @@ $white-color: #ffffff;
   }
 }
 
-
 // Usage
-@include font-face('IBM Plex Sans', '../fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf');
-@include font-face('Lato', '../fonts/Lato/Lato-Regular.ttf');
-@include font-face('Montserrat', '../fonts/Montserrat/Montserrat-Regular.ttf');
-@include font-face('Poppins', '../fonts/Poppins/Poppins-Regular.ttf');
-@include font-face('Roboto', '../fonts/Roboto/Roboto-Regular.ttf');
-
+@include font-face("IBM Plex Sans",
+  "../fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf"
+);
+@include font-face("Lato", "../fonts/Lato/Lato-Regular.ttf");
+@include font-face("Montserrat", "../fonts/Montserrat/Montserrat-Regular.ttf");
+@include font-face("Poppins", "../fonts/Poppins/Poppins-Regular.ttf");
+@include font-face("Roboto", "../fonts/Roboto/Roboto-Regular.ttf");
 
 .sgsb-header {
   padding: 0 20px !important;
   display: inline-flex;
   align-items: center;
-
 }
 
 .sgsb-logo {
@@ -35,7 +34,6 @@ $white-color: #ffffff;
   // height: 36px;
   margin: 24px auto 10px;
   text-align: center;
-
 }
 
 .sgsb-heading[class] {
@@ -51,21 +49,18 @@ Module Card Style
 #sbooster-modules-page {
   .ant-layout-header {
     padding: 0;
-
   }
 
   .ant-layout-header,
   .ant-layout-sider {
     background: #ffffff;
-
   }
-
 }
 
 .site-card-wrapper {
   .sgsb-module-card {
     border-radius: 10px;
-    background: #FFF;
+    background: #fff;
 
     .ant-card-body {
       padding: 0;
@@ -79,7 +74,7 @@ Module Card Style
         height: auto;
         line-height: inherit;
         padding: 8px 18px 7px 15px !important;
-        border: 1px solid #B2DDFF;
+        border: 1px solid #b2ddff;
         position: relative;
 
         .anticon {
@@ -106,20 +101,17 @@ Module Card Style
     .switch-btn {
       @media (min-width: 768px) and (max-width: 1024px) {
         float: none !important;
-
       }
-
     }
 
     .ant-switch {
-      background: #638DC1;
+      background: #638dc1;
       width: 46px;
       height: 25px;
       margin-left: -10px;
 
       @media (min-width: 768px) and (max-width: 1024px) {
         margin-left: 0 !important;
-
       }
 
       .ant-switch-handle {
@@ -128,7 +120,7 @@ Module Card Style
       }
 
       &.ant-switch-checked {
-        background: #2C81FF;
+        background: #2c81ff;
 
         .ant-switch-handle {
           left: calc(100% - 18px - 4px);
@@ -138,7 +130,7 @@ Module Card Style
 
     .module-thumb {
       border-radius: 35px;
-      background: #E7F3FF;
+      background: #e7f3ff;
       padding: 14px;
       margin-right: 11px;
       width: 64px;
@@ -146,36 +138,32 @@ Module Card Style
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
     }
 
     .module-name {
-      color: #073B4C;
+      color: #073b4c;
       font-size: 20px;
       font-style: normal;
       font-weight: 600;
       line-height: 29px;
-
     }
 
     .module-desc {
-      color: #757C7E;
+      color: #757c7e;
       font-weight: 400;
       font-size: 16px;
       line-height: 28px;
       padding: 17px 40px 51px 23px;
       min-height: 180px;
-
     }
 
     .sgsb__module-footer {
-      background: #DDF0FF;
+      background: #ddf0ff;
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
 
       @media (max-width: 767px) {
         padding: 19px 8px 19px !important;
-
       }
 
       .ant-space {
@@ -183,7 +171,6 @@ Module Card Style
           .doc-btn {
             display: flex;
             gap: 10px;
-
           }
 
           .switch-btn {
@@ -196,7 +183,6 @@ Module Card Style
         display: flex;
         justify-content: space-between;
         width: 100%;
-
       }
 
       @media (min-width: 768px) and (max-width: 1024px) {
@@ -205,31 +191,26 @@ Module Card Style
 
         &>div {
           // gap : 3px !important;
-
         }
 
         a {
           // font-size: 11px !important;
         }
-
       }
 
       .footer-btn[class] {
-        color: #073B4C;
+        color: #073b4c;
         font-size: 16px;
         font-weight: 400;
         border-radius: 8px;
-        border: 1px solid #B2DDFF;
-        background: #FFF;
+        border: 1px solid #b2ddff;
+        background: #fff;
 
         &:hover {
-          color: #0875FF;
-          border: 1px solid #B2DDFF;
-
+          color: #0875ff;
+          border: 1px solid #b2ddff;
         }
-
       }
-
     }
   }
 }
@@ -243,11 +224,10 @@ Pagination Style
     height: 47px;
     line-height: 45px;
     border-radius: 4px;
-    border: 1px solid #B2DDFF;
+    border: 1px solid #b2ddff;
 
     .ant-pagination-item-link {
       border: 0;
-
     }
   }
 
@@ -265,21 +245,17 @@ Pagination Style
         color: #fff;
         background: #008dff;
         border-radius: 4px;
-
       }
     }
   }
 }
 
 .sgsb-search-section {
-
   .search-bar {
-
     padding-right: 10px;
 
     @media (max-width: 520px) {
       margin-bottom: 20px;
-
     }
 
     &.active {
@@ -287,11 +263,10 @@ Pagination Style
         display: block;
         width: 250px;
         border-right: none;
-        transition: .3s linear 0s;
+        transition: 0.3s linear 0s;
 
         @media (max-width: 520px) {
           width: 73%;
-
         }
 
         .ant-input-group-wrapper {
@@ -300,35 +275,28 @@ Pagination Style
               display: flex;
             }
           }
-
         }
-
       }
 
       .ant-input-group-addon {
         border-left-width: 0;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-
       }
-
-
     }
-
-
   }
 
   input[class] {
-    background: #F6F9FF;
+    background: #f6f9ff;
     border-radius: 8px;
     border: 0;
     height: 46px;
     width: 0;
     outline: none;
     display: none;
-    border: 1px solid #B2DDFF;
+    border: 1px solid #b2ddff;
     border-right-width: 0;
-    transition: .3s linear 0s;
+    transition: 0.3s linear 0s;
 
     &:focus {
       box-shadow: none;
@@ -336,11 +304,11 @@ Pagination Style
   }
 
   .ant-input-group-addon[class] {
-    background-color: #F6F9FF;
-    border: 1px solid #B2DDFF;
+    background-color: #f6f9ff;
+    border: 1px solid #b2ddff;
     padding: 4px 10px 0 15px;
     border-radius: 8px;
-    color: #073B4C;
+    color: #073b4c;
     font-size: 20px;
     cursor: pointer;
     width: 46px;
@@ -348,7 +316,6 @@ Pagination Style
     // display: flex;
     align-items: center;
     justify-content: center;
-
   }
 
   .ant-select-selector[class] {
@@ -468,22 +435,18 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
   @media (max-width: 767px) {
     display: block;
-
   }
 
   @media (min-width: 1500px) {
     // gap: 20px;
-
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
     // gap: 10px;
-
   }
 
   @media (min-width: 1500px) and (max-width: 2000px) {
     // gap: 20px;
-
   }
 
   &-sideabr {
@@ -491,13 +454,11 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
     @media (min-width: 1800px) {
       // padding: 0 22px;
-
     }
 
     @media (max-width: 767px) {
       padding-top: 2px;
       margin-bottom: 40px;
-
     }
 
     h3 {
@@ -517,7 +478,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
           &:before {
             content: "";
             position: absolute;
-            background: #0875FF;
+            background: #0875ff;
             width: 3px;
             height: 28px;
             right: 3px;
@@ -527,7 +488,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
           svg {
             rect {
-              fill: #0875FF;
+              fill: #0875ff;
             }
           }
         }
@@ -535,7 +496,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
       @media (min-width: 1500px) {
         // padding: 50px 8px 40px;
-
       }
 
       svg {
@@ -545,7 +505,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
     .all-widgets-menu {
       h4 {
-        color: #073B4C;
+        color: #073b4c;
         font-size: 16px;
         font-weight: 600;
         display: flex;
@@ -558,7 +518,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         &:hover:before {
           content: "";
           position: absolute;
-          background: #0875FF;
+          background: #0875ff;
           width: 3px;
           height: 28px;
           right: 3px;
@@ -566,16 +526,13 @@ main.ant-layout-content.sgsb-module-setting-layout {
           border-bottom-left-radius: 10px;
         }
 
-
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
-
         }
 
         span {
           margin-left: auto;
           cursor: pointer;
-
         }
 
         .ant-menu-title-content {
@@ -584,7 +541,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
             display: flex;
           }
         }
-
       }
 
       .widgets-menu {
@@ -596,7 +552,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
         @media (min-width: 1800px) {
           // padding: 0 22px;
           padding: 0 42px 0 0;
-
         }
 
         &.ant-menu-hidden {
@@ -608,7 +563,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         }
 
         .sgsb-selected-module {
-          background: #0875FF;
+          background: #0875ff;
           color: #ffffff !important;
           border-top-right-radius: 8px;
           border-bottom-right-radius: 8px;
@@ -620,13 +575,11 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
           @media (min-width: 1500px) {
             // padding: 12px 0px 12px 34px;
-
           }
 
           &:hover {
             a {
               color: #ffffff;
-
             }
           }
 
@@ -642,166 +595,141 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
             @media (min-width: 1500px) {
               // left: 8px;
-
             }
-
           }
 
           &.fly-cart {
             &:before {
               content: "";
-              background: url('../images/menu/quick-cart-icon.svg');
-
+              background: url("../images/menu/quick-cart-icon.svg");
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/quick-cart-icon-white.svg');
-
+                background: url("../images/menu/quick-cart-icon-white.svg");
               }
-
             }
           }
 
           &.progressive-discount-banner {
             &:before {
               content: "";
-              background: url('../images/menu/free-shipping-bar-icon.svg');
+              background: url("../images/menu/free-shipping-bar-icon.svg");
               width: 20px;
               height: 18px;
               background-repeat: no-repeat;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/free-shipping-bar-icon-white.svg');
+                background: url("../images/menu/free-shipping-bar-icon-white.svg");
                 width: 20px;
                 height: 18px;
                 background-repeat: no-repeat;
               }
-
             }
           }
 
           &.floating-notification-bar {
             &:before {
               content: "";
-              background: url('../images/menu/floating-bar.svg');
+              background: url("../images/menu/floating-bar.svg");
               width: 20px;
               height: 18px;
               background-repeat: no-repeat;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/floating-bar-white.svg');
+                background: url("../images/menu/floating-bar-white.svg");
                 width: 20px;
                 height: 18px;
                 background-repeat: no-repeat;
               }
-
             }
           }
 
           &.sales-pop {
             &:before {
               content: "";
-              background: url('../images/menu/sales-pop.svg');
+              background: url("../images/menu/sales-pop.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/sales-pop-white.svg');
-
+                background: url("../images/menu/sales-pop-white.svg");
               }
-
             }
           }
 
           &.countdown-timer {
             &:before {
               content: "";
-              background: url('../images/menu/countdown-timer.svg');
+              background: url("../images/menu/countdown-timer.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/countdown-timer-white.svg');
-
+                background: url("../images/menu/countdown-timer-white.svg");
               }
-
             }
           }
 
           &.upsell-order-bump {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url("../images/menu/upsel.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
-
+                background: url("../images/menu/upsel-white.svg");
               }
-
             }
           }
 
           &.direct-checkout {
             &:before {
               content: "";
-              background: url('../images/menu/direct-checkout.svg');
+              background: url("../images/menu/direct-checkout.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/direct-checkout-white.svg');
-
+                background: url("../images/menu/direct-checkout-white.svg");
               }
-
             }
           }
 
           &.stock-bar {
             &:before {
               content: "";
-              background: url('../images/menu/stock-bar.svg');
+              background: url("../images/menu/stock-bar.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/stock-bar-white.svg');
-
+                background: url("../images/menu/stock-bar-white.svg");
               }
-
             }
           }
-
         }
 
         a {
-          color: #757D9E;
+          color: #757d9e;
           padding-top: 12px;
           padding-bottom: 12px;
           text-decoration: none;
@@ -823,62 +751,57 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
 
           &.fly-cart::before {
-            background: url('../images/menu/quick-cart-icon-white.svg');
+            background: url("../images/menu/quick-cart-icon-white.svg");
           }
 
           &.progressive-discount-banner::before {
-            background: url('../images/menu/free-shipping-bar-icon-white.svg');
+            background: url("../images/menu/free-shipping-bar-icon-white.svg");
             width: 20px;
             height: 18px;
             background-repeat: no-repeat;
           }
 
           &.floating-notification-bar::before {
-            background: url('../images/menu/floating-bar-white.svg');
+            background: url("../images/menu/floating-bar-white.svg");
             width: 20px;
             height: 18px;
             background-repeat: no-repeat;
           }
 
           &.sales-pop::before {
-            background: url('../images/menu/sales-pop-white.svg');
+            background: url("../images/menu/sales-pop-white.svg");
           }
 
           &.direct-checkout::before {
-            background: url('../images/menu/direct-checkout-white.svg');
+            background: url("../images/menu/direct-checkout-white.svg");
           }
 
           &.stock-bar::before {
-            background: url('../images/menu/stock-bar-white.svg');
-
+            background: url("../images/menu/stock-bar-white.svg");
           }
 
           &.upsell-order-bump::before {
-            background: url('../images/menu/upsel-white.svg');
+            background: url("../images/menu/upsel-white.svg");
           }
 
           &.countdown-timer::before {
-            background: url('../images/menu/countdown-timer-white.svg');
+            background: url("../images/menu/countdown-timer-white.svg");
           }
-
         }
 
         li {
-          color: #757D9E;
+          color: #757d9e;
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
 
           &:hover {
-            background: #0875FF;
+            background: #0875ff;
             color: #ffffff;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
-
           }
-
         }
-
       }
     }
 
@@ -888,7 +811,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
         &:before {
           content: "";
           position: absolute;
-          background: #0875FF;
+          background: #0875ff;
           width: 3px;
           height: 28px;
           right: 3px;
@@ -898,7 +821,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
       }
     }
   }
-
 }
 
 .sgsb__settings-sidebar {
@@ -909,7 +831,6 @@ main.ant-layout-content.sgsb-module-setting-layout {
     flex: 0 0 320px !important;
     max-width: 320px !important;
     min-width: 320px !important;
-
   }
 
   .ant-layout-sider-children[class] {
@@ -953,16 +874,15 @@ End Settings Sidebar
   align-items: center;
   padding: 9px 9px 9px 20px;
   border-radius: 5px;
-  background: #E0F6E5;
+  background: #e0f6e5;
 
   .sgsb-premium-limit-warning-message {
-    color: #073B4C;
+    color: #073b4c;
     display: block;
     font-size: 16px;
   }
 
   .premium-btn {
-
     a {
       display: inline-flex;
       align-items: center;
@@ -979,16 +899,14 @@ End Settings Sidebar
       span {
         font-size: 16px;
         font-weight: 700;
-
       }
-
     }
   }
 
   .premium-btn {
     a {
       border: none;
-      background: var(--premium-color, #FFAC27);
+      background: var(--premium-color, #ffac27);
 
       &:focus {
         color: #ffffff;
@@ -998,10 +916,7 @@ End Settings Sidebar
   }
 }
 
-
-
 // upsell order bump css end
-
 
 .sgsb-admin-dashboard {
   display: flex;
@@ -1010,22 +925,18 @@ End Settings Sidebar
 
   @media (max-width: 767px) {
     display: block;
-
   }
 
   @media (min-width: 1500px) {
     // gap: 20px;
-
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
     // gap: 10px;
-
   }
 
   @media (min-width: 1500px) and (max-width: 2000px) {
     // gap: 20px;
-
   }
 
   &-sideabr {
@@ -1035,13 +946,11 @@ End Settings Sidebar
     @media (min-width: 1800px) {
       flex-basis: 320px;
       padding: 0 22px;
-
     }
 
     @media (max-width: 767px) {
       padding-top: 2px;
       margin-bottom: 40px;
-
     }
 
     h3 {
@@ -1062,7 +971,7 @@ End Settings Sidebar
           &:before {
             content: "";
             position: absolute;
-            background: #0875FF;
+            background: #0875ff;
             width: 3px;
             height: 28px;
             right: 3px;
@@ -1072,7 +981,7 @@ End Settings Sidebar
 
           svg {
             rect {
-              fill: #0875FF;
+              fill: #0875ff;
             }
           }
         }
@@ -1080,7 +989,6 @@ End Settings Sidebar
 
       @media (min-width: 1500px) {
         // padding: 50px 8px 40px;
-
       }
 
       svg {
@@ -1091,7 +999,7 @@ End Settings Sidebar
     .all-widgets-menu {
       h4 {
         cursor: pointer;
-        color: #073B4C;
+        color: #073b4c;
         font-size: 16px;
         font-weight: 600;
         display: flex;
@@ -1104,7 +1012,7 @@ End Settings Sidebar
         &:hover:before {
           content: "";
           position: absolute;
-          background: #0875FF;
+          background: #0875ff;
           width: 3px;
           height: 28px;
           right: 3px;
@@ -1114,13 +1022,11 @@ End Settings Sidebar
 
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
-
         }
 
         span {
           margin-left: auto;
           cursor: pointer;
-
         }
 
         .ant-menu-title-content {
@@ -1129,7 +1035,6 @@ End Settings Sidebar
             display: flex;
           }
         }
-
       }
 
       .widgets-menu {
@@ -1141,7 +1046,6 @@ End Settings Sidebar
         @media (min-width: 1800px) {
           // padding: 0 22px;
           padding: 0 42px 0 0;
-
         }
 
         &.ant-menu-hidden {
@@ -1153,7 +1057,7 @@ End Settings Sidebar
         }
 
         .sgsb-selected-module {
-          background: #0875FF;
+          background: #0875ff;
           color: #ffffff !important;
           border-top-right-radius: 8px;
           border-bottom-right-radius: 8px;
@@ -1165,13 +1069,11 @@ End Settings Sidebar
 
           @media (min-width: 1500px) {
             // padding: 12px 0px 12px 34px;
-
           }
 
           &:hover {
             a {
               color: #ffffff;
-
             }
           }
 
@@ -1187,166 +1089,141 @@ End Settings Sidebar
 
             @media (min-width: 1500px) {
               // left: 8px;
-
             }
-
           }
 
           &.fly-cart {
             &:before {
               content: "";
-              background: url('../images/menu/quick-cart-icon.svg');
-
+              background: url("../images/menu/quick-cart-icon.svg");
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/quick-cart-icon-white.svg');
-
+                background: url("../images/menu/quick-cart-icon-white.svg");
               }
-
             }
           }
 
           &.progressive-discount-banner {
             &:before {
               content: "";
-              background: url('../images/menu/free-shipping-bar-icon.svg');
+              background: url("../images/menu/free-shipping-bar-icon.svg");
               width: 20px;
               height: 18px;
               background-repeat: no-repeat;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/free-shipping-bar-icon-white.svg');
+                background: url("../images/menu/free-shipping-bar-icon-white.svg");
                 width: 20px;
                 height: 18px;
                 background-repeat: no-repeat;
               }
-
             }
           }
 
           &.floating-notification-bar {
             &:before {
               content: "";
-              background: url('../images/menu/floating-bar.svg');
+              background: url("../images/menu/floating-bar.svg");
               width: 20px;
               height: 18px;
               background-repeat: no-repeat;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/floating-bar-white.svg');
+                background: url("../images/menu/floating-bar-white.svg");
                 width: 20px;
                 height: 18px;
                 background-repeat: no-repeat;
               }
-
             }
           }
 
           &.sales-pop {
             &:before {
               content: "";
-              background: url('../images/menu/sales-pop.svg');
+              background: url("../images/menu/sales-pop.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/sales-pop-white.svg');
-
+                background: url("../images/menu/sales-pop-white.svg");
               }
-
             }
           }
 
           &.countdown-timer {
             &:before {
               content: "";
-              background: url('../images/menu/countdown-timer.svg');
+              background: url("../images/menu/countdown-timer.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/countdown-timer-white.svg');
-
+                background: url("../images/menu/countdown-timer-white.svg");
               }
-
             }
           }
 
           &.upsell-order-bump {
             &:before {
               content: "";
-              background: url('../images/menu/upsel.svg');
+              background: url("../images/menu/upsel.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/upsel-white.svg');
-
+                background: url("../images/menu/upsel-white.svg");
               }
-
             }
           }
 
           &.direct-checkout {
             &:before {
               content: "";
-              background: url('../images/menu/direct-checkout.svg');
+              background: url("../images/menu/direct-checkout.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/direct-checkout-white.svg');
-
+                background: url("../images/menu/direct-checkout-white.svg");
               }
-
             }
           }
 
           &.stock-bar {
             &:before {
               content: "";
-              background: url('../images/menu/stock-bar.svg');
+              background: url("../images/menu/stock-bar.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/stock-bar-white.svg');
-
+                background: url("../images/menu/stock-bar-white.svg");
               }
-
             }
           }
-
         }
 
         a {
-          color: #757D9E;
+          color: #757d9e;
           padding-top: 12px;
           padding-bottom: 12px;
           text-decoration: none;
@@ -1368,57 +1245,51 @@ End Settings Sidebar
           }
 
           &.fly-cart::before {
-            background: url('../images/menu/quick-cart-icon-white.svg');
+            background: url("../images/menu/quick-cart-icon-white.svg");
           }
 
           &.progressive-discount-banner::before {
-            background: url('../images/menu/free-shipping-bar-icon-white.svg');
+            background: url("../images/menu/free-shipping-bar-icon-white.svg");
             width: 20px;
             height: 18px;
             background-repeat: no-repeat;
           }
 
           &.sales-pop::before {
-            background: url('../images/menu/sales-pop-white.svg');
+            background: url("../images/menu/sales-pop-white.svg");
           }
 
           &.direct-checkout::before {
-            background: url('../images/menu/direct-checkout-white.svg');
+            background: url("../images/menu/direct-checkout-white.svg");
           }
 
           &.stock-bar::before {
-            background: url('../images/menu/stock-bar-white.svg');
-
+            background: url("../images/menu/stock-bar-white.svg");
           }
 
           &.upsell-order-bump::before {
-            background: url('../images/menu/upsel-white.svg');
+            background: url("../images/menu/upsel-white.svg");
           }
 
           &.countdown-timer::before {
-            background: url('../images/menu/countdown-timer-white.svg');
+            background: url("../images/menu/countdown-timer-white.svg");
           }
-
         }
 
         li {
-          color: #757D9E;
+          color: #757d9e;
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
 
           &:hover {
-            background: #0875FF;
+            background: #0875ff;
             color: #ffffff;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
-
           }
-
         }
-
       }
-
     }
 
     h3,
@@ -1427,7 +1298,7 @@ End Settings Sidebar
         &:before {
           content: "";
           position: absolute;
-          background: #0875FF;
+          background: #0875ff;
           width: 3px;
           height: 28px;
           right: 3px;
@@ -1438,7 +1309,7 @@ End Settings Sidebar
     }
 
     .active-widgets {
-      color: #073B4C;
+      color: #073b4c;
       font-size: 15px;
       list-style: none;
       display: flex;
@@ -1455,15 +1326,14 @@ End Settings Sidebar
     .request__feature-block {
       text-align: center;
       border-radius: 8px;
-      border: 1px solid #2541AC;
-      background: #2541AC;
+      border: 1px solid #2541ac;
+      background: #2541ac;
       padding: 57px 3px 25px;
       margin: 95px 8px 0;
       position: relative;
 
       @media (min-width: 320px) and (max-width: 520px) {
         margin-bottom: 60px;
-
       }
 
       &:before {
@@ -1472,7 +1342,7 @@ End Settings Sidebar
         bottom: -19px;
         width: 100%;
         height: 40px;
-        background: url('../images/slide-layer.svg');
+        background: url("../images/slide-layer.svg");
         left: 0;
         background-repeat: no-repeat;
         background-size: contain;
@@ -1481,14 +1351,12 @@ End Settings Sidebar
         @media (min-width: 320px) and (max-width: 520px) {
           background-size: cover;
           bottom: -31px;
-
         }
 
         @media (min-width: 1441px) and (max-width: 2000px) {
           background-size: cover;
           left: -1.4px;
           bottom: -31px;
-
         }
       }
 
@@ -1498,9 +1366,7 @@ End Settings Sidebar
 
         .ant-image-img {
           width: inherit;
-
         }
-
       }
 
       .box-icon {
@@ -1508,15 +1374,13 @@ End Settings Sidebar
         top: -38px;
         left: 50%;
         transform: translateX(-50%);
-
       }
 
       .rating {
         margin-bottom: 22px;
 
         svg {
-          color: #FEB423;
-
+          color: #feb423;
         }
       }
 
@@ -1530,20 +1394,17 @@ End Settings Sidebar
           color: #ffffff;
           box-shadow: none;
         }
-
       }
 
       h4,
       p,
       h5 {
         color: #ffffff;
-
       }
 
       h5 {
         font-size: 14px;
         font-weight: 600;
-
       }
 
       h4 {
@@ -1551,7 +1412,6 @@ End Settings Sidebar
         font-weight: 600;
         line-height: 27px;
         margin-bottom: 4px;
-
       }
 
       p {
@@ -1559,20 +1419,15 @@ End Settings Sidebar
         font-weight: 300;
         line-height: 21px;
         margin-bottom: 20px;
-
       }
 
       .ant-btn {
         border-radius: 6px;
-        background: #0875FF;
+        background: #0875ff;
         padding: 0 16px;
         border: 0;
-
       }
     }
-
-
-
   }
 
   &-module {
@@ -1587,7 +1442,6 @@ End Settings Sidebar
     @media (min-width: 1800px) {
       .sgsb__module-pagination {
         padding-left: 38px !important;
-
       }
     }
 
@@ -1598,7 +1452,6 @@ End Settings Sidebar
 
       .sgsb__module-pagination {
         padding-left: 8px !important;
-
       }
 
       .dashboard-faq-page {
@@ -1635,9 +1488,7 @@ End Settings Sidebar
     @media (min-width: 1200px) and (max-width: 1439px) {
       .module-desc[class] {
         min-height: 208px;
-
       }
-
     }
 
     @media (min-width: 992px) and (max-width: 1199px) {
@@ -1671,17 +1522,13 @@ End Settings Sidebar
 
           .doc-btn {
             gap: 3px !important;
-
           }
 
           .footer-btn[class] {
             font-size: 10px;
-
           }
-
         }
       }
-
     }
 
     @media (min-width: 1301px) and (max-width: 1439px) {
@@ -1691,12 +1538,9 @@ End Settings Sidebar
 
           .footer-btn[class] {
             font-size: 12px;
-
           }
-
         }
       }
-
     }
 
     @media (min-width: 1025px) and (max-width: 1199px) {
@@ -1711,14 +1555,11 @@ End Settings Sidebar
           }
         }
       }
-
     }
-
 
     .module-banner[class] {
       .ant-image[class] {
         width: 100% !important;
-
       }
     }
 
@@ -1752,10 +1593,8 @@ End Settings Sidebar
           object-fit: cover;
           border-top-left-radius: 10px;
           border-top-right-radius: 10px;
-
         }
       }
-
     }
 
     @media (min-width: 1500px) and (max-width: 2000px) {
@@ -1764,11 +1603,7 @@ End Settings Sidebar
       &-box-content {
         // padding-left: 0 !important;
         padding: 30px 0 0 30px;
-
       }
-
-
-
     }
 
     @media (min-width: 2001px) {
@@ -1791,11 +1626,8 @@ End Settings Sidebar
         .module-banner {
           .ant-image {
             width: 100% !important;
-
           }
         }
-
-
       }
     }
 
@@ -1805,37 +1637,29 @@ End Settings Sidebar
       .module-banner {
         .ant-image {
           width: 100% !important;
-
         }
       }
 
       .doc-btn {
         // gap: 2px !important;
-
       }
 
       &-box-content {
         // padding-left: 0 !important;
         padding: 8px 0 0 8px;
-
       }
-
     }
 
     @media (min-width: 1440px) and (max-width: 2000px) {
-
       .module-banner {
         .ant-image {
           width: 100% !important;
-
         }
       }
-
     }
 
     .ant-alert-warning {
       margin: 13px 0px 0 14px;
-
     }
 
     &-top-bar {
@@ -1857,7 +1681,6 @@ End Settings Sidebar
 
         @media (max-width: 767px) {
           display: none;
-
         }
       }
 
@@ -1873,13 +1696,11 @@ End Settings Sidebar
 
         @media (max-width: 767px) {
           display: none;
-
         }
       }
 
       @media (max-width: 767px) {
         margin-bottom: 30px;
-
       }
 
       .help-btn,
@@ -1904,16 +1725,14 @@ End Settings Sidebar
           span {
             font-size: 18px;
             font-weight: 700;
-
           }
-
         }
       }
 
       .premium-btn {
         a {
           border: none;
-          background: var(--premium-color, #FFAC27);
+          background: var(--premium-color, #ffac27);
 
           &:focus {
             color: #ffffff;
@@ -1921,7 +1740,6 @@ End Settings Sidebar
           }
         }
       }
-
     }
 
     @media (max-width: 991px) {
@@ -1930,13 +1748,11 @@ End Settings Sidebar
 
         &>div {
           max-width: 100% !important;
-
         }
 
         .module-banner {
           .ant-image {
             width: 100% !important;
-
           }
         }
 
@@ -1944,7 +1760,6 @@ End Settings Sidebar
           .ant-card-body {
             &>div {
               display: block;
-
             }
           }
         }
@@ -1952,18 +1767,15 @@ End Settings Sidebar
     }
 
     @media (min-width: 1440px) and (max-width: 2000px) {
-
       &-box-content {
         .sgsb-module-card {
           .ant-card-body {
             &>div {
               display: block;
-
             }
           }
         }
       }
-
     }
 
     @media (min-width: 1300px) and (max-width: 1550px) {
@@ -1976,13 +1788,10 @@ End Settings Sidebar
           .switch-btn[class] {
             float: left !important;
             padding-left: 10px;
-
           }
         }
-
       }
     }
-
   }
 }
 
@@ -1993,7 +1802,6 @@ End Settings Sidebar
     .sgsb-logo {
       margin: 15px auto 10px;
       display: inline-block;
-
     }
   }
 
@@ -2001,7 +1809,7 @@ End Settings Sidebar
     .header-content {
       margin: 0;
       display: flex;
-      color: #073B4C;
+      color: #073b4c;
       font-size: 24px;
       font-weight: 600;
       line-height: 32px;
@@ -2018,7 +1826,7 @@ End Settings Sidebar
 
     .header-divider {
       margin: 0;
-      color: #DDE6F9;
+      color: #dde6f9;
     }
   }
 
@@ -2036,7 +1844,7 @@ End Settings Sidebar
         .sgsb-settings-card {
           height: 100%;
           border-radius: 5px;
-          border-color: #DDE6F9;
+          border-color: #dde6f9;
 
           .pro-content-overlay {
             top: 0;
@@ -2058,7 +1866,7 @@ End Settings Sidebar
               padding: 9px 15px;
               border-radius: 5px;
               align-items: center;
-              background: #FFAC27;
+              background: #ffac27;
               display: inline-flex;
 
               .overlay-btn-crown {
@@ -2160,7 +1968,6 @@ End Settings Sidebar
               margin-top: 5px;
             }
 
-
             .settings-heading {
               margin: 0;
               margin-right: 10px;
@@ -2172,7 +1979,7 @@ End Settings Sidebar
 
             .settings-field {
               float: right;
-              background: #DFE6F3;
+              background: #dfe6f3;
 
               &.singlecheckbox-field {
                 background: none;
@@ -2228,17 +2035,16 @@ End Settings Sidebar
                   }
 
                   .ant-select-selection-item {
-                    color: #073B4C;
-                    background: #F6F9FF;
+                    color: #073b4c;
+                    background: #f6f9ff;
                   }
-
                 }
               }
 
               &.number-field {
                 width: 100%;
                 border-radius: 5px;
-                background: #F6F9FF;
+                background: #f6f9ff;
 
                 input {
                   color: #000;
@@ -2247,7 +2053,7 @@ End Settings Sidebar
 
                 &.combine-field {
                   padding: 5px;
-                  border-color: #DDE6F9;
+                  border-color: #dde6f9;
 
                   input {
                     text-align: left;
@@ -2257,10 +2063,10 @@ End Settings Sidebar
 
               &.textarea-field,
               &.textinput-field {
-                color: #073B4C;
+                color: #073b4c;
                 border-radius: 5px;
-                background: #F6F9FF;
-                border: 1px solid #DDE6F9;
+                background: #f6f9ff;
+                border: 1px solid #dde6f9;
 
                 &.field-gap {
                   margin-bottom: 15px;
@@ -2276,15 +2082,15 @@ End Settings Sidebar
               }
 
               &.single-select-field {
-                border-color: #DDE6F9;
-                background: #F6F9FF;
+                border-color: #dde6f9;
+                background: #f6f9ff;
                 border-radius: 5px;
 
                 .ant-select-selector {
-                  border-color: #DDE6F9;
+                  border-color: #dde6f9;
                   border-radius: 5px;
-                  background: #F6F9FF;
-                  color: #073B4C;
+                  background: #f6f9ff;
+                  color: #073b4c;
                 }
 
                 &.combine-select,
@@ -2308,7 +2114,7 @@ End Settings Sidebar
               }
 
               &.ant-switch-checked {
-                background: #0875FF;
+                background: #0875ff;
               }
 
               &.color-picker-field {
@@ -2316,7 +2122,7 @@ End Settings Sidebar
                 background: transparent;
 
                 .ant-color-picker-color-block-inner {
-                  border-color: #DDE6F9;
+                  border-color: #dde6f9;
                 }
               }
 
@@ -2331,10 +2137,10 @@ End Settings Sidebar
                   height: 100%;
                   padding: 0 12px;
                   border-radius: 5px;
-                  border: 1px solid #DDE6F9;
+                  border: 1px solid #dde6f9;
 
                   &.ant-radio-button-wrapper-checked {
-                    border-color: #0875FF;
+                    border-color: #0875ff;
                   }
 
                   &:before {
@@ -2342,12 +2148,12 @@ End Settings Sidebar
                   }
 
                   &:hover {
-                    background: #0875FF;
-                    border-color: #0875FF;
+                    background: #0875ff;
+                    border-color: #0875ff;
 
                     .radio-icon {
                       path {
-                        fill: #FFF !important;
+                        fill: #fff !important;
                       }
                     }
                   }
@@ -2372,7 +2178,6 @@ End Settings Sidebar
                   }
 
                   &.quick-cart-position {
-
                     grid-template-rows: repeat(2, auto);
 
                     img {
@@ -2405,7 +2210,6 @@ End Settings Sidebar
                       }
                     }
 
-
                     .option-name {
                       gap: 0px;
                       display: flex;
@@ -2420,13 +2224,11 @@ End Settings Sidebar
                         position: absolute;
                         bottom: 28%;
                       }
-
                     }
-
                   }
 
                   label.ant-radio-button-wrapper {
-                    color: #073B4C;
+                    color: #073b4c;
                     font-size: 14px;
 
                     .layout-img {
@@ -2443,7 +2245,7 @@ End Settings Sidebar
 
                     &:hover,
                     &.ant-radio-button-wrapper-checked {
-                      border: 1px solid #0875FF;
+                      border: 1px solid #0875ff;
                       background: transparent;
                     }
 
@@ -2466,7 +2268,7 @@ End Settings Sidebar
                     height: 16px;
                     display: flex;
                     font-size: 12px;
-                    background: #0875FF;
+                    background: #0875ff;
                     border-radius: 100%;
                     justify-content: center;
                     transform: translate(50%, -50%);
@@ -2476,7 +2278,7 @@ End Settings Sidebar
                 &.custom-field {
                   label.ant-radio-button-wrapper {
                     &:hover {
-                      border-color: #DDE6F9;
+                      border-color: #dde6f9;
                       background: transparent;
                     }
 
@@ -2497,12 +2299,12 @@ End Settings Sidebar
 
               &:not(.ant-switch-checked) {
                 .ant-switch-inner-unchecked {
-                  color: #73829D;
+                  color: #73829d;
                 }
 
                 .ant-switch-handle {
                   &:before {
-                    background: #ABB8D0;
+                    background: #abb8d0;
                   }
                 }
               }
@@ -2552,7 +2354,7 @@ End Settings Sidebar
           }
 
           .settings-heading {
-            color: #073B4C;
+            color: #073b4c;
             font-size: 16px;
             font-weight: 500;
             line-height: 20px;
@@ -2573,14 +2375,14 @@ End Settings Sidebar
             margin-right: 10px;
             align-items: center;
             border-radius: 50px;
-            background: #DFE6F3;
+            background: #dfe6f3;
             justify-content: center;
           }
 
           .textarea-content {
             p {
               margin: 0;
-              color: #073B4C;
+              color: #073b4c;
               font-size: 14px;
               line-height: 1.8;
             }
@@ -2595,7 +2397,7 @@ End Settings Sidebar
               font-size: 10px;
               font-weight: 600;
               line-height: 1;
-              background: #FFAC27;
+              background: #ffac27;
               color: white;
               border-radius: 10px;
               padding: 4px 7px;
@@ -2640,7 +2442,7 @@ End Settings Sidebar
                   .upgrade-content {
                     gap: 10px;
                     display: flex;
-                    color: #073B4C;
+                    color: #073b4c;
                     font-weight: 500;
                   }
                 }
@@ -2693,36 +2495,36 @@ End Settings Sidebar
 
         .section-divider {
           margin: 50px 0;
-          color: #DDE6F9;
+          color: #dde6f9;
         }
 
         .sgsb-collapse-settings {
           overflow: hidden;
-          border-color: #DDE6F9;
+          border-color: #dde6f9;
           border-radius: 5px;
 
           .ant-collapse-item {
-            border-color: #DDE6F9;
+            border-color: #dde6f9;
             border-radius: 0;
           }
 
           .ant-collapse-header {
             border-radius: 0;
-            background: #FFF;
+            background: #fff;
             padding: 10px 16px;
 
             .ant-collapse-header-text {
-              color: #073B4C;
+              color: #073b4c;
             }
           }
 
           .ant-collapse-content {
             border-radius: 0;
             background: #f7f9ff;
-            border-color: #DDE6F9;
+            border-color: #dde6f9;
 
             .content-bump-label {
-              color: #073B4C;
+              color: #073b4c;
               display: block;
               font-size: 16px;
               font-weight: 500;
@@ -2732,10 +2534,10 @@ End Settings Sidebar
 
             #fixed-bump,
             #discount-bump {
-              color: #073B4C;
+              color: #073b4c;
               padding: 6px 10px;
               border-radius: 5px;
-              border: 1px solid #DDE6F9;
+              border: 1px solid #dde6f9;
             }
           }
         }
@@ -2771,7 +2573,7 @@ End Settings Sidebar
               padding: 9px 15px;
               border-radius: 5px;
               align-items: center;
-              background: #FFAC27;
+              background: #ffac27;
               display: inline-flex;
 
               .overlay-btn-crown {
@@ -2805,12 +2607,12 @@ End Settings Sidebar
 
       .ant-tabs-tab-active {
         .ant-tabs-tab-btn {
-          color: #0875FF;
+          color: #0875ff;
         }
       }
 
       &:before {
-        border-color: #DDE6F9;
+        border-color: #dde6f9;
       }
     }
 
@@ -2823,7 +2625,7 @@ End Settings Sidebar
 
       h4 {
         margin: 0;
-        color: #073B4C;
+        color: #073b4c;
         font-size: 18px;
         font-weight: 600;
       }
@@ -2845,27 +2647,27 @@ End Settings Sidebar
       .sgsb-settings-save-button {
         border: 0;
         margin: 0;
-        color: #FFF;
+        color: #fff;
         height: auto;
         z-index: 9999;
         line-height: 1;
         font-size: 16px;
         font-weight: 500;
         padding: 12px 24px;
-        background: #0875FF;
+        background: #0875ff;
       }
 
       .sgsb-settings-reset-button {
         height: auto;
         z-index: 9999;
-        color: #073B4C;
+        color: #073b4c;
         line-height: 1;
         font-size: 16px;
         font-weight: 500;
         border-radius: 5px;
         padding: 12px 24px;
         background: #f6f9ff;
-        border: 1px solid #DDE6F9;
+        border: 1px solid #dde6f9;
       }
     }
   }
@@ -2899,7 +2701,7 @@ End Settings Sidebar
           width: 50px;
           height: 40px;
           display: flex;
-          background: #0875FF;
+          background: #0875ff;
           align-items: center;
           align-self: self-start;
           justify-content: center;
@@ -2972,7 +2774,7 @@ End Settings Sidebar
           font-size: 10px;
           font-weight: 600;
           line-height: 1;
-          background: #FFAC27;
+          background: #ffac27;
           color: white;
           border-radius: 10px;
           padding: 4px 7px;
@@ -3000,7 +2802,7 @@ End Settings Sidebar
           padding: 4px 14px;
           border-radius: 5px;
           align-items: center;
-          background: #FFAC27;
+          background: #ffac27;
           display: inline-flex;
 
           .overlay-btn-crown {
@@ -3024,11 +2826,11 @@ End Settings Sidebar
 
 .ant-select-selector {
   width: 100%;
-  border-color: #DDE6F9 !important;
+  border-color: #dde6f9 !important;
 }
 
 .trigger-radio-selected {
-  background-color: #F6F9FF;
+  background-color: #f6f9ff;
 }
 
 .ant-radio-input {
@@ -3076,7 +2878,7 @@ End Settings Sidebar
     &.modal-content-heading {
       font-size: 22px;
       font-weight: 700;
-      color: #102F50;
+      color: #102f50;
       margin-bottom: 0;
     }
   }
@@ -3093,24 +2895,24 @@ End Settings Sidebar
     margin-top: 10px;
 
     .modal-cancel-button {
-      color: #FF0834;
-      border: 1px solid #FF0834;
+      color: #ff0834;
+      border: 1px solid #ff0834;
 
       &:hover {
-        background-color: #FFF0F3 !important;
-        color: #FF0834;
-        border: 1px solid #FF0834;
+        background-color: #fff0f3 !important;
+        color: #ff0834;
+        border: 1px solid #ff0834;
       }
     }
 
     .modal-submit-button {
-      color: #0875FF;
-      border: 1px solid #0875FF;
+      color: #0875ff;
+      border: 1px solid #0875ff;
 
       &:hover {
-        background-color: #ECF4FF;
-        color: #0875FF;
-        border: 1px solid #0875FF;
+        background-color: #ecf4ff;
+        color: #0875ff;
+        border: 1px solid #0875ff;
       }
     }
 
@@ -3131,6 +2933,8 @@ End Settings Sidebar
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  padding-top: 26px;
+  background-color: #fff;
 
   .storegrowth-icon {
     width: fit-content;
@@ -3143,6 +2947,10 @@ End Settings Sidebar
 
   .sgsg-ini-setup-progress {
     width: 100%;
+
+    .ant-steps-item-content {
+      font-weight: 700;
+    }
   }
 
   .sgsb-return-dashboard {
@@ -3151,16 +2959,55 @@ End Settings Sidebar
       padding: 20px 30px;
       border-radius: 5px;
       border: none;
-      background: #E3E9FF;
+      background: #e3e9ff;
     }
   }
 
   .sgsb-ini-setup-content-layout {
-    margin: 50px 36px;
+    margin: 22px 36px;
     border-radius: 10px;
-    opacity: 0.8;
-    background: #F4F7FF;
-    padding: 80px 20px;
+    background: #f4f7ff;
+    padding: 60px 20px;
+
+    .sgsb-steps-controller {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .steps-button {
+      padding: 12px 30px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 700;
+      width: fit-content;
+      cursor: pointer;
+
+      &.next {
+        color: #fff;
+        background-color: #0875ff;
+      }
+
+      &.previous {
+        color: #073b4c;
+        background-color: #e3e9ff;
+      }
+
+      &.completion-cta {
+        color: #fff;
+        background-color: #0875ff;
+      }
+
+      &.doc-cta {
+        color: #fff;
+        background: #000000;
+      }
+
+      &.support-cta {
+        color: #073b4c;
+        background-color: #dde6f9;
+      }
+    }
 
     // Welcome step layout
     .sgsb-ini-setup-welcome {
@@ -3170,7 +3017,7 @@ End Settings Sidebar
       align-items: center;
 
       .sgsb-content-heading {
-        color: var(--Secoundary-Color, #073B4C);
+        color: var(--Secoundary-Color, #073b4c);
         text-align: center;
         font-size: 36px;
         font-style: normal;
@@ -3179,15 +3026,14 @@ End Settings Sidebar
         margin: 0;
 
         span {
-          color: var(--Primary-Color, #0875FF);
-          ;
+          color: var(--Primary-Color, #0875ff);
         }
       }
 
       .sgsb-sub-heading {
         margin-top: 16px;
         white-space: pre-line;
-        color: var(--Secoundary-Color, #073B4C);
+        color: var(--Secoundary-Color, #073b4c);
         text-align: center;
         font-size: 18px;
         font-style: normal;
@@ -3195,16 +3041,109 @@ End Settings Sidebar
         line-height: normal;
       }
 
-      .get-started-cta {
+      .get-started {
         margin-top: 50px;
         padding: 16px 42px;
-        border-radius: 6px;
-        border: none;
         color: #fff;
-        background-color: #0875FF;
-        cursor: pointer;
+        background-color: #0875ff;
+      }
+    }
+
+    //Setup Completion page
+    .sgsb-step-completion {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+
+      .sgsb-inisetup-heading-content {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+
+        .completion-check-mark {
+          border: 2px solid #0875ff;
+          border-radius: 50%;
+          padding: 24px 22px;
+          display: inline-flex;
+        }
+
+        .setup-completion-heading {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .heading {
+            color: #073b4c;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+          }
+
+          .sub-heading {
+            color: #073b4c;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+          }
+        }
       }
 
+      .sgsb-ini-setup-completion {
+        .sgsb-intro-video {
+          iframe {
+            width: 36vw;
+            height: 19vw;
+            border-radius: 6px;
+            background: gray;
+          }
+        }
+
+        &.support-doc {
+          display: flex;
+          gap: 44px;
+          margin-left: 8%;
+        }
+
+        .sgsb-support-doc-cta {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+
+      .ini-setup {
+        &.user-agreement {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-left: 8%;
+
+          .getting-updates,
+          .getting-essentials {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+
+            .content-container {
+              line-height: 0.5;
+
+              .heading {
+                color: var(--Secoundary-Color, #073b4c);
+                font-size: 16px;
+                font-weight: 500;
+              }
+
+              .content {
+                color: var(--Secoundary-Color, #073b4c);
+                font-size: 12px;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,13 +1,13 @@
 
-import { useState, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { Steps } from 'antd';
 import ContentLayout from './ContentLayout';
 
-const Progress = () => {
-  const [current, setCurrent] = useState(0);
+const Progress = ({next,prev,current,setCurrent}) => {
   const onChange = (value) => {
     setCurrent(value);
   };
+
 
   const steps = [
     {
@@ -20,7 +20,7 @@ const Progress = () => {
       title: 'Ready',
     },
   ];
-
+  const stepSize = steps.length;
   return (
     <Fragment>
       <Steps
@@ -29,7 +29,7 @@ const Progress = () => {
         onChange={onChange}
         items={steps}
       />
-      <ContentLayout current={current} />
+      <ContentLayout current={current} next={next} prev={prev} stepSize={stepSize}/>
     </Fragment>
   );
 }
