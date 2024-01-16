@@ -115,6 +115,7 @@
 .offer-main-wrap .product-image-and-title .offer-price{
   flex: 1.5;
   font-weight: 800;
+  text-align: right;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-image img{
@@ -155,4 +156,26 @@
   background: rgba(48, 33, 182, 0.678);
   margin-bottom: 20px;
   padding: 5px;
+}
+
+.bogo-badge-image {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+}
+
+.bogo-badge-image.default-icon {
+    color: #fff;
+    display: flex;
+    border-radius: 5px;
+    background: #1677ff;
+    align-items: center;
+    justify-content: center;
+}
+
+.bogo-badge-image.default-icon svg {
+    fill: #fff;
 }

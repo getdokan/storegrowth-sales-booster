@@ -12,6 +12,8 @@ if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url
 	$bogo_message = $bogo_info->product_page_message;
 	$bogo_message = str_replace( '[target_product]', get_the_title( $target_product ), $bogo_message );
 	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
+
+    $show_regular_price = Helper::sgsb_get_bogo_settings_option( 'regular_price_show', false );
 	?>
 
 	<div class='bogo-template-overview-area'>
@@ -76,10 +78,12 @@ if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url
 					</div>
 				</div>
 				<div class="offer-price">
-					<span style="text-decoration: line-through;">
-						<?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $regular_price, 2 ) ); ?>
-					</span>
-					&nbsp;
+                    <?php if ( $show_regular_price ) : ?>
+                        <span style="text-decoration: line-through;">
+                            <?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $regular_price, 2 ) ); ?>
+                        </span>
+                    <?php endif; ?>
+                    &nbsp;
 					<span>
 						<?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $offer_price, 2 ) ); ?>
 					</span>

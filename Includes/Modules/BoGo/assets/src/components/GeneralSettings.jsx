@@ -45,8 +45,7 @@ const GeneralSettings = () => {
   const onBarChange = (key, value) => {
     setBogoGlobalSettings({
       ...currentSettings,
-      [key]: value,
-      default_custom_badge_icon: "",
+      [key]: value
     });
   };
 
@@ -137,15 +136,15 @@ const GeneralSettings = () => {
           isEnable={currentSettings?.global_product_page_bage_icon}
           tooltip={__('The badge icon will show in the product page.')}
         />
-        
-        {applyFilters(
+
+        { applyFilters(
           "sgsb_bogo_global_badge_icon_radio_box",
           "",
           iconOptions,
           currentSettings,
           onBarChange,
           setBogoGlobalSettings
-        )}
+        ) }
 
       </SettingsSection>
       <ActionsHandler

@@ -8,6 +8,7 @@ import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSett
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BogoIcons from "../BogoIcons";
 import { Fragment } from "react";
+import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 
 const TemplateSection = () => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -19,7 +20,7 @@ const TemplateSection = () => {
   const onFieldChange = (key, value) => {
     setCreateFromData({
       ...createBogoData,
-      [key]: value,
+      [key]: key !== 'enable_custom_badge_image' ? value : ( value ? 1 : 0 ),
     });
   };
 
@@ -55,17 +56,30 @@ const TemplateSection = () => {
     { value: "no_border", label: __("No Border", "storegrowth-sales-booster") },
   ];
 
+  const enable_custom_badge_image = parseInt( createBogoData.enable_custom_badge_image ) !== 0;
+
   return (
     <Fragment>
       <SettingsSection>
-        {applyFilters(
-          "sgsb_bogo_single_badge_icon_radio_box",
-          "",
-          iconOptions,
-          createBogoData,
-          onBarChange,
-          setCreateFromData
-        )}
+        <Switcher
+          changeHandler={ onFieldChange }
+          name={ 'enable_custom_badge_image' }
+          isEnable={ enable_custom_badge_image }
+          title={ __( 'Offer Icon', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'Will be able to achieve the control of the image style in the popup.', 'storegrowth-sales-booster' ) }
+        />
+
+        {/* Rendered BOGO image style settings. */}
+        { enable_custom_badge_image && (
+          applyFilters(
+            'sgsb_bogo_single_badge_icon_radio_box',
+            '',
+            iconOptions,
+            createBogoData,
+            onBarChange,
+            setCreateFromData
+          )
+        ) }
       </SettingsSection>
       {/* Render bogo offer box settings section. */}
       <SectionHeader

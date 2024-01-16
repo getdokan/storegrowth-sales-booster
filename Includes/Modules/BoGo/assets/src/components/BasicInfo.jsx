@@ -10,6 +10,7 @@ import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSett
 import OfferField from "./OfferField";
 import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
 import { InputNumber } from "sales-booster/src/components/settings/Panels";
+import {applyFilters} from "@wordpress/hooks";
 
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -44,18 +45,6 @@ const BasicInfo = ({ clearErrors }) => {
         setProductListForSelect(originalProductListForSelect);
       }
     }, [targetProducts, originalSimpleProductForOffer, originalProductListForSelect, offerProductId]);
-    
-
-  const bogoSchedules = [
-    { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
-    { value: "saturday", label: __("Saturday", "storegrowth-sales-booster") },
-    { value: "sunday", label: __("Sunday", "storegrowth-sales-booster") },
-    { value: "monday", label: __("Monday", "storegrowth-sales-booster") },
-    { value: "tuesday", label: __("Tuesday", "storegrowth-sales-booster") },
-    { value: "wednesday", label: __("Wednesday", "storegrowth-sales-booster") },
-    { value: "thursday", label: __("Thursday", "storegrowth-sales-booster") },
-    { value: "friday", label: __("Friday", "storegrowth-sales-booster") },
-  ];
 
   const offerOptions = [
     { value: "free", label: __("Free", "storegrowth-sales-booster") },
@@ -111,15 +100,16 @@ const BasicInfo = ({ clearErrors }) => {
 
   };
 
+  const hidePremiumFeature = applyFilters( 'sgsb_hide_bogo_premium_options', true );
 
   const dealOptions = [
-    { key: 'same', value: __('Buy X Get X', 'storegrowth-sales-booster') },
     { key: 'different', value: __('Buy X Get Y', 'storegrowth-sales-booster') },
+    { key: 'same', disabled: hidePremiumFeature, value: __('Buy X Get X', 'storegrowth-sales-booster') },
   ];
 
   const dealCategories = [
     { key: 'products', value: __('Products', 'storegrowth-sales-booster') },
-    { key: 'categories', value: __('Categories', 'storegrowth-sales-booster') },
+    { key: 'categories', disabled: hidePremiumFeature, value: __('Categories', 'storegrowth-sales-booster') },
   ];
 
   return (
@@ -198,7 +188,8 @@ const BasicInfo = ({ clearErrors }) => {
                 ?.toLowerCase()
                 ?.includes(inputValue.toLowerCase())
             }
-          />)}
+          />)
+        }
 
         <OfferField
           createBogoData={createBogoData}
@@ -206,14 +197,12 @@ const BasicInfo = ({ clearErrors }) => {
           onFieldChange={onFieldChange}
         />
 
-        <InputNumber
-          min={1}
-          name={"minimum_quantity_required"}
-          title={__("Select Min Quantity", "storegrowth-sales-booster")}
-          tooltip={__("Minimum add to cart", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.minimum_quantity_required}
-          changeHandler={onFieldChange}
-        />
+        {applyFilters(
+          'sgsb_after_bogo_offer_settings',
+          '',
+          createBogoData,
+          onFieldChange
+        )}
 
         <TextRadioBox
           name={`bogo_type`}
@@ -253,55 +242,12 @@ const BasicInfo = ({ clearErrors }) => {
           />
         )}
 
-        {/* <MultiSelectBox
-          name={"get_alternate_products"}
-          changeHandler={onFieldChange}
-          fieldValue={createBogoData?.get_alternate_products.map(Number)}
-          options={simpleProductForOffer}
-          title={__("Select Alternate Offer Product", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Search for Alternate Offer",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "This will show the alternate offer product.",
-            "storegrowth-sales-booster"
-          )}
-        /> */}
-
-        <MultiSelectBox
-          name={"offer_schedule"}
-          options={bogoSchedules}
-          changeHandler={onFieldChange}
-          fieldValue={createBogoData?.offer_schedule}
-          title={__("BOGO Schedule", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Please select bogo schedule",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "The schedule can be daily or on specific days of the week.",
-            "storegrowth-sales-booster"
-          )}
-        />
-        <DateField
-          name={"offer_start"}
-          title={__("Offer Start", "storegrowth-sales-booster")}
-          tooltip={__("Offer Start", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.offer_start}
-          changeHandler={onFieldChange}
-          fullWidth={true}
-        />
-        <DateField
-          name={"offer_end"}
-          title={__("Offer End", "storegrowth-sales-booster")}
-          tooltip={__("Offer End", "storegrowth-sales-booster")}
-          fieldValue={createBogoData?.offer_end}
-          endDateDisable={true}
-          startDateValue={createBogoData?.offer_start}
-          changeHandler={onFieldChange}
-          fullWidth={true}
-        />
+        {applyFilters(
+          'sgsb_after_bogo_basic_info_settings',
+          '',
+          createBogoData,
+          onFieldChange
+        )}
       </SettingsSection>
     </Fragment>
   );

@@ -2238,6 +2238,12 @@ End Settings Sidebar
 
               &.textarea-field {
                 padding: 10px 16px;
+
+                &[readonly] {
+                  &:hover {
+                    opacity: 0.5;
+                  }
+                }
               }
 
               &.textinput-field {

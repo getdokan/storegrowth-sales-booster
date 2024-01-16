@@ -25,6 +25,7 @@ export { default as RadioBox } from "./PanelSettings/Fields/RadioBox";
 export { default as InputNumber } from "./PanelSettings/Fields/Number";
 export { default as SelectBox } from "./PanelSettings/Fields/SelectBox";
 export { default as TextInput } from "./PanelSettings/Fields/TextInput";
+export { default as DateField } from "./PanelSettings/Fields/DateField";
 export { default as EmptyField } from "./PanelSettings/Fields/EmptyField";
 export { default as ColourPicker } from "./PanelSettings/Fields/ColorPicker";
 export { default as TextAreaBox } from "./PanelSettings/Fields/TextAreaBox";

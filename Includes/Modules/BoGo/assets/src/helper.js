@@ -1,3 +1,5 @@
+import { __ } from '@wordpress/i18n';
+
 export const isString = (value) => typeof value === "string";
 
 export const bogoPropertiesToWorkForHtmlEntity = [
@@ -60,13 +62,13 @@ export const convertBogoItemHtmlEntitiesToTexts = (bogoItem) => {
 export const createBogoForm = {
   name_of_order_bogo: "",
   bogo_status: "yes",
-  bogo_deal_type: "same",
+  bogo_deal_type: "different",
   bogo_type: "products",
   minimum_quantity_required: 1,
-  bogo_shop_page_message: "",
   offer_start_date: "",
   offer_end_date: "",
   default_badge_icon_name: "bogo-icons-1",
+  enable_custom_badge_image: 0,
   default_custom_badge_icon: "",
   target_products: '',
   target_categories: [],
@@ -102,6 +104,8 @@ export const createBogoForm = {
   selection_title: "Add selection title please",
   offer_description: "Add offer description please",
   offer_product_regular_price: 0,
+  product_page_message: __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
+  shop_page_message: __( 'Buy 1, unit of any product from this shop and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
 };
 /**
  * Default data of create bogo.
@@ -113,6 +117,6 @@ export const iniBogoGlobalSettings = {
   global_product_page_bage_icon: false,
   bogo_category_page_message: "",
   default_custom_badge_icon: "",
-  default_badge_icon_name: "",
+  default_badge_icon_name: "bogo-icons-1",
   bogo_category_messages: [],
 };

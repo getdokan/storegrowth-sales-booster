@@ -38,7 +38,60 @@ class OrderBogo {
 		add_action( 'woocommerce_cart_item_removed', array( $this, 'remove_linked_bogo_product' ), 10, 2 );
 		add_filter( 'woocommerce_cart_item_class', array( $this, 'add_custom_class_to_offer_product' ), 10, 3 );
 		add_filter( 'woocommerce_cart_item_name', array( $this, 'add_custom_text_for_offer_product' ), 10, 3 );
+
+        add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
+        add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
 	}
+
+    public function display_bogo_floating_badge_on_product() {
+        global $product;
+
+        $show_shop_badge = Helper::sgsb_get_bogo_settings_option( 'shop_page_bage_icon' );
+        if ( is_shop() && ! $show_shop_badge ) {
+            return;
+        }
+
+        $show_product_badge = Helper::sgsb_get_bogo_settings_option( 'global_product_page_bage_icon' );
+        if ( is_product() && ! $show_product_badge ) {
+            return;
+        }
+
+        $product_id       = $product->get_id();
+        $product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
+
+        $offer_badge     = '';
+        $offer_badge_url = '';
+        $product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
+        if ( $product_bogo_status === 'yes' ) {
+            $offer_badge_url = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
+        } else {
+            $selected_offer = array();
+            $offers         = Helper::sgsb_get_global_offered_product_list();
+
+            foreach ( $offers as $offer ) {
+                if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
+                    $selected_offer = $offer;
+                    break;
+                }
+            }
+
+            if ( ! empty( $selected_offer ) ) {
+                if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
+                    $offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
+                    $offer_badge_url = ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
+                } else {
+                    $offer_badge     = Helper::sgsb_get_bogo_settings_option( 'default_badge_icon_name' );
+                    $offer_badge_url = Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' );
+                }
+            }
+        }
+
+        if ( ! file_exists( __DIR__ . '/../templates/bogo-offer-badge.php' ) ) {
+            return;
+        }
+
+        include __DIR__ . '/../templates/bogo-offer-badge.php';
+    }
 
 	public function handle_cart_update() {
 		$product_quantities = array();
@@ -361,26 +414,17 @@ class OrderBogo {
 			$offer_type           = isset( $_POST['offer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_type'] ) ) : 'free';
 			$get_product          = isset( $_POST['get_different_product_field'] ) ? sanitize_text_field( wp_unslash( $_POST['get_different_product_field'] ) ) : '';
 			$bogo_products        = isset( $_POST['get_alternate_products'] ) ? wc_clean( wp_unslash( $_POST['get_alternate_products'] ) ) : array();
-			$offer_schedule       = isset( $_POST['offer_schedule'] ) ? wc_clean( wp_unslash( $_POST['offer_schedule'] ) ) : array( 'daily' );
-			$offer_end_date       = isset( $_POST['offer_end'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_end'] ) ) : '';
-			$bogo_categories      = isset( $_POST['offered_categories'] ) ? wc_clean( wp_unslash( $_POST['offered_categories'] ) ) : array();
 			$bogo_badge_image     = isset( $_POST['bogo_badge_image'] ) ? sanitize_url( $_POST['bogo_badge_image'] ) : '';
-			$offer_start_date     = isset( $_POST['offer_start'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_start'] ) ) : '';
 			$product_discount     = isset( $_POST['discount_amount'] ) ? sanitize_text_field( wp_unslash( $_POST['discount_amount'] ) ) : 0;
-			$minimum_quantity     = isset( $_POST['minimum_quantity_required'] ) ? sanitize_text_field( wp_unslash( $_POST['minimum_quantity_required'] ) ) : 0;
 			$shop_page_message    = isset( $_POST['shop_page_message'] ) ? sanitize_text_field( wp_unslash( $_POST['shop_page_message'] ) ) : '';
 			$product_page_message = isset( $_POST['product_page_message'] ) ? sanitize_text_field( wp_unslash( $_POST['product_page_message'] ) ) : '';
 
-			$bogo_settings_data['offer_end']                   = $offer_end_date;
 			$bogo_settings_data['offer_type']                  = $offer_type;
-			$bogo_settings_data['offer_start']                 = $offer_start_date;
-			$bogo_settings_data['offer_schedule']              = $offer_schedule;
 			$bogo_settings_data['discount_amount']             = $product_discount;
 			$bogo_settings_data['bogo_badge_image']            = $bogo_badge_image;
 			$bogo_settings_data['shop_page_message']           = $shop_page_message;
             $bogo_settings_data['product_page_message']        = $product_page_message;
             $bogo_settings_data['get_alternate_products']      = $bogo_products;
-            $bogo_settings_data['minimum_quantity_required']   = $minimum_quantity;
             $bogo_settings_data['get_different_product_field'] = $get_product;
 		}
 

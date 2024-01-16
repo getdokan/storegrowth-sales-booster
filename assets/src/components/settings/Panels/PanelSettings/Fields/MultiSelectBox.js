@@ -3,6 +3,8 @@ import SettingsTooltip from "../SettingsTooltip";
 import UpgradeCrown from "../UpgradeCrown";
 import FieldWrapper from "./FieldWrapper";
 import {__} from "@wordpress/i18n";
+import UpgradeOverlay from "../UpgradeOverlay";
+import React from "react";
 
 const { Title } = Typography;
 
@@ -19,7 +21,7 @@ const MultiSelectBox = ({
 } ) => {
     return (
         // Make settings multi-select component with card preview.
-        <FieldWrapper colSpan={ colSpan }>
+        <FieldWrapper colSpan={ colSpan } upgradeClass={ needUpgrade ? `upgrade-settings` : '' }>
             <Col span={9}>
                 <div className={ `card-heading` }>
                     {/* Handle switcher title. */}

@@ -105,6 +105,10 @@ class EnqueueScript {
 	 * Style for frontend.
 	 */
 	public function front_styles() {
+        if ( ! is_checkout() ) {
+            return;
+        }
+
 		$ftime = filemtime( sgsb_modules_path( 'UpsellOrderBump/assets/css/order-bump-front.css' ) );
 
 		wp_enqueue_style(
