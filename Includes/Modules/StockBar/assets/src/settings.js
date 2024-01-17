@@ -9,12 +9,14 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "stock-bar"
     routes.push({
-      name: "stock-bar",
+      name: moduleName,
       label: "Stock Bar",
       path: "/stock-bar",
       element: (
         <StockBarLayout
+          moduleId={moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}

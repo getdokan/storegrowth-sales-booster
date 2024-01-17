@@ -9,12 +9,14 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "floating-notification-bar";
     routes.push({
-      name: "floating-notification-bar",
+      name: moduleName,
       label: "Floating Bar",
       path: "/floating-notification-bar",
       element: (
         <FloatingNotificationBarLayout
+          moduleId = {moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}

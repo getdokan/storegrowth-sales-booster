@@ -9,12 +9,15 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "countdown-timer";
+
     routes.push({
-      name: "countdown-timer",
+      name: moduleName,
       label: "Sales Countdown",
       path: "/countdown-timer",
       element: (
         <SalesCountdownLayout
+          moduleId = {moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}

@@ -6,11 +6,12 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
  * Add routes to sidebar.
  */
 addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate, useParams, useSearchParams) => {
+  const moduleName = 'fly-cart';
   routes.push( {
-    path: "/fly-cart",
-    element: <FlyCart navigate={ navigate } useSearchParams={ useSearchParams } />,
-    name: 'fly-cart',
+    name: moduleName,
     label:'Quick Cart',
+    path: "/fly-cart",
+    element: <FlyCart navigate={ navigate } useSearchParams={ useSearchParams } moduleId ={moduleName}/>,
   } );
 
   return routes;
