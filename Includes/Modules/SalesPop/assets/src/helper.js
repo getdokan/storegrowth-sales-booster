@@ -54,7 +54,7 @@ export const createPopupForm = {
     image_style                  : true,
     popup_style                  : true,
     mobile_view                  : false,
-    popup_width                  : 22,
+    popup_width                  : 400,
     virtual_time				 : 1,
     screen_width                 : window.screen.width,
     virtual_name                 : [],

@@ -15,7 +15,7 @@ import { Fragment } from "react";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FlyCart( { navigate, useSearchParams } ) {
+function FlyCart( { navigate, useSearchParams , moduleId } ) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -167,6 +167,7 @@ function FlyCart( { navigate, useSearchParams } ) {
     <Fragment>
       <PanelHeader
         title={ __( 'Quick Cart Setting', 'storegrowth-sales-booster' ) }
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

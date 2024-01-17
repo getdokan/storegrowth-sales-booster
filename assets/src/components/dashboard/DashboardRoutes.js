@@ -1,7 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from "@wordpress/hooks";
 import Overview from './Overview';
-import Pricing from './Pricing';
 import Faq from './Faq';
 import React from 'react';
 
@@ -11,12 +10,6 @@ let dashboardRoutes = [
         path    : '/dashboard/overview',
         label   : __( 'Overview', 'storegrowth-sales-booster' ),
         element : <Overview />,
-    },
-    {
-        name    : 'dashboard',
-        path    : '/dashboard/pricing',
-        label   : __( 'Pricing', 'storegrowth-sales-booster' ),
-        element : <Pricing />,
     },
     {
         name    : 'dashboard',

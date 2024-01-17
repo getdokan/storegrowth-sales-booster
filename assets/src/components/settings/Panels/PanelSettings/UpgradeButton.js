@@ -4,8 +4,9 @@ import UpgradeCrown from "./UpgradeCrown";
 const UpgradeButton = () => {
     return (
         <a
-            href='#/dashboard/pricing'
+            href='https://storegrowth.io/pricing/'
             className={ `upgrade-button` }
+            target="_blank"
         >
             { __('Upgrade to PRO ', 'storegrowth-sales-booster' ) }
             <UpgradeCrown proBadge={ false } classes={ `overlay-btn-crown` } />

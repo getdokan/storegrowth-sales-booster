@@ -1,10 +1,18 @@
 import { __ } from '@wordpress/i18n';
-import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import { applyFilters } from '@wordpress/hooks';
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import RadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioBox";
 import CartIcon from "./CartIcon";
+import LayoutOption from './LayoutOption';
+import BottomLeft from '../../images/cart-position/bottom-left.svg';
+import CenterLeft from '../../images/cart-position/center-left.svg';
+import TopLeft from '../../images/cart-position/top-left.svg';
+import BottomRight from '../../images/cart-position/bottom-right.svg';
+import CenterRight from '../../images/cart-position/center-right.svg';
+import TopRight from '../../images/cart-position/top-right.svg';
+
 
 const DesignSettings = ({
     formData,
@@ -13,12 +21,48 @@ const DesignSettings = ({
     buttonLoading,
     onFormReset
 }) => {
-    const iconPositions = [
-        { value: 'top-left', label: __( 'Top Left', 'storegrowth-sales-booster' ) },
-        { value: 'top-right', label: __( 'Top Right', 'storegrowth-sales-booster' ) },
-        { value: 'bottom-left', label: __( 'Bottom Left', 'storegrowth-sales-booster' ) },
-        { value: 'bottom-right', label: __( 'Bottom Right', 'storegrowth-sales-booster' ) },
+
+    let positionContents = [
+        {
+            key  : 'bottom-right',
+            icon : BottomRight,
+            name : __( 'Bottom Right', 'storegrowth-sales-booster' )
+        },
+        {
+            key  : 'top-left',
+            icon : TopLeft,
+            name : __( 'Top Left', 'storegrowth-sales-booster' )
+        },
+        {
+            key  : 'top-right',
+            icon : TopRight,
+            name : __( 'Top Right', 'storegrowth-sales-booster' )
+        },
+        {
+            key  : 'bottom-left',
+            icon : BottomLeft,
+            name : __( 'Bottom Left', 'storegrowth-sales-booster' )
+        },
     ];
+
+    const positionIcons = {
+        'center_left': CenterLeft,
+        'center_right': CenterRight,
+    };
+
+    positionContents = applyFilters(
+        'sgsb_quick_cart_position_settings',
+        positionContents,
+        positionIcons
+    );
+
+    const positionOptions = positionContents?.map( layout => (
+        {
+            key      : layout?.key,
+            disabled : layout?.disabled,
+            value    : <LayoutOption src={ layout?.icon } name={ layout?.name } disabled={ layout?.disabled } />
+        }
+    ) );
 
     const iconStyleNames = [
         'shopping-cart-icon-1',
@@ -33,13 +77,16 @@ const DesignSettings = ({
 
     return (
         <SettingsSection>
-            <SelectBox
+            <RadioBox
                 name={ `icon_position` }
-                changeHandler={ onFieldChange }
-                options={ [ ...iconPositions ] }
+                fieldWidth={ true }
+                classes={ `radio-img-field quick-cart-position` }
                 fieldValue={ formData.icon_position }
-                title={ __( 'Cart Icon Position', 'storegrowth-sales-booster' ) }
+                changeHandler={ onFieldChange }
+                options={ [ ...positionOptions ] }
+                title={ __( `Cart Icon Position`, 'storegrowth-sales-booster' ) }
             />
+
             <RadioBox
                 name={ `icon_name` }
                 options={ [ ...iconOptions ] }

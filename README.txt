@@ -1,74 +1,97 @@
-=== StoreGrowth - Sales Booster For WooCommerce | Live Sales Notifications, Upsell Bump, Quick Cart, Direct Checkout, Stock Countdown and more ===
+=== StoreGrowth - Smart Direct Checkout, Fly Cart / Floating Cart, Live Sales Notifications, Floating Notification Bar and more | Best Sales Booster for WooCommerce ===
 Contributors: mehedi_csit, invizo
-Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown
+Tags: floating cart, notification bar, add to cart, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
+
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.0.1
+Stable tag: 1.1.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-== Description ==
+Best WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
 
-Supercharge your WooCommerce store with [StoreGrowth](https://storegrowth.io/), the ultimate sales booster suite!
+== Description == 
 
-Unlock the full potential of your online store and skyrocket your sales using our comprehensive set of 8+ advanced tools. From live sales notifications and a floating notification bar to free shipping incentives, upsell bumps, quick cart, direct checkout, stock countdown alerts, and a sales countdown timer – StoreGrowth has it all. Elevate your WooCommerce experience and create an unbeatable shopping journey for your customers. Boost conversions, increase average order value, and take your online business to new heights with StoreGrowth!
+= Boost Sales with WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site! =
+
+The [StoreGrowth](https://storegrowth.io/pricing/) plugin is an all-in-one bundle for WooCommerce, offering more than eight modules to enhance sales funnels. It addresses the difficulty of installing multiple plugins by reducing the burden and improving website performance. Compatible with various WordPress themes, it allows full control over design and customization, including a real-time preview of changes. This plugin is designed to attract and encourage visitors to purchase, increasing sales and creating a positive impact on your business.
 
 [youtube https://youtu.be/q9gWD7iUHX0?si=3C8l7l6o_JFfymg2]
 
-[Documentation](https://storegrowth.io/documentation/) [StoreGrowth Pro](https://storegrowth.io/)
+[Documentation](https://storegrowth.io/documentation/) [Upgrade to pro](https://storegrowth.io/pricing/)
 
-**Live Sales Notifications:** Instantly build trust and credibility by showcasing real-time purchases. Let your customers see what others are buying, triggering the Fear of Missing Out (FOMO) effect and encouraging them to make a purchase.
+== MODULES ==
 
-**Floating Notification Bar:** Capture attention with a customizable floating bar that highlights special offers, discounts, or important announcements. Keep your customers informed and engaged throughout their shopping journey.
+= WooCommerce Direct Checkout
+= WooCommerce Fly Cart and Side Cart
+= WooCommerce Live Sales Notification
+= WooCommerce Floating Notification Bar
+= WooCommerce Upsell Order Bump
+= WooCommerce Sales Countdown Timer
+= WooCommerce Stock Countdown Progress Bar
+= WooCommerce Free Shipping Bar
 
-**Free Shipping Bar:** Boost cart values by promoting free shipping. Encourage customers to reach the minimum spend for free shipping, turning casual browsers into satisfied buyers.
+**WooCommerce Direct Checkout:** This feature redirects users to the checkout page after adding items to their cart. It simplifies the checkout process, reducing the likelihood of abandoned carts and speeding up shopping for a better experience and increased sales. Highlights include:
 
-**Upsell Order Bump:** Increase average order values effortlessly. Present irresistible upsell offers at the checkout, enticing customers to add more to their carts.
+✅ Transforming the “Add to Cart” button into a “Buy Now” button.
+✅ Option to place a “Buy Now” button alongside the “Add to Cart” button.
+✅ Specific product targeting for the “Buy Now” button.
+✅ Fully customizable design for the “Buy Now” button.
 
-**Quick Cart & Direct Checkout:** Streamline the buying process with a Quick Cart option and Direct Checkout feature. Minimize friction and enhance user experience for higher conversion rates.
+**Quick Cart:** Adds a side cart to the WooCommerce store, allowing shoppers to easily add or remove items and proceed to a one-click fast checkout. Highlights include:
 
-**Stock Bar:** Create a sense of urgency by displaying stock levels. Drive sales by letting customers know when a product is running low, encouraging them to make a swift purchase.
+✅ Real-time updates of product subtotals.
+✅ Seamless addition or removal of items.
+✅ One-click checkout.
+✅ Customizable design and cart details.
 
-**Sales Countdown:** Amp up excitement with a countdown timer for limited-time offers. Drive urgency and push customers to take action before the clock runs out.
+**Live Sales Popup Notification:** Enhances sales and conversion rates by displaying recent sales alerts to store visitors, creating trust and a sense of urgency. Highlights include:
 
-🔥 **FOMO-Infused Sales Acceleration with StoreGrowth** 🔥
+✅ Pre-made templates available with one-click application.
+✅ Fully customizable template design and message.
+✅ Options to display sales notifications for the latest or specific products.
 
-Unleash the power of FOMO (Fear of Missing Out) and elevate your WooCommerce store's conversion game with StoreGrowth-Sales Booster for WooCommerce. Our plugin is packed with features designed to instill urgency, exclusivity, and social validation, turning casual browsers into eager customers.
+**Floating Notification Bar:** Increases conversion rates with a floating announcement banner. It informs visitors about the latest deals and discounts. Highlights include:
 
-✨ **Live Sales Notifications:**
+✅ Action button targeting specific offers or products.
+✅ Highly customizable floating bar designs.
+✅ Adjustable positioning for the notification bar.
+✅ Targeting specific pages for display.
 
-Showcase real-time purchases to create a dynamic atmosphere of popularity and urgency on your website. Watch as FOMO takes hold, compelling visitors to join the ranks of satisfied customers.
+**Free Shipping Label and Progress Bar:** Encourages customers to increase their cart value by offering free shipping incentives. Displays a progress bar for orders over a certain amount. Highlights include:
 
-⏰ **Sales Countdown:**
+✅ Real-time display of the free shipping progress bar.
+✅ Options to create free shipping offers or discounts.
+✅ Setting a minimum cart value.
 
-Integrate customizable countdown timers for limited-time offers and promotions. Drive urgency and a sense of exclusivity, nudging visitors to act swiftly before the clock runs out.
+**Checkout Upsell Order Bump:** Offers upsell opportunities during checkout with tempting additional products, without interrupting progress. Highlights include:
 
-📉 **Stock Bar:**
+✅ Specific category or product targeting for upsells.
+✅ Custom days for enabling upsell offers.
+✅ Various order bumps for targeted products.
 
-Display live stock levels, injecting a fear of scarcity into the shopping experience. Customers are prompted to secure their favorite items before they vanish from the shelves.
+**Stock Count Progress Bar:** A visual representation of available stock for a product, encouraging timely purchases. Easy to set up and customize.
 
-🚀 **Floating Notification Bar:**
-
-Harness the FOMO effect with a customizable floating bar that highlights exclusive deals, time-sensitive discounts, or limited-stock alerts. Make every offer a can't-miss opportunity.
+**Sales Countdown Timer:** Showcases a flexible countdown timer, motivating customers and drawing attention to products, boosting sales during campaigns.
 
 **Key Features:**
 
 **1. Intuitive React-Based Admin Panel:**
 
-- Effortlessly navigate our super-fast and clean admin panel built with React for a seamless user experience.
+✅ Effortlessly navigate our super-fast and clean admin panel built with React for a seamless user experience.
 
 **2. Customizable Design Options:**
 
-- Modify the design of every feature directly from the admin panel, giving you full control over the look and feel of your store.
+✅ Modify the design of every feature directly from the admin panel, giving you full control over the look and feel of your store.
 
 **3. Interactive Preview Panel:**
 
-- Visualize changes in real-time with an interactive preview panel for each module, ensuring a perfect match with your store's aesthetics.
+✅ Visualize changes in real-time with an interactive preview panel for each module, ensuring a perfect match with your store's aesthetics.
 
 **4. Broad Theme Compatibility:**
 
-- Seamlessly integrate StoreGrowth with a variety of popular WordPress themes for a versatile user experience.
+✅ Seamlessly integrate StoreGrowth with a variety of popular WordPress themes for a versatile user experience.
 
 ## Documentation and Support
 
@@ -84,35 +107,49 @@ For detailed information about features, frequently asked questions (FAQs), and 
 
 StoreGrowth – WooCommerce Sales Booster is a robust plugin designed to enhance sales and boost conversions on your WooCommerce store.
 
-= How does StoreGrowth – WooCommerce Sales Booster plugin help increase conversion rates?
+= How do I activate my pro plan?
 
-StoreGrowth employs various tactics like countdown timers, up-sell order bump, discount banners, free shipping bar, sales notifications, personalized recommendations, and social proof to create a sense of urgency, boost customer trust, and encourage immediate action, resulting in higher conversion rates.
+Go to the [StoreGrowth](https://storegrowth.io/pricing/) website or [click here](https://storegrowth.io/pricing/) to choose a pro plan.
 
-= What is a StoreGrowth – Sales Booster for WooCommerce plugin?
+= Is StoreGrowth compatible with other WordPress themes?
 
-The StoreGrowth – Sales Booster plugin is a powerful tool designed to enhance your online store’s sales by implementing various strategies and features to attract and convert customers.
+StoreGrowth is compatible with various popular WordPress themes and creates an amazing experience with sales booster modules.
 
-= Can I create urgency and scarcity on my product pages using this plugin?
-Absolutely! With its Countdown Timer module, you can easily add countdown timers to your product pages, creating a sense of urgency and motivating customers to make a purchase quickly.
+= How can I get support?
 
-= Will the sales booster features work with my existing WooCommerce setup?
+Storegrowth has a 24/7 dedicated developer team to provide support for any inconvenience.
 
-Definitely! The WooCommerce Sales Booster plugin seamlessly integrates with your current WooCommerce store without any conflicts or disruptions.
 
-= Can StoreGrowth – WooCommerce Sales Booster plugin help improve promotional capabilities?
+= Do you have a documentation guide?
 
-Yes, indeed! With a StoreGrowth – Sales Booster plugin, you can easily create and manage time-limited promotions, flash sales, discount banners, and special offers, enabling you to run effective marketing campaigns and drive sales on your WooCommerce store.
+StoreGrowth has a detailed [document guide](https://storegrowth.io/docs/) to learn how you can use the plugin and customize the design according to your website. [Learn More](https://storegrowth.io/docs/)
 
-= Is technical support available if I encounter any issues with the plugin?
-Absolutely! We offer dedicated customer support to assist you with any questions or technical difficulties you may encounter. Simply reach out to our knowledgeable support team, and we’ll be happy to assist you.
+= Can I set up campaigns for specific products?
 
-= Is StoreGrowth – Sales Booster plugins compatible with mobile devices?
+Yes, You can set up a campaign for specific products. Go to WordPress dashboard > Products > select the product   >  sales countdown > then set sales start to end date and discount percentage. [Learn More](https://storegrowth.io/docs/sales-countdown/)
 
-Yes, WooCommerce Sales Booster plugins are typically designed to be mobile-responsive, ensuring a seamless and optimized shopping experience for customers using smartphones and tablets.
+= Will it affect product loading time?
 
-= Is the plugin GDPR compliant?
+StoreGrowth is a lightweight plugin that reduces the impact on the website performance to ensure fast loading time.
 
-Absolutely! The WooCommerce Sales Booster plugin provides the option to display a GDPR notice on the checkout page, ensuring compliance with privacy regulations.
+= Can I show different upsell products bump for specific products?
+
+It is easy to set different upsell order bumps. Go to StoreGrowth dashboard > create new > select targeted products and category > select offer products and your order bump is ready. [Learn More](https://storegrowth.io/docs/upsell-order-bump/)
+
+=  How does the stock progress bar help to increase sales?
+
+Real-time stock progress creates a missing-out scarcity. Therefore before stock finishing customers secure the desired product.
+
+= Will quick cart show real-time updates and subtotals of products?
+
+Yes, After adding a product it shows subtotal, and also products can be added or removed from the quick cart.
+
+= How does the floating notification bar work?
+
+StoreGrowth floating notification bar displays ongoing offers and discounts while visitors are browsing the website. It creates great attention and helps to convert visitors into sales.
+
+[StoreGrowth](https://storegrowth.io/pricing/) has all the amazing sales booster modules for WooCommerce store. A sales booster strategy is a quicker and simpler way to attract visitors to browse more and encourage them to purchase. It creates a positive impact on your customers. Furthermore, skyrocket your business growth.
+
 
 
 == Installation ==
@@ -120,4 +157,25 @@ Absolutely! The WooCommerce Sales Booster plugin provides the option to display 
 1. Upload the StoreGrowth - Sales Booster for WooCommerce plugin files to the `/wp-content/plugins/` directory, or install the plugin through the WordPress plugins screen directly. Just search with this plugin name StoreGrowth - Sales Booster.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Use the Sales Booster admin menu to configure the plugin
+
+== Changelog ==
+
+= 1.1.2 - 17 January, 2023 =
+fix deactivate module
+update readme description
+
+= 1.1.2 =
+update readme text
+
+= 1.1.1 =
+fix composer issue
+
+= 1.1.0 =
+Release date: 01/15/2024
+
+refactored codebase and checked Compatibility
+
+= 1.0.1 =
+
+initila release
 

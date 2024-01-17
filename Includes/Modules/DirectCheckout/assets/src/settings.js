@@ -15,10 +15,13 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+
+    const moduleName = "direct-checkout";
+
     routes.push({
-      path: "/direct-checkout",
-      name: "direct-checkout",
+      name: moduleName,
       label:"Direct Checkout",
+      path: "/direct-checkout",
       exact: true,
       element: (
         <DirectCheckout
@@ -33,6 +36,7 @@ addFilter(
           index: true,
           element: (
             <DirectCheckoutLayout
+              moduleId={moduleName}
               navigate={navigate}
               useParams={useParams}
               useSearchParams={useSearchParams}

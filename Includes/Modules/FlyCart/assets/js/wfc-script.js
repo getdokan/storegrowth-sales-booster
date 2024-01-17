@@ -12,6 +12,12 @@
     shake: true,
   });
 
+  function showNotification(message) {
+    var $notificationPopup = $(".sgsb-cart-notification-popup");
+    $notificationPopup.find(".sgsb-cart-notification-message").text(message);
+    $notificationPopup.fadeIn().delay(2500).fadeOut();
+  }
+
   /**
    * Set Fly Cart Contents.
    */
@@ -151,11 +157,15 @@
       jQuery(this).addClass("wfc-hide");
       jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
     });
-    jQuery(document).on("click", ".sgsb-cart-widget-close", function (event) {
-      event.preventDefault();
-      jQuery(".wfc-overlay").addClass("wfc-hide");
-      jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
-    });
+    jQuery(document).on(
+      "click",
+      ".sgsb-cart-widget-close, .qc-close-nav",
+      function (event) {
+        event.preventDefault();
+        jQuery(".wfc-overlay").addClass("wfc-hide");
+        jQuery(".wfc-widget-sidebar").addClass("wfc-slide");
+      }
+    );
     const { checkoutRedirect, quickCartRedirect, isPro } = sgsbFrontend;
     // If quick cart redirection selected from direct checkout then trigger quick cart for checkout/buy-now button.
     if (isPro && Boolean(checkoutRedirect)) {
@@ -175,7 +185,7 @@
               jQuery(".wfc-overlay").removeClass("wfc-hide");
               jQuery(".wfc-widget-sidebar").removeClass("wfc-slide");
               setDynamicHeight();
-              getCartContents();
+              openCheckoutPageCallback(sgsbFrontend?.checkoutUrl);
             },
             error: (error) => console.log(error),
           });
@@ -209,6 +219,19 @@
       "click",
       ".sgsb-fly-cart-table .product-quantity button.sgsb-plus-icon",
       function () {
+        var quantityInput = $(this).siblings(".quantity").find(".qty");
+        var maxValue = quantityInput.attr("max");
+        var currentValue = parseInt(quantityInput.val());
+
+        if (
+          !isNaN(currentValue) &&
+          !isNaN(maxValue) &&
+          currentValue >= maxValue
+        ) {
+          showNotification("Stock limit reached");
+          return; // Stop further execution if the limit is reached
+        }
+
         updateProductQuantity.bind(this, "plus").call();
       }
     );
@@ -254,7 +277,7 @@
             return;
           }
         }.bind(this),
-        800
+        100
       );
     });
 

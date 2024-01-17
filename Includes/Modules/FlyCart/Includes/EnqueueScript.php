@@ -189,6 +189,7 @@ class EnqueueScript {
 				'checkoutRedirect'  => $is_checkout_redirect,
 				'quickCartRedirect' => $is_add_to_qcart_redirect,
 				'cartLayoutType'    => $cart_layout_type,
+				'checkoutUrl'       => wc_get_checkout_url(),
 				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 				'nonce'             => wp_create_nonce( 'sgsb_frontend_ajax' ),
 				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
