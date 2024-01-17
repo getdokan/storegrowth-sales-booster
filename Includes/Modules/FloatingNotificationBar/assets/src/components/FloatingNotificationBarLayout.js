@@ -21,6 +21,7 @@ function FloatingNotificationBarLayout({
   outlet: Outlet,
   navigate,
   useSearchParams,
+  moduleId
 }) {
   const { setPageLoading } = useDispatch('sgsb');
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -208,6 +209,7 @@ function FloatingNotificationBarLayout({
           'Floating Bar Setting',
           'storegrowth-sales-booster'
         )}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

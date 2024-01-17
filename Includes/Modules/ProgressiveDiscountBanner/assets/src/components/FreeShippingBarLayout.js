@@ -17,7 +17,7 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
+function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -190,6 +190,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams }) {
     <Fragment>
       <PanelHeader
         title={__("Free Shipping Bar Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>
