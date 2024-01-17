@@ -1,10 +1,10 @@
-=== StoreGrowth - Direct Checkout, Fly Cart / Side Cart, Live Sales Notifications, Floating Notification Bar and more | Best Sales Booster for WooCommerce ===
+=== StoreGrowth - Smart Direct Checkout, Fly Cart / Floating Cart, Live Sales Notifications, Floating Notification Bar and more | Best Sales Booster for WooCommerce ===
 Contributors: mehedi_csit, invizo
-Tags: floating cart, cart popup, add to cart, woocommerce direct checkout, woocommerce ajax cart, notification bar, sales notification, social proof, fomo, woocommerce notification
+Tags: floating cart, notification bar, add to cart, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -34,42 +34,42 @@ The [StoreGrowth](https://storegrowth.io/pricing/) plugin is an all-in-one bundl
 
 **WooCommerce Direct Checkout:** This feature redirects users to the checkout page after adding items to their cart. It simplifies the checkout process, reducing the likelihood of abandoned carts and speeding up shopping for a better experience and increased sales. Highlights include:
 
-- Transforming the “Add to Cart” button into a “Buy Now” button.
-- Option to place a “Buy Now” button alongside the “Add to Cart” button.
-- Specific product targeting for the “Buy Now” button.
-- Fully customizable design for the “Buy Now” button.
+✅ Transforming the “Add to Cart” button into a “Buy Now” button.
+✅ Option to place a “Buy Now” button alongside the “Add to Cart” button.
+✅ Specific product targeting for the “Buy Now” button.
+✅ Fully customizable design for the “Buy Now” button.
 
 **Quick Cart:** Adds a side cart to the WooCommerce store, allowing shoppers to easily add or remove items and proceed to a one-click fast checkout. Highlights include:
 
-- Real-time updates of product subtotals.
-- Seamless addition or removal of items.
-- One-click checkout.
-- Customizable design and cart details.
+✅ Real-time updates of product subtotals.
+✅ Seamless addition or removal of items.
+✅ One-click checkout.
+✅ Customizable design and cart details.
 
 **Live Sales Popup Notification:** Enhances sales and conversion rates by displaying recent sales alerts to store visitors, creating trust and a sense of urgency. Highlights include:
 
-- Pre-made templates available with one-click application.
-- Fully customizable template design and message.
-- Options to display sales notifications for the latest or specific products.
+✅ Pre-made templates available with one-click application.
+✅ Fully customizable template design and message.
+✅ Options to display sales notifications for the latest or specific products.
 
 **Floating Notification Bar:** Increases conversion rates with a floating announcement banner. It informs visitors about the latest deals and discounts. Highlights include:
 
-- Action button targeting specific offers or products.
-- Highly customizable floating bar designs.
-- Adjustable positioning for the notification bar.
-- Targeting specific pages for display.
+✅ Action button targeting specific offers or products.
+✅ Highly customizable floating bar designs.
+✅ Adjustable positioning for the notification bar.
+✅ Targeting specific pages for display.
 
 **Free Shipping Label and Progress Bar:** Encourages customers to increase their cart value by offering free shipping incentives. Displays a progress bar for orders over a certain amount. Highlights include:
 
-- Real-time display of the free shipping progress bar.
-- Options to create free shipping offers or discounts.
-- Setting a minimum cart value.
+✅ Real-time display of the free shipping progress bar.
+✅ Options to create free shipping offers or discounts.
+✅ Setting a minimum cart value.
 
 **Checkout Upsell Order Bump:** Offers upsell opportunities during checkout with tempting additional products, without interrupting progress. Highlights include:
 
-- Specific category or product targeting for upsells.
-- Custom days for enabling upsell offers.
-- Various order bumps for targeted products.
+✅ Specific category or product targeting for upsells.
+✅ Custom days for enabling upsell offers.
+✅ Various order bumps for targeted products.
 
 **Stock Count Progress Bar:** A visual representation of available stock for a product, encouraging timely purchases. Easy to set up and customize.
 
@@ -79,19 +79,19 @@ The [StoreGrowth](https://storegrowth.io/pricing/) plugin is an all-in-one bundl
 
 **1. Intuitive React-Based Admin Panel:**
 
-- Effortlessly navigate our super-fast and clean admin panel built with React for a seamless user experience.
+✅ Effortlessly navigate our super-fast and clean admin panel built with React for a seamless user experience.
 
 **2. Customizable Design Options:**
 
-- Modify the design of every feature directly from the admin panel, giving you full control over the look and feel of your store.
+✅ Modify the design of every feature directly from the admin panel, giving you full control over the look and feel of your store.
 
 **3. Interactive Preview Panel:**
 
-- Visualize changes in real-time with an interactive preview panel for each module, ensuring a perfect match with your store's aesthetics.
+✅ Visualize changes in real-time with an interactive preview panel for each module, ensuring a perfect match with your store's aesthetics.
 
 **4. Broad Theme Compatibility:**
 
-- Seamlessly integrate StoreGrowth with a variety of popular WordPress themes for a versatile user experience.
+✅ Seamlessly integrate StoreGrowth with a variety of popular WordPress themes for a versatile user experience.
 
 ## Documentation and Support
 
@@ -159,6 +159,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.1.2 - 17 January, 2023 =
+fix deactivate module
+update readme description
 
 = 1.1.2 =
 update readme text
