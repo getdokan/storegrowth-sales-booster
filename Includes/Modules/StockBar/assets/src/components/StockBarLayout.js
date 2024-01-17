@@ -14,7 +14,7 @@ import DesignTab from "./DesingTab";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function StockBarLayout({ navigate, useSearchParams }) {
+function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -155,6 +155,7 @@ function StockBarLayout({ navigate, useSearchParams }) {
     <Fragment>
       <PanelHeader
         title={__("Stock Bar Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

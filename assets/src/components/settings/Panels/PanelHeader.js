@@ -5,9 +5,7 @@ import { deactivatorHandler , removeHashFromURL} from '../../../utils/helper';
 import SettingsTooltip from './PanelSettings/SettingsTooltip';
 const { Title } = Typography;
 
-const PanelHeader = ( { title, children } ) => {
-    let url = window.location.hash
-    let moduleId = removeHashFromURL(url);
+const PanelHeader = ( { title, children , moduleId = ''} ) => {
     
     return (
         <div className={ `panel-header` }>

@@ -9,12 +9,15 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "progressive-discount-banner";
+
     routes.push({
-      name: "progressive-discount-banner",
+      name: moduleName,
       label: "Free Shipping Bar",
       path: "/progressive-discount-banner",
       element: (
         <FreeShippingBarLayout
+          moduleId={moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
