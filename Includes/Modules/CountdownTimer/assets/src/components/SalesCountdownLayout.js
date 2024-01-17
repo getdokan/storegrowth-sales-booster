@@ -19,7 +19,7 @@ import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function SalesCountdownLayout({ navigate, useSearchParams }) {
+function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -184,6 +184,7 @@ function SalesCountdownLayout({ navigate, useSearchParams }) {
     <Fragment>
       <PanelHeader
         title={__("Sales Countdown Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

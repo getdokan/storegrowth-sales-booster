@@ -17,7 +17,7 @@ import Preview from "./Preview";
 import Template from "./Template";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function PopupLayout({ outlet: Outlet, navigate, useSearchParams }) {
+function PopupLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
   const isProEnabled = sgsbAdmin.isPro;
 
   const { setCreateFromData, setButtonLoading } = useDispatch(
@@ -146,6 +146,7 @@ function PopupLayout({ outlet: Outlet, navigate, useSearchParams }) {
     <>
       <PanelHeader
         title={__("Sales Notification Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

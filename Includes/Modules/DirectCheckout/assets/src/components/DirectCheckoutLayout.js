@@ -12,7 +12,12 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
+function DirectCheckoutLayout({
+  outlet: Outlet,
+  navigate,
+  useSearchParams,
+  moduleId,
+}) {
   const isProEnabled = sgsbAdmin.isPro;
 
   const { setCreateFromData, setButtonLoading } = useDispatch(
@@ -86,6 +91,7 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
     <>
       <PanelHeader
         title={__("Direct Checkout Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>
@@ -102,7 +108,7 @@ function DirectCheckoutLayout({ outlet: Outlet, navigate, useSearchParams }) {
           )}
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
-        <TouchPreview previewWidth={ 250 }>
+        <TouchPreview previewWidth={250}>
           <Preview storeData={createDirectCheckoutForm} />
         </TouchPreview>
       </PanelContainer>
