@@ -11,37 +11,37 @@ import QuickViewThree from "./QuickViewThree";
 const Templates = ({ formData, setFormData }) => {
   let templates = [
     {
-      key: "stock_bar_one",
+      key: "quick_view_one",
       component: (
         <QuickViewOne
-          activeTemplate={formData?.stockbar_template === "stock_bar_one"}
+          activeTemplate={formData?.stockbar_template === "quick_view_one"}
         />
       ),
     },
     {
-      key: "stock_bar_two",
+      key: "quick_view_two",
       component: (
         <QuickViewTwo
-          activeTemplate={formData?.stockbar_template === "stock_bar_two"}
+          activeTemplate={formData?.stockbar_template === "quick_view_two"}
         />
       ),
     },
     {
-      key: "stock_bar_three",
+      key: "quick_view_three",
       component: (
         <QuickViewThree
-          activeTemplate={formData?.stockbar_template === "stock_bar_three"}
+          activeTemplate={formData?.stockbar_template === "quick_view_three"}
         />
       ),
     },
   ];
 
   const templateStyles = {
-    stock_bar_one: {
+    quick_view_one: {
       stockbar_height: 10,
       stockbar_bg_color: "#EBF6FF",
       stockbar_fg_color: "#008DFF",
-      stockbar_template: "stock_bar_one",
+      stockbar_template: "quick_view_one",
       stock_display_format: "above",
       stockbar_border_color: "#DDE6F9",
       total_sell_count_text: __("Total Sold", "storegrowth-sales-booster"),
@@ -50,11 +50,11 @@ const Templates = ({ formData, setFormData }) => {
         "storegrowth-sales-booster"
       ),
     },
-    stock_bar_two: {
+    quick_view_two: {
       stockbar_height: 10,
       stockbar_bg_color: "#E6F8F1",
       stockbar_fg_color: "#02AC6E",
-      stockbar_template: "stock_bar_two",
+      stockbar_template: "quick_view_two",
       stock_display_format: "above",
       stockbar_border_color: "#BDE5D7",
       total_sell_count_text: __("Total Sold", "storegrowth-sales-booster"),
@@ -63,11 +63,11 @@ const Templates = ({ formData, setFormData }) => {
         "storegrowth-sales-booster"
       ),
     },
-    stock_bar_three: {
+    quick_view_three: {
       stockbar_height: 10,
       stockbar_bg_color: "#EFF0F8",
       stockbar_fg_color: "linear-gradient(90deg, #AF89FF 0%, #0283AC 100%)",
-      stockbar_template: "stock_bar_three",
+      stockbar_template: "quick_view_three",
       stock_display_format: "above",
       stockbar_border_color: "#ae89ff33",
       total_sell_count_text: __("Total Sold", "storegrowth-sales-booster"),

@@ -25,6 +25,7 @@ class EnqueueScript {
 	 * Constructor of Enqueue_Script class.
 	 */
 	private function __construct() {
+
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -36,32 +37,27 @@ class EnqueueScript {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		if ( ! is_product() && ! is_shop() ) {
-			return;
-		}
+
+		wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), '4.3.1' );
+		wp_enqueue_script( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array( 'jquery' ), '4.3.1', true );
 
 		wp_enqueue_style(
-			'sgsb-stock-cd-custom-style',
+			'sgsb-quick-view-custom-style',
 			sgsb_modules_url( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ),
 			array(),
 			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ) )
 		);
 
-		// wp_enqueue_script(
-		// 	'stockbar_jqmeter',
-		// 	sgsb_modules_url( 'QuickView/assets/scripts/jqmeter.min.js' ),
-		// 	array( 'jquery' ),
-		// 	filemtime( sgsb_modules_path( 'QuickView/assets/scripts/jqmeter.min.js' ) ),
-		// 	true
-		// );
+		wp_enqueue_script(
+			'sgsb-quick-view-custom-script',
+			sgsb_modules_url( 'QuickView/assets/scripts/quick-view.js' ),
+			array( 'jquery' ),
+			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/quick-view.js' ) ),
+			true
+		);
 
-		// wp_enqueue_script(
-		// 	'stockbar_custom_script',
-		// 	sgsb_modules_url( 'QuickView/assets/scripts/sgsb-stock-bar.js' ),
-		// 	array( 'jquery', 'stockbar_jqmeter' ),
-		// 	filemtime( sgsb_modules_path( 'QuickView/assets/scripts/sgsb-stock-bar.js' ) ),
-		// 	true
-		// );
+		// Pass AJAX URL to script
+		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 		// $this->inline_styles();
 	}
@@ -92,7 +88,7 @@ class EnqueueScript {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sgsb_stock_bar_settings' );
+		$settings = get_option( 'sgsb_quick_view_settings' );
 
 		$bar_height   = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
 		$bg_color     = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );

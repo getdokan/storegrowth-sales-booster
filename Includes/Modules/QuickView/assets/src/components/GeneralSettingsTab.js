@@ -14,14 +14,14 @@ function GeneralSettingsTab(props) {
     <Fragment>
       <SettingsSection>
         {applyFilters(
-          "sgsb_shop_stock_bar_enable_settings",
+          "sgsb_shop_quick_view_enable_settings",
           "",
           formData,
           onFieldChange
         )}
         <SingleCheckBox
-          name={"product_page_stock_bar_enable"}
-          checkedValue={formData.product_page_stock_bar_enable}
+          name={"product_page_quick_view_enable"}
+          checkedValue={formData.product_page_quick_view_enable}
           className={`settings-field checkbox-field`}
           changeHandler={onFieldChange}
           title={__("Display on Product Page", "storegrowth-sales-booster")}
@@ -31,7 +31,7 @@ function GeneralSettingsTab(props) {
           )}
         />
         {applyFilters(
-          "sgsb_variation_product_stock_bar_enable_settings",
+          "sgsb_variation_product_quick_view_enable_settings",
           "",
           formData,
           onFieldChange

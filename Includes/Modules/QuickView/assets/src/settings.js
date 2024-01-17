@@ -9,12 +9,14 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "quick-view"
     routes.push({
-      name: "quick-view",
-      label: "Stock Bar",
+      name: moduleName,
+      label: "Quick View",
       path: "/quick-view",
       element: (
         <QuickViewLayout
+          moduleId = {moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}

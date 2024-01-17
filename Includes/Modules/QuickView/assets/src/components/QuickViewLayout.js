@@ -14,7 +14,7 @@ import DesignTab from "./DesingTab";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function QuickViewLayout({ navigate, useSearchParams }) {
+function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -25,7 +25,7 @@ function QuickViewLayout({ navigate, useSearchParams }) {
     stockbar_height: 10,
     stockbar_bg_color: "#EBF6FF",
     stockbar_fg_color: "#008DFF",
-    stockbar_template: "stock_bar_one",
+    stockbar_template: "quick_view_one",
     stock_display_format: "above",
     stockbar_border_color: "#DDE6F9",
     total_sell_count_text: __("Total Sold", "storegrowth-sales-booster"),
@@ -33,11 +33,11 @@ function QuickViewLayout({ navigate, useSearchParams }) {
       "Available Item",
       "storegrowth-sales-booster"
     ),
-    shop_page_stock_bar_enable: false,
+    shop_page_quick_view_enable: false,
     shop_page_countdown_enable: false,
-    product_page_stock_bar_enable: true,
+    product_page_quick_view_enable: true,
     product_page_countdown_enable: true,
-    variation_page_stock_bar_enable: false,
+    variation_page_quick_view_enable: false,
   };
   const [formData, setFormData] = useState({
     ...initalQuickViewData,
@@ -71,7 +71,7 @@ function QuickViewLayout({ navigate, useSearchParams }) {
     setButtonLoading(true);
 
     let data = {
-      action: "sgsb_stock_bar_save_settings",
+      action: "sgsb_quick_view_save_settings",
       _ajax_nonce: sgsbAdmin.nonce,
       form_data: formData,
     };
@@ -96,7 +96,7 @@ function QuickViewLayout({ navigate, useSearchParams }) {
         url: sgsbAdmin.ajax_url,
         method: "POST",
         data: {
-          action: "sgsb_stock_bar_get_settings",
+          action: "sgsb_quick_view_get_settings",
           _ajax_nonce: sgsbAdmin.nonce,
         },
       })
@@ -158,6 +158,7 @@ function QuickViewLayout({ navigate, useSearchParams }) {
     <Fragment>
       <PanelHeader
         title={__("Stock Bar Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

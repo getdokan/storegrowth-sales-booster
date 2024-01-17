@@ -9,10 +9,10 @@ if ( ! $product->managing_stock() ) {
 	return;
 }
 
-$settings                         = get_option( 'sgsb_stock_bar_settings' );
-$enable_stock_bar_in_product_page = sgsb_find_option_setting( $settings, 'product_page_stock_bar_enable', true );
+$settings                         = get_option( 'sgsb_quick_view_settings' );
+$enable_quick_view_in_product_page = sgsb_find_option_setting( $settings, 'product_page_quick_view_enable', true );
 
-if ( is_product() && ! $enable_stock_bar_in_product_page ) {
+if ( is_product() && ! $enable_quick_view_in_product_page ) {
 	return;
 }
 
@@ -58,7 +58,7 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 		<?php
 		if ( 'below' === $sd_format ) :
 				/* translators: %s: Left items in stock */
-				do_action( 'sgsb_stock_bar_stock_below' );
+				do_action( 'sgsb_quick_view_stock_below' );
 			endif;
 		?>
 	</div>
