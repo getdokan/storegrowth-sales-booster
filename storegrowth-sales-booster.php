@@ -106,6 +106,12 @@ if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-
 }
 
 /**
+ * add option when plugin is activated.
+ */
+register_activation_hook(__FILE__, function () {
+    add_option('storegrowth_activation_redirect', true);
+});
+/**
  * Initialize the plugin functionality.
  *
  * @since  1.0.0
