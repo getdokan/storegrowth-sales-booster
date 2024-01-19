@@ -9,7 +9,8 @@ global $product;
 $product_id           = $product->get_ID();
 $product_type         = $product->get_type();
 $settings             = get_option( 'sgsb_quick_view_settings' );
-$buy_now_button_label = sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Quick View' );
+$buy_now_button_label = sgsb_find_option_setting( $settings, 'quick_view_button_label', 'Quick View' );
+$button_effect        = sgsb_find_option_setting( $settings, 'effect', 'mfp-3d-unfold' );
 $product_page         = is_product() ? '_product_page' : '';
 	$classes          = implode(
 		' ',
@@ -17,13 +18,13 @@ $product_page         = is_product() ? '_product_page' : '';
 			array(
 				'button',
 				'product_type_' . $product_type,
-				'sgsb_quick_view_button' . $product_page,
+				'sgsbqcv-btn' . $product_page,
 			)
 		)
 	);
 
 	?>
 
-<a href="#" data-id="<?php echo absint( $product_id ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
+<a href="#" data-id="<?php echo absint( $product_id ); ?>" data-context="default" data-effect="<?php echo esc_attr( $button_effect ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
 	<?php echo esc_html( sprintf( '%1$s', $buy_now_button_label ) ); ?>
 </a>

@@ -29,8 +29,8 @@ class Ajax {
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
 		add_action( 'wp_ajax_get_product_data', array( $this, 'get_product_data_callback' ) );
 		add_action( 'wp_ajax_nopriv_get_product_data', array( $this, 'get_product_data_callback' ) );
-		add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
-		add_action( 'wp_ajax_nopriv_load_modal_template', array( $this, 'load_modal_template_callback' ) );
+		// add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
+		// add_action( 'wp_ajax_nopriv_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 	}
 
 	/**
@@ -63,41 +63,143 @@ class Ajax {
 	}
 
 	public function get_product_data_callback() {
-		error_log( 'Runnign' );
+		error_log( 'invoked' );
+		global $post, $product;
+		$settings               = get_option( 'sgsb_quick_view_settings' );
+		$view_settings          = sgsb_find_option_setting( $settings, 'view', 'popup' );
+		$content_images         = sgsb_find_option_setting( $settings, 'content_image', 'all' );
+		$sidebar_heading        = sgsb_find_option_setting( $settings, 'sidebar_heading', 'no' );
+		$content_view_button    = sgsb_find_option_setting( $settings, 'content_view_details_button', 'no' );
+		$content_image_lightbox = sgsb_find_option_setting( $settings, 'content_image_lightbox', 'no' );
+		// error_log( 'Runnign' );
 		$product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
+		$product    = wc_get_product( $product_id );
 
-		// Get the WooCommerce product object
-		$product = wc_get_product( $product_id );
-
+		ob_start();
 		if ( $product ) {
-			// Get relevant product data
-			$product_data = array(
-				'name'  => $product->get_name(),
-				'price' => $product->get_price(),
-			// Add more product data as needed
-			);
+			$post      = get_post( $product_id );
+			$thumb_ids = array();
 
-			// Send the response back to the JavaScript
-			echo json_encode( $product_data );
-		} else {
-			// If product not found, send an error response
-			echo json_encode( array( 'error' => 'Product not found.' ) );
+			if ( $content_images === 'product_image' ) {
+				if ( $product_image = $product->get_image_id() ) {
+					$thumb_ids[] = $product_image;
+				}
+
+				if ( $product->is_type( 'variable' ) && ( $children = $product->get_visible_children() ) ) {
+					foreach ( $children as $child ) {
+						if ( ( $child_product = wc_get_product( $child ) ) && ( $child_product_image = $child_product->get_image_id() ) ) {
+							$thumb_ids[] = $child_product_image;
+						}
+					}
+				}
+			} else {
+				if ( $content_images === 'all' ) {
+					if ( $product_image = $product->get_image_id() ) {
+						$thumb_ids[] = $product_image;
+					}
+
+					if ( $product->is_type( 'variable' ) && ( $children = $product->get_visible_children() ) ) {
+						foreach ( $children as $child ) {
+							if ( ( $child_product = wc_get_product( $child ) ) && ( $child_product_image = $child_product->get_image_id() ) ) {
+								$thumb_ids[] = $child_product_image;
+							}
+						}
+					}
+				}
+
+				if ( is_a( $product, 'WC_Product_Variation' ) ) {
+					// get images from WPC Additional Variation Images
+					$_images = array_filter( explode( ',', get_post_meta( $product_id, 'wpcvi_images', true ) ) );
+					if ( ! empty( $_images ) ) {
+						$thumb_ids = array_merge( $thumb_ids, $_images );
+					}
+				} else {
+					$thumb_ids = array_merge( $thumb_ids, $product->get_gallery_image_ids() );
+				}
+			}
+
+			$thumb_ids = apply_filters( 'sgsb_qv_thumbnails', $thumb_ids, $product );
+			$thumb_ids = array_unique( $thumb_ids );
+			error_log( print_r( $thumb_ids, 1 ) );
+
+			if ( $view_settings === 'popup' ) {
+				echo '<div id="woosq-popup" class="woosq-popup mfp-with-anim ' . esc_attr( $content_view_button === 'yes' ? 'view-details' : '' ) . '">';
+			} elseif ( $sidebar_heading === 'yes' ) {
+					echo '<div class="woosq-sidebar-heading"><span class="woosq-heading">' . esc_html( $product->get_name() ) . '</span><span class="woosq-close"> &times; </span></div>';
+			} else {
+				echo '<span class="woosq-close"> &times; </span>';
+			}
+			?>
+									<div class="woocommerce single-product woosq-product">
+											<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
+													<div class="thumbnails">
+						<?php
+						do_action( 'woosq_before_thumbnails', $product );
+
+						echo '<div class="images">';
+
+						$image_sz = apply_filters( 'woosq_image_size', 'default' );
+
+						if ( $image_sz === 'default' ) {
+							$image_size = sgsb_find_option_setting( $settings, 'image_size', 'default' );
+						} else {
+							$image_size = $image_sz;
+						}
+
+						if ( ! empty( $thumb_ids ) ) {
+							foreach ( $thumb_ids as $thumb_id ) {
+								if ( $content_image_lightbox !== 'no' ) {
+									$image_full = wp_get_attachment_image_src( $thumb_id, 'full' );
+
+									echo '<div class="thumbnail" data-id="' . $thumb_id . '">' . wp_get_attachment_image(
+										$thumb_id,
+										$image_size,
+										false,
+										array(
+											'data-fancybox' => 'gallery',
+											'data-src' => esc_url( $image_full[0] ),
+										)
+									) . '</div>';
+								} else {
+									echo '<div class="thumbnail" data-id="' . $thumb_id . '">' . wp_get_attachment_image( $thumb_id, $image_size ) . '</div>';
+								}
+							}
+						} else {
+							echo '<div class="thumbnail">' . wc_placeholder_img( $image_size ) . '</div>';
+						}
+
+						echo '</div>';
+
+						do_action( 'woosq_after_thumbnails', $product );
+						?>
+													</div>
+													<div class="summary entry-summary">
+						<?php do_action( 'woosq_before_summary', $product ); ?>
+
+															<div class="summary-content">
+							<?php do_action( 'woosq_product_summary', $product ); ?>
+															</div>
+
+						<?php do_action( 'woosq_after_summary', $product ); ?>
+													</div>
+											</div>
+									</div><!-- /woocommerce single-product -->
+			<?php
+			if ( $content_view_button === 'yes' ) {
+				$view_details_text = self::localization( 'view_details', esc_html__( 'View product details', 'woo-smart-quick-view' ) );
+
+				echo sprintf( '<a class="view-details-btn" href="%s">%s</a>', $product->get_permalink(), esc_html( $view_details_text ) );
+			}
+
+			if ( $view_settings === 'popup' ) {
+				echo '</div><!-- #woosq-popup -->';
+			}
+
+			wp_reset_postdata();
 		}
 
-		// Always exit to prevent extra output
+		// $response = '<h1>Hello World</h1>';
+		// 	return $response;
 		wp_die();
-	}
-
-
-
-	public function load_modal_template_callback() {
-		echo $this->load_quick_view_modal_template(); // This function loads your modal template
-		wp_die();
-	}
-
-	public function load_quick_view_modal_template() {
-		ob_start();
-		include __DIR__ . '/../templates/quick-view-modal.php';
-		return ob_get_clean();
 	}
 }

@@ -48,18 +48,167 @@ class EnqueueScript {
 			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ) )
 		);
 
-		wp_enqueue_script(
-			'sgsb-quick-view-custom-script',
-			sgsb_modules_url( 'QuickView/assets/scripts/quick-view.js' ),
-			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/quick-view.js' ) ),
-			true
-		);
-
 		// Pass AJAX URL to script
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
+
+		// slick.
+		wp_enqueue_style(
+			'slick',
+			sgsb_modules_url( 'QuickView/assets/libs/slick/slick.css' ),
+			array(),
+			filemtime( sgsb_modules_path( 'QuickView/assets/libs/slick/slick.css' ) )
+		);
+		wp_enqueue_script(
+			'slick',
+			sgsb_modules_url( 'QuickView/assets/libs/slick/slick.min.js' ),
+			array( 'jquery' ),
+			filemtime( sgsb_modules_path( 'QuickView/assets/libs/slick/slick.min.js' ) ),
+			true
+		);
+
+					// fancybox
+		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'yes' ) {
+		// wp_enqueue_style( 'fancybox', WOOSQ_URI . 'assets/libs/fancybox/jquery.fancybox.min.css' );
+		// wp_enqueue_script( 'fancybox', WOOSQ_URI . 'assets/libs/fancybox/jquery.fancybox.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// }
+
+					// zoom
+		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'zoom' ) {
+		// wp_enqueue_script( 'zoom', WOOSQ_URI . 'assets/libs/zoom/jquery.zoom.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// }
+
+					// perfect srollbar
+		// if ( self::get_setting( 'perfect_scrollbar', 'yes' ) === 'yes' ) {
+		// wp_enqueue_style( 'perfect-scrollbar', WOOSQ_URI . 'assets/libs/perfect-scrollbar/css/perfect-scrollbar.min.css' );
+		// wp_enqueue_style( 'perfect-scrollbar-wpc', WOOSQ_URI . 'assets/libs/perfect-scrollbar/css/custom-theme.css' );
+		// wp_enqueue_script( 'perfect-scrollbar', WOOSQ_URI . 'assets/libs/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// }
+
+			// magnific
+			wp_enqueue_style(
+				'magnific-popup',
+				sgsb_modules_url( 'QuickView/assets/libs/magnific-popup/magnific-popup.css' ),
+				array(),
+				filemtime( sgsb_modules_path( 'QuickView/assets/libs/magnific-popup/magnific-popup.css' ) )
+			);
+			wp_enqueue_script(
+				'magnific-popup',
+				sgsb_modules_url( 'QuickView/assets/libs/magnific-popup/jquery.magnific-popup.min.js' ),
+				array( 'jquery' ),
+				filemtime( sgsb_modules_path( 'QuickView/assets/libs/magnific-popup/jquery.magnific-popup.min.js' ) ),
+				true
+			);
+
+		// feather icons
+		wp_enqueue_style(
+			'sgsbqcv-feather',
+			sgsb_modules_url( 'QuickView/assets/libs/feather/feather.css' ),
+			array(),
+			filemtime( sgsb_modules_path( 'QuickView/assets/libs/feather/feather.css' ) )
+		);
+
+		// if ( self::get_setting( 'button_icon', 'no' ) !== 'no' ) {
+		// wp_enqueue_style( 'woosq-icons', WOOSQ_URI . 'assets/css/icons.css', array(), WOOSQ_VERSION );
+		// }
+
+		// main style & js
+		wp_enqueue_style(
+			'sgsbqcv-frontend',
+			sgsb_modules_url( 'QuickView/assets/scripts/frontend.css' ),
+			array(),
+			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/frontend.css' ) )
+		);
+		wp_enqueue_script(
+			'sgsbqcv-frontend',
+			sgsb_modules_url( 'QuickView/assets/scripts/quick-view.js' ),
+			array(
+				'jquery',
+				'wc-add-to-cart-variation',
+			),
+			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/quick-view.js' ) ),
+			true
+		);
+					wp_localize_script(
+						'sgsbqcv-frontend',
+						'sgsbqcv_vars',
+						array(
+							'ajax_url'                => admin_url( 'admin-ajax.php' ),
+							'nonce'                   => wp_create_nonce( 'woosq-security' ),
+							'view'                    => 'popup',
+							'effect'                  => 'mfp-3d-unfold',
+							'scrollbar'               => 'yes',
+							'auto_close'              => 'yes',
+							'hashchange'              => apply_filters( 'woosq_hashchange', 'no' ),
+							'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
+							'cart_url'                => apply_filters( 'woocommerce_add_to_cart_redirect', wc_get_cart_url(), null ),
+							'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'woo-smart-quick-view' ) ),
+							'next_prev'               => 'yes',
+							'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
+							'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
+							'thumbnails_effect'       => 'no',
+							'related_slick_params'    => apply_filters(
+								'woosq_related_slick_params',
+								json_encode(
+									apply_filters(
+										'woosq_related_slick_params_arr',
+										array(
+											'slidesToShow' => 2,
+											'slidesToScroll' => 2,
+											'dots'         => true,
+											'arrows'       => false,
+											'adaptiveHeight' => true,
+											'rtl'          => is_rtl(),
+										)
+									)
+								)
+							),
+							'thumbnails_slick_params' => apply_filters(
+								'woosq_thumbnails_slick_params',
+								json_encode(
+									apply_filters(
+										'woosq_thumbnails_slick_params_arr',
+										array(
+											'slidesToShow' => 1,
+											'slidesToScroll' => 1,
+											'dots'         => true,
+											'arrows'       => true,
+											'adaptiveHeight' => false,
+											'rtl'          => is_rtl(),
+										)
+									)
+								)
+							),
+							'thumbnails_zoom_params'  => apply_filters(
+								'woosq_thumbnails_zoom_params',
+								json_encode(
+									apply_filters(
+										'woosq_thumbnails_zoom_params_arr',
+										array(
+											'duration' => 120,
+											'magnify'  => 1,
+										)
+									)
+								)
+							),
+							'quick_view'              => isset( $_REQUEST['quick-view'] ) ? absint( sanitize_key( $_REQUEST['quick-view'] ) ) : 0,
+						)
+					);
+
 		// $this->inline_styles();
+	}
+
+	public static function localization( $key = '', $default = '' ) {
+		$str = '';
+
+		if ( ! empty( $key ) && ! empty( self::$localization[ $key ] ) ) {
+			$str = self::$localization[ $key ];
+		} elseif ( ! empty( $default ) ) {
+			$str = $default;
+		}
+
+		return apply_filters( 'woosq_localization_' . $key, $str );
 	}
 
 	/**
