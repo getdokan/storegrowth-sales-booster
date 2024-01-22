@@ -125,7 +125,7 @@ class OrderBogo {
 		return $product_name;
 	}
 
-	public function is_bogo_applicable( $bogo_settings, $quantity ) {
+	public function is_bogo_applicable( $product_id, $bogo_settings ) {
 		// Check if BOGO is enabled
 		if ( isset( $bogo_settings['bogo_status'] ) && $bogo_settings['bogo_status'] !== 'yes' ) {
 			return false;
@@ -141,7 +141,7 @@ class OrderBogo {
             return false;
         }
 
-		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $bogo_settings, $quantity );
+		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
 
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
@@ -153,7 +153,7 @@ class OrderBogo {
 		$bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
         // Apply BOGO product if applicable.
-		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $bogo_settings, $quantity ) ) {
+		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings ) ) {
 			foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
 				if ( isset( $cart_item['linked_to_product_key'] ) && sanitize_key( $cart_item['linked_to_product_key'] ) === $cart_item_key ) {
 					WC()->cart->set_quantity( $cart_key, ( $cart_item['quantity'] + 1 ) );

@@ -24,7 +24,6 @@ const BasicInfo = ({ clearErrors }) => {
 
   const [simpleProductForOffer, setSimpleProductForOffer] = useState([]);
   const [productListForSelect, setProductListForSelect] = useState([]);
-  const [productListForExclude, setProductListForExclude] = useState([]);
 
   const targetProducts = createBogoData?.offered_products;
   const originalSimpleProductForOffer =
@@ -38,13 +37,9 @@ const BasicInfo = ({ clearErrors }) => {
         const updatedProductListForSelect = originalProductListForSelect.filter(
           item => item.value !== offerProductId && item.value !== parseInt(targetProducts)
         );
-        const excludeProductListForSelect = originalProductListForSelect?.filter(
-          product => ( typeof product?.catIds?.find( id => createBogoData?.get_alternate_categories?.includes( id.toString() ) ) !== 'undefined' )
-        );
 
         setSimpleProductForOffer(updatedOfferProducts);
         setProductListForSelect(updatedProductListForSelect);
-        setProductListForExclude(excludeProductListForSelect);
       } else {
         setSimpleProductForOffer(originalSimpleProductForOffer);
         setProductListForSelect(originalProductListForSelect);
@@ -246,18 +241,6 @@ const BasicInfo = ({ clearErrors }) => {
                 "storegrowth-sales-booster-pro"
               )}
             />
-            {/*<MultiSelectBox*/}
-            {/*  name={"exclude_products"}*/}
-            {/*  changeHandler={onFieldChange}*/}
-            {/*  fieldValue={createBogoData?.exclude_products ? createBogoData?.exclude_products : []}*/}
-            {/*  options={productListForExclude}*/}
-            {/*  title={__("Exclude Products", "storegrowth-sales-booster-pro")}*/}
-            {/*  placeHolderText={__("Select exclude products", "storegrowth-sales-booster-pro")}*/}
-            {/*  tooltip={__(*/}
-            {/*    "Exclude this category products as alternate product for this offer.",*/}
-            {/*    "storegrowth-sales-booster-pro"*/}
-            {/*  )}*/}
-            {/*/>*/}
           </Fragment>
         )}
 
@@ -265,7 +248,8 @@ const BasicInfo = ({ clearErrors }) => {
           'sgsb_after_bogo_basic_info_settings',
           '',
           createBogoData,
-          onFieldChange
+          onFieldChange,
+          productListForSelect
         )}
       </SettingsSection>
     </Fragment>
