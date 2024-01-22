@@ -139,8 +139,6 @@ const CategoryMessages = ({ navigate }) => {
         if ( response?.success ) {
           setPageLoading(false);
 
-          console.log( response?.data?.categoryDataList );
-
           setBogoGlobalSettings({
             ...currentSettings,
             bogo_category_messages: [ ...response?.data?.categoryDataList ],

@@ -74,6 +74,7 @@ export const createBogoForm = {
   target_categories: [],
   get_alternate_products: [],
   get_alternate_categories: [],
+  exclude_products: [],
   offered_products: '',
   offer_schedule: ["daily"],
   smart_offer: false,

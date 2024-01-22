@@ -341,7 +341,7 @@ class Ajax {
 		$data['name_of_order_bogo']                 = sanitize_text_field( $data['name_of_order_bogo'] );
 		$data['target_products']                    = wc_clean( $data['target_products'] );
 		$data['target_categories']                  = wc_clean( $data['target_categories'] );
-		$data['bogo_schedule']                      = wc_clean( $data['bogo_schedule'] );
+		$data['bogo_schedule']                      = ! empty( $data['bogo_schedule'] ) ? wc_clean( $data['bogo_schedule'] ) : array();
 		$data['smart_offer']                        = sanitize_text_field( $data['smart_offer'] );
 		$data['get_different_product_field']        = intval( $data['get_different_product_field'] );
 		$data['offer_type']                         = sanitize_text_field( $data['offer_type'] );

@@ -171,7 +171,7 @@ class Helper {
      * @return int|mixed|null
      */
     public static function sgsb_get_offer_product_id( $settings, $product_id ) {
-        $deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'same';
+        $deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
 
         // Return same product as offer for same deal.
         if ( $deal_type === 'same' ) {
