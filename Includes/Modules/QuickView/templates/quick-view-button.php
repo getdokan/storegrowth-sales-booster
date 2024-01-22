@@ -17,8 +17,8 @@ $product_page         = is_product() ? '_product_page' : '';
 		array_filter(
 			array(
 				'button',
-				'product_type_' . $product_type,
-				'sgsbqcv-btn' . $product_page,
+				' woosq-btn-' . $product_id,
+				'woosq-btn' . $product_page,
 			)
 		)
 	);

@@ -122,79 +122,79 @@ class EnqueueScript {
 		);
 		wp_enqueue_script(
 			'sgsbqcv-frontend',
-			sgsb_modules_url( 'QuickView/assets/scripts/quick-view.js' ),
+			sgsb_modules_url( 'QuickView/assets/scripts/frontend.js' ),
 			array(
 				'jquery',
 				'wc-add-to-cart-variation',
 			),
-			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/quick-view.js' ) ),
+			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/frontend.js' ) ),
 			true
 		);
-					wp_localize_script(
-						'sgsbqcv-frontend',
-						'sgsbqcv_vars',
-						array(
-							'ajax_url'                => admin_url( 'admin-ajax.php' ),
-							'nonce'                   => wp_create_nonce( 'woosq-security' ),
-							'view'                    => 'popup',
-							'effect'                  => 'mfp-3d-unfold',
-							'scrollbar'               => 'yes',
-							'auto_close'              => 'yes',
-							'hashchange'              => apply_filters( 'woosq_hashchange', 'no' ),
-							'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
-							'cart_url'                => apply_filters( 'woocommerce_add_to_cart_redirect', wc_get_cart_url(), null ),
-							'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'woo-smart-quick-view' ) ),
-							'next_prev'               => 'yes',
-							'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
-							'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
-							'thumbnails_effect'       => 'no',
-							'related_slick_params'    => apply_filters(
-								'woosq_related_slick_params',
-								json_encode(
-									apply_filters(
-										'woosq_related_slick_params_arr',
-										array(
-											'slidesToShow' => 2,
-											'slidesToScroll' => 2,
-											'dots'         => true,
-											'arrows'       => false,
-											'adaptiveHeight' => true,
-											'rtl'          => is_rtl(),
-										)
-									)
-								)
-							),
-							'thumbnails_slick_params' => apply_filters(
-								'woosq_thumbnails_slick_params',
-								json_encode(
-									apply_filters(
-										'woosq_thumbnails_slick_params_arr',
-										array(
-											'slidesToShow' => 1,
-											'slidesToScroll' => 1,
-											'dots'         => true,
-											'arrows'       => true,
-											'adaptiveHeight' => false,
-											'rtl'          => is_rtl(),
-										)
-									)
-								)
-							),
-							'thumbnails_zoom_params'  => apply_filters(
-								'woosq_thumbnails_zoom_params',
-								json_encode(
-									apply_filters(
-										'woosq_thumbnails_zoom_params_arr',
-										array(
-											'duration' => 120,
-											'magnify'  => 1,
-										)
-									)
-								)
-							),
-							'quick_view'              => isset( $_REQUEST['quick-view'] ) ? absint( sanitize_key( $_REQUEST['quick-view'] ) ) : 0,
+		wp_localize_script(
+			'sgsbqcv-frontend',
+			'woosq_vars',
+			array(
+				'ajax_url'                => admin_url( 'admin-ajax.php' ),
+				'nonce'                   => wp_create_nonce( 'woosq-security' ),
+				'view'                    => 'popup',
+				'effect'                  => 'mfp-3d-unfold',
+				'scrollbar'               => 'no',
+				'auto_close'              => 'yes',
+				'hashchange'              => 'no',
+				'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
+				'cart_url'                => apply_filters( 'woocommerce_add_to_cart_redirect', wc_get_cart_url(), null ),
+				'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'woo-smart-quick-view' ) ),
+				'next_prev'               => 'yes',
+				'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
+				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
+				'thumbnails_effect'       => 'no',
+				'related_slick_params'    => apply_filters(
+					'woosq_related_slick_params',
+					json_encode(
+						apply_filters(
+							'woosq_related_slick_params_arr',
+							array(
+								'slidesToShow'   => 2,
+								'slidesToScroll' => 2,
+								'dots'           => true,
+								'arrows'         => false,
+								'adaptiveHeight' => true,
+								'rtl'            => is_rtl(),
+							)
 						)
-					);
+					)
+				),
+				'thumbnails_slick_params' => apply_filters(
+					'woosq_thumbnails_slick_params',
+					json_encode(
+						apply_filters(
+							'woosq_thumbnails_slick_params_arr',
+							array(
+								'slidesToShow'   => 1,
+								'slidesToScroll' => 1,
+								'dots'           => true,
+								'arrows'         => true,
+								'adaptiveHeight' => false,
+								'rtl'            => is_rtl(),
+							)
+						)
+					)
+				),
+				'thumbnails_zoom_params'  => apply_filters(
+					'woosq_thumbnails_zoom_params',
+					json_encode(
+						apply_filters(
+							'woosq_thumbnails_zoom_params_arr',
+							array(
+								'duration' => 120,
+								'magnify'  => 1,
+							)
+						)
+					)
+				),
+				'quick_view'              => isset( $_REQUEST['quick-view'] ) ? absint( sanitize_key( $_REQUEST['quick-view'] ) ) : 0,
+			)
+		);
 
 		// $this->inline_styles();
 	}

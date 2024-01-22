@@ -27,8 +27,8 @@ class Ajax {
 	private function __construct() {
 		add_action( 'wp_ajax_sgsb_quick_view_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
-		add_action( 'wp_ajax_get_product_data', array( $this, 'get_product_data_callback' ) );
-		add_action( 'wp_ajax_nopriv_get_product_data', array( $this, 'get_product_data_callback' ) );
+		add_action( 'wp_ajax_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_nopriv_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
 		// add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 		// add_action( 'wp_ajax_nopriv_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 	}
@@ -62,25 +62,27 @@ class Ajax {
 		wp_send_json_success( $form_data );
 	}
 
-	public function get_product_data_callback() {
-		error_log( 'invoked' );
-		global $post, $product;
-		$settings               = get_option( 'sgsb_quick_view_settings' );
-		$view_settings          = sgsb_find_option_setting( $settings, 'view', 'popup' );
-		$content_images         = sgsb_find_option_setting( $settings, 'content_image', 'all' );
-		$sidebar_heading        = sgsb_find_option_setting( $settings, 'sidebar_heading', 'no' );
-		$content_view_button    = sgsb_find_option_setting( $settings, 'content_view_details_button', 'no' );
-		$content_image_lightbox = sgsb_find_option_setting( $settings, 'content_image_lightbox', 'no' );
-		// error_log( 'Runnign' );
-		$product_id = isset( $_POST['product_id'] ) ? intval( $_POST['product_id'] ) : 0;
-		$product    = wc_get_product( $product_id );
 
-		ob_start();
+
+	public function ajax_quickview_callback() {
+		error_log( 'Invoking' );
+		check_ajax_referer( 'woosq-security', 'nonce' );
+
+		global $post, $product;
+		$product_id                  = absint( sanitize_key( $_REQUEST['product_id'] ) );
+		$product                     = wc_get_product( $product_id );
+		$content_image               = 'all';
+		$content_view_details_button = 'no';
+		$content_image_lightbox      = 'no';
+		$view                        = 'popup';
+		$sidebar_heading = "no";
+
 		if ( $product ) {
-			$post      = get_post( $product_id );
+			$post = get_post( $product_id );
+			setup_postdata( $post );
 			$thumb_ids = array();
 
-			if ( $content_images === 'product_image' ) {
+			if ( $content_image === 'product_image' ) {
 				if ( $product_image = $product->get_image_id() ) {
 					$thumb_ids[] = $product_image;
 				}
@@ -93,7 +95,7 @@ class Ajax {
 					}
 				}
 			} else {
-				if ( $content_images === 'all' ) {
+				if ( $content_image === 'all' ) {
 					if ( $product_image = $product->get_image_id() ) {
 						$thumb_ids[] = $product_image;
 					}
@@ -110,6 +112,7 @@ class Ajax {
 				if ( is_a( $product, 'WC_Product_Variation' ) ) {
 					// get images from WPC Additional Variation Images
 					$_images = array_filter( explode( ',', get_post_meta( $product_id, 'wpcvi_images', true ) ) );
+
 					if ( ! empty( $_images ) ) {
 						$thumb_ids = array_merge( $thumb_ids, $_images );
 					}
@@ -118,21 +121,21 @@ class Ajax {
 				}
 			}
 
-			$thumb_ids = apply_filters( 'sgsb_qv_thumbnails', $thumb_ids, $product );
+			$thumb_ids = apply_filters( 'woosq_thumbnails', $thumb_ids, $product );
 			$thumb_ids = array_unique( $thumb_ids );
 			error_log( print_r( $thumb_ids, 1 ) );
 
-			if ( $view_settings === 'popup' ) {
-				echo '<div id="woosq-popup" class="woosq-popup mfp-with-anim ' . esc_attr( $content_view_button === 'yes' ? 'view-details' : '' ) . '">';
+			if ( $view === 'popup' ) {
+				echo '<div id="woosq-popup" class="woosq-popup mfp-with-anim ' . esc_attr( $content_view_details_button === 'yes' ? 'view-details' : '' ) . '">';
 			} elseif ( $sidebar_heading === 'yes' ) {
 					echo '<div class="woosq-sidebar-heading"><span class="woosq-heading">' . esc_html( $product->get_name() ) . '</span><span class="woosq-close"> &times; </span></div>';
 			} else {
 				echo '<span class="woosq-close"> &times; </span>';
 			}
 			?>
-									<div class="woocommerce single-product woosq-product">
-											<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
-													<div class="thumbnails">
+			<div class="woocommerce single-product woosq-product">
+				<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
+					<div class="thumbnails">
 						<?php
 						do_action( 'woosq_before_thumbnails', $product );
 
@@ -141,7 +144,7 @@ class Ajax {
 						$image_sz = apply_filters( 'woosq_image_size', 'default' );
 
 						if ( $image_sz === 'default' ) {
-							$image_size = sgsb_find_option_setting( $settings, 'image_size', 'default' );
+							$image_size = 'woosq';
 						} else {
 							$image_size = $image_sz;
 						}
@@ -172,34 +175,32 @@ class Ajax {
 
 						do_action( 'woosq_after_thumbnails', $product );
 						?>
-													</div>
-													<div class="summary entry-summary">
+					</div>
+					<div class="summary entry-summary">
 						<?php do_action( 'woosq_before_summary', $product ); ?>
 
-															<div class="summary-content">
+						<div class="summary-content">
 							<?php do_action( 'woosq_product_summary', $product ); ?>
-															</div>
+						</div>
 
 						<?php do_action( 'woosq_after_summary', $product ); ?>
-													</div>
-											</div>
-									</div><!-- /woocommerce single-product -->
+					</div>
+				</div>
+			</div><!-- /woocommerce single-product -->
 			<?php
-			if ( $content_view_button === 'yes' ) {
+			if ( $content_view_details_button === 'yes' ) {
 				$view_details_text = self::localization( 'view_details', esc_html__( 'View product details', 'woo-smart-quick-view' ) );
 
 				echo sprintf( '<a class="view-details-btn" href="%s">%s</a>', $product->get_permalink(), esc_html( $view_details_text ) );
 			}
 
-			if ( $view_settings === 'popup' ) {
+			if ( $view === 'popup' ) {
 				echo '</div><!-- #woosq-popup -->';
 			}
 
 			wp_reset_postdata();
 		}
 
-		// $response = '<h1>Hello World</h1>';
-		// 	return $response;
 		wp_die();
 	}
 }
