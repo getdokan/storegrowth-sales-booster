@@ -136,9 +136,8 @@ const CategoryMessages = ({ navigate }) => {
         _ajax_nonce: bogo_save_url.ajd_nonce,
       },
       function (response) {
+        setPageLoading(false);
         if ( response?.success ) {
-          setPageLoading(false);
-
           console.log( response?.data?.categoryDataList );
 
           setBogoGlobalSettings({
@@ -174,14 +173,14 @@ const CategoryMessages = ({ navigate }) => {
     {
       name: __( 'Residential', 'storegrowth-sales-booster' ),
       status: <ActionToggler isChecked={ true } />,
-      message: __( 'Buy 1, unit of any product from this category and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
+      message: __( "🎉 Elevate your shopping experience: Buy 1 unit from any category and unlock the magic with a FREE extra unit! 🛍️✨", 'storegrowth-sales-booster' ),
       id: <TargetProductAndCategory catName={ [ __( 'Residential', 'storegrowth-sales-booster' ) ] } />,
       action: <ActionButton />,
     },
     {
       name: __( 'Technology', 'storegrowth-sales-booster' ),
       status: <ActionToggler isChecked={ false } />,
-      message: __( 'Buy 1, unit of any product from this category and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
+      message: __( '🎉 Elevate your shopping experience: Buy 1 unit from any category and unlock the magic with a FREE extra unit! 🛍️✨', 'storegrowth-sales-booster' ),
       id: <TargetProductAndCategory catName={ [ __( 'Technology', 'storegrowth-sales-booster' ) ] } />,
       action: <ActionButton />,
     },
