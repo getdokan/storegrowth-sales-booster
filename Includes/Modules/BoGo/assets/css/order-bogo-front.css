@@ -264,6 +264,7 @@ a.custom-choose-product {
   color: #fff;
   border-radius: 6px;
   line-height: 2.5;
+  cursor: pointer;
 }
 
 .custom-close-modal {
