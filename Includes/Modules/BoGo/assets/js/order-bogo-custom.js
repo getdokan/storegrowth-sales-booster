@@ -72,22 +72,24 @@ function extraProducts(product_id, check_status, offer_price) {
     $(document).ready(function () {
         var showModalButton = $(".custom-choose-product");
         var closeModalButton = $(".custom-close-modal, #overlay");
-        var modal = $("#product-selection-modal, #overlay");
+        var modal = "#product-selection-modal, #overlay";
     
         showModalButton.click(function (event) {
             event.preventDefault();
-            modal.addClass("fade-in").show();
+            var modalContent = $(this).closest('.product-name').find(modal);
+            modalContent.addClass("fade-in").show();
         });
     
         closeModalButton.click(function (event) {
             event.preventDefault();
-            modal.removeClass("fade-in").addClass("fade-out");
-    
+            var modalContent = $(this).closest('.product-name').find(modal);
+            modalContent.removeClass("fade-in").addClass("fade-out");
             setTimeout(function () {
-                modal.hide().removeClass("fade-out");
-            }, 300); // Adjust the timeout to match the duration of your CSS animation
+                modalContent.hide().removeClass("fade-out");
+            }, 300);
         });
     });
+    
     
 
 })(jQuery);
