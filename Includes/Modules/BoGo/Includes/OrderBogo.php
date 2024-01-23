@@ -39,59 +39,59 @@ class OrderBogo {
 		add_filter( 'woocommerce_cart_item_class', array( $this, 'add_custom_class_to_offer_product' ), 10, 3 );
 		add_filter( 'woocommerce_cart_item_name', array( $this, 'add_custom_text_for_offer_product' ), 10, 3 );
 
-        add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
-        add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
+		add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
+		add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
 	}
 
-    public function display_bogo_floating_badge_on_product() {
-        global $product;
+	public function display_bogo_floating_badge_on_product() {
+		global $product;
 
-        $show_shop_badge = Helper::sgsb_get_bogo_settings_option( 'shop_page_bage_icon' );
-        if ( is_shop() && ! $show_shop_badge ) {
-            return;
-        }
+		$show_shop_badge = Helper::sgsb_get_bogo_settings_option( 'shop_page_bage_icon' );
+		if ( is_shop() && ! $show_shop_badge ) {
+			return;
+		}
 
-        $show_product_badge = Helper::sgsb_get_bogo_settings_option( 'global_product_page_bage_icon' );
-        if ( is_product() && ! $show_product_badge ) {
-            return;
-        }
+		$show_product_badge = Helper::sgsb_get_bogo_settings_option( 'global_product_page_bage_icon' );
+		if ( is_product() && ! $show_product_badge ) {
+			return;
+		}
 
-        $product_id       = $product->get_id();
-        $product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
+		$product_id       = $product->get_id();
+		$product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
 
-        $offer_badge     = '';
-        $offer_badge_url = '';
-        $product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
-        if ( $product_bogo_status === 'yes' ) {
-            $offer_badge_url = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
-        } else {
-            $selected_offer = array();
-            $offers         = Helper::sgsb_get_global_offered_product_list();
+		$offer_badge         = '';
+		$offer_badge_url     = '';
+		$product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
+		if ( $product_bogo_status === 'yes' ) {
+			$offer_badge_url = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
+		} else {
+			$selected_offer = array();
+			$offers         = Helper::sgsb_get_global_offered_product_list();
 
-            foreach ( $offers as $offer ) {
-                if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
-                    $selected_offer = $offer;
-                    break;
-                }
-            }
+			foreach ( $offers as $offer ) {
+				if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
+					$selected_offer = $offer;
+					break;
+				}
+			}
 
-            if ( ! empty( $selected_offer ) ) {
-                if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
-                    $offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
-                    $offer_badge_url = ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
-                } else {
-                    $offer_badge     = Helper::sgsb_get_bogo_settings_option( 'default_badge_icon_name' );
-                    $offer_badge_url = Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' );
-                }
-            }
-        }
+			if ( ! empty( $selected_offer ) ) {
+				if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
+					$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
+					$offer_badge_url = ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
+				} else {
+					$offer_badge     = Helper::sgsb_get_bogo_settings_option( 'default_badge_icon_name' );
+					$offer_badge_url = Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' );
+				}
+			}
+		}
 
-        if ( ! file_exists( __DIR__ . '/../templates/bogo-offer-badge.php' ) ) {
-            return;
-        }
+		if ( ! file_exists( __DIR__ . '/../templates/bogo-offer-badge.php' ) ) {
+			return;
+		}
 
-        include __DIR__ . '/../templates/bogo-offer-badge.php';
-    }
+		include __DIR__ . '/../templates/bogo-offer-badge.php';
+	}
 
 	public function handle_cart_update() {
 		$product_quantities = array();
@@ -109,17 +109,20 @@ class OrderBogo {
 	}
 
 	public function add_custom_text_for_offer_product( $product_name, $cart_item, $cart_item_key ) {
+		// error_log( $product_name );
+		// error_log( print_r( $cart_item, 1 ) );
+		// error_log( $cart_item_key );
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
 			$bogo_settings = get_post_meta( $cart_item['bogo_product_for'], 'sgsb_product_bogo_settings', true );
-//			$custom_text   = '<p><a href="#" class="custom-choose-product">Choose Product</a></p>';
-
+			// $custom_text   = '<p><a href="#" class="custom-choose-product">Choose Product</a></p>';
+			// error_log( print_r( $bogo_settings, 1 ) );
 			if ( file_exists( __DIR__ . '/../templates/bogo-offer-products-popup.php' ) ) {
 				ob_start();
 				include __DIR__ . '/../templates/bogo-offer-products-popup.php';
-                $product_name .= ob_get_clean();
+				$product_name .= ob_get_clean();
 			}
 
-//			return $product_name . $custom_text;
+			// return $product_name . $custom_text;
 		}
 
 		return $product_name;
@@ -131,15 +134,15 @@ class OrderBogo {
 			return false;
 		}
 
-        // Check offer dates
-        $current_date = date( 'Y-m-d' );
-        if ( isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
-            return false;
-        }
+		// Check offer dates
+		$current_date = date( 'Y-m-d' );
+		if ( isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
+			return false;
+		}
 
-        if ( isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
-            return false;
-        }
+		if ( isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
+			return false;
+		}
 
 		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
@@ -148,11 +151,11 @@ class OrderBogo {
 		// Get apply product id.
 		$apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
 
-        // Prepare settings for BOGO apply.
-        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
+		// Prepare settings for BOGO apply.
+		$bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
 		$bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
-        // Apply BOGO product if applicable.
+		// Apply BOGO product if applicable.
 		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings ) ) {
 			foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
 				if ( isset( $cart_item['linked_to_product_key'] ) && sanitize_key( $cart_item['linked_to_product_key'] ) === $cart_item_key ) {
@@ -166,7 +169,7 @@ class OrderBogo {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
-        $offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
+		$offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
 		$product          = wc_get_product( $offer_product_id );
 		if ( ! $product ) {
 			return;
@@ -178,19 +181,19 @@ class OrderBogo {
 			$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
 		}
 
-        // Add the offer product to the cart
-        WC()->cart->add_to_cart(
-            $offer_product_id,
-            $quantity, // Quantity of the offer product
-            '',
-            '',
-            array(
-                'bogo_offer'            => true,
-                'bogo_product_for'      => $product_id,
-                'bogo_offer_price'      => $offer_product_cost,
-                'linked_to_product_key' => $cart_item_key,
-            )
-        );
+		// Add the offer product to the cart
+		WC()->cart->add_to_cart(
+			$offer_product_id,
+			$quantity, // Quantity of the offer product
+			'',
+			'',
+			array(
+				'bogo_offer'            => true,
+				'bogo_product_for'      => $product_id,
+				'bogo_offer_price'      => $offer_product_cost,
+				'linked_to_product_key' => $cart_item_key,
+			)
+		);
 	}
 
 	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
@@ -410,9 +413,9 @@ class OrderBogo {
 			$bogo_settings_data['discount_amount']             = $product_discount;
 			$bogo_settings_data['bogo_badge_image']            = $bogo_badge_image;
 			$bogo_settings_data['shop_page_message']           = $shop_page_message;
-            $bogo_settings_data['product_page_message']        = $product_page_message;
-            $bogo_settings_data['get_alternate_products']      = $bogo_products;
-            $bogo_settings_data['get_different_product_field'] = $get_product;
+			$bogo_settings_data['product_page_message']        = $product_page_message;
+			$bogo_settings_data['get_alternate_products']      = $bogo_products;
+			$bogo_settings_data['get_different_product_field'] = $get_product;
 		}
 
 		$bogo_settings_data = apply_filters(

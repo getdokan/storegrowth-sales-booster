@@ -67,4 +67,27 @@ function extraProducts(product_id, check_status, offer_price) {
     $(document).ajaxComplete(function() {
         disableOfferProductActions();
     });
+
+    //Modal Controller
+    $(document).ready(function () {
+        var showModalButton = $(".custom-choose-product");
+        var closeModalButton = $(".custom-close-modal, #overlay");
+        var modal = $("#product-selection-modal, #overlay");
+    
+        showModalButton.click(function (event) {
+            event.preventDefault();
+            modal.addClass("fade-in").show();
+        });
+    
+        closeModalButton.click(function (event) {
+            event.preventDefault();
+            modal.removeClass("fade-in").addClass("fade-out");
+    
+            setTimeout(function () {
+                modal.hide().removeClass("fade-out");
+            }, 300); // Adjust the timeout to match the duration of your CSS animation
+        });
+    });
+    
+
 })(jQuery);
