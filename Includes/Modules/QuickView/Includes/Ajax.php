@@ -29,6 +29,8 @@ class Ajax {
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
 		add_action( 'wp_ajax_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
 		add_action( 'wp_ajax_nopriv_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
 		// add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 		// add_action( 'wp_ajax_nopriv_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 	}
@@ -65,7 +67,6 @@ class Ajax {
 
 
 	public function ajax_quickview_callback() {
-		error_log( 'Invoking' );
 		check_ajax_referer( 'woosq-security', 'nonce' );
 
 		global $post, $product;
@@ -75,7 +76,7 @@ class Ajax {
 		$content_view_details_button = 'no';
 		$content_image_lightbox      = 'no';
 		$view                        = 'popup';
-		$sidebar_heading = "no";
+		$sidebar_heading             = 'no';
 
 		if ( $product ) {
 			$post = get_post( $product_id );
@@ -201,6 +202,14 @@ class Ajax {
 			wp_reset_postdata();
 		}
 
+		wp_die();
+	}
+
+	public function custom_ajax_add_to_cart() {
+		$product_id = $_POST['product_id'];
+		$quantity   = $_POST['quantity'];
+		error_log( $product_id );
+		WC()->cart->add_to_cart( $product_id, $quantity );
 		wp_die();
 	}
 }

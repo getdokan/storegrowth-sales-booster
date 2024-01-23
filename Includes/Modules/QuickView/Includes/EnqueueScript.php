@@ -52,6 +52,7 @@ class EnqueueScript {
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
+		wp_enqueue_script( 'wc-add-to-cart' );
 
 		// slick.
 		wp_enqueue_style(

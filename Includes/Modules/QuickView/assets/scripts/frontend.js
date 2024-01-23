@@ -70,15 +70,55 @@ console.log("Workimg");
     woosq_open(id, effect, context);
   });
 
-  $(document).on("added_to_cart", function () {
-    if (woosq_vars.auto_close === "yes") {
-      if (woosq_vars.view === "popup") {
-        $.magnificPopup.close();
-      }
+  jQuery(document).ready(function ($) {
+    console.log("loading");
+    function custom_ajax_add_to_cart(product_id) {
+        var quantity = $('#custom-quantity').val();
 
-      woosq_close();
+        $.ajax({
+            type: 'POST',
+            url: woosq_vars.ajax_url,
+            data: {
+                action: 'custom_ajax_add_to_cart',
+                product_id: product_id,
+                quantity: quantity,
+            },
+            success: function (response) {
+                alert('Product added to cart!');
+            },
+        });
     }
+
+    $('body').on('click', '.custom-add-to-cart button', function () {
+      
+      // Get the ID of the clicked element (assumes the button has an ID attribute)
+        var clickedElementId = $(this).attr('product-id');
+        console.log(clickedElementId);
+
+        // // Call the function with the clicked element's ID
+        custom_ajax_add_to_cart(clickedElementId);
+      // Add your additional logic here
   });
+
+    $('.custom-add-to-cart').on('click', function () {
+      console.log("clicked");
+        // Get the ID of the clicked element (assumes the button has an ID attribute)
+        var clickedElementId = $(this).attr('product-id');
+
+        // // Call the function with the clicked element's ID
+        // custom_ajax_add_to_cart(clickedElementId);
+    });
+});
+
+  // $(document).on("added_to_cart", function () {
+  //   if (woosq_vars.auto_close === "yes") {
+  //     if (woosq_vars.view === "popup") {
+  //       $.magnificPopup.close();
+  //     }
+
+  //     woosq_close();
+  //   }
+  // });
 
   $(document).on("woosq_loaded", function () {
     var form_variation = $("#woosq-popup").find(".variations_form");
