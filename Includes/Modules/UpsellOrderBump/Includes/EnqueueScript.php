@@ -169,9 +169,12 @@ class EnqueueScript {
 		$simple_product_for_offer = array();
 
 		foreach ( $products as $product ) {
+            // Get the product category IDs.
+            $category_ids              = wp_get_post_terms( $product->ID, 'product_cat', array( 'fields' => 'ids' ) );
 			$product_list_for_select[] = array(
-				'value' => $product->ID,
-				'label' => $product->post_title,
+				'value'  => $product->ID,
+				'label'  => $product->post_title,
+                'catIds' => $category_ids,
 			);
 
 			$_product      = wc_get_product( $product->ID );

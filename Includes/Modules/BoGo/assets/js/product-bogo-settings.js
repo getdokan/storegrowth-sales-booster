@@ -1,16 +1,16 @@
 ;( function ( $ ){
     let bogoType = $('#bogo_type');
     let bogoProducts = $('.alt-bogo-products');
-    let bogoCategories = $('.alt-bogo-categories');
+    let bogoSettings = $('.alt-bogo-categories, .exclude-bogo-products');
 
     // Function to handle visibility based on selection
     function toggleVisibility() {
         if (bogoType.val() === 'products') {
             bogoProducts.show();
-            bogoCategories.hide();
+            bogoSettings.hide();
         } else if (bogoType.val() === 'categories') {
             bogoProducts.hide();
-            bogoCategories.show();
+            bogoSettings.show();
         }
     }
 
@@ -70,6 +70,6 @@
     });
 
     $( '#_sgsb_get_product_field' ).select2({ allowClear : true });
-    $( '#_sgsb_get_multiple_product_field, #_sgsb_get_multiple_category_field, #_sgsb_bogo_available_variable_products, #_sgsb_offer_day_schedule' )
+    $( '#_sgsb_get_multiple_product_field, #_sgsb_get_multiple_category_field, #_sgsb_bogo_available_variable_products, #_sgsb_offer_day_schedule, #_sgsb_get_product_exclude_field' )
         .select2({ multiple : true });
 })(jQuery);

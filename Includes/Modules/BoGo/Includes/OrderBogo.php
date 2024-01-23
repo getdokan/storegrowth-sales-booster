@@ -125,36 +125,23 @@ class OrderBogo {
 		return $product_name;
 	}
 
-	public function is_bogo_applicable( $bogo_settings, $quantity ) {
+	public function is_bogo_applicable( $product_id, $bogo_settings ) {
 		// Check if BOGO is enabled
 		if ( isset( $bogo_settings['bogo_status'] ) && $bogo_settings['bogo_status'] !== 'yes' ) {
 			return false;
 		}
 
-		// Check offer dates
-		$current_date = date( 'Y-m-d' );
-		if ( isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
-			return false;
-		}
+        // Check offer dates
+        $current_date = date( 'Y-m-d' );
+        if ( isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
+            return false;
+        }
 
-		if ( isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
-			return false;
-		}
+        if ( isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
+            return false;
+        }
 
-		// Check offer schedule
-		if ( isset( $bogo_settings['offer_schedule'] ) &&
-            ! in_array( strtolower( date( 'l' ) ), $bogo_settings['offer_schedule'] ) &&
-            ! in_array( 'daily', $bogo_settings['offer_schedule'] )
-        ) {
-			return false;
-		}
-
-		// Check minimum quantity
-		if ( isset( $bogo_settings['minimum_quantity_required'] ) && $quantity < $bogo_settings['minimum_quantity_required'] ) {
-			return false;
-		}
-
-		return true;
+		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
 
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
@@ -166,7 +153,7 @@ class OrderBogo {
 		$bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
         // Apply BOGO product if applicable.
-		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $bogo_settings, $quantity ) ) {
+		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings ) ) {
 			foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
 				if ( isset( $cart_item['linked_to_product_key'] ) && sanitize_key( $cart_item['linked_to_product_key'] ) === $cart_item_key ) {
 					WC()->cart->set_quantity( $cart_key, ( $cart_item['quantity'] + 1 ) );
@@ -179,7 +166,7 @@ class OrderBogo {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
-		$offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
+        $offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
 		$product          = wc_get_product( $offer_product_id );
 		if ( ! $product ) {
 			return;
@@ -191,19 +178,19 @@ class OrderBogo {
 			$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
 		}
 
-		// Add the offer product to the cart
-		WC()->cart->add_to_cart(
-			$offer_product_id,
-			$quantity, // Quantity of the offer product
-			'',
-			'',
-			array(
-				'bogo_offer'            => true,
-				'bogo_product_for'      => $product_id,
-				'bogo_offer_price'      => $offer_product_cost,
-				'linked_to_product_key' => $cart_item_key,
-			)
-		);
+        // Add the offer product to the cart
+        WC()->cart->add_to_cart(
+            $offer_product_id,
+            $quantity, // Quantity of the offer product
+            '',
+            '',
+            array(
+                'bogo_offer'            => true,
+                'bogo_product_for'      => $product_id,
+                'bogo_offer_price'      => $offer_product_cost,
+                'linked_to_product_key' => $cart_item_key,
+            )
+        );
 	}
 
 	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {

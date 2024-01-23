@@ -71,6 +71,16 @@ addFilter(
       <Fragment>
         <MultiSelectBox
           needUpgrade={true}
+          name={"exclude_products"}
+          title={__("Exclude Products", "storegrowth-sales-booster")}
+          placeHolderText={__("Select exclude products", "storegrowth-sales-booster")}
+          tooltip={__(
+            "Exclude this category products as alternate product for this offer.",
+            "storegrowth-sales-booster"
+          )}
+        />
+        <MultiSelectBox
+          needUpgrade={true}
           name={"offer_schedule"}
           options={bogoSchedules}
           fieldValue={['daily']}

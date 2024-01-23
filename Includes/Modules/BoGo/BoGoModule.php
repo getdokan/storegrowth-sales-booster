@@ -9,9 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
-// use STOREGROWTH\SPSB\Modules\Bo_Go\Bo_Go;
-// use STOREGROWTH\SPSB\Modules\Bo_Go\Ajax\Ajax;
-// use STOREGROWTH\SPSB\Modules\Order_Bump\Enqueue_Script;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
