@@ -1,6 +1,6 @@
 <?php
 /**
- * Enqueue_Script class for `Upsell Order Bogo`.
+ * Enqueue_Script class for `Bogo`.
  *
  * @package SBFW
  */
@@ -92,7 +92,7 @@ class EnqueueScript {
 
 			wp_localize_script(
 				'sgsb-bogo-settings',
-				'products_and_categories',
+				'bogo_products_and_categories',
 				array(
 					'product_list'          => $this->prodcut_list(),
 					'product_list_for_view' => $this->prodcut_list_for_view(),
@@ -199,10 +199,6 @@ class EnqueueScript {
 		$simple_product_for_offer = array();
 
 		foreach ( $products as $product ) {
-			$product_list_for_select[] = array(
-				'value' => $product->ID,
-				'label' => $product->post_title,
-			);
 
 			$_product      = wc_get_product( $product->ID );
 			$sale_price    = $_product->get_sale_price();
@@ -225,6 +221,13 @@ class EnqueueScript {
 				$category_names[] = $category->name;
 			}
 
+			// Get the product list.
+			if ( $_product->is_type( 'simple' ) ) {
+				$product_list_for_select[] = array(
+					'value' => $product->ID,
+					'label' => $product->post_title,
+				);
+			}
 			// Get categories csv.
 			$category_names = implode( ', ', $category_names );
 
@@ -241,7 +244,7 @@ class EnqueueScript {
 			$product_title_by_id[ $product->ID ] = $product->post_title;
 		}
 
-		$product_info['productListForSelect']  = $product_list_for_select;
+		$product_info['productListForSelect']  = apply_filters( 'sgsb_bogo_select_product_list', $product_list_for_select, $products );
 		$product_info['simpleProductForOffer'] = $simple_product_for_offer;
 		$product_info['productTitleById']      = $product_title_by_id;
 

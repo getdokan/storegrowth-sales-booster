@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
-import { useSelect } from "@wordpress/data";
+import { useSelect, useDispatch } from "@wordpress/data";
 
 const CreateBogoButton = ({ navigate }) => {
   const { bogoListData } = useSelect((select) => ({
     bogoListData: select("sgsb_bogo").getBogoData(),
   }));
+  const { setBogoData } = useDispatch("sgsb_bogo");
+
+  useEffect(() => {
+    jQuery.post(
+      bogo_save_url.ajax_url,
+      {
+        action: "bogo_list",
+        data: [],
+        _ajax_nonce: bogo_save_url.ajd_nonce,
+      },
+      function (bogoDataFromAjax) {
+        const bogoDataParsed = bogoDataFromAjax.data;
+        setBogoData(bogoDataParsed);
+      }
+    );
+  }, []);
+
   const hash = window.location.hash.replace(/^#/, ""); // Remove the leading '#'
 
   const isCreateNew = [
@@ -23,28 +40,31 @@ const CreateBogoButton = ({ navigate }) => {
   const isDisableBogoCreation = bogoListData?.length >= 2 && !sgsbAdmin.isPro;
   const isDisableMessageCreation = !sgsbAdmin.isPro;
 
-  const buttonProps = {
+  const commonButtonProps = {
     shape: "square",
-    disabled: (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) ? isDisableMessageCreation : isDisableBogoCreation,
     className: "create-bogo-button",
   };
 
+  const buttonProps = {
+    ...commonButtonProps,
+    disabled: (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) ? isDisableMessageCreation : isDisableBogoCreation,
+  };
+
+  const buttonPropsList = {
+    ...commonButtonProps,
+    disabled: false,
+  };
+
   const getButtonLabel = () => {
-    if (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) {
-      return __("Message List", "storegrowth-sales-booster");
-    }
-    return __("BOGO List", "storegrowth-sales-booster");
+    return (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) ? __("Message List", "storegrowth-sales-booster") : __("BOGO List", "storegrowth-sales-booster");
   };
 
   const getButtonClickHandler = () => {
-    if (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) {
-      return () => navigate('bogo?tab_name=messages');
-    }
-    return () => navigate('bogo?tab_name=lists');
+    return (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) ? () => navigate('bogo?tab_name=messages') : () => navigate('bogo?tab_name=lists');
   };
 
-  const renderButton = (label, onClick) => (
-    <Button {...buttonProps} onClick={onClick}>
+  const renderButton = (label, onClick, extraProps = {}) => (
+    <Button {...extraProps} onClick={onClick}>
       {label}
     </Button>
   );
@@ -52,13 +72,14 @@ const CreateBogoButton = ({ navigate }) => {
   return (
     <div className="bogo-action-buttons">
       {!isCreateNew &&
-        renderButton(getButtonLabel(), getButtonClickHandler())
+        renderButton(getButtonLabel(), getButtonClickHandler(), buttonPropsList)
       }
       {isCreateNew &&
         renderButton(__("Create New", "storegrowth-sales-booster"), () =>
           navigate(
             (hash === '/bogo?tab_name=messages' || hash?.includes('/bogo/create-message')) ? 'bogo/create-message' : 'bogo/create-bogo'
-          )
+          ),
+          buttonProps
         )
       }
     </div>

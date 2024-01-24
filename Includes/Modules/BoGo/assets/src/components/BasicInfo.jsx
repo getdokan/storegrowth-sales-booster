@@ -10,7 +10,7 @@ import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSett
 import OfferField from "./OfferField";
 import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
 import { InputNumber } from "sales-booster/src/components/settings/Panels";
-import {applyFilters} from "@wordpress/hooks";
+import { applyFilters } from "@wordpress/hooks";
 
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -18,33 +18,103 @@ const BasicInfo = ({ clearErrors }) => {
     createBogoData: select("sgsb_bogo").getCreateFromData(),
   }));
 
+  const targetProductList = [
+    {
+      "value": 35,
+      "label": "T-Shirt with Logo",
+    },
+    {
+      "value": 36,
+      "label": "Beanie with Logo",
+    },
+    {
+      "value": 37,
+      "label": "Logo Collection",
+    },
+    {
+      "value": 15,
+      "label": "V-Neck T-Shirt",
+    },
+    {
+      "value": 16,
+      "label": "Hoodie",
+    },
+    {
+      "value": 17,
+      "label": "Hoodie with Logo",
+    },
+    {
+      "value": 18,
+      "label": "T-Shirt",
+    },
+    {
+      "value": 19,
+      "label": "Beanie",
+    },
+    {
+      "value": 20,
+      "label": "Belt",
+    },
+    {
+      "value": 21,
+      "label": "Cap",
+    },
+    {
+      "value": 22,
+      "label": "Sunglasses",
+    },
+    {
+      "value": 23,
+      "label": "Hoodie with Pocket",
+
+    },
+    {
+      "value": 24,
+      "label": "Hoodie with Zipper",
+    },
+    {
+      "value": 25,
+      "label": "Long Sleeve Tee",
+    },
+    {
+      "value": 26,
+      "label": "Polo",
+    },
+    {
+      "value": 27,
+      "label": "Album",
+    },
+    {
+      "value": 28,
+      "label": "Single",
+    }
+  ]
   const offerProductId = parseInt(createBogoData?.get_different_product_field);
   const originalProductListForSelect =
-    products_and_categories.product_list.productListForSelect;
+    bogo_products_and_categories.product_list.productListForSelect;
 
   const [simpleProductForOffer, setSimpleProductForOffer] = useState([]);
   const [productListForSelect, setProductListForSelect] = useState([]);
 
   const targetProducts = createBogoData?.offered_products;
   const originalSimpleProductForOffer =
-    products_and_categories.product_list.simpleProductForOffer;
+    bogo_products_and_categories.product_list.simpleProductForOffer;
+  useEffect(() => {
+    if (targetProducts !== "") {
+      const updatedOfferProducts = originalSimpleProductForOffer.filter(
+        item => item.value !== parseInt(targetProducts)
+      );
+      const updatedProductListForSelect = originalProductListForSelect.filter(
+        item => item.value !== offerProductId && item.value !== parseInt(targetProducts)
+      );
 
-    useEffect(() => {
-      if (targetProducts !== "") {
-        const updatedOfferProducts = originalSimpleProductForOffer.filter(
-          item => item.value !== parseInt(targetProducts)
-        );
-        const updatedProductListForSelect = originalProductListForSelect.filter(
-          item => item.value !== offerProductId && item.value !== parseInt(targetProducts)
-        );
-
-        setSimpleProductForOffer(updatedOfferProducts);
-        setProductListForSelect(updatedProductListForSelect);
-      } else {
-        setSimpleProductForOffer(originalSimpleProductForOffer);
-        setProductListForSelect(originalProductListForSelect);
-      }
-    }, [targetProducts, originalSimpleProductForOffer, originalProductListForSelect, offerProductId]);
+      setSimpleProductForOffer(updatedOfferProducts);
+      setProductListForSelect(updatedProductListForSelect);
+    } else {
+      setSimpleProductForOffer(originalSimpleProductForOffer);
+      setProductListForSelect(originalProductListForSelect);
+    }
+  }, [targetProducts, originalSimpleProductForOffer, originalProductListForSelect, offerProductId]);
 
   const offerOptions = [
     { value: "free", label: __("Free", "storegrowth-sales-booster-pro") },
@@ -85,11 +155,11 @@ const BasicInfo = ({ clearErrors }) => {
         ...createBogoData,
         [key]: value,
         offer_image_url:
-          products_and_categories.product_list_for_view[value].image_url,
+          bogo_products_and_categories.product_list_for_view[value].image_url,
         offer_product_title:
-          products_and_categories.product_list_for_view[value].post_title,
+          bogo_products_and_categories.product_list_for_view[value].post_title,
         offer_product_regular_price:
-          products_and_categories.product_list_for_view[value].regular_price,
+          bogo_products_and_categories.product_list_for_view[value].regular_price,
       });
     } else {
       setCreateFromData({
@@ -100,7 +170,7 @@ const BasicInfo = ({ clearErrors }) => {
 
   };
 
-  const hidePremiumFeature = applyFilters( 'sgsb_hide_bogo_premium_options', true );
+  const hidePremiumFeature = applyFilters('sgsb_hide_bogo_premium_options', true);
 
   const dealOptions = [
     { key: 'different', value: __('Buy X Get Y', 'storegrowth-sales-booster') },
@@ -133,8 +203,8 @@ const BasicInfo = ({ clearErrors }) => {
           classes={`search-single-select`}
           name={"offered_products"}
           changeHandler={onFieldChange}
-          options={productListForSelect}
-          fieldValue={createBogoData?.offered_products ? createBogoData?.offered_products : ''}
+          options={originalProductListForSelect}
+          fieldValue={createBogoData?.offered_products}
           title={__("Select Target Product(s)", "storegrowth-sales-booster-pro")}
           placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
           tooltip={__(
@@ -233,7 +303,7 @@ const BasicInfo = ({ clearErrors }) => {
               name={"get_alternate_categories"}
               changeHandler={onFieldChange}
               fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}
-              options={products_and_categories.category_list.catForSelect}
+              options={bogo_products_and_categories.category_list.catForSelect}
               title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}
               placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}
               tooltip={__(
