@@ -20,30 +20,31 @@ function DesignTab(props) {
     <Fragment>
       <SettingsSection>
         <ColourPicker
-          name={"stockbar_bg_color"}
-          fieldValue={formData.stockbar_bg_color}
+          name={"button_color"}
+          fieldValue={formData?.button_color}
           changeHandler={onFieldChange}
-          title={__("Foreground Color", "storegrowth-sales-booster")}
+          title={__("Button Color", "storegrowth-sales-booster")}
         />
-        {applyFilters(
-          "sgsb_bar_color_quick_view_settings",
-          "",
-          formData,
-          onFieldChange
-        )}
         <ColourPicker
-          name={"stockbar_border_color"}
-          fieldValue={formData.stockbar_border_color}
+          name={"button_text_color"}
+          fieldValue={formData?.button_text_color}
           changeHandler={onFieldChange}
-          title={__("Border Color", "storegrowth-sales-booster")}
+          title={__("Button Text Color", "storegrowth-sales-booster")}
+        />
+        <ColourPicker
+          name={"modal_background_color"}
+          fieldValue={formData?.modal_background_color}
+          changeHandler={onFieldChange}
+          title={__("Modal Backgroud Color", "storegrowth-sales-booster")}
         />
 
         {applyFilters(
-          "sgsb_design_panel_quick_view_settings",
+          "sgsb_quick_view_navigation_settings",
           "",
           formData,
           onFieldChange
         )}
+
       </SettingsSection>
 
       <Templates formData={formData} setFormData={setFormData} />

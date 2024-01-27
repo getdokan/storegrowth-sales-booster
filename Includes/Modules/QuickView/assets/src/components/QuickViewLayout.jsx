@@ -9,10 +9,11 @@ import PanelContainer from "sales-booster/src/components/settings/Panels/PanelCo
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
 import PanelSettings from "sales-booster/src/components/settings/Panels/PanelSettings";
+import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 import GeneralSettingsTab from "./GeneralSettingsTab";
 import DesignTab from "./DesingTab";
 import Preview from "./Preview";
-import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
+
 
 function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
@@ -22,23 +23,30 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const initalQuickViewData = {
-    stockbar_height: 10,
-    stockbar_bg_color: "#EBF6FF",
-    stockbar_fg_color: "#008DFF",
-    stockbar_template: "quick_view_one",
-    stock_display_format: "above",
-    stockbar_border_color: "#DDE6F9",
-    total_sell_count_text: __("Total Sold", "storegrowth-sales-booster"),
-    available_item_count_text: __(
-      "Available Item",
-      "storegrowth-sales-booster"
-    ),
-    shop_page_quick_view_enable: false,
-    shop_page_countdown_enable: false,
-    product_page_quick_view_enable: true,
-    product_page_countdown_enable: true,
-    variation_page_quick_view_enable: false,
+    popup_on_mobile             : false,
+    enable_lightbox             : false,
+    modal_animation_effect      : "",
+    enable_product_navigation   : false,
+    show_title                  : true,
+    show_description            : true,
+    show_price                  : true,
+    show_image                  : true,
+    show_excerpt                : true,
+    show_meta                   : true,
+    show_add_to_cart            : false,
+    button_label                : __("Quick View", "storegrowth-sales-booster"),
+    button_position             : "after_add_to_cart",
+    enable_qucik_view_icon      : false,
+    quick_view_icon             : "quick-icon-1",
+    show_quick_icon             : true,
+    show_view_details_button    : false,
+    button_color                : "#000000",
+    button_text_color           : "#ffffff",
+    modal_background_color      : "#ffffff",
+    navigation_background       : "#000000",
+    navigation_text_color       : "$ffffff",
   };
+
   const [formData, setFormData] = useState({
     ...initalQuickViewData,
   });
@@ -54,15 +62,15 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const notificationMessage = (type) => {
     if (type == "general_settings") {
       notification["success"]({
-        message: "Settings Section",
-        description: "General settings section data updated successfully.",
+        message     : "Settings Section",
+        description : "General settings section data updated successfully.",
       });
     }
 
     if (type == "design") {
       notification["success"]({
-        message: "Design Section",
-        description: "Design section data updated successfully.",
+        message     : "Design Section",
+        description : "Design section data updated successfully.",
       });
     }
   };
@@ -71,16 +79,16 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     setButtonLoading(true);
 
     let data = {
-      action: "sgsb_quick_view_save_settings",
-      _ajax_nonce: sgsbAdmin.nonce,
-      form_data: formData,
+      action      : "sgsb_quick_view_save_settings",
+      _ajax_nonce : sgsbAdmin?.nonce,
+      form_data   : formData,
     };
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
-        method: "POST",
-        data: data,
+        url     : sgsbAdmin.ajax_url,
+        method  : "POST",
+        data    : data,
       })
       .success(() => {
         setButtonLoading(false);
@@ -93,16 +101,16 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
-        method: "POST",
-        data: {
-          action: "sgsb_quick_view_get_settings",
-          _ajax_nonce: sgsbAdmin.nonce,
+        url     : sgsbAdmin?.ajax_url,
+        method  : "POST",
+        data    : {
+          action      : "sgsb_quick_view_get_settings",
+          _ajax_nonce : sgsbAdmin?.nonce,
         },
       })
       .success((response) => {
-        if (response.success) {
-          setFormData({ ...formData, ...response.data });
+        if (response?.success) {
+          setFormData({ ...formData, ...response?.data });
           setTimeout(() => setPageLoading(false), 500);
         }
       });
@@ -116,15 +124,15 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     setFormData({ ...formData, [key]: value });
   };
 
-  const noop = () => {};
+  const noop = () => { };
   const excludeTabs = ["general"];
   const showPreview = !excludeTabs?.includes(tabName);
 
   const tabPanels = [
     {
-      key: "general",
-      title: __("Stock Bar Setting", "storegrowth-sales-booster"),
-      panel: (
+      key    : "general",
+      title  : __("Stock Bar Setting", "storegrowth-sales-booster"),
+      panel  : (
         <GeneralSettingsTab
           formData={formData}
           onFieldChange={onFieldChange}
@@ -137,9 +145,9 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
       ),
     },
     {
-      key: "design",
-      title: __("Design", "storegrowth-sales-booster"),
-      panel: (
+      key   : "design",
+      title : __("Design", "storegrowth-sales-booster"),
+      panel : (
         <DesignTab
           formData={formData}
           setFormData={setFormData}
