@@ -240,8 +240,8 @@ function BogoList({ navigate }) {
     },
   ];
 
-  let catInfoByCatId = products_and_categories.category_list.catNameById;
-  let productInfoById = products_and_categories.product_list.productTitleById;
+  let catInfoByCatId = bogo_products_and_categories.category_list.catNameById;
+  let productInfoById = bogo_products_and_categories.product_list.productTitleById;
 
   function mapBogoData(item) {
     let categories = item.offered_categories;

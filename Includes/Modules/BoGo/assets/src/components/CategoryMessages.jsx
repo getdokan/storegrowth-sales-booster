@@ -1,7 +1,7 @@
 import { Switch } from 'antd';
 import { __ } from "@wordpress/i18n";
 import { Table, Button } from "antd";
-import {Fragment, useEffect} from "react";
+import { Fragment, useEffect } from "react";
 import { applyFilters } from "@wordpress/hooks";
 import { useDispatch, useSelect } from "@wordpress/data";
 import UpgradeCard from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCard";
@@ -10,10 +10,10 @@ import UpgradeOverlay from "sales-booster/src/components/settings/Panels/PanelSe
 const ActionToggler = ({ isChecked }) => {
   return (
     <Fragment>
-      <Switch size='small' defaultChecked={ isChecked } />
-      <div className={ `table-categories` } style={{ marginTop: 8 }}>
-        <span style={{ padding: 0 }} className={ `category-pills` }>
-          { __( isChecked ? 'Active' : 'Deactive', 'storegrowth-sales-booster' ) }
+      <Switch size='small' defaultChecked={isChecked} />
+      <div className={`table-categories`} style={{ marginTop: 8 }}>
+        <span style={{ padding: 0 }} className={`category-pills`}>
+          {__(isChecked ? 'Active' : 'Deactive', 'storegrowth-sales-booster')}
         </span>
       </div>
     </Fragment>
@@ -69,7 +69,7 @@ const ActionButton = () => {
             fill="#02AC6E"
           />
         </svg>
-        { __( 'Edit', 'storegrowth-sales-booster' ) }
+        {__('Edit', 'storegrowth-sales-booster')}
       </Button>
       <Button
         shape="round"
@@ -104,7 +104,7 @@ const ActionButton = () => {
             fill="#DC1B1B"
           />
         </svg>
-        { __( 'Delete', 'storegrowth-sales-booster' ) }
+        {__('Delete', 'storegrowth-sales-booster')}
       </Button>
     </Fragment>
   );
@@ -112,8 +112,8 @@ const ActionButton = () => {
 
 const TargetProductAndCategory = ({ catName }) => {
   return (
-    <div className={ `table-categories` } style={{ marginTop: 8 }}>
-      <span className={ `product-pills` }>{ catName }</span>
+    <div className={`table-categories`} style={{ marginTop: 8 }}>
+      <span className={`product-pills`}>{catName}</span>
     </div>
   );
 }
@@ -126,7 +126,7 @@ const CategoryMessages = ({ navigate }) => {
     bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
   }));
 
-  useEffect( () => {
+  useEffect(() => {
     setPageLoading(true);
 
     jQuery.post(
@@ -136,61 +136,62 @@ const CategoryMessages = ({ navigate }) => {
         _ajax_nonce: bogo_save_url.ajd_nonce,
       },
       function (response) {
-        if ( response?.success ) {
-          setPageLoading(false);
+        setPageLoading(false);
+        if (response?.success) {
+          console.log(response?.data?.categoryDataList);
 
           setBogoGlobalSettings({
             ...currentSettings,
-            bogo_category_messages: [ ...response?.data?.categoryDataList ],
+            bogo_category_messages: [...response?.data?.categoryDataList],
           });
         }
       }
     );
-  }, [] );
+  }, []);
 
   const columns = [
     {
-      title     : __( 'Target Category', 'storegrowth-sales-booster' ),
-      dataIndex : 'id',
-      align     : 'left',
+      title: __('Target Category', 'storegrowth-sales-booster'),
+      dataIndex: 'id',
+      align: 'left',
     },
     {
-      title     : __( 'Status', 'storegrowth-sales-booster' ),
-      dataIndex : 'status',
+      title: __('Status', 'storegrowth-sales-booster'),
+      dataIndex: 'status',
     },
     {
-      title     : __( 'Message', 'storegrowth-sales-booster' ),
-      dataIndex : 'message',
+      title: __('Message', 'storegrowth-sales-booster'),
+      dataIndex: 'message',
     },
     {
-      title     : __( 'Action', 'storegrowth-sales-booster' ),
-      dataIndex : 'action',
+      title: __('Action', 'storegrowth-sales-booster'),
+      dataIndex: 'action',
     },
   ];
 
   let data = [
     {
-      name: __( 'Residential', 'storegrowth-sales-booster' ),
-      status: <ActionToggler isChecked={ true } />,
-      message: __( 'Buy 1, unit of any product from this category and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
-      id: <TargetProductAndCategory catName={ [ __( 'Residential', 'storegrowth-sales-booster' ) ] } />,
+      name: __('Residential', 'storegrowth-sales-booster'),
+      status: <ActionToggler isChecked={true} />,
+      message: __("🎉 Elevate your shopping experience: Buy 1 unit from any category and unlock the magic with a FREE extra unit! 🛍️✨", 'storegrowth-sales-booster'),
+      id: <TargetProductAndCategory catName={[__('Residential', 'storegrowth-sales-booster')]} />,
       action: <ActionButton />,
     },
     {
-      name: __( 'Technology', 'storegrowth-sales-booster' ),
-      status: <ActionToggler isChecked={ false } />,
-      message: __( 'Buy 1, unit of any product from this category and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
-      id: <TargetProductAndCategory catName={ [ __( 'Technology', 'storegrowth-sales-booster' ) ] } />,
+      name: __('Technology', 'storegrowth-sales-booster'),
+      status: <ActionToggler isChecked={false} />,
+      message: __('🎉 Elevate your shopping experience: Buy 1 unit from any category and unlock the magic with a FREE extra unit! 🛍️✨', 'storegrowth-sales-booster'),
+      id: <TargetProductAndCategory catName={[__('Technology', 'storegrowth-sales-booster')]} />,
       action: <ActionButton />,
     },
   ],
 
-  catInfoByCatId = products_and_categories.category_list.catNameById;
+    catInfoByCatId = bogo_products_and_categories.category_list.catNameById;
 
   data = applyFilters(
     'sgsb_bogo_category_messages_data',
     data,
-    [ ...currentSettings?.bogo_category_messages ],
+    [...currentSettings?.bogo_category_messages],
     catInfoByCatId,
     navigate,
   );
@@ -201,24 +202,24 @@ const CategoryMessages = ({ navigate }) => {
   );
 
   return (
-    <div className={ `upsell-order-list-table` }>
-      { isDisableMessageCreation && (
+    <div className={`upsell-order-list-table`}>
+      {isDisableMessageCreation && (
         <UpgradeCard
-          message={ __(
+          message={__(
             'Upgrade to premium to use BOGO category messages.',
             'storegrowth-sales-booster'
-          ) }
+          )}
         />
-      ) }
+      )}
 
-      <div className={ `bogo-msg-table-content` }>
+      <div className={`bogo-msg-table-content`}>
         <Table
           bordered
-          columns={ columns }
-          dataSource={ data }
-          className={ `space-top` }
+          columns={columns}
+          dataSource={data}
+          className={`space-top`}
         />
-        { isDisableMessageCreation && <UpgradeOverlay /> }
+        {isDisableMessageCreation && <UpgradeOverlay />}
       </div>
     </div>
   );

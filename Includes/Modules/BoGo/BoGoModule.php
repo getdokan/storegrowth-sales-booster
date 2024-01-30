@@ -1,6 +1,6 @@
 <?php
 /**
- * File for Bo_Go class.
+ * File for BoGo class.
  *
  * @package SBFW
  */
@@ -47,7 +47,7 @@ class BoGoModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'BoGo/assets/images/upsell-order-bump-module-img.svg' );
+		return sgsb_modules_url( 'BoGo/assets/images/bogo-module-img.svg' );
 	}
 
 	/**

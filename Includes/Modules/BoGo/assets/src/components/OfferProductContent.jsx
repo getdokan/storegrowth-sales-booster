@@ -5,7 +5,7 @@ const OfferProductContent = ({ offerProduct, bogoItem }) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
   const product =
-    products_and_categories?.product_list?.simpleProductForOffer?.find(
+    bogo_products_and_categories?.product_list?.simpleProductForOffer?.find(
       (simpleProduct) =>
         simpleProduct?.value === parseInt(bogoItem.get_different_product_field)
     );
