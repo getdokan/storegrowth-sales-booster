@@ -16,7 +16,7 @@ if ( ! empty( $offer_products ) ) : ?>
                     foreach ( $offer_products as $product_id ) :
                         $product            = wc_get_product( $product_id );
                         $offer_product_cost = 0;
-                        if ( $bogo_settings['offer_type'] === 'discount' ) {
+                        if ( isset( $bogo_settings['offer_type'] ) && $bogo_settings['offer_type'] === 'discount' ) {
                             $offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $bogo_settings['discount_amount'] / 100 ) ), 0 );
                         }
                         ?>

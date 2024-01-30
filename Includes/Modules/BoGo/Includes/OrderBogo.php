@@ -59,8 +59,8 @@ class OrderBogo {
         $product_id       = $product->get_id();
         $product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
 
-        $offer_badge     = '';
-        $offer_badge_url = '';
+        $offer_badge         = '';
+        $offer_badge_url     = '';
         $product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
         if ( $product_bogo_status === 'yes' ) {
             $offer_badge_url = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
@@ -94,32 +94,35 @@ class OrderBogo {
     }
 
 	public function handle_cart_update() {
-		$product_quantities = array();
-		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-			$item_id       = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : intval( $cart_item['product_id'] );
-			$item_quantity = $cart_item['quantity'];
+        // Get the cart items
+        $cart_items = WC()->cart->get_cart();
+		foreach ( $cart_items as $cart_item_key => $cart_item ) {
+            $product_id    = ! empty( $cart_item['product_id'] ) ? intval( $cart_item['product_id'] ) : 0;
+            $variation_id  = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
+            $item_quantity = ! empty( $cart_item['quantity'] ) ? intval( $cart_item['quantity'] ) : 0;
+            $bogo_settings = Helper::sgsb_prepare_bogo_settings( $product_id, $product_id, $variation_id );
 
-			$product_quantities[ $item_id ] = $item_quantity;
-			if ( ! ( isset( $cart_item['bogo_offer'] ) || isset( $cart_item['bogo_product_for'] ) ) ) {
-				continue;
-			}
+            $free_product_quantity = 0;
+            if ( ! empty( $bogo_settings['minimum_quantity_required'] ) ) {
+                $free_product_quantity = floor( $item_quantity / $bogo_settings['minimum_quantity_required'] ) * 1;
+            }
 
-			WC()->cart->set_quantity( $cart_item_key, $product_quantities[ $cart_item['bogo_product_for'] ] );
+            if ( isset( $cart_item['child_key'] ) && array_key_exists( $cart_item['child_key'], $cart_items ) ) {
+                WC()->cart->set_quantity( $cart_item['child_key'], $free_product_quantity );
+            } else {
+                $this->add_offer_product_to_cart( $cart_item_key, $product_id, $free_product_quantity, $variation_id, [], [] );
+            }
 		}
 	}
 
 	public function add_custom_text_for_offer_product( $product_name, $cart_item, $cart_item_key ) {
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
 			$bogo_settings = get_post_meta( $cart_item['bogo_product_for'], 'sgsb_product_bogo_settings', true );
-//			$custom_text   = '<p><a href="#" class="custom-choose-product">Choose Product</a></p>';
-
 			if ( file_exists( __DIR__ . '/../templates/bogo-offer-products-popup.php' ) ) {
 				ob_start();
 				include __DIR__ . '/../templates/bogo-offer-products-popup.php';
                 $product_name .= ob_get_clean();
 			}
-
-//			return $product_name . $custom_text;
 		}
 
 		return $product_name;
@@ -130,6 +133,12 @@ class OrderBogo {
 		if ( isset( $bogo_settings['bogo_status'] ) && $bogo_settings['bogo_status'] !== 'yes' ) {
 			return false;
 		}
+
+        // Check is purchasable product.
+        $product = wc_get_product( $product_id );
+        if ( ! $product->is_purchasable() ) {
+            return false;
+        }
 
         // Check offer dates
         $current_date = date( 'Y-m-d' );
@@ -147,21 +156,14 @@ class OrderBogo {
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
 		// Get apply product id.
 		$apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
+        $bogo_settings         = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
-        // Prepare settings for BOGO apply.
-        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
-		$bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
-
-        // Apply BOGO product if applicable.
-		if ( ! empty( $bogo_settings ) && $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings ) ) {
-			foreach ( WC()->cart->get_cart() as $cart_key => $cart_item ) {
-				if ( isset( $cart_item['linked_to_product_key'] ) && sanitize_key( $cart_item['linked_to_product_key'] ) === $cart_item_key ) {
-					WC()->cart->set_quantity( $cart_key, ( $cart_item['quantity'] + 1 ) );
-					return;
-				}
-			}
-
-			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key );
+        // Apply BOGO product if different apply & applicable.
+		if ( ! empty( $bogo_settings ) &&
+            ( $bogo_settings['bogo_deal_type'] !== 'same' ) &&
+            $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings )
+        ) {
+			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, $quantity );
 		}
 	}
 
@@ -178,19 +180,24 @@ class OrderBogo {
 			$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
 		}
 
-        // Add the offer product to the cart
-        WC()->cart->add_to_cart(
+        // Add the offer product to the cart for different offer.
+        $free_product_key = WC()->cart->add_to_cart(
             $offer_product_id,
             $quantity, // Quantity of the offer product
             '',
             '',
             array(
+                'parent_key'            => $cart_item_key,
                 'bogo_offer'            => true,
                 'bogo_product_for'      => $product_id,
                 'bogo_offer_price'      => $offer_product_cost,
                 'linked_to_product_key' => $cart_item_key,
             )
         );
+
+        if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
+            WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
+        }
 	}
 
 	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
@@ -235,18 +242,18 @@ class OrderBogo {
 		}
 
 		if ( $is_custom_field_present && isset( $bogo_custom_field_value->bogo_status ) && 'yes' === $bogo_custom_field_value->bogo_status ) {
-				$bogo_global_info = (object) $bogo_custom_field_value;
-				$bogo_info        = $bogo_global_info;
-				$deal_type        = $bogo_info->bogo_deal_type;
-				$bogo_status      = $bogo_info->bogo_status;
-				$target_product   = $current_product_id;
-				$offer_product_id = 'same' === $deal_type ? $target_product : $bogo_info->get_different_product_field;
-				$offer_type       = $bogo_info->offer_type;
-				$discount_amount  = $bogo_info->discount_amount;
-				$image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
-				$_product         = wc_get_product( $offer_product_id );
-				$regular_price    = $_product->get_price();
-				$offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
+            $bogo_global_info = (object) $bogo_custom_field_value;
+            $bogo_info        = $bogo_global_info;
+            $deal_type        = $bogo_info->bogo_deal_type;
+            $bogo_status      = $bogo_info->bogo_status;
+            $target_product   = $current_product_id;
+            $offer_product_id = 'same' === $deal_type ? $target_product : $bogo_info->get_different_product_field;
+            $offer_type       = $bogo_info->offer_type;
+            $discount_amount  = $bogo_info->discount_amount;
+            $image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
+            $_product         = wc_get_product( $offer_product_id );
+            $regular_price    = $_product->get_price();
+            $offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
 
 			if (
 				$current_product_id === (int) $target_product && 'yes' === $bogo_status
@@ -276,9 +283,9 @@ class OrderBogo {
 				}
 
 				if (
-				isset( $bogo_info->target_categories )
-				&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bogo_info->target_categories ) )
-				&& ! in_array( $offer_product_id, $showed_bogo_product_id, true )
+                    isset( $bogo_info->target_categories )
+                    && count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bogo_info->target_categories ) )
+                    && ! in_array( $offer_product_id, $showed_bogo_product_id, true )
 				) {
 
 					include __DIR__ . '/../templates/bogo-product-front-view.php';

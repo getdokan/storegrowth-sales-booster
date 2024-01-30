@@ -221,4 +221,14 @@ class Helper {
 
         return apply_filters( 'sgsb_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
     }
+
+    public static function sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id ) {
+        // Prepare settings for BOGO apply.
+        return apply_filters(
+            'sgsb_get_bogo_settings_for_cart',
+            Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id ),
+            $product_id,
+            $variation_id
+        );
+    }
 }
