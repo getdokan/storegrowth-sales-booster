@@ -38,7 +38,8 @@ if ( ! empty( $offer_products ) ) : ?>
 							<div class="altenate-product-heading"><h3><?php echo $product->get_title(); ?></h3>
 							<span class="choosen-offer-product"
 								data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
-								data-offer-product-cost="<?php echo esc_attr( $offer_product_cost ); ?>"
+                                data-item-key="<?php echo esc_attr( $cart_item['parent_key'] ); ?>"
+                                data-offer-product-cost="<?php echo esc_attr( $offer_product_cost ); ?>"
 								data-main-product-id="<?php echo esc_attr( $cart_item['bogo_product_for'] ); ?>"
 								data-product-link-key="<?php echo esc_attr( $cart_item['linked_to_product_key'] ); ?>">
 								<?php esc_html_e( 'Choose', 'storegrowth-sales-booster' ); ?>

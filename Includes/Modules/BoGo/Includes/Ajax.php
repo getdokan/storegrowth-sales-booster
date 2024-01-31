@@ -61,6 +61,7 @@ class Ajax {
 			wp_send_json_error( 'Choose able product data can\'t be empty.' );
 		}
 
+		$item_key            = isset( $data['cart_item_key'] ) ? intval( $data['cart_item_key'] ) : 0;
 		$main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
 		$product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
 		$offer_product_cost  = isset( $data['offer_product_cost'] ) ? intval( $data['offer_product_cost'] ) : 0;
@@ -81,18 +82,23 @@ class Ajax {
 		}
 
 		// Add the selected product as the new offer product
-		WC()->cart->add_to_cart(
+		$free_product_key = WC()->cart->add_to_cart(
 			$selected_product_id,
 			$offer_product_quantity,
 			'',
 			'',
 			array(
 				'bogo_offer'            => true,
-				'bogo_product_for'      => $main_product_id,
+                'parent_key'            => $item_key,
+                'bogo_product_for'      => $main_product_id,
 				'bogo_offer_price'      => $offer_product_cost,
 				'linked_to_product_key' => $product_link_key,
 			)
 		);
+
+        if ( $free_product_key && isset( WC()->cart->cart_contents[ $item_key ] ) ) {
+            WC()->cart->cart_contents[ $item_key ]['child_key'] = $free_product_key;
+        }
 
 		wp_send_json_success( 'Product updated successfully.' );
 	}

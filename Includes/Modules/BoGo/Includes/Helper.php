@@ -205,11 +205,10 @@ class Helper {
      */
     public static function sgsb_get_alternate_offer_products( $product_id, $item_id ) {
         $variation_id    = 0;
-        $current_product = wc_get_product( $product_id );
+        $current_product = wc_get_product( $item_id );
 
         if ( $current_product->is_type( 'variable' ) ) {
-            $variation_id = $product_id;
-            $product_id   = $current_product->get_parent_id();
+            $variation_id = $item_id;
         }
 
         $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $product_id );
@@ -218,6 +217,11 @@ class Helper {
         // Fetch full product details.
         $product_ids     = ! empty( $bogo_settings['get_alternate_products'] ) ? $bogo_settings['get_alternate_products'] : array();
         $product_objects = ! empty( $product_ids ) ? array_map( 'wc_get_product', $product_ids ) : array();
+
+//        error_log( print_r( $item_id, 1 ) );
+//        error_log( print_r( $product_ids, 1 ) );
+//        error_log( print_r( $product_objects, 1 ) );
+//        error_log( print_r( apply_filters( 'sgsb_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id ), 1 ) );
 
         return apply_filters( 'sgsb_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
     }
