@@ -36,15 +36,18 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 			<?php
 			$offered_product_id = ! empty( $bogo_settings['get_different_product_field'] ) ? esc_html( $bogo_settings['get_different_product_field'] ) : '';
 
+            // Display the select dropdown with modified options using apply_filters
+            $deal_types = apply_filters(
+                'sgsb_bogo_deal_types',
+                array( 'different' => __( 'Buy X Get Y Free', 'storegrowth-sales-booster' ) ),
+            );
+
 			woocommerce_wp_select(
 				array(
 					'id'      => 'bogo_deal_type',
 					'value'   => $different_deal_type,
 					'label'   => __( 'Deal Type', 'storegrowth-sales-booster' ),
-					'options' => array(
-                        'different' => __( 'Buy X Get Y Free', 'storegrowth-sales-booster' ),
-                        'same'      => __( 'Buy X Get X Free', 'storegrowth-sales-booster' ),
-					),
+					'options' => $deal_types,
 				)
 			);
 

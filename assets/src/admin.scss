@@ -726,6 +726,24 @@ main.ant-layout-content.sgsb-module-setting-layout {
             }
           }
 
+          &.bogo {
+            &:before {
+              content: "";
+              background: url('../images/menu/bogo.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/bogo-white.svg');
+
+              }
+
+            }
+          }
+
           &.countdown-timer {
             &:before {
               content: "";
@@ -861,6 +879,9 @@ main.ant-layout-content.sgsb-module-setting-layout {
             background: url('../images/menu/countdown-timer-white.svg');
           }
 
+          &.bogo::before {
+            background: url('../images/menu/bogo-white.svg');
+          }
         }
 
         li {
@@ -1264,6 +1285,24 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/sales-pop-white.svg');
+
+              }
+
+            }
+          }
+
+          &.bogo {
+            &:before {
+              content: "";
+              background: url('../images/menu/bogo.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/bogo-white.svg');
 
               }
 
