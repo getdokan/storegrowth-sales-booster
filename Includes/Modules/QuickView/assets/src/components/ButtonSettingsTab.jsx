@@ -5,7 +5,6 @@ import SettingsSection from "sales-booster/src/components/settings/Panels/PanelS
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import { Switcher, SelectBox } from "sales-booster/src/components/settings/Panels";
-import Templates from "./Templates";
 
 function ButtonSettingsTab(props) {
   const {
@@ -29,8 +28,12 @@ function ButtonSettingsTab(props) {
     {
       value: "center_on_the_image",
       label: __("Center On The Image", "storegrowth-sales-booster"),
+      // disabled:true,
+      // needUpgrade:true,
     },
   ];
+
+  
 
   return (
     <Fragment>
@@ -55,7 +58,7 @@ function ButtonSettingsTab(props) {
           options={[...buttonPositions]}
           fieldValue={formData?.button_position}
           changeHandler={onFieldChange}
-          title={__("Modal Effects", "storegrowth-sales-booster")}
+          title={__("Button Position", "storegrowth-sales-booster")}
         />
         <Switcher
           colSpan={24}

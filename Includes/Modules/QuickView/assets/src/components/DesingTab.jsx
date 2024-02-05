@@ -4,6 +4,7 @@ import { applyFilters } from "@wordpress/hooks";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
+import Number from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 function DesignTab(props) {
   const {
@@ -17,6 +18,24 @@ function DesignTab(props) {
   return (
     <Fragment>
       <SettingsSection>
+      <Number
+          min={1}
+          max={100}
+          style={{
+            width: "100px",
+            textAlign: "center",
+          }}
+          addonAfter={"px"}
+          name={"button_border_radius"}
+          fieldValue={formData?.button_border_radius}
+          changeHandler={onFieldChange}
+          title={__("Border Radius", "storegrowth-sales-booster")}
+          placeHolderText={__("Border Radius", "storegrowth-sales-booster")}
+          tooltip={__(
+            "To set the border radius of the button",
+            "storegrowth-sales-booster"
+          )}
+        />
         <ColourPicker
           name={"button_color"}
           fieldValue={formData?.button_color}

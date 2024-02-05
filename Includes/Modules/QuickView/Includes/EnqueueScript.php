@@ -38,15 +38,9 @@ class EnqueueScript {
 	 */
 	public function wp_enqueue_scripts() {
 
-		wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', array(), '4.3.1' );
-		wp_enqueue_script( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array( 'jquery' ), '4.3.1', true );
-
-		wp_enqueue_style(
-			'sgsb-quick-view-custom-style',
-			sgsb_modules_url( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ),
-			array(),
-			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ) )
-		);
+		$settings            = get_option( 'sgsb_quick_view_settings' );
+		$modal_effect        = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
+		$enable_close_button = sgsb_find_option_setting( $settings, 'enable_close_button', true );
 
 		// Pass AJAX URL to script.
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
@@ -146,7 +140,8 @@ class EnqueueScript {
 				'ajax_url'                => admin_url( 'admin-ajax.php' ),
 				'nonce'                   => wp_create_nonce( 'sgsbqcv-security' ),
 				'view'                    => 'popup',
-				'effect'                  => 'mfp-3d-unfold',
+				'effect'                  => $modal_effect,
+				'enable_close_button'     => $enable_close_button,
 				'scrollbar'               => 'yes',
 				'auto_close'              => 'yes',
 				'hashchange'              => 'no',
@@ -205,7 +200,7 @@ class EnqueueScript {
 			)
 		);
 
-		// $this->inline_styles();
+		$this->inline_styles();
 	}
 
 	public static function localization( $key = '', $default = '' ) {
@@ -248,35 +243,22 @@ class EnqueueScript {
 		// Get settings options.
 		$settings = get_option( 'sgsb_quick_view_settings' );
 
-		$bar_height   = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );
-		$fg_color     = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );
-		$border_color = sgsb_find_option_setting( $settings, 'stockbar_border_color', '#dde6f9' );
-
-		$theme               = wp_get_theme();
-		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
+		$modal_bg_color       = sgsb_find_option_setting( $settings, 'modal_background_color', '#ffffff' );
+		$button_color         = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
+		$button_text_color    = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
+		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', 4 );
 
 		$custom_css = "
-			.sgsb-stock-progress-bar-section {
-				border: 2px solid {$border_color};
+			.sgsbqcv-btn {
+				border-radius: {$button_border_radius}px !important;
+				background-color: {$button_color} !important;
+				color: {$button_text_color} !important;
 			}
-			.sgsb-stock-progress {
-				height: {$bar_height}px;
-				background: {$fg_color};
-			}
-			.sgsb-stock-progress-bar {
-				background-color: {$bg_color};
-			}
-		";
-
-		if ( $is_twenty_one_theme ) {
-			$custom_css .= '
-                .sgsb-stock-counter-and-bar {
-                    margin-top: 18px;
-                }
-            ';
+			.sgsbqcv-product > .product .summary {
+				background-color: {$modal_bg_color};
 		}
-
-		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
+		";
+		$custom_css = apply_filters( 'sgsb_qcv_inline_styles', $custom_css );
+		wp_add_inline_style( 'sgsbqcv-frontend', $custom_css );
 	}
 }

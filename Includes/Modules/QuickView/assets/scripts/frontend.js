@@ -45,7 +45,8 @@ console.log("Workimg");
       var id = match[1];
       var effect = $this.attr("data-effect");
       var context = $this.attr("data-context");
-
+      console.log("Data Effect");
+      console.log(effect);
       sgsbqcv_open(id, effect, context);
       e.preventDefault();
     }
@@ -256,7 +257,11 @@ function sgsbqcv_open(id, effect, context) {
 
     if (typeof effect !== typeof undefined && effect !== false) {
       main_class = main_class + " " + effect;
+      console.log("main2");
+      console.log(main_class);
     } else {
+      console.log("main1");
+      console.log(main_class);
       main_class = main_class + " " + sgsbqcv_vars.effect;
     }
 
@@ -269,6 +274,7 @@ function sgsbqcv_open(id, effect, context) {
         overflowY: "scroll",
         fixedContentPos: true,
         tClose: sgsbqcv_vars.close,
+        showCloseBtn:sgsbqcv_vars?.enable_close_button,
         gallery: {
           tPrev: sgsbqcv_vars.prev,
           tNext: sgsbqcv_vars.next,

@@ -15,43 +15,51 @@ function GeneralSettingsTab(props) {
 
   const modalEffects = [
     {
-      value: "normal",
-      label: __("Normal", "storegrowth-sales-booster"),
+      value: "mfp-3d-unfold",
+      label: __("3D Unfold", "storegrowth-sales-booster"),
     },
     {
-      value: "sticky",
-      label: __("Sticky", "storegrowth-sales-booster"),
+      value: "mfp-zoom-out",
+      label: __("Zoom Out", "storegrowth-sales-booster"),
+    },
+    {
+      value: "mfp-move-from-top",
+      label: __("Move From Top", "storegrowth-sales-booster"),
+    },
+    {
+      value: "mfp-fade",
+      label: __("Fade", "storegrowth-sales-booster"),
     },
   ];
 
   let contentOptions = [
     {
-      name  : "show_title",
-      title : __("Show Title", "storegrowth-sales-booster"),
+      name: "show_title",
+      title: __("Show Title", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_description",
-      title : __("Show Description", "storegrowth-sales-booster"),
+      name: "show_description",
+      title: __("Show Description", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_price",
-      title : __("Show Price", "storegrowth-sales-booster"),
+      name: "show_price",
+      title: __("Show Price", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_image",
-      title : __("Show Product Image", "storegrowth-sales-booster"),
+      name: "show_image",
+      title: __("Show Product Image", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_excert",
-      title : __("Show Excert", "storegrowth-sales-booster"),
+      name: "show_excert",
+      title: __("Show Excert", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_meta",
-      title : __("Show Product Meta", "storegrowth-sales-booster"),
+      name: "show_meta",
+      title: __("Show Product Meta", "storegrowth-sales-booster"),
     },
     {
-      name  : "show_add_to_cart",
-      title : __("Show Add to Cart", "storegrowth-sales-booster"),
+      name: "show_add_to_cart",
+      title: __("Show Add to Cart", "storegrowth-sales-booster"),
     },
   ];
 
@@ -71,7 +79,7 @@ function GeneralSettingsTab(props) {
           title={__("Enable In Mobile", "storegrowth-sales-booster")}
           isEnable={
             formData?.popup_on_mobile == "true" ||
-            formData?.popup_on_mobile == true
+              formData?.popup_on_mobile == true
               ? true
               : false
           }
@@ -87,7 +95,7 @@ function GeneralSettingsTab(props) {
           title={__("Enable LightBox", "storegrowth-sales-booster")}
           isEnable={
             formData?.enable_lightbox == "true" ||
-            formData?.enable_lightbox == true
+              formData?.enable_lightbox == true
               ? true
               : false
           }
@@ -107,7 +115,7 @@ function GeneralSettingsTab(props) {
           formData={formData}
           changeHandler={onFieldChange}
           options={[...contentOptions]}
-          title={__("Cart Contents:", "storegrowth-sales-booster")}
+          title={__("Popup Contents:", "storegrowth-sales-booster")}
         />
         {applyFilters(
           "sgsb_variation_product_quick_view_enable_settings",

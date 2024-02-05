@@ -26,7 +26,8 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const initalQuickViewData = {
     popup_on_mobile: false,
     enable_lightbox: false,
-    modal_animation_effect: "",
+    modal_animation_effect: "mfp-3d-unfold",
+    button_border_radius: 4,
     enable_product_navigation: false,
     show_title: true,
     show_description: true,

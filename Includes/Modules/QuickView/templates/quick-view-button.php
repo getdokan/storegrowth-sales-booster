@@ -10,7 +10,7 @@ $product_id   = $product->get_ID();
 $product_type = $product->get_type();
 $settings     = get_option( 'sgsb_quick_view_settings' );
 $button_label = sgsb_find_option_setting( $settings, 'button_label', 'Quick View' );
-$modal_effect = sgsb_find_option_setting( $settings, 'effect', 'mfp-3d-unfold' );
+$modal_effect = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 $product_page = is_product() ? '_product_page' : '';
 	$classes  = implode(
 		' ',

@@ -45,10 +45,9 @@
   max-width: 920px;
   margin: 0 auto;
   padding: 0;
-  background-color: #fff;
   max-height: 460px;
-  box-sizing: border-box;
   overflow: hidden;
+  border-radius: 18px;;
 }
 
 .sgsbqcv-popup *, .sgsbqcv-sidebar * {
