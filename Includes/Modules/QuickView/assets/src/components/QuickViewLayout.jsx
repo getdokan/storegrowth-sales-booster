@@ -13,6 +13,7 @@ import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPrev
 import GeneralSettingsTab from "./GeneralSettingsTab";
 import DesignTab from "./DesingTab";
 import Preview from "./Preview";
+import ButtonSettingsTab from "./ButtonSettingsTab";
 
 
 function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
@@ -23,28 +24,29 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const initalQuickViewData = {
-    popup_on_mobile             : false,
-    enable_lightbox             : false,
-    modal_animation_effect      : "",
-    enable_product_navigation   : false,
-    show_title                  : true,
-    show_description            : true,
-    show_price                  : true,
-    show_image                  : true,
-    show_excerpt                : true,
-    show_meta                   : true,
-    show_add_to_cart            : false,
-    button_label                : __("Quick View", "storegrowth-sales-booster"),
-    button_position             : "after_add_to_cart",
-    enable_qucik_view_icon      : false,
-    quick_view_icon             : "quick-icon-1",
-    show_quick_icon             : true,
-    show_view_details_button    : false,
-    button_color                : "#000000",
-    button_text_color           : "#ffffff",
-    modal_background_color      : "#ffffff",
-    navigation_background       : "#000000",
-    navigation_text_color       : "$ffffff",
+    popup_on_mobile: false,
+    enable_lightbox: false,
+    modal_animation_effect: "",
+    enable_product_navigation: false,
+    show_title: true,
+    show_description: true,
+    show_price: true,
+    show_image: true,
+    show_excerpt: true,
+    show_meta: true,
+    show_add_to_cart: false,
+    button_label: __("Quick View", "storegrowth-sales-booster"),
+    button_position: "after_add_to_cart",
+    enable_qucik_view_icon: false,
+    quick_view_icon: "quick-icon-1",
+    show_quick_icon: true,
+    enable_close_button: true,
+    show_view_details_button: false,
+    button_color: "#000000",
+    button_text_color: "#ffffff",
+    modal_background_color: "#ffffff",
+    navigation_background: "#000000",
+    navigation_text_color: "$ffffff",
   };
 
   const [formData, setFormData] = useState({
@@ -60,18 +62,27 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const notificationMessage = (type) => {
-    if (type == "general_settings") {
-      notification["success"]({
-        message     : "Settings Section",
-        description : "General settings section data updated successfully.",
-      });
-    }
-
-    if (type == "design") {
-      notification["success"]({
-        message     : "Design Section",
-        description : "Design section data updated successfully.",
-      });
+    switch (type) {
+      case "general_settings":
+        notification["success"]({
+          message: "Settings Section",
+          description: "General settings section data updated successfully.",
+        });
+        break;
+      case "button_settings":
+        notification["success"]({
+          message: "Button Settings Section",
+          description: "Button settings section data updated successfully.",
+        });
+        break;
+      case "design":
+        notification["success"]({
+          message: "Design Section",
+          description: "Design section data updated successfully.",
+        });
+        break;
+      default:
+        break;
     }
   };
 
@@ -79,16 +90,16 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     setButtonLoading(true);
 
     let data = {
-      action      : "sgsb_quick_view_save_settings",
-      _ajax_nonce : sgsbAdmin?.nonce,
-      form_data   : formData,
+      action: "sgsb_quick_view_save_settings",
+      _ajax_nonce: sgsbAdmin?.nonce,
+      form_data: formData,
     };
 
     jQuery
       .ajax({
-        url     : sgsbAdmin.ajax_url,
-        method  : "POST",
-        data    : data,
+        url: sgsbAdmin.ajax_url,
+        method: "POST",
+        data: data,
       })
       .success(() => {
         setButtonLoading(false);
@@ -101,11 +112,11 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
 
     jQuery
       .ajax({
-        url     : sgsbAdmin?.ajax_url,
-        method  : "POST",
-        data    : {
-          action      : "sgsb_quick_view_get_settings",
-          _ajax_nonce : sgsbAdmin?.nonce,
+        url: sgsbAdmin?.ajax_url,
+        method: "POST",
+        data: {
+          action: "sgsb_quick_view_get_settings",
+          _ajax_nonce: sgsbAdmin?.nonce,
         },
       })
       .success((response) => {
@@ -130,9 +141,9 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
 
   const tabPanels = [
     {
-      key    : "general",
-      title  : __("Stock Bar Setting", "storegrowth-sales-booster"),
-      panel  : (
+      key: "general",
+      title: __("General Setting", "storegrowth-sales-booster"),
+      panel: (
         <GeneralSettingsTab
           formData={formData}
           onFieldChange={onFieldChange}
@@ -145,9 +156,25 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
       ),
     },
     {
-      key   : "design",
-      title : __("Design", "storegrowth-sales-booster"),
-      panel : (
+      key: "button-settings",
+      title: __("Button Settings", "storegrowth-sales-booster"),
+      panel: (
+        <ButtonSettingsTab
+          formData={formData}
+          setFormData={setFormData}
+          onFieldChange={onFieldChange}
+          onFormSave={() => onFormSave("button_settings")}
+          upgradeTeaser={!isProEnabled}
+          buttonLoading={buttonLoading}
+          onFormReset={onFormReset}
+          noop={noop}
+        />
+      ),
+    },
+    {
+      key: "design",
+      title: __("Design", "storegrowth-sales-booster"),
+      panel: (
         <DesignTab
           formData={formData}
           setFormData={setFormData}
@@ -165,7 +192,7 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   return (
     <Fragment>
       <PanelHeader
-        title={__("Stock Bar Setting", "storegrowth-sales-booster")}
+        title={__("Quick View Setting", "storegrowth-sales-booster")}
         moduleId={moduleId}
       />
       <PanelContainer>

@@ -27,8 +27,8 @@ class Ajax {
 	private function __construct() {
 		add_action( 'wp_ajax_sgsb_quick_view_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
-		add_action( 'wp_ajax_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
-		add_action( 'wp_ajax_nopriv_woosq_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_nopriv_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
 		add_action( 'wp_ajax_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
 		// add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
@@ -67,7 +67,7 @@ class Ajax {
 
 
 	public function ajax_quickview_callback() {
-		check_ajax_referer( 'woosq-security', 'nonce' );
+		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
 
 		global $post, $product;
 		$product_id                  = absint( sanitize_key( $_REQUEST['product_id'] ) );
@@ -122,30 +122,30 @@ class Ajax {
 				}
 			}
 
-			$thumb_ids = apply_filters( 'woosq_thumbnails', $thumb_ids, $product );
+			$thumb_ids = apply_filters( 'sgsbqcv_thumbnails', $thumb_ids, $product );
 			$thumb_ids = array_unique( $thumb_ids );
 			error_log( print_r( $thumb_ids, 1 ) );
 
 			if ( $view === 'popup' ) {
-				echo '<div id="woosq-popup" class="woosq-popup mfp-with-anim ' . esc_attr( $content_view_details_button === 'yes' ? 'view-details' : '' ) . '">';
+				echo '<div id="sgsbqcv-popup" class="sgsbqcv-popup mfp-with-anim ' . esc_attr( $content_view_details_button === 'yes' ? 'view-details' : '' ) . '">';
 			} elseif ( $sidebar_heading === 'yes' ) {
-					echo '<div class="woosq-sidebar-heading"><span class="woosq-heading">' . esc_html( $product->get_name() ) . '</span><span class="woosq-close"> &times; </span></div>';
+					echo '<div class="sgsbqcv-sidebar-heading"><span class="sgsbqcv-heading">' . esc_html( $product->get_name() ) . '</span><span class="sgsbqcv-close"> &times; </span></div>';
 			} else {
-				echo '<span class="woosq-close"> &times; </span>';
+				echo '<span class="sgsbqcv-close"> &times; </span>';
 			}
 			?>
-			<div class="woocommerce single-product woosq-product">
+			<div class="woocommerce single-product sgsbqcv-product">
 				<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
 					<div class="thumbnails">
 						<?php
-						do_action( 'woosq_before_thumbnails', $product );
+						do_action( 'sgsbqcv_before_thumbnails', $product );
 
 						echo '<div class="images">';
 
-						$image_sz = apply_filters( 'woosq_image_size', 'default' );
+						$image_sz = apply_filters( 'sgsbqcv_image_size', 'default' );
 
 						if ( $image_sz === 'default' ) {
-							$image_size = 'woosq';
+							$image_size = 'sgsbqcv';
 						} else {
 							$image_size = $image_sz;
 						}
@@ -174,17 +174,17 @@ class Ajax {
 
 						echo '</div>';
 
-						do_action( 'woosq_after_thumbnails', $product );
+						do_action( 'sgsbqcv_after_thumbnails', $product );
 						?>
 					</div>
 					<div class="summary entry-summary">
-						<?php do_action( 'woosq_before_summary', $product ); ?>
+						<?php do_action( 'sgsbqcv_before_summary', $product ); ?>
 
 						<div class="summary-content">
-							<?php do_action( 'woosq_product_summary', $product ); ?>
+							<?php do_action( 'sgsbqcv_product_summary', $product ); ?>
 						</div>
 
-						<?php do_action( 'woosq_after_summary', $product ); ?>
+						<?php do_action( 'sgsbqcv_after_summary', $product ); ?>
 					</div>
 				</div>
 			</div><!-- /woocommerce single-product -->
@@ -196,7 +196,7 @@ class Ajax {
 			}
 
 			if ( $view === 'popup' ) {
-				echo '</div><!-- #woosq-popup -->';
+				echo '</div><!-- #sgsbqcv-popup -->';
 			}
 
 			wp_reset_postdata();

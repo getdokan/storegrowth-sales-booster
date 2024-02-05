@@ -4,12 +4,10 @@ import { applyFilters } from "@wordpress/hooks";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
-import Templates from "./Templates";
 
 function DesignTab(props) {
   const {
     formData,
-    setFormData,
     onFieldChange,
     onFormSave,
     buttonLoading,
@@ -46,8 +44,6 @@ function DesignTab(props) {
         )}
 
       </SettingsSection>
-
-      <Templates formData={formData} setFormData={setFormData} />
 
       <ActionsHandler
         resetHandler={onFormReset}

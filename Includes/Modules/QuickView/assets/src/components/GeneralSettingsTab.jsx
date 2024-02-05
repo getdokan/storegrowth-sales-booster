@@ -109,31 +109,6 @@ function GeneralSettingsTab(props) {
           options={[...contentOptions]}
           title={__("Cart Contents:", "storegrowth-sales-booster")}
         />
-        <TextInput
-          name={"button_label"}
-          className={`settings-field input-field`}
-          fieldValue={formData?.button_label}
-          title={__("Quick View Button label", "storegrowth-sales-booster")}
-          placeHolderText={__(
-            "Quick View Button Label",
-            "storegrowth-sales-booster"
-          )}
-          tooltip={__(
-            "This will be the set the Label of the Quick View Button",
-            "storegrowth-sales-booster"
-          )}
-        />
-        <SingleCheckBox
-          name={"product_page_quick_view_enable"}
-          checkedValue={formData?.product_page_quick_view_enable}
-          className={`settings-field checkbox-field`}
-          changeHandler={onFieldChange}
-          title={__("Display on Product Page", "storegrowth-sales-booster")}
-          tooltip={__(
-            "The stock countdown bar will show on the single product page",
-            "storegrowth-sales-booster"
-          )}
-        />
         {applyFilters(
           "sgsb_variation_product_quick_view_enable_settings",
           "",

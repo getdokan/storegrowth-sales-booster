@@ -25,48 +25,36 @@ class CommonHooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'show_quick_view_button_shop' ), 15 );
-		// add_action( 'woosq_product_summary', array( $this, 'before_title' ), 4 );
-		add_action( 'woosq_product_summary', 'woocommerce_template_single_title', 5 );
-		// add_action( 'woosq_product_summary', array( $this, 'after_title' ), 6 );
+		$this->button_positon_hooks();
 
-		// add_action( 'woosq_product_summary', array( $this, 'before_rating' ), 9 );
-		add_action( 'woosq_product_summary', 'woocommerce_template_single_rating' );
-		// add_action( 'woosq_product_summary', array( $this, 'after_rating' ), 11 );
-
-		// add_action( 'woosq_product_summary', array( $this, 'before_price' ), 14 );
-		add_action( 'woosq_product_summary', 'woocommerce_template_single_price', 15 );
-		// add_action( 'woosq_product_summary', array( $this, 'after_price' ), 16 );
-
-		// add_action( 'woosq_product_summary', array( $this, 'before_excerpt' ), 19 );
-		add_action( 'woosq_product_summary', 'woocommerce_template_single_excerpt', 20 );
-		// add_action( 'woosq_product_summary', array( $this, 'after_excerpt' ), 21 );
-
-		add_action( 'woosq_product_summary', array( $this, 'add_to_cart' ), 25 );
-
-		// add_action( 'woosq_product_summary', array( $this, 'before_meta' ), 29 );
-		add_action( 'woosq_product_summary', 'woocommerce_template_single_meta', 30 );
-		// add_action( 'woosq_product_summary', array( $this, 'after_meta' ), 31 );
+		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_title', 5 );
+		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_rating' );
+		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_price', 15 );
+		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_excerpt', 20 );
+		add_action( 'sgsbqcv_product_summary', array( $this, 'add_to_cart' ), 25 );
+		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_meta', 30 );
 	}
 
 		/**
 		 * Hook for WooCommerce loop add to cart link.
 		 *
 		 * @since 1.0.0
-		 *
-		 * @param string $add_to_cart Add to cart link.
-		 *
-		 * @return string
 		 */
-	public function show_quick_view_button_shop( $add_to_cart ) {
-			ob_start();
-			$this->display_buy_now_button();
-			$buy_now_button = ob_get_contents();
-			ob_end_clean();
+	public function show_quick_view_button_shop() {
+		echo esc_html( $this->display_buy_now_button() );
+	}
+		/**
+		 * Hook for button postion.
+		 *
+		 * @since 1.1.3
+		 */
+	public function button_positon_hooks() {
+		$settings        = get_option( 'sgsb_quick_view_settings' );
+		$button_position = sgsb_find_option_setting( $settings, 'button_position', 'after_add_to_cart' );
+		$hook            = 'woocommerce_after_shop_loop_item';
+		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
 
-			$add_to_cart .= $buy_now_button;
-
-		return $add_to_cart;
+		add_action( $hook, array( $this, 'show_quick_view_button_shop' ), $priority );
 	}
 
 		/**

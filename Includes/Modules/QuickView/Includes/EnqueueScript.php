@@ -48,7 +48,7 @@ class EnqueueScript {
 			filemtime( sgsb_modules_path( 'QuickView/assets/scripts/sgsb-quick-view-style.css' ) )
 		);
 
-		// Pass AJAX URL to script
+		// Pass AJAX URL to script.
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
@@ -69,22 +69,30 @@ class EnqueueScript {
 			true
 		);
 
-					// fancybox
+		wp_enqueue_script(
+			'zoom',
+			sgsb_modules_url( 'QuickView/assets/libs/zoom/jquery.zoom.min.js' ),
+			array( 'jquery' ),
+			filemtime( sgsb_modules_path( 'QuickView/assets/libs/zoom/jquery.zoom.min.js' ) ),
+			true
+		);
+
+		// fancybox
 		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'yes' ) {
-		// wp_enqueue_style( 'fancybox', WOOSQ_URI . 'assets/libs/fancybox/jquery.fancybox.min.css' );
-		// wp_enqueue_script( 'fancybox', WOOSQ_URI . 'assets/libs/fancybox/jquery.fancybox.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// wp_enqueue_style( 'fancybox', sgsbqcv_URI . 'assets/libs/fancybox/jquery.fancybox.min.css' );
+		// wp_enqueue_script( 'fancybox', sgsbqcv_URI . 'assets/libs/fancybox/jquery.fancybox.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
 		// }
 
 					// zoom
 		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'zoom' ) {
-		// wp_enqueue_script( 'zoom', WOOSQ_URI . 'assets/libs/zoom/jquery.zoom.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// wp_enqueue_script( 'zoom', sgsbqcv_URI . 'assets/libs/zoom/jquery.zoom.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
 		// }
 
-					// perfect srollbar
+		// perfect srollbar
 		// if ( self::get_setting( 'perfect_scrollbar', 'yes' ) === 'yes' ) {
-		// wp_enqueue_style( 'perfect-scrollbar', WOOSQ_URI . 'assets/libs/perfect-scrollbar/css/perfect-scrollbar.min.css' );
-		// wp_enqueue_style( 'perfect-scrollbar-wpc', WOOSQ_URI . 'assets/libs/perfect-scrollbar/css/custom-theme.css' );
-		// wp_enqueue_script( 'perfect-scrollbar', WOOSQ_URI . 'assets/libs/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js', array( 'jquery' ), WOOSQ_VERSION, true );
+		// wp_enqueue_style( 'perfect-scrollbar', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/css/perfect-scrollbar.min.css' );
+		// wp_enqueue_style( 'perfect-scrollbar-wpc', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/css/custom-theme.css' );
+		// wp_enqueue_script( 'perfect-scrollbar', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
 		// }
 
 			// magnific
@@ -111,7 +119,7 @@ class EnqueueScript {
 		);
 
 		// if ( self::get_setting( 'button_icon', 'no' ) !== 'no' ) {
-		// wp_enqueue_style( 'woosq-icons', WOOSQ_URI . 'assets/css/icons.css', array(), WOOSQ_VERSION );
+		// wp_enqueue_style( 'sgsbqcv-icons', sgsbqcv_URI . 'assets/css/icons.css', array(), sgsbqcv_VERSION );
 		// }
 
 		// main style & js
@@ -133,13 +141,13 @@ class EnqueueScript {
 		);
 		wp_localize_script(
 			'sgsbqcv-frontend',
-			'woosq_vars',
+			'sgsbqcv_vars',
 			array(
 				'ajax_url'                => admin_url( 'admin-ajax.php' ),
-				'nonce'                   => wp_create_nonce( 'woosq-security' ),
+				'nonce'                   => wp_create_nonce( 'sgsbqcv-security' ),
 				'view'                    => 'popup',
 				'effect'                  => 'mfp-3d-unfold',
-				'scrollbar'               => 'no',
+				'scrollbar'               => 'yes',
 				'auto_close'              => 'yes',
 				'hashchange'              => 'no',
 				'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
@@ -148,12 +156,12 @@ class EnqueueScript {
 				'next_prev'               => 'yes',
 				'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
 				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
-				'thumbnails_effect'       => 'no',
+				'thumbnails_effect'       => 'zoom',
 				'related_slick_params'    => apply_filters(
-					'woosq_related_slick_params',
+					'sgsbqcv_related_slick_params',
 					json_encode(
 						apply_filters(
-							'woosq_related_slick_params_arr',
+							'sgsbqcv_related_slick_params_arr',
 							array(
 								'slidesToShow'   => 2,
 								'slidesToScroll' => 2,
@@ -166,10 +174,10 @@ class EnqueueScript {
 					)
 				),
 				'thumbnails_slick_params' => apply_filters(
-					'woosq_thumbnails_slick_params',
+					'sgsbqcv_thumbnails_slick_params',
 					json_encode(
 						apply_filters(
-							'woosq_thumbnails_slick_params_arr',
+							'sgsbqcv_thumbnails_slick_params_arr',
 							array(
 								'slidesToShow'   => 1,
 								'slidesToScroll' => 1,
@@ -182,10 +190,10 @@ class EnqueueScript {
 					)
 				),
 				'thumbnails_zoom_params'  => apply_filters(
-					'woosq_thumbnails_zoom_params',
+					'sgsbqcv_thumbnails_zoom_params',
 					json_encode(
 						apply_filters(
-							'woosq_thumbnails_zoom_params_arr',
+							'sgsbqcv_thumbnails_zoom_params_arr',
 							array(
 								'duration' => 120,
 								'magnify'  => 1,
@@ -209,7 +217,7 @@ class EnqueueScript {
 			$str = $default;
 		}
 
-		return apply_filters( 'woosq_localization_' . $key, $str );
+		return apply_filters( 'sgsbqcv_localization_' . $key, $str );
 	}
 
 	/**
