@@ -96,11 +96,29 @@ class OrderBogo {
     public function handle_cart_update() {
         // Get the cart items
         $cart_items = WC()->cart->get_cart();
+
         // Iterate through the cart items.
         foreach ( $cart_items as $cart_item_key => $cart_item ) {
+            if ( isset( $cart_item['changed_product_id'] ) ) {
+                $parent_item   = WC()->cart->cart_contents[ $cart_item[ 'linked_to_product_key' ] ];
+                $product_id    = ! empty( $parent_item['product_id'] ) ? intval( $parent_item['product_id'] ) : 0;
+                $variation_id  = ! empty( $parent_item['variation_id'] ) ? intval( $parent_item['variation_id'] ) : 0;
+
+                $apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
+                $bogo_settings = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+
+                $required_quantity     = ! empty( $bogo_settings['minimum_quantity_required'] ) ? $bogo_settings['minimum_quantity_required'] : 1;
+                $free_product_quantity = floor( $parent_item['quantity'] / $required_quantity ) * 1;
+
+                WC()->cart->set_quantity( $cart_item_key, $free_product_quantity );
+                continue;
+            }
+
             $product_id    = ! empty( $cart_item['product_id'] ) ? intval( $cart_item['product_id'] ) : 0;
             $variation_id  = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
-            $bogo_settings = Helper::sgsb_prepare_bogo_settings( $product_id, $product_id, $variation_id );
+
+            $apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
+            $bogo_settings = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
             // Get offer product info.
             $offer_product_id = Helper::sgsb_get_offer_product_id( $bogo_settings, $product_id );
@@ -109,7 +127,7 @@ class OrderBogo {
                 continue;
             }
 
-            $free_product_quantity = apply_filters( 'sgsb_free_product_quantify_for_cart_update', $cart_item['quantity'], $bogo_settings, $cart_item );
+            $free_product_quantity = apply_filters( 'sgsb_free_product_quantity_for_cart_update', $cart_item['quantity'], $bogo_settings, $cart_item );
             if ( isset( $cart_item['child_key'] ) && array_key_exists( $cart_item['child_key'], $cart_items ) ) {
                 WC()->cart->set_quantity( $cart_item['child_key'], $free_product_quantity );
             } else {
@@ -184,6 +202,8 @@ class OrderBogo {
             }
 
             if ( isset( $cart_item['changed_product_id'] ) && $cart_item['bogo_product_for'] == $product_id ) {
+                $quantity_required = ! empty( $settings['minimum_quantity_required'] ) ? $settings['minimum_quantity_required'] : 1;
+                $total_quantity    = floor( $total_quantity / $quantity_required ) * 1;
                 WC()->cart->set_quantity( $cart_item['key'], $total_quantity );
                 return;
             }

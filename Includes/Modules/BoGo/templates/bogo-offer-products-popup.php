@@ -10,14 +10,26 @@
 
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
 
-$offer_products = Helper::sgsb_get_alternate_offer_products( $cart_item['bogo_product_for'], $cart_item['product_id'] );
+$item_id = $cart_item['product_id'];
+if ( ! empty( $cart_item['changed_product_id'] ) ) {
+    $product = wc_get_product( $cart_item['bogo_product_for'] );
+    $item_id = $product->is_type( 'variable' ) ? wp_get_post_parent_id( $cart_item['bogo_product_for'] ) : $item_id;
+}
+
+$offer_products = Helper::sgsb_get_alternate_offer_products( $cart_item['bogo_product_for'], $item_id );
 
 if ( ! empty( $offer_products ) ) : ?>
-	<p><a href="#" class="custom-choose-product">Choose Product</a></p>
+	<p>
+        <a href="#" class="custom-choose-product">
+            <?php esc_html_e( 'Choose Product', 'storegrowth-sales-booster' ); ?>
+        </a>
+    </p>
 	<div id="overlay"></div>
 	<!-- Modal Structure (example using basic HTML and CSS) -->
 	<div id="product-selection-modal" style="display:none;">
-		<div class="modal-container-heading"><span>Choose Product</span></div>
+		<div class="modal-container-heading">
+            <span><?php esc_html_e( 'Choose Product', 'storegrowth-sales-booster' ); ?></span>
+        </div>
 		<!-- Your modal content goes here -->
 		<div class="modal-content">
 			<div id="product-list">
