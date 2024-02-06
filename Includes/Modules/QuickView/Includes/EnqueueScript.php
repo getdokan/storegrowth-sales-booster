@@ -41,7 +41,8 @@ class EnqueueScript {
 		$settings            = get_option( 'sgsb_quick_view_settings' );
 		$modal_effect        = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 		$enable_close_button = sgsb_find_option_setting( $settings, 'enable_close_button', true );
-
+		$enable_in_mobile    = sgsb_find_option_setting( $settings, 'enable_in_mobile', true );
+		$enable_zoom_box     = sgsb_find_option_setting( $settings, 'enable_zoom_box', false );
 		// Pass AJAX URL to script.
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -70,26 +71,7 @@ class EnqueueScript {
 			filemtime( sgsb_modules_path( 'QuickView/assets/libs/zoom/jquery.zoom.min.js' ) ),
 			true
 		);
-
-		// fancybox
-		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'yes' ) {
-		// wp_enqueue_style( 'fancybox', sgsbqcv_URI . 'assets/libs/fancybox/jquery.fancybox.min.css' );
-		// wp_enqueue_script( 'fancybox', sgsbqcv_URI . 'assets/libs/fancybox/jquery.fancybox.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
-		// }
-
-					// zoom
-		// if ( self::get_setting( 'content_image_lightbox', 'no' ) === 'zoom' ) {
-		// wp_enqueue_script( 'zoom', sgsbqcv_URI . 'assets/libs/zoom/jquery.zoom.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
-		// }
-
-		// perfect srollbar
-		// if ( self::get_setting( 'perfect_scrollbar', 'yes' ) === 'yes' ) {
-		// wp_enqueue_style( 'perfect-scrollbar', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/css/perfect-scrollbar.min.css' );
-		// wp_enqueue_style( 'perfect-scrollbar-wpc', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/css/custom-theme.css' );
-		// wp_enqueue_script( 'perfect-scrollbar', sgsbqcv_URI . 'assets/libs/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js', array( 'jquery' ), sgsbqcv_VERSION, true );
-		// }
-
-			// magnific
+			// magnific.
 			wp_enqueue_style(
 				'magnific-popup',
 				sgsb_modules_url( 'QuickView/assets/libs/magnific-popup/magnific-popup.css' ),
@@ -139,19 +121,17 @@ class EnqueueScript {
 			array(
 				'ajax_url'                => admin_url( 'admin-ajax.php' ),
 				'nonce'                   => wp_create_nonce( 'sgsbqcv-security' ),
-				'view'                    => 'popup',
 				'effect'                  => $modal_effect,
 				'enable_close_button'     => $enable_close_button,
-				'scrollbar'               => 'yes',
-				'auto_close'              => 'yes',
-				'hashchange'              => 'no',
+				'enable_in_mobile'        => $enable_in_mobile,
+				'hashchange'              => 'yes',
 				'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
 				'cart_url'                => apply_filters( 'woocommerce_add_to_cart_redirect', wc_get_cart_url(), null ),
 				'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'woo-smart-quick-view' ) ),
 				'next_prev'               => 'yes',
 				'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
 				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
-				'thumbnails_effect'       => 'zoom',
+				'thumbnails_effect'       => $enable_zoom_box,
 				'related_slick_params'    => apply_filters(
 					'sgsbqcv_related_slick_params',
 					json_encode(
@@ -247,6 +227,7 @@ class EnqueueScript {
 		$button_color         = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
 		$button_text_color    = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', 4 );
+		$show_image           = sgsb_find_option_setting( $settings, 'show_image', 4 );
 
 		$custom_css = "
 			.sgsbqcv-btn {
@@ -256,8 +237,13 @@ class EnqueueScript {
 			}
 			.sgsbqcv-product > .product .summary {
 				background-color: {$modal_bg_color};
-		}
+		} 
 		";
+		if ( ! $show_image ) {
+			$custom_css .= ' .sgsbqcv-popup.mfp-with-anim .thumbnails{
+				display:none;
+			}';
+		}
 		$custom_css = apply_filters( 'sgsb_qcv_inline_styles', $custom_css );
 		wp_add_inline_style( 'sgsbqcv-frontend', $custom_css );
 	}

@@ -64,19 +64,17 @@ class Ajax {
 		wp_send_json_success( $form_data );
 	}
 
-
-
 	public function ajax_quickview_callback() {
 		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
 
 		global $post, $product;
+		$settings = get_option( 'sgsb_quick_view_settings' );
+
 		$product_id                  = absint( sanitize_key( $_REQUEST['product_id'] ) );
 		$product                     = wc_get_product( $product_id );
 		$content_image               = 'all';
-		$content_view_details_button = 'no';
+		$content_view_details_button = sgsb_find_option_setting( $settings, 'show_view_details_button', false );
 		$content_image_lightbox      = 'no';
-		$view                        = 'popup';
-		$sidebar_heading             = 'no';
 
 		if ( $product ) {
 			$post = get_post( $product_id );
@@ -124,15 +122,8 @@ class Ajax {
 
 			$thumb_ids = apply_filters( 'sgsbqcv_thumbnails', $thumb_ids, $product );
 			$thumb_ids = array_unique( $thumb_ids );
-			error_log( print_r( $thumb_ids, 1 ) );
 
-			if ( $view === 'popup' ) {
-				echo '<div id="sgsbqcv-popup" class="sgsbqcv-popup mfp-with-anim ' . esc_attr( $content_view_details_button === 'yes' ? 'view-details' : '' ) . '">';
-			} elseif ( $sidebar_heading === 'yes' ) {
-					echo '<div class="sgsbqcv-sidebar-heading"><span class="sgsbqcv-heading">' . esc_html( $product->get_name() ) . '</span><span class="sgsbqcv-close"> &times; </span></div>';
-			} else {
-				echo '<span class="sgsbqcv-close"> &times; </span>';
-			}
+				echo '<div id="sgsbqcv-popup" class="sgsbqcv-popup mfp-with-anim ' . esc_attr( $content_view_details_button ? 'view-details' : '' ) . '">';
 			?>
 			<div class="woocommerce single-product sgsbqcv-product">
 				<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
@@ -189,16 +180,11 @@ class Ajax {
 				</div>
 			</div><!-- /woocommerce single-product -->
 			<?php
-			if ( $content_view_details_button === 'yes' ) {
-				$view_details_text = self::localization( 'view_details', esc_html__( 'View product details', 'woo-smart-quick-view' ) );
-
+			if ( $content_view_details_button ) {
+				$view_details_text = 'View Product Details';
 				echo sprintf( '<a class="view-details-btn" href="%s">%s</a>', $product->get_permalink(), esc_html( $view_details_text ) );
 			}
-
-			if ( $view === 'popup' ) {
 				echo '</div><!-- #sgsbqcv-popup -->';
-			}
-
 			wp_reset_postdata();
 		}
 
@@ -208,7 +194,6 @@ class Ajax {
 	public function custom_ajax_add_to_cart() {
 		$product_id = $_POST['product_id'];
 		$quantity   = $_POST['quantity'];
-		error_log( $product_id );
 		WC()->cart->add_to_cart( $product_id, $quantity );
 		wp_die();
 	}

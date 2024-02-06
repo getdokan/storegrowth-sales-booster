@@ -66,10 +66,12 @@
 .sgsbqcv-product > .product {
   display: flex !important;
   float: none !important;
+  justify-content: center;
+  align-items: center;
 }
 
 .sgsbqcv-product > .product > div {
-  width: 50% !important;
+  width: -webkit-fill-available !important;
   float: none !important;
   margin: 0 !important;
   height: 460px;

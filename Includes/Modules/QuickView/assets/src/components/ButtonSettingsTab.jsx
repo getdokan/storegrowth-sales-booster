@@ -9,14 +9,13 @@ import { Switcher, SelectBox } from "sales-booster/src/components/settings/Panel
 function ButtonSettingsTab(props) {
   const {
     formData,
-    setFormData,
     onFieldChange,
     onFormSave,
     buttonLoading,
     onFormReset,
   } = props;
 
-  const buttonPositions = [
+  let buttonPositions = [
     {
       value: "after_add_to_cart",
       label: __("After Add to Cart", "storegrowth-sales-booster"),
@@ -24,15 +23,14 @@ function ButtonSettingsTab(props) {
     {
       value: "before_add_to_cart",
       label: __("Before Add to Cart", "storegrowth-sales-booster"),
-    },
-    {
-      value: "center_on_the_image",
-      label: __("Center On The Image", "storegrowth-sales-booster"),
-      // disabled:true,
-      // needUpgrade:true,
-    },
+    }
   ];
 
+  buttonPositions = applyFilters(
+    "sgsb_quick_view_button_position_settings",
+    "",
+    buttonPositions
+  )
   
 
   return (

@@ -26,15 +26,65 @@ class CommonHooks {
 	 */
 	private function __construct() {
 		$this->button_positon_hooks();
-
-		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_title', 5 );
-		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_rating' );
-		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_price', 15 );
-		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_excerpt', 20 );
-		add_action( 'sgsbqcv_product_summary', array( $this, 'add_to_cart' ), 25 );
-		add_action( 'sgsbqcv_product_summary', 'woocommerce_template_single_meta', 30 );
+		$this->content_loader_hooks();
 	}
 
+		/**
+		 * Hook for Content Loader.
+		 *
+		 * @since 1.0.0
+		 */
+	public function content_loader_hooks() {
+		$settings = get_option( 'sgsb_quick_view_settings' );
+
+		$actions = array(
+			'show_title'       => array(
+				'action'   => 'woocommerce_template_single_title',
+				'priority' => 5,
+			),
+			'show_rating'      => array(
+				'action'   => 'woocommerce_template_single_rating',
+				'priority' => 10,
+			),
+			'show_excerpt'     => array(
+				'action'   => 'woocommerce_template_single_excerpt',
+				'priority' => 15,
+			),
+			'show_price'       => array(
+				'action'   => 'woocommerce_template_single_price',
+				'priority' => 20,
+			),
+			'show_add_to_cart' => array(
+				'action'   => array( $this, 'add_to_cart' ),
+				'priority' => 25,
+			),
+			'show_meta'        => array(
+				'action'   => 'woocommerce_template_single_meta',
+				'priority' => 30,
+			),
+			'show_description' => array(
+				'action'   => array( $this, 'show_single_product_description' ),
+				'priority' => 35,
+			),
+		);
+
+		foreach ( $actions as $setting => $data ) {
+			if ( sgsb_find_option_setting( $settings, $setting, true ) ) {
+					add_action( 'sgsbqcv_product_summary', $data['action'], $data['priority'] );
+			}
+		}
+	}
+
+		/**
+		 * Hook for WooCommerce loop add to cart link.
+		 *
+		 * @since 1.0.0
+		 */
+	public function show_single_product_description() {
+		global $product;
+		$description = $product->get_description();
+		include __DIR__ . '/../templates/description-template.php';
+	}
 		/**
 		 * Hook for WooCommerce loop add to cart link.
 		 *
@@ -74,14 +124,8 @@ class CommonHooks {
 	 * Hook for WooCommerce loop add to cart link.
 	 *
 	 * @since 1.1.3
-	 *
-	 * @param string $_product Add to cart link.
 	 */
-	public function add_to_cart( $_product ) {
-		global $product;
-		$product    = $_product;
-		$product_id = get_the_ID();
-		// include __DIR__ . '/../templates/add-to-cart.php';
+	public function add_to_cart() {
 		woocommerce_template_single_add_to_cart();
 	}
 }

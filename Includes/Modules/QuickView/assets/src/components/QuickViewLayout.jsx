@@ -24,8 +24,8 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   const tabName = searchParams.get("tab_name") || "general";
 
   const initalQuickViewData = {
-    popup_on_mobile: false,
-    enable_lightbox: false,
+    enable_in_mobile: true,
+    enable_zoom_box: false,
     modal_animation_effect: "mfp-3d-unfold",
     button_border_radius: 4,
     enable_product_navigation: false,
@@ -35,7 +35,7 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     show_image: true,
     show_excerpt: true,
     show_meta: true,
-    show_add_to_cart: false,
+    show_add_to_cart: true,
     button_label: __("Quick View", "storegrowth-sales-booster"),
     button_position: "after_add_to_cart",
     enable_qucik_view_icon: false,

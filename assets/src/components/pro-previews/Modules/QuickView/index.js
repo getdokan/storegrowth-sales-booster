@@ -1,10 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment } from 'react';
 import { addFilter } from '@wordpress/hooks';
-import InputNumber from '../../../settings/Panels/PanelSettings/Fields/Number';
-import SelectBox from '../../../settings/Panels/PanelSettings/Fields/SelectBox';
-import TextInput from '../../../settings/Panels/PanelSettings/Fields/TextInput';
-import SingleCheckBox from '../../../settings/Panels/PanelSettings/Fields/SingleCheckBox';
 import ColourPicker from '../../../settings/Panels/PanelSettings/Fields/ColorPicker';
 
 // Handle stock bar modules pro settings prompts.
@@ -20,14 +16,23 @@ addFilter(
                     name={ 'navigation_background' }
                     title={ __( 'Navigation Background Color', 'storegrowth-sales-booster' ) }
                 />
-                <ColourPicker
-                    needUpgrade={ true }
-                    fieldValue={ '000000' }
-                    name={ 'navigation_text_color' }
-                    title={ __( 'Navigation Text Color', 'storegrowth-sales-booster' ) }
-                />
             </Fragment>
         );
+    }
+);
+addFilter( 
+    'sgsb_quick_view_button_position_settings',
+    'sgsb_quick_view_button_position_settings_callback',
+    ( component,buttonPositions ) =>  { 
+        return [...buttonPositions,
+            {
+                value: "center_on_the_image",
+                label: __("Center On The Image", "storegrowth-sales-booster"),
+                disabled:true,
+                needUpgrade:true,
+            },
+        ]
+            
     }
 );
 

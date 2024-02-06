@@ -50,7 +50,7 @@ function GeneralSettingsTab(props) {
       title: __("Show Product Image", "storegrowth-sales-booster"),
     },
     {
-      name: "show_excert",
+      name: "show_excerpt",
       title: __("Show Excert", "storegrowth-sales-booster"),
     },
     {
@@ -74,12 +74,12 @@ function GeneralSettingsTab(props) {
         )}
         <Switcher
           colSpan={12}
-          name={"popup_on_mobile"}
+          name={"enable_in_mobile"}
           changeHandler={onFieldChange}
           title={__("Enable In Mobile", "storegrowth-sales-booster")}
           isEnable={
-            formData?.popup_on_mobile == "true" ||
-              formData?.popup_on_mobile == true
+            formData?.enable_in_mobile == "true" ||
+              formData?.enable_in_mobile == true
               ? true
               : false
           }
@@ -90,12 +90,12 @@ function GeneralSettingsTab(props) {
         />
         <Switcher
           colSpan={12}
-          name={"enable_lightbox"}
+          name={"enable_zoom_box"}
           changeHandler={onFieldChange}
-          title={__("Enable LightBox", "storegrowth-sales-booster")}
+          title={__("Enable Zoom Box", "storegrowth-sales-booster")}
           isEnable={
-            formData?.enable_lightbox == "true" ||
-              formData?.enable_lightbox == true
+            formData?.enable_zoom_box == "true" ||
+              formData?.enable_zoom_box == true
               ? true
               : false
           }
@@ -115,7 +115,7 @@ function GeneralSettingsTab(props) {
           formData={formData}
           changeHandler={onFieldChange}
           options={[...contentOptions]}
-          title={__("Popup Contents:", "storegrowth-sales-booster")}
+          title={__("Quick View Contents:", "storegrowth-sales-booster")}
         />
         {applyFilters(
           "sgsb_variation_product_quick_view_enable_settings",
