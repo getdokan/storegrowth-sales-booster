@@ -102,6 +102,13 @@ class OrderBogo {
             $variation_id  = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
             $bogo_settings = Helper::sgsb_prepare_bogo_settings( $product_id, $product_id, $variation_id );
 
+            // Get offer product info.
+            $offer_product_id = Helper::sgsb_get_offer_product_id( $bogo_settings, $product_id );
+            $offer_product    = wc_get_product( $offer_product_id );
+            if ( ! $offer_product ) {
+                continue;
+            }
+
             $free_product_quantity = apply_filters( 'sgsb_free_product_quantify_for_cart_update', $cart_item['quantity'], $bogo_settings, $cart_item );
             if ( isset( $cart_item['child_key'] ) && array_key_exists( $cart_item['child_key'], $cart_items ) ) {
                 WC()->cart->set_quantity( $cart_item['child_key'], $free_product_quantity );
@@ -127,12 +134,6 @@ class OrderBogo {
     public function is_bogo_applicable( $product_id, $bogo_settings ) {
         // Check if BOGO is enabled
         if ( isset( $bogo_settings['bogo_status'] ) && $bogo_settings['bogo_status'] !== 'yes' ) {
-            return false;
-        }
-
-        // Check is purchasable product.
-        $product = wc_get_product( $product_id );
-        if ( ! $product->is_purchasable() ) {
             return false;
         }
 
@@ -166,14 +167,26 @@ class OrderBogo {
     public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
         $offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
         $product          = wc_get_product( $offer_product_id );
-        if ( ! $product ) {
-            return;
-        }
 
         // Determine the cost of the offer product (if necessary)
         $offer_product_cost = 0; // Assume free by default
         if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
             $offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
+        }
+
+        // Initialize the total quantity count to 0.
+        $total_quantity = 0;
+
+        // Logic to remove the existing offer product and add the new one.
+        foreach ( WC()->cart->get_cart() as $cart_item ) {
+            if ( ( $cart_item['product_id'] == $product_id ) ) {
+                $total_quantity += $cart_item['quantity'];
+            }
+
+            if ( isset( $cart_item['changed_product_id'] ) && $cart_item['bogo_product_for'] == $product_id ) {
+                WC()->cart->set_quantity( $cart_item['key'], $total_quantity );
+                return;
+            }
         }
 
         // Add the offer product to the cart for different offer.

@@ -92,7 +92,8 @@ class Ajax {
                 'parent_key'            => $item_key,
                 'bogo_product_for'      => $main_product_id,
 				'bogo_offer_price'      => $offer_product_cost,
-				'linked_to_product_key' => $product_link_key,
+                'changed_product_id'    => $selected_product_id,
+                'linked_to_product_key' => $product_link_key,
 			)
 		);
 
