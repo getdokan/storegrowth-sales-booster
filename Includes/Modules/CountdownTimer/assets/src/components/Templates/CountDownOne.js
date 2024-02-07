@@ -78,7 +78,7 @@ const CountDownOne = () => {
                     <span
                         className='sgsb-colon ct-layout-1'
                         style={ {
-                            color      : '#1B1B50',
+                            color      : '#008DFF',
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
@@ -118,7 +118,7 @@ const CountDownOne = () => {
                     <span
                         className='sgsb-colon ct-layout-1'
                         style={ {
-                            color      : '#1B1B50',
+                            color      : '#008DFF',
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
