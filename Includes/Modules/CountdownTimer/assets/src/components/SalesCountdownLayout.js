@@ -43,6 +43,7 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
     },
   ];
   const initialSalesCountdownData = {
+    font_family                   : 'roboto',
     border_color                  : '#1677FF',
     selected_theme                : 'ct-layout-1',
     countdown_heading             : '[discount]% OFF',

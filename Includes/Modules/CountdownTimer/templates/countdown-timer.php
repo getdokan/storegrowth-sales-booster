@@ -27,11 +27,24 @@ $discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_dis
 $heading_text = sgsb_find_option_setting( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
 
+$families = [
+    'lato'          => 'Lato',
+    'roboto'        => 'Roboto',
+    'poppins'       => 'Poppins',
+    'merienda'      => 'Merienda',
+    'montserrat'    => 'Montserrat',
+    'ibm_plex_sans' => 'IBM Plex Sans',
+];
+
 // Countdown Styles.
+$font_family      = sgsb_find_option_setting( $settings, 'font_family', 'roboto' );
 $border_color     = sgsb_find_option_setting( $settings, 'border_color', '#1677FF' );
 $heading_color    = sgsb_find_option_setting( $settings, 'heading_text_color', '#008DFF' );
 $background_color = sgsb_find_option_setting( $settings, 'widget_background_color', '#FFF' );
 
+// Get countdown heading template conditionally.
+$heading_color = ( $layout_class !== 'ct-layout-2' ? $heading_color : ( $heading_color !== 'transparent' ? $heading_color: 'default' ) );
+$font_family   = ! empty( $families[ $font_family ] ) ? $families[ $font_family ] : $font_family;
 ?>
 <div
 	class="sgsb-countdown-timer <?php echo esc_attr( $layout_class ); ?>"
@@ -41,15 +54,18 @@ $background_color = sgsb_find_option_setting( $settings, 'widget_background_colo
 	<div class="sgsb-countdown-timer-wrapper">
 		<?php if ( $heading_text ) : ?>
 			<p
-				class='sgsb-countdown-timer-heading <?php echo esc_attr( $layout_class ); ?>'
-				style='color: <?php echo esc_attr( $layout_class !== 'ct-layout-2' ? $heading_color : '' ); ?>;'
+                class='sgsb-countdown-timer-heading <?php echo esc_attr( $layout_class . ' ' . $heading_color ); ?>'
+                style='color: <?php echo esc_attr( $heading_color ); ?>; font-family: <?php echo esc_attr( $font_family ); ?>;'
 			>
 				<?php echo wp_kses_post( $heading ); ?>
 			</p>
 		<?php endif; ?>
 
 		<div class="sgsb-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
-			<div class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>">
+			<div
+                style="font-family: <?php echo esc_attr( $font_family ); ?>;"
+                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+            >
 				<strong class="sgsb-countdown-timer-item-days">00</strong>
 				<span>Days</span>
 			</div>
@@ -57,7 +73,10 @@ $background_color = sgsb_find_option_setting( $settings, 'widget_background_colo
 				class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
 				style='color: <?php echo esc_attr( $layout_class !== 'ct-layout-2' ? $heading_color : '' ); ?>;'
 			>:</span>
-			<div class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>">
+			<div
+                style="font-family: <?php echo esc_attr( $font_family ); ?>;"
+                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+            >
 				<strong class="sgsb-countdown-timer-item-hours">00</strong>
 				<span>Hours</span>
 			</div>
@@ -65,7 +84,10 @@ $background_color = sgsb_find_option_setting( $settings, 'widget_background_colo
 				class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
 				style='color: <?php echo esc_attr( $layout_class !== 'ct-layout-2' ? $heading_color : '' ); ?>;'
 			>:</span>
-			<div class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>">
+			<div
+                style="font-family: <?php echo esc_attr( $font_family ); ?>;"
+                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+            >
 				<strong class="sgsb-countdown-timer-item-minutes">00</strong>
 				<span>Min</span>
 			</div>
@@ -73,7 +95,10 @@ $background_color = sgsb_find_option_setting( $settings, 'widget_background_colo
 				class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
 				style='color: <?php echo esc_attr( $layout_class !== 'ct-layout-2' ? $heading_color : '' ); ?>;'
 			>:</span>
-			<div class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>">
+			<div
+                style="font-family: <?php echo esc_attr( $font_family ); ?>;"
+                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+            >
 				<strong class="sgsb-countdown-timer-item-seconds">00</strong>
 				<span>Sec</span>
 			</div>

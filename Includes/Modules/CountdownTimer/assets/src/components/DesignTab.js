@@ -8,6 +8,7 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 
 import "../styles/countdown-timer.css";
 import Templates from "./Templates";
+import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 
 function DesignTab( props ) {
   const {
@@ -23,9 +24,48 @@ function DesignTab( props ) {
     handleSelect,
   } = props;
 
+  const fontFamily = [
+    {
+      value: 'poppins',
+      label: __('Poppins', 'storegrowth-sales-booster'),
+    },
+    {
+      value: 'merienda',
+      label: __('Merienda', 'storegrowth-sales-booster'),
+    },
+    {
+      value: 'roboto',
+      label: __('Roboto', 'storegrowth-sales-booster'),
+    },
+    {
+      value: 'lato',
+      label: __('Lato', 'storegrowth-sales-booster'),
+    },
+    {
+      value: 'montserrat',
+      label: __('Montserrat', 'storegrowth-sales-booster'),
+    },
+    {
+      value: 'ibm_plex_sans',
+      label: __('IBM Plex Sans', 'storegrowth-sales-booster'),
+    },
+  ];
+
   return (
     <Fragment>
       <SettingsSection>
+        <SelectBox
+          name={`font_family`}
+          options={[...fontFamily]}
+          fieldValue={formData.font_family}
+          changeHandler={onFieldChange}
+          title={__("Font Family", "storegrowth-sales-booster")}
+          tooltip={__(
+            "Select your desired font family",
+              "storegrowth-sales-booster"
+          )}
+        />
+
         <ColourPicker
           name={"widget_background_color"}
           fieldValue={formData.widget_background_color}
@@ -54,19 +94,6 @@ function DesignTab( props ) {
       </SettingsSection>
 
       <Templates formData={ formData } setFormData={ setFormData } />
-
-      {/*<Form.Item label="Theme" labelAlign="left">*/}
-      {/*  <div className="sgsb-countdown-theme">*/}
-      {/*    {options.map((option, index) => (*/}
-      {/*      <Selector*/}
-      {/*        key={index}*/}
-      {/*        option={option}*/}
-      {/*        onSelect={() => handleSelect(option.theme)}*/}
-      {/*        isSelected={option.theme === formData.selected_theme}*/}
-      {/*      />*/}
-      {/*    ))}*/}
-      {/*  </div>*/}
-      {/*</Form.Item>*/}
     </Fragment>
   );
 }

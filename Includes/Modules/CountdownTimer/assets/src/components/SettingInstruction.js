@@ -49,7 +49,7 @@ const SettingInstruction = () => {
               )
             }
           >
-            Documentaion
+            Documentation
           </button>
         </div>
       </div>

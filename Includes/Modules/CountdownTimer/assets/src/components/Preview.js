@@ -1,13 +1,20 @@
-import React, {Fragment} from 'react'
-import {__} from "@wordpress/i18n";
+import React, { Fragment } from 'react'
+import { __ } from "@wordpress/i18n";
+import { useState, useEffect } from '@wordpress/element';
 
 const Preview = ( { formData } ) => {
-
+    const [ defaultHeading, setDefaultHeading ] = useState( true );
     const dynamicText = formData.countdown_heading.replace(
         '[discount]',
         50
     );
-    
+
+    useEffect( () => {
+        if ( formData?.selected_theme === 'ct-layout-2' ) {
+            setDefaultHeading( formData?.heading_text_color === 'transparent' );
+        }
+    }, [ formData?.heading_text_color ] );
+
     return (
         <Fragment>
             { formData?.selected_theme === 'ct-layout-1' && (
@@ -39,6 +46,7 @@ const Preview = ( { formData } ) => {
                                 textAlign  : 'center',
                                 fontWeight : 600,
                                 lineHeight : 1.2,
+                                fontFamily : formData?.font_family,
                             } }
                         >
                             { __( dynamicText, 'storegrowth-sales-booster' ) }
@@ -75,12 +83,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '03', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Days', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Days', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-1'
@@ -113,12 +124,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '21', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Hours', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Hours', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-1'
@@ -151,12 +165,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '02', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Min', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Min', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-1'
@@ -189,12 +206,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '33', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Sec', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Sec', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -225,14 +245,15 @@ const Preview = ( { formData } ) => {
                         <p
                             className='sgsb-countdown-timer-heading ct-layout-2'
                             style={ {
+                                color                : !defaultHeading ? formData?.heading_text_color : '',
                                 margin               : '0 0 10px 0',
                                 fontSize             : 40,
                                 textAlign            : 'center',
                                 fontWeight           : 600,
-                                background           : 'linear-gradient(90deg, #32DBBE 0%, #008DFF 100%)',
+                                background           : defaultHeading ? 'linear-gradient(90deg, #32DBBE 0%, #008DFF 100%) text' : '',
                                 lineHeight           : 1.2,
-                                fontFamily           : 'Merienda',
-                                webkitTextFillColor  : 'transparent',
+                                fontFamily           : formData?.font_family,
+                                webkitTextFillColor  : defaultHeading ? 'transparent' : '',
                                 webkitBackgroundClip : 'text',
                             } }
                         >
@@ -260,7 +281,6 @@ const Preview = ( { formData } ) => {
                                     fontSize      : 12,
                                     textAlign     : 'center',
                                     paddingTop    : 12,
-                                    
                                     borderRadius  : 8,
                                     letterSpacing : 2,
                                     textTransform : 'uppercase',
@@ -273,12 +293,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '03', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Days', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Days', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
@@ -294,7 +317,6 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -308,12 +330,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '21', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Hours', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Hours', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
@@ -329,7 +354,6 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -343,12 +367,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '02', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Min', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Min', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
@@ -364,7 +391,6 @@ const Preview = ( { formData } ) => {
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
-                                    
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -378,12 +404,15 @@ const Preview = ( { formData } ) => {
                                         fontSize     : 24,
                                         lineHeight   : .75,
                                         fontWeight   : 500,
+                                        fontFamily   : formData?.font_family,
                                         marginBottom : 6,
                                     } }
                                 >
                                     { __( '33', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span>{ __( 'Sec', 'storegrowth-sales-booster' ) }</span>
+                                <span style={ { fontFamily : formData?.font_family } }>
+                                    { __( 'Sec', 'storegrowth-sales-booster' ) }
+                                </span>
                             </div>
                         </div>
                     </div>

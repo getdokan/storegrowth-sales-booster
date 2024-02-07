@@ -21,15 +21,17 @@ const Templates = ( { formData, setFormData } ) => {
 
     let templateStyles = {
         'ct-layout-1' : {
+            font_family             : 'roboto',
             border_color            : '#1677FF',
             selected_theme          : 'ct-layout-1',
             heading_text_color      : '#008dff',
             widget_background_color : '#FFF',
         },
         'ct-layout-2' : {
+            font_family             : 'merienda',
             border_color            : '#0875FF33',
             selected_theme          : 'ct-layout-2',
-            heading_text_color      : '#008dff',
+            heading_text_color      : 'transparent',
             widget_background_color : '#eff8ff',
         },
     };

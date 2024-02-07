@@ -29,6 +29,7 @@ const CountDownOne = () => {
                         textAlign  : 'center',
                         fontWeight : 600,
                         lineHeight : 1.2,
+                        fontFamily : 'Roboto',
                     } }
                 >
                     { __( '50% OFF', 'storegrowth-sales-booster' ) }
@@ -65,11 +66,14 @@ const CountDownOne = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Roboto',
                             } }
                         >
                             { __( '03', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Days', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Roboto' } }>
+                            { __( 'Days', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
@@ -102,11 +106,14 @@ const CountDownOne = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Roboto',
                             } }
                         >
                             { __( '21', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Hours', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Roboto' } }>
+                            { __( 'Hours', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
@@ -139,11 +146,14 @@ const CountDownOne = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Roboto',
                             } }
                         >
                             { __( '02', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Min', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Roboto' } }>
+                            { __( 'Min', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
@@ -176,11 +186,14 @@ const CountDownOne = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Roboto',
                             } }
                         >
                             { __( '33', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Sec', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Roboto' } }>
+                            { __( 'Sec', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                 </div>
             </div>
