@@ -37,7 +37,7 @@ class QuickViewModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sgsb_modules_url( 'QuickView/assets/images/stock-bar-icon.svg' );
+		return sgsb_modules_url( 'QuickView/assets/images/quickview-icon-blue.svg' );
 	}
 
 	/**

@@ -23,7 +23,6 @@ $white-color: #ffffff;
   padding: 0 20px !important;
   display: inline-flex;
   align-items: center;
-
 }
 
 .sgsb-logo {
@@ -797,6 +796,23 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
             }
           }
+          &.quick-view {
+            &:before {
+              content: "";
+              background: url('../images/menu/quickview-icon.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quickview-icon-white.svg');
+
+              }
+
+            }
+          }
 
         }
 
@@ -859,6 +875,10 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
           &.countdown-timer::before {
             background: url('../images/menu/countdown-timer-white.svg');
+          }
+
+          &.quick-view::before {
+            background: url('../images/menu/quickview-icon-white.svg');
           }
 
         }
@@ -1337,6 +1357,24 @@ End Settings Sidebar
               &:before {
                 content: "";
                 background: url('../images/menu/stock-bar-white.svg');
+
+              }
+
+            }
+          }
+
+          &.quick-view {
+            &:before {
+              content: "";
+              background: url('../images/menu/quickview-icon.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quickview-icon-white.svg');
 
               }
 

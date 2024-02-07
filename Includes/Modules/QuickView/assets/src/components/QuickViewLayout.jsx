@@ -39,7 +39,7 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     button_label: __("Quick View", "storegrowth-sales-booster"),
     button_position: "after_add_to_cart",
     enable_qucik_view_icon: false,
-    quick_view_icon: "quick-icon-1",
+    quick_view_icon: "quick-view-icon-1",
     show_quick_icon: true,
     enable_close_button: true,
     show_view_details_button: false,

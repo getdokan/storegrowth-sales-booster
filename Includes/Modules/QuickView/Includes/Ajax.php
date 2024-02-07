@@ -180,10 +180,8 @@ class Ajax {
 				</div>
 			</div><!-- /woocommerce single-product -->
 			<?php
-			if ( $content_view_details_button ) {
-				$view_details_text = 'View Product Details';
-				echo sprintf( '<a class="view-details-btn" href="%s">%s</a>', $product->get_permalink(), esc_html( $view_details_text ) );
-			}
+			$permalink = $product->get_permalink();
+			do_action( 'sgsb_quick_view_details_button', $permalink, $content_view_details_button );
 				echo '</div><!-- #sgsbqcv-popup -->';
 			wp_reset_postdata();
 		}

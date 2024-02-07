@@ -4,7 +4,8 @@ import { applyFilters } from "@wordpress/hooks";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
-import { Switcher, SelectBox } from "sales-booster/src/components/settings/Panels";
+import QuickViewIcon from "./QuickViewIcon";
+import { Switcher, SelectBox, RadioBox } from "sales-booster/src/components/settings/Panels";
 
 function ButtonSettingsTab(props) {
   const {
@@ -31,7 +32,17 @@ function ButtonSettingsTab(props) {
     "",
     buttonPositions
   )
-  
+
+  const iconStyleNames = [
+    'quick-view-icon-1',
+    'quick-view-icon-2',
+    'quick-view-icon-3',
+    'quick-view-icon-4',
+  ];
+
+  const iconOptions = iconStyleNames?.map(iconStyleName => (
+    { key: iconStyleName, value: <QuickViewIcon activeIcon={formData?.quick_view_icon === iconStyleName} iconName={iconStyleName} /> }
+  ));
 
   return (
     <Fragment>
@@ -74,6 +85,16 @@ function ButtonSettingsTab(props) {
             "storegrowth-sales-booster"
           )}
         />
+        {formData?.enable_qucik_view_icon &&
+          <RadioBox
+            name={`quick_view_icon`}
+            options={[...iconOptions]}
+            changeHandler={onFieldChange}
+            classes={`radio-icon-field quick-icon-layout`}
+            fieldValue={formData.quick_view_icon}
+            title={__(`Cart Icon`, 'storegrowth-sales-booster')}
+          />
+        }
         <Switcher
           colSpan={24}
           name={"enable_close_button"}
@@ -90,6 +111,12 @@ function ButtonSettingsTab(props) {
             "storegrowth-sales-booster"
           )}
         />
+        {applyFilters(
+          "sgsb_quick_after_modal_close_button_settings",
+          "",
+          formData,
+          onFieldChange
+        )}
         <Switcher
           colSpan={24}
           name={"show_view_details_button"}
