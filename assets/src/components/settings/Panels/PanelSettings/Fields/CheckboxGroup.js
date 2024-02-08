@@ -109,10 +109,16 @@ const CheckboxGroup = ({
         </div>
       </Col>
       <Col span={checkboxColSpan}>
-        <Space direction={displayDirection}>
+        <Space
+          direction={displayDirection}
+          className="checkbox-container"
+          style={{ flexFlow: "wrap" }}
+        >
           {options.map((checkbox) => (
             <label
-              className={`${checkbox.needUpgrade ? "disabled-checkbox" : ""}`}
+              className={`${
+                checkbox.needUpgrade ? "disabled-checkbox" : "enabled-checkbox"
+              }`}
               key={checkbox.value}
               style={{ display: "flex", gap: "4px" }}
             >
