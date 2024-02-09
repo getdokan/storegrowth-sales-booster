@@ -16,6 +16,7 @@
   "dependencies": {
     "antd": "^5.5.0",
     "nanoid": "^3.3.4",
+    "clipboard-polyfill": "^4.0.2",
     "@wordpress/i18n": "^4.24.0"
   }
 }

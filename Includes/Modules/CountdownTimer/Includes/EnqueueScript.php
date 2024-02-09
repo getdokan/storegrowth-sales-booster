@@ -36,9 +36,9 @@ class EnqueueScript {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		if ( ! is_product() && ! is_shop() ) {
-			return;
-		}
+		// if ( ! is_product() && ! is_shop() ) {
+		// 	return;
+		// }
 
 		wp_enqueue_style(
 			'sgsb-cd-timer-custom-style',

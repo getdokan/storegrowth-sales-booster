@@ -5,6 +5,7 @@ import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import GeneralSettingTab from "./GeneralSettingTab";
 import DesignTab from "./DesignTab";
+import ShortCodeGenerator from "./ShortCodeGenerator";
 import Preview from "./Preview";
 
 import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
@@ -166,6 +167,24 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'design' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          handleSelect={ handleSelect }
+          noop={ noop }
+          options={ options }
+        />
+      ),
+    },
+    {
+      key: "short_code",
+      title: __("Short Code Generator", "storegrowth-sales-booster"),
+      panel: (
+        <ShortCodeGenerator
           formData={ formData }
           setFormData={ setFormData }
           onFieldChange={ onFieldChange }
