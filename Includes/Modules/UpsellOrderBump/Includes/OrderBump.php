@@ -43,7 +43,6 @@ class OrderBump {
 			'posts_per_page' => -1,
 		);
 		$bump_list              = get_posts( $args_bump );
-		$showed_bump_product_id = array();
 
 		foreach ( $all_cart_products as $value ) {
 			$cat_ids = $value['data']->get_category_ids();
@@ -91,29 +90,19 @@ class OrderBump {
 				// don't show the offer if the 'offer product' is already added in the cart from the shop page with regular price.
 				continue;
 			}
-			if (
-				$bump_info->target_products
-				&&
-				count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $bump_info->target_products ) )
-				&&
-				! in_array( $offer_product_id, $showed_bump_product_id, true )
-			) {
 
-				include __DIR__ . '/../templates/bump-product-front-view.php';
-
-				$showed_bump_product_id[] = $offer_product_id;
-			}
-
-			if (
-				isset( $bump_info->target_categories )
-				&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bump_info->target_categories ) )
-				&& ! in_array( $offer_product_id, $showed_bump_product_id, true )
-			) {
-
-				include __DIR__ . '/../templates/bump-product-front-view.php';
-
-				$showed_bump_product_id[] = $offer_product_id;
-			}
+            $bump_type = ! empty( $bump_info->bump_type ) ? esc_html( $bump_info->bump_type ) : 'products';
+            if ( $bump_type === 'products' ) {
+                $target_products = ! empty( $bump_info->target_products ) ? wc_clean( $bump_info->target_products ) : array();
+                if ( $target_products && ( count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $target_products ) ) ) ) {
+                    include __DIR__ . '/../templates/bump-product-front-view.php';
+                }
+            } else {
+                $target_categories = ! empty( $bump_info->target_categories ) ? wc_clean( $bump_info->target_categories ) : array();
+                if ( $target_categories && ( count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $target_categories ) ) ) ) {
+                    include __DIR__ . '/../templates/bump-product-front-view.php';
+                }
+            }
 		}
 	}
 
