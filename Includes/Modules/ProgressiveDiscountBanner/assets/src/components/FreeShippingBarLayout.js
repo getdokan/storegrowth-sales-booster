@@ -55,8 +55,14 @@ function FreeShippingBarLayout({
 
   const [formData, setFormData] = useState({ ...initialShipData });
 
+  const [showUndo, setShowUndo] = useState( false );
+  const [undoData, setUndoData] = useState({
+    ...initialShipData,
+  });
+
   const onFormReset = () => {
     setFormData({ ...initialShipData });
+    setShowUndo( false );
   };
 
   const fontFamily = [
@@ -99,6 +105,7 @@ function FreeShippingBarLayout({
       .success((response) => {
         if (response.success && response.data) {
           setFormData({ ...formData, ...response.data });
+          setUndoData({ ...undoData, ...response.data });
           setTimeout(() => setPageLoading(false), 500);
         }
       });
@@ -113,7 +120,14 @@ function FreeShippingBarLayout({
       ...formData,
       [key]: value,
     });
+    setShowUndo( true );
   };
+
+  const onUndoClick = () => {
+    setShowUndo( false );
+    setFormData({ ...undoData });
+  };
+
   const changeTab = (key) => {
     navigate("/progressive-discount-banner?tab_name=" + key);
   };
@@ -150,8 +164,10 @@ function FreeShippingBarLayout({
         data,
       })
       .success(() => {
+        setShowUndo(false);
         setButtonLoading(false);
         notificationMessage(type);
+        setUndoData({ ...formData });
       });
   };
 
@@ -163,6 +179,7 @@ function FreeShippingBarLayout({
         <SettingsTab
           formData={formData}
           setFormData={setFormData}
+          setShowUndo={setShowUndo}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("banner_settings")}
           buttonLoading={buttonLoading}
@@ -197,10 +214,12 @@ function FreeShippingBarLayout({
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={showPreview && tabName ? 12 : 24}
             tabPanels={tabPanels}
+            showUndoIcon={showUndo}
+            undoHandler={onUndoClick}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
+            colSpan={showPreview && tabName ? 12 : 24}
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>

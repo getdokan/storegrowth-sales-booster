@@ -4,8 +4,10 @@ import TabPanels from "./TabPanels";
 const PanelSettings = ( {
     tabPanels,
     activeTab,
+    undoHandler,
     changeHandler,
-    colSpan = 12
+    colSpan = 12,
+    showUndoIcon = false
 } ) => {
     return (
         // Handle settings column width dynamically by using colSpan.
@@ -14,8 +16,10 @@ const PanelSettings = ( {
             <TabPanels
                 tabPanels={ tabPanels }
                 activeTab={ activeTab }
-                classes={ `settings-panel ${ colSpan === 24 ? 'full-width' : '' }` }
+                undoHandler={ undoHandler }
+                showUndoIcon={ showUndoIcon }
                 changeHandler={ changeHandler }
+                classes={ `settings-panel ${ colSpan === 24 ? 'full-width' : '' }` }
             />
         </Col>
     );

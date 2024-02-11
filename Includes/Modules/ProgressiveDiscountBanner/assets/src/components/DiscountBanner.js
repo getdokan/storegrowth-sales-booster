@@ -9,7 +9,7 @@ import BarIcon from "./BarIcon";
 import SettingInstruction from "./SettingInstruction";
 
 function DiscountBanner(props) {
-    const { formData, setFormData, onFieldChange } = props;
+    const { formData, setFormData, setShowUndo, onFieldChange } = props;
 
     const barTypes = [
         {
@@ -64,6 +64,7 @@ function DiscountBanner(props) {
             [ key ]: value,
             progressive_banner_custom_icon : '',
         } );
+        setShowUndo( true );
     };
 
     return (

@@ -11,7 +11,8 @@ function SettingsTab(props) {
     onFieldChange,
     onFormSave,
     buttonLoading,
-    onFormReset
+    onFormReset,
+    setShowUndo
   } = props;
 
 
@@ -19,6 +20,7 @@ function SettingsTab(props) {
     <Fragment>
       <DiscountBanner
         formData={formData}
+        setShowUndo={setShowUndo}
         setFormData={setFormData}
         onFieldChange={onFieldChange}
       />
