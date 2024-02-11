@@ -2033,6 +2033,17 @@ End Settings Sidebar
       .settings-panel {
         margin-right: 32px;
 
+        .ant-tabs-extra-content {
+          .dashicons {
+            color: #0875ff;
+            cursor: pointer;
+            &.dashicons-undo {
+              color: #0875ff;
+              cursor: pointer;
+            }
+          }
+        }
+
         .sgsb-settings-card {
           height: 100%;
           border-radius: 5px;
