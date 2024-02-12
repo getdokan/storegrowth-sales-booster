@@ -5,3 +5,4 @@ vendor
 lerna-debug.log
 assets/build/
 Includes/Modules/*/assets/build/
+package-lock.json
