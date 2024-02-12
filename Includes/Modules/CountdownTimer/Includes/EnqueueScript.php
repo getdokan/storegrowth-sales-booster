@@ -25,10 +25,19 @@ class EnqueueScript {
 	 * Constructor of Enqueue_Script class.
 	 */
 	private function __construct() {
+		add_action( 'init', array( $this, 'sgsb_countdown_time_blocks_init' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
+
+
+	/**
+	 * Block Register of the Sales countdown.
+	 */
+	public function sgsb_countdown_time_blocks_init() {
+		register_block_type( sgsb_modules_path( 'CountdownTimer/assets/build/blocks' ) );
+	}
+
 
 	/**
 	 * Add JS scripts to frontend.
@@ -37,7 +46,7 @@ class EnqueueScript {
 	 */
 	public function wp_enqueue_scripts() {
 		// if ( ! is_product() && ! is_shop() ) {
-		// 	return;
+		// return;
 		// }
 
 		wp_enqueue_style(
