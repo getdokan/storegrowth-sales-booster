@@ -24,17 +24,22 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
   const initialShipData = {
+    btn_text                       : 'Cart',
     bar_type                       : "normal",
     user_type                      : "both",
     font_size                      : 20,
+    btn_style                      : true,
+    btn_color                      : "#ffffff",
     text_color                     : "#ffffff",
     icon_color                     : "#ffffff",
+    btn_target                     : sgsbFsbData?.cartUrl,
     font_family                    : "poppins",
     banner_delay                   : 7,
     bar_position                   : "top",
     bar_template                   : 'shipping_bar_one',
     discount_type                  : "free-shipping",
     banner_height                  : 60,
+    btn_text_color                 : "#073b4c",
     banner_trigger                 : "after-few-seconds",
     close_icon_color               : "#ffffff",
     background_color               : "#0875FF",

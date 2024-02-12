@@ -77,6 +77,24 @@ function DesignTab(props) {
                     fieldValue={formData.close_icon_color}
                     title={__('Close Button Color', 'storegrowth-sales-booster')}
                 />
+                { Boolean( formData.btn_style ) && (
+                    <Fragment>
+                        <ColourPicker
+                            colSpan={12}
+                            name={'btn_color'}
+                            fieldValue={formData.btn_color}
+                            changeHandler={onFieldChange}
+                            title={__('CTA Background', 'storegrowth-sales-booster')}
+                        />
+                        <ColourPicker
+                            colSpan={12}
+                            name={'btn_text_color'}
+                            changeHandler={onFieldChange}
+                            fieldValue={formData.btn_text_color}
+                            title={__( 'CTA Text Color', 'storegrowth-sales-booster')}
+                        />
+                    </Fragment>
+                ) }
             </SettingsSection>
 
             <Templates formData={ formData } setFormData={ setFormData } />

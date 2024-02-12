@@ -19,12 +19,17 @@ const Templates = ( { formData, setFormData } ) => {
 
     let templateStyles = {
         shipping_bar_one: {
+            btn_text                       : __( 'Cart', 'storegrowth-sales-booster' ),
             font_size                      : 20,
+            btn_style                      : true,
+            btn_color                      : "#ffffff",
             text_color                     : "#ffffff",
             icon_color                     : "#ffffff",
+            btn_target                     : sgsbFsbData?.cartUrl,
             font_family                    : "poppins",
             bar_template                   : 'shipping_bar_one',
             banner_height                  : 60,
+            btn_text_color                 : "#073b4c",
             close_icon_color               : "#ffffff",
             background_color               : "#0875FF",
             cart_minimum_amount            : 10,

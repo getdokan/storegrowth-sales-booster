@@ -7,6 +7,8 @@ import TextAreaBox from "../../../../../../assets/src/components/settings/Panels
 import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BarIcon from "./BarIcon";
 import SettingInstruction from "./SettingInstruction";
+import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 
 function DiscountBanner(props) {
     const { formData, setFormData, setShowUndo, onFieldChange } = props;
@@ -181,6 +183,49 @@ function DiscountBanner(props) {
                         "storegrowth-sales-booster"
                     )}
                 />
+
+                <Switcher
+                    name={ 'btn_style' }
+                    changeHandler={ onFieldChange }
+                    isEnable={ Boolean( formData.btn_style ) }
+                    title={ __( 'Display CTA Button', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Will be able to achieve the control call to action button.', 'storegrowth-sales-booster' ) }
+                />
+
+                { Boolean( formData.btn_style ) && (
+                    <Fragment>
+                        <TextInput
+                            name={ 'btn_text' }
+                            placeHolderText={ __(
+                                'Write CTA button text',
+                                'storegrowth-sales-booster'
+                            ) }
+                            fieldValue={ formData.btn_text }
+                            className={ `settings-field input-field` }
+                            changeHandler={ onFieldChange }
+                            title={ __( 'CTA Name', 'storegrowth-sales-booster' ) }
+                            tooltip={ __(
+                                'The name of call to action button',
+                                'storegrowth-sales-booster'
+                            ) }
+                        />
+                        <TextInput
+                            name={ 'btn_target' }
+                            placeHolderText={ __(
+                                'Write CTA button target url',
+                                'storegrowth-sales-booster'
+                            ) }
+                            fieldValue={ formData.btn_target }
+                            className={ `settings-field input-field` }
+                            changeHandler={ onFieldChange }
+                            title={ __( 'CTA Target URI', 'storegrowth-sales-booster' ) }
+                            tooltip={ __(
+                                'The target/redirect url for call to action button',
+                                'storegrowth-sales-booster'
+                            ) }
+                        />
+                    </Fragment>
+                ) }
             </SettingsSection>
             <SettingsSection>
                 { applyFilters(
