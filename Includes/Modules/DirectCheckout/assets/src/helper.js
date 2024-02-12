@@ -8,7 +8,7 @@ export const createDirectCheckoutForm = {
     button_color                 : "#008dff",
     border_color                 : "#008dff",
     border_width                 : 1,
-    paddingXaxis                 : 30,
+    paddingXaxis                 : 20,
     paddingYaxis                 : 10,
     generated_link               : "example",
     checkout_redirect            : 'legacy-checkout',

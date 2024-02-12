@@ -109,6 +109,12 @@ class EnqueueScript {
 		$text_color           = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
 		$font_size            = sgsb_find_option_setting( $settings, 'font_size', '16' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', '5' );
+		$button_border_style  = sgsb_find_option_setting( $settings, 'button_border_style', 'solid' );
+        $border_width         = sgsb_find_option_setting( $settings, 'border_width', '1' );
+        $border_color         = sgsb_find_option_setting( $settings, 'border_color', '#008dff' );
+        $horizontal_padding   = sgsb_find_option_setting( $settings, 'paddingXaxis', '20' );
+        $vertical_padding     = sgsb_find_option_setting( $settings, 'paddingYaxis', '10' );
+		$font_family          = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
 
 		$theme                 = wp_get_theme();
 		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
@@ -127,6 +133,9 @@ class EnqueueScript {
 			font-size: {$font_size}px !important;
 			color: {$text_color} !important;
 			margin: {$button_margin};
+			border: {$border_width}px {$button_border_style} {$border_color};
+			padding: {$vertical_padding}px {$horizontal_padding}px;
+			font-family: {$font_family};
 		} ";
 
 		if ( $is_avada_theme ) {
