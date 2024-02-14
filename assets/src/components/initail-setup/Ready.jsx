@@ -1,13 +1,23 @@
 import { Fragment } from "react";
+import { useState } from '@wordpress/element';
 import { Switch } from 'antd';
 import { __ } from "@wordpress/i18n";
 
 const Ready = () => {
+  const [updateNews, setupdateNews] = useState(true);
+  const [userDetails, setUserdetails] = useState(true);
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-  };
+  const getUserDetails=()=> {
+    if (updateNews === true || userDetails === true) {
+      console.log("Send Data");
+    } else {
+      return;
+    }
+  }
 
+
+  console.log(updateNews);
+  console.log(userDetails);
   return (
     <Fragment>
       <div className="sgsb-step-completion">
@@ -32,6 +42,7 @@ const Ready = () => {
             <a
               href="/wp-admin/admin.php?page=sgsb-settings"
               className="steps-button completion-cta"
+              onClick={getUserDetails}
             >
               {__(`Ready To Go`, "storegrowth-sales-booster")}
             </a>
@@ -62,14 +73,14 @@ const Ready = () => {
 
         <div className="ini-setup user-agreement">
           <div className="getting-updates">
-            <Switch defaultChecked onChange={onChange} />
+            <Switch defaultChecked onChange={(checked) => { setupdateNews(checked) }} />
             <div className="user-agreement content-container">
               <h3 className="heading">{__('Get Updates', "storegrowth-sales-booster")}</h3>
               <p className="content">{__('We will send essential tips & tricks for effective usage of StoreGrowth.', "storegrowth-sales-booster")}</p>
             </div>
           </div>
           <div className="getting-essentials">
-            <Switch defaultChecked onChange={onChange} />
+            <Switch defaultChecked onChange={(checked) => { setUserdetails(checked) }} />
             <div className="user-agreement content-container">
               <h3 className="heading">{__('Share Essentials', "storegrowth-sales-booster")}</h3>
               <p className="content">{__('Let us collect non-sensitive diagnosis data and usage information.', "storegrowth-sales-booster")}</p>
