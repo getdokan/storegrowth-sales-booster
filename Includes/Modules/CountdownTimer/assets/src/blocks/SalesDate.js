@@ -31,10 +31,6 @@ const SalesDate = (props) => {
     current < dayjs(attributes.startDate);
 
   return (
-    // <EmptyField
-    //   title={__("Date Picker", "storegrowth-sales-booster-pro")}
-    //   tooltip={__("Actions of the button", "storegrowth-sales-booster-pro")}
-    // >
       <div
         style={{
           display: "flex",
@@ -57,7 +53,6 @@ const SalesDate = (props) => {
           attributes?.endDate
         )}
       </div>
-    // </EmptyField>
   );
 };
 

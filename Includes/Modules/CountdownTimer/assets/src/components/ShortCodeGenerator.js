@@ -9,7 +9,7 @@ import EmptyField from "sales-booster/src/components/settings/Panels/PanelSettin
 
 import "../styles/countdown-timer.css";
 import Templates from "./Templates";
-import Countdown from "../blocks/SalesDate";
+import Countdown from "./Countdown";
 
 function ShortCodeGenerator() {
   const [copied, setCopied] = useState(false);

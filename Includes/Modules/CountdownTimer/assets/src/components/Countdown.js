@@ -1,4 +1,4 @@
-import { Checkbox, DatePicker } from "antd";
+import { DatePicker } from "antd";
 import { __ } from "@wordpress/i18n";
 import dayjs from "dayjs";
 
