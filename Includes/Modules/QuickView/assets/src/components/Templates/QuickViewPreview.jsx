@@ -1,9 +1,9 @@
 import React from "react";
-import { Button } from 'antd';
+import { Button ,Image} from 'antd';
 import QuickViewIcon from "../QuickViewIcon";
-
+import ProductImage from '../../../images/bump-preview.svg'
 const QuickViewPreview = ({ formData }) => {
-
+  console.log(ProductImage)
   const buttonStyle = {
     borderRadius: formData?.button_border_radius,
     backgroundColor: formData?.button_color,
@@ -36,11 +36,12 @@ const QuickViewPreview = ({ formData }) => {
           <div className="thumbnails">
             <div className="images">
               <div className="thumbnail" data-id="59">
-                <img
-                  style={{ maxWidth: "200px", maxHeight: "200px" }}
-                  src="http://storegrowthprod2.test/wp-content/uploads/2023/12/beanie-with-logo-1.jpg"
+                <Image width={200} src={ProductImage} preview={false}/>
+                {/* <img
+                  
+                  src={}
                   className="attachment-sgsbqcv size-sgsbqcv"
-                />
+                /> */}
               </div>
             </div>
           </div>
