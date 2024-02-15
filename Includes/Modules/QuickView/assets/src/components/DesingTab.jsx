@@ -29,7 +29,7 @@ function DesignTab(props) {
           name={"button_border_radius"}
           fieldValue={formData?.button_border_radius}
           changeHandler={onFieldChange}
-          title={__("Border Radius", "storegrowth-sales-booster")}
+          title={__("Button Border Radius", "storegrowth-sales-booster")}
           placeHolderText={__("Border Radius", "storegrowth-sales-booster")}
           tooltip={__(
             "To set the border radius of the button",

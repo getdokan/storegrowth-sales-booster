@@ -55,3 +55,24 @@ addFilter(
         );
     }
 );
+addFilter(
+    "sgsb_quick_view_button_icon_settings",
+    "sgsb_quick_view_button_icon_settings_callback",
+    (component) => {
+        return (
+            <>
+                <Switcher
+                    colSpan={24}
+                    name={"enable_qucik_view_icon"}
+                    needUpgrade={true}
+                    title={__("Enable Quick View Icon", "storegrowth-sales-booster")}
+                    isEnable={false}
+                    tooltip={__(
+                        "By enableing this quick view will show in mobile.",
+                        "storegrowth-sales-booster"
+                    )}
+                />
+            </>
+        );
+    }
+);

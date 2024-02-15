@@ -137,7 +137,7 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const noop = () => { };
-  const excludeTabs = ["general"];
+  const excludeTabs = [""];
   const showPreview = !excludeTabs?.includes(tabName);
 
   const tabPanels = [

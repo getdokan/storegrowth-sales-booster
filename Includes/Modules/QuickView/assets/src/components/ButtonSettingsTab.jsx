@@ -69,32 +69,14 @@ function ButtonSettingsTab(props) {
           changeHandler={onFieldChange}
           title={__("Button Position", "storegrowth-sales-booster")}
         />
-        <Switcher
-          colSpan={24}
-          name={"enable_qucik_view_icon"}
-          changeHandler={onFieldChange}
-          title={__("Enable Quick View Icon", "storegrowth-sales-booster")}
-          isEnable={
-            formData?.enable_qucik_view_icon == "true" ||
-              formData?.enable_qucik_view_icon == true
-              ? true
-              : false
-          }
-          tooltip={__(
-            "By enableing this quick view will show in mobile.",
-            "storegrowth-sales-booster"
-          )}
-        />
-        {formData?.enable_qucik_view_icon &&
-          <RadioBox
-            name={`quick_view_icon`}
-            options={[...iconOptions]}
-            changeHandler={onFieldChange}
-            classes={`radio-icon-field quick-icon-layout`}
-            fieldValue={formData.quick_view_icon}
-            title={__(`Cart Icon`, 'storegrowth-sales-booster')}
-          />
-        }
+        {applyFilters(
+          "sgsb_quick_view_button_icon_settings",
+          "",
+          onFieldChange,
+          formData,
+          iconOptions
+        )}
+
         <Switcher
           colSpan={24}
           name={"enable_close_button"}
@@ -117,22 +99,6 @@ function ButtonSettingsTab(props) {
           formData,
           onFieldChange
         )}
-        <Switcher
-          colSpan={24}
-          name={"show_view_details_button"}
-          changeHandler={onFieldChange}
-          title={__("Enable View Details Button", "storegrowth-sales-booster")}
-          isEnable={
-            formData?.show_view_details_button == "true" ||
-              formData?.show_view_details_button == true
-              ? true
-              : false
-          }
-          tooltip={__(
-            "By enableing this quick view will show in mobile.",
-            "storegrowth-sales-booster"
-          )}
-        />
       </SettingsSection>
       <ActionsHandler
         resetHandler={onFormReset}
