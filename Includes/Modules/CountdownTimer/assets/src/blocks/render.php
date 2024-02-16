@@ -13,6 +13,7 @@ $heading          = empty( $attributes['discountText'] ) ? false : $attributes['
 $border_color     = empty( $attributes['borderColor'] ) ? false : $attributes['borderColor'];
 $heading_color    = empty( $attributes['headingColor'] ) ? false : $attributes['headingColor'];
 $background_color = empty( $attributes['backgroundColor'] ) ? false : $attributes['backgroundColor'];
+$start_date       = empty( $attributes['startDate'] ) ? false : $attributes['startDate'];
 $end_date         = empty( $attributes['endDate'] ) ? false : $attributes['endDate'];
 
 
@@ -30,7 +31,7 @@ $end_date         = empty( $attributes['endDate'] ) ? false : $attributes['endDa
 				<?php echo wp_kses_post( $heading ); ?>
 			</p>
 
-		<div class="sgsb-countdown-timer-items ct-layout-1" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="sgsb-countdown-timer-items ct-layout-1" data-end-date="<?php echo esc_attr( $end_date ); ?> 23:59:59">
 			<div class="sgsb-countdown-timer-item ct-layout-1">
 				<strong class="sgsb-countdown-timer-item-days">00</strong>
 				<span>Days</span>
