@@ -9,9 +9,11 @@ const TextInput = ( {
     name,
     title,
     tooltip,
+    className,
     fieldValue,
     changeHandler,
     placeHolderText,
+    type = 'text',
     colSpan = 24,
     fullWidth = false,
     needUpgrade = false
@@ -34,10 +36,11 @@ const TextInput = ( {
             <Col span={ fullWidth ? 15 : 10 }>
                 {/* Handle settings textarea field by using dynamic props */}
                 <Input
+                    type={ type }
                     disabled={ needUpgrade }
                     placeholder={ placeHolderText }
                     value={ fieldValue ? fieldValue : '' }
-                    className={ `settings-field textinput-field` }
+                    className={ `settings-field textinput-field ${className}` }
                     onChange={ ( event ) => changeHandler( name, event.target.value ) }
                 />
             </Col>

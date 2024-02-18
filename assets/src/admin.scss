@@ -2276,6 +2276,10 @@ End Settings Sidebar
                 &.field-gap {
                   margin-bottom: 15px;
                 }
+
+                &.error {
+                  border-color: red;
+                }
               }
 
               &.textarea-field {
