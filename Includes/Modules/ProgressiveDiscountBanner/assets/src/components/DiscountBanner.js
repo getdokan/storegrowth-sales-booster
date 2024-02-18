@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
+import { useState } from "@wordpress/element";
 import { applyFilters } from '@wordpress/hooks';
 import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
@@ -11,7 +12,7 @@ import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 
 function DiscountBanner(props) {
-    const { formData, setFormData, setShowUndo, onFieldChange } = props;
+    const { isValid, formData, setFormData, setShowUndo, onFieldChange } = props;
 
     const barTypes = [
         {
@@ -58,7 +59,6 @@ function DiscountBanner(props) {
     const iconOptions = iconStyleNames?.map( iconStyleName => (
         { key: iconStyleName, value: <BarIcon activeIcon={ formData?.progressive_banner_icon_name === iconStyleName } iconName={ iconStyleName } /> }
     ) );
-
 
     const onBarChange = ( key, value ) => {
         setFormData( {
@@ -210,13 +210,14 @@ function DiscountBanner(props) {
                             ) }
                         />
                         <TextInput
+                            type={ 'url' }
                             name={ 'btn_target' }
                             placeHolderText={ __(
                                 'Write CTA button target url',
                                 'storegrowth-sales-booster'
                             ) }
                             fieldValue={ formData.btn_target }
-                            className={ `settings-field input-field` }
+                            className={ !isValid ? 'error' : '' }
                             changeHandler={ onFieldChange }
                             title={ __( 'CTA Target URI', 'storegrowth-sales-booster' ) }
                             tooltip={ __(

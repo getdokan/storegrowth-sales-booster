@@ -120,11 +120,28 @@ function FreeShippingBarLayout({
     getSettings();
   }, []);
 
+  const [ isValidUrl, setIsValidUrl ] = useState( true );
+
+  const validateURL = ( input ) => {
+    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test( input );
+  };
+
   const onFieldChange = (key, value) => {
+    if ( key === 'btn_target' ) {
+      setIsValidUrl( validateURL( value ) );
+    }
+
     setFormData({
       ...formData,
       [key]: value,
     });
+
     setShowUndo( true );
   };
 
@@ -183,6 +200,7 @@ function FreeShippingBarLayout({
       panel: (
         <SettingsTab
           formData={formData}
+          isValid={isValidUrl}
           setFormData={setFormData}
           setShowUndo={setShowUndo}
           onFieldChange={onFieldChange}
@@ -198,6 +216,7 @@ function FreeShippingBarLayout({
       panel: (
         <DesignTab
           formData={formData}
+          isValid={isValidUrl}
           setFormData={setFormData}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("design")}

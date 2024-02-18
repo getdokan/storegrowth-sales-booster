@@ -6,6 +6,7 @@ import {Fragment} from "react";
 
 function SettingsTab(props) {
   const {
+    isValid,
     formData,
     setFormData,
     onFieldChange,
@@ -19,6 +20,7 @@ function SettingsTab(props) {
   return (
     <Fragment>
       <DiscountBanner
+        isValid={isValid}
         formData={formData}
         setShowUndo={setShowUndo}
         setFormData={setFormData}
@@ -28,7 +30,7 @@ function SettingsTab(props) {
       <ActionsHandler
         resetHandler={onFormReset}
         loadingHandler={buttonLoading}
-        saveHandler={onFormSave}
+        saveHandler={isValid && onFormSave}
       />
       <p className="ant-form-item-explain" style={{ margin: "15px 0 0 0" }}>
         Note: Please clear your cart in order to see the updates when you update

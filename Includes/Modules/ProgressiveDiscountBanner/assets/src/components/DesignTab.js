@@ -11,6 +11,7 @@ import Templates from './Templates';
 
 function DesignTab(props) {
     const {
+        isValid,
         formData,
         setFormData,
         onFieldChange,
@@ -102,7 +103,7 @@ function DesignTab(props) {
             <ActionsHandler
                 resetHandler={onFormReset}
                 loadingHandler={buttonLoading}
-                saveHandler={onFormSave}
+                saveHandler={isValid && onFormSave}
             />
         </Fragment>
     );
