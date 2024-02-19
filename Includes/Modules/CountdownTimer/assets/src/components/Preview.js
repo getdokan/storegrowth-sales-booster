@@ -18,7 +18,7 @@ const Preview = ( { formData } ) => {
     );
 
     useEffect( () => {
-        if ( isProExists && formData?.selected_theme === 'ct-layout-2' ) {
+        if ( formData?.selected_theme === 'ct-layout-2' ) {
             setDefaultHeading( formData?.heading_text_color === 'transparent' );
             setDefaultCounter( formData?.counter_background_color === 'transparent' );
         }
