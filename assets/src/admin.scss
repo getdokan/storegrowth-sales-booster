@@ -2033,14 +2033,12 @@ End Settings Sidebar
       .settings-panel {
         margin-right: 32px;
 
-        .ant-tabs-extra-content {
-          .dashicons {
+        .dashicons {
+          color: #0875ff;
+          cursor: pointer;
+          &.dashicons-undo {
             color: #0875ff;
             cursor: pointer;
-            &.dashicons-undo {
-              color: #0875ff;
-              cursor: pointer;
-            }
           }
         }
 
