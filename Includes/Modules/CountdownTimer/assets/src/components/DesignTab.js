@@ -23,6 +23,8 @@ function DesignTab( props ) {
     noop,
     options,
     handleSelect,
+    undoHandler,
+    showUndoIcon
   } = props;
 
   const fontFamily = [
@@ -68,22 +70,28 @@ function DesignTab( props ) {
         />
 
         <ColourPicker
+          undoHandler={undoHandler}
           name={"widget_background_color"}
           fieldValue={formData.widget_background_color}
+          showUndoIcon={showUndoIcon?.widget_background_color}
           changeHandler={onFieldChange}
           title={__("Widget Background Color", "storegrowth-sales-booster")}
         />
 
         <ColourPicker
+          undoHandler={undoHandler}
           name={"border_color"}
           fieldValue={formData.border_color}
+          showUndoIcon={showUndoIcon?.border_color}
           changeHandler={onFieldChange}
           title={__("Border Color", "storegrowth-sales-booster")}
         />
 
         <ColourPicker
+          undoHandler={undoHandler}
           name={"heading_text_color"}
           fieldValue={formData.heading_text_color}
+          showUndoIcon={showUndoIcon?.heading_text_color}
           changeHandler={onFieldChange}
           title={__("Heading Text Color", "storegrowth-sales-booster")}
         />
@@ -93,7 +101,9 @@ function DesignTab( props ) {
           'sgsb_append_countdown_design_settings',
           '',
           formData,
-          onFieldChange
+          onFieldChange,
+          showUndoIcon,
+          undoHandler
         ) }
 
         <ActionsHandler
@@ -103,7 +113,11 @@ function DesignTab( props ) {
         />
       </SettingsSection>
 
-      <Templates formData={ formData } setFormData={ setFormData } />
+      <Templates
+        formData={ formData }
+        setFormData={ setFormData }
+        showUndoIcon={ showUndoIcon }
+      />
     </Fragment>
   );
 }

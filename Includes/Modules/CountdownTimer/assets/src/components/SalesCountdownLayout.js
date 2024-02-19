@@ -62,12 +62,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   const [formData, setFormData] = useState({
     ...initialSalesCountdownData,
   });
-
-  const [showUndo, setShowUndo] = useState( false );
-  const [undoData, setUndoData] = useState({
-    ...initialSalesCountdownData,
-  });
-
   const onFormReset = () => {
     setFormData({ ...initialSalesCountdownData });
     setShowUndo( false );
@@ -145,14 +139,36 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
     onFieldChange("selected_theme", theme);
   };
 
+  const [showUndo, setShowUndo] = useState({
+    border_color            : false,
+    heading_text_color      : false,
+    widget_background_color : false
+  });
+
+  const colorKeyStack = [
+    'border_color',
+    'heading_text_color',
+    'widget_background_color'
+  ];
+
   const onFieldChange = (key, value) => {
     setFormData({ ...formData, [key]: value });
-    setShowUndo( true );
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({ ...showUndo, [key]: true });
+    }
   };
 
-  const onUndoClick = () => {
-    setShowUndo( false );
-    setFormData({ ...undoData });
+  const onUndoClick = ( key ) => {
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({
+        ...showUndo,
+        [key]: false,
+      });
+      setFormData({
+        ...formData,
+        [key]: undoData?.[key],
+      });
+    }
   };
 
   const noop = () => {};
@@ -189,16 +205,18 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
-          formData={formData}
-          setFormData={setFormData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          handleSelect={handleSelect}
-          noop={noop}
-          options={options}
+          showUndoIcon={ showUndo }
+          undoHandler={ onUndoClick }
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'design' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          handleSelect={ handleSelect }
+          noop={ noop }
+          options={ options }
         />
       ),
     },
@@ -213,8 +231,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
         <PanelRow>
           <PanelSettings
             tabPanels={tabPanels}
-            showUndoIcon={showUndo}
-            undoHandler={onUndoClick}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
             colSpan={showPreview && tabName ? 12 : 24}

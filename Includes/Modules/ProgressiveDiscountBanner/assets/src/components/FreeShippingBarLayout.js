@@ -60,11 +60,6 @@ function FreeShippingBarLayout({
 
   const [formData, setFormData] = useState({ ...initialShipData });
 
-  const [showUndo, setShowUndo] = useState( false );
-  const [undoData, setUndoData] = useState({
-    ...initialShipData,
-  });
-
   const onFormReset = () => {
     setFormData({ ...initialShipData });
     setShowUndo( false );
@@ -132,6 +127,28 @@ function FreeShippingBarLayout({
     return !!pattern.test( input );
   };
 
+  const [showUndo, setShowUndo] = useState({
+    btn_color        : false,
+    text_color       : false,
+    icon_color       : false,
+    btn_text_color   : false,
+    close_icon_color : false,
+    background_color : false,
+  });
+
+  const [undoData, setUndoData] = useState({
+    ...initialShipData,
+  });
+
+  const colorKeyStack = [
+    'btn_color',
+    'text_color',
+    'icon_color',
+    'btn_text_color',
+    'close_icon_color',
+    'background_color'
+  ];
+
   const onFieldChange = (key, value) => {
     if ( key === 'btn_target' ) {
       setIsValidUrl( validateURL( value ) );
@@ -142,12 +159,22 @@ function FreeShippingBarLayout({
       [key]: value,
     });
 
-    setShowUndo( true );
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({ ...showUndo, [key]: true });
+    }
   };
 
-  const onUndoClick = () => {
-    setShowUndo( false );
-    setFormData({ ...undoData });
+  const onUndoClick = ( key ) => {
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({
+        ...showUndo,
+        [key]: false,
+      });
+      setFormData({
+        ...formData,
+        [key]: undoData?.[key],
+      });
+    }
   };
 
   const changeTab = (key) => {
@@ -215,6 +242,8 @@ function FreeShippingBarLayout({
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
+          showUndoIcon={showUndo}
+          undoHandler={onUndoClick}
           formData={formData}
           isValid={isValidUrl}
           setFormData={setFormData}

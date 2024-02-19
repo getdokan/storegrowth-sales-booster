@@ -6,7 +6,7 @@ import ShippingBarOne from "./Templates/ShippingBarOne";
 import {applyFilters} from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
 
-const Templates = ( { formData, setFormData } ) => {
+const Templates = ( { formData, setFormData, showUndoIcon } ) => {
     let templates = [
         { key: 'shipping_bar_one', component: <ShippingBarOne /> },
     ];
@@ -46,6 +46,10 @@ const Templates = ( { formData, setFormData } ) => {
     );
 
     const onTemplateChange = ( name, value ) => {
+        for ( let key in showUndoIcon ) {
+            showUndoIcon[key] = false;
+        }
+
         setFormData( {
             ...formData,
             ...templateStyles?.[ value ]
