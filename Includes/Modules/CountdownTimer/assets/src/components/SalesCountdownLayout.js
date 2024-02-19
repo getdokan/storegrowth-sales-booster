@@ -19,7 +19,7 @@ import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
+function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -43,13 +43,13 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
     },
   ];
   const initialSalesCountdownData = {
-    border_color                  : '#1677FF',
-    selected_theme                : 'ct-layout-1',
-    countdown_heading             : '[discount]% OFF',
-    heading_text_color            : '#008dff',
-    widget_background_color       : '#ffffff',
-    shop_page_countdown_enable    : false,
-    product_page_countdown_enable : true,
+    border_color: "#1677FF",
+    selected_theme: "ct-layout-1",
+    countdown_heading: "[discount]% OFF",
+    heading_text_color: "#008dff",
+    widget_background_color: "#ffffff",
+    shop_page_countdown_enable: false,
+    product_page_countdown_enable: true,
   };
 
   const [formData, setFormData] = useState({
@@ -137,13 +137,14 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
   const excludeTabs = [];
   const showPreview = !excludeTabs?.includes(tabName);
 
-  const fontUrl = 'https://fonts.googleapis.com/css2?family=Merienda&display=swap';
+  const fontUrl =
+    "https://fonts.googleapis.com/css2?family=Merienda&display=swap";
 
-  const link = document.createElement( 'link' );
+  const link = document.createElement("link");
   link.href = fontUrl;
-  link.rel = 'stylesheet';
+  link.rel = "stylesheet";
 
-  document.head.appendChild( link );
+  document.head.appendChild(link);
 
   const tabPanels = [
     {
@@ -166,16 +167,16 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
-          formData={ formData }
-          setFormData={ setFormData }
-          onFieldChange={ onFieldChange }
-          onFormSave={ () => onFormSave( 'design' ) }
-          upgradeTeaser={ !isProEnabled }
-          buttonLoading={ buttonLoading }
-          onFormReset={ onFormReset }
-          handleSelect={ handleSelect }
-          noop={ noop }
-          options={ options }
+          formData={formData}
+          setFormData={setFormData}
+          onFieldChange={onFieldChange}
+          onFormSave={() => onFormSave("design")}
+          upgradeTeaser={!isProEnabled}
+          buttonLoading={buttonLoading}
+          onFormReset={onFormReset}
+          handleSelect={handleSelect}
+          noop={noop}
+          options={options}
         />
       ),
     },
@@ -183,7 +184,7 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
   return (
     <Fragment>
       <PanelHeader
-        title={__("Sales Countdown Setting", "storegrowth-sales-booster")}
+        title={__("Countdown Timer Setting", "storegrowth-sales-booster")}
         moduleId={moduleId}
       />
       <PanelContainer>
@@ -196,13 +197,13 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview formData={ formData } />
+              <Preview formData={formData} />
             </PanelPreview>
           )}
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
         <TouchPreview>
-          <Preview formData={ formData } />
+          <Preview formData={formData} />
         </TouchPreview>
       </PanelContainer>
     </Fragment>

@@ -19,7 +19,7 @@ addFilter(
     routes.push({
       name: moduleName,
       path: "/sales-pop",
-      label: "Sales Pop",
+      label: "Sales Notification",
       exact: true,
       element: (
         <SalesPop

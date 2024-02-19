@@ -13,7 +13,7 @@ addFilter(
 
     routes.push({
       name: moduleName,
-      label: "Free Shipping Bar",
+      label: "Free Shipping Rules",
       path: "/progressive-discount-banner",
       element: (
         <FreeShippingBarLayout
@@ -21,13 +21,13 @@ addFilter(
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
-					useSearchParams={useSearchParams}
+          useSearchParams={useSearchParams}
         />
       ),
     });
 
     return routes;
-  }
+  },
 );
 
 /**
