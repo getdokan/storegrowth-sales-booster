@@ -71,14 +71,14 @@ const CountDownOne = () => {
                         >
                             { __( '03', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span style={ { fontFamily : 'Roboto' } }>
+                        <span style={ { fontFamily : 'Roboto', color : '#1B1B50', } }>
                             { __( 'Days', 'storegrowth-sales-booster' ) }
                         </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
                         style={ {
-                            color      : '#008DFF',
+                            color      : '#1B1B50',
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
@@ -111,14 +111,14 @@ const CountDownOne = () => {
                         >
                             { __( '21', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span style={ { fontFamily : 'Roboto' } }>
+                        <span style={ { fontFamily : 'Roboto', color : '#1B1B50', } }>
                             { __( 'Hours', 'storegrowth-sales-booster' ) }
                         </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
                         style={ {
-                            color      : '#008DFF',
+                            color      : '#1B1B50',
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
@@ -151,14 +151,14 @@ const CountDownOne = () => {
                         >
                             { __( '02', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span style={ { fontFamily : 'Roboto' } }>
+                        <span style={ { fontFamily : 'Roboto', color : '#1B1B50', } }>
                             { __( 'Min', 'storegrowth-sales-booster' ) }
                         </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-1'
                         style={ {
-                            color      : '#008DFF',
+                            color      : '#1B1B50',
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
@@ -191,7 +191,7 @@ const CountDownOne = () => {
                         >
                             { __( '33', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span style={ { fontFamily : 'Roboto' } }>
+                        <span style={ { fontFamily : 'Roboto', color : '#1B1B50', } }>
                             { __( 'Sec', 'storegrowth-sales-booster' ) }
                         </span>
                     </div>

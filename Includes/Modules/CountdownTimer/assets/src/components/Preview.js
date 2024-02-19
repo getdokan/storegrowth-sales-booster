@@ -1,19 +1,28 @@
 import React, { Fragment } from 'react'
 import { __ } from "@wordpress/i18n";
 import { useState, useEffect } from '@wordpress/element';
+import {applyFilters} from "@wordpress/hooks";
 
 const Preview = ( { formData } ) => {
     const [ defaultHeading, setDefaultHeading ] = useState( true );
+    const [ defaultCounter, setDefaultCounter ] = useState( true );
+
     const dynamicText = formData.countdown_heading.replace(
         '[discount]',
         50
     );
 
+    const isProExists = applyFilters(
+        'sgsb_render_countdown_premium_styles',
+        false
+    );
+
     useEffect( () => {
-        if ( formData?.selected_theme === 'ct-layout-2' ) {
+        if ( isProExists && formData?.selected_theme === 'ct-layout-2' ) {
             setDefaultHeading( formData?.heading_text_color === 'transparent' );
+            setDefaultCounter( formData?.counter_background_color === 'transparent' );
         }
-    }, [ formData?.heading_text_color ] );
+    }, [ formData?.heading_text_color, formData?.counter_background_color ] );
 
     return (
         <Fragment>
@@ -66,10 +75,11 @@ const Preview = ( { formData } ) => {
                                     color         : '#989FAB',
                                     width         : 64,
                                     height        : 64,
-                                    border        : `1px solid #ecedf0`,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     fontSize      : 12,
                                     textAlign     : 'center',
                                     paddingTop    : 12,
+                                    background    : formData?.counter_background_color,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
                                     textTransform : 'uppercase',
@@ -78,7 +88,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-days'
                                     style={ {
-                                        color        : '#1B1B50',
+                                        color        : formData?.day_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -89,7 +99,12 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '03', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.day_text_color,
+                                        fontFamily : formData?.font_family,
+                                    } }
+                                >
                                     { __( 'Days', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
@@ -107,9 +122,10 @@ const Preview = ( { formData } ) => {
                                     width         : 64,
                                     color         : '#989FAB',
                                     height        : 64,
-                                    border        : `1px solid #ecedf0`,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : formData?.counter_background_color,
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -119,7 +135,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-hours'
                                     style={ {
-                                        color        : '#1B1B50',
+                                        color        : formData?.hour_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -130,7 +146,12 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '21', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.hour_text_color,
+                                        fontFamily : formData?.font_family,
+                                    } }
+                                >
                                     { __( 'Hours', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
@@ -148,9 +169,10 @@ const Preview = ( { formData } ) => {
                                     width         : 64,
                                     color         : '#989FAB',
                                     height        : 64,
-                                    border        : `1px solid #ecedf0`,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : formData?.counter_background_color,
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -160,7 +182,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-minutes'
                                     style={ {
-                                        color        : '#1B1B50',
+                                        color        : formData?.minute_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -171,7 +193,12 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '02', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.minute_text_color,
+                                        fontFamily : formData?.font_family,
+                                    } }
+                                >
                                     { __( 'Min', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
@@ -189,9 +216,10 @@ const Preview = ( { formData } ) => {
                                     width         : 64,
                                     color         : '#989FAB',
                                     height        : 64,
-                                    border        : `1px solid #ecedf0`,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : formData?.counter_background_color,
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -201,7 +229,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-seconds'
                                     style={ {
-                                        color        : '#1B1B50',
+                                        color        : formData?.second_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -212,7 +240,12 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '33', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.second_text_color,
+                                        fontFamily : formData?.font_family,
+                                    } }
+                                >
                                     { __( 'Sec', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
@@ -266,8 +299,8 @@ const Preview = ( { formData } ) => {
                                 color          : '#fff',
                                 width          : 'fit-content',
                                 display        : 'flex',
-                                boxShadow      : '0px 12px 48px 0px rgba(27, 27, 80, 0.10)',
-                                background     : 'var(--gradient, linear-gradient(90deg, #32DBBE 0%, #008DFF 100%))',
+                                boxShadow      : defaultCounter ? '0px 12px 48px 0px rgba(27, 27, 80, 0.10)' : '',
+                                background     : defaultCounter ? 'var(--gradient, linear-gradient(90deg, #32DBBE 0%, #008DFF 100%))' : '',
                                 marginBottom   : 10,
                                 borderRadius   : 6,
                                 justifyContent : 'center',
@@ -277,9 +310,11 @@ const Preview = ( { formData } ) => {
                                 className='sgsb-countdown-timer-item ct-layout-2'
                                 style={ {
                                     width         : 64,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : !defaultCounter ? formData?.counter_background_color : '',
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -289,6 +324,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-days'
                                     style={ {
+                                        color        : formData?.day_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -299,13 +335,19 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '03', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.day_text_color,
+                                        fontFamily : formData?.font_family
+                                    } }
+                                >
                                     { __( 'Days', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
                                 style={ {
+                                    color      : !defaultCounter ? formData?.heading_text_color : '#FFFFFF',
                                     margin     : '0 14px',
                                     lineHeight : 4,
                                 } }
@@ -314,9 +356,11 @@ const Preview = ( { formData } ) => {
                                 className='sgsb-countdown-timer-item ct-layout-2'
                                 style={ {
                                     width         : 64,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : !defaultCounter ? formData?.counter_background_color : '',
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -326,6 +370,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-hours'
                                     style={ {
+                                        color        : formData?.hour_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -336,13 +381,19 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '21', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.hour_text_color,
+                                        fontFamily : formData?.font_family
+                                    } }
+                                >
                                     { __( 'Hours', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
                                 style={ {
+                                    color      : !defaultCounter ? formData?.heading_text_color : '#FFFFFF',
                                     margin     : '0 14px',
                                     lineHeight : 4,
                                 } }
@@ -351,9 +402,11 @@ const Preview = ( { formData } ) => {
                                 className='sgsb-countdown-timer-item ct-layout-2'
                                 style={ {
                                     width         : 64,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : !defaultCounter ? formData?.counter_background_color : '',
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -363,6 +416,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-minutes'
                                     style={ {
+                                        color        : formData?.minute_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -373,13 +427,19 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '02', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : formData?.minute_text_color,
+                                        fontFamily : formData?.font_family
+                                    } }
+                                >
                                     { __( 'Min', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>
                             <span
                                 className='sgsb-colon ct-layout-2'
                                 style={ {
+                                    color      : !defaultCounter ? formData?.heading_text_color : '#FFFFFF',
                                     margin     : '0 14px',
                                     lineHeight : 4,
                                 } }
@@ -388,9 +448,11 @@ const Preview = ( { formData } ) => {
                                 className='sgsb-countdown-timer-item ct-layout-2'
                                 style={ {
                                     width         : 64,
+                                    border        : `1px solid ${formData?.counter_border_color}`,
                                     height        : 64,
                                     fontSize      : 12,
                                     textAlign     : 'center',
+                                    background    : !defaultCounter ? formData?.counter_background_color : '',
                                     paddingTop    : 12,
                                     borderRadius  : 8,
                                     letterSpacing : 2,
@@ -400,6 +462,7 @@ const Preview = ( { formData } ) => {
                                 <strong
                                     className='sgsb-countdown-timer-item-seconds'
                                     style={ {
+                                        color        : formData?.second_text_color,
                                         display      : 'block',
                                         fontSize     : 24,
                                         lineHeight   : .75,
@@ -410,7 +473,12 @@ const Preview = ( { formData } ) => {
                                 >
                                     { __( '33', 'storegrowth-sales-booster' ) }
                                 </strong>
-                                <span style={ { fontFamily : formData?.font_family } }>
+                                <span
+                                    style={ {
+                                        color      : isProExists ? formData?.second_text_color : '#FFFFFF',
+                                        fontFamily : formData?.font_family
+                                    } }
+                                >
                                     { __( 'Sec', 'storegrowth-sales-booster' ) }
                                 </span>
                             </div>

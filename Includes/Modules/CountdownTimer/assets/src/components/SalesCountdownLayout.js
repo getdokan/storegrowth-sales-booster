@@ -45,10 +45,16 @@ function SalesCountdownLayout({ navigate, useSearchParams ,moduleId}) {
   const initialSalesCountdownData = {
     font_family                   : 'roboto',
     border_color                  : '#1677FF',
+    day_text_color                : '#1B1B50',
     selected_theme                : 'ct-layout-1',
+    hour_text_color               : '#1B1B50',
+    minute_text_color             : '#1B1B50',
+    second_text_color             : '#1B1B50',
     countdown_heading             : '[discount]% OFF',
-    heading_text_color            : '#008dff',
-    widget_background_color       : '#ffffff',
+    heading_text_color            : '#008DFF',
+    counter_border_color          : '#ECEDF0',
+    widget_background_color       : '#FFFFFF',
+    counter_background_color      : '#FFFFFF',
     shop_page_countdown_enable    : false,
     product_page_countdown_enable : true,
   };

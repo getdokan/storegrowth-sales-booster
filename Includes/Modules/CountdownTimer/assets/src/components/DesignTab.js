@@ -9,6 +9,7 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import "../styles/countdown-timer.css";
 import Templates from "./Templates";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import {applyFilters} from "@wordpress/hooks";
 
 function DesignTab( props ) {
   const {
@@ -86,6 +87,15 @@ function DesignTab( props ) {
           changeHandler={onFieldChange}
           title={__("Heading Text Color", "storegrowth-sales-booster")}
         />
+
+        {/* Rendered countdown settings. */}
+        { applyFilters(
+          'sgsb_append_countdown_design_settings',
+          '',
+          formData,
+          onFieldChange
+        ) }
+
         <ActionsHandler
           resetHandler={onFormReset}
           loadingHandler={buttonLoading}
