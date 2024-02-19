@@ -1,9 +1,6 @@
 import { notification } from "antd";
 import { __ } from "@wordpress/i18n";
-import {
-  useEffect,
-  useState,
-} from "@wordpress/element";
+import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import { Fragment } from "react";
 import SettingsTab from "./SettingsTab";
@@ -17,38 +14,43 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
+function FreeShippingBarLayout({
+  outlet: Outlet,
+  navigate,
+  useSearchParams,
+  moduleId,
+}) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
   const initialShipData = {
-    bar_type                       : "normal",
-    user_type                      : "both",
-    font_size                      : 20,
-    text_color                     : "#ffffff",
-    icon_color                     : "#ffffff",
-    font_family                    : "poppins",
-    banner_delay                   : 7,
-    bar_position                   : "top",
-    bar_template                   : 'shipping_bar_one',
-    discount_type                  : "free-shipping",
-    banner_height                  : 60,
-    banner_trigger                 : "after-few-seconds",
-    close_icon_color               : "#ffffff",
-    background_color               : "#0875FF",
-    banner_device_view             : ["banner-show-desktop"],
-    banner_show_option             : "banner-show-everywhere",
-    scroll_banner_delay            : 7,
-    cart_minimum_amount            : 10,
-    slected_page_option            : [],
-    goal_completion_text           : "You have successfully acquired free Shipping.",
-    discount_amount_mode           : "fixed-amount",
-    discount_amount_value          : "",
-    progressive_banner_text        : "Add more [amount] to get FREE SHIPPING.",
-    progressive_banner_icon_name   : 'shipping-bar-icon-1',
-    progressive_banner_custom_icon : '',
+    bar_type: "normal",
+    user_type: "both",
+    font_size: 20,
+    text_color: "#ffffff",
+    icon_color: "#ffffff",
+    font_family: "poppins",
+    banner_delay: 7,
+    bar_position: "top",
+    bar_template: "shipping_bar_one",
+    discount_type: "free-shipping",
+    banner_height: 60,
+    banner_trigger: "after-few-seconds",
+    close_icon_color: "#ffffff",
+    background_color: "#0875FF",
+    banner_device_view: ["banner-show-desktop"],
+    banner_show_option: "banner-show-everywhere",
+    scroll_banner_delay: 7,
+    cart_minimum_amount: 10,
+    slected_page_option: [],
+    goal_completion_text: "You have successfully acquired free Shipping.",
+    discount_amount_mode: "fixed-amount",
+    discount_amount_value: "",
+    progressive_banner_text: "Add more [amount] to get FREE SHIPPING.",
+    progressive_banner_icon_name: "shipping-bar-icon-1",
+    progressive_banner_custom_icon: "",
   };
 
   const [formData, setFormData] = useState({ ...initialShipData });
@@ -189,7 +191,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
   return (
     <Fragment>
       <PanelHeader
-        title={__("Free Shipping Bar Setting", "storegrowth-sales-booster")}
+        title={__("Free Shipping Rules Setting", "storegrowth-sales-booster")}
         moduleId={moduleId}
       />
       <PanelContainer>
@@ -202,13 +204,21 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+              <Preview
+                isProActive={isProEnabled}
+                formData={formData}
+                fontFamily={fontFamily}
+              />
             </PanelPreview>
           )}
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
-        <TouchPreview previewWidth={ 550 }>
-          <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+        <TouchPreview previewWidth={550}>
+          <Preview
+            isProActive={isProEnabled}
+            formData={formData}
+            fontFamily={fontFamily}
+          />
         </TouchPreview>
       </PanelContainer>
     </Fragment>
