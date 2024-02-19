@@ -12,7 +12,7 @@ const CountDownOne = ({ attributes }) => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [startDate, endDate]);
+    }, [startDate, endDate,discountText]);
 
     function calculateTimeRemaining() {
         const now = new Date();

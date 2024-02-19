@@ -28,7 +28,7 @@ $background_color = sgsb_find_option_setting( $settings, 'widget_background_colo
 				<?php echo wp_kses_post( $heading ); ?>
 			</p>
 
-		<div class="sgsb-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="sgsb-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?> 23:59:59">
 			<div class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>">
 				<strong class="sgsb-countdown-timer-item-days">00</strong>
 				<span>Days</span>

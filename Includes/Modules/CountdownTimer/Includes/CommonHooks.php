@@ -175,7 +175,7 @@ class CommonHooks {
 		$args = shortcode_atts( $defaults, $attr );
 
 		$heading       = $args['title'];
-		$start_date    = $args['start_date'];
+		$start_date    = sprintf( '%s 00:00:00', $args['start_date'] );
 		$end_date      = $args['end_date'];
 		$layout_class  = $args['template'];
 		$template_file = __DIR__ . '/../templates/short-code-timer.php';

@@ -16,6 +16,12 @@ $background_color = empty( $attributes['backgroundColor'] ) ? false : $attribute
 $start_date       = empty( $attributes['startDate'] ) ? false : $attributes['startDate'];
 $end_date         = empty( $attributes['endDate'] ) ? false : $attributes['endDate'];
 
+if ( strtotime( sprintf( '%s 00:00:00', $start_date ) ) > time() ) {
+	$heading      = 'Starts In';
+	$counter_time = sprintf( '%s 00:00:00', $start_date );
+} else {
+	$counter_time = sprintf( '%s 23:59:59', $end_date );
+}
 
 ?>
 <div
@@ -31,7 +37,7 @@ $end_date         = empty( $attributes['endDate'] ) ? false : $attributes['endDa
 				<?php echo wp_kses_post( $heading ); ?>
 			</p>
 
-		<div class="sgsb-countdown-timer-items ct-layout-1" data-end-date="<?php echo esc_attr( $end_date ); ?> 23:59:59">
+		<div class="sgsb-countdown-timer-items ct-layout-1" data-end-date="<?php echo esc_attr( $counter_time ); ?>">
 			<div class="sgsb-countdown-timer-item ct-layout-1">
 				<strong class="sgsb-countdown-timer-item-days">00</strong>
 				<span>Days</span>
