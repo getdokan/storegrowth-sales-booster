@@ -17,7 +17,7 @@ const SideBarController = ({ attributes, onFieldChange }) => {
           />
           <SalesDate attributes={attributes} onFieldChange={onFieldChange} />
         </PanelBody>
-        <PanelBody title={__("Countdown Desing", "storegrowth-sales-booster")}>
+        <PanelBody title={__("Countdown Design", "storegrowth-sales-booster")}>
           <ColourPicker
             name={"headingColor"}
             fieldValue={attributes?.headingColor}
