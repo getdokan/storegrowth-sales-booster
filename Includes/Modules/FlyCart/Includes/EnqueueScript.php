@@ -142,7 +142,7 @@ class EnqueueScript {
 	}
 
 	/**
-	 * Quick Cart Side cart design
+	 * Fly Cart Side cart design
 	 *
 	 * @return void
 	 */

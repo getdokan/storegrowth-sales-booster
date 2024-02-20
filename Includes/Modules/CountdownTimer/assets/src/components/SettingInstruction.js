@@ -14,7 +14,7 @@ const SettingInstruction = () => {
           </a>{" "}
           in woocommerce. Then select a desired product to <b>Edit</b>. In the
           product meta of woocommerce you will be able to see{" "}
-          <b>"Sales Countdown"</b>.
+          <b>"Countdown Timer"</b>.
         </p>
         <Image preview={false} src={scInstruction} />
         <div
@@ -45,7 +45,7 @@ const SettingInstruction = () => {
             onClick={() =>
               window.open(
                 "https://storegrowth.io/docs/sales-countdown/",
-                "_blank"
+                "_blank",
               )
             }
           >
