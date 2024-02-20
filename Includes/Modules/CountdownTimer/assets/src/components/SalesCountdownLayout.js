@@ -141,14 +141,26 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
 
   const [showUndo, setShowUndo] = useState({
     border_color            : false,
+    day_text_color          : false,
+    hour_text_color         : false,
+    minute_text_color       : false,
+    second_text_color       : false,
+    counter_border_color    : false,
     heading_text_color      : false,
-    widget_background_color : false
+    widget_background_color : false,
+    counter_background_color: false,
   });
 
   const colorKeyStack = [
     'border_color',
+    'day_text_color',
+    'hour_text_color',
+    'minute_text_color',
+    'second_text_color',
     'heading_text_color',
-    'widget_background_color'
+    'counter_border_color',
+    'widget_background_color',
+    'counter_background_color',
   ];
 
   const onFieldChange = (key, value) => {
