@@ -1,7 +1,7 @@
 import { addFilter } from "@wordpress/hooks";
 import SalesCountdownLayout from "./components/SalesCountdownLayout";
 import { StockOutlined } from "@ant-design/icons";
-import "./blocks/SalesCountdown";
+
 
 /**
  * Add routes to sidebar.

@@ -36,6 +36,13 @@ class Assets {
 	private $settings_page_hook = 'storegrowth_page_sgsb-settings';
 
 	/**
+	 * Module settings page slug.
+	 *
+	 * @var string
+	 */
+	private $post_page_hook = 'post.php';
+
+	/**
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
@@ -51,6 +58,7 @@ class Assets {
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
+
 		if ( $this->modules_page_hook === $hook ) {
 			$settings_file = require sgsb_plugin_path( 'assets/build/modules.asset.php' );
 
@@ -73,7 +81,7 @@ class Assets {
 			);
 		}
 
-		if ( $this->settings_page_hook === $hook ) {
+		if ( $this->settings_page_hook === $hook || $this->post_page_hook) {
 			$settings_file = require sgsb_plugin_path( 'assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
