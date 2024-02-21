@@ -11,7 +11,6 @@ import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSe
 import SectionHeader from "sales-booster/src/components/settings/Panels/SectionHeader";
 import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import OfferField from "./OfferField";
-import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 
 
 const BasicInfo = ({ clearErrors }) => {
@@ -109,11 +108,6 @@ const BasicInfo = ({ clearErrors }) => {
     }
   };
 
-  const orderBumpDeal = [
-    { key: 'products', value: __('Products', 'storegrowth-sales-booster') },
-    { key: 'categories', value: __('Categories', 'storegrowth-sales-booster') },
-  ];
-
   return (
     <Fragment>
       <SettingsSection>
@@ -128,48 +122,36 @@ const BasicInfo = ({ clearErrors }) => {
             "storegrowth-sales-booster"
           )}
         />
-        <TextRadioBox
-          name={`bump_type`}
-          title={__("Select Bump Type", "storegrowth-sales-booster")}
-          classes={""}
-          tooltip={__("Select the target bump type", "storegrowth-sales-booster")}
-          options={[...orderBumpDeal]}
-          fieldValue={createBumpData?.bump_type}
+        <MultiSelectBox
+          name={"target_products"}
           changeHandler={onFieldChange}
+          options={productListForSelect}
+          fieldValue={createBumpData.target_products.map(Number)}
+          title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Search for products",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The target product indicates for which specific products the upsell order bump option will be displayed.",
+            "storegrowth-sales-booster"
+          )}
         />
-        {createBumpData?.bump_type !== "categories" ? (
-          <MultiSelectBox
-            name={"target_products"}
-            changeHandler={onFieldChange}
-            options={productListForSelect}
-            fieldValue={createBumpData.target_products.map(Number)}
-            title={__("Select Target Product(s)", "storegrowth-sales-booster")}
-            placeHolderText={__(
-              "Search for products",
-              "storegrowth-sales-booster"
-            )}
-            tooltip={__(
-              "The target product indicates for which specific products the upsell order bump option will be displayed.",
-              "storegrowth-sales-booster"
-            )}
-          />
-        ) : (
-          <MultiSelectBox
-            name={"target_categories"}
-            changeHandler={onFieldChange}
-            fieldValue={createBumpData.target_categories.map(Number)}
-            options={products_and_categories.category_list.catForSelect}
-            title={__("Select Target Categories", "storegrowth-sales-booster")}
-            placeHolderText={__(
-              "Search for Categories",
-              "storegrowth-sales-booster"
-            )}
-            tooltip={__(
-              "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
-              "storegrowth-sales-booster"
-            )}
-          />
-        )}
+        <MultiSelectBox
+          name={"target_categories"}
+          changeHandler={onFieldChange}
+          fieldValue={createBumpData.target_categories.map(Number)}
+          options={products_and_categories.category_list.catForSelect}
+          title={__("Select Target Categories", "storegrowth-sales-booster")}
+          placeHolderText={__(
+            "Search for Categories",
+            "storegrowth-sales-booster"
+          )}
+          tooltip={__(
+            "The target categories indicates for which specific categories the upsell order bump option will be displayed.",
+            "storegrowth-sales-booster"
+          )}
+        />
         <MultiSelectBox
           name={"bump_schedule"}
           options={bumpSchedules}

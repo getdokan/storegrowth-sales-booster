@@ -51,12 +51,12 @@ const SettingInstruction = () => {
             }}
             onClick={() =>
               window.open(
-                "https://storegrowth.io/docs/free-shipping-bar-setting/",
+                "https://storegrowth.io/docs/free-shipping-bar/",
                 "_blank"
               )
             }
           >
-            Documentation
+            Documentaion
           </button>
         </div>
       </div>

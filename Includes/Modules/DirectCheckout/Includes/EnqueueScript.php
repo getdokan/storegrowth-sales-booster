@@ -194,13 +194,6 @@ class EnqueueScript {
             ';
 		}
 
-		wp_add_inline_style(
-            'sgsb-button-style',
-            apply_filters(
-                'sgsb_direct_checkout_button_inline_styles',
-                $custom_css,
-                $settings
-            )
-        );
+		wp_add_inline_style( 'sgsb-button-style', $custom_css );
 	}
 }

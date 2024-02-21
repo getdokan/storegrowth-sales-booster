@@ -11,7 +11,6 @@ import Templates from './Templates';
 
 function DesignTab(props) {
     const {
-        isValid,
         formData,
         setFormData,
         onFieldChange,
@@ -19,8 +18,6 @@ function DesignTab(props) {
         buttonLoading,
         fontFamily,
         onFormReset,
-        undoHandler,
-        showUndoIcon
     } = props;
 
     return (
@@ -53,75 +50,41 @@ function DesignTab(props) {
                 ) }
 
                 <ColourPicker
-                    colSpan={12}
                     name={'background_color'}
-                    undoHandler={undoHandler}
-                    changeHandler={onFieldChange}
+                    colSpan={12}
                     fieldValue={formData.background_color}
-                    showUndoIcon={showUndoIcon?.background_color}
+                    changeHandler={onFieldChange}
                     title={__('Background Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    colSpan={12}
                     name={'text_color'}
-                    undoHandler={undoHandler}
-                    changeHandler={onFieldChange}
+                    colSpan={12}
                     fieldValue={formData.text_color}
-                    showUndoIcon={showUndoIcon?.text_color}
+                    changeHandler={onFieldChange}
                     title={__('Text Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    colSpan={12}
                     name={'icon_color'}
-                    undoHandler={undoHandler}
-                    changeHandler={onFieldChange}
+                    colSpan={12}
                     fieldValue={formData.icon_color}
-                    showUndoIcon={showUndoIcon?.icon_color}
+                    changeHandler={onFieldChange}
                     title={__('Icon Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    colSpan={12}
-                    undoHandler={undoHandler}
                     name={'close_icon_color'}
+                    colSpan={12}
                     changeHandler={onFieldChange}
                     fieldValue={formData.close_icon_color}
-                    showUndoIcon={showUndoIcon?.close_icon_color}
                     title={__('Close Button Color', 'storegrowth-sales-booster')}
                 />
-                { Boolean( formData.btn_style ) && (
-                    <Fragment>
-                        <ColourPicker
-                            colSpan={12}
-                            name={'btn_color'}
-                            undoHandler={undoHandler}
-                            changeHandler={onFieldChange}
-                            fieldValue={formData.btn_color}
-                            showUndoIcon={showUndoIcon?.btn_color}
-                            title={__('CTA Background', 'storegrowth-sales-booster')}
-                        />
-                        <ColourPicker
-                            colSpan={12}
-                            name={'btn_text_color'}
-                            undoHandler={undoHandler}
-                            changeHandler={onFieldChange}
-                            fieldValue={formData.btn_text_color}
-                            showUndoIcon={showUndoIcon?.btn_text_color}
-                            title={__( 'CTA Text Color', 'storegrowth-sales-booster')}
-                        />
-                    </Fragment>
-                ) }
             </SettingsSection>
 
-            <Templates
-                formData={ formData }
-                setFormData={ setFormData }
-                showUndoIcon={ showUndoIcon }
-            />
+            <Templates formData={ formData } setFormData={ setFormData } />
 
             <ActionsHandler
                 resetHandler={onFormReset}
                 loadingHandler={buttonLoading}
-                saveHandler={isValid && onFormSave}
+                saveHandler={onFormSave}
             />
         </Fragment>
     );

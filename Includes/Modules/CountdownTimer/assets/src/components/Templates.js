@@ -7,7 +7,7 @@ import {applyFilters} from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
 import CountDownTwo from "./Templates/CountDownTwo";
 
-const Templates = ( { formData, setFormData, showUndoIcon } ) => {
+const Templates = ( { formData, setFormData } ) => {
     let templates = [
         { key: 'ct-layout-1', component: <CountDownOne /> },
         { key: 'ct-layout-2', component: <CountDownTwo /> },
@@ -41,10 +41,6 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
     );
 
     const onTemplateChange = ( name, value ) => {
-        for ( let key in showUndoIcon ) {
-            showUndoIcon[key] = false;
-        }
-
         setFormData( {
             ...formData,
             ...templateStyles?.[ value ]

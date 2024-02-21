@@ -5,7 +5,7 @@ const PanelSettings = ( {
     tabPanels,
     activeTab,
     changeHandler,
-    colSpan = 12,
+    colSpan = 12
 } ) => {
     return (
         // Handle settings column width dynamically by using colSpan.
@@ -14,8 +14,8 @@ const PanelSettings = ( {
             <TabPanels
                 tabPanels={ tabPanels }
                 activeTab={ activeTab }
-                changeHandler={ changeHandler }
                 classes={ `settings-panel ${ colSpan === 24 ? 'full-width' : '' }` }
+                changeHandler={ changeHandler }
             />
         </Col>
     );

@@ -81,11 +81,6 @@ class EnqueueScript {
 				$settings_file['version'],
 				false
 			);
-
-            // Pass the Cart URL to the JavaScript file
-            wp_localize_script('sgsb-pd-banner-settings', 'sgsbFsbData', array(
-                'cartUrl' => wc_get_cart_url(), // WooCommerce Cart URL
-            ));
 		}
 	}
 

@@ -65,7 +65,6 @@ export const createBumpForm = {
     smart_offer: false,
     offer_product: '',
     offer_type: [],
-    bump_type: 'products',
     offer_amount: '',
     box_border_style: 'solid',
     box_border_color: '#32DBBE',

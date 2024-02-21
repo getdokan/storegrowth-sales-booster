@@ -1,7 +1,6 @@
 import React from 'react';
 import BarIcon from "./BarIcon";
 import {__} from "@wordpress/i18n";
-import {extractedTitle} from "sales-booster/src/utils/helper";
 
 const Preview = ( { isProActive, formData, fontFamily } ) => {
     const bannerStyle = {
@@ -60,24 +59,8 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                         fontSize: formData.font_size,
                     }}
                 >
-                    { Boolean( formData.btn_style ) ? extractedTitle( dynamicText, 19 ) : dynamicText }
+                    {dynamicText}
                 </span>
-                { Boolean( formData.btn_style ) && (
-                    <span
-                        className='fs-bar-action-button'
-                        style={ {
-                            color           : formData?.btn_text_color,
-                            padding         : '5px 15px',
-                            fontSize        : 14,
-                            fontWeight      : 600,
-                            fontFamily      : 'Poppins',
-                            borderRadius    : '5px',
-                            backgroundColor : formData?.btn_color,
-                        } }
-                    >
-                        { extractedTitle( formData?.btn_text, 15 ) }
-                    </span>
-                ) }
                 <div
                     className='sgsb-pd-banner-bar-remove'
                     style={{

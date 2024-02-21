@@ -10,12 +10,10 @@ const ColourPicker = ( {
     name,
     title,
     tooltip,
-    undoHandler,
     changeHandler,
     colSpan = 24,
     fieldValue = '#82B9FF',
-    needUpgrade = false,
-    showUndoIcon = false,
+    needUpgrade = false
 } ) => {
     const colors = [
         '#000000',
@@ -66,26 +64,16 @@ const ColourPicker = ( {
                 </div>
             </Col>
             <Col span={9}>
-                <div
-                    style={ {
-                        gap            : 16,
-                        display        : 'flex',
-                        alignItems     : 'center',
-                        justifyContent : 'flex-end',
-                    } }
-                >
-                    { showUndoIcon && <span onClick={ () => undoHandler( name ) } className="dashicons dashicons-undo"></span> }
-                    {/* Handle settings color-picker field by using dynamic props */}
-                    <ColorPicker
-                        value={fieldValue}
-                        presets={presetColors}
-                        disabled={needUpgrade}
-                        className={`settings-field color-picker-field`}
-                        onChange={(v, hex) => changeHandler(name, hex)}
-                    />
-                </div>
+                {/* Handle settings color-picker field by using dynamic props */}
+                <ColorPicker
+                    value={ fieldValue }
+                    presets={ presetColors }
+                    disabled={ needUpgrade }
+                    className={ `settings-field color-picker-field` }
+                    onChange={ ( v, hex ) => changeHandler( name, hex ) }
+                />
             </Col>
-            {needUpgrade && <UpgradeOverlay/>}
+            { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }
