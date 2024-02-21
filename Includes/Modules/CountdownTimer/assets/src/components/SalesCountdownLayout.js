@@ -43,25 +43,82 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
     },
   ];
   const initialSalesCountdownData = {
-    border_color: "#1677FF",
-    selected_theme: "ct-layout-1",
-    countdown_heading: "[discount]% OFF",
-    heading_text_color: "#008dff",
-    widget_background_color: "#ffffff",
-    shop_page_countdown_enable: false,
-    product_page_countdown_enable: true,
+    font_family                   : 'roboto',
+    border_color                  : '#1677FF',
+    day_text_color                : '#1B1B50',
+    selected_theme                : 'ct-layout-1',
+    hour_text_color               : '#1B1B50',
+    minute_text_color             : '#1B1B50',
+    second_text_color             : '#1B1B50',
+    countdown_heading             : '[discount]% OFF',
+    heading_text_color            : '#008DFF',
+    counter_border_color          : '#ECEDF0',
+    widget_background_color       : '#FFFFFF',
+    counter_background_color      : '#FFFFFF',
+    shop_page_countdown_enable    : false,
+    product_page_countdown_enable : true,
   };
 
   const [formData, setFormData] = useState({
     ...initialSalesCountdownData,
   });
+  const [undoData, setUndoData] = useState({
+    ...initialSalesCountdownData,
+  });
+
+  const undoState = {
+    border_color            : false,
+    day_text_color          : false,
+    hour_text_color         : false,
+    minute_text_color       : false,
+    second_text_color       : false,
+    counter_border_color    : false,
+    heading_text_color      : false,
+    widget_background_color : false,
+    counter_background_color: false,
+  };
 
   const onFormReset = () => {
     setFormData({ ...initialSalesCountdownData });
+    setShowUndo( { ...undoState } );
   };
 
   const changeTab = (key) => {
     navigate("/countdown-timer?tab_name=" + key);
+  };
+
+  const [showUndo, setShowUndo] = useState( { ...undoState } );
+
+  const colorKeyStack = [
+    'border_color',
+    'day_text_color',
+    'hour_text_color',
+    'minute_text_color',
+    'second_text_color',
+    'heading_text_color',
+    'counter_border_color',
+    'widget_background_color',
+    'counter_background_color',
+  ];
+
+  const onFieldChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({ ...showUndo, [key]: true });
+    }
+  };
+
+  const onUndoClick = ( key ) => {
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({
+        ...showUndo,
+        [key]: false,
+      });
+      setFormData({
+        ...formData,
+        [key]: undoData?.[key],
+      });
+    }
   };
 
   const notificationMessage = (type) => {
@@ -96,8 +153,10 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
         data: data,
       })
       .success(() => {
+        setShowUndo(false);
         setButtonLoading(false);
         notificationMessage(type);
+        setUndoData({ ...formData });
       });
   };
 
@@ -116,6 +175,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       .success((response) => {
         if (response.success) {
           setFormData({ ...formData, ...response.data });
+          setUndoData({ ...undoData, ...response.data });
           setTimeout(() => setPageLoading(false), 500);
         }
       });
@@ -127,10 +187,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
 
   const handleSelect = (theme) => {
     onFieldChange("selected_theme", theme);
-  };
-
-  const onFieldChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
   };
 
   const noop = () => {};
@@ -167,16 +223,18 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
-          formData={formData}
-          setFormData={setFormData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          handleSelect={handleSelect}
-          noop={noop}
-          options={options}
+          showUndoIcon={ showUndo }
+          undoHandler={ onUndoClick }
+          formData={ formData }
+          setFormData={ setFormData }
+          onFieldChange={ onFieldChange }
+          onFormSave={ () => onFormSave( 'design' ) }
+          upgradeTeaser={ !isProEnabled }
+          buttonLoading={ buttonLoading }
+          onFormReset={ onFormReset }
+          handleSelect={ handleSelect }
+          noop={ noop }
+          options={ options }
         />
       ),
     },
@@ -190,10 +248,10 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={showPreview && tabName ? 12 : 24}
             tabPanels={tabPanels}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
+            colSpan={showPreview && tabName ? 12 : 24}
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>

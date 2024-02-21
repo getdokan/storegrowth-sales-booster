@@ -1,5 +1,6 @@
 import React from "react";
 import { __ } from "@wordpress/i18n";
+import { extractedTitle } from "sales-booster/src/utils/helper";
 
 const ShippingBarOne = () => {
     return (
@@ -73,9 +74,23 @@ const ShippingBarOne = () => {
                         position   : 'relative',
                     }}
                 >
-                    { __( 'Add more $10 to get FREE SHIPPING.', 'storegrowth-sales-booster' ) }
+                    { __( 'Add more $10 to get...', 'storegrowth-sales-booster' ) }
                 </div>
             </div>
+            <span
+                className='fs-bar-action-button'
+                style={ {
+                    color           : '#073b4c',
+                    padding         : '1px 15px',
+                    fontSize        : 14,
+                    fontWeight      : 600,
+                    fontFamily      : 'Poppins',
+                    borderRadius    : '5px',
+                    backgroundColor : '#ffffff',
+                } }
+            >
+                { __( 'Cart', 'storegrowth-sales-booster' ) }
+            </span>
             <svg
                 width='16'
                 height='16'
