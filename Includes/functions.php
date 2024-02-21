@@ -166,3 +166,18 @@ if ( ! function_exists( 'storegrowth_sales_booster_start_plugin_tracking' ) ) {
 
 	storegrowth_sales_booster_start_plugin_tracking();
 }
+/**
+ * Register ajax callback
+ */
+add_action('wp_ajax_sgsb_get_user_concent_data', 'sgsb_get_user_concent_data');
+
+/**
+ * Get User Concent Data
+ */
+function sgsb_get_user_concent_data() {
+	// check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
+	error_log('true');
+	print_r($_POST);
+	wp_send_json_success(array('message' => 'Success message'));
+	wp_die();
+}

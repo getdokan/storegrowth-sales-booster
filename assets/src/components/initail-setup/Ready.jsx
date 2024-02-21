@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { Switch } from 'antd';
 import { __ } from "@wordpress/i18n";
 
@@ -7,17 +7,39 @@ const Ready = () => {
   const [updateNews, setupdateNews] = useState(true);
   const [userDetails, setUserdetails] = useState(true);
 
-  const getUserDetails=()=> {
-    if (updateNews === true || userDetails === true) {
-      console.log("Send Data");
-    } else {
-      return;
-    }
-  }
+    useEffect(() => {
+      const getUserDetails = async () => {
+        console.log('true');
+        try {
+          if (updateNews === true || userDetails === true) {
+            const response = await fetch('/wp-admin/admin-ajax.php', {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                _ajax_nonce: sgsbAdmin.nonce,
+                action: 'sgsb_get_user_concent_data',
+              }),
+            });
 
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
 
-  console.log(updateNews);
-  console.log(userDetails);
+            const data = await response.json();
+            console.log(data);
+          }
+        } catch (error) {
+          console.error('Error fetching license key:', error);
+        }
+      };
+
+      getUserDetails(); // Call getUserDetails within useEffect
+    }, []);
+  };
+  
   return (
     <Fragment>
       <div className="sgsb-step-completion">
