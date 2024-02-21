@@ -21,28 +21,36 @@ function DesignTab( props ) {
     noop,
     options,
     handleSelect,
+    undoHandler,
+    showUndoIcon
   } = props;
 
   return (
     <Fragment>
       <SettingsSection>
         <ColourPicker
+          undoHandler={undoHandler}
           name={"widget_background_color"}
           fieldValue={formData.widget_background_color}
+          showUndoIcon={showUndoIcon?.widget_background_color}
           changeHandler={onFieldChange}
           title={__("Widget Background Color", "storegrowth-sales-booster")}
         />
 
         <ColourPicker
+          undoHandler={undoHandler}
           name={"border_color"}
           fieldValue={formData.border_color}
+          showUndoIcon={showUndoIcon?.border_color}
           changeHandler={onFieldChange}
           title={__("Border Color", "storegrowth-sales-booster")}
         />
 
         <ColourPicker
+          undoHandler={undoHandler}
           name={"heading_text_color"}
           fieldValue={formData.heading_text_color}
+          showUndoIcon={showUndoIcon?.heading_text_color}
           changeHandler={onFieldChange}
           title={__("Heading Text Color", "storegrowth-sales-booster")}
         />
@@ -53,20 +61,11 @@ function DesignTab( props ) {
         />
       </SettingsSection>
 
-      <Templates formData={ formData } setFormData={ setFormData } />
-
-      {/*<Form.Item label="Theme" labelAlign="left">*/}
-      {/*  <div className="sgsb-countdown-theme">*/}
-      {/*    {options.map((option, index) => (*/}
-      {/*      <Selector*/}
-      {/*        key={index}*/}
-      {/*        option={option}*/}
-      {/*        onSelect={() => handleSelect(option.theme)}*/}
-      {/*        isSelected={option.theme === formData.selected_theme}*/}
-      {/*      />*/}
-      {/*    ))}*/}
-      {/*  </div>*/}
-      {/*</Form.Item>*/}
+      <Templates
+        formData={ formData }
+        setFormData={ setFormData }
+        showUndoIcon={ showUndoIcon }
+      />
     </Fragment>
   );
 }
