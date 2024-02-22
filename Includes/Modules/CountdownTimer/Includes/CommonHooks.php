@@ -25,9 +25,7 @@ class CommonHooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
-		add_shortcode( 'sgsb_countdown_timer', array( $this, 'sgsb_countdown_timer_short_code' ) );
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_countdown_timer_template' ) );
-
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'woocommerce_product_data_panels' ) );
 		add_action( 'woocommerce_admin_process_product_object', array( $this, 'woocommerce_admin_process_product_object' ) );
@@ -155,40 +153,5 @@ class CommonHooks {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Generate countdown timer shortcode.
-	 *
-	 * @param array $attr Shortcode attributes.
-	 * @return string HTML content for the countdown timer.
-	 */
-	public function sgsb_countdown_timer_short_code( $attr ) {
-		ob_start();
-		$defaults = array(
-			'title'      => 'Discount 50% off',
-			'start_date' => '',
-			'end_date'   => '',
-			'template'   => 'ct-layout-1',
-		);
-
-		$args = shortcode_atts( $defaults, $attr );
-
-		$heading       = $args['title'];
-		$start_date    = sprintf( '%s 00:00:00', $args['start_date'] );
-		$end_date      = $args['end_date'];
-		$layout_class  = $args['template'];
-		$template_file = __DIR__ . '/../templates/short-code-timer.php';
-
-		// Check start date is later.
-		if ( strtotime( $start_date ) > time() ) {
-			return false;
-		}
-		if ( file_exists( $template_file ) ) {
-			include $template_file;
-		} else {
-			echo 'Error: Template file not found.';
-		}
-		return ob_get_clean();
 	}
 }
