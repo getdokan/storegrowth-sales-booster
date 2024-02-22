@@ -55,7 +55,7 @@ class ProgressiveDiscountBannerModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Free Shipping Bar';
+		return 'Free Shipping Rules';
 	}
 
 	/**

@@ -34,24 +34,24 @@ const TextRadioBox = ( {
                     { needUpgrade && !fieldWidth && <UpgradeCrown /> }
                 </div>
             </Col>
-                <Col
-                    span={ 15 }
-                    style={ { display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 12 } }
-                >
-                    {/* Handle settings radio field by using dynamic props */}
-                    { options && options?.length > 0 && (
-                        <Radio.Group
-                            buttonStyle='solid'
-                            value={ fieldValue }
-                            // className={ `settings-field radio-field ${ classes }` }
-                            onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
-                        >
-                            { options?.map(
-                                option => <Radio key={option?.key} disabled={ option?.disabled } value={ option?.key }>{ option?.value }</Radio>
-                            ) }
-                        </Radio.Group>
-                    ) }
-                </Col>
+            <Col
+                span={ 15 }
+                style={ { display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 12 } }
+            >
+                {/* Handle settings radio field by using dynamic props */}
+                { options && options?.length > 0 && (
+                    <Radio.Group
+                        buttonStyle='solid'
+                        value={ fieldValue }
+                        // className={ `settings-field radio-field ${ classes }` }
+                        onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
+                    >
+                        { options?.map(
+                            option => <Radio key={option?.key} disabled={ option?.disabled } value={ option?.key }>{ option?.value }</Radio>
+                        ) }
+                    </Radio.Group>
+                ) }
+            </Col>
             { needUpgrade && <UpgradeOverlay /> }
         </FieldWrapper>
     );
