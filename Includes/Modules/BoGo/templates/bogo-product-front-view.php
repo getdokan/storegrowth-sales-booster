@@ -6,6 +6,8 @@
  */
 
 // Check if essential variables are set before using them.
+use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
+
 if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :
         __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' );
@@ -47,6 +49,8 @@ if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular
 						</h3>
 
 						<?php
+                        $show_regular_price = Helper::sgsb_get_bogo_settings_option( 'regular_price_show' );
+
 						// Collect offer product categories.
 						$product_id         = ! empty( $bogo_info->offered_products ) ? absint( $bogo_info->offered_products ) : 0;
 						$product_categories = wp_get_post_terms( $product_id, 'product_cat' );
@@ -67,9 +71,14 @@ if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular
 						<?php endif; ?>
 					</div>
 				</div>
-				<div class="offer-price" style="color: <?php echo esc_attr( $bogo_info->product_description_text_color ); ?>;
-												font-size: <?php echo esc_attr( $bogo_info->product_description_font_size ); ?>px;">
-					<span style="text-decoration: line-through;">
+				<div
+                    class="offer-price"
+                    style="
+                        color: <?php echo esc_attr( $bogo_info->product_description_text_color ); ?>;
+                        font-size: <?php echo esc_attr( $bogo_info->product_description_font_size ); ?>px;
+                    "
+                >
+					<span style="text-decoration: line-through; display: <?php echo esc_attr( $show_regular_price ? 'inline-block' : 'none' ); ?>;">
 						<?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $regular_price, 2 ) ); ?>
 					</span>
 					&nbsp;
