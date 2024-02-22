@@ -14,7 +14,16 @@ if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular
 	?>
 
 	<div class='template-overview-area'>
-		<div class="offer-main-wrap" style="<?php echo 'no_border' !== $bogo_info->box_border_style ? 'border: 2px ' . esc_attr( $bogo_info->box_border_style ) . ' ' . esc_attr( $bogo_info->box_border_color ) : ''; ?>">
+		<div
+            class="offer-main-wrap"
+            style="
+                <?php
+                    echo ( 'no_border' !== $bogo_info->box_border_style ?
+                    'border: 2px ' . esc_attr( $bogo_info->box_border_style ) . ' ' . esc_attr( $bogo_info->box_border_color ) . '; ' : '' ) .
+                    'margin-top: ' . esc_attr( $bogo_info->box_top_margin ) . 'px; margin-bottom: ' .  esc_attr( $bogo_info->box_bottom_margin ) . 'px;'
+                ?>
+            "
+        >
 			<div class="dynamic-offer-text" style="background: <?php echo esc_attr( $bogo_info->discount_background_color ); ?>;
 													color: <?php echo esc_attr( $bogo_info->discount_text_color ); ?>;
 													font-size: <?php echo esc_attr( $bogo_info->discount_font_size ); ?>px;">

@@ -62,12 +62,10 @@
 }
 
 .offer-main-wrap{
-  border: 2px solid #32DBBE;
   width: 100%;
   padding: 15px;
   background: #fff;
   border-radius: 15px;
-  margin-bottom: 48px;
 }
 
 .offer-main-wrap .dynamic-offer-text{
@@ -156,6 +154,54 @@
   background: rgba(48, 33, 182, 0.678);
   margin-bottom: 20px;
   padding: 5px;
+}
+
+.single-product div.product {
+    overflow: visible !important;
+}
+
+.bogo-badge-tooltip {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.bogo-badge-tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    background-color: #555;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.bogo-badge-tooltip:hover::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+    transition: border-color 0.3s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.bogo-badge-tooltip:hover::after,
+.bogo-badge-tooltip:hover::before {
+    visibility: visible;
+    opacity: 1;
 }
 
 .bogo-badge-image {

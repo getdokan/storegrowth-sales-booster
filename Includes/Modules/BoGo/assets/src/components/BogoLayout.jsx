@@ -7,7 +7,7 @@ import CreateBogoButton from "./CreateBogoButton";
 function BogoLayout({ outlet: Outlet, navigate, useSearchParams }) {
     return (
         <Fragment>
-            <PanelHeader title={__('BOGO Settings', 'storegrowth-sales-booster')}>
+            <PanelHeader title={ __( 'BOGO Settings', 'storegrowth-sales-booster' ) } moduleId={ 'bogo' }>
                 <CreateBogoButton navigate={navigate} useSearchParams={useSearchParams} />
             </PanelHeader>
             <PanelContainer>

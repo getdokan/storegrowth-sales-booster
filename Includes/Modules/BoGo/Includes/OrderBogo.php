@@ -60,14 +60,17 @@ class OrderBogo {
         $product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
 
         $offer_badge         = '';
+        $shop_page_msg       = '';
+        $selected_offer      = array();
         $offer_badge_url     = '';
+        $product_page_msg    = '';
         $product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
         if ( $product_bogo_status === 'yes' ) {
-            $offer_badge_url = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
+            $shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : $shop_page_msg;
+            $offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
+            $product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : $product_page_msg;
         } else {
-            $selected_offer = array();
-            $offers         = Helper::sgsb_get_global_offered_product_list();
-
+            $offers = Helper::sgsb_get_global_offered_product_list();
             foreach ( $offers as $offer ) {
                 if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
                     $selected_offer = $offer;
@@ -75,22 +78,26 @@ class OrderBogo {
                 }
             }
 
+            $shop_page_msg    = ! empty( $selected_offer['shop_page_message'] ) ? esc_html( $selected_offer['shop_page_message'] ) : $shop_page_msg;
+            $product_page_msg = ! empty( $selected_offer['product_page_message'] ) ? esc_html( $selected_offer['product_page_message'] ) : $product_page_msg;
             if ( ! empty( $selected_offer ) ) {
+                $is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
                 if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
                     $offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
-                    $offer_badge_url = ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
+                    $offer_badge_url = $is_pro && ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
                 } else {
                     $offer_badge     = Helper::sgsb_get_bogo_settings_option( 'default_badge_icon_name' );
-                    $offer_badge_url = Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' );
+                    $offer_badge_url = $is_pro ? Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
                 }
             }
         }
 
-        if ( ! file_exists( __DIR__ . '/../templates/bogo-offer-badge.php' ) ) {
+        $path = apply_filters( 'sgsb_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
+        if ( ! file_exists( $path ) ) {
             return;
         }
 
-        include __DIR__ . '/../templates/bogo-offer-badge.php';
+        include $path;
     }
 
     public function handle_cart_update() {
@@ -157,11 +164,12 @@ class OrderBogo {
 
         // Check offer dates
         $current_date = date( 'Y-m-d' );
-        if ( isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
+        $is_pro       = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
+        if ( $is_pro && isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
             return false;
         }
 
-        if ( isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
+        if ( $is_pro && isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
             return false;
         }
 
@@ -234,7 +242,7 @@ class OrderBogo {
         if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
             $can_remove_offer_product = Helper::sgsb_get_bogo_settings_option( 'offer_remove_from_cart', false );
             // Append custom class for BOGO offered product.
-            $class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option' : ' sgsb-bogo-offer-applied';
+            $class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied' : ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option';
         }
 
         return $class;
