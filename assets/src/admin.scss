@@ -2388,6 +2388,12 @@ End Settings Sidebar
                         fill: #FFF !important;
                       }
                     }
+                    .radio-icon-stroke {
+                      path {
+                        fill: none !important;
+                        stroke: #fff !important;
+                      }
+                    }
                   }
                 }
 

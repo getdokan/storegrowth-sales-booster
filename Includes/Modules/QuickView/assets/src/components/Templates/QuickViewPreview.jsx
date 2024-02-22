@@ -1,7 +1,7 @@
 import React from "react";
 import { Button ,Image} from 'antd';
 import QuickViewIcon from "../QuickViewIcon";
-import ProductImage from '../../../images/bump-preview.svg'
+import ProductImage from '../../../images/dummy-product.svg'
 const QuickViewPreview = ({ formData }) => {
   console.log(ProductImage)
   const buttonStyle = {
@@ -50,15 +50,17 @@ const QuickViewPreview = ({ formData }) => {
           className="summary entry-summary"
           style={{
             height: "100%",
-            overflowX: "hidden",
-            overflowY: "auto",
             position: "relative",
+            width:"100%",
             background: `${formData?.modal_background_color}`,
           }}
         >
           <div
             className="summary-content"
             style={{
+              height: "inherit",
+              overflowX: "hidden",
+              overflowY: "auto",
               padding: "20px",
             }}
           >
@@ -117,9 +119,11 @@ const QuickViewPreview = ({ formData }) => {
                 </span>
                 <span className="posted_in">
                   Category:{" "}
-                  <a href="#" rel="tag">
+                  <p style={{
+                    color:"blue",
+                  }} rel="tag">
                     Accessories
-                  </a>
+                  </p>
                 </span>
               </div>
             )}
