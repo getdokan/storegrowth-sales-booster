@@ -37,7 +37,7 @@ class EnqueueScript {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		check_ajax_referer( 'sgsbqcv-security' );
+
 		$settings            = get_option( 'sgsb_quick_view_settings' );
 		$modal_effect        = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 		$enable_close_button = sgsb_find_option_setting( $settings, 'enable_close_button', true );
@@ -172,7 +172,6 @@ class EnqueueScript {
 						)
 					)
 				),
-
 				'quick_view'              => isset( $_REQUEST['quick-view'] ) ? absint( sanitize_key( $_REQUEST['quick-view'] ) ) : 0,
 			)
 		);
