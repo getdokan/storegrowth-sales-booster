@@ -67,8 +67,8 @@ class EnqueueScript {
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
 
+        wp_enqueue_media();
 		if ( ( $hook == 'post-new.php' || $hook == 'post.php' ) && 'product' === $post->post_type ) {
-			wp_enqueue_media();
 			wp_enqueue_style( 'sgsb-bogo-admin-style' );
 
 			wp_enqueue_script( 'select2' );
