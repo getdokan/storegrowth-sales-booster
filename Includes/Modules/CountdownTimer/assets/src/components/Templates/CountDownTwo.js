@@ -72,11 +72,14 @@ const CountDownTwo = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Merienda',
                             } }
                         >
                             { __( '03', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Days', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Merienda' } }>
+                            { __( 'Days', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-2'
@@ -93,7 +96,6 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -106,11 +108,14 @@ const CountDownTwo = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Merienda',
                             } }
                         >
                             { __( '21', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Hours', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Merienda' } }>
+                            { __( 'Hours', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-2'
@@ -127,7 +132,6 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -140,11 +144,14 @@ const CountDownTwo = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Merienda',
                             } }
                         >
                             { __( '02', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Min', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Merienda' } }>
+                            { __( 'Min', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                     <span
                         className='sgsb-colon ct-layout-2'
@@ -161,7 +168,6 @@ const CountDownTwo = () => {
                             padding       : '14px 0',
                             fontSize      : 12,
                             textAlign     : 'center',
-                            
                             borderRadius  : 8,
                             letterSpacing : 2,
                             textTransform : 'uppercase',
@@ -174,15 +180,17 @@ const CountDownTwo = () => {
                                 fontSize   : 24,
                                 lineHeight : .75,
                                 fontWeight : 500,
+                                fontFamily : 'Merienda',
                             } }
                         >
                             { __( '33', 'storegrowth-sales-booster' ) }
                         </strong>
-                        <span>{ __( 'Sec', 'storegrowth-sales-booster' ) }</span>
+                        <span style={ { fontFamily : 'Merienda' } }>
+                            { __( 'Sec', 'storegrowth-sales-booster' ) }
+                        </span>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }

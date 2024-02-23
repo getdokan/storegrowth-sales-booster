@@ -11,6 +11,7 @@ import Templates from './Templates';
 
 function DesignTab(props) {
     const {
+        isValid,
         formData,
         setFormData,
         onFieldChange,
@@ -18,6 +19,8 @@ function DesignTab(props) {
         buttonLoading,
         fontFamily,
         onFormReset,
+        undoHandler,
+        showUndoIcon
     } = props;
 
     return (
@@ -50,41 +53,75 @@ function DesignTab(props) {
                 ) }
 
                 <ColourPicker
-                    name={'background_color'}
                     colSpan={12}
-                    fieldValue={formData.background_color}
+                    name={'background_color'}
+                    undoHandler={undoHandler}
                     changeHandler={onFieldChange}
+                    fieldValue={formData.background_color}
+                    showUndoIcon={showUndoIcon?.background_color}
                     title={__('Background Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    name={'text_color'}
                     colSpan={12}
-                    fieldValue={formData.text_color}
+                    name={'text_color'}
+                    undoHandler={undoHandler}
                     changeHandler={onFieldChange}
+                    fieldValue={formData.text_color}
+                    showUndoIcon={showUndoIcon?.text_color}
                     title={__('Text Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    name={'icon_color'}
                     colSpan={12}
-                    fieldValue={formData.icon_color}
+                    name={'icon_color'}
+                    undoHandler={undoHandler}
                     changeHandler={onFieldChange}
+                    fieldValue={formData.icon_color}
+                    showUndoIcon={showUndoIcon?.icon_color}
                     title={__('Icon Color', 'storegrowth-sales-booster')}
                 />
                 <ColourPicker
-                    name={'close_icon_color'}
                     colSpan={12}
+                    undoHandler={undoHandler}
+                    name={'close_icon_color'}
                     changeHandler={onFieldChange}
                     fieldValue={formData.close_icon_color}
+                    showUndoIcon={showUndoIcon?.close_icon_color}
                     title={__('Close Button Color', 'storegrowth-sales-booster')}
                 />
+                { Boolean( formData.btn_style ) && (
+                    <Fragment>
+                        <ColourPicker
+                            colSpan={12}
+                            name={'btn_color'}
+                            undoHandler={undoHandler}
+                            changeHandler={onFieldChange}
+                            fieldValue={formData.btn_color}
+                            showUndoIcon={showUndoIcon?.btn_color}
+                            title={__('CTA Background', 'storegrowth-sales-booster')}
+                        />
+                        <ColourPicker
+                            colSpan={12}
+                            name={'btn_text_color'}
+                            undoHandler={undoHandler}
+                            changeHandler={onFieldChange}
+                            fieldValue={formData.btn_text_color}
+                            showUndoIcon={showUndoIcon?.btn_text_color}
+                            title={__( 'CTA Text Color', 'storegrowth-sales-booster')}
+                        />
+                    </Fragment>
+                ) }
             </SettingsSection>
 
-            <Templates formData={ formData } setFormData={ setFormData } />
+            <Templates
+                formData={ formData }
+                setFormData={ setFormData }
+                showUndoIcon={ showUndoIcon }
+            />
 
             <ActionsHandler
                 resetHandler={onFormReset}
                 loadingHandler={buttonLoading}
-                saveHandler={onFormSave}
+                saveHandler={isValid && onFormSave}
             />
         </Fragment>
     );

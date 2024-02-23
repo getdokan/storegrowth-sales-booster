@@ -122,10 +122,10 @@ function ActionButton({ navigate, bump_id }) {
   );
 }
 
-function TargetProductAndCategory({ catList, productList }) {
-  return (
-    <>
-      {productList && (
+function TargetProductAndCategory({ type, catList, productList }) {
+    return (
+    <Fragment>
+      {type === 'products' && productList && (
         <div style={{ marginBottom: 12 }}>
           {__("Target Products", "storegrowth-sales-booster")} <br />
           <div className={`table-products`} style={{ marginTop: 8 }}>
@@ -136,7 +136,7 @@ function TargetProductAndCategory({ catList, productList }) {
         </div>
       )}
 
-      {catList && (
+      {type === 'categories' && catList && (
         <div>
           {__("Target Categories", "storegrowth-sales-booster")} <br />
           <div className={`table-categories`} style={{ marginTop: 8 }}>
@@ -146,7 +146,7 @@ function TargetProductAndCategory({ catList, productList }) {
           </div>
         </div>
       )}
-    </>
+    </Fragment>
   );
 }
 
@@ -186,7 +186,7 @@ function OrderBumpList({ navigate }) {
       align: "left",
     },
     {
-      title: "Target Product(s) and Categories",
+      title: "Target Product(s) or Categories",
       dataIndex: "product_category",
     },
     {
@@ -230,10 +230,10 @@ function OrderBumpList({ navigate }) {
       key: item,
       name: item.name_of_order_bump,
       product_category: (
-        <TargetProductAndCategory catList={catList} productList={productList} />
+        <TargetProductAndCategory type={item?.bump_type} catList={catList} productList={productList} />
       ),
       offers: <OfferProductContent offerProduct={ offerProduct } bumpItem={ item } />,
-      action: <ActionButton navigate={navigate} bump_id={item.id} />,
+      action: <ActionButton navigate={navigate} bump_id={item?.id} />,
     };
   }
 

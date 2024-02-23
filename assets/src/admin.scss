@@ -2033,6 +2033,15 @@ End Settings Sidebar
       .settings-panel {
         margin-right: 32px;
 
+        .dashicons {
+          color: #0875ff;
+          cursor: pointer;
+          &.dashicons-undo {
+            color: #0875ff;
+            cursor: pointer;
+          }
+        }
+
         .sgsb-settings-card {
           height: 100%;
           border-radius: 5px;
@@ -2275,6 +2284,10 @@ End Settings Sidebar
 
                 &.field-gap {
                   margin-bottom: 15px;
+                }
+
+                &.error {
+                  border-color: red;
                 }
               }
 

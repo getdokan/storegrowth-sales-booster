@@ -6,7 +6,7 @@ import ShippingBarOne from "./Templates/ShippingBarOne";
 import {applyFilters} from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";
 
-const Templates = ( { formData, setFormData } ) => {
+const Templates = ( { formData, setFormData, showUndoIcon } ) => {
     let templates = [
         { key: 'shipping_bar_one', component: <ShippingBarOne /> },
     ];
@@ -19,12 +19,17 @@ const Templates = ( { formData, setFormData } ) => {
 
     let templateStyles = {
         shipping_bar_one: {
+            btn_text                       : __( 'Cart', 'storegrowth-sales-booster' ),
             font_size                      : 20,
+            btn_style                      : true,
+            btn_color                      : "#ffffff",
             text_color                     : "#ffffff",
             icon_color                     : "#ffffff",
+            btn_target                     : sgsbFsbData?.cartUrl,
             font_family                    : "poppins",
             bar_template                   : 'shipping_bar_one',
             banner_height                  : 60,
+            btn_text_color                 : "#073b4c",
             close_icon_color               : "#ffffff",
             background_color               : "#0875FF",
             cart_minimum_amount            : 10,
@@ -41,6 +46,10 @@ const Templates = ( { formData, setFormData } ) => {
     );
 
     const onTemplateChange = ( name, value ) => {
+        for ( let key in showUndoIcon ) {
+            showUndoIcon[key] = false;
+        }
+
         setFormData( {
             ...formData,
             ...templateStyles?.[ value ]

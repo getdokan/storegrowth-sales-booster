@@ -14,7 +14,7 @@ addFilter(
 
     routes.push({
       name: moduleName,
-      label: "Sales Countdown",
+      label: "Countdown Timer",
       path: "/countdown-timer",
       element: (
         <SalesCountdownLayout
@@ -36,7 +36,7 @@ addFilter(
  */
 addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
   items.push({
-    label: <Link to="/countdown-timer">Sales Countdown</Link>,
+    label: <Link to="/countdown-timer">Countdown Timer</Link>,
     key: "countdown-timer",
     icon: <StockOutlined />,
   });
