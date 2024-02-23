@@ -31,8 +31,6 @@ class Ajax {
 		add_action( 'wp_ajax_nopriv_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
 		add_action( 'wp_ajax_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
-		// add_action( 'wp_ajax_load_modal_template', array( $this, 'load_modal_template_callback' ) );
-		// add_action( 'wp_ajax_nopriv_load_modal_template', array( $this, 'load_modal_template_callback' ) );
 	}
 
 	/**
@@ -64,44 +62,57 @@ class Ajax {
 		wp_send_json_success( $form_data );
 	}
 
+	/**
+	 * Quick view Ajax call.
+	 */
 	public function ajax_quickview_callback() {
 		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
 
 		global $post, $product;
 		$settings = get_option( 'sgsb_quick_view_settings' );
 
-		$product_id                  = absint( sanitize_key( $_REQUEST['product_id'] ) );
+		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );
 		$content_image               = 'all';
 		$content_view_details_button = sgsb_find_option_setting( $settings, 'show_view_details_button', false );
 		$content_image_lightbox      = 'no';
 
 		if ( $product ) {
+
 			$post = get_post( $product_id );
 			setup_postdata( $post );
 			$thumb_ids = array();
 
-			if ( $content_image === 'product_image' ) {
-				if ( $product_image = $product->get_image_id() ) {
+			if ( 'product_image' === $content_image ) {
+				$product_image = $product->get_image_id();
+				if ( $product_image ) {
 					$thumb_ids[] = $product_image;
 				}
-
-				if ( $product->is_type( 'variable' ) && ( $children = $product->get_visible_children() ) ) {
+				$children = $product->get_visible_children();
+				if ( $product->is_type( 'variable' ) && ( $children ) ) {
 					foreach ( $children as $child ) {
-						if ( ( $child_product = wc_get_product( $child ) ) && ( $child_product_image = $child_product->get_image_id() ) ) {
+						$child_product       = wc_get_product( $child );
+						$child_product_image = $child_product->get_image_id();
+						if ( $child_product && $child_product_image ) {
 							$thumb_ids[] = $child_product_image;
 						}
 					}
 				}
 			} else {
-				if ( $content_image === 'all' ) {
-					if ( $product_image = $product->get_image_id() ) {
-						$thumb_ids[] = $product_image;
+				if ( 'all' === $content_image ) {
+
+					if ( $product->get_image_id() ) {
+						$product_image = $product->get_image_id();
+						$thumb_ids[]   = $product_image;
 					}
 
-					if ( $product->is_type( 'variable' ) && ( $children = $product->get_visible_children() ) ) {
+					if ( $product->is_type( 'variable' ) && ( $product->get_visible_children() ) ) {
+						$children = $product->get_visible_children();
 						foreach ( $children as $child ) {
-							if ( ( $child_product = wc_get_product( $child ) ) && ( $child_product_image = $child_product->get_image_id() ) ) {
+							$child_product       = wc_get_product( $child );
+							$child_product_image = $child_product->get_image_id();
+
+							if ( $child_product && ( $child_product_image ) ) {
 								$thumb_ids[] = $child_product_image;
 							}
 						}
@@ -109,7 +120,7 @@ class Ajax {
 				}
 
 				if ( is_a( $product, 'WC_Product_Variation' ) ) {
-					// get images from WPC Additional Variation Images
+					// get images from WPC Additional Variation Images.
 					$_images = array_filter( explode( ',', get_post_meta( $product_id, 'wpcvi_images', true ) ) );
 
 					if ( ! empty( $_images ) ) {
@@ -135,7 +146,7 @@ class Ajax {
 
 						$image_sz = apply_filters( 'sgsbqcv_image_size', 'default' );
 
-						if ( $image_sz === 'default' ) {
+						if ( 'default' === $image_sz ) {
 							$image_size = 'sgsbqcv';
 						} else {
 							$image_size = $image_sz;
@@ -143,10 +154,10 @@ class Ajax {
 
 						if ( ! empty( $thumb_ids ) ) {
 							foreach ( $thumb_ids as $thumb_id ) {
-								if ( $content_image_lightbox !== 'no' ) {
+								if ( 'no' !== $content_image_lightbox ) {
 									$image_full = wp_get_attachment_image_src( $thumb_id, 'full' );
 
-									echo '<div class="thumbnail" data-id="' . $thumb_id . '">' . wp_get_attachment_image(
+									echo '<div class="thumbnail" data-id="' . esc_attr( $thumb_id ) . '">' . wp_get_attachment_image(
 										$thumb_id,
 										$image_size,
 										false,
@@ -156,11 +167,11 @@ class Ajax {
 										)
 									) . '</div>';
 								} else {
-									echo '<div class="thumbnail" data-id="' . $thumb_id . '">' . wp_get_attachment_image( $thumb_id, $image_size ) . '</div>';
+									echo '<div class="thumbnail" data-id="' . esc_attr( $thumb_id ) . '">' . wp_get_attachment_image( $thumb_id, $image_size ) . '</div>';
 								}
 							}
 						} else {
-							echo '<div class="thumbnail">' . wc_placeholder_img( $image_size ) . '</div>';
+							echo '<div class="thumbnail">' . esc_attr( wc_placeholder_img( $image_size ) ) . '</div>';
 						}
 
 						echo '</div>';
@@ -186,13 +197,6 @@ class Ajax {
 			wp_reset_postdata();
 		}
 
-		wp_die();
-	}
-
-	public function custom_ajax_add_to_cart() {
-		$product_id = $_POST['product_id'];
-		$quantity   = $_POST['quantity'];
-		WC()->cart->add_to_cart( $product_id, $quantity );
 		wp_die();
 	}
 }

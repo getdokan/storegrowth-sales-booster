@@ -37,7 +37,7 @@ class EnqueueScript {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-
+		check_ajax_referer( 'sgsbqcv-security' );
 		$settings            = get_option( 'sgsb_quick_view_settings' );
 		$modal_effect        = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 		$enable_close_button = sgsb_find_option_setting( $settings, 'enable_close_button', true );
@@ -86,7 +86,7 @@ class EnqueueScript {
 				true
 			);
 
-		// feather icons
+		// feather icons.
 		wp_enqueue_style(
 			'sgsbqcv-feather',
 			sgsb_modules_url( 'QuickView/assets/libs/feather/feather.css' ),
@@ -94,11 +94,7 @@ class EnqueueScript {
 			filemtime( sgsb_modules_path( 'QuickView/assets/libs/feather/feather.css' ) )
 		);
 
-		// if ( self::get_setting( 'button_icon', 'no' ) !== 'no' ) {
-		// wp_enqueue_style( 'sgsbqcv-icons', sgsbqcv_URI . 'assets/css/icons.css', array(), sgsbqcv_VERSION );
-		// }
-
-		// main style & js
+		// main style & js.
 		wp_enqueue_style(
 			'sgsbqcv-frontend',
 			sgsb_modules_url( 'QuickView/assets/scripts/frontend.css' ),
@@ -134,7 +130,7 @@ class EnqueueScript {
 				'thumbnails_effect'       => $enable_zoom_box,
 				'related_slick_params'    => apply_filters(
 					'sgsbqcv_related_slick_params',
-					json_encode(
+					wp_json_encode(
 						apply_filters(
 							'sgsbqcv_related_slick_params_arr',
 							array(
@@ -150,7 +146,7 @@ class EnqueueScript {
 				),
 				'thumbnails_slick_params' => apply_filters(
 					'sgsbqcv_thumbnails_slick_params',
-					json_encode(
+					wp_json_encode(
 						apply_filters(
 							'sgsbqcv_thumbnails_slick_params_arr',
 							array(
@@ -166,7 +162,7 @@ class EnqueueScript {
 				),
 				'thumbnails_zoom_params'  => apply_filters(
 					'sgsbqcv_thumbnails_zoom_params',
-					json_encode(
+					wp_json_encode(
 						apply_filters(
 							'sgsbqcv_thumbnails_zoom_params_arr',
 							array(
@@ -176,6 +172,7 @@ class EnqueueScript {
 						)
 					)
 				),
+
 				'quick_view'              => isset( $_REQUEST['quick-view'] ) ? absint( sanitize_key( $_REQUEST['quick-view'] ) ) : 0,
 			)
 		);
@@ -183,13 +180,19 @@ class EnqueueScript {
 		$this->inline_styles();
 	}
 
-	public static function localization( $key = '', $default = '' ) {
+	/**
+	 * Localization.
+	 *
+	 * @param string $key key.
+	 * @param string $defaul .
+	 */
+	public static function localization( $key = '', $defaul = '' ) {
 		$str = '';
 
 		if ( ! empty( $key ) && ! empty( self::$localization[ $key ] ) ) {
-			$str = self::$localization[ $key ];
-		} elseif ( ! empty( $default ) ) {
-			$str = $default;
+			$str = self::$localization[ $key ]; // phpcs: ignore.
+		} elseif ( ! empty( $defaul ) ) {
+			$str = $defaul;
 		}
 
 		return apply_filters( 'sgsbqcv_localization_' . $key, $str );
