@@ -6,6 +6,8 @@ import SelectBox from '../../../settings/Panels/PanelSettings/Fields/SelectBox';
 import TextInput from '../../../settings/Panels/PanelSettings/Fields/TextInput';
 import ColourPicker from '../../../settings/Panels/PanelSettings/Fields/ColorPicker';
 import SingleCheckBox from '../../../settings/Panels/PanelSettings/Fields/SingleCheckBox';
+import Number from "../../../settings/Panels/PanelSettings/Fields/Number";
+import {UpgradeCrown} from "../../../settings/Panels";
 
 // Handle stock bar modules pro settings prompts.
 addFilter( 
@@ -130,6 +132,94 @@ addFilter(
                     ) }
                     needUpgrade={ true }
                 />
+            </Fragment>
+        );
+    }
+);
+addFilter(
+    'sgsb_append_after_stock_status_settings',
+    'sgsb_append_after_stock_status_settings_callback',
+    () => {
+        return (
+            <Fragment>
+                <Number
+                    min={ 1 }
+                    max={ 100 }
+                    fieldValue={ 10 }
+                    needUpgrade={ true }
+                    title={ __( `Minimum Quantity Required`, 'storegrowth-sales-booster' ) }
+                />
+
+                <TextInput
+                    needUpgrade={ true }
+                    className={ `settings-field input-field` }
+                    title={ __( 'Stock Status Text', 'storegrowth-sales-booster' ) }
+                    fieldValue={ __( 'Product quantity below {quantity} units, please restock soon.', 'storegrowth-sales-booster' ) }
+                    tooltip={ __(
+                        'Please input your stock status warning message here, using {quantity} to represent the actual product quantity.',
+                        'storegrowth-sales-booster'
+                    ) }
+                />
+
+                <ColourPicker
+                    needUpgrade={ true }
+                    fieldValue={ '#073B4C' }
+                    title={ __( 'Stock Status Color', 'storegrowth-sales-booster' ) }
+                />
+            </Fragment>
+        );
+    }
+);
+addFilter(
+    'sgsb_before_stock_bar_preview_end',
+    'sgsb_before_stock_bar_preview_end_callback',
+    () => {
+        return (
+            <Fragment>
+                <p
+                    className={ `stock-status-warning-msg` }
+                    style={ {
+                        gap       : 10,
+                        color     : '#073B4C',
+                        margin    : 0,
+                        display   : 'flex',
+                        fontSize  : 14,
+                        alignItem : 'center',
+                    } }
+                >
+                    <UpgradeCrown proBadge={ false } />
+                    { __(
+                        'Product quantity below {quantity} units, please restock soon.',
+                        'storegrowth-sales-booster'
+                    ) }
+                </p>
+            </Fragment>
+        );
+    }
+);
+addFilter(
+    'sgsb_before_stock_bar_preview_template_end',
+    'sgsb_before_stock_bar_preview_template_end_callback',
+    () => {
+        return (
+            <Fragment>
+                <p
+                    className={ `stock-status-warning-msg` }
+                    style={ {
+                        gap       : 10,
+                        color     : '#073B4C',
+                        margin    : 0,
+                        display   : 'flex',
+                        fontSize  : 14,
+                        alignItem : 'center',
+                    } }
+                >
+                    <UpgradeCrown proBadge={ false } />
+                    { __(
+                        'Product quantity below {quantity} units, please restock soon.',
+                        'storegrowth-sales-booster'
+                    ) }
+                </p>
             </Fragment>
         );
     }
