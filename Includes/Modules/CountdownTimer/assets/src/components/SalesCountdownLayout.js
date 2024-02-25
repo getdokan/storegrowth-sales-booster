@@ -58,6 +58,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
     counter_background_color      : '#FFFFFF',
     shop_page_countdown_enable    : false,
     product_page_countdown_enable : true,
+    enable_ct_block               : false,
   };
 
   const [formData, setFormData] = useState({

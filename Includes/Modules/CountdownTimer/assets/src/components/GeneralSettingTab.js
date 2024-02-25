@@ -9,15 +9,8 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import SettingInstruction from "./SettingInstruction";
 
 function GeneralSettingTab(props) {
-  const {
-    formData,
-    onFieldChange,
-    onFormSave,
-    buttonLoading,
-    upgradeTeaser,
-    onFormReset,
-    noop,
-  } = props;
+  const { formData, onFieldChange, onFormSave, buttonLoading, onFormReset } =
+    props;
   return (
     <Fragment>
       <SettingsSection>
@@ -25,7 +18,7 @@ function GeneralSettingTab(props) {
           name={"countdown_heading"}
           placeHolderText={__(
             "Last chance! [discount]% OFF",
-            "storegrowth-sales-booster"
+            "storegrowth-sales-booster",
           )}
           fieldValue={formData.countdown_heading}
           className={`settings-field input-field`}
@@ -33,7 +26,7 @@ function GeneralSettingTab(props) {
           title={__("Countdown Heading", "storegrowth-sales-booster")}
           tooltip={__(
             "The [discount] will be replace with your actual discount percentage. e.g. Last chance! [discount]% OFF",
-            "storegrowth-sales-booster"
+            "storegrowth-sales-booster",
           )}
         />
 
@@ -43,7 +36,7 @@ function GeneralSettingTab(props) {
           formData,
           onFieldChange,
         )}
-        
+
         <SingleCheckBox
           name={"product_page_countdown_enable"}
           checkedValue={formData.product_page_countdown_enable}
@@ -52,10 +45,18 @@ function GeneralSettingTab(props) {
           title={__("Product Page Display", "storegrowth-sales-booster")}
           tooltip={__(
             "The countdown will show on the single product page",
-            "storegrowth-sales-booster"
+            "storegrowth-sales-booster",
           )}
         />
-        <SettingInstruction/>
+
+        {applyFilters(
+          "sgsb_countdown_timer_block_enable_settings",
+          "",
+          formData,
+          onFieldChange,
+        )}
+        
+        <SettingInstruction />
         <ActionsHandler
           resetHandler={onFormReset}
           loadingHandler={buttonLoading}

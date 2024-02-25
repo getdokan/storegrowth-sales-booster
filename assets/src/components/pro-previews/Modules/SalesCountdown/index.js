@@ -5,6 +5,7 @@ import SingleCheckBox from '../../../settings/Panels/PanelSettings/Fields/Single
 import GeneratedCode from './GeneratedCode';
 import Countdown from './Countdown';
 import ColourPicker from "../../../settings/Panels/PanelSettings/Fields/ColorPicker";
+import { Switcher } from '../../../settings/Panels';
 
 // Handle stock bar modules pro settings prompts.
 addFilter(
@@ -23,6 +24,26 @@ addFilter(
                     'storegrowth-sales-booster'
                 )}
             />
+        );
+    }
+);
+
+addFilter(
+    'sgsb_countdown_timer_block_enable_settings',
+    'sgsb_countdown_timer_block_enable_settings_callback',
+    (component) => {
+        return (
+            <Switcher
+            colSpan={ 24 }
+            isEnable={ false }
+            needUpgrade={ true }
+            name={ 'enable_ct_block' }
+            title={ __( 'Enable Timer Block', 'storegrowth-sales-booster' ) }
+            tooltip={ __(
+                'By enableing the block will be able to use the countdown timer block',
+                'storegrowth-sales-booster'
+            ) }
+        />
         );
     }
 );
