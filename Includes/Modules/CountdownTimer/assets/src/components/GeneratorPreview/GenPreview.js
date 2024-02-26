@@ -17,6 +17,56 @@ const GenPreview = ( { formData } ) => {
         false
     );
 
+    const { countdown_start_date, countdown_end_date } = formData;
+    const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeRemaining(calculateTimeRemaining());
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [countdown_start_date, countdown_end_date]);
+
+    function calculateTimeRemaining() {
+        const now = new Date();
+        const start = new Date(countdown_start_date + "T00:00:00");
+        const end = new Date(countdown_end_date + "T23:59:59");
+
+        let diff, statuss;
+
+        if (start > now) {
+            diff = start - now;
+            statuss = "Starts In";
+        } else {
+            diff = end - now;
+            statuss = `${dynamicText}`;
+        }
+
+        if (isNaN(diff) || diff <= 0 || start > now) {
+            return { days: "00", hours: "00", minutes: "00", seconds: "00", status };
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        return {
+            days: formatTime(days),
+            hours: formatTime(hours),
+            minutes: formatTime(minutes),
+            seconds: formatTime(seconds),
+            statuss,
+        };
+    }
+
+    function formatTime(time) {
+        return time.toString().padStart(2, "0");
+    }
+
+    const { days, hours, minutes, seconds, statuss } = timeRemaining;
+    // console.log(`${days} ${hours} ${minutes} ${seconds} `);
     useEffect( () => {
         if ( formData?.selected_theme === 'ct-layout-2' ) {
             setDefaultHeading( formData?.heading_text_color === 'transparent' );
@@ -106,7 +156,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '03', 'storegrowth-sales-booster' ) }
+                                    { __( `${days}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -153,7 +203,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '21', 'storegrowth-sales-booster' ) }
+                                    { __( `${hours}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -200,7 +250,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '02', 'storegrowth-sales-booster' ) }
+                                    { __( `${minutes}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -247,7 +297,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '33', 'storegrowth-sales-booster' ) }
+                                    { __( `${seconds}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -342,7 +392,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '03', 'storegrowth-sales-booster' ) }
+                                    { __( `${days}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -388,7 +438,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '21', 'storegrowth-sales-booster' ) }
+                                    { __( `${hours}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -434,7 +484,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '02', 'storegrowth-sales-booster' ) }
+                                    { __( `${minutes}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
@@ -480,7 +530,7 @@ const GenPreview = ( { formData } ) => {
                                         marginBottom : 6,
                                     } }
                                 >
-                                    { __( '33', 'storegrowth-sales-booster' ) }
+                                    { __( `${seconds}`, 'storegrowth-sales-booster' ) }
                                 </strong>
                                 <span
                                     style={ {
