@@ -187,9 +187,8 @@ addFilter(
                         alignItem : 'center',
                     } }
                 >
-                    <UpgradeCrown proBadge={ false } />
                     { __(
-                        'Product quantity below {quantity} units, please restock soon.',
+                        'Product quantity below or equal 10 units, please restock soon.',
                         'storegrowth-sales-booster'
                     ) }
                 </p>
@@ -214,9 +213,8 @@ addFilter(
                         alignItem : 'center',
                     } }
                 >
-                    <UpgradeCrown proBadge={ false } />
                     { __(
-                        'Product quantity below {quantity} units, please restock soon.',
+                        'Product quantity below or equal {required_quantity} units, please restock soon.',
                         'storegrowth-sales-booster'
                     ) }
                 </p>

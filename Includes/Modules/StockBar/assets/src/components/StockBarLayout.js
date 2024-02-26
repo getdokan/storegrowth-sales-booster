@@ -24,7 +24,7 @@ function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
   const initalStockBarData = {
     stockbar_height                 : 10,
     show_stock_status               : true,
-    stock_status_text               : __( 'Product quantity below {quantity} units, please restock soon.', 'storegrowth-sales-booster' ),
+    stock_status_text               : __( 'Product quantity below or equal {required_quantity} units, please restock soon.', 'storegrowth-sales-booster' ),
     status_text_color               : '#073B4C',
     stockbar_bg_color               : "#EBF6FF",
     stockbar_fg_color               : "#008DFF",
