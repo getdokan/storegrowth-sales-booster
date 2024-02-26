@@ -1,13 +1,15 @@
 import { __ } from "@wordpress/i18n";
 
 const OfferProductContent = ({ offerProduct, bogoItem }) => {
+    console.log( offerProduct, bogoItem );
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+  const offerId = bogoItem.bogo_deal_type === 'same' ? bogoItem?.offered_products : bogoItem.get_different_product_field;
   const product =
     bogo_products_and_categories?.product_list?.simpleProductForOffer?.find(
       (simpleProduct) =>
-        simpleProduct?.value === parseInt(bogoItem.get_different_product_field)
+        simpleProduct?.value === parseInt(offerId)
     );
   let discountedPrice = parseFloat(bogoItem?.discount_amount)?.toFixed(2);
 

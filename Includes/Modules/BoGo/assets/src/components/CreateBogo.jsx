@@ -143,7 +143,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (!createBogoData.get_different_product_field) {
+    if (!createBogoData.get_different_product_field && createBogoData.bogo_deal_type !== 'same') {
       notification["error"]({
         message: "Please select offer product",
       });

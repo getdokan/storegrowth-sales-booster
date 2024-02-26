@@ -266,7 +266,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let offerProduct = productInfoById[item.get_different_product_field];
+    let offerProduct = item.bogo_deal_type === 'same' ? productInfoById[item.offered_products] : productInfoById[item.get_different_product_field];
     return {
       key: item.id,
       name: item.name_of_order_bogo,
