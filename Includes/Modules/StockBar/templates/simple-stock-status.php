@@ -34,9 +34,10 @@ $stock_contents    = apply_filters(
     array(
         'quantity_required' => 10,
         'status_text_color' => '#073B4C',
-        'stock_status_text' => __( 'Product quantity below or equal 10 units, please restock soon.', 'storegrowth-sales-booster' )
+        'stock_status_text' => __( "Hurry! only {$stock} stocks left.", 'storegrowth-sales-booster' )
     ),
-    $settings
+    $settings,
+    $stock
 );
 
 ?>

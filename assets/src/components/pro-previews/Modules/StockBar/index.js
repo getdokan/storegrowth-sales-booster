@@ -154,7 +154,7 @@ addFilter(
                     needUpgrade={ true }
                     className={ `settings-field input-field` }
                     title={ __( 'Stock Status Text', 'storegrowth-sales-booster' ) }
-                    fieldValue={ __( 'Product quantity below {quantity} units, please restock soon.', 'storegrowth-sales-booster' ) }
+                    fieldValue={ __( 'Hurry! only {quantity} stocks left.', 'storegrowth-sales-booster' ) }
                     tooltip={ __(
                         'Please input your stock status warning message here, using {quantity} to represent the actual product quantity.',
                         'storegrowth-sales-booster'
@@ -188,7 +188,7 @@ addFilter(
                     } }
                 >
                     { __(
-                        'Product quantity below or equal 10 units, please restock soon.',
+                        'Hurry! only {quantity} stocks left.',
                         'storegrowth-sales-booster'
                     ) }
                 </p>
@@ -214,7 +214,7 @@ addFilter(
                     } }
                 >
                     { __(
-                        'Product quantity below or equal {required_quantity} units, please restock soon.',
+                        'Hurry! only {quantity} stocks left.',
                         'storegrowth-sales-booster'
                     ) }
                 </p>
