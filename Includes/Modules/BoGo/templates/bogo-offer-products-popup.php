@@ -40,7 +40,7 @@ if ( ! empty( $offer_products ) ) : ?>
 						$image_id           = $product->get_image_id();
 						$image_url          = wp_get_attachment_image_src( $image_id, 'full' );
 						$offer_product_cost = 0;
-						if ( $bogo_settings['offer_type'] === 'discount' ) {
+						if ( ! empty( $bogo_settings['offer_type'] ) && $bogo_settings['offer_type'] === 'discount' ) {
 							$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $bogo_settings['discount_amount'] / 100 ) ), 0 );
 						}
 						?>
