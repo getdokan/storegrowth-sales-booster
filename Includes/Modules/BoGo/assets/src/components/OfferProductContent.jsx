@@ -1,7 +1,6 @@
 import { __ } from "@wordpress/i18n";
 
 const OfferProductContent = ({ offerProduct, bogoItem }) => {
-    console.log( offerProduct, bogoItem );
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };

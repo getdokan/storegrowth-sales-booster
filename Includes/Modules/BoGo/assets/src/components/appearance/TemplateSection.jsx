@@ -113,7 +113,7 @@ const TemplateSection = () => {
         />
         <Number
           min={0}
-          max={20}
+          max={100}
           style={{ width: 100 }}
           name={`box_top_margin`}
           changeHandler={onFieldChange}
@@ -122,7 +122,7 @@ const TemplateSection = () => {
         />
         <Number
           min={0}
-          max={20}
+          max={100}
           style={{ width: 100 }}
           name={`box_bottom_margin`}
           changeHandler={onFieldChange}

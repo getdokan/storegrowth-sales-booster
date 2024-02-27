@@ -17,7 +17,7 @@ if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url
 	?>
 
 	<div class='bogo-template-overview-area'>
-		<div class="offer-main-wrap">
+		<div class="offer-main-wrap" style="border: 2px solid #32DBBE; margin-bottom: 20px;">
 			<div class="dynamic-offer-text">
 				<svg width='15' height='15' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
 					<path

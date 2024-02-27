@@ -64,7 +64,7 @@ class Ajax {
 		$item_key            = isset( $data['cart_item_key'] ) ? intval( $data['cart_item_key'] ) : 0;
 		$main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
 		$product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
-		$offer_product_cost  = isset( $data['offer_product_cost'] ) ? intval( $data['offer_product_cost'] ) : 0;
+		$offer_product_cost  = isset( $data['offer_product_cost'] ) ? floatval( $data['offer_product_cost'] ) : 0;
 		$selected_product_id = isset( $data['selected_product_id'] ) ? intval( $data['selected_product_id'] ) : 0;
 
 		if ( ! $selected_product_id || ! $main_product_id ) {

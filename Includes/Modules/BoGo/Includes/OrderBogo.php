@@ -145,7 +145,7 @@ class OrderBogo {
 
     public function add_custom_text_for_offer_product( $product_name, $cart_item, $cart_item_key ) {
         if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-            $bogo_settings = get_post_meta( $cart_item['bogo_product_for'], 'sgsb_product_bogo_settings', true );
+            $bogo_settings = Helper::sgsb_prepare_bogo_settings( $cart_item['bogo_product_for'], $cart_item['product_id'], $cart_item['variation_id'] );
             if ( file_exists( __DIR__ . '/../templates/bogo-offer-products-popup.php' ) ) {
                 ob_start();
                 include __DIR__ . '/../templates/bogo-offer-products-popup.php';
@@ -285,6 +285,13 @@ class OrderBogo {
             $bogo_status      = $bogo_info->bogo_status;
             $target_product   = $current_product_id;
             $offer_product_id = 'same' === $deal_type ? $target_product : $bogo_info->get_different_product_field;
+            $offer_product_id = empty( $offer_product_id ) && ! empty( $bogo_info->get_alternate_products[0] ) ?
+                intval( $bogo_info->get_alternate_products[0] ) : $offer_product_id;
+
+            if ( ! $offer_product_id ) {
+                return;
+            }
+
             $offer_type       = $bogo_info->offer_type;
             $discount_amount  = $bogo_info->discount_amount;
             $image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
