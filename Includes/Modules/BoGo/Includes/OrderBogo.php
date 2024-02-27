@@ -138,7 +138,7 @@ class OrderBogo {
             if ( isset( $cart_item['child_key'] ) && array_key_exists( $cart_item['child_key'], $cart_items ) ) {
                 WC()->cart->set_quantity( $cart_item['child_key'], $free_product_quantity );
             } else {
-                $this->add_offer_product_to_cart( $cart_item_key, $product_id, $free_product_quantity, $variation_id, [], [] );
+                $this->add_offer_product_to_cart( $cart_item_key, $product_id, $free_product_quantity, $variation_id, [], $cart_item );
             }
         }
     }
@@ -181,8 +181,8 @@ class OrderBogo {
         $apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
         $bogo_settings         = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
-        // Apply BOGO product if different apply & applicable.
-        if ( ! empty( $bogo_settings ) &&
+        // Apply BOGO product if not offer product, different apply & applicable.
+        if ( empty( $cart_item['bogo_offer'] ) && ! empty( $bogo_settings ) &&
             ( $bogo_settings['bogo_deal_type'] !== 'same' ) &&
             $this->is_bogo_applicable( $apply_able_product_id, $bogo_settings )
         ) {
