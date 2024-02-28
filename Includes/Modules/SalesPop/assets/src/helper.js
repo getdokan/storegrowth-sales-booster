@@ -44,6 +44,7 @@ export const createPopupForm = {
     ...message,
     loop                         : false,
     enabe                        : false,
+    enble_visibility             : false,
     sound                        : false,
     address                      : ['real'],
     template                     : 4,
