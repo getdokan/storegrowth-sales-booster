@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import {applyFilters} from "@wordpress/hooks";
 
 const StockBarOne = ( { activeTemplate } ) => {
     return (
@@ -70,6 +71,8 @@ const StockBarOne = ( { activeTemplate } ) => {
                         } }
                     ></div>
                 </div>
+
+                { applyFilters( 'sgsb_before_stock_bar_preview_template_end', '' ) }
             </div>
         </div>
     );
