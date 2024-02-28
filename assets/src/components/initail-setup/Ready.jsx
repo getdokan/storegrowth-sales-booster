@@ -9,36 +9,21 @@ const Ready = () => {
 
     useEffect(() => {
       const getUserDetails = async () => {
-        console.log('true');
-        try {
-          if (updateNews === true || userDetails === true) {
-            const response = await fetch('/wp-admin/admin-ajax.php', {
-              method: 'POST',
-              credentials: 'same-origin',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({
-                _ajax_nonce: sgsbAdmin.nonce,
-                action: 'sgsb_get_user_concent_data',
-              }),
-            });
+        const response = await fetch('/wp-admin/admin-ajax.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            _ajax_nonce: sgsbAdmin.nonce,
+            action: 'sgsb_get_user_concent_data',
+          }),
+        });
+       };
 
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            console.log(data);
-          }
-        } catch (error) {
-          console.error('Error fetching license key:', error);
-        }
-      };
-
-      getUserDetails(); // Call getUserDetails within useEffect
+      getUserDetails(); 
     }, []);
-  };
   
   return (
     <Fragment>
@@ -64,7 +49,7 @@ const Ready = () => {
             <a
               href="/wp-admin/admin.php?page=sgsb-settings"
               className="steps-button completion-cta"
-              onClick={getUserDetails}
+              onClick={null}
             >
               {__(`Ready To Go`, "storegrowth-sales-booster")}
             </a>

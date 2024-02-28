@@ -26,6 +26,10 @@ class Ajax {
 	 */
 	private function __construct() {
 		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );
+		/**
+		 * Register ajax callback
+		*/
+		add_action('wp_ajax_sgsb_get_user_concent_data',  array( $this,'sgsb_get_user_concent_data'));
 	}
 
 	/**
@@ -93,5 +97,15 @@ class Ajax {
 		$modules->update_active_module_ids( $active_modules );
 
 		wp_send_json_success();
+	}
+	/**
+	 * Get User Concent Data
+	 */
+	public function sgsb_get_user_concent_data() {
+		error_log('called');
+		check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
+		error_log('true');
+		print_r($_POST);
+		wp_send_json_success(array('message' => 'Success message'));
 	}
 }
