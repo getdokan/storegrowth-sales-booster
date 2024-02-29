@@ -24,6 +24,12 @@
   function setCartContents(response) {
     let parentElement = $(".sgsb-widget-shopping-cart-content");
     parentElement.html(response?.data?.htmlResponse);
+
+    // Handle free product options.
+    $( '.sgsb-widget-shopping-cart-content .sgsb-bogo-offer-applied .product-quantity .sgsb-minus-icon,' +
+      '.sgsb-widget-shopping-cart-content .sgsb-bogo-offer-applied .product-quantity .sgsb-plus-icon' ).hide();
+    $( '.sgsb-widget-shopping-cart-content .sgsb-disable-bogo-offer-removed-option .product-remove' ).css({ visibility: 'hidden' });
+
     $(".wfc-cart-icon .wfc-cart-countlocation").html(
       response?.data?.cartCountLocation
     );

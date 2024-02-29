@@ -235,6 +235,12 @@ a.custom-choose-product {
   color: #fff;
   border-radius: 4px;
   line-height: 2;
+  display: none;
+}
+
+.woocommerce-cart .cart_item a.custom-choose-product,
+.woocommerce-checkout .checkout-review-order-table .product-name {
+    display: inline;
 }
 
 #overlay {

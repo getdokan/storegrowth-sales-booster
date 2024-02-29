@@ -41,6 +41,7 @@ class OrderBogo {
 
         add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
         add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
+        add_filter( 'woocommerce_cart_item_price', array( $this, 'update_woocommerce_item_price' ), 10, 3 );
     }
 
     public function display_bogo_floating_badge_on_product() {
@@ -353,6 +354,16 @@ class OrderBogo {
                 }
             }
         }
+    }
+
+    public function update_woocommerce_item_price( $price, $cart_item, $cart_item_key ) {
+        // Check if the custom price is set in the cart item
+        if ( isset( $cart_item['bogo_offer_price'] ) ) {
+            // Format the price to display it
+            $price = wc_price( $cart_item['bogo_offer_price'] );
+        }
+
+        return $price;
     }
 
     /**

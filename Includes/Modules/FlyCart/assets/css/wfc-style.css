@@ -273,6 +273,10 @@
     line-height: 1;
 }
 
+.sgsb-fly-cart-table td.product-name .sgsb-product-title a.custom-choose-product {
+    display: none;
+}
+
 .sgsb-fly-cart-table td.product-name .sgsb-product-title .sgsb-product-category {
     font-size: 12px;
     font-weight: initial;

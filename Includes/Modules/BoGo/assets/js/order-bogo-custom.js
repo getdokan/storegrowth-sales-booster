@@ -75,7 +75,7 @@ function extraProducts(product_id, check_status, offer_price) {
         var showModalButton = $(".custom-choose-product");
         var closeModalButton = $(".custom-close-modal, #overlay");
         var modal = "#product-selection-modal, #overlay";
-    
+
         showModalButton.click(function (event) {
             event.preventDefault();
             var modalContent = $(this).closest('.product-name').find(modal);
