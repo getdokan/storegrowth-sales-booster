@@ -2,13 +2,19 @@
 
 jQuery(document).ready(function ($) {
   // Stock progress bar.
-  $(".jqmeter-container").each(function (event) {
-    var goal = $(this).parent().attr("total-stock");
-    var raised = $(this).parent().attr("total-sale");
-    var height = $(this).parent().data("height") + "px";
-    var bgColor = $(this).parent().data("bgcolor");
-    var barColor = $(this).parent().data("fgcolor");
-    $(this).jQMeter({
+  sgsb_stockbar_jqmeter();
+  showStockProgress();
+  sgsb_stockbar_variations();
+});
+
+function sgsb_stockbar_jqmeter() {
+  jQuery(".jqmeter-container").each(function (event) {
+    var goal = jQuery(this).parent().attr("total-stock");
+    var raised = jQuery(this).parent().attr("total-sale");
+    var height = jQuery(this).parent().data("height") + "px";
+    var bgColor = jQuery(this).parent().data("bgcolor");
+    var barColor = jQuery(this).parent().data("fgcolor");
+    jQuery(this).jQMeter({
       goal: goal,
       raised: raised,
       meterOrientation: "horizontal",
@@ -17,16 +23,22 @@ jQuery(document).ready(function ($) {
       bgColor: bgColor,
       displayTotal: false,
     });
-    $( this ).find( '.inner-therm' ).css( { background: barColor } );
+    jQuery(this).find(".inner-therm").css({ background: barColor });
   });
-  
-  showStockProgress();
-  $("form.variations_form").on("show_variation", function (event, variation) {
-    showStockProgress();
-  });
+}
 
-  function showStockProgress() {
-    let order_progress = $(".sgsb-stock-progress").attr("data-order-progress");
-    $(".sgsb-stock-progress").animate({ width: `${order_progress}%` }, 1300);
-  }
-});
+function sgsb_stockbar_variations() {
+  jQuery("form.variations_form").on(
+    "show_variation",
+    function (event, variation) {
+      showStockProgress();
+    },
+  );
+}
+
+function showStockProgress() {
+  let order_progress = jQuery(".sgsb-stock-progress").attr(
+    "data-order-progress",
+  );
+  jQuery(".sgsb-stock-progress").animate({ width: `${order_progress}%` }, 1300);
+}

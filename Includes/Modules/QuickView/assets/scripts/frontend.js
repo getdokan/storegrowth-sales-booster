@@ -10,7 +10,6 @@ function isMobileDevice() {
 (function ($) {
   $(function () {
     if (isMobileDevice() && !sgsbqcv_vars.enable_in_mobile) {
-      console.log("running");
       $(".sgsbqcv-btn").each(function () {
         $(this).remove();
       });
@@ -318,14 +317,35 @@ function sgsbqcv_loaded() {
   jQuery(".sgsbqcv-sidebar").removeClass("sgsbqcv-loading");
 }
 
+function isFunctionDefined(func) {
+  return typeof func === 'function';
+}
+
+function callIfDefined(func) {
+  if (isFunctionDefined(func)) {
+    func();
+  } else {
+    console.error(func.name + " is not defined");
+  }
+}
+
 function sgsbqcv_init_content(context) {
   if (context === "loaded") {
+    callIfDefined(sgsb_stockbar_jqmeter);
+    callIfDefined(sgsb_countdown_timer_methods);
+    callIfDefined(() => {
+      if (typeof sgsbDirectChecoutQuick !== 'undefined') {
+        callIfDefined(sgsbDirectChecoutQuick.init);
+      }
+    });
+
+    // Call other methods even if they may not be defined initially
     sgsbqcv_thumbnails_zoom();
     sgsbqcv_thumbnails_slick();
     sgsbqcv_related_slick();
   }
-
 }
+
 
 function sgsbqcv_get_key(array, key, value) {
   for (var i = 0; i < array.length; i++) {
