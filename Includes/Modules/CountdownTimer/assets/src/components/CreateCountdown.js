@@ -3,13 +3,9 @@ import { __ } from "@wordpress/i18n";
 import { notification } from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
-import GeneralSettingTab from "./GeneralSettingTab";
 import DesignTab from "./DesignTab";
-import ShortCodeGenerator from "./ShortCodeGenerator";
 import Preview from "./Preview";
 import GenPreview from "./GeneratorPreview/GenPreview";
-
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
 import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
 import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
 import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
@@ -20,9 +16,9 @@ import Layout2 from "../../images/layout/layout-2.svg";
 import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
-import CountdownList from "./CountdownList";
+import BasicInfo from "./BasicInfo";
 
-function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
+function CreateCountdown({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -102,7 +98,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const changeTab = (key) => {
-    navigate("/countdown-timer?tab_name=" + key);
+    navigate("countdown-timer/create-countdown?tab_name=" + key);
   };
 
   const [showUndo, setShowUndo] = useState({ ...undoState });
@@ -229,15 +225,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       key: "general",
       title: __("Countdown Setting", "storegrowth-sales-booster"),
       panel: (
-        <GeneralSettingTab
-          formData={formData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("general_settings")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          noop={noop}
-        />
+        <BasicInfo/>
       ),
     },
     {
@@ -259,31 +247,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
           options={options}
         />
       ),
-    },
-    {
-      key: "short_code",
-      title: __("Short Code Generator", "storegrowth-sales-booster"),
-      panel: (
-        <ShortCodeGenerator
-          formData={shortCodeState}
-          setFormData={setShortCodeState}
-          onFieldChange={shortCodeFieldChanger}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          handleSelect={handleSelect}
-          noop={noop}
-          options={options}
-        />
-      ),
-    },
-    {
-      key:"countdown_list",
-      title: __("Countdown Timer List", "storegrowth-sales-booster"),
-      panel : (
-        <CountdownList/>
-      )
     }
   ];
   return (
@@ -315,4 +278,4 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   );
 }
 
-export default SalesCountdownLayout;
+export default CreateCountdown;
