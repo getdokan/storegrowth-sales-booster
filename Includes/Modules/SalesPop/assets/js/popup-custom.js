@@ -8,8 +8,8 @@
 	var notification_per_page = popup_all_properties.notification_per_page;
 	var mobile_view						= popup_all_properties.mobile_view;
 	var product_random				= popup_all_properties.product_random;
-	var link_new_tab					= popup_all_properties.open_product_link_in_new_tab
-	
+	var link_new_tab					= popup_all_properties.open_product_link_in_new_tab;
+	var visibility_behaviour	= popup_all_properties.enble_visibility;
 	var notification_count 	  = 0;
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
@@ -138,9 +138,13 @@
 	}
 	
 
-	$( ".custom-close").click( function() {
-		$(".custom-social-proof").stop().slideToggle('slow');
-	} );
+	$(".custom-close").click(function() {
+			if (visibility_behaviour) {
+					$(".custom-social-proof").remove();
+			} else {
+					$(".custom-social-proof").stop().slideToggle('slow');
+			}
+	});
 
 	function handlePopupVisibility() {
 		var windowWidth = $(window).width();
