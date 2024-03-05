@@ -22,8 +22,8 @@ function CreateCountdown({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
-  let [searchParams, setSearchParams] = useSearchParams("general");
-  const tabName = searchParams.get("tab_name") || "general";
+  let [searchParams, setSearchParams] = useSearchParams("basic-info");
+  const tabName = searchParams.get("tab_name") || "basic-info";
   const isTabCodeGen = searchParams.get("tab_name") === "short_code";
 
   const options = [
@@ -208,7 +208,7 @@ function CreateCountdown({ navigate, useSearchParams, moduleId }) {
   };
 
   const noop = () => {};
-  const excludeTabs = ['countdown_list'];
+  const excludeTabs = ['basic-info'];
   const showPreview = !excludeTabs?.includes(tabName);
 
   const fontUrl =
@@ -222,7 +222,7 @@ function CreateCountdown({ navigate, useSearchParams, moduleId }) {
 
   const tabPanels = [
     {
-      key: "general",
+      key: "basic-info",
       title: __("Countdown Setting", "storegrowth-sales-booster"),
       panel: (
         <BasicInfo/>
@@ -256,7 +256,7 @@ function CreateCountdown({ navigate, useSearchParams, moduleId }) {
           <PanelSettings
             tabPanels={tabPanels}
             changeHandler={changeTab}
-            activeTab={tabName ? tabName : "general"}
+            activeTab={tabName ? tabName : "basic-info"}
             colSpan={showPreview && tabName ? 12 : 24}
           />
           {showPreview && tabName && (

@@ -212,7 +212,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const noop = () => {};
-  const excludeTabs = ['countdown_list'];
+  const excludeTabs = ['countdown_list','general'];
   const showPreview = !excludeTabs?.includes(tabName);
 
   const fontUrl =
@@ -237,26 +237,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
           buttonLoading={buttonLoading}
           onFormReset={onFormReset}
           noop={noop}
-        />
-      ),
-    },
-    {
-      key: "design",
-      title: __("Design", "storegrowth-sales-booster"),
-      panel: (
-        <DesignTab
-          showUndoIcon={showUndo}
-          undoHandler={onUndoClick}
-          formData={formData}
-          setFormData={setFormData}
-          onFieldChange={onFieldChange}
-          onFormSave={() => onFormSave("design")}
-          upgradeTeaser={!isProEnabled}
-          buttonLoading={buttonLoading}
-          onFormReset={onFormReset}
-          handleSelect={handleSelect}
-          noop={noop}
-          options={options}
         />
       ),
     },
