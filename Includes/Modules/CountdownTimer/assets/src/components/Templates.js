@@ -21,16 +21,30 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
 
     let templateStyles = {
         'ct-layout-1' : {
-            border_color            : '#1677FF',
-            selected_theme          : 'ct-layout-1',
-            heading_text_color      : '#008dff',
-            widget_background_color : '#FFF',
+            font_family              : 'roboto',
+            border_color             : '#1677FF',
+            day_text_color           : '#1B1B50',
+            selected_theme           : 'ct-layout-1',
+            hour_text_color          : '#1B1B50',
+            minute_text_color        : '#1B1B50',
+            second_text_color        : '#1B1B50',
+            heading_text_color       : '#008dff',
+            counter_border_color     : '#ECEDF0',
+            widget_background_color  : '#FFFFFF',
+            counter_background_color : '#FFFFFF',
         },
         'ct-layout-2' : {
-            border_color            : '#0875FF33',
-            selected_theme          : 'ct-layout-2',
-            heading_text_color      : '#008dff',
-            widget_background_color : '#eff8ff',
+            font_family              : 'merienda',
+            border_color             : '#0875FF33',
+            day_text_color           : '#FFFFFF',
+            selected_theme           : 'ct-layout-2',
+            hour_text_color          : '#FFFFFF',
+            minute_text_color        : '#FFFFFF',
+            second_text_color        : '#FFFFFF',
+            heading_text_color       : 'transparent',
+            counter_border_color     : 'transparent',
+            widget_background_color  : '#eff8ff',
+            counter_background_color : 'transparent',
         },
     };
 

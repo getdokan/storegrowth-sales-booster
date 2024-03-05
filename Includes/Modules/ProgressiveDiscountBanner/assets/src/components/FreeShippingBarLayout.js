@@ -1,9 +1,6 @@
 import { notification } from "antd";
 import { __ } from "@wordpress/i18n";
-import {
-  useEffect,
-  useState,
-} from "@wordpress/element";
+import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import { Fragment } from "react";
 import SettingsTab from "./SettingsTab";
@@ -17,7 +14,12 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
+function FreeShippingBarLayout({
+  outlet: Outlet,
+  navigate,
+  useSearchParams,
+  moduleId,
+}) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -259,7 +261,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
   return (
     <Fragment>
       <PanelHeader
-        title={__("Free Shipping Bar Setting", "storegrowth-sales-booster")}
+        title={__("Free Shipping Rules Setting", "storegrowth-sales-booster")}
         moduleId={moduleId}
       />
       <PanelContainer>
@@ -274,13 +276,21 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+              <Preview
+                isProActive={isProEnabled}
+                formData={formData}
+                fontFamily={fontFamily}
+              />
             </PanelPreview>
           )}
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
-        <TouchPreview previewWidth={ 550 }>
-          <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+        <TouchPreview previewWidth={550}>
+          <Preview
+            isProActive={isProEnabled}
+            formData={formData}
+            fontFamily={fontFamily}
+          />
         </TouchPreview>
       </PanelContainer>
     </Fragment>

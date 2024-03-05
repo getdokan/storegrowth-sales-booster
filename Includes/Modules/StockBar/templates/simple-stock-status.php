@@ -27,6 +27,19 @@ $sd_format           = sgsb_find_option_setting( $settings, 'stock_display_forma
 $total_sell_text     = sgsb_find_option_setting( $settings, 'total_sell_count_text', 'Total Sold' );
 $available_item_text = sgsb_find_option_setting( $settings, 'available_item_count_text', 'Available Item' );
 
+// Vars for threshold warning msg.
+$show_stock_status = sgsb_find_option_setting( $settings, 'show_stock_status', true );
+$stock_contents    = apply_filters(
+    'sgsb_stock_bar_warning_contents',
+    array(
+        'quantity_required' => 10,
+        'status_text_color' => '#073B4C',
+        'stock_status_text' => __( "Hurry! only {$stock} stocks left.", 'storegrowth-sales-booster' )
+    ),
+    $settings,
+    $stock
+);
+
 ?>
 
 <div class="sgsb-stock-bar">
@@ -61,5 +74,14 @@ $available_item_text = sgsb_find_option_setting( $settings, 'available_item_coun
 				do_action( 'sgsb_stock_bar_stock_below' );
 			endif;
 		?>
+
+        <?php if ( $show_stock_status && ( $stock <= $stock_contents['quantity_required'] ) ) : ?>
+            <p
+                class='stock-status-warning-msg'
+                style='color: <?php echo esc_attr( $stock_contents['status_text_color'] ); ?>; margin: 0; font-size: 14px;'
+            >
+                <?php esc_html_e( $stock_contents['stock_status_text'], 'storegrowth-sales-booster' ); ?>
+            </p>
+        <?php endif; ?>
 	</div>
 </div>
