@@ -189,42 +189,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
     onFieldChange("selected_theme", theme);
   };
 
-  // const [showUndo, setShowUndo] = useState({
-  //   border_color            : false,
-  //   heading_text_color      : false,
-  //   widget_background_color : false
-  // });
-
-  // const [undoData, setUndoData] = useState({
-  //   ...initialSalesCountdownData,
-  // });
-
-  // const colorKeyStack = [
-  //   'border_color',
-  //   'heading_text_color',
-  //   'widget_background_color'
-  // ];
-
-  // const onFieldChange = (key, value) => {
-  //   setFormData({ ...formData, [key]: value });
-  //   if ( colorKeyStack?.includes( key ) ) {
-  //     setShowUndo({ ...showUndo, [key]: true });
-  //   }
-  // };
-
-  // const onUndoClick = ( key ) => {
-  //   if ( colorKeyStack?.includes( key ) ) {
-  //     setShowUndo({
-  //       ...showUndo,
-  //       [key]: false,
-  //     });
-  //     setFormData({
-  //       ...formData,
-  //       [key]: undoData?.[key],
-  //     });
-  //   }
-  // };
-
   const noop = () => {};
   const excludeTabs = [];
   const showPreview = !excludeTabs?.includes(tabName);
