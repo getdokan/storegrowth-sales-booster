@@ -4,7 +4,7 @@ Tags: floating cart, fly cart, side cart, checkout optimization, notification ba
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.24.4
+Stable tag: 1.24.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -216,7 +216,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= 1.24.4 - 17 January, 2023 =
+= 1.24.5 - 06 March, 2024 =
 
 enhance: add font family customize option for countdown settings & fix template two heading ui stuff
 
@@ -274,7 +274,7 @@ enhance: make compatible with template
 
 fix: quantity template replacement by stock quantity
 
-= 1.1.3 - 17 January, 2023 =
+= 1.1.3 - 17 January, 2024 =
 fix deactivate module
 update readme description
 
