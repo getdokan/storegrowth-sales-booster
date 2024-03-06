@@ -104,8 +104,8 @@ function DefaultBanner(props) {
           selectedOptions={formData.button_view}
           handleCheckboxChange={onFieldChange}
           title={__("Show Button", "storegrowth-sales-booster")}
-          headColSpan={16}
-          checkboxColSpan={8}
+          headColSpan={14}
+          checkboxColSpan={10}
         />
         <TextInput
           name={"ac_button_text"}

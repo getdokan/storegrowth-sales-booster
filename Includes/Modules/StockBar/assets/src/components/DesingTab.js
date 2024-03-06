@@ -5,6 +5,9 @@ import SettingsSection from "sales-booster/src/components/settings/Panels/PanelS
 import ColourPicker from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import Templates from "./Templates";
+import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import {TextInput} from "sales-booster/src/components/settings/Panels";
+import Number from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 function DesignTab(props) {
   const {
@@ -43,7 +46,22 @@ function DesignTab(props) {
           '',
           formData,
           onFieldChange
-        ) } 
+        ) }
+
+        <Switcher
+          name={ 'show_stock_status' }
+          changeHandler={ onFieldChange }
+          isEnable={ Boolean( formData.show_stock_status ) }
+          title={ __( 'Stock Status', 'storegrowth-sales-booster' ) }
+          tooltip={ __( 'We can customize and control stock status content.', 'storegrowth-sales-booster' ) }
+        />
+
+        { Boolean( formData.show_stock_status ) && applyFilters(
+          'sgsb_append_after_stock_status_settings',
+          '',
+          formData,
+          onFieldChange
+        ) }
       </SettingsSection>
 
       <Templates

@@ -120,13 +120,20 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     }
 
     
-    if ( createBumpData.target_products.length == 0 && createBumpData.target_categories.length == 0 ){
+    if ( createBumpData.bump_type === 'products' && createBumpData.target_products.length == 0 ){
       notification['error'] ( {
-        message: 'You have to select target products or target categories or both',
+        message: 'You have to select target products for bump products type',
       } );
       
       return null;
-      
+    }
+
+    if ( createBumpData.bump_type === 'categories' && createBumpData.target_categories.length == 0 ){
+      notification['error'] ( {
+        message: 'You have to select target categories for bump categories type',
+      } );
+
+      return null;
     }
 
     if ( createBumpData.bump_schedule.length == 0 ){
