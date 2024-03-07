@@ -4,12 +4,10 @@ import { notification } from "antd";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import GeneralSettingTab from "./GeneralSettingTab";
-import DesignTab from "./DesignTab";
 import ShortCodeGenerator from "./ShortCodeGenerator";
 import Preview from "./Preview";
 import GenPreview from "./GeneratorPreview/GenPreview";
 
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
 import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
 import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
 import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
@@ -18,7 +16,7 @@ import PanelSettings from "../../../../../../assets/src/components/settings/Pane
 import Layout1 from "../../images/layout/layout-1.svg";
 import Layout2 from "../../images/layout/layout-2.svg";
 import Custom from "../../images/layout/custom.svg";
-import "../styles/countdown-timer.css";
+// import "../styles/countdown-timer.css";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 import CountdownList from "./CountdownList";
 
@@ -212,7 +210,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const noop = () => {};
-  const excludeTabs = ['countdown_list','general'];
+  const excludeTabs = ["countdown_list", "general"];
   const showPreview = !excludeTabs?.includes(tabName);
 
   const fontUrl =
@@ -241,6 +239,11 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       ),
     },
     {
+      key: "countdown_list",
+      title: __("Countdown Timer List", "storegrowth-sales-booster"),
+      panel: <CountdownList />,
+    },
+    {
       key: "short_code",
       title: __("Short Code Generator", "storegrowth-sales-booster"),
       panel: (
@@ -258,13 +261,6 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
         />
       ),
     },
-    {
-      key:"countdown_list",
-      title: __("Countdown Timer List", "storegrowth-sales-booster"),
-      panel : (
-        <CountdownList/>
-      )
-    }
   ];
   return (
     <Fragment>
