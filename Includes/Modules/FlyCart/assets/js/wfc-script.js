@@ -222,8 +222,9 @@
         var quantityInput = $(this).siblings(".quantity").find(".qty");
         var maxValue = quantityInput.attr("max");
         var currentValue = parseInt(quantityInput.val());
-
+        console.log(maxValue);
         if (
+          maxValue !== "" &&
           !isNaN(currentValue) &&
           !isNaN(maxValue) &&
           currentValue >= maxValue

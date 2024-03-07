@@ -154,7 +154,7 @@ class EnqueueScript {
                 right: 0;
             }
             .sgsb-widget-shopping-cart-content-wrapper{
-                width:600px;
+                width:460px;
             }
         ';
 
