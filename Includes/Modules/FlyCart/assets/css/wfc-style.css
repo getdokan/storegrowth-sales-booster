@@ -688,6 +688,7 @@ iframe.sgsb-fast-cart-checkout-frame {
     width: 100%;
     max-width: initial;
     border: 0 none;
+    padding: 0px 20px;
 }
 
 .woocommerce-page .woocommerce-checkout #customer_details,
