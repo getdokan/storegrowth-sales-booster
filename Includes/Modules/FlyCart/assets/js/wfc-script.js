@@ -127,8 +127,9 @@
 
     let extraHeight =
       sgsbFrontend?.cartLayoutType === "center" ? isMobileHeight : 0;
+    let smallScreenDeduction = isSmallScreen? 10 : 31;
     let deductableHeight =
-      $(".qc-cart-heading").height() + adminBarHeight + 41 + extraHeight;
+      $(".qc-cart-heading").height() + adminBarHeight + smallScreenDeduction + extraHeight;
 
     $(".sgsb-widget-shopping-cart-content-wrapper").css(
       "height",

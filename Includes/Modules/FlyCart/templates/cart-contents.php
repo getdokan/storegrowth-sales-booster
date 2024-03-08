@@ -180,4 +180,4 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 				?>
 </div>
 
-				<?php do_action( 'woocommerce_after_cart' ); ?>
+<?php do_action( 'woocommerce_after_cart' ); ?>
