@@ -92,8 +92,8 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Documentaion', 'storegrowth-sales-booster' ),
-			__( 'Documentaion', 'storegrowth-sales-booster' ),
+			__( 'Documentation', 'storegrowth-sales-booster' ),
+			__( 'Documentation', 'storegrowth-sales-booster' ),
 			'manage_options',
 			'go-sgsb-docs',
 			array( $this, 'handle_external_redirects' )
