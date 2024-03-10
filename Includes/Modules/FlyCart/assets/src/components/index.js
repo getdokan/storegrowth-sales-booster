@@ -21,7 +21,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
 
   const quickCartState = {
     layout: "side",
-    icon_name: "shopping-cart-icon-1",
+    icon_name: "shopping-cart-icon-5",
     icon_color: "#FFF",
     show_coupon: true,
     icon_position: "bottom-right",

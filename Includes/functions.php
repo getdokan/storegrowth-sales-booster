@@ -150,7 +150,8 @@ if ( ! function_exists( 'storegrowth_sales_booster_start_plugin_tracking' ) ) {
 
 		$tracker->set_notice_options(
 			array(
-				'notice'       => __( 'Want to help make <strong>StoreGrowth</strong> even more awesome? Be the first to get access to <strong>StoreGrowth PRO</strong> with a huge <strong>50% Early Bird Discount</strong> if you allow us to track the non-sensitive usage data.', 'storegrowth-sales-booster' ),
+				'notice'       => __( 'Never miss an important update!
+ Opt in to get email notifications for security & feature updates, educational content, and occasional offers, and to share some basic WordPress environment info.', 'storegrowth-sales-booster' ),
 				'extra_notice' => __(
 					'We collect non-sensitive diagnostic data and plugin usage information. 
         Your site URL, WordPress & PHP version, plugins & themes and email address to send you the 

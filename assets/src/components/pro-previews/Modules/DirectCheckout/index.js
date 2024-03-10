@@ -66,12 +66,12 @@ addFilter(
     ( checkoutPageOptions ) => {
         checkoutPageOptions?.push(
             {
-                label       : __( 'Quick Cart Checkout', 'storegrowth-sales-booster' ),
+                label       : __( 'Fly Cart Checkout', 'storegrowth-sales-booster' ),
                 value       : 'quick-cart-checkout',
                 disabled    : true,
                 needUpgrade : true,
                 tooltip     : __(
-                    'The checkout will redirect to Quick Cart module cart checkout page.',
+                    'The checkout will redirect to Fly Cart module cart checkout page.',
                     'storegrowth-sales-booster'
                 ),
             },
