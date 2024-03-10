@@ -77,6 +77,18 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 				</g>
 			</svg>
 		<?php endif; ?>
+		<?php if ( $icon_name === 'shopping-cart-icon-5' ) : ?>
+			<svg width='16' height='17' fill='none' class='radio-icon' viewBox='0 0 25 25'
+				style='  border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'>
+				<g>
+				<path d="M3.06164 15.1933L3.42688 13.1219C3.85856 10.6736 4.0744 9.44952 4.92914 8.72476C5.78389 8 7.01171 8 9.46734 8H14.5327C16.9883 8 18.2161 8 19.0709 8.72476C19.9256 9.44952 20.1414 10.6736 20.5731 13.1219L20.9384 15.1933C21.5357 18.5811 21.8344 20.275 20.9147 21.3875C19.995 22.5 18.2959 22.5 14.8979 22.5H9.1021C5.70406 22.5 4.00504 22.5 3.08533 21.3875C2.16562 20.275 2.4643 18.5811 3.06164 15.1933Z" stroke="<?php echo esc_attr( $cart_icon_color ); ?>" stroke-width="1.5"/>
+
+<path d="M6.375 8L6.58477 5.98618C6.81947 3.73306 9.17384 2 12 2C14.8261 2 17.1805 3.73306 17.4152 5.98618L17.625 8" stroke="<?php echo esc_attr( $cart_icon_color ); ?>" stroke-width="1.5"/>
+
+<path d="M15.75 11C15.5875 12.4131 13.9571 13.5 12 13.5C10.0429 13.5 8.41252 12.4131 8.25 11" stroke="<?php echo esc_attr( $cart_icon_color ); ?>" stroke-width="1.5" stroke-linecap="round"/>
+				</g>
+			</svg>
+		<?php endif; ?>
 		<span class="wfc-cart-countlocation">
 			<?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?>
 		</span>

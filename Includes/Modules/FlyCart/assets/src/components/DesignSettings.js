@@ -69,6 +69,7 @@ const DesignSettings = ({
         'shopping-cart-icon-2',
         'shopping-cart-icon-3',
         'shopping-cart-icon-4',
+        'shopping-cart-icon-5',
     ];
 
     const iconOptions = iconStyleNames?.map( iconStyleName => (
