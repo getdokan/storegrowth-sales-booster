@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB;
 
+use STOREGROWTH\SPSB\Admin\WPInsightsStoreGrowthSalesBooster;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -102,10 +103,9 @@ class Ajax {
 	 * Get User Concent Data
 	 */
 	public function sgsb_get_user_concent_data() {
-		error_log('called');
 		check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
-		error_log('true');
-		print_r($_POST);
+		error_log("response". print_r($_POST,1));
 		wp_send_json_success(array('message' => 'Success message'));
+		wp_die();
 	}
 }

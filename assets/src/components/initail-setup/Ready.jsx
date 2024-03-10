@@ -1,30 +1,7 @@
 import { Fragment } from "react";
-import { useState, useEffect } from '@wordpress/element';
-import { Switch } from 'antd';
 import { __ } from "@wordpress/i18n";
 
 const Ready = () => {
-  const [updateNews, setupdateNews] = useState(true);
-  const [userDetails, setUserdetails] = useState(true);
-
-    useEffect(() => {
-      const getUserDetails = async () => {
-        const response = await fetch('/wp-admin/admin-ajax.php', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            _ajax_nonce: sgsbAdmin.nonce,
-            action: 'sgsb_get_user_concent_data',
-          }),
-        });
-       };
-
-      getUserDetails(); 
-    }, []);
-  
   return (
     <Fragment>
       <div className="sgsb-step-completion">
@@ -75,23 +52,6 @@ const Ready = () => {
             <a href="https://support.invizo.io/" target="_blank" className="steps-button support-cta">
               {__("Get Support", "storegrowth-sales-booster")}
             </a>
-          </div>
-        </div>
-
-        <div className="ini-setup user-agreement">
-          <div className="getting-updates">
-            <Switch defaultChecked onChange={(checked) => { setupdateNews(checked) }} />
-            <div className="user-agreement content-container">
-              <h3 className="heading">{__('Get Updates', "storegrowth-sales-booster")}</h3>
-              <p className="content">{__('We will send essential tips & tricks for effective usage of StoreGrowth.', "storegrowth-sales-booster")}</p>
-            </div>
-          </div>
-          <div className="getting-essentials">
-            <Switch defaultChecked onChange={(checked) => { setUserdetails(checked) }} />
-            <div className="user-agreement content-container">
-              <h3 className="heading">{__('Share Essentials', "storegrowth-sales-booster")}</h3>
-              <p className="content">{__('Let us collect non-sensitive diagnosis data and usage information.', "storegrowth-sales-booster")}</p>
-            </div>
           </div>
         </div>
       </div>
