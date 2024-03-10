@@ -1,6 +1,6 @@
 import { notification } from "antd";
 
-import { __ } from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
 import { useDispatch } from "@wordpress/data";
 import DesignSettings from "./DesignSettings";
 import GeneralSettings from "./GeneralSettings";
@@ -15,27 +15,28 @@ import { Fragment } from "react";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FlyCart( { navigate, useSearchParams } ) {
+function FlyCart({ navigate, useSearchParams, moduleId }) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const quickCartState = {
-    layout                      : "side",
-    icon_name                   : "shopping-cart-icon-1",
-    icon_color                  : "#FFF",
-    show_coupon                 : true,
-    icon_position               : "bottom-right",
-    widget_bg_color             : "#EAF0FD",
-    buttons_bg_color            : "#0875FF",
-    show_remove_icon            : true,
-    show_product_image          : true,
-    show_product_price          : true,
-    show_quantity_picker        : true,
-    shopping_button_bg_color    : "#073B4C",
-    enable_add_to_cart_redirect : true,
+    layout: "side",
+    icon_name: "shopping-cart-icon-5",
+    icon_color: "#FFF",
+    show_coupon: true,
+    icon_position: "bottom-right",
+    widget_bg_color: "#FFFFFF",
+    product_card_bg_color: "#FFFFFF",
+    buttons_bg_color: "#0875FF",
+    show_remove_icon: true,
+    show_product_image: true,
+    show_product_price: true,
+    show_quantity_picker: true,
+    shopping_button_bg_color: "#073B4C",
+    enable_add_to_cart_redirect: true,
   };
 
-  const [formData, updateFormData] = useState( { ...quickCartState } );
+  const [formData, updateFormData] = useState({ ...quickCartState });
 
   const getSettings = () => {
     setPageLoading(true);
@@ -67,7 +68,7 @@ function FlyCart( { navigate, useSearchParams } ) {
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.;
         const fieldName = event.target.name;
-        let fieldValue  = ui.color.toString();
+        let fieldValue = ui.color.toString();
 
         updateFormData((prevFormData) => ({
           ...prevFormData,
@@ -121,7 +122,7 @@ function FlyCart( { navigate, useSearchParams } ) {
   };
 
   let tabColorPickerActivated = false;
-  let [ searchParams, setSearchParams ] = useSearchParams();
+  let [searchParams, setSearchParams] = useSearchParams();
   const onTabChange = (activeKey) => {
     if (activeKey != "1" && !tabColorPickerActivated) {
       tabColorPickerActivated = true;
@@ -129,60 +130,65 @@ function FlyCart( { navigate, useSearchParams } ) {
     }
   };
 
-  const tabName = searchParams.get( 'tab_name' );
-  const changeTab = ( key ) => {
-    navigate( "/fly-cart?tab_name=" + key );
+  const tabName = searchParams.get("tab_name");
+  const changeTab = (key) => {
+    navigate("/fly-cart?tab_name=" + key);
   };
 
   const onFormReset = () => {
-    updateFormData( { ...quickCartState } );
-  }
+    updateFormData({ ...quickCartState });
+  };
 
   const tabPanels = [
     {
-      key: 'general',
-      title: __( 'General Setting', 'storegrowth-sales-booster' ),
-      panel: <GeneralSettings
-        formData={ formData }
-        onFormSave={ onFormSave}
-        buttonLoading={ buttonLoading }
-        onFieldChange={ onFieldChange }
-        onFormReset={onFormReset}
-      />,
+      key: "general",
+      title: __("General Setting", "storegrowth-sales-booster"),
+      panel: (
+        <GeneralSettings
+          formData={formData}
+          onFormSave={onFormSave}
+          buttonLoading={buttonLoading}
+          onFieldChange={onFieldChange}
+          onFormReset={onFormReset}
+        />
+      ),
     },
     {
-      key: 'design',
-      title: __( 'Design', 'storegrowth-sales-booster' ),
-      panel: <DesignSettings
-        formData={ formData }
-        onFormSave={ () => onFormSave('design') }
-        onFieldChange={ onFieldChange }
-        buttonLoading={ buttonLoading }
-        onFormReset={onFormReset}
-      />,
+      key: "design",
+      title: __("Design", "storegrowth-sales-booster"),
+      panel: (
+        <DesignSettings
+          formData={formData}
+          onFormSave={() => onFormSave("design")}
+          onFieldChange={onFieldChange}
+          buttonLoading={buttonLoading}
+          onFormReset={onFormReset}
+        />
+      ),
     },
   ];
 
   return (
     <Fragment>
       <PanelHeader
-        title={ __( 'Quick Cart Setting', 'storegrowth-sales-booster' ) }
+        title={__("Fly Cart Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={ 12 }
-            tabPanels={ tabPanels }
-            changeHandler={ changeTab }
-            activeTab={ tabName ? tabName : 'general' }
+            colSpan={12}
+            tabPanels={tabPanels}
+            changeHandler={changeTab}
+            activeTab={tabName ? tabName : "general"}
           />
-          <PanelPreview colSpan={ 12 }>
-            <Preview storeData={ formData } />
+          <PanelPreview colSpan={12}>
+            <Preview storeData={formData} />
           </PanelPreview>
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
-        <TouchPreview previewWidth={ 580 }>
-          <Preview storeData={ formData } />
+        <TouchPreview previewWidth={580}>
+          <Preview storeData={formData} />
         </TouchPreview>
       </PanelContainer>
     </Fragment>

@@ -14,7 +14,7 @@ import DesignTab from "./DesingTab";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function StockBarLayout({ navigate, useSearchParams }) {
+function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
   const isProEnabled = sgsbAdmin.isPro;
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -23,12 +23,16 @@ function StockBarLayout({ navigate, useSearchParams }) {
 
   const initalStockBarData = {
     stockbar_height                 : 10,
+    show_stock_status               : true,
+    stock_status_text               : __( 'Hurry! only {quantity} stocks left.', 'storegrowth-sales-booster' ),
+    status_text_color               : '#073B4C',
     stockbar_bg_color               : "#EBF6FF",
     stockbar_fg_color               : "#008DFF",
     stockbar_template               : 'stock_bar_one',
     stock_display_format            : 'above',
     stockbar_border_color           : '#DDE6F9',
     total_sell_count_text           : __( 'Total Sold', 'storegrowth-sales-booster' ),
+    status_quantity_required        : 10,
     available_item_count_text       : __( 'Available Item', 'storegrowth-sales-booster' ),
     shop_page_stock_bar_enable      : false,
     shop_page_countdown_enable      : false,
@@ -155,6 +159,7 @@ function StockBarLayout({ navigate, useSearchParams }) {
     <Fragment>
       <PanelHeader
         title={__("Stock Bar Setting", "storegrowth-sales-booster")}
+        moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>

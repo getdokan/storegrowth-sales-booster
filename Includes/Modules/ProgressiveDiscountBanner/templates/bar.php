@@ -7,9 +7,14 @@
 
 use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Helper;
 
-$settings    = Helper::sgsb_pd_banner_get_settings();
-$banner_text = Helper::sgsb_pd_banner_get_banner_text( $settings );
-$banner_icon = Helper::sgsb_pd_banner_get_banner_icon( $settings );
+$settings          = Helper::sgsb_pd_banner_get_settings();
+$banner_text       = Helper::sgsb_pd_banner_get_banner_text( $settings );
+$banner_icon       = Helper::sgsb_pd_banner_get_banner_icon( $settings );
+$button_style      = sgsb_find_option_setting( $settings, 'btn_style', true );
+$button_bg         = sgsb_find_option_setting( $settings, 'btn_color', '#fff' );
+$button_text       = sgsb_find_option_setting( $settings, 'btn_text', __( 'Cart', 'storegrowth-sales-booster' ) );
+$redirect_url      = sgsb_find_option_setting( $settings, 'btn_target', wc_get_cart_url() );
+$button_text_color = sgsb_find_option_setting( $settings, 'btn_text_color', '#073b4c' );
 ?>
 <div class='sgsb-pd-banner-bar-wrapper'>
 	<div class='sgsb-pd-banner-bar'>
@@ -59,16 +64,24 @@ $banner_icon = Helper::sgsb_pd_banner_get_banner_icon( $settings );
 				</svg>
 			<?php endif; ?>
 		</div>
-		<span class='sgsb-pd-banner-text'>
+        <div class="sgsb-fn-bar-data-content">
+            <span class='sgsb-pd-banner-text'>
 			<?php
-			/**
-			 * Banner text filter.
-			 *
-			 * @since 1.0.0
-			 */
-			echo wp_kses_post( apply_filters( 'sales_boster_pd_banner_text', $banner_text ) );
-			?>
+            /**
+             * Banner text filter.
+             *
+             * @since 1.0.0
+             */
+            echo wp_kses_post( apply_filters( 'sales_boster_pd_banner_text', $banner_text ) );
+            ?>
 		</span>
+            <?php if ( $button_style ) : ?>
+                <a href="<?php echo esc_url( $redirect_url ); ?>" target="_blank" class="fn-bar-action-button"
+                   style="background: <?php echo esc_attr( $button_bg ); ?>; color: <?php echo esc_attr( $button_text_color ); ?>">
+                    <?php echo wp_kses_post( $button_text ); ?>
+                </a>
+            <?php endif; ?>
+        </div>
 		<div class='sgsb-pd-banner-bar-remove'>
 			<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
 				<g clip-path='url(#clip0_205_1006)'>

@@ -152,11 +152,13 @@ width: fit-content;
 
 }
 
+.sgsb-countdown-timer-heading.ct-layout-2.default {
+	background: linear-gradient(90deg, #32DBBE 0%, #008DFF 100%) text;
+	-webkit-text-fill-color: transparent;
+}
+
 .sgsb-countdown-timer-heading.ct-layout-2 {
-background: linear-gradient(90deg, #32DBBE 0%, #008DFF 100%);
 -webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-font-family: "Merienda" !important;
 }
 
 /* layout2  styles end */

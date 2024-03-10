@@ -15,12 +15,14 @@ register( OrderBumpStore );
  * Add routes to sidebar.
  */
 addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams,useSearchParams) => {
+  const moduleName = 'upsell-order-bump';
+
   routes.push( {
+    name: moduleName,
+    label:"Upsell Order Bump",
     path: "/upsell-order-bump",
     exact:true,
-    name: 'upsell-order-bump',
-    label:"Upsell Order Bump",
-    element: <OrderBump outlet={outlet} navigate={navigate} useParams={useParams} />,
+    element: <OrderBump outlet={outlet} navigate={navigate} useParams={useParams} moduleId={moduleName}/>,
     children: [
       {
         index: true,

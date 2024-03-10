@@ -9,22 +9,25 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "progressive-discount-banner";
+
     routes.push({
-      name: "progressive-discount-banner",
-      label: "Free Shipping Bar",
+      name: moduleName,
+      label: "Free Shipping Rules",
       path: "/progressive-discount-banner",
       element: (
         <FreeShippingBarLayout
+          moduleId={moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
-					useSearchParams={useSearchParams}
+          useSearchParams={useSearchParams}
         />
       ),
     });
 
     return routes;
-  }
+  },
 );
 
 /**

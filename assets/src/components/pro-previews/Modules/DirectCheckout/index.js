@@ -2,6 +2,10 @@ import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import TextInput from "../../../settings/Panels/PanelSettings/Fields/TextInput";
 import SingleCheckBox from "../../../settings/Panels/PanelSettings/Fields/SingleCheckBox";
+import {Fragment} from "react";
+import {SelectBox} from "../../../settings/Panels";
+import InputNumber from "../../../settings/Panels/PanelSettings/Fields/Number";
+import ColourPicker from "../../../settings/Panels/PanelSettings/Fields/ColorPicker";
 
 // Handle direct checkout modules pro settings prompts.
 addFilter(
@@ -62,12 +66,12 @@ addFilter(
     ( checkoutPageOptions ) => {
         checkoutPageOptions?.push(
             {
-                label       : __( 'Quick Cart Checkout', 'storegrowth-sales-booster' ),
+                label       : __( 'Fly Cart Checkout', 'storegrowth-sales-booster' ),
                 value       : 'quick-cart-checkout',
                 disabled    : true,
                 needUpgrade : true,
                 tooltip     : __(
-                    'The checkout will redirect to Quick Cart module cart checkout page.',
+                    'The checkout will redirect to Fly Cart module cart checkout page.',
                     'storegrowth-sales-booster'
                 ),
             },
@@ -92,6 +96,101 @@ addFilter(
                     'storegrowth-sales-booster'
                 ) }
             />
+        );
+    }
+);
+addFilter(
+    'sgsb_after_direct_checkout_button_design_settings',
+    'sgsb_after_direct_checkout_button_design_settings_callback',
+    () => {
+        const fontFamily = [
+            {
+                value: 'poppins',
+                label: __('Poppins', 'storegrowth-sales-booster'),
+            }
+        ];
+
+        const borders = [
+            { value: 'dotted', label: __( 'Dotted', 'storegrowth-sales-booster' ) }
+        ];
+
+        return (
+            <Fragment>
+                <SelectBox
+                    needUpgrade={ true }
+                    fieldValue={ fontFamily?.[0] }
+                    title={ __( "Font Family", "storegrowth-sales-booster" ) }
+                    tooltip={ __(
+                        "Select your desired font family",
+                        "storegrowth-sales-booster"
+                    ) }
+                />
+
+                <InputNumber
+                    min={1}
+                    max={100}
+                    style={{
+                        width: "100px",
+                        textAlign: "center",
+                    }}
+                    addonAfter={"px"}
+                    needUpgrade={ true }
+                    title={__("Horizontal Padding", "storegrowth-sales-booster")}
+                    placeHolderText={__("Button Horizontal Padding", "storegrowth-sales-booster")}
+                    tooltip={__(
+                        "To set the horizontal padding of the button",
+                        "storegrowth-sales-booster"
+                    )}
+                />
+
+                <InputNumber
+                    min={1}
+                    max={100}
+                    style={{
+                        width: "100px",
+                        textAlign: "center",
+                    }}
+                    addonAfter={"px"}
+                    needUpgrade={ true }
+                    title={__("Vertical Padding", "storegrowth-sales-booster")}
+                    placeHolderText={__("Button Vertical Padding", "storegrowth-sales-booster")}
+                    tooltip={__(
+                        "To set the vertical padding of the button",
+                        "storegrowth-sales-booster"
+                    )}
+                />
+
+                <InputNumber
+                    min={1}
+                    max={20}
+                    style={{
+                        width: "100px",
+                        textAlign: "center",
+                    }}
+                    addonAfter={"px"}
+                    needUpgrade={ true }
+                    title={__("Border Width", "storegrowth-sales-booster")}
+                    placeHolderText={__("Button Border Width", "storegrowth-sales-booster")}
+                    tooltip={__(
+                        "To set the border width of the button",
+                        "storegrowth-sales-booster"
+                    )}
+                />
+
+                <ColourPicker
+                    needUpgrade={ true }
+                    fieldValue={`#008dff`}
+                    title={__("Border Color", "storegrowth-sales-booster")}
+                />
+
+                <SelectBox
+                    needUpgrade={ true }
+                    fieldValue={ borders?.[0] }
+                    title={ __( 'Overview Border', 'storegrowth-sales-booster' ) }
+                    placeHolderText={ __( 'Change Overview Border', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'The Style of the order bump border.', 'storegrowth-sales-booster' ) }
+                />
+            </Fragment>
         );
     }
 );

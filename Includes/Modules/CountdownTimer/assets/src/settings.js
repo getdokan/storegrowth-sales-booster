@@ -9,12 +9,15 @@ addFilter(
   "sgsb_routes",
   "sgsb",
   (routes, outlet, navigate, useParams, useSearchParams) => {
+    const moduleName = "countdown-timer";
+
     routes.push({
-      name: "countdown-timer",
-      label: "Sales Countdown",
+      name: moduleName,
+      label: "Countdown Timer",
       path: "/countdown-timer",
       element: (
         <SalesCountdownLayout
+          moduleId = {moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
@@ -32,7 +35,7 @@ addFilter(
  */
 addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
   items.push({
-    label: <Link to="/countdown-timer">Sales Countdown</Link>,
+    label: <Link to="/countdown-timer">Countdown Timer</Link>,
     key: "countdown-timer",
     icon: <StockOutlined />,
   });

@@ -55,7 +55,7 @@ class FlyCartModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Quick Cart';
+		return 'Fly Cart';
 	}
 
 	/**
@@ -73,7 +73,7 @@ class FlyCartModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_module_category() {
-		return 'Quick Cart';
+		return 'Fly Cart';
 	}
 
 	/**
@@ -112,7 +112,6 @@ class FlyCartModule implements ModuleSkeleton {
 		 */
 		do_action( 'storegrowth_quick_cart_module_init' );
 	}
-
 }
 
 // Create object and return.
