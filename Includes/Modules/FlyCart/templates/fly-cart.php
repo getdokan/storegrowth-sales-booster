@@ -93,9 +93,9 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 	<div class="qc-cart-heading">
 		<h3 class="wfc-cart-heading">
 			<?php esc_html_e( 'Shopping Cart', 'storegrowth-sales-booster' ); ?>
-			<span class="wfc-cart-countlocation">
+			<div class="wfc-cart-countlocation">
 				<?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?>
-		</span>
+		</div>
 		</h3>
 		<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">

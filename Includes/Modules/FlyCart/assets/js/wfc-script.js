@@ -24,7 +24,7 @@
   function setCartContents(response) {
     let parentElement = $(".sgsb-widget-shopping-cart-content");
     parentElement.html(response?.data?.htmlResponse);
-    $(".wfc-cart-icon .wfc-cart-countlocation").html(
+    $(".wfc-cart-icon .wfc-cart-countlocation, .wfc-widget-sidebar .wfc-cart-countlocation").html(
       response?.data?.cartCountLocation
     );
     elementClassRemover();
