@@ -119,6 +119,12 @@ const DesignSettings = ({
                 fieldValue={ formData.widget_bg_color }
                 title={ __( 'Widget Background Color', 'storegrowth-sales-booster' ) }
             />
+            <ColourPicker
+                name={ `product_card_bg_color` }
+                changeHandler={ onFieldChange }
+                fieldValue={ formData.product_card_bg_color }
+                title={ __( 'Product Card Backgorund Color', 'storegrowth-sales-booster' ) }
+            />
             <ActionsHandler
                 saveHandler={ onFormSave }
                 resetHandler={ onFormReset }

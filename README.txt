@@ -4,12 +4,12 @@ Tags: floating cart, fly cart, side cart, checkout optimization, notification ba
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.24.5
+Stable tag: 1.24.6
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost Your Sales and Conversion with Sales Countdown Timer, Floating Notification Bar, Side Cart, Fly Cart, Live Sales Notifications, Upsell Order Bump, and many more. 
+Boost Your Sales and Conversion with Fly Cart, Upsell Order Bump, Sales Countdown Timer, Floating Notification Bar, Side Cart, Live Sales Notifications, and many more. 
 
 == Description == 
 
@@ -215,6 +215,11 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.24.6 - 10 March, 2024 =
+
+enhance: fly cart ui design
+update: update logo and icon in dashboard
 
 = 1.24.5 - 06 March, 2024 =
 
