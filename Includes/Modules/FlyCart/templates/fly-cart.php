@@ -17,7 +17,7 @@ $action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color',
 ?>
 <div class="wfc-cart-icon <?php echo esc_attr( $icon_position ); ?>">
 	<span class="wfc-open-btn wfc-icon <?php echo esc_attr( $icon_name ); ?>">
-		<?php if ( $icon_name === 'shopping-cart-icon-1' ) : ?>
+		<?php if ( $icon_name === 'shopping-cart-icon-5' ) : ?>
 			<svg width='16' height='17' fill='none' class='radio-icon' viewBox='0 0 100 100'
 				style='  border-radius: 10px; background: <?php echo esc_attr( $action_btn_active_bg ); ?>;'>
 				<g>
