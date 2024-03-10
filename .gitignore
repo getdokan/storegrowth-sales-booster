@@ -6,3 +6,4 @@ lerna-debug.log
 package-lock.json
 assets/build/
 Includes/Modules/*/assets/build/
+package-lock.json

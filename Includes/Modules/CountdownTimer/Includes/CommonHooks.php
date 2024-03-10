@@ -26,7 +26,6 @@ class CommonHooks {
 	 */
 	private function __construct() {
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_countdown_timer_template' ) );
-
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'woocommerce_product_data_panels' ) );
 		add_action( 'woocommerce_admin_process_product_object', array( $this, 'woocommerce_admin_process_product_object' ) );
@@ -153,7 +152,6 @@ class CommonHooks {
 		if ( $product && $product->is_type( 'external' ) ) {
 			return true;
 		}
-
 		return false;
 	}
 }

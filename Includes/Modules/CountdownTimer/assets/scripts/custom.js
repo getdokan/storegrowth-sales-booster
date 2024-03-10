@@ -1,7 +1,6 @@
 'use strict';
 
 jQuery(document).ready( function($) {
-
   $('.sgsb-countdown-timer-items').each(function() {
     $(this).countdown( $(this).data('end-date') )
       .on('update.countdown', function(event) {

@@ -2,6 +2,7 @@ import { addFilter } from "@wordpress/hooks";
 import SalesCountdownLayout from "./components/SalesCountdownLayout";
 import { StockOutlined } from "@ant-design/icons";
 
+
 /**
  * Add routes to sidebar.
  */
@@ -17,7 +18,7 @@ addFilter(
       path: "/countdown-timer",
       element: (
         <SalesCountdownLayout
-          moduleId = {moduleName}
+          moduleId={moduleName}
           outlet={outlet}
           navigate={navigate}
           useParams={useParams}
@@ -27,7 +28,7 @@ addFilter(
     });
 
     return routes;
-  }
+  },
 );
 
 /**

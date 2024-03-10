@@ -26,6 +26,7 @@ class AdminHooks {
 	 */
 	private function __construct() {
 		add_filter( 'plugin_action_links_' . STOREGROWTH_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'block_categories_all', array( $this, 'salesbooster_block_category' ) );
 	}
 
 	/**
@@ -43,5 +44,22 @@ class AdminHooks {
 		);
 
 		return array_merge( $action_links, $links );
+	}
+
+
+	/**
+	 * Show action links on the plugin screen.
+	 *
+	 * @param mixed $categories Plugin Action links.
+	 *
+	 * @return array
+	 */
+	public function salesbooster_block_category( $categories ) {
+		$custom_category = array(
+			'slug'  => 'sales-booster',
+			'title' => 'StoreGrowth Sales Booster',
+		);
+		array_unshift( $categories, $custom_category );
+		return $categories;
 	}
 }

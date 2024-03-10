@@ -26,9 +26,9 @@ class EnqueueScript {
 	 */
 	private function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
+
 
 	/**
 	 * Add JS scripts to frontend.
@@ -36,9 +36,9 @@ class EnqueueScript {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		if ( ! is_product() && ! is_shop() ) {
-			return;
-		}
+		// if ( ! is_product() && ! is_shop() ) {
+		// return;
+		// }
 
 		wp_enqueue_style(
 			'sgsb-cd-timer-custom-style',

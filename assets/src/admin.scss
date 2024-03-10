@@ -564,8 +564,8 @@ main.ant-layout-content.sgsb-module-setting-layout {
           right: 3px;
           border-top-left-radius: 10px;
           border-bottom-left-radius: 10px;
-      }
-      
+        }
+
 
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
@@ -1110,7 +1110,7 @@ End Settings Sidebar
           right: 3px;
           border-top-left-radius: 10px;
           border-bottom-left-radius: 10px;
-      }
+        }
 
         @media (min-width: 1500px) {
           // padding: 0 12px 20px 8px;
@@ -2164,6 +2164,17 @@ End Settings Sidebar
             padding: 18px;
             align-items: center;
 
+            .countdown-shortcode-content {
+              background: gainsboro;
+              padding: 6px;
+              border-radius: 4px;
+
+              span.anticon:hover {
+                cursor: pointer;
+              }
+
+            }
+
             .textarea-heading,
             .textinput-heading {
               margin-top: 5px;
@@ -2404,8 +2415,9 @@ End Settings Sidebar
                           width: 120px;
                         }
                       }
+
                       .upgrade-button {
-                        gap:0px;
+                        gap: 0px;
                         flex-direction: column;
                       }
                     }
