@@ -17,7 +17,7 @@ const Welcome = ( {next}) => {
         },
         body: new URLSearchParams({
           _ajax_nonce: sgsbAdmin.nonce,
-          action: 'sgsb_get_user_concent_data',
+          action: 'sgsb_process_user_concent_data',
           updateNews,
           userDetails,
         }),
