@@ -23,10 +23,20 @@ const ContentLayout = ({ current, next, prev, stepSize = 0 }) => {
   return (
     <div className='sgsb-ini-setup-content-layout'>
       {renderContent()}
-      {(current !== 0 && current !== stepSize - 1) &&
+      {(current !== 0) &&
         <div className='sgsb-steps-controller'>
           <button onClick={prev} type="button" className='steps-button previous'>{__(`Previous`, 'storegrowth-sales-booster')}</button>
-          <button onClick={next} type="button" className='steps-button next'>{__(`Next`, 'storegrowth-sales-booster')}</button>
+          {current !== 2 && <button onClick={next} type="button" className='steps-button next'>{__(`Next Step`, 'storegrowth-sales-booster')}</button>}
+          {current === 2 &&
+            <a
+              href="/wp-admin/admin.php?page=sgsb-settings#dashboard/overview"
+              className="steps-button completion-cta"
+              onClick={null}
+            >
+              {__(`Ready To Go`, "storegrowth-sales-booster")}
+            </a>
+          }
+
         </div>
       }
     </div>

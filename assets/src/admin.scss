@@ -1844,6 +1844,7 @@ End Settings Sidebar
         .dashicons {
           color: #0875ff;
           cursor: pointer;
+
           &.dashicons-undo {
             color: #0875ff;
             cursor: pointer;
@@ -2169,6 +2170,7 @@ End Settings Sidebar
                         fill: #fff !important;
                       }
                     }
+
                     .radio-icon-stroke {
                       path {
                         fill: none !important;
@@ -2954,210 +2956,324 @@ End Settings Sidebar
   gap: 20px;
   padding-top: 26px;
   background-color: #fff;
+  min-height: inherit;
 
-  .storegrowth-icon {
-    width: fit-content;
-    margin: 20px auto;
+  .sgsb-ini-page-container {
+    max-width: 1100px;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
 
-    img {
-      height: 38px;
-    }
-  }
-
-  .sgsg-ini-setup-progress {
-    width: 100%;
-
-    .ant-steps-item-content {
-      font-weight: 700;
-    }
-  }
-
-  .sgsb-return-dashboard {
-    .sgsb-dashboard-cta {
-      height: auto;
-      padding: 20px 30px;
-      border-radius: 5px;
-      border: none;
-      background: #e3e9ff;
-    }
-  }
-
-  .sgsb-ini-setup-content-layout {
-    margin: 22px 36px;
-    border-radius: 10px;
-    background: #f4f7ff;
-    padding: 60px 20px;
-
-    .sgsb-steps-controller {
+    .storegrowth-icon {
+      width: 100%;
       display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+      justify-content: space-between;
+      gap: 12%;
+      // margin: 20px auto;
 
-    .steps-button {
-      padding: 12px 30px;
-      border-radius: 6px;
-      border: none;
-      font-weight: 700;
-      width: fit-content;
-      cursor: pointer;
-
-      &.next {
-        color: #fff;
-        background-color: #0875ff;
-      }
-
-      &.previous {
-        color: #073b4c;
-        background-color: #e3e9ff;
-      }
-
-      &.completion-cta {
-        color: #fff;
-        background-color: #0875ff;
-      }
-
-      &.doc-cta {
-        color: #fff;
-        background: #000000;
-      }
-
-      &.support-cta {
-        color: #073b4c;
-        background-color: #dde6f9;
+      img {
+        height: 28px;
       }
     }
 
-    // Welcome step layout
-    .sgsb-ini-setup-welcome {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
+    .sgsg-ini-setup-progress {
+      width: 100%;
 
-      .sgsb-content-heading {
-        color: var(--Secoundary-Color, #073b4c);
-        text-align: center;
-        font-size: 36px;
-        font-style: normal;
+      .ant-steps-item-content {
         font-weight: 700;
-        line-height: normal;
-        margin: 0;
+      }
+    }
 
-        span {
-          color: var(--Primary-Color, #0875ff);
+    .sgsb-return-dashboard {
+      .sgsb-dashboard-cta {
+        height: auto;
+        padding: 20px 30px;
+        border-radius: 5px;
+        border: none;
+        background: #e3e9ff;
+      }
+    }
+
+    .sgsb-ini-setup-content-layout {
+
+      .sgsb-steps-controller {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .steps-button {
+        padding: 12px 30px;
+        border-radius: 6px;
+        border: none;
+        font-weight: 700;
+        width: fit-content;
+        cursor: pointer;
+
+        &.next {
+          color: #fff;
+          background-color: #0875ff;
+        }
+
+        &.previous {
+          background-color: #ffffff;
+          border: 1px solid black;
+        }
+
+        &.completion-cta {
+          color: #fff;
+          background-color: #0875ff;
+        }
+
+        &.doc-cta {
+          color: #fff;
+          background: #000000;
+        }
+
+        &.support-cta {
+          color: #073b4c;
+          background-color: #dde6f9;
         }
       }
 
-      .sgsb-sub-heading {
-        margin-top: 16px;
-        white-space: pre-line;
-        color: var(--Secoundary-Color, #073b4c);
-        text-align: center;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-      }
-
-      .get-started {
-        margin-top: 50px;
-        padding: 16px 42px;
-        color: #fff;
-        background-color: #0875ff;
-      }
-    }
-
-    //Setup Completion page
-    .sgsb-step-completion {
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-
-      .sgsb-inisetup-heading-content {
+      // Welcome step layout
+      .sgsb-ini-setup-welcome {
         display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
-        gap: 24px;
 
-        .completion-check-mark {
-          border: 2px solid #0875ff;
-          border-radius: 50%;
-          padding: 24px 22px;
-          display: inline-flex;
-        }
-
-        .setup-completion-heading {
+        .ini-setup-announce-container {
           display: flex;
           flex-direction: column;
           align-items: center;
+          gap: 24px;
+          margin: 80px 0px;
 
-          .heading {
-            color: #073b4c;
-            text-align: center;
-            font-size: 36px;
-            font-weight: 700;
+          &.congratulation {
+            margin: 40px 0px;
           }
 
-          .sub-heading {
-            color: #073b4c;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 400;
-          }
-        }
-      }
-
-      .sgsb-ini-setup-completion {
-        .sgsb-intro-video {
-          iframe {
-            width: 36vw;
-            height: 19vw;
-            border-radius: 6px;
-            background: gray;
-          }
-        }
-
-        &.support-doc {
-          display: flex;
-          gap: 44px;
-          margin-left: 8%;
-        }
-
-        .sgsb-support-doc-cta {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-      }
-
-      .ini-setup {
-        &.user-agreement {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          margin-left: 8%;
-
-          .getting-updates,
-          .getting-essentials {
+          .annouce-contents {
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 530px;
+
+            .sgsb-content-heading {
+              color: var(--Secoundary-Color, #073b4c);
+              text-align: center;
+              font-size: 36px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: normal;
+              margin: 0;
+
+              span {
+                color: var(--Primary-Color, #0875ff);
+              }
+            }
+
+            .sgsb-sub-heading {
+              // white-space: pre-line;
+              color: var(--Secoundary-Color, #5A5A5F);
+              text-align: center;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;
+            }
+          }
+
+          .social-links {
+            display: flex;
             gap: 10px;
 
-            .content-container {
-              line-height: 0.5;
-
-              .heading {
-                color: var(--Secoundary-Color, #073b4c);
-                font-size: 16px;
+            a {
+              &.social-link {
+                display: flex;
+                padding: 8px 12px 8px 8px;
+                justify-content: center;
+                align-items: center;
+                gap: var(--S-8, 8px);
+                border-radius: 10px;
+                color: var(--Text-color-Primary, #000012);
+                text-align: center;
+                font-size: 14px;
+                font-style: normal;
                 font-weight: 500;
               }
 
-              .content {
-                color: var(--Secoundary-Color, #073b4c);
-                font-size: 12px;
-                font-weight: 400;
+              &.youtube {
+                background: #FFD5D5;
+              }
+
+              &.get-support {
+                background: #B7DFFF;
+              }
+
+              &.documentation {
+                background: #FFE7D9;
+              }
+            }
+          }
+
+          .get-started {
+            display: flex;
+            height: 40px;
+            padding: 24px 20px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background-color: #0875FF;
+            color: #fff;
+          }
+        }
+
+        //user Agriment
+        .ini-setup.user-agreement {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+
+          .getting-updates,
+          .getting-essentials {
+            .ant-checkbox-checked {
+              .ant-checkbox-inner {
+                background-color: #fff;
+                border-color: #B7DFFF;
+
+                &::after {
+                  border: 1.5px solid #008DFF;
+                  border-left: none;
+                  border-top: none;
+                }
+              }
+            }
+
+
+            .user-agreement {
+              display: flex;
+              gap: 6px;
+
+              p {
+                margin: 0;
+
+                &.heading {
+                  font-weight: 600;
+                }
+              }
+            }
+
+          }
+
+        }
+      }
+
+      //Modules page
+      .sgsb-admin-dashboard-module {
+        margin: 80px 0px;
+
+        .sgsb-admin-dashboard-module-box-content {
+          padding: 0px !important;
+          background: none;
+          margin-bottom: 14px;
+        }
+      }
+
+      //Setup Completion page
+      .sgsb-step-completion {
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+
+        .sgsb-inisetup-heading-content {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+
+          .completion-check-mark {
+            border: 2px solid #0875ff;
+            border-radius: 50%;
+            padding: 24px 22px;
+            display: inline-flex;
+          }
+
+          .setup-completion-heading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .heading {
+              color: #073b4c;
+              text-align: center;
+              font-size: 36px;
+              font-weight: 700;
+            }
+
+            .sub-heading {
+              color: #073b4c;
+              text-align: center;
+              font-size: 14px;
+              font-weight: 400;
+            }
+          }
+        }
+
+        .sgsb-ini-setup-completion {
+          .sgsb-intro-video {
+            iframe {
+              width: 36vw;
+              height: 19vw;
+              border-radius: 6px;
+              background: gray;
+            }
+          }
+
+          &.support-doc {
+            display: flex;
+            gap: 44px;
+            margin-left: 8%;
+          }
+
+          .sgsb-support-doc-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+          }
+        }
+
+        .ini-setup {
+          &.user-agreement {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-left: 8%;
+
+            .getting-updates,
+            .getting-essentials {
+              display: flex;
+              align-items: flex-start;
+              gap: 10px;
+
+              .content-container {
+                line-height: 0.5;
+
+                .heading {
+                  color: var(--Secoundary-Color, #073b4c);
+                  font-size: 16px;
+                  font-weight: 500;
+                }
+
+                .content {
+                  color: var(--Secoundary-Color, #073b4c);
+                  font-size: 12px;
+                  font-weight: 400;
+                }
               }
             }
           }
@@ -3165,4 +3281,5 @@ End Settings Sidebar
       }
     }
   }
+
 }

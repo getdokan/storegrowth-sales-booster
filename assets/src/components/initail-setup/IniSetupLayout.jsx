@@ -1,6 +1,6 @@
 import { React, Fragment, useState, useRef, useEffect } from '@wordpress/element';
 import Progress from './Progress';
-import { Button } from 'antd';
+import { Steps } from 'antd';
 import StoreGrowthIcon from '../../../images/logo.svg'
 
 const IniSetupLayout = () => {
@@ -25,16 +25,39 @@ const IniSetupLayout = () => {
     }
   }, [current]);
 
+  const onChange = (value) => {
+    setCurrent(value);
+  };
+
+
+  const steps = [
+    {
+      title: 'Welcome',
+    },
+    {
+      title: 'Modules',
+    },
+    {
+      title: 'Ready',
+    },
+  ];
+  const stepSize = steps.length;
   return (
     <Fragment>
       <div ref={contentLayoutRef} className='sgsb-ini-setup-page'>
-        <div className='storegrowth-icon'>
-          <img src={StoreGrowthIcon} alt="storegrowth-icon" />
-        </div>
-        <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} /></div>
+        <div className='sgsb-ini-page-container'>
+          <div className='storegrowth-icon'>
+            <img src={StoreGrowthIcon} alt="storegrowth-icon" />
+            <Steps
+              size="small"
+              current={current}
+              onChange={onChange}
+              items={steps}
+            />
+            <img src={StoreGrowthIcon} alt="storegrowth-icon" className='sgsb-empty-spacer'/>
+          </div>
+          <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} stepSize={stepSize} /></div>
 
-        <div className='sgsb-return-dashboard'>
-          <Button className="sgsb-dashboard-cta" onClick={clickHandler}> Return To Dashboard</Button>
         </div>
       </div>
     </Fragment>
