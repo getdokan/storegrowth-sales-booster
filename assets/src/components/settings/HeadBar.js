@@ -15,7 +15,7 @@ function HeadBar() {
                 <div className="premium-btn">
                   <Button
                     width="210px"
-                    href="#/dashboard/pricing"
+                    href="https://storegrowth.io/pricing/"
                     type="primary"
                   >
                     Get Premium
