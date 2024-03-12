@@ -54,7 +54,9 @@ const IniSetupLayout = () => {
               onChange={onChange}
               items={steps}
             />
-            <img src={StoreGrowthIcon} alt="storegrowth-icon" className='sgsb-empty-spacer'/>
+            <div className='steps-skipper-controller'>
+              
+            </div>
           </div>
           <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} stepSize={stepSize} /></div>
 
