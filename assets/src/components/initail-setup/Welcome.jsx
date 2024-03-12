@@ -1,11 +1,8 @@
 import { Fragment } from 'react'
-import { useState, useEffect } from '@wordpress/element';
 import { Checkbox } from 'antd';
 import { __ } from '@wordpress/i18n';
 import WelcomeAnnounce from '../../../images/welcome-announce.svg'
-const Welcome = ({ next }) => {
-  const [updateNews, setupdateNews] = useState(true);
-  const [userDetails, setUserdetails] = useState(true);
+const Welcome = ({ next, agreementData, handleCheckbox }) => {
 
   const getUserDetails = async () => {
     try {
@@ -18,8 +15,7 @@ const Welcome = ({ next }) => {
         body: new URLSearchParams({
           _ajax_nonce: sgsbAdmin.nonce,
           action: 'sgsb_process_user_concent_data',
-          updateNews,
-          userDetails,
+          data: JSON.stringify(agreementData),
         }),
       });
 
@@ -47,19 +43,19 @@ of StoreGrowth Turbocharge Your WooCommerce Store’s Sales!`, 'storegrowth-sale
         </div>
         <div className="ini-setup user-agreement">
           <div className="getting-updates">
-            <Checkbox checked={updateNews} onChange={() => { setupdateNews(!updateNews) }} >
-            <span className="user-agreement content-container">
-              <p className="heading">{__('Get Updates: ', "storegrowth-sales-booster")}</p>
-              <p className="content">{__('We will send essential tips & tricks for effective usage of StoreGrowth.', "storegrowth-sales-booster")}</p>
-            </span>
+            <Checkbox checked={agreementData?.update_news} onChange={() => handleCheckbox('update_news', !agreementData?.update_news)} >
+              <span className="user-agreement content-container">
+                <p className="heading">{__('Get Updates: ', "storegrowth-sales-booster")}</p>
+                <p className="content">{__('We will send essential tips & tricks for effective usage of StoreGrowth.', "storegrowth-sales-booster")}</p>
+              </span>
             </Checkbox>
           </div>
           <div className="getting-essentials">
-            <Checkbox checked={userDetails} onChange={() => { setUserdetails(!userDetails) }} >
-            <span className="user-agreement content-container">
-              <p className="heading">{__('Share Essentials: ', "storegrowth-sales-booster")}</p>
-              <p className="content">{__('Let us collect non-sensitive diagnosis data and usage information.', "storegrowth-sales-booster")}</p>
-            </span>
+            <Checkbox checked={agreementData.user_details} onChange={() => handleCheckbox('user_details', !agreementData.user_details)} >
+              <span className="user-agreement content-container">
+                <p className="heading">{__('Share Essentials: ', "storegrowth-sales-booster")}</p>
+                <p className="content">{__('Let us collect non-sensitive diagnosis data and usage information.', "storegrowth-sales-booster")}</p>
+              </span>
             </Checkbox>
           </div>
         </div>

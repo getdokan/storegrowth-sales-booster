@@ -7,6 +7,19 @@ const IniSetupLayout = () => {
   const [current, setCurrent] = useState(0);
   const contentLayoutRef = useRef(null);
 
+  const agreementsData = {
+    update_news: true,
+    user_details: true,
+  }
+  const [agreementData, setAgreementData] = useState(agreementsData)
+
+  const handleCheckbox = (key, value) => {
+    setAgreementData({
+      ...agreementData,
+      [key]: value,
+    });
+  };
+
   // const clickHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
 
   const next = () => { setCurrent(current + 1) }
@@ -58,7 +71,7 @@ const IniSetupLayout = () => {
 
             </div>
           </div>
-          <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} stepSize={stepSize} /></div>
+          <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} stepSize={stepSize} agreementData={agreementData} handleCheckbox={handleCheckbox} /></div>
 
         </div>
       </div>

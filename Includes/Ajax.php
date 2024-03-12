@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Ajax {
 
 	use Singleton;
+
 	/**
 	 * Invizo Insights Version
 	 */
@@ -49,13 +50,13 @@ class Ajax {
 	 * Constructor of _Ajax class.
 	 */
 	private function __construct() {
-		$this->plugin_file      = plugin_dir_path(__FILE__) . '../storegrowth-sales-booster.php';
-		$this->plugin_name      = basename( $this->plugin_file, '.php' );
+		$this->plugin_file = plugin_dir_path( __FILE__ ) . '../storegrowth-sales-booster.php';
+		$this->plugin_name = basename( $this->plugin_file, '.php' );
 		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );
 		/**
 		 * Register ajax callback
 		*/
-		add_action('wp_ajax_sgsb_process_user_concent_data',  array( $this,'sgsb_process_user_concent_data'));
+		add_action( 'wp_ajax_sgsb_process_user_concent_data', array( $this, 'sgsb_process_user_concent_data' ) );
 	}
 
 	/**
@@ -137,45 +138,45 @@ class Ajax {
 		$plugin = get_plugin_data( $this->plugin_file );
 		return $plugin;
 	}
-	public function sgsb_collect_non_sensitive_data(){
+	public function sgsb_collect_non_sensitive_data() {
 		$body = array(
-				'plugin_slug'   => sanitize_text_field( $this->plugin_name ),
-				'url'           => get_bloginfo( 'url' ),
-				'site_name'     => get_bloginfo( 'name' ),
-				'site_version'  => get_bloginfo( 'version' ),
-				'site_language' => get_bloginfo( 'language' ),
-				'charset'       => get_bloginfo( 'charset' ),
-				'wpins_version' => self::INVZ_VERSION,
-				'php_version'   => phpversion(),
-				'multisite'     => is_multisite(),
-				'file_location' => __FILE__,
-			);
+			'plugin_slug'   => sanitize_text_field( $this->plugin_name ),
+			'url'           => get_bloginfo( 'url' ),
+			'site_name'     => get_bloginfo( 'name' ),
+			'site_version'  => get_bloginfo( 'version' ),
+			'site_language' => get_bloginfo( 'language' ),
+			'charset'       => get_bloginfo( 'charset' ),
+			'wpins_version' => self::INVZ_VERSION,
+			'php_version'   => phpversion(),
+			'multisite'     => is_multisite(),
+			'file_location' => __FILE__,
+		);
 
 			// Collect the email if the correct option has been set
 
-			if ( ! function_exists( 'wp_get_current_user' ) ) {
-				include ABSPATH . 'wp-includes/pluggable.php';
-			}
+		if ( ! function_exists( 'wp_get_current_user' ) ) {
+			include ABSPATH . 'wp-includes/pluggable.php';
+		}
 			$current_user = wp_get_current_user();
 			$email        = $current_user->user_email;
-			if ( is_email( $email ) ) {
-				$body['email'] = $email;
-			}
-			$body['server']           = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
+		if ( is_email( $email ) ) {
+			$body['email'] = $email;
+		}
+			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
 
 			/**
 			 * Collect all active and inactive plugins
 			 */
-			if ( ! function_exists( 'get_plugins' ) ) {
-				include ABSPATH . '/wp-admin/includes/plugin.php';
-			}
+		if ( ! function_exists( 'get_plugins' ) ) {
+			include ABSPATH . '/wp-admin/includes/plugin.php';
+		}
 			$plugins        = array_keys( get_plugins() );
 			$active_plugins = is_network_admin() ? array_keys( get_site_option( 'active_sitewide_plugins', array() ) ) : get_option( 'active_plugins', array() );
-			foreach ( $plugins as $key => $plugin ) {
-				if ( in_array( $plugin, $active_plugins ) ) {
-					unset( $plugins[ $key ] );
-				}
+		foreach ( $plugins as $key => $plugin ) {
+			if ( in_array( $plugin, $active_plugins ) ) {
+				unset( $plugins[ $key ] );
 			}
+		}
 			$body['active_plugins']   = $active_plugins;
 			$body['inactive_plugins'] = $plugins;
 
@@ -189,18 +190,18 @@ class Ajax {
 			 * @since 3.0.0
 			 */
 			$plugin = $this->plugin_data();
-			if ( empty( $plugin ) ) {
-				$body['message'] .= __( 'We can\'t detect any plugin information. This is most probably because you have not included the code in the plugin main file.', 'plugin-usage-tracker' );
-				$body['status']   = 'NOT FOUND';
-			} else {
-				if ( isset( $plugin['Name'] ) ) {
-					$body['plugin'] = sanitize_text_field( $plugin['Name'] );
-				}
-				if ( isset( $plugin['Version'] ) ) {
-					$body['version'] = sanitize_text_field( $plugin['Version'] );
-				}
-				$body['status'] = 'Active';
+		if ( empty( $plugin ) ) {
+			$body['message'] .= __( 'We can\'t detect any plugin information. This is most probably because you have not included the code in the plugin main file.', 'plugin-usage-tracker' );
+			$body['status']   = 'NOT FOUND';
+		} else {
+			if ( isset( $plugin['Name'] ) ) {
+				$body['plugin'] = sanitize_text_field( $plugin['Name'] );
 			}
+			if ( isset( $plugin['Version'] ) ) {
+				$body['version'] = sanitize_text_field( $plugin['Version'] );
+			}
+			$body['status'] = 'Active';
+		}
 
 			/**
 			 * Get active theme name and version
@@ -208,33 +209,29 @@ class Ajax {
 			 * @since 3.0.0
 			 */
 			$theme = wp_get_theme();
-			if ( $theme->Name ) {
-				$body['theme'] = sanitize_text_field( $theme->Name );
-			}
-			if ( $theme->Version ) {
-				$body['theme_version'] = sanitize_text_field( $theme->Version );
-			}
+		if ( $theme->Name ) {
+			$body['theme'] = sanitize_text_field( $theme->Name );
+		}
+		if ( $theme->Version ) {
+			$body['theme_version'] = sanitize_text_field( $theme->Version );
+		}
 			return $body;
 	}
 	/**
 	 * Process Consent Data
 	 */
 	public function sgsb_process_user_concent_data() {
-		check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
+		check_ajax_referer( 'sgsb_ajax_nonce', '_ajax_nonce' );
+		$post_data    = isset( $_POST['data'] ) ? json_decode( wp_unslash( stripslashes( isset( $_POST['data'] ) ) ), true ) : '';
+		$update_news  = $post_data['update_news'];
+		$user_details = $post_data['user_details'];
 
-		$updateNews  = isset( $_POST['updateNews'] ) ? $_POST['updateNews'] : false;
-		$userDetails = isset( $_POST['userDetails'] ) ? $_POST['userDetails'] : false;
-
-		if ( $updateNews === "false" && $userDetails === "false" ) {
-			error_log("execute");
+		if ( ! $update_news && ! $user_details ) {
 			return;
 		}
-		// Collect non-sensitive data
 		$data_to_send = $this->sgsb_collect_non_sensitive_data();
-
-		// Prepare the request arguments
 		$request_args = array(
-			'body'        => json_encode($data_to_send),
+			'body'        => wp_json_encode( $data_to_send ),
 			'headers'     => array(
 				'Content-Type' => 'application/json',
 			),
@@ -242,37 +239,26 @@ class Ajax {
 			'redirection' => 5,
 			'blocking'    => true,
 			'httpversion' => '1.0',
-			'sslverify'   => false, // Change to true in production
+			'sslverify'   => false,
 			'data_format' => 'body',
 		);
 
-		// Send the request
-		$response = wp_remote_post(self::API_URL, $request_args);
+		$response = wp_remote_post( self::API_URL, $request_args );
 
-		// Check for errors
-		if (is_wp_error($response)) {
-			// Handle error
+		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
-			// You can log the error message or return it to the caller
-			return new WP_Error('api_error', $error_message);
+			return new WP_Error( 'api_error', $error_message );
 		} else {
-			// Request was successful
-			// You may want to log or process the response data here if needed
-			$response_code = wp_remote_retrieve_response_code($response);
-			if ($response_code === 200) {
-				// Request successful, you can return success message or response data if any
-				$response_body = wp_remote_retrieve_body($response);
+			$response_code = wp_remote_retrieve_response_code( $response );
+			if ( $response_code === 200 ) {
+				$response_body = wp_remote_retrieve_body( $response );
 				return $response_body;
 			} else {
-				// Request was not successful
-				// Handle the error accordingly
-				return new WP_Error('api_error', 'API returned unexpected response code: ' . $response_code);
+				return new WP_Error( 'api_error', 'API returned unexpected response code: ' . $response_code );
 			}
 		}
 
-		// Send JSON success message after the API request is processed
-		wp_send_json_success(array('message' => 'Success message'));
+		wp_send_json_success( array( 'message' => 'Success message' ) );
 		wp_die();
 	}
-
 }
