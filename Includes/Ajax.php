@@ -49,7 +49,7 @@ class Ajax {
 	 * Constructor of _Ajax class.
 	 */
 	private function __construct() {
-		$this->plugin_file      = plugin_dir_path(__FILE__) . 'storegrowth-sales-booster.php';
+		$this->plugin_file      = plugin_dir_path(__FILE__) . '../storegrowth-sales-booster.php';
 		$this->plugin_name      = basename( $this->plugin_file, '.php' );
 		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );
 		/**
@@ -222,7 +222,10 @@ class Ajax {
 	public function sgsb_process_user_concent_data() {
 		check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
 
-		if ( $_POST["updateNews"] !== true && $_POST["userDetails"] !== true ) {
+		$updateNews  = isset( $_POST['updateNews'] ) ? $_POST['updateNews'] : false;
+		$userDetails = isset( $_POST['userDetails'] ) ? $_POST['userDetails'] : false;
+
+		if ( $updateNews === "false" && $userDetails === "false" ) {
 			error_log("execute");
 			return;
 		}
