@@ -217,55 +217,59 @@ class Ajax {
 			return $body;
 	}
 	/**
- * Process Consent Data
- */
-public function sgsb_process_user_concent_data() {
-    check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
+	 * Process Consent Data
+	 */
+	public function sgsb_process_user_concent_data() {
+		check_ajax_referer('sgsb_ajax_nonce', '_ajax_nonce');
 
-    // Collect non-sensitive data
-    $data_to_send = $this->sgsb_collect_non_sensitive_data();
+		if ( $_POST["updateNews"] !== true && $_POST["userDetails"] !== true ) {
+			error_log("execute");
+			return;
+		}
+		// Collect non-sensitive data
+		$data_to_send = $this->sgsb_collect_non_sensitive_data();
 
-    // Prepare the request arguments
-    $request_args = array(
-        'body'        => json_encode($data_to_send),
-        'headers'     => array(
-            'Content-Type' => 'application/json',
-        ),
-        'timeout'     => 30,
-        'redirection' => 5,
-        'blocking'    => true,
-        'httpversion' => '1.0',
-        'sslverify'   => false, // Change to true in production
-        'data_format' => 'body',
-    );
+		// Prepare the request arguments
+		$request_args = array(
+			'body'        => json_encode($data_to_send),
+			'headers'     => array(
+				'Content-Type' => 'application/json',
+			),
+			'timeout'     => 30,
+			'redirection' => 5,
+			'blocking'    => true,
+			'httpversion' => '1.0',
+			'sslverify'   => false, // Change to true in production
+			'data_format' => 'body',
+		);
 
-    // Send the request
-    $response = wp_remote_post(self::API_URL, $request_args);
+		// Send the request
+		$response = wp_remote_post(self::API_URL, $request_args);
 
-    // Check for errors
-    if (is_wp_error($response)) {
-        // Handle error
-        $error_message = $response->get_error_message();
-        // You can log the error message or return it to the caller
-        return new WP_Error('api_error', $error_message);
-    } else {
-        // Request was successful
-        // You may want to log or process the response data here if needed
-        $response_code = wp_remote_retrieve_response_code($response);
-        if ($response_code === 200) {
-            // Request successful, you can return success message or response data if any
-            $response_body = wp_remote_retrieve_body($response);
-            return $response_body;
-        } else {
-            // Request was not successful
-            // Handle the error accordingly
-            return new WP_Error('api_error', 'API returned unexpected response code: ' . $response_code);
-        }
-    }
+		// Check for errors
+		if (is_wp_error($response)) {
+			// Handle error
+			$error_message = $response->get_error_message();
+			// You can log the error message or return it to the caller
+			return new WP_Error('api_error', $error_message);
+		} else {
+			// Request was successful
+			// You may want to log or process the response data here if needed
+			$response_code = wp_remote_retrieve_response_code($response);
+			if ($response_code === 200) {
+				// Request successful, you can return success message or response data if any
+				$response_body = wp_remote_retrieve_body($response);
+				return $response_body;
+			} else {
+				// Request was not successful
+				// Handle the error accordingly
+				return new WP_Error('api_error', 'API returned unexpected response code: ' . $response_code);
+			}
+		}
 
-    // Send JSON success message after the API request is processed
-    wp_send_json_success(array('message' => 'Success message'));
-    wp_die();
-}
+		// Send JSON success message after the API request is processed
+		wp_send_json_success(array('message' => 'Success message'));
+		wp_die();
+	}
 
 }
