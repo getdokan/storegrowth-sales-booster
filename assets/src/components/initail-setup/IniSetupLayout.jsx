@@ -7,7 +7,7 @@ const IniSetupLayout = () => {
   const [current, setCurrent] = useState(0);
   const contentLayoutRef = useRef(null);
 
-  const clickHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
+  // const clickHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
 
   const next = () => { setCurrent(current + 1) }
 
@@ -55,7 +55,7 @@ const IniSetupLayout = () => {
               items={steps}
             />
             <div className='steps-skipper-controller'>
-              
+
             </div>
           </div>
           <div className='sgsg-ini-setup-progress'> <Progress next={next} prev={prev} current={current} setCurrent={setCurrent} stepSize={stepSize} /></div>

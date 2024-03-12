@@ -21,6 +21,22 @@ export const menuFix = (slug) => {
           background: "#fff", // Replace with your desired background color
         });
         $(".notice").remove();
+        $(document).ready(function() {
+            var children = $('#wpbody-content').children();
+            children.each(function() {
+                var classNames = $(this).attr('class');
+                if (classNames) {
+                    var classList = classNames.split(' ');
+                    if (!classList.includes('metabox-prefs') && !classList.includes('wrap') && !classList.includes('clear')) {
+                        $(this).remove();
+                    }
+                }
+            });
+        });
+        
+        
+        
+    
     }
     // *************************************
     // Add target blank for upgrade button
