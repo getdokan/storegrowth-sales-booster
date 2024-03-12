@@ -222,14 +222,17 @@ class Ajax {
 	 */
 	public function sgsb_process_user_concent_data() {
 		check_ajax_referer( 'sgsb_ajax_nonce', '_ajax_nonce' );
-		$post_data    = isset( $_POST['data'] ) ? json_decode( wp_unslash( stripslashes( isset( $_POST['data'] ) ) ), true ) : '';
-		$update_news  = $post_data['update_news'];
-		$user_details = $post_data['user_details'];
+		$post_data = json_decode( wp_unslash( stripslashes( $_POST['data'] ) ) );
+
+		$update_news  = $post_data->update_news;
+		$user_details = $post_data->user_details;
 
 		if ( ! $update_news && ! $user_details ) {
-			return;
+					return;
 		}
+
 		$data_to_send = $this->sgsb_collect_non_sensitive_data();
+
 		$request_args = array(
 			'body'        => wp_json_encode( $data_to_send ),
 			'headers'     => array(
