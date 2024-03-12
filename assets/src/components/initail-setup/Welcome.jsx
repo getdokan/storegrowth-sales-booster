@@ -2,33 +2,8 @@ import { Fragment } from 'react'
 import { Checkbox } from 'antd';
 import { __ } from '@wordpress/i18n';
 import WelcomeAnnounce from '../../../images/welcome-announce.svg'
-const Welcome = ({ next, agreementData, handleCheckbox }) => {
+const Welcome = ({ next, agreementData, handleCheckbox, getUserDetails }) => {
 
-  const getUserDetails = async () => {
-    try {
-      const response = await fetch('/wp-admin/admin-ajax.php', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          _ajax_nonce: sgsbAdmin.nonce,
-          action: 'sgsb_process_user_concent_data',
-          data: JSON.stringify(agreementData),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const responseData = await response.json();
-      console.log(responseData);
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-    }
-  };
   return (
     <Fragment>
       <div className='sgsb-ini-setup-welcome'>
