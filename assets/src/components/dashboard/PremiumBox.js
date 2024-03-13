@@ -19,7 +19,7 @@ function PremiumBox() {
         support and boost your
         website’s visibility.
         </p>
-        <Button className='premium-btn' type="primary" href='#/dashboard/pricing' size='large'>
+        <Button className='premium-btn' type="primary" href='https://storegrowth.io/pricing/' size='large'>
             Get Premium 
             <Image
                 preview={false}
