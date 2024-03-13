@@ -104,6 +104,7 @@ const IniSetupLayout = () => {
   }, [current]);
 
   const DynamicContent = current !== (stepSize - 1) ? "Skip This Step" : "Skip  Guide";
+
   return (
     <Fragment>
       <div ref={contentLayoutRef} className="sgsb-ini-setup-page">
@@ -126,7 +127,7 @@ const IniSetupLayout = () => {
                 className="skipper-link"
                 onClick={() => skipHandler()}
               >
-                {__(`${DynamicContent}`, "storegrowth-sales-booster")}
+                {__(`${current !== 0 ? DynamicContent : ""}`, "storegrowth-sales-booster")}
               </span>
             </div>
           </div>
