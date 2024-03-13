@@ -25,10 +25,6 @@ $show_product_price   = sgsb_find_option_setting( $settings, 'show_product_price
 $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true );
 ?>
 
-
-<span class="sgsb-cart-item-count">You have <?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?> items in your cart</span>
-<?php do_action( 'woocommerce_before_cart' ); ?>
-
 <form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
 	<div class="sgsb-cart-notification-popup">
 		<div class="sgsb-cart-notification-content">
@@ -69,18 +65,9 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 					<?php endif; ?>
 
 					<td class="product-name">
+						<div class="sgsb-product-detail-container">
 						<div class="sgsb-product-title">
 							<?php
-							$product_categories = get_the_terms( $product_id, 'product_cat' );
-							// var_dump( print_r( $product_categories ) );
-							// Check if categories exist and loop through them.
-							if ( $product_categories && ! is_wp_error( $product_categories ) ) {
-								foreach ( $product_categories as $product_category ) {
-									// Display the category name.
-									echo '<div class="sgsb-product-category">' . esc_html( $product_category->name ) . '</div>';
-								}
-							}
-
 							if ( ! $product_permalink ) {
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
 							} else {
@@ -88,50 +75,50 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 							}
 							?>
 						</div>
-
-						<?php if ( $show_quantity_picker ) : ?>
+							<?php if ( $show_quantity_picker ) : ?>
 						<div class="product-quantity">
-							<?php
-							if ( $_product->is_sold_individually() ) {
-								$product_quantity = sprintf( '<input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
-							} else {
-								$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
-								$product_quantity .= woocommerce_quantity_input(
-									array(
-										'input_name'   => "cart[{$cart_item_key}][qty]",
-										'input_value'  => $cart_item['quantity'],
-										'max_value'    => $_product->get_max_purchase_quantity(),
-										'min_value'    => '1',
-										'product_name' => $_product->get_name(),
-									),
-									$_product,
-									false
-								);
-								$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
-							}
+								<?php
+								if ( $_product->is_sold_individually() ) {
+									$product_quantity = sprintf( '<input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
+								} else {
+									$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
+									$product_quantity .= woocommerce_quantity_input(
+										array(
+											'input_name'   => "cart[{$cart_item_key}][qty]",
+											'input_value'  => $cart_item['quantity'],
+											'max_value'    => $_product->get_max_purchase_quantity(),
+											'min_value'    => '1',
+											'product_name' => $_product->get_name(),
+										),
+										$_product,
+										false
+									);
+									$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
+								}
 
 							// phpcs:ignore
 							echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item );
-							?>
+								?>
 						</div>
-						<?php endif; ?>
-					</td>
+						</div>
+							<div class="sgsb-product-detail-container">
 
-					<?php if ( $show_product_price ) : ?>
-					<td class="product-subtotal">
-						<?php
+								<?php if ( $show_product_price ) : ?>
+							<div class="product-subtotal" >
+									<?php
 						 	// phpcs:ignore
 							echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
-						?>
-					</td>
-					<?php endif; ?>
-					<?php if ( $show_remove_icon ) : ?>
-						<td class="product-remove">
-							<?php
-							echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-								'woocommerce_cart_item_remove_link',
-								sprintf(
-									'<a href="%s" class="sgsb-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">
+									?>
+							</div>
+							<?php endif; ?>
+						<?php endif; ?>
+							<?php if ( $show_remove_icon ) : ?>
+						<div class="product-remove">
+								<?php
+								echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									'woocommerce_cart_item_remove_link',
+									sprintf(
+										'<a href="%s" class="sgsb-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">
                                         <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                                             <path
                                                 fill="#073B4C"
@@ -139,16 +126,18 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
                                             />
                                         </svg>
                                     </a>',
-									esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . Helper::sgsb_fast_cart_get_query_string_for_http_ajax_referer() ),
-									esc_html__( 'Remove this item', 'storegrowth-sales-booster' ),
-									esc_attr( $product_id ),
-									esc_attr( $_product->get_sku() )
-								),
-								$cart_item_key
-							);
-							?>
-						</td>
+										esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . Helper::sgsb_fast_cart_get_query_string_for_http_ajax_referer() ),
+										esc_html__( 'Remove this item', 'storegrowth-sales-booster' ),
+										esc_attr( $product_id ),
+										esc_attr( $_product->get_sku() )
+									),
+									$cart_item_key
+								);
+								?>
+						</div>
 						<?php endif; ?>
+						</div>
+					</td>
 				</tr>
 				<?php
 			}
@@ -191,4 +180,4 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 				?>
 </div>
 
-				<?php do_action( 'woocommerce_after_cart' ); ?>
+<?php do_action( 'woocommerce_after_cart' ); ?>

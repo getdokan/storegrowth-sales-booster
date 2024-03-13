@@ -1,9 +1,6 @@
 import { notification } from "antd";
 import { __ } from "@wordpress/i18n";
-import {
-  useEffect,
-  useState,
-} from "@wordpress/element";
+import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 import { Fragment } from "react";
 import SettingsTab from "./SettingsTab";
@@ -17,24 +14,34 @@ import PanelPreview from "../../../../../../assets/src/components/settings/Panel
 import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
-function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
+function FreeShippingBarLayout({
+  outlet: Outlet,
+  navigate,
+  useSearchParams,
+  moduleId,
+}) {
   const { setPageLoading } = useDispatch("sgsb");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
   const initialShipData = {
+    btn_text                       : 'Cart',
     bar_type                       : "normal",
     user_type                      : "both",
     font_size                      : 20,
+    btn_style                      : true,
+    btn_color                      : "#ffffff",
     text_color                     : "#ffffff",
     icon_color                     : "#ffffff",
+    btn_target                     : sgsbFsbData?.cartUrl,
     font_family                    : "poppins",
     banner_delay                   : 7,
     bar_position                   : "top",
     bar_template                   : 'shipping_bar_one',
     discount_type                  : "free-shipping",
     banner_height                  : 60,
+    btn_text_color                 : "#073b4c",
     banner_trigger                 : "after-few-seconds",
     close_icon_color               : "#ffffff",
     background_color               : "#0875FF",
@@ -55,6 +62,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
 
   const onFormReset = () => {
     setFormData({ ...initialShipData });
+    setShowUndo( false );
   };
 
   const fontFamily = [
@@ -97,6 +105,7 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
       .success((response) => {
         if (response.success && response.data) {
           setFormData({ ...formData, ...response.data });
+          setUndoData({ ...undoData, ...response.data });
           setTimeout(() => setPageLoading(false), 500);
         }
       });
@@ -106,12 +115,68 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
     getSettings();
   }, []);
 
+  const [ isValidUrl, setIsValidUrl ] = useState( true );
+
+  const validateURL = ( input ) => {
+    const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test( input );
+  };
+
+  const [showUndo, setShowUndo] = useState({
+    btn_color        : false,
+    text_color       : false,
+    icon_color       : false,
+    btn_text_color   : false,
+    close_icon_color : false,
+    background_color : false,
+  });
+
+  const [undoData, setUndoData] = useState({
+    ...initialShipData,
+  });
+
+  const colorKeyStack = [
+    'btn_color',
+    'text_color',
+    'icon_color',
+    'btn_text_color',
+    'close_icon_color',
+    'background_color'
+  ];
+
   const onFieldChange = (key, value) => {
+    if ( key === 'btn_target' ) {
+      setIsValidUrl( validateURL( value ) );
+    }
+
     setFormData({
       ...formData,
       [key]: value,
     });
+
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({ ...showUndo, [key]: true });
+    }
   };
+
+  const onUndoClick = ( key ) => {
+    if ( colorKeyStack?.includes( key ) ) {
+      setShowUndo({
+        ...showUndo,
+        [key]: false,
+      });
+      setFormData({
+        ...formData,
+        [key]: undoData?.[key],
+      });
+    }
+  };
+
   const changeTab = (key) => {
     navigate("/progressive-discount-banner?tab_name=" + key);
   };
@@ -148,8 +213,10 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
         data,
       })
       .success(() => {
+        setShowUndo(false);
         setButtonLoading(false);
         notificationMessage(type);
+        setUndoData({ ...formData });
       });
   };
 
@@ -160,7 +227,9 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
       panel: (
         <SettingsTab
           formData={formData}
+          isValid={isValidUrl}
           setFormData={setFormData}
+          setShowUndo={setShowUndo}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("banner_settings")}
           buttonLoading={buttonLoading}
@@ -173,7 +242,10 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
       title: __("Design", "storegrowth-sales-booster"),
       panel: (
         <DesignTab
+          showUndoIcon={showUndo}
+          undoHandler={onUndoClick}
           formData={formData}
+          isValid={isValidUrl}
           setFormData={setFormData}
           onFieldChange={onFieldChange}
           onFormSave={() => onFormSave("design")}
@@ -189,26 +261,36 @@ function FreeShippingBarLayout({ outlet: Outlet, navigate, useSearchParams , mod
   return (
     <Fragment>
       <PanelHeader
-        title={__("Free Shipping Bar Setting", "storegrowth-sales-booster")}
+        title={__("Free Shipping Rules Setting", "storegrowth-sales-booster")}
         moduleId={moduleId}
       />
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            colSpan={showPreview && tabName ? 12 : 24}
             tabPanels={tabPanels}
+            showUndoIcon={showUndo}
+            undoHandler={onUndoClick}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
+            colSpan={showPreview && tabName ? 12 : 24}
           />
           {showPreview && tabName && (
             <PanelPreview colSpan={12}>
-              <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+              <Preview
+                isProActive={isProEnabled}
+                formData={formData}
+                fontFamily={fontFamily}
+              />
             </PanelPreview>
           )}
         </PanelRow>
         {/* Render preview panel for responsive preview. */}
-        <TouchPreview previewWidth={ 550 }>
-          <Preview isProActive={ isProEnabled } formData={formData} fontFamily={fontFamily} />
+        <TouchPreview previewWidth={550}>
+          <Preview
+            isProActive={isProEnabled}
+            formData={formData}
+            fontFamily={fontFamily}
+          />
         </TouchPreview>
       </PanelContainer>
     </Fragment>

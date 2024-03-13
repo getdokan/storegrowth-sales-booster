@@ -2071,6 +2071,15 @@ End Settings Sidebar
       .settings-panel {
         margin-right: 32px;
 
+        .dashicons {
+          color: #0875ff;
+          cursor: pointer;
+          &.dashicons-undo {
+            color: #0875ff;
+            cursor: pointer;
+          }
+        }
+
         .sgsb-settings-card {
           height: 100%;
           border-radius: 5px;
@@ -2302,6 +2311,10 @@ End Settings Sidebar
 
                 &.field-gap {
                   margin-bottom: 15px;
+                }
+
+                &.error {
+                  border-color: red;
                 }
               }
 
@@ -2960,13 +2973,13 @@ End Settings Sidebar
       }
     }
 
-    @media screen and (min-width: 1024px) {
+    @media screen and (min-width: 1241px) {
       .touch-preview-panel {
         display: none;
       }
     }
 
-    @media screen and (max-width: 1023px) {
+    @media screen and (max-width: 1240px) {
       .panel-column {
         flex: 100%;
         max-width: 100%;

@@ -109,11 +109,12 @@ class EnqueueScript {
 	 */
 	private function qc_basic_inline_styles() {
 		// Get style options.
-		$settings         = get_option( 'sgsb_fly_cart_settings' );
-		$wfc_color        = sgsb_find_option_setting( $settings, 'icon_color', '#fff' );
-		$widget_bg_color  = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
-		$wfc_btn_bgcolor  = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
-		$shop_btn_bgcolor = sgsb_find_option_setting( $settings, 'shopping_button_bg_color', '#073B4C' );
+		$settings              = get_option( 'sgsb_fly_cart_settings' );
+		$wfc_color             = sgsb_find_option_setting( $settings, 'icon_color', '#fff' );
+		$widget_bg_color       = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
+		$product_card_bg_color = sgsb_find_option_setting( $settings, 'product_card_bg_color', '#fff' );
+		$wfc_btn_bgcolor       = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
+		$shop_btn_bgcolor      = sgsb_find_option_setting( $settings, 'shopping_button_bg_color', '#073B4C' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -131,7 +132,10 @@ class EnqueueScript {
 				border-color: {$wfc_btn_bgcolor};
 			}
 			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
-			  background-color: {$shop_btn_bgcolor};
+				background-color: {$shop_btn_bgcolor};
+			}
+			.sgsb-widget-shopping-cart-content .sgsb-woocommerce-cart-form .sgsb-fly-cart-table tr.woocommerce-cart-form__cart-item.cart_item {
+				background-color: {$product_card_bg_color};
 			}
 			.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
                 background: {$wfc_btn_bgcolor} !important;
@@ -142,7 +146,7 @@ class EnqueueScript {
 	}
 
 	/**
-	 * Quick Cart Side cart design
+	 * Fly Cart Side cart design
 	 *
 	 * @return void
 	 */
@@ -154,7 +158,7 @@ class EnqueueScript {
                 right: 0;
             }
             .sgsb-widget-shopping-cart-content-wrapper{
-                width:600px;
+                width:460px;
             }
         ';
 
