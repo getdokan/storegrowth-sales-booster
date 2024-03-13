@@ -4,7 +4,7 @@ Tags: floating cart, fly cart, side cart, checkout optimization, notification ba
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.24.7
+Stable tag: 1.25.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -215,6 +215,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.25.7 - 10 March, 2024 =
+
+enhance: add onboarding screen
 
 = 1.24.7 - 10 March, 2024 =
 
