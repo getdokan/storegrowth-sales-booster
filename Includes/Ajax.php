@@ -31,7 +31,7 @@ class Ajax {
 	/**
 	 * API URL
 	 */
-	const API_URL = 'http://woo-plugin-dev.test/wp-json/invizo-insights/v1/save-data';
+	const API_URL = 'https://invizo.io/wp-json/invizo-insights/v1/save-data';
 
 	/**
 	 * Installed Plugin File
@@ -243,7 +243,7 @@ class Ajax {
 			'redirection' => 5,
 			'blocking'    => true,
 			'httpversion' => '1.0',
-			'sslverify'   => false,
+			'sslverify'   => true,
 			'data_format' => 'body',
 		);
 
