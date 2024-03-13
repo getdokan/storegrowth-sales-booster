@@ -11,8 +11,7 @@ const Welcome = ({ next, agreementData, handleCheckbox, getUserDetails }) => {
           <img className='annouce-image' src={WelcomeAnnounce} alt="storegrowth-icon" />
           <div className='annouce-contents'>
             <h3 className='sgsb-content-heading'>{__("Welcome To StoreGrowth", "storegrowth-sales-booster")}</h3>
-            <span className='sgsb-sub-heading'>{__(`# 1 Marketing Plugin For WooCommerce
-of StoreGrowth Turbocharge Your WooCommerce Store’s Sales!`, 'storegrowth-sales-booster')}</span>
+            <span className='sgsb-sub-heading'>{__(`Conversion Boosting Toolkit for WooCommerce`, 'storegrowth-sales-booster')}</span>
           </div>
           <button onClick={() => { next(); getUserDetails(); }} type="button" className='steps-button get-started'>{__(`Get Started`, 'storegrowth-sales-booster')}</button>
         </div>
