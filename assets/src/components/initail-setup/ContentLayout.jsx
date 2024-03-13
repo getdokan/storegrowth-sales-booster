@@ -33,7 +33,7 @@ const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handl
               className="steps-button completion-cta"
               onClick={null}
             >
-              {__(`Ready To Go`, "storegrowth-sales-booster")}
+              {__(`Go to dashboard`, "storegrowth-sales-booster")}
             </a>
           }
 

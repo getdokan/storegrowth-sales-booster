@@ -2954,16 +2954,18 @@ End Settings Sidebar
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding-top: 26px;
   background-color: #fff;
   min-height: inherit;
+  margin-bottom: -25px;
+  margin-left: -15px;
+  margin-right: -20px;
+  padding: 30px 30px 20px;
 
   .sgsb-ini-page-container {
     max-width: 1100px;
     width: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
 
     .storegrowth-icon {
@@ -2971,13 +2973,18 @@ End Settings Sidebar
       display: flex;
       justify-content: space-between;
       gap: 12%;
-      // margin: 20px auto;
+      padding: 0px 8px;
 
       img {
         height: 28px;
       }
-      .steps-skipper-controller{
-        width: 10%;
+
+      .steps-skipper-controller {
+        width: 18%;
+        text-align: center;
+        color: #1B49F6;
+        font-weight: 500;
+        cursor: pointer;
       }
     }
 
@@ -3177,7 +3184,45 @@ End Settings Sidebar
 
       //Modules page
       .sgsb-admin-dashboard-module {
-        margin: 80px 0px;
+
+        .ini-setup-announce-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+          padding: 36px 0px;
+
+          .annouce-contents {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 530px;
+
+            .sgsb-content-heading {
+              color: var(--Secoundary-Color, #073b4c);
+              text-align: center;
+              font-size: 36px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: normal;
+              margin: 0;
+
+              span {
+                color: var(--Primary-Color, #0875ff);
+              }
+            }
+
+            .sgsb-sub-heading {
+              // white-space: pre-line;
+              color: var(--Secoundary-Color, #5A5A5F);
+              text-align: center;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: normal;
+            }
+          }
+        }
 
         .sgsb-admin-dashboard-module-box-content {
           padding: 0px !important;

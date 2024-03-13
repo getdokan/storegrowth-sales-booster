@@ -8,6 +8,7 @@ import {
 import Progress from "./Progress";
 import { Steps } from "antd";
 import StoreGrowthIcon from "../../../images/logo.svg";
+import { __ } from "@wordpress/i18n";
 
 const IniSetupLayout = () => {
   const [current, setCurrent] = useState(0);
@@ -18,6 +19,19 @@ const IniSetupLayout = () => {
     user_details: true,
   };
   const [agreementData, setAgreementData] = useState(agreementsData);
+
+  const steps = [
+    {
+      title: "Welcome",
+    },
+    {
+      title: "Modules",
+    },
+    {
+      title: "Ready",
+    },
+  ];
+  const stepSize = steps.length;
 
   const getUserDetails = async () => {
     try {
@@ -39,7 +53,6 @@ const IniSetupLayout = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
@@ -52,8 +65,6 @@ const IniSetupLayout = () => {
     });
   };
 
-  // const clickHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
-
   const next = () => {
     setCurrent(current + 1);
   };
@@ -61,6 +72,13 @@ const IniSetupLayout = () => {
   const prev = () => {
     setCurrent(current - 1);
   };
+
+  const redirectHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
+  const skipHandler = (event) => {
+    if (current !== (stepSize - 1)) {
+      next();
+    } else redirectHandler();
+  }
 
   useEffect(() => {
     // Scroll to the top of the content layout when 'current' changes
@@ -71,22 +89,7 @@ const IniSetupLayout = () => {
     }
   }, [current]);
 
-  const onChange = (value) => {
-    setCurrent(value);
-  };
-
-  const steps = [
-    {
-      title: "Welcome",
-    },
-    {
-      title: "Modules",
-    },
-    {
-      title: "Ready",
-    },
-  ];
-  const stepSize = steps.length;
+  const DynamicContent = current !== (stepSize - 1) ? "Skip This Step" : "Skip  Guide";
   return (
     <Fragment>
       <div ref={contentLayoutRef} className="sgsb-ini-setup-page">
@@ -98,13 +101,20 @@ const IniSetupLayout = () => {
               current={current}
               onChange={(value) => {
                 setCurrent(value);
-                if (value === 1) {
+                if (value !== 0) {
                   getUserDetails();
                 }
               }}
               items={steps}
             />
-            <div className="steps-skipper-controller"></div>
+            <div className="steps-skipper-controller">
+              <span
+                className="skipper-link"
+                onClick={() => skipHandler()}
+              >
+                {__(`${DynamicContent}`, "storegrowth-sales-booster")}
+              </span>
+            </div>
           </div>
           <div className="sgsg-ini-setup-progress">
             {" "}

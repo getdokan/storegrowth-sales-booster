@@ -54,6 +54,12 @@ function ModulesSetup() {
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-module">
+      <div className='ini-setup-announce-container'>
+          <div className='annouce-contents'>
+            <h3 className='sgsb-content-heading'>{__("Choose and Enable Modules", "storegrowth-sales-booster")}</h3>
+            <span className='sgsb-sub-heading'>{__(`This is a list of all the modules of StoreGrowth. Enable your desired modules and get them ready for your next sales campaign.`, 'storegrowth-sales-booster')}</span>
+          </div>
+        </div>
         <ModuleList
           modules={allModules}
           minValue={pagination?.minValue}
