@@ -1,18 +1,12 @@
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState, useMemo } from "@wordpress/element";
-import { Alert, Button, Col, Image, Pagination, Row, Modal } from "antd";
-import { nanoid } from "nanoid";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-
+import { Button, Col, Image, Pagination, Row } from "antd";
+import ModuleList from "./ModuleList";
 import { Ajax } from "../../ajax";
-import ModuleCard from "./ModuleCard";
 import ModuleSearch from "./ModuleSearch";
 
-import dashboardIcon from "../../../images/dashboard-icon.svg";
 import helpIcon from "../../../images/help-icon.svg";
 import logo from "../../../images/logo.svg";
-import downArrowIocn from "../../../images/menu/down-arrow-icon.svg";
-import upArrowIocn from "../../../images/menu/up-arrow-icon.svg";
 import widgetIcon from "../../../images/widget-icon.svg";
 import ModuleFilter from "./ModuleFilter";
 import PremiumBox from "./PremiumBox";
@@ -161,23 +155,6 @@ function Modules() {
     }
   }, [activatedModules]);
 
-  // Module List
-  const ModuleList = ({ modules }) => {
-    return (
-      <>
-        {modules
-          .filter((module) =>
-            module.name.toLowerCase().includes(searchModule.toLowerCase())
-          )
-          .filter((module) => (filterActiveModules ? module.status : true)) // Filter based on the filterActiveModules state
-          .slice(minValue, maxValue)
-          .map((module) => (
-            <ModuleCard module={module} key={nanoid()} />
-          ))}
-      </>
-    );
-  };
-
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
       <div className="sgsb-admin-dashboard-sideabr">
@@ -298,11 +275,13 @@ function Modules() {
             handleModuleActivation={handleModuleActivation}
           />
         )}
-
-        <Row className="sgsb-admin-dashboard-module-box-content">
-          <ModuleList modules={selectFilter.modules} />
-        </Row>
-
+        <ModuleList
+          modules={selectFilter.modules}
+          filterActiveModules={filterActiveModules}
+          searchModule={searchModule}
+          minValue={minValue}
+          maxValue={maxValue}
+        />
         <div
           className="sgsb__module-pagination"
           style={{
