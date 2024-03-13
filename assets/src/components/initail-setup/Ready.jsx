@@ -25,7 +25,7 @@ const Ready = () => {
               {__(`Youtube`, "storegrowth-sales-booster")}
             </a>
             <a
-              href="/wp-admin/admin.php?page=sgsb-settings#dashboard/overview"
+              href="https://support.invizo.io/"
               target="_blank"
               className="social-link get-support"
               onClick={null}
@@ -39,7 +39,7 @@ const Ready = () => {
               {__(`Get Support`, "storegrowth-sales-booster")}
             </a>
             <a
-              href="/wp-admin/admin.php?page=sgsb-settings#dashboard/overview"
+              href="https://storegrowth.io/docs/"
               target="_blank"
               className="social-link documentation"
               onClick={null}
