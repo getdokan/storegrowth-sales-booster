@@ -57,6 +57,7 @@ class Ajax {
 		 * Register ajax callback
 		*/
 		add_action( 'wp_ajax_sgsb_process_user_concent_data', array( $this, 'sgsb_process_user_concent_data' ) );
+		add_action( 'wp_ajax_sgsb_inisetup_flag_update', array( $this, 'sgsb_inisetup_flag_update' ) );
 	}
 
 	/**
@@ -261,6 +262,16 @@ class Ajax {
 			}
 		}
 
+		wp_send_json_success( array( 'message' => 'Success message' ) );
+		wp_die();
+	}
+	/**
+	 * Process Consent Data
+	 */
+	public function sgsb_inisetup_flag_update() {
+		check_ajax_referer( 'sgsb_ajax_nonce', '_ajax_nonce' );
+		$flag_data = isset( $_POST['sgsb_ini_completion'] );
+		update_option( 'sgsb_ini_completion', $flag_data );
 		wp_send_json_success( array( 'message' => 'Success message' ) );
 		wp_die();
 	}

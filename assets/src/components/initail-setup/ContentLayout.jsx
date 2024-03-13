@@ -4,13 +4,13 @@ import Welcome from './Welcome';
 import ModulesSetup from './ModulesSetup';
 import Ready from './Ready';
 
-const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handleCheckbox ,getUserDetails}) => {
+const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handleCheckbox, getUserDetails, iniSetupChecker }) => {
 
 
   const renderContent = () => {
     switch (parseInt(current)) {
       case 0:
-        return <Welcome current={current} next={next} agreementData={agreementData} handleCheckbox={handleCheckbox} getUserDetails={getUserDetails}/>;
+        return <Welcome current={current} next={next} agreementData={agreementData} handleCheckbox={handleCheckbox} getUserDetails={getUserDetails} />;
       case 1:
         return <ModulesSetup />;
       case 2:
@@ -31,7 +31,7 @@ const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handl
             <a
               href="/wp-admin/admin.php?page=sgsb-settings#dashboard/overview"
               className="steps-button completion-cta"
-              onClick={null}
+              onClick={() => iniSetupChecker()}
             >
               {__(`Go to dashboard`, "storegrowth-sales-booster")}
             </a>

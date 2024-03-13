@@ -9,6 +9,7 @@ import Progress from "./Progress";
 import { Steps } from "antd";
 import StoreGrowthIcon from "../../../images/logo.svg";
 import { __ } from "@wordpress/i18n";
+import { Ajax } from "../../ajax";
 
 const IniSetupLayout = () => {
   const [current, setCurrent] = useState(0);
@@ -33,29 +34,42 @@ const IniSetupLayout = () => {
   ];
   const stepSize = steps.length;
 
-  const getUserDetails = async () => {
+  const fetchData = async (url, params) => {
     try {
-      const response = await fetch("/wp-admin/admin-ajax.php", {
+      const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-          _ajax_nonce: sgsbAdmin.nonce,
-          action: "sgsb_process_user_concent_data",
-          data: JSON.stringify(agreementData),
-        }),
+        body: new URLSearchParams(params),
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
-      const responseData = await response.json();
+      return await response.json();
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      console.error("Error fetching data:", error);
     }
+  };
+
+  const getUserDetails = async () => {
+    const params = {
+      _ajax_nonce: sgsbAdmin.nonce,
+      action: "sgsb_process_user_concent_data",
+      data: JSON.stringify(agreementData),
+    };
+    return await fetchData("/wp-admin/admin-ajax.php", params);
+  };
+
+  const iniSetupChecker = async () => {
+    const params = {
+      _ajax_nonce: sgsbAdmin.nonce,
+      action: "sgsb_inisetup_flag_update",
+      sgsb_ini_completion: true,
+    };
+    return await fetchData("/wp-admin/admin-ajax.php", params);
   };
 
   const handleCheckbox = (key, value) => {
@@ -77,7 +91,7 @@ const IniSetupLayout = () => {
   const skipHandler = (event) => {
     if (current !== (stepSize - 1)) {
       next();
-    } else redirectHandler();
+    } else { redirectHandler(); iniSetupChecker(); }
   }
 
   useEffect(() => {
@@ -127,6 +141,7 @@ const IniSetupLayout = () => {
               agreementData={agreementData}
               handleCheckbox={handleCheckbox}
               getUserDetails={getUserDetails}
+              iniSetupChecker={iniSetupChecker}
             />
           </div>
         </div>
