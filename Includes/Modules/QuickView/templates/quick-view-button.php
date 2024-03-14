@@ -13,14 +13,14 @@ $button_label          = sgsb_find_option_setting( $settings, 'button_label', 'Q
 $modal_effect          = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 $quick_view_icon_color = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
 $is_icon_active        = sgsb_find_option_setting( $settings, 'enable_qucik_view_icon', false );
-$product_page          = is_product() ? '_product_page' : '';
-	$classes           = implode(
+// $product_page          = is_product() ? '_product_page' : '';
+	$classes = implode(
 		' ',
 		array_filter(
 			array(
 				'button',
 				' sgsbqcv-btn-' . $product_id,
-				'sgsbqcv-btn' . $product_page,
+				'sgsbqcv-btn',
 			)
 		)
 	);

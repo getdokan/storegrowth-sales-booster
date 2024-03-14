@@ -18,6 +18,7 @@ function isMobileDevice() {
   $(function () {
     $(".sgsbqcv-btn, .sgsbqcv-link").each(function () {
       var id = $(this).attr("data-id");
+      console.log(id);
       var pid = $(this).attr("data-pid");
       var product_id = $(this).attr("data-product_id");
       if (typeof pid !== typeof undefined && pid !== false) {
@@ -318,7 +319,7 @@ function sgsbqcv_loaded() {
 }
 
 function isFunctionDefined(func) {
-  return typeof func === 'function';
+  return typeof func === "function";
 }
 
 function callIfDefined(func) {
@@ -331,21 +332,20 @@ function callIfDefined(func) {
 
 function sgsbqcv_init_content(context) {
   if (context === "loaded") {
-    callIfDefined(sgsb_stockbar_jqmeter);
-    callIfDefined(sgsb_countdown_timer_methods);
-    callIfDefined(() => {
-      if (typeof sgsbDirectChecoutQuick !== 'undefined') {
-        callIfDefined(sgsbDirectChecoutQuick.init);
-      }
-    });
-
     // Call other methods even if they may not be defined initially
     sgsbqcv_thumbnails_zoom();
     sgsbqcv_thumbnails_slick();
     sgsbqcv_related_slick();
+
+    callIfDefined(sgsb_stockbar_jqmeter);
+    callIfDefined(sgsb_countdown_timer_methods);
+    callIfDefined(() => {
+      if (typeof sgsbDirectChecoutQuick !== "undefined") {
+        callIfDefined(sgsbDirectChecoutQuick.init);
+      }
+    });
   }
 }
-
 
 function sgsbqcv_get_key(array, key, value) {
   for (var i = 0; i < array.length; i++) {
@@ -358,7 +358,7 @@ function sgsbqcv_get_key(array, key, value) {
 }
 
 function sgsbqcv_thumbnails_zoom() {
-  if (sgsbqcv_vars.thumbnails_effect ) {
+  if (sgsbqcv_vars.thumbnails_effect) {
     jQuery("#sgsbqcv-popup .thumbnails .images .thumbnail").each(function () {
       var $this = jQuery(this);
       var zoom_params = JSON.parse(sgsbqcv_vars.thumbnails_zoom_params);
