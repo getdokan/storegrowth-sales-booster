@@ -7,7 +7,7 @@ const ButtonAction = ({ formData, onFieldChange }) => {
   const buttonActionOptions = [
     {
       value: "ba-url-redirect",
-      label: __("Url Redirect", "storegrowth-sales-booster"),
+      label: __("URL Redirect", "storegrowth-sales-booster"),
     },
     {
       value: "ba-close",

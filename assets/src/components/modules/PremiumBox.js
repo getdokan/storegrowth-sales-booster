@@ -20,7 +20,7 @@ function PremiumBox() {
         website’s visibility.
         </p>
         
-        <Button className='premium-btn' type="primary" href='admin.php?page=sgsb-settings#/dashboard/pricing' size='large'>
+        <Button className='premium-btn' type="primary" href='https://storegrowth.io/pricing/' size='large'>
             Get Premium 
             <Image
                 preview={false}

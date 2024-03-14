@@ -40,8 +40,6 @@ class Assets {
 	 */
 	private function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_menu_scripts' ) );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
 
@@ -95,21 +93,6 @@ class Assets {
 				)
 			);
 		}
-	}
-
-	/**
-	 * Add CSS files to admin menu.
-	 */
-	public function admin_menu_scripts() {
-		$script_url = sgsb_assets_url( 'menu-scripts/admin-menu.js' );
-
-		wp_enqueue_script(
-			'sgsb-settings-menu-script',
-			$script_url,
-			array(),
-			'1.0.1',
-			true
-		);
 	}
 
 	/**
