@@ -2,15 +2,15 @@ import React from "react";
 import { Button ,Image} from 'antd';
 import QuickViewIcon from "../QuickViewIcon";
 import ProductImage from '../../../images/dummy-product.svg'
+
 const QuickViewPreview = ({ formData }) => {
-  console.log(ProductImage)
   const buttonStyle = {
     borderRadius: formData?.button_border_radius,
     backgroundColor: formData?.button_color,
     color: formData?.button_text_color,
   };
 
-  const buttonContent = formData.enable_qucik_view_icon ? (
+  const buttonContent = formData.enable_qucik_view_icon && sgsbAdmin.isPro ? (
     <QuickViewIcon
       activeIcon={true}
       iconName={formData?.quick_view_icon}

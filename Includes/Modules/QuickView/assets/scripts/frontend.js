@@ -18,7 +18,6 @@ function isMobileDevice() {
   $(function () {
     $(".sgsbqcv-btn, .sgsbqcv-link").each(function () {
       var id = $(this).attr("data-id");
-      console.log(id);
       var pid = $(this).attr("data-pid");
       var product_id = $(this).attr("data-product_id");
       if (typeof pid !== typeof undefined && pid !== false) {
@@ -322,11 +321,17 @@ function isFunctionDefined(func) {
   return typeof func === "function";
 }
 
+function isFunctionDefined(func) {
+  return typeof func === "function";
+}
+
 function callIfDefined(func) {
   if (isFunctionDefined(func)) {
-    func();
-  } else {
-    console.error(func.name + " is not defined");
+    try {
+      func();
+    } catch (error) {
+      return;
+    }
   }
 }
 
@@ -337,8 +342,13 @@ function sgsbqcv_init_content(context) {
     sgsbqcv_thumbnails_slick();
     sgsbqcv_related_slick();
 
-    callIfDefined(sgsb_stockbar_jqmeter);
-    callIfDefined(sgsb_countdown_timer_methods);
+    if (typeof sgsb_countdown_timer_methods === "function") {
+      callIfDefined(sgsb_countdown_timer_methods);
+    }
+    
+    if (typeof sgsb_stockbar_jqmeter === "function") {
+      callIfDefined(sgsb_stockbar_jqmeter);
+    }
     callIfDefined(() => {
       if (typeof sgsbDirectChecoutQuick !== "undefined") {
         callIfDefined(sgsbDirectChecoutQuick.init);
