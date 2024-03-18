@@ -22,6 +22,15 @@ const QuickViewPreview = ({ formData }) => {
 
   return (
     <>
+    <div className="quick-view-wrapper"
+      style={
+        {
+          padding: "25px",
+          background: "#00000014",
+          borderRadius: "6px",
+        }
+      }
+    >
       <div
         id="product-36"
         className="product"
@@ -30,6 +39,7 @@ const QuickViewPreview = ({ formData }) => {
           height: "200px",
           borderRadius: "6px",
           overflow: "hidden",
+          position: "relative",
         }}
       >
         {formData?.show_image && (
@@ -178,6 +188,7 @@ const QuickViewPreview = ({ formData }) => {
             x
           </div>
         )}
+      </div>
       </div>
       <div className="quick-view-button" style={{ marginTop: "40px" }}>
         <Button style={buttonStyle}>{buttonContent}</Button>
