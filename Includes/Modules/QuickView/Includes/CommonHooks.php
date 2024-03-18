@@ -25,6 +25,7 @@ class CommonHooks {
 	 * Constructor of Common_Hooks class.
 	 */
 	private function __construct() {
+		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect' ) );
 		$this->button_positon_hooks();
 		$this->content_loader_hooks();
 	}
@@ -127,5 +128,19 @@ class CommonHooks {
 	 */
 	public function add_to_cart() {
 		woocommerce_template_single_add_to_cart();
+	}
+
+	/**
+	 * Hook for WooCommerce add-to-cart link redirection
+	 *
+	 * @since 1.25.7
+	 */
+	public function add_to_cart_redirect( $url ) {
+		if ( apply_filters( 'sgsbqcv_redirect', true ) ) {
+			if ( ! empty( $_REQUEST['sgsbqcv-redirect'] ) ) {
+				return apply_filters( 'sgsbqcv_redirect_url', add_query_arg( 'added_to_cart', '1', sanitize_url( $_REQUEST['sgsbqcv-redirect'] ) ) );
+			}
+		}
+		return $url;
 	}
 }

@@ -38,6 +38,8 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     show_add_to_cart: true,
     button_label: __("Quick View", "storegrowth-sales-booster"),
     button_position: "after_add_to_cart",
+    cart_url_redirection: 'legacy-cart-redirection',
+    auto_open_fly_cart: false,
     enable_qucik_view_icon: false,
     quick_view_icon: "quick-view-icon-1",
     show_quick_icon: true,

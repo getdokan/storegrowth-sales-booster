@@ -29,8 +29,6 @@ class Ajax {
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
 		add_action( 'wp_ajax_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
 		add_action( 'wp_ajax_nopriv_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
-		add_action( 'wp_ajax_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
-		add_action( 'wp_ajax_nopriv_custom_ajax_add_to_cart', array( $this, 'custom_ajax_add_to_cart' ) );
 	}
 
 	/**

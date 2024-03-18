@@ -31,6 +31,23 @@ function GeneralSettingsTab(props) {
       label: __("Fade", "storegrowth-sales-booster"),
     },
   ];
+  
+  let addToCartRedirection = [
+    {
+      value: "legacy-cart-redirection",
+      label: __("Cart Redirect", "storegrowth-sales-booster"),
+    },
+    {
+      value: "shop-page-redirection",
+      label: __("Shop Page Redirect", "storegrowth-sales-booster"),
+    },
+  ];
+
+  addToCartRedirection = applyFilters(
+    "sgsb_quick_view_add_to_cart_redirection_settings",
+    "",
+    addToCartRedirection
+  )
 
   let contentOptions = [
     {
@@ -111,6 +128,23 @@ function GeneralSettingsTab(props) {
           changeHandler={onFieldChange}
           title={__("Modal Effects", "storegrowth-sales-booster")}
         />
+
+        <SelectBox
+          name={`cart_url_redirection`}
+          options={[...addToCartRedirection]}
+          fieldValue={formData?.cart_url_redirection}
+          changeHandler={onFieldChange}
+          title={__("Add To Cart Redirection", "storegrowth-sales-booster")}
+        />
+        
+        {
+          applyFilters(
+          "sgsb_quick_view_fly_cart_settings",
+          "",
+          formData,
+          onFieldChange
+        )}
+
         <ContentGroup
           formData={formData}
           changeHandler={onFieldChange}

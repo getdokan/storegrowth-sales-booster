@@ -43,6 +43,8 @@ class EnqueueScript {
 		$enable_close_button = sgsb_find_option_setting( $settings, 'enable_close_button', true );
 		$enable_in_mobile    = sgsb_find_option_setting( $settings, 'enable_in_mobile', true );
 		$enable_zoom_box     = sgsb_find_option_setting( $settings, 'enable_zoom_box', false );
+		$cart_redirect       = sgsb_find_option_setting( $settings, 'cart_url_redirection', false );
+		$fly_cart_open       = sgsb_find_option_setting( $settings, 'auto_open_fly_cart', false );
 		// Pass AJAX URL to script.
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -121,12 +123,14 @@ class EnqueueScript {
 				'enable_close_button'     => $enable_close_button,
 				'enable_in_mobile'        => $enable_in_mobile,
 				'hashchange'              => 'yes',
-				'cart_redirect'           => get_option( 'woocommerce_cart_redirect_after_add' ),
+				'cart_redirect'           => $cart_redirect,
+				'fly_cart_auto_open'      => $fly_cart_open,
 				'cart_url'                => apply_filters( 'woocommerce_add_to_cart_redirect', wc_get_cart_url(), null ),
-				'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'woo-smart-quick-view' ) ),
+				'failed_to_add'           => __( 'Failed to add the product to the cart.', 'storegrowth-sales-booster' ),
+				'close'                   => self::localization( 'close', esc_html__( 'Close (Esc)', 'storegrowth-sales-booster' ) ),
 				'next_prev'               => 'yes',
-				'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'woo-smart-quick-view' ) ),
-				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'woo-smart-quick-view' ) ),
+				'next'                    => self::localization( 'next', esc_html__( 'Next (Right arrow key)', 'storegrowth-sales-booster' ) ),
+				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'storegrowth-sales-booster' ) ),
 				'thumbnails_effect'       => $enable_zoom_box,
 				'related_slick_params'    => apply_filters(
 					'sgsbqcv_related_slick_params',

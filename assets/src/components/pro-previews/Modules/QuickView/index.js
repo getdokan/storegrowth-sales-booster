@@ -76,3 +76,19 @@ addFilter(
         );
     }
 );
+
+addFilter(
+    "sgsb_quick_view_add_to_cart_redirection_settings",
+    "sgsb_quick_view_add_to_cart_redirection_settings_callback",
+    (component, addToCartRedirection) => {
+        return [
+            ...addToCartRedirection,
+            {
+                value: "add-to-cart-ajax",
+                label: __("Ajax add to cart", "storegrowth-sales-booster"),
+                disabled: true,
+                needUpgrade: true,
+            },
+        ];
+    }
+);
