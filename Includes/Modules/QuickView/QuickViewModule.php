@@ -64,7 +64,7 @@ class QuickViewModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.';
+		return 'Explore product details instantly. Get a sneak peek of product photos, descriptions, and pricing at a glance - all from your shop page.';
 	}
 
 	/**
