@@ -18,51 +18,7 @@
     $notificationPopup.fadeIn().delay(2500).fadeOut();
   }
 
-  /**
-   * Set Fly Cart Contents.
-   */
-  function setCartContents(response) {
-    let parentElement = $(".sgsb-widget-shopping-cart-content");
-    parentElement.html(response?.data?.htmlResponse);
-    $(".wfc-cart-icon .wfc-cart-countlocation, .wfc-widget-sidebar .wfc-cart-countlocation").html(
-      response?.data?.cartCountLocation
-    );
-    elementClassRemover();
-    setTimeout(function () {
-      $(".sgsb-fly-cart-loader").addClass("wfc-hide");
-    }, 500);
-
-    jQuery(document.body).trigger("wc_fragment_refresh");
-  }
-
-  function elementClassRemover() {
-    let parentElement = $(".sgsb-widget-shopping-cart-content");
-    let cartCollatoralClass = $(".sgsb-cart-collaterals");
-    let cartFormElement = $("form.sgsb-woocommerce-cart-form");
-
-    if (parentElement.length > 0) {
-      parentElement
-        .find("div.kadence-woo-cart-form-wrap")
-        .removeClass("kadence-woo-cart-form-wrap");
-    }
-    if (cartFormElement.length > 0) {
-      cartFormElement.find("div.cart-summary").remove();
-      cartFormElement
-        .find(".woocommerce-content-box")
-        .find("h2")
-        .remove()
-        .end()
-        .removeClass("woocommerce-content-box full-width clearfix");
-    }
-
-    if (cartCollatoralClass.length > 0) {
-      cartCollatoralClass.find(".shipping-coupon").remove();
-      cartCollatoralClass
-        .find(".cart_totals")
-        .find(".wc-proceed-to-checkout a:not(.sgsb-cart-widget-buttons a)")
-        .remove();
-    }
-  }
+ 
   /**
    * Get Cart Contents.
    */
@@ -76,7 +32,7 @@
         _ajax_nonce: sgsbFrontend.nonce,
         method: "get_cart_contents",
       },
-      success: setCartContents,
+      success: sgsbFlyCartSetContents,
     });
   }
 
@@ -210,7 +166,7 @@
           url: event.target.action,
           method: "POST",
           data: $(this).serialize(),
-          success: setCartContents,
+          success: sgsbFlyCartSetContents,
         });
       }
     );
@@ -223,7 +179,6 @@
         var quantityInput = $(this).siblings(".quantity").find(".qty");
         var maxValue = quantityInput.attr("max");
         var currentValue = parseInt(quantityInput.val());
-        console.log(maxValue);
         if (
           maxValue !== "" &&
           !isNaN(currentValue) &&
@@ -294,7 +249,7 @@
         $.ajax({
           url: $(this).attr("href"),
           method: "GET",
-          success: setCartContents,
+          success: sgsbFlyCartSetContents,
         });
       }
     );
@@ -369,3 +324,49 @@
     }
   });
 })(jQuery);
+
+ /**
+   * Set Fly Cart Contents.
+   */
+ function sgsbFlyCartSetContents(response) {
+  let parentElement = jQuery(".sgsb-widget-shopping-cart-content");
+  parentElement.html(response?.data?.htmlResponse);
+  jQuery(".wfc-cart-icon .wfc-cart-countlocation, .wfc-widget-sidebar .wfc-cart-countlocation").html(
+    response?.data?.cartCountLocation
+  );
+  sgsbFlyCartElementClassRemover();
+  setTimeout(function () {
+    jQuery(".sgsb-fly-cart-loader").addClass("wfc-hide");
+  }, 500);
+
+  jQuery(document.body).trigger("wc_fragment_refresh");
+}
+
+function sgsbFlyCartElementClassRemover() {
+  let parentElement = jQuery(".sgsb-widget-shopping-cart-content");
+  let cartCollatoralClass = jQuery(".sgsb-cart-collaterals");
+  let cartFormElement = jQuery("form.sgsb-woocommerce-cart-form");
+
+  if (parentElement.length > 0) {
+    parentElement
+      .find("div.kadence-woo-cart-form-wrap")
+      .removeClass("kadence-woo-cart-form-wrap");
+  }
+  if (cartFormElement.length > 0) {
+    cartFormElement.find("div.cart-summary").remove();
+    cartFormElement
+      .find(".woocommerce-content-box")
+      .find("h2")
+      .remove()
+      .end()
+      .removeClass("woocommerce-content-box full-width clearfix");
+  }
+
+  if (cartCollatoralClass.length > 0) {
+    cartCollatoralClass.find(".shipping-coupon").remove();
+    cartCollatoralClass
+      .find(".cart_totals")
+      .find(".wc-proceed-to-checkout a:not(.sgsb-cart-widget-buttons a)")
+      .remove();
+  }
+}

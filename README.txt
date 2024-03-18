@@ -4,7 +4,7 @@ Tags: floating cart, fly cart, side cart, checkout optimization, notification ba
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.25.7
+Stable tag: 1.26.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -25,7 +25,7 @@ We created StoreGrowth to make it easier for busy store owners like you to incre
 
 This plugin is super user-friendly, compatible with popular WordPress themes, gives you full customization control, and reduces the hassle of using different tools to boost WooCommerce sales. 
 
-[youtube https://youtu.be/q9gWD7iUHX0?si=3C8l7l6o_JFfymg2]
+[youtube https://youtu.be/UPGtOEsY2kI?si=s-xfT5NNH5SP1Ya2]
 
 [Documentation](https://storegrowth.io/documentation/) [Upgrade to pro](https://storegrowth.io/pricing/)
 
@@ -49,13 +49,11 @@ It is designed in a way that requires zero technical skills and minimal feature 
 
 Whether you’re a new or experienced WooCommerce store owner, this plugin is what you need to engage your visitors and boost conversion instantly.
 
-
-
-Everything You Need To Supercharge Your WooCommerce Store
+##ALL MODULES##
 
 StoreGrowth has all the powerful features that you need to increase sales and average order value with the highest converting checkout.
 
-**Fly Cart:**
+**👉 [Fly Cart:](https://storegrowth.io/) **
 
 Navigating and managing items within the cart can be a tiring process for online shoppers, often leading to a less-than-optimal user experience.
 
@@ -70,7 +68,7 @@ This feature creates a side cart in your WooCommerce store, providing shoppers w
 
 With StoreGrowth's Quick Cart feature, you're not just enhancing cart functionality; you're transforming the shopping journey into a streamlined and enjoyable experience. 
 
-**Sales Countdown Timer:**
+**👉 [Sales Countdown Timer:](https://storegrowth.io/) **
 
 When you are running a sales campaign or providing time-sensitive offers, capturing customer attention, and creating a sense of urgency to drive purchases is a real struggle. 
 
@@ -84,7 +82,7 @@ StoreGrowth allows you to create visually appealing and functional WooCommerce c
 ✅Create multiple countdown timers and display them with shortcodes.
 
 
-**WooCommerce Direct Checkout:**
+**👉 [WooCommerce Direct Checkout:](https://storegrowth.io/) **
 
 This feature is designed to get rid of abandoned carts and lengthy checkout flows in your WooCommerce store. 
 
@@ -93,6 +91,7 @@ Imagine customers clicking the "Buy Now" button and skipping the unnecessary car
 Here's how WooCommerce Direct Checkout makes it happen:
 
 ✅Button Transformation: Effortlessly transform your "Add to Cart" button into a powerful "Buy Now" button for direct checkout.
+
 **Choose the perfect option:**
 ✅Replace the classic "Add to Cart" button with "Buy Now."
 ✅Display both buttons side-by-side for flexibility.
@@ -100,7 +99,7 @@ Here's how WooCommerce Direct Checkout makes it happen:
 ✅Fully Customizable Design: Customize the design of your "Buy Now" button to match your brand perfectly.
 ✅View Button Analytics: Get insights on how each product button is performing in terms of clicks and conversion so that you can plan your product promotion effectively.
 
-**Live Sales Notification:**
+**👉 [Live Sales Notification:](https://storegrowth.io/) **
 
 Online shoppers coming to your WooCommerce store may be hesitant to make purchases without social proof or a feeling of product popularity. 
 
@@ -112,7 +111,7 @@ The Live Sales Popup Notification feature allows you to generate real-time sales
 ✅ Fully Customizable: Design and message customization for brand consistency.
 ✅ Targeted Display Options: Choose between displaying notifications for the latest purchases or specific products.
 
-**Free Shipping Label and Progress Bar:**
+**👉 [Free Shipping Label and Progress Bar:](https://storegrowth.io/) **
 
 Are you offering free shipping over an amount? Then the free shipping bar is the best way to encourage your customers to increase their cart value.
 
@@ -126,7 +125,7 @@ The Free Shipping Label and Progress Bar dynamically display the progress custom
 
 Customers can instantly see how close they are to reaching the minimum cart value for free shipping, creating transparency and motivation for additional purchases.
 
-**Checkout Upsell Order Bump:**
+**👉 [Checkout Upsell Order Bump:](https://storegrowth.io/) **
 
 With the Checkout Upsell Order Bump feature, you can strategically place attractive additional products within the checkout process.
 
@@ -136,7 +135,7 @@ This way you are allowing your customers to explore and add to their order witho
 ✅ Custom Days: Set the duration of upsell offers to align with your marketing strategy.
 ✅ Various Order Bumps: Display a range of tempting additional products for customers to choose from.
 
-**Stock Count Progress Bar:**
+**👉 [Stock Count Progress Bar:](https://storegrowth.io/)**
 
 The Stock Count Progress Bar offers customers a real-time visual indicator of the available stock for a specific product. 
 
@@ -147,6 +146,24 @@ You get easy setup and customization options for the Stock Count Progress Bar.
 The highlight of this feature is its ability to create a sense of urgency. As customers witness diminishing stock levels through the progress bar, they are motivated to make timely purchases to secure the product before it gets stocked out.
 
 And, the best part is you can even showcase stock warning messages based on the stock you have to encourage your visitors even more. For example, Hurry Up! Only 2 Stocks Are Left!!
+
+**👉 [Quick View (new):](https://storegrowth.io/)**
+
+Navigating and managing items within the cart can be a tiring process for WooCommerce shoppers. 
+
+To enhance the shopping experience, we have introduced the Quick View feature for easier product discovery and evaluation.
+
+Quick View allows your customers to instantly preview key product details like images, descriptions, and pricing with just a single click from the shop page with a visually-appealing lightbox modal.
+
+Shoppers can quickly explore the product and seamlessly add it to their cart – all without ever navigating away from the main product listing. 
+
+✅ Accelerates Product Research: Customers can rapidly evaluate products and compare options, facilitating faster decision-making.
+
+✅ Reduces Abandoned Carts: By providing a frictionless shopping flow, fewer shoppers abandon their carts due to frustration from excessive clicking.
+
+✅ Enables Impulse Purchases: Instantly satisfying customer curiosity creates a sense of urgency to buy before the moment passes.
+
+With Quick View, you can not just enhance product exploration; you can transform the entire shopping experience into a seamless journey for your customers.
 
 
 ## Documentation and Support
