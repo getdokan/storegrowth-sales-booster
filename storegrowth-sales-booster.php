@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth - Sales Booster For WooCommerce Lite
  * Description: Best WooCommerce Direct Checkout, Fly Cart and Side Cart, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
- * Version:     1.25.7
+ * Version:     1.26.7
  * Author:      Invizo
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+

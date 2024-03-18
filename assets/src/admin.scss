@@ -726,6 +726,24 @@ main.ant-layout-content.sgsb-module-setting-layout {
               }
             }
           }
+          &.quick-view {
+            &:before {
+              content: "";
+              background: url('../images/menu/quickview-icon.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quickview-icon-white.svg');
+
+              }
+
+            }
+          }
+
         }
 
         a {
@@ -787,6 +805,11 @@ main.ant-layout-content.sgsb-module-setting-layout {
           &.countdown-timer::before {
             background: url("../images/menu/countdown-timer-white.svg");
           }
+
+          &.quick-view::before {
+            background: url('../images/menu/quickview-icon-white.svg');
+          }
+
         }
 
         li {
@@ -1220,6 +1243,25 @@ End Settings Sidebar
               }
             }
           }
+
+          &.quick-view {
+            &:before {
+              content: "";
+              background: url('../images/menu/quickview-icon.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/quickview-icon-white.svg');
+
+              }
+
+            }
+          }
+
         }
 
         a {
