@@ -15,7 +15,7 @@ const Preview = ( { storeData } ) => {
             <div
                 className='wfc-widget'
                 style={ {
-                    padding: 26,
+                    padding:"12px 0px",
                     borderTopLeftRadius: 10,
                     borderBottomLeftRadius: 10,
                     background: storeData?.widget_bg_color,
@@ -23,29 +23,64 @@ const Preview = ( { storeData } ) => {
             >
                 <div
                     className='qc-cart-heading'
-                    style={ { marginBottom: 6 } }
+                    style={ {
+                        marginBottom: 6 ,
+                        padding: "0px 12px 4px 12px",
+                        borderBottom: "1px solid #DBE7FF"
+                    } }
                 >
                     <Title
                         level={ 3 }
                         className='wfc-cart-heading'
                         style={ {
+                            alignItems:"flex-end",
                             margin: 0,
-                            fontSize: 36,
+                            fontSize: 18,
                             fontWeight: 600,
-                            color: '#073B4C',
+                            color: '#303030',
+                            display:"flex",
+                            justifyContent:"space-between",
+                            padding: "8px 0px",
                         } }
                     >
+                        <div 
+                            className='wfc-cart-info-container'
+                            style={ {
+                                    display:"flex",
+                                    gap: 6,
+                            } }
+                        >
                         { __( 'Shopping Cart', 'storegrowth-sales-booster' ) }
+                        <span
+                            className='sgsb-cart-item-count'
+                            style={ {
+                                fontWeight: 300,
+                                color: '#fff',
+                                fontSize: 14,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                background: 'blue',
+                                height: 20,
+                                width: 20,
+                                borderRadius: 50,
+                            } }
+                        >
+                            { __( '3', 'storegrowth-sales-booster' ) }
+                        </span>
+                        </div>
                         <span
                             className='wfc-close-btn sgsb-cart-widget-close'
                             style={ {
-                                marginTop: 6,
                                 float: 'right',
                                 display: 'flex',
+                                background:"#1616161a",
+                                padding:1,
+                                borderRadius:4
                             } }
                         >
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M15.1503 0.329175C15.5892 -0.109725 16.3008 -0.109725 16.7397 0.329174C17.1786 0.768074 17.1786 1.47967 16.7397 1.91857L10.1236 8.53466L16.7398 15.1508C17.1787 15.5897 17.1787 16.3013 16.7398 16.7402C16.3009 17.1791 15.5893 17.1791 15.1504 16.7402L8.53424 10.1241L1.91857 16.7397C1.47967 17.1786 0.768073 17.1786 0.329174 16.7397C-0.109726 16.3008 -0.109724 15.5892 0.329175 15.1503L6.94484 8.53466L0.329203 1.91902C-0.109697 1.48012 -0.109697 0.768522 0.329203 0.329623C0.768102 -0.109276 1.4797 -0.109275 1.9186 0.329624L8.53424 6.94527L15.1503 0.329175Z" fill="#B9C9EB" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M13.9697 15.0303C14.2626 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2626 15.0303 13.9697L11.0607 10L15.0303 6.03033C15.3232 5.73744 15.3232 5.26256 15.0303 4.96967C14.7374 4.67678 14.2626 4.67678 13.9697 4.96967L10 8.93934L6.03033 4.96967C5.73744 4.67678 5.26256 4.67678 4.96967 4.96967C4.67678 5.26256 4.67678 5.73744 4.96967 6.03033L8.93934 10L4.96967 13.9697C4.67678 14.2626 4.67678 14.7374 4.96967 15.0303C5.26256 15.3232 5.73744 15.3232 6.03033 15.0303L10 11.0607L13.9697 15.0303Z" fill="#303030"/>
                         </svg>
                     </span>
                     </Title>
@@ -53,29 +88,27 @@ const Preview = ( { storeData } ) => {
                 <div className='sgsb-widget-shopping-cart-content-wrapper'>
                     <div className='sgsb-widget-shopping-cart-content'>
                         <div
-                            className='sgsb-cart-item-count'
-                            style={ {
-                                fontWeight: 500,
-                                marginBottom: 30,
-                                color: '#345f6f',
-                            } }
-                        >
-                            { __( 'You have 3 items in your cart', 'storegrowth-sales-booster' ) }
-                        </div>
-                        <div
                             className='sgsb-fly-cart-table'
                             style={ {
                                 width: '100%',
-                                marginBottom: 30,
+                                padding:"12px 12px",
+                                borderBottom: "1px solid #DBE7FF",
                             } }
                         >
-                            <div className='sgsb-fly-cart-table-body'>
+                            <div 
+                            className='sgsb-fly-cart-table-body'
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: 12,
+                            }}  
+                            >
                                 <div
                                     style={ {
-                                        padding: 16,
+                                        padding: 12,
                                         display: 'flex',
                                         borderRadius: 10,
-                                        background: '#FFF',
+                                        background: storeData?.product_card_bg_color,
                                         alignItems: 'center',
                                         border: '1px solid #DDE6F9',
                                     } }
@@ -96,29 +129,25 @@ const Preview = ( { storeData } ) => {
 
                                     <div
                                         className='product-name'
-                                        style={ { marginRight: 16 } }
+                                        style={ { 
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 6,
+                                            width: '100%',
+                                        } }
+                                    >
+                                    <div 
+                                        className='sgsb-product-detail-container'
+                                        style={ {
+                                            display:"flex",
+                                            justifyContent:'space-between',
+                                            alignItems: "center",
+                                        } }
                                     >
                                         <div className='sgsb-product-title'>
                                             <div
                                                 style={ {
-                                                    fontSize: 12,
-                                                    paddingTop: 3,
-                                                    paddingLeft: 10,
-                                                    paddingBottom: 3,
-                                                    paddingRight: 10,
-                                                    borderRadius: 10,
-                                                    color: '#35606f',
-                                                    display: 'inline',
-                                                    background: '#EFF2F9'
-                                                } }
-                                                className='sgsb-product-category'
-                                            >
-                                                { __( 'Hoodies', 'storegrowth-sales-booster' ) }
-                                            </div>
-                                            <div
-                                                style={ {
                                                     fontSize: 14,
-                                                    marginTop: 5,
                                                     fontWeight: 500,
                                                     color: '#073B4C',
                                                 } }
@@ -127,37 +156,13 @@ const Preview = ( { storeData } ) => {
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
                                         </div>
-                                    </div>
-
-                                    { storeData?.show_quantity_picker && (
-                                        <div
-                                            className='quantity'
-                                            style={ { marginRight: 16 } }
-                                        >
-                                            <div
-                                                className='product-quantity'
-                                                style={ {
-                                                    gap: 14,
-                                                    fontSize: 13,
-                                                    display: 'flex',
-                                                    fontWeight: 600,
-                                                    color: '#073B4C',
-                                                } }
-                                            >
-                                                <span className='sgsb-minus-icon'>-</span>
-                                                <span className='product-count'>1</span>
-                                                <span className='sgsb-plus-icon'>+</span>
-                                            </div>
-                                        </div>
-                                    ) }
-
-                                    { storeData?.show_product_price && (
+                                        { storeData?.show_product_price && (
                                         <div className='product-subtotal'>
                                         <span
                                             className='woocommerce-Price-amount amount'
                                             style={ {
                                                 fontSize: 13,
-                                                fontWeight: 500,
+                                                fontWeight: 700,
                                                 color: '#073B4C',
                                             } }
                                         >
@@ -165,16 +170,66 @@ const Preview = ( { storeData } ) => {
                                         </span>
                                         </div>
                                     ) }
+                                    </div>
+                                    <div 
+                                    className='sgsb-product-detail-container'
+                                    style={ {
+                                        display:"flex",
+                                        justifyContent:'space-between',
+                                        alignItems: "center",
+                                    } }
+                                    >
+                                    { storeData?.show_quantity_picker && (
+                                        <div
+                                            className='quantity'
+                                            style={ { marginRight: 16 } }
+                                        >
+                                            <div
+                                                className='product-quantity'
+                                                style={ {
+                                                    fontSize: 13,
+                                                    display: 'flex',
+                                                    fontWeight: 600,
+                                                    color: '#073B4C',
+                                                } }
+                                            >
+                                                <span 
+                                                className='sgsb-minus-icon' 
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 8px',
+                                                    borderRadius: '4px 0px 0px 4px'
+                                                }}>-</span>
+                                                <span 
+                                                className='product-count'
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 12px',
+                                                }}
+                                                >1</span>
+                                                <span 
+                                                className='sgsb-plus-icon'
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 8px',
+                                                    borderRadius: '0px 4px 4px 0px'
+                                                }}
+                                                >+</span>
+                                            </div>
+                                        </div>
+                                    ) }
 
                                     { storeData?.show_remove_icon && (
                                         <div
                                             className='product-remove'
                                             style={ {
-                                                padding: 7,
-                                                borderRadius: 8,
                                                 display: 'flex',
-                                                marginLeft: 'auto',
-                                                background: '#EFF2F9'
                                             } }
                                         >
                                             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -185,14 +240,15 @@ const Preview = ( { storeData } ) => {
                                             </svg>
                                         </div>
                                     ) }
+                                    </div>
+                                    </div> 
                                 </div>
                                 <div
                                     style={ {
-                                        padding: 16,
-                                        marginTop: 18,
+                                        padding: 12,
                                         display: 'flex',
                                         borderRadius: 10,
-                                        background: '#FFF',
+                                        background: storeData?.product_card_bg_color,
                                         alignItems: 'center',
                                         border: '1px solid #DDE6F9',
                                     } }
@@ -213,29 +269,25 @@ const Preview = ( { storeData } ) => {
 
                                     <div
                                         className='product-name'
-                                        style={ { marginRight: 16 } }
+                                        style={ { 
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 6,
+                                            width: '100%',
+                                        } }
+                                    >
+                                    <div 
+                                        className='sgsb-product-detail-container'
+                                        style={ {
+                                            display:"flex",
+                                            justifyContent:'space-between',
+                                            alignItems: "center",
+                                        } }
                                     >
                                         <div className='sgsb-product-title'>
                                             <div
                                                 style={ {
-                                                    fontSize: 12,
-                                                    paddingTop: 3,
-                                                    paddingLeft: 10,
-                                                    paddingBottom: 3,
-                                                    paddingRight: 10,
-                                                    borderRadius: 10,
-                                                    color: '#35606f',
-                                                    display: 'inline',
-                                                    background: '#EFF2F9'
-                                                } }
-                                                className='sgsb-product-category'
-                                            >
-                                                { __( 'Hoodies', 'storegrowth-sales-booster' ) }
-                                            </div>
-                                            <div
-                                                style={ {
                                                     fontSize: 14,
-                                                    marginTop: 5,
                                                     fontWeight: 500,
                                                     color: '#073B4C',
                                                 } }
@@ -244,8 +296,29 @@ const Preview = ( { storeData } ) => {
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
                                         </div>
+                                        { storeData?.show_product_price && (
+                                        <div className='product-subtotal'>
+                                        <span
+                                            className='woocommerce-Price-amount amount'
+                                            style={ {
+                                                fontSize: 13,
+                                                fontWeight: 700,
+                                                color: '#073B4C',
+                                            } }
+                                        >
+                                            { __( '$42.00', 'storegrowth-sales-booster' ) }
+                                        </span>
+                                        </div>
+                                    ) }
                                     </div>
-
+                                    <div 
+                                    className='sgsb-product-detail-container'
+                                    style={ {
+                                        display:"flex",
+                                        justifyContent:'space-between',
+                                        alignItems: "center",
+                                    } }
+                                    >
                                     { storeData?.show_quantity_picker && (
                                         <div
                                             className='quantity'
@@ -254,32 +327,41 @@ const Preview = ( { storeData } ) => {
                                             <div
                                                 className='product-quantity'
                                                 style={ {
-                                                    gap: 14,
                                                     fontSize: 13,
                                                     display: 'flex',
                                                     fontWeight: 600,
                                                     color: '#073B4C',
                                                 } }
                                             >
-                                                <span className='sgsb-minus-icon'>-</span>
-                                                <span className='product-count'>1</span>
-                                                <span className='sgsb-plus-icon'>+</span>
+                                                <span 
+                                                className='sgsb-minus-icon' 
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 8px',
+                                                    borderRadius: '4px 0px 0px 4px'
+                                                }}>-</span>
+                                                <span 
+                                                className='product-count'
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 12px',
+                                                }}
+                                                >1</span>
+                                                <span 
+                                                className='sgsb-plus-icon'
+                                                style={{
+                                                    border: '1px solid #EBEBEB',
+                                                    height: 'fit-content',
+                                                    lineHeight: 'initial',
+                                                    padding: '2px 8px',
+                                                    borderRadius: '0px 4px 4px 0px'
+                                                }}
+                                                >+</span>
                                             </div>
-                                        </div>
-                                    ) }
-
-                                    { storeData?.show_product_price && (
-                                        <div className='product-subtotal'>
-                                            <span
-                                                className='woocommerce-Price-amount amount'
-                                                style={ {
-                                                    fontSize: 13,
-                                                    fontWeight: 500,
-                                                    color: '#073B4C',
-                                                } }
-                                            >
-                                                { __( '$42.00', 'storegrowth-sales-booster' ) }
-                                            </span>
                                         </div>
                                     ) }
 
@@ -287,11 +369,7 @@ const Preview = ( { storeData } ) => {
                                         <div
                                             className='product-remove'
                                             style={ {
-                                                padding: 7,
-                                                borderRadius: 8,
                                                 display: 'flex',
-                                                marginLeft: 'auto',
-                                                background: '#EFF2F9'
                                             } }
                                         >
                                             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -302,11 +380,18 @@ const Preview = ( { storeData } ) => {
                                             </svg>
                                         </div>
                                     ) }
+                                    </div>
+                                    </div> 
                                 </div>
+                                
                             </div>
                         </div>
 
-                        <div className='sgsb-cart-collaterals cart-collaterals'>
+                        <div className='sgsb-cart-collaterals cart-collaterals'
+                            style={{
+                                padding:12,
+                            }}
+                        >
                             {/* Render contents before cart total preview. */}
                             { applyFilters(
                                 'sgsb_before_quick_cart_total_preview',
@@ -319,24 +404,28 @@ const Preview = ( { storeData } ) => {
                                     <div
                                         className='shop-table-body'
                                         style={ {
-                                            marginTop: 30,
-                                            marginBottom: 30
+                                            margin:'16px 0px'
                                         } }
                                     >
                                         <div
                                             className='cart-subtotal'
                                             style={ {
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 display: 'flex',
-                                                fontWeight: 500,
                                                 marginBottom: 6,
-                                                color: '#345f6f',
+                                                color: '#000',
                                                 justifyContent: 'space-between',
                                             } }
                                         >
                                             <div>{ __( 'Subtotal', 'storegrowth-sales-booster' ) }</div>
                                             <div data-title='Subtotal'>
-                                            <span className='woocommerce-Price-amount amount'>
+                                            <span 
+                                            className='woocommerce-Price-amount amount'
+                                            style={ {
+                                                fontWeight: 700,
+                                                color: '#000',
+                                            } }
+                                            >
                                                 { __( '$126.00', 'storegrowth-sales-booster' ) }
                                             </span>
                                             </div>
@@ -350,12 +439,19 @@ const Preview = ( { storeData } ) => {
                                                 justifyContent: 'space-between',
                                             } }
                                         >
-                                            <div style={ { fontWeight: 600 } }>
+                                            <div>
                                                 { __( 'Total', 'storegrowth-sales-booster' ) }
                                             </div>
                                             <div data-title='Total'>
                                                 <strong>
-                                                <span className='woocommerce-Price-amount amount'>
+                                                <span 
+                                                className='woocommerce-Price-amount amount'
+                                                style={ {
+                                                    fontSize: 14,
+                                                    fontWeight: 700,
+                                                    color: '#000',
+                                                } }
+                                                >
                                                     { __( '$126.00', 'storegrowth-sales-booster' ) }
                                                 </span>
                                                 </strong>
@@ -374,13 +470,14 @@ const Preview = ( { storeData } ) => {
                                         <div
                                             className='sgsb-cart-widget-shooping-button sgsb-cart-widget-close'
                                             style={ {
-                                                fontSize: 16,
+                                                fontSize: 15,
+                                                height:"fit-content",
                                                 width: '100%',
                                                 color: '#fff',
-                                                paddingTop: 12,
+                                                paddingTop: 10,
                                                 borderRadius: 6,
                                                 fontWeight: 600,
-                                                paddingBottom: 12,
+                                                paddingBottom: 10,
                                                 textAlign: 'center',
                                                 background: storeData?.shopping_button_bg_color,
                                             } }
@@ -390,13 +487,14 @@ const Preview = ( { storeData } ) => {
                                         <div
                                             className='sgsb-cart-widget-checkout-button'
                                             style={ {
-                                                fontSize: 16,
+                                                height:"fit-content",
+                                                fontSize: 15,
                                                 width: '100%',
                                                 color: '#fff',
-                                                paddingTop: 12,
+                                                paddingTop: 10,
                                                 borderRadius: 6,
                                                 fontWeight: 600,
-                                                paddingBottom: 12,
+                                                paddingBottom: 10,
                                                 textAlign: 'center',
                                                 background: storeData?.buttons_bg_color,
                                             } }

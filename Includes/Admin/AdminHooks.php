@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class AdminHooks {
 
+
 	use Singleton;
 
 	/**
@@ -26,6 +27,7 @@ class AdminHooks {
 	 */
 	private function __construct() {
 		add_filter( 'plugin_action_links_' . STOREGROWTH_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_action( 'admin_init', array( $this, 'sgsb_redirect_initial_setup' ) );
 	}
 
 	/**
@@ -43,5 +45,22 @@ class AdminHooks {
 		);
 
 		return array_merge( $action_links, $links );
+	}
+
+	/**
+	 * Redirect to Welcome Page when plugin is activated.
+	 */
+
+	public function sgsb_redirect_initial_setup() {
+		$ini_setup_completion = get_option( 'sgsb_ini_completion' );
+		if ( $ini_setup_completion ) {
+			return;}
+
+		if ( get_option( 'storegrowth_activation_redirect', false ) ) {
+			delete_option( 'storegrowth_activation_redirect' );
+			if ( wp_safe_redirect( admin_url( 'admin.php?page=sgsb-modules#/ini-setup' ) ) ) {
+				exit();
+			}
+		}
 	}
 }

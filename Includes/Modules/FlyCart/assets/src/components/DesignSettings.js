@@ -69,6 +69,7 @@ const DesignSettings = ({
         'shopping-cart-icon-2',
         'shopping-cart-icon-3',
         'shopping-cart-icon-4',
+        'shopping-cart-icon-5',
     ];
 
     const iconOptions = iconStyleNames?.map( iconStyleName => (
@@ -118,6 +119,12 @@ const DesignSettings = ({
                 changeHandler={ onFieldChange }
                 fieldValue={ formData.widget_bg_color }
                 title={ __( 'Widget Background Color', 'storegrowth-sales-booster' ) }
+            />
+            <ColourPicker
+                name={ `product_card_bg_color` }
+                changeHandler={ onFieldChange }
+                fieldValue={ formData.product_card_bg_color }
+                title={ __( 'Product Card Backgorund Color', 'storegrowth-sales-booster' ) }
             />
             <ActionsHandler
                 saveHandler={ onFormSave }

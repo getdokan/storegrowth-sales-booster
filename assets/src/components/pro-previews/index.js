@@ -1,5 +1,6 @@
 import './Modules/BoGo/index.js';
 import './Modules/QuickCart/index.js';
+import './Modules/QuickView/index.js';
 import './Modules/SalesPop/index.js';
 import './Modules/SalesCountdown/index.js';
 import './Modules/StockBar/index.js';

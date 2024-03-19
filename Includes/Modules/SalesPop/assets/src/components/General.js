@@ -38,7 +38,14 @@ function General( { onFormSave } ) {
           isEnable={ (createPopupFormData.enable == 'true' || createPopupFormData.enable == true) ? true : false }
           tooltip={ __( 'By enabling the sales pop will show in the store.', 'storegrowth-sales-booster' ) }
         />
-
+        <Switcher
+          colSpan={ 12 }
+          name={ 'enble_visibility' }
+          changeHandler={ onFieldChange }
+          title={ __( 'Stop Popup Visibility On Close', 'storegrowth-sales-booster' ) }
+          isEnable={ (createPopupFormData?.enble_visibility == 'true' || createPopupFormData.enble_visibility == true) ? true : false }
+          tooltip={ __( 'When enabled if the close button is clicked it the popup will not show until page refresh.' ) }
+        />
         {/* Rendered all necessary sales pop settings after popup enable settings. */}
         { applyFilters(
           'sgsb_after_sales_pop_enable_settings',

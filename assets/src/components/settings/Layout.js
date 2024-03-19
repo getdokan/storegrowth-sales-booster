@@ -16,7 +16,6 @@ import dashboardRoutes from "../dashboard/DashboardRoutes";
 
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
-
   return (
     <Layout className="sgsb-layout-relative">
       <Sidebar routes={routes} />
