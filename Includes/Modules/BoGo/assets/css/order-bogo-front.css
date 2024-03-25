@@ -208,7 +208,7 @@
     top: 0;
     left: 0;
     z-index: 1;
-    width: 35px;
+    width: fit-content;
     height: 35px;
     position: absolute;
 }
@@ -217,13 +217,12 @@
     color: #fff;
     display: flex;
     border-radius: 5px;
-    background: #1677ff;
     align-items: center;
     justify-content: center;
 }
 
 .bogo-badge-image.default-icon svg {
-    fill: #fff;
+    /* fill: #fff; */
 }
 
 /* Starting of the modal seletion styling */
