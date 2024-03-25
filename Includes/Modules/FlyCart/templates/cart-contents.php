@@ -106,8 +106,16 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 								<?php if ( $show_product_price ) : ?>
 							<div class="product-subtotal" >
 									<?php
+									if ( isset( $cart_item['bogo_offer_price'] ) ) {
+										$offer_price = floatval( $cart_item['bogo_offer_price'] );
+										$quantity    = intval( $cart_item['quantity'] );
+										$sub_total   = wc_price( $offer_price * $quantity );
+									} else {
+										$sub_total = WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] );
+									}
+
 						 	// phpcs:ignore
-							echo apply_filters( 'woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] ), $cart_item, $cart_item_key );
+							echo apply_filters( 'woocommerce_cart_item_subtotal', $sub_total, $cart_item, $cart_item_key );
 									?>
 							</div>
 							<?php endif; ?>
