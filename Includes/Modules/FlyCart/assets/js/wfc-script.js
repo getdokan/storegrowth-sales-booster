@@ -154,21 +154,23 @@
     }
 
     // Handle cart form submit.
-    $(document).on(
-      "submit",
-      "form.sgsb-woocommerce-cart-form",
-      function (event) {
-        event.preventDefault();
-        $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
-
-        $.ajax({
-          url: event.target.action,
+    $(document).on("submit", "form.sgsb-woocommerce-cart-form", function(event) {
+      event.preventDefault();
+      $(".sgsb-fly-cart-loader").removeClass("wfc-hide");
+      var formAction = event.target.action;
+      var formData = $(this).serialize();
+      $.ajax({
+          url: formAction,
           method: "POST",
-          data: $(this).serialize(),
-          success: sgsbFlyCartSetContents,
-        });
-      }
-    );
+          data: formData,
+          success: getCartContents,
+          error: function(xhr, status, error) {
+              console.error("Error updating cart: " + error);
+          }
+      });
+  });
+  
+  
 
     // On plus icon click.
     $(document).on(

@@ -81,21 +81,22 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 								if ( $_product->is_sold_individually() ) {
 									$product_quantity = sprintf( '<input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
 								} else {
-									$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
-									$product_quantity .= woocommerce_quantity_input(
-										array(
+										$input_args = array(
 											'input_name'   => "cart[{$cart_item_key}][qty]",
 											'input_value'  => $cart_item['quantity'],
 											'max_value'    => $_product->get_max_purchase_quantity(),
 											'min_value'    => '1',
 											'product_name' => $_product->get_name(),
-										),
-										$_product,
-										false
-									);
-									$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
-								}
+										);
 
+										if ( isset( $cart_item['bogo_offer_price'] ) ) {
+												$product_quantity = woocommerce_quantity_input( $input_args, $_product, false );
+										} else {
+												$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
+												$product_quantity .= woocommerce_quantity_input( $input_args, $_product, false );
+												$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
+										}
+								}
 							// phpcs:ignore
 							echo apply_filters( 'woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item );
 								?>

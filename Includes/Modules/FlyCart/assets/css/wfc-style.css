@@ -296,7 +296,7 @@
     display: block;
 }
 
-.sgsb-fly-cart-table td.product-name .sgsb-product-title a.custom-choose-product {
+.sgsb-fly-cart-table td.product-name .sgsb-product-title p {
     display: none;
 }
 
