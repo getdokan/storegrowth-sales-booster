@@ -41,9 +41,9 @@ const Preview = ( { storeData } ) => {
                 style={ {
                     gap: 6,
                     paddingTop: 8,
+                    display: 'flex',
                     fontWeight: 500,
                     borderRadius: 5,
-                    display: 'flex',
                     paddingBottom: 8,
                     textAlign: 'center',
                     alignItems: 'center',
@@ -73,7 +73,6 @@ const Preview = ( { storeData } ) => {
                     alignItems: 'center',
                 } }
             >
-                
                 <Image
                     preview={ false }
                     style={ { width: 76, height: 76, borderRadius: 7 } }

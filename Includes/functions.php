@@ -129,3 +129,25 @@ if ( ! function_exists( 'sgsb_sanitize_svg_icon_fields' ) ) {
 		return wp_kses( $value, $icon_allowed_html );
 	}
 }
+
+if ( ! function_exists( 'sgsb_get_day_for_schedule' ) ) {
+	/**
+	 * Sanitize form SVG field xml.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @return array
+	 */
+	function sgsb_get_day_for_schedule() {
+		return array(
+			'daily'     => __( 'Daily', 'storegrowth-sales-booster' ),
+			'saturday'  => __( 'Saturday', 'storegrowth-sales-booster' ),
+			'sunday'    => __( 'Sunday', 'storegrowth-sales-booster' ),
+			'monday'    => __( 'Monday', 'storegrowth-sales-booster' ),
+			'tuesday'   => __( 'Tuesday', 'storegrowth-sales-booster' ),
+			'wednesday' => __( 'Wednesday', 'storegrowth-sales-booster' ),
+			'thursday'  => __( 'Thursday', 'storegrowth-sales-booster' ),
+			'friday'    => __( 'Friday', 'storegrowth-sales-booster' ),
+		);
+	}
+}

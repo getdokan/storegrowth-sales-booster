@@ -9,17 +9,17 @@ import React, {Fragment} from "react";
 const { Title } = Typography;
 
 const TextRadioBox = ( {
-                           name,
-                           title,
-                           classes,
-                           tooltip,
-                           options,
-                           fieldWidth,
-                           fieldValue,
-                           changeHandler,
-                           colSpan = 24,
-                           needUpgrade = false,
-                       } ) => {
+    name,
+    title,
+    classes,
+    tooltip,
+    options,
+    fieldWidth,
+    fieldValue,
+    changeHandler,
+    colSpan = 24,
+    needUpgrade = false,
+} ) => {
 
     return (
         // Make settings radio component with card preview.

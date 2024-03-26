@@ -667,6 +667,24 @@ main.ant-layout-content.sgsb-module-setting-layout {
             }
           }
 
+          &.bogo {
+            &:before {
+              content: "";
+              background: url('../images/menu/bogo.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/bogo-white.svg');
+
+              }
+
+            }
+          }
+
           &.countdown-timer {
             &:before {
               content: "";
@@ -810,6 +828,9 @@ main.ant-layout-content.sgsb-module-setting-layout {
             background: url('../images/menu/quickview-icon-white.svg');
           }
 
+          &.bogo::before {
+            background: url('../images/menu/bogo-white.svg');
+          }
         }
 
         li {
@@ -893,7 +914,6 @@ End Settings Sidebar
 .sgsb-upgrade-premium-notice-card {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
   align-items: center;
   padding: 9px 9px 9px 20px;
   border-radius: 5px;
@@ -1181,6 +1201,24 @@ End Settings Sidebar
                 content: "";
                 background: url("../images/menu/sales-pop-white.svg");
               }
+            }
+          }
+
+          &.bogo {
+            &:before {
+              content: "";
+              background: url('../images/menu/bogo.svg');
+              width: 19px;
+
+            }
+
+            &:hover {
+              &:before {
+                content: "";
+                background: url('../images/menu/bogo-white.svg');
+
+              }
+
             }
           }
 
@@ -2131,6 +2169,12 @@ End Settings Sidebar
 
               &.textarea-field {
                 padding: 10px 16px;
+
+                &[readonly] {
+                  &:hover {
+                    opacity: 0.5;
+                  }
+                }
               }
 
               &.textinput-field {
@@ -2671,6 +2715,24 @@ End Settings Sidebar
       .ant-tabs-tab-active {
         .ant-tabs-tab-btn {
           color: #0875ff;
+        }
+      }
+
+      .ant-tabs-tab {
+        .prompt-tab {
+          gap: .5rem;
+          margin: 0 .5rem;
+          display: flex;
+
+          .sgsb-pro-badge {
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1;
+            background: #FFAC27;
+            color: white;
+            border-radius: 10px;
+            padding: 4px 7px;
+          }
         }
       }
 

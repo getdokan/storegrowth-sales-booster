@@ -1,0 +1,157 @@
+.bogo-template-main-wrapper{
+    width: 100%;
+    /* height: 900px; */
+    /* background: rgb(185, 179, 190); */
+    margin-bottom: 30px;
+    /* padding: 0 20px ; */
+}
+
+.bogo-template-main-wrapper .demo-template-design-change-area{
+    width: 55%;
+    float: left;
+}
+
+.bogo-template-main-wrapper .bogo-template-overview-area{
+    width: 45%;
+    min-height: 800px;
+    float: left;
+    padding: 10 20px ;
+}
+
+.offer-overview-top-text{
+    width: 100%;
+    height: 45px;
+    background: rgb(146, 218, 146);
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.offer-main-wrap{
+    width: 100%;
+    height: 600px;
+    padding: 10px;
+}
+
+.offer-main-wrap .dynamic-offer-text{
+    gap: 4px;
+    width: 100%;
+    display: flex;
+    min-height: 30px;
+    font-weight: bold;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.offer-main-wrap .product-image-and-title{
+    width: 100%;
+    min-height: 160px;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-image{
+    background: rgb(247, 242, 242);
+    min-height: 120px;
+    width: 30%;
+    padding: 5px;
+    float: left;
+    
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-title{
+    min-height: 150px;
+    width: 70%;
+    padding: 5px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.offer-main-wrap .product-checkbox-and-excitement-message{
+    width: 100%;
+    min-height: 35px;
+    margin-bottom: 20px;
+    padding: 5px;
+    font-size: 15px;
+    margin-top: 20px;
+    clear: both;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.offer-main-wrap .product-checkbox-and-excitement-message .custom-checkbox{
+    height: 25px;
+    width: 25px;
+}
+
+.offer-main-wrap .product-description{
+    width: 100%;
+    height: 200px;
+    background: rgba(48, 33, 182, 0.678);
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+/* Teamplate design change area */
+.demo-template-design-change-area .offer-offer-box-text{
+    width: 98%;
+    height: 25px;
+    background: rgb(236, 233, 233);
+    padding-left: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.form-input-distance{
+  margin-top: -20px;
+}
+
+.offer-discount-title::before{
+  content: 'For Discount %dfgdfgdfg';
+}
+
+.App {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  
+  h2 {
+    margin-top: 40px;
+  }
+  
+  .rc-color-picker-panel {
+    border: 1px solid #ccc;
+  }
+  .rc-color-picker-panel-inner {
+    border: none;
+    box-shadow: none;
+  }
+  .rc-color-picker-panel-board-hsv {
+    border-radius: 12px;
+    outline: none;
+  }
+  .rc-color-picker-panel-board-value {
+    border: none;
+    border-radius: 12px;
+  }
+  .rc-color-picker-panel-board-saturation {
+    border: none;
+    border-radius: 12px;
+  }
+  .rc-color-picker-panel-ribbon {
+    border-radius: 12px;
+  }
+  .rc-color-picker-panel-wrap-preview {
+    border-radius: 12px;
+  }
+  .rc-color-picker-panel-preview span {
+    border-radius: 12px;
+  }
+  .rc-color-picker-panel-preview input {
+    border-radius: 12px;
+  }
