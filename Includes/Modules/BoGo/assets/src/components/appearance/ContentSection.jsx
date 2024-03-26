@@ -28,8 +28,8 @@ const ContentSection = () => {
           changeHandler={onFieldChange}
           readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
-          placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
-          tooltip={__('example text', 'storegrowth-sales-booster')}
+          placeHolderText={__('Buy This Product and Get Another Product', 'storegrowth-sales-booster')}
+          tooltip={__('Enter the text for shop page', 'storegrowth-sales-booster')}
         />
         <TextAreaBox
           areaRows={3}
@@ -38,8 +38,8 @@ const ContentSection = () => {
           changeHandler={onFieldChange}
           readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}
           title={__('Product Page Message', 'storegrowth-sales-booster')}
-          placeHolderText={__('Enter the text for shop page', 'storegrowth-sales-booster')}
-          tooltip={__('example text', 'storegrowth-sales-booster')}
+          placeHolderText={__('Free Gift', 'storegrowth-sales-booster')}
+          tooltip={__('Enter the text for product page', 'storegrowth-sales-booster')}
         />
       </SettingsSection>
     </Fragment>

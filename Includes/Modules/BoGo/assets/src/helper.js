@@ -105,8 +105,8 @@ export const createBogoForm = {
   selection_title: "Add selection title please",
   offer_description: "Add offer description please",
   offer_product_regular_price: 0,
-  product_page_message: __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
-  shop_page_message: __( 'Buy 1, unit of any product from this shop and get 1 unit free of the same product', 'storegrowth-sales-booster' ),
+  product_page_message: __( 'Free Gift', 'storegrowth-sales-booster' ),
+  shop_page_message: __( '', 'storegrowth-sales-booster' ),
 };
 /**
  * Default data of create bogo.
