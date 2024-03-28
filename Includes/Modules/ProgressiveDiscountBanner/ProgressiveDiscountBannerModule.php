@@ -46,7 +46,7 @@ class ProgressiveDiscountBannerModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'ProgressiveDiscountBanner/assets/images/free-shipping-bar-module-img.svg' );
+		return sgsb_modules_url( 'ProgressiveDiscountBanner/assets/images/free-shipping-bar-module-img.webp' );
 	}
 
 	/**

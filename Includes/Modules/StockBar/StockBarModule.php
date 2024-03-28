@@ -46,7 +46,7 @@ class StockBarModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'StockBar/assets/images/stock-bar-module-img.svg' );
+		return sgsb_modules_url( 'StockBar/assets/images/stock-bar-module-img.webp' );
 	}
 
 	/**
