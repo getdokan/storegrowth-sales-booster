@@ -1,6 +1,6 @@
 {
   "name": "storegrowth-sales-booster",
-  "version": "1.26.7",
+  "version": "1.27.7",
   "type": "module",
   "description": "=== StoreGrowth - Sales Booster === Contributors: Invizo Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown, Quick View Requires at least: 5.4 Tested up to: 6.2.2 Stable tag: 1.0.0 Requires PHP: 7.4 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
   "main": "index.js",
@@ -18,6 +18,7 @@
     "watch:sales-notification": "lerna run start --scope='sales-booster-sales-notification'",
     "watch:stock-bar": "lerna run start --scope='sales-booster-stock-bar'",
     "watch:upsell-order-bump": "lerna run start --scope='sales-booster-upsell-order-bump'",
+    "watch:bogo": "lerna run start --scope='sales-booster-bogo'",
     "watch:quick-view": "lerna run start --scope='sales-booster-quick-view'",
     "build:sales-booster": "lerna run build --scope='sales-booster'",
     "build:sales-countdown": "lerna run build --scope='sales-booster-sales-countdown'",
@@ -28,6 +29,7 @@
     "build:sales-pop": "lerna run build --scope='sales-booster-sales-pop'",
     "build:stock-bar": "lerna run build --scope='sales-booster-stock-bar'",
     "build:upsell-order-bump": "lerna run build --scope='sales-booster-upsell-order-bump'",
+    "build:bogo": "lerna run build --scope='sales-booster-bogo'",
     "build:quick-view": "lerna run build --scope='sales-booster-quick-view'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

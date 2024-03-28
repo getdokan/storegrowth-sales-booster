@@ -46,7 +46,7 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'FloatingNotificationBar/assets/images/floating-bar-feature-image.svg' );
+		return sgsb_modules_url( 'FloatingNotificationBar/assets/images/floating-bar-feature-image.webp' );
 	}
 
 	/**

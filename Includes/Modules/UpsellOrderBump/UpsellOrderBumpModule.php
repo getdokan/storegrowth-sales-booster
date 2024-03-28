@@ -9,9 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump;
 
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Modules\Upsell_Order_Bump\Order_Bump;
-use STOREGROWTH\SPSB\Modules\Upsell_Order_Bump\Ajax\Ajax;
-use STOREGROWTH\SPSB\Modules\Order_Bump\Enqueue_Script;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -50,7 +47,7 @@ class UpsellOrderBumpModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'UpsellOrderBump/assets/images/upsell-order-bump-module-img.svg' );
+		return sgsb_modules_url( 'UpsellOrderBump/assets/images/upsell-order-bump-module-img.webp' );
 	}
 
 	/**

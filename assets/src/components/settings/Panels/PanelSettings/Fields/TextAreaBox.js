@@ -13,6 +13,7 @@ const TextAreaBox = ( {
     title,
     tooltip,
     areaRows,
+    readOnly,
     fieldValue,
     changeHandler,
     placeHolderText,
@@ -53,6 +54,7 @@ const TextAreaBox = ( {
                     onChange={ ( event ) => {inputRestrictor?
                     (event.nativeEvent.inputType==="deleteContentBackward"?changeHandler( name, event.target.value ):""):
                     changeHandler( name, event.target.value )} }
+                    readOnly={ readOnly }
                 />
                 { renderTextAreaContent && renderAreaContent }
             </Col>

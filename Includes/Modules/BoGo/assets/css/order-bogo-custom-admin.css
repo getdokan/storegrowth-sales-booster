@@ -1,0 +1,185 @@
+
+.tab-pan-wrapper .ant-tabs-nav{
+    background: #d9ede1;
+    padding: 0 15px;
+    color: black;
+}
+
+
+.order-bogo-offer{
+    font-size: 16px;
+    background: #7979F5;
+    height: 50px;
+    font-size: 20px;
+}
+
+.order-bogo-appearance{
+    font-size: 16px;
+    background: #7979F5;
+    height: 50px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.order-bogo-offer-text, .order-bogo-appearance-text{
+    font-size: 27px;
+}
+
+.order-bogo-offer-section{
+    background: #EEEEEE;
+    height: 35px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.order-bogo-offer-section-text{
+    font-size: 16px;
+    color: #9b9bf5; 
+}
+.order-bogo-save-change-button{
+    background: #7979F5;
+    border: 1px solid #7979F5;
+    margin-top: 20px;
+}
+
+
+/* Start Order BoGo List Table Styles. */
+.create-upsell-order-bogo-button {
+    border: 0;
+    width: 126px;
+    height: auto;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 24px;
+    line-height: 20px;
+    background-color: #CCE3FF;
+    border-radius: 5px !important;
+}
+
+.create-upsell-order-bogo-button,
+.create-upsell-order-bogo-button:hover {
+    color: #073B4C !important;
+}
+
+.upsell-order-list-table .ant-table-container,
+.upsell-order-list-table .ant-table-placeholder .ant-table-cell {
+    /*border-radius: 5px;*/
+    border: 0 !important;
+}
+
+.upsell-order-list-table .ant-table.ant-table-bordered {
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid #DDE5F9;
+}
+
+.upsell-order-list-table .ant-table .ant-table-thead .ant-table-cell:last-child {
+    border-inline-end: 0 !important;
+}
+
+/*.upsell-order-list-table .ant-table .ant-table-body .ant-table-cell {*/
+/*    border: 0;*/
+/*}*/
+
+.upsell-order-list-table .ant-table-thead .ant-table-cell {
+    color: #073B4C;
+    font-size: 16px;
+    background: #FFF;
+    font-weight: 500;
+    padding: 13px 20px;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row,
+.upsell-order-list-table .ant-table-tbody .ant-table-placeholder {
+    background: #f7f9ff !important;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell {
+    color: #073B4C;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 18px 16px;
+    vertical-align: top;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .table-products,
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .table-categories {
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .category-pills,
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .product-pills {
+    border-radius: 4px;
+    padding: 2px 12px;
+    font-weight: 400;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .product-pills {
+    color: #008DFF;
+    background: #EBF6FF;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell .category-pills {
+    color: #32DBBE;
+    background: #EEFCF9;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row .ant-table-cell:last-child {
+    border-right: 0 !important;
+}
+
+.upsell-order-list-table .ant-table-tbody .ant-table-row:last-child td.ant-table-cell {
+    border: 0;
+}
+
+.upsell-order-list-table .ant-table-container,
+.upsell-order-list-table .ant-table-content .ant-table-cell {
+    border-color: #DDE6F9 !important;
+}
+
+.bogo-msg-table-content {
+    position: relative;
+}
+
+.upsell-order-list-table .pro-content-overlay {
+    display: none;
+}
+
+.upsell-order-list-table :hover .pro-content-overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    border-radius: 5px;
+    position: absolute;
+    align-items: center;
+    background: #00000080;
+    justify-content: center;
+}
+
+.upsell-order-list-table .pro-content-overlay .upgrade-button {
+    gap: 10px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 15px;
+    border-radius: 5px;
+    align-items: center;
+    background: #FFAC27;
+    display: inline-flex;
+}
+
+.upsell-order-list-table .pro-content-overlay .upgrade-button .overlay-btn-crown svg path {
+    fill: #fff;
+}
+
+/* End Order BoGo List Table Styles. */
+
+

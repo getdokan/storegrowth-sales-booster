@@ -1,0 +1,358 @@
+.extra_product_design{
+  background: rgb(185, 178, 241);
+  width: 50%;
+  padding: 5px;
+  border-radius: 3px;
+  color:black;
+}
+
+.order-bogo-product{
+  width: 80%;
+  margin: auto;
+  margin-bottom: 5px;
+}
+.order-bogo-product-checkbox{
+  background: rgb(235, 182, 85);
+  padding: 6px;
+  color:black;
+  clear: both;
+  margin-bottom: 10px;
+}
+
+.bogo-product-image{
+  width: 30%;
+  clear: left;
+  float: left;
+}
+
+.bogo-product-description{
+  margin-left: -5%;
+  width: 65%;
+  float: left;
+  padding: 0%;
+  margin-top: -18px;
+}
+
+.bogo-content{
+  font-size: 14px;
+  margin-top: -20px;
+}
+.bogo-product-discount-offer{
+  margin-top: 12px;
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
+}
+
+/* overview from admin */
+
+.bogo-template-overview-area{
+  width: 100%;
+  float: left;
+}
+
+.offer-overview-top-text{
+  width: 100%;
+  height: 45px;
+  background: rgb(146, 218, 146);
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.offer-main-wrap{
+  width: 100%;
+  padding: 15px;
+  background: #fff;
+  border-radius: 15px;
+}
+
+.offer-main-wrap .dynamic-offer-text{
+  background: #E1FFF4;
+  color: #02AC6E;
+  font-size: 13px;
+  gap: 4px;
+  max-width: 100%;
+  display: flex;
+  min-height: 33px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.offer-main-wrap .product-image-and-title{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  line-height: normal;
+  justify-content: space-between;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-image-title{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 3;
+}
+
+.offer-main-wrap .product-image-and-title .product-checkbox-and-excitement-message{
+  flex: .8;
+  gap: 10px;
+  display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  align-items: center;
+}
+
+.offer-main-wrap .product-image-and-title .offer-price{
+  flex: 1.5;
+  font-weight: 800;
+  text-align: right;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-image img{
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-title{
+  gap: 15px;
+  padding: 5px;
+  display: grid;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-title h3{
+  margin: 0;
+  font-weight: bold;
+}
+
+.offer-main-wrap .product-image-and-title .offer-product-title p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.offer-main-wrap .product-checkbox-and-excitement-message .custom-checkbox{
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+
+.offer-main-wrap .product-checkbox-and-excitement-message label {
+  cursor: pointer;
+}
+
+.offer-main-wrap .product-description{
+  width: 98%;
+  height: 200px;
+  background: rgba(48, 33, 182, 0.678);
+  margin-bottom: 20px;
+  padding: 5px;
+}
+
+.single-product div.product {
+    overflow: visible !important;
+}
+
+.bogo-badge-tooltip {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.bogo-badge-tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    background-color: #555;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.bogo-badge-tooltip:hover::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+    transition: border-color 0.3s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.bogo-badge-tooltip:hover::after,
+.bogo-badge-tooltip:hover::before {
+    visibility: visible;
+    opacity: 1;
+}
+
+.bogo-badge-image {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: fit-content;
+    height: 35px;
+    position: absolute;
+}
+
+.bogo-badge-image.default-icon {
+    color: #fff;
+    display: flex;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bogo-badge-image.default-icon svg {
+    /* fill: #fff; */
+}
+
+/* Starting of the modal seletion styling */
+
+a.custom-choose-product {
+  text-decoration: none !important;
+  padding: 6px 10px;
+  background: black;
+  color: #fff;
+  border-radius: 4px;
+  line-height: 2;
+  display: none;
+}
+
+.woocommerce-cart .cart_item a.custom-choose-product,
+.woocommerce-checkout .checkout-review-order-table .product-name {
+    display: inline;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out; /* Add smooth transition */
+}
+
+#product-selection-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8); /* Initial scale for a modern effect */
+  z-index: 1001;
+  background: #ffffff; /* Semi-transparent red background */
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 6px;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Add smooth transition */
+}
+
+.product-selection-modal .modal-container-heading {
+  font-size: 24px;
+  font-weight: 700;
+  border-bottom: 1px solid;
+  margin-bottom: 14px;
+}
+
+.modal-content {
+  /* Style your modal content here if needed */
+  position: relative;
+}
+
+.modal-content div#product-list {
+  overflow: scroll;
+  max-height: calc(100vh - 200px);
+}
+
+
+.modal-content ul>li {
+  /* Style your modal content here if needed */
+  list-style: none;
+}
+
+.alternate-product-container {
+  display: inline-flex;
+  gap:20px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin-bottom:8px ;
+  padding: 8px;
+}
+
+.alternate-product-container img {
+  width: 18%;
+  border-radius: 6px;
+}
+.alternate-product-container .altenate-product-heading h3{
+    margin: 0;
+    line-height: 1;
+    font-weight: 500;
+}
+.alternate-product-container .altenate-product-heading span.choosen-offer-product {
+  padding: 4px 10px;
+  background: black;
+  color: #fff;
+  border-radius: 6px;
+  line-height: 2.5;
+  cursor: pointer;
+}
+
+.custom-close-modal {
+  /* Style your close button if needed */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 0px 4px 0px 6px;
+  padding: 2px 12px;
+  background: black;
+}
+
+/* Add fade-in and fade-out animations */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-in-out;
+}

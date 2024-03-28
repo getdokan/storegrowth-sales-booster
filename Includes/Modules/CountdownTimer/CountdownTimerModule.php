@@ -46,7 +46,7 @@ class CountdownTimerModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'CountdownTimer/assets/images/sales-countdown-module-img.svg' );
+		return sgsb_modules_url( 'CountdownTimer/assets/images/sales-countdown-module-img.webp' );
 	}
 
 	/**

@@ -11,6 +11,7 @@ const ExpandPanels = ( { panels } ) => {
                 >
                     { panels?.map( panel => (
                         <Collapse
+                            key={panel.key}
                             items={ [ panel ] }
                             collapsible='header'
                             expandIconPosition={ 'end' }

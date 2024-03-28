@@ -1,11 +1,10 @@
 import FieldWrapper from './FieldWrapper';
 import UpgradeCrown from '../UpgradeCrown';
-import {Button, Typography, Col, Radio, Row} from 'antd';
+import {Button, Typography, Col, Radio} from 'antd';
 import SettingsTooltip from '../SettingsTooltip';
 import UpgradeOverlay from '../UpgradeOverlay';
 import {__} from '@wordpress/i18n';
 import React, {Fragment} from "react";
-import {wpMedia} from "../../../../../utils/helper";
 
 const { Title } = Typography;
 

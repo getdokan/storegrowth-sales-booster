@@ -1,0 +1,112 @@
+#bogo_product_data,
+#bogo_settings_fields,
+.disable-product-field,
+.disable_bogo_product_discount,
+.disable_get_multiple_category_field,
+.disable_get_multiple_product_field{
+    display: none;
+}
+
+.active-product-field,
+.enable_bogo_product_discount,
+.enable_get_multiple_category_field,
+.enable_get_multiple_product_field {
+    display: block;
+}
+
+.sgsb-bogo-box-title {
+    color: #fff;
+    padding: 10px;
+    font-weight: 700;
+    background: #0875ff;
+}
+
+.sgsb-bogo-box-title .sgsb-section-tip {
+    cursor: pointer;
+}
+
+#bogo_settings_fields .sgsb-bogo-box-title {
+    margin: 16px 0;
+}
+
+#bogo_settings_fields .sale_price_dates_fields {
+    margin-bottom: 24px;
+}
+
+#bogo_settings_fields .sale_price_dates_fields .form-field:last-child {
+    padding-top: 0 !important;
+}
+
+#bogo_settings_fields .sale_price_dates_fields .form-field,
+#bogo_settings_fields .sale_price_dates_fields .form-field:last-child .description {
+    margin: 0;
+}
+
+.bogo-notice {
+    padding: 5px 10px;
+    background: white;
+}
+
+.bogo-notice .bogo-notice-text span.sgsb-notice-attention {
+    color: #FFBCC8;
+    border-radius: 50px;
+    border: 1px solid #FFBCC8;
+    width: 24px;
+    text-align: center;
+    margin: 0px 8px;
+    font-size: 18px;
+}
+
+.bogo-notice .bogo-notice-text {
+    width: 90%;
+    margin: 24px;
+    background: white;
+    padding: 10px 10px;
+    display: inline-flex;
+    border: 0.5px solid #FFBCC8;
+    border-left: 5px solid #FFBCC8;
+    border-radius: 4px;
+}
+.bogo-settings-preview img{
+    width: 100%;
+}
+.sgsb-upgrade-notice a.upgrade-btn {
+    align-items: center;
+    border-radius: 5px;
+    display: inline-flex;
+    gap: 10px;
+    height: 40px;
+    padding: 12px 14px;
+    background: var(--premium-color,#ffac27);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.bogo.sgsb-upgrade-notice{
+    display: none;
+    justify-content: center;
+    background: #00000080;
+    padding: 40px 0px;
+    margin: auto;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upgrade-overlay:hover + .bogo.sgsb-upgrade-notice,
+    .bogo.sgsb-upgrade-notice:hover {
+        display: flex;
+    }

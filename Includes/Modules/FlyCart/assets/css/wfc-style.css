@@ -296,6 +296,10 @@
     display: block;
 }
 
+.sgsb-fly-cart-table td.product-name .sgsb-product-title p {
+    display: none;
+}
+
 .sgsb-fly-cart-table td.product-name .sgsb-product-title .sgsb-product-category {
     font-size: 12px;
     font-weight: initial;
