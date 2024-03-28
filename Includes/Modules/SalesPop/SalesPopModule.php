@@ -46,7 +46,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'SalesPop/assets/images/sales-pop-module-img.svg' );
+		return sgsb_modules_url( 'SalesPop/assets/images/sales-pop-module-img.webp' );
 	}
 
 	/**
