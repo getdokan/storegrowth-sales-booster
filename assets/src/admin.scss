@@ -545,7 +545,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
 
       .widgets-menu {
         padding: 0 20px 0 0;
-        max-height: 0;
+        // max-height: 0;
         overflow: hidden;
         transition: max-height 0.5s ease-in-out;
 
@@ -554,13 +554,13 @@ main.ant-layout-content.sgsb-module-setting-layout {
           padding: 0 42px 0 0;
         }
 
-        &.ant-menu-hidden {
-          max-height: 0; // Hide immediately when hidden class is applied
-        }
+        // &.ant-menu-hidden {
+        //   max-height: 0; // Hide immediately when hidden class is applied
+        // }
 
-        &:not(.ant-menu-hidden) {
-          max-height: 500px; // Show immediately when hidden class is removed
-        }
+        // &:not(.ant-menu-hidden) {
+        //   max-height: 500px; // Show immediately when hidden class is removed
+        // }
 
         .sgsb-selected-module {
           background: #0875ff;
@@ -1082,22 +1082,20 @@ End Settings Sidebar
 
       .widgets-menu {
         padding: 0 20px 0 0;
-        max-height: 0;
         overflow: hidden;
         transition: max-height 0.5s ease-in-out;
 
         @media (min-width: 1800px) {
-          // padding: 0 22px;
           padding: 0 42px 0 0;
         }
 
-        &.ant-menu-hidden {
-          max-height: 0; // Hide immediately when hidden class is applied
-        }
+        // &.ant-menu-hidden {
+        //   max-height: 0; // Hide immediately when hidden class is applied
+        // }
 
-        &:not(.ant-menu-hidden) {
-          max-height: 500px; // Show immediately when hidden class is removed
-        }
+        // &:not(.ant-menu-hidden) {
+        //   max-height: 500px; // Show immediately when hidden class is removed
+        // }
 
         .sgsb-selected-module {
           background: #0875ff;

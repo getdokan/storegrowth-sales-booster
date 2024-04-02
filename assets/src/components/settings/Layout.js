@@ -7,7 +7,6 @@ import {
   useRoutes,
   useSearchParams,
 } from "react-router-dom";
-
 import React from "react";
 import HeadBar from "./HeadBar";
 import Sidebar from "./Sidebar";
@@ -19,12 +18,9 @@ function ModuleSettings({ routes }) {
   return (
     <Layout className="sgsb-layout-relative">
       <Sidebar routes={routes} />
-
       <Layout>
         <HeadBar />
-        <Layout.Content
-          className="sgsb-module-setting-layout"
-        >
+        <Layout.Content className="sgsb-module-setting-layout">
           {element}
         </Layout.Content>
       </Layout>
@@ -33,11 +29,11 @@ function ModuleSettings({ routes }) {
   );
 }
 
-// If not module is active.
+// If no module is active.
 function NoModuleActive() {
   return (
     <Alert
-      message="You don't have any module active, Please active any module to update settings."
+      message="You don't have any module active. Please activate any module to update settings."
       type="info"
     />
   );
@@ -47,13 +43,17 @@ function AppLayout() {
   let navigate = useNavigate();
 
   let routes = applyFilters(
-    'sgsb_routes',
-    [ ...dashboardRoutes ],
+    "sgsb_routes",
+    [...dashboardRoutes],
     Outlet,
     navigate,
     useParams,
     useSearchParams
   );
+
+  routes = !sgsbAdmin.isPro
+    ? routes
+    : routes.filter((route) => route.promptEnable !== true);
 
   return (
     <Layout>
