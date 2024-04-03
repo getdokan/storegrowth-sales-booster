@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { addFilter } from "@wordpress/hooks";
-import PromptNotice from "../../PromptNotice/PromptNotice";
+import PromptNotice from "../../PromptNotice/PlanUpgradeModal";
 
 // Handle stock bar modules pro settings prompts.
 addFilter(

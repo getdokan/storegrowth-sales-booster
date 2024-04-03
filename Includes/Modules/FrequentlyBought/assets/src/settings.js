@@ -7,7 +7,7 @@ import CreateBump from "./components/CreateBump";
 import { register } from "@wordpress/data";
 
 import OrderBumpStore from "./store";
-import PromptNotice from "sales-booster/src/components/pro-previews/PromptNotice/PromptNotice";
+import PlanUpgradeModal from "sales-booster/src/components/pro-previews/PromptNotice/PlanUpgradeModal";
 
 register(OrderBumpStore);
 
@@ -27,7 +27,7 @@ addFilter(
       label: "FBT",
       path: "/frequently-bought",
       exact: true,
-      element: <PromptNotice />,
+      element: <PlanUpgradeModal />,
     });
 
     return routes;
