@@ -80,6 +80,7 @@ class Modules {
 			$all_modules[] = array(
 				'id'          => $module_id,
 				'name'        => $module->get_name(),
+				'dir'					=>$module->get_dir(),
 				'icon'        => $module->get_icon(),
 				'banner'      => $module->get_banner(),
 				'description' => $module->get_description(),

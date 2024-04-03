@@ -31,6 +31,15 @@ class DirectCheckoutModule implements ModuleSkeleton {
 		return 'direct-checkout';
 	}
 
+				/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'DirectCheckout';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

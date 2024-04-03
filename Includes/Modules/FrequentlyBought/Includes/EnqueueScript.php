@@ -76,6 +76,14 @@ class EnqueueScript {
 					'image_folder' => sgsb_modules_url( 'FrequentlyBought/assets/images' ),
 				)
 			);
+
+			wp_localize_script(
+				'sgsb-frequently-bought-settings',
+				'sgsbAdminPro',
+				array(
+					'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+				)
+			);
 		}
 	}
 

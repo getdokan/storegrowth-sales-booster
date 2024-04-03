@@ -31,6 +31,15 @@ class SalesPopModule implements ModuleSkeleton {
 		return 'sales-pop';
 	}
 
+		/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'SalesPop';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

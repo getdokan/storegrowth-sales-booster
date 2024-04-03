@@ -51,9 +51,9 @@ function AppLayout() {
     useSearchParams
   );
 
-  routes = !sgsbAdmin.isPro
-    ? routes
-    : routes.filter((route) => route.promptEnable !== true);
+  // routes = !sgsbAdmin.isPro
+  //   ? routes
+  //   : routes.filter((route) => route.promptEnable !== true);
 
   return (
     <Layout>

@@ -32,6 +32,15 @@ class StockBarModule implements ModuleSkeleton {
 	}
 
 	/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'StockBar';
+	}
+
+	/**
 	 * Icon for a module.
 	 *
 	 * @return string

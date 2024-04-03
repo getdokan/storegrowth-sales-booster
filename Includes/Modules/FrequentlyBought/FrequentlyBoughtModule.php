@@ -32,6 +32,15 @@ class FrequentlyBoughtModule implements ModuleSkeleton {
 		return 'frequently-bought';
 	}
 
+					/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'FrequentlyBought';
+	}
+
 	/**
 	 * Icon for a module.
 	 *
