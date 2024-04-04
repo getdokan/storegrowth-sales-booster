@@ -34,8 +34,8 @@ class Ajax {
 		add_action( 'wp_ajax_bump_delete', array( $this, 'bump_delete' ) );
 		add_action( 'wp_ajax_nopriv_bump_delete', array( $this, 'bump_delete' ) );
 
-		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
-		add_action( 'wp_ajax_nopriv_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
+		add_action( 'wp_ajax_upsell_offer_product_add_to_cart', array( $this, 'upsell_offer_product_add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_upsell_offer_product_add_to_cart', array( $this, 'upsell_offer_product_add_to_cart' ) );
 	}
 
 	/**
@@ -113,9 +113,8 @@ class Ajax {
 	/**
 	 * Bump product add to cart.
 	 */
-	public function offer_product_add_to_cart() {
+	public function upsell_offer_product_add_to_cart() {
 		check_ajax_referer( 'ajd_protected' );
-
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();
 
@@ -155,6 +154,7 @@ class Ajax {
 
 		}
 
+		wp_send_json_success('Product added to cart successfully.');
 		die();
 	}
 
