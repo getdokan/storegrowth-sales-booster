@@ -45,20 +45,12 @@ class OrderBump {
 		$bump_list             = get_posts( $args_bump );
 
 		foreach ( $all_cart_products as $value ) {
-			error_log( $value['data']->is_type( 'simple' ) );
 			$cat_ids = $value['data']->get_category_ids();
 			foreach ( $cat_ids as $cat_id ) {
 				$all_cart_category_ids[] = $cat_id;
 			}
-				// $all_cart_product_ids[] = array(
-				// 	'product_id'   => $value['product_id'],
-				// 	'variation_id' => $value['variation_id'],
-				// 	'variation'    => $value['variation'],
-				// );
 				$all_cart_product_ids[] = $value['variation_id'] === 0 ? $value['product_id'] : $value['variation_id'];
 		}
-		error_log( print_r( $all_cart_product_ids, 1 ) );
-		// error_log( print_r( $all_cart_products, 1 ) );
 		foreach ( $bump_list as $bump ) {
 			$bump_info        = maybe_unserialize( $bump->post_excerpt );
 			$bump_info        = (object) $bump_info;
