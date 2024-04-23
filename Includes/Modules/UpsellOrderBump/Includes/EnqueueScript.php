@@ -105,9 +105,9 @@ class EnqueueScript {
 	 * Style for frontend.
 	 */
 	public function front_styles() {
-        if ( ! is_checkout() ) {
-            return;
-        }
+		if ( ! is_checkout() ) {
+			return;
+		}
 
 		$ftime = filemtime( sgsb_modules_path( 'UpsellOrderBump/assets/css/order-bump-front.css' ) );
 
@@ -169,12 +169,12 @@ class EnqueueScript {
 		$simple_product_for_offer = array();
 
 		foreach ( $products as $product ) {
-            // Get the product category IDs.
-            $category_ids              = wp_get_post_terms( $product->ID, 'product_cat', array( 'fields' => 'ids' ) );
+			// Get the product category IDs.
+			$category_ids              = wp_get_post_terms( $product->ID, 'product_cat', array( 'fields' => 'ids' ) );
 			$product_list_for_select[] = array(
 				'value'  => $product->ID,
 				'label'  => $product->post_title,
-                'catIds' => $category_ids,
+				'catIds' => $category_ids,
 			);
 
 			$_product      = wc_get_product( $product->ID );
@@ -182,7 +182,7 @@ class EnqueueScript {
 			$regular_price = $_product->get_regular_price();
 
 			// Prepare woocommerce price data.
-			$price = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
+			$price = esc_html( $regular_price );
 			$price = wp_strip_all_tags( html_entity_decode( wc_price( $price ) ) );
 
 			// Render woocommerce price with currency symbol.
@@ -201,7 +201,7 @@ class EnqueueScript {
 			// Get categories csv.
 			$category_names = implode( ', ', $category_names );
 
-			if ( $regular_price ) {
+			if ( $_product->is_type( 'simple' ) && $regular_price ) {
 				$simple_product_for_offer[] = array(
 					'price'            => $price,
 					'value'            => $product->ID,
@@ -210,6 +210,25 @@ class EnqueueScript {
 					'label'            => $product->post_title . $_product_price,
 				);
 			}
+			if ( $_product->is_type( 'variable' ) ) {
+				$variations = $_product->get_available_variations();
+
+				foreach ( $variations as $variation ) {
+						$variation_id         = $variation['variation_id'];
+						$variation_attributes = $variation['attributes'];
+						$regular_price        = number_format( $variation['display_regular_price'], 2 ) . $currency_symbol;
+						$variation_root_name  = $_product->get_title();
+						$variation_name       = $variation_root_name . '(' . implode( ', ', $variation_attributes ) . ') (' . $regular_price . ')';
+
+						$simple_product_for_offer[] = array(
+							'price'            => $regular_price,
+							'value'            => $variation_id,
+							'currency'         => $currency_symbol,
+							'offer_categories' => $category_names,
+							'label'            => $variation_name,
+						);
+				}
+			}
 
 			$product_title_by_id[ $product->ID ] = $product->post_title;
 		}
@@ -217,7 +236,6 @@ class EnqueueScript {
 		$product_info['productListForSelect']  = $product_list_for_select;
 		$product_info['simpleProductForOffer'] = $simple_product_for_offer;
 		$product_info['productTitleById']      = $product_title_by_id;
-
 		return $product_info;
 	}
 
@@ -225,20 +243,44 @@ class EnqueueScript {
 	 * Product list for view.
 	 */
 	public function prodcut_list_for_view() {
-		$args                  = array(
+		$args     = array(
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
 		);
-		$products              = get_posts( $args );
+		$products = get_posts( $args );
+
 		$product_list_for_view = array();
-
 		foreach ( $products as $product ) {
-			$_product                              = wc_get_product( $product->ID );
-			$product->regular_price                = $_product->get_regular_price();
-			$product->image_url                    = wp_get_attachment_url( get_post_thumbnail_id( $product->ID ), 'thumbnail' );
-			$product_list_for_view[ $product->ID ] = $product;
-		}
+			$_product = wc_get_product( $product->ID );
 
+			if ( $_product->is_type( 'simple' ) ) {
+				$product_list_for_view[ $product->ID ] = array(
+					'ID'            => $product->ID,
+					'post_title'    => $_product->get_title(),
+					'image_url'     => wp_get_attachment_url( get_post_thumbnail_id( $product->ID ), 'thumbnail' ),
+					'regular_price' => number_format( (int) $_product->get_regular_price(), 2 ),
+				);
+			}
+			if ( $_product->is_type( 'variable' ) ) {
+				$variations = $_product->get_available_variations();
+
+				foreach ( $variations as $variation ) {
+						$variation_id         = $variation['variation_id'];
+						$variation_attributes = $variation['attributes'];
+						$regular_price        = number_format( $variation['display_regular_price'], 2 );
+						$variation_root_name  = $_product->get_title();
+						$variation_name       = $variation_root_name . '(' . implode( ', ', $variation_attributes ) . ')';
+						$image_url            = $variation['image']['url'];
+
+						$product_list_for_view[ $variation_id ] = array(
+							'ID'            => $variation_id,
+							'post_title'    => $variation_name,
+							'image_url'     => $image_url,
+							'regular_price' => $regular_price,
+						);
+				}
+			}
+		}
 		return $product_list_for_view;
 	}
 

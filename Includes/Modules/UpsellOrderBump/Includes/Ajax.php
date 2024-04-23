@@ -126,10 +126,10 @@ class Ajax {
 			$all_cart_product_ids[] = $value['product_id'];
 		}
 
-		$bump_price       = isset( $_POST['data']['bump_price'] ) ? floatval( wp_unslash( $_POST['data']['bump_price'] ) ) : null;
-		$checked          = isset( $_POST['data']['checked'] ) ? boolval( wp_unslash( $_POST['data']['checked'] ) ) : null;
-		$offer_product_id = isset( $_POST['data']['offer_product_id'] ) ? intval( wp_unslash( $_POST['data']['offer_product_id'] ) ) : null;
-
+		$bump_price         = isset( $_POST['data']['bump_price'] ) ? floatval( wp_unslash( $_POST['data']['bump_price'] ) ) : null;
+		$checked            = isset( $_POST['data']['checked'] ) ? boolval( wp_unslash( $_POST['data']['checked'] ) ) : null;
+		$offer_product_id   = isset( $_POST['data']['offer_product_id'] ) ? intval( wp_unslash( $_POST['data']['offer_product_id'] ) ) : null;
+		$offer_variation_id = isset( $_POST['data']['offer_variation_id'] ) ? intval( wp_unslash( $_POST['data']['offer_variation_id'] ) ) : null;
 		if ( $checked ) {
 			$product_id      = $offer_product_id;
 			$product_cart_id = WC()->cart->generate_cart_id( $product_id );
@@ -144,7 +144,7 @@ class Ajax {
 			// Cart item data to send & save in order.
 			$cart_item_data = array( 'custom_price' => $custom_price );
 			// Woocommerce function to add product into cart check its documentation also.
-			$woocommerce->cart->add_to_cart( $offer_product_id, 1, $variation_id = 0, $variation = array(), $cart_item_data );
+			$woocommerce->cart->add_to_cart( $offer_product_id, 1, $offer_variation_id, $variation = array(), $cart_item_data );
 			// Calculate totals.
 			$woocommerce->cart->calculate_totals();
 			// Save cart to session.
@@ -154,7 +154,7 @@ class Ajax {
 
 		}
 
-		wp_send_json_success('Product added to cart successfully.');
+		wp_send_json_success( $offer_variation_id );
 		die();
 	}
 
