@@ -4,6 +4,17 @@
  *
  * @package Bump design for front.
  */
+
+if ( $_product && $_product->is_type( 'variation' ) ) {
+	$product_offer_id = $_product->get_parent_id();
+	$variation_id     = $offer_product_id;
+} elseif ( $_product && $_product->is_type( 'simple' ) ) {
+	$product_offer_id = $offer_product_id;
+	$variation_id     = 0;
+} else {
+	return;
+}
+
 ?>
 
 <div class='template-overview-area'>
@@ -83,12 +94,12 @@
 				<input 
 					type     = "checkbox"
 					class    = 'custom-checkbox' 
-					value    = "<?php echo esc_attr( $offer_product_id ); ?>" 
-					id       = "test_<?php echo esc_attr( $offer_product_id ); ?>" 
-					onchange = "extraProducts(<?php echo esc_attr( $offer_product_id ); ?>,'<?php echo esc_attr( $checked ); ?>', '<?php echo esc_attr( $offer_price ); ?>')"
+					value    = "<?php echo esc_attr( $product_offer_id ); ?>" 
+					id       = "test_<?php echo esc_attr( $product_offer_id ); ?>" 
+					onchange = "extraProducts(<?php echo esc_attr( $product_offer_id ); ?>,<?php echo esc_attr( $variation_id ); ?>,'<?php echo esc_attr( $checked ); ?>', '<?php echo esc_attr( $offer_price ); ?>')"
 					<?php echo esc_attr( $checked ); ?> 
 				/>
-				<label for='test_<?php echo esc_attr( $offer_product_id ); ?>'>
+				<label for='test_<?php echo esc_attr( $product_offer_id ); ?>'>
 					<?php esc_html_e( 'Select', 'storegrowth-sales-booster' ); ?>
 				</label>
 			</div>
