@@ -1,21 +1,21 @@
 === StoreGrowth — Best WooCommerce Marketing Solution — Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & More to boost sales ===
 Contributors: mehedi_csit, invizo
-Tags: floating cart, fly cart, side cart, checkout optimization, notification bar, add to cart, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
+Tags: upsell, sliding cart, side cart, checkout optimization, notification bar, add to cart redirect, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
 
 Requires at least: 5.4
 Tested up to: 6.4.1
-Stable tag: 1.27.7
+Stable tag: 1.28.8
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost Your Sales and Conversion with Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & Many More.
+Boost Your Sales and Conversion with Upsell, FOMO, Buy one get one, Buy x get y, Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & Many More.
 
 == Description == 
 
 = Maximize your WooCommerce sales with powerful marketing modules such as fly cart, direct checkout, add to cart redirect, bogo, quikc view, upsell order bump, sales countdown, live sales notification, and many more! =
 
-StoreGrowth is a conversion-boosting toolkit to help you optimize your sales campaigns for the best results. It offers you **10+ powerful marketing modules** in one place, so you don’t need to use multiple plugins to increase sales. 
+[StoreGrowth](https://storegrowth.io/) is a conversion-boosting toolkit to help you optimize your sales campaigns for the best results. It offers you **10+ powerful marketing modules** in one place, so you don’t need to use multiple plugins to increase sales. 
 
 - **It is lightweight and easy to use.**
 - **It is standalone with no page builder dependency.**
@@ -28,7 +28,7 @@ StoreGrowth is specially built for WooCommerce marketers who are looking for a c
 
 [youtube https://youtu.be/UPGtOEsY2kI?si=s-xfT5NNH5SP1Ya2]
 
-
+👉<a href="https://demo.storegrowth.io/" target="_blank"> Demo </a>
 👉<a href="https://storegrowth.io/documentation/" target="_blank"> Documentation </a>
 👉 <a href="https://storegrowth.io/pricing/" target="_blank"> Upgrade To Pro </a>
 
@@ -266,6 +266,15 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.28.8 - 23 April, 2024 =
+
+fix: countdown timer script issue
+enhance: add variable product support for upsell order bump
+
+= 1.27.8 - 05 April, 2024 =
+
+fix: order bump offer price
 
 = 1.27.7 - 17 March, 2024 =
 

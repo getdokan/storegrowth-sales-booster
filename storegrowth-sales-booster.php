@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth - Sales Booster For WooCommerce Lite
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
- * Version:     1.27.7
+ * Version:     1.28.8
  * Author:      Invizo
  * Author URI:  https://invizo.io/
  * License:     GPL-2.0+
@@ -51,7 +51,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
  * Define The Template's Folder Constant
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path(STOREGROWTH_PLUGIN_FILE) . 'Includes/Modules/');
+	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'Includes/Modules/' );
 }
 
 /**
@@ -108,9 +108,12 @@ if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-
 /**
  * add option when plugin is activated.
  */
-register_activation_hook(__FILE__, function () {
-    add_option('storegrowth_activation_redirect', true);
-});
+register_activation_hook(
+	__FILE__,
+	function () {
+		add_option( 'storegrowth_activation_redirect', true );
+	}
+);
 /**
  * Initialize the plugin functionality.
  *
