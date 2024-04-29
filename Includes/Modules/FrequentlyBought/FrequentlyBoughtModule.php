@@ -33,10 +33,10 @@ class FrequentlyBoughtModule implements ModuleSkeleton {
 	}
 
 					/**
-	 * directory Name for a module.
-	 *
-	 * @return string
-	 */
+					 * directory Name for a module.
+					 *
+					 * @return string
+					 */
 	public function get_dir() {
 		return 'FrequentlyBought';
 	}
@@ -110,9 +110,16 @@ class FrequentlyBoughtModule implements ModuleSkeleton {
 	 * @return void
 	 */
 	public function init() {
-		Includes\FrequentlyBought::instance();
-		Includes\Ajax::instance();
+		// Includes\FrequentlyBought::instance();
+		// Includes\Ajax::instance();
 		Includes\EnqueueScript::instance();
+
+				/**
+		 * Module initialized.
+		 *
+		 * @since 1.28.8
+		 */
+		do_action( 'storegrowth_fbt_module_init' );
 	}
 }
 
