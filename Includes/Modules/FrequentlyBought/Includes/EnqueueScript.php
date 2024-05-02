@@ -53,35 +53,24 @@ class EnqueueScript {
 				true
 			);
 
-			$action    = 'ajd_protected';
-			$ajd_nonce = wp_create_nonce( $action );
-
+			$action                      = 'ajd_protected';
+			$ajd_nonce                   = wp_create_nonce( $action );
+			$product_and_categories_data = array();
+			$fbt_product_and_categories  = apply_filters( 'sgsb_fbt_product_and_categories_info', $product_and_categories_data );
+			
 			wp_localize_script(
 				'sgsb-frequently-bought-settings',
 				'products_and_categories',
-				array(
-					'product_list'          => $this->prodcut_list(),
-					'product_list_for_view' => $this->prodcut_list_for_view(),
-					'category_list'         => $this->category_list(),
-					'order_bump_list'       => $this->order_bump_list(),
-				)
+				$fbt_product_and_categories
 			);
 
 			wp_localize_script(
 				'sgsb-frequently-bought-settings',
-				'bump_save_url',
+				'fbt_save_url',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => $ajd_nonce,
 					'image_folder' => sgsb_modules_url( 'FrequentlyBought/assets/images' ),
-				)
-			);
-
-			wp_localize_script(
-				'sgsb-frequently-bought-settings',
-				'sgsbAdminPro',
-				array(
-					'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 				)
 			);
 		}
@@ -107,198 +96,5 @@ class EnqueueScript {
 			null,
 			$ftime_template
 		);
-	}
-
-	/**
-	 * Style for frontend.
-	 */
-	public function front_styles() {
-        if ( ! is_checkout() ) {
-            return;
-        }
-
-		$ftime = filemtime( sgsb_modules_path( 'FrequentlyBought/assets/css/frequently-bought-front.css' ) );
-
-		wp_enqueue_style(
-			'sgsb-frequently-bought-front-css',
-			sgsb_modules_url( 'FrequentlyBought/assets/css/frequently-bought-front.css' ),
-			null,
-			$ftime
-		);
-	}
-
-	/**
-	 * Script for frontend.
-	 */
-	public function front_scripts() {
-		$ftime = filemtime( sgsb_modules_path( 'FrequentlyBought/assets/js/frequently-bought-custom.js' ) );
-
-		wp_enqueue_script(
-			'sgsb-frequently-bought-front-js',
-			sgsb_modules_url( 'FrequentlyBought/assets/js/frequently-bought-custom.js' ),
-			'jquery',
-			$ftime,
-			true
-		);
-
-		$action    = 'ajd_protected';
-		$ajd_nonce = wp_create_nonce( $action );
-		wp_localize_script(
-			'sgsb-frequently-bought-front-js',
-			'bump_save_url',
-			array(
-				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
-				'ajd_nonce'          => $ajd_nonce,
-			)
-		);
-	}
-
-	/**
-	 * Product list.
-	 */
-	public function prodcut_list() {
-		$args = array(
-			'post_type'      => 'product',
-			'posts_per_page' => -1,
-			'tax_query'      => array(
-				array(
-					'taxonomy' => 'product_type',
-					'field'    => 'slug',
-					'terms'    => 'external',
-					'operator' => 'NOT IN',
-				),
-			),
-		);
-
-		$products = get_posts( $args );
-
-		$product_list_for_select  = array();
-		$product_title_by_id      = array();
-		$simple_product_for_offer = array();
-
-		foreach ( $products as $product ) {
-            // Get the product category IDs.
-            $category_ids              = wp_get_post_terms( $product->ID, 'product_cat', array( 'fields' => 'ids' ) );
-			$product_list_for_select[] = array(
-				'value'  => $product->ID,
-				'label'  => $product->post_title,
-                'catIds' => $category_ids,
-			);
-
-			$_product      = wc_get_product( $product->ID );
-			$sale_price    = $_product->get_sale_price();
-			$regular_price = $_product->get_regular_price();
-
-			// Prepare woocommerce price data.
-			$price = ! empty( $sale_price ) ? esc_html( $sale_price ) : esc_html( $regular_price );
-			$price = wp_strip_all_tags( html_entity_decode( wc_price( $price ) ) );
-
-			// Render woocommerce price with currency symbol.
-			$_product_price  = ' (' . $price . ')';
-			$currency_symbol = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
-
-			// Offer product categories.
-			// Collect offer product categories.
-			$product_categories = wp_get_post_terms( $product->ID, 'product_cat' );
-
-			$category_names = array();
-			foreach ( $product_categories as $category ) {
-				$category_names[] = $category->name;
-			}
-
-			// Get categories csv.
-			$category_names = implode( ', ', $category_names );
-
-			if ( $regular_price ) {
-				$simple_product_for_offer[] = array(
-					'price'            => $price,
-					'value'            => $product->ID,
-					'currency'         => $currency_symbol,
-					'offer_categories' => $category_names,
-					'label'            => $product->post_title . $_product_price,
-				);
-			}
-
-			$product_title_by_id[ $product->ID ] = $product->post_title;
-		}
-
-		$product_info['productListForSelect']  = $product_list_for_select;
-		$product_info['simpleProductForOffer'] = $simple_product_for_offer;
-		$product_info['productTitleById']      = $product_title_by_id;
-
-		return $product_info;
-	}
-
-	/**
-	 * Product list for view.
-	 */
-	public function prodcut_list_for_view() {
-		$args                  = array(
-			'post_type'      => 'product',
-			'posts_per_page' => -1,
-		);
-		$products              = get_posts( $args );
-		$product_list_for_view = array();
-
-		foreach ( $products as $product ) {
-			$_product                              = wc_get_product( $product->ID );
-			$product->regular_price                = $_product->get_regular_price();
-			$product->image_url                    = wp_get_attachment_url( get_post_thumbnail_id( $product->ID ), 'thumbnail' );
-			$product_list_for_view[ $product->ID ] = $product;
-		}
-
-		return $product_list_for_view;
-	}
-
-	/**
-	 * Category list.
-	 */
-	public function category_list() {
-		$orderby    = 'name';
-		$order      = 'asc';
-		$hide_empty = false;
-		$cat_args   = array(
-			'orderby'    => $orderby,
-			'order'      => $order,
-			'hide_empty' => $hide_empty,
-		);
-
-		$product_categories = get_terms( 'product_cat', $cat_args );
-		$category_list      = array();
-		$cat_name_by_bd     = array();
-
-		foreach ( $product_categories as $key => $category ) {
-			$category_list[] = array(
-				'value' => $category->term_id,
-				'label' => $category->name,
-			);
-
-			$cat_name_by_id[ $category->term_id ] = $category->name;
-		}
-
-		$catergory_info['catForSelect'] = $category_list;
-		$catergory_info['catNameById']  = $cat_name_by_id;
-
-		return $catergory_info;
-	}
-
-	/**
-	 * Order bump list.
-	 */
-	public function order_bump_list() {
-		$args_bump = array(
-			'post_type'      => 'sgsb_order_bump',
-			'posts_per_page' => -1,
-		);
-		$bump_list = get_posts( $args_bump );
-		$bumps     = array();
-
-		foreach ( $bump_list as $bump ) {
-			if ( 'object' === gettype( json_decode( $bump->post_excerpt ) ) ) {
-				$bumps[ $bump->ID ] = json_decode( $bump->post_excerpt );
-			}
-		}
-
-		return $bumps;
 	}
 }
