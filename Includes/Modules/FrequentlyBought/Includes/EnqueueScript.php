@@ -28,8 +28,6 @@ class EnqueueScript {
 	private function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
 	}
 
 
