@@ -110,8 +110,6 @@ class FrequentlyBoughtModule implements ModuleSkeleton {
 	 * @return void
 	 */
 	public function init() {
-		// Includes\FrequentlyBought::instance();
-		// Includes\Ajax::instance();
 		Includes\EnqueueScript::instance();
 
 				/**
