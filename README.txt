@@ -1,10 +1,10 @@
 === StoreGrowth — Best WooCommerce Marketing Solution — Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & More to boost sales ===
-Contributors: mehedi_csit, invizo
+Contributors: invizo
 Tags: upsell, sliding cart, side cart, checkout optimization, notification bar, add to cart redirect, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
 
 Requires at least: 5.4
-Tested up to: 6.4.1
-Stable tag: 1.28.8
+Tested up to: 6.5.3
+Stable tag: 1.28.9
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -266,6 +266,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.28.9 - 02 June, 2024 =
+
+fix: paypal checkout button issue
 
 = 1.28.8 - 23 April, 2024 =
 
