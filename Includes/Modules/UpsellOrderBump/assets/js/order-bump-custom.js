@@ -13,6 +13,6 @@ function extraProducts(product_id, variation_id , check_status, offer_price) {
         'data'      : passData,
         '_ajax_nonce' : bump_save_url.ajd_nonce
      }, function (data) {
-        // location.reload();
+        location.reload();
     });
 }
