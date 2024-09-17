@@ -230,7 +230,7 @@ class EnqueueScript {
 		$settings = get_option( 'sgsb_quick_view_settings' );
 
 		$modal_bg_color       = sgsb_find_option_setting( $settings, 'modal_background_color', '#ffffff' );
-		$button_color         = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
+		$button_color         = sgsb_find_option_setting( $settings, 'button_color', '#000000' );
 		$button_text_color    = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
 		$button_border_radius = sgsb_find_option_setting( $settings, 'button_border_radius', 4 );
 		$show_image           = sgsb_find_option_setting( $settings, 'show_image', 4 );

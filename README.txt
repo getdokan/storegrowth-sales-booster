@@ -4,7 +4,7 @@ Tags: upsell, sliding cart, side cart, checkout optimization, notification bar, 
 
 Requires at least: 5.4
 Tested up to: 6.5.3
-Stable tag: 1.28.9
+Stable tag: 1.28.10
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -266,6 +266,9 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 1. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= 1.28.10 - 17 Sep, 2024 =
+fix: quick view issue
 
 = 1.28.9 - 02 June, 2024 =
 
