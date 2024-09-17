@@ -82,8 +82,6 @@ class CommonHooks {
 		 * @since 1.0.0
 		 */
 	public function show_single_product_description() {
-		global $product;
-		$description = $product->get_description();
 		include __DIR__ . '/../templates/description-template.php';
 	}
 		/**
