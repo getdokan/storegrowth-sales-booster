@@ -1,6 +1,6 @@
-=== StoreGrowth — Best WooCommerce Marketing Solution — Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & More to boost sales ===
+=== StoreGrowth - WooCommerce Sales Booster: Fly Cart, Direct Checkout, Live Sales Notifications, Upsell, Countdown Timer & More ===
 Contributors: invizo
-Tags: upsell, sliding cart, side cart, checkout optimization, notification bar, add to cart redirect, Buy now button, woocommerce direct checkout, woocommerce ajax cart, cart popup, sales notification, social proof, fomo, woocommerce notification, Side cart, fly cart, upsell order bump, free shipping bar, stock count progress bar, sales countdown timer.
+Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales Countdown timer 
 
 Requires at least: 5.4
 Tested up to: 6.5.3
@@ -9,13 +9,13 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Boost Your Sales and Conversion with Upsell, FOMO, Buy one get one, Buy x get y, Fly Cart, Direct Checkout, Add To Cart Redirect, BOGO, Quick View, Sales Countdown Timer, Floating Notification Bar, Live Sales Notifications, Upsell Order Bump & Many More.
+Boost WooCommerce conversions: Fly Cart, Direct Checkout, Add to Cart Redirect, BOGO, Quick View, Countdown Timer, Floating Bar, Sales Alerts, Upsell
 
 == Description == 
 
-= Maximize your WooCommerce sales with powerful marketing modules such as fly cart, direct checkout, add to cart redirect, bogo, quikc view, upsell order bump, sales countdown, live sales notification, and many more! =
+= Boost your WooCommerce sales with StoreGrowth's advanced marketing modules, including Fly Cart, Direct Checkout, Add-to-Cart Redirect, BOGO offers, Quick View, Upsell Order Bumps, Sales Countdown, Live Sales Notifications, and more! =
 
-[StoreGrowth](https://storegrowth.io/) is a conversion-boosting toolkit to help you optimize your sales campaigns for the best results. It offers you **10+ powerful marketing modules** in one place, so you don’t need to use multiple plugins to increase sales. 
+[StoreGrowth](https://storegrowth.io/) is your all-in-one conversion-boosting toolkit, specially designed to help you grow quickly with diverse sales campaigns. **With 10+ powerful marketing modules** in one place, you can boost sales without juggling multiple plugins.
 
 - **It is lightweight and easy to use.**
 - **It is standalone with no page builder dependency.**
@@ -38,27 +38,27 @@ Online shoppers love deals and promotions. The WooCommerce checkout is not convi
 
 As a store owner, you can not just sit relax, and hope to make sales. You need to apply different tactics to attract your targeted buyers to make the purchasing decision. 
 
-**StoreGrowth is the only solution you need to level up your marketing game.**
+**StoreGrowth offers everything needed to build a strong marketing strategy and boost WooCommerce sales effectively.**
 
-- Transform your WooCommerce checkout into a seamless experience with fly carts.
+- Seamless Checkout: Accelerate the WooCommerce checkout process with Fly Carts for a smoother shopping experience. 
 
-- Increase AOV with strategic upsell order bump offers at the checkout.
+- Higher Average Order Value: Using the Checkout Upsell Order Bump boosts sales by suggesting additional products at checkout without disrupting the process.
 
-- Create Urgency and FOMO with the Sales Countdown Timer and draw your customers' attention.
+- Create Urgency and FOMO: The Sales Countdown Timer can capture customer attention and drive quick decisions. 
  
-- Streamline the buying process by replacing the ‘Add to Cart’ button with the ‘Buy Now’ button.
+- Simplified Buying Process: Replace the 'Add to Cart' button with a 'Buy Now' button for instant purchases.
 
-- Promote your deals and discounts with a highly customizable floating notification bar.
+- Promote Deals Effectively: Highlight discounts with a customizable floating notification bar.
 
-- Encourage bigger orders with real-time free shipping custom messages.
+- Encourage Larger Orders: Display real-time free shipping messages to motivate higher cart values.
 
-- Build trust with real-time sales notifications on your site.
+- Build Trust: Show real-time sales notifications to boost customer confidence.
 
-- Create a sense of scarcity by representing the stock levels of each product on the shop page.
+- Highlight Scarcity: Display stock levels on the shop page to create a sense of urgency.
 
-- Allow users to quickly view key product details with a lightbox modal.
+- Quick Product Previews: Provide quick access to key product details through a lightbox popup from your shop page.
 
-- Create exclusive BOGO offers and promote them to engage your audience.
+- Engage Shoppers with BOGO Offers: With the exclusive BOGO module create and promote exclusive buy-one-get-one deals to attract attention and boost sales. 
 
 == All The Modules of StoreGrowth At A Glance  ==
 
@@ -86,7 +86,7 @@ As a store owner, you can not just sit relax, and hope to make sales. You need t
 
 StoreGrowth has all the powerful features that you need to increase sales and average order value with the highest converting checkout.
 
-**👉 [Fly Cart:](https://storegrowth.io/) **
+**👉 [Fly Cart:](https://storegrowth.io/quick-cart/) **
 
 The fly cart feature creates a side cart in your WooCommerce store. Your customers can add products to the cart, review their order, and proceed to checkout without leaving the shop page. It provides a user-friendly and efficient way to manage their orders and proceed to checkout.
 
@@ -99,7 +99,7 @@ You can decide how you want to display the fly cart, and what contents the fly c
 
 The fly cart enhances the cart functionality and improves the overall shopping journey for your customers.
 
-**👉 [Sales Countdown Timer:](https://storegrowth.io/) **
+**👉 [Sales Countdown Timer:](https://storegrowth.io/sales-countdown/) **
 
 Sales Countdown Timer allows you to promote your deals and promotions with FOMO. It is the best way to remind them of limited-time offers and motivate immediate action before the deal disappears. It creates excitement around your store and engages your audience.
 
@@ -111,29 +111,29 @@ In StoreGrowth, you can create visually appealing and functional WooCommerce cou
 ✅ Create multiple countdown timers and display them with shortcodes.
 
 
-**👉 [WooCommerce Direct Checkout:](https://storegrowth.io/) **
+**👉 [WooCommerce Direct Checkout:](https://storegrowth.io/direct-checkout/) **
 
 The WooCommerce Direct Checkout option allows you to replace the **"Add to Cart"** button with a **"Buy Now"** button. Not only that, you get to choose what this additional button will be and how you want to place it on your shop page.
 
-And the best part is, you can design this button according to your brand, highlight it on the product page and shop page, and redirect this button wherever you want.
+And the best part of woocommerce direct checkout is, you can design this button according to your brand, highlight it on the product page and shop page, and redirect this button wherever you want.
 
-✅ Replace your "Add to Cart" with a "Buy Now" button for direct checkout.
+✅ Replace your "Add to Cart" with a "Buy Now" button for woocommerce direct checkout.
 ✅ Apply "Buy Now" for high-demand items or limited-time promotions.
 ✅ Customize the design of your "Buy Now" button to match your brand perfectly.
 
-**👉 [Live Sales Notification:](https://storegrowth.io/) **
+**👉 [Live Sales Notification:](https://storegrowth.io/sales-notifications/) **
 
 Online shoppers coming to your WooCommerce store may be hesitant to make purchases without social proof or a feeling of product popularity. Real-time sales notifications showcasing recent purchases, build trust and encourage action from hesitant visitors.
 
 The Live Sales Popup Notification feature allows you to generate real-time sales alerts, showcasing recent purchases made by other customers. It will act as social proof to boost your sales and conversions.
 
 ✅ Easily create sales notification popups with ready-to-use templates.
-✅ Design and message customization for brand consistency.
+✅ Design and message customization for brand consistency and provide live sales notifications
 ✅ Choose between displaying notifications for the latest purchases or specific products.
 ✅ Select time delay for displaying the live sales notifications popup.
 
 
-**👉 [Free Shipping Rule:](https://storegrowth.io/) **
+**👉 [Free Shipping Rule:](https://storegrowth.io/free-shipping-bar/) **
 
 If you are offering free shipping over an amount, then this is the feature you need. The free shipping rule is the best way to encourage your customers to increase their cart value.
 
@@ -148,7 +148,7 @@ As buyers add items to the cart, the banner text will be automatically updated b
 Customers can instantly see how close they are to reaching the minimum cart value for free shipping. This creates transparency and motivation for additional purchases.
 
 
-**👉 [Checkout Upsell Order Bump:](https://storegrowth.io/) **
+**👉 [Checkout Upsell Order Bump:](https://storegrowth.io/upsell-order-bump/) **
 
 With the Checkout Upsell Order Bump feature, you can place attractive additional products within the checkout process.
 
@@ -159,7 +159,7 @@ StoreGrowth allows you to create upsell order bump offers where you can choose t
 ✅ Create multiple order bump offers to increase AOV.
 
 
-**👉 [Stock Count Progress Bar:](https://storegrowth.io/)**
+**👉 [Stock Count Progress Bar:](https://storegrowth.io/stock-countdown-bar/)**
 
 The Stock Count Progress Bar offers customers a real-time visual indicator of the available stock for a specific product. This visual representation dynamically adjusts as purchases are made. It gives customers instant feedback on the product's popularity and availability.
 
@@ -181,7 +181,7 @@ Quick View allows your customers to instantly preview key product details like i
 ✅ Get full flexibility in designing your quick view modal.
 
 
-**👉 [BOGO (new):](https://storegrowth.io/)**
+**👉 [BOGO (new):](https://storegrowth.io/bogo/)**
 
 The BOGO (Buy One Get One) feature in StoreGrowth allows WooCommerce store owners to easily create compelling BOGO deals and offers for their customers. With BOGO, you can set up two types of offers:
 
@@ -203,8 +203,6 @@ The BOGO (Buy One Get One) feature in StoreGrowth allows WooCommerce store owner
 ## Documentation and Support
 
 Explore our comprehensive documentation and tutorials on our [Documentation](https://storegrowth.io/documentation/) page to make the most out of StoreGrowth features.
-
-If you have additional questions or need assistance, please visit our support forum on the [Plugin’s Forum](https://support.invizo.io/).
 
 For detailed information about features, frequently asked questions (FAQs), and comprehensive documentation, visit our official website at [StoreGrowth](https://storegrowth.io/).
 
