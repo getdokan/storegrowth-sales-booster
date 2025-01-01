@@ -1,5 +1,5 @@
 === StoreGrowth - WooCommerce Sales Booster: Fly Cart, Direct Checkout, Live Sales Notifications, Upsell, Countdown Timer & More ===
-Contributors: invizo
+Contributors: Dokan Inc.
 Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales Countdown timer 
 
 Requires at least: 5.4
@@ -203,6 +203,8 @@ The BOGO (Buy One Get One) feature in StoreGrowth allows WooCommerce store owner
 ## Documentation and Support
 
 Explore our comprehensive documentation and tutorials on our [Documentation](https://storegrowth.io/documentation/) page to make the most out of StoreGrowth features.
+
+If you have additional questions or need assistance, please visit our [Support](https://dokan.co/contact/) 
 
 For detailed information about features, frequently asked questions (FAQs), and comprehensive documentation, visit our official website at [StoreGrowth](https://storegrowth.io/).
 
