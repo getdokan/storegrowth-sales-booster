@@ -1,3 +1,8 @@
+### 1.28.8 ( April 23, 2024 ) ###
+
+- **fix:** Countdown timer script issue.
+- **enhance:** Added variable product support for upsell order bump.
+
 ### 1.27.8 ( April 17, 2024 ) ###
 
 - **fix:** order bump offer price

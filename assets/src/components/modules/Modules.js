@@ -254,7 +254,7 @@ function Modules() {
                 <div className="help-btn">
                   <Button
                     width="210px"
-                    href="https://invizo.io/support/"
+                    href="https://dokan.co/contact/"
                     target="_blank"
                     type="primary"
                   >
