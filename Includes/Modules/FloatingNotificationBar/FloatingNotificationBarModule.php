@@ -31,6 +31,16 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 		return 'floating-notification-bar';
 	}
 
+			/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'FloatingNotificationBar';
+	}
+
+
 	/**
 	 * Icon for a module.
 	 *

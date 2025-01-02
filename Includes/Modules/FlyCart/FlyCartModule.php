@@ -31,6 +31,15 @@ class FlyCartModule implements ModuleSkeleton {
 		return 'fly-cart';
 	}
 
+				/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'QuickCart';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

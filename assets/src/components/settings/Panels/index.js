@@ -34,3 +34,4 @@ export { default as CheckboxGroup } from "./PanelSettings/Fields/CheckboxGroup";
 export { default as RadioTemplate } from "./PanelSettings/Fields/RadioTemplate";
 export { default as MultiSelectBox } from "./PanelSettings/Fields/MultiSelectBox";
 export { default as SingleCheckBox } from "./PanelSettings/Fields/SingleCheckBox";
+export { default as TextRadioBox } from "./PanelSettings/Fields/TextRadioBox";

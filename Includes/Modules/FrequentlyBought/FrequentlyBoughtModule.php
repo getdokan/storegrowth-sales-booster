@@ -1,11 +1,11 @@
 <?php
 /**
- * File for Sales Pop Module class.
+ * File for Upsell_Order_Bump class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop;
+namespace STOREGROWTH\SPSB\Modules\FrequentlyBought;
 
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -18,7 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Sales Pop module initiator class.
  */
-class SalesPopModule implements ModuleSkeleton {
+class FrequentlyBoughtModule implements ModuleSkeleton {
+
 
 	use Singleton;
 
@@ -28,16 +29,16 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_id() {
-		return 'sales-pop';
+		return 'frequently-bought';
 	}
 
-		/**
-	 * directory Name for a module.
-	 *
-	 * @return string
-	 */
+					/**
+					 * directory Name for a module.
+					 *
+					 * @return string
+					 */
 	public function get_dir() {
-		return 'SalesPop';
+		return 'FrequentlyBought';
 	}
 
 	/**
@@ -46,7 +47,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_icon() {
-		return sgsb_modules_url( 'SalesPop/assets/images/sales-pop.svg' );
+		return sgsb_modules_url( 'FrequentlyBought/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
@@ -55,7 +56,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_banner() {
-		return sgsb_modules_url( 'SalesPop/assets/images/sales-pop-module-img.webp' );
+		return sgsb_modules_url( 'FrequentlyBought/assets/images/upsell-order-bump-module-img.webp' );
 	}
 
 	/**
@@ -64,7 +65,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'Sales Notification';
+		return 'FBT';
 	}
 
 	/**
@@ -73,7 +74,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_description() {
-		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
+		return 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.';
 	}
 
 	/**
@@ -82,7 +83,7 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public function get_module_category() {
-		return 'Sales';
+		return 'cart';
 	}
 
 	/**
@@ -109,12 +110,16 @@ class SalesPopModule implements ModuleSkeleton {
 	 * @return void
 	 */
 	public function init() {
-		Includes\SalesPOP::instance();
-		Includes\Ajax::instance();
+		Includes\EnqueueScript::instance();
 
-		do_action( 'storegrowth_sales_pop_module_init' );
+				/**
+		 * Module initialized.
+		 *
+		 * @since 1.28.8
+		 */
+		do_action( 'storegrowth_fbt_module_init' );
 	}
 }
 
 // Create object and return.
-return SalesPopModule::instance();
+return FrequentlyBoughtModule::instance();

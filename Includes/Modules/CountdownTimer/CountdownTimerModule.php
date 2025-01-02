@@ -31,6 +31,15 @@ class CountdownTimerModule implements ModuleSkeleton {
 		return 'countdown-timer';
 	}
 
+				/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'SalesCountdown';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

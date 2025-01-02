@@ -32,6 +32,15 @@ class BoGoModule implements ModuleSkeleton {
 		return 'bogo';
 	}
 
+				/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'BoGo';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

@@ -31,6 +31,15 @@ class QuickViewModule implements ModuleSkeleton {
 		return 'quick-view';
 	}
 
+		/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'QuickView';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

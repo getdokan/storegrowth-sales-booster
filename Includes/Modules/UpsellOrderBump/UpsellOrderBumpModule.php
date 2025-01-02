@@ -32,6 +32,15 @@ class UpsellOrderBumpModule implements ModuleSkeleton {
 		return 'upsell-order-bump';
 	}
 
+		/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'UpsellOrderBump';
+	}
+
 	/**
 	 * Icon for a module.
 	 *

@@ -31,6 +31,14 @@ class ProgressiveDiscountBannerModule implements ModuleSkeleton {
 		return 'progressive-discount-banner';
 	}
 
+		/**
+	 * directory Name for a module.
+	 *
+	 * @return string
+	 */
+	public function get_dir() {
+		return 'FreeShippingBar';
+	}
 	/**
 	 * Icon for a module.
 	 *
