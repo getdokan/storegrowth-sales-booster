@@ -25,7 +25,7 @@ const Ready = () => {
               {__(`Youtube`, "storegrowth-sales-booster")}
             </a>
             <a
-              href="https://support.invizo.io/"
+              href="https://dokan.co/contact/"
               target="_blank"
               className="social-link get-support"
               onClick={null}
