@@ -15,9 +15,9 @@ const Overview = () => {
   const baseUrlStore = "https://storegrowth.io";
   const baseUrlStoregrowth = "https://";
   const links = {
-    doc: "/documentation",
-    featureRequest: "#", // TODO: Update the link to feature request
-    support: "#", // TODO: Update the link to feature request
+    doc: "/docs",
+    featureRequest: "dokan.co/contact",
+    support: "dokan.co/contact",
   };
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
