@@ -4,7 +4,7 @@ Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales C
 
 Requires at least: 5.4
 Tested up to: 6.7.1
-Stable tag: 1.28.12
+Stable tag: 1.28.13
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -267,6 +267,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
+= 1.28.13 ( Jan 02, 2025  ) =
+
+- **update:** Url related information updated.
+
 = 1.28.12 ( Jan 02, 2025  ) =
 
 - **update:** Organization, brand information and contributors updated.
@@ -278,10 +282,5 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 = 1.28.9 ( June 02, 2024 ) =
 
 - **fix:** Paypal checkout button issue.
-
-= 1.28.8 ( April 23, 2024 ) =
-
-- **fix:** Countdown timer script issue.
-- **enhance:** Added variable product support for upsell order bump.
 
 [CHECK THE FULL CHANGELOG](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md).
