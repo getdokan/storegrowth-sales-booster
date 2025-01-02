@@ -4,7 +4,7 @@ Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales C
 
 Requires at least: 5.4
 Tested up to: 6.7.1
-Stable tag: 1.28.11
+Stable tag: 1.28.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -267,7 +267,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= 1.28.11 ( Jan 02, 2025  ) =
+= 1.28.12 ( Jan 02, 2025  ) =
 
 - **update:** Organization, brand information and contributors updated.
 
