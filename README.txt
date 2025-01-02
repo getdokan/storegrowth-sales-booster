@@ -284,4 +284,4 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 - **fix:** Countdown timer script issue.
 - **enhance:** Added variable product support for upsell order bump.
 
-[CHECK THE FULL CHANGELOG](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md). // TODO: storegrowth-sales-booster is a private repository. Please update the link to the public repository user will not find the full change logs.
+[CHECK THE FULL CHANGELOG](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md).

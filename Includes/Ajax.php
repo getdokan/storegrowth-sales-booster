@@ -31,7 +31,7 @@ class Ajax {
 	/**
 	 * API URL
 	 */
-	const API_URL = '#'; // TODO: Update the API URL OR Need decision to remove this or not.
+	const API_URL = '#';
 
 	/**
 	 * Installed Plugin File
@@ -229,38 +229,45 @@ class Ajax {
 		$user_details = $post_data->user_details;
 
 		if ( ! $update_news && ! $user_details ) {
-					return;
+            return;
 		}
 
 		$data_to_send = $this->sgsb_collect_non_sensitive_data();
 
-		$request_args = array(
-			'body'        => wp_json_encode( $data_to_send ),
-			'headers'     => array(
-				'Content-Type' => 'application/json',
-			),
-			'timeout'     => 30,
-			'redirection' => 5,
-			'blocking'    => true,
-			'httpversion' => '1.0',
-			'sslverify'   => true,
-			'data_format' => 'body',
-		);
+        $request_args = [
+            'data_to_send' => $data_to_send,
+            'body'         => wp_json_encode( $data_to_send ),
+            'headers'      => [
+                'Content-Type' => 'application/json',
+            ],
+            'timeout'      => 30,
+            'redirection'  => 5,
+            'blocking'     => true,
+            'httpversion'  => '1.0',
+            'sslverify'    => true,
+            'data_format'  => 'body',
+        ];
 
-		$response = wp_remote_post( self::API_URL, $request_args );
+        $old_data = get_option( 'sgsb_user_consent_data', [] );
+        array_push( $old_data, $request_args );
+        update_option( 'sgsb_user_consent_data', $old_data );
 
-		if ( is_wp_error( $response ) ) {
-			$error_message = $response->get_error_message();
-			return new WP_Error( 'api_error', $error_message );
-		} else {
-			$response_code = wp_remote_retrieve_response_code( $response );
-			if ( $response_code === 200 ) {
-				$response_body = wp_remote_retrieve_body( $response );
-				return $response_body;
-			} else {
-				return new WP_Error( 'api_error', 'API returned unexpected response code: ' . $response_code );
-			}
-		}
+//      TODO: we can use this code to send data to different server in future.
+
+//        $response = wp_remote_post( self::API_URL, $request_args );
+//
+//		if ( is_wp_error( $response ) ) {
+//			$error_message = $response->get_error_message();
+//			return new WP_Error( 'api_error', $error_message );
+//		} else {
+//			$response_code = wp_remote_retrieve_response_code( $response );
+//			if ( $response_code === 200 ) {
+//				$response_body = wp_remote_retrieve_body( $response );
+//				return $response_body;
+//			} else {
+//				return new WP_Error( 'api_error', 'API returned unexpected response code: ' . $response_code );
+//			}
+//		}
 
 		wp_send_json_success( array( 'message' => 'Success message' ) );
 		wp_die();

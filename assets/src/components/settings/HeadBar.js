@@ -26,7 +26,7 @@ function HeadBar() {
               <div className="help-btn">
                 <Button
                   width="210px"
-                  href="" // TODO: Update the link to weDevs or dokan
+                  href="https://dokan.co/contact/"
                   target="_blank"
                   type="primary"
                 >

@@ -14,7 +14,7 @@ const Ready = () => {
           </div>
           <div className="social-links">
             <a
-              href="#" // TODO: Update the youtube link.
+              href="https://www.youtube.com/@Invizo-io"
               target="_blank"
               className="social-link youtube"
               onClick={null}
@@ -25,7 +25,7 @@ const Ready = () => {
               {__(`Youtube`, "storegrowth-sales-booster")}
             </a>
             <a
-              href="#" // TODO: Update the link to support.
+              href="https://dokan.co/contact/"
               target="_blank"
               className="social-link get-support"
               onClick={null}
