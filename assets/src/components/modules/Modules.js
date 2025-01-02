@@ -254,7 +254,7 @@ function Modules() {
                 <div className="help-btn">
                   <Button
                     width="210px"
-                    href="https://invizo.io/support/"
+                    href="#" // TODO: Update the link to weDevs or dokan support
                     target="_blank"
                     type="primary"
                   >

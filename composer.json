@@ -1,5 +1,5 @@
 {
-  "name": "invizo/storegrowth",
+  "name": "dokan/storegrowth-lite",
   "autoload": {
     "psr-4": {
       "STOREGROWTH\\SPSB\\": "Includes/"
@@ -8,8 +8,8 @@
   },
   "authors": [
     {
-      "name": "Invizo",
-      "email": "info@invizo.io"
+      "name": "Dokan Inc.",
+      "email": "support@dokan.co"
     }
   ]
 }

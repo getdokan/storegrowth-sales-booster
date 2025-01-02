@@ -26,7 +26,7 @@ function HeadBar() {
               <div className="help-btn">
                 <Button
                   width="210px"
-                  href="https://invizo.io/support/"
+                  href="" // TODO: Update the link to weDevs or dokan
                   target="_blank"
                   type="primary"
                 >

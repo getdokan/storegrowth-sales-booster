@@ -13,11 +13,11 @@ import { __ } from "@wordpress/i18n";
 
 const Overview = () => {
   const baseUrlStore = "https://storegrowth.io";
-  const baseUrlInvizo = "https://";
+  const baseUrlStoregrowth = "https://";
   const links = {
     doc: "/documentation",
-    featureRequest: "support.invizo.io",
-    support: "support.invizo.io",
+    featureRequest: "#", // TODO: Update the link to feature request
+    support: "#", // TODO: Update the link to feature request
   };
   return (
     <div className="site-card-wrapper sgsb-admin-dashboard">
@@ -94,7 +94,7 @@ const Overview = () => {
                               encounter. We're just an email away!
                             </p>
                             <a
-                              href={baseUrlInvizo + links?.support}
+                              href={baseUrlStoregrowth + links?.support}
                               target="_blank"
                             >
                               Contact Us
@@ -127,7 +127,7 @@ const Overview = () => {
                       </p>
                       <span className="feature-requests-submit-button">
                         <a
-                          href={baseUrlInvizo + links?.featureRequest}
+                          href={baseUrlStoregrowth + links?.featureRequest}
                           target="_blank"
                         >
                           Submit Request

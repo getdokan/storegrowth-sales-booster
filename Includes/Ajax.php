@@ -24,14 +24,14 @@ class Ajax {
 	use Singleton;
 
 	/**
-	 * Invizo Insights Version
+	 * Insights Version
 	 */
 	const INVZ_VERSION = '1.0.0';
 
 	/**
 	 * API URL
 	 */
-	const API_URL = 'https://invizo.io/wp-json/invizo-insights/v1/save-data';
+	const API_URL = '#'; // TODO: Update the API URL OR Need decision to remove this or not.
 
 	/**
 	 * Installed Plugin File
