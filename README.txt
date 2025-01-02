@@ -3,9 +3,9 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales Countdown timer 
 
 Requires at least: 5.4
-Tested up to: 6.5.3
-Stable tag: 1.28.10
-Requires PHP: 7.0
+Tested up to: 6.7.1
+Stable tag: 1.28.11
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -267,118 +267,21 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= 1.28.10 - 17 Sep, 2024 =
-fix: quick view issue
+= 1.28.11 ( Jan 02, 2025  ) =
 
-= 1.28.9 - 02 June, 2024 =
+- **update:** Organization, brand information and contributors updated.
 
-fix: paypal checkout button issue
+= 1.28.10 ( Sep 17, 2024 ) =
 
-= 1.28.8 - 23 April, 2024 =
+- **fix:** Quick view issue.
 
-fix: countdown timer script issue
-enhance: add variable product support for upsell order bump
+= 1.28.9 ( June 02, 2024 ) =
 
-= 1.27.8 - 05 April, 2024 =
+- **fix:** Paypal checkout button issue.
 
-fix: order bump offer price
+= 1.28.8 ( April 23, 2024 ) =
 
-= 1.27.7 - 17 March, 2024 =
+- **fix:** Countdown timer script issue.
+- **enhance:** Added variable product support for upsell order bump.
 
-enhance: release BOGO module
-
-= 1.26.7 - 17 March, 2024 =
-
-enhance: release quick view module
-
-= 1.25.7 - 10 March, 2024 =
-
-enhance: add onboarding screen
-
-= 1.24.7 - 10 March, 2024 =
-
-update: fly cart icon and prompt text
-fix: add theme compatibility
-
-= 1.24.6 - 10 March, 2024 =
-
-enhance: fly cart ui design
-update: update logo and icon in dashboard
-
-= 1.24.5 - 06 March, 2024 =
-
-enhance: add font family customize option for countdown settings & fix template two heading ui stuff
-
-fix: bar button layout design, touch preview.
-
-enhance: close button popup visibility
-
-fix: free shipping bar documentation redirection issue
-
-enhance: implement settings undo option for free shipping bar & sales countdown
-
-enhance: implement bump type selection & dependencies for offer selection
-
-enhance: implement buy now button ui customization functionalities for direct checkout module
-
-enhance: implement cart cta button for free shipping bar
-
-enhance: add validation for cta url & add pro prompts for direct checkout ui
-
-doc: module renamed
-
-enhance: make compatible with updated ui & design
-
-enhance: make compatible with countdown premium styles
-
-enhance: update undo state & make it individual color settings
-
-fix: free shipping bar documentation redirection issue
-
-enhance: implement settings undo option for free shipping bar & sales countdown
-
-enhance: implement bump type selection & dependencies for offer selection
-
-enhance: implement buy now button ui customization functionalities for direct checkout module
-
-enhance: implement cart cta button for free shipping bar
-
-enhance: add validation for cta url & add pro prompts for direct checkout ui
-
-enhance: update undo state & make it individual color settings
-
-enhance: add font family customize option for countdown settings & fix template two heading ui stuff
-
-enhance: make compatible with updated ui & design
-
-enhance: readded undo init codes during merge conflicts
-
-enhance: add text radio box component
-
-enhance: implement low stock warning msg preview for stock bar
-
-enhance: make compatible warning message with premium version
-
-enhance: make compatible with template
-
-fix: quantity template replacement by stock quantity
-
-= 1.1.3 - 17 January, 2024 =
-fix deactivate module
-update readme description
-
-= 1.1.2 =
-update readme text
-
-= 1.1.1 =
-fix composer issue
-
-= 1.1.0 =
-Release date: 01/15/2024
-
-refactored codebase and checked Compatibility
-
-= 1.0.1 =
-
-initila release
-
+[CHECK THE FULL CHANGELOG](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md).
