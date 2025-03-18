@@ -117,6 +117,8 @@ class Ajax {
 		check_ajax_referer( 'ajd_protected' );
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();
+		$all_cart_product_ids = array();
+		$all_cart_category_ids = array();
 
 		foreach ( $all_cart_products as $value ) {
 			$cat_ids = $value['data']->get_category_ids();
@@ -126,36 +128,69 @@ class Ajax {
 			$all_cart_product_ids[] = $value['product_id'];
 		}
 
-		$bump_price         = isset( $_POST['data']['bump_price'] ) ? floatval( wp_unslash( $_POST['data']['bump_price'] ) ) : null;
-		$checked            = isset( $_POST['data']['checked'] ) ? boolval( wp_unslash( $_POST['data']['checked'] ) ) : null;
-		$offer_product_id   = isset( $_POST['data']['offer_product_id'] ) ? intval( wp_unslash( $_POST['data']['offer_product_id'] ) ) : null;
-		$offer_variation_id = isset( $_POST['data']['offer_variation_id'] ) ? intval( wp_unslash( $_POST['data']['offer_variation_id'] ) ) : null;
-		if ( $checked ) {
-			$product_id      = $offer_product_id;
-			$product_cart_id = WC()->cart->generate_cart_id( $product_id );
-			$cart_item_key   = WC()->cart->find_product_in_cart( $product_cart_id );
-			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-				if ( $cart_item['product_id'] === $offer_product_id ) {
-					WC()->cart->remove_cart_item( $cart_item_key );
-				}
-			}
-		} else {
-			$custom_price = $bump_price;
-			// Cart item data to send & save in order.
-			$cart_item_data = array( 'custom_price' => $custom_price );
-			// Woocommerce function to add product into cart check its documentation also.
-			$woocommerce->cart->add_to_cart( $offer_product_id, 1, $offer_variation_id, $variation = array(), $cart_item_data );
-			// Calculate totals.
-			$woocommerce->cart->calculate_totals();
-			// Save cart to session.
-			$woocommerce->cart->set_session();
-			// Maybe set cart cookies.
-			$woocommerce->cart->maybe_set_cart_cookies();
-
+		$bump_price         = isset( $_POST['data']['bump_price'] ) ? floatval( wp_unslash( $_POST['data']['bump_price'] ) ) : 0;
+		$checked            = isset( $_POST['data']['checked'] ) ? filter_var( wp_unslash( $_POST['data']['checked'] ), FILTER_VALIDATE_BOOLEAN ) : false;
+		$offer_product_id   = isset( $_POST['data']['offer_product_id'] ) ? absint( wp_unslash( $_POST['data']['offer_product_id'] ) ) : 0;
+		$offer_variation_id = isset( $_POST['data']['offer_variation_id'] ) ? absint( wp_unslash( $_POST['data']['offer_variation_id'] ) ) : 0;
+		
+		// Validate product exists
+		$product = wc_get_product($offer_product_id);
+		if (!$product) {
+			wp_send_json_error(array('message' => 'Product not found'));
+			return;
 		}
-
-		wp_send_json_success( $offer_variation_id );
-		die();
+		
+		try {
+			if ( $checked ) {
+				// Remove the product from cart
+				$product_cart_id = WC()->cart->generate_cart_id( $offer_product_id );
+				$cart_item_key   = WC()->cart->find_product_in_cart( $product_cart_id );
+				
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+					if ( $cart_item['product_id'] === $offer_product_id || 
+					     ($offer_variation_id && $cart_item['variation_id'] === $offer_variation_id) ) {
+						WC()->cart->remove_cart_item( $cart_item_key );
+					}
+				}
+				wp_send_json_success(array('message' => 'Product removed from cart', 'product_id' => $offer_product_id));
+			} else {
+				// Add the product to cart
+				$custom_price = $bump_price;
+				// Cart item data to send & save in order.
+				$cart_item_data = array( 'custom_price' => $custom_price );
+				
+				// If it's a variable product, ensure variation ID is valid
+				if ($offer_variation_id > 0) {
+					$variation = wc_get_product($offer_variation_id);
+					if (!$variation || $variation->get_parent_id() != $offer_product_id) {
+						wp_send_json_error(array('message' => 'Invalid variation'));
+						return;
+					}
+				}
+				
+				// Woocommerce function to add product into cart check its documentation also.
+				$added = $woocommerce->cart->add_to_cart( $offer_product_id, 1, $offer_variation_id, array(), $cart_item_data );
+				
+				if (!$added) {
+					wp_send_json_error(array('message' => 'Failed to add product to cart'));
+					return;
+				}
+				
+				// Calculate totals.
+				$woocommerce->cart->calculate_totals();
+				// Save cart to session.
+				$woocommerce->cart->set_session();
+				// Maybe set cart cookies.
+				$woocommerce->cart->maybe_set_cart_cookies();
+				
+				wp_send_json_success(array('message' => 'Product added to cart', 'product_id' => $offer_product_id, 'variation_id' => $offer_variation_id));
+			}
+		} catch (Exception $e) {
+			wp_send_json_error(array('message' => $e->getMessage()));
+		}
+		
+		// This should never execute due to previous wp_send_json_* calls
+		wp_die();
 	}
 
 	/**

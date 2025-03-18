@@ -51,19 +51,37 @@ class OrderBump {
 			}
 				$all_cart_product_ids[] = $value['variation_id'] === 0 ? $value['product_id'] : $value['variation_id'];
 		}
+		
+		if (empty($all_cart_product_ids)) {
+			return;
+		}
+		
 		foreach ( $bump_list as $bump ) {
 			$bump_info        = maybe_unserialize( $bump->post_excerpt );
+			
+			if (!is_array($bump_info) && !is_object($bump_info)) {
+				continue;
+			}
+			
 			$bump_info        = (object) $bump_info;
-			$offer_product_id = $bump_info->offer_product;
-			$offer_type       = $bump_info->offer_type;
-			$offer_amount     = $bump_info->offer_amount;
+			$offer_product_id = isset($bump_info->offer_product) ? $bump_info->offer_product : 0;
+			$offer_type       = isset($bump_info->offer_type) ? $bump_info->offer_type : '';
+			$offer_amount     = isset($bump_info->offer_amount) ? $bump_info->offer_amount : 0;
+			
+			if (empty($offer_product_id)) {
+				continue;
+			}
 
 			$checked = '';
 			if ( in_array( (int) $offer_product_id, $all_cart_product_ids, true ) ) {
 				$checked = 'checked';
 			}
 
-			$_product      = wc_get_product( $offer_product_id );
+			$_product = wc_get_product( $offer_product_id );
+			if (!$_product) {
+				continue;
+			}
+			
 			$regular_price = $_product->get_regular_price();
 			if ( 'discount' === $offer_type ) {
 				$offer_price = ( $regular_price - ( $regular_price * $offer_amount / 100 ) );
@@ -86,20 +104,27 @@ class OrderBump {
 				break;
 			}
 			if ( $product_already_added_from_shop ) {
-				// don't show the offer if the 'offer product' is already added in the cart from the shop page with regular price.
 				continue;
 			}
 
 			$bump_type = ! empty( $bump_info->bump_type ) ? esc_html( $bump_info->bump_type ) : 'products';
 			if ( $bump_type === 'products' ) {
 				$target_products = ! empty( $bump_info->target_products ) ? wc_clean( $bump_info->target_products ) : array();
-				if ( $target_products && ( count( $all_cart_product_ids ) !== count( array_diff( $all_cart_product_ids, $target_products ) ) ) ) {
-					include __DIR__ . '/../templates/bump-product-front-view.php';
+				
+				if (!empty($target_products)) {
+					$matching_products = array_intersect($all_cart_product_ids, $target_products);
+					if (!empty($matching_products)) {
+						include __DIR__ . '/../templates/bump-product-front-view.php';
+					}
 				}
 			} else {
 				$target_categories = ! empty( $bump_info->target_categories ) ? wc_clean( $bump_info->target_categories ) : array();
-				if ( $target_categories && ( count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $target_categories ) ) ) ) {
-					include __DIR__ . '/../templates/bump-product-front-view.php';
+				
+				if (!empty($target_categories)) {
+					$matching_categories = array_intersect($all_cart_category_ids, $target_categories);
+					if (!empty($matching_categories)) {
+						include __DIR__ . '/../templates/bump-product-front-view.php';
+					}
 				}
 			}
 		}

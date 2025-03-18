@@ -5,14 +5,45 @@
  * @package Bump design for front.
  */
 
-if ($_product && $_product->is_type('variation')) {
-    $product_offer_id = $_product->get_parent_id();
-    $variation_id = $offer_product_id;
+// Initialize variables
+$product_offer_id = 0;
+$variation_id = 0;
+
+// Handle different product types
+if ($_product && $_product->exists()) {
+    if ($_product->is_type('variation')) {
+        $product_offer_id = $_product->get_parent_id();
+        $variation_id = $offer_product_id;
+    } else if ($_product->is_type('simple')) {
+        $product_offer_id = $offer_product_id;
+        $variation_id = 0;
+    } else {
+        // For other product types, use default handling
+        $product_offer_id = $offer_product_id;
+        $variation_id = 0;
+    }
 }
-if ($_product && $_product->is_type('simple')) {
-    $product_offer_id = $offer_product_id;
-    $variation_id = 0;
+
+// If no valid product, exit early
+if (empty($product_offer_id)) {
+    return;
 }
+
+// Set defaults for missing bump_info properties
+$bump_info = (object) wp_parse_args((array) $bump_info, array(
+    'box_top_margin' => 15,
+    'box_bottom_margin' => 15,
+    'box_border_style' => 'solid',
+    'box_border_color' => '#c8c8c8',
+    'discount_background_color' => '#efefef',
+    'discount_text_color' => '#333333',
+    'discount_font_size' => 14,
+    'product_description_text_color' => '#333333',
+    'product_description_font_size' => 14,
+    'offer_discount_title' => '% OFF',
+    'offer_fixed_price_title' => ' FIXED PRICE',
+    'offer_image_url' => 'http://false'
+));
 
 ?>
 
@@ -38,7 +69,7 @@ echo 'font-size:' . esc_attr($bump_info->discount_font_size) . 'px;'
 			<?php
 echo 'discount' === $offer_type ? '&nbsp;' . esc_attr($offer_amount . $bump_info->offer_discount_title) : esc_attr($offer_amount) . '.00' . esc_attr($bump_info->offer_fixed_price_title);
 $fallback_image_url = esc_url(plugin_dir_url(__FILE__) . '../assets/images/bump-preview.svg');
-$image_url = 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;
+$image_url = isset($bump_info->offer_image_url) && 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;
 ?>
 			</div>
 			<div class="product-image-and-title">
@@ -55,7 +86,7 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;'
 				"
 				>
 					<h3 style="color:<?php echo esc_attr($bump_info->product_description_text_color); ?>">
-					<?php echo esc_attr($bump_info->offer_product_title); ?>
+					<?php echo esc_attr(isset($bump_info->offer_product_title) ? $bump_info->offer_product_title : $_product->get_title()); ?>
 					</h3>
 
 					<?php
