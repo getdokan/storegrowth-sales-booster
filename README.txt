@@ -34,7 +34,7 @@ StoreGrowth is specially built for WooCommerce marketers who are looking for a c
 
 == Why Use StoreGrowth?  ==
 
-[youtube https://www.youtube.com/watch?v=_Vv5T7qqhoE]
+[youtube https://www.youtube.com/watch?v=3XCAOyrD89E]
 
 Online shoppers love deals and promotions. The WooCommerce checkout is not convincing enough for buyers to take action. 
 
