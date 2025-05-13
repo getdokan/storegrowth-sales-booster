@@ -2780,6 +2780,11 @@ End Settings Sidebar
         font-weight: 500;
         padding: 12px 24px;
         background: #0875ff;
+        // disabled style
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
       }
 
       .sgsb-settings-reset-button {
