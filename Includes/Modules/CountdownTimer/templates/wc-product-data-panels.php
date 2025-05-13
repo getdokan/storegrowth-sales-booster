@@ -16,16 +16,21 @@ $dates_to   = $dates_to ? gmdate( 'Y-m-d', strtotime( $dates_to ) ) : $dates_to;
 ?>
 <div id="sgsb-countdown-timer-tab" class="panel woocommerce_options_panel hidden">
 	<div class="options_group">
-		<?php
-		woocommerce_wp_text_input(
-			array(
-				'id'          => '_sgsb_countdown_timer_discount_amount',
-				'label'       => __( 'Product Discount (%)', 'storegrowth-sales-booster' ),
-				'placeholder' => 'Set the discount as percentage.',
-				'desc_tip'    => true,
-				'description' => __( 'Set the countdown timer discount as percentage.', 'storegrowth-sales-booster' ),
-			)
-		);
+        <?php
+        woocommerce_wp_text_input(
+                [
+                'id'                => '_sgsb_countdown_timer_discount_amount',
+                'label'             => __( 'Product Discount (%)', 'storegrowth-sales-booster' ),
+                'placeholder'       => 'Set the discount as percentage.',
+                'desc_tip'          => true,
+                'description'       => __( 'Set the countdown timer discount as percentage.', 'storegrowth-sales-booster' ),
+                'type'              => 'number',
+                'custom_attributes' => [
+                        'min' => '0',
+                        'max' => '100',
+                ],
+            ]
+        );
 		?>
 		<p class="form-field sale_price_dates_fields" style="margin-bottom: 0;">
 			<label>
