@@ -61,6 +61,8 @@ function ButtonSettingsTab(props) {
             "This will be the set the Label of the Quick View Button",
             "storegrowth-sales-booster"
           )}
+          maxLength={15}
+          showCount={true}
         />
         <SelectBox
           name={`button_position`}
