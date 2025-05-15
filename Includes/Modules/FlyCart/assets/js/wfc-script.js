@@ -129,6 +129,11 @@
         "click",
         function (event) {
           event.preventDefault();
+
+          if ( event?.target?.classList.contains('sgsb_buy_now_button_disabled') ) {
+            return;
+          }
+
           const productId = jQuery(event?.target).data("id");
           jQuery.ajax({
             url: sgsbFrontend.ajaxUrl,

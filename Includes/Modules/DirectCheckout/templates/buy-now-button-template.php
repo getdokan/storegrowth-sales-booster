@@ -11,6 +11,7 @@ $product_type         = $product->get_type();
 $settings             = get_option( 'sgsb_direct_checkout_settings' );
 $buy_now_button_label = sgsb_find_option_setting( $settings, 'buy_now_button_label', 'Buy Now' );
 $product_page         = is_product() ? '_product_page' : '';
+$stock_class_name     = $product->is_in_stock() ? ' ' : 'sgsb_buy_now_button_disabled';
 	$classes          = implode(
 		' ',
 		array_filter(
@@ -18,6 +19,7 @@ $product_page         = is_product() ? '_product_page' : '';
 				'button',
 				'product_type_' . $product_type,
 				'sgsb_buy_now_button' . $product_page,
+                $stock_class_name,
 			)
 		)
 	);
