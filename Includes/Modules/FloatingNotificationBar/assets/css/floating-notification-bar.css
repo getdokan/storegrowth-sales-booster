@@ -90,15 +90,7 @@ body:not(.show_floating_notification_bar) {
 }
 
 .fn-bar-action-button:hover {
-    background-color: blue;
-    /* Background color on hover */
-    color: white;
-    /* Text color on hover */
-}
-
-.fn-bar-action-button:hover {
-    background-color: #0056b3;
-    /* Change the background color on hover */
+    opacity: 0.95;
 }
 
 body.admin-bar .sgsb-floating-notification-bar-wrapper {
