@@ -2153,10 +2153,7 @@ End Settings Sidebar
 
               &.textarea-field,
               &.textinput-field {
-                color: #073b4c;
-                border-radius: 5px;
-                background: #f6f9ff;
-                border: 1px solid #dde6f9;
+
 
                 &.field-gap {
                   margin-bottom: 15px;
@@ -2164,6 +2161,11 @@ End Settings Sidebar
 
                 &.error {
                   border-color: red;
+                }
+                &.ant-input-status-error {
+                  border-width: 1px;
+                  border-style: solid;
+                  border-color: #ff4d4f !important;
                 }
               }
 
@@ -2175,6 +2177,7 @@ End Settings Sidebar
                     opacity: 0.5;
                   }
                 }
+
               }
 
               &.textinput-field {
