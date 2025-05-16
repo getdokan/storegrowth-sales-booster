@@ -1,20 +1,17 @@
-import { notification } from 'antd';
-import { __ } from '@wordpress/i18n';
-import {
-  useEffect,
-  useState,
-} from '@wordpress/element';
-import { useDispatch } from '@wordpress/data';
-import { Fragment } from 'react';
-import SettingsTab from './SettingsTab';
-import DesignTab from './DesignTab';
-import Preview from './Preview';
-
-import PanelHeader from '../../../../../../assets/src/components/settings/Panels/PanelHeader';
-import PanelContainer from '../../../../../../assets/src/components/settings/Panels/PanelContainer';
-import PanelRow from '../../../../../../assets/src/components/settings/Panels/PanelRow';
-import PanelPreview from '../../../../../../assets/src/components/settings/Panels/PanelPreview';
-import PanelSettings from '../../../../../../assets/src/components/settings/Panels/PanelSettings';
+import { notification } from "antd";
+import { __ } from "@wordpress/i18n";
+import { useEffect, useState, useMemo } from "@wordpress/element";
+import { useDispatch } from "@wordpress/data";
+import { Fragment } from "react";
+import SettingsTab from "./SettingsTab";
+import DesignTab from "./DesignTab";
+import Preview from "./Preview";
+import { applyFilters } from "@wordpress/hooks";
+import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function FloatingNotificationBarLayout({
@@ -25,6 +22,7 @@ function FloatingNotificationBarLayout({
 }) {
   const { setPageLoading } = useDispatch('sgsb');
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [hasValidationError, setHasValidationError] = useState(false);
 
   let [searchParams, setSearchParams] = useSearchParams('general');
   const tabName = searchParams.get('tab_name') || 'general';
@@ -144,10 +142,12 @@ function FloatingNotificationBarLayout({
       });
     }
   };
-
   const onFormSave = (type) => {
-    setButtonLoading(true);
+    if (hasValidationError) {
+      return;
+    }
 
+    setButtonLoading(true);
     const data = {
       action: 'sgsb_floating_notification_bar_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
@@ -166,7 +166,6 @@ function FloatingNotificationBarLayout({
       });
   };
 
-
   const tabPanels = [
     {
       key: 'general',
@@ -180,6 +179,8 @@ function FloatingNotificationBarLayout({
           buttonLoading={buttonLoading}
           upgradeTeaser={!isProEnabled}
           onFormReset={onFormReset}
+          isDisabled={hasValidationError}
+          onValidationChange={setHasValidationError}
         />
       ),
     },

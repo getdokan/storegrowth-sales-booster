@@ -10,6 +10,8 @@ function SettingsTab(props) {
     buttonLoading,
     upgradeTeaser,
     onFormReset,
+    isDisabled,
+    onValidationChange,
   } = props;
 
   return (
@@ -19,11 +21,13 @@ function SettingsTab(props) {
         setFormData={setFormData}
         onFieldChange={onFieldChange}
         upgradeTeaser={upgradeTeaser}
+        onValidationChange={onValidationChange}
       />
       <ActionsHandler
         resetHandler={onFormReset}
         loadingHandler={buttonLoading}
         saveHandler={onFormSave}
+        isDisabled={isDisabled}
       />
 
       <p className="ant-form-item-explain" style={{ margin: "15px 0 0 0" }}>

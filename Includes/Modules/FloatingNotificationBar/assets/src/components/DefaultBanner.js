@@ -10,7 +10,7 @@ import BarIcon from "./BarIcon";
 import ButtonAction from "./ButtonAction";
 
 function DefaultBanner(props) {
-  const { formData, setFormData, onFieldChange } = props;
+  const { formData, setFormData, onFieldChange, onValidationChange } = props;
 
   const checkboxesOption = [
     {
@@ -120,7 +120,8 @@ function DefaultBanner(props) {
           "sgsb_floating_notification_bar_coupon_coundown",
           "",
           formData,
-          onFieldChange
+          onFieldChange,
+          onValidationChange
         )}
       </SettingsSection>
       {applyFilters(
