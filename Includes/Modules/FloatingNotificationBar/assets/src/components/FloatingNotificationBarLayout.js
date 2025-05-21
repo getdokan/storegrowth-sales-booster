@@ -25,6 +25,7 @@ function FloatingNotificationBarLayout({
 }) {
   const { setPageLoading } = useDispatch('sgsb');
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [isValidURL, setIsValidURL] = useState(true);
 
   let [searchParams, setSearchParams] = useSearchParams('general');
   const tabName = searchParams.get('tab_name') || 'general';
@@ -119,7 +120,11 @@ function FloatingNotificationBarLayout({
     getSettings();
   }, []);
 
-  const onFieldChange = (key, value) => {
+  const onFieldChange = (key, value, isValid = true) => {
+      if ( 'redirect_url' === key ) {
+          setIsValidURL( isValid );
+      }
+
     setFormData({
       ...formData,
       [key]: value,
@@ -145,8 +150,26 @@ function FloatingNotificationBarLayout({
     }
   };
 
-  const onFormSave = (type) => {
-    setButtonLoading(true);
+  const onFormSave = ( type ) => {
+    setButtonLoading( true );
+
+    if (type === 'banner_settings') {
+      const isRedirect = formData.button_action === 'ba-url-redirect';
+
+      if (isRedirect && !formData.redirect_url) {
+        return showError(
+          __('Required Redirect URL', 'storegrowth-sales-booster'),
+          __('Redirect URL must be required.', 'storegrowth-sales-booster')
+        );
+      }
+
+      if (!isValidURL) {
+        return showError(
+          __('Invalid URL', 'storegrowth-sales-booster'),
+          __('Please enter a valid URL.', 'storegrowth-sales-booster')
+        );
+      }
+    }
 
     const data = {
       action: 'sgsb_floating_notification_bar_save_settings',
@@ -166,6 +189,11 @@ function FloatingNotificationBarLayout({
       });
   };
 
+  // Show error notification
+  const showError = (message, description) => {
+    notification.error({ message, description });
+    setButtonLoading(false);
+  };
 
   const tabPanels = [
     {
