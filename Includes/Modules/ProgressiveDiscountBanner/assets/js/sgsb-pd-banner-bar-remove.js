@@ -107,10 +107,12 @@
       }
 
       $(document).on("click", ".sgsb-pd-banner-bar-remove", function () {
-        $(".sgsb-pd-banner-bar-wrapper").css("transform", "translateY(-200%)");
+        const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
+        $( '.sgsb-pd-banner-bar-wrapper' ).css( 'transform', slideDirection );
         paddingRemoverBody();
         setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
+        $( '.sgsb-floating-notification-bar-wrapper' ).css({ top: '32px' });
       });
     });
   } else {
