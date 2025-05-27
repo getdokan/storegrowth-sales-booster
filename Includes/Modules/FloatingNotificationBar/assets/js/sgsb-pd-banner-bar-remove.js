@@ -46,7 +46,20 @@
     const bannerShow = () => {
       $(".sgsb-floating-notification-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
+      updateBannerPosition();
     };
+
+    const updateBannerPosition = () => {
+      let enableShippingBanner = sgsb_fnb_data.enable_shipping_banner,
+        shippingBannerPosition = sgsb_fnb_data.shipping_banner_position;
+
+      if ( enableShippingBanner && 'top' === shippingBannerPosition ) {
+        let shippingBannerHeight = sgsb_fnb_data.shipping_banner_height;
+        $( '.sgsb-floating-notification-bar-wrapper' ).css({
+          top: `${ parseInt( shippingBannerHeight ) + 32 }px`,
+        });
+      }
+    }
 
     const bannerHide = () => {
       $(".sgsb-floating-notification-bar-wrapper").hide();

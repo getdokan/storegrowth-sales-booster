@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes;
 
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Helper as PD_Helper;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -55,7 +56,16 @@ class EnqueueScript {
 			filemtime( sgsb_modules_path( 'FloatingNotificationBar/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
-		$localized_fnb_data = Helper::sgsb_floating_notification_bar_get_settings();
+
+		$localized_fnb_data     = Helper::sgsb_floating_notification_bar_get_settings();
+        $enable_shipping_banner = sgsb_is_module_active( 'progressive-discount-banner' );
+
+        $localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
+        if ( $enable_shipping_banner ) {
+            $shipping_banner_settings                       = PD_Helper::sgsb_pd_banner_get_settings();
+            $localized_fnb_data['shipping_banner_height']   = $shipping_banner_settings['banner_height'] ?? 60;
+            $localized_fnb_data['shipping_banner_position'] = $shipping_banner_settings['bar_position'] ?? 'top';
+        }
 
 		// Use wp_localize_script to pass the data to your script.
 		wp_localize_script( 'sgsb-floating-notification-bar-remove', 'sgsb_fnb_data', $localized_fnb_data );
