@@ -57,7 +57,7 @@ class EnqueueScript {
 			true
 		);
 
-        $localized_fnb_data     = Helper::sgsb_floating_notification_bar_get_settings();
+                $localized_fnb_data     = Helper::sgsb_floating_notification_bar_get_settings();
                 $enable_shipping_banner = sgsb_is_module_active( 'progressive-discount-banner' );
 
                 $localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
