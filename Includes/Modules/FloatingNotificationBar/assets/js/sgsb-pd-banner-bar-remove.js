@@ -56,9 +56,10 @@
         isPDBannerVisible = ! pdBannerHiddenTime || parseInt( pdBannerHiddenTime ) < now;
 
       if ( enableShippingBanner && isPDBannerVisible && 'top' === shippingBannerPosition ) {
-        let shippingBannerHeight = sgsb_fnb_data?.shipping_banner_height;
+        let shippingBannerHeight = sgsb_fnb_data?.shipping_banner_height,
+          offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
         $( '.sgsb-floating-notification-bar-wrapper' ).css({
-          top: `${ parseInt( shippingBannerHeight ) + 32 }px`,
+          top: `${ parseInt( shippingBannerHeight ) + offset }px`,
         });
       }
     }
