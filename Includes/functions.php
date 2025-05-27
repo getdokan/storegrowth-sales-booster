@@ -156,7 +156,7 @@ if ( ! function_exists( 'sgsb_is_module_active' ) ) {
     /**
      * Check if the module is active.
      *
-     * @since 1.0.3
+     * @since 1.28.14
      *
      * @param string $module_id The module ID to check.
      *
