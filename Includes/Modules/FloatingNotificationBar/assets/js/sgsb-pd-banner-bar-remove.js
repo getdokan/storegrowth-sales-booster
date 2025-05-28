@@ -132,12 +132,18 @@
         ".sgsb-floating-notification-bar-remove",
         function () {
           const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
-          $( '.sgsb-floating-notification-bar-wrapper' ).css( 'transform', slideDirection );
+          $('.sgsb-floating-notification-bar-wrapper').css('transform', slideDirection);
           paddingRemoverBody();
           setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
           localStorage.setItem("fn_banner_hidden_time", now + 10 * 60 * 1000);
         }
       );
+
+      // Handle WooCommerce AJAX add to cart
+      $( document.body ).on( 'added_to_cart', function() {
+        const offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
+        $( '.sgsb-floating-notification-bar-wrapper' ).css( { top: `${offset}px` } );
+      });
     });
 
     // Cupon Code Functionality
