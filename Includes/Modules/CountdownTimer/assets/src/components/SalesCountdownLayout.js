@@ -126,24 +126,17 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const notificationMessage = (type) => {
-    if (type == "general_settings") {
-      notification["success"]({
-        message: "Settings Section",
-        description: "General settings section data updated successfully.",
-      });
-    }
-
-    if (type == "design") {
-      notification["success"]({
-        message: "Design Section",
-        description: "Design section data updated successfully.",
-      });
-    } else {
+      const typeMapping = {
+        general_settings: "General Settings Section",
+        design: "Design Section",
+        vendor_settings: "Vendor Section",
+      }
         notification["success"]({
-            message: __("Settings Updated", "storegrowth-sales-booster"),
-            description: __("Settings updated successfully.", "storegrowth-sales-booster"),
+            message: typeMapping[type] || __("Settings Updated", "storegrowth-sales-booster"),
+            description: typeMapping[type]
+              ? `${typeMapping[type]} data updated successfully.`
+              : __("Settings updated successfully.", "storegrowth-sales-booster"),
         });
-    }
   };
 
   const onFormSave = (type) => {
