@@ -8,6 +8,7 @@ const DEFAULT_STATE = {
   createBogoForm,
   bogo_data: [],
   bogoGeneralSettings: iniBogoGlobalSettings,
+  extensionData: {},
 };
 
 /**
@@ -31,6 +32,15 @@ const reducer = (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         bogoGeneralSettings: action.payload,
+      };
+
+    case "UPDATE_EXTENSION_DATA":
+      return {
+        ...state,
+        extensionData: {
+          ...state.extensionData,
+          ...action.payload, // Merge new data into existing
+        },
       };
 
     default:
@@ -82,6 +92,13 @@ const actions = {
       payload: iniBogoGlobalSettings, // Reset to initial bogoGlobalSettings
     };
   },
+
+  setExtensionData(payload) {
+    return {
+      type: "UPDATE_EXTENSION_DATA",
+      payload,
+    };
+  },
 };
 
 /**
@@ -96,6 +113,9 @@ const selectors = {
   },
   getBogoGlobalSettings(state) {
     return state.bogoGeneralSettings;
+  },
+  getExtensionData(state) {
+    return state.extensionData;
   },
 };
 

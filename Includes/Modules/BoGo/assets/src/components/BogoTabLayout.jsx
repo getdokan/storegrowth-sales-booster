@@ -44,13 +44,18 @@ function BogoTabLayout({ navigate, useSearchParams }) {
     },
   ];
 
+  const filteredTabPanels = applyFilters(
+    'sgsb_bogo_tab_panels',
+    tabPanels
+  );
+
   return (
     <>
       <Form {...layout}>
         <PanelRow>
           <PanelSettings
             colSpan={24}
-            tabPanels={tabPanels}
+            tabPanels={filteredTabPanels}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
           />
