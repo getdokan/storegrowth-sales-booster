@@ -3,6 +3,7 @@
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
 use WP_Error;
+use WP_Query;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,7 +32,7 @@ class Bogo {
      */
     public function create( array $data ) {
         if ( ! $data ) {
-            return new WP_Error( 'missing_data', __( 'No data provided', 'storegrowth-sales-booster-pro' ) );
+            return new WP_Error( 'missing_data', __( 'No data provided', 'storegrowth-sales-booster' ) );
         }
 
         $bogo_detail = $this->sanitize_create_bogo_data( $data );
@@ -48,7 +49,7 @@ class Bogo {
                 'post_status'  => 'publish',
                 'post_type'    => $this->post_type,
                 'post_excerpt' => maybe_serialize( $bogo_detail ),
-                'post_content' => 'Not defined',
+                'post_content' => __( 'Not defined', 'storegrowth-sales-booster' ),
             ];
 
             return wp_insert_post( $args, true );
@@ -70,7 +71,7 @@ class Bogo {
         $bogo = get_post( $id );
 
         if ( ! $bogo || $bogo->post_type !== $this->post_type ) {
-            return new WP_Error( 'not_found', 'Bogo not found' );
+            return new WP_Error( 'not_found', __( 'Bogo not found', 'storegrowth-sales-booster' ) );
         }
 
         $data       = maybe_unserialize( $bogo->post_excerpt );
@@ -92,19 +93,26 @@ class Bogo {
         $default = [
             'post_type'      => $this->post_type,
             'posts_per_page' => -1,
+            'paged'          => 1,
         ];
 
-        $args      = wp_parse_args( $args, $default );
-        $bogo_list = get_posts( $args );
-        $bogos     = [];
+        $args  = wp_parse_args( $args, $default );
+        $query = new WP_Query( $args );
+        $bogos = [];
 
-        foreach ( $bogo_list as $bogo ) {
-            $post_excerpt       = maybe_unserialize($bogo->post_excerpt);
+        foreach ( $query->posts as $bogo ) {
+            $post_excerpt       = maybe_unserialize( $bogo->post_excerpt );
             $post_excerpt['id'] = $bogo->ID;
             $bogos[]            = $post_excerpt;
         }
 
-        return $bogos;
+        return [
+            'data'         => $bogos,
+            'total_items'  => $query->found_posts,
+            'total_pages'  => $query->max_num_pages,
+            'current_page' => $args['paged'],
+            'per_page'     => $args['posts_per_page'],
+        ];
     }
 
     /**
@@ -118,10 +126,26 @@ class Bogo {
      * @return int|WP_Error
      */
     public function update( int $id, array $data ) {
+        $post = get_post( $id );
+
+        if ( ! $post ) {
+            return new WP_Error( 'bogo_not_found', __( 'BOGO offer not found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
+        }
+
+        // Get existing post_excerpt and unserialize.
+        $existing_data = maybe_unserialize( $post->post_excerpt );
+
+        if ( ! is_array( $existing_data ) ) {
+            $existing_data = [];
+        }
+
+        // Merge new data with existing.
+        $merged_data = array_merge( $existing_data, $data );
+
         $args = [
             'ID'           => $id,
-            'post_title'   => $data['name_of_order_bogo'] ?? '',
-            'post_excerpt' => maybe_serialize( $data ),
+            'post_title'   => $data['name_of_order_bogo'] ?? $post->post_title,
+            'post_excerpt' => maybe_serialize( $merged_data ),
         ];
 
         return wp_update_post( $args, true );
@@ -140,7 +164,7 @@ class Bogo {
         $result = wp_delete_post( $id, true );
 
         if ( ! $result ) {
-            return new WP_Error( 'delete_failed', 'Failed to delete Bogo' );
+            return new WP_Error( 'delete_failed', __( 'Failed to delete Bogo offer.', 'storegrowth-sales-booster' ) );
         }
 
         return true;
@@ -159,7 +183,7 @@ class Bogo {
     public function set_status( int $id, string $status ) {
         $bogo = get_post( $id );
         if ( ! $bogo || $bogo->post_type !== $this->post_type ) {
-            return new WP_Error( 'not_found', 'Bogo not found' );
+            return new WP_Error( 'not_found', __( 'Bogo not found', 'storegrowth-sales-booster' ) );
         }
 
         $bogo_settings                = ! empty( $bogo->post_excerpt ) ? maybe_unserialize( $bogo->post_excerpt ) : [];
@@ -185,11 +209,15 @@ class Bogo {
      */
     private function sanitize_create_bogo_data( array $data ) {
         $data['name_of_order_bogo']                 = $data['name_of_order_bogo'] ? sanitize_text_field( $data['name_of_order_bogo'] ) : '';
+
+        // todo: Need to correct the field names.
+        $data['offered_products']                   = $data['offered_products'] ? intval( $data['offered_products'] ) : 0; // Target product's ID.
+        $data['get_different_product_field']        = $data['get_different_product_field'] ? intval( $data['get_different_product_field'] ) : 0; // Offered product's ID.
+
         $data['target_products']                    = $data['target_products'] ? wc_clean( $data['target_products'] ) : [];
         $data['target_categories']                  = $data['target_categories'] ? wc_clean( $data['target_categories'] ) : [];
         $data['bogo_schedule']                      = ! empty( $data['bogo_schedule'] ) ? wc_clean( $data['bogo_schedule'] ) : [];
         $data['smart_offer']                        = $data['smart_offer'] ? sanitize_text_field( $data['smart_offer'] ) : '';
-        $data['get_different_product_field']        = $data['get_different_product_field'] ? intval( $data['get_different_product_field'] ) : 0;
         $data['offer_type']                         = $data['offer_type'] ? sanitize_text_field( $data['offer_type'] ) : '';
         $data['discount_amount']                    = $data['discount_amount'] ? sanitize_text_field( $data['discount_amount'] ) : '';
         $data['box_border_style']                   = $data['box_border_style'] ? sanitize_text_field( $data['box_border_style'] ) : '';

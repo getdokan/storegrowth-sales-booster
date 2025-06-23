@@ -222,7 +222,7 @@ class Ajax {
 			wp_send_json_success( $result );
 		} else {
 			$bogos = $this->bogo->get_items();
-			wp_send_json_success( $bogos );
+			wp_send_json_success( $bogos['data'] ?? [] );
 		}
 	}
 
