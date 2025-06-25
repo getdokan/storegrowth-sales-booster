@@ -24,24 +24,24 @@ class BogoController extends WP_REST_Controller {
      *
      * @var Bogo
      */
-    private Bogo $bogo;
+    protected Bogo $bogo;
 
-	/**
-	 * Class Constructor.
-	 *
-	 * @return void
-	 */
+    /**
+     * Class Constructor.
+     *
+     * @return void
+     */
     public function __construct() {
-	    $this->namespace = 'sales-booster/v1';
-	    $this->rest_base = 'bogo/offers';
+        $this->namespace = 'sales-booster/v1';
+        $this->rest_base = 'bogo/offers';
         $this->bogo      = new Bogo();
     }
 
-	/**
-	 * Register Rest Routes.
-	 *
-	 * @return void
-	 */
+    /**
+     * Register Rest Routes.
+     *
+     * @return void
+     */
     public function register_routes(): void {
         register_rest_route(
             $this->namespace,
@@ -130,15 +130,15 @@ class BogoController extends WP_REST_Controller {
         );
     }
 
-	/**
-	 * Get Items.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @param WP_REST_Request $request Rest Request.
-	 *
-	 * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-	 */
+    /**
+     * Get Items.
+     *
+     * @since 1.29.0
+     *
+     * @param WP_REST_Request $request Rest Request.
+     *
+     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     */
     public function get_items( $request ) {
         $params = $request->get_params();
 
@@ -164,15 +164,15 @@ class BogoController extends WP_REST_Controller {
         return $this->format_collection_response( $response, $request, $items['total_items'] );
     }
 
-	/**
-	 * Get Item.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @param WP_REST_Request $request Rest Request.
-	 *
-	 * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-	 */
+    /**
+     * Get Item.
+     *
+     * @since 1.29.0
+     *
+     * @param WP_REST_Request $request Rest Request.
+     *
+     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     */
     public function get_item( $request ) {
         $id   = $request->get_param( 'id' );
         $item = $this->bogo->get_item( $id );
@@ -226,15 +226,15 @@ class BogoController extends WP_REST_Controller {
         return $response;
     }
 
-	/**
-	 * Update item.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @param WP_REST_Request $request The REST request.
-	 *
-	 * @return WP_REST_Response
-	 */
+    /**
+     * Update item.
+     *
+     * @since 1.29.0
+     *
+     * @param WP_REST_Request $request The REST request.
+     *
+     * @return WP_REST_Response
+     */
     public function update_item( $request ) {
         $id   = $request->get_param( 'id' );
         $data = $request->get_params();
@@ -258,15 +258,15 @@ class BogoController extends WP_REST_Controller {
         return $response;
     }
 
-	/**
-	 * Delete item.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @param WP_REST_Request $request The REST request.
-	 *
-	 * @return WP_REST_Response
-	 */
+    /**
+     * Delete item.
+     *
+     * @since 1.29.0
+     *
+     * @param WP_REST_Request $request The REST request.
+     *
+     * @return WP_REST_Response
+     */
     public function delete_item( $request ) {
         $id     = $request->get_param( 'id' );
         $result = $this->bogo->delete( $id );
@@ -278,13 +278,13 @@ class BogoController extends WP_REST_Controller {
         return new WP_REST_Response( [ 'deleted' => true ], 200 );
     }
 
-	/**
-	 * Get Endpoint Args for Create Item.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @return array
-	 */
+    /**
+     * Get Endpoint Args for Create Item.
+     *
+     * @since 1.29.0
+     *
+     * @return array
+     */
     public function get_endpoint_args_for_create_item() {
         return [
             'name_of_order_bogo' => [
@@ -676,7 +676,7 @@ class BogoController extends WP_REST_Controller {
         $max_pages = ceil( $total_items / $per_page );
 
         $response->header( 'X-WP-TotalPages', (int) $max_pages );
-        $base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->base ) ) );
+        $base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
 
         if ( $page > 1 ) {
             $prev_page = $page - 1;
