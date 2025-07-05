@@ -343,13 +343,13 @@ class BogoController extends WP_REST_Controller {
                 'description'       => __( 'Minimum quantity required to trigger the offer.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'absint',
             ],
-            'offer_start_date' => [
+            'offer_start' => [
                 'type'              => 'string',
                 'format'            => 'date-time',
                 'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'sanitize_text_field',
             ],
-            'offer_end_date' => [
+            'offer_end' => [
                 'type'              => 'string',
                 'format'            => 'date-time',
                 'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
