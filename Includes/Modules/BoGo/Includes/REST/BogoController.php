@@ -301,8 +301,8 @@ class BogoController extends WP_REST_Controller {
             ],
             'get_different_product_field' => [
                 'type'              => 'integer',
-                'required'          => true,
                 'description'       => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
+                'default'           => 0,
                 'sanitize_callback' => 'absint',
             ],
             'bogo_status' => [
