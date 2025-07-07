@@ -166,11 +166,11 @@ class OrderBogo {
 		// Check offer dates
 		$current_date = date( 'Y-m-d' );
 		$is_pro       = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
-		if ( $is_pro && isset( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
+		if ( $is_pro && !empty( $bogo_settings['offer_start'] ) && $current_date < $bogo_settings['offer_start'] ) {
 			return false;
 		}
 
-		if ( $is_pro && isset( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
+		if ( $is_pro && !empty( $bogo_settings['offer_end'] ) && $current_date > $bogo_settings['offer_end'] ) {
 			return false;
 		}
 
