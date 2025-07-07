@@ -68,7 +68,7 @@ class BogoController extends WP_REST_Controller {
             [
                 'args' => [
                     'id' => [
-                        'description' => __( 'Bogo offer ID', 'dokan' ),
+                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
                         'type'        => 'integer',
                     ],
                 ],
