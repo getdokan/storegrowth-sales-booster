@@ -114,6 +114,32 @@ register_activation_hook(
 		add_option( 'storegrowth_activation_redirect', true );
 	}
 );
+
+// Use the necessary namespace.
+use STOREGROWTH\SPSB\DependencyManagement\Container;
+
+// Declare the $dokan_container as global to access from the inside of the function.
+global $storegrowth_container;
+
+// Instantiate the container.
+$storegrowth_container = new Container();
+
+// Register the service providers.
+$storegrowth_container->addServiceProvider( new \STOREGROWTH\SPSB\DependencyManagement\Providers\ServiceProvider() );
+
+/**
+ * Get the container.
+ *
+ * @since 1.29.0
+ *
+ * @return Container The global container instance.
+ */
+function storegrowth_get_container(): Container {
+    global $storegrowth_container;
+
+    return $storegrowth_container;
+}
+
 /**
  * Initialize the plugin functionality.
  *

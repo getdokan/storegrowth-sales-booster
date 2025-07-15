@@ -2,7 +2,8 @@
   "name": "dokan/storegrowth-lite",
   "autoload": {
     "psr-4": {
-      "STOREGROWTH\\SPSB\\": "Includes/"
+      "STOREGROWTH\\SPSB\\": "Includes/",
+      "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\": "lib/packages/"
     },
     "files": [ "Includes/functions.php" ]
   },

@@ -49,7 +49,7 @@ class Ajax {
 	/**
 	 * Constructor of _Ajax class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		$this->plugin_file = plugin_dir_path( __FILE__ ) . '../storegrowth-sales-booster.php';
 		$this->plugin_name = basename( $this->plugin_file, '.php' );
 		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );

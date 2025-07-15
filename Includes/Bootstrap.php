@@ -10,6 +10,7 @@ namespace STOREGROWTH\SPSB;
 use STOREGROWTH\SPSB\Admin\AdminMenu;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Admin\AdminHooks;
+use STOREGROWTH\SPSB\DependencyManagement\Container;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,6 +42,32 @@ class Bootstrap {
 	}
 
 	/**
+	 * Magic getter to bypass referencing objects
+	 *
+	 * @since 1.29.0
+	 *
+	 * @param string $prop
+	 *
+	 * @return object Class Instance
+	 */
+	public function __get( $prop ) {
+		if ( $this->get_container()->has( $prop ) ) {
+			return $this->get_container()->get( $prop );
+		}
+	}
+
+	/**
+	 * Retrieve the container instance.
+	 *
+	 * @since 1.29.0
+	 *
+	 * @return Container
+	 */
+	public function get_container(): Container {
+		return storegrowth_get_container();
+	}
+
+	/**
 	 * Load scripts and styles.
 	 */
 	private function load_scripts() {
@@ -51,7 +78,9 @@ class Bootstrap {
 	 * Load ajax classes
 	 */
 	private function load_ajax_classes() {
-		Ajax::instance();
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$this->get_container()->get( 'ajax-service' );
+		}
 	}
 
 	/**
