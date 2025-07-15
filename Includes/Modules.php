@@ -32,7 +32,7 @@ class Modules {
 	/**
 	 * Constructor of Modules class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		$this->load_active_modules();
 	}
 
