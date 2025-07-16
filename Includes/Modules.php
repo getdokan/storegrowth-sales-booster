@@ -46,7 +46,9 @@ class Modules {
 			return $this->modules;
 		}
 
-		$list_modules = glob( __DIR__ . '/Modules/*/*.php' );
+		$list_modules = glob( __DIR__ . '/../modules/*/*.php' );
+
+		error_log( print_r( $list_modules, 1 ) );
 
 		foreach ( $list_modules as $module_file ) {
 			// Handle modules namespaces for dynamic autoload.

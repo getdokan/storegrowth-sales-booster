@@ -1,7 +1,7 @@
 {
   "name": "sales-booster",
   "workspaces": [
-    "../Includes/Modules/**/assets/src"
+    "../modules/**/assets/src"
   ],
   "version": "1.0.0",
   "description": "",
