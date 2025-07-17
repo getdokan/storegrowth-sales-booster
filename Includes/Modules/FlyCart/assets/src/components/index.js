@@ -14,6 +14,7 @@ import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPrev
 import { Fragment } from "react";
 import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
+import { applyFilters } from "@wordpress/hooks";
 
 function FlyCart({ navigate, useSearchParams, moduleId }) {
   const { setPageLoading } = useDispatch("sgsb");
@@ -36,7 +37,12 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
     enable_add_to_cart_redirect: true,
   };
 
-  const [formData, updateFormData] = useState({ ...quickCartState });
+  const filteredQuickCartState = applyFilters(
+    'sgsb_quick_cart_state',
+    quickCartState
+  );
+
+  const [formData, updateFormData] = useState({ ...filteredQuickCartState });
 
   const getSettings = () => {
     setPageLoading(true);
@@ -136,7 +142,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
   };
 
   const onFormReset = () => {
-    updateFormData({ ...quickCartState });
+    updateFormData({ ...filteredQuickCartState });
   };
 
   const tabPanels = [
