@@ -15,6 +15,17 @@ const ButtonAction = ({ formData, onFieldChange }) => {
     },
   ];
 
+  const isValidUrl = (url) => {
+    // Trim whitespace from input
+    if (!url || typeof url !== "string") return false;
+    const trimmed = url.trim();
+
+    // Basic pattern: must contain at least one dot and no spaces
+    const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(\/.*)?$/;
+
+    return urlPattern.test(trimmed);
+  };
+
   return (
     <EmptyField
       title={__("Button Action", "storegrowth-sales-booster")}
@@ -42,10 +53,15 @@ const ButtonAction = ({ formData, onFieldChange }) => {
                 border: "1px solid #DDE6F9",
               }}
               onChange={(event) =>
-                onFieldChange("redirect_url", event.target.value)
+                onFieldChange("redirect_url", event.target.value, isValidUrl(formData.redirect_url))
               }
               placeholder="http://example.com"
             />
+            {!isValidUrl(formData.redirect_url) && (
+              <div style={{ color: "red" }}>
+                  { __( 'Please enter a valid URL', 'storegrowth-sales-booster' ) }
+              </div>
+            )}
             {applyFilters(
               "sgsb_floating_notification_bar_button_redirection",
               "",
