@@ -151,3 +151,21 @@ if ( ! function_exists( 'sgsb_get_day_for_schedule' ) ) {
 		);
 	}
 }
+
+if ( ! function_exists( 'sgsb_is_module_active' ) ) {
+    /**
+     * Check if the module is active.
+     *
+     * @since 1.28.14
+     *
+     * @param string $module_id The module ID to check.
+     *
+     * @return boolean True if the module is active, false otherwise.
+     */
+    function sgsb_is_module_active( $module_id ) {
+        $modules        = \STOREGROWTH\SPSB\Modules::instance();
+        $active_modules = $modules->get_active_module_ids();
+
+        return in_array( $module_id, $active_modules, true );
+    }
+}
