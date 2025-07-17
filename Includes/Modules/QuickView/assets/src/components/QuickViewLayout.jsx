@@ -45,7 +45,7 @@ function QuickViewLayout({ navigate, useSearchParams, moduleId }) {
     show_quick_icon: true,
     enable_close_button: true,
     show_view_details_button: false,
-    button_color: "#000000",
+    button_color: "#0875FF",
     button_text_color: "#ffffff",
     modal_background_color: "#ffffff",
     navigation_background: "#000000",
