@@ -46,7 +46,23 @@
     const bannerShow = () => {
       $(".sgsb-floating-notification-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
+      updateBannerPosition();
     };
+
+    const updateBannerPosition = () => {
+      let enableShippingBanner = sgsb_fnb_data?.enable_shipping_banner,
+        shippingBannerPosition = sgsb_fnb_data?.shipping_banner_position,
+        pdBannerHiddenTime = localStorage.getItem( 'banner_hidden_time' ),
+        isPDBannerVisible = ! pdBannerHiddenTime || parseInt( pdBannerHiddenTime ) < now;
+
+      if ( enableShippingBanner && isPDBannerVisible && 'top' === shippingBannerPosition ) {
+        let shippingBannerHeight = sgsb_fnb_data?.shipping_banner_height,
+          offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
+        $( '.sgsb-floating-notification-bar-wrapper' ).css({
+          top: `${ parseInt( shippingBannerHeight ) + offset }px`,
+        });
+      }
+    }
 
     const bannerHide = () => {
       $(".sgsb-floating-notification-bar-wrapper").hide();
@@ -115,15 +131,19 @@
         "click",
         ".sgsb-floating-notification-bar-remove",
         function () {
-          $(".sgsb-floating-notification-bar-wrapper").css(
-            "transform",
-            "translateY(-200%)"
-          );
+          const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
+          $('.sgsb-floating-notification-bar-wrapper').css('transform', slideDirection);
           paddingRemoverBody();
           setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
           localStorage.setItem("fn_banner_hidden_time", now + 10 * 60 * 1000);
         }
       );
+
+      // Handle WooCommerce AJAX add to cart
+      $( document.body ).on( 'added_to_cart', function() {
+        const offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
+        $( '.sgsb-floating-notification-bar-wrapper' ).css( { top: `${offset}px` } );
+      });
     });
 
     // Cupon Code Functionality

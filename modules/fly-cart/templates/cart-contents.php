@@ -147,6 +147,7 @@ $show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true
 						<?php endif; ?>
 						</div>
 					</td>
+                    <?php do_action( 'sgsb_fly_cart_after_single_item_columns', $_product ); ?>
 				</tr>
 				<?php
 			}

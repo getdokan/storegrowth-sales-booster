@@ -104,6 +104,7 @@ class BoGoModule implements ModuleSkeleton {
 		Includes\OrderBogo::instance();
 		Includes\Ajax::instance();
 		Includes\EnqueueScript::instance();
+		Includes\Api::instance();
 
 			/**
 		 * Module initialized.

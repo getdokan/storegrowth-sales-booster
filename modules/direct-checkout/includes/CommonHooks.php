@@ -246,7 +246,7 @@ class CommonHooks {
 		( 'cart-with-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
 		|| 'cart-with-buy-now' === $buy_now_button_setting
 		) {
-			if ( 'simple' === $product->get_type() && $product->is_purchasable() && $product->is_in_stock() ) {
+			if ( 'simple' === $product->get_type() && $product->is_purchasable() ) {
 				include __DIR__ . '/../templates/buy-now-button-template.php';
 			}
 		}

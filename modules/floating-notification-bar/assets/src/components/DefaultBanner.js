@@ -10,7 +10,7 @@ import BarIcon from "./BarIcon";
 import ButtonAction from "./ButtonAction";
 
 function DefaultBanner(props) {
-  const { formData, setFormData, onFieldChange } = props;
+  const { formData, setFormData, onFieldChange, onValidationChange } = props;
 
   const checkboxesOption = [
     {
@@ -85,9 +85,13 @@ function DefaultBanner(props) {
           changeHandler={onFieldChange}
           title={__("Default Banner Text", "storegrowth-sales-booster")}
           placeHolderText={__(
-            `Shop more than ${sgsbAdmin.currencySymbol}100 to get free shipping.`,
+            `Enter banner text which will appear`,
             "storegrowth-sales-booster"
           )}
+          status={
+            formData.default_banner_text.length > 0 ? "" : "error"
+          }
+          maxLength={80}
         />
         {applyFilters(
           "sgsb_floating_notification_bar_icon_radio_box",
@@ -120,7 +124,8 @@ function DefaultBanner(props) {
           "sgsb_floating_notification_bar_coupon_coundown",
           "",
           formData,
-          onFieldChange
+          onFieldChange,
+          onValidationChange
         )}
       </SettingsSection>
       {applyFilters(

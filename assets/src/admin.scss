@@ -2153,10 +2153,7 @@ End Settings Sidebar
 
               &.textarea-field,
               &.textinput-field {
-                color: #073b4c;
-                border-radius: 5px;
-                background: #f6f9ff;
-                border: 1px solid #dde6f9;
+
 
                 &.field-gap {
                   margin-bottom: 15px;
@@ -2164,6 +2161,9 @@ End Settings Sidebar
 
                 &.error {
                   border-color: red;
+                }
+                &.ant-input-status-error {
+                  border-color: #ff4d4f;
                 }
               }
 
@@ -2175,6 +2175,7 @@ End Settings Sidebar
                     opacity: 0.5;
                   }
                 }
+
               }
 
               &.textinput-field {
@@ -2780,6 +2781,11 @@ End Settings Sidebar
         font-weight: 500;
         padding: 12px 24px;
         background: #0875ff;
+        // disabled style
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
       }
 
       .sgsb-settings-reset-button {

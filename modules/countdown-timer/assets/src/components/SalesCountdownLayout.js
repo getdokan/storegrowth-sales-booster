@@ -18,6 +18,7 @@ import Layout2 from "../../images/layout/layout-2.svg";
 import Custom from "../../images/layout/custom.svg";
 import "../styles/countdown-timer.css";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
+import { applyFilters } from '@wordpress/hooks';
 
 function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   const isProEnabled = sgsbAdmin.isPro;
@@ -59,11 +60,14 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
     product_page_countdown_enable : true,
   };
 
+  // apply filters to allow other modules to modify the initial data.
+    const filteredInitialData = applyFilters( 'sgsb_countdown_timer_initial_data', initialSalesCountdownData );
+
   const [formData, setFormData] = useState({
-    ...initialSalesCountdownData,
+    ...filteredInitialData,
   });
   const [undoData, setUndoData] = useState({
-    ...initialSalesCountdownData,
+    ...filteredInitialData,
   });
 
   const undoState = {
@@ -79,7 +83,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const onFormReset = () => {
-    setFormData({ ...initialSalesCountdownData });
+    setFormData({ ...filteredInitialData });
     setShowUndo( { ...undoState } );
   };
 
@@ -122,19 +126,17 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
   };
 
   const notificationMessage = (type) => {
-    if (type == "general_settings") {
-      notification["success"]({
-        message: "Settings Section",
-        description: "General settings section data updated successfully.",
-      });
-    }
-
-    if (type == "design") {
-      notification["success"]({
-        message: "Design Section",
-        description: "Design section data updated successfully.",
-      });
-    }
+      const typeMapping = {
+        general_settings: "General Settings Section",
+        design: "Design Section",
+        vendor_settings: "Vendor Section",
+      }
+        notification["success"]({
+            message: typeMapping[type] || __("Settings Updated", "storegrowth-sales-booster"),
+            description: typeMapping[type]
+              ? `${typeMapping[type]} data updated successfully.`
+              : __("Settings updated successfully.", "storegrowth-sales-booster"),
+        });
   };
 
   const onFormSave = (type) => {
@@ -239,6 +241,17 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       ),
     },
   ];
+
+  // wp filter to allow other modules to add their own tabs.
+    const filteredTabPanel=applyFilters(
+        "sgsb_countdown_timer_tab_panels",
+        tabPanels,
+        formData,
+        onFieldChange,
+        onFormSave,
+        buttonLoading,
+        onFormReset
+    );
   return (
     <Fragment>
       <PanelHeader
@@ -248,7 +261,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
       <PanelContainer>
         <PanelRow>
           <PanelSettings
-            tabPanels={tabPanels}
+            tabPanels={filteredTabPanel}
             changeHandler={changeTab}
             activeTab={tabName ? tabName : "general"}
             colSpan={showPreview && tabName ? 12 : 24}

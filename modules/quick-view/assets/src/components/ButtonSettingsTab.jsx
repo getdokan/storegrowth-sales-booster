@@ -43,24 +43,27 @@ function ButtonSettingsTab(props) {
   const iconOptions = iconStyleNames?.map(iconStyleName => (
     { key: iconStyleName, value: <QuickViewIcon activeIcon={formData?.quick_view_icon === iconStyleName} iconName={iconStyleName} /> }
   ));
+    const isButtonLabelEmpty = !formData?.button_label || formData.button_label.trim() === '';
 
   return (
     <Fragment>
       <SettingsSection>
         <TextInput
           name={"button_label"}
-          className={`settings-field input-field`}
+          className={`settings-field input-field  ${isButtonLabelEmpty ? 'error' : ''}`}
           fieldValue={formData?.button_label}
           changeHandler={onFieldChange}
           title={__("Quick View Button label", "storegrowth-sales-booster")}
           placeHolderText={__(
-            "Quick View Button Label",
+            "Button Label",
             "storegrowth-sales-booster"
           )}
           tooltip={__(
             "This will be the set the Label of the Quick View Button",
             "storegrowth-sales-booster"
           )}
+          maxLength={15}
+          showCount={true}
         />
         <SelectBox
           name={`button_position`}
@@ -101,6 +104,8 @@ function ButtonSettingsTab(props) {
         )}
       </SettingsSection>
       <ActionsHandler
+          // disabled is button label is empty
+        isDisabled={ formData?.button_label === "" }
         resetHandler={onFormReset}
         loadingHandler={buttonLoading}
         saveHandler={onFormSave}

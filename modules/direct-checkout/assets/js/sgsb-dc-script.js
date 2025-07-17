@@ -9,7 +9,11 @@
     handleProductDirectCheckout: function( event ) {
       event.stopPropagation();
       event.preventDefault();
-  
+
+        if ( event?.target?.classList.contains('sgsb_buy_now_button_disabled') ) {
+            return;
+        }
+
       // Check quick cart checkout availability first.
       if ( sgsbDcFrontend?.isPro && sgsbDcFrontend?.isQuickCartCheckout ) return;
       let productId = jQuery( event?.target ).data( 'id' ),
@@ -51,6 +55,10 @@ const sgsbDirectChecoutQuick = {
   handleProductDirectCheckout: function( event ) {
     event.stopPropagation();
     event.preventDefault();
+
+    if ( event?.target?.classList.contains('sgsb_buy_now_button_disabled') ) {
+      return;
+    }
 
     // Check quick cart checkout availability first.
     let productId = jQuery( event?.target ).data( 'id' ),

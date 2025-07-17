@@ -22,9 +22,18 @@ class Ajax {
 	use Singleton;
 
 	/**
+	 * BoGo Instance.
+	 *
+	 * @var BoGo
+	 */
+	private $bogo;
+
+	/**
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
+		$this->bogo = $this->get_bogo_instance();
+
 		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );
 		add_action( 'wp_ajax_nopriv_bogo_create', array( $this, 'bogo_create' ) );
 
@@ -51,6 +60,17 @@ class Ajax {
 
 		add_action( 'wp_ajax_update_offer_product', array( $this, 'handle_update_offer_product' ) );
 		add_action( 'wp_ajax_nopriv_update_offer_product', array( $this, 'handle_update_offer_product' ) );
+	}
+
+	/**
+	 * Get BoGo Instance.
+	 *
+	 * @since 1.29.0
+	 *
+	 * @return BoGo
+	 */
+	private function get_bogo_instance() {
+		return new BoGo();
 	}
 
 	public function handle_update_offer_product() {
@@ -143,31 +163,18 @@ class Ajax {
 	public function bogo_create() {
 		check_ajax_referer( 'ajd_protected' );
 
-		$bogo_detail = $this->get_sanitized_create_bogo_data();
-
-		$my_post = array(
-			'post_title'   => $bogo_detail['name_of_order_bogo'],
-			'post_status'  => 'publish',
-			'post_type'    => 'sgsb_bogo',
-			'post_excerpt' => maybe_serialize( $bogo_detail ),
-			'post_content' => 'Not defined',
-
-		);
-		if ( 0 === $bogo_detail['offer_product_id'] ) {
-			$args_bogo = array(
-				'post_type'      => 'sgsb_bogo',
-				'posts_per_page' => - 1,
-			);
-			$bogo_list = get_posts( $args_bogo );
-			if ( is_array( $bogo_list ) && count( $bogo_list ) >= 2 && ! SGSB_PRO_ACTIVE ) {
-				// don't allow creating more than 2 bogos.
-				return;
-			}
-			echo esc_attr( wp_insert_post( $my_post ) );
-		} elseif ( ! empty( $bogo_detail['offer_product_id'] ) ) {
-			$my_post['ID'] = $bogo_detail['offer_product_id'];
-			wp_update_post( $my_post );
+		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			wp_send_json_error( __( 'No data provided.', 'storegrowth-sales-booster-pro' ) );
 		}
+
+		$data = $_POST['data']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
+
+		$result = $this->bogo->create( $data );
+
+		if ( is_wp_error($result) ) {
+			wp_send_json_error( $result->get_error_message() );
+		}
+		wp_send_json_success( $result );
 
 		die();
 	}
@@ -204,25 +211,18 @@ class Ajax {
 	 */
 	public function bogo_list() {
 		check_ajax_referer( 'ajd_protected' );
+
 		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
 
 		if ( $bogo_id ) {
-			$bogo = get_post( $bogo_id );
-			wp_send_json_success( maybe_unserialize( $bogo->post_excerpt ) );
+			$result = $this->bogo->get_item($bogo_id);
+            if ( is_wp_error($result) ) {
+                wp_send_json_error( $result->get_error_message() );
+            }
+			wp_send_json_success( $result );
 		} else {
-			$args_bogo = array(
-				'post_type'      => 'sgsb_bogo',
-				'posts_per_page' => - 1,
-			);
-			$bogo_list = get_posts( $args_bogo );
-			$bogos     = array();
-			foreach ( $bogo_list as $bogo ) {
-				$post_excerpt       = maybe_unserialize( $bogo->post_excerpt );
-				$post_excerpt['id'] = $bogo->ID;
-
-				$bogos[] = $post_excerpt;
-			}
-			wp_send_json_success( $bogos );
+			$bogos = $this->bogo->get_items();
+			wp_send_json_success( $bogos['data'] ?? [] );
 		}
 	}
 
@@ -250,30 +250,35 @@ class Ajax {
 	 */
 	public function bogo_delete() {
 		check_ajax_referer( 'ajd_protected' );
+
 		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-		wp_delete_post( $bogo_id, true );
+        $result  = $this->bogo->delete($bogo_id);
+
+        if ( is_wp_error($result) ) {
+            wp_send_json_error( $result->get_error_message() );
+        }
 		wp_send_json_success( 'yes' );
 	}
 
 	/**
-	 * Bogo product delete.
+	 * Bogo product status handler.
 	 */
 	public function bogo_status_handler() {
 		check_ajax_referer( 'ajd_protected' );
+
 		$data    = ! empty( $_POST['data'] ) ? wc_clean( wp_unslash( $_POST['data'] ) ) : array();
 		$post_id = ! empty( $data['id'] ) ? intval( $data['id'] ) : 0;
 
 		if ( empty( $post_id ) || ! isset( $data['status'] ) ) {
-			return wp_send_json_error( __( 'Offer id & status is required', 'storegrowth-sales-booster' ) );
+			wp_send_json_error( __( 'Offer id & status is required', 'storegrowth-sales-booster' ) );
 		}
 
-		$bogo_post     = get_post( $post_id );
-		$bogo_settings = ! empty( $bogo_post->post_excerpt ) ? maybe_unserialize( $bogo_post->post_excerpt ) : array();
+        $result = $this->bogo->set_status( $post_id, $data['status'] );
 
-		$bogo_settings['bogo_status'] = filter_var( $data['status'], FILTER_VALIDATE_BOOLEAN ) ? 'yes' : 'no';
-		$bogo_post->post_excerpt      = maybe_serialize( $bogo_settings );
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( $result->get_error_message() );
+        }
 
-		wp_update_post( $bogo_post );
 		wp_send_json_success( $data['status'] );
 	}
 
@@ -323,61 +328,5 @@ class Ajax {
 		}
 
 		die();
-	}
-
-	/**
-	 * Sanitize create order bogo data.
-	 *
-	 * @return array
-	 */
-	private function get_sanitized_create_bogo_data() {
-		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			return array();
-		}
-
-		$data = $_POST['data']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
-
-		if ( empty( $data['target_products'] ) ) {
-			$data['target_products'] = array();
-		}
-
-		if ( empty( $data['target_categories'] ) ) {
-			$data['target_categories'] = array();
-		}
-
-		$data['name_of_order_bogo']                 = sanitize_text_field( $data['name_of_order_bogo'] );
-		$data['target_products']                    = wc_clean( $data['target_products'] );
-		$data['target_categories']                  = wc_clean( $data['target_categories'] );
-		$data['bogo_schedule']                      = ! empty( $data['bogo_schedule'] ) ? wc_clean( $data['bogo_schedule'] ) : array();
-		$data['smart_offer']                        = sanitize_text_field( $data['smart_offer'] );
-		$data['get_different_product_field']        = intval( $data['get_different_product_field'] );
-		$data['offer_type']                         = sanitize_text_field( $data['offer_type'] );
-		$data['discount_amount']                    = sanitize_text_field( $data['discount_amount'] );
-		$data['box_border_style']                   = sanitize_text_field( $data['box_border_style'] );
-		$data['box_border_color']                   = sanitize_text_field( $data['box_border_color'] );
-		$data['box_top_margin']                     = sanitize_text_field( $data['box_top_margin'] );
-		$data['box_bottom_margin']                  = sanitize_text_field( $data['box_bottom_margin'] );
-		$data['discount_background_color']          = sanitize_text_field( $data['discount_background_color'] );
-		$data['discount_text_color']                = sanitize_text_field( $data['discount_text_color'] );
-		$data['discount_font_size']                 = sanitize_text_field( $data['discount_font_size'] );
-		$data['product_description_text_color']     = sanitize_text_field( $data['product_description_text_color'] );
-		$data['product_description_font_size']      = sanitize_text_field( $data['product_description_font_size'] );
-		$data['accept_offer_background_color']      = sanitize_text_field( $data['accept_offer_background_color'] );
-		$data['accept_offer_text_color']            = sanitize_text_field( $data['accept_offer_text_color'] );
-		$data['accept_offer_font_size']             = sanitize_text_field( $data['accept_offer_font_size'] );
-		$data['offer_description_background_color'] = sanitize_text_field( $data['offer_description_background_color'] );
-		$data['offer_description_text_color']       = sanitize_text_field( $data['offer_description_text_color'] );
-		$data['offer_description_font_size']        = sanitize_text_field( $data['offer_description_font_size'] );
-		$data['offer_image_url']                    = esc_url_raw( $data['offer_image_url'] );
-		$data['offer_product_title']                = sanitize_text_field( $data['offer_product_title'] );
-		$data['offer_product_id']                   = intval( $data['offer_product_id'] );
-		$data['offer_discount_title']               = sanitize_text_field( $data['offer_discount_title'] );
-		$data['offer_fixed_price_title']            = sanitize_text_field( $data['offer_fixed_price_title'] );
-		$data['product_description']                = sanitize_text_field( $data['product_description'] );
-		$data['selection_title']                    = sanitize_text_field( $data['selection_title'] );
-		$data['offer_description']                  = sanitize_text_field( $data['offer_description'] );
-		$data['offer_product_regular_price']        = sanitize_text_field( $data['offer_product_regular_price'] );
-
-		return $data;
 	}
 }
