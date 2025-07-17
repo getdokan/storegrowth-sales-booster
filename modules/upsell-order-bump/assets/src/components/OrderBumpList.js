@@ -5,7 +5,7 @@ import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState } from "@wordpress/element";
 import { convertBumpItemHtmlEntitiesToTexts } from "../helper";
 import { Fragment } from "react";
-import UpgradeCard from "../../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
+import UpgradeCard from "../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
 import OfferProductContent from "./OfferProductContent";
 
 const deleteBump = (stateUpdateCallback) => (id) => {

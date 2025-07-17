@@ -1,7 +1,7 @@
 import { Select, Input, Checkbox } from "antd";
 import { __ } from "@wordpress/i18n";
 import { applyFilters } from "@wordpress/hooks";
-import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
+import EmptyField from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 
 const ButtonAction = ({ formData, onFieldChange }) => {
   const buttonActionOptions = [

@@ -39,7 +39,7 @@
   "workspaces": {
     "packages": [
       "assets",
-      "Includes/Modules/*/assets"
+      "modules/*/assets"
     ]
   },
   "devDependencies": {

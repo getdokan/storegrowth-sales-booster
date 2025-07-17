@@ -5,11 +5,11 @@ import Design from "./Design";
 import Preview from "./Preview";
 import { useDispatch, useSelect } from "@wordpress/data";
 
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
-import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
-import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
-import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
-import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import PanelHeader from "../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../assets/src/components/settings/Panels/PanelSettings";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function DirectCheckoutLayout({

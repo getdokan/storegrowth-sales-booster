@@ -1,10 +1,10 @@
 import { applyFilters } from "@wordpress/hooks";
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
-import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
+import TextAreaBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
+import CheckboxGroup from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
+import SelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import TextInput from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BarIcon from "./BarIcon";
 import ButtonAction from "./ButtonAction";

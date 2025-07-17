@@ -4,8 +4,8 @@ import { Fragment } from "react";
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
 import { createPopupForm, noop } from '../helper';
-import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Switcher from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 function General( { onFormSave } ) {

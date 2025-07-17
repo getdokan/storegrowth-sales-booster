@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { Fragment } from "react";
-import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import SectionHeader from "../../../../../assets/src/components/settings/Panels/SectionHeader";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import NotifyBarOne from "./Templates/NotifyBarOne";
 import { applyFilters } from "@wordpress/hooks";
 import RadioTemplate from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioTemplate";

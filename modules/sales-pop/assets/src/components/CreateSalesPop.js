@@ -2,10 +2,10 @@ import { useDispatch, useSelect } from '@wordpress/data';
 
 import { __ } from "@wordpress/i18n";
 import { applyFilters } from '@wordpress/hooks';
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
-import TextAreaBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
-import MultiSelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Switcher from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import TextAreaBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
+import MultiSelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import { createPopupForm } from "../helper";
 import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";

@@ -4,11 +4,11 @@ import { __ } from "@wordpress/i18n";
 import { useEffect, useState } from "@wordpress/element";
 import { useDispatch } from "@wordpress/data";
 
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
-import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
-import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
-import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
-import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import PanelHeader from "../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../assets/src/components/settings/Panels/PanelSettings";
 import GeneralSettingsTab from "./GeneralSettingsTab";
 import DesignTab from "./DesingTab";
 import Preview from "./Preview";

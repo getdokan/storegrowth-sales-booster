@@ -1,13 +1,13 @@
 import { noop } from '../helper';
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
-import Switcher from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
-import SectionSpacer from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import Switcher from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
+import SectionSpacer from "../../../../../assets/src/components/settings/Panels/PanelSettings/SectionSpacer";
+import SelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import { Fragment } from "react";
-import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import Number from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 
 const BasicDesign = (props) => {
 

@@ -1,6 +1,6 @@
 import { Radio, InputNumber } from "antd";
 import { __ } from "@wordpress/i18n";
-import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
+import EmptyField from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 import { Fragment } from "react";
 
 const BannerTrigger = () => {

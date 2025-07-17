@@ -1,9 +1,9 @@
 import { __ } from "@wordpress/i18n";
 import { Select } from "antd";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
-import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
-import EmptyField from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import SectionHeader from "../../../../../assets/src/components/settings/Panels/SectionHeader";
+import CheckboxGroup from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
+import EmptyField from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/EmptyField";
 import BannerTrigger from "./BannerTrigger";
 
 const DisplayRules = (props) => {

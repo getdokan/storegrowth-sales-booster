@@ -7,11 +7,11 @@ import GeneralSettingTab from "./GeneralSettingTab";
 import DesignTab from "./DesignTab";
 import Preview from "./Preview";
 
-import PanelHeader from "../../../../../../assets/src/components/settings/Panels/PanelHeader";
-import PanelContainer from "../../../../../../assets/src/components/settings/Panels/PanelContainer";
-import PanelRow from "../../../../../../assets/src/components/settings/Panels/PanelRow";
-import PanelPreview from "../../../../../../assets/src/components/settings/Panels/PanelPreview";
-import PanelSettings from "../../../../../../assets/src/components/settings/Panels/PanelSettings";
+import PanelHeader from "../../../../../assets/src/components/settings/Panels/PanelHeader";
+import PanelContainer from "../../../../../assets/src/components/settings/Panels/PanelContainer";
+import PanelRow from "../../../../../assets/src/components/settings/Panels/PanelRow";
+import PanelPreview from "../../../../../assets/src/components/settings/Panels/PanelPreview";
+import PanelSettings from "../../../../../assets/src/components/settings/Panels/PanelSettings";
 
 import Layout1 from "../../images/layout/layout-1.svg";
 import Layout2 from "../../images/layout/layout-2.svg";

@@ -2,9 +2,9 @@ import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { applyFilters } from "@wordpress/hooks";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import SelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
 import Templates from "./Templates";
 
 function DesignTab(props) {

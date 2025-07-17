@@ -2,8 +2,8 @@ import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { Form } from "antd";
 import Selector from "./Selector";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 import "../styles/countdown-timer.css";

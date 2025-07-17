@@ -2,9 +2,9 @@ import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { applyFilters } from '@wordpress/hooks';
 import { useDispatch, useSelect } from "@wordpress/data";
-import CheckboxGroup from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
-import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import CheckboxGroup from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
+import SingleCheckBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createDirectCheckoutForm } from "../helper";
 

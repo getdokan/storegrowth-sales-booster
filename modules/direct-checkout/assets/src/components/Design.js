@@ -1,9 +1,9 @@
 import { __ } from "@wordpress/i18n";
 import { Fragment } from "react";
 import { useDispatch, useSelect } from "@wordpress/data";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import Number from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import ColourPicker from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createDirectCheckoutForm } from "../helper";
 import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Switcher";

@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import { applyFilters } from "@wordpress/hooks";
 import "../styles/countdown-timer.css";
-import TextInput from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
-import SingleCheckBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
+import TextInput from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
+import SingleCheckBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SingleCheckBox";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import SettingInstruction from "./SettingInstruction";
 

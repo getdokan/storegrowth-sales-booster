@@ -1,10 +1,10 @@
 import { noop } from '../helper';
 import { __ } from "@wordpress/i18n";
-import SettingsSection from "../../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
-import ColourPicker from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
-import SectionHeader from "../../../../../../assets/src/components/settings/Panels/SectionHeader";
-import SelectBox from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-import Number from "../../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
+import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
+import ColourPicker from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ColorPicker";
+import SectionHeader from "../../../../../assets/src/components/settings/Panels/SectionHeader";
+import SelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import Number from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Number";
 const fontSizes = [ ...Array( 15 ).keys() ].map( value => {
     const pair = value + 10;
     return { value: pair, label: pair };
