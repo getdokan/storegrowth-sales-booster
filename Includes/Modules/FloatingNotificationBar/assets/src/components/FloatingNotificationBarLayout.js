@@ -1,9 +1,6 @@
 import { notification } from 'antd';
 import { __ } from '@wordpress/i18n';
-import {
-  useEffect,
-  useState,
-} from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import { Fragment } from 'react';
 import SettingsTab from './SettingsTab';
@@ -26,6 +23,7 @@ function FloatingNotificationBarLayout({
   const { setPageLoading } = useDispatch('sgsb');
   const [buttonLoading, setButtonLoading] = useState(false);
   const [isValidURL, setIsValidURL] = useState(true);
+  const [hasValidationError, setHasValidationError] = useState(false);
 
   let [searchParams, setSearchParams] = useSearchParams('general');
   const tabName = searchParams.get('tab_name') || 'general';
@@ -151,6 +149,10 @@ function FloatingNotificationBarLayout({
   };
 
   const onFormSave = ( type ) => {
+    if (hasValidationError) {
+      return;
+    }
+
     setButtonLoading( true );
 
     if (type === 'banner_settings') {
@@ -170,7 +172,6 @@ function FloatingNotificationBarLayout({
         );
       }
     }
-
     const data = {
       action: 'sgsb_floating_notification_bar_save_settings',
       _ajax_nonce: sgsbAdmin.nonce,
@@ -208,6 +209,8 @@ function FloatingNotificationBarLayout({
           buttonLoading={buttonLoading}
           upgradeTeaser={!isProEnabled}
           onFormReset={onFormReset}
+          isDisabled={hasValidationError}
+          onValidationChange={setHasValidationError}
         />
       ),
     },
