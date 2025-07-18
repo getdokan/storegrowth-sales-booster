@@ -22,7 +22,7 @@ interface ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_id();
+	public static function get_id();
 
 	/**
 	 * Icon for a module.

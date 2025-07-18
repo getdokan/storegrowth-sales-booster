@@ -7,8 +7,6 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,12 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class EnqueueScript {
 
-	use Singleton;
-
 	/**
 	 * Constructor of Enqueue_Script class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );

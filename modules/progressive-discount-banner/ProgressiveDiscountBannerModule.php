@@ -27,7 +27,7 @@ class ProgressiveDiscountBannerModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_id() {
+	public static function get_id() {
 		return 'progressive-discount-banner';
 	}
 

@@ -7,8 +7,6 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,12 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class CommonHooks {
 
-	use Singleton;
-
 	/**
 	 * Constructor of Common_Hooks class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_countdown_timer_template' ) );
 
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );

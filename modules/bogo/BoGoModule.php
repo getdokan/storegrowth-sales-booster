@@ -28,7 +28,7 @@ class BoGoModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_id() {
+	public static function get_id() {
 		return 'bogo';
 	}
 

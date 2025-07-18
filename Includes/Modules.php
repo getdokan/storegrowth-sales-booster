@@ -48,13 +48,16 @@ class Modules {
 
 		$list_modules = glob( __DIR__ . '/../modules/*/*.php' );
 
-		error_log( print_r( $list_modules, 1 ) );
-
 		foreach ( $list_modules as $module_file ) {
 			// Handle modules namespaces for dynamic autoload.
 			$module_class     = str_replace( '.php', '', basename( $module_file ) );
 			$class_namespace  = str_replace( 'Module', '', $module_class );
 			$module_namespace = "STOREGROWTH\\SPSB\\Modules\\{$class_namespace}\\{$module_class}";
+
+			if ( 'bootstrap' === strtolower( $module_class ) || ! class_exists( $module_namespace ) ) {
+				// Skip bootstrap class and if module class does not exist.
+				continue;
+			}
 
 			// Hold modules instance & store it.
 			$module = $module_namespace::instance();

@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers\BootstrapServiceProvider;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,7 +28,7 @@ class CountdownTimerModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_id() {
+	public static function get_id() {
 		return 'countdown-timer';
 	}
 
@@ -100,10 +101,7 @@ class CountdownTimerModule implements ModuleSkeleton {
 	 * @return void
 	 */
 	public function init() {
-		// Initialize necessary classes instance for countdown timer module.
-		Includes\EnqueueScript::instance();
-		Includes\CommonHooks::instance();
-		Includes\Ajax::instance();
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**
 		 * Module initialized.

@@ -78,6 +78,13 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
 }
 
 /**
+ * Define module directory.
+ */
+if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
+	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
+}
+
+/**
  * Check free plugin is active or not.
  */
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -150,6 +157,9 @@ function storegrowth_get_container(): Container {
 function sgsb_plugin(): Bootstrap {
 	return Bootstrap::instance();
 }
+
+// Load modules bootstrap files.
+require_once STOREGROWTH_MODULE_DIR . '/countdown-timer/bootstrap.php';
 
 // Call initialization function.
 sgsb_plugin();

@@ -7,8 +7,6 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
-
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,12 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Ajax {
 
-	use Singleton;
-
 	/**
 	 * Constructor of Ajax class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_sgsb_countdown_timer_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_countdown_timer_get_settings', array( $this, 'get_settings' ) );
 	}
