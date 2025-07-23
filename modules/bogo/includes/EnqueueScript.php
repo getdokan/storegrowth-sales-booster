@@ -25,7 +25,7 @@ class EnqueueScript {
 	/**
 	 * Constructor of Enqueue class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'init', array( $this, 'register_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );

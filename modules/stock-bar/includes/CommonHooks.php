@@ -24,7 +24,7 @@ class CommonHooks {
 	/**
 	 * Constructor of Common_Hooks class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_stock_status_template' ) );
 
 		add_filter( 'woocommerce_get_stock_html', array( $this, 'woocommerce_get_stock_html' ), 10, 2 );

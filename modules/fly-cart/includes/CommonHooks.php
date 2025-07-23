@@ -24,7 +24,7 @@ class CommonHooks {
 	/**
 	 * Constructor of Enqueue class.
 	 */
-	private function __construct() {
+    public function __construct() {
 		add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragment' ) );
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );

@@ -24,7 +24,7 @@ class CommonHooks {
 	/**
 	 * Constructor of Common_Hooks class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_filter( 'woocommerce_add_to_cart_redirect', array( $this, 'add_to_cart_redirect' ) );
 		$this->button_positon_hooks();
 		$this->content_loader_hooks();

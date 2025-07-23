@@ -24,7 +24,7 @@ class CommonHooks {
 	/**
 	 * Constructor of Common_Hooks class.
 	 */
-	private function __construct() {
+	public function __construct() {
 
 		$this->direct_checkout_hooks_init();
 	}

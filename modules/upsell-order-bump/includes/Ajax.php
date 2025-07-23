@@ -24,7 +24,7 @@ class Ajax {
 	/**
 	 * Constructor of Bootstrap class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_bump_create', array( $this, 'bump_create' ) );
 		add_action( 'wp_ajax_nopriv_bump_create', array( $this, 'bump_create' ) );
 

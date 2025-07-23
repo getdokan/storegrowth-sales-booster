@@ -24,7 +24,7 @@ class Ajax {
 	/**
 	 * Constructor of Bootstrap class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_popup_products', array( $this, 'popup_products' ) );
 		add_action( 'wp_ajax_nopriv_popup_products', array( $this, 'popup_products' ) );
 

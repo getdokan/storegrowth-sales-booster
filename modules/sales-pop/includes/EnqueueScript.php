@@ -24,7 +24,7 @@ class EnqueueScript {
 	/**
 	 * Constructor of Bootstrap class.
 	 */
-	private function __construct() {
+    public function __construct() {
 		// Assets for frontend.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );

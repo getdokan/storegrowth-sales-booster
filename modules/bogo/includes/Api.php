@@ -19,7 +19,7 @@ class Api {
     /**
      * Constructor of Bootstrap class.
      */
-    private function __construct() {
+    public function __construct() {
         $this->init_hooks();
     }
 

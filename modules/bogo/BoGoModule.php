@@ -7,7 +7,8 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo;
 
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\BaseModule;
+use STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,10 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Sales Pop module initiator class.
  */
-class BoGoModule implements ModuleSkeleton {
-
+class BoGoModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'upsell-order-bump';
 
 	/**
 	 * Unique ID for a module.
@@ -37,9 +39,9 @@ class BoGoModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -80,10 +82,14 @@ class BoGoModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -91,21 +97,17 @@ class BoGoModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
-		Includes\OrderBogo::instance();
-		Includes\Ajax::instance();
-		Includes\EnqueueScript::instance();
-		Includes\Api::instance();
-
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 			/**
 		 * Module initialized.
 		 *

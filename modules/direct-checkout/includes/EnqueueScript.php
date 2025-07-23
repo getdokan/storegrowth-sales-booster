@@ -24,7 +24,7 @@ class EnqueueScript {
 	/**
 	 * Constructor of Enqueue_Script class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );

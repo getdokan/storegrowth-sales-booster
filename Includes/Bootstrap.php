@@ -95,6 +95,6 @@ class Bootstrap {
 	 * Load module classes
 	 */
 	private function load_module_classes() {
-		$this->get_container()->get( Modules::class );
+		$this->get_container()->get( ModuleManager::class )->load();
 	}
 }

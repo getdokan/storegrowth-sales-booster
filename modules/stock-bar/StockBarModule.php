@@ -7,7 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\StockBar;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\Modules\StockBar\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * `Stock Bar` module initiator class.
  */
-class StockBarModule implements ModuleSkeleton {
+class StockBarModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'stock-bar-icon';
 
 	/**
 	 * Unique ID for a module.
@@ -36,9 +40,9 @@ class StockBarModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -79,10 +83,14 @@ class StockBarModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -90,20 +98,17 @@ class StockBarModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
-		// Include necessary classes for stock bar.
-		Includes\EnqueueScript::instance();
-		Includes\CommonHooks::instance();
-		Includes\Ajax::instance();
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**
 		 * Module initialized.

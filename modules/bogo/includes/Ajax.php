@@ -31,7 +31,7 @@ class Ajax {
 	/**
 	 * Constructor of Bootstrap class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		$this->bogo = $this->get_bogo_instance();
 
 		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );

@@ -86,9 +86,9 @@ class Ajax {
 	 * Get all Modules.
 	 */
 	private function get_all_modules() {
-		$modules = Modules::instance();
+		$modules = new ModuleManager();
 
-		wp_send_json( $modules->list_all_modules() );
+		wp_send_json( $modules->get_all() );
 	}
 
 	/**
@@ -101,15 +101,15 @@ class Ajax {
 			wp_die();
 		}
 
-		$modules        = Modules::instance();
-		$active_modules = $modules->get_active_module_ids();
+		$modules        = new ModuleManager();
+		$active_modules = $modules->get_active_modules();
 
 		$module_id = isset( $_POST['data']['module_id'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['module_id'] ) ) : null;
 		$status    = isset( $_POST['data']['status'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['status'] ) ) : null;
 
 		// phpcs:enable
 
-		$selected_module = $modules->get_module_by_id( $module_id );
+		$selected_module = $modules->get( $module_id );
 
 		if ( 'true' === $status ) { // Activate.
 			$active_modules[ $selected_module->get_id() ] = $selected_module->get_id();
@@ -122,7 +122,7 @@ class Ajax {
 		}
 
 		// Update to DB.
-		$modules->update_active_module_ids( $active_modules );
+//		$modules->update_active_module_ids( $active_modules );
 
 		wp_send_json_success();
 	}

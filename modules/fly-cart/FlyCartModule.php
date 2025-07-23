@@ -7,7 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Fly Cart module initiator class.
  */
-class FlyCartModule implements ModuleSkeleton {
+class FlyCartModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'icon-fast-cart-module';
 
 	/**
 	 * Unique ID for a module.
@@ -28,7 +32,7 @@ class FlyCartModule implements ModuleSkeleton {
 	 * @return string
 	 */
 	public static function get_id() {
-		return 'fly-cart';
+		return 'icon-fast-cart-module';
 	}
 
 	/**
@@ -36,9 +40,9 @@ class FlyCartModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -79,10 +83,14 @@ class FlyCartModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -90,20 +98,17 @@ class FlyCartModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
-		// Initialize necessary classes instance for fly cart module.
-		Includes\EnqueueScript::instance();
-		Includes\CommonHooks::instance();
-		Includes\Ajax::instance();
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**
 		 * Fast fly cart module init.

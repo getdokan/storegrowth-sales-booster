@@ -7,7 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Floating notification bar module initiator class.
  */
-class FloatingNotificationBarModule implements ModuleSkeleton {
+class FloatingNotificationBarModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'floating-bar-icon';
 
 	/**
 	 * Unique ID for a module.
@@ -36,9 +40,9 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -79,10 +83,14 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -90,9 +98,9 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Setting Initial Banner Data.
@@ -119,10 +127,8 @@ class FloatingNotificationBarModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function init() {
-		Includes\Ajax::instance();
-		Includes\CommonHooks::instance();
-		Includes\EnqueueScript::instance();
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		do_action( 'storegrowth_floating_bar_module_init' );
 	}

@@ -24,7 +24,7 @@ class Ajax {
 	/**
 	 * Constructor of Ajax class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_sgsb_fly_cart_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_fly_cart_get_settings', array( $this, 'get_settings' ) );
 

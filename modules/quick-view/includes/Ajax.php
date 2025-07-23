@@ -24,7 +24,7 @@ class Ajax {
 	/**
 	 * Constructor of Ajax class.
 	 */
-	private function __construct() {
+    public function __construct() {
 		add_action( 'wp_ajax_sgsb_quick_view_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
 		add_action( 'wp_ajax_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );

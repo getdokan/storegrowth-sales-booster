@@ -24,7 +24,7 @@ class WoocommerceDiscount {
 	/**
 	 * Constructor of Woocommerce_Discount class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'woocommerce_add_to_cart', array( $this, 'woocommerce_added_to_cart' ), 22 );
 		add_action( 'woocommerce_cart_item_restored', array( $this, 'woocommerce_added_to_cart' ), 22 );
 

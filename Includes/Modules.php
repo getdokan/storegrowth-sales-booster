@@ -144,7 +144,7 @@ class Modules {
 	 */
 	private function load_active_modules() {
 		foreach ( $this->get_active_modules() as $module ) {
-			$module->init();
+			$module->boot();
 		}
 	}
 

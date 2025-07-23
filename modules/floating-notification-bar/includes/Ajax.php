@@ -24,7 +24,7 @@ class Ajax {
 	/**
 	 * Constructor of Ajax class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_sgsb_floating_notification_bar_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_floating_notification_bar_get_settings', array( $this, 'get_settings' ) );
 	}

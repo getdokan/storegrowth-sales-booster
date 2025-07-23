@@ -7,7 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\QuickView;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * `Stock Bar` module initiator class.
  */
-class QuickViewModule implements ModuleSkeleton {
+class QuickViewModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'quickview-icon-blue';
 
 	/**
 	 * Unique ID for a module.
@@ -36,9 +40,9 @@ class QuickViewModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -79,10 +83,14 @@ class QuickViewModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -90,20 +98,17 @@ class QuickViewModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
-		// Include necessary classes for stock bar.
-		Includes\EnqueueScript::instance();
-		Includes\CommonHooks::instance();
-		Includes\Ajax::instance();
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**
 		 * Module initialized.

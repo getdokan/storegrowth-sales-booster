@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers\BootstrapServiceProvider;
@@ -19,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * `Countdown Timer` module initiator class.
  */
-class CountdownTimerModule implements ModuleSkeleton {
+class CountdownTimerModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'countdown-timer';
 
 	/**
 	 * Unique ID for a module.
@@ -37,9 +40,9 @@ class CountdownTimerModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -80,10 +83,14 @@ class CountdownTimerModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -91,16 +98,16 @@ class CountdownTimerModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
+	public function boot() {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

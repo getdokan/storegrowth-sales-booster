@@ -60,9 +60,16 @@ interface ModuleSkeleton {
 	public function get_module_category();
 
 	/**
-	 * Module activation function.
+	 * Module is active function.
 	 *
 	 * @return void
+	 */
+	public function is_active();
+
+	/**
+	 * Module activation function.
+	 *
+	 * @return bool
 	 */
 	public function activate();
 
@@ -74,9 +81,9 @@ interface ModuleSkeleton {
 	public function deactivate();
 
 	/**
-	 * Starting point of the module.
+	 * Boot the module.
 	 *
 	 * @return void
 	 */
-	public function init();
+	public function boot();
 }

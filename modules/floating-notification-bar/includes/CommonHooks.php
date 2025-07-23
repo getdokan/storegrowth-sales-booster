@@ -24,7 +24,7 @@ class CommonHooks {
 	/**
 	 * Constructor of Common_Hooks class.
 	 */
-	private function __construct() {
+	public function __construct() {
 		// Don't load banner on 'order received' cart.
 
 		if ( $this->is_order_received_page() ) {

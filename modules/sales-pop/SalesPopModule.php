@@ -7,7 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
+use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -18,9 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Sales Pop module initiator class.
  */
-class SalesPopModule implements ModuleSkeleton {
+class SalesPopModule extends BaseModule {
 
 	use Singleton;
+
+	protected $icon = 'sales-pop';
 
 	/**
 	 * Unique ID for a module.
@@ -36,9 +40,9 @@ class SalesPopModule implements ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
-		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
-	}
+//	public function get_icon() {
+//		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
+//	}
 
 	/**
 	 * Banner for a module.
@@ -79,10 +83,14 @@ class SalesPopModule implements ModuleSkeleton {
 	/**
 	 * Module activation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function activate() {
-		// TODO: Implement activate() method.
+	public function activate(): bool {
+		$activated = parent::activate();
+
+//		( new Installer() )->run();
+
+		return $activated;
 	}
 
 	/**
@@ -90,18 +98,17 @@ class SalesPopModule implements ModuleSkeleton {
 	 *
 	 * @return void
 	 */
-	public function deactivate() {
-		// TODO: Implement deactivate() method.
-	}
+//	public function deactivate() {
+//		// TODO: Implement deactivate() method.
+//	}
 
 	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
 	 */
-	public function init() {
-		Includes\SalesPOP::instance();
-		Includes\Ajax::instance();
+	public function boot() {
+		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		do_action( 'storegrowth_sales_pop_module_init' );
 	}
