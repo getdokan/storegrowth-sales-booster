@@ -39,9 +39,9 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
+	}
 
 	/**
 	 * Banner for a module.

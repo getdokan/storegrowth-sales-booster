@@ -39,9 +39,9 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-icon.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-icon.svg' );
+	}
 
 	/**
 	 * Banner for a module.

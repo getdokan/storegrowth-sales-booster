@@ -39,9 +39,9 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
+	}
 
 	/**
 	 * Banner for a module.

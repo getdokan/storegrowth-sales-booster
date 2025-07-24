@@ -39,9 +39,9 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
+	}
 
 	/**
 	 * Banner for a module.

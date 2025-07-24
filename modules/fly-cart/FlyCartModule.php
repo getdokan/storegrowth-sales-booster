@@ -39,9 +39,9 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
+	}
 
 	/**
 	 * Banner for a module.

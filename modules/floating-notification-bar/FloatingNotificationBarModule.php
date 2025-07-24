@@ -39,9 +39,9 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
+	}
 
 	/**
 	 * Banner for a module.

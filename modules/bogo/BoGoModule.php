@@ -39,9 +39,9 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
+	}
 
 	/**
 	 * Banner for a module.

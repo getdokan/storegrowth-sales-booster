@@ -39,9 +39,9 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
+	}
 
 	/**
 	 * Banner for a module.

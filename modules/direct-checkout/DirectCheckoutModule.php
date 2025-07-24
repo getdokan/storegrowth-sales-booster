@@ -39,9 +39,9 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-//	public function get_icon() {
-//		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout.svg' );
-//	}
+	public function get_icon() {
+		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout.svg' );
+	}
 
 	/**
 	 * Banner for a module.
