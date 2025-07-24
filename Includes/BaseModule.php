@@ -7,8 +7,6 @@ use STOREGROWTH\SPSB\DependencyManagement\Container;
 
 abstract class BaseModule implements ModuleSkeleton {
 
-    protected $icon = '';
-
     protected $active_modules_option_key = 'sgsb_active_module_ids';
 
     protected function get_container(): Container {
@@ -48,10 +46,6 @@ abstract class BaseModule implements ModuleSkeleton {
 
         return $this->update_active_modules_option_data( $filter_data );
     }
-
-//    public function get_icon(): string {
-//        return apply_filters( 'sgsb_module_icon', $this->icon, $this->get_id() );
-//    }
 
     protected function get_active_modules_option_data(): array {
         return (array) get_option( $this->active_modules_option_key, [] );

@@ -159,7 +159,16 @@ function sgsb_plugin(): Bootstrap {
 }
 
 // Load modules bootstrap files.
+require_once STOREGROWTH_MODULE_DIR . '/bogo/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/countdown-timer/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/direct-checkout/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/floating-notification-bar/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/fly-cart/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/progressive-discount-banner/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/quick-view/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/sales-pop/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 
 // Call initialization function.
 sgsb_plugin();

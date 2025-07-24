@@ -80,26 +80,26 @@ class FlyCartModule extends BaseModule {
 	}
 
 	/**
-	 * Module activation function.
+	 * Module activation method.
 	 *
 	 * @return bool
 	 */
 	public function activate(): bool {
 		$activated = parent::activate();
 
-//		( new Installer() )->run();
-
 		return $activated;
 	}
 
 	/**
-	 * Module deactivation function.
+	 * Module deactivation method.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-//	public function deactivate() {
-//		// TODO: Implement deactivate() method.
-//	}
+	public function deactivate(): bool {
+		$deactivated = parent::deactivate();
+
+		return $deactivated;
+	}
 
 	/**
 	 * Starting point of the module.
