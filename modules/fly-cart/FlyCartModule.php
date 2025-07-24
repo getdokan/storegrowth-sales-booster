@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
@@ -32,7 +31,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public static function get_id() {
-		return 'icon-fast-cart-module';
+		return 'fly-cart';
 	}
 
 	/**

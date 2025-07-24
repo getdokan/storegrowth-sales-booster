@@ -56,6 +56,34 @@ class ModuleManager {
 	}
 
 	/**
+	 * List Modules for frontend.
+	 *
+	 * @return array
+	 */
+	public function list_all_modules() {
+		$modules = $this->get_all();
+
+		$all_modules = array();
+		$active_ids  = $this->get_active_modules();
+
+		foreach ( $modules as $module ) {
+			$module_id = $module->get_id();
+
+			$all_modules[] = array(
+				'id'          => $module_id,
+				'name'        => $module->get_name(),
+				'icon'        => $module->get_icon(),
+				'banner'      => $module->get_banner(),
+				'description' => $module->get_description(),
+				'category'    => $module->get_module_category(),
+				'status'      => isset( $active_ids[ $module_id ] ),
+			);
+		}
+
+		return $all_modules;
+	}
+
+	/**
 	 * Get all active modules.
 	 *
 	 * @return array<string, ModuleSkeleton>

@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 

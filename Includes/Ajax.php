@@ -88,7 +88,7 @@ class Ajax {
 	private function get_all_modules() {
 		$modules = new ModuleManager();
 
-		wp_send_json( $modules->get_all() );
+		wp_send_json( $modules->list_all_modules() );
 	}
 
 	/**

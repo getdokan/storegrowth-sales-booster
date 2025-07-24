@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 

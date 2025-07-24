@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\QuickView;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
 use STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
