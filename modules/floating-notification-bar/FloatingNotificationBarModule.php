@@ -102,26 +102,6 @@ class FloatingNotificationBarModule extends BaseModule {
 	}
 
 	/**
-	 * Setting Initial Banner Data.
-	 *
-	 * @return void
-	 */
-	public function set_initial_banner_data() {
-		$flags = get_option( 'sgsb_discount_banner_flags', array() );
-		if ( isset( $flags['done_setting_initial_banner_data'] ) ) {
-			return;
-		}
-		$default_data = array(
-			'default_banner_text' => 'Shop more than $100 to get free shipping.',
-		);
-		delete_option( 'sgsb_floating_notification_bar_settings' );
-		$result = update_option( 'sgsb_floating_notification_bar_settings', $default_data );
-		if ( $result ) {
-			update_option( 'sgsb_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
-		}
-	}
-
-	/**
 	 * Starting point of the module.
 	 *
 	 * @return void
