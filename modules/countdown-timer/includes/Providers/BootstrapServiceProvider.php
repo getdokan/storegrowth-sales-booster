@@ -43,8 +43,6 @@ class BootstrapServiceProvider extends BootableServiceProvider {
             $this->share_with_implements_tags( $service );
             $this->getContainer()->get( $service );
         }
-
-        $this->getContainer()->addServiceProvider( new ServiceProvider() );
     }
 
     /**
