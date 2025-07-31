@@ -7,8 +7,9 @@ use STOREGROWTH\SPSB\DependencyManagement\Container;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 abstract class BaseModule implements ModuleSkeleton {
+
 	use Singleton;
-    
+
     protected $active_modules_option_key = 'sgsb_active_module_ids';
 
     protected function get_container(): Container {

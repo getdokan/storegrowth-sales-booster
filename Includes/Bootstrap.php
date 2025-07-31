@@ -41,6 +41,9 @@ class Bootstrap {
 
 		// Include admin classes.
 		$this->load_admin_classes();
+
+		// Register hooks.
+		$this->register_hooks();
 	}
 
 	/**
@@ -67,6 +70,7 @@ class Bootstrap {
      */
     public function register_rest_routes(): void {
 		$controller_list = $this->get_container()->get( WP_REST_Controller::class );
+
 		foreach ( $controller_list as $controller ) {
 			if ( method_exists( $controller, 'register_routes' ) ) {	
 				$controller->register_routes();

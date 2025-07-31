@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\QuickView\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,14 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add ajax actions inside this class.
  */
-class Ajax {
+class Ajax implements HookRegistry {
 
-	use Singleton;
-
-	/**
-	 * Constructor of Ajax class.
-	 */
-    public function __construct() {
+    /**
+     * Register Hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function register_hooks(): void {
 		add_action( 'wp_ajax_sgsb_quick_view_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
 		add_action( 'wp_ajax_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );

@@ -41,7 +41,6 @@ class BootstrapServiceProvider extends BootableServiceProvider {
     public function boot(): void {
         foreach ( $this->services as $service ) {
             $this->share_with_implements_tags( $service );
-            $this->getContainer()->get( $service );
         }
     }
 

@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,16 +15,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Load sample ajax functionality inside this class.
+ * Add ajax actions inside this class.
  */
-class Ajax {
-
-	use Singleton;
+class Ajax implements HookRegistry {
 
 	/**
-	 * Constructor of Bootstrap class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'wp_ajax_popup_products', array( $this, 'popup_products' ) );
 		add_action( 'wp_ajax_nopriv_popup_products', array( $this, 'popup_products' ) );
 

@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -17,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load post type related functionality inside this class.
  */
-class OrderBump {
+class OrderBump implements HookRegistry {
 
 	use Singleton;
 
 	/**
 	 * Constructor of Woocommerce_Functionality class.
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'woocommerce_review_order_before_submit', array( $this, 'bump_product_frontend_view' ) );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_custom_price_to_cart_item' ) );
 	}

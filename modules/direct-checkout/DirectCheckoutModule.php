@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Modules\DirectCheckout\Includes\Providers\BootstrapServiceProvider;
 
 // If this file is called directly, abort.
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class DirectCheckoutModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'direct-checkout';
 
 	/**
@@ -30,7 +27,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'direct-checkout';
 	}
 
@@ -39,7 +36,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout.svg' );
 	}
 
@@ -48,7 +45,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout-module-img.webp' );
 	}
 
@@ -57,7 +54,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Direct Checkout';
 	}
 
@@ -66,7 +63,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience';
 	}
 
@@ -75,7 +72,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Stock';
 	}
 
@@ -106,7 +103,7 @@ class DirectCheckoutModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

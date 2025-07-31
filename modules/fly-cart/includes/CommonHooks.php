@@ -7,24 +7,26 @@
 
 namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 /**
  * Miscellaneous hooks implementation.
  */
-class CommonHooks {
+class CommonHooks implements HookRegistry {
 
-	use Singleton;
-
-	/**
-	 * Constructor of Enqueue class.
-	 */
-    public function __construct() {
+    /**
+     * Register Hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function register_hooks(): void {
 		add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragment' ) );
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );

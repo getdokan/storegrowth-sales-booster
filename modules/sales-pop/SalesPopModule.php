@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class SalesPopModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'sales-pop';
 
 	/**
@@ -30,7 +27,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'sales-pop';
 	}
 
@@ -39,7 +36,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
 	}
 
@@ -48,7 +45,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop-module-img.webp' );
 	}
 
@@ -57,7 +54,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Sales Notification';
 	}
 
@@ -66,7 +63,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
 	}
 
@@ -75,7 +72,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Sales';
 	}
 
@@ -106,7 +103,7 @@ class SalesPopModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		do_action( 'storegrowth_sales_pop_module_init' );

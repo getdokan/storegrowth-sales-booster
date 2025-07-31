@@ -7,24 +7,28 @@
 
 namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+    exit;
 }
 
 /**
- * Add styles of scripts files inside this class.
+ * Add styles and scripts files of `Countdown Timer` module inside this class.
  */
-class EnqueueScript {
+class EnqueueScript implements HookRegistry {
+    use Singleton;
 
-	use Singleton;
-
-	/**
-	 * Constructor of Bootstrap class.
-	 */
-    public function __construct() {
+    /**
+     * Register Hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return void
+     */
+    public function register_hooks(): void {
 		// Assets for frontend.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );

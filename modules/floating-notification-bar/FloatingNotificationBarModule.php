@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class FloatingNotificationBarModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'floating-bar-icon';
 
 	/**
@@ -30,7 +27,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'floating-notification-bar';
 	}
 
@@ -39,7 +36,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
 	}
 
@@ -48,7 +45,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-feature-image.webp' );
 	}
 
@@ -57,7 +54,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Floating Bar';
 	}
 
@@ -66,7 +63,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Captivate with announcements. Customizable bars draw attention to special offers, discounts, and important news.';
 	}
 
@@ -75,7 +72,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Discount Banner';
 	}
 
@@ -106,7 +103,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		do_action( 'storegrowth_floating_bar_module_init' );

@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class FlyCartModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'icon-fast-cart-module';
 
 	/**
@@ -30,7 +27,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'fly-cart';
 	}
 
@@ -39,7 +36,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
 	}
 
@@ -48,7 +45,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'fly-cart/assets/images/quick-cart-module-img.webp' );
 	}
 
@@ -57,7 +54,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Fly Cart';
 	}
 
@@ -66,7 +63,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Streamline shopping effortlessly. Add and review items without leaving your page, simplifying the experience.';
 	}
 
@@ -75,7 +72,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Fly Cart';
 	}
 
@@ -106,7 +103,7 @@ class FlyCartModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

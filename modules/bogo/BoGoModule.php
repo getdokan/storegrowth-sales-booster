@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Sales Pop module initiator class.
  */
 class BoGoModule extends BaseModule {
+
 	/**
 	 * Module icon.
 	 *
@@ -109,7 +110,7 @@ class BoGoModule extends BaseModule {
 	 */
 	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-			/**
+		/**
 		 * Module initialized.
 		 *
 		 * @since 1.0.2

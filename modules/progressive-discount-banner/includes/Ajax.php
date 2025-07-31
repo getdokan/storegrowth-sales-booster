@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,14 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add ajax actions inside this class.
  */
-class Ajax {
-
-	use Singleton;
+class Ajax implements HookRegistry {
 
 	/**
-	 * Constructor of Ajax class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'wp_ajax_sgsb_pd_banner_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_sgsb_pd_banner_get_settings', array( $this, 'get_settings' ) );
 	}

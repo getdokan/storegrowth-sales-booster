@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\QuickView;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QuickViewModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'quickview-icon-blue';
 
 	/**
@@ -30,7 +27,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'quick-view';
 	}
 
@@ -39,7 +36,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
 	}
 
@@ -48,7 +45,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'quick-view/assets/images/quick-view-module-img.webp' );
 	}
 
@@ -57,7 +54,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Quick View';
 	}
 
@@ -66,7 +63,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Explore product details instantly. Get a sneak peek of product photos, descriptions, and pricing at a glance - all from your shop page.';
 	}
 
@@ -75,7 +72,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Quick View';
 	}
 
@@ -106,7 +103,7 @@ class QuickViewModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -17,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load post type related functionality inside this class.
  */
-class SalesPOP {
+class SalesPOP implements HookRegistry {
 
 	use Singleton;
 
 	/**
 	 * Constructor of Woocommerce_Functionality class.
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'plugins_loaded', array( $this, 'load_assets' ) );
 		add_action( 'wp_footer', array( $this, 'footer_files' ) );
 	}

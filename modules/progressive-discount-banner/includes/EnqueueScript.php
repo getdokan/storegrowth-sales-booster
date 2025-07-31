@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -15,18 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Add styles and scripts files of `Progressive Discount Banner` Modules inside this class.
+ * Add styles and scripts files of `Countdown Timer` module inside this class.
  */
-class EnqueueScript {
-
+class EnqueueScript implements HookRegistry {
 	use Singleton;
 
 	/**
-	 * Constructor of Enqueue class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 

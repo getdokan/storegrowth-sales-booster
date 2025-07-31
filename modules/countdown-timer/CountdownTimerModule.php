@@ -8,7 +8,6 @@
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers\BootstrapServiceProvider;
 
 // If this file is called directly, abort.
@@ -21,14 +20,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class CountdownTimerModule extends BaseModule {
 
-	use Singleton;
-
 	/**
 	 * Unique ID for a module.
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'countdown-timer';
 	}
 
@@ -37,7 +34,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
@@ -46,7 +43,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'countdown-timer/assets/images/sales-countdown-module-img.webp' );
 	}
 
@@ -55,7 +52,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Countdown Timer';
 	}
 
@@ -64,7 +61,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.';
 	}
 
@@ -73,7 +70,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Stock';
 	}
 
@@ -104,7 +101,7 @@ class CountdownTimerModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

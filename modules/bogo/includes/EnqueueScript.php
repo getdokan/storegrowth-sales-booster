@@ -22,12 +22,13 @@ class EnqueueScript implements HookRegistry {
 	use Singleton;
 
 	/**
-	 * Register hooks.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
 	 *
 	 * @return void
 	 */
-	public function register_hooks(): void
-	{
+	public function register_hooks(): void {
 		add_action( 'init', array( $this, 'register_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );

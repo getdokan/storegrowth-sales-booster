@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\StockBar;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\StockBar\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class StockBarModule extends BaseModule {
 
-	use Singleton;
-
 	protected $icon = 'stock-bar-icon';
 
 	/**
@@ -30,7 +27,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'stock-bar';
 	}
 
@@ -39,7 +36,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
 	}
 
@@ -48,7 +45,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-module-img.webp' );
 	}
 
@@ -57,7 +54,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'Stock Bar';
 	}
 
@@ -66,7 +63,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.';
 	}
 
@@ -75,7 +72,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Stock';
 	}
 
@@ -106,7 +103,7 @@ class StockBarModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
 		/**

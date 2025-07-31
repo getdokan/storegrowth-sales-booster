@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\DirectCheckout\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,15 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Miscellaneous hooks implementation.
  */
-class CommonHooks {
-
-	use Singleton;
+class CommonHooks implements HookRegistry {
 
 	/**
-	 * Constructor of Common_Hooks class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
-
+	public function register_hooks(): void {
 		$this->direct_checkout_hooks_init();
 	}
 

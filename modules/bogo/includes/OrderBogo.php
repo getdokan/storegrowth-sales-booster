@@ -7,9 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
-use MangoPay\Hook;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load post type related functionality inside this class.
  */
-class OrderBogo extends HookRegistry {
+class OrderBogo implements HookRegistry {
 
 	use Singleton;
 

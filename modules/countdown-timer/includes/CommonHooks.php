@@ -7,6 +7,8 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,12 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Miscellaneous hooks implementation.
  */
-class CommonHooks {
+class CommonHooks implements HookRegistry {
 
 	/**
-	 * Constructor of Common_Hooks class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_countdown_timer_template' ) );
 
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );

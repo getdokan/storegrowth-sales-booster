@@ -18,11 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Load sample ajax functionality inside this class.
  */
 class Ajax implements HookRegistry {
+
 	/**
-	 * Constructor of Bootstrap class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function register_hooks(): void
-	{
+	public function register_hooks(): void {
 		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );
 		add_action( 'wp_ajax_nopriv_bogo_create', array( $this, 'bogo_create' ) );
 
