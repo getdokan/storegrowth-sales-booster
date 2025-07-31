@@ -22,68 +22,68 @@ interface ModuleSkeleton {
 	 *
 	 * @return string
 	 */
-	public static function get_id();
+	public static function get_id(): string;
 
 	/**
 	 * Icon for a module.
 	 *
 	 * @return string
 	 */
-	public function get_banner();
+	public function get_banner(): string;
 
 	/**
 	 * Icon for a module.
 	 *
 	 * @return string
 	 */
-	public function get_icon();
+	public function get_icon(): string;
 
 	/**
 	 * Unique name for a module.
 	 *
 	 * @return string
 	 */
-	public function get_name();
+	public function get_name(): string;
 
 	/**
 	 * Description for the module.
 	 *
 	 * @return string
 	 */
-	public function get_description();
+	public function get_description(): string;
 
 	/**
 	 * Category for the module.
 	 *
 	 * @return string
 	 */
-	public function get_module_category();
+	public function get_module_category(): string;
 
 	/**
 	 * Module is active function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function is_active();
+	public function is_active(): bool;
 
 	/**
 	 * Module activation function.
 	 *
 	 * @return bool
 	 */
-	public function activate();
+	public function activate(): bool;
 
 	/**
 	 * Module deactivation function.
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function deactivate();
+	public function deactivate(): bool;
 
 	/**
 	 * Boot the module.
 	 *
 	 * @return void
 	 */
-	public function boot();
+	public function boot(): void;
 }

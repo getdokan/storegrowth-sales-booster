@@ -30,13 +30,13 @@ trait Singleton {
 	 * @return self
 	 */
 	public static function instance() {
-		if ( self::$object ) {
-			return self::$object;
+		if ( static::$object ) {
+			return static::$object;
 		}
 
-		self::$object = new self();
+		static::$object = new static();
 
-		return self::$object;
+		return static::$object;
 	}
 
 	/**

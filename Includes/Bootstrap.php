@@ -11,6 +11,8 @@ use STOREGROWTH\SPSB\Admin\AdminMenu;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Admin\AdminHooks;
 use STOREGROWTH\SPSB\DependencyManagement\Container;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use WP_REST_Controller;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,6 +42,37 @@ class Bootstrap {
 		// Include admin classes.
 		$this->load_admin_classes();
 	}
+
+	/**
+	 * Register hooks.
+	 *
+	 * @return void
+	 */
+	public function register_hooks(): void {
+        add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+
+		$hook_registry_list = $this->get_container()->get( HookRegistry::class );
+
+		foreach ( $hook_registry_list as $hook_registry ) {
+			if ( method_exists( $hook_registry, 'register_hooks' ) ) {
+				$hook_registry->register_hooks();
+			}
+		}
+    }
+
+    /**
+     * Register REST API routes.
+	 * 
+	 * @return void
+     */
+    public function register_rest_routes(): void {
+		$controller_list = $this->get_container()->get( WP_REST_Controller::class );
+		foreach ( $controller_list as $controller ) {
+			if ( method_exists( $controller, 'register_routes' ) ) {	
+				$controller->register_routes();
+			}
+		}
+    }
 
 	/**
 	 * Magic getter to bypass referencing objects

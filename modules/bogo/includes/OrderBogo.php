@@ -7,8 +7,9 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
+use MangoPay\Hook;
 use STOREGROWTH\SPSB\Traits\Singleton;
-
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load post type related functionality inside this class.
  */
-class OrderBogo {
+class OrderBogo extends HookRegistry {
 
 	use Singleton;
 
 	/**
 	 * Constructor of Woocommerce_Functionality class.
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'woocommerce_single_product_summary', array( $this, 'bogo_product_frontend_view' ), 6 );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_custom_price_to_cart_item' ) );
 

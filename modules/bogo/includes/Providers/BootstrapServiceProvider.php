@@ -4,9 +4,9 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Api;
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\OrderBogo;
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\BoGo\Includes\REST\BogoController;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -30,7 +30,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	    OrderBogo::class,
 		Ajax::class,
 		EnqueueScript::class,
-		Api::class,
+        BogoController::class
     ];
 
     /**
@@ -43,7 +43,6 @@ class BootstrapServiceProvider extends BootableServiceProvider {
     public function boot(): void {
         foreach ( $this->services as $service ) {
             $this->share_with_implements_tags( $service );
-            $this->getContainer()->get( $service );
         }
     }
 

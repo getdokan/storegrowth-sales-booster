@@ -9,7 +9,6 @@ namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,9 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Sales Pop module initiator class.
  */
 class BoGoModule extends BaseModule {
-
-	use Singleton;
-
+	/**
+	 * Module icon.
+	 *
+	 * @var string
+	 */
 	protected $icon = 'upsell-order-bump';
 
 	/**
@@ -30,7 +31,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public static function get_id() {
+	public static function get_id(): string {
 		return 'bogo';
 	}
 
@@ -39,7 +40,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_icon() {
+	public function get_icon(): string {
 		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
 	}
 
@@ -48,7 +49,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_banner() {
+	public function get_banner(): string {
 		return sgsb_modules_url( 'bogo/assets/images/bogo-module-img.webp' );
 	}
 
@@ -57,7 +58,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_name() {
+	public function get_name(): string {
 		return 'BOGO';
 	}
 
@@ -66,7 +67,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_description(): string {
 		return 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.';
 	}
 
@@ -75,7 +76,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return string
 	 */
-	public function get_module_category() {
+	public function get_module_category(): string {
 		return 'Upsell';
 	}
 
@@ -106,7 +107,7 @@ class BoGoModule extends BaseModule {
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 			/**
 		 * Module initialized.

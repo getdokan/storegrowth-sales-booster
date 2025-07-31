@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,23 +17,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load sample ajax functionality inside this class.
  */
-class Ajax {
-
-	use Singleton;
-
-	/**
-	 * BoGo Instance.
-	 *
-	 * @var BoGo
-	 */
-	private $bogo;
-
+class Ajax implements HookRegistry {
 	/**
 	 * Constructor of Bootstrap class.
 	 */
-	public function __construct() {
-		$this->bogo = $this->get_bogo_instance();
-
+	public function register_hooks(): void
+	{
 		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );
 		add_action( 'wp_ajax_nopriv_bogo_create', array( $this, 'bogo_create' ) );
 
@@ -62,15 +51,8 @@ class Ajax {
 		add_action( 'wp_ajax_nopriv_update_offer_product', array( $this, 'handle_update_offer_product' ) );
 	}
 
-	/**
-	 * Get BoGo Instance.
-	 *
-	 * @since 1.29.0
-	 *
-	 * @return BoGo
-	 */
-	private function get_bogo_instance() {
-		return new BoGo();
+	protected function get_bogo(): Bogo {
+		return storegrowth_get_container()->get( Bogo::class );
 	}
 
 	public function handle_update_offer_product() {
@@ -169,7 +151,7 @@ class Ajax {
 
 		$data = $_POST['data']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
 
-		$result = $this->bogo->create( $data );
+		$result = $this->get_bogo()->create( $data );
 
 		if ( is_wp_error($result) ) {
 			wp_send_json_error( $result->get_error_message() );
@@ -215,13 +197,13 @@ class Ajax {
 		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
 
 		if ( $bogo_id ) {
-			$result = $this->bogo->get_item($bogo_id);
+			$result = $this->get_bogo()->get_item($bogo_id);
             if ( is_wp_error($result) ) {
                 wp_send_json_error( $result->get_error_message() );
             }
 			wp_send_json_success( $result );
 		} else {
-			$bogos = $this->bogo->get_items();
+			$bogos = $this->get_bogo()->get_items();
 			wp_send_json_success( $bogos['data'] ?? [] );
 		}
 	}
@@ -252,7 +234,7 @@ class Ajax {
 		check_ajax_referer( 'ajd_protected' );
 
 		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-        $result  = $this->bogo->delete($bogo_id);
+        $result  = $this->get_bogo()->delete($bogo_id);
 
         if ( is_wp_error($result) ) {
             wp_send_json_error( $result->get_error_message() );
@@ -273,7 +255,7 @@ class Ajax {
 			wp_send_json_error( __( 'Offer id & status is required', 'storegrowth-sales-booster' ) );
 		}
 
-        $result = $this->bogo->set_status( $post_id, $data['status'] );
+        $result = $this->get_bogo()->set_status( $post_id, $data['status'] );
 
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( $result->get_error_message() );

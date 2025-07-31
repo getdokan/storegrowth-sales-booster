@@ -20,13 +20,6 @@ defined( 'ABSPATH' ) || exit();
 class BogoController extends WP_REST_Controller {
 
     /**
-     * Bogo instance.
-     *
-     * @var Bogo
-     */
-    protected Bogo $bogo;
-
-    /**
      * Class Constructor.
      *
      * @return void
@@ -34,7 +27,10 @@ class BogoController extends WP_REST_Controller {
     public function __construct() {
         $this->namespace = 'sales-booster/v1';
         $this->rest_base = 'bogo/offers';
-        $this->bogo      = new Bogo();
+    }
+
+    protected function get_bogo(): Bogo {
+        return storegrowth_get_container()->get( Bogo::class );
     }
 
     /**
@@ -147,7 +143,7 @@ class BogoController extends WP_REST_Controller {
             'paged'          => $params['page'],
         ];
 
-        $items = $this->bogo->get_items( $args );
+        $items = $this->get_bogo()->get_items( $args );
 
         if ( ! $items['data'] ) {
             return new WP_Error( 'no_offer_items', __( 'No BOGO offers found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
@@ -175,7 +171,7 @@ class BogoController extends WP_REST_Controller {
      */
     public function get_item( $request ) {
         $id   = $request->get_param( 'id' );
-        $item = $this->bogo->get_item( $id );
+        $item = $this->get_bogo()->get_item( $id );
 
         if ( is_wp_error( $item ) ) {
             return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
@@ -203,7 +199,7 @@ class BogoController extends WP_REST_Controller {
             return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
         }
 
-        $result = $this->bogo->create( $data );
+        $result = $this->get_bogo()->create( $data );
 
         if ( is_wp_error( $result ) ) {
             return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
@@ -218,7 +214,7 @@ class BogoController extends WP_REST_Controller {
         }
 
         $post         = get_post( $result );
-        $created_data = $this->bogo->get_item( $post->ID );
+        $created_data = $this->get_bogo()->get_item( $post->ID );
         $response     = $this->prepare_item_for_response( $created_data, $request );
 
         $response->set_status( 201 );
@@ -243,14 +239,14 @@ class BogoController extends WP_REST_Controller {
             return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
         }
 
-        $result = $this->bogo->update( $id, $data );
+        $result = $this->get_bogo()->update( $id, $data );
 
         if ( is_wp_error( $result ) ) {
             return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
         }
 
         $post         = get_post( $result );
-        $created_data = $this->bogo->get_item( $post->ID );
+        $created_data = $this->get_bogo()->get_item( $post->ID );
         $response     = $this->prepare_item_for_response( $created_data, $request );
 
         $response->set_status( 201 );
@@ -269,7 +265,7 @@ class BogoController extends WP_REST_Controller {
      */
     public function delete_item( $request ) {
         $id     = $request->get_param( 'id' );
-        $result = $this->bogo->delete( $id );
+        $result = $this->get_bogo()->delete( $id );
 
         if ( is_wp_error( $result ) ) {
             return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );

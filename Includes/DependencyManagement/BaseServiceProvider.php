@@ -72,6 +72,13 @@ abstract class BaseServiceProvider extends AbstractServiceProvider {
             }
         }
 
+        foreach ( class_parents( $id ) as $parent ) {
+            $definition->addTag( $parent );
+            if ( ! in_array( $parent, $this->services, true ) ) {
+                $this->services[] = $parent;
+            }
+        }
+
         return $definition;
     }
 

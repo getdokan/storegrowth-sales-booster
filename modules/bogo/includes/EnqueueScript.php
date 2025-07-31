@@ -8,6 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,15 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add styles and scripts files of `Upsell Order Bogo` Modules inside this class.
  */
-class EnqueueScript {
-
-
+class EnqueueScript implements HookRegistry {
 	use Singleton;
 
 	/**
-	 * Constructor of Enqueue class.
+	 * Register hooks.
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void
+	{
 		add_action( 'init', array( $this, 'register_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
