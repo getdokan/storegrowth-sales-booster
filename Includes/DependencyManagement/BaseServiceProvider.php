@@ -5,6 +5,7 @@
 
 namespace STOREGROWTH\SPSB\DependencyManagement;
 
+use ReflectionClass;
 use STOREGROWTH\SPSB\ThirdParty\Packages\League\Container\Definition\DefinitionInterface;
 use STOREGROWTH\SPSB\ThirdParty\Packages\League\Container\ServiceProvider\AbstractServiceProvider;
 
@@ -73,9 +74,13 @@ abstract class BaseServiceProvider extends AbstractServiceProvider {
         }
 
         foreach ( class_parents( $id ) as $parent ) {
-            $definition->addTag( $parent );
-            if ( ! in_array( $parent, $this->services, true ) ) {
-                $this->services[] = $parent;
+           $class = new ReflectionClass( $parent );
+
+            if ( $class->isAbstract() ) {
+                $definition->addTag( $parent );
+                if ( ! in_array( $parent, $this->services, true ) ) {
+                    $this->services[] = $parent;
+                }
             }
         }
 
