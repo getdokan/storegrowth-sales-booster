@@ -2,7 +2,7 @@
   "name": "dokan/storegrowth-lite",
   "autoload": {
     "psr-4": {
-      "STOREGROWTH\\SPSB\\": "Includes/",
+      "STOREGROWTH\\SPSB\\": "includes/",
       "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\": "lib/packages/",
       "STOREGROWTH\\SPSB\\Modules\\BoGo\\": "modules/bogo",
       "STOREGROWTH\\SPSB\\Modules\\BoGo\\Includes\\": "modules/bogo/includes",
