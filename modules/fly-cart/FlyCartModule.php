@@ -46,7 +46,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'fly-cart/assets/images/quick-cart-module-img.webp' );
+		return sgsb_modules_url( 'fly-cart/assets/images/fly-cart-thumbnail.png' );
 	}
 
 	/**

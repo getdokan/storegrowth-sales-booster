@@ -46,7 +46,7 @@ class UpsellOrderBumpModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-module-img.webp' );
+		return sgsb_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-thumbnail.png' );
 	}
 
 	/**

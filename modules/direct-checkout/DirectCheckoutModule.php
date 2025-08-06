@@ -46,7 +46,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout-module-img.webp' );
+		return sgsb_modules_url( 'direct-checkout/assets/images/direct-checkout-thumbnail.png' );
 	}
 
 	/**

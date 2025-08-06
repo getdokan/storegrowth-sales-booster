@@ -46,7 +46,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'quick-view/assets/images/quick-view-module-img.webp' );
+		return sgsb_modules_url( 'quick-view/assets/images/quick-view-thumbnail.png' );
 	}
 
 	/**
