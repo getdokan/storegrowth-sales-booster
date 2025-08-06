@@ -65,17 +65,21 @@ class Bootstrap {
 
     /**
      * Register REST API routes.
-	 * 
-	 * @return void
+     *
+     * @return void
      */
     public function register_rest_routes(): void {
-		$controller_list = $this->get_container()->get( WP_REST_Controller::class );
+        if ( ! $this->get_container()->has( WP_REST_Controller::class ) ) {
+            return;
+        }
 
-		foreach ( $controller_list as $controller ) {
-			if ( method_exists( $controller, 'register_routes' ) ) {	
-				$controller->register_routes();
-			}
-		}
+        $controller_list = $this->get_container()->get( WP_REST_Controller::class );
+
+        foreach ( $controller_list as $controller ) {
+            if ( method_exists( $controller, 'register_routes' ) ) {
+                $controller->register_routes();
+            }
+        }
     }
 
 	/**
