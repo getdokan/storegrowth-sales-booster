@@ -39,7 +39,7 @@ class Assets {
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
 
