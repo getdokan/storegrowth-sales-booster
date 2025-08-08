@@ -37,7 +37,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
+		return Helper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-feature-image.webp' );
+		return Helper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-feature-image.webp' );
 	}
 
 	/**

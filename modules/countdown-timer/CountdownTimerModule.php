@@ -35,7 +35,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
+		return Helper::get_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'countdown-timer/assets/images/sales-countdown-module-img.webp' );
+		return Helper::get_modules_url( 'countdown-timer/assets/images/sales-countdown-module-img.webp' );
 	}
 
 	/**

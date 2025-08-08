@@ -37,7 +37,7 @@ class UpsellOrderBumpModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump.svg' );
+		return Helper::get_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class UpsellOrderBumpModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-module-img.webp' );
+		return Helper::get_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-module-img.webp' );
 	}
 
 	/**

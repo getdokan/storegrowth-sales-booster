@@ -10,7 +10,7 @@ if ( ! $product->managing_stock() ) {
 }
 
 $settings                         = get_option( 'sgsb_stock_bar_settings' );
-$enable_stock_bar_in_product_page = sgsb_find_option_setting( $settings, 'product_page_stock_bar_enable', true );
+$enable_stock_bar_in_product_page = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_page_stock_bar_enable', true );
 
 if ( is_product() && ! $enable_stock_bar_in_product_page ) {
 	return;
@@ -20,15 +20,15 @@ $total_sales = intval( $product->get_total_sales() );
 $stock       = intval( $product->get_stock_quantity() );
 $total_stock = $stock + $total_sales;
 
-$bar_height          = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
-$bg_color            = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );
-$fg_color            = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );
-$sd_format           = sgsb_find_option_setting( $settings, 'stock_display_format', 'above' );
-$total_sell_text     = sgsb_find_option_setting( $settings, 'total_sell_count_text', 'Total Sold' );
-$available_item_text = sgsb_find_option_setting( $settings, 'available_item_count_text', 'Available Item' );
+$bar_height          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
+$bg_color            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
+$fg_color            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
+$sd_format           = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stock_display_format', 'above' );
+$total_sell_text     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'total_sell_count_text', 'Total Sold' );
+$available_item_text = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'available_item_count_text', 'Available Item' );
 
 // Vars for threshold warning msg.
-$show_stock_status = sgsb_find_option_setting( $settings, 'show_stock_status', true );
+$show_stock_status = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_stock_status', true );
 $stock_contents    = apply_filters(
     'sgsb_stock_bar_warning_contents',
     array(

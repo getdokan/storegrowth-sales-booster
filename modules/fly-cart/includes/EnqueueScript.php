@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,30 +41,30 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function wp_enqueue_scripts() {
 		$settings = get_option( 'sgsb_fly_cart_settings' );
-		$layout   = sgsb_find_option_setting( $settings, 'layout', 'side' );
+		$layout   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'layout', 'side' );
 		if ( is_checkout() || is_cart() ) {
 			return;
 		}
 
 		wp_enqueue_style(
 			'flaticon',
-			sgsb_modules_url( 'fly-cart/assets/font/flaticon.css' ),
+			PluginHelper::get_modules_url( 'fly-cart/assets/font/flaticon.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/font/flaticon.css' ) )
 		);
 
 		wp_enqueue_style(
 			'sgsb-ffc-style',
-			sgsb_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
+			PluginHelper::get_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'wfc-flyto',
-			sgsb_modules_url( 'fly-cart/assets/js/flyto.js' ),
+			PluginHelper::get_modules_url( 'fly-cart/assets/js/flyto.js' ),
 			array( 'jquery', 'jquery-effects-shake' ),
-			filemtime( sgsb_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/js/flyto.js' ) ),
 			true
 		);
 
@@ -93,14 +94,14 @@ class EnqueueScript implements HookRegistry {
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 
-			$settings_file = require sgsb_modules_path( 'fly-cart/assets/build/settings.asset.php' );
+			$settings_file = require PluginHelper::get_modules_path( 'fly-cart/assets/build/settings.asset.php' );
 
 			// Extra dependencies.
 			$settings_file['dependencies'][] = 'wp-color-picker';
 
 			wp_enqueue_script(
 				'sgsb-fly-cart-settings',
-				sgsb_modules_url( 'fly-cart/assets/build/settings.js' ),
+				PluginHelper::get_modules_url( 'fly-cart/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -114,11 +115,11 @@ class EnqueueScript implements HookRegistry {
 	private function qc_basic_inline_styles() {
 		// Get style options.
 		$settings              = get_option( 'sgsb_fly_cart_settings' );
-		$wfc_color             = sgsb_find_option_setting( $settings, 'icon_color', '#fff' );
-		$widget_bg_color       = sgsb_find_option_setting( $settings, 'widget_bg_color', '#fff' );
-		$product_card_bg_color = sgsb_find_option_setting( $settings, 'product_card_bg_color', '#fff' );
-		$wfc_btn_bgcolor       = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
-		$shop_btn_bgcolor      = sgsb_find_option_setting( $settings, 'shopping_button_bg_color', '#073B4C' );
+		$wfc_color             = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
+		$widget_bg_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
+		$product_card_bg_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
+		$wfc_btn_bgcolor       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
+		$shop_btn_bgcolor      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'shopping_button_bg_color', '#073B4C' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -176,17 +177,17 @@ class EnqueueScript implements HookRegistry {
 		// Get checkout redirection data.
 		$qcart_settings           = get_option( 'sgsb_fly_cart_settings' );
 		$dir_checkout_settings    = get_option( 'sgsb_direct_checkout_settings' );
-		$cart_layout_type         = sgsb_find_option_setting( $qcart_settings, 'layout', 'side' );
-		$is_add_to_qcart_redirect = sgsb_find_option_setting( $qcart_settings, 'enable_add_to_cart_redirect', true );
-		$checkout_redirect        = sgsb_find_option_setting( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
+		$cart_layout_type         = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'layout', 'side' );
+		$is_add_to_qcart_redirect = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'enable_add_to_cart_redirect', true );
+		$checkout_redirect        = \STOREGROWTH\SPSB\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
 
 		$is_checkout_redirect = ( 'quick-cart-checkout' === $checkout_redirect );
 
 		wp_enqueue_script(
 			'wfc-script',
-			sgsb_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
+			PluginHelper::get_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
 			true
 		);
 

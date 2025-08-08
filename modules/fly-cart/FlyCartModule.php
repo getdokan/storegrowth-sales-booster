@@ -37,7 +37,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
+		return Helper::get_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'fly-cart/assets/images/quick-cart-module-img.webp' );
+		return Helper::get_modules_url( 'fly-cart/assets/images/quick-cart-module-img.webp' );
 	}
 
 	/**

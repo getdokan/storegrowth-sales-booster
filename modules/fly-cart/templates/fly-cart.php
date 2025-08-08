@@ -9,11 +9,11 @@
  */
 
 $settings   = get_option( 'sgsb_fly_cart_settings' );
-$layout     = sgsb_find_option_setting( $settings, 'layout', 'side' );
+$layout     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'layout', 'side' );
 $class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
 
-$cart_icon_color      = sgsb_find_option_setting( $settings, 'icon_color', '#FFF' );
-$action_btn_active_bg = sgsb_find_option_setting( $settings, 'buttons_bg_color', '#0875FF' );
+$cart_icon_color      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#FFF' );
+$action_btn_active_bg = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
 ?>
 <div class="wfc-cart-icon <?php echo esc_attr( $icon_position ); ?>">
 	<span class="wfc-open-btn wfc-icon <?php echo esc_attr( $icon_name ); ?>">

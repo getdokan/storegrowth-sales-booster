@@ -37,7 +37,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
+		return Helper::get_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-module-img.webp' );
+		return Helper::get_modules_url( 'stock-bar/assets/images/stock-bar-module-img.webp' );
 	}
 
 	/**

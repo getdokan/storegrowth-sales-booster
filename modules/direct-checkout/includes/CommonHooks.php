@@ -35,7 +35,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function direct_checkout_hooks_init() {
 		$settings               = get_option( 'sgsb_direct_checkout_settings' );
-		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+		$buy_now_button_setting = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 		if ( 'cart-with-buy-now' === $buy_now_button_setting || 'specific-buy-now' === $buy_now_button_setting ) {
 			// Show direct checkout button on shop loop item and product page.
 			add_filter( 'woocommerce_loop_add_to_cart_link', array( $this, 'show_direct_checkout_button_shop' ), 15 );
@@ -79,7 +79,7 @@ class CommonHooks implements HookRegistry {
 			$product_id                    = get_the_ID();
 			$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
 			$settings                      = get_option( 'sgsb_direct_checkout_settings' );
-			$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-to-buy-now' );
+			$buy_now_button_setting        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-to-buy-now' );
 			if (
 				( 'cart-to-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
 				|| 'cart-to-buy-now' === $buy_now_button_setting
@@ -137,7 +137,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	private function should_display_buy_now_button( $option_key ) {
 		$settings = get_option( 'sgsb_direct_checkout_settings' );
-		return sgsb_find_option_setting( $settings, $option_key, true );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, $option_key, true );
 	}
 
 	/**
@@ -197,7 +197,7 @@ class CommonHooks implements HookRegistry {
 		$product_id                    = get_the_ID();
 		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
 		$settings                      = get_option( 'sgsb_direct_checkout_settings' );
-		$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+		$buy_now_button_setting        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 
 		if (
 		( 'cart-to-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
@@ -221,7 +221,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function set_template_path( $template, $template_name ) {
 		$settings               = get_option( 'sgsb_direct_checkout_settings' );
-		$buy_now_button_setting = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+		$buy_now_button_setting = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 		// Override template path .
 		if ( 'cart-to-buy-now' === $buy_now_button_setting ) {
 			if ( in_array( $template_name, array( 'single-product/add-to-cart/simple.php', 'loop/add-to-cart.php' ), true ) ) {
@@ -241,7 +241,7 @@ class CommonHooks implements HookRegistry {
 		$product_id                    = get_the_ID();
 		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
 		$settings                      = get_option( 'sgsb_direct_checkout_settings' );
-		$buy_now_button_setting        = sgsb_find_option_setting( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
+		$buy_now_button_setting        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 
 		if (
 		( 'cart-with-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )

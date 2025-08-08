@@ -10,11 +10,11 @@ use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Helper;
 $settings          = Helper::sgsb_pd_banner_get_settings();
 $banner_text       = Helper::sgsb_pd_banner_get_banner_text( $settings );
 $banner_icon       = Helper::sgsb_pd_banner_get_banner_icon( $settings );
-$button_style      = sgsb_find_option_setting( $settings, 'btn_style', true );
-$button_bg         = sgsb_find_option_setting( $settings, 'btn_color', '#fff' );
-$button_text       = sgsb_find_option_setting( $settings, 'btn_text', __( 'Cart', 'storegrowth-sales-booster' ) );
-$redirect_url      = sgsb_find_option_setting( $settings, 'btn_target', wc_get_cart_url() );
-$button_text_color = sgsb_find_option_setting( $settings, 'btn_text_color', '#073b4c' );
+$button_style      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_style', true );
+$button_bg         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_color', '#fff' );
+$button_text       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_text', __( 'Cart', 'storegrowth-sales-booster' ) );
+$redirect_url      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_target', wc_get_cart_url() );
+$button_text_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_text_color', '#073b4c' );
 ?>
 <div class='sgsb-pd-banner-bar-wrapper'>
 	<div class='sgsb-pd-banner-bar'>

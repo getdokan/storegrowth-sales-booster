@@ -37,7 +37,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
+		return Helper::get_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'quick-view/assets/images/quick-view-module-img.webp' );
+		return Helper::get_modules_url( 'quick-view/assets/images/quick-view-module-img.webp' );
 	}
 
 	/**

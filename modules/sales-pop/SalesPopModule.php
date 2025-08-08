@@ -37,7 +37,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
+		return Helper::get_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'sales-pop/assets/images/sales-pop-module-img.webp' );
+		return Helper::get_modules_url( 'sales-pop/assets/images/sales-pop-module-img.webp' );
 	}
 
 	/**

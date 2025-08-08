@@ -50,11 +50,11 @@ class Assets {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		if ( $this->modules_page_hook === $hook ) {
-			$settings_file = require sgsb_plugin_path( 'assets/build/modules.asset.php' );
+			$settings_file = require PluginHelper::get_plugin_path( 'assets/build/modules.asset.php' );
 
 			wp_enqueue_script(
 				'sgsb-modules-script',
-				sgsb_assets_url( 'build/modules.js' ),
+				Helper::get_plugin_assets_url( 'build/modules.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
@@ -72,11 +72,11 @@ class Assets {
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
-			$settings_file = require sgsb_plugin_path( 'assets/build/settings.asset.php' );
+			$settings_file = require PluginHelper::get_plugin_path( 'assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
 				'sgsb-settings-script',
-				sgsb_assets_url( 'build/settings.js' ),
+				Helper::get_plugin_assets_url( 'build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
@@ -107,9 +107,9 @@ class Assets {
 		) {
 			wp_enqueue_style(
 				'sgsb-admin-style',
-				sgsb_assets_url( 'build/modules.css' ),
+				Helper::get_plugin_assets_url( 'build/modules.css' ),
 				array(),
-				filemtime( sgsb_plugin_path( 'assets/build/modules.css' ) )
+				filemtime( PluginHelper::get_plugin_path( 'assets/build/modules.css' ) )
 			);
 		}
 	}

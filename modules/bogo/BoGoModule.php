@@ -42,7 +42,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
+		return Helper::get_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'bogo/assets/images/bogo-module-img.webp' );
+		return Helper::get_modules_url( 'bogo/assets/images/bogo-module-img.webp' );
 	}
 
 	/**
