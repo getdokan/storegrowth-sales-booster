@@ -46,7 +46,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-module-img.webp' );
+		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-thumbnail.png' );
 	}
 
 	/**
