@@ -44,7 +44,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'countdown-timer/assets/images/sales-countdown-module-img.webp' );
+		return Helper::get_modules_url( 'countdown-timer/assets/images/countdown-timer-thumbnail.png' );
 	}
 
 	/**

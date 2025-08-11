@@ -46,7 +46,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-feature-image.webp' );
+		return Helper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-thumbnail.png' );
 	}
 
 	/**

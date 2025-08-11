@@ -46,7 +46,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-module-img.webp' );
+		return Helper::get_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-thumbnail.png' );
 	}
 
 	/**

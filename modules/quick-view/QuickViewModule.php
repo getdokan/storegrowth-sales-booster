@@ -46,7 +46,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'quick-view/assets/images/quick-view-module-img.webp' );
+		return Helper::get_modules_url( 'quick-view/assets/images/quick-view-thumbnail.png' );
 	}
 
 	/**

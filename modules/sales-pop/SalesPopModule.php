@@ -46,7 +46,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'sales-pop/assets/images/sales-pop-module-img.webp' );
+		return Helper::get_modules_url( 'sales-pop/assets/images/sales-pop-thumbnail.png' );
 	}
 
 	/**
