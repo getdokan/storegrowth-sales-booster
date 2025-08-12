@@ -12,6 +12,7 @@ use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Admin\AdminHooks;
 use STOREGROWTH\SPSB\DependencyManagement\Container;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use STOREGROWTH\SPSB\Integrations\Integrations;
 use WP_REST_Controller;
 
 // If this file is called directly, abort.
@@ -44,6 +45,9 @@ class Bootstrap {
 
 		// Register hooks.
 		$this->register_hooks();
+
+		// Include integration classes.
+		$this->load_integration_classes();
 	}
 
 	/**
@@ -137,5 +141,14 @@ class Bootstrap {
 	 */
 	private function load_module_classes() {
 		$this->get_container()->get( ModuleManager::class )->load();
+	}
+
+	/**
+	 * Load integration classes.
+	 *
+	 * @since 1.12.0
+	 */
+	private function load_integration_classes() {
+		Integrations::instance();
 	}
 }
