@@ -15,7 +15,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
     const id = params?.id || 0;
     const [ isLoading, setIsLoading ] = useState( false );
     const [ selectedSchedules, setSelectedSchedules ] = useState( [
-        { label: __( 'Daily', 'storegrowth-sales-booster-pro' ), value: 'daily' },
+        { label: __( 'Daily', 'storegrowth-sales-booster' ), value: 'daily' },
     ] );
     const [ vendorId, setVendorId ] = useState( 0 );
     const [ errorCode, setErrorCode ] = useState( 0 );
@@ -39,16 +39,16 @@ const CreateBogoOffer = ( { navigate, params } ) => {
         schedule_start: '',
         schedule_end: '',
         shop_page_msg: '',
-        product_page_msg: __( 'Free Gift', 'storegrowth-sales-booster-pro' ),
+        product_page_msg: __( 'Free Gift', 'storegrowth-sales-booster' ),
     } );
 
     const dealTypes = [
         {
-            label: __( 'Buy X Get Y', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Buy X Get Y', 'storegrowth-sales-booster' ),
             value: 'different'
         },
         {
-            label: __( 'Buy X Get X', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Buy X Get X', 'storegrowth-sales-booster' ),
             value: 'same'
         }
     ] as any;
@@ -58,46 +58,46 @@ const CreateBogoOffer = ( { navigate, params } ) => {
     const offerTypes = [
         {
             value: 'free',
-            label: __( 'Free', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Free', 'storegrowth-sales-booster' ),
         },
         {
             value: 'discount',
-            label: __( 'Discount (%)', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Discount (%)', 'storegrowth-sales-booster' ),
         },
     ] as any;
 
     const offerSchedules = [
         {
             value: 'daily',
-            label: __( 'Daily', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Daily', 'storegrowth-sales-booster' ),
         },
         {
             value: 'saturday',
-            label: __( 'Saturday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Saturday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'sunday',
-            label: __( 'Sunday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Sunday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'monday',
-            label: __( 'Monday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Monday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'tuesday',
-            label: __( 'Tuesday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Tuesday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'wednesday',
-            label: __( 'Wednesday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Wednesday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'thursday',
-            label: __( 'Thursday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Thursday', 'storegrowth-sales-booster' ),
         },
         {
             value: 'friday',
-            label: __( 'Friday', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Friday', 'storegrowth-sales-booster' ),
         },
     ] as any;
 
@@ -136,7 +136,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                     schedule_start: response.offer_start || '',
                     schedule_end: response.offer_end || '',
                     shop_page_msg: response.shop_page_message || '',
-                    product_page_msg: response.product_page_message || __( 'Free Gift', 'storegrowth-sales-booster-pro' ),
+                    product_page_msg: response.product_page_message || __( 'Free Gift', 'storegrowth-sales-booster' ),
                 } );
 
                 setSelectedSchedules( offerSchedules.filter( item => response.offer_schedule.includes( item?.value) ) );
@@ -226,7 +226,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
             schedule_start: '',
             schedule_end: '',
             shop_page_msg: '',
-            product_page_msg: __( 'Free Gift', 'storegrowth-sales-booster-pro' ),
+            product_page_msg: __( 'Free Gift', 'storegrowth-sales-booster' ),
         } );
     }
 
@@ -271,7 +271,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
         if ( hasEmptyRequiredField ) {
             toast({
                 type: 'error',
-                title: __('Please fill all of the required fields.', 'storegrowth-sales-booster-pro' ),
+                title: __('Please fill all of the required fields.', 'storegrowth-sales-booster' ),
             });
             return;
         }
@@ -279,7 +279,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
         if ( 'different' === formData.deal_type && formData.target_product === formData.offer_product  ) {
             toast({
                 type: 'error',
-                title: __('Please choose different offer product.', 'storegrowth-sales-booster-pro' ),
+                title: __('Please choose different offer product.', 'storegrowth-sales-booster' ),
             });
             return;
         }
@@ -293,20 +293,20 @@ const CreateBogoOffer = ( { navigate, params } ) => {
 
                 toast( {
                     type: 'success',
-                    title: __( 'Offer updated successfully.', 'storegrowth-sales-booster-pro' ),
+                    title: __( 'Offer updated successfully.', 'storegrowth-sales-booster' ),
                 } );
             } else {
                 await createOffer( payload );
                 navigate( '/sales-booster/bogo/' );
                 toast( {
                     type: 'success',
-                    title: __( 'Offer created successfully.', 'storegrowth-sales-booster-pro' ),
+                    title: __( 'Offer created successfully.', 'storegrowth-sales-booster' ),
                 } );
             }
         } catch ( error ) {
             toast( {
                 type: 'error',
-                title: error?.message || __( 'Failed to submitting the form.', 'storegrowth-sales-booster-pro' ),
+                title: error?.message || __( 'Failed to submitting the form.', 'storegrowth-sales-booster' ),
             } );
         } finally {
             setIsLoading( false );
@@ -337,12 +337,12 @@ const CreateBogoOffer = ( { navigate, params } ) => {
             <form className="space-y-2 flex flex-col" onSubmit={ handleSubmit }>
                 <div className="mb-2.5">
                     <SimpleInput
-                        label={ __( 'Name of BOGO Offer', 'storegrowth-sales-booster-pro' ) }
+                        label={ __( 'Name of BOGO Offer', 'storegrowth-sales-booster' ) }
                         input={ {
                             id: 'offer_name',
                             name: 'offer_name',
                             type: 'text',
-                            placeholder: __( 'Offer Name', 'storegrowth-sales-booster-pro' ),
+                            placeholder: __( 'Offer Name', 'storegrowth-sales-booster' ),
                         } }
                         value={ formData.offer_name }
                         onChange={ handleChange }
@@ -354,7 +354,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                 <div className="pb-4">
                     <ProductSearch
                         name="target_product"
-                        label={ __( 'Target Product', 'storegrowth-sales-booster-pro' ) }
+                        label={ __( 'Target Product', 'storegrowth-sales-booster' ) }
                         isMulti={ false }
                         placeholder={ __(
                             'Search for a target product',
@@ -372,7 +372,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                 <div className="mb-5">
                     <SimpleRadio
                         optionClass="!inline-block mr-4"
-                        label={ __( 'Deal Type', 'storegrowth-sales-booster-pro' ) }
+                        label={ __( 'Deal Type', 'storegrowth-sales-booster' ) }
                         name="deal_type"
                         options={ adminSettings?.vendors_can_create_buy_x_get_x ? dealTypes : filteredDealTypes }
                         value={ formData.deal_type }
@@ -386,7 +386,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                     <div className="pb-4">
                         <ProductSearch
                             name="offer_product"
-                            label={ __( 'Offer Product', 'storegrowth-sales-booster-pro' ) }
+                            label={ __( 'Offer Product', 'storegrowth-sales-booster' ) }
                             isMulti={ false }
                             placeholder={ __(
                                 'Search for a offer product',
@@ -405,7 +405,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                 <div className="pb-4 flex">
                     <div className="min-w-[8rem]">
                         <SearchableSelect
-                            label={ __( 'Offer Type', 'storegrowth-sales-booster-pro' ) }
+                            label={ __( 'Offer Type', 'storegrowth-sales-booster' ) }
                             options={ offerTypes }
                             onChange={ ( option ) =>
                                 handleSelectInputChange( 'offer_type', option )
@@ -438,7 +438,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
 
                 <div className="pb-4">
                     <SimpleInput
-                        label={ __( 'Select Min Quantity', 'storegrowth-sales-booster-pro' ) }
+                        label={ __( 'Select Min Quantity', 'storegrowth-sales-booster' ) }
                         input={ {
                             id: 'min_qty',
                             name: 'min_qty',
@@ -457,7 +457,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                     <>
                         <div className="pb-4">
                             <SearchableSelect
-                                label={ __( 'Offer Schedule', 'storegrowth-sales-booster-pro' ) }
+                                label={ __( 'Offer Schedule', 'storegrowth-sales-booster' ) }
                                 isMulti={ true }
                                 isSearchable={ true }
                                 placeholder={ __(
@@ -475,7 +475,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
 
                         <div className="pb-4">
                             <label htmlFor="schedule_start">
-                                { __( 'Filter by Date', 'storegrowth-sales-booster-pro' ) }
+                                { __( 'Filter by Date', 'storegrowth-sales-booster' ) }
                             </label>
                             <WpDatePicker
                                 onChange={ ( date ) => {
@@ -495,7 +495,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                                         id: 'schedule_start',
                                         name: 'schedule_start',
                                         type: 'text',
-                                        placeholder: __( 'Select Start Date', 'storegrowth-sales-booster-pro' ),
+                                        placeholder: __( 'Select Start Date', 'storegrowth-sales-booster' ),
                                     } }
                                     value={
                                         formData.schedule_start
@@ -514,7 +514,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
 
                         <div className="pb-4">
                             <label htmlFor="schedule_end">
-                                { __( 'Filter by Date', 'storegrowth-sales-booster-pro' ) }
+                                { __( 'Filter by Date', 'storegrowth-sales-booster' ) }
                             </label>
                             <WpDatePicker
                                 onChange={ ( date ) => {
@@ -534,7 +534,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                                         id: 'schedule_end',
                                         name: 'schedule_end',
                                         type: 'text',
-                                        placeholder: __( 'Select Start Date', 'storegrowth-sales-booster-pro' ),
+                                        placeholder: __( 'Select Start Date', 'storegrowth-sales-booster' ),
                                     } }
                                     value={
                                         formData.schedule_end
@@ -565,7 +565,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                                 ),
                                 rows: 3,
                             } }
-                            label={ __( 'Shop Page Message', 'storegrowth-sales-booster-pro' ) }
+                            label={ __( 'Shop Page Message', 'storegrowth-sales-booster' ) }
                             value={ formData.shop_page_msg }
                             onChange={ handleChange }
                             className="w-full h-fit focus:!ring-0"
@@ -585,7 +585,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                                 ),
                                 rows: 3,
                             } }
-                            label={ __( 'Product Page Message', 'storegrowth-sales-booster-pro' ) }
+                            label={ __( 'Product Page Message', 'storegrowth-sales-booster' ) }
                             value={ formData.product_page_msg }
                             onChange={ handleChange }
                             className="w-full h-fit focus:!ring-0"
@@ -605,7 +605,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                         } }
                         variant="secondary"
                     >
-                        { __( 'Cancel', 'storegrowth-sales-booster-pro' ) }
+                        { __( 'Cancel', 'storegrowth-sales-booster' ) }
                     </DokanButton>
                     <DokanButton
                         type="submit"
@@ -613,8 +613,8 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                         disabled={ isLoading }
                     >
                         { formData.id
-                            ? __( 'Update Offer', 'storegrowth-sales-booster-pro' )
-                            : __( 'Create Offer', 'storegrowth-sales-booster-pro' ) }
+                            ? __( 'Update Offer', 'storegrowth-sales-booster' )
+                            : __( 'Create Offer', 'storegrowth-sales-booster' ) }
                     </DokanButton>
                 </div>
             </form>

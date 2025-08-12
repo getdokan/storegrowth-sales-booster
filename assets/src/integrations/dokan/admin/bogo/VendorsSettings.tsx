@@ -59,8 +59,8 @@ const VendorsSettings = () => {
     const notificationMessage = ( type ) => {
         if ( "vendors_settings" === type ) {
             notification["success"]( {
-                message:  __( 'Vendors Settings Section', 'storegrowth-sales-booster-pro' ),
-                description:  __( 'Vendors section settings data updated successfully.', 'storegrowth-sales-booster-pro' ),
+                message:  __( 'Vendors Settings Section', 'storegrowth-sales-booster' ),
+                description:  __( 'Vendors section settings data updated successfully.', 'storegrowth-sales-booster' ),
             } );
         }
     };
@@ -87,29 +87,29 @@ const VendorsSettings = () => {
             <div style={{ marginBottom: 24 }}>
                 <Switcher
                     name="vendors_can_create_buy_x_get_x"
-                    title={ __( 'Vendors Can Create Buy X Get X', 'storegrowth-sales-booster-pro' ) }
-                    tooltip={ __( 'Allow vendors to create buy X get X', 'storegrowth-sales-booster-pro' ) }
+                    title={ __( 'Vendors Can Create Buy X Get X', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Allow vendors to create buy X get X', 'storegrowth-sales-booster' ) }
                     isEnable={ currentVendorsSettings?.vendors_can_create_buy_x_get_x }
                     changeHandler={ onFieldChange }
                 />
                 <Switcher
                     name="vendors_can_schedule_offers"
-                    title={ __( 'Vendors Can Schedule Offers', 'storegrowth-sales-booster-pro' ) }
-                    tooltip={ __( 'Allow vendors to schedule offers', 'storegrowth-sales-booster-pro' ) }
+                    title={ __( 'Vendors Can Schedule Offers', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Allow vendors to schedule offers', 'storegrowth-sales-booster' ) }
                     isEnable={ currentVendorsSettings?.vendors_can_schedule_offers }
                     changeHandler={ onFieldChange }
                 />
                 <Switcher
                     name="vendors_can_set_shop_page_custom_message"
-                    title={ __( 'Vendors Can Set Shop Page Custom Messages', 'storegrowth-sales-booster-pro' ) }
-                    tooltip={ __( 'Allow vendors to set shop page custom messages', 'storegrowth-sales-booster-pro' ) }
+                    title={ __( 'Vendors Can Set Shop Page Custom Messages', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Allow vendors to set shop page custom messages', 'storegrowth-sales-booster' ) }
                     isEnable={ currentVendorsSettings?.vendors_can_set_shop_page_custom_message }
                     changeHandler={ onFieldChange }
                 />
                 <Switcher
                     name="vendors_can_set_product_page_custom_message"
-                    title={ __( 'Vendors Can Set Shop Page Custom Messages', 'storegrowth-sales-booster-pro' ) }
-                    tooltip={ __( 'Allow vendors to set shop page custom messages', 'storegrowth-sales-booster-pro' ) }
+                    title={ __( 'Vendors Can Set Shop Page Custom Messages', 'storegrowth-sales-booster' ) }
+                    tooltip={ __( 'Allow vendors to set shop page custom messages', 'storegrowth-sales-booster' ) }
                     isEnable={ currentVendorsSettings?.vendors_can_set_product_page_custom_message }
                     changeHandler={ onFieldChange }
                 />

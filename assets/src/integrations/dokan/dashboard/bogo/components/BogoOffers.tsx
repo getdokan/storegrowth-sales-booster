@@ -108,15 +108,15 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                 toast( {
                     type: 'error',
                     title:
-                        __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster-pro' ) +
+                        __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster' ) +
                         ( errorData?.message ||
                             error.statusText ||
-                            __( 'Unknown error', 'storegrowth-sales-booster-pro' ) ),
+                            __( 'Unknown error', 'storegrowth-sales-booster' ) ),
                 } );
             } else {
                 toast( {
                     type: 'error',
-                    title: __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster-pro' ) + error,
+                    title: __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster' ) + error,
                 } );
             }
         } finally {
@@ -151,7 +151,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             if ( updatedItem ) {
                 toast( {
                     type: 'success',
-                    title: __( 'BOGO offer status updated successfully.', 'storegrowth-sales-booster-pro' ),
+                    title: __( 'BOGO offer status updated successfully.', 'storegrowth-sales-booster' ),
                 } );
             }
 
@@ -159,7 +159,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         } catch ( error ) {
             toast( {
                 type: 'error',
-                title: __( 'Error updating BOGO offer status: ', 'storegrowth-sales-booster-pro' ) + error.error,
+                title: __( 'Error updating BOGO offer status: ', 'storegrowth-sales-booster' ) + error.error,
             } );
         } finally {
             setIsLoading( false );
@@ -189,7 +189,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             if ( deletedItem ) {
                 toast( {
                     type: 'success',
-                    title: __( 'BOGO offer deleted successfully.', 'storegrowth-sales-booster-pro' ),
+                    title: __( 'BOGO offer deleted successfully.', 'storegrowth-sales-booster' ),
                 } );
             }
 
@@ -197,7 +197,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         } catch ( error ) {
             toast( {
                 type: 'error',
-                title: __( 'Error deleting BOGO offer: ', 'storegrowth-sales-booster-pro' ) + error.error,
+                title: __( 'Error deleting BOGO offer: ', 'storegrowth-sales-booster' ) + error.error,
             } );
         } finally {
             setIsLoading( false );
@@ -209,7 +209,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
     const fields = [
         {
             id: 'name_of_order_bogo',
-            label: __( 'Offer Name', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Offer Name', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
                 <div>
                     { isLoading ? (
@@ -232,7 +232,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         },
         {
             id: 'bogo_status',
-            label: __( 'Status', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Status', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
                 <div>
                     { isLoading ? (
@@ -252,7 +252,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         },
         {
             id: 'offered_products',
-            label: __( 'Target Product', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Target Product', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
                 <div>
                     { isLoading ? (
@@ -267,7 +267,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         },
         {
             id: 'offers',
-            label: __( 'Offers', 'storegrowth-sales-booster-pro' ),
+            label: __( 'Offers', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
                 <div>
                     { isLoading ? (
@@ -281,8 +281,8 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                     ) : (
                         <ul>
                             <li><strong>{ getProductName( item?.get_different_product_field ? item.get_different_product_field : item?.offered_products ) }</strong></li>
-                            <li>{ __( 'Product Price: ', 'storegrowth-sales-booster-pro' ) } <PriceHtml price={ getProductPrice( item?.get_different_product_field ? item.get_different_product_field : item?.offered_products ) } /></li>
-                            <li>{ __( 'Discounted Price: ', 'storegrowth-sales-booster-pro' ) } <PriceHtml price={ getDiscountedAmount( item ) } /></li>
+                            <li>{ __( 'Product Price: ', 'storegrowth-sales-booster' ) } <PriceHtml price={ getProductPrice( item?.get_different_product_field ? item.get_different_product_field : item?.offered_products ) } /></li>
+                            <li>{ __( 'Discounted Price: ', 'storegrowth-sales-booster' ) } <PriceHtml price={ getDiscountedAmount( item ) } /></li>
                         </ul>
                     ) }
                 </div>
@@ -307,7 +307,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                 <span
                     className={ `px-2 bg-transparent font-medium text-dokan-link hover:text-dokan-link-hover pr-r text-sm` }
                 >
-                    { __( 'Edit', 'storegrowth-sales-booster-pro' ) }
+                    { __( 'Edit', 'storegrowth-sales-booster' ) }
                 </span>
             ),
         },
@@ -321,7 +321,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                     <span
                         className={ `px-2 bg-transparent font-medium text-dokan-danger hover:text-dokan-danger-hover text-sm` }
                     >
-                        { __( 'Delete', 'storegrowth-sales-booster-pro' ) }
+                        { __( 'Delete', 'storegrowth-sales-booster' ) }
                     </span>
                 );
             },
@@ -402,17 +402,17 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             <DokanModal
                 isOpen={ isConfirmationModalOpen }
                 namespace="storegrowth-dokan-vendor-bogo-offer-delete"
-                dialogTitle={ __( 'Delete Offer', 'storegrowth-sales-booster-pro' ) }
+                dialogTitle={ __( 'Delete Offer', 'storegrowth-sales-booster' ) }
                 confirmationTitle={ __(
                     'Are you sure you want to proceed?',
-                    'storegrowth-sales-booster-pro'
+                    'storegrowth-sales-booster'
                 ) }
                 confirmationDescription={ __(
                     'Deleting this offer will prevent further completion of this subscription purchase.',
-                    'storegrowth-sales-booster-pro'
+                    'storegrowth-sales-booster'
                 ) }
-                confirmButtonText={ __( 'Yes, Delete', 'storegrowth-sales-booster-pro' ) }
-                cancelButtonText={ __( 'Close', 'storegrowth-sales-booster-pro' ) }
+                confirmButtonText={ __( 'Yes, Delete', 'storegrowth-sales-booster' ) }
+                cancelButtonText={ __( 'Close', 'storegrowth-sales-booster' ) }
                 onConfirm={ () => deleteOffer() }
                 onClose={ () => setIsConfirmationModalOpen( false ) }
             />

@@ -7,7 +7,7 @@ addFilter( 'sgsb_bogo_tab_panels', 'sgsb_bogo_tab_panels_callback', ( panels ) =
         ...panels,
         {
             key: 'vendors',
-            title: __('Vendors', 'storegrowth-sales-booster-pro'),
+            title: __('Vendors', 'storegrowth-sales-booster'),
             panel: <VendorsSettings/>,
         },
     ];

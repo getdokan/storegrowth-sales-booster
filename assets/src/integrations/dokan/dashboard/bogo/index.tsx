@@ -15,7 +15,7 @@ const AddOfferCreateButton = () => {
         <Fill name="dokan-header-actions">
             { ( { navigate } ) => (
                 <DokanButton onClick={ () => navigate( '/sales-booster/bogo/create' ) }>
-                    { __( 'Create New Offer', 'storegrowth-sales-booster-pro' ) }
+                    { __( 'Create New Offer', 'storegrowth-sales-booster' ) }
                 </DokanButton>
             ) }
         </Fill>
@@ -35,7 +35,7 @@ domReady( () => {
         function ( routes ) {
             routes.push( {
                 id: 'storegrowth-dokan-vendor-bogo',
-                title: __( 'StoreGrowth BOGO', 'storegrowth-sales-booster-pro' ),
+                title: __( 'StoreGrowth BOGO', 'storegrowth-sales-booster' ),
                 element: <App />,
                 path: '/sales-booster/bogo/',
                 exact: true,
@@ -55,7 +55,7 @@ domReady( () => {
         function ( routes ) {
             routes.push( {
                 id: 'storegrowth-dokan-vendor-bogo-create',
-                title: __( 'Create BOGO Offer', 'storegrowth-sales-booster-pro' ),
+                title: __( 'Create BOGO Offer', 'storegrowth-sales-booster' ),
                 element: <CreateBogoOffer />,
                 path: '/sales-booster/bogo/create',
                 exact: true,
@@ -76,7 +76,7 @@ domReady( () => {
         function ( routes ) {
             routes.push( {
                 id: 'storegrowth-dokan-vendor-bogo-update',
-                title: __( 'Update BOGO Offer', 'storegrowth-sales-booster-pro' ),
+                title: __( 'Update BOGO Offer', 'storegrowth-sales-booster' ),
                 element: <CreateBogoOffer />,
                 path: '/sales-booster/bogo/update/:id',
                 exact: true,

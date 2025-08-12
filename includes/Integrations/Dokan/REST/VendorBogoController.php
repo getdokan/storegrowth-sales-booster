@@ -40,7 +40,7 @@ class VendorBogoController extends BogoController {
             [
                 'args' => [
                     'id' => [
-                        'description' => __( 'Vendor ID', 'storegrowth-sales-booster-pro' ),
+                        'description' => __( 'Vendor ID', 'storegrowth-sales-booster' ),
                         'type'        => 'integer',
                     ],
                 ],
@@ -65,7 +65,7 @@ class VendorBogoController extends BogoController {
             [
                 'args' => [
                     'id' => [
-                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster-pro' ),
+                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
                         'type'        => 'integer',
                     ],
                 ],
@@ -104,7 +104,7 @@ class VendorBogoController extends BogoController {
 
         return new WP_Error(
             'salesbooster_permission_failure',
-            __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster-pro' ),
+            __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
             [ 'status' => 403 ]
         );
     }
@@ -172,7 +172,7 @@ class VendorBogoController extends BogoController {
         if ( ! $offer_vendor_id || dokan_get_current_user_id() !== $offer_vendor_id ) {
             return new WP_Error(
                 'salesbooster_permission_failure',
-                __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster-pro' ),
+                __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
                 [ 'status' => 403 ]
             );
         }
@@ -196,17 +196,17 @@ class VendorBogoController extends BogoController {
         $data = $request->get_params();
 
         if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
+            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
         }
 
         $target_product_vendor  = dokan_get_vendor_by_product( $data['offered_products'] ?? 0, true );
 
         if ( ! $target_product_vendor ) {
-            return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster-pro' ) ], 400 );
+            return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster' ) ], 400 );
         }
 
         if ( dokan_get_current_user_id() !== $target_product_vendor ) {
-            return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster-pro' ) ], 403 );
+            return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster' ) ], 403 );
         }
 
         $result = $this->get_bogo()->create( $data );
@@ -218,7 +218,7 @@ class VendorBogoController extends BogoController {
         if ( empty( $result ) || ! is_int( $result ) ) {
             // Likely due to free version restriction, return appropriate message.
             return new WP_REST_Response(
-                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster-pro' ) ],
+                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
                 403
             );
         }
@@ -257,21 +257,21 @@ class VendorBogoController extends BogoController {
         $current_vendor_id = dokan_get_current_user_id();
 
         if ( ! $offer_vendor_id || $current_vendor_id !== $offer_vendor_id ) {
-            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster-pro' ) ], 403 );
+            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster' ) ], 403 );
         }
 
         if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
+            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
         }
 
 	    $target_product_vendor  = dokan_get_vendor_by_product( $data['offered_products'] ?? 0, true );
 
 	    if ( ! $target_product_vendor ) {
-		    return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster-pro' ) ], 400 );
+		    return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster' ) ], 400 );
 	    }
 
 	    if ( dokan_get_current_user_id() !== $target_product_vendor ) {
-		    return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster-pro' ) ], 403 );
+		    return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster' ) ], 403 );
 	    }
 
         $result = $this->get_bogo()->update( $id, $data );
@@ -309,7 +309,7 @@ class VendorBogoController extends BogoController {
         $offer_vendor_id = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
 
         if ( ! $offer_vendor_id || dokan_get_current_user_id() !== $offer_vendor_id ) {
-            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster-pro' ) ], 403 );
+            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster' ) ], 403 );
         }
 
         $result = $this->get_bogo()->delete( $id );

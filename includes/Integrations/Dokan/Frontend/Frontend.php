@@ -85,7 +85,7 @@ class Frontend {
             $shop_url  = $vendor->get_shop_url();
             ?>
             <h5>
-                <?php esc_html_e( 'Vendor: ', 'storegrowth-sales-booster-pro' ); ?>
+                <?php esc_html_e( 'Vendor: ', 'storegrowth-sales-booster' ); ?>
                 <span class="dokan-vendor-store-name">
                     <?php if ( $is_store_link_enabled ) : ?>
                         <a href="<?php echo esc_url( $shop_url ); ?>" target="_blank">

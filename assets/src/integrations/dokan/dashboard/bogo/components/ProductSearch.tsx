@@ -23,7 +23,7 @@ const ProductSearch = ( { name, label, onChange, value = {}, placeholder = '', r
                 setSearchedProducts(resultData);
                 callback(resultData);
             } catch (error) {
-                console.error(__('Search failed:', 'storegrowth-sales-booster-pro' ), error);
+                console.error(__('Search failed:', 'storegrowth-sales-booster' ), error);
             }
         }, 300 ); // adjust delay as needed
     };
@@ -84,7 +84,7 @@ const ProductSearch = ( { name, label, onChange, value = {}, placeholder = '', r
                 } );
             } }
             noOptionsMessage={ () =>
-                __( 'No Options', 'storegrowth-sales-booster-pro' )
+                __( 'No Options', 'storegrowth-sales-booster' )
             }
             disabled={ disabled }
             required={ required }

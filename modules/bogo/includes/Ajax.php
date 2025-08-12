@@ -150,7 +150,7 @@ class Ajax implements HookRegistry {
 		check_ajax_referer( 'ajd_protected' );
 
 		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			wp_send_json_error( __( 'No data provided.', 'storegrowth-sales-booster-pro' ) );
+			wp_send_json_error( __( 'No data provided.', 'storegrowth-sales-booster' ) );
 		}
 
 		$data = $_POST['data']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing

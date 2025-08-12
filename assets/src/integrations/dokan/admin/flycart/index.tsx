@@ -10,11 +10,11 @@ addFilter(
             ...contentOptions,
             {
                 name  : 'show_quick_cart_dokan_store_names',
-                title : __( 'Show Store Names', 'storegrowth-sales-booster-pro' ),
+                title : __( 'Show Store Names', 'storegrowth-sales-booster' ),
             },
             {
                 name  : 'enable_quick_cart_dokan_store_links',
-                title : __( 'Enable Store Links', 'storegrowth-sales-booster-pro' ),
+                title : __( 'Enable Store Links', 'storegrowth-sales-booster' ),
             },
         ];
     }
