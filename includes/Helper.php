@@ -85,13 +85,13 @@ class Helper {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array  $settings WP option array.
+	 * @param array $settings WP option array.
 	 * @param string $key      Key from option array.
-	 * @param string $default  Default value.
+	 * @param mixed  $default  Default value.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public static function find_option_settings( array $settings, string $key, string $default = '' ): string {
+	public static function find_option_settings( array $settings, string $key, $default = '' ) {
 		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
