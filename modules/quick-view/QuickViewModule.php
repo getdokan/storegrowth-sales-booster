@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\QuickView;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return Helper::get_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
+		return PluginHelper::get_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
 	}
 
 	/**
@@ -46,7 +47,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'quick-view/assets/images/quick-view-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'quick-view/assets/images/quick-view-thumbnail.png' );
 	}
 
 	/**

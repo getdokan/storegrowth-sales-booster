@@ -120,4 +120,19 @@ class Helper {
 		// Display available formatted coupon codes.
 		return $formatted_coupon_codes;
 	}
+
+	/**
+	 * Get the all coupon codes.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public static function is_user_role_allowed_to_view_promotions() {
+		if ( ! is_user_logged_in() ) {
+			return true;
+		}
+
+
+	}
 }

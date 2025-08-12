@@ -50,7 +50,7 @@ class Assets {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		if ( $this->modules_page_hook === $hook ) {
-			$settings_file = require PluginHelper::get_plugin_path( 'assets/build/modules.asset.php' );
+			$settings_file = require Helper::get_plugin_path( 'assets/build/modules.asset.php' );
 
 			wp_enqueue_script(
 				'sgsb-modules-script',
@@ -72,7 +72,7 @@ class Assets {
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
-			$settings_file = require PluginHelper::get_plugin_path( 'assets/build/settings.asset.php' );
+			$settings_file = require Helper::get_plugin_path( 'assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
 				'sgsb-settings-script',
@@ -109,7 +109,7 @@ class Assets {
 				'sgsb-admin-style',
 				Helper::get_plugin_assets_url( 'build/modules.css' ),
 				array(),
-				filemtime( PluginHelper::get_plugin_path( 'assets/build/modules.css' ) )
+				filemtime( Helper::get_plugin_path( 'assets/build/modules.css' ) )
 			);
 		}
 	}

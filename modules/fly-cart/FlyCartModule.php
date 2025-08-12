@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return Helper::get_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
+		return PluginHelper::get_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
 	}
 
 	/**
@@ -46,7 +47,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return Helper::get_modules_url( 'fly-cart/assets/images/fly-cart-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'fly-cart/assets/images/fly-cart-thumbnail.png' );
 	}
 
 	/**
