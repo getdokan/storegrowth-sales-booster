@@ -60,10 +60,10 @@ class Dashboard {
         // Remove promo banners from vendor dashboard.
         add_filter( 'sgsb_floating_bar_content_pro', [ $this, 'remove_sgsb_template_path_on_seller_dashboard' ], 99 );
         add_filter( 'free_shipping_bar_content_pro', [ $this, 'remove_sgsb_template_path_on_seller_dashboard' ], 99 );
-//        add_action( 'dokan_product_edit_after_inventory_variants' , [ $this, 'sgsb_add_product_countdown_timer_fields' ], 5, 2 );
+        add_action( 'dokan_product_edit_after_inventory_variants' , [ $this, 'sgsb_add_product_countdown_timer_fields' ], 5, 2 );
 
         // Save countdown timer fields when product is saved
-//        add_action( 'dokan_process_product_meta', [ $this, 'sgsb_save_product_countdown_timer_fields' ], 10, 1 );
+        add_action( 'dokan_process_product_meta', [ $this, 'sgsb_save_product_countdown_timer_fields' ], 10, 1 );
     }
 
     /**
@@ -159,7 +159,7 @@ class Dashboard {
         ];
 
         // Include the template file directly with variables in scope
-        include STOREGROWTH_PRO_PLUGIN_DIR_PATH . '/includes/Modules/CountdownTimer/templates/dokan-countdown-timer-fields.php';
+        include STOREGROWTH_PLUGIN_DIR_PATH . '/Modules/countdown-timer/templates/dokan-countdown-timer-fields.php';
     }
 
     /**

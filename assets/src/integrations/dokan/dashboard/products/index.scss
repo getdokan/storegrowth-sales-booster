@@ -1,0 +1,17 @@
+.dokan-countdown-timer-options{
+  .dokan-countdown-timer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    .dokan-form-control{
+      background-color: #ffffff;
+      border: 1px solid #e5e5e5;
+    }
+    .dokan-countdown-timer-discount {
+      flex: auto;
+    }
+    .dokan-countdown-timer-date-wrapper{
+      width: 70%;
+    }
+  }
+}
