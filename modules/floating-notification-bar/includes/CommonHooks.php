@@ -60,6 +60,10 @@ class CommonHooks implements HookRegistry {
 	 * Output bar html
 	 */
 	public function wp_footer() {
+		if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
+			return;
+		}
+
 		$settings            = Helper::sgsb_floating_notification_bar_get_settings();
 		$default_device_view = array( 'banner-show-desktop' );
 		$device_view         = PluginHelper::find_option_settings( $settings, 'banner_device_view', $default_device_view );
