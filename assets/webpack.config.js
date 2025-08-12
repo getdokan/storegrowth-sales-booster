@@ -10,8 +10,8 @@ module.exports = {
         'bogo-dokan-admin': './src/integrations/dokan/admin/bogo/index.tsx',
         'bogo-dokan-dashboard': './src/integrations/dokan/dashboard/bogo/index.tsx',
         'dokan-fly-cart': './src/integrations/dokan/admin/flycart/index.tsx',
-        // 'dokan-countdown-timer': './src/integrations/dokan/admin/countdownTimer/index.tsx',
-        // 'dokan-dashboard-products': './src/integrations/dokan/dashboard/products/index.js',
+        'dokan-countdown-timer': './src/integrations/dokan/admin/countdownTimer/index.tsx',
+        'dokan-dashboard-products': './src/integrations/dokan/dashboard/products/index.js',
     },
     externals: {
         ...defaultConfig.externals,

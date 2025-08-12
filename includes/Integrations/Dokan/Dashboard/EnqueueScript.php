@@ -25,7 +25,7 @@ class EnqueueScript
      * @return void
      */
     private function init_hooks() {
-//        add_action( 'wp_enqueue_scripts', array( $this, 'dashboard_enqueue_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'dashboard_enqueue_scripts' ) );
     }
 
     /**
