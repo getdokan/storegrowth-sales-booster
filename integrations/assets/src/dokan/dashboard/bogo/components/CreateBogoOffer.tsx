@@ -108,7 +108,6 @@ const CreateBogoOffer = ( { navigate, params } ) => {
         'offer_name',
         'target_product',
         'deal_type',
-        'min_qty',
     ];
 
     const fetchBogoOffer = useCallback( async () => {
@@ -436,22 +435,24 @@ const CreateBogoOffer = ( { navigate, params } ) => {
                     ) }
                 </div>
 
-                <div className="pb-4">
-                    <SimpleInput
-                        label={ __( 'Select Min Quantity', 'storegrowth-sales-booster' ) }
-                        input={ {
-                            id: 'min_qty',
-                            name: 'min_qty',
-                            type: 'number',
-                            min: '1',
-                            max: '9999',
-                            disabled: isLoading,
-                        } }
-                        value={ formData.min_qty }
-                        onChange={ handleChange }
-                        required
-                    />
-                </div>
+                { adminSettings?.is_pro_active && (
+                    <div className="pb-4">
+                        <SimpleInput
+                            label={ __( 'Select Min Quantity', 'storegrowth-sales-booster' ) }
+                            input={ {
+                                id: 'min_qty',
+                                name: 'min_qty',
+                                type: 'number',
+                                min: '1',
+                                max: '9999',
+                                disabled: isLoading,
+                            } }
+                            value={ formData.min_qty }
+                            onChange={ handleChange }
+                            required
+                        />
+                    </div>
+                ) }
 
                 { adminSettings?.vendors_can_set_shop_page_custom_message && (
                     <>

@@ -89,6 +89,7 @@ class Bogo {
             'sgsb-bogo-dokan-vendor-dashboard',
             'sgsbBogoDokanVendorDashboard',
             [
+                'is_pro_active'                               => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
                 'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',
                 'vendors_can_schedule_offers'                 => $admin_settings['vendors_can_schedule_offers'] ?? '',
                 'vendors_can_set_shop_page_custom_message'    => $admin_settings['vendors_can_set_shop_page_custom_message'] ?? '',
