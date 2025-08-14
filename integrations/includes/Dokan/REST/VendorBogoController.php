@@ -159,8 +159,8 @@ class VendorBogoController extends BogoController {
         $id   = $request->get_param( 'id' );
         $item = $this->get_bogo()->get_item( $id );
 
-        if ( is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
+        if ( ! $item || is_wp_error( $item ) ) {
+            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $offer_vendor_id = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
@@ -245,8 +245,8 @@ class VendorBogoController extends BogoController {
         $data = $request->get_params();
         $item = $this->get_bogo()->get_item( $id );
 
-        if ( is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
+        if ( ! $item || is_wp_error( $item ) ) {
+            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $offer_vendor_id   = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
@@ -298,8 +298,8 @@ class VendorBogoController extends BogoController {
         $id   = $request->get_param( 'id' );
         $item = $this->get_bogo()->get_item( $id );
 
-        if ( is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
+        if ( ! $item || is_wp_error( $item ) ) {
+            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $offer_vendor_id = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );

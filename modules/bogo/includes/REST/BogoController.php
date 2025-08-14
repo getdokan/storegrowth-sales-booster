@@ -146,7 +146,7 @@ class BogoController extends WP_REST_Controller {
         $items = $this->get_bogo()->get_items( $args );
 
         if ( ! $items['data'] ) {
-            return new WP_Error( 'no_offer_items', __( 'No BOGO offers found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
+            return new WP_REST_Response( [ 'error' => __( 'No item found.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $data = [];
@@ -173,8 +173,8 @@ class BogoController extends WP_REST_Controller {
         $id   = $request->get_param( 'id' );
         $item = $this->get_bogo()->get_item( $id );
 
-        if ( is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
+        if ( ! $item || is_wp_error( $item ) ) {
+            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $response = $this->prepare_item_for_response( $item, $request );
