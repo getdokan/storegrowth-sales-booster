@@ -169,6 +169,8 @@ require_once STOREGROWTH_MODULE_DIR . '/quick-view/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/sales-pop/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
+
+// Load integrations bootstrap files.
 require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
