@@ -135,10 +135,6 @@ class VendorBogoController extends BogoController {
 
         $items = $this->get_bogo()->get_items( $args );
 
-        if ( ! $items['data'] ) {
-            return new WP_Error( 'no_offer_items', __( 'No BOGO offers found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
-        }
-
         $data = [];
         foreach ( $items['data'] as $item ) {
             $item_data = $this->prepare_item_for_response( $item, $request );
