@@ -113,6 +113,3 @@ class DirectCheckoutModule extends BaseModule {
 		 */
 	}
 }
-
-// Create object and return.
-return DirectCheckoutModule::instance();

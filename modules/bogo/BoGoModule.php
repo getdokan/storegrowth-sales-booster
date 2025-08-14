@@ -118,6 +118,3 @@ class BoGoModule extends BaseModule {
 		do_action( 'storegrowth_bogo_module_init' );
 	}
 }
-
-// Create object and return.
-return BoGoModule::instance();

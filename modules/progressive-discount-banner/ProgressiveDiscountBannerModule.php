@@ -109,6 +109,3 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 		do_action( 'storegrowth_free_shipping_bar_module_init' );
 	}
 }
-
-// Create object and return.
-return ProgressiveDiscountBannerModule::instance();

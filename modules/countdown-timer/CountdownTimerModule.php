@@ -112,6 +112,3 @@ class CountdownTimerModule extends BaseModule {
 		do_action( 'storegrowth_countdown_timer_module_init' );
 	}
 }
-
-// Create object and return.
-return CountdownTimerModule::instance();

@@ -109,6 +109,3 @@ class FloatingNotificationBarModule extends BaseModule {
 		do_action( 'storegrowth_floating_bar_module_init' );
 	}
 }
-
-// Create object and return.
-return FloatingNotificationBarModule::instance();

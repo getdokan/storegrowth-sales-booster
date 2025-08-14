@@ -114,6 +114,3 @@ class FlyCartModule extends BaseModule {
 		do_action( 'storegrowth_quick_cart_module_init' );
 	}
 }
-
-// Create object and return.
-return FlyCartModule::instance();

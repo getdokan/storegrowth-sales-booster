@@ -114,6 +114,3 @@ class QuickViewModule extends BaseModule {
 		do_action( 'storegrowth_quick_view_module_init' );
 	}
 }
-
-// Create object and return.
-return QuickViewModule::instance();

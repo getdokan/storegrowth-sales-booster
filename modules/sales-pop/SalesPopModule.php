@@ -109,6 +109,3 @@ class SalesPopModule extends BaseModule {
 		do_action( 'storegrowth_sales_pop_module_init' );
 	}
 }
-
-// Create object and return.
-return SalesPopModule::instance();

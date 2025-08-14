@@ -112,6 +112,3 @@ class UpsellOrderBumpModule extends BaseModule {
 		do_action( 'storegrowth_upsell_order_bump_module_init' );
 	}
 }
-
-// Create object and return.
-return UpsellOrderBumpModule::instance();
