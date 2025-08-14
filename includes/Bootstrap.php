@@ -149,6 +149,5 @@ class Bootstrap {
 	 * @since 1.12.0
 	 */
 	private function load_integration_classes() {
-		Integrations::instance();
 	}
 }

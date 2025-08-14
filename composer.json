@@ -3,6 +3,7 @@
   "autoload": {
     "psr-4": {
       "STOREGROWTH\\SPSB\\": "includes/",
+      "STOREGROWTH\\SPSB\\Integrations\\": "integrations/includes/",
       "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\": "lib/packages/",
       "STOREGROWTH\\SPSB\\Modules\\BoGo\\": "modules/bogo",
       "STOREGROWTH\\SPSB\\Modules\\BoGo\\Includes\\": "modules/bogo/includes",

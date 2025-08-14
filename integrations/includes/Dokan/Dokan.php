@@ -2,26 +2,20 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan;
 
+use PHPUnit\Runner\Hook;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
 use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Dashboard;
 use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 /**
  * Dokan Class.
  *
  * @package SBFW
  */
-class Dokan {
-
-    use Singleton;
-
-    /**
-     * Constructor of Dokan Class.
-     *
-     * @since 1.12.0
-     */
-    private function __construct() {
+class Dokan implements HookRegistry {
+    public function register_hooks(): void {
         add_action( 'dokan_loaded', [ $this, 'init_classes' ] );
     }
 
