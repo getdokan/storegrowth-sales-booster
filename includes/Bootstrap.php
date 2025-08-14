@@ -12,7 +12,6 @@ use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Admin\AdminHooks;
 use STOREGROWTH\SPSB\DependencyManagement\Container;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Integrations\Integrations;
 use WP_REST_Controller;
 
 // If this file is called directly, abort.

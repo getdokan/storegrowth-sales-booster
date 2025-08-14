@@ -158,7 +158,7 @@ if ( ! function_exists( 'sgsb_is_module_active' ) ) {
      * @return boolean True if the module is active, false otherwise.
      */
     function sgsb_is_module_active( $module_id ) {
-        $modules        = new \STOREGROWTH\SPSB\ModuleManager();
+        $modules        = storegrowth_get_container()->get( \STOREGROWTH\SPSB\ModuleManager::class );
         $active_modules = $modules->get_active_modules();
 
         return in_array( $module_id, $active_modules, true );
