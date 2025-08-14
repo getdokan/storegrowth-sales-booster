@@ -5,11 +5,6 @@
  * @package WPBP
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 if ( ! function_exists( 'sgsb_assets_url' ) ) {
 	/**
 	 * Get plugin assets url.
