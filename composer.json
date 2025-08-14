@@ -28,10 +28,50 @@
     },
     "files": [ "Includes/functions.php" ]
   },
+ "require-dev": {
+    "league/container": "^4.0",
+    "coenjacobs/mozart": "^0.7.1"
+  },
   "authors": [
     {
       "name": "Dokan Inc.",
       "email": "support@dokan.co"
     }
-  ]
+  ],
+  "scripts": {
+    "post-install-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ]
+  },
+  "extra": {
+    "mozart": {
+        "dep_namespace": "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\",
+        "dep_directory": "/lib/packages/",
+        "classmap_directory": "/lib/classes/",
+        "classmap_prefix": "STOREGROWTH_SPSB_",
+        "packages": [
+            "league/container"
+        ],
+        "excluded_packages": [
+            "psr/http-client",
+            "psr/http-message"
+        ],
+        "override_autoload": {
+            "google/apiclient": {
+                "classmap": [
+                    "src/"
+                ]
+            }
+        },
+        "delete_vendor_directories": true
+    }
+  },
+
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
