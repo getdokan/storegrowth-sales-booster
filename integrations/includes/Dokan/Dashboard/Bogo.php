@@ -67,7 +67,7 @@ class Bogo {
             return;
         }
 
-        $script_assets = sgsb_plugin_path( 'assets/build/bogo-dokan-dashboard.asset.php' );
+        $script_assets = sgsb_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' );
 
         if ( ! file_exists( $script_assets ) ) {
             return;
@@ -77,23 +77,23 @@ class Bogo {
 
         wp_enqueue_script(
             'sgsb-bogo-dokan-vendor-dashboard',
-	        sgsb_assets_url( 'build/bogo-dokan-dashboard.js' ),
+            sgsb_integrations_url( 'assets/build/bogo-dokan-dashboard.js' ),
             array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
             $assets['version'],
             true
         );
 
-		$admin_settings = get_option( 'sgsb_bogo_dokan_vendors_settings', [] );
+        $admin_settings = get_option( 'sgsb_bogo_dokan_vendors_settings', [] );
 
-		wp_localize_script(
-			'sgsb-bogo-dokan-vendor-dashboard',
-			'sgsbBogoDokanVendorDashboard',
-			[
-				'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',
-				'vendors_can_schedule_offers'                 => $admin_settings['vendors_can_schedule_offers'] ?? '',
-				'vendors_can_set_shop_page_custom_message'    => $admin_settings['vendors_can_set_shop_page_custom_message'] ?? '',
-				'vendors_can_set_product_page_custom_message' => $admin_settings['vendors_can_set_product_page_custom_message'] ?? '',
-			]
-		);
+        wp_localize_script(
+            'sgsb-bogo-dokan-vendor-dashboard',
+            'sgsbBogoDokanVendorDashboard',
+            [
+                'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',
+                'vendors_can_schedule_offers'                 => $admin_settings['vendors_can_schedule_offers'] ?? '',
+                'vendors_can_set_shop_page_custom_message'    => $admin_settings['vendors_can_set_shop_page_custom_message'] ?? '',
+                'vendors_can_set_product_page_custom_message' => $admin_settings['vendors_can_set_product_page_custom_message'] ?? '',
+            ]
+        );
     }
 }

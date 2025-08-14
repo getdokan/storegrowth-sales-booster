@@ -27,6 +27,17 @@ if ( ! function_exists( 'sgsb_modules_url' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sgsb_integrations_url' ) ) {
+	/**
+	 * Get Integrations URL.
+	 *
+	 * @param string $path Integrations internal path.
+	 */
+	function sgsb_integrations_url( $path ) {
+		return STOREGROWTH_PLUGIN_DIR_URL . 'integrations/' . $path;
+	}
+}
+
 if ( ! function_exists( 'sgsb_modules_path' ) ) {
 	/**
 	 * Get Modules path.

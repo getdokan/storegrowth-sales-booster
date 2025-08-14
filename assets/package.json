@@ -7,8 +7,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wp-scripts start",
-    "build": "wp-scripts build"
+    "start": "wp-scripts start src/settings.js src/modules.js",
+    "build": "wp-scripts build src/settings.js src/modules.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,8 +16,6 @@
     "@wordpress/scripts": "^30.17.0"
   },
   "dependencies": {
-    "@getdokan/dokan-ui": "github:getdokan/dokan-ui#dokan-plugin",
-    "@wordpress/data": "^10.28.0",
     "@wordpress/i18n": "^4.24.0",
     "antd": "^5.5.0",
     "dayjs": "^1.11.9",

@@ -5,13 +5,11 @@ module.exports = {
     ...defaultConfig,
     entry: {
         ...defaultConfig.entry,
-        'settings': './src/settings.js',
-        'modules': './src/modules.js',
-        'bogo-dokan-admin': './src/integrations/dokan/admin/bogo/index.tsx',
-        'bogo-dokan-dashboard': './src/integrations/dokan/dashboard/bogo/index.tsx',
-        'dokan-fly-cart': './src/integrations/dokan/admin/flycart/index.tsx',
-        'dokan-countdown-timer': './src/integrations/dokan/admin/countdownTimer/index.tsx',
-        'dokan-dashboard-products': './src/integrations/dokan/dashboard/products/index.js',
+        'bogo-dokan-admin': './src/dokan/admin/bogo/index.tsx',
+        'bogo-dokan-dashboard': './src/dokan/dashboard/bogo/index.tsx',
+        'dokan-fly-cart': './src/dokan/admin/flycart/index.tsx',
+        'dokan-countdown-timer': './src/dokan/admin/countdownTimer/index.tsx',
+        'dokan-dashboard-products': './src/dokan/dashboard/products/index.js',
     },
     externals: {
         ...defaultConfig.externals,

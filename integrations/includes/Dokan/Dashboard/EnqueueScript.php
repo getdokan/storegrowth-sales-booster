@@ -36,14 +36,14 @@ class EnqueueScript
      */
     public function dashboard_enqueue_scripts() {
        // products  page
-        $products_file = require sgsb_plugin_path( 'assets/build/dokan-dashboard-products.asset.php' );
-        if ( ! file_exists( sgsb_plugin_path( 'assets/build/dokan-dashboard-products.js' ) ) ) {
+        $products_file = require sgsb_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' );
+        if ( ! file_exists( sgsb_plugin_path( 'integrations/assets/build/dokan-dashboard-products.js' ) ) ) {
             return;
         }
 
         wp_enqueue_style(
             'sgsb-dokan-dashboard-products',
-	        sgsb_assets_url( 'build/dokan-dashboard-products.css' ),
+            sgsb_integrations_url( 'assets/build/dokan-dashboard-products.css' ),
             $products_file['dependencies'],
             $products_file['version']
         );

@@ -1,8 +1,5 @@
 {
-  "name": "sales-booster",
-  "workspaces": [
-    "../modules/**/assets/src"
-  ],
+  "name": "sales-booster-integrations",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
