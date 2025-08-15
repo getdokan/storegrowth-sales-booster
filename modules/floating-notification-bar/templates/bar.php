@@ -10,9 +10,9 @@ use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Helper;
 $settings      = Helper::sgsb_floating_notification_bar_get_settings();
 $banner_text   = Helper::sgsb_floating_notification_bar_get_banner_text( $settings );
 $banner_icon   = Helper::sgsb_floating_notification_bar_get_banner_icon( $settings );
-$button_text   = sgsb_find_option_setting( $settings, 'ac_button_text', 'Shop Now' );
-$button_action = sgsb_find_option_setting( $settings, 'button_action', 'ba-url-redirect' );
-$redirect_url  = sgsb_find_option_setting( $settings, 'redirect_url', '#' );
+$button_text   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'ac_button_text', 'Shop Now' );
+$button_action = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_action', 'ba-url-redirect' );
+$redirect_url  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'redirect_url', '#' );
 
 ?>
 <div class="sgsb-floating-notification-bar-wrapper">

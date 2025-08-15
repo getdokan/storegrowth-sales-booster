@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,7 +42,7 @@ class EnqueueScript implements HookRegistry {
 	 * Add JS scripts.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'popup-custom-js', sgsb_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
+		wp_enqueue_script( 'popup-custom-js', PluginHelper::get_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
 		$args             = array(
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
@@ -105,10 +106,10 @@ class EnqueueScript implements HookRegistry {
 	 * Add CSS files.
 	 */
 	public function enqueue_styles() {
-		$ftime = filemtime( sgsb_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
+		$ftime = filemtime( PluginHelper::get_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
 		wp_enqueue_style(
 			'popup-custom-css',
-			sgsb_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
+			PluginHelper::get_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
 			null,
 			$ftime
 		);
@@ -125,11 +126,11 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'storegrowth_page_sgsb-settings' === $screen ) {
 			add_action( 'admin_head', array( $this, 'admin_css' ) );
-			$settings_file = require sgsb_modules_path( 'sales-pop/assets/build/settings.asset.php' );
+			$settings_file = require PluginHelper::get_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
 				'sgsb-sales-pop-settings',
-				sgsb_modules_url( 'sales-pop/assets/build/settings.js' ),
+				PluginHelper::get_modules_url( 'sales-pop/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -141,7 +142,7 @@ class EnqueueScript implements HookRegistry {
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
-					'image_folder' => sgsb_modules_url( 'upsell-order-bump/assets/images' ),
+					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
 					'product_list' => $this->product_list(),
 				)
 			);

@@ -43,13 +43,13 @@ class WoocommerceDiscount {
 		}
 
 		$settings      = Helper::sgsb_pd_banner_get_settings();
-		$discount_type = sgsb_find_option_setting( $settings, 'discount_type', false );
+		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = sgsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -97,13 +97,13 @@ class WoocommerceDiscount {
 	 */
 	public function woocommerce_cart_calculate_fees() {
 		$settings      = Helper::sgsb_pd_banner_get_settings();
-		$discount_type = sgsb_find_option_setting( $settings, 'discount_type', false );
+		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = sgsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -125,7 +125,7 @@ class WoocommerceDiscount {
 	private function set_discount_amount( $settings, $cart_amount ) {
 		$discount_amount = 0;
 
-		$discount_amount_value = floatval( sgsb_find_option_setting( $settings, 'discount_amount_value', 0 ) );
+		$discount_amount_value = floatval( \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_amount_value', 0 ) );
 
 		if ( 'fixed-amount' === $settings['discount_amount_mode'] ) {
 			$discount_amount = $discount_amount_value;

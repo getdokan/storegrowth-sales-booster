@@ -18,11 +18,11 @@ if ( WC()->cart->is_empty() ) {
 }
 
 $settings             = get_option( 'sgsb_fly_cart_settings' );
-$show_product_image   = sgsb_find_option_setting( $settings, 'show_product_image', true );
-$show_remove_icon     = sgsb_find_option_setting( $settings, 'show_remove_icon', true );
-$show_quantity_picker = sgsb_find_option_setting( $settings, 'show_quantity_picker', true );
-$show_product_price   = sgsb_find_option_setting( $settings, 'show_product_price', true );
-$show_coupon          = sgsb_find_option_setting( $settings, 'show_coupon', true );
+$show_product_image   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_product_image', true );
+$show_remove_icon     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_remove_icon', true );
+$show_quantity_picker = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
+$show_product_price   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_product_price', true );
+$show_coupon          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_coupon', true );
 ?>
 
 <form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">

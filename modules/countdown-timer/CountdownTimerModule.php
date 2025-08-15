@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -35,7 +36,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
+		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
 	/**
@@ -44,7 +45,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'countdown-timer/assets/images/countdown-timer-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer-thumbnail.png' );
 	}
 
 	/**

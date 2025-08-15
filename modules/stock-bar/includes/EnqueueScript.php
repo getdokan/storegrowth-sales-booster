@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\StockBar\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,24 +46,24 @@ class EnqueueScript implements HookRegistry {
 
 		wp_enqueue_style(
 			'sgsb-stock-cd-custom-style',
-			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ),
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'stockbar_jqmeter',
-			sgsb_modules_url( 'stock-bar/assets/scripts/jqmeter.min.js' ),
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/jqmeter.min.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/jqmeter.min.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/jqmeter.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'stockbar_custom_script',
-			sgsb_modules_url( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ),
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ),
 			array( 'jquery', 'stockbar_jqmeter' ),
-			filemtime( sgsb_modules_path( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ) ),
 			true
 		);
 
@@ -79,11 +80,11 @@ class EnqueueScript implements HookRegistry {
 			return;
 		}
 
-		$settings_file = require sgsb_modules_path( 'stock-bar/assets/build/settings.asset.php' );
+		$settings_file = require PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
 			'sgsb-stock-bar-settings',
-			sgsb_modules_url( 'stock-bar/assets/build/settings.js' ),
+			PluginHelper::get_modules_url( 'stock-bar/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
@@ -97,10 +98,10 @@ class EnqueueScript implements HookRegistry {
 		// Get settings options.
 		$settings = get_option( 'sgsb_stock_bar_settings' );
 
-		$bar_height   = sgsb_find_option_setting( $settings, 'stockbar_height', '10' );
-		$bg_color     = sgsb_find_option_setting( $settings, 'stockbar_bg_color', '#e7efff' );
-		$fg_color     = sgsb_find_option_setting( $settings, 'stockbar_fg_color', '#0875ff' );
-		$border_color = sgsb_find_option_setting( $settings, 'stockbar_border_color', '#dde6f9' );
+		$bar_height   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
+		$bg_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
+		$fg_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
+		$border_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_border_color', '#dde6f9' );
 
 		$theme               = wp_get_theme();
 		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;

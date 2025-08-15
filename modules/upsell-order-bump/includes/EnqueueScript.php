@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -46,12 +47,12 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
 
-			$settings_file                   = require sgsb_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
+			$settings_file                   = require PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
 			wp_enqueue_script(
 				'sgsb-order-bump-settings',
-				sgsb_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
+				PluginHelper::get_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
@@ -77,7 +78,7 @@ class EnqueueScript implements HookRegistry {
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => $ajd_nonce,
-					'image_folder' => sgsb_modules_url( 'upsell-order-bump/assets/images' ),
+					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
 				)
 			);
 		}
@@ -87,19 +88,19 @@ class EnqueueScript implements HookRegistry {
 	 * Add CSS scripts to admin.
 	 */
 	public function admin_enqueue_styles() {
-		$ftime          = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
-		$ftime_template = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
+		$ftime          = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
+		$ftime_template = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
 
 		wp_enqueue_style(
 			'sgsb-order-bump-custom-admin-css',
-			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
+			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
 			null,
 			$ftime
 		);
 
 		wp_enqueue_style(
 			'sgsb-order-bump-template-css',
-			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
+			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
 			null,
 			$ftime_template
 		);
@@ -113,11 +114,11 @@ class EnqueueScript implements HookRegistry {
 			return;
 		}
 
-		$ftime = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/css/order-bump-front.css' ) );
+		$ftime = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-front.css' ) );
 
 		wp_enqueue_style(
 			'sgsb-order-bump-front-css',
-			sgsb_modules_url( 'upsell-order-bump/assets/css/order-bump-front.css' ),
+			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-front.css' ),
 			null,
 			$ftime
 		);
@@ -127,11 +128,11 @@ class EnqueueScript implements HookRegistry {
 	 * Script for frontend.
 	 */
 	public function front_scripts() {
-		$ftime = filemtime( sgsb_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
+		$ftime = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
 
 		wp_enqueue_script(
 			'sgsb-order-bump-front-js',
-			sgsb_modules_url( 'upsell-order-bump/assets/js/order-bump-custom.js' ),
+			PluginHelper::get_modules_url( 'upsell-order-bump/assets/js/order-bump-custom.js' ),
 			'jquery',
 			$ftime,
 			true

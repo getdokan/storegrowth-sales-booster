@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,7 +43,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
+		return PluginHelper::get_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
@@ -51,7 +52,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'bogo/assets/images/bogo-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'bogo/assets/images/bogo-thumbnail.png' );
 	}
 
 	/**

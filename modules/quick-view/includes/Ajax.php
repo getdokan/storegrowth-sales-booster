@@ -74,7 +74,7 @@ class Ajax implements HookRegistry {
 		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );
 		$content_image               = 'all';
-		$content_view_details_button = sgsb_find_option_setting( $settings, 'show_view_details_button', false );
+		$content_view_details_button = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_view_details_button', false );
 		$content_image_lightbox      = 'no';
 
 		if ( $product ) {

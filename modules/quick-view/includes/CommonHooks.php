@@ -72,7 +72,7 @@ class CommonHooks implements HookRegistry {
 		);
 
 		foreach ( $actions as $setting => $data ) {
-			if ( sgsb_find_option_setting( $settings, $setting, true ) ) {
+			if ( \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, $setting, true ) ) {
 					add_action( 'sgsbqcv_product_summary', $data['action'], $data['priority'] );
 			}
 		}
@@ -101,7 +101,7 @@ class CommonHooks implements HookRegistry {
 		 */
 	public function button_positon_hooks() {
 		$settings        = get_option( 'sgsb_quick_view_settings' );
-		$button_position = sgsb_find_option_setting( $settings, 'button_position', 'after_add_to_cart' );
+		$button_position = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_position', 'after_add_to_cart' );
 		$hook            = 'woocommerce_after_shop_loop_item';
 		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
 

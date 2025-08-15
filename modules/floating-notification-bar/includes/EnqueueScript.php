@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,25 +43,25 @@ class EnqueueScript implements HookRegistry {
 			wp_enqueue_script( 'wc-cart-fragments' );
 		}
 
-		$style_file = sgsb_modules_path( 'floating-notification-bar/assets/css/floating-notification-bar.css' );
+		$style_file = PluginHelper::get_modules_path( 'floating-notification-bar/assets/css/floating-notification-bar.css' );
 
 		wp_enqueue_style(
 			'sgsb-floating-notification-bar-style',
-			sgsb_modules_url( 'floating-notification-bar/assets/css/floating-notification-bar.css' ),
+			PluginHelper::get_modules_url( 'floating-notification-bar/assets/css/floating-notification-bar.css' ),
 			array(),
 			filemtime( $style_file )
 		);
 
 		wp_enqueue_script(
 			'sgsb-floating-notification-bar-remove',
-			sgsb_modules_url( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ),
+			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
 			true
 		);
 
                 $localized_fnb_data     = Helper::sgsb_floating_notification_bar_get_settings();
-                $enable_shipping_banner = sgsb_is_module_active( 'progressive-discount-banner' );
+                $enable_shipping_banner = PluginHelper::is_module_active( 'progressive-discount-banner' );
 
                 $localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
                 if ( $enable_shipping_banner ) {
@@ -81,12 +82,12 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
-			$settings_file = require sgsb_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
+			$settings_file = require PluginHelper::get_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
 
 			wp_enqueue_media();
 			wp_enqueue_script(
 				'sgsb-floating-notification-bar-settings',
-				sgsb_modules_url( 'floating-notification-bar/assets/build/settings.js' ),
+				PluginHelper::get_modules_url( 'floating-notification-bar/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				false
@@ -148,17 +149,17 @@ class EnqueueScript implements HookRegistry {
 		);
 		// Get style options.
 		$settings          = Helper::sgsb_floating_notification_bar_get_settings();
-		$bar_position      = sgsb_find_option_setting( $settings, 'bar_position', 'top' );
-		$bar_type          = sgsb_find_option_setting( $settings, 'bar_type', 'normal' );
-		$bg_color          = sgsb_find_option_setting( $settings, 'background_color', '#008DFF' );
-		$text_color        = sgsb_find_option_setting( $settings, 'text_color', '#ffffff' );
-		$icon_color        = sgsb_find_option_setting( $settings, 'icon_color', '#ffffff' );
-		$close_icon_color  = sgsb_find_option_setting( $settings, 'close_icon_color', '#ffffff' );
-		$banner_height     = sgsb_find_option_setting( $settings, 'banner_height', 60 );
-		$font_size         = sgsb_find_option_setting( $settings, 'font_size', 20 );
-		$button_color      = sgsb_find_option_setting( $settings, 'button_color', '#ffffff' );
-		$button_text_color = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
-		$font_family       = sgsb_find_option_setting( $settings, 'font_family', 'poppins' );
+		$bar_position      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_position', 'top' );
+		$bar_type          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_type', 'normal' );
+		$bg_color          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
+		$text_color        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
+		$icon_color        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#ffffff' );
+		$close_icon_color  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'close_icon_color', '#ffffff' );
+		$banner_height     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'banner_height', 60 );
+		$font_size         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_size', 20 );
+		$button_color      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_color', '#ffffff' );
+		$button_text_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
+		$font_family       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_family', 'poppins' );
 		$selected_font     = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( 'bottom' === $bar_position ) {

@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,24 +43,24 @@ class EnqueueScript implements HookRegistry {
 
 		wp_enqueue_style(
 			'sgsb-cd-timer-custom-style',
-			sgsb_modules_url( 'countdown-timer/assets/scripts/wpbs-style.css' ),
+			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/wpbs-style.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/wpbs-style.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/wpbs-style.css' ) )
 		);
 
 		wp_enqueue_script(
 			'sgsb-jquery-countdown',
-			sgsb_modules_url( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ),
+			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
-			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ) ),
 			true
 		);
 
 		wp_enqueue_script(
 			'wpbsc_custom_script',
-			sgsb_modules_url( 'countdown-timer/assets/scripts/custom.js' ),
+			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/custom.js' ),
 			array( 'jquery', 'sgsb-jquery-countdown' ),
-			filemtime( sgsb_modules_path( 'countdown-timer/assets/scripts/custom.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/custom.js' ) ),
 			true
 		);
 
@@ -76,12 +77,12 @@ class EnqueueScript implements HookRegistry {
 			return;
 		}
 
-		$settings_file = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
-		$style_file    = require sgsb_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
+		$settings_file = require PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
+		$style_file    = require PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
 			'sgsb-countdown-timer-settings',
-			sgsb_modules_url( 'countdown-timer/assets/build/settings.js' ),
+			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
 			false
@@ -89,9 +90,9 @@ class EnqueueScript implements HookRegistry {
 
 		wp_enqueue_style(
 			'sgsb-countdown-timer-style',
-			sgsb_modules_url( 'countdown-timer/assets/build/settings.css' ),
+			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.css' ),
 			array(),
-			filemtime( sgsb_modules_path( 'countdown-timer/assets/build/settings.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.css' ) )
 		);
 	}
 
@@ -102,10 +103,10 @@ class EnqueueScript implements HookRegistry {
 		// Get settings options.
 		$settings = get_option( 'sgsb_countdown_timer_settings' );
 
-		$widget_bg_color    = sgsb_find_option_setting( $settings, 'widget_background_color', '#ffffff' );
-		$border_color       = sgsb_find_option_setting( $settings, 'border_color', '#cccccc' );
-		$heading_text_color = sgsb_find_option_setting( $settings, 'heading_text_color', '#000000' );
-		$selected_theme     = sgsb_find_option_setting( $settings, 'selected_theme', 'ct-custom' );
+		$widget_bg_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
+		$border_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );
+		$heading_text_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'heading_text_color', '#000000' );
+		$selected_theme     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 
 		// Check current theme status.
 		$theme                = wp_get_theme();
