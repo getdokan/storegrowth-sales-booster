@@ -2,7 +2,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
+use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\BoGo\BoGoModule;
 
 /**
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\BoGo\BoGoModule;
  *
  * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
  */
-class ServiceProvider extends BootableServiceProvider {
+class ServiceProvider extends BaseServiceProvider {
 
     /**
      * List of services provided by this provider.
@@ -28,27 +28,6 @@ class ServiceProvider extends BootableServiceProvider {
     ];
 
     /**
-     * Check if the provider offers the given alias.
-     *
-     * @since 2.0.0
-     *
-     * @param string $alias
-     *
-     * @return bool
-     */
-    public function provides( string $alias ): bool {
-        if ( isset( $this->services[ $alias ] ) ) {
-            return true;
-        }
-
-        if ( $alias === BoGoModule::get_id() ) {
-            return true;
-        }
-
-        return parent::provides( $alias );
-    }
-
-    /**
      * Boot the service provider.
      *
      * @since 2.0.0
@@ -56,7 +35,6 @@ class ServiceProvider extends BootableServiceProvider {
      * @return void
      */
     public function boot(): void {
-
     }
 
     /**
