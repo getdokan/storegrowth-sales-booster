@@ -41,7 +41,7 @@ class Helper {
 	 */
 	public static function sgsb_floating_notification_bar_get_banner_text( $settings ) {
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
-		return sgsb_find_option_setting( $settings, 'default_banner_text', $banner_text );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function sgsb_floating_notification_bar_get_banner_icon( $settings ) {
-		return sgsb_find_option_setting( $settings, 'default_banner_icon_name' );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_icon_name' );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function sgsb_floating_notification_bar_get_custom_banner_icon( $settings ) {
-		return sgsb_find_option_setting( $settings, 'default_banner_custom_icon' );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_custom_icon' );
 	}
 
 	/**

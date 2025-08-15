@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -46,16 +47,16 @@ class EnqueueScript implements HookRegistry {
 	public function register_enqueue_scripts() {
 		wp_register_style(
 			'sgsb-bogo-admin-style',
-			sgsb_modules_url( 'bogo/assets/css/product-bogo-settings.css' ),
+			PluginHelper::get_modules_url( 'bogo/assets/css/product-bogo-settings.css' ),
 			null,
-			filemtime( sgsb_modules_path( 'bogo/assets/css/product-bogo-settings.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/product-bogo-settings.css' ) )
 		);
 
 		wp_register_script(
 			'sgsb-bogo-admin-script',
-			sgsb_modules_url( 'bogo/assets/js/product-bogo-settings.js' ),
+			PluginHelper::get_modules_url( 'bogo/assets/js/product-bogo-settings.js' ),
 			array( 'jquery', 'jquery-ui-datepicker' ),
-			filemtime( sgsb_modules_path( 'bogo/assets/js/product-bogo-settings.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'bogo/assets/js/product-bogo-settings.js' ) ),
 			true
 		);
 	}
@@ -79,12 +80,12 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
-			$settings_file                   = require sgsb_modules_path( 'bogo/assets/build/settings.asset.php' );
+			$settings_file                   = require PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
 			wp_enqueue_script(
 				'sgsb-bogo-settings',
-				sgsb_modules_url( 'bogo/assets/build/settings.js' ),
+				PluginHelper::get_modules_url( 'bogo/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
 				true
@@ -110,7 +111,7 @@ class EnqueueScript implements HookRegistry {
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => $ajd_nonce,
-					'image_folder' => sgsb_modules_url( 'BoGo/assets/images' ),
+					'image_folder' => PluginHelper::get_modules_url( 'BoGo/assets/images' ),
 				)
 			);
 		}
@@ -120,19 +121,19 @@ class EnqueueScript implements HookRegistry {
 	 * Add CSS scripts to admin.
 	 */
 	public function admin_enqueue_styles() {
-		$ftime          = filemtime( sgsb_modules_path( 'bogo/assets/css/order-bogo-custom-admin.css' ) );
-		$ftime_template = filemtime( sgsb_modules_path( 'bogo/assets/css/order-bogo-template.css' ) );
+		$ftime          = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-custom-admin.css' ) );
+		$ftime_template = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-template.css' ) );
 
 		wp_enqueue_style(
 			'sgsb-bogo-custom-admin-css',
-			sgsb_modules_url( 'bogo/assets/css/order-bogo-custom-admin.css' ),
+			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-custom-admin.css' ),
 			null,
 			$ftime
 		);
 
 		wp_enqueue_style(
 			'sgsb-bogo-template-css',
-			sgsb_modules_url( 'bogo/assets/css/order-bogo-template.css' ),
+			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-template.css' ),
 			null,
 			$ftime_template
 		);
@@ -142,11 +143,11 @@ class EnqueueScript implements HookRegistry {
 	 * Style for frontend.
 	 */
 	public function front_styles() {
-		$ftime = filemtime( sgsb_modules_path( 'bogo/assets/css/order-bogo-front.css' ) );
+		$ftime = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-front.css' ) );
 
 		wp_enqueue_style(
 			'sgsb-bogo-front-css',
-			sgsb_modules_url( 'bogo/assets/css/order-bogo-front.css' ),
+			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-front.css' ),
 			null,
 			$ftime
 		);
@@ -156,11 +157,11 @@ class EnqueueScript implements HookRegistry {
 	 * Script for frontend.
 	 */
 	public function front_scripts() {
-		$ftime = filemtime( sgsb_modules_path( 'bogo/assets/js/order-bogo-custom.js' ) );
+		$ftime = filemtime( PluginHelper::get_modules_path( 'bogo/assets/js/order-bogo-custom.js' ) );
 
 		wp_enqueue_script(
 			'sgsb-bogo-front-js',
-			sgsb_modules_url( 'bogo/assets/js/order-bogo-custom.js' ),
+			PluginHelper::get_modules_url( 'bogo/assets/js/order-bogo-custom.js' ),
 			'jquery',
 			$ftime,
 			true

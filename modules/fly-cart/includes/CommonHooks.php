@@ -61,8 +61,8 @@ class CommonHooks implements HookRegistry {
 		}
 
 		$settings      = get_option( 'sgsb_fly_cart_settings' );
-		$icon_position = sgsb_find_option_setting( $settings, 'icon_position', 'bottom-right' );
-		$icon_name     = sgsb_find_option_setting( $settings, 'icon_name', 'shopping-cart-icon-5' );
+		$icon_position = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
+		$icon_name     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
 
 		include __DIR__ . '/../templates/fly-cart.php';
 	}

@@ -9,10 +9,10 @@ global $product;
 $product_id            = $product->get_ID();
 $product_type          = $product->get_type();
 $settings              = get_option( 'sgsb_quick_view_settings' );
-$button_label          = sgsb_find_option_setting( $settings, 'button_label', 'Quick View' );
-$modal_effect          = sgsb_find_option_setting( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
-$quick_view_icon_color = sgsb_find_option_setting( $settings, 'button_text_color', '#ffffff' );
-$is_icon_active        = sgsb_find_option_setting( $settings, 'enable_qucik_view_icon', false );
+$button_label          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_label', 'Quick View' );
+$modal_effect          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
+$quick_view_icon_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
+$is_icon_active        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_qucik_view_icon', false );
 // $product_page          = is_product() ? '_product_page' : '';
 	$classes = implode(
 		' ',

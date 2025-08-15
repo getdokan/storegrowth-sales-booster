@@ -38,15 +38,15 @@ class Helper {
 	 * @return string
 	 */
 	public static function sgsb_pd_banner_get_banner_text( $settings ) {
-		$minimum_amount = sgsb_find_option_setting( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// If customer already added enough to cart.
 		if ( $cart_amount >= $minimum_amount ) {
-			return sgsb_find_option_setting( $settings, 'goal_completion_text' );
+			return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'goal_completion_text' );
 		}
 
-		$pbanner_text = sgsb_find_option_setting( $settings, 'progressive_banner_text' );
+		$pbanner_text = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_text' );
 
 		return str_replace( '[amount]', wc_price( $minimum_amount - $cart_amount ), $pbanner_text );
 	}
@@ -89,7 +89,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function sgsb_pd_banner_get_banner_icon( $settings ) {
-		return sgsb_find_option_setting( $settings, 'progressive_banner_icon_name' );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_icon_name' );
 	}
 
 	/**
@@ -102,6 +102,6 @@ class Helper {
 	 * @return string
 	 */
 	public static function sgsb_pd_banner_get_banner_custom_icon( $settings ) {
-		return sgsb_find_option_setting( $settings, 'progressive_banner_custom_icon' );
+		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
 	}
 }

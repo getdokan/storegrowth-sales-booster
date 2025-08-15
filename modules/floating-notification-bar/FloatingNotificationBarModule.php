@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
+		return PluginHelper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
 	}
 
 	/**
@@ -46,7 +47,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'floating-notification-bar/assets/images/floating-bar-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-thumbnail.png' );
 	}
 
 	/**

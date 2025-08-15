@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\StockBar;
 
 use STOREGROWTH\SPSB\BaseModule;
 use STOREGROWTH\SPSB\Modules\StockBar\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +38,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
+		return PluginHelper::get_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
 	}
 
 	/**
@@ -46,7 +47,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return sgsb_modules_url( 'stock-bar/assets/images/stock-bar-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'stock-bar/assets/images/stock-bar-thumbnail.png' );
 	}
 
 	/**
