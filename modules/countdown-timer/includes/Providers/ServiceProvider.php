@@ -2,7 +2,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
+use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\CountdownTimer\CountdownTimerModule;
 
 /**
@@ -14,8 +14,7 @@ use STOREGROWTH\SPSB\Modules\CountdownTimer\CountdownTimerModule;
  *
  * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
  */
-class ServiceProvider extends BootableServiceProvider {
-
+class ServiceProvider extends BaseServiceProvider {
     /**
      * List of services provided by this provider.
      *
@@ -26,27 +25,6 @@ class ServiceProvider extends BootableServiceProvider {
     protected $services = [
         CountdownTimerModule::class,
     ];
-
-    /**
-     * Check if the provider offers the given alias.
-     *
-     * @since 2.0.0
-     *
-     * @param string $alias
-     *
-     * @return bool
-     */
-    public function provides( string $alias ): bool {
-        if ( isset( $this->services[ $alias ] ) ) {
-            return true;
-        }
-
-        if ( $alias === CountdownTimerModule::get_id() ) {
-            return true;
-        }
-
-        return parent::provides( $alias );
-    }
 
     /**
      * Boot the service provider.
