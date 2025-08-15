@@ -10,7 +10,7 @@ addFilter('sgsb_countdown_timer_tab_panels', 'sgsb_countdown_timer_tab_panels_ca
     return [
         ...panels,
         {
-            key: 'vendor', title: __('Vendor', 'storegrowth-sales-booster'),
+            key: 'vendor', title: __('Vendors', 'storegrowth-sales-booster'),
             panel: <DokanCountdownTimer
                 formData={formData}
                 onFieldChange={onFieldChange}
