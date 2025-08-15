@@ -42,7 +42,7 @@ class EnqueueScript {
         $flycart_file   = require sgsb_plugin_path( 'integrations/assets/build/dokan-fly-cart.asset.php' );
         $countdown_file = require sgsb_plugin_path( 'integrations/assets/build/dokan-countdown-timer.asset.php' );
 
-        if ( file_exists( sgsb_plugin_path( 'assets/build/bogo-dokan-admin.js' ) ) ) {
+        if ( file_exists( sgsb_plugin_path( 'integrations/assets/build/bogo-dokan-admin.js' ) ) ) {
             wp_enqueue_script(
                 'sgsb-bogo-dokan-admin',
                 sgsb_integrations_url( 'assets/build/bogo-dokan-admin.js' ),
@@ -52,7 +52,7 @@ class EnqueueScript {
             );
         }
 
-        if ( file_exists( sgsb_plugin_path( 'assets/build/dokan-fly-cart.js' ) ) ) {
+        if ( file_exists( sgsb_plugin_path( 'integrations/assets/build/dokan-fly-cart.js' ) ) ) {
             wp_enqueue_script(
                 'sgsb-dokan-fly-cart',
                 sgsb_integrations_url( 'assets/build/dokan-fly-cart.js' ),
@@ -62,7 +62,7 @@ class EnqueueScript {
             );
         }
 
-        if ( file_exists( sgsb_plugin_path( 'assets/build/dokan-countdown-timer.js' ) ) ) {
+        if ( file_exists( sgsb_plugin_path( 'integrations/assets/build/dokan-countdown-timer.js' ) ) ) {
             wp_enqueue_script(
                 'sgsb-dokan-countdown-timer',
                 sgsb_integrations_url( 'assets/build/dokan-countdown-timer.js' ),
