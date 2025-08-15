@@ -51,18 +51,17 @@ class Dashboard {
      * @return void
      */
     private function init_hooks() {
+		// Add menu and page on Dokan vendor dashboard.
         add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_menu_on_dokan_vendor_dashboard' ], 10, 1 );
         add_filter( 'dokan_query_var_filter', [ $this, 'add_endpoint_on_dokan_vendor_dashboard' ], 10, 1 );
 
         // Flush rewrite rules.
         add_action( 'woocommerce_flush_rewrite_rules', [ $this, 'flush_rewrite_rules' ] );
 
-        // Remove promo banners from vendor dashboard.
-        add_filter( 'sgsb_floating_bar_content_pro', [ $this, 'remove_sgsb_template_path_on_seller_dashboard' ], 99 );
-        add_filter( 'free_shipping_bar_content_pro', [ $this, 'remove_sgsb_template_path_on_seller_dashboard' ], 99 );
+        // Add countdown-timer fields to Dokan product edit page.
         add_action( 'dokan_product_edit_after_inventory_variants' , [ $this, 'sgsb_add_product_countdown_timer_fields' ], 5, 2 );
 
-        // Save countdown timer fields when product is saved
+        // Save countdown-timer fields when product is saved.
         add_action( 'dokan_process_product_meta', [ $this, 'sgsb_save_product_countdown_timer_fields' ], 10, 1 );
     }
 
@@ -116,23 +115,6 @@ class Dashboard {
         add_filter( 'dokan_query_var_filter', [ $this, 'add_endpoint_on_dokan_vendor_dashboard' ] );
         dokan()->rewrite->register_rule();
         flush_rewrite_rules( true );
-    }
-
-    /**
-     * Remove StoreGrowth Template Path on Dokan Seller Dashboard.
-     *
-     * @since 1.12.0
-     *
-     * @param string $template_patch Template path.
-     *
-     * @return string $template_patch
-     */
-    public function remove_sgsb_template_path_on_seller_dashboard( $template_patch ) {
-        if ( dokan_is_seller_dashboard() ) {
-            $template_patch = '';
-        }
-
-        return $template_patch;
     }
 
     /**
