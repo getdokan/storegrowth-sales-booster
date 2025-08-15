@@ -33,10 +33,10 @@ class Dashboard {
      * @return void
      */
     private function init_classes() {
-	    // Initialize necessary classes instance for countdown timer module.
-	    EnqueueScript::instance();
+        // Initialize necessary classes instance for countdown timer module.
+        EnqueueScript::instance();
 
-	    $modules = new ModuleManager();
+        $modules = new ModuleManager();
 
         if ( $modules->is_active_module( 'bogo' ) ) {
             Bogo::instance();
