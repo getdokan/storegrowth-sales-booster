@@ -2,8 +2,9 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Integrations\Dokan\Dokan;
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Integrations\Dokan\Ajax;
 use STOREGROWTH\SPSB\Integrations\Dokan\Api;
 use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;
@@ -11,7 +12,6 @@ use STOREGROWTH\SPSB\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScrip
 use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Dashboard;
 use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Bogo;
 use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\EnqueueScript as DashboardEnqueueScript;
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -22,7 +22,7 @@ use STOREGROWTH\SPSB\Interfaces\HookRegistry;
  *
  * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
  */
-class DokanServiceProvider extends BaseServiceProvider {
+class DokanServiceProvider extends BootstrapServiceProvider {
     /**
      * List of services provided by this provider.
      *
@@ -49,6 +49,15 @@ class DokanServiceProvider extends BaseServiceProvider {
      * @return void
      */
     public function boot(): void {
+	    foreach ( $this->services as $service ) {
+		    if ( $service === Dokan::class ) {
+			    $this->getContainer()->add( $service )
+			         ->addTag( HookRegistry::class )
+			         ->setShared( true );
+		    } else {
+			    $this->getContainer()->add( $service )->setShared( true );
+		    }
+	    }
     }
 
     /**
@@ -59,16 +68,6 @@ class DokanServiceProvider extends BaseServiceProvider {
      * @return void
      */
     public function register(): void {
-        // Register all services with HookRegistry tag
-        foreach ( $this->services as $service ) {
-            if ( $service === Dokan::class ) {
-                $this->getContainer()->add( $service )
-                    ->addTag( HookRegistry::class )
-                    ->setShared( true );
-            } else {
-                $this->getContainer()->add( $service )->setShared( true );
-            }
-        }
     }
 }
 

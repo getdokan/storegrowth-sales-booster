@@ -2,8 +2,6 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan;
 
-use PHPUnit\Runner\Hook;
-use STOREGROWTH\SPSB\Traits\Singleton;
 use STOREGROWTH\SPSB\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
 use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Dashboard;
 use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;
