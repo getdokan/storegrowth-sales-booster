@@ -2,6 +2,7 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan\Dashboard;
 
+use STOREGROWTH\SPSB\Helper;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 /**
@@ -67,7 +68,7 @@ class Bogo {
             return;
         }
 
-        $script_assets = sgsb_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' );
+        $script_assets = Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' );
 
         if ( ! file_exists( $script_assets ) ) {
             return;
@@ -77,7 +78,7 @@ class Bogo {
 
         wp_enqueue_script(
             'sgsb-bogo-dokan-vendor-dashboard',
-            sgsb_integrations_url( 'assets/build/bogo-dokan-dashboard.js' ),
+	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.js' ),
             array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
             $assets['version'],
             true

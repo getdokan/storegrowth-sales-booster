@@ -2,6 +2,7 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan\Frontend;
 
+use STOREGROWTH\SPSB\Helper;
 use STOREGROWTH\SPSB\Traits\Singleton;
 use WC_Product;
 
@@ -45,8 +46,8 @@ class Frontend {
      */
     public function display_dokan_vendor_info( WC_Product $product ) {
         $settings              = get_option( 'sgsb_fly_cart_settings' );
-        $is_store_name_visible = sgsb_find_option_setting( $settings, 'show_quick_cart_dokan_store_names', true );
-        $is_store_link_enabled = sgsb_find_option_setting( $settings, 'enable_quick_cart_dokan_store_links', true );
+        $is_store_name_visible = Helper::find_option_settings( $settings, 'show_quick_cart_dokan_store_names', true );
+        $is_store_link_enabled = Helper::find_option_settings( $settings, 'enable_quick_cart_dokan_store_links', true );
 
         if ( ! $is_store_name_visible ) {
             return;

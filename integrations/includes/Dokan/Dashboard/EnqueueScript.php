@@ -2,6 +2,7 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan\Dashboard;
 
+use STOREGROWTH\SPSB\Helper;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 class EnqueueScript
@@ -36,14 +37,14 @@ class EnqueueScript
      */
     public function dashboard_enqueue_scripts() {
        // products  page
-        $products_file = require sgsb_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' );
-        if ( ! file_exists( sgsb_plugin_path( 'integrations/assets/build/dokan-dashboard-products.js' ) ) ) {
+        $products_file = require Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' );
+        if ( ! file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.js' ) ) ) {
             return;
         }
 
         wp_enqueue_style(
             'sgsb-dokan-dashboard-products',
-            sgsb_integrations_url( 'assets/build/dokan-dashboard-products.css' ),
+	        Helper::get_integrations_path( 'assets/build/dokan-dashboard-products.css' ),
             $products_file['dependencies'],
             $products_file['version']
         );

@@ -51,6 +51,19 @@ class Helper {
 	}
 
 	/**
+	 * Get Integrations Path.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $path Module internal path.
+	 *
+	 * @return string
+	 */
+	public static function get_integrations_path( string $path ): string {
+		return STOREGROWTH_PLUGIN_DIR_URL . 'integrations/' . $path;
+	}
+
+	/**
 	 * Get Plugin File Path.
 	 *
 	 * @since 2.0.0
