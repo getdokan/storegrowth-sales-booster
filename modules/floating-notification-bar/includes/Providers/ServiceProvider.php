@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\FloatingNotificationBarModule;

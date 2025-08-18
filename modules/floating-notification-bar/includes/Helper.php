@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes;
+namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 // If this file is called directly, abort.
 use PHP_CodeSniffer\Generators\HTML;
