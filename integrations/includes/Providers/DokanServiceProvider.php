@@ -4,7 +4,7 @@ namespace STOREGROWTH\SPSB\Integrations\Providers;
 
 use STOREGROWTH\SPSB\Integrations\Dokan\Dokan;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\BoGo\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Integrations\Dokan\Ajax;
 use STOREGROWTH\SPSB\Integrations\Dokan\Api;
 use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;

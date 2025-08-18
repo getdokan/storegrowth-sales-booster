@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
+namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use WP_Error;
 use WP_Query;

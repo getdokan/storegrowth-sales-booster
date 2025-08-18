@@ -1,13 +1,13 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\BoGo\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\BoGo\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Bogo;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\OrderBogo;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\EnqueueScript;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\REST\BogoController;
+use STOREGROWTH\SPSB\Modules\BoGo\Ajax;
+use STOREGROWTH\SPSB\Modules\BoGo\Bogo;
+use STOREGROWTH\SPSB\Modules\BoGo\OrderBogo;
+use STOREGROWTH\SPSB\Modules\BoGo\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
 
 /**
  * BootstrapServiceProvider for the module.

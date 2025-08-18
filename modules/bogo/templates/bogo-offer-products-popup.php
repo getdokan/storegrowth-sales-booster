@@ -8,7 +8,7 @@
  * @since     1.1.2
  */
 
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\BoGo\Helper;
 
 $item_id = $cart_item['product_id'];
 if ( ! empty( $cart_item['changed_product_id'] ) ) {
