@@ -94,6 +94,16 @@ class Helper {
 	}
 
 	/**
+	 * Get settings by the key.
+	 *
+	 * @param string $key
+	 * @return array
+	 */
+	public static function get_settings( string $key ): array {
+		return (array) get_option( $key );
+	}
+
+	/**
 	 * Find Options Settings Value.
 	 *
 	 * @since 2.0.0

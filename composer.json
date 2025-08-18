@@ -25,7 +25,10 @@
       "STOREGROWTH\\SPSB\\Modules\\StockBar\\Includes\\": "modules/stock-bar/includes",
       "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump",
       "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\Includes\\": "modules/upsell-order-bump/includes"
-    }
+    },
+    "files": [
+      "helpers/functions.php"
+    ]
   },
  "require-dev": {
     "league/container": "^4.0",
