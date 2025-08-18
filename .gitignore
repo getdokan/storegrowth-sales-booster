@@ -5,4 +5,8 @@ vendor
 lerna-debug.log
 package-lock.json
 assets/build/
-Includes/Modules/*/assets/build/
+modules/*/assets/build/
+integrations/assets/build/
+lib/packages/
+.vscode/
+

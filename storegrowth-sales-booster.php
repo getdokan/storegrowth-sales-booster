@@ -51,7 +51,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
  * Define The Template's Folder Constant
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'Includes/Modules/' );
+	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'modules/' );
 }
 
 /**
@@ -59,7 +59,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
  */
 
 if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
-	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'CountdownTimer/templates/' );
+	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
 }
 
 /**
@@ -67,7 +67,7 @@ if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
  */
 
 if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
-	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'ProgressiveDiscountBanner/templates/' );
+	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
 }
 
 /**
@@ -75,6 +75,13 @@ if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
  */
 if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
 	define( 'STOREGROWTH_PLUGIN_BASENAME', plugin_basename( STOREGROWTH_PLUGIN_FILE ) );
+}
+
+/**
+ * Define module directory.
+ */
+if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
+	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
 }
 
 /**
@@ -114,6 +121,32 @@ register_activation_hook(
 		add_option( 'storegrowth_activation_redirect', true );
 	}
 );
+
+// Use the necessary namespace.
+use STOREGROWTH\SPSB\DependencyManagement\Container;
+
+// Declare the $dokan_container as global to access from the inside of the function.
+global $storegrowth_container;
+
+// Instantiate the container.
+$storegrowth_container = new Container();
+
+// Register the service providers.
+$storegrowth_container->addServiceProvider( new \STOREGROWTH\SPSB\DependencyManagement\Providers\ServiceProvider() );
+
+/**
+ * Get the container.
+ *
+ * @since 1.29.0
+ *
+ * @return Container The global container instance.
+ */
+function storegrowth_get_container(): Container {
+    global $storegrowth_container;
+
+    return $storegrowth_container;
+}
+
 /**
  * Initialize the plugin functionality.
  *
@@ -124,6 +157,21 @@ register_activation_hook(
 function sgsb_plugin(): Bootstrap {
 	return Bootstrap::instance();
 }
+
+// Load modules bootstrap files.
+require_once STOREGROWTH_MODULE_DIR . '/bogo/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/countdown-timer/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/direct-checkout/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/floating-notification-bar/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/fly-cart/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/progressive-discount-banner/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/quick-view/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/sales-pop/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
+
+// Load integrations bootstrap files.
+require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
 sgsb_plugin();
