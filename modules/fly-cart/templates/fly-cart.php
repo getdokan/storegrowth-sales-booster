@@ -8,7 +8,7 @@
  * @package SBFW
  */
 
-$settings   = get_option( 'sgsb_fly_cart_settings' );
+$settings   = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
 $layout     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'layout', 'side' );
 $class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
 

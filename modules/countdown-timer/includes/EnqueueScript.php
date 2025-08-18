@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
+namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -101,7 +101,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sgsb_countdown_timer_settings' );
+		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_countdown_timer_settings' );
 
 		$widget_bg_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
 		$border_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );

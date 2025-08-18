@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
+namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

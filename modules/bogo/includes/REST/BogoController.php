@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\BoGo\Includes\REST;
+namespace STOREGROWTH\SPSB\Modules\BoGo\REST;
 
 use WP_Error;
 use WP_HTTP_Response;
@@ -8,7 +8,7 @@ use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Bogo;
+use STOREGROWTH\SPSB\Modules\BoGo\Bogo;
 
 defined( 'ABSPATH' ) || exit();
 
@@ -146,7 +146,7 @@ class BogoController extends WP_REST_Controller {
         $items = $this->get_bogo()->get_items( $args );
 
         if ( ! $items['data'] ) {
-            return new WP_Error( 'no_offer_items', __( 'No BOGO offers found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
+            return new WP_REST_Response( [ 'error' => __( 'No item found.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $data = [];
@@ -173,8 +173,8 @@ class BogoController extends WP_REST_Controller {
         $id   = $request->get_param( 'id' );
         $item = $this->get_bogo()->get_item( $id );
 
-        if ( is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => $item->get_error_message() ], 404 );
+        if ( ! $item || is_wp_error( $item ) ) {
+            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
         }
 
         $response = $this->prepare_item_for_response( $item, $request );
@@ -196,7 +196,7 @@ class BogoController extends WP_REST_Controller {
         $data = $request->get_params();
 
         if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
+            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
         }
 
         $result = $this->get_bogo()->create( $data );
@@ -208,7 +208,7 @@ class BogoController extends WP_REST_Controller {
         if ( empty( $result ) || ! is_int( $result ) ) {
             // Likely due to free version restriction, return appropriate message.
             return new WP_REST_Response(
-                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster-pro' ) ],
+                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
                 403
             );
         }
@@ -236,7 +236,7 @@ class BogoController extends WP_REST_Controller {
         $data = $request->get_params();
 
         if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster-pro' ) ], 400 );
+            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
         }
 
         $result = $this->get_bogo()->update( $id, $data );

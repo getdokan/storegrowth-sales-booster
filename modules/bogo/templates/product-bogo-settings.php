@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\BoGo\Includes;
+namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 ?>
 

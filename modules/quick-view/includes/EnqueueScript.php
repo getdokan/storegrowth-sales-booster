@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView\Includes;
+namespace STOREGROWTH\SPSB\Modules\QuickView;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -41,7 +41,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function wp_enqueue_scripts() {
 
-		$settings            = get_option( 'sgsb_quick_view_settings' );
+		$settings            = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
 		$modal_effect        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 		$enable_close_button = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_close_button', true );
 		$enable_in_mobile    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_in_mobile', true );
@@ -230,7 +230,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sgsb_quick_view_settings' );
+		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
 
 		$modal_bg_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'modal_background_color', '#ffffff' );
 		$button_color         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_color', '#0875FF' );

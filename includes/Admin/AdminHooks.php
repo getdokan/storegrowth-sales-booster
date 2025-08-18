@@ -52,7 +52,7 @@ class AdminHooks {
 	 */
 
 	public function sgsb_redirect_initial_setup() {
-		$ini_setup_completion = get_option( 'sgsb_ini_completion' );
+		$ini_setup_completion = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_ini_completion' );
 		if ( $ini_setup_completion ) {
 			return;}
 

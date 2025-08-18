@@ -51,6 +51,19 @@ class Helper {
 	}
 
 	/**
+	 * Get Integrations Path.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $path Module internal path.
+	 *
+	 * @return string
+	 */
+	public static function get_integrations_path( string $path ): string {
+		return STOREGROWTH_PLUGIN_DIR_URL . 'integrations/' . $path;
+	}
+
+	/**
 	 * Get Plugin File Path.
 	 *
 	 * @since 2.0.0
@@ -78,6 +91,20 @@ class Helper {
 		require STOREGROWTH_PLUGIN_DIR_PATH . $path;
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Get settings by the key.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string $key     The option key to retrieve.
+	 * @param mixed  $default Default value to return if option doesn't exist.
+	 *
+	 * @return array
+	 */
+	public static function get_settings( string $key, $default = array() ): array {
+		return (array) get_option( $key, $default );
 	}
 
 	/**

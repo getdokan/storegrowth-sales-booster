@@ -1,8 +1,8 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
+use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 
 /**
@@ -12,9 +12,9 @@ use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBanner
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
-class ServiceProvider extends BootableServiceProvider {
+class ServiceProvider extends BaseServiceProvider {
 
     /**
      * List of services provided by this provider.
@@ -26,27 +26,6 @@ class ServiceProvider extends BootableServiceProvider {
     protected $services = [
 	    ProgressiveDiscountBannerModule::class,
     ];
-
-    /**
-     * Check if the provider offers the given alias.
-     *
-     * @since 2.0.0
-     *
-     * @param string $alias
-     *
-     * @return bool
-     */
-    public function provides( string $alias ): bool {
-        if ( isset( $this->services[ $alias ] ) ) {
-            return true;
-        }
-
-        if ( $alias === ProgressiveDiscountBannerModule::get_id() ) {
-            return true;
-        }
-
-        return parent::provides( $alias );
-    }
 
     /**
      * Boot the service provider.

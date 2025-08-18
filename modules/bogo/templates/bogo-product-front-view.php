@@ -6,7 +6,7 @@
  */
 
 // Check if essential variables are set before using them.
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\BoGo\Helper;
 
 if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :

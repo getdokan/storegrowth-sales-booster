@@ -101,7 +101,7 @@ class Ajax {
 			wp_die();
 		}
 
-		$modules        = new ModuleManager();
+		$modules        = storegrowth_get_container()->get( \STOREGROWTH\SPSB\ModuleManager::class );
 		$active_modules = $modules->get_active_modules();
 
 		$module_id = isset( $_POST['data']['module_id'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['module_id'] ) ) : null;
@@ -248,7 +248,7 @@ class Ajax {
             'data_format'  => 'body',
         ];
 
-        $old_data = get_option( 'sgsb_user_consent_data', [] );
+        $old_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_user_consent_data', [] );
         array_push( $old_data, $request_args );
         update_option( 'sgsb_user_consent_data', $old_data );
 

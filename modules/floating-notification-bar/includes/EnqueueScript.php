@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes;
+namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;

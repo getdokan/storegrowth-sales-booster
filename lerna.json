@@ -4,6 +4,7 @@
   "npmClient": "npm",
   "packages": [
     "assets",
+    "integrations/assets",
     "modules/*/assets"
   ]
 }

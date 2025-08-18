@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes;
+namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -40,7 +40,7 @@ class EnqueueScript implements HookRegistry {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		$settings = get_option( 'sgsb_fly_cart_settings' );
+		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
 		$layout   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'layout', 'side' );
 		if ( is_checkout() || is_cart() ) {
 			return;
@@ -114,7 +114,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function qc_basic_inline_styles() {
 		// Get style options.
-		$settings              = get_option( 'sgsb_fly_cart_settings' );
+		$settings              = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
 		$wfc_color             = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
 		$widget_bg_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
 		$product_card_bg_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
@@ -175,8 +175,8 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function frontend_widget_script() {
 		// Get checkout redirection data.
-		$qcart_settings           = get_option( 'sgsb_fly_cart_settings' );
-		$dir_checkout_settings    = get_option( 'sgsb_direct_checkout_settings' );
+		$qcart_settings           = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$dir_checkout_settings    = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
 		$cart_layout_type         = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'layout', 'side' );
 		$is_add_to_qcart_redirect = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'enable_add_to_cart_redirect', true );
 		$checkout_redirect        = \STOREGROWTH\SPSB\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );

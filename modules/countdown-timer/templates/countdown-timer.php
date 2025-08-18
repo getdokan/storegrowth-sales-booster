@@ -5,13 +5,13 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
+namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 if ( ! Helper::sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 
-$settings                         = get_option( 'sgsb_countdown_timer_settings' );
+$settings                         = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_countdown_timer_settings' );
 $enable_countdown_in_product_page = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_page_countdown_enable', true );
 $layout_class                     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 

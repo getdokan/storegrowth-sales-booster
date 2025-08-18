@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\StockBar\Includes;
+namespace STOREGROWTH\SPSB\Modules\StockBar;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -96,7 +96,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = get_option( 'sgsb_stock_bar_settings' );
+		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_stock_bar_settings' );
 
 		$bar_height   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
 		$bg_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );

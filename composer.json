@@ -3,33 +3,67 @@
   "autoload": {
     "psr-4": {
       "STOREGROWTH\\SPSB\\": "includes/",
+      "STOREGROWTH\\SPSB\\Integrations\\": "integrations/includes/",
       "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\": "lib/packages/",
-      "STOREGROWTH\\SPSB\\Modules\\BoGo\\": "modules/bogo",
-      "STOREGROWTH\\SPSB\\Modules\\BoGo\\Includes\\": "modules/bogo/includes",
-      "STOREGROWTH\\SPSB\\Modules\\CountdownTimer\\": "modules/countdown-timer",
-      "STOREGROWTH\\SPSB\\Modules\\CountdownTimer\\Includes\\": "modules/countdown-timer/includes",
-      "STOREGROWTH\\SPSB\\Modules\\DirectCheckout\\": "modules/direct-checkout",
-      "STOREGROWTH\\SPSB\\Modules\\DirectCheckout\\Includes\\": "modules/direct-checkout/includes",
-      "STOREGROWTH\\SPSB\\Modules\\FloatingNotificationBar\\": "modules/floating-notification-bar",
-      "STOREGROWTH\\SPSB\\Modules\\FloatingNotificationBar\\Includes\\": "modules/floating-notification-bar/includes",
-      "STOREGROWTH\\SPSB\\Modules\\FlyCart\\": "modules/fly-cart",
-      "STOREGROWTH\\SPSB\\Modules\\FlyCart\\Includes\\": "modules/fly-cart/includes",
-      "STOREGROWTH\\SPSB\\Modules\\ProgressiveDiscountBanner\\": "modules/progressive-discount-banner",
-      "STOREGROWTH\\SPSB\\Modules\\ProgressiveDiscountBanner\\Includes\\": "modules/progressive-discount-banner/includes",
-      "STOREGROWTH\\SPSB\\Modules\\QuickView\\": "modules/quick-view",
-      "STOREGROWTH\\SPSB\\Modules\\QuickView\\Includes\\": "modules/quick-view/includes",
-      "STOREGROWTH\\SPSB\\Modules\\SalesPop\\": "modules/sales-pop",
-      "STOREGROWTH\\SPSB\\Modules\\SalesPop\\Includes\\": "modules/sales-pop/includes",
-      "STOREGROWTH\\SPSB\\Modules\\StockBar\\": "modules/stock-bar",
-      "STOREGROWTH\\SPSB\\Modules\\StockBar\\Includes\\": "modules/stock-bar/includes",
-      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump",
-      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\Includes\\": "modules/upsell-order-bump/includes"
-    }
+      "STOREGROWTH\\SPSB\\Modules\\BoGo\\": "modules/bogo/includes",
+      "STOREGROWTH\\SPSB\\Modules\\CountdownTimer\\": "modules/countdown-timer/includes",
+      "STOREGROWTH\\SPSB\\Modules\\DirectCheckout\\": "modules/direct-checkout/includes",
+      "STOREGROWTH\\SPSB\\Modules\\FloatingNotificationBar\\": "modules/floating-notification-bar/includes",
+      "STOREGROWTH\\SPSB\\Modules\\FlyCart\\": "modules/fly-cart/includes",
+      "STOREGROWTH\\SPSB\\Modules\\ProgressiveDiscountBanner\\": "modules/progressive-discount-banner/includes",
+      "STOREGROWTH\\SPSB\\Modules\\QuickView\\": "modules/quick-view/includes",
+      "STOREGROWTH\\SPSB\\Modules\\SalesPop\\": "modules/sales-pop/includes",
+      "STOREGROWTH\\SPSB\\Modules\\StockBar\\": "modules/stock-bar/includes",
+      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump/includes"
+    },
+    "files": [
+      "helpers/functions.php"
+    ]
+  },
+ "require-dev": {
+    "league/container": "^4.0",
+    "coenjacobs/mozart": "^0.7.1"
   },
   "authors": [
     {
       "name": "Dokan Inc.",
       "email": "support@dokan.co"
     }
-  ]
+  ],
+  "scripts": {
+    "post-install-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ]
+  },
+  "extra": {
+    "mozart": {
+        "dep_namespace": "STOREGROWTH\\SPSB\\ThirdParty\\Packages\\",
+        "dep_directory": "/lib/packages/",
+        "classmap_directory": "/lib/classes/",
+        "classmap_prefix": "STOREGROWTH_SPSB_",
+        "packages": [
+            "league/container"
+        ],
+        "excluded_packages": [
+            "psr/http-client",
+            "psr/http-message"
+        ],
+        "override_autoload": {
+            "google/apiclient": {
+                "classmap": [
+                    "src/"
+                ]
+            }
+        },
+        "delete_vendor_directories": true
+    }
+  },
+
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

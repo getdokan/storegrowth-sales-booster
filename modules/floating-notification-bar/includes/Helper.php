@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes;
+namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
 
 // If this file is called directly, abort.
 use PHP_CodeSniffer\Generators\HTML;
@@ -27,7 +27,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function sgsb_floating_notification_bar_get_settings() {
-		return get_option( 'sgsb_floating_notification_bar_settings', array() );
+		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_floating_notification_bar_settings', array() );
 	}
 
 	/**

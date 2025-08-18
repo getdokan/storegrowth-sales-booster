@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
+namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
@@ -48,7 +48,7 @@ class EnqueueScript implements HookRegistry {
 			'posts_per_page' => -1,
 		);
 		$products         = get_posts( $args );
-		$popup_properties = get_option( 'sgsb_popup_products', false );
+		$popup_properties = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', false );
 
 		if ( false !== $popup_properties ) {
 			$popup_properties  = maybe_unserialize( $popup_properties );
@@ -122,7 +122,7 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $screen name of screen.
 	 */
 	public function admin_enqueue_scripts( $screen ) {
-		$popup_properties = maybe_unserialize( get_option( 'sgsb_popup_products', true ) );
+		$popup_properties = maybe_unserialize( \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', true ) );
 
 		if ( 'storegrowth_page_sgsb-settings' === $screen ) {
 			add_action( 'admin_head', array( $this, 'admin_css' ) );

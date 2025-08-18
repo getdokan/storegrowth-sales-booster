@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\QuickView\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\QuickView\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\QuickView\Includes\CommonHooks;
-use STOREGROWTH\SPSB\Modules\QuickView\Includes\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\QuickView\Ajax;
+use STOREGROWTH\SPSB\Modules\QuickView\CommonHooks;
+use STOREGROWTH\SPSB\Modules\QuickView\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\QuickView\Includes\EnqueueScript;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

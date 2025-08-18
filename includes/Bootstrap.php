@@ -44,6 +44,9 @@ class Bootstrap {
 
 		// Register hooks.
 		$this->register_hooks();
+
+		// Include integration classes.
+		$this->load_integration_classes();
 	}
 
 	/**
@@ -137,5 +140,13 @@ class Bootstrap {
 	 */
 	private function load_module_classes() {
 		$this->get_container()->get( ModuleManager::class )->load();
+	}
+
+	/**
+	 * Load integration classes.
+	 *
+	 * @since 1.12.0
+	 */
+	private function load_integration_classes() {
 	}
 }
