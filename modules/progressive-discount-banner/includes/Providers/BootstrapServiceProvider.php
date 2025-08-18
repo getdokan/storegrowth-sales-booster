@@ -65,7 +65,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	 * @return void
 	 */
 	public function set_initial_banner_data() {
-		$flags = get_option( 'sgsb_discount_banner_flags', array() );
+		$flags = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_discount_banner_flags', array() );
 		if ( isset( $flags['done_setting_initial_banner_data'] ) ) {
 			return;
 		}

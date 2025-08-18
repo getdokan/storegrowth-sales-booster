@@ -25,7 +25,7 @@ $product_type             = $product->get_type();
 $add_to_cart_text         = $product->add_to_cart_text();
 $is_in_stock              = $product->is_in_stock();
 $permalink                = get_permalink( $product_id );
-$settings                 = get_option( 'sgsb_direct_checkout_settings' );
+$settings                 = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
 $class                    = 'simple' === $product_type ? 'button product_type_simple sgsb_buy_now_button' : $args['class'];
 $buy_now_button_label     = $is_in_stock ? \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_label', 'Buy Now' ) : 'Read More';
 $product_checkout_url     = esc_url( $is_in_stock ? wc_get_checkout_url() : $permalink );

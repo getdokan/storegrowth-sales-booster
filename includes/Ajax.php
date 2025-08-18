@@ -248,7 +248,7 @@ class Ajax {
             'data_format'  => 'body',
         ];
 
-        $old_data = get_option( 'sgsb_user_consent_data', [] );
+        $old_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_user_consent_data', [] );
         array_push( $old_data, $request_args );
         update_option( 'sgsb_user_consent_data', $old_data );
 

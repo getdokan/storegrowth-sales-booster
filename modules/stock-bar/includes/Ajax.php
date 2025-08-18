@@ -55,7 +55,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = get_option( 'sgsb_stock_bar_settings', array() );
+		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_stock_bar_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

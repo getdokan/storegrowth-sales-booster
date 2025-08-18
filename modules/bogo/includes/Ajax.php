@@ -127,7 +127,7 @@ class Ajax implements HookRegistry {
 			$bogo_general_settings_data = $data['bogo_general_settings_data'];
 
 			update_option( 'sgsb_bogo_general_settings', $bogo_general_settings_data );
-			wp_send_json_success( maybe_unserialize( get_option( 'sgsb_bogo_general_settings' ) ) );
+			wp_send_json_success( maybe_unserialize( \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings' ) ) );
 		}
 	}
 
@@ -138,7 +138,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = get_option( 'sgsb_bogo_general_settings', array() );
+		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -176,7 +176,7 @@ class Ajax implements HookRegistry {
         }
 
         $data          = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
-        $bogo_settings = get_option( 'sgsb_bogo_general_settings', array() );
+        $bogo_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
         $cat_ids       = ! empty( $bogo_settings['bogo_category_messages'] ) ? wp_list_pluck( $bogo_settings['bogo_category_messages'], 'id' ) : array();
         if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids ) ) {
             $index = array_search( $data['editableId'], $cat_ids );
@@ -218,7 +218,7 @@ class Ajax implements HookRegistry {
     public function bogo_category_msg_list() {
         check_ajax_referer( 'ajd_protected' );
 
-        $bogo_settings = get_option( 'sgsb_bogo_general_settings', array() );
+        $bogo_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
         if ( empty( $bogo_settings['bogo_category_messages'] ) ) {
             wp_send_json_error( __( 'Category message not found.' ) );
         }

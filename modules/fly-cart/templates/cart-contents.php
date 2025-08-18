@@ -17,7 +17,7 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
-$settings             = get_option( 'sgsb_fly_cart_settings' );
+$settings             = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
 $show_product_image   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_product_image', true );
 $show_remove_icon     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_remove_icon', true );
 $show_quantity_picker = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_quantity_picker', true );

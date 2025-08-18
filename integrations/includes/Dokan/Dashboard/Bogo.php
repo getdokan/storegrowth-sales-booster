@@ -84,7 +84,7 @@ class Bogo {
             true
         );
 
-        $admin_settings = get_option( 'sgsb_bogo_dokan_vendors_settings', [] );
+        $admin_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings', [] );
 
         wp_localize_script(
             'sgsb-bogo-dokan-vendor-dashboard',
