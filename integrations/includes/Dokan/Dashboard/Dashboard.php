@@ -80,7 +80,7 @@ class Dashboard {
         }
 
         $menus['sales_booster'] = [
-            'title'      => __( 'SalesBooster', 'storegrowth-sales-booster' ),
+            'title'      => __( 'StoreGrowth', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fas fa-chart-line"></i>',
             'url'        => dokan_get_navigation_url( 'sales-booster' ),
             'pos'        => 199,
