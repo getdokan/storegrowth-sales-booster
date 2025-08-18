@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.

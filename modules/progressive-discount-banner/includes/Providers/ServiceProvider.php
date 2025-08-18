@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
