@@ -54,7 +54,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Countdown Timer';
+		return __( 'Countdown Timer', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.';
+		return __( 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class CountdownTimerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Stock';
+		return __( 'Stock', 'storegrowth-sales-booster' );
 	}
 
 	/**

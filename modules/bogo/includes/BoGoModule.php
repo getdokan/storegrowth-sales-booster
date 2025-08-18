@@ -61,7 +61,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'BOGO';
+		return __( 'BOGO', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.';
+		return __( 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -79,7 +79,7 @@ class BoGoModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Upsell';
+		return __( 'Upsell', 'storegrowth-sales-booster' );
 	}
 
 	/**

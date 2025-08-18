@@ -56,7 +56,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Stock Bar';
+		return __( 'Stock Bar', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.';
+		return __( 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class StockBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Stock';
+		return __( 'Stock', 'storegrowth-sales-booster' );
 	}
 
 	/**

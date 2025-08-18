@@ -56,7 +56,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Direct Checkout';
+		return __( 'Direct Checkout', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience';
+		return __( 'Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Stock';
+		return __( 'Stock', 'storegrowth-sales-booster' );
 	}
 
 	/**

@@ -56,7 +56,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Fly Cart';
+		return __( 'Fly Cart', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Streamline shopping effortlessly. Add and review items without leaving your page, simplifying the experience.';
+		return __( 'Streamline shopping effortlessly. Add and review items without leaving your page, simplifying the experience.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class FlyCartModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Fly Cart';
+		return __( 'Fly Cart', 'storegrowth-sales-booster' );
 	}
 
 	/**

@@ -56,7 +56,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Sales Notification';
+		return __( 'Sales Notification', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
+		return __( 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Sales';
+		return __( 'Sales', 'storegrowth-sales-booster' );
 	}
 
 	/**
