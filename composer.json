@@ -14,8 +14,7 @@
       "STOREGROWTH\\SPSB\\Modules\\QuickView\\": "modules/quick-view/includes",
       "STOREGROWTH\\SPSB\\Modules\\SalesPop\\": "modules/sales-pop/includes",
       "STOREGROWTH\\SPSB\\Modules\\StockBar\\": "modules/stock-bar/includes",
-      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump",
-      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\Includes\\": "modules/upsell-order-bump/includes"
+      "STOREGROWTH\\SPSB\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump/includes"
     },
     "files": [
       "helpers/functions.php"

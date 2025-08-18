@@ -1,10 +1,10 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Ajax;
+use STOREGROWTH\SPSB\Modules\UpsellOrderBump\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
