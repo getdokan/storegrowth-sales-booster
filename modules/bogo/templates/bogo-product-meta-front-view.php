@@ -13,7 +13,7 @@ if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url
 	$bogo_message = str_replace( '[target_product]', get_the_title( $target_product ), $bogo_message );
 	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
 
-    $show_regular_price = Helper::sgsb_get_bogo_settings_option( 'regular_price_show', false );
+    $show_regular_price = Helper::get_bogo_settings_option( 'regular_price_show', false );
 	?>
 
 	<div class='bogo-template-overview-area'>
@@ -53,10 +53,10 @@ if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url
                         $apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $target_product, $variation_id );
 
                         // Prepare settings for BOGO apply.
-                        $bogo_settings = Helper::sgsb_get_product_bogo_settings_for_cart( $apply_able_product_id );
+                        $bogo_settings = Helper::get_product_bogo_settings_for_cart( $apply_able_product_id );
                         $bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $target_product, $variation_id );
 
-                        $product_id = Helper::sgsb_get_offer_product_id( $bogo_settings, $apply_able_product_id );
+                        $product_id = Helper::get_offer_product_id( $bogo_settings, $apply_able_product_id );
 
 						if ( $product_id ) {
 							$product_categories = wp_get_post_terms( $product_id, 'product_cat' );

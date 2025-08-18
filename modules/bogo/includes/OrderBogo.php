@@ -48,18 +48,18 @@ class OrderBogo implements HookRegistry {
 	public function display_bogo_floating_badge_on_product() {
 		global $product;
 
-		$show_shop_badge = Helper::sgsb_get_bogo_settings_option( 'shop_page_bage_icon' );
+		$show_shop_badge = Helper::get_bogo_settings_option( 'shop_page_bage_icon' );
 		if ( is_shop() && ! $show_shop_badge ) {
 			return;
 		}
 
-		$show_product_badge = Helper::sgsb_get_bogo_settings_option( 'global_product_page_bage_icon' );
+		$show_product_badge = Helper::get_bogo_settings_option( 'global_product_page_bage_icon' );
 		if ( is_product() && ! $show_product_badge ) {
 			return;
 		}
 
 		$product_id       = $product->get_id();
-		$product_settings = Helper::sgsb_get_product_bogo_settings( $product_id );
+		$product_settings = Helper::get_product_bogo_settings( $product_id );
 
 		$offer_badge         = '';
 		$shop_page_msg       = '';
@@ -72,7 +72,7 @@ class OrderBogo implements HookRegistry {
 			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
 			$product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : $product_page_msg;
 		} else {
-			$offers = Helper::sgsb_get_global_offered_product_list();
+			$offers = Helper::get_global_offered_product_list();
 			foreach ( $offers as $offer ) {
 				if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
 					$selected_offer = $offer;
@@ -88,8 +88,8 @@ class OrderBogo implements HookRegistry {
 					$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
 					$offer_badge_url = $is_pro && ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
 				} else {
-					$offer_badge     = Helper::sgsb_get_bogo_settings_option( 'default_badge_icon_name' );
-					$offer_badge_url = $is_pro ? Helper::sgsb_get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
+					$offer_badge     = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
+					$offer_badge_url = $is_pro ? Helper::get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
 				}
 			}
 		}
@@ -114,7 +114,7 @@ class OrderBogo implements HookRegistry {
 				$variation_id = ! empty( $parent_item['variation_id'] ) ? intval( $parent_item['variation_id'] ) : 0;
 
 				$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
-				$bogo_settings         = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+				$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
 				$required_quantity     = ! empty( $bogo_settings['minimum_quantity_required'] ) ? $bogo_settings['minimum_quantity_required'] : 1;
 				$free_product_quantity = floor( $parent_item['quantity'] / $required_quantity ) * 1;
@@ -127,10 +127,10 @@ class OrderBogo implements HookRegistry {
 			$variation_id = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
 
 			$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
-			$bogo_settings         = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+			$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
 			// Get offer product info.
-			$offer_product_id = Helper::sgsb_get_offer_product_id( $bogo_settings, $product_id );
+			$offer_product_id = Helper::get_offer_product_id( $bogo_settings, $product_id );
 			$offer_product    = wc_get_product( $offer_product_id );
 			if ( ! $offer_product ) {
 				continue;
@@ -147,7 +147,7 @@ class OrderBogo implements HookRegistry {
 
 	public function add_custom_text_for_offer_product( $product_name, $cart_item, $cart_item_key ) {
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-			$bogo_settings = Helper::sgsb_prepare_bogo_settings( $cart_item['bogo_product_for'], $cart_item['product_id'], $cart_item['variation_id'] );
+			$bogo_settings = Helper::prepare_bogo_settings( $cart_item['bogo_product_for'], $cart_item['product_id'], $cart_item['variation_id'] );
 			if ( file_exists( __DIR__ . '/../templates/bogo-offer-products-popup.php' ) ) {
 				ob_start();
 				include __DIR__ . '/../templates/bogo-offer-products-popup.php';
@@ -181,7 +181,7 @@ class OrderBogo implements HookRegistry {
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
 		// Get apply product id.
 		$apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
-		$bogo_settings         = Helper::sgsb_prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+		$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
 		// Apply BOGO product if not offer product, different apply & applicable.
 		if ( empty( $cart_item['bogo_offer'] ) && ! empty( $bogo_settings ) &&
@@ -193,7 +193,7 @@ class OrderBogo implements HookRegistry {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
-		$offer_product_id = Helper::sgsb_get_offer_product_id( $settings, $product_id );
+		$offer_product_id = Helper::get_offer_product_id( $settings, $product_id );
 		$product          = wc_get_product( $offer_product_id );
 
 		// Determine the cost of the offer product (if necessary)
@@ -242,7 +242,7 @@ class OrderBogo implements HookRegistry {
 	public function add_custom_class_to_offer_product( $class, $cart_item, $cart_item_key ) {
 		// Check if the cart item is an offer product
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
-			$can_remove_offer_product = Helper::sgsb_get_bogo_settings_option( 'offer_remove_from_cart', false );
+			$can_remove_offer_product = Helper::get_bogo_settings_option( 'offer_remove_from_cart', false );
 			// Append custom class for BOGO offered product.
 			$class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied' : ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option';
 		}
@@ -272,7 +272,7 @@ class OrderBogo implements HookRegistry {
 		$all_cart_products       = $woocommerce->cart->get_cart();
 		$all_cart_product_ids    = array();
 		$all_cart_category_ids   = array();
-		$bogo_list               = Helper::sgsb_get_global_offered_products();
+		$bogo_list               = Helper::get_global_offered_products();
 		$showed_bogo_product_id  = array();
 		$is_simple_product       = $product->is_type( 'simple' );
 
@@ -367,7 +367,7 @@ class OrderBogo implements HookRegistry {
 
 	public function update_woocommerce_item_price( $price, $cart_item, $cart_item_key ) {
 		$product            = $cart_item['data'];
-		$show_regular_price = Helper::sgsb_get_bogo_settings_option( 'regular_price_show' );
+		$show_regular_price = Helper::get_bogo_settings_option( 'regular_price_show' );
 		if ( isset( $cart_item['bogo_offer_price'] ) ) {
 			$regular_price = $product->get_regular_price();
 			if ( $show_regular_price ) {
@@ -418,7 +418,7 @@ class OrderBogo implements HookRegistry {
 		global $post;
 
 		$product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
-		if ( ! Helper::sgsb_is_load_product_bogo_offer( $product_id ) ) {
+		if ( ! Helper::is_load_product_bogo_offer( $product_id ) ) {
 			include __DIR__ . '/../templates/bogo-upgrade-notice.php';
 			return;
 		}

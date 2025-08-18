@@ -135,7 +135,7 @@ $show_coupon          = \STOREGROWTH\SPSB\Helper::find_option_settings( $setting
                                             />
                                         </svg>
                                     </a>',
-										esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . Helper::sgsb_fast_cart_get_query_string_for_http_ajax_referer() ),
+										esc_url( wc_get_cart_remove_url( $cart_item_key ) . '&' . Helper::get_query_string_for_http_ajax_referer() ),
 										esc_html__( 'Remove this item', 'storegrowth-sales-booster' ),
 										esc_attr( $product_id ),
 										esc_attr( $_product->get_sku() )
@@ -164,7 +164,7 @@ $show_coupon          = \STOREGROWTH\SPSB\Helper::find_option_settings( $setting
 				<?php do_action( 'woocommerce_cart_actions' ); ?>
 
 				<?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce', false ); ?>
-				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( Helper::sgsb_fast_cart_get_query_string_for_http_ajax_referer( true ) ); ?>">
+				<input type="hidden" name="_wp_http_referer" value="<?php echo esc_attr( Helper::get_query_string_for_http_ajax_referer( true ) ); ?>">
 			</td>
 		</tr>
 

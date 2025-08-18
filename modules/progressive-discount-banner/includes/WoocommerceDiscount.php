@@ -42,7 +42,7 @@ class WoocommerceDiscount {
 			return;
 		}
 
-		$settings      = Helper::sgsb_pd_banner_get_settings();
+		$settings      = Helper::get_settings();
 		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
@@ -96,7 +96,7 @@ class WoocommerceDiscount {
 	 * Calculate discount amount.
 	 */
 	public function woocommerce_cart_calculate_fees() {
-		$settings      = Helper::sgsb_pd_banner_get_settings();
+		$settings      = Helper::get_settings();
 		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {

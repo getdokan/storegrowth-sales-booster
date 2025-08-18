@@ -117,7 +117,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function woocommerce_product_get_price( $price, $product ) {
 		// Check countdown discount is set.
-		if ( Helper::sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
+		if ( Helper::is_product_discountable( $product->get_id() ) ) {
 			$float_price     = floatval( $product->get_regular_price() );
 			$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
 			$discount_amount = 100 - intval( $discount_amount );
@@ -136,7 +136,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function woocommerce_product_is_on_sale( $is_on_sale, $product ) {
 		// Check countdown discount is set.
-		if ( Helper::sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
+		if ( Helper::is_product_discountable( $product->get_id() ) ) {
 			return true;
 		}
 
