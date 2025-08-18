@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\StockBar\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\StockBar\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\StockBar\StockBarModule;
