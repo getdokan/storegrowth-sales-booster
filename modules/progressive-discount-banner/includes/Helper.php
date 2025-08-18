@@ -25,7 +25,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function sgsb_pd_banner_get_settings() {
-		return get_option( 'sgsb_progressive_discount_banner_settings', array() );
+		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_progressive_discount_banner_settings', array() );
 	}
 
 	/**

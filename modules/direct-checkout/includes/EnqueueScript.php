@@ -57,7 +57,7 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-		$dir_checkout_settings = get_option( 'sgsb_direct_checkout_settings' );
+		$dir_checkout_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
 		$checkout_redirect     = \STOREGROWTH\SPSB\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
 		$is_checkout_redirect  = ( 'quick-cart-checkout' === $checkout_redirect );
 		wp_localize_script(
@@ -92,7 +92,7 @@ class EnqueueScript implements HookRegistry {
 			$settings_file['version'],
 			false
 		);
-		$sgsb_active_module_ids  = get_option( 'sgsb_active_module_ids' );
+		$sgsb_active_module_ids  = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_active_module_ids' );
 		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $sgsb_active_module_ids );
 		wp_localize_script(
 			'sgsb-direct-checkout-settings',
@@ -108,7 +108,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function dc_button_inline_styles() {
 		// Get style options.
-		$settings             = get_option( 'sgsb_direct_checkout_settings' );
+		$settings             = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
 		$button_color         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
 		$text_color           = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
 		$font_size            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_size', '16' );

@@ -9,7 +9,7 @@ if ( ! $product->managing_stock() ) {
 	return;
 }
 
-$settings                         = get_option( 'sgsb_stock_bar_settings' );
+$settings                         = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_stock_bar_settings' );
 $enable_stock_bar_in_product_page = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_page_stock_bar_enable', true );
 
 if ( is_product() && ! $enable_stock_bar_in_product_page ) {

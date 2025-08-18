@@ -45,7 +45,7 @@ class Frontend {
      * @return void
      */
     public function display_dokan_vendor_info( WC_Product $product ) {
-        $settings              = get_option( 'sgsb_fly_cart_settings' );
+        $settings              = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
         $is_store_name_visible = Helper::find_option_settings( $settings, 'show_quick_cart_dokan_store_names', true );
         $is_store_link_enabled = Helper::find_option_settings( $settings, 'enable_quick_cart_dokan_store_links', true );
 

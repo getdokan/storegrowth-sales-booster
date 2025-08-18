@@ -7,7 +7,7 @@
  * @var array $args
  */
 // Get settings from the main plugin's options
-$settings = get_option('sgsb_countdown_timer_settings', array());
+$settings = \STOREGROWTH\SPSB\Helper::get_settings('sgsb_countdown_timer_settings', array());
 
 $defaults = [
     'post_id'      => 0,

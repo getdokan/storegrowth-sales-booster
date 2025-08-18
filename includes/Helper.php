@@ -96,11 +96,15 @@ class Helper {
 	/**
 	 * Get settings by the key.
 	 *
-	 * @param string $key
+	 * @since 2.0.0
+	 *
+	 * @param string $key     The option key to retrieve.
+	 * @param mixed  $default Default value to return if option doesn't exist.
+	 *
 	 * @return array
 	 */
-	public static function get_settings( string $key ): array {
-		return (array) get_option( $key );
+	public static function get_settings( string $key, $default = array() ): array {
+		return (array) get_option( $key, $default );
 	}
 
 	/**

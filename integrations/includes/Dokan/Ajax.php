@@ -46,7 +46,7 @@ class Ajax {
             $vendors_settings_data = $data['sgsb_bogo_dokan_vendors_settings_data'];
 
             update_option( 'sgsb_bogo_dokan_vendors_settings', $vendors_settings_data );
-            wp_send_json_success( maybe_unserialize( get_option( 'sgsb_bogo_dokan_vendors_settings' ) ) );
+            wp_send_json_success( maybe_unserialize( \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings' ) ) );
         }
     }
 
@@ -60,7 +60,7 @@ class Ajax {
     public function get_settings() {
         check_ajax_referer( 'sgsb_ajax_nonce' );
 
-        $form_data = get_option( 'sgsb_bogo_dokan_vendors_settings', [] );
+        $form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings', [] );
 
         wp_send_json_success( $form_data );
     }

@@ -57,7 +57,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = get_option( 'sgsb_quick_view_settings', array() );
+		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -69,7 +69,7 @@ class Ajax implements HookRegistry {
 		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
 
 		global $post, $product;
-		$settings = get_option( 'sgsb_quick_view_settings' );
+		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
 
 		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );

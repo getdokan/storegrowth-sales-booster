@@ -108,7 +108,7 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function sgsb_get_bogo_settings_option( $option, $default = '' ) {
-		$options = get_option( 'sgsb_bogo_general_settings', array() );
+		$options = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
 
 		if ( isset( $options[ $option ] ) ) {
 			return $options[ $option ];
