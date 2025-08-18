@@ -1,14 +1,14 @@
 <?php
 /**
- * File for Sales Pop Module class.
+ * File for StockBarModule class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop;
+namespace STOREGROWTH\SPSB\Modules\StockBar;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\StockBar\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sales Pop module initiator class.
+ * `Stock Bar` module initiator class.
  */
-class SalesPopModule extends BaseModule {
+class StockBarModule extends BaseModule {
 
-	protected $icon = 'sales-pop';
+	protected $icon = 'stock-bar-icon';
 
 	/**
 	 * Unique ID for a module.
@@ -29,7 +29,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public static function get_id(): string {
-		return 'sales-pop';
+		return 'stock-bar';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
+		return PluginHelper::get_modules_url( 'stock-bar/assets/images/stock-bar-icon.svg' );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'stock-bar/assets/images/stock-bar-thumbnail.png' );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Sales Notification';
+		return 'Stock Bar';
 	}
 
 	/**
@@ -65,7 +65,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
+		return 'Drive FOMO effectively. Visually indicate low stock or scarcity to encourage immediate action.';
 	}
 
 	/**
@@ -74,7 +74,7 @@ class SalesPopModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Sales';
+		return 'Stock';
 	}
 
 	/**
@@ -107,6 +107,14 @@ class SalesPopModule extends BaseModule {
 	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
-		do_action( 'storegrowth_sales_pop_module_init' );
+		/**
+		 * Module initialized.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'storegrowth_stock_bar_module_init' );
 	}
 }
+
+// Create object and return.
+return StockBarModule::instance();

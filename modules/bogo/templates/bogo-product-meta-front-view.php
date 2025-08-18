@@ -6,7 +6,7 @@
  */
 
 // Check if the variables are set before using them.
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\BoGo\Helper;
 
 if ( isset( $product, $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	$bogo_message = $bogo_info->product_page_message;

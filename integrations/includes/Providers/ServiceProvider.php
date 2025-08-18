@@ -11,7 +11,7 @@ use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BootableServiceProvider {
     /**

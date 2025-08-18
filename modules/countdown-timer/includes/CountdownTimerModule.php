@@ -1,14 +1,14 @@
 <?php
 /**
- * File for Floating_Notification_Bar_Module class.
+ * File for CountdownTimerModule class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
+namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\CountdownTimer\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
@@ -17,11 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Floating notification bar module initiator class.
+ * `Countdown Timer` module initiator class.
  */
-class FloatingNotificationBarModule extends BaseModule {
-
-	protected $icon = 'floating-bar-icon';
+class CountdownTimerModule extends BaseModule {
 
 	/**
 	 * Unique ID for a module.
@@ -29,7 +27,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public static function get_id(): string {
-		return 'floating-notification-bar';
+		return 'countdown-timer';
 	}
 
 	/**
@@ -38,7 +36,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return PluginHelper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-icon.svg' );
+		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
 	/**
@@ -47,7 +45,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return PluginHelper::get_modules_url( 'floating-notification-bar/assets/images/floating-bar-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer-thumbnail.png' );
 	}
 
 	/**
@@ -56,7 +54,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Floating Bar';
+		return 'Countdown Timer';
 	}
 
 	/**
@@ -65,7 +63,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Captivate with announcements. Customizable bars draw attention to special offers, discounts, and important news.';
+		return 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.';
 	}
 
 	/**
@@ -74,7 +72,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Discount Banner';
+		return 'Stock';
 	}
 
 	/**
@@ -107,6 +105,11 @@ class FloatingNotificationBarModule extends BaseModule {
 	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
-		do_action( 'storegrowth_floating_bar_module_init' );
+		/**
+		 * Module initialized.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'storegrowth_countdown_timer_module_init' );
 	}
 }

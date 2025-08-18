@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes\Providers\ServiceProvider;
+use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

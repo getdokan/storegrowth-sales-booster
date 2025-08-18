@@ -7,7 +7,7 @@ use WP_HTTP_Response;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use STOREGROWTH\SPSB\Modules\BoGo\Includes\REST\BogoController;
+use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
 
 defined( 'ABSPATH' ) || exit();
 

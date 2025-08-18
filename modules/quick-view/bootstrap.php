@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers\ServiceProvider;
+use STOREGROWTH\SPSB\Modules\QuickView\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

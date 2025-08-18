@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\SalesPop\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\SalesPop\SalesPopModule;
@@ -12,7 +12,7 @@ use STOREGROWTH\SPSB\Modules\SalesPop\SalesPopModule;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 

@@ -1,14 +1,14 @@
 <?php
 /**
- * File for Direct_Checkout_Module class.
+ * File for BoGo class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
+namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\DirectCheckout\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\BoGo\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
@@ -17,11 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * `Direct Checkout` module initiator class.
+ * Sales Pop module initiator class.
  */
-class DirectCheckoutModule extends BaseModule {
+class BoGoModule extends BaseModule {
 
-	protected $icon = 'direct-checkout';
+	/**
+	 * Module icon.
+	 *
+	 * @var string
+	 */
+	protected $icon = 'upsell-order-bump';
 
 	/**
 	 * Unique ID for a module.
@@ -29,7 +34,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public static function get_id(): string {
-		return 'direct-checkout';
+		return 'bogo';
 	}
 
 	/**
@@ -38,7 +43,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return PluginHelper::get_modules_url( 'direct-checkout/assets/images/direct-checkout.svg' );
+		return PluginHelper::get_modules_url( 'bogo/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
@@ -47,7 +52,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return PluginHelper::get_modules_url( 'direct-checkout/assets/images/direct-checkout-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'bogo/assets/images/bogo-thumbnail.png' );
 	}
 
 	/**
@@ -56,7 +61,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Direct Checkout';
+		return 'BOGO';
 	}
 
 	/**
@@ -65,7 +70,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience';
+		return 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.';
 	}
 
 	/**
@@ -74,7 +79,7 @@ class DirectCheckoutModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Stock';
+		return 'Upsell';
 	}
 
 	/**
@@ -106,11 +111,11 @@ class DirectCheckoutModule extends BaseModule {
 	 */
 	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
 		/**
 		 * Module initialized.
 		 *
-		 * @since 1.0.0
+		 * @since 1.0.2
 		 */
+		do_action( 'storegrowth_bogo_module_init' );
 	}
 }

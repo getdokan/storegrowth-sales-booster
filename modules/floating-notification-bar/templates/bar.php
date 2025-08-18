@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Helper;
 
 $settings      = Helper::sgsb_floating_notification_bar_get_settings();
 $banner_text   = Helper::sgsb_floating_notification_bar_get_banner_text( $settings );

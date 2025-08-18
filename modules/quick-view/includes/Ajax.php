@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView\Includes;
+namespace STOREGROWTH\SPSB\Modules\QuickView;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 

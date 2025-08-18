@@ -1,12 +1,12 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\CommonHooks;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\EnqueueScript;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\WoocommerceDiscount;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Ajax;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\CommonHooks;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -15,7 +15,7 @@ use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\WoocommerceDisco
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

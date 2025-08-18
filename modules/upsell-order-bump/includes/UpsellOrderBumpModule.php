@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.

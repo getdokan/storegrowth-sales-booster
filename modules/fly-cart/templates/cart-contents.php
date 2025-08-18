@@ -8,7 +8,7 @@
  * @package SBFW
  */
 
-use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\FlyCart\Helper;
 
 // phpcs:disable WooCommerce.Commenting.CommentHooks.MissingHookComment
 // Show empty cart notice if cart is empty.

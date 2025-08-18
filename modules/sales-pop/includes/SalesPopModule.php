@@ -1,14 +1,14 @@
 <?php
 /**
- * File for Progressive Discount Banner Module class.
+ * File for Sales Pop Module class.
  *
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
+namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\SalesPop\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
@@ -17,11 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Progressive Discount Banner module initiator class.
+ * Sales Pop module initiator class.
  */
-class ProgressiveDiscountBannerModule extends BaseModule {
+class SalesPopModule extends BaseModule {
 
-	protected $icon = 'free-shipping-bar-icon';
+	protected $icon = 'sales-pop';
 
 	/**
 	 * Unique ID for a module.
@@ -29,7 +29,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public static function get_id(): string {
-		return 'progressive-discount-banner';
+		return 'sales-pop';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_icon(): string {
-		return PluginHelper::get_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-icon.svg' );
+		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_banner(): string {
-		return PluginHelper::get_modules_url( 'progressive-discount-banner/assets/images/free-shipping-bar-thumbnail.png' );
+		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop-thumbnail.png' );
 	}
 
 	/**
@@ -56,7 +56,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Free Shipping Rules';
+		return 'Sales Notification';
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more.';
+		return 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.';
 	}
 
 	/**
@@ -74,7 +74,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Discount Banner';
+		return 'Sales';
 	}
 
 	/**
@@ -107,6 +107,6 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	public function boot(): void {
 		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
 
-		do_action( 'storegrowth_free_shipping_bar_module_init' );
+		do_action( 'storegrowth_sales_pop_module_init' );
 	}
 }

@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Helper;
+use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Helper;
 
 $settings          = Helper::sgsb_pd_banner_get_settings();
 $banner_text       = Helper::sgsb_pd_banner_get_banner_text( $settings );

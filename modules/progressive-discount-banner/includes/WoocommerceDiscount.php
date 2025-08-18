@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
 

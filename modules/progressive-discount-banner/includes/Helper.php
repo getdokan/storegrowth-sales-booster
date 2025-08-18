@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

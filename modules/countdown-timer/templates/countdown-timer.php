@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer\Includes;
+namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 if ( ! Helper::sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
 	return;

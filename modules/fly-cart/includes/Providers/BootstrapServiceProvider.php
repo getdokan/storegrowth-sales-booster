@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\FlyCart\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\FlyCart\Includes\CommonHooks;
-use STOREGROWTH\SPSB\Modules\FlyCart\Includes\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\FlyCart\Ajax;
+use STOREGROWTH\SPSB\Modules\FlyCart\CommonHooks;
+use STOREGROWTH\SPSB\Modules\FlyCart\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\FlyCart\Includes\EnqueueScript;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

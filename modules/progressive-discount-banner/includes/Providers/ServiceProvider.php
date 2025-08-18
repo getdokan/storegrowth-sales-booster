@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
@@ -12,7 +12,7 @@ use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBanner
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 

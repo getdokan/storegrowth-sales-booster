@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\FlyCart\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
