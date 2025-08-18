@@ -57,6 +57,6 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		wp_send_json_success( Helper::sgsb_floating_notification_bar_get_settings() );
+		wp_send_json_success( Helper::get_settings() );
 	}
 }

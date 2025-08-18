@@ -7,7 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
-if ( ! Helper::sgsb_stock_cd_is_product_discountable( $product->get_id() ) ) {
+if ( ! Helper::is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 

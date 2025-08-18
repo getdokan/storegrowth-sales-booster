@@ -49,7 +49,7 @@ if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular
 						</h3>
 
 						<?php
-                        $show_regular_price = Helper::sgsb_get_bogo_settings_option( 'regular_price_show' );
+                        $show_regular_price = Helper::get_bogo_settings_option( 'regular_price_show' );
 
 						// Collect offer product categories.
 						$product_id         = ! empty( $bogo_info->offered_products ) ? absint( $bogo_info->offered_products ) : 0;

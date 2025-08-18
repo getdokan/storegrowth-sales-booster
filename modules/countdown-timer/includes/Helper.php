@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
     /**
-     * Check product is discount-able.
+     * Check if product is discountable.
      *
      * @since 1.0.2
      *
@@ -26,7 +26,7 @@ class Helper {
      *
      * @return bool
      */
-    public static function sgsb_stock_cd_is_product_discountable( $product_id ) {
+    public static function is_product_discountable( $product_id ) {
         $discount_amount = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_amount', true );
         $start_date      = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_start', true );
         $end_date        = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_end', true );

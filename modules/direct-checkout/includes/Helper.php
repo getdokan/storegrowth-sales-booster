@@ -18,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
     /**
-     * Check product is discount-able.
+     * Direct checkout functionality.
      *
      * @since 1.0.2
      *
      * @return void
      */
-    public static function sgsb_direct_checkout() {
+    public static function direct_checkout() {
         echo 'post id';
     }
 }

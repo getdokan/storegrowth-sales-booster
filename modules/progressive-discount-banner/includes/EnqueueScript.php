@@ -60,7 +60,7 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-		$localized_fsb_data = Helper::sgsb_pd_banner_get_settings();
+		$localized_fsb_data = Helper::get_settings();
 
 		// Use wp_localize_script to pass the data to your script.
 		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsb_fsb_data', $localized_fsb_data );
@@ -141,7 +141,7 @@ class EnqueueScript implements HookRegistry {
 			),
 		);
 		// Get style options.
-		$settings      = Helper::sgsb_pd_banner_get_settings();
+		$settings      = Helper::get_settings();
 		$bar_position  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_position', 'top' );
 		$bg_color      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
 		$text_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );

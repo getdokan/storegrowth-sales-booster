@@ -7,9 +7,9 @@
 
 use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Helper;
 
-$settings          = Helper::sgsb_pd_banner_get_settings();
-$banner_text       = Helper::sgsb_pd_banner_get_banner_text( $settings );
-$banner_icon       = Helper::sgsb_pd_banner_get_banner_icon( $settings );
+$settings          = Helper::get_settings();
+$banner_text       = Helper::get_banner_text( $settings );
+$banner_icon       = Helper::get_banner_icon( $settings );
 $button_style      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_style', true );
 $button_bg         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_color', '#fff' );
 $button_text       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'btn_text', __( 'Cart', 'storegrowth-sales-booster' ) );

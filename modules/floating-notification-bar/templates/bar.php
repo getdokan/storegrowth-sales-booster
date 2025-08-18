@@ -7,9 +7,9 @@
 
 use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Helper;
 
-$settings      = Helper::sgsb_floating_notification_bar_get_settings();
-$banner_text   = Helper::sgsb_floating_notification_bar_get_banner_text( $settings );
-$banner_icon   = Helper::sgsb_floating_notification_bar_get_banner_icon( $settings );
+$settings      = Helper::get_settings();
+$banner_text   = Helper::get_banner_text( $settings );
+$banner_icon   = Helper::get_banner_icon( $settings );
 $button_text   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'ac_button_text', 'Shop Now' );
 $button_action = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_action', 'ba-url-redirect' );
 $redirect_url  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'redirect_url', '#' );

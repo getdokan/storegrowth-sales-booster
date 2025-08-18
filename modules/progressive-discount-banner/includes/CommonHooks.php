@@ -59,13 +59,13 @@ class CommonHooks implements HookRegistry {
 	 * Output bar html
 	 */
 	public function wp_footer() {
-		$settings             = Helper::sgsb_pd_banner_get_settings();
+		$settings             = Helper::get_settings();
 		$deafault_device_view = array( 'banner-show-desktop' );
 		$device_view          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'banner_device_view', $deafault_device_view );
 
 		if ( empty( $device_view ) ) {
 			return;} else {
-				Helper::sgsb_pd_banner_get_bar_content();
+				Helper::get_bar_content();
 			}
 	}
 
@@ -76,7 +76,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function woocommerce_add_to_cart_fragments( $fragments ) {
 
-		$fragments['div.sgsb-pd-banner-bar-wrapper'] = Helper::sgsb_pd_banner_get_bar_content( false );
+		$fragments['div.sgsb-pd-banner-bar-wrapper'] = Helper::get_bar_content( false );
 
 		return $fragments;
 	}

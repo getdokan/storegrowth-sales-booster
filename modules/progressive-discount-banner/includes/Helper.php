@@ -18,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
 	/**
-	 * Get Settings for this module.
+	 * Get settings for this module.
 	 *
 	 * @since 1.0.2
 	 *
 	 * @return array
 	 */
-	public static function sgsb_pd_banner_get_settings() {
+	public static function get_settings() {
 		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_progressive_discount_banner_settings', array() );
 	}
 
@@ -37,7 +37,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_pd_banner_get_banner_text( $settings ) {
+	public static function get_banner_text( $settings ) {
 		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
@@ -52,7 +52,7 @@ class Helper {
 	}
 
 	/**
-	 * Get bar template.
+	 * Get bar template content.
 	 *
 	 * @since 1.0.2
 	 *
@@ -60,7 +60,7 @@ class Helper {
 	 *
 	 * @return false|string|void
 	 */
-	public static function sgsb_pd_banner_get_bar_content( $is_echo = true ) {
+	public static function get_bar_content( $is_echo = true ) {
 		$path = apply_filters( 'free_shipping_bar_content_pro', __DIR__ . '/../templates/bar.php' );
 
 		if ( ! $path ) {
@@ -88,12 +88,12 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_pd_banner_get_banner_icon( $settings ) {
+	public static function get_banner_icon( $settings ) {
 		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_icon_name' );
 	}
 
 	/**
-	 * Get banner custom icon src.
+	 * Get banner custom icon source.
 	 *
 	 * @since 1.0.2
 	 *
@@ -101,7 +101,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_pd_banner_get_banner_custom_icon( $settings ) {
+	public static function get_banner_custom_icon( $settings ) {
 		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
 	}
 }

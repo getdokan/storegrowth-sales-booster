@@ -16,7 +16,7 @@ if ( ! empty( $cart_item['changed_product_id'] ) ) {
     $item_id = $product->is_type( 'variable' ) ? wp_get_post_parent_id( $cart_item['bogo_product_for'] ) : $item_id;
 }
 
-$offer_products = Helper::sgsb_get_alternate_offer_products( $cart_item['bogo_product_for'], $item_id );
+$offer_products = Helper::get_alternate_offer_products( $cart_item['bogo_product_for'], $item_id );
 
 if ( ! empty( $offer_products ) ) : ?>
 	<p>

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
 	/**
-	 * Get query string for http ajax referer.
+	 * Get query string for HTTP AJAX referer.
 	 *
 	 * @since 1.0.2
 	 *
@@ -26,7 +26,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_fast_cart_get_query_string_for_http_ajax_referer( $url_only = false ) {
+	public static function get_query_string_for_http_ajax_referer( $url_only = false ) {
 		$nonce = wp_create_nonce( 'sgsb_frontend_ajax' );
 
 		$ajax_referer = sprintf(

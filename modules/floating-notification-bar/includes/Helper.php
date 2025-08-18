@@ -20,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
 	/**
-	 * Get Settings for this module.
+	 * Get settings for this module.
 	 *
 	 * @since 1.0.2
 	 *
 	 * @return array
 	 */
-	public static function sgsb_floating_notification_bar_get_settings() {
+	public static function get_settings() {
 		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_floating_notification_bar_settings', array() );
 	}
 
@@ -39,13 +39,13 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_floating_notification_bar_get_banner_text( $settings ) {
+	public static function get_banner_text( $settings ) {
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
 		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}
 
 	/**
-	 * Get bar template.
+	 * Get bar template content.
 	 *
 	 * @since 1.0.2
 	 *
@@ -53,7 +53,7 @@ class Helper {
 	 *
 	 * @return false|string|void
 	 */
-	public static function sgsb_floating_notification_bar_get_bar_content( $is_echo = true ) {
+	public static function get_bar_content( $is_echo = true ) {
 		$path = apply_filters( 'sgsb_floating_bar_content_pro', __DIR__ . '/../templates/bar.php' );
 
 		if ( ! $path ) {
@@ -80,12 +80,12 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_floating_notification_bar_get_banner_icon( $settings ) {
+	public static function get_banner_icon( $settings ) {
 		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_icon_name' );
 	}
 
 	/**
-	 * Get banner custom icon src.
+	 * Get banner custom icon source.
 	 *
 	 * @since 1.0.2
 	 *
@@ -93,7 +93,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function sgsb_floating_notification_bar_get_custom_banner_icon( $settings ) {
+	public static function get_custom_banner_icon( $settings ) {
 		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_custom_icon' );
 	}
 

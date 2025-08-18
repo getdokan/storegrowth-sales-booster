@@ -60,12 +60,12 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-                $localized_fnb_data     = Helper::sgsb_floating_notification_bar_get_settings();
+                $localized_fnb_data     = Helper::get_settings();
                 $enable_shipping_banner = PluginHelper::is_module_active( 'progressive-discount-banner' );
 
                 $localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
                 if ( $enable_shipping_banner ) {
-                    $shipping_banner_settings                       = PD_Helper::sgsb_pd_banner_get_settings();
+                    $shipping_banner_settings                       = PD_Helper::get_settings();
                     $localized_fnb_data['shipping_banner_height']   = $shipping_banner_settings['banner_height'] ?? 60;
                     $localized_fnb_data['shipping_banner_position'] = $shipping_banner_settings['bar_position'] ?? 'top';
                 }
@@ -148,7 +148,7 @@ class EnqueueScript implements HookRegistry {
 			),
 		);
 		// Get style options.
-		$settings          = Helper::sgsb_floating_notification_bar_get_settings();
+		$settings          = Helper::get_settings();
 		$bar_position      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_position', 'top' );
 		$bar_type          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_type', 'normal' );
 		$bg_color          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
