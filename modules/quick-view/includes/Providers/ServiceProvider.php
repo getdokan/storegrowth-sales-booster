@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\QuickView\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\QuickView\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\QuickView\QuickViewModule;
