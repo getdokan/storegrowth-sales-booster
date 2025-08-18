@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\CountdownTimer\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.

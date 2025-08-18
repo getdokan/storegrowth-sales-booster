@@ -16,7 +16,7 @@ use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Includes\Providers
+ * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
