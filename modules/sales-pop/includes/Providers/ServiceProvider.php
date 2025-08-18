@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\SalesPop\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\SalesPop\SalesPopModule;

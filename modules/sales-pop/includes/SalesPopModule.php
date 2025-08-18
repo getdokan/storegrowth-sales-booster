@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\SalesPop\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.

@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes;
+namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\SalesPop\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\SalesPop\Includes\Ajax;
-use STOREGROWTH\SPSB\Modules\SalesPop\Includes\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\SalesPop\Ajax;
+use STOREGROWTH\SPSB\Modules\SalesPop\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
