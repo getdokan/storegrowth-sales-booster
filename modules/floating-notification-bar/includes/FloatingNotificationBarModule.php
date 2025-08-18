@@ -56,7 +56,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Floating Bar';
+		return __( 'Floating Bar', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Captivate with announcements. Customizable bars draw attention to special offers, discounts, and important news.';
+		return __( 'Captivate with announcements. Customizable bars draw attention to special offers, discounts, and important news.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class FloatingNotificationBarModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Discount Banner';
+		return __( 'Discount Banner', 'storegrowth-sales-booster' );
 	}
 
 	/**

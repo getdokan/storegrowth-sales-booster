@@ -56,7 +56,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Quick View';
+		return __( 'Quick View', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Explore product details instantly. Get a sneak peek of product photos, descriptions, and pricing at a glance - all from your shop page.';
+		return __( 'Explore product details instantly. Get a sneak peek of product photos, descriptions, and pricing at a glance - all from your shop page.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Quick View';
+		return __( 'Quick View', 'storegrowth-sales-booster' );
 	}
 
 	/**

@@ -56,7 +56,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'Free Shipping Rules';
+		return __( 'Free Shipping Rules', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_description(): string {
-		return 'Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more.';
+		return __( 'Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more.', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string
 	 */
 	public function get_module_category(): string {
-		return 'Discount Banner';
+		return __( 'Discount Banner', 'storegrowth-sales-booster' );
 	}
 
 	/**
