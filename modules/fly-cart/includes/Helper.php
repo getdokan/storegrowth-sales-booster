@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes;
+namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

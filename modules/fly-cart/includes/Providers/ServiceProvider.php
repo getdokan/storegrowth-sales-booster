@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\FlyCart\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\FlyCart\FlyCartModule;
