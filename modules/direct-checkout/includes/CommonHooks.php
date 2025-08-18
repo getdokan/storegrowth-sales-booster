@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout\Includes;
+namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 

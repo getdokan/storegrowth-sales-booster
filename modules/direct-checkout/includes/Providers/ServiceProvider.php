@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout\Includes\Providers;
+namespace STOREGROWTH\SPSB\Modules\DirectCheckout\Providers;
 
 use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
 use STOREGROWTH\SPSB\Modules\DirectCheckout\DirectCheckoutModule;

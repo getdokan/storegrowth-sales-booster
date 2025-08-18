@@ -8,7 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
 
 use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\DirectCheckout\Includes\Providers\BootstrapServiceProvider;
+use STOREGROWTH\SPSB\Modules\DirectCheckout\Providers\BootstrapServiceProvider;
 use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
