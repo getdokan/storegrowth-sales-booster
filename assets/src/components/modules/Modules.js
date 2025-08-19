@@ -282,22 +282,24 @@ function Modules() {
           minValue={minValue}
           maxValue={maxValue}
         />
-        <div
-          className="sgsb__module-pagination"
-          style={{
-            paddingTop: "80px",
-            paddingLeft: "22px",
-          }}
-        >
-          <Pagination
-            defaultCurrent={1}
-            current={currentPage}
-            defaultPageSize={perPageItem}
-            onChange={hanglePageItem}
-            total={totalItems}
-            hideOnSinglePage={false}
-          />
-        </div>
+        {totalItems > perPageItem && (
+          <div
+            className="sgsb__module-pagination"
+            style={{
+              paddingTop: "80px",
+              paddingLeft: "22px",
+            }}
+          >
+            <Pagination
+              defaultCurrent={1}
+              current={currentPage}
+              defaultPageSize={perPageItem}
+              onChange={hanglePageItem}
+              total={totalItems}
+              hideOnSinglePage={false}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
