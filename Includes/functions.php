@@ -151,3 +151,24 @@ if ( ! function_exists( 'sgsb_get_day_for_schedule' ) ) {
 		);
 	}
 }
+
+if ( ! function_exists( 'sgsb_get_localized_price' ) ) {
+    /**
+     * Returns currency datas.
+     *
+     * @since
+     *
+     * @return array
+     */
+    function sgsb_get_localized_price() {
+        return [
+            'precision' => wc_get_price_decimals(),
+            'symbol'    => html_entity_decode( get_woocommerce_currency_symbol() ),
+            'decimal'   => esc_attr( wc_get_price_decimal_separator() ),
+            'thousand'  => esc_attr( wc_get_price_thousand_separator() ),
+            'position'  => esc_attr( get_option( 'woocommerce_currency_pos' ) ),
+            'format'    => esc_attr( str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], get_woocommerce_price_format() ) ), // For accounting JS
+        ];
+    }
+}
+

@@ -39,9 +39,43 @@ class Assets {
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
+        add_action( 'init', array( $this, 'register_all_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
+
+    /**
+     * Register scripts here.
+     *
+     * @return void
+     */
+    public function register_all_scripts() {
+        wp_register_script(
+            'sgsb-accounting',
+            WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
+            [ 'jquery' ]
+        );
+    }
+
+    /**
+     * Load global localized scripts here.
+     *
+     * @param string $handle
+     *
+     * @return void
+     */
+    public function load_sgsb_global_localized_scripts( $handle ) {
+        $data = [
+            'currency' => sgsb_get_localized_price(),
+        ];
+
+        // localize dokan frontend script
+        wp_localize_script(
+            $handle,
+            'sgsb',
+            apply_filters( 'sgsb_global_common_localized_args', $data ),
+        );
+    }
 
 	/**
 	 * Add JS scripts to admin.
@@ -52,10 +86,11 @@ class Assets {
 		if ( $this->modules_page_hook === $hook ) {
 			$settings_file = require sgsb_plugin_path( 'assets/build/modules.asset.php' );
 
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
 			wp_enqueue_script(
 				'sgsb-modules-script',
 				sgsb_assets_url( 'build/modules.js' ),
-				$settings_file['dependencies'],
+				$dependencies,
 				$settings_file['version'],
 				true
 			);
@@ -69,15 +104,18 @@ class Assets {
 					'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 				)
 			);
+
+            $this->load_sgsb_global_localized_scripts( 'sgsb-modules-script' );
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
 			$settings_file = require sgsb_plugin_path( 'assets/build/settings.asset.php' );
 
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
 			wp_enqueue_script(
 				'sgsb-settings-script',
 				sgsb_assets_url( 'build/settings.js' ),
-				$settings_file['dependencies'],
+				$dependencies,
 				$settings_file['version'],
 				true
 			);
@@ -92,6 +130,8 @@ class Assets {
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
 			);
+
+            $this->load_sgsb_global_localized_scripts( 'sgsb-settings-script' );
 		}
 	}
 
