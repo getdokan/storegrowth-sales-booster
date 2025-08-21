@@ -4,9 +4,6 @@
  *
  * @package SBFW
  */
-
-namespace STOREGROWTH\SPSB\Modules\BoGo;
-
 ?>
 
 <!-- Start BOGO Tab Content -->
