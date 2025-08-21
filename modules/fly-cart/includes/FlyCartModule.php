@@ -17,101 +17,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Fly Cart module initiator class.
+ * Fly Cart module class.
+ * 
+ * This module provides functionality for displaying a fly cart
+ * that allows users to add and review items without leaving the page.
+ * 
+ * @since 1.0.0
  */
 class FlyCartModule extends BaseModule {
 
+	/**
+	 * Module icon identifier.
+	 *
+	 * @var string
+	 */
 	protected $icon = 'icon-fast-cart-module';
 
 	/**
-	 * Unique ID for a module.
+	 * Get the unique identifier for this module.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module ID.
 	 */
 	public static function get_id(): string {
 		return 'fly-cart';
 	}
 
 	/**
-	 * Icon for a module.
+	 * Get the module icon URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
 		return PluginHelper::get_modules_url( 'fly-cart/assets/images/icon-fast-cart-module.svg' );
 	}
 
 	/**
-	 * Banner for a module.
+	 * Get the module banner image URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module banner image.
 	 */
 	public function get_banner(): string {
 		return PluginHelper::get_modules_url( 'fly-cart/assets/images/fly-cart-thumbnail.png' );
 	}
 
 	/**
-	 * Unique name for a module.
+	 * Get the module display name.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module name.
 	 */
 	public function get_name(): string {
 		return __( 'Fly Cart', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Description for the module.
+	 * Get the module description.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module description.
 	 */
 	public function get_description(): string {
 		return __( 'Streamline shopping effortlessly. Add and review items without leaving your page, simplifying the experience.', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Category for a module.
+	 * Get the module category.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module category.
 	 */
 	public function get_module_category(): string {
 		return __( 'Fly Cart', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Module activation method.
-	 *
-	 * @return bool
+	 * Get the bootstrap service provider for this module.
+	 * 
+	 * @since 1.0.0
+	 * @return BootstrapServiceProvider The service provider instance for this module.
 	 */
-	public function activate(): bool {
-		$activated = parent::activate();
-
-		return $activated;
-	}
-
-	/**
-	 * Module deactivation method.
-	 *
-	 * @return bool
-	 */
-	public function deactivate(): bool {
-		$deactivated = parent::deactivate();
-
-		return $deactivated;
-	}
-
-	/**
-	 * Starting point of the module.
-	 *
-	 * @return void
-	 */
-	public function boot(): void {
-		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
-		/**
-		 * Fast fly cart module init.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'storegrowth_quick_cart_module_init' );
+	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
+		return new BootstrapServiceProvider();
 	}
 }

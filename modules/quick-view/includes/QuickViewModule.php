@@ -17,101 +17,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * `Stock Bar` module initiator class.
+ * Quick View module class.
+ * 
+ * This module provides functionality for displaying product details
+ * in a quick view popup without leaving the current page.
+ * 
+ * @since 1.0.0
  */
 class QuickViewModule extends BaseModule {
 
+	/**
+	 * Module icon identifier.
+	 *
+	 * @var string
+	 */
 	protected $icon = 'quickview-icon-blue';
 
 	/**
-	 * Unique ID for a module.
+	 * Get the unique identifier for this module.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module ID.
 	 */
 	public static function get_id(): string {
 		return 'quick-view';
 	}
 
 	/**
-	 * Icon for a module.
+	 * Get the module icon URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
 		return PluginHelper::get_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
 	}
 
 	/**
-	 * Banner for a module.
+	 * Get the module banner image URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module banner image.
 	 */
 	public function get_banner(): string {
 		return PluginHelper::get_modules_url( 'quick-view/assets/images/quick-view-thumbnail.png' );
 	}
 
 	/**
-	 * Unique name for a module.
+	 * Get the module display name.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module name.
 	 */
 	public function get_name(): string {
 		return __( 'Quick View', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Description for the module.
+	 * Get the module description.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module description.
 	 */
 	public function get_description(): string {
 		return __( 'Explore product details instantly. Get a sneak peek of product photos, descriptions, and pricing at a glance - all from your shop page.', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Category for a module.
+	 * Get the module category.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module category.
 	 */
 	public function get_module_category(): string {
 		return __( 'Quick View', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Module activation method.
-	 *
-	 * @return bool
+	 * Get the bootstrap service provider for this module.
+	 * 
+	 * @since 1.0.0
+	 * @return BootstrapServiceProvider The service provider instance for this module.
 	 */
-	public function activate(): bool {
-		$activated = parent::activate();
-
-		return $activated;
-	}
-
-	/**
-	 * Module deactivation method.
-	 *
-	 * @return bool
-	 */
-	public function deactivate(): bool {
-		$deactivated = parent::deactivate();
-
-		return $deactivated;
-	}
-
-	/**
-	 * Starting point of the module.
-	 *
-	 * @return void
-	 */
-	public function boot(): void {
-		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
-		/**
-		 * Module initialized.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'storegrowth_quick_view_module_init' );
+	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
+		return new BootstrapServiceProvider();
 	}
 }
