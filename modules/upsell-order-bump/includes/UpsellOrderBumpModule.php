@@ -17,99 +17,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sales Pop module initiator class.
+ * Upsell Order Bump module class.
+ * 
+ * This module provides functionality for displaying upsell offers
+ * at checkout to increase order values and profit.
+ * 
+ * @since 1.0.0
  */
 class UpsellOrderBumpModule extends BaseModule {
 
+	/**
+	 * Module icon identifier.
+	 *
+	 * @var string
+	 */
 	protected $icon = 'upsell-order-bump';
 
 	/**
-	 * Unique ID for a module.
+	 * Get the unique identifier for this module.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module ID.
 	 */
 	public static function get_id(): string {
 		return 'upsell-order-bump';
 	}
 
 	/**
-	 * Icon for a module.
+	 * Get the module icon URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
 		return PluginHelper::get_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump.svg' );
 	}
 
 	/**
-	 * Banner for a module.
+	 * Get the module banner image URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module banner image.
 	 */
 	public function get_banner(): string {
 		return PluginHelper::get_modules_url( 'upsell-order-bump/assets/images/upsell-order-bump-thumbnail.png' );
 	}
 
 	/**
-	 * Unique name for a module.
+	 * Get the module display name.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module name.
 	 */
 	public function get_name(): string {
 		return __( 'Upsell Order Bump', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Description for the module.
+	 * Get the module description.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module description.
 	 */
 	public function get_description(): string {
 		return __( 'Effortlessly boost sales. Offer relevant add-ons at checkout for increased order values and profit.', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Category for a module.
+	 * Get the module category.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module category.
 	 */
 	public function get_module_category(): string {
 		return __( 'Upsell', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Module activation method.
-	 *
-	 * @return bool
+	 * Get the bootstrap service provider for this module.
+	 * 
+	 * @since 1.0.0
+	 * @return BootstrapServiceProvider The service provider instance for this module.
 	 */
-	public function activate(): bool {
-		$activated = parent::activate();
-
-		return $activated;
-	}
-
-	/**
-	 * Module deactivation method.
-	 *
-	 * @return bool
-	 */
-	public function deactivate(): bool {
-		$deactivated = parent::deactivate();
-
-		return $deactivated;
-	}
-
-	/**
-	 * Starting point of the module.
-	 *
-	 * @return void
-	 */
-	public function boot(): void {
-		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
-		/**
-		 * Module initialized.
-		 */
-		do_action( 'storegrowth_upsell_order_bump_module_init' );
+	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
+		return new BootstrapServiceProvider();
 	}
 }

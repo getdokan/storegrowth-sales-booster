@@ -17,96 +17,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sales Pop module initiator class.
+ * Sales Pop module class.
+ * 
+ * This module provides functionality for displaying real-time sales
+ * notifications to build trust and create urgency.
+ * 
+ * @since 1.0.0
  */
 class SalesPopModule extends BaseModule {
 
+	/**
+	 * Module icon identifier.
+	 *
+	 * @var string
+	 */
 	protected $icon = 'sales-pop';
 
 	/**
-	 * Unique ID for a module.
+	 * Get the unique identifier for this module.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module ID.
 	 */
 	public static function get_id(): string {
 		return 'sales-pop';
 	}
 
 	/**
-	 * Icon for a module.
+	 * Get the module icon URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
 		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop.svg' );
 	}
 
 	/**
-	 * Banner for a module.
+	 * Get the module banner image URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module banner image.
 	 */
 	public function get_banner(): string {
 		return PluginHelper::get_modules_url( 'sales-pop/assets/images/sales-pop-thumbnail.png' );
 	}
 
 	/**
-	 * Unique name for a module.
+	 * Get the module display name.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module name.
 	 */
 	public function get_name(): string {
 		return __( 'Sales Notification', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Description for the module.
+	 * Get the module description.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module description.
 	 */
 	public function get_description(): string {
 		return __( 'Build trust, create urgency. Real-time sales notifications enhance credibility and drive conversions.', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Category for a module.
+	 * Get the module category.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module category.
 	 */
 	public function get_module_category(): string {
 		return __( 'Sales', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Module activation method.
-	 *
-	 * @return bool
+	 * Get the bootstrap service provider for this module.
+	 * 
+	 * @since 1.0.0
+	 * @return BootstrapServiceProvider The service provider instance for this module.
 	 */
-	public function activate(): bool {
-		$activated = parent::activate();
-
-		return $activated;
-	}
-
-	/**
-	 * Module deactivation method.
-	 *
-	 * @return bool
-	 */
-	public function deactivate(): bool {
-		$deactivated = parent::deactivate();
-
-		return $deactivated;
-	}
-
-	/**
-	 * Starting point of the module.
-	 *
-	 * @return void
-	 */
-	public function boot(): void {
-		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
-		do_action( 'storegrowth_sales_pop_module_init' );
+	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
+		return new BootstrapServiceProvider();
 	}
 }

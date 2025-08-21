@@ -17,99 +17,82 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * `Countdown Timer` module initiator class.
+ * Countdown Timer module class.
+ * 
+ * This module provides functionality for displaying countdown timers
+ * to create urgency and excitement for sales events.
+ * 
+ * @since 1.0.0
  */
 class CountdownTimerModule extends BaseModule {
 
 	/**
-	 * Unique ID for a module.
+	 * Get the unique identifier for this module.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module ID.
 	 */
 	public static function get_id(): string {
 		return 'countdown-timer';
 	}
 
 	/**
-	 * Icon for a module.
+	 * Get the module icon URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
 		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer.svg' );
 	}
 
 	/**
-	 * Banner for a module.
+	 * Get the module banner image URL.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The URL to the module banner image.
 	 */
 	public function get_banner(): string {
 		return PluginHelper::get_modules_url( 'countdown-timer/assets/images/countdown-timer-thumbnail.png' );
 	}
 
 	/**
-	 * Unique name for a module.
+	 * Get the module display name.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module name.
 	 */
 	public function get_name(): string {
 		return __( 'Countdown Timer', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Description for the module.
+	 * Get the module description.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module description.
 	 */
 	public function get_description(): string {
 		return __( 'Build anticipation. Countdown timers create excitement for upcoming sales events, enticing your audience.', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Category for a module.
+	 * Get the module category.
 	 *
-	 * @return string
+	 * @since 1.0.0
+	 * @return string The module category.
 	 */
 	public function get_module_category(): string {
 		return __( 'Stock', 'storegrowth-sales-booster' );
 	}
 
 	/**
-	 * Module activation method.
-	 *
-	 * @return bool
+	 * Get the bootstrap service provider for this module.
+	 * 
+	 * @since 1.0.0
+	 * @return BootstrapServiceProvider The service provider instance for this module.
 	 */
-	public function activate(): bool {
-		$activated = parent::activate();
-
-		return $activated;
-	}
-
-	/**
-	 * Module deactivation method.
-	 *
-	 * @return bool
-	 */
-	public function deactivate(): bool {
-		$deactivated = parent::deactivate();
-
-		return $deactivated;
-	}
-
-	/**
-	 * Starting point of the module.
-	 *
-	 * @return void
-	 */
-	public function boot(): void {
-		storegrowth_get_container()->addServiceProvider( new BootstrapServiceProvider() );
-
-		/**
-		 * Module initialized.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'storegrowth_countdown_timer_module_init' );
+	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
+		return new BootstrapServiceProvider();
 	}
 }
