@@ -156,7 +156,7 @@ const Preview = ( { storeData } ) => {
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
                                         </div>
-                                        { storeData?.show_product_price && (
+                                        { storeData?.show_quantity_picker && storeData?.show_product_price && (
                                         <div className='product-subtotal'>
                                         <span
                                             className='woocommerce-Price-amount amount'
@@ -296,7 +296,7 @@ const Preview = ( { storeData } ) => {
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
                                         </div>
-                                        { storeData?.show_product_price && (
+                                        { storeData?.show_quantity_picker && storeData?.show_product_price && (
                                         <div className='product-subtotal'>
                                         <span
                                             className='woocommerce-Price-amount amount'
