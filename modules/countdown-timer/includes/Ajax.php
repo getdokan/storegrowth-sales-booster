@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
 
+use STOREGROWTH\SPSB\Helper;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
@@ -41,8 +42,8 @@ class Ajax implements HookRegistry {
 			wp_send_json_error();
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `sgsb_sanitize_form_fields`.
-		$form_data = array_map( 'sgsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
+		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
 
 		update_option( 'sgsb_countdown_timer_settings', $form_data );
 
