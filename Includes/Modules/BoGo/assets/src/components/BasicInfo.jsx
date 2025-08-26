@@ -174,12 +174,12 @@ const BasicInfo = ({ clearErrors }) => {
 
   const dealOptions = [
     { key: 'different', value: __('Buy X Get Y', 'storegrowth-sales-booster') },
-    { key: 'same', disabled: hidePremiumFeature, value: __('Buy X Get X', 'storegrowth-sales-booster') },
+    { key: 'same', disabled: hidePremiumFeature, needUpgrade: hidePremiumFeature, value: __('Buy X Get X', 'storegrowth-sales-booster') },
   ];
 
   const dealCategories = [
     { key: 'products', value: __('Products', 'storegrowth-sales-booster') },
-    { key: 'categories', disabled: hidePremiumFeature, value: __('Categories', 'storegrowth-sales-booster') },
+    { key: 'categories', disabled: hidePremiumFeature, needUpgrade: hidePremiumFeature, value: __('Categories', 'storegrowth-sales-booster') },
   ];
 
   return (
