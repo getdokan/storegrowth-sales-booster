@@ -52,7 +52,7 @@ class EnqueueScript implements HookRegistry {
 
 		if ( false !== $popup_properties ) {
 			$popup_properties  = maybe_unserialize( $popup_properties );
-			$popup_products    = $popup_properties['popup_products'];
+      $popup_products    = $popup_properties['popup_products'] ?? array();
 			$product_list      = array();
 			$product_url       = array();
 			$product_image_url = array();
