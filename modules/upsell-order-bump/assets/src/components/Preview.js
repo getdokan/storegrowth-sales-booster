@@ -13,7 +13,7 @@ const Preview = ( { storeData } ) => {
         }
     const product = products_and_categories?.product_list?.simpleProductForOffer
         ?.find( simpleProduct => simpleProduct?.value === parseInt( storeData.offer_product ) );
-    let discountedPrice = parseFloat( storeData?.offer_amount )?.toFixed( 2 );
+    let discountedPrice = parseFloat( storeData?.offer_amount ? storeData?.offer_amount : '0' )?.toFixed( 2 );
 
     if ( storeData?.offer_type === 'discount' ) {
         const currencySymbol = product?.currency;

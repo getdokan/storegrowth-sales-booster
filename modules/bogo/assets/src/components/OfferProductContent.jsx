@@ -10,7 +10,7 @@ const OfferProductContent = ({ offerProduct, bogoItem }) => {
       (simpleProduct) =>
         simpleProduct?.value === parseInt(offerId)
     );
-  let discountedPrice = parseFloat(bogoItem?.discount_amount)?.toFixed(2);
+  let discountedPrice = parseFloat( bogoItem?.discount_amount ? bogoItem?.discount_amount : '0' )?.toFixed( 2 );
 
   if (bogoItem?.offer_type === "discount") {
     const currencySymbol = product?.currency;
