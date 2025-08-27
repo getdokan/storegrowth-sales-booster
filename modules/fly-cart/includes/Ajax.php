@@ -8,6 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\FlyCart;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use STOREGROWTH\SPSB\Helper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,10 +45,10 @@ class Ajax implements HookRegistry {
 			wp_send_json_error();
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via `sgsb_sanitize_form_fields`.
-		$form_data = array_map( 'sgsb_sanitize_form_fields', wp_unslash( $_POST['form_data'] ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
+		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
 
-		$get_form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings', array() );
+		$get_form_data = Helper::get_settings( 'sgsb_fly_cart_settings', array() );
 		$merged_data   = array_merge( $get_form_data, $form_data );
 
 		update_option( 'sgsb_fly_cart_settings', $merged_data );
@@ -61,7 +62,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings', array() );
+		$form_data = Helper::get_settings( 'sgsb_fly_cart_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
