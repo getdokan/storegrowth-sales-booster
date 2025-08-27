@@ -127,5 +127,3 @@ if ( ! function_exists( 'sgsb_get_day_for_schedule' ) ) {
 		return Helper::get_days_for_schedule();
 	}
 }
-
-
