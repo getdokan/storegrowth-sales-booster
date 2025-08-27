@@ -21,6 +21,7 @@ const Number = ({
   addonBefore = "",
   addonAfter = "",
   style = {},
+  status = ""
 }) => {
   return (
     // Make settings number component with card preview.
@@ -51,6 +52,7 @@ const Number = ({
           value={fieldValue ? fieldValue : 0}
           className={`settings-field number-field`}
           onChange={(value) => changeHandler(name, value)}
+          status={status}
         />
       </Col>
       { needUpgrade && <UpgradeOverlay /> }

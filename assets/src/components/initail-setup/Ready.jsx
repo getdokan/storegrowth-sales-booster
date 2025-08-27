@@ -14,7 +14,7 @@ const Ready = () => {
           </div>
           <div className="social-links">
             <a
-              href="https://www.youtube.com/@Invizo-io"
+              href="https://www.youtube.com/playlist?list=PLJorZsV2RVv9t0NTRb27PoS0pUkywfowX"
               target="_blank"
               className="social-link youtube"
               onClick={null}
