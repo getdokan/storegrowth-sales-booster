@@ -1,5 +1,5 @@
 import { __, sprintf } from "@wordpress/i18n";
-import { formatPrice, unformatNumber } from "../../../../../../assets/src/utils/Accounting";
+import { formatPrice, unformatNumber } from "../../../../../assets/src/utils/Accounting";
 import { RawHTML } from '@wordpress/element';
 
 const OfferProductContent = ( { offerProduct, bumpItem } ) => {
