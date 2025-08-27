@@ -47,7 +47,16 @@ const TextRadioBox = ( {
                         onChange={ ( v ) => changeHandler( name, v?.target?.value ) }
                     >
                         { options?.map(
-                            option => <Radio key={option?.key} disabled={ option?.disabled } value={ option?.key }>{ option?.value }</Radio>
+                            option => <Radio key={option?.key} disabled={ option?.disabled } value={ option?.key }>
+                              <div style={{display: "flex", alignItems: "center", gap: 10, justifyContent: "center"}}>
+                                { option?.value }
+                                {
+                                  option?.needUpgrade ?
+                                    <UpgradeCrown />
+                                    : ''
+                                }
+                              </div>
+                            </Radio>
                         ) }
                     </Radio.Group>
                 ) }
