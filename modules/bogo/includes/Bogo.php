@@ -38,7 +38,7 @@ class Bogo {
         $bogo_detail = $this->sanitize_create_bogo_data( $data );
 
         if ( 0 === $bogo_detail['offer_product_id'] ) {
-            $bogo_list = $this->get_items();
+	        $bogo_list = $this->get_items()['data'] ?? [];
             if ( is_array( $bogo_list ) && count( $bogo_list ) >= 2 && ! SGSB_PRO_ACTIVE ) {
                 // don't allow creating more than 2 bogos.
                 return;
@@ -208,42 +208,42 @@ class Bogo {
      * @return array
      */
     private function sanitize_create_bogo_data( array $data ) {
-        $data['name_of_order_bogo']                 = $data['name_of_order_bogo'] ? sanitize_text_field( $data['name_of_order_bogo'] ) : '';
+        $data['name_of_order_bogo']                 = isset( $data['name_of_order_bogo'] ) ? sanitize_text_field( $data['name_of_order_bogo'] ) : '';
 
         // todo: Need to correct the field names.
-        $data['offered_products']                   = $data['offered_products'] ? intval( $data['offered_products'] ) : 0; // Target product's ID.
-        $data['get_different_product_field']        = $data['get_different_product_field'] ? intval( $data['get_different_product_field'] ) : 0; // Offered product's ID.
+        $data['offered_products']                   = isset( $data['offered_products'] ) ? intval( $data['offered_products'] ) : 0; // Target product's ID.
+        $data['get_different_product_field']        = isset( $data['get_different_product_field'] ) ? intval( $data['get_different_product_field'] ) : 0; // Offered product's ID.
 
-        $data['target_products']                    = $data['target_products'] ? wc_clean( $data['target_products'] ) : [];
-        $data['target_categories']                  = $data['target_categories'] ? wc_clean( $data['target_categories'] ) : [];
+        $data['target_products']                    = isset( $data['target_products'] ) ? wc_clean( $data['target_products'] ) : [];
+        $data['target_categories']                  = isset( $data['target_categories'] ) ? wc_clean( $data['target_categories'] ) : [];
         $data['bogo_schedule']                      = ! empty( $data['bogo_schedule'] ) ? wc_clean( $data['bogo_schedule'] ) : [];
-        $data['smart_offer']                        = $data['smart_offer'] ? sanitize_text_field( $data['smart_offer'] ) : '';
-        $data['offer_type']                         = $data['offer_type'] ? sanitize_text_field( $data['offer_type'] ) : '';
-        $data['discount_amount']                    = $data['discount_amount'] ? sanitize_text_field( $data['discount_amount'] ) : '';
-        $data['box_border_style']                   = $data['box_border_style'] ? sanitize_text_field( $data['box_border_style'] ) : '';
-        $data['box_border_color']                   = $data['box_border_color'] ? sanitize_text_field( $data['box_border_color'] ) : '';
-        $data['box_top_margin']                     = $data['box_top_margin'] ? sanitize_text_field( $data['box_top_margin'] ) : '';
-        $data['box_bottom_margin']                  = $data['box_bottom_margin'] ? sanitize_text_field( $data['box_bottom_margin'] ) : '';
-        $data['discount_background_color']          = $data['discount_background_color'] ? sanitize_text_field( $data['discount_background_color'] ) : '';
-        $data['discount_text_color']                = $data['discount_text_color'] ? sanitize_text_field( $data['discount_text_color'] ) : '';
-        $data['discount_font_size']                 = $data['discount_font_size'] ? sanitize_text_field( $data['discount_font_size'] ) : '';
-        $data['product_description_text_color']     = $data['product_description_text_color'] ? sanitize_text_field( $data['product_description_text_color'] ) : '';
-        $data['product_description_font_size']      = $data['product_description_font_size'] ? sanitize_text_field( $data['product_description_font_size'] ) : '';
-        $data['accept_offer_background_color']      = $data['accept_offer_background_color'] ? sanitize_text_field( $data['accept_offer_background_color'] ) : '';
-        $data['accept_offer_text_color']            = $data['accept_offer_text_color'] ? sanitize_text_field( $data['accept_offer_text_color'] ) : '';
-        $data['accept_offer_font_size']             = $data['accept_offer_font_size'] ? sanitize_text_field( $data['accept_offer_font_size'] ) : '';
-        $data['offer_description_background_color'] = $data['offer_description_background_color'] ? sanitize_text_field( $data['offer_description_background_color'] ) : '';
-        $data['offer_description_text_color']       = $data['offer_description_text_color'] ? sanitize_text_field( $data['offer_description_text_color'] ) : '';
-        $data['offer_description_font_size']        = $data['offer_description_font_size'] ? sanitize_text_field( $data['offer_description_font_size'] ) : '';
-        $data['offer_image_url']                    = $data['offer_image_url'] ? esc_url_raw( $data['offer_image_url'] ) : '';
-        $data['offer_product_title']                = $data['offer_product_title'] ? sanitize_text_field( $data['offer_product_title'] ) : '';
-        $data['offer_product_id']                   = $data['offer_product_id'] ? intval( $data['offer_product_id'] ) : 0;
-        $data['offer_discount_title']               = $data['offer_discount_title'] ? sanitize_text_field( $data['offer_discount_title'] ) : '';
-        $data['offer_fixed_price_title']            = $data['offer_fixed_price_title'] ? sanitize_text_field( $data['offer_fixed_price_title'] ) : '';
-        $data['product_description']                = $data['product_description'] ? sanitize_text_field( $data['product_description'] ) : '';
-        $data['selection_title']                    = $data['selection_title'] ? sanitize_text_field( $data['selection_title'] ) : '';
-        $data['offer_description']                  = $data['offer_description'] ? sanitize_text_field( $data['offer_description'] ) : '';
-        $data['offer_product_regular_price']        = $data['offer_product_regular_price'] ? sanitize_text_field( $data['offer_product_regular_price'] ) : '';
+        $data['smart_offer']                        = isset( $data['smart_offer'] ) ? sanitize_text_field( $data['smart_offer'] ) : '';
+        $data['offer_type']                         = isset( $data['offer_type'] ) ? sanitize_text_field( $data['offer_type'] ) : '';
+        $data['discount_amount']                    = isset( $data['discount_amount'] ) ? sanitize_text_field( $data['discount_amount'] ) : '';
+        $data['box_border_style']                   = isset( $data['box_border_style'] ) ? sanitize_text_field( $data['box_border_style'] ) : '';
+        $data['box_border_color']                   = isset( $data['box_border_color'] ) ? sanitize_text_field( $data['box_border_color'] ) : '';
+        $data['box_top_margin']                     = isset( $data['box_top_margin'] ) ? sanitize_text_field( $data['box_top_margin'] ) : '';
+        $data['box_bottom_margin']                  = isset( $data['box_bottom_margin'] ) ? sanitize_text_field( $data['box_bottom_margin'] ) : '';
+        $data['discount_background_color']          = isset( $data['discount_background_color'] ) ? sanitize_text_field( $data['discount_background_color'] ) : '';
+        $data['discount_text_color']                = isset( $data['discount_text_color'] ) ? sanitize_text_field( $data['discount_text_color'] ) : '';
+        $data['discount_font_size']                 = isset( $data['discount_font_size'] ) ? sanitize_text_field( $data['discount_font_size'] ) : '';
+        $data['product_description_text_color']     = isset( $data['product_description_text_color'] ) ? sanitize_text_field( $data['product_description_text_color'] ) : '';
+        $data['product_description_font_size']      = isset( $data['product_description_font_size'] ) ? sanitize_text_field( $data['product_description_font_size'] ) : '';
+        $data['accept_offer_background_color']      = isset( $data['accept_offer_background_color'] ) ? sanitize_text_field( $data['accept_offer_background_color'] ) : '';
+        $data['accept_offer_text_color']            = isset( $data['accept_offer_text_color'] ) ? sanitize_text_field( $data['accept_offer_text_color'] ) : '';
+        $data['accept_offer_font_size']             = isset( $data['accept_offer_font_size'] ) ? sanitize_text_field( $data['accept_offer_font_size'] ) : '';
+        $data['offer_description_background_color'] = isset( $data['offer_description_background_color'] ) ? sanitize_text_field( $data['offer_description_background_color'] ) : '';
+        $data['offer_description_text_color']       = isset( $data['offer_description_text_color'] ) ? sanitize_text_field( $data['offer_description_text_color'] ) : '';
+        $data['offer_description_font_size']        = isset( $data['offer_description_font_size'] ) ? sanitize_text_field( $data['offer_description_font_size'] ) : '';
+        $data['offer_image_url']                    = isset( $data['offer_image_url'] ) ? esc_url_raw( $data['offer_image_url'] ) : '';
+        $data['offer_product_title']                = isset( $data['offer_product_title'] ) ? sanitize_text_field( $data['offer_product_title'] ) : '';
+        $data['offer_product_id']                   = isset( $data['offer_product_id'] ) ? intval( $data['offer_product_id'] ) : 0;
+        $data['offer_discount_title']               = isset( $data['offer_discount_title'] ) ? sanitize_text_field( $data['offer_discount_title'] ) : '';
+        $data['offer_fixed_price_title']            = isset( $data['offer_fixed_price_title'] ) ? sanitize_text_field( $data['offer_fixed_price_title'] ) : '';
+        $data['product_description']                = isset( $data['product_description'] ) ? sanitize_text_field( $data['product_description'] ) : '';
+        $data['selection_title']                    = isset( $data['selection_title'] ) ? sanitize_text_field( $data['selection_title'] ) : '';
+        $data['offer_description']                  = isset( $data['offer_description'] ) ? sanitize_text_field( $data['offer_description'] ) : '';
+        $data['offer_product_regular_price']        = isset( $data['offer_product_regular_price'] ) ? sanitize_text_field( $data['offer_product_regular_price'] ) : '';
 
         return $data;
     }
