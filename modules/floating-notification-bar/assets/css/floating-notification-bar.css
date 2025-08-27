@@ -67,6 +67,13 @@ body:not(.show_floating_notification_bar) {
     height: 25px;
 }
 
+.sgsb-floating-notification-bar-text-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+}
+
 .sgsb-floating-notification-bar-text {
     font-size: 20px;
     font-weight: 600;
@@ -159,6 +166,10 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+    .sgsb-floating-notification-bar-text-container {
+        display: block;
+    }
+
     .sgsb-floating-notification-bar-wrapper {
         height: auto !important;
     }

@@ -51,136 +51,140 @@ const NotifyBarOne = ({coutdownEnable}) => {
                     />
                 </g>
             </svg>
-            <div
-                style={{
-                    display        : 'flex',
-                    alignItems     : 'center',
-                    flexDirection  : 'row',
-                    justifyContent : 'flex-start',
-                }}
-            >
+
+            <div style={ { display:'flex', justifyContent:'space-between', gap: '1rem' } }>
                 <div
                     style={{
-                        fontSize   : 20,
-                        fontWeight : '500',
-                        fontFamily : 'Poppins',
-                        position   : 'relative',
+                        display        : 'flex',
+                        alignItems     : 'center',
+                        flexDirection  : 'row',
+                        justifyContent : 'flex-start',
                     }}
                 >
-                    { __( 'Christmas Sales', 'storegrowth-sales-booster' ) }
-                </div>
-            </div>
-            { coutdownEnable &&
-                <div
-                    className='sgsb-fn-bar-countdown'
-                    style={ {
-                        gap        : 10,
-                        display    : 'flex',
-                        fontSize   : 14,
-                        fontWeight : 700,
-                    } }
-                >
                     <div
-                        className='sgsb-fn-bar-countdown-value'
-                        style={ {
-                            gap           : 8,
-                            display       : 'flex',
-                            lineHeight    : 1,
-                            flexDirection : 'column',
-                        } }
+                        style={{
+                            fontSize   : 20,
+                            fontWeight : '500',
+                            fontFamily : 'Poppins',
+                            position   : 'relative',
+                        }}
                     >
-                        <span className='sgsb-countdown-value days'>
-                            { __( '21', 'storegrowth-sales-booster' ) }
-                        </span>
-                        <span
-                            className='sgsb-countdown-content'
-                            style={ {
-                                fontSize   : 10,
-                                fontWeight : 400,
-                            } }
-                        >
-                            { __( 'DAY', 'storegrowth-sales-booster' ) }
-                        </span>
-                    </div>
-                    <div
-                        className='sgsb-fn-bar-countdown-value'
-                        style={ {
-                            gap           : 8,
-                            lineHeight    : 1,
-                            display       : 'flex',
-                            flexDirection : 'column',
-                        } }
-                    >
-                        { __( '10', 'storegrowth-sales-booster' ) }
-                        <span
-                            className='sgsb-countdown-content'
-                            style={ {
-                                fontSize   : 10,
-                                fontWeight : 400,
-                            } }
-                        >
-                            { __( 'HRS', 'storegrowth-sales-booster' ) }
-                        </span>
-                    </div>
-                    <div
-                        className='sgsb-fn-bar-countdown-value'
-                        style={ {
-                            gap           : 8,
-                            lineHeight    : 1,
-                            display       : 'flex',
-                            flexDirection : 'column',
-                        } }
-                    >
-                        <span className='sgsb-countdown-value minutes'>
-                            { __( '36', 'storegrowth-sales-booster' ) }
-                        </span>
-                        <span
-                            className='sgsb-countdown-content'
-                            style={ {
-                                fontSize   : 10,
-                                fontWeight : 400,
-                            } }
-                        >
-                            { __( 'MIN', 'storegrowth-sales-booster' ) }
-                        </span>
-                    </div>
-                    <div
-                        className='sgsb-fn-bar-countdown-value'
-                        style={ {
-                            gap           : 8,
-                            lineHeight    : 1,
-                            display       : 'flex',
-                            flexDirection : 'column',
-                        } }
-                    >
-                        <span className='sgsb-countdown-value seconds'>
-                            { __( '20', 'storegrowth-sales-booster' ) }
-                        </span>
-                        <span
-                            className='sgsb-countdown-content'
-                            style={ {
-                                fontSize   : 10,
-                                fontWeight : 400,
-                            } }
-                        >
-                            SEC
-                        </span>
+                      { __( 'Christmas Sales', 'storegrowth-sales-booster' ) }
                     </div>
                 </div>
-            }
-            <span
-                className='fn-bar-action-button'
-                style={ {
+                { coutdownEnable &&
+                    <div
+                        className='sgsb-fn-bar-countdown'
+                        style={ {
+                            gap        : 10,
+                            display    : 'flex',
+                            fontSize   : 14,
+                            fontWeight : 700,
+                        } }
+                    >
+                        <div
+                            className='sgsb-fn-bar-countdown-value'
+                            style={ {
+                                gap           : 8,
+                                display       : 'flex',
+                                lineHeight    : 1,
+                                flexDirection : 'column',
+                            } }
+                        >
+                              <span className='sgsb-countdown-value days'>
+                                  { __( '21', 'storegrowth-sales-booster' ) }
+                              </span>
+                            <span
+                                className='sgsb-countdown-content'
+                                style={ {
+                                    fontSize   : 10,
+                                    fontWeight : 400,
+                                } }
+                            >
+                                  { __( 'DAY', 'storegrowth-sales-booster' ) }
+                              </span>
+                        </div>
+                        <div
+                            className='sgsb-fn-bar-countdown-value'
+                            style={ {
+                                gap           : 8,
+                                lineHeight    : 1,
+                                display       : 'flex',
+                                flexDirection : 'column',
+                            } }
+                        >
+                            { __( '10', 'storegrowth-sales-booster' ) }
+                            <span
+                                className='sgsb-countdown-content'
+                                style={ {
+                                    fontSize   : 10,
+                                    fontWeight : 400,
+                                } }
+                            >
+                                  { __( 'HRS', 'storegrowth-sales-booster' ) }
+                              </span>
+                        </div>
+                        <div
+                            className='sgsb-fn-bar-countdown-value'
+                            style={ {
+                                gap           : 8,
+                                lineHeight    : 1,
+                                display       : 'flex',
+                                flexDirection : 'column',
+                            } }
+                        >
+                            <span className='sgsb-countdown-value minutes'>
+                                { __( '36', 'storegrowth-sales-booster' ) }
+                            </span>
+                            <span
+                                className='sgsb-countdown-content'
+                                style={ {
+                                    fontSize   : 10,
+                                    fontWeight : 400,
+                                } }
+                            >
+                                  { __( 'MIN', 'storegrowth-sales-booster' ) }
+                              </span>
+                        </div>
+                        <div
+                            className='sgsb-fn-bar-countdown-value'
+                            style={ {
+                                gap           : 8,
+                                lineHeight    : 1,
+                                display       : 'flex',
+                                flexDirection : 'column',
+                            } }
+                        >
+                            <span className='sgsb-countdown-value seconds'>
+                                { __( '20', 'storegrowth-sales-booster' ) }
+                            </span>
+                            <span
+                                className='sgsb-countdown-content'
+                                style={ {
+                                    fontSize   : 10,
+                                    fontWeight : 400,
+                                } }
+                            >
+                                  SEC
+                            </span>
+                        </div>
+                    </div>
+                }
+                <span
+                  className='fn-bar-action-button'
+                  style={ {
                     color           : '#073B4C',
                     padding         : '1px 12px',
                     fontSize        : 12,
                     fontWeight      : 600,
                     borderRadius    : '5px',
                     backgroundColor : '#fff',
-                } }
-            >
-                { __( 'Shop Now', 'storegrowth-sales-booster' ) }
-            </span>
+                  } }
+                >
+                    { __( 'Shop Now', 'storegrowth-sales-booster' ) }
+                </span>
+            </div>
+
             <svg
                 width='16'
                 height='16'

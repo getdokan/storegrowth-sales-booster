@@ -61,17 +61,19 @@ $redirect_url  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'red
 				</svg>
 			<?php endif; ?>
 		</div>
-		<span class="sgsb-floating-notification-bar-text">
+		<div class="sgsb-floating-notification-bar-text-container">
+      <span class="sgsb-floating-notification-bar-text">
 			<?php
-			/**
-			 * Banner text filter.
-			 *
-			 * @since 1.0.0
-			 */
-			echo wp_kses_post( apply_filters( 'sales_boster_floating_notification_bar_text', $banner_text ) );
-			?>
+      /**
+       * Banner text filter.
+       *
+       * @since 1.0.0
+       */
+      echo wp_kses_post( apply_filters( 'sales_boster_floating_notification_bar_text', $banner_text ) );
+      ?>
 		</span>
-		<?php require plugin_dir_path( __FILE__ ) . 'action-button.php'; ?>
+      <?php require plugin_dir_path( __FILE__ ) . 'action-button.php'; ?>
+    </div>
 		<div class="sgsb-floating-notification-bar-remove">
 			<svg width="16" height="16" viewBox="0 0 16 16">
 				<g>
