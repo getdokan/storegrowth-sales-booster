@@ -1,7 +1,7 @@
 {
   "name": "sales-booster",
   "workspaces": [
-    "../Includes/Modules/**/assets/src"
+    "../modules/**/assets/src"
   ],
   "version": "1.0.0",
   "description": "",
@@ -13,13 +13,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@wordpress/scripts": "^23.7.2"
+    "@wordpress/scripts": "^30.17.0"
   },
   "dependencies": {
     "@wordpress/i18n": "^4.24.0",
     "antd": "^5.5.0",
+    "dayjs": "^1.11.9",
     "nanoid": "^3.3.4",
-    "react-router-dom": "^6.3.0",
-    "dayjs": "^1.11.9"
+    "react-router-dom": "^6.3.0"
   }
 }

@@ -16,7 +16,9 @@ const TextInput = ( {
     type = 'text',
     colSpan = 24,
     fullWidth = false,
-    needUpgrade = false
+    needUpgrade = false,
+    maxLength=null,
+    showCount=false,
 } ) => {
 
     return (
@@ -42,6 +44,8 @@ const TextInput = ( {
                     value={ fieldValue ? fieldValue : '' }
                     className={ `settings-field textinput-field ${className}` }
                     onChange={ ( event ) => changeHandler( name, event.target.value ) }
+                    maxLength={ maxLength }
+                    showCount={ showCount }
                 />
             </Col>
         </FieldWrapper>
