@@ -55,25 +55,24 @@ class Assets {
             WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
             [ 'jquery' ]
         );
-    }
-
-    /**
-     * Load global localized scripts here.
-     *
-     * @param string $handle
-     *
-     * @return void
-     */
-    public function load_sgsb_global_localized_scripts( $handle ) {
-        $data = [
-            'currency' => sgsb_get_localized_price(),
-        ];
 
         // localize dokan frontend script
         wp_localize_script(
-            $handle,
+            'sgsb-accounting',
             'sgsb',
-            apply_filters( 'sgsb_global_common_localized_args', $data ),
+            apply_filters(
+                'sgsb_global_common_localized_args',
+                array(
+                    'currency' => array(
+                        'precision' => wc_get_price_decimals(),
+                        'symbol'    => html_entity_decode( get_woocommerce_currency_symbol() ),
+                        'decimal'   => esc_attr( wc_get_price_decimal_separator() ),
+                        'thousand'  => esc_attr( wc_get_price_thousand_separator() ),
+                        'position'  => esc_attr( get_option( 'woocommerce_currency_pos' ) ),
+                        'format'    => esc_attr( str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], get_woocommerce_price_format() ) ), // For accounting JS
+                    ),
+                )
+            ),
         );
     }
 
@@ -104,8 +103,6 @@ class Assets {
 					'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 				)
 			);
-
-            $this->load_sgsb_global_localized_scripts( 'sgsb-modules-script' );
 		}
 
 		if ( $this->settings_page_hook === $hook ) {
@@ -130,8 +127,6 @@ class Assets {
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
 			);
-
-            $this->load_sgsb_global_localized_scripts( 'sgsb-settings-script' );
 		}
 	}
 
