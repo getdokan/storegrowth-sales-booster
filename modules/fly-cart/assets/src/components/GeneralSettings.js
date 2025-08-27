@@ -44,6 +44,10 @@ const GeneralSettings = ({
         { name: 'show_product_price', title: __( 'Show product price', 'storegrowth-sales-booster' ) },
     ];
 
+    if ( !formData.show_quantity_picker ) {
+        contentOptions = contentOptions.filter( item => item.name !== 'show_product_price' );
+    }
+
     contentOptions = applyFilters( 'sgsb_quick_cart_content_settings', contentOptions );
 
     return (
