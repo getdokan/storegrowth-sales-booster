@@ -39,9 +39,42 @@ class Assets {
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
+        add_action( 'init', array( $this, 'register_all_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
+
+    /**
+     * Register scripts here.
+     *
+     * @return void
+     */
+    public function register_all_scripts() {
+        wp_register_script(
+            'sgsb-accounting',
+            WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
+            [ 'jquery' ]
+        );
+
+        // localize dokan frontend script
+        wp_localize_script(
+            'sgsb-accounting',
+            'sgsb',
+            apply_filters(
+                'sgsb_global_common_localized_args',
+                array(
+                    'currency' => array(
+                        'precision' => wc_get_price_decimals(),
+                        'symbol'    => html_entity_decode( get_woocommerce_currency_symbol() ),
+                        'decimal'   => esc_attr( wc_get_price_decimal_separator() ),
+                        'thousand'  => esc_attr( wc_get_price_thousand_separator() ),
+                        'position'  => esc_attr( get_option( 'woocommerce_currency_pos' ) ),
+                        'format'    => esc_attr( str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], get_woocommerce_price_format() ) ), // For accounting JS
+                    ),
+                )
+            ),
+        );
+    }
 
 	/**
 	 * Add JS scripts to admin.
@@ -52,10 +85,11 @@ class Assets {
 		if ( $this->modules_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/modules.asset.php' );
 
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
 			wp_enqueue_script(
 				'sgsb-modules-script',
 				Helper::get_plugin_assets_url( 'build/modules.js' ),
-				$settings_file['dependencies'],
+                $dependencies,
 				$settings_file['version'],
 				true
 			);
@@ -74,10 +108,11 @@ class Assets {
 		if ( $this->settings_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/settings.asset.php' );
 
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
 			wp_enqueue_script(
 				'sgsb-settings-script',
 				Helper::get_plugin_assets_url( 'build/settings.js' ),
-				$settings_file['dependencies'],
+                $dependencies,
 				$settings_file['version'],
 				true
 			);
