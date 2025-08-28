@@ -5,6 +5,7 @@ namespace STOREGROWTH\SPSB\Modules\SalesPop\Providers;
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
 use STOREGROWTH\SPSB\Modules\SalesPop\Ajax;
 use STOREGROWTH\SPSB\Modules\SalesPop\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\SalesPop\SalesPOP;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -27,6 +28,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
     protected $services = [
         EnqueueScript::class,
         Ajax::class,
+        SalesPOP::class
     ];
 
     /**

@@ -38,7 +38,7 @@ class Ajax implements HookRegistry {
 	 * Order bump creation
 	 */
 	public function popup_products() {
-		wp_send_json_success( maybe_unserialize( get_option( 'sgsb_popup_products' ) ) );
+		wp_send_json_success( get_option( 'sgsb_popup_products' ) );
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Ajax implements HookRegistry {
 		$popup_products = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
 		$popup_products = $this->form_validation( $popup_products );
 		update_option( 'sgsb_popup_products', $popup_products );
-		wp_send_json_success( maybe_unserialize( get_option( 'sgsb_popup_products' ) ) );
+		wp_send_json_success( get_option( 'sgsb_popup_products' ) );
 	}
 
 	/**
