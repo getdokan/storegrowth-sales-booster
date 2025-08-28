@@ -49,7 +49,7 @@ class Ajax implements HookRegistry {
 		$popup_data     = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); //phpcs:ignore
 		$popup_products = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
 		$popup_products = $this->form_validation( $popup_products );
-		update_option( 'sgsb_popup_products', maybe_serialize( $popup_products ) );
+		update_option( 'sgsb_popup_products', $popup_products );
 		wp_send_json_success( maybe_unserialize( get_option( 'sgsb_popup_products' ) ) );
 	}
 
