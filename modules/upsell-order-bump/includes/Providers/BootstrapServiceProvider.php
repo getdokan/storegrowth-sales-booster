@@ -5,6 +5,7 @@ namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers;
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
 use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Ajax;
 use STOREGROWTH\SPSB\Modules\UpsellOrderBump\EnqueueScript;
+use STOREGROWTH\SPSB\Modules\UpsellOrderBump\OrderBump;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -27,6 +28,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
     protected $services = [
         EnqueueScript::class,
         Ajax::class,
+        OrderBump::class,
     ];
 
     /**
