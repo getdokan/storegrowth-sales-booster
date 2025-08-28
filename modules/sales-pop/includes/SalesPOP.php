@@ -41,7 +41,7 @@ class SalesPOP implements HookRegistry {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
-		$popup_properties = maybe_unserialize( \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', true ) );
+		$popup_properties = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', true );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';
