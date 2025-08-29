@@ -285,8 +285,8 @@ class OrderBogo implements HookRegistry {
 			$bogo_info        = $bogo_global_info;
 			$deal_type        = $bogo_info->bogo_deal_type;
 			$bogo_status      = $bogo_info->bogo_status;
-			$target_product   = $current_product_id;
-			$offer_product_id = 'same' === $deal_type ? $target_product : $bogo_info->get_different_product_field;
+			$offered_product   = $current_product_id;
+			$offer_product_id = 'same' === $deal_type ? $offered_product : $bogo_info->get_different_product_field;
 			$offer_product_id = empty( $offer_product_id ) && ! empty( $bogo_info->get_alternate_products[0] ) ?
 				intval( $bogo_info->get_alternate_products[0] ) : $offer_product_id;
 
@@ -302,7 +302,7 @@ class OrderBogo implements HookRegistry {
 			$offer_price     = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
 
 			if (
-				$current_product_id === (int) $target_product && 'yes' === $bogo_status
+				$current_product_id === (int) $offered_product && 'yes' === $bogo_status
 			) {
 				include __DIR__ . '/../templates/bogo-product-meta-front-view.php';
 			}
@@ -312,8 +312,8 @@ class OrderBogo implements HookRegistry {
 				$bogo_info        = $bogo_global_info;
 				$deal_type        = $bogo_info->bogo_deal_type;
 				$bogo_status      = $bogo_info->bogo_status;
-				$target_product   = $bogo_info->offered_products;
-				$offer_product_id = 'same' === $deal_type ? $target_product : $bogo_info->get_different_product_field;
+				$offered_product   = $bogo_info->offered_products;
+				$offer_product_id = 'same' === $deal_type ? $offered_product : $bogo_info->get_different_product_field;
 				$offer_type       = $bogo_info->offer_type;
 				$discount_amount  = $bogo_info->discount_amount;
 				$image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
@@ -322,15 +322,15 @@ class OrderBogo implements HookRegistry {
 				$offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
 
 				if (
-					$current_product_id === (int) $target_product && 'yes' === $bogo_status
+					$current_product_id === (int) $offered_product && 'yes' === $bogo_status
 				) {
 
 					include __DIR__ . '/../templates/bogo-product-front-view.php';
 				}
 
 				if (
-					isset( $bogo_info->target_categories )
-					&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bogo_info->target_categories ) )
+					isset( $bogo_info->offered_categories )
+					&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bogo_info->offered_categories ) )
 					&& ! in_array( $offer_product_id, $showed_bogo_product_id, true )
 				) {
 

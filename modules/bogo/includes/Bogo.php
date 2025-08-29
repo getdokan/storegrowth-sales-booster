@@ -214,8 +214,8 @@ class Bogo {
         $data['offered_products']                   = isset( $data['offered_products'] ) ? intval( $data['offered_products'] ) : 0; // Target product's ID.
         $data['get_different_product_field']        = isset( $data['get_different_product_field'] ) ? intval( $data['get_different_product_field'] ) : 0; // Offered product's ID.
 
-        $data['target_products']                    = isset( $data['target_products'] ) ? wc_clean( $data['target_products'] ) : [];
-        $data['target_categories']                  = isset( $data['target_categories'] ) ? wc_clean( $data['target_categories'] ) : [];
+        $data['offered_products']                    = isset( $data['offered_products'] ) ? wc_clean( $data['offered_products'] ) : [];
+        $data['offered_categories']                  = isset( $data['offered_categories'] ) ? wc_clean( $data['offered_categories'] ) : [];
         $data['bogo_schedule']                      = ! empty( $data['bogo_schedule'] ) ? wc_clean( $data['bogo_schedule'] ) : [];
         $data['smart_offer']                        = isset( $data['smart_offer'] ) ? sanitize_text_field( $data['smart_offer'] ) : '';
         $data['offer_type']                         = isset( $data['offer_type'] ) ? sanitize_text_field( $data['offer_type'] ) : '';

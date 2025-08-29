@@ -55,7 +55,7 @@ class EnqueueScript implements HookRegistry {
 		wp_register_script(
 			'sgsb-bogo-admin-script',
 			PluginHelper::get_modules_url( 'bogo/assets/js/product-bogo-settings.js' ),
-			array( 'jquery', 'jquery-ui-datepicker' ),
+			array( 'jquery', 'jquery-ui-datepicker', 'select2' ),
 			filemtime( PluginHelper::get_modules_path( 'bogo/assets/js/product-bogo-settings.js' ) ),
 			true
 		);

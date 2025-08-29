@@ -368,12 +368,12 @@ class BogoController extends WP_REST_Controller {
                 'description'       => __( 'Custom badge image URL or ID.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'esc_url_raw',
             ],
-            'target_products' => [
+            'offered_products' => [
                 'type'              => 'string',
                 'description'       => __( 'Comma-separated target product IDs.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'sanitize_text_field',
             ],
-            'target_categories' => [
+            'offered_categories' => [
                 'type'        => 'array',
                 'items'       => [ 'type' => 'integer' ],
                 'description' => __( 'Target category IDs.', 'storegrowth-sales-booster' ),
@@ -606,8 +606,8 @@ class BogoController extends WP_REST_Controller {
         // Always-cast arrays
         $array_fields = [
             'offer_schedule',
-            'target_products',
-            'target_categories',
+            'offered_products',
+            'offered_categories',
             'bogo_schedule',
             'get_alternate_products',
         ];
@@ -765,13 +765,13 @@ class BogoController extends WP_REST_Controller {
                     'format'      => 'date',
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'target_products' => [
+                'offered_products' => [
                     'description' => __( 'Array of product IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
                     'type'        => 'array',
                     'items'       => [ 'type' => 'integer' ],
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'target_categories' => [
+                'offered_categories' => [
                     'description' => __( 'Array of category IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
                     'type'        => 'array',
                     'items'       => [ 'type' => 'integer' ],

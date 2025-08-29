@@ -8,10 +8,10 @@
 // Check if essential variables are set before using them.
 use STOREGROWTH\SPSB\Modules\BoGo\Helper;
 
-if ( isset( $bogo_info, $target_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
+if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :
         __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' );
-	$bogo_message = str_replace( '[target_product]', get_the_title( $target_product ), $bogo_message );
+	$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
 	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
 	?>
 

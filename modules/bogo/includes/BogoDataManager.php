@@ -68,7 +68,7 @@ class BogoDataManager {
 			"SELECT * FROM {$table} 
 			 WHERE type = 'global' 
 			 AND status = 'active'
-			 AND (target_products LIKE %s OR target_categories LIKE %s)",
+			 AND (offered_products LIKE %s OR offered_categories LIKE %s)",
 			'%"' . $product_id . '"%',
 			'%"' . $product_id . '"%'
 		) );
@@ -176,8 +176,8 @@ class BogoDataManager {
 		$insert_data = array(
 			'type'                    => 'global',
 			'name'                    => $data['name_of_order_bogo'],
-			'target_products'         => \wp_json_encode( $offered_products ),
-			'target_categories'       => \wp_json_encode( $offered_categories ),
+			'offered_products'         => \wp_json_encode( $offered_products ),
+			'offered_categories'       => \wp_json_encode( $offered_categories ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
@@ -210,8 +210,8 @@ class BogoDataManager {
 
 		$update_data = array(
 			'name'                    => $data['name_of_order_bogo'] ?? '',
-			'target_products'         => \wp_json_encode( $data['offered_products'] ?? array() ),
-			'target_categories'       => \wp_json_encode( $data['offered_categories'] ?? array() ),
+			'offered_products'         => \wp_json_encode( $data['offered_products'] ?? array() ),
+			'offered_categories'       => \wp_json_encode( $data['offered_categories'] ?? array() ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
@@ -287,11 +287,11 @@ class BogoDataManager {
 		$settings = (array) $row;
 
 		// Convert JSON fields back to arrays.
-		if ( $settings['target_products'] ) {
-			$settings['target_products'] = json_decode( $settings['target_products'], true );
+		if ( $settings['offered_products'] ) {
+			$settings['offered_products'] = json_decode( $settings['offered_products'], true );
 		}
-		if ( $settings['target_categories'] ) {
-			$settings['target_categories'] = json_decode( $settings['target_categories'], true );
+		if ( $settings['offered_categories'] ) {
+			$settings['offered_categories'] = json_decode( $settings['offered_categories'], true );
 		}
 		if ( $settings['alternate_products'] ) {
 			$settings['alternate_products'] = json_decode( $settings['alternate_products'], true );
@@ -303,8 +303,8 @@ class BogoDataManager {
 			$settings['get_alternate_products']      = $settings['alternate_products'];
 		} else {
 			// For global offers, use offered_ prefix consistently
-			$settings['offered_products'] = $settings['target_products'];
-			$settings['offered_categories'] = $settings['target_categories'];
+			$settings['offered_products'] = $settings['offered_products'];
+			$settings['offered_categories'] = $settings['offered_categories'];
 			$settings['name_of_order_bogo'] = $settings['name'];
 		}
 
@@ -328,8 +328,8 @@ class BogoDataManager {
 			name VARCHAR(255) NOT NULL,
 			product_id BIGINT DEFAULT NULL,
 			variation_id BIGINT DEFAULT 0,
-			target_products JSON DEFAULT NULL,
-			target_categories JSON DEFAULT NULL,
+			offered_products JSON DEFAULT NULL,
+			offered_categories JSON DEFAULT NULL,
 			bogo_status ENUM('yes', 'no') DEFAULT 'no',
 			bogo_deal_type ENUM('same', 'different') DEFAULT 'different',
 			offer_type ENUM('free', 'discount') DEFAULT 'free',
