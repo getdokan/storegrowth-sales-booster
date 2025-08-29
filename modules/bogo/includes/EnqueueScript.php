@@ -111,6 +111,7 @@ class EnqueueScript implements HookRegistry {
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
 					'ajd_nonce'    => $ajd_nonce,
+					'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
 					'image_folder' => PluginHelper::get_modules_url( 'BoGo/assets/images' ),
 				)
 			);
@@ -175,6 +176,7 @@ class EnqueueScript implements HookRegistry {
 			array(
 				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
 				'ajd_nonce'          => $ajd_nonce,
+				'rest_nonce'         => wp_create_nonce( 'wp_rest' ),
 			)
 		);
 	}

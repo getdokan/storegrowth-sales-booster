@@ -31,7 +31,9 @@ class Helper {
 		$offer_applied_ids                   = wp_list_pluck( $offers, 'offered_products' );
 		$is_variable_product                 = $product->is_type( 'variable' );
 		$offer_available_for_current_product = in_array( $product_id, $offer_applied_ids );
-
+		error_log ('is_variable_product: ' .  print_r( $is_variable_product, true) );
+		error_log ('product count: ' .  print_r( count( $offers ), true) );
+		error_log ('offer_available_for_current_product: ' .  print_r( $offer_available_for_current_product, true) );
 		// BOGO settings will be available for simple product &
 		return apply_filters(
 			'sgsb_load_product_bogo_offer',

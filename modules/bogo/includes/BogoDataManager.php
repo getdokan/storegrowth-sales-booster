@@ -7,6 +7,8 @@
 
 namespace STOREGROWTH\SPSB\Modules\BoGo;
 
+use Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -125,13 +127,40 @@ class BogoDataManager {
 	 *
 	 * @return array Array of global BOGO offers.
 	 */
-	public static function get_global_bogo_offers() {
+	public static function get_global_bogo_offers( array $conditions = [] ) {
 		global $wpdb;
 
 		$table = self::get_table_name();
 
+		$where_clause = '';
+		$where_values = array();
+
+		// Build WHERE clause based on conditions
+		if ( ! empty( $conditions ) ) {
+			$where_parts = array();
+			
+			foreach ( $conditions as $field => $value ) {
+				if ( $value !== null ) {
+					// Use %i for field name and appropriate placeholder for value
+					$value_placeholder = is_numeric( $value ) ? '%d' : '%s';
+					$where_parts[] = "%i = {$value_placeholder}";
+					$where_values[] = $field;
+					$where_values[] = $value;
+				}
+			}
+			
+			if ( ! empty( $where_parts ) ) {
+				$where_clause = 'WHERE ' . implode( ' AND ', $where_parts );
+			}
+		}
+
+		$query = "SELECT * FROM {$table}";
+		if ( ! empty( $where_clause ) ) {
+			$query .= ' ' . $where_clause;
+		}
+
 		$results = $wpdb->get_results(
-			"SELECT * FROM {$table} WHERE type = 'global' AND status = 'active'"
+			$wpdb->prepare( $query, $where_values )
 		);
 
 		return array_map( array( self::class, 'format_settings' ), $results );
@@ -176,14 +205,14 @@ class BogoDataManager {
 		$insert_data = array(
 			'type'                    => 'global',
 			'name'                    => $data['name_of_order_bogo'],
-			'offered_products'         => \wp_json_encode( $offered_products ),
-			'offered_categories'       => \wp_json_encode( $offered_categories ),
+			'offered_products'         => wp_json_encode( $offered_products ),
+			'offered_categories'       => wp_json_encode( $offered_categories ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
 			'discount_amount'         => $data['discount_amount'] ?? 0,
 			'offer_product_id'        => $data['get_different_product_field'] ?? null,
-			'alternate_products'      => \wp_json_encode( $data['get_alternate_products'] ?? array() ),
+			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
 			'offer_start'             => $data['offer_start'] ?? null,
 			'offer_end'               => $data['offer_end'] ?? null,
 			'product_page_message'    => $data['product_page_message'] ?? '',
@@ -193,7 +222,13 @@ class BogoDataManager {
 			'status'                  => 'active',
 		);
 
-		return $wpdb->insert( $table, $insert_data );
+		$result  = $wpdb->insert( $table, $insert_data );
+
+		if ( ! $result ) {
+			throw new Exception( 'Failed to insert BOGO offer: ' . $wpdb->last_error , 400 );
+		}
+
+		return $wpdb->insert_id;
 	}
 
 	/**
@@ -210,14 +245,14 @@ class BogoDataManager {
 
 		$update_data = array(
 			'name'                    => $data['name_of_order_bogo'] ?? '',
-			'offered_products'         => \wp_json_encode( $data['offered_products'] ?? array() ),
-			'offered_categories'       => \wp_json_encode( $data['offered_categories'] ?? array() ),
+			'offered_products'         => wp_json_encode( $data['offered_products'] ?? array() ),
+			'offered_categories'       => wp_json_encode( $data['offered_categories'] ?? array() ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
 			'discount_amount'         => $data['discount_amount'] ?? 0,
 			'offer_product_id'        => $data['get_different_product_field'] ?? null,
-			'alternate_products'      => \wp_json_encode( $data['get_alternate_products'] ?? array() ),
+			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
 			'offer_start'             => $data['offer_start'] ?? null,
 			'offer_end'               => $data['offer_end'] ?? null,
 			'product_page_message'    => $data['product_page_message'] ?? '',
@@ -350,7 +385,7 @@ class BogoDataManager {
 			UNIQUE KEY unique_product_variation (product_id, variation_id)
 		) {$charset_collate};";
 
-		require_once( \ABSPATH . 'wp-admin/includes/upgrade.php' );
-		\dbDelta( $sql );
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
 	}
 }

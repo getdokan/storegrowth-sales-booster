@@ -1,11 +1,12 @@
 import { __ } from "@wordpress/i18n";
-import { Form, notification } from "antd";
+import { Form, notification, Modal } from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState } from "@wordpress/element";
 import {
   convertBogoItemHtmlEntitiesToTexts,
   convertBogoItemTextDatasToHtmlEntities,
 } from "../helper";
+import { getBogoOffers, getBogoOffer, createBogoOffer, updateBogoOffer, deleteBogoOffer } from "../utils/restApi";
 import BasicInfo from "./BasicInfo";
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
@@ -32,21 +33,22 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   useEffect(() => {
     if (!bogoData?.length > 0) {
       setPageLoading(true);
-      jQuery.post(
-        bogo_save_url.ajax_url,
-        {
-          action: "bogo_list",
-          data: [],
-          _ajax_nonce: bogo_save_url.ajd_nonce,
-        },
-        function (bogoDataFromAjax) {
+      getBogoOffers()
+        .then((response) => {
           setPageLoading(false);
-          const bogoDataParsed = bogoDataFromAjax.data.map((bogoItem) =>
+          const bogoDataParsed = response.map((bogoItem) =>
             convertBogoItemHtmlEntitiesToTexts(bogoItem)
           );
           setallBogosData(bogoDataParsed);
-        }
-      );
+        })
+        .catch((error) => {
+          setPageLoading(false);
+          console.error('Failed to fetch BOGO offers:', error);
+          notification["error"]({
+            message: "Failed to load BOGO offers",
+            description: error.message,
+          });
+        });
     } else {
       setallBogosData(bogoData);
     }
@@ -58,47 +60,56 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   };
 
   if (action_name == "delete") {
-    setPageLoading(true);
-    let $ = jQuery;
-    $.post(
-      bogo_save_url.ajax_url,
-      {
-        action: "bogo_delete",
-        data: bogo_id,
-        _ajax_nonce: bogo_save_url.ajd_nonce,
+    Modal.confirm({
+      title: __("Delete BOGO Offer", "storegrowth-sales-booster"),
+      content: __("Are you sure you want to delete this BOGO offer? This action cannot be undone.", "storegrowth-sales-booster"),
+      okText: __("Delete", "storegrowth-sales-booster"),
+      okType: 'danger',
+      cancelText: __("Cancel", "storegrowth-sales-booster"),
+      onOk() {
+        setPageLoading(true);
+        deleteBogoOffer(bogo_id)
+          .then(() => {
+            setPageLoading(false);
+            notification["success"]({
+              message: __("BOGO offer deleted successfully", "storegrowth-sales-booster"),
+            });
+            navigate("/bogo");
+          })
+          .catch((error) => {
+            setPageLoading(false);
+            console.error('Failed to delete BOGO offer:', error);
+            notification["error"]({
+              message: __("Failed to delete BOGO offer", "storegrowth-sales-booster"),
+              description: error.message,
+            });
+          });
       },
-      function (data) {
-        setPageLoading(false);
-        notification["error"]({
-          message: "Order Bogo deleted",
-        });
-        navigate("/bogo");
-      }
-    );
+    });
   }
 
   if (bogo_id) {
     useEffect(() => {
       setPageLoading(true);
-      let $ = jQuery;
-      $.post(
-        bogo_save_url.ajax_url,
-        {
-          action: "bogo_list",
-          data: bogo_id,
-          _ajax_nonce: bogo_save_url.ajd_nonce,
-        },
-        function (data) {
+      getBogoOffer(bogo_id)
+        .then((data) => {
           setPageLoading(false);
 
-          const parsedBogoItem = convertBogoItemHtmlEntitiesToTexts(data.data);
+          const parsedBogoItem = convertBogoItemHtmlEntitiesToTexts(data);
           setCreateFromData({
             ...createBogoData,
             ...parsedBogoItem,
             offer_product_id: bogo_id,
           });
-        }
-      );
+        })
+        .catch((error) => {
+          setPageLoading(false);
+          console.error('Failed to fetch BOGO offer:', error);
+          notification["error"]({
+            message: "Failed to load BOGO offer",
+            description: error.message,
+          });
+        });
     }, []);
   } else {
     useEffect(() => {
@@ -192,7 +203,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       }
       let isSameScheduleExist = false;
       for (const newScheduleItem of newTargetSchedules) {
-        if (bogoItem.offer_schedule.includes(newScheduleItem)) {
+        if (bogoItem.offer_schedule?.includes(newScheduleItem)) {
           isSameScheduleExist = true;
           break;
         }
@@ -228,29 +239,44 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       setButtonLoading(true);
       const bogoDataParsedToEntities =
         convertBogoItemTextDatasToHtmlEntities(createBogoData);
-      let $ = jQuery;
-      $.post(
-        bogo_save_url.ajax_url,
-        {
-          action: "bogo_create",
-          data: bogoDataParsedToEntities,
-          _ajax_nonce: bogo_save_url.ajd_nonce,
-        },
-        function (data) {
+      
+      const apiCall = isEditingExistingBogoItem 
+        ? updateBogoOffer(parseInt(bogo_id), bogoDataParsedToEntities)
+        : createBogoOffer(bogoDataParsedToEntities);
+      
+      apiCall
+        .then((data) => {
           setCreateFromData({
             ...bogoDataParsedToEntities,
-            offer_product_id: data,
+            offer_product_id: data.id || data,
           });
           setButtonLoading(false);
 
+          const successMessage = isEditingExistingBogoItem 
+            ? "Order Bogo Update"
+            : "Order Bogo Creation";
+          const successDescription = isEditingExistingBogoItem
+            ? "Data for order bogo update saved successfully"
+            : "Data for order bogo creation saved successfully";
+
           notification["success"]({
-            message: "Order Bogo Creation",
-            description: "Data for order bogo creation saved successfully",
+            message: successMessage,
+            description: successDescription,
           });
 
           navigate("/bogo?tab_name=lists");
-        }
-      );
+        })
+        .catch((error) => {
+          setButtonLoading(false);
+          const errorMessage = isEditingExistingBogoItem
+            ? "Failed to update BOGO offer"
+            : "Failed to create BOGO offer";
+          console.error(errorMessage + ':', error);
+          notification["error"]({
+            message: errorMessage,
+            description: error.message,
+          });
+        });
     }
   };
 

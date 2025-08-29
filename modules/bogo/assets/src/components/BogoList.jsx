@@ -1,10 +1,11 @@
 import { __ } from "@wordpress/i18n";
 import { applyFilters } from "@wordpress/hooks";
-import { Table, Button, notification } from "antd";
+import { Table, Button, notification, Modal } from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { Switch } from 'antd';
 import { useEffect, useState } from "@wordpress/element";
 import { convertBogoItemHtmlEntitiesToTexts } from "../helper";
+import { deleteBogoOffer, updateBogoStatus, getBogoOffers } from "../utils/restApi";
 import { Fragment } from "react";
 import { nanoid } from 'nanoid';
 import UpgradeCard from "sales-booster/src/components/settings/Panels/PanelSettings/UpgradeCard";
@@ -12,38 +13,39 @@ import OfferProductContent from "./OfferProductContent";
 
 const deleteBogo = (stateUpdateCallback) => (id) => {
   stateUpdateCallback(true);
-  jQuery.post(
-    bogo_save_url.ajax_url,
-    {
-      action: "bogo_delete",
-      data: id,
-      _ajax_nonce: bogo_save_url.ajd_nonce,
-    },
-    function () {
-      notification["error"]({
+  deleteBogoOffer(id)
+    .then(() => {
+      notification["success"]({
         message: "Bogo deleted",
       });
       stateUpdateCallback(false);
       location.reload();
-    }
-  );
+    })
+    .catch((error) => {
+      stateUpdateCallback(false);
+      console.error('Failed to delete BOGO offer:', error);
+      notification["error"]({
+        message: "Failed to delete BOGO offer",
+        description: error.message,
+      });
+    });
 };
 
 const statusHandler = (id, status, stateUpdateCallback) => {
-  jQuery.post(
-    bogo_save_url.ajax_url,
-    {
-      action: "bogo_status_handler",
-      data: { id, status },
-      _ajax_nonce: bogo_save_url.ajd_nonce,
-    },
-    function (response) {
+  updateBogoStatus(id, status ? 'yes' : 'no')
+    .then((response) => {
       notification["success"]({
         message: __("Status Updated", 'storegrowth-sales-booster'),
       });
-      stateUpdateCallback(response.data);
-    }
-  );
+      stateUpdateCallback(status);
+    })
+    .catch((error) => {
+      console.error('Failed to update BOGO status:', error);
+      notification["error"]({
+        message: "Failed to update status",
+        description: error.message,
+      });
+    });
 };
 
 
@@ -67,6 +69,20 @@ function ActionToggler({ bogo_id, bogo_status }) {
 
 function ActionButton({ navigate, bogo_id }) {
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const showDeleteConfirm = () => {
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setIsDeleteModalVisible(false);
+    deleteBogo(setButtonLoading)(bogo_id);
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalVisible(false);
+  };
 
   return (
     <Fragment>
@@ -131,7 +147,7 @@ function ActionButton({ navigate, bogo_id }) {
           display: "inline-flex",
           background: "transparent",
         }}
-        onClick={() => deleteBogo(setButtonLoading)(bogo_id)}
+        onClick={showDeleteConfirm}
         loading={buttonLoading}
       >
         <svg
@@ -156,6 +172,19 @@ function ActionButton({ navigate, bogo_id }) {
         </svg>
         {__("Delete", "storegrowth-sales-booster")}
       </Button>
+
+      <Modal
+        title={__("Delete BOGO Offer", "storegrowth-sales-booster")}
+        open={isDeleteModalVisible}
+        onOk={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        okText={__("Delete", "storegrowth-sales-booster")}
+        cancelText={__("Cancel", "storegrowth-sales-booster")}
+        okButtonProps={{ danger: true }}
+        confirmLoading={buttonLoading}
+      >
+        <p>{__("Are you sure you want to delete this BOGO offer? This action cannot be undone.", "storegrowth-sales-booster")}</p>
+      </Modal>
     </Fragment>
   );
 }
@@ -199,22 +228,23 @@ function BogoList({ navigate }) {
   useEffect(() => {
     setPageLoading(true);
 
-    jQuery.post(
-      bogo_save_url.ajax_url,
-      {
-        action: "bogo_list",
-        data: [],
-        _ajax_nonce: bogo_save_url.ajd_nonce,
-      },
-      function (bogoDataFromAjax) {
+    getBogoOffers()
+      .then((bogoDataFromApi) => {
         setPageLoading(false);
 
-        const bogoDataParsed = bogoDataFromAjax.data.map((bogoItem) =>
+        const bogoDataParsed = bogoDataFromApi.map((bogoItem) =>
           convertBogoItemHtmlEntitiesToTexts(bogoItem)
         );
         setBogoData(bogoDataParsed);
-      }
-    );
+      })
+      .catch((error) => {
+        setPageLoading(false);
+        console.error('Failed to fetch BOGO offers:', error);
+        notification["error"]({
+          message: "Failed to load BOGO offers",
+          description: error.message,
+        });
+      });
   }, []);
   const columns = [
     {
@@ -317,7 +347,7 @@ function BogoList({ navigate }) {
 
   const isDisableBogoCreation = applyFilters(
     "sgsb_control_upsell_order_bogo_data",
-    bogoListData?.length >= 2 && !SGSB_PRO_ACTIVE
+    bogoListData?.length >= 2
   );
 
   return (
