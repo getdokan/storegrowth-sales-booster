@@ -146,14 +146,14 @@ class BogoDataManager {
 		$offers = self::get_global_bogo_offers();
 		return array_map( function( $offer ) {
 			return array(
-				'offered_products' => $offer['target_products'][0] ?? null,
+				'offered_products' => $offer['offered_products'] ?? null,
 				'bogo_status'      => $offer['bogo_status'],
 				'shop_page_message' => $offer['shop_page_message'],
 				'product_page_message' => $offer['product_page_message'],
 				'default_badge_icon_name' => $offer['default_badge_icon_name'] ?? '',
 				'default_custom_badge_icon' => $offer['default_custom_badge_icon'] ?? '',
 				'enable_custom_badge_image' => $offer['enable_custom_badge_image'] ?? false,
-				'target_categories' => $offer['target_categories'] ?? array(),
+				'offered_categories' => $offer['offered_categories'] ?? array(),
 			);
 		}, $offers );
 	}
@@ -169,15 +169,15 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		// Handle both old and new field names for backward compatibility
-		$target_products = $data['target_products'] ?? $data['offered_products'] ?? array();
-		$target_categories = $data['target_categories'] ?? $data['offered_categories'] ?? array();
+		// Use offered_ prefix for consistency
+		$offered_products = $data['offered_products'] ?? array();
+		$offered_categories = $data['offered_categories'] ?? array();
 		
 		$insert_data = array(
 			'type'                    => 'global',
 			'name'                    => $data['name_of_order_bogo'],
-			'target_products'         => \wp_json_encode( $target_products ),
-			'target_categories'       => \wp_json_encode( $target_categories ),
+			'target_products'         => \wp_json_encode( $offered_products ),
+			'target_categories'       => \wp_json_encode( $offered_categories ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
@@ -210,8 +210,8 @@ class BogoDataManager {
 
 		$update_data = array(
 			'name'                    => $data['name_of_order_bogo'] ?? '',
-			'target_products'         => \wp_json_encode( $data['target_products'] ?? array() ),
-			'target_categories'       => \wp_json_encode( $data['target_categories'] ?? array() ),
+			'target_products'         => \wp_json_encode( $data['offered_products'] ?? array() ),
+			'target_categories'       => \wp_json_encode( $data['offered_categories'] ?? array() ),
 			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
@@ -302,7 +302,7 @@ class BogoDataManager {
 			$settings['get_different_product_field'] = $settings['offer_product_id'];
 			$settings['get_alternate_products']      = $settings['alternate_products'];
 		} else {
-			// For global offers, provide both old and new field names
+			// For global offers, use offered_ prefix consistently
 			$settings['offered_products'] = $settings['target_products'];
 			$settings['offered_categories'] = $settings['target_categories'];
 			$settings['name_of_order_bogo'] = $settings['name'];

@@ -261,10 +261,8 @@ function BogoList({ navigate }) {
   let productInfoById = bogo_products_and_categories.product_list.productTitleById;
 
   function mapBogoData(item) {
-    // Handle both old and new data formats
-    const isNewFormat = item.type !== undefined;
-    
-    let categories = isNewFormat ? (item.target_categories || []) : (item.offered_categories || []);
+    // Use offered_ prefix consistently
+    let categories = item.offered_categories || [];
     let catList = "";
 
     if (Array.isArray(categories)) {
@@ -277,7 +275,7 @@ function BogoList({ navigate }) {
       }
     }
 
-    let products = isNewFormat ? (item.target_products || []) : [item.offered_products];
+    let products = item.offered_products || [];
     let productList = "";
 
     if (Array.isArray(products)) {
@@ -291,21 +289,15 @@ function BogoList({ navigate }) {
     }
 
     let offerProduct = "";
-    if (isNewFormat) {
-      offerProduct = item.bogo_deal_type === 'same' 
-        ? productInfoById[products[0]] 
-        : productInfoById[item.offer_product_id];
-    } else {
-      offerProduct = item.bogo_deal_type === 'same' 
-        ? productInfoById[item.offered_products] 
-        : productInfoById[item.get_different_product_field];
-    }
+    offerProduct = item.bogo_deal_type === 'same' 
+      ? productInfoById[products[0]] 
+      : productInfoById[item.offer_product_id];
 
     return {
       key: item.id,
-      name: isNewFormat ? item.name : item.name_of_order_bogo,
-      type: isNewFormat ? item.type : 'global', // Default to global for old format
-      status: <ActionToggler bogo_id={item.id} bogo_status={isNewFormat ? item.bogo_status : item.bogo_status} item={item} />,
+      name: item.name_of_order_bogo || item.name,
+      type: item.type || 'global', // Default to global for old format
+      status: <ActionToggler bogo_id={item.id} bogo_status={item.bogo_status} item={item} />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),
