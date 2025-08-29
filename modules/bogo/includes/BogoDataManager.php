@@ -340,7 +340,6 @@ class BogoDataManager {
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			INDEX idx_type_status (type, status),
 			INDEX idx_product (product_id, variation_id),
-			INDEX idx_global_targets (type, target_products(100), target_categories(100)),
 			UNIQUE KEY unique_product_variation (product_id, variation_id)
 		) {$charset_collate};";
 
