@@ -204,7 +204,7 @@ const BasicInfo = ({ clearErrors }) => {
           name={"offered_products"}
           changeHandler={onFieldChange}
           options={originalProductListForSelect}
-          fieldValue={createBogoData?.offered_products}
+          fieldValue={ String( createBogoData?.offered_products ) }
           title={__("Select Target Product(s)", "storegrowth-sales-booster-pro")}
           placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
           tooltip={__(
