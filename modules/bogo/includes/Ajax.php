@@ -56,6 +56,44 @@ class Ajax implements HookRegistry {
 	}
 
 	protected function get_bogo(): Bogo {
+		// Use new unified data manager if available, fallback to old method
+		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager' ) ) {
+			// Return a wrapper that uses the new data manager
+			return new class {
+				public function create( $data ) {
+					return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::create_global_offer( $data );
+				}
+				
+				public function get_item( $id ) {
+					return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_bogo_offer( $id );
+				}
+				
+				public function get_items( $args = array() ) {
+					$offers = \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
+					return array(
+						'data' => $offers,
+						'total_items' => count( $offers ),
+						'total_pages' => 1,
+						'current_page' => 1,
+						'per_page' => count( $offers ),
+					);
+				}
+				
+				public function update( $id, $data ) {
+					return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::update_global_offer( $id, $data );
+				}
+				
+				public function delete( $id ) {
+					return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::delete_bogo_offer( $id );
+				}
+				
+				public function set_status( $id, $status ) {
+					$status_value = filter_var( $status, FILTER_VALIDATE_BOOLEAN ) ? 'active' : 'inactive';
+					return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::set_bogo_status( $id, $status_value );
+				}
+			};
+		}
+		
 		return storegrowth_get_container()->get( Bogo::class );
 	}
 

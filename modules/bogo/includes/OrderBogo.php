@@ -494,6 +494,12 @@ class OrderBogo implements HookRegistry {
 			$is_variable_product
 		);
 
-		update_post_meta( $post_id, 'sgsb_product_bogo_settings', $bogo_settings_data );
+		// Use new unified data manager if available, fallback to old method
+		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager' ) ) {
+			\STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::save_product_bogo_settings( $post_id, 0, $bogo_settings_data );
+		} else {
+			// Fallback to old method
+			update_post_meta( $post_id, 'sgsb_product_bogo_settings', $bogo_settings_data );
+		}
 	}
 }
