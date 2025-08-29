@@ -7,6 +7,7 @@
 
 namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
 
+use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -17,14 +18,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add or Remove discount when product add/remove to cart.
  */
-class WoocommerceDiscount {
+class WoocommerceDiscount implements HookRegistry {
 
 	use Singleton;
 
 	/**
-	 * Constructor of Woocommerce_Discount class.
+	 * Register Hooks.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
 	 */
-	public function __construct() {
+	public function register_hooks(): void {
 		add_action( 'woocommerce_add_to_cart', array( $this, 'woocommerce_added_to_cart' ), 22 );
 		add_action( 'woocommerce_cart_item_restored', array( $this, 'woocommerce_added_to_cart' ), 22 );
 
