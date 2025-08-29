@@ -208,7 +208,7 @@ class BogoController extends WP_REST_Controller {
         if ( empty( $result ) || ! is_int( $result ) ) {
             // Likely due to free version restriction, return appropriate message.
             return new WP_REST_Response(
-                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
+                [ 'message' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
                 403
             );
         }

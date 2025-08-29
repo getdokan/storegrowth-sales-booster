@@ -305,7 +305,7 @@ const CreateBogoOffer = ( { navigate, params } ) => {
         } catch ( error ) {
             toast( {
                 type: 'error',
-                title: error?.message || __( 'Failed to submitting the form.', 'storegrowth-sales-booster' ),
+                title:error?.message || __( 'Failed to submitting the form.', 'storegrowth-sales-booster' ),
             } );
         } finally {
             setIsLoading( false );

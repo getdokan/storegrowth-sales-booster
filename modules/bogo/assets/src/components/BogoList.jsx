@@ -20,8 +20,8 @@ const deleteBogo = (stateUpdateCallback) => (id) => {
       _ajax_nonce: bogo_save_url.ajd_nonce,
     },
     function () {
-      notification["error"]({
-        message: "Bogo deleted",
+      notification["success"]({
+        message: "BOGO offer deleted successfully"
       });
       stateUpdateCallback(false);
       location.reload();
