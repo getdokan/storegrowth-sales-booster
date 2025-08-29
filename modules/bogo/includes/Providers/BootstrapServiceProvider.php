@@ -5,6 +5,7 @@ namespace STOREGROWTH\SPSB\Modules\BoGo\Providers;
 use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
 use STOREGROWTH\SPSB\Modules\BoGo\Ajax;
 use STOREGROWTH\SPSB\Modules\BoGo\Bogo;
+use STOREGROWTH\SPSB\Modules\BoGo\BogoDataWrapper;
 use STOREGROWTH\SPSB\Modules\BoGo\OrderBogo;
 use STOREGROWTH\SPSB\Modules\BoGo\EnqueueScript;
 use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
@@ -33,6 +34,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         EnqueueScript::class,
         BogoController::class,
         Bogo::class,
+        BogoDataWrapper::class,
     ];
 
     /**
