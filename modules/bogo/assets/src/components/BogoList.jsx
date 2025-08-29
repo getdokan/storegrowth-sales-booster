@@ -223,6 +223,23 @@ function BogoList({ navigate }) {
       align: "left",
     },
     {
+      title: "Type",
+      dataIndex: "type",
+      render: (type) => (
+        <span style={{ 
+          padding: '4px 8px', 
+          borderRadius: '4px', 
+          fontSize: '12px',
+          fontWeight: '500',
+          backgroundColor: type === 'product' ? '#e6f7ff' : '#f6ffed',
+          color: type === 'product' ? '#1890ff' : '#52c41a',
+          border: `1px solid ${type === 'product' ? '#91d5ff' : '#b7eb8f'}`
+        }}>
+          {type === 'product' ? 'Product' : 'Global'}
+        </span>
+      ),
+    },
+    {
       title: "Status",
       dataIndex: "status",
     },
@@ -244,33 +261,51 @@ function BogoList({ navigate }) {
   let productInfoById = bogo_products_and_categories.product_list.productTitleById;
 
   function mapBogoData(item) {
-    let categories = item.offered_categories;
+    // Handle both old and new data formats
+    const isNewFormat = item.type !== undefined;
+    
+    let categories = isNewFormat ? (item.target_categories || []) : (item.offered_categories || []);
     let catList = "";
 
-    for (const key in categories) {
-      if (Object.keys(categories).length - 1 > key) {
-        catList = catList + catInfoByCatId[categories[key]] + ", ";
-      } else {
-        catList = catList + catInfoByCatId[categories[key]];
+    if (Array.isArray(categories)) {
+      for (const key in categories) {
+        if (Object.keys(categories).length - 1 > key) {
+          catList = catList + catInfoByCatId[categories[key]] + ", ";
+        } else {
+          catList = catList + catInfoByCatId[categories[key]];
+        }
       }
     }
 
-    let products = [item.offered_products];
+    let products = isNewFormat ? (item.target_products || []) : [item.offered_products];
     let productList = "";
 
-    for (const key in products) {
-      if (Object.keys(products).length - 1 > key) {
-        productList = productList + productInfoById[products[key]] + ", ";
-      } else {
-        productList = productList + productInfoById[products[key]];
+    if (Array.isArray(products)) {
+      for (const key in products) {
+        if (Object.keys(products).length - 1 > key) {
+          productList = productList + productInfoById[products[key]] + ", ";
+        } else {
+          productList = productList + productInfoById[products[key]];
+        }
       }
     }
 
-    let offerProduct = item.bogo_deal_type === 'same' ? productInfoById[item.offered_products] : productInfoById[item.get_different_product_field];
+    let offerProduct = "";
+    if (isNewFormat) {
+      offerProduct = item.bogo_deal_type === 'same' 
+        ? productInfoById[products[0]] 
+        : productInfoById[item.offer_product_id];
+    } else {
+      offerProduct = item.bogo_deal_type === 'same' 
+        ? productInfoById[item.offered_products] 
+        : productInfoById[item.get_different_product_field];
+    }
+
     return {
       key: item.id,
-      name: item.name_of_order_bogo,
-      status: <ActionToggler bogo_id={item.id} bogo_status={item.bogo_status} item={item} />,
+      name: isNewFormat ? item.name : item.name_of_order_bogo,
+      type: isNewFormat ? item.type : 'global', // Default to global for old format
+      status: <ActionToggler bogo_id={item.id} bogo_status={isNewFormat ? item.bogo_status : item.bogo_status} item={item} />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),
@@ -283,14 +318,14 @@ function BogoList({ navigate }) {
 
   let data = applyFilters(
     "sgsb_upsell_order_bogo_data",
-    bogoListData.slice(-2).map(mapBogoData),
+    bogoListData.map(mapBogoData),
     bogoListData,
     mapBogoData
   );
 
   const isDisableBogoCreation = applyFilters(
     "sgsb_control_upsell_order_bogo_data",
-    bogoListData?.length >= 2
+    bogoListData?.length >= 2 && !SGSB_PRO_ACTIVE
   );
 
   return (
