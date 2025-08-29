@@ -121,11 +121,9 @@ register_activation_hook(
 		add_option( 'storegrowth_activation_redirect', true );
 		
 		// Run BOGO migration if needed
-		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoMigration' ) ) {
-			$migration_status = \STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::get_migration_status();
-			if ( $migration_status['migration_needed'] ) {
-				\STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::migrate_to_single_table();
-			}
+		$migration_status = \STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::get_migration_status();
+		if ( $migration_status['migration_needed'] ) {
+			\STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::migrate_to_single_table();
 		}
 	}
 );

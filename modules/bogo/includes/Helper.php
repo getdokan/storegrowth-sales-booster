@@ -61,14 +61,7 @@ class Helper {
 	 * @return array|null
 	 */
 	public static function get_product_bogo_settings( $product_id ) {
-		// Use new unified data manager if available, fallback to old method
-		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager' ) ) {
-			return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id );
-		}
-		
-		// Fallback to old method
-		$bogo_settings = get_post_meta( $product_id, 'sgsb_product_bogo_settings', true );
-		return $bogo_settings;
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id );
 	}
 
 	/**
@@ -79,18 +72,7 @@ class Helper {
 	 * @return \WP_POST[]|int[]
 	 */
 	public static function get_global_offered_products() {
-		// Use new unified data manager if available, fallback to old method
-		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager' ) ) {
-			return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
-		}
-		
-		// Fallback to old method
-		$args_bogo = array(
-			'post_type'      => 'sgsb_bogo',
-			'posts_per_page' => -1,
-		);
-
-		return get_posts( $args_bogo );
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
 	}
 
 	/**
@@ -101,17 +83,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_global_offered_product_list() {
-		// Use new unified data manager if available, fallback to old method
-		if ( class_exists( 'STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager' ) ) {
-			return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_offered_product_list();
-		}
-		
-		// Fallback to old method
-		$bogo_list = self::get_global_offered_products();
-		$offers    = wp_list_pluck( $bogo_list, 'post_excerpt' );
-
-		// Convert the serialized data into an array
-		return array_map( 'maybe_unserialize', $offers );
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_offered_product_list();
 	}
 
 
