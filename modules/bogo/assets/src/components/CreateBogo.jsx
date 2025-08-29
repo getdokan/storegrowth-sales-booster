@@ -151,7 +151,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (createBogoData.offer_type.length == 0) {
+    if (!createBogoData.offer_type || createBogoData.offer_type.length === 0) {
       notification["error"]({
         message: "Please select offer type",
       });

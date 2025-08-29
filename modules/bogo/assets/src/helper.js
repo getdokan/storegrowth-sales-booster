@@ -79,7 +79,7 @@ export const createBogoForm = {
   offer_schedule: ["daily"],
   smart_offer: false,
   get_different_product_field: "",
-  offer_type: [],
+  offer_type: "",
   discount_amount: "",
   box_border_style: "solid",
   box_border_color: "#32DBBE",
