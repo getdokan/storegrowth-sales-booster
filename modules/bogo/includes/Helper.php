@@ -146,10 +146,22 @@ class Helper {
 
         $offers = self::get_global_offered_product_list();
         foreach ( $offers as $offer ) {
-            if ( intval( $offer['offered_products'] ) === $product_id ) {
-                return $offer;
+            $offered_products = $offer['offered_products'] ?? array();
+            
+            // Handle both array and string formats for backward compatibility
+            if ( is_array( $offered_products ) ) {
+                if ( in_array( $product_id, $offered_products ) ) {
+                    return $offer;
+                }
+            } else {
+                // Backward compatibility for string format
+                if ( intval( $offered_products ) === $product_id ) {
+                    return $offer;
+                }
             }
         }
+        
+        return null;
     }
 
     /**
@@ -162,28 +174,28 @@ class Helper {
      *
      * @return int|mixed|null
      */
-    public static function get_offer_product_id( $settings, $product_id ) {
-        $deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
+    	public static function get_offer_product_id( $settings, $product_id ) {
+		$deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
 
-        // Return same product as offer for same deal.
-        if ( $deal_type === 'same' ) {
-            return $product_id;
-        }
+		// Return same product as offer for same deal.
+		if ( $deal_type === 'same' ) {
+			return $product_id;
+		}
 
-        // Return buy y product for different deal.
-        if ( ! empty( $settings['get_different_product_field'] ) ) {
-            return intval( $settings['get_different_product_field'] );
-        }
+		// Return buy y product for different deal.
+		if ( ! empty( $settings['get_different_product_field'] ) ) {
+			return intval( $settings['get_different_product_field'] );
+		}
 
-        // Return alternate first product as offer for buy y product.
-        $alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
-        return apply_filters(
-            'sgsb_bogo_offer_product_id_for_cart',
-            ! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
-            $settings,
-            $product_id
-        );
-    }
+		// Return alternate first product as offer for buy y product.
+		$alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
+		return apply_filters(
+			'sgsb_bogo_offer_product_id_for_cart',
+			! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
+			$settings,
+			$product_id
+		);
+	}
 
     /**
      * Get alternate offer products for BOGO apply.

@@ -373,12 +373,22 @@ class BogoController extends WP_REST_Controller {
             $data['offered_categories'] = array_map( 'absint', array_filter( explode( ',', $data['offered_categories'] ) ) );
         }
 
-        // Normalize get_alternate_products (convert string to array if needed)
-        if ( isset( $data['get_alternate_products'] ) && is_string( $data['get_alternate_products'] ) ) {
-            $data['get_alternate_products'] = array_map( 'absint', array_filter( explode( ',', $data['get_alternate_products'] ) ) );
-        }
+        		// Normalize get_alternate_products (convert string to array if needed)
+		if ( isset( $data['get_alternate_products'] ) && is_string( $data['get_alternate_products'] ) ) {
+			$data['get_alternate_products'] = array_map( 'absint', array_filter( explode( ',', $data['get_alternate_products'] ) ) );
+		}
 
-        return $data;
+		// Normalize offer_schedule (convert string to array if needed)
+		if ( isset( $data['offer_schedule'] ) && is_string( $data['offer_schedule'] ) ) {
+			$data['offer_schedule'] = array_filter( explode( ',', $data['offer_schedule'] ) );
+		}
+
+		// Ensure offer_schedule has a default value
+		if ( ! isset( $data['offer_schedule'] ) || empty( $data['offer_schedule'] ) ) {
+			$data['offer_schedule'] = array( 'daily' );
+		}
+
+		return $data;
     }
 
     /**

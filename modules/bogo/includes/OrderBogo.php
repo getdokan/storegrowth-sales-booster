@@ -196,6 +196,11 @@ class OrderBogo implements HookRegistry {
 		$offer_product_id = Helper::get_offer_product_id( $settings, $product_id );
 		$product          = wc_get_product( $offer_product_id );
 
+		// Check if product exists before accessing its methods
+		if ( ! $product ) {
+			return;
+		}
+
 		// Determine the cost of the offer product (if necessary)
 		$offer_product_cost = 0; // Assume free by default
 		if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
@@ -267,12 +272,9 @@ class OrderBogo implements HookRegistry {
 		global $woocommerce;
 		global $product;
 		$current_product_id      = $product->get_id();
-		$bogo_custom_field_value = (object) get_post_meta( $current_product_id, 'sgsb_product_bogo_settings', true );
-		$is_custom_field_present = $bogo_custom_field_value;
 		$all_cart_products       = $woocommerce->cart->get_cart();
 		$all_cart_product_ids    = array();
 		$all_cart_category_ids   = array();
-		$bogo_list               = Helper::get_global_offered_products();
 		$showed_bogo_product_id  = array();
 		$is_simple_product       = $product->is_type( 'simple' );
 
@@ -280,66 +282,121 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		if ( $is_custom_field_present && isset( $bogo_custom_field_value->bogo_status ) && 'yes' === $bogo_custom_field_value->bogo_status ) {
-			$bogo_global_info = (object) $bogo_custom_field_value;
-			$bogo_info        = $bogo_global_info;
-			$deal_type        = $bogo_info->bogo_deal_type;
-			$bogo_status      = $bogo_info->bogo_status;
-			$offered_product   = $current_product_id;
-			$offer_product_id = 'same' === $deal_type ? $offered_product : $bogo_info->get_different_product_field;
-			$offer_product_id = empty( $offer_product_id ) && ! empty( $bogo_info->get_alternate_products[0] ) ?
-				intval( $bogo_info->get_alternate_products[0] ) : $offer_product_id;
-
-			if ( ! $offer_product_id ) {
-				return;
-			}
-
-			$offer_type      = $bogo_info->offer_type;
-			$discount_amount = $bogo_info->discount_amount;
-			$image_url       = get_the_post_thumbnail_url( $offer_product_id, 'full' );
-			$_product        = wc_get_product( $offer_product_id );
-			$regular_price   = $_product->get_price();
-			$offer_price     = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
-
-			if (
-				$current_product_id === (int) $offered_product && 'yes' === $bogo_status
-			) {
-				include __DIR__ . '/../templates/bogo-product-meta-front-view.php';
-			}
-		} else {
-			foreach ( $bogo_list as $bogo ) {
-				$bogo_global_info = (object) maybe_unserialize( $bogo->post_excerpt );
-				$bogo_info        = $bogo_global_info;
-				$deal_type        = $bogo_info->bogo_deal_type;
-				$bogo_status      = $bogo_info->bogo_status;
-				$offered_product   = $bogo_info->offered_products;
-				$offer_product_id = 'same' === $deal_type ? $offered_product : $bogo_info->get_different_product_field;
-				$offer_type       = $bogo_info->offer_type;
-				$discount_amount  = $bogo_info->discount_amount;
-				$image_url        = get_the_post_thumbnail_url( $offer_product_id, 'full' );
-				$_product         = wc_get_product( $offer_product_id );
-				$regular_price    = $_product->get_price();
-				$offer_price      = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
-
-				if (
-					$current_product_id === (int) $offered_product && 'yes' === $bogo_status
-				) {
-
-					include __DIR__ . '/../templates/bogo-product-front-view.php';
+		// Get cart category IDs for category-based offers
+		foreach ( $all_cart_products as $cart_item ) {
+			$product_id = $cart_item['product_id'];
+			$all_cart_product_ids[] = $product_id;
+			
+			$product_categories = get_the_terms( $product_id, 'product_cat' );
+			if ( $product_categories && ! is_wp_error( $product_categories ) ) {
+				foreach ( $product_categories as $category ) {
+					$all_cart_category_ids[] = $category->term_id;
 				}
+			}
+		}
 
-				if (
-					isset( $bogo_info->offered_categories )
-					&& count( $all_cart_category_ids ) !== count( array_diff( $all_cart_category_ids, $bogo_info->offered_categories ) )
-					&& ! in_array( $offer_product_id, $showed_bogo_product_id, true )
-				) {
+		// Check for product-specific BOGO settings first
+		$product_bogo_settings = Helper::get_product_bogo_settings( $current_product_id );
+		
+		if ( $product_bogo_settings && isset( $product_bogo_settings['bogo_status'] ) && 'yes' === $product_bogo_settings['bogo_status'] ) {
+			$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $current_product_id );
+		}
 
-					include __DIR__ . '/../templates/bogo-product-front-view.php';
+		// Check for global BOGO offers
+		$global_bogo_offers = Helper::get_global_offered_products();
+		
+		foreach ( $global_bogo_offers as $bogo_offer ) {
+			// Check if current product is in the offered products list
+			$offered_products = $bogo_offer['offered_products'] ?? array();
+			$is_product_offered = false;
+			
+			if ( is_array( $offered_products ) ) {
+				$is_product_offered = in_array( $current_product_id, $offered_products );
+			} else {
+				$is_product_offered = (int) $offered_products === $current_product_id;
+			}
 
+			// Check if current product categories match offered categories
+			$offered_categories = $bogo_offer['offered_categories'] ?? array();
+			$is_category_offered = false;
+			
+			if ( ! empty( $offered_categories ) && ! empty( $all_cart_category_ids ) ) {
+				$is_category_offered = ! empty( array_intersect( $all_cart_category_ids, $offered_categories ) );
+			}
+
+			if ( ( $is_product_offered || $is_category_offered ) && 
+				 isset( $bogo_offer['bogo_status'] ) && 'yes' === $bogo_offer['bogo_status'] ) {
+				
+				$offer_product_id = $this->get_offer_product_id_from_settings( $bogo_offer, $current_product_id );
+				
+				if ( $offer_product_id && ! in_array( $offer_product_id, $showed_bogo_product_id, true ) ) {
+					$this->display_bogo_offer( $bogo_offer, $current_product_id, $offer_product_id );
 					$showed_bogo_product_id[] = $offer_product_id;
 				}
 			}
 		}
+	}
+
+	/**
+	 * Display BOGO offer on frontend.
+	 *
+	 * @param array $bogo_settings BOGO settings.
+	 * @param int   $current_product_id Current product ID.
+	 * @param int   $offer_product_id Offer product ID.
+	 */
+	private function display_bogo_offer( $bogo_settings, $current_product_id, $offer_product_id ) {
+		$deal_type       = $bogo_settings['bogo_deal_type'] ?? 'different';
+		$bogo_status     = $bogo_settings['bogo_status'] ?? 'no';
+		$offer_type      = $bogo_settings['offer_type'] ?? 'free';
+		$discount_amount = $bogo_settings['discount_amount'] ?? 0;
+		
+		$image_url = get_the_post_thumbnail_url( $offer_product_id, 'full' );
+		$_product  = wc_get_product( $offer_product_id );
+		
+		// Check if product exists before accessing its methods
+		if ( ! $_product ) {
+			return;
+		}
+		
+		$regular_price = $_product->get_price();
+		$offer_price   = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
+
+		// Include the appropriate template
+		if ( $current_product_id === $offer_product_id ) {
+			include __DIR__ . '/../templates/bogo-product-meta-front-view.php';
+		} else {
+			include __DIR__ . '/../templates/bogo-product-front-view.php';
+		}
+	}
+
+	/**
+	 * Get offer product ID from BOGO settings.
+	 *
+	 * @param array $bogo_settings BOGO settings.
+	 * @param int   $current_product_id Current product ID.
+	 * @return int|null Offer product ID or null if not found.
+	 */
+	private function get_offer_product_id_from_settings( $bogo_settings, $current_product_id ) {
+		$deal_type = $bogo_settings['bogo_deal_type'] ?? 'different';
+		
+		// For same deal type, return the current product
+		if ( 'same' === $deal_type ) {
+			return $current_product_id;
+		}
+		
+		// For different deal type, check for specific product field
+		$different_product_id = $bogo_settings['get_different_product_field'] ?? null;
+		if ( $different_product_id ) {
+			return (int) $different_product_id;
+		}
+		
+		// Check for alternate products
+		$alternate_products = $bogo_settings['get_alternate_products'] ?? array();
+		if ( ! empty( $alternate_products ) && is_array( $alternate_products ) ) {
+			return (int) $alternate_products[0];
+		}
+		
+		return null;
 	}
 
 	/**
@@ -391,6 +448,11 @@ class OrderBogo implements HookRegistry {
 
 		$product_id = ! empty( $post->ID ) ? intval( $post->ID ) : 0;
 		$product    = wc_get_product( $product_id );
+
+		// Check if product exists before accessing its methods
+		if ( ! $product ) {
+			return $product_data_tabs;
+		}
 
 		// Check BOGO tab availability via current product type.
 		$is_available_bogo = $product->is_type( 'simple' ) || $product->is_type( 'variable' );
@@ -469,6 +531,12 @@ class OrderBogo implements HookRegistry {
 		);
 
 		$current_product     = wc_get_product( $post_id );
+		
+		// Check if product exists before accessing its methods
+		if ( ! $current_product ) {
+			return;
+		}
+		
 		$is_variable_product = $current_product->is_type( 'variable' );
 		if ( ! $is_variable_product ) {
 			$offer_type           = isset( $_POST['offer_type'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_type'] ) ) : 'free';
@@ -478,6 +546,9 @@ class OrderBogo implements HookRegistry {
 			$product_discount     = isset( $_POST['discount_amount'] ) ? sanitize_text_field( wp_unslash( $_POST['discount_amount'] ) ) : 0;
 			$shop_page_message    = isset( $_POST['shop_page_message'] ) ? sanitize_text_field( wp_unslash( $_POST['shop_page_message'] ) ) : '';
 			$product_page_message = isset( $_POST['product_page_message'] ) ? sanitize_text_field( wp_unslash( $_POST['product_page_message'] ) ) : '';
+			$offer_schedule       = isset( $_POST['offer_schedule'] ) ? wc_clean( wp_unslash( $_POST['offer_schedule'] ) ) : array( 'daily' );
+			$offer_start          = isset( $_POST['offer_start'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_start'] ) ) : '';
+			$offer_end            = isset( $_POST['offer_end'] ) ? sanitize_text_field( wp_unslash( $_POST['offer_end'] ) ) : '';
 
 			$bogo_settings_data['offer_type']                  = $offer_type;
 			$bogo_settings_data['discount_amount']             = $product_discount;
@@ -486,7 +557,12 @@ class OrderBogo implements HookRegistry {
 			$bogo_settings_data['product_page_message']        = $product_page_message;
 			$bogo_settings_data['get_alternate_products']      = $bogo_products;
 			$bogo_settings_data['get_different_product_field'] = $get_product;
+			$bogo_settings_data['offer_schedule']              = $offer_schedule;
+			$bogo_settings_data['offer_start']                 = $offer_start;
+			$bogo_settings_data['offer_end']                   = $offer_end;
 		}
+
+		$bogo_settings_data['offered_products'] = [ $post_id ];
 
 		$bogo_settings_data = apply_filters(
 			'sgsb_before_save_bogo_settings_data',
@@ -495,5 +571,8 @@ class OrderBogo implements HookRegistry {
 		);
 
 		\STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::save_product_bogo_settings( $post_id, 0, $bogo_settings_data );
+		
+		// Sync offer schedules between product and global offers
+		\STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::sync_offer_schedules( $post_id );
 	}
 }

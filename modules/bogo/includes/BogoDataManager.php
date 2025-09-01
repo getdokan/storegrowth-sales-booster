@@ -106,7 +106,11 @@ class BogoDataManager {
 			'shop_page_message'       => $settings['shop_page_message'] ?? '',
 			'bogo_badge_image'        => $settings['bogo_badge_image'] ?? '',
 			'minimum_quantity_required' => $settings['minimum_quantity_required'] ?? 1,
+			'offer_start'             => $settings['offer_start'] ?? null,
+			'offer_end'               => $settings['offer_end'] ?? null,
+			'offer_schedule'          => wp_json_encode( $settings['offer_schedule'] ?? array( 'daily' ) ),
 			'status'                  => 'active',
+			'offered_products'        => wp_json_encode( $settings['offered_products'] ?? array() ),
 		);
 
 		$existing = $wpdb->get_var( $wpdb->prepare(
@@ -132,13 +136,11 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		$where_clause = '';
+		$where_parts = array( "type = 'global'" );
 		$where_values = array();
 
 		// Build WHERE clause based on conditions
 		if ( ! empty( $conditions ) ) {
-			$where_parts = array();
-			
 			foreach ( $conditions as $field => $value ) {
 				if ( $value !== null ) {
 					// Use %i for field name and appropriate placeholder for value
@@ -148,16 +150,10 @@ class BogoDataManager {
 					$where_values[] = $value;
 				}
 			}
-			
-			if ( ! empty( $where_parts ) ) {
-				$where_clause = 'WHERE ' . implode( ' AND ', $where_parts );
-			}
 		}
 
-		$query = "SELECT * FROM {$table}";
-		if ( ! empty( $where_clause ) ) {
-			$query .= ' ' . $where_clause;
-		}
+		$where_clause = 'WHERE ' . implode( ' AND ', $where_parts );
+		$query = "SELECT * FROM {$table} {$where_clause} ORDER BY created_at DESC";
 
 		$results = $wpdb->get_results(
 			$wpdb->prepare( $query, $where_values )
@@ -167,23 +163,43 @@ class BogoDataManager {
 	}
 
 	/**
+	 * Get active global BOGO offers only (for cart/frontend use).
+	 *
+	 * @param array $conditions Additional conditions.
+	 * @return array Array of active global BOGO offers.
+	 */
+	public static function get_active_global_bogo_offers( array $conditions = [] ) {
+		$conditions['status'] = 'active';
+		return self::get_global_bogo_offers( $conditions );
+	}
+
+	/**
 	 * Get global BOGO offers as list (for backward compatibility).
 	 *
 	 * @return array Array of global BOGO offers in old format.
 	 */
 	public static function get_global_offered_product_list() {
-		$offers = self::get_global_bogo_offers();
+		$offers = self::get_active_global_bogo_offers();
 		return array_map( function( $offer ) {
-			return array(
+			// Use the same formatting as get_bogo_offer for consistency
+			$formatted_offer = array(
 				'offered_products' => $offer['offered_products'] ?? null,
 				'bogo_status'      => $offer['bogo_status'],
+				'bogo_deal_type'   => $offer['bogo_deal_type'] ?? 'different',
+				'offer_type'       => $offer['offer_type'] ?? 'free',
+				'discount_amount'  => $offer['discount_amount'] ?? 0,
+				'minimum_quantity_required' => $offer['minimum_quantity_required'] ?? 1,
+				'get_different_product_field' => $offer['offer_product_id'] ?? null,
+				'get_alternate_products' => $offer['alternate_products'] ?? array(),
 				'shop_page_message' => $offer['shop_page_message'],
 				'product_page_message' => $offer['product_page_message'],
-				'default_badge_icon_name' => $offer['default_badge_icon_name'] ?? '',
-				'default_custom_badge_icon' => $offer['default_custom_badge_icon'] ?? '',
-				'enable_custom_badge_image' => $offer['enable_custom_badge_image'] ?? false,
 				'offered_categories' => $offer['offered_categories'] ?? array(),
 			);
+			
+			// Add backward compatibility fields
+			$formatted_offer['name_of_order_bogo'] = $offer['name'] ?? '';
+			
+			return $formatted_offer;
 		}, $offers );
 	}
 
@@ -215,6 +231,7 @@ class BogoDataManager {
 			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
 			'offer_start'             => $data['offer_start'] ?? null,
 			'offer_end'               => $data['offer_end'] ?? null,
+			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'product_page_message'    => $data['product_page_message'] ?? '',
 			'shop_page_message'       => $data['shop_page_message'] ?? '',
 			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
@@ -255,6 +272,7 @@ class BogoDataManager {
 			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
 			'offer_start'             => $data['offer_start'] ?? null,
 			'offer_end'               => $data['offer_end'] ?? null,
+			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'product_page_message'    => $data['product_page_message'] ?? '',
 			'shop_page_message'       => $data['shop_page_message'] ?? '',
 			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
@@ -331,6 +349,11 @@ class BogoDataManager {
 		if ( $settings['alternate_products'] ) {
 			$settings['alternate_products'] = json_decode( $settings['alternate_products'], true );
 		}
+		if ( isset( $settings['offer_schedule'] ) && $settings['offer_schedule'] ) {
+			$settings['offer_schedule'] = json_decode( $settings['offer_schedule'], true );
+		} else {
+			$settings['offer_schedule'] = array( 'daily' );
+		}
 
 		// Add backward compatibility fields.
 		if ( $settings['type'] === 'product' ) {
@@ -377,6 +400,7 @@ class BogoDataManager {
 			bogo_badge_image VARCHAR(500) DEFAULT NULL,
 			offer_start DATE DEFAULT NULL,
 			offer_end DATE DEFAULT NULL,
+			offer_schedule JSON DEFAULT NULL,
 			status ENUM('active', 'inactive') DEFAULT 'active',
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -387,5 +411,114 @@ class BogoDataManager {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
+
+		// Run migration to add offer_schedule column if it doesn't exist
+		self::migrate_offer_schedule_column();
+	}
+
+	/**
+	 * Migrate to add offer_schedule column if it doesn't exist.
+	 *
+	 * @return void
+	 */
+	private static function migrate_offer_schedule_column() {
+		global $wpdb;
+
+		$table = self::get_table_name();
+		
+		// Check if offer_schedule column exists
+		$column_exists = $wpdb->get_results( $wpdb->prepare(
+			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
+			DB_NAME,
+			$table,
+			'offer_schedule'
+		) );
+
+		if ( empty( $column_exists ) ) {
+			$wpdb->query( "ALTER TABLE {$table} ADD COLUMN offer_schedule JSON DEFAULT NULL AFTER offer_end" );
+			
+			// Update existing records with default schedule
+			$wpdb->query( "UPDATE {$table} SET offer_schedule = '[\"daily\"]' WHERE offer_schedule IS NULL" );
+		}
+	}
+
+	/**
+	 * Sync offer schedules between product and global offers.
+	 *
+	 * @param int $product_id Product ID to sync schedules for.
+	 * @return bool Success status.
+	 */
+	public static function sync_offer_schedules( $product_id ) {
+		global $wpdb;
+
+		$table = self::get_table_name();
+
+		// Get product BOGO settings
+		$product_settings = self::get_product_bogo_settings( $product_id );
+
+		if ( ! $product_settings ) {
+			return false;
+		}
+
+		// Get global offers that include this product
+		$global_offers = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM {$table} WHERE type = 'global' AND offered_products LIKE %s",
+			'%' . $product_id . '%'
+		) );
+
+		$product_schedule = $product_settings['offer_schedule'] ?? array( 'daily' );
+
+		foreach ( $global_offers as $offer ) {
+			$global_schedule = json_decode( $offer->offer_schedule, true ) ?? array( 'daily' );
+			
+			// Merge schedules (product schedule takes priority)
+			$merged_schedule = array_unique( array_merge( $product_schedule, $global_schedule ) );
+			
+			// Update global offer with merged schedule
+			$wpdb->update( 
+				$table, 
+				array( 'offer_schedule' => wp_json_encode( $merged_schedule ) ),
+				array( 'id' => $offer->id )
+			);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get offer schedule for a specific product.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array Array of schedule days.
+	 */
+	public static function get_product_offer_schedule( $product_id ) {
+		$product_settings = self::get_product_bogo_settings( $product_id );
+		
+		if ( ! $product_settings ) {
+			return array( 'daily' );
+		}
+
+		return $product_settings['offer_schedule'] ?? array( 'daily' );
+	}
+
+	/**
+	 * Check if BOGO offer is active based on schedule.
+	 *
+	 * @param array $schedule Offer schedule array.
+	 * @return bool Whether the offer is active.
+	 */
+	public static function is_offer_active_by_schedule( $schedule ) {
+		if ( empty( $schedule ) ) {
+			$schedule = array( 'daily' );
+		}
+
+		// Check if daily is in schedule
+		if ( in_array( 'daily', $schedule ) ) {
+			return true;
+		}
+
+		// Check if current day is in schedule
+		$current_day = strtolower( date( 'l' ) );
+		return in_array( $current_day, $schedule );
 	}
 }
