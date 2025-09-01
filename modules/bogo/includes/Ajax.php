@@ -60,16 +60,19 @@ class Ajax implements HookRegistry {
 	}
 
 	public function handle_update_offer_product() {
-		check_ajax_referer( 'ajd_protected' );
+		// Verify nonce for security
+		if ( ! isset( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( $_POST['_ajax_nonce'], 'ajd_protected' ) ) {
+			wp_send_json_error( 'Security check failed.' );
+		}
 
 		$data = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
 		if ( empty( $data ) ) {
 			wp_send_json_error( 'Choose able product data can\'t be empty.' );
 		}
 
-		$item_key            = isset( $data['cart_item_key'] ) ? intval( $data['cart_item_key'] ) : 0;
+		$item_key            = isset( $data['cart_item_key'] ) ? sanitize_text_field( $data['cart_item_key'] ) : '';
 		$main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
-		$product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
+		$product_link_key    = isset( $data['product_link_key'] ) ? sanitize_text_field( $data['product_link_key'] ) : '';
 		$offer_product_cost  = isset( $data['offer_product_cost'] ) ? floatval( $data['offer_product_cost'] ) : 0;
 		$selected_product_id = isset( $data['selected_product_id'] ) ? intval( $data['selected_product_id'] ) : 0;
 
@@ -80,7 +83,8 @@ class Ajax implements HookRegistry {
 		// Logic to remove the existing offer product and add the new one.
 		$offer_product_quantity = 1;
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-			if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_product_for'] == $main_product_id ) {
+			if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] && 
+			     isset( $cart_item['bogo_product_for'] ) && $cart_item['bogo_product_for'] == $main_product_id ) {
 				$offer_product_quantity = $cart_item['quantity'];
 				WC()->cart->remove_cart_item( $cart_item_key );
 				break;
@@ -95,7 +99,7 @@ class Ajax implements HookRegistry {
 			'',
 			array(
 				'bogo_offer'            => true,
-                'parent_key'            => $item_key,
+                'parent_key'            => $product_link_key, // Use the product link key as parent
                 'bogo_product_for'      => $main_product_id,
 				'bogo_offer_price'      => $offer_product_cost,
                 'changed_product_id'    => $selected_product_id,
@@ -103,8 +107,9 @@ class Ajax implements HookRegistry {
 			)
 		);
 
-        if ( $free_product_key && isset( WC()->cart->cart_contents[ $item_key ] ) ) {
-            WC()->cart->cart_contents[ $item_key ]['child_key'] = $free_product_key;
+        // Update the parent cart item with the new child key
+        if ( $free_product_key && ! empty( $product_link_key ) && isset( WC()->cart->cart_contents[ $product_link_key ] ) ) {
+            WC()->cart->cart_contents[ $product_link_key ]['child_key'] = $free_product_key;
         }
 
 		wp_send_json_success( 'Product updated successfully.' );

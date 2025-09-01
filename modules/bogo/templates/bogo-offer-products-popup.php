@@ -18,6 +18,9 @@ if ( ! empty( $cart_item['changed_product_id'] ) ) {
 
 $offer_products = Helper::get_alternate_offer_products( $cart_item['bogo_product_for'], $item_id );
 
+// Get bogo settings for discount calculation
+$bogo_settings = $bogo_settings ?? Helper::prepare_bogo_settings( $cart_item['bogo_product_for'], $cart_item['product_id'], $cart_item['variation_id'] ?? 0 );
+
 if ( ! empty( $offer_products ) ) : ?>
 	<p>
         <a href="#" class="custom-choose-product">
@@ -35,27 +38,37 @@ if ( ! empty( $offer_products ) ) : ?>
 			<div id="product-list">
 				<ul style="margin: 0;">
 					<?php
-					foreach ( $offer_products as $product_id ) :
-						$product            = wc_get_product( $product_id );
+					foreach ( $offer_products as $product_obj ) :
+						// Handle both product objects and product IDs
+						$product = is_object( $product_obj ) ? $product_obj : wc_get_product( $product_obj );
+						if ( ! $product ) {
+							continue;
+						}
+						
 						$image_id           = $product->get_image_id();
 						$image_url          = wp_get_attachment_image_src( $image_id, 'full' );
 						$offer_product_cost = 0;
 						if ( ! empty( $bogo_settings['offer_type'] ) && $bogo_settings['offer_type'] === 'discount' ) {
-							$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $bogo_settings['discount_amount'] / 100 ) ), 0 );
+							$discount_amount = ! empty( $bogo_settings['discount_amount'] ) ? floatval( $bogo_settings['discount_amount'] ) : 0;
+							$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $discount_amount / 100 ) ), 0 );
 						}
 						?>
 						<li>
 							<div class="alternate-product-container">
-							<img src="<?php echo esc_url( $image_url[0] ); ?>" alt="product">
-							<div class="altenate-product-heading"><h3><?php echo $product->get_title(); ?></h3>
-							<span class="choosen-offer-product"
-								data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
-                                data-item-key="<?php echo esc_attr( $cart_item['parent_key'] ); ?>"
-                                data-offer-product-cost="<?php echo esc_attr( $offer_product_cost ); ?>"
-								data-main-product-id="<?php echo esc_attr( $cart_item['bogo_product_for'] ); ?>"
-								data-product-link-key="<?php echo esc_attr( $cart_item['linked_to_product_key'] ); ?>">
-								<?php esc_html_e( 'Choose', 'storegrowth-sales-booster' ); ?>
-							</span></div>
+							<?php if ( ! empty( $image_url ) && ! empty( $image_url[0] ) ) : ?>
+								<img src="<?php echo esc_url( $image_url[0] ); ?>" alt="<?php echo esc_attr( $product->get_name() ); ?>">
+							<?php endif; ?>
+							<div class="altenate-product-heading">
+								<h3><?php echo esc_html( $product->get_name() ); ?></h3>
+								<span class="choosen-offer-product"
+									data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
+	                                data-item-key="<?php echo esc_attr( $cart_item['parent_key'] ?? '' ); ?>"
+	                                data-offer-product-cost="<?php echo esc_attr( $offer_product_cost ); ?>"
+									data-main-product-id="<?php echo esc_attr( $cart_item['bogo_product_for'] ); ?>"
+									data-product-link-key="<?php echo esc_attr( $cart_item['linked_to_product_key'] ?? '' ); ?>">
+									<?php esc_html_e( 'Choose', 'storegrowth-sales-booster' ); ?>
+								</span>
+							</div>
 							</div>
 						</li>
 					<?php endforeach; ?>

@@ -238,8 +238,8 @@ a.custom-choose-product {
 }
 
 .woocommerce-cart .cart_item a.custom-choose-product,
-.woocommerce-checkout .checkout-review-order-table .product-name {
-    display: inline;
+.woocommerce-checkout .checkout-review-order-table .product-name a.custom-choose-product {
+    display: inline !important;
 }
 
 #overlay {
