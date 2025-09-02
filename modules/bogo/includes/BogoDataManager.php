@@ -39,16 +39,13 @@ class BogoDataManager {
 	}
 
 	/**
-	 * Unified method to get BOGO offers with flexible conditions.
+	 * Build WHERE clause for BOGO offers queries.
 	 *
-	 * @param array $conditions Query conditions (type, product_id, variation_id, status, etc.).
-	 * @param array $options Query options (order_by, limit, offset).
-	 * @return array Array of BOGO offers.
+	 * @param array $conditions Conditions to filter results.
+	 * @param array $options    Query options (used by filters).
+	 * @return array Array containing 'clause' and 'values' for the WHERE clause.
 	 */
-	public static function get_bogo_offers( array $conditions = [], array $options = [] ) {
-		global $wpdb;
-
-		$table = self::get_table_name();
+	private static function build_where_clause( array $conditions = [], array $options = [] ) {
 		$where_parts = array();
 		$where_values = array();
 
@@ -74,8 +71,33 @@ class BogoDataManager {
 			}
 		}
 
-		// Build the complete query
-		$where_clause = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
+		return [
+			'clause' => ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '',
+			'values' => $where_values
+		];
+	}
+
+	/**
+	 * Unified method to get BOGO offers with flexible conditions.
+	 *
+	 * @param array $conditions Query conditions (type, product_id, variation_id, status, etc.).
+	 * @param array $options Query options (order_by, limit, offset).
+	 * @return array Array of BOGO offers.
+	 */
+	public static function get_bogo_offers( array $conditions = [], array $options = [] ) {
+		global $wpdb;
+
+		$table = self::get_table_name();
+		$options = wp_parse_args( $options, [
+			'order_by' => 'created_at DESC',
+			'limit' => 20,
+			'offset' => 0,
+		]);
+
+		// Build WHERE clause using shared method
+		$where_data = self::build_where_clause( $conditions, $options );
+		$where_clause = $where_data['clause'];
+		$where_values = $where_data['values'];
 		
 		// Set default options
 		$order_by = $options['order_by'] ?? 'created_at DESC';
@@ -305,7 +327,7 @@ class BogoDataManager {
 		$insert_data = self::map_bogo_data( $data, 'global' );
 		
 		// Add user tracking with filters
-		$insert_data['created_by'] = apply_filters( 'sgsb_bogo_created_by', get_current_user_id(), 0, $data );
+		$insert_data['created_by'] = apply_filters( 'sgsb_bogo_created_by', $data['created_by'] ?? get_current_user_id(), 0, $data );
 		$insert_data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), 0, $data );
 
 		$result  = $wpdb->insert( $table, $insert_data );
@@ -371,6 +393,31 @@ class BogoDataManager {
 		);
 
 		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );
+	}
+
+	/**
+	 * Get total count of BOGO offers matching the conditions.
+	 *
+	 * @param array $conditions Conditions to filter offers.
+	 * @return int Total count of matching offers.
+	 */
+	public static function get_bogo_offers_count( array $conditions = [] ) {
+		global $wpdb;
+
+		$table = self::get_table_name();
+
+		// Build WHERE clause using shared method
+		$where_data = self::build_where_clause( $conditions, [] );
+		$where_clause = $where_data['clause'];
+		$where_values = $where_data['values'];
+		
+		$query = "SELECT COUNT(*) FROM %i {$where_clause}";
+		$query = trim( $query );
+
+		// Prepare the query with table name and where values
+		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values ) );
+
+		return (int) $wpdb->get_var( $prepared_query );
 	}
 
 	/**

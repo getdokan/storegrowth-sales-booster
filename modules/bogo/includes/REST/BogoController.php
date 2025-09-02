@@ -127,6 +127,56 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
+     * Get query filters for fetching BOGO offers.
+     * This method can be overridden by child classes to customize query filters.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Query filters for BogoDataManager.
+     */
+    protected function get_query_filters( $request ) {
+        return [];
+    }
+
+    /**
+     * Get query options for fetching BOGO offers.
+     * This method can be overridden by child classes to customize query options.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Query options for BogoDataManager.
+     */
+    protected function get_query_options( $request ) {
+        $params = $request->get_params();
+        $per_page = isset( $params['per_page'] ) ? (int) $params['per_page'] : 20;
+        $page = isset( $params['page'] ) ? (int) $params['page'] : 1;
+
+        return [
+            'limit' => $per_page,
+            'offset' => ($page - 1) * $per_page,
+            'order_by' => 'created_at DESC'
+        ];
+    }
+
+    /**
+     * Get total count of BOGO offers for pagination.
+     * This method can be overridden by child classes to customize count logic.
+     *
+     * @since 1.29.0
+     * @param array $query_filters Query filters.
+     * @param WP_REST_Request $request Rest Request.
+     * @return int Total count of offers.
+     */
+    protected function get_total_items_count( $query_filters, $request ) {
+        if ( ! empty( $query_filters ) ) {
+            return BogoDataManager::get_bogo_offers_count( $query_filters );
+        } else {
+            // For global offers, add the type filter
+            return BogoDataManager::get_bogo_offers_count( ['type' => 'global'] );
+        }
+    }
+
+    /**
      * Get BOGO offers with pagination.
      *
      * @since 1.29.0
@@ -134,25 +184,43 @@ class BogoController extends WP_REST_Controller {
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
      */
     public function get_items( $request ) {
-        $params = $request->get_params();
-        $per_page = isset( $params['per_page'] ) ? (int) $params['per_page'] : 20;
-        $page = isset( $params['page'] ) ? (int) $params['page'] : 1;
-
-        $offers = BogoDataManager::get_global_bogo_offers();
+        // Get custom query filters and options from child classes
+        $query_filters = $this->get_query_filters( $request );
+        $query_options = $this->get_query_options( $request );
         
-        $total_items = count( $offers );
-        $total_pages = ceil( $total_items / $per_page );
-        $offset = ( $page - 1 ) * $per_page;
-        $paginated_offers = array_slice( $offers, $offset, $per_page );
+        // Get total count for pagination
+        $total_items = $this->get_total_items_count( $query_filters, $request );
+        
+        // Get paginated offers
+        if ( ! empty( $query_filters ) ) {
+            $offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
+        } else {
+            // For global offers, add the type filter
+            $global_filters = ['type' => 'global'];
+            $offers = BogoDataManager::get_bogo_offers( $global_filters, $query_options );
+        }
 
         $data = [];
-        foreach ( $paginated_offers as $item ) {
+        foreach ( $offers as $item ) {
             $item_data = $this->prepare_item_for_response( $item, $request );
             $data[] = $this->prepare_response_for_collection( $item_data );
         }
 
         $response = rest_ensure_response( $data );
         return $this->format_collection_response( $response, $request, $total_items );
+    }
+
+    /**
+     * Check permission for accessing a single BOGO offer.
+     * This method can be overridden by child classes to implement custom permission logic.
+     *
+     * @since 1.29.0
+     * @param array $item The BOGO offer data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if permission granted, WP_Error otherwise.
+     */
+    protected function check_single_item_permission( $item, $request ) {
+        return true;
     }
 
     /**
@@ -170,10 +238,54 @@ class BogoController extends WP_REST_Controller {
             return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
         }
 
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $item, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
         $response = $this->prepare_item_for_response( $item, $request );
         $response->set_status( 200 );
 
         return $response;
+    }
+
+    /**
+     * Prepare data before creating a BOGO offer.
+     * This method can be overridden by child classes to customize data before creation.
+     *
+     * @since 1.29.0
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Modified data for creation.
+     */
+    protected function prepare_data_for_creation( $data, $request ) {
+        return $data;
+    }
+
+    /**
+     * Check creation limitations before creating a BOGO offer.
+     * This method can be overridden by child classes to implement custom limitations.
+     *
+     * @since 1.29.0
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if allowed, WP_Error otherwise.
+     */
+    protected function check_creation_limitations( $data, $request ) {
+        // Check for free version limitations
+        if ( ! SGSB_PRO_ACTIVE ) {
+            $existing_offers = BogoDataManager::get_global_bogo_offers();
+            if ( count( $existing_offers ) >= 2 ) {
+                return new WP_Error(
+                    'salesbooster_limit_exceeded',
+                    __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
+                    [ 'status' => 403 ]
+                );
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -193,16 +305,14 @@ class BogoController extends WP_REST_Controller {
         }
         $data = $validation;
 
-        // Check for free version limitations
-        if ( ! SGSB_PRO_ACTIVE ) {
-            $existing_offers = BogoDataManager::get_global_bogo_offers();
-            if ( count( $existing_offers ) >= 2 ) {
-                return new WP_REST_Response(
-                    [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
-                    403
-                );
-            }
+        // Check creation limitations
+        $limitation_check = $this->check_creation_limitations( $data, $request );
+        if ( is_wp_error( $limitation_check ) ) {
+            return $limitation_check;
         }
+
+        // Prepare data for creation (can be customized by child classes)
+        $data = $this->prepare_data_for_creation( $data, $request );
 
         $result = BogoDataManager::create_global_offer( $data );
 
@@ -246,6 +356,12 @@ class BogoController extends WP_REST_Controller {
             return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
         }
 
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
         $result = BogoDataManager::update_global_offer( $id, $data );
 
         $updated_data = BogoDataManager::get_bogo_offer( $id );
@@ -264,6 +380,18 @@ class BogoController extends WP_REST_Controller {
      */
     public function delete_item( $request ) {
         $id = $request->get_param( 'id' );
+        
+        $existing_offer = BogoDataManager::get_bogo_offer( $id );
+        if ( ! $existing_offer ) {
+            return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
+        }
+
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
         $result = BogoDataManager::delete_bogo_offer( $id );
 
         if ( ! $result ) {
