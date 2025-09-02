@@ -62,8 +62,8 @@ class Helper {
 	 *
 	 * @return array|null
 	 */
-	public static function get_product_bogo_settings( $product_id ) {
-		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id );
+	public static function get_product_bogo_settings( $product_id, $variation_id = 0, array $query_args = [] ) {
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id, $variation_id, $query_args );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Helper {
      */
     public static function get_product_bogo_settings_for_cart( $product_id ) {
         $product_settings = Helper::get_product_bogo_settings( $product_id );
-        if ( isset( $product_settings['bogo_status'] ) && $product_settings['bogo_status'] === 'yes' ) {
+        if ( isset( $product_settings['status'] ) && $product_settings['status'] === 'active' ) {
             return $product_settings;
         }
 

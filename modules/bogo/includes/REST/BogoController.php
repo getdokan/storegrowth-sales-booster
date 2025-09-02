@@ -190,17 +190,11 @@ class BogoController extends WP_REST_Controller {
         
         // Get total count for pagination
         $total_items = $this->get_total_items_count( $query_filters, $request );
-        
-        // Get paginated offers
-        if ( ! empty( $query_filters ) ) {
-            $offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
-        } else {
-            // For global offers, add the type filter
-            $global_filters = ['type' => 'global'];
-            $offers = BogoDataManager::get_bogo_offers( $global_filters, $query_options );
-        }
+
+        $offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
 
         $data = [];
+        
         foreach ( $offers as $item ) {
             $item_data = $this->prepare_item_for_response( $item, $request );
             $data[] = $this->prepare_response_for_collection( $item_data );
@@ -629,13 +623,7 @@ class BogoController extends WP_REST_Controller {
                 'default'           => 0,
                 'sanitize_callback' => 'absint',
             ],
-            'bogo_status' => [
-                'type'              => 'string',
-                'default'           => 'yes',
-                'enum'              => [ 'yes', 'no' ],
-                'description'       => __( 'Whether the BOGO is enabled.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
+            
             'bogo_deal_type' => [
                 'type'              => 'string',
                 'default'           => 'different',
@@ -905,7 +893,6 @@ class BogoController extends WP_REST_Controller {
             'offered_categories'          => null,
             'get_different_product_field'  => 'absint',
             'offer_product_id'            => 'absint',
-            'bogo_status'                 => null,
             'bogo_deal_type'              => null,
             'offer_type'                  => null,
             'discount_amount'             => null,
@@ -940,10 +927,6 @@ class BogoController extends WP_REST_Controller {
         
         if ( isset( $item['alternate_products'] ) && ! isset( $data['get_alternate_products'] ) ) {
             $data['get_alternate_products'] = $item['alternate_products'];
-        }
-
-        if ( isset( $item['status'] ) ) {
-            $data['bogo_status'] = ( $item['status'] === 'active' ) ? 'yes' : 'no';
         }
 
         $context = ! empty( $request['context'] ) ? $request['context'] : 'view';
@@ -1027,12 +1010,7 @@ class BogoController extends WP_REST_Controller {
                     'items'       => [ 'type' => 'integer' ],
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'bogo_status' => [
-                    'description' => __( 'Whether the BOGO offer is active.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'enum'        => [ 'yes', 'no' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
+              
                 'bogo_deal_type' => [
                     'description' => __( 'The deal type for BOGO (e.g., same or different products).', 'storegrowth-sales-booster' ),
                     'type'        => 'string',

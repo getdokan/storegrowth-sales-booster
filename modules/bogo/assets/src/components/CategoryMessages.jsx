@@ -13,7 +13,7 @@ const ActionToggler = ({ isChecked }) => {
       <Switch size='small' defaultChecked={isChecked} />
       <div className={`table-categories`} style={{ marginTop: 8 }}>
         <span style={{ padding: 0 }} className={`category-pills`}>
-          {__(isChecked ? 'Active' : 'Deactive', 'storegrowth-sales-booster')}
+          { isChecked ? __('Active', 'storegrowth-sales-booster') : __('Deactive', 'storegrowth-sales-booster') }
         </span>
       </div>
     </Fragment>

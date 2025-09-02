@@ -50,7 +50,7 @@ const statusHandler = (id, status, stateUpdateCallback) => {
 
 
 function ActionToggler({ bogo_id, bogo_status }) {
-  const [isChecked, setIsChecked] = useState(bogo_status === "yes");
+  const [isChecked, setIsChecked] = useState(bogo_status === "active");
 
   const handleSwitchChange = (checked) => statusHandler(bogo_id, checked, setIsChecked);
 
@@ -327,7 +327,7 @@ function BogoList({ navigate }) {
       key: item.id,
       name: item.name_of_order_bogo || item.name,
       type: item.type || 'global', // Default to global for old format
-      status: <ActionToggler bogo_id={item.id} bogo_status={item.bogo_status} item={item} />,
+      status: <ActionToggler bogo_id={item.id} bogo_status={item.status} item={item} />,
       product_category: (
         <TargetProductAndCategory catList={catList} productList={productList} />
       ),

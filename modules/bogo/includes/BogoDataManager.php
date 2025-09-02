@@ -127,14 +127,21 @@ class BogoDataManager {
 	 * @param int $variation_id Variation ID (default 0).
 	 * @return array|null BOGO settings or null if not found.
 	 */
-	public static function get_product_bogo_settings( $product_id, $variation_id = 0 ) {
-		// First check for product-specific settings
-		$product_settings = self::get_bogo_offers( [
+	public static function get_product_bogo_settings( $product_id, $variation_id = 0, array $query_args = [] ) {
+
+		$filter_args = wp_parse_args( $query_args, [
 			'type' => 'product',
 			'product_id' => $product_id,
 			'variation_id' => $variation_id,
 			'status' => 'active'
-		] );
+		]);
+
+		if (isset($query_args['status']) && ! $query_args['status'] ) {
+			unset( $filter_args['status'] );
+		}
+		// First check for product-specific settings
+		$product_settings = self::get_bogo_offers( $filter_args );
+
 
 		if ( ! empty( $product_settings ) ) {
 			return $product_settings[0];
@@ -224,7 +231,6 @@ class BogoDataManager {
 	private static function map_bogo_data( $data, $type, $product_id = 0, $variation_id = 0 ) {
 		$mapped_data = array(
 			'type'                    => $type,
-			'bogo_status'             => $data['bogo_status'] ?? 'no',
 			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
 			'offer_type'              => $data['offer_type'] ?? 'free',
 			'discount_amount'         => $data['discount_amount'] ?? 0,
@@ -323,7 +329,6 @@ class BogoDataManager {
 			// Use the same formatting as get_bogo_offer for consistency
 			$formatted_offer = array(
 				'offered_products' => $offer['offered_products'] ?? null,
-				'bogo_status'      => $offer['bogo_status'],
 				'bogo_deal_type'   => $offer['bogo_deal_type'] ?? 'different',
 				'offer_type'       => $offer['offer_type'] ?? 'free',
 				'discount_amount'  => $offer['discount_amount'] ?? 0,

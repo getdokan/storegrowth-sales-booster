@@ -56,7 +56,7 @@ class BogoValidator {
 	 * @return bool True if BOGO is enabled, false otherwise.
 	 */
 	private static function is_bogo_enabled( $bogo_settings ) {
-		return isset( $bogo_settings['bogo_status'] ) && 'yes' === $bogo_settings['bogo_status'];
+		return isset( $bogo_settings['status'] ) && 'active' === $bogo_settings['status'];
 	}
 
 	/**
@@ -245,7 +245,7 @@ class BogoValidator {
 		$valid = true;
 
 		// Check required fields
-		if ( empty( $bogo_settings['bogo_status'] ) ) {
+		if ( empty( $bogo_settings['status'] ) ) {
 			$errors[] = 'BOGO status is required';
 			$valid = false;
 		}
@@ -436,7 +436,6 @@ class BogoValidator {
 	 */
 	private static function prepare_settings_for_save( $settings, $type, $product_id, $variation_id ) {
 		$prepared = array(
-			'bogo_status' => $settings['bogo_status'] ?? 'no',
 			'bogo_deal_type' => $settings['bogo_deal_type'] ?? 'different',
 			'offer_type' => $settings['offer_type'] ?? 'free',
 			'discount_amount' => floatval( $settings['discount_amount'] ?? 0 ),

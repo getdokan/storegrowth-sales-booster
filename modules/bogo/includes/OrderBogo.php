@@ -83,9 +83,9 @@ class OrderBogo implements HookRegistry {
 
 		// First, check for product-specific BOGO settings
 		$product_settings = Helper::get_product_bogo_settings( $product_id );
-		$product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
+		$product_bogo_status = ! empty( $product_settings['status'] ) ? esc_html( $product_settings['status'] ) : 'inactive';
 		
-		if ( $product_bogo_status === 'yes' && BogoValidator::is_bogo_applicable( $product_id, $product_settings ) ) {
+		if ( $product_bogo_status === 'active' && BogoValidator::is_bogo_applicable( $product_id, $product_settings ) ) {
 			// Use product-specific settings
 			$selected_offer   = $product_settings;
 			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : '';
@@ -100,7 +100,7 @@ class OrderBogo implements HookRegistry {
 			$product_category_ids = is_array( $product_categories ) ? $product_categories : array();
 
 			foreach ( $offers as $offer ) {
-				if ( $offer['bogo_status'] !== 'yes' ) {
+				if ( $offer['status'] !== 'active' ) {
 					continue;
 				}
 
@@ -336,7 +336,7 @@ class OrderBogo implements HookRegistry {
 		// Check for product-specific BOGO settings first
 		$product_bogo_settings = Helper::get_product_bogo_settings( $current_product_id );
 		
-		if ( $product_bogo_settings && isset( $product_bogo_settings['bogo_status'] ) && 'yes' === $product_bogo_settings['bogo_status'] ) {
+		if ( $product_bogo_settings && isset( $product_bogo_settings['status'] ) && 'active' === $product_bogo_settings['status'] ) {
 			$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $current_product_id );
 		}
 
@@ -344,6 +344,7 @@ class OrderBogo implements HookRegistry {
 		$global_bogo_offers = Helper::get_global_offered_products();
 		
 		foreach ( $global_bogo_offers as $bogo_offer ) {
+
 			// Use BogoValidator to check if offer should be displayed
 			if ( ! BogoValidator::should_display_offer( $bogo_offer, $current_product_id, $current_product_category_ids ) ) {
 				continue;
@@ -352,6 +353,7 @@ class OrderBogo implements HookRegistry {
 			$offer_product_id = BogoValidator::get_offer_product_id( $bogo_offer, $current_product_id );
 			
 			if ( $offer_product_id && ! in_array( $offer_product_id, $showed_bogo_product_id, true ) ) {
+
 				$this->display_bogo_offer( $bogo_offer, $current_product_id, $offer_product_id );
 				$showed_bogo_product_id[] = $offer_product_id;
 			}
@@ -367,7 +369,7 @@ class OrderBogo implements HookRegistry {
 	 */
 	private function display_bogo_offer( $bogo_settings, $current_product_id, $offer_product_id ) {
 		$deal_type       = $bogo_settings['bogo_deal_type'] ?? 'different';
-		$bogo_status     = $bogo_settings['bogo_status'] ?? 'no';
+		$bogo_status     = $bogo_settings['status'] ?? 'inactive';
 		$offer_type      = $bogo_settings['offer_type'] ?? 'free';
 		$discount_amount = $bogo_settings['discount_amount'] ?? 0;
 		
@@ -544,13 +546,13 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$bogo_enabled = isset( $_POST['bogo_status'] ) ? 'yes' : 'no';
+		$bogo_enabled = isset( $_POST['bogo_status'] ) ? 'active' : 'inactive';
 		$bogo_type    = isset( $_POST['bogo_type'] ) ? sanitize_text_field( wp_unslash( $_POST['bogo_type'] ) ) : 'same';
 		$deal_type    = isset( $_POST['bogo_deal_type'] ) ? sanitize_text_field( wp_unslash( $_POST['bogo_deal_type'] ) ) : 'same';
 
 		$bogo_settings_data = array(
 			'bogo_type'      => $bogo_type,
-			'bogo_status'    => $bogo_enabled,
+			'status'    => $bogo_enabled,
 			'bogo_deal_type' => $deal_type,
 		);
 

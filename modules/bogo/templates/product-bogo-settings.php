@@ -12,19 +12,19 @@
 		<?php
 		global $post;
 
-		$bogo_settings       = \STOREGROWTH\SPSB\Modules\BoGo\Helper::get_product_bogo_settings( $post->ID );
-		$is_enable_bogo      = ! empty( $bogo_settings['bogo_status'] ) ? esc_html( $bogo_settings['bogo_status'] ) : 'no';
+		$bogo_settings       = \STOREGROWTH\SPSB\Modules\BoGo\Helper::get_product_bogo_settings( $post->I, 0, ['status' => ''] );
+		$is_enable_bogo      = ! empty( $bogo_settings['status'] ) ? esc_html( $bogo_settings['status'] ) : 'no';
 		$different_deal_type = ! empty( $bogo_settings['bogo_deal_type'] ) ? esc_html( $bogo_settings['bogo_deal_type'] ) : 'different';
 		$different_bogo_type = ! empty( $bogo_settings['bogo_type'] ) ? esc_html( $bogo_settings['bogo_type'] ) : 'products';
 		// Add a nonce field for BOGO settings panel.
 		wp_nonce_field( 'sgsb_bogo_settings', '_sgsb_bogo_settings_nonce' );
-
 		// Enable/Disable for BOGO
 		woocommerce_wp_checkbox(
 			array(
-				'id'    => 'bogo_status',
-				'value' => $is_enable_bogo,
-				'label' => __( 'Enable BOGO', 'storegrowth-sales-booster' ),
+				'id'      => 'bogo_status',
+				'value'   => $is_enable_bogo === 'active' ? 'yes' : 'no',
+				'cbvalue' => 'yes',
+				'label'   => __( 'Enable BOGO', 'storegrowth-sales-booster' ),
 			)
 		);
 		?>
