@@ -26,37 +26,27 @@ class BogoValidator {
 	 * @return bool True if BOGO is applicable, false otherwise.
 	 */
 	public static function is_bogo_applicable( $product_id, $bogo_settings ) {
-		error_log( 'BogoValidator: Checking applicability for Product ID: ' . $product_id );
-		error_log( 'BogoValidator: BOGO Settings Status: ' . ( $bogo_settings['bogo_status'] ?? 'not set' ) );
-		
 		// Check if BOGO is enabled
 		if ( ! self::is_bogo_enabled( $bogo_settings ) ) {
-			error_log( 'BogoValidator: BOGO not enabled' );
 			return false;
 		}
 
 		// Check if offer is active (status check)
 		if ( ! self::is_offer_status_active( $bogo_settings ) ) {
-			error_log( 'BogoValidator: Offer status is not active' );
 			return false;
 		}
 
 		// Check date range (Pro feature)
 		if ( ! self::is_date_range_valid( $bogo_settings ) ) {
-			error_log( 'BogoValidator: Date range validation failed' );
 			return false;
 		}
 
 		// Check schedule (Pro feature)
 		if ( ! self::is_schedule_valid( $bogo_settings ) ) {
-			error_log( 'BogoValidator: Schedule validation failed' );
 			return false;
 		}
 
-		$filter_result = apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
-		error_log( 'BogoValidator: Final filter result: ' . ( $filter_result ? 'true' : 'false' ) );
-		
-		return $filter_result;
+		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
 
 	/**
@@ -99,7 +89,6 @@ class BogoValidator {
 		$offer_start = $bogo_settings['offer_start'] ?? null;
 		if ( ! empty( $offer_start ) && '0000-00-00' !== $offer_start ) {
 			if ( $current_date < $offer_start ) {
-				error_log( 'BogoValidator: Current date (' . $current_date . ') is before offer start (' . $offer_start . ')' );
 				return false;
 			}
 		}
@@ -108,7 +97,6 @@ class BogoValidator {
 		$offer_end = $bogo_settings['offer_end'] ?? null;
 		if ( ! empty( $offer_end ) && '0000-00-00' !== $offer_end ) {
 			if ( $current_date > $offer_end ) {
-				error_log( 'BogoValidator: Current date (' . $current_date . ') is after offer end (' . $offer_end . ')' );
 				return false;
 			}
 		}
@@ -212,11 +200,9 @@ class BogoValidator {
 	 */
 	public static function get_offer_product_id( $bogo_settings, $current_product_id ) {
 		$deal_type = $bogo_settings['bogo_deal_type'] ?? 'different';
-		error_log( 'BogoValidator: Getting offer product ID for deal_type: ' . $deal_type );
 		
 		// For same deal type, return the current product
 		if ( 'same' === $deal_type ) {
-			error_log( 'BogoValidator: Same deal type - returning current product ID: ' . $current_product_id );
 			return $current_product_id;
 		}
 		
@@ -229,7 +215,6 @@ class BogoValidator {
 		foreach ( $possible_fields as $field ) {
 			$offer_product_id = $bogo_settings[ $field ] ?? null;
 			if ( ! empty( $offer_product_id ) ) {
-				error_log( 'BogoValidator: Found offer product ID in field "' . $field . '": ' . $offer_product_id );
 				return (int) $offer_product_id;
 			}
 		}
@@ -239,12 +224,10 @@ class BogoValidator {
 		if ( ! empty( $alternate_products ) && is_array( $alternate_products ) ) {
 			$first_alternate = $alternate_products[0] ?? null;
 			if ( ! empty( $first_alternate ) ) {
-				error_log( 'BogoValidator: Found first alternate product: ' . $first_alternate );
 				return (int) $first_alternate;
 			}
 		}
 		
-		error_log( 'BogoValidator: No offer product ID found in settings' );
 		return null;
 	}
 
@@ -379,11 +362,8 @@ class BogoValidator {
 	 * @return bool True if offer should be displayed, false otherwise.
 	 */
 	public static function should_display_offer( $bogo_settings, $current_product_id, $current_product_category_ids = array() ) {
-		error_log( 'BogoValidator: Checking if offer should be displayed for Product ID: ' . $current_product_id );
-		
 		// Check if BOGO is applicable
 		if ( ! self::is_bogo_applicable( $current_product_id, $bogo_settings ) ) {
-			error_log( 'BogoValidator: BOGO not applicable' );
 			return false;
 		}
 
@@ -395,13 +375,8 @@ class BogoValidator {
 		$offered_categories = $bogo_settings['offered_categories'] ?? array();
 		$is_category_offered = self::is_category_offered( $current_product_category_ids, $offered_categories );
 
-		error_log( 'BogoValidator: Product offered: ' . ( $is_product_offered ? 'yes' : 'no' ) . ', Category offered: ' . ( $is_category_offered ? 'yes' : 'no' ) );
-
 		// Must match either product or category criteria
-		$should_display = $is_product_offered || $is_category_offered;
-		error_log( 'BogoValidator: Should display offer: ' . ( $should_display ? 'yes' : 'no' ) );
-		
-		return $should_display;
+		return $is_product_offered || $is_category_offered;
 	}
 
 	/**
