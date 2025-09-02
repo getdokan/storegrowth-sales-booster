@@ -79,6 +79,49 @@ class BogoDataManager {
 	}
 
 	/**
+	 * Map BOGO settings to database fields.
+	 *
+	 * @param array  $data        BOGO settings data.
+	 * @param string $type        BOGO type ('product' or 'global').
+	 * @param int    $product_id  Product ID (for product type).
+	 * @param int    $variation_id Variation ID (for product type).
+	 * @return array Mapped data for database operations.
+	 */
+	private static function map_bogo_data( $data, $type, $product_id = 0, $variation_id = 0 ) {
+		$mapped_data = array(
+			'type'                    => $type,
+			'bogo_status'             => $data['bogo_status'] ?? 'no',
+			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
+			'offer_type'              => $data['offer_type'] ?? 'free',
+			'discount_amount'         => $data['discount_amount'] ?? 0,
+			'offer_product_id'        => $data['get_different_product_field'] ?? null,
+			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
+			'product_page_message'    => $data['product_page_message'] ?? '',
+			'shop_page_message'       => $data['shop_page_message'] ?? '',
+			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
+			'minimum_quantity_required' => $data['minimum_quantity_required'] ?? 1,
+			'offer_start'             => $data['offer_start'] ?? null,
+			'offer_end'               => $data['offer_end'] ?? null,
+			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
+			'status'                  => apply_filters( 'sgsb_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
+		);
+
+		// Add type-specific fields
+		if ( 'product' === $type ) {
+			$mapped_data['name'] = 'Product BOGO - ' . $product_id;
+			$mapped_data['product_id'] = $product_id;
+			$mapped_data['variation_id'] = $variation_id;
+			$mapped_data['offered_products'] = wp_json_encode( $data['offered_products'] ?? array() );
+		} else {
+			$mapped_data['name'] = $data['name_of_order_bogo'] ?? '';
+			$mapped_data['offered_products'] = wp_json_encode( $data['offered_products'] ?? array() );
+			$mapped_data['offered_categories'] = wp_json_encode( $data['offered_categories'] ?? array() );
+		}
+
+		return apply_filters( 'sgsb_bogo_mapped_data', $mapped_data, $type, $product_id, $variation_id );
+	}
+
+	/**
 	 * Save product-specific BOGO settings.
 	 *
 	 * @param int   $product_id   Product ID.
@@ -91,27 +134,8 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		$data = array(
-			'type'                    => 'product',
-			'name'                    => 'Product BOGO - ' . $product_id,
-			'product_id'              => $product_id,
-			'variation_id'            => $variation_id,
-			'bogo_status'             => $settings['bogo_status'] ?? 'no',
-			'bogo_deal_type'          => $settings['bogo_deal_type'] ?? 'different',
-			'offer_type'              => $settings['offer_type'] ?? 'free',
-			'discount_amount'         => $settings['discount_amount'] ?? 0,
-			'offer_product_id'        => $settings['get_different_product_field'] ?? null,
-			'alternate_products'      => \wp_json_encode( $settings['get_alternate_products'] ?? array() ),
-			'product_page_message'    => $settings['product_page_message'] ?? '',
-			'shop_page_message'       => $settings['shop_page_message'] ?? '',
-			'bogo_badge_image'        => $settings['bogo_badge_image'] ?? '',
-			'minimum_quantity_required' => $settings['minimum_quantity_required'] ?? 1,
-			'offer_start'             => $settings['offer_start'] ?? null,
-			'offer_end'               => $settings['offer_end'] ?? null,
-			'offer_schedule'          => wp_json_encode( $settings['offer_schedule'] ?? array( 'daily' ) ),
-			'status'                  => 'active',
-			'offered_products'        => wp_json_encode( $settings['offered_products'] ?? array() ),
-		);
+		// Map the data using the unified method
+		$data = self::map_bogo_data( $settings, 'product', $product_id, $variation_id );
 
 		$existing = $wpdb->get_var( $wpdb->prepare(
 			"SELECT id FROM {$table} WHERE type = 'product' AND product_id = %d AND variation_id = %d",
@@ -120,8 +144,13 @@ class BogoDataManager {
 		) );
 
 		if ( $existing ) {
+			// For updates, only set updated_by, never change created_by
+			$data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $existing, $settings );
 			return $wpdb->update( $table, $data, array( 'id' => $existing ) );
 		} else {
+			// For new records, set both created_by and updated_by
+			$data['created_by'] = apply_filters( 'sgsb_bogo_created_by', get_current_user_id(), $product_id, $variation_id, $settings );
+			$data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), 0, $settings );
 			return $wpdb->insert( $table, $data );
 		}
 	}
@@ -214,30 +243,12 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		// Use offered_ prefix for consistency
-		$offered_products = $data['offered_products'] ?? array();
-		$offered_categories = $data['offered_categories'] ?? array();
+		// Map the data using the unified method
+		$insert_data = self::map_bogo_data( $data, 'global' );
 		
-		$insert_data = array(
-			'type'                    => 'global',
-			'name'                    => $data['name_of_order_bogo'],
-			'offered_products'         => wp_json_encode( $offered_products ),
-			'offered_categories'       => wp_json_encode( $offered_categories ),
-			'bogo_status'             => $data['bogo_status'] ?? 'no',
-			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
-			'offer_type'              => $data['offer_type'] ?? 'free',
-			'discount_amount'         => $data['discount_amount'] ?? 0,
-			'offer_product_id'        => $data['get_different_product_field'] ?? null,
-			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
-			'offer_start'             => $data['offer_start'] ?? null,
-			'offer_end'               => $data['offer_end'] ?? null,
-			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
-			'product_page_message'    => $data['product_page_message'] ?? '',
-			'shop_page_message'       => $data['shop_page_message'] ?? '',
-			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
-			'minimum_quantity_required' => $data['minimum_quantity_required'] ?? 1,
-			'status'                  => 'active',
-		);
+		// Add user tracking with filters
+		$insert_data['created_by'] = apply_filters( 'sgsb_bogo_created_by', get_current_user_id(), 0, $data );
+		$insert_data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), 0, $data );
 
 		$result  = $wpdb->insert( $table, $insert_data );
 
@@ -260,24 +271,12 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		$update_data = array(
-			'name'                    => $data['name_of_order_bogo'] ?? '',
-			'offered_products'         => wp_json_encode( $data['offered_products'] ?? array() ),
-			'offered_categories'       => wp_json_encode( $data['offered_categories'] ?? array() ),
-			'bogo_status'             => $data['bogo_status'] ?? 'no',
-			'bogo_deal_type'          => $data['bogo_deal_type'] ?? 'different',
-			'offer_type'              => $data['offer_type'] ?? 'free',
-			'discount_amount'         => $data['discount_amount'] ?? 0,
-			'offer_product_id'        => $data['get_different_product_field'] ?? null,
-			'alternate_products'      => wp_json_encode( $data['get_alternate_products'] ?? array() ),
-			'offer_start'             => $data['offer_start'] ?? null,
-			'offer_end'               => $data['offer_end'] ?? null,
-			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
-			'product_page_message'    => $data['product_page_message'] ?? '',
-			'shop_page_message'       => $data['shop_page_message'] ?? '',
-			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
-			'minimum_quantity_required' => $data['minimum_quantity_required'] ?? 1,
-		);
+		// Map the data using the unified method (excluding type and status)
+		$update_data = self::map_bogo_data( $data, 'global' );
+		unset( $update_data['type'], $update_data['status'] );
+		
+		// Add user tracking with filter
+		$update_data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $id, $data );
 
 		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );
 	}
@@ -308,7 +307,12 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		return $wpdb->update( $table, array( 'status' => $status ), array( 'id' => $id ) );
+		$update_data = array(
+			'status' => $status,
+			'updated_by' => apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $id, array( 'status' => $status ) ),
+		);
+
+		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );
 	}
 
 	/**
@@ -402,45 +406,21 @@ class BogoDataManager {
 			offer_end DATE DEFAULT NULL,
 			offer_schedule JSON DEFAULT NULL,
 			status ENUM('active', 'inactive') DEFAULT 'active',
+			created_by BIGINT DEFAULT NULL,
+			updated_by BIGINT DEFAULT NULL,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			INDEX idx_type_status (type, status),
 			INDEX idx_product (product_id, variation_id),
+			INDEX idx_created_by (created_by),
+			INDEX idx_updated_by (updated_by),
 			UNIQUE KEY unique_product_variation (product_id, variation_id)
 		) {$charset_collate};";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
-
-		// Run migration to add offer_schedule column if it doesn't exist
-		self::migrate_offer_schedule_column();
 	}
 
-	/**
-	 * Migrate to add offer_schedule column if it doesn't exist.
-	 *
-	 * @return void
-	 */
-	private static function migrate_offer_schedule_column() {
-		global $wpdb;
-
-		$table = self::get_table_name();
-		
-		// Check if offer_schedule column exists
-		$column_exists = $wpdb->get_results( $wpdb->prepare(
-			"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
-			DB_NAME,
-			$table,
-			'offer_schedule'
-		) );
-
-		if ( empty( $column_exists ) ) {
-			$wpdb->query( "ALTER TABLE {$table} ADD COLUMN offer_schedule JSON DEFAULT NULL AFTER offer_end" );
-			
-			// Update existing records with default schedule
-			$wpdb->query( "UPDATE {$table} SET offer_schedule = '[\"daily\"]' WHERE offer_schedule IS NULL" );
-		}
-	}
 
 	/**
 	 * Sync offer schedules between product and global offers.

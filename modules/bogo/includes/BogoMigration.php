@@ -84,6 +84,15 @@ class BogoMigration {
 		foreach ( $products as $product ) {
 			$settings = maybe_unserialize( $product->meta_value );
 			if ( $settings && is_array( $settings ) ) {
+				// Get the user who created the product (post author)
+				$post_author = $wpdb->get_var( $wpdb->prepare(
+					"SELECT post_author FROM {$wpdb->posts} WHERE ID = %d",
+					$product->post_id
+				) );
+				
+				// Add user tracking to settings
+				$settings['_migrated_user_id'] = $post_author ? intval( $post_author ) : 1;
+				
 				$result = BogoDataManager::save_product_bogo_settings(
 					$product->post_id,
 					0, // variation_id
@@ -110,7 +119,7 @@ class BogoMigration {
 
 		// Get all BOGO posts.
 		$posts = $wpdb->get_results(
-			"SELECT ID, post_title, post_excerpt FROM {$wpdb->posts} 
+			"SELECT ID, post_title, post_excerpt, post_author FROM {$wpdb->posts} 
 			 WHERE post_type = 'sgsb_bogo'"
 		);
 
@@ -118,6 +127,10 @@ class BogoMigration {
 			$settings = maybe_unserialize( $post->post_excerpt );
 			if ( $settings && is_array( $settings ) ) {
 				$settings['name_of_order_bogo'] = $post->post_title;
+				
+				// Add user tracking to settings
+				$settings['_migrated_user_id'] = $post->post_author ? intval( $post->post_author ) : 1;
+				
 				$result = BogoDataManager::create_global_offer( $settings );
 				if ( $result ) {
 					$migrated_count++;
