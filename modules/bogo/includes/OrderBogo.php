@@ -130,7 +130,7 @@ class OrderBogo implements HookRegistry {
 			$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
 			// Get offer product info.
-			$offer_product_id = Helper::get_offer_product_id( $bogo_settings, $product_id );
+			$offer_product_id = BogoValidator::get_offer_product_id( $bogo_settings, $product_id );
 			$offer_product    = wc_get_product( $offer_product_id );
 			if ( ! $offer_product ) {
 				continue;
@@ -177,8 +177,9 @@ class OrderBogo implements HookRegistry {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
-		$offer_product_id = Helper::get_offer_product_id( $settings, $product_id );
-		$product          = wc_get_product( $offer_product_id );
+		// Use BogoValidator instead of Helper for consistent offer product ID retrieval
+		$offer_product_id = BogoValidator::get_offer_product_id( $settings, $product_id );
+		$product = wc_get_product( $offer_product_id );
 
 		// Check if product exists before accessing its methods
 		if ( ! $product ) {
@@ -283,41 +284,24 @@ class OrderBogo implements HookRegistry {
 		// Check for product-specific BOGO settings first
 		$product_bogo_settings = Helper::get_product_bogo_settings( $current_product_id );
 		
-		// Log the product BOGO settings for debugging
-		error_log( 'Product BOGO Settings for Product ID ' . $current_product_id . ': ' . print_r( $product_bogo_settings, true ) );
-		error_log( 'Current Product Categories for Product ID ' . $current_product_id . ': ' . print_r( $current_product_category_ids, true ) );
-		error_log( 'Product Type - Eligible: ' . ( BogoValidator::is_product_eligible( $product ) ? 'yes' : 'no' ) );
-		
 		if ( $product_bogo_settings && isset( $product_bogo_settings['bogo_status'] ) && 'yes' === $product_bogo_settings['bogo_status'] ) {
-			error_log( 'Displaying product-specific BOGO offer for Product ID: ' . $current_product_id );
 			$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $current_product_id );
-		} else {
-			error_log( 'Product-specific BOGO not displayed. Settings exist: ' . ( $product_bogo_settings ? 'yes' : 'no' ) . ', Status: ' . ( $product_bogo_settings['bogo_status'] ?? 'not set' ) );
 		}
 
 		// Check for global BOGO offers
 		$global_bogo_offers = Helper::get_global_offered_products();
-		error_log( 'Product BOGO Global Settings for Product ID ' . $current_product_id . ': ' . print_r( $global_bogo_offers, true ) );
-
 		
 		foreach ( $global_bogo_offers as $bogo_offer ) {
-			error_log( 'Processing global BOGO offer ID: ' . ( $bogo_offer['id'] ?? 'unknown' ) );
-			
 			// Use BogoValidator to check if offer should be displayed
 			if ( ! BogoValidator::should_display_offer( $bogo_offer, $current_product_id, $current_product_category_ids ) ) {
-				error_log( 'Global BOGO offer conditions not met for offer ID: ' . ( $bogo_offer['id'] ?? 'unknown' ) );
 				continue;
 			}
 			
 			$offer_product_id = BogoValidator::get_offer_product_id( $bogo_offer, $current_product_id );
-			error_log( 'Offer product ID: ' . ( $offer_product_id ?? 'none' ) );
 			
 			if ( $offer_product_id && ! in_array( $offer_product_id, $showed_bogo_product_id, true ) ) {
-				error_log( 'Displaying global BOGO offer for Product ID: ' . $current_product_id . ', Offer Product ID: ' . $offer_product_id );
 				$this->display_bogo_offer( $bogo_offer, $current_product_id, $offer_product_id );
 				$showed_bogo_product_id[] = $offer_product_id;
-			} else {
-				error_log( 'Global BOGO offer not displayed. Offer product ID: ' . ( $offer_product_id ?? 'none' ) . ', Already shown: ' . ( in_array( $offer_product_id, $showed_bogo_product_id, true ) ? 'yes' : 'no' ) );
 			}
 		}
 	}
