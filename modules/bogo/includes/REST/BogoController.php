@@ -516,6 +516,27 @@ class BogoController extends WP_REST_Controller {
 			$data['offer_schedule'] = array( 'daily' );
 		}
 
+		// Normalize date fields - convert empty strings or invalid dates to null
+		$date_fields = [ 'offer_start', 'offer_end' ];
+		foreach ( $date_fields as $field ) {
+			if ( isset( $data[ $field ] ) ) {
+				$date_value = trim( $data[ $field ] );
+				// Convert empty strings, '0000-00-00', or invalid dates to null
+				if ( empty( $date_value ) || $date_value === '0000-00-00' || $date_value === '0000-00-00 00:00:00' ) {
+					$data[ $field ] = null;
+				} else {
+					// Validate the date format and convert invalid dates to null
+					$timestamp = strtotime( $date_value );
+					if ( $timestamp === false ) {
+						$data[ $field ] = null;
+					} else {
+						// Keep the original format but ensure it's a valid date
+						$data[ $field ] = $date_value;
+					}
+				}
+			}
+		}
+
 		return $data;
     }
 

@@ -183,6 +183,36 @@ class BogoDataManager {
 	}
 
 	/**
+	 * Normalize date field to ensure null values instead of invalid dates.
+	 *
+	 * @param mixed $date_value The date value to normalize.
+	 * @return string|null Normalized date value or null.
+	 */
+	private static function normalize_date_field( $date_value ) {
+		if ( $date_value === null || $date_value === '' ) {
+			return null;
+		}
+
+		// Convert string values
+		if ( is_string( $date_value ) ) {
+			$date_value = trim( $date_value );
+			
+			// Check for invalid date formats
+			if ( $date_value === '0000-00-00' || $date_value === '0000-00-00 00:00:00' || empty( $date_value ) ) {
+				return null;
+			}
+
+			// Validate the date format
+			$timestamp = strtotime( $date_value );
+			if ( $timestamp === false ) {
+				return null;
+			}
+		}
+
+		return $date_value;
+	}
+
+	/**
 	 * Map BOGO settings to database fields.
 	 *
 	 * @param array  $data        BOGO settings data.
@@ -204,8 +234,8 @@ class BogoDataManager {
 			'shop_page_message'       => $data['shop_page_message'] ?? '',
 			'bogo_badge_image'        => $data['bogo_badge_image'] ?? '',
 			'minimum_quantity_required' => $data['minimum_quantity_required'] ?? 1,
-			'offer_start'             => $data['offer_start'] ?? null,
-			'offer_end'               => $data['offer_end'] ?? null,
+			'offer_start'             => self::normalize_date_field( $data['offer_start'] ?? null ),
+			'offer_end'               => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'status'                  => apply_filters( 'sgsb_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
 		);
