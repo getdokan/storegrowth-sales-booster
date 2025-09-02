@@ -39,6 +39,66 @@ class BogoDataManager {
 	}
 
 	/**
+	 * Unified method to get BOGO offers with flexible conditions.
+	 *
+	 * @param array $conditions Query conditions (type, product_id, variation_id, status, etc.).
+	 * @param array $options Query options (order_by, limit, offset).
+	 * @return array Array of BOGO offers.
+	 */
+	public static function get_bogo_offers( array $conditions = [], array $options = [] ) {
+		global $wpdb;
+
+		$table = self::get_table_name();
+		$where_parts = array();
+		$where_values = array();
+
+		$conditions = apply_filters( 'sgsb_bogo_query_args', $conditions, $options );
+
+		// Build WHERE clause based on conditions
+		if ( ! empty( $conditions ) ) {
+			foreach ( $conditions as $field => $value ) {
+				if ( $value !== null && $value !== '' ) {
+					// Handle special cases for JSON fields
+					if ( in_array( $field, ['offered_products', 'offered_categories'] ) && is_numeric( $value ) ) {
+						$where_parts[] = "%i LIKE %s";
+						$where_values[] = $field;
+						$where_values[] = '%"' . $value . '"%';
+					} else {
+						// Use appropriate placeholder based on value type
+						$placeholder = is_numeric( $value ) ? '%d' : '%s';
+						$where_parts[] = "%i = {$placeholder}";
+						$where_values[] = $field;
+						$where_values[] = $value;
+					}
+				}
+			}
+		}
+
+		// Build the complete query
+		$where_clause = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
+		
+		// Set default options
+		$order_by = $options['order_by'] ?? 'created_at DESC';
+		$limit = isset( $options['limit'] ) ? 'LIMIT ' . intval( $options['limit'] ) : '';
+		$offset = isset( $options['offset'] ) ? 'OFFSET ' . intval( $options['offset'] ) : '';
+
+		// Parse order_by to separate field and direction
+		$order_parts = explode( ' ', trim( $order_by ) );
+		$order_field = $order_parts[0] ?? 'created_at';
+		$order_direction = isset( $order_parts[1] ) ? ' ' . strtoupper( trim( $order_parts[1] ) ) : ' DESC';
+
+		$query = "SELECT * FROM %i {$where_clause} ORDER BY %i{$order_direction} {$limit} {$offset}";
+		$query = trim( $query );
+
+		// Prepare the query with table name, field names, and order by field
+		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values, [ $order_field ] ) );
+
+		$results = $wpdb->get_results( $prepared_query );
+
+		return array_map( array( self::class, 'format_settings' ), $results );
+	}
+
+	/**
 	 * Get BOGO settings for a product.
 	 *
 	 * @param int $product_id   Product ID.
@@ -46,36 +106,58 @@ class BogoDataManager {
 	 * @return array|null BOGO settings or null if not found.
 	 */
 	public static function get_product_bogo_settings( $product_id, $variation_id = 0 ) {
-		global $wpdb;
+		// First check for product-specific settings
+		$product_settings = self::get_bogo_offers( [
+			'type' => 'product',
+			'product_id' => $product_id,
+			'variation_id' => $variation_id,
+			'status' => 'active'
+		] );
 
-		$table = self::get_table_name();
-
-		// First check for product-specific settings.
-		$product_settings = $wpdb->get_row( $wpdb->prepare(
-			"SELECT * FROM {$table} 
-			 WHERE type = 'product' 
-			 AND product_id = %d 
-			 AND variation_id = %d 
-			 AND status = 'active'",
-			$product_id,
-			$variation_id
-		) );
-
-		if ( $product_settings ) {
-			return self::format_settings( $product_settings );
+		if ( ! empty( $product_settings ) ) {
+			return $product_settings[0];
 		}
 
-		// Fallback to global settings.
-		$global_settings = $wpdb->get_row( $wpdb->prepare(
-			"SELECT * FROM {$table} 
-			 WHERE type = 'global' 
-			 AND status = 'active'
-			 AND (offered_products LIKE %s OR offered_categories LIKE %s)",
-			'%"' . $product_id . '"%',
-			'%"' . $product_id . '"%'
-		) );
+		// Fallback to global settings that include this product
+		$global_settings = self::get_bogo_offers( [
+			'type' => 'global',
+			'status' => 'active'
+		] );
 
-		return $global_settings ? self::format_settings( $global_settings ) : null;
+		// Filter global settings to find those that include the current product
+		foreach ( $global_settings as $setting ) {
+			if ( self::product_in_global_offer( $setting, $product_id ) ) {
+				return $setting;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Check if a product is included in a global BOGO offer.
+	 *
+	 * @param array $offer Global BOGO offer data.
+	 * @param int   $product_id Product ID to check.
+	 * @return bool Whether the product is included.
+	 */
+	private static function product_in_global_offer( $offer, $product_id ) {
+		// Check offered products
+		if ( ! empty( $offer['offered_products'] ) && is_array( $offer['offered_products'] ) ) {
+			if ( in_array( $product_id, $offer['offered_products'] ) ) {
+				return true;
+			}
+		}
+
+		// Check offered categories
+		if ( ! empty( $offer['offered_categories'] ) && is_array( $offer['offered_categories'] ) ) {
+			$product_categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'ids' ) );
+			if ( ! empty( array_intersect( $offer['offered_categories'], $product_categories ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -158,37 +240,12 @@ class BogoDataManager {
 	/**
 	 * Get all global BOGO offers.
 	 *
+	 * @param array $conditions Additional conditions.
 	 * @return array Array of global BOGO offers.
 	 */
 	public static function get_global_bogo_offers( array $conditions = [] ) {
-		global $wpdb;
-
-		$table = self::get_table_name();
-
-		$where_parts = array( "type = 'global'" );
-		$where_values = array();
-
-		// Build WHERE clause based on conditions
-		if ( ! empty( $conditions ) ) {
-			foreach ( $conditions as $field => $value ) {
-				if ( $value !== null ) {
-					// Use %i for field name and appropriate placeholder for value
-					$value_placeholder = is_numeric( $value ) ? '%d' : '%s';
-					$where_parts[] = "%i = {$value_placeholder}";
-					$where_values[] = $field;
-					$where_values[] = $value;
-				}
-			}
-		}
-
-		$where_clause = 'WHERE ' . implode( ' AND ', $where_parts );
-		$query = "SELECT * FROM {$table} {$where_clause} ORDER BY created_at DESC";
-
-		$results = $wpdb->get_results(
-			$wpdb->prepare( $query, $where_values )
-		);
-
-		return array_map( array( self::class, 'format_settings' ), $results );
+		$conditions['type'] = 'global';
+		return self::get_bogo_offers( $conditions );
 	}
 
 	/**
@@ -198,8 +255,9 @@ class BogoDataManager {
 	 * @return array Array of active global BOGO offers.
 	 */
 	public static function get_active_global_bogo_offers( array $conditions = [] ) {
+		$conditions['type'] = 'global';
 		$conditions['status'] = 'active';
-		return self::get_global_bogo_offers( $conditions );
+		return self::get_bogo_offers( $conditions );
 	}
 
 	/**
@@ -322,16 +380,8 @@ class BogoDataManager {
 	 * @return array|null BOGO offer data or null if not found.
 	 */
 	public static function get_bogo_offer( $id ) {
-		global $wpdb;
-
-		$table = self::get_table_name();
-
-		$result = $wpdb->get_row( $wpdb->prepare(
-			"SELECT * FROM {$table} WHERE id = %d",
-			$id
-		) );
-
-		return $result ? self::format_settings( $result ) : null;
+		$offers = self::get_bogo_offers( [ 'id' => $id ] );
+		return ! empty( $offers ) ? $offers[0] : null;
 	}
 
 	/**
@@ -441,15 +491,19 @@ class BogoDataManager {
 		}
 
 		// Get global offers that include this product
-		$global_offers = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM {$table} WHERE type = 'global' AND offered_products LIKE %s",
-			'%' . $product_id . '%'
-		) );
+		$global_offers = self::get_bogo_offers( [
+			'type' => 'global'
+		] );
 
 		$product_schedule = $product_settings['offer_schedule'] ?? array( 'daily' );
 
 		foreach ( $global_offers as $offer ) {
-			$global_schedule = json_decode( $offer->offer_schedule, true ) ?? array( 'daily' );
+			// Check if this global offer includes the product
+			if ( ! self::product_in_global_offer( $offer, $product_id ) ) {
+				continue;
+			}
+
+			$global_schedule = $offer['offer_schedule'] ?? array( 'daily' );
 			
 			// Merge schedules (product schedule takes priority)
 			$merged_schedule = array_unique( array_merge( $product_schedule, $global_schedule ) );
@@ -458,7 +512,7 @@ class BogoDataManager {
 			$wpdb->update( 
 				$table, 
 				array( 'offer_schedule' => wp_json_encode( $merged_schedule ) ),
-				array( 'id' => $offer->id )
+				array( 'id' => $offer['id'] )
 			);
 		}
 
