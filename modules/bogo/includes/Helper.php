@@ -102,11 +102,41 @@ class Helper {
 	public static function get_bogo_settings_option( $option, $default = '' ) {
 		$options = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
 
+		// If options are empty, initialize with defaults
+		if ( empty( $options ) ) {
+			$options = self::initialize_bogo_default_settings();
+		}
+
+
+
 		if ( isset( $options[ $option ] ) ) {
 			return $options[ $option ];
 		}
 
 		return $default;
+	}
+
+	/**
+	 * Initialize default BOGO settings if they don't exist.
+	 *
+	 * @return array Default BOGO settings.
+	 */
+	private static function initialize_bogo_default_settings() {
+		$default_settings = array(
+			'offer_remove_from_cart'        => false,
+			'regular_price_show'            => false,
+			'shop_page_bage_icon'          => false,
+			'global_product_page_bage_icon' => false,
+			'bogo_category_page_message'    => '',
+			'default_custom_badge_icon'     => '',
+			'default_badge_icon_name'       => 'bogo-icons-1',
+			'bogo_category_messages'        => array(),
+		);
+
+		// Save the default settings
+		update_option( 'sgsb_bogo_general_settings', $default_settings );
+
+		return $default_settings;
 	}
 
 	/**

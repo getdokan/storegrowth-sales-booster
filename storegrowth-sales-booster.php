@@ -125,6 +125,9 @@ register_activation_hook(
 		if ( $migration_status['migration_needed'] ) {
 			\STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::migrate_to_single_table();
 		}
+		
+		// Initialize default BOGO settings
+		\STOREGROWTH\SPSB\Modules\BoGo\Helper::get_bogo_settings_option( 'default_badge_icon_name' );
 	}
 );
 

@@ -42,40 +42,103 @@ class OrderBogo implements HookRegistry {
 
 		add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
 		add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
-		add_filter( 'woocommerce_cart_item_price', array( $this, 'update_woocommerce_item_price' ), 10, 3 );
+		add_action( 'woocommerce_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
+		add_action( 'woocommerce_after_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
+
+
+
 	}
 
 	public function display_bogo_floating_badge_on_product() {
 		global $product;
 
-		$show_shop_badge = Helper::get_bogo_settings_option( 'shop_page_bage_icon' );
-		if ( is_shop() && ! $show_shop_badge ) {
+		// Try to get product from different sources
+		if ( ! $product || ! is_object( $product ) ) {
+			// Try to get product from post
+			global $post;
+			if ( $post && $post->post_type === 'product' ) {
+				$product = wc_get_product( $post->ID );
+			}
+			
+			// If still no product, try to get from loop
+			if ( ! $product || ! is_object( $product ) ) {
+				global $woocommerce_loop;
+				if ( isset( $woocommerce_loop['loop'] ) && have_posts() ) {
+					the_post();
+					$product = wc_get_product( get_the_ID() );
+					rewind_posts();
+				}
+			}
+		}
+
+		// Check if we're in a valid context
+		if ( ! $product || ! is_object( $product ) ) {
 			return;
 		}
 
+		// Determine current page type
+		$is_shop_page = is_shop() || is_product_category() || is_product_tag();
+		$is_product_page = is_product();
+
+		// Check badge display settings
+		$show_shop_badge = Helper::get_bogo_settings_option( 'shop_page_bage_icon' );
 		$show_product_badge = Helper::get_bogo_settings_option( 'global_product_page_bage_icon' );
-		if ( is_product() && ! $show_product_badge ) {
+
+
+
+		// If neither badge type is enabled, don't show anything
+		if ( ! $show_shop_badge && ! $show_product_badge ) {
+			return;
+		}
+
+		// If we're on shop page but shop badge is disabled, don't show
+		if ( $is_shop_page && ! $show_shop_badge ) {
+			return;
+		}
+
+		// If we're on product page but product badge is disabled, don't show
+		if ( $is_product_page && ! $show_product_badge ) {
 			return;
 		}
 
 		$product_id       = $product->get_id();
 		$product_settings = Helper::get_product_bogo_settings( $product_id );
 
-		$offer_badge         = '';
-		$shop_page_msg       = '';
-		$selected_offer      = array();
-		$offer_badge_url     = '';
-		$product_page_msg    = '';
+		// Initialize variables
+		$offer_badge = '';
+		$offer_badge_url = '';
+		$shop_page_msg = '';
+		$product_page_msg = '';
+		$has_bogo_offer = false;
+
+		$selected_offer = array();
 		$product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
 		if ( $product_bogo_status === 'yes' ) {
-			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : $shop_page_msg;
-			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
-			$product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : $product_page_msg;
+			// Product has specific BOGO settings
+			$has_bogo_offer = true;
+			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : __( 'BOGO Offer Available!', 'storegrowth-sales-booster' );
+			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : '';
+			$product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : __( 'BOGO Offer Available!', 'storegrowth-sales-booster' );
+			
+			// Set badge icon
+			$default_badge = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
+			$offer_badge = ! empty( $product_settings['bogo_badge_image'] ) ? '' : $default_badge;
 		} else {
 			$offers = Helper::get_global_offered_product_list();
 			foreach ( $offers as $offer ) {
-				if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
+				$offered_products = $offer['offered_products'] ?? array();
+				
+				// Handle both array and single value formats
+				$is_product_offered = false;
+				if ( is_array( $offered_products ) ) {
+					$is_product_offered = in_array( $product_id, $offered_products );
+				} else {
+					$is_product_offered = (int) $offered_products === $product_id;
+				}
+				
+				if ( $is_product_offered && ( $offer['bogo_status'] === 'yes' ) ) {
 					$selected_offer = $offer;
+					$has_bogo_offer = true;
 					break;
 				}
 			}
@@ -93,6 +156,13 @@ class OrderBogo implements HookRegistry {
 				}
 			}
 		}
+
+		// Only show badge if there's actually a BOGO offer
+		if ( ! $has_bogo_offer ) {
+			return;
+		}
+
+
 
 		$path = apply_filters( 'sgsb_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
 		if ( ! file_exists( $path ) ) {
@@ -414,25 +484,9 @@ class OrderBogo implements HookRegistry {
 		}
 	}
 
-	/**
-	 * Product custom price.
-	 *
-	 * @param object $price is all product of cart.
-	 * @param object $cart_item is all product of cart.
-	 * @param object $cart_item_key is all product of cart.
-	 */
 
-	public function update_woocommerce_item_price( $price, $cart_item, $cart_item_key ) {
-		$product            = $cart_item['data'];
-		$show_regular_price = Helper::get_bogo_settings_option( 'regular_price_show' );
-		if ( isset( $cart_item['bogo_offer_price'] ) ) {
-			$regular_price = $product->get_regular_price();
-			if ( $show_regular_price ) {
-				$price .= '<br><span class="regular-price"><s>' . wc_price( $regular_price ) . '</s></span>';
-			}
-		}
-		return $price;
-	}
+
+
 
 	/**
 	 * Add buy one, get one settings tab for product.
@@ -575,4 +629,10 @@ class OrderBogo implements HookRegistry {
 		// Sync offer schedules between product and global offers
 		\STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::sync_offer_schedules( $post_id );
 	}
+
+
+
+
+
+
 }
