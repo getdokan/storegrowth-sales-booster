@@ -314,8 +314,6 @@ class OrderBogo implements HookRegistry {
 	 * @param int   $offer_product_id Offer product ID.
 	 */
 	private function display_bogo_offer( $bogo_settings, $current_product_id, $offer_product_id ) {
-		error_log( 'display_bogo_offer called - Current Product: ' . $current_product_id . ', Offer Product: ' . $offer_product_id );
-		
 		$deal_type       = $bogo_settings['bogo_deal_type'] ?? 'different';
 		$bogo_status     = $bogo_settings['bogo_status'] ?? 'no';
 		$offer_type      = $bogo_settings['offer_type'] ?? 'free';
@@ -326,13 +324,11 @@ class OrderBogo implements HookRegistry {
 		
 		// Check if product exists before accessing its methods
 		if ( ! $_product ) {
-			error_log( 'BOGO offer product not found: ' . $offer_product_id );
 			return;
 		}
 		
 		$regular_price = $_product->get_price();
 		$offer_price   = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
-		error_log( 'offer_price: ' . $offer_price );
 		
 		// Prepare template variables
 		$offered_product = $current_product_id; // The product that triggers the offer
@@ -353,20 +349,14 @@ class OrderBogo implements HookRegistry {
 			'offered_products' => $bogo_settings['offered_products'][0] ?? $current_product_id,
 		));
 		
-		error_log( 'Template variables set - bogo_info: ' . ( is_object( $bogo_info ) ? 'object' : 'not object' ) );
-		
 		// Include the appropriate template
 		if ( $current_product_id === $offer_product_id ) {
 			$template_path = __DIR__ . '/../templates/bogo-product-meta-front-view.php';
-			error_log( 'Using same product template: ' . $template_path );
 			if ( file_exists( $template_path ) ) {
 				include $template_path;
-			} else {
-				error_log( 'Template not found: ' . $template_path );
 			}
 		} else {
 			$template_path = __DIR__ . '/../templates/bogo-product-front-view.php';
-			error_log( 'Using different product template: ' . $template_path );
 			require $template_path;
 		}
 	}
