@@ -48,6 +48,12 @@ class OrderBogo implements HookRegistry {
 	public function display_bogo_floating_badge_on_product() {
 		global $product;
 
+		// Validate product exists
+		if ( ! $product || ! is_object( $product ) ) {
+			return;
+		}
+
+		// Check badge display settings
 		$show_shop_badge = Helper::get_bogo_settings_option( 'shop_page_bage_icon' );
 		if ( is_shop() && ! $show_shop_badge ) {
 			return;
@@ -58,42 +64,88 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$product_id       = $product->get_id();
-		$product_settings = Helper::get_product_bogo_settings( $product_id );
+		$product_id = $product->get_id();
+		if ( ! $product_id ) {
+			return;
+		}
 
+		// Check if product is eligible for BOGO offers
+		if ( ! BogoValidator::is_product_eligible( $product ) ) {
+			return;
+		}
+
+		// Initialize variables
 		$offer_badge         = '';
 		$shop_page_msg       = '';
 		$selected_offer      = array();
 		$offer_badge_url     = '';
 		$product_page_msg    = '';
+
+		// First, check for product-specific BOGO settings
+		$product_settings = Helper::get_product_bogo_settings( $product_id );
 		$product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
-		if ( $product_bogo_status === 'yes' ) {
-			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : $shop_page_msg;
-			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : $offer_badge_url;
-			$product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : $product_page_msg;
+		
+		if ( $product_bogo_status === 'yes' && BogoValidator::is_bogo_applicable( $product_id, $product_settings ) ) {
+			// Use product-specific settings
+			$selected_offer   = $product_settings;
+			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : '';
+			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : '';
+			$product_page_msg = ! empty( $product_settings['product_page_message'] ) ? esc_html( $product_settings['product_page_message'] ) : '';
 		} else {
+			// Check for global BOGO offers
 			$offers = Helper::get_global_offered_product_list();
+			
+			// Get product categories for category-based offers
+			$product_categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'ids' ) );
+			$product_category_ids = is_array( $product_categories ) ? $product_categories : array();
+
 			foreach ( $offers as $offer ) {
-				if ( ( intval( $offer['offered_products'] ) === $product_id ) && ( $offer['bogo_status'] === 'yes' ) ) {
-					$selected_offer = $offer;
-					break;
+				if ( $offer['bogo_status'] !== 'yes' ) {
+					continue;
 				}
+
+				// Check if offer is applicable to this product
+				if ( ! BogoValidator::should_display_offer( $offer, $product_id, $product_category_ids ) ) {
+					continue;
+				}
+
+				// Validate the offer is currently applicable
+				if ( ! BogoValidator::is_bogo_applicable( $product_id, $offer ) ) {
+					continue;
+				}
+
+				$selected_offer = $offer;
+				break;
 			}
 
-			$shop_page_msg    = ! empty( $selected_offer['shop_page_message'] ) ? esc_html( $selected_offer['shop_page_message'] ) : $shop_page_msg;
-			$product_page_msg = ! empty( $selected_offer['product_page_message'] ) ? esc_html( $selected_offer['product_page_message'] ) : $product_page_msg;
 			if ( ! empty( $selected_offer ) ) {
-				$is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
-				if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
-					$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
-					$offer_badge_url = $is_pro && ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
-				} else {
-					$offer_badge     = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
-					$offer_badge_url = $is_pro ? Helper::get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
-				}
+				$shop_page_msg    = ! empty( $selected_offer['shop_page_message'] ) ? esc_html( $selected_offer['shop_page_message'] ) : '';
+				$product_page_msg = ! empty( $selected_offer['product_page_message'] ) ? esc_html( $selected_offer['product_page_message'] ) : '';
 			}
 		}
 
+		// If no applicable offer found, return early
+		if ( empty( $selected_offer ) ) {
+			return;
+		}
+
+		// Set badge icon and URL
+		$is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
+		
+		if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
+			$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
+			$offer_badge_url = $is_pro && ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
+		} else {
+			$offer_badge     = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
+			$offer_badge_url = $is_pro ? Helper::get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
+		}
+
+		// If no badge icon or URL, don't display
+		if ( empty( $offer_badge ) && empty( $offer_badge_url ) ) {
+			return;
+		}
+
+		// Load and include the badge template
 		$path = apply_filters( 'sgsb_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
 		if ( ! file_exists( $path ) ) {
 			return;
