@@ -56,7 +56,12 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
 
   const changeTab = (key) => {
-    navigate("/bogo/create-bogo?tab_name=" + key);
+    // Check if we're editing an existing BOGO (bogo_id exists)
+    if (bogo_id) {
+      navigate(`/bogo/${bogo_id}?tab_name=${key}`);
+    } else {
+      navigate("/bogo/create-bogo?tab_name=" + key);
+    }
   };
 
   if (action_name == "delete") {
