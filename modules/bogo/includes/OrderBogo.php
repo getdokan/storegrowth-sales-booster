@@ -54,13 +54,11 @@ class OrderBogo implements HookRegistry {
 
 		// Try to get product from different sources
 		if ( ! $product || ! is_object( $product ) ) {
-			// Try to get product from post
 			global $post;
 			if ( $post && $post->post_type === 'product' ) {
 				$product = wc_get_product( $post->ID );
 			}
-			
-			// If still no product, try to get from loop
+
 			if ( ! $product || ! is_object( $product ) ) {
 				global $woocommerce_loop;
 				if ( isset( $woocommerce_loop['loop'] ) && have_posts() ) {
@@ -71,20 +69,16 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 
-		// Check if we're in a valid context
 		if ( ! $product || ! is_object( $product ) ) {
 			return;
 		}
 
-		// Determine current page type
 		$is_shop_page = is_shop() || is_product_category() || is_product_tag();
 		$is_product_page = is_product();
 
 		// Check badge display settings
 		$show_shop_badge = Helper::get_bogo_settings_option( 'shop_page_bage_icon' );
 		$show_product_badge = Helper::get_bogo_settings_option( 'global_product_page_bage_icon' );
-
-
 
 		// If neither badge type is enabled, don't show anything
 		if ( ! $show_shop_badge && ! $show_product_badge ) {
@@ -114,7 +108,6 @@ class OrderBogo implements HookRegistry {
 		$selected_offer = array();
 		$product_bogo_status = ! empty( $product_settings['bogo_status'] ) ? esc_html( $product_settings['bogo_status'] ) : 'no';
 		if ( $product_bogo_status === 'yes' ) {
-			// Product has specific BOGO settings
 			$has_bogo_offer = true;
 			$shop_page_msg    = ! empty( $product_settings['shop_page_message'] ) ? esc_html( $product_settings['shop_page_message'] ) : __( 'BOGO Offer Available!', 'storegrowth-sales-booster' );
 			$offer_badge_url  = ! empty( $product_settings['bogo_badge_image'] ) ? esc_url( $product_settings['bogo_badge_image'] ) : '';
@@ -127,8 +120,6 @@ class OrderBogo implements HookRegistry {
 			$offers = Helper::get_global_offered_product_list();
 			foreach ( $offers as $offer ) {
 				$offered_products = $offer['offered_products'] ?? array();
-				
-				// Handle both array and single value formats
 				$is_product_offered = false;
 				if ( is_array( $offered_products ) ) {
 					$is_product_offered = in_array( $product_id, $offered_products );
@@ -161,9 +152,7 @@ class OrderBogo implements HookRegistry {
 		if ( ! $has_bogo_offer ) {
 			return;
 		}
-
-
-
+		
 		$path = apply_filters( 'sgsb_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
 		if ( ! file_exists( $path ) ) {
 			return;
