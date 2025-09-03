@@ -193,17 +193,21 @@
 						'desc_tip'    => true,
 					)
 				);
-
-				woocommerce_wp_text_input(
-					array(
-						'id'          => '_shop_page_message',
-						'name'        => 'shop_page_message',
-						'value'       => $shop_page_msg,
-						'label'       => __( 'Shop page message', 'storegrowth-sales-booster' ),
-						'description' => __( 'Enter custom message two.', 'storegrowth-sales-booster' ),
-						'desc_tip'    => true,
-					)
-				);
+				/**
+				 * TODO: It has no impact in the current implementation.
+				 * @see https://github.com/getdokan/plugin-internal-tasks/issues/892
+				 */
+				
+				// woocommerce_wp_text_input(
+				// 	array(
+				// 		'id'          => '_shop_page_message',
+				// 		'name'        => 'shop_page_message',
+				// 		'value'       => $shop_page_msg,
+				// 		'label'       => __( 'Shop page message', 'storegrowth-sales-booster' ),
+				// 		'description' => __( 'Enter custom message two.', 'storegrowth-sales-booster' ),
+				// 		'desc_tip'    => true,
+				// 	)
+				// );
 
 				woocommerce_wp_text_input(
 					array(
