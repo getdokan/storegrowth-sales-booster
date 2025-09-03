@@ -31,6 +31,8 @@ class OrderBogo implements HookRegistry {
 
 		add_action( 'woocommerce_add_to_cart', array( $this, 'add_offer_product_to_cart' ), 10, 6 );
 		add_action( 'woocommerce_update_cart_action_cart_updated', array( $this, 'handle_cart_update' ) );
+		add_action( 'woocommerce_after_cart_item_quantity_update', array( $this, 'handle_cart_update' ) );
+		add_action( 'woocommerce_cart_loaded_from_session', array( $this, 'cleanup_cart_bogo_duplicates' ) );
 
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_bogo_product_data_tab' ) );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'add_bogo_product_data_fields' ) );
@@ -43,6 +45,9 @@ class OrderBogo implements HookRegistry {
 		add_action( 'woocommerce_before_shop_loop_item_title', array( $this, 'display_bogo_floating_badge_on_product' ) );
 		add_action( 'woocommerce_before_single_product_summary', array( $this, 'display_bogo_floating_badge_on_product' ) );
 		add_filter( 'woocommerce_cart_item_price', array( $this, 'update_woocommerce_item_price' ), 10, 3 );
+
+		// Store API validation for BOGO offers
+		add_action( 'woocommerce_after_cart_item_quantity_update', array( $this, 'prevent_bogo_cart_item_qty_update' ), 10, 4 );
 	}
 
 	public function display_bogo_floating_badge_on_product() {
@@ -155,45 +160,220 @@ class OrderBogo implements HookRegistry {
 	}
 
 	public function handle_cart_update() {
-		// Get the cart items
-		$cart_items = WC()->cart->get_cart();
+		// Early exit if cart is not available
+		if ( ! WC()->cart || WC()->cart->is_empty() ) {
+			return;
+		}
 
-		// Iterate through the cart items.
-		foreach ( $cart_items as $cart_item_key => $cart_item ) {
-			if ( isset( $cart_item['changed_product_id'] ) ) {
-				$parent_item  = WC()->cart->cart_contents[ $cart_item['linked_to_product_key'] ];
-				$product_id   = ! empty( $parent_item['product_id'] ) ? intval( $parent_item['product_id'] ) : 0;
-				$variation_id = ! empty( $parent_item['variation_id'] ) ? intval( $parent_item['variation_id'] ) : 0;
+		// Prevent recursion
+		static $updating = false;
+		if ( $updating ) {
+			return;
+		}
+		$updating = true;
 
-				$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
-				$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
-
-				$required_quantity     = ! empty( $bogo_settings['minimum_quantity_required'] ) ? $bogo_settings['minimum_quantity_required'] : 1;
-				$free_product_quantity = floor( $parent_item['quantity'] / $required_quantity ) * 1;
-
-				WC()->cart->set_quantity( $cart_item_key, $free_product_quantity );
-				continue;
+		try {
+			// Get the cart items
+			$cart_items = WC()->cart->get_cart();
+			
+			if ( empty( $cart_items ) || ! is_array( $cart_items ) ) {
+				return;
 			}
 
-			$product_id   = ! empty( $cart_item['product_id'] ) ? intval( $cart_item['product_id'] ) : 0;
-			$variation_id = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
+			// Iterate through the cart items.
+			foreach ( $cart_items as $cart_item_key => $cart_item ) {
+				// Validate cart item structure
+				if ( ! is_array( $cart_item ) || empty( $cart_item_key ) ) {
+					continue;
+				}
 
-			$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
-			$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+				// Handle BOGO offer products with changed quantity
+				if ( isset( $cart_item['changed_product_id'] ) ) {
+					$this->handle_bogo_offer_quantity_update( $cart_item_key, $cart_item, $cart_items );
+					continue;
+				}
 
-			// Get offer product info.
-			$offer_product_id = BogoValidator::get_offer_product_id( $bogo_settings, $product_id );
-			$offer_product    = wc_get_product( $offer_product_id );
-			if ( ! $offer_product ) {
-				continue;
+				// Skip if this is already a BOGO offer product
+				if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
+					continue;
+				}
+
+				// Handle regular products with BOGO eligibility
+				$this->handle_regular_product_bogo_update( $cart_item_key, $cart_item, $cart_items );
 			}
+		} catch ( \Exception $e ) {
+			// Log error but don't break the cart functionality
+			wc_get_logger()->error( 'BOGO cart update error: ' . $e->getMessage() );
+		} finally {
+			$updating = false;
+		}
+	}
 
-			$free_product_quantity = apply_filters( 'sgsb_free_product_quantity_for_cart_update', $cart_item['quantity'], $bogo_settings, $cart_item );
-			if ( isset( $cart_item['child_key'] ) && array_key_exists( $cart_item['child_key'], $cart_items ) ) {
-				WC()->cart->set_quantity( $cart_item['child_key'], $free_product_quantity );
+	/**
+	 * Handle quantity update for BOGO offer products.
+	 *
+	 * @param string $cart_item_key Cart item key.
+	 * @param array  $cart_item Cart item data.
+	 * @param array  $cart_items All cart items.
+	 */
+	private function handle_bogo_offer_quantity_update( $cart_item_key, $cart_item, $cart_items ) {
+		// Validate linked product key exists
+		if ( empty( $cart_item['linked_to_product_key'] ) ) {
+			return;
+		}
+
+		$linked_key = $cart_item['linked_to_product_key'];
+		
+		// Check if parent item still exists in cart
+		if ( ! isset( $cart_items[ $linked_key ] ) || ! isset( WC()->cart->cart_contents[ $linked_key ] ) ) {
+			// Parent item removed, remove this offer product too
+			WC()->cart->remove_cart_item( $cart_item_key );
+			return;
+		}
+
+		$parent_item = WC()->cart->cart_contents[ $linked_key ];
+		
+		// Validate parent item structure
+		if ( ! is_array( $parent_item ) ) {
+			return;
+		}
+
+		$product_id   = ! empty( $parent_item['product_id'] ) ? intval( $parent_item['product_id'] ) : 0;
+		$variation_id = ! empty( $parent_item['variation_id'] ) ? intval( $parent_item['variation_id'] ) : 0;
+		$parent_quantity = ! empty( $parent_item['quantity'] ) ? intval( $parent_item['quantity'] ) : 0;
+
+		if ( $product_id <= 0 || $parent_quantity <= 0 ) {
+			return;
+		}
+
+		$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
+		$bogo_settings = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+
+		if ( empty( $bogo_settings ) ) {
+			return;
+		}
+
+		$required_quantity = ! empty( $bogo_settings['minimum_quantity_required'] ) ? intval( $bogo_settings['minimum_quantity_required'] ) : 1;
+		$required_quantity = max( 1, $required_quantity ); // Ensure minimum of 1
+		
+		$free_product_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		
+		// Update the offer product quantity
+		if ( $free_product_quantity > 0 ) {
+			WC()->cart->cart_contents[ $cart_item_key ]['quantity'] = $free_product_quantity;
+		} else {
+			// Remove offer product if parent quantity doesn't meet requirements
+			WC()->cart->remove_cart_item( $cart_item_key );
+		}
+	}
+
+	/**
+	 * Handle BOGO update for regular products.
+	 *
+	 * @param string $cart_item_key Cart item key.
+	 * @param array  $cart_item Cart item data.
+	 * @param array  $cart_items All cart items.
+	 */
+	private function handle_regular_product_bogo_update( $cart_item_key, $cart_item, $cart_items ) {
+		$product_id   = ! empty( $cart_item['product_id'] ) ? intval( $cart_item['product_id'] ) : 0;
+		$variation_id = ! empty( $cart_item['variation_id'] ) ? intval( $cart_item['variation_id'] ) : 0;
+		$quantity     = ! empty( $cart_item['quantity'] ) ? intval( $cart_item['quantity'] ) : 0;
+
+		if ( $product_id <= 0 || $quantity <= 0 ) {
+			return;
+		}
+
+		$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
+		$bogo_settings = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
+
+		if ( empty( $bogo_settings ) ) {
+			return;
+		}
+
+		// Get offer product info.
+		$offer_product_id = BogoValidator::get_offer_product_id( $bogo_settings, $product_id );
+		if ( ! $offer_product_id ) {
+			return;
+		}
+		
+		$offer_product = wc_get_product( $offer_product_id );
+		if ( ! $offer_product ) {
+			return;
+		}
+
+		$free_product_quantity = apply_filters( 'sgsb_free_product_quantity_for_cart_update', $quantity, $bogo_settings, $cart_item );
+		
+		// Validate the calculated quantity
+		if ( ! is_numeric( $free_product_quantity ) || $free_product_quantity < 0 ) {
+			return;
+		}
+
+		// Check for existing BOGO offer to prevent duplicates
+		$existing_offer_key = $this->find_existing_bogo_offer( $cart_item_key, $product_id, $offer_product_id );
+		
+		if ( $existing_offer_key ) {
+			// Update existing offer quantity
+			if ( $free_product_quantity > 0 ) {
+				WC()->cart->cart_contents[ $existing_offer_key ]['quantity'] = $free_product_quantity;
 			} else {
-				$this->add_offer_product_to_cart( $cart_item_key, $product_id, $free_product_quantity, $variation_id, array(), $cart_item );
+				// Remove offer product if quantity is 0
+				WC()->cart->remove_cart_item( $existing_offer_key );
+				unset( WC()->cart->cart_contents[ $cart_item_key ]['child_key'] );
 			}
+		} elseif ( $free_product_quantity > 0 ) {
+			// Add new offer product only if quantity is greater than 0 and no existing offer
+			$this->add_offer_product_to_cart( $cart_item_key, $product_id, $free_product_quantity, $variation_id, array(), $cart_item );
+		}
+	}
+
+	/**
+	 * Clean up BOGO duplicates when cart is loaded from session.
+	 * This helps clean up any duplicates that might have been created in previous sessions.
+	 */
+	public function cleanup_cart_bogo_duplicates() {
+		if ( ! WC()->cart || WC()->cart->is_empty() ) {
+			return;
+		}
+
+		$cart_items = WC()->cart->get_cart();
+		$parent_offers = array(); // Track offers by parent product
+		$keys_to_remove = array();
+
+		// Group BOGO offers by parent product
+		foreach ( $cart_items as $cart_key => $cart_item ) {
+			if ( ! isset( $cart_item['bogo_offer'] ) || ! $cart_item['bogo_offer'] ) {
+				continue;
+			}
+
+			if ( ! isset( $cart_item['bogo_product_for'] ) || ! isset( $cart_item['linked_to_product_key'] ) ) {
+				// Invalid BOGO offer, remove it
+				$keys_to_remove[] = $cart_key;
+				continue;
+			}
+
+			$parent_product_id = intval( $cart_item['bogo_product_for'] );
+			$parent_cart_key = $cart_item['linked_to_product_key'];
+			$offer_product_id = intval( $cart_item['product_id'] );
+			
+			// Check if parent still exists
+			if ( ! isset( $cart_items[ $parent_cart_key ] ) ) {
+				$keys_to_remove[] = $cart_key;
+				continue;
+			}
+
+			$key = $parent_cart_key . '_' . $parent_product_id . '_' . $offer_product_id;
+			
+			if ( isset( $parent_offers[ $key ] ) ) {
+				// Duplicate found, mark for removal
+				$keys_to_remove[] = $cart_key;
+			} else {
+				$parent_offers[ $key ] = $cart_key;
+			}
+		}
+
+		// Remove duplicates
+		foreach ( $keys_to_remove as $key_to_remove ) {
+			WC()->cart->remove_cart_item( $key_to_remove );
 		}
 	}
 
@@ -224,7 +404,57 @@ class OrderBogo implements HookRegistry {
 			( $bogo_settings['bogo_deal_type'] !== 'same' ) &&
 			$this->is_bogo_applicable( $apply_able_product_id, $bogo_settings )
 		) {
+			// Clean up any duplicate BOGO offers before applying new one
+			$this->clean_duplicate_bogo_offers( $cart_item_key, $apply_able_product_id );
 			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, $quantity );
+		}
+	}
+
+	/**
+	 * Clean up duplicate BOGO offers for the same parent product.
+	 *
+	 * @param string $parent_cart_key Parent cart item key.
+	 * @param int    $parent_product_id Parent product ID.
+	 */
+	private function clean_duplicate_bogo_offers( $parent_cart_key, $parent_product_id ) {
+		$cart_items = WC()->cart->get_cart();
+		$found_offers = array();
+		$keys_to_remove = array();
+		
+		foreach ( $cart_items as $cart_key => $cart_item ) {
+			// Skip if not a BOGO offer
+			if ( ! isset( $cart_item['bogo_offer'] ) || ! $cart_item['bogo_offer'] ) {
+				continue;
+			}
+			
+			// Skip if not linked to the target parent
+			if ( ! isset( $cart_item['linked_to_product_key'] ) || 
+				 $cart_item['linked_to_product_key'] !== $parent_cart_key ||
+				 ! isset( $cart_item['bogo_product_for'] ) ||
+				 intval( $cart_item['bogo_product_for'] ) !== intval( $parent_product_id ) ) {
+				continue;
+			}
+			
+			$offer_product_id = intval( $cart_item['product_id'] );
+			$offer_key = $parent_product_id . '_' . $offer_product_id;
+			
+			if ( isset( $found_offers[ $offer_key ] ) ) {
+				// This is a duplicate, mark for removal
+				$keys_to_remove[] = $cart_key;
+			} else {
+				// First occurrence of this offer
+				$found_offers[ $offer_key ] = $cart_key;
+			}
+		}
+		
+		// Remove duplicate offers
+		foreach ( $keys_to_remove as $key_to_remove ) {
+			WC()->cart->remove_cart_item( $key_to_remove );
+		}
+		
+		// Clean up child_key references from parent if multiple were found
+		if ( count( $found_offers ) > 1 && isset( WC()->cart->cart_contents[ $parent_cart_key ] ) ) {
+			unset( WC()->cart->cart_contents[ $parent_cart_key ]['child_key'] );
 		}
 	}
 
@@ -238,27 +468,18 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
+		// Check if BOGO offer already exists for this parent product to prevent duplicates
+		$existing_offer_key = $this->find_existing_bogo_offer( $cart_item_key, $product_id, $offer_product_id );
+		if ( $existing_offer_key ) {
+			// Update existing offer quantity instead of adding duplicate
+			$this->update_existing_bogo_offer_quantity( $existing_offer_key, $quantity, $settings );
+			return;
+		}
+
 		// Determine the cost of the offer product (if necessary)
 		$offer_product_cost = 0; // Assume free by default
 		if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
 			$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
-		}
-
-		// Initialize the total quantity count to 0.
-		$total_quantity = 0;
-
-		// Logic to remove the existing offer product and add the new one.
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
-			if ( ( $cart_item['product_id'] == $product_id ) ) {
-				$total_quantity += $cart_item['quantity'];
-			}
-
-			if ( isset( $cart_item['changed_product_id'] ) && $cart_item['bogo_product_for'] == $product_id ) {
-				$quantity_required = ! empty( $settings['minimum_quantity_required'] ) ? $settings['minimum_quantity_required'] : 1;
-				$total_quantity    = floor( $total_quantity / $quantity_required ) * 1;
-				WC()->cart->set_quantity( $cart_item['key'], $total_quantity );
-				return;
-			}
 		}
 
 		// Add the offer product to the cart for different offer.
@@ -278,6 +499,76 @@ class OrderBogo implements HookRegistry {
 
 		if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
 			WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
+		}
+	}
+
+	/**
+	 * Find existing BOGO offer for the same parent product.
+	 *
+	 * @param string $parent_cart_key Parent cart item key.
+	 * @param int    $parent_product_id Parent product ID.
+	 * @param int    $offer_product_id Offer product ID.
+	 * @return string|false Existing offer cart key or false if not found.
+	 */
+	private function find_existing_bogo_offer( $parent_cart_key, $parent_product_id, $offer_product_id ) {
+		$cart_items = WC()->cart->get_cart();
+		
+		foreach ( $cart_items as $cart_key => $cart_item ) {
+			// Check if this is a BOGO offer product
+			if ( ! isset( $cart_item['bogo_offer'] ) || ! $cart_item['bogo_offer'] ) {
+				continue;
+			}
+			
+			// Check if it's linked to the same parent product
+			if ( isset( $cart_item['linked_to_product_key'] ) && 
+				 $cart_item['linked_to_product_key'] === $parent_cart_key &&
+				 isset( $cart_item['bogo_product_for'] ) &&
+				 intval( $cart_item['bogo_product_for'] ) === intval( $parent_product_id ) &&
+				 intval( $cart_item['product_id'] ) === intval( $offer_product_id ) ) {
+				return $cart_key;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Update existing BOGO offer quantity.
+	 *
+	 * @param string $offer_cart_key Offer cart item key.
+	 * @param int    $new_quantity New quantity.
+	 * @param array  $settings BOGO settings.
+	 */
+	private function update_existing_bogo_offer_quantity( $offer_cart_key, $new_quantity, $settings ) {
+		// Get the parent item to calculate the correct quantity
+		$cart_items = WC()->cart->get_cart();
+		$offer_item = $cart_items[ $offer_cart_key ] ?? null;
+		
+		if ( ! $offer_item || ! isset( $offer_item['linked_to_product_key'] ) ) {
+			return;
+		}
+		
+		$parent_item = $cart_items[ $offer_item['linked_to_product_key'] ] ?? null;
+		if ( ! $parent_item ) {
+			return;
+		}
+		
+		$parent_quantity = intval( $parent_item['quantity'] );
+		$required_quantity = ! empty( $settings['minimum_quantity_required'] ) ? intval( $settings['minimum_quantity_required'] ) : 1;
+		$required_quantity = max( 1, $required_quantity );
+		
+		// Calculate the correct offer quantity based on parent quantity
+		$calculated_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		
+		if ( $calculated_quantity > 0 ) {
+			WC()->cart->cart_contents[ $offer_cart_key ]['quantity'] = $calculated_quantity;
+		} else {
+			// Remove offer if parent quantity doesn't meet requirements
+			WC()->cart->remove_cart_item( $offer_cart_key );
+			// Also remove child_key reference from parent
+			if ( isset( WC()->cart->cart_contents[ $offer_item['linked_to_product_key'] ]['child_key'] ) ) {
+				unset( WC()->cart->cart_contents[ $offer_item['linked_to_product_key'] ]['child_key'] );
+			}
 		}
 	}
 
@@ -600,5 +891,30 @@ class OrderBogo implements HookRegistry {
 		
 		// Sync offer schedules between product and global offers
 		\STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::sync_offer_schedules( $post_id );
+	}
+
+	/**
+	 * Prevent quantity updates for BOGO offer products in cart.
+	 *
+	 * @param string $cart_item_key Cart item key.
+	 * @param int    $quantity New quantity.
+	 * @param int    $old_quantity Old quantity.
+	 * @param WC_Cart $cart Cart object.
+	 */
+	public function prevent_bogo_cart_item_qty_update( $cart_item_key, $quantity, $old_quantity, $cart ) {
+		$cart_item = $cart->get_cart_item( $cart_item_key );
+		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] && ! isset( $_POST['add-to-cart'] ) ) {
+
+			// If someone is trying to change the quantity of a BOGO offer product
+			if ( $old_quantity && $quantity != $old_quantity ) {
+				// Add a notice to inform the user
+				wc_add_notice( 
+					__( 'The quantity of BOGO offer products cannot be changed manually. It is automatically managed based on your purchase.', 'storegrowth-sales-booster' ), 
+					'error' 
+				);
+
+				$cart->cart_contents[ $cart_item_key ]['quantity'] = $old_quantity;
+			}
+		}
 	}
 }
