@@ -11,7 +11,15 @@ import OfferField from "./OfferField";
 import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
 import { InputNumber } from "sales-booster/src/components/settings/Panels";
 import { applyFilters } from "@wordpress/hooks";
-
+/**
+* TODO: Enable BOGO Type, Alternate Products, and BOGO Schedule fields once the backend is ready.
+* @see https://github.com/getdokan/plugin-internal-tasks/issues/891
+*/
+const DISPLAY_FIELDS = {
+  bogoType: false,
+  alternateProducts: false,
+  bogoSchedule: false,
+};
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
   const { createBogoData } = useSelect((select) => ({
@@ -273,7 +281,7 @@ const BasicInfo = ({ clearErrors }) => {
           createBogoData,
           onFieldChange
         )}
-
+       {DISPLAY_FIELDS.bogoType && (
         <TextRadioBox
           name={`bogo_type`}
           title={__("Select BOGO Type", "storegrowth-sales-booster-pro")}
@@ -283,44 +291,48 @@ const BasicInfo = ({ clearErrors }) => {
           fieldValue={createBogoData?.bogo_type}
           changeHandler={onFieldChange}
         />
-
-        {(createBogoData?.bogo_type === "products") ? (
-          <MultiSelectBox
-            name={"get_alternate_products"}
-            changeHandler={onFieldChange}
-            options={productListForSelect}
-            fieldValue={createBogoData?.get_alternate_products ? createBogoData?.get_alternate_products.map(Number) : []}
-            title={__("Alternate option of the offered products", "storegrowth-sales-booster-pro")}
-            placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
-            tooltip={__(
-              "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-              "storegrowth-sales-booster-pro"
+        )}
+        {DISPLAY_FIELDS.alternateProducts && (
+          <>
+            {(createBogoData?.bogo_type === "products") ? (
+              <MultiSelectBox
+                name={"get_alternate_products"}
+                changeHandler={onFieldChange}
+                options={productListForSelect}
+                fieldValue={createBogoData?.get_alternate_products ? createBogoData?.get_alternate_products.map(Number) : []}
+                title={__("Alternate option of the offered products", "storegrowth-sales-booster-pro")}
+                placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
+                tooltip={__(
+                  "The target product indicates for which specific products the upsell order bogo option will be displayed.",
+                  "storegrowth-sales-booster-pro"
+                )}
+              />
+            ) : (
+              <Fragment>
+                <MultiSelectBox
+                  name={"get_alternate_categories"}
+                  changeHandler={onFieldChange}
+                  fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}
+                  options={bogo_products_and_categories.category_list.catForSelect}
+                  title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}
+                  placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}
+                  tooltip={__(
+                    "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
+                    "storegrowth-sales-booster-pro"
+                  )}
+                />
+              </Fragment>
             )}
-          />
-        ) : (
-          <Fragment>
-            <MultiSelectBox
-              name={"get_alternate_categories"}
-              changeHandler={onFieldChange}
-              fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}
-              options={bogo_products_and_categories.category_list.catForSelect}
-              title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}
-              placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}
-              tooltip={__(
-                "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
-                "storegrowth-sales-booster-pro"
-              )}
-            />
-          </Fragment>
+            </>
         )}
-
-        {applyFilters(
-          'sgsb_after_bogo_basic_info_settings',
-          '',
-          createBogoData,
-          onFieldChange,
-          productListForSelect
-        )}
+        {DISPLAY_FIELDS.bogoSchedule &&
+          applyFilters(
+            'sgsb_after_bogo_basic_info_settings',
+            '',
+            createBogoData,
+            onFieldChange,
+            productListForSelect
+          )}
       </SettingsSection>
     </Fragment>
   );
