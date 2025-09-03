@@ -105,7 +105,7 @@ class OrderBogo implements HookRegistry {
 			$product_category_ids = is_array( $product_categories ) ? $product_categories : array();
 
 			foreach ( $offers as $offer ) {
-				if ( $offer['status'] !== 'active' ) {
+				if ( ! isset( $offer['status'] ) || $offer['status'] !== 'active' ) {
 					continue;
 				}
 
