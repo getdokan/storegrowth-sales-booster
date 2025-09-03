@@ -22,6 +22,7 @@ const BasicInfo = ({ clearErrors }) => {
     createBogoData: select("sgsb_bogo").getCreateFromData(),
   }));
 
+  
   const targetProductList = [
     {
       value: 35,
