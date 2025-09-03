@@ -314,8 +314,6 @@ class BogoController extends WP_REST_Controller {
             return new WP_REST_Response( [ 'error' => __( 'Failed to create BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
         }
 
-        error_log( 'New bogo ID ' .  $result );
-
         $created_data = BogoDataManager::get_bogo_offer( $result );
         if ( ! $created_data ) {
             return new WP_REST_Response( [ 'error' => __( 'Failed to retrieve created BOGO offer.', 'storegrowth-sales-booster' ) ], 500 );
