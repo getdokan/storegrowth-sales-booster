@@ -244,6 +244,16 @@ class BogoDataManager {
 			'offer_end'               => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'status'                  => apply_filters( 'sgsb_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
+			// Design fields
+			'box_border_style'        => $data['box_border_style'] ?? 'solid',
+			'box_border_color'        => $data['box_border_color'] ?? '#e0e0e0',
+			'box_top_margin'          => $data['box_top_margin'] ?? 10,
+			'box_bottom_margin'       => $data['box_bottom_margin'] ?? 10,
+			'discount_background_color' => $data['discount_background_color'] ?? '#ff6b6b',
+			'discount_text_color'     => $data['discount_text_color'] ?? '#ffffff',
+			'discount_font_size'      => $data['discount_font_size'] ?? 14,
+			'product_description_text_color' => $data['product_description_text_color'] ?? '#333333',
+			'product_description_font_size' => $data['product_description_font_size'] ?? 12,
 		);
 
 		// Add type-specific fields
@@ -538,6 +548,15 @@ class BogoDataManager {
 			offer_end DATE DEFAULT NULL,
 			offer_schedule JSON DEFAULT NULL,
 			status ENUM('active', 'inactive') DEFAULT 'active',
+			box_border_style VARCHAR(20) DEFAULT 'solid',
+			box_border_color VARCHAR(20) DEFAULT '#e0e0e0',
+			box_top_margin INT DEFAULT 10,
+			box_bottom_margin INT DEFAULT 10,
+			discount_background_color VARCHAR(20) DEFAULT '#ff6b6b',
+			discount_text_color VARCHAR(20) DEFAULT '#ffffff',
+			discount_font_size INT DEFAULT 14,
+			product_description_text_color VARCHAR(20) DEFAULT '#333333',
+			product_description_font_size INT DEFAULT 12,
 			created_by BIGINT DEFAULT NULL,
 			updated_by BIGINT DEFAULT NULL,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

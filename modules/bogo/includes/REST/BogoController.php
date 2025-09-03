@@ -432,14 +432,8 @@ class BogoController extends WP_REST_Controller {
             );
         }
 
-        // Log raw data for debugging
-        error_log( 'Raw request data: ' . print_r( $data, true ) );
-
         // Normalize data
         $data = $this->normalize_request_data( $data );
-
-        // Log normalized data for debugging
-        error_log( 'Normalized data: ' . print_r( $data, true ) );
 
         // Validate required fields
         if ( ! isset( $data['name_of_order_bogo'] ) || trim( $data['name_of_order_bogo'] ) === '' ) {
@@ -456,6 +450,29 @@ class BogoController extends WP_REST_Controller {
                 __( 'Missing or empty required field: offer_type', 'storegrowth-sales-booster' ),
                 [ 'status' => 400 ]
             );
+        }
+
+        // Validate design fields are present
+        $design_fields = [
+            'box_border_style',
+            'box_border_color', 
+            'box_top_margin',
+            'box_bottom_margin',
+            'discount_background_color',
+            'discount_text_color',
+            'discount_font_size',
+            'product_description_text_color',
+            'product_description_font_size'
+        ];
+        
+        foreach ( $design_fields as $field ) {
+            if ( ! isset( $data[ $field ] ) || trim( $data[ $field ] ) === '' ) {
+                return new WP_Error(
+                    'missing_design_field',
+                    __( 'Missing or empty required design field: ' . $field, 'storegrowth-sales-booster' ),
+                    [ 'status' => 400 ]
+                );
+            }
         }
 
         return $data;
@@ -508,6 +525,25 @@ class BogoController extends WP_REST_Controller {
 		// Ensure offer_schedule has a default value
 		if ( ! isset( $data['offer_schedule'] ) || empty( $data['offer_schedule'] ) ) {
 			$data['offer_schedule'] = array( 'daily' );
+		}
+
+		// Normalize design fields
+		$design_fields = [
+			'box_border_style',
+			'box_border_color', 
+			'box_top_margin',
+			'box_bottom_margin',
+			'discount_background_color',
+			'discount_text_color',
+			'discount_font_size',
+			'product_description_text_color',
+			'product_description_font_size'
+		];
+		
+		foreach ( $design_fields as $field ) {
+			if ( isset( $data[ $field ] ) ) {
+				$data[ $field ] = sanitize_text_field( $data[ $field ] );
+			}
 		}
 
 		// Normalize date fields - convert empty strings or invalid dates to null
