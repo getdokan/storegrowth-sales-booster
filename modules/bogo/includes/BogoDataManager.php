@@ -244,6 +244,18 @@ class BogoDataManager {
 			'offer_end'               => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'status'                  => apply_filters( 'sgsb_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
+			// Design settings as JSON
+			'design_settings'         => wp_json_encode( array(
+				'box_border_style'        => $data['box_border_style'] ?? 'solid',
+				'box_border_color'        => $data['box_border_color'] ?? '#e0e0e0',
+				'box_top_margin'          => $data['box_top_margin'] ?? 10,
+				'box_bottom_margin'       => $data['box_bottom_margin'] ?? 10,
+				'discount_background_color' => $data['discount_background_color'] ?? '#ff6b6b',
+				'discount_text_color'     => $data['discount_text_color'] ?? '#ffffff',
+				'discount_font_size'      => $data['discount_font_size'] ?? 14,
+				'product_description_text_color' => $data['product_description_text_color'] ?? '#333333',
+				'product_description_font_size' => $data['product_description_font_size'] ?? 12,
+			) ),
 		);
 
 		// Add type-specific fields
@@ -339,6 +351,10 @@ class BogoDataManager {
 				'product_page_message' => $offer['product_page_message'],
 				'offered_categories' => $offer['offered_categories'] ?? array(),
 			);
+			
+			// Extract design settings from JSON
+			$design_settings = self::get_design_settings( $offer['design_settings'] ?? null );
+			$formatted_offer = array_merge( $formatted_offer, $design_settings );
 			
 			// Add backward compatibility fields
 			$formatted_offer['name_of_order_bogo'] = $offer['name'] ?? '';
@@ -538,6 +554,7 @@ class BogoDataManager {
 			offer_end DATE DEFAULT NULL,
 			offer_schedule JSON DEFAULT NULL,
 			status ENUM('active', 'inactive') DEFAULT 'active',
+			design_settings JSON DEFAULT NULL,
 			created_by BIGINT DEFAULT NULL,
 			updated_by BIGINT DEFAULT NULL,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -599,6 +616,34 @@ class BogoDataManager {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Extract design settings from JSON with defaults.
+	 *
+	 * @param string|array $design_settings_json JSON string or decoded array.
+	 * @return array Design settings with defaults.
+	 */
+	public static function get_design_settings( $design_settings_json ) {
+		$design_settings = array();
+		
+		if ( is_string( $design_settings_json ) ) {
+			$design_settings = json_decode( $design_settings_json, true ) ?: array();
+		} elseif ( is_array( $design_settings_json ) ) {
+			$design_settings = $design_settings_json;
+		}
+		
+		return array_merge( array(
+			'box_border_style'        => 'solid',
+			'box_border_color'        => '#e0e0e0',
+			'box_top_margin'          => 10,
+			'box_bottom_margin'       => 10,
+			'discount_background_color' => '#ff6b6b',
+			'discount_text_color'     => '#ffffff',
+			'discount_font_size'      => 14,
+			'product_description_text_color' => '#333333',
+			'product_description_font_size' => 12,
+		), $design_settings );
 	}
 
 	/**
