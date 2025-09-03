@@ -36,12 +36,13 @@ function BogoTabLayout({ navigate, useSearchParams }) {
       title : __( 'Lists', 'storegrowth-sales-booster' ),
       panel : <BogoList navigate={navigate} />,
     },
-    {
-      proBadge : applyFilters('sgsb_bogo_category_tab_prompts', true),
-      key      : 'messages',
-      panel    : <CategoryMessages navigate={navigate} />,
-      title    : __( 'Messages', 'storegrowth-sales-booster' ),
-    },
+    // TODO: Enable this when we have the backend ready.
+    // {
+    //   proBadge : applyFilters('sgsb_bogo_category_tab_prompts', true),
+    //   key      : 'messages',
+    //   panel    : <CategoryMessages navigate={navigate} />,
+    //   title    : __( 'Messages', 'storegrowth-sales-booster' ),
+    // },
   ];
 
   const filteredTabPanels = applyFilters(

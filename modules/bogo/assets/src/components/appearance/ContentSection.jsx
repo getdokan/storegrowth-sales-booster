@@ -21,16 +21,17 @@ const ContentSection = () => {
   return (
     <Fragment>
       <SettingsSection>
-        <TextAreaBox
-          areaRows={3}
-          name={'shop_page_message'}
-          fieldValue={createBogoData?.shop_page_message}
-          changeHandler={onFieldChange}
-          readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}
-          title={__('Shop Page Message', 'storegrowth-sales-booster')}
-          placeHolderText={__('Buy This Product and Get Another Product', 'storegrowth-sales-booster')}
-          tooltip={__('Enter the text for shop page', 'storegrowth-sales-booster')}
-        />
+        {/* TODO: Add shop page message later, currently this settings have no impact on the order bogo. */}
+        {/*<TextAreaBox*/}
+        {/*  areaRows={3}*/}
+        {/*  name={'shop_page_message'}*/}
+        {/*  fieldValue={createBogoData?.shop_page_message}*/}
+        {/*  changeHandler={onFieldChange}*/}
+        {/*  readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}*/}
+        {/*  title={__('Shop Page Message', 'storegrowth-sales-booster')}*/}
+        {/*  placeHolderText={__('Buy This Product and Get Another Product', 'storegrowth-sales-booster')}*/}
+        {/*  tooltip={__('Enter the text for shop page', 'storegrowth-sales-booster')}*/}
+        {/*/>*/}
         <TextAreaBox
           areaRows={3}
           name={'product_page_message'}

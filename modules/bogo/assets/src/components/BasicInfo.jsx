@@ -274,45 +274,46 @@ const BasicInfo = ({ clearErrors }) => {
           onFieldChange
         )}
 
-        <TextRadioBox
-          name={`bogo_type`}
-          title={__("Select BOGO Type", "storegrowth-sales-booster-pro")}
-          classes={""}
-          tooltip={__("this is an example", "storegrowth-sales-booster-pro")}
-          options={[...dealCategories]}
-          fieldValue={createBogoData?.bogo_type}
-          changeHandler={onFieldChange}
-        />
+        { /* TODO: add this settings later, currently this settings have no impact on the order bogo. */ }
+        {/*<TextRadioBox*/}
+        {/*  name={`bogo_type`}*/}
+        {/*  title={__("Select BOGO Type", "storegrowth-sales-booster-pro")}*/}
+        {/*  classes={""}*/}
+        {/*  tooltip={__("this is an example", "storegrowth-sales-booster-pro")}*/}
+        {/*  options={[...dealCategories]}*/}
+        {/*  fieldValue={createBogoData?.bogo_type}*/}
+        {/*  changeHandler={onFieldChange}*/}
+        {/*/>*/}
 
-        {(createBogoData?.bogo_type === "products") ? (
-          <MultiSelectBox
-            name={"get_alternate_products"}
-            changeHandler={onFieldChange}
-            options={productListForSelect}
-            fieldValue={createBogoData?.get_alternate_products ? createBogoData?.get_alternate_products.map(Number) : []}
-            title={__("Alternate option of the offered products", "storegrowth-sales-booster-pro")}
-            placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
-            tooltip={__(
-              "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-              "storegrowth-sales-booster-pro"
-            )}
-          />
-        ) : (
-          <Fragment>
-            <MultiSelectBox
-              name={"get_alternate_categories"}
-              changeHandler={onFieldChange}
-              fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}
-              options={bogo_products_and_categories.category_list.catForSelect}
-              title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}
-              placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}
-              tooltip={__(
-                "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
-                "storegrowth-sales-booster-pro"
-              )}
-            />
-          </Fragment>
-        )}
+        {/*{(createBogoData?.bogo_type === "products") ? (*/}
+        {/*  <MultiSelectBox*/}
+        {/*    name={"get_alternate_products"}*/}
+        {/*    changeHandler={onFieldChange}*/}
+        {/*    options={productListForSelect}*/}
+        {/*    fieldValue={createBogoData?.get_alternate_products ? createBogoData?.get_alternate_products.map(Number) : []}*/}
+        {/*    title={__("Alternate option of the offered products", "storegrowth-sales-booster-pro")}*/}
+        {/*    placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}*/}
+        {/*    tooltip={__(*/}
+        {/*      "The target product indicates for which specific products the upsell order bogo option will be displayed.",*/}
+        {/*      "storegrowth-sales-booster-pro"*/}
+        {/*    )}*/}
+        {/*  />*/}
+        {/*) : (*/}
+        {/*  <Fragment>*/}
+        {/*    <MultiSelectBox*/}
+        {/*      name={"get_alternate_categories"}*/}
+        {/*      changeHandler={onFieldChange}*/}
+        {/*      fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}*/}
+        {/*      options={bogo_products_and_categories.category_list.catForSelect}*/}
+        {/*      title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}*/}
+        {/*      placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}*/}
+        {/*      tooltip={__(*/}
+        {/*        "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",*/}
+        {/*        "storegrowth-sales-booster-pro"*/}
+        {/*      )}*/}
+        {/*    />*/}
+        {/*  </Fragment>*/}
+        {/*)}*/}
 
         {applyFilters(
           'sgsb_after_bogo_basic_info_settings',
