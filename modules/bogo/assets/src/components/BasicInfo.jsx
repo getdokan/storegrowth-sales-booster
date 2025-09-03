@@ -12,9 +12,9 @@ import DateField from "sales-booster/src/components/settings/Panels/PanelSetting
 import { InputNumber } from "sales-booster/src/components/settings/Panels";
 import { applyFilters } from "@wordpress/hooks";
 const HIDDEN_FIELDS = {
-  bogoType: true,
-  alternateProducts: true,
-  bogoSchedule: true,
+  bogoType: false,
+  alternateProducts: false,
+  bogoSchedule: false,
 };
 const BasicInfo = ({ clearErrors }) => {
   const { setCreateFromData } = useDispatch("sgsb_bogo");
@@ -277,7 +277,7 @@ const BasicInfo = ({ clearErrors }) => {
           createBogoData,
           onFieldChange
         )}
-       {!HIDDEN_FIELDS.bogoType && (
+       {HIDDEN_FIELDS.bogoType && (
         <TextRadioBox
           name={`bogo_type`}
           title={__("Select BOGO Type", "storegrowth-sales-booster-pro")}
@@ -288,7 +288,7 @@ const BasicInfo = ({ clearErrors }) => {
           changeHandler={onFieldChange}
         />
         )}
-        {!HIDDEN_FIELDS.alternateProducts && (
+        {HIDDEN_FIELDS.alternateProducts && (
           <>
             {(createBogoData?.bogo_type === "products") ? (
               <MultiSelectBox
@@ -321,7 +321,7 @@ const BasicInfo = ({ clearErrors }) => {
             )}
             </>
         )}
-        {!HIDDEN_FIELDS.bogoSchedule &&
+        {HIDDEN_FIELDS.bogoSchedule &&
           applyFilters(
             'sgsb_after_bogo_basic_info_settings',
             '',
