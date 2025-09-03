@@ -27,18 +27,6 @@ class Ajax implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_ajax_bogo_create', array( $this, 'bogo_create' ) );
-		add_action( 'wp_ajax_nopriv_bogo_create', array( $this, 'bogo_create' ) );
-
-		add_action( 'wp_ajax_bogo_list', array( $this, 'bogo_list' ) );
-		add_action( 'wp_ajax_nopriv_bogo_list', array( $this, 'bogo_list' ) );
-
-		add_action( 'wp_ajax_bogo_delete', array( $this, 'bogo_delete' ) );
-		add_action( 'wp_ajax_nopriv_bogo_delete', array( $this, 'bogo_delete' ) );
-
-		add_action( 'wp_ajax_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
-		add_action( 'wp_ajax_nopriv_bogo_status_handler', array( $this, 'bogo_status_handler' ) );
-
         add_action( 'wp_ajax_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
         add_action( 'wp_ajax_nopriv_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
 
@@ -143,28 +131,6 @@ class Ajax implements HookRegistry {
 		wp_send_json_success( $form_data );
 	}
 
-	/**
-	 * Order bogo creation.
-	 */
-	public function bogo_create() {
-		check_ajax_referer( 'ajd_protected' );
-
-		if ( ! isset( $_POST['data'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			wp_send_json_error( __( 'No data provided.', 'storegrowth-sales-booster' ) );
-		}
-
-		$data = $_POST['data']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Missing
-
-		$result = $this->get_bogo()->create( $data );
-
-		if ( is_wp_error($result) ) {
-			wp_send_json_error( $result->get_error_message() );
-		}
-		wp_send_json_success( $result );
-
-		die();
-	}
-
     /**
      * Bogo category message creation.
      */
@@ -192,26 +158,6 @@ class Ajax implements HookRegistry {
         wp_send_json_success( $status );
     }
 
-	/**
-	 * Order bogo list.
-	 */
-	public function bogo_list() {
-		check_ajax_referer( 'ajd_protected' );
-
-		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-
-		if ( $bogo_id ) {
-			$result = $this->get_bogo()->get_item($bogo_id);
-            if ( is_wp_error($result) ) {
-                wp_send_json_error( $result->get_error_message() );
-            }
-			wp_send_json_success( $result );
-		} else {
-			$bogos = $this->get_bogo()->get_items();
-			wp_send_json_success( $bogos['data'] ?? [] );
-		}
-	}
-
     /**
      * Bogo category message list.
      */
@@ -230,43 +176,6 @@ class Ajax implements HookRegistry {
             )
         );
     }
-
-	/**
-	 * Bogo product delete.
-	 */
-	public function bogo_delete() {
-		check_ajax_referer( 'ajd_protected' );
-
-		$bogo_id = isset( $_POST['data'] ) ? intval( wp_unslash( $_POST['data'] ) ) : null;
-        $result  = $this->get_bogo()->delete($bogo_id);
-
-        if ( is_wp_error($result) ) {
-            wp_send_json_error( $result->get_error_message() );
-        }
-		wp_send_json_success( 'yes' );
-	}
-
-	/**
-	 * Bogo product status handler.
-	 */
-	public function bogo_status_handler() {
-		check_ajax_referer( 'ajd_protected' );
-
-		$data    = ! empty( $_POST['data'] ) ? wc_clean( wp_unslash( $_POST['data'] ) ) : array();
-		$post_id = ! empty( $data['id'] ) ? intval( $data['id'] ) : 0;
-
-		if ( empty( $post_id ) || ! isset( $data['status'] ) ) {
-			wp_send_json_error( __( 'Offer id & status is required', 'storegrowth-sales-booster' ) );
-		}
-
-        $result = $this->get_bogo()->set_status( $post_id, $data['status'] );
-
-        if ( is_wp_error( $result ) ) {
-            wp_send_json_error( $result->get_error_message() );
-        }
-
-		wp_send_json_success( $data['status'] );
-	}
 
 	/**
 	 * Bogo product add to cart.
