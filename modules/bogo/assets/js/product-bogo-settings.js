@@ -77,4 +77,5 @@
     } else {
         console.warn('Select2 is not loaded. BOGO product settings may not work correctly.');
     }
+    
 })(jQuery);
