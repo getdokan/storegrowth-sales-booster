@@ -59,15 +59,15 @@ class ServiceProvider extends BaseServiceProvider {
         $this->add_with_implements_tags( UpsellOrderBumpModule::get_id(), UpsellOrderBumpModule::class, true );
         
         // Register data access class
-        $this->container->share( OrderBumpData::class );
+        $this->container->addShared( OrderBumpData::class );
         
         // Register REST API service provider
-        $this->container->share( RestApiServiceProvider::class );
+        $this->container->addShared( RestApiServiceProvider::class );
         
         // Register AJAX handler for frontend operations
-        $this->container->share( OrderBumpAjax::class );
+        $this->container->addShared( OrderBumpAjax::class );
         
         // Register REST API controller
-        $this->container->share( OrderBumpController::class );
+        $this->container->addShared( OrderBumpController::class );
     }
 }
