@@ -3,8 +3,11 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpAjax;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -27,6 +30,8 @@ class BootstrapServiceProvider extends BootableServiceProvider {
     protected $services = [
         EnqueueScript::class,
         OrderBump::class,
+        OrderBumpAjax::class,
+        OrderBumpController::class,
     ];
 
     /**
@@ -40,6 +45,10 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         foreach ( $this->services as $service ) {
             $this->share_with_implements_tags( $service );
         }
+
+        // Register data access class
+        $this->container->add( OrderBumpData::class );
+        
     }
 
     /**
