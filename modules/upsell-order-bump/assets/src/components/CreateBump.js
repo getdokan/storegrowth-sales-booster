@@ -64,7 +64,10 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   };
 
   const changeTab = ( key ) => {
-    navigate( "/upsell-order-bump/create-bump?tab_name=" + key );
+    // Determine if we're in edit mode
+    const isEditMode = bump_id && action_name === 'edit';
+    const baseRoute = isEditMode ? `/upsell-order-bump/edit-bump/${bump_id}` : "/upsell-order-bump/create-bump";
+    navigate( `${baseRoute}?tab_name=${key}` );
   };
 
   if( action_name == 'delete' ) {
@@ -233,7 +236,9 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             }
         }
         if( ( duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ) ){
-            if ( window.location.hash === '#/upsell-order-bump/create-bump' ) {
+            // Only show duplicate errors in create mode, not edit mode
+            const isEditMode = bump_id && action_name === 'edit';
+            if ( !isEditMode ) {
                 setDuplicateDataError(duplicateErrs);
                 return false;
             }
