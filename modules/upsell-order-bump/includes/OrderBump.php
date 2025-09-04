@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,6 +22,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderBump implements HookRegistry {
 
 	use Singleton;
+
+	/**
+	 * OrderBumpData instance.
+	 *
+	 * @var OrderBumpData
+	 */
+	private $order_bump_data;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		$this->order_bump_data = new OrderBumpData();
+	}
 
 	/**
 	 * Constructor of Woocommerce_Functionality class.
@@ -36,16 +51,10 @@ class OrderBump implements HookRegistry {
 	 * Bump offer product for frontend.
 	 */
 	public function bump_product_frontend_view() {
-
 		global $woocommerce;
 		$all_cart_products     = $woocommerce->cart->get_cart();
 		$all_cart_product_ids  = array();
 		$all_cart_category_ids = array();
-		$args_bump             = array(
-			'post_type'      => 'sgsb_order_bump',
-			'posts_per_page' => -1,
-		);
-		$bump_list             = get_posts( $args_bump );
 
 		foreach ( $all_cart_products as $value ) {
 			// Get categories from the current cart item (variation or simple product)
@@ -75,27 +84,29 @@ class OrderBump implements HookRegistry {
 		
 		// Remove duplicate category IDs
 		$all_cart_category_ids = array_unique( $all_cart_category_ids );
-		foreach ( $bump_list as $bump ) {
-			$bump_info        = maybe_unserialize( $bump->post_excerpt );
-			$bump_info        = (object) $bump_info;
-			$offer_product_id = $bump_info->offer_product;
-			$offer_type       = $bump_info->offer_type;
-			$offer_amount     = $bump_info->offer_amount;
+
+		// Get matching bumps using the new data access class
+		$matching_bumps = $this->order_bump_data->get_matching_bumps( $all_cart_product_ids, $all_cart_category_ids );
+
+		foreach ( $matching_bumps as $bump ) {
+			$offer_product_id = $bump['offer_product_id'];
+			$offer_type       = $bump['offer_type'];
+			$offer_amount     = $bump['offer_amount'];
 
 			$checked = '';
 			if ( in_array( (int) $offer_product_id, $all_cart_product_ids, true ) ) {
 				$checked = 'checked';
 			}
 
-					$_product      = wc_get_product( $offer_product_id );
-		$regular_price = $_product->get_regular_price();
-		// Use sale price if available, otherwise use regular price for discount calculation
-		$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
-		if ( 'discount' === $offer_type ) {
-			$offer_price = ( $current_price - ( $current_price * $offer_amount / 100 ) );
-		} else {
-			$offer_price = $offer_amount;
-		}
+			$_product      = wc_get_product( $offer_product_id );
+			$regular_price = $_product->get_regular_price();
+			// Use sale price if available, otherwise use regular price for discount calculation
+			$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
+			if ( 'discount' === $offer_type ) {
+				$offer_price = ( $current_price - ( $current_price * $offer_amount / 100 ) );
+			} else {
+				$offer_price = $offer_amount;
+			}
 
 			$cart                            = WC()->cart;
 			$product_already_added_from_shop = false;
@@ -116,24 +127,11 @@ class OrderBump implements HookRegistry {
 				continue;
 			}
 
-			$bump_type = ! empty( $bump_info->bump_type ) ? esc_html( $bump_info->bump_type ) : 'products';
-			if ( $bump_type === 'products' ) {
-				$target_products = ! empty( $bump_info->target_products ) ? wc_clean( $bump_info->target_products ) : array();
-				// Convert target products to integers to ensure consistent data types
-				$target_products = array_map( 'intval', $target_products );
-				
-				// Check if any target products are in cart (simple intersection check)
-				if ( $target_products && ! empty( array_intersect( $all_cart_product_ids, $target_products ) ) ) {
-					include __DIR__ . '/../templates/bump-product-front-view.php';
-				}
-			} else {
-				$target_categories = ! empty( $bump_info->target_categories ) ? wc_clean( $bump_info->target_categories ) : array();
-				
-				// Check if any target categories are in cart (simple intersection check)
-				if ( $target_categories && ! empty( array_intersect( $all_cart_category_ids, $target_categories ) ) ) {
-					include __DIR__ . '/../templates/bump-product-front-view.php';
-				}
-			}
+			// Convert bump data to object for template compatibility
+			$bump_info = (object) array_merge( $bump, $bump['design_settings'] );
+			$bump_info->bump_type = $bump['target_type'];
+
+			include __DIR__ . '/../templates/bump-product-front-view.php';
 		}
 	}
 
@@ -210,32 +208,25 @@ class OrderBump implements HookRegistry {
 	 * @param array $removed_item_ids Array of removed product/variation IDs.
 	 */
 	private function validate_bump_products_after_removal( $removed_item_ids ) {
-		// Get all bump offers
-		$args_bump = array(
-			'post_type'      => 'sgsb_order_bump',
-			'posts_per_page' => -1,
-		);
-		$bump_list = get_posts( $args_bump );
+		// Get all active bump offers
+		$bump_list = $this->order_bump_data->get_all( array( 'status' => 'active' ) );
 
 		foreach ( $bump_list as $bump ) {
-			$bump_info = maybe_unserialize( $bump->post_excerpt );
-			$bump_info = (object) $bump_info;
-
-			$bump_type = ! empty( $bump_info->bump_type ) ? esc_html( $bump_info->bump_type ) : 'products';
-			$offer_product_id = $bump_info->offer_product;
+			$bump_type = $bump['target_type'];
+			$offer_product_id = $bump['offer_product_id'];
 
 			// Check if the removed item was a target for this bump offer
 			$was_target = false;
 
 			if ( $bump_type === 'products' ) {
-				$target_products = ! empty( $bump_info->target_products ) ? wc_clean( $bump_info->target_products ) : array();
+				$target_products = $bump['target_products'];
 				$was_target = ! empty( array_intersect( $removed_item_ids, $target_products ) );
 			} else {
 				// For category-based bumps, check if removed product was in target categories
 				$was_target = false;
 				foreach ( $removed_item_ids as $removed_item_id ) {
 					$removed_product_categories = wp_get_post_terms( $removed_item_id, 'product_cat', array( 'fields' => 'ids' ) );
-					$target_categories = ! empty( $bump_info->target_categories ) ? wc_clean( $bump_info->target_categories ) : array();
+					$target_categories = $bump['target_categories'];
 					if ( ! empty( array_intersect( $removed_product_categories, $target_categories ) ) ) {
 						$was_target = true;
 						break;
@@ -245,7 +236,7 @@ class OrderBump implements HookRegistry {
 
 			if ( $was_target ) {
 				// Check if there are still other target products in cart
-				$remaining_targets = $this->get_remaining_target_products( $bump_info, $bump_type );
+				$remaining_targets = $this->get_remaining_target_products( $bump, $bump_type );
 
 				if ( empty( $remaining_targets ) ) {
 					// No more target products in cart, remove or reset the bump product
@@ -258,7 +249,7 @@ class OrderBump implements HookRegistry {
 	/**
 	 * Get remaining target products in cart for a bump offer.
 	 *
-	 * @param object $bump_info The bump offer info.
+	 * @param array $bump_info The bump offer info.
 	 * @param string $bump_type The bump type (products or categories).
 	 * @return array Array of remaining target product IDs.
 	 */
@@ -277,13 +268,13 @@ class OrderBump implements HookRegistry {
 			}
 
 			if ( $bump_type === 'products' ) {
-				$target_products = ! empty( $bump_info->target_products ) ? wc_clean( $bump_info->target_products ) : array();
+				$target_products = $bump_info['target_products'];
 				if ( ! empty( array_intersect( $cart_item_ids, $target_products ) ) ) {
 					$remaining_targets = array_merge( $remaining_targets, $cart_item_ids );
 				}
 			} else {
 				$cart_categories = wp_get_post_terms( $cart_product_id, 'product_cat', array( 'fields' => 'ids' ) );
-				$target_categories = ! empty( $bump_info->target_categories ) ? wc_clean( $bump_info->target_categories ) : array();
+				$target_categories = $bump_info['target_categories'];
 				if ( ! empty( array_intersect( $cart_categories, $target_categories ) ) ) {
 					$remaining_targets = array_merge( $remaining_targets, $cart_item_ids );
 				}

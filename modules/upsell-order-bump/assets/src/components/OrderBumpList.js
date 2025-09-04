@@ -7,24 +7,26 @@ import { convertBumpItemHtmlEntitiesToTexts } from "../helper";
 import { Fragment } from "react";
 import UpgradeCard from "../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
 import OfferProductContent from "./OfferProductContent";
+import orderBumpApi from '../services/OrderBumpApi';
 
 const deleteBump = (stateUpdateCallback) => (id) => {
   stateUpdateCallback(true);
-  jQuery.post(
-    bump_save_url.ajax_url,
-    {
-      action: "bump_delete",
-      data: id,
-      _ajax_nonce: bump_save_url.ajd_nonce,
-    },
-    function () {
-      notification["error"]({
+  orderBumpApi.delete(id)
+    .then(() => {
+      notification.error({
         message: "Order Bump deleted",
       });
       stateUpdateCallback(false);
       location.reload();
-    }
-  );
+    })
+    .catch(error => {
+      console.error('Error deleting order bump:', error);
+      notification.error({
+        message: 'Error',
+        description: 'Failed to delete order bump',
+      });
+      stateUpdateCallback(false);
+    });
 };
 
 function ActionButton({ navigate, bump_id }) {

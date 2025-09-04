@@ -4,6 +4,11 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\ServiceProvider as RestApiServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpAjax;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
 
 /**
  * ServiceProvider for the module.
@@ -12,7 +17,7 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
  *
  * @since 2.0.0
  *
- * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 
@@ -25,6 +30,10 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
         UpsellOrderBumpModule::class,
+        OrderBumpData::class,
+        RestApiServiceProvider::class,
+        OrderBumpAjax::class,
+        OrderBumpController::class,
     ];
 
     /**
@@ -35,7 +44,8 @@ class ServiceProvider extends BaseServiceProvider {
      * @return void
      */
     public function boot(): void {
-
+        // Run database migration
+        Migration::run_migration();
     }
 
     /**
@@ -47,5 +57,17 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( UpsellOrderBumpModule::get_id(), UpsellOrderBumpModule::class, true );
+        
+        // Register data access class
+        $this->container->share( OrderBumpData::class );
+        
+        // Register REST API service provider
+        $this->container->share( RestApiServiceProvider::class );
+        
+        // Register AJAX handler for frontend operations
+        $this->container->share( OrderBumpAjax::class );
+        
+        // Register REST API controller
+        $this->container->share( OrderBumpController::class );
     }
 }

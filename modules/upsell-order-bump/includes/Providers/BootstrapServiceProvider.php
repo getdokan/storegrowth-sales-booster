@@ -3,7 +3,6 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Ajax;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 
@@ -27,7 +26,6 @@ class BootstrapServiceProvider extends BootableServiceProvider {
      */
     protected $services = [
         EnqueueScript::class,
-        Ajax::class,
         OrderBump::class,
     ];
 

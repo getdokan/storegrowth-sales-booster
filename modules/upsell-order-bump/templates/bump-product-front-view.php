@@ -19,7 +19,7 @@ if ($_product && $_product->is_type('simple')) {
 <div class='template-overview-area'>
 		<hr style="margin-top:<?php echo esc_attr($bump_info->box_top_margin); ?>px"/>
 		<div class="offer-main-wrap"
-		style="<?php echo 'no_border' !== $bump_info->box_border_style ? 'border:2px ' . esc_attr($bump_info->box_border_style) . ' ' . esc_attr($bump_info->box_border_color) : ''; ?>">
+		style="<?php echo 'no_border' !== $bump_info->box_border_style ? 'border:2px ' . esc_attr($bump_info->box_border_style) . ' ' . esc_attr($bump_info->box_border_color) : 'border:none'; ?>">
 			<div class="dynamic-offer-text"
 			style="
 			<?php
@@ -50,7 +50,7 @@ $image_url = 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_
 				style = "
 				<?php
 echo 'color:' . esc_attr($bump_info->product_description_text_color) . ';';
-echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;'
+echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 ?>
 				"
 				>
@@ -82,7 +82,7 @@ $category_names = implode(', ', $category_names);
 			<div class="offer-price" style = "
 				<?php
 echo 'color:' . esc_attr($bump_info->product_description_text_color) . ';';
-echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;'
+echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 ?>
 				">
 			<span style="text-decoration:line-through"><?php echo esc_html(get_woocommerce_currency_symbol()) . esc_attr(number_format((float) $regular_price, 2)); ?></span>
