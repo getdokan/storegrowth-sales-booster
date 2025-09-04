@@ -183,11 +183,11 @@ class EnqueueScript implements HookRegistry {
 			);
 
 			$_product      = wc_get_product( $product->ID );
-			$sale_price    = $_product->get_sale_price();
+			$current_price = $_product->get_price();
 			$regular_price = $_product->get_regular_price();
 
 			// Prepare woocommerce price data.
-			$price = esc_html( $regular_price );
+			$price = esc_html( $current_price );
 			$price = wp_strip_all_tags( html_entity_decode( wc_price( $price ) ) );
 
 			// Render woocommerce price with currency symbol.
@@ -206,7 +206,7 @@ class EnqueueScript implements HookRegistry {
 			// Get categories csv.
 			$category_names = implode( ', ', $category_names );
 
-			if ( $_product->is_type( 'simple' ) && $regular_price ) {
+			if ( $_product->is_type( 'simple' ) && $current_price ) {
 				$simple_product_for_offer[] = array(
 					'price'            => $price,
 					'value'            => $product->ID,
@@ -259,11 +259,20 @@ class EnqueueScript implements HookRegistry {
 			$_product = wc_get_product( $product->ID );
 
 			if ( $_product->is_type( 'simple' ) ) {
+				// Use get_price() method directly since it gives the current price
+				$current_price = $_product->get_price();
+				$regular_price = $_product->get_regular_price();
+				
+				// Ensure we have valid numeric values for number_format
+				$current_price = is_numeric( $current_price ) ? (float) $current_price : 0.00;
+				$regular_price = is_numeric( $regular_price ) ? (float) $regular_price : $current_price;
+				
 				$product_list_for_view[ $product->ID ] = array(
 					'ID'            => $product->ID,
 					'post_title'    => $_product->get_title(),
 					'image_url'     => wp_get_attachment_url( get_post_thumbnail_id( $product->ID ), 'thumbnail' ),
-					'regular_price' => number_format( (int) $_product->get_regular_price(), 2 ),
+					'regular_price' => number_format( $regular_price, 2 ),
+					'current_price' => number_format( $current_price, 2 ),
 				);
 			}
 			if ( $_product->is_type( 'variable' ) ) {
@@ -272,7 +281,21 @@ class EnqueueScript implements HookRegistry {
 				foreach ( $variations as $variation ) {
 						$variation_id         = $variation['variation_id'];
 						$variation_attributes = $variation['attributes'];
-						$regular_price        = number_format( $variation['display_regular_price'], 2 );
+						$variation_product = wc_get_product( $variation_id );
+						
+						// Ensure we have a valid variation product
+						if ( ! $variation_product ) {
+							continue;
+						}
+						
+						$current_variation_price = $variation_product->get_price();
+						$variation_regular_price = $variation_product->get_regular_price();
+						
+						// Ensure we have valid numeric values for number_format
+						$current_variation_price = is_numeric( $current_variation_price ) ? (float) $current_variation_price : 0.00;
+						$variation_regular_price = is_numeric( $variation_regular_price ) ? (float) $variation_regular_price : $current_variation_price;
+						
+						$formatted_price      = number_format( $current_variation_price, 2 );
 						$variation_root_name  = $_product->get_title();
 						$variation_name       = $variation_root_name . '(' . implode( ', ', $variation_attributes ) . ')';
 						$image_url            = $variation['image']['url'];
@@ -281,7 +304,8 @@ class EnqueueScript implements HookRegistry {
 							'ID'            => $variation_id,
 							'post_title'    => $variation_name,
 							'image_url'     => $image_url,
-							'regular_price' => $regular_price,
+							'regular_price' => number_format( $variation_regular_price, 2 ),
+							'current_price' => $formatted_price,
 						);
 				}
 			}

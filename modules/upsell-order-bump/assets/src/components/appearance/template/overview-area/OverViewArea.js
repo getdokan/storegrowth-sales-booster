@@ -15,7 +15,9 @@ function OverViewArea(props) {
     var offerMessage = "20% off only for you";
 
     if ( createBumpData.offer_type === 'discount' ) {
-        offerAmout = createBumpData.offer_product_regular_price - createBumpData.offer_product_regular_price*createBumpData.offer_amount/100;
+        // Use the current price (sale price if available, otherwise regular price) for discount calculation
+        const currentPrice = createBumpData.offer_product_regular_price;
+        offerAmout = currentPrice - currentPrice*createBumpData.offer_amount/100;
         offerMessage = createBumpData.offer_amount + "% off only for you";
     } else if ( createBumpData.offer_type === 'price' ) {
         offerAmout = createBumpData.offer_amount;
