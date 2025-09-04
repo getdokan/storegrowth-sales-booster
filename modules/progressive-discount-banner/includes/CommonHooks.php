@@ -9,6 +9,8 @@ namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
+use StorePulse\StoreGrowth\helper as PluginHelper;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
