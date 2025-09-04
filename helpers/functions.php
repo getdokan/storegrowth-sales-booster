@@ -46,14 +46,14 @@ if ( ! function_exists( 'spsg_modules_path' ) ) {
 	}
 }
 
-if ( ! function_exists( 'spsg_plugin_path' ) ) {
+if ( ! function_exists( 'sp_store_growth_path' ) ) {
 	/**
 	 * Get plugin file path.
 	 *
 	 * @deprecated Use Helper::get_plugin_path() instead.
 	 * @param string $path Plugin path.
 	 */
-	function spsg_plugin_path( $path ) {
+	function sp_store_growth_path( $path ) {
 		_deprecated_function( __FUNCTION__, '1.5.0', 'Helper::get_plugin_path()' );
 		return Helper::get_plugin_path( $path );
 	}
