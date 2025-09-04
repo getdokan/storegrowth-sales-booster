@@ -127,6 +127,10 @@ class OrderBumpData {
 			}
 		}
 
+		// Apply filters for user tracking fields
+		$created_by = apply_filters( 'sgsb_order_bump_created_by', $data['created_by'] ?? get_current_user_id(), $data );
+		$updated_by = apply_filters( 'sgsb_order_bump_updated_by', $data['updated_by'] ?? get_current_user_id(), $data );
+
 		// Prepare data for insertion
 		$insert_data = array(
 			'name'                  => sanitize_text_field( $data['name'] ),
@@ -138,10 +142,13 @@ class OrderBumpData {
 			'offer_type'            => sanitize_text_field( $data['offer_type'] ?? 'discount' ),
 			'offer_amount'          => floatval( $data['offer_amount'] ?? 0 ),
 			'offer_discount_title'  => sanitize_text_field( $data['offer_discount_title'] ?? '' ),
-			'created_by'            => intval( $data['created_by'] ?? get_current_user_id() ),
-			'updated_by'            => intval( $data['updated_by'] ?? get_current_user_id() ),
+			'created_by'            => intval( $created_by ),
+			'updated_by'            => intval( $updated_by ),
 			'design_settings'       => wp_json_encode( $data['design_settings'] ?? array() ),
 		);
+
+		// Apply filter to allow modification of insert data before database operation
+		$insert_data = apply_filters( 'sgsb_order_bump_insert_data', $insert_data, $data );
 
 		$result = $wpdb->insert(
 			$this->table_name,
@@ -163,7 +170,12 @@ class OrderBumpData {
 		);
 
 		if ( $result ) {
-			return $wpdb->insert_id;
+			$insert_id = $wpdb->insert_id;
+			
+			// Fire action after successful creation
+			do_action( 'sgsb_order_bump_created', $insert_id, $insert_data, $data );
+			
+			return $insert_id;
 		}
 
 		return false;
@@ -220,7 +232,8 @@ class OrderBumpData {
 		}
 
 		// Always update the updated_by field when updating
-		$update_data['updated_by'] = get_current_user_id();
+		$updated_by = apply_filters( 'sgsb_order_bump_updated_by', get_current_user_id(), $data, $id );
+		$update_data['updated_by'] = intval( $updated_by );
 
 		if ( isset( $data['design_settings'] ) ) {
 			$update_data['design_settings'] = wp_json_encode( $data['design_settings'] );
@@ -230,6 +243,9 @@ class OrderBumpData {
 			return false;
 		}
 
+		// Apply filter to allow modification of update data before database operation
+		$update_data = apply_filters( 'sgsb_order_bump_update_data', $update_data, $data, $id );
+
 		$result = $wpdb->update(
 			$this->table_name,
 			$update_data,
@@ -237,6 +253,11 @@ class OrderBumpData {
 			null,
 			array( '%d' )
 		);
+
+		if ( $result !== false ) {
+			// Fire action after successful update
+			do_action( 'sgsb_order_bump_updated', $id, $update_data, $data );
+		}
 
 		return $result !== false;
 	}
@@ -256,6 +277,11 @@ class OrderBumpData {
 			array( 'id' => $id ),
 			array( '%d' )
 		);
+
+		if ( $result !== false ) {
+			// Fire action after successful deletion
+			do_action( 'sgsb_order_bump_deleted', $id );
+		}
 
 		return $result !== false;
 	}
