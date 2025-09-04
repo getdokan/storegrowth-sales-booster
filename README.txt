@@ -34,6 +34,8 @@ StoreGrowth is specially built for WooCommerce marketers who are looking for a c
 
 == Why Use StoreGrowth?  ==
 
+[youtube https://www.youtube.com/watch?v=3XCAOyrD89E]
+
 Online shoppers love deals and promotions. The WooCommerce checkout is not convincing enough for buyers to take action. 
 
 As a store owner, you can not just sit relax, and hope to make sales. You need to apply different tactics to attract your targeted buyers to make the purchasing decision. 
@@ -86,7 +88,7 @@ As a store owner, you can not just sit relax, and hope to make sales. You need t
 
 StoreGrowth has all the powerful features that you need to increase sales and average order value with the highest converting checkout.
 
-**👉 [Fly Cart:](https://storegrowth.io/quick-cart/) **
+**👉 [Fly Cart:](https://storegrowth.io/quick-cart/)**
 
 The fly cart feature creates a side cart in your WooCommerce store. Your customers can add products to the cart, review their order, and proceed to checkout without leaving the shop page. It provides a user-friendly and efficient way to manage their orders and proceed to checkout.
 
@@ -99,7 +101,7 @@ You can decide how you want to display the fly cart, and what contents the fly c
 
 The fly cart enhances the cart functionality and improves the overall shopping journey for your customers.
 
-**👉 [Sales Countdown Timer:](https://storegrowth.io/sales-countdown/) **
+**👉 [Sales Countdown Timer:](https://storegrowth.io/sales-countdown/)**
 
 Sales Countdown Timer allows you to promote your deals and promotions with FOMO. It is the best way to remind them of limited-time offers and motivate immediate action before the deal disappears. It creates excitement around your store and engages your audience.
 
@@ -111,7 +113,7 @@ In StoreGrowth, you can create visually appealing and functional WooCommerce cou
 ✅ Create multiple countdown timers and display them with shortcodes.
 
 
-**👉 [WooCommerce Direct Checkout:](https://storegrowth.io/direct-checkout/) **
+**👉 [WooCommerce Direct Checkout:](https://storegrowth.io/direct-checkout/)**
 
 The WooCommerce Direct Checkout option allows you to replace the **"Add to Cart"** button with a **"Buy Now"** button. Not only that, you get to choose what this additional button will be and how you want to place it on your shop page.
 
@@ -121,7 +123,7 @@ And the best part of woocommerce direct checkout is, you can design this button 
 ✅ Apply "Buy Now" for high-demand items or limited-time promotions.
 ✅ Customize the design of your "Buy Now" button to match your brand perfectly.
 
-**👉 [Live Sales Notification:](https://storegrowth.io/sales-notifications/) **
+**👉 [Live Sales Notification:](https://storegrowth.io/sales-notifications/)**
 
 Online shoppers coming to your WooCommerce store may be hesitant to make purchases without social proof or a feeling of product popularity. Real-time sales notifications showcasing recent purchases, build trust and encourage action from hesitant visitors.
 
@@ -133,7 +135,7 @@ The Live Sales Popup Notification feature allows you to generate real-time sales
 ✅ Select time delay for displaying the live sales notifications popup.
 
 
-**👉 [Free Shipping Rule:](https://storegrowth.io/free-shipping-bar/) **
+**👉 [Free Shipping Rule:](https://storegrowth.io/free-shipping-bar/)**
 
 If you are offering free shipping over an amount, then this is the feature you need. The free shipping rule is the best way to encourage your customers to increase their cart value.
 
@@ -148,7 +150,7 @@ As buyers add items to the cart, the banner text will be automatically updated b
 Customers can instantly see how close they are to reaching the minimum cart value for free shipping. This creates transparency and motivation for additional purchases.
 
 
-**👉 [Checkout Upsell Order Bump:](https://storegrowth.io/upsell-order-bump/) **
+**👉 [Checkout Upsell Order Bump:](https://storegrowth.io/upsell-order-bump/)**
 
 With the Checkout Upsell Order Bump feature, you can place attractive additional products within the checkout process.
 
