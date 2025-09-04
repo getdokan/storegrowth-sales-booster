@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
-use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 use StorePulse\StoreGrowth\helper as PluginHelper;
