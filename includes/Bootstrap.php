@@ -57,11 +57,14 @@ class Bootstrap {
 	public function register_hooks(): void {
         add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 
-		$hook_registry_list = $this->get_container()->get( HookRegistry::class );
+		if ( $this->get_container()->has( HookRegistry::class ) ) {
 
-		foreach ( $hook_registry_list as $hook_registry ) {
-			if ( method_exists( $hook_registry, 'register_hooks' ) ) {
-				$hook_registry->register_hooks();
+			$hook_registry_list = $this->get_container()->get( HookRegistry::class );
+
+			foreach ( $hook_registry_list as $hook_registry ) {
+				if ( method_exists( $hook_registry, 'register_hooks' ) ) {
+					$hook_registry->register_hooks();
+				}
 			}
 		}
     }

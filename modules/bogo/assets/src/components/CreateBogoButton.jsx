@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Button } from "antd";
 import { __ } from "@wordpress/i18n";
 import { useSelect, useDispatch } from "@wordpress/data";
+import { getBogoOffers } from "../utils/restApi";
 
 const CreateBogoButton = ({ navigate }) => {
   const { bogoListData } = useSelect((select) => ({
@@ -10,18 +11,14 @@ const CreateBogoButton = ({ navigate }) => {
   const { setBogoData } = useDispatch("sgsb_bogo");
 
   useEffect(() => {
-    jQuery.post(
-      bogo_save_url.ajax_url,
-      {
-        action: "bogo_list",
-        data: [],
-        _ajax_nonce: bogo_save_url.ajd_nonce,
-      },
-      function (bogoDataFromAjax) {
-        const bogoDataParsed = bogoDataFromAjax.data;
+    getBogoOffers()
+      .then((bogoDataFromApi) => {
+        const bogoDataParsed = bogoDataFromApi;
         setBogoData(bogoDataParsed);
-      }
-    );
+      })
+      .catch((error) => {
+        console.error('Failed to fetch BOGO offers:', error);
+      });
   }, []);
 
   const hash = window.location.hash.replace(/^#/, ""); // Remove the leading '#'

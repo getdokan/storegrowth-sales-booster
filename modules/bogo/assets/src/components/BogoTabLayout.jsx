@@ -36,12 +36,17 @@ function BogoTabLayout({ navigate, useSearchParams }) {
       title : __( 'Lists', 'storegrowth-sales-booster' ),
       panel : <BogoList navigate={navigate} />,
     },
-    {
-      proBadge : applyFilters('sgsb_bogo_category_tab_prompts', true),
-      key      : 'messages',
-      panel    : <CategoryMessages navigate={navigate} />,
-      title    : __( 'Messages', 'storegrowth-sales-booster' ),
-    },
+    /**
+     * TODO: Add messages tab back in after fixing the issues of it.
+     * @see https://github.com/getdokan/plugin-internal-tasks/issues/896
+     */
+
+    // {
+    //   proBadge : applyFilters('sgsb_bogo_category_tab_prompts', true),
+    //   key      : 'messages',
+    //   panel    : <CategoryMessages navigate={navigate} />,
+    //   title    : __( 'Messages', 'storegrowth-sales-booster' ),
+    // },
   ];
 
   const filteredTabPanels = applyFilters(

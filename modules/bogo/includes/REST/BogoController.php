@@ -8,7 +8,7 @@ use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use STOREGROWTH\SPSB\Modules\BoGo\Bogo;
+use STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager;
 
 defined( 'ABSPATH' ) || exit();
 
@@ -21,22 +21,14 @@ class BogoController extends WP_REST_Controller {
 
     /**
      * Class Constructor.
-     *
-     * @return void
      */
     public function __construct() {
         $this->namespace = 'sales-booster/v1';
         $this->rest_base = 'bogo/offers';
     }
 
-    protected function get_bogo(): Bogo {
-        return storegrowth_get_container()->get( Bogo::class );
-    }
-
     /**
-     * Register Rest Routes.
-     *
-     * @return void
+     * Register REST routes.
      */
     public function register_routes(): void {
         register_rest_route(
@@ -103,15 +95,523 @@ class BogoController extends WP_REST_Controller {
                 ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/(?P<id>\d+)/status',
+            [
+                'args' => [
+                    'id' => [
+                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
+                        'type'        => 'integer',
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'callback'            => [ $this, 'update_status' ],
+                    'permission_callback' => [ $this, 'check_permission' ],
+                    'args'                => [
+                        'id' => [
+                            'type'     => 'integer',
+                            'required' => true,
+                        ],
+                        'status' => [
+                            'type'     => 'string',
+                            'required' => true,
+                            'enum'     => [ 'yes', 'no' ],
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
-     * Permission Checker.
+     * Get query filters for fetching BOGO offers.
+     * This method can be overridden by child classes to customize query filters.
      *
      * @since 1.29.0
-     *
      * @param WP_REST_Request $request Rest Request.
+     * @return array Query filters for BogoDataManager.
+     */
+    protected function get_query_filters( $request ) {
+        return [];
+    }
+
+    /**
+     * Get query options for fetching BOGO offers.
+     * This method can be overridden by child classes to customize query options.
      *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Query options for BogoDataManager.
+     */
+    protected function get_query_options( $request ) {
+        $params = $request->get_params();
+        $per_page = isset( $params['per_page'] ) ? (int) $params['per_page'] : 20;
+        $page = isset( $params['page'] ) ? (int) $params['page'] : 1;
+
+        return [
+            'limit' => $per_page,
+            'offset' => ($page - 1) * $per_page,
+            'order_by' => 'created_at DESC'
+        ];
+    }
+
+    /**
+     * Get total count of BOGO offers for pagination.
+     * This method can be overridden by child classes to customize count logic.
+     *
+     * @since 1.29.0
+     * @param array $query_filters Query filters.
+     * @param WP_REST_Request $request Rest Request.
+     * @return int Total count of offers.
+     */
+    protected function get_total_items_count( $query_filters, $request ) {
+        if ( ! empty( $query_filters ) ) {
+            return BogoDataManager::get_bogo_offers_count( $query_filters );
+        } else {
+            // For global offers, add the type filter
+            return BogoDataManager::get_bogo_offers_count( ['type' => 'global'] );
+        }
+    }
+
+    /**
+     * Get BOGO offers with pagination.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
+     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     */
+    public function get_items( $request ) {
+        // Get custom query filters and options from child classes
+        $query_filters = $this->get_query_filters( $request );
+        $query_options = $this->get_query_options( $request );
+        
+        // Get total count for pagination
+        $total_items = $this->get_total_items_count( $query_filters, $request );
+
+        $offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
+
+        $data = [];
+        
+        foreach ( $offers as $item ) {
+            $item_data = $this->prepare_item_for_response( $item, $request );
+            $data[] = $this->prepare_response_for_collection( $item_data );
+        }
+
+        $response = rest_ensure_response( $data );
+        return $this->format_collection_response( $response, $request, $total_items );
+    }
+
+    /**
+     * Check permission for accessing a single BOGO offer.
+     * This method can be overridden by child classes to implement custom permission logic.
+     *
+     * @since 1.29.0
+     * @param array $item The BOGO offer data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if permission granted, WP_Error otherwise.
+     */
+    protected function check_single_item_permission( $item, $request ) {
+        return true;
+    }
+
+    /**
+     * Get a single BOGO offer.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
+     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     */
+    public function get_item( $request ) {
+        $id = $request->get_param( 'id' );
+        $item = BogoDataManager::get_bogo_offer( $id );
+
+        if ( ! $item ) {
+            return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
+        }
+
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $item, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
+        $response = $this->prepare_item_for_response( $item, $request );
+        $response->set_status( 200 );
+
+        return $response;
+    }
+
+    /**
+     * Prepare data before creating a BOGO offer.
+     * This method can be overridden by child classes to customize data before creation.
+     *
+     * @since 1.29.0
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Modified data for creation.
+     */
+    protected function prepare_data_for_creation( $data, $request ) {
+        return $data;
+    }
+
+    /**
+     * Check creation limitations before creating a BOGO offer.
+     * This method can be overridden by child classes to implement custom limitations.
+     *
+     * @since 1.29.0
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if allowed, WP_Error otherwise.
+     */
+    protected function check_creation_limitations( $data, $request ) {
+        // Check for free version limitations
+        if ( ! SGSB_PRO_ACTIVE ) {
+            $existing_offers = BogoDataManager::get_global_bogo_offers();
+            if ( count( $existing_offers ) >= 2 ) {
+                return new WP_Error(
+                    'salesbooster_limit_exceeded',
+                    __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
+                    [ 'status' => 403 ]
+                );
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Create a BOGO offer.
+     *
+     * @since 1.29.0
+     * @param \WP_REST_Request $request The REST request.
+     * @return WP_REST_Response
+     */
+    public function create_item( $request ) {
+        $data = $request->get_params();
+
+        // Validate and normalize data
+        $validation = $this->validate_and_normalize_data( $data );
+        if ( is_wp_error( $validation ) ) {
+            return $validation;
+        }
+        $data = $validation;
+
+        // Check creation limitations
+        $limitation_check = $this->check_creation_limitations( $data, $request );
+        if ( is_wp_error( $limitation_check ) ) {
+            return $limitation_check;
+        }
+
+        // Prepare data for creation (can be customized by child classes)
+        $data = $this->prepare_data_for_creation( $data, $request );
+
+        $result = BogoDataManager::create_global_offer( $data );
+
+        if ( ! $result ) {
+            return new WP_REST_Response( [ 'error' => __( 'Failed to create BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
+        }
+
+        $created_data = BogoDataManager::get_bogo_offer( $result );
+        if ( ! $created_data ) {
+            return new WP_REST_Response( [ 'error' => __( 'Failed to retrieve created BOGO offer.', 'storegrowth-sales-booster' ) ], 500 );
+        }
+
+        $response = $this->prepare_item_for_response( $created_data, $request );
+        $response->set_status( 201 );
+
+        return $response;
+    }
+
+    /**
+     * Update a BOGO offer.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request The REST request.
+     * @return WP_REST_Response
+     */
+    public function update_item( $request ) {
+        $id = $request->get_param( 'id' );
+        $data = $request->get_params();
+
+        // Validate and normalize data
+        $validation = $this->validate_and_normalize_data( $data );
+        if ( is_wp_error( $validation ) ) {
+            return $validation;
+        }
+        $data = $validation;
+
+        $existing_offer = BogoDataManager::get_bogo_offer( $id );
+        if ( ! $existing_offer ) {
+            return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
+        }
+
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
+        $result = BogoDataManager::update_global_offer( $id, $data );
+
+        $updated_data = BogoDataManager::get_bogo_offer( $id );
+        $response = $this->prepare_item_for_response( $updated_data, $request );
+        $response->set_status( 200 );
+
+        return $response;
+    }
+
+    /**
+     * Delete a BOGO offer.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request The REST request.
+     * @return WP_REST_Response
+     */
+    public function delete_item( $request ) {
+        $id = $request->get_param( 'id' );
+        
+        $existing_offer = BogoDataManager::get_bogo_offer( $id );
+        if ( ! $existing_offer ) {
+            return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
+        }
+
+        // Check custom permission logic from child classes
+        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
+        $result = BogoDataManager::delete_bogo_offer( $id );
+
+        if ( ! $result ) {
+            return new WP_REST_Response( [ 'error' => __( 'Failed to delete BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
+        }
+
+        return new WP_REST_Response( [ 'deleted' => true ], 200 );
+    }
+
+    /**
+     * Update BOGO offer status.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request The REST request.
+     * @return WP_REST_Response
+     */
+    public function update_status( $request ) {
+        $id = $request->get_param( 'id' );
+        $status = $request->get_param( 'status' );
+        $table_status = ( $status === 'yes' ) ? 'active' : 'inactive';
+        
+        $result = BogoDataManager::set_bogo_status( $id, $table_status );
+
+        if ( ! $result ) {
+            return new WP_REST_Response( [ 'error' => __( 'Failed to update BOGO offer status.', 'storegrowth-sales-booster' ) ], 400 );
+        }
+
+        return new WP_REST_Response( [ 'status' => $status ], 200 );
+    }
+
+    /**
+     * Validate and normalize request data.
+     *
+     * @since 1.29.0
+     * @param array $data The request data.
+     * @return array|WP_Error Normalized data or error if validation fails.
+     */
+    protected function validate_and_normalize_data( $data ) {
+        if ( empty( $data ) || ! is_array( $data ) ) {
+            return new WP_Error(
+                'invalid_data',
+                __( 'No data provided', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        // Normalize data
+        $data = $this->normalize_request_data( $data );
+
+        // Validate required fields
+        if ( ! isset( $data['name_of_order_bogo'] ) || trim( $data['name_of_order_bogo'] ) === '' ) {
+            return new WP_Error(
+                'missing_name_of_order_bogo',
+                __( 'Missing or empty required field: name_of_order_bogo', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        if ( ! isset( $data['offer_type'] ) || trim( $data['offer_type'] ) === '' ) {
+            return new WP_Error(
+                'missing_offer_type',
+                __( 'Missing or empty required field: offer_type', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        // Validate design fields are present
+        $design_fields = [
+            'box_border_style',
+            'box_border_color', 
+            'box_top_margin',
+            'box_bottom_margin',
+            'discount_background_color',
+            'discount_text_color',
+            'discount_font_size',
+            'product_description_text_color',
+            'product_description_font_size'
+        ];
+        
+        foreach ( $design_fields as $field ) {
+            if ( ! isset( $data[ $field ] ) || trim( $data[ $field ] ) === '' ) {
+                return new WP_Error(
+                    'missing_design_field',
+                    __( 'Missing or empty required design field: ' . $field, 'storegrowth-sales-booster' ),
+                    [ 'status' => 400 ]
+                );
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Normalize request data for backward compatibility.
+     *
+     * @since 1.29.0
+     * @param array $data The request data.
+     * @return array Normalized data.
+     */
+    protected function normalize_request_data( $data ) {
+        // Ensure backward compatibility for 'name' field
+        if ( isset( $data['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
+            $data['name_of_order_bogo'] = $data['name'];
+        }
+
+        // Decode HTML entities and sanitize name_of_order_bogo
+        if ( isset( $data['name_of_order_bogo'] ) ) {
+            $data['name_of_order_bogo'] = html_entity_decode( $data['name_of_order_bogo'], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+            $data['name_of_order_bogo'] = sanitize_text_field( $data['name_of_order_bogo'] );
+        }
+
+        // Ensure offer_type is preserved
+        if ( isset( $data['offer_type'] ) ) {
+            $data['offer_type'] = sanitize_text_field( $data['offer_type'] );
+        }
+
+        // Normalize offered_products (convert string to array if needed)
+        if ( isset( $data['offered_products'] ) && is_string( $data['offered_products'] ) ) {
+            $data['offered_products'] = array_map( 'absint', array_filter( explode( ',', $data['offered_products'] ) ) );
+        }
+
+        // Normalize offered_categories (convert string to array if needed)
+        if ( isset( $data['offered_categories'] ) && is_string( $data['offered_categories'] ) ) {
+            $data['offered_categories'] = array_map( 'absint', array_filter( explode( ',', $data['offered_categories'] ) ) );
+        }
+
+        		// Normalize get_alternate_products (convert string to array if needed)
+		if ( isset( $data['get_alternate_products'] ) && is_string( $data['get_alternate_products'] ) ) {
+			$data['get_alternate_products'] = array_map( 'absint', array_filter( explode( ',', $data['get_alternate_products'] ) ) );
+		}
+
+		// Normalize offer_schedule (convert string to array if needed)
+		if ( isset( $data['offer_schedule'] ) && is_string( $data['offer_schedule'] ) ) {
+			$data['offer_schedule'] = array_filter( explode( ',', $data['offer_schedule'] ) );
+		}
+
+		// Ensure offer_schedule has a default value
+		if ( ! isset( $data['offer_schedule'] ) || empty( $data['offer_schedule'] ) ) {
+			$data['offer_schedule'] = array( 'daily' );
+		}
+
+		// Normalize design fields
+		$design_fields = [
+			'box_border_style',
+			'box_border_color', 
+			'box_top_margin',
+			'box_bottom_margin',
+			'discount_background_color',
+			'discount_text_color',
+			'discount_font_size',
+			'product_description_text_color',
+			'product_description_font_size'
+		];
+		
+		foreach ( $design_fields as $field ) {
+			if ( isset( $data[ $field ] ) ) {
+				$data[ $field ] = sanitize_text_field( $data[ $field ] );
+			}
+		}
+
+		// Normalize date fields - convert empty strings or invalid dates to null
+		$date_fields = [ 'offer_start', 'offer_end' ];
+		foreach ( $date_fields as $field ) {
+			if ( isset( $data[ $field ] ) ) {
+				$date_value = trim( $data[ $field ] );
+				// Convert empty strings, '0000-00-00', or invalid dates to null
+				if ( empty( $date_value ) || $date_value === '0000-00-00' || $date_value === '0000-00-00 00:00:00' ) {
+					$data[ $field ] = null;
+				} else {
+					// Validate the date format and convert invalid dates to null
+					$timestamp = strtotime( $date_value );
+					if ( $timestamp === false ) {
+						$data[ $field ] = null;
+					} else {
+						// Keep the original format but ensure it's a valid date
+						$data[ $field ] = $date_value;
+					}
+				}
+			}
+		}
+
+		return $data;
+    }
+
+    /**
+     * Custom validation for offered_products field.
+     *
+     * @since 1.29.0
+     * @param mixed $value The value to validate.
+     * @param WP_REST_Request $request The request object.
+     * @param string $param The parameter name.
+     * @return bool|WP_Error
+     */
+    public function validate_offered_products( $value, $request, $param ) {
+        return true;
+    }
+
+    /**
+     * Custom validation for offered_categories field.
+     *
+     * @since 1.29.0
+     * @param mixed $value The value to validate.
+     * @param WP_REST_Request $request The request object.
+     * @param string $param The parameter name.
+     * @return bool|WP_Error
+     */
+    public function validate_offered_categories( $value, $request, $param ) {
+        return true;
+    }
+
+    /**
+     * Custom validation for get_alternate_products field.
+     *
+     * @since 1.29.0
+     * @param mixed $value The value to validate.
+     * @param WP_REST_Request $request The request object.
+     * @param string $param The parameter name.
+     * @return bool|WP_Error
+     */
+    public function validate_get_alternate_products( $value, $request, $param ) {
+        return true;
+    }
+
+    /**
+     * Permission checker.
+     *
+     * @since 1.29.0
+     * @param WP_REST_Request $request Rest Request.
      * @return bool|WP_Error
      */
     public function check_permission( $request ) {
@@ -127,158 +627,9 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
-     * Get Items.
+     * Get endpoint arguments for create item.
      *
      * @since 1.29.0
-     *
-     * @param WP_REST_Request $request Rest Request.
-     *
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-     */
-    public function get_items( $request ) {
-        $params = $request->get_params();
-
-        $args = [
-            'posts_per_page' => $params['per_page'],
-            'paged'          => $params['page'],
-        ];
-
-        $items = $this->get_bogo()->get_items( $args );
-
-        if ( ! $items['data'] ) {
-            return new WP_REST_Response( [ 'error' => __( 'No item found.', 'storegrowth-sales-booster' ) ], 200 );
-        }
-
-        $data = [];
-        foreach ( $items['data'] as $item ) {
-            $item_data = $this->prepare_item_for_response( $item, $request );
-            $data[]    = $this->prepare_response_for_collection( $item_data );
-        }
-
-        $response = rest_ensure_response( $data );
-
-        return $this->format_collection_response( $response, $request, $items['total_items'] );
-    }
-
-    /**
-     * Get Item.
-     *
-     * @since 1.29.0
-     *
-     * @param WP_REST_Request $request Rest Request.
-     *
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-     */
-    public function get_item( $request ) {
-        $id   = $request->get_param( 'id' );
-        $item = $this->get_bogo()->get_item( $id );
-
-        if ( ! $item || is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
-        }
-
-        $response = $this->prepare_item_for_response( $item, $request );
-        $response->set_status( 200 );
-
-        return $response;
-    }
-
-    /**
-     * Create item.
-     *
-     * @since 1.29.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
-     */
-    public function create_item( $request ) {
-        $data = $request->get_params();
-
-        if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
-        }
-
-        $result = $this->get_bogo()->create( $data );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        if ( empty( $result ) || ! is_int( $result ) ) {
-            // Likely due to free version restriction, return appropriate message.
-            return new WP_REST_Response(
-                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
-                403
-            );
-        }
-
-        $post         = get_post( $result );
-        $created_data = $this->get_bogo()->get_item( $post->ID );
-        $response     = $this->prepare_item_for_response( $created_data, $request );
-
-        $response->set_status( 201 );
-
-        return $response;
-    }
-
-    /**
-     * Update item.
-     *
-     * @since 1.29.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
-     */
-    public function update_item( $request ) {
-        $id   = $request->get_param( 'id' );
-        $data = $request->get_params();
-
-        if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
-        }
-
-        $result = $this->get_bogo()->update( $id, $data );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        $post         = get_post( $result );
-        $created_data = $this->get_bogo()->get_item( $post->ID );
-        $response     = $this->prepare_item_for_response( $created_data, $request );
-
-        $response->set_status( 201 );
-
-        return $response;
-    }
-
-    /**
-     * Delete item.
-     *
-     * @since 1.29.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
-     */
-    public function delete_item( $request ) {
-        $id     = $request->get_param( 'id' );
-        $result = $this->get_bogo()->delete( $id );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        return new WP_REST_Response( [ 'deleted' => true ], 200 );
-    }
-
-    /**
-     * Get Endpoint Args for Create Item.
-     *
-     * @since 1.29.0
-     *
      * @return array
      */
     public function get_endpoint_args_for_create_item() {
@@ -289,25 +640,24 @@ class BogoController extends WP_REST_Controller {
                 'description'       => __( 'Name of the BOGO offer.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'sanitize_text_field',
             ],
+            'name' => [
+                'type'              => 'string',
+                'description'       => __( 'Name of the BOGO offer (alternative to name_of_order_bogo).', 'storegrowth-sales-booster' ),
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
             'offered_products' => [
-                'type'              => 'integer',
-                'required'          => true,
-                'description'       => __( 'The ID of target product.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'absint',
+                'type'        => [ 'array', 'string' ],
+                'items'       => [ 'type' => 'integer' ],
+                'description' => __( 'Array of target product IDs or comma-separated string.', 'storegrowth-sales-booster' ),
+                'validate_callback' => [ $this, 'validate_offered_products' ],
             ],
             'get_different_product_field' => [
-                'type'              => 'integer',
+                'type'              => [ 'integer', 'string' ],
                 'description'       => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
                 'default'           => 0,
                 'sanitize_callback' => 'absint',
             ],
-            'bogo_status' => [
-                'type'              => 'string',
-                'default'           => 'yes',
-                'enum'              => [ 'yes', 'no' ],
-                'description'       => __( 'Whether the BOGO is enabled.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
+            
             'bogo_deal_type' => [
                 'type'              => 'string',
                 'default'           => 'different',
@@ -368,22 +718,17 @@ class BogoController extends WP_REST_Controller {
                 'description'       => __( 'Custom badge image URL or ID.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'esc_url_raw',
             ],
-            'target_products' => [
-                'type'              => 'string',
-                'description'       => __( 'Comma-separated target product IDs.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'target_categories' => [
-                'type'        => 'array',
+            'offered_categories' => [
+                'type'        => [ 'array', 'string' ],
                 'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Target category IDs.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
+                'description' => __( 'Target category IDs (array or comma-separated string).', 'storegrowth-sales-booster' ),
+                'validate_callback' => [ $this, 'validate_offered_categories' ],
             ],
             'get_alternate_products' => [
-                'type'        => 'array',
+                'type'        => [ 'array', 'string' ],
                 'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Alternate product IDs for GET BOGO type.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
+                'description' => __( 'Alternate product IDs for GET BOGO type (array or comma-separated string).', 'storegrowth-sales-booster' ),
+                'validate_callback' => [ $this, 'validate_get_alternate_products' ],
             ],
             'get_alternate_categories' => [
                 'type'        => 'array',
@@ -538,139 +883,113 @@ class BogoController extends WP_REST_Controller {
                 'description'       => __( 'Message shown on shop page.', 'storegrowth-sales-booster' ),
                 'sanitize_callback' => 'sanitize_textarea_field',
             ],
+            'bogo_badge_image' => [
+                'type'              => 'string',
+                'description'       => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'alternate_products' => [
+                'type'        => 'array',
+                'items'       => [ 'type' => 'integer' ],
+                'description' => __( 'Array of alternate product IDs.', 'storegrowth-sales-booster' ),
+                'validate_callback' => 'rest_validate_request_arg',
+            ],
+            'offer_start_date' => [
+                'type'              => 'string',
+                'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'offer_end_date' => [
+                'type'              => 'string',
+                'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
         ];
     }
 
     /**
-     * Prepare Item for The REST API Response.
+     * Prepare item for the REST API response.
      *
      * @since 1.29.0
-     *
-     * @param array            $item    BOGO offer data.
-     * @param WP_REST_Request  $request Request object.
-     *
+     * @param array $item BOGO offer data.
+     * @param WP_REST_Request $request Request object.
      * @return WP_REST_Response
      */
     public function prepare_item_for_response( $item, $request ) {
         $fields = $this->get_fields_for_response( $request );
-        $data   = [];
+        $data = [];
 
-        // Simple field map: field => transformation callback (optional)
         $field_map = [
             'id'                          => 'absint',
+            'name'                        => 'html_entity_decode',
             'name_of_order_bogo'          => 'html_entity_decode',
-            'offered_products'            => 'absint',
-            'get_different_product_field' => 'absint',
-            'bogo_status'              => null,
-            'bogo_deal_type'           => null,
-            'bogo_type'                => null,
-            'minimum_quantity_required'=> null,
-            'offer_start_date'         => null,
-            'offer_end_date'           => null,
-            'default_badge_icon_name'  => null,
-            'enable_custom_badge_image'=> null,
-            'default_custom_badge_icon'=> null,
-            'offer_type'               => null,
-            'discount_amount'          => null,
-            'box_border_style'         => null,
-            'box_border_color'         => null,
-            'box_top_margin'           => null,
-            'box_bottom_margin'        => null,
-            'discount_background_color'=> null,
-            'discount_text_color'      => null,
-            'discount_font_size'       => null,
-            'product_description_text_color' => null,
-            'product_description_font_size'  => null,
-            'accept_offer_background_color'  => null,
-            'accept_offer_text_color'        => null,
-            'accept_offer_font_size'         => null,
-            'offer_description_background_color' => null,
-            'offer_description_text_color'       => null,
-            'offer_description_font_size'        => null,
-            'offer_image_url'           => 'esc_url_raw',
-            'offer_product_title'       => null,
-            'offer_product_id'          => 'absint',
-            'offer_discount_title'      => 'html_entity_decode',
-            'offer_fixed_price_title'   => 'html_entity_decode',
-            'product_description'       => 'html_entity_decode',
-            'selection_title'           => 'html_entity_decode',
-            'offer_description'         => 'html_entity_decode',
-            'offer_product_regular_price' => null,
-            'product_page_message'      => null,
-            'shop_page_message'         => null,
-            'offer_start'               => null,
-            'offer_end'                 => null,
-            'smart_offer'               => function( $v ) { return $v === 'true'; },
-        ];
-
-        // Always-cast arrays
-        $array_fields = [
-            'offer_schedule',
-            'target_products',
-            'target_categories',
-            'bogo_schedule',
-            'get_alternate_products',
+            'offered_products'            => null,
+            'offered_categories'          => null,
+            'get_different_product_field'  => 'absint',
+            'offer_product_id'            => 'absint',
+            'bogo_deal_type'              => null,
+            'offer_type'                  => null,
+            'discount_amount'             => null,
+            'minimum_quantity_required'   => null,
+            'offer_start'                 => null,
+            'offer_end'                   => null,
+            'product_page_message'        => null,
+            'shop_page_message'           => null,
+            'bogo_badge_image'            => null,
+            'alternate_products'          => null,
+            'get_alternate_products'      => null,
+            'type'                        => null,
+            'status'                      => null,
+            'created_at'                  => null,
+            'updated_at'                  => null,
         ];
 
         foreach ( $field_map as $key => $callback ) {
             if ( in_array( $key, $fields, true ) && isset( $item[ $key ] ) ) {
                 $value = $item[ $key ];
-
-                if ( is_callable( $callback ) ) {
-                    $data[ $key ] = call_user_func( $callback, $value );
-                } else {
-                    $data[ $key ] = $value;
-                }
+                $data[ $key ] = is_callable( $callback ) ? call_user_func( $callback, $value ) : $value;
             }
         }
 
-        foreach ( $array_fields as $array_key ) {
-            if ( in_array( $array_key, $fields, true ) && isset( $item[ $array_key ] ) ) {
-                $data[ $array_key ] = (array) $item[ $array_key ];
-            }
+        if ( isset( $item['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
+            $data['name_of_order_bogo'] = $item['name'];
+        }
+        
+        if ( isset( $item['offer_product_id'] ) && ! isset( $data['get_different_product_field'] ) ) {
+            $data['get_different_product_field'] = $item['offer_product_id'];
+        }
+        
+        if ( isset( $item['alternate_products'] ) && ! isset( $data['get_alternate_products'] ) ) {
+            $data['get_alternate_products'] = $item['alternate_products'];
         }
 
-        // Prepare response with context and additional fields
-        $context  = ! empty( $request['context'] ) ? $request['context'] : 'view';
-        $data     = $this->filter_response_by_context( $data, $context );
-        $data     = $this->add_additional_fields_to_object( $data, $request );
+        $context = ! empty( $request['context'] ) ? $request['context'] : 'view';
+        $data = $this->filter_response_by_context( $data, $context );
+        $data = $this->add_additional_fields_to_object( $data, $request );
         $response = rest_ensure_response( $data );
 
-        /**
-         * Filter the prepared BOGO response.
-         *
-         * @param WP_REST_Response $response The response object.
-         * @param array            $item     Original item array.
-         * @param WP_REST_Request  $request  Request object.
-         */
         return apply_filters( 'storegrowth_rest_prepare_bogo_offer', $response, $item, $request );
     }
 
-
     /**
-     * Format item's collection for response
+     * Format item's collection for response.
      *
      * @since 1.29.0
-     *
-     * @param  WP_REST_Response $response
-     * @param  WP_REST_Request  $request
-     * @param  int              $total_items
-     *
+     * @param WP_REST_Response $response
+     * @param WP_REST_Request $request
+     * @param int $total_items
      * @return WP_REST_Response
      */
     public function format_collection_response( $response, $request, $total_items ) {
-        if ( intval( $total_items ) === 0 ) {
+        if ( $total_items === 0 ) {
             return $response;
         }
 
-        // Store pagination values for headers then unset for count query.
         $per_page = (int) ( ! empty( $request['per_page'] ) ? $request['per_page'] : 20 );
-        $page     = (int) ( ! empty( $request['page'] ) ? $request['page'] : 1 );
+        $page = (int) ( ! empty( $request['page'] ) ? $request['page'] : 1 );
 
         $response->header( 'X-WP-Total', (int) $total_items );
-
         $max_pages = ceil( $total_items / $per_page );
-
         $response->header( 'X-WP-TotalPages', (int) $max_pages );
         $base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
 
@@ -692,10 +1011,9 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
-     * Get The Item Schema.
+     * Get the item schema.
      *
      * @since 1.29.0
-     *
      * @return array
      */
     public function get_item_schema() {
@@ -715,17 +1033,18 @@ class BogoController extends WP_REST_Controller {
                     'type'        => 'string',
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'offered_products' => [
-                    'description' => __( 'The ID of target product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'integer',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'bogo_status' => [
-                    'description' => __( 'Whether the BOGO offer is active.', 'storegrowth-sales-booster' ),
+                'name' => [
+                    'description' => __( 'The name of the BOGO offer.', 'storegrowth-sales-booster' ),
                     'type'        => 'string',
-                    'enum'        => [ 'yes', 'no' ],
                     'context'     => [ 'view', 'edit' ],
                 ],
+                'offered_products' => [
+                    'description' => __( 'Array of target product IDs.', 'storegrowth-sales-booster' ),
+                    'type'        => 'array',
+                    'items'       => [ 'type' => 'integer' ],
+                    'context'     => [ 'view', 'edit' ],
+                ],
+              
                 'bogo_deal_type' => [
                     'description' => __( 'The deal type for BOGO (e.g., same or different products).', 'storegrowth-sales-booster' ),
                     'type'        => 'string',
@@ -765,13 +1084,7 @@ class BogoController extends WP_REST_Controller {
                     'format'      => 'date',
                     'context'     => [ 'view', 'edit' ],
                 ],
-                'target_products' => [
-                    'description' => __( 'Array of product IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'integer' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'target_categories' => [
+                'offered_categories' => [
                     'description' => __( 'Array of category IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
                     'type'        => 'array',
                     'items'       => [ 'type' => 'integer' ],
@@ -797,7 +1110,13 @@ class BogoController extends WP_REST_Controller {
                 'get_alternate_products' => [
                     'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
                     'type'        => 'array',
-                    'items'       => [ 'type' => 'string' ],
+                    'items'       => [ 'type' => 'integer' ],
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'alternate_products' => [
+                    'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
+                    'type'        => 'array',
+                    'items'       => [ 'type' => 'integer' ],
                     'context'     => [ 'view', 'edit' ],
                 ],
                 'offer_type' => [
@@ -955,6 +1274,35 @@ class BogoController extends WP_REST_Controller {
                 'shop_page_message' => [
                     'description' => __( 'Message shown on the shop page for the offer.', 'storegrowth-sales-booster' ),
                     'type'        => 'string',
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'bogo_badge_image' => [
+                    'description' => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
+                    'type'        => 'string',
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'type' => [
+                    'description' => __( 'Type of BOGO offer (global or product).', 'storegrowth-sales-booster' ),
+                    'type'        => 'string',
+                    'enum'        => [ 'global', 'product' ],
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'status' => [
+                    'description' => __( 'Status of the BOGO offer (active or inactive).', 'storegrowth-sales-booster' ),
+                    'type'        => 'string',
+                    'enum'        => [ 'active', 'inactive' ],
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'created_at' => [
+                    'description' => __( 'Creation timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
+                    'type'        => 'string',
+                    'format'      => 'date-time',
+                    'context'     => [ 'view', 'edit' ],
+                ],
+                'updated_at' => [
+                    'description' => __( 'Last update timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
+                    'type'        => 'string',
+                    'format'      => 'date-time',
                     'context'     => [ 'view', 'edit' ],
                 ],
                 'bogo_schedule' => [

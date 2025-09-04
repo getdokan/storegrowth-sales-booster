@@ -21,7 +21,12 @@ const ContentSection = () => {
   return (
     <Fragment>
       <SettingsSection>
-        <TextAreaBox
+        {
+          /**
+           * TODO: It has no impact in the current implementation.
+           * @see https://github.com/getdokan/plugin-internal-tasks/issues/892
+           */
+        /* <TextAreaBox
           areaRows={3}
           name={'shop_page_message'}
           fieldValue={createBogoData?.shop_page_message}
@@ -30,7 +35,7 @@ const ContentSection = () => {
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Buy This Product and Get Another Product', 'storegrowth-sales-booster')}
           tooltip={__('Enter the text for shop page', 'storegrowth-sales-booster')}
-        />
+        /> */}
         <TextAreaBox
           areaRows={3}
           name={'product_page_message'}

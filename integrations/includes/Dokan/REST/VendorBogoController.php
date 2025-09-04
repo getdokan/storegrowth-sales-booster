@@ -2,17 +2,16 @@
 
 namespace STOREGROWTH\SPSB\Integrations\Dokan\REST;
 
+use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
+use STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager;
 use WP_Error;
-use WP_HTTP_Response;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_REST_Server;
-use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
 
 defined( 'ABSPATH' ) || exit();
 
 /**
- * BogoController Class.
+ * VendorBogoController Class.
  *
  * @package SBFW
  */
@@ -26,66 +25,6 @@ class VendorBogoController extends BogoController {
     public function __construct() {
         parent::__construct();
         $this->rest_base = 'bogo/offers/vendor';
-    }
-
-    /**
-     * Register Rest Routes.
-     *
-     * @return void
-     */
-    public function register_routes(): void {
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base . '/(?P<id>\d+)',
-            [
-                'args' => [
-                    'id' => [
-                        'description' => __( 'Vendor ID', 'storegrowth-sales-booster' ),
-                        'type'        => 'integer',
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_items' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => $this->get_collection_params(),
-                ],
-                [
-                    'methods'             => WP_REST_Server::CREATABLE,
-                    'callback'            => [ $this, 'create_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => $this->get_endpoint_args_for_create_item(),
-                ],
-            ]
-        );
-
-        register_rest_route(
-            $this->namespace,
-             '/bogo/vendor-offers/(?P<id>\d+)',
-            [
-                'args' => [
-                    'id' => [
-                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
-                        'type'        => 'integer',
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::EDITABLE,
-                    'callback'            => [ $this, 'update_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::DELETABLE,
-                    'callback'            => [ $this, 'delete_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                ],
-            ]
-        );
     }
 
     /**
@@ -110,210 +49,99 @@ class VendorBogoController extends BogoController {
     }
 
     /**
-     * Get Items.
+     * Override query filters to filter offers by current vendor.
      *
      * @since 1.12.0
-     *
      * @param WP_REST_Request $request Rest Request.
-     *
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     * @return array Query filters for BogoDataManager.
      */
-    public function get_items( $request ) {
-        $params = $request->get_params();
-
-        $args = [
-            'posts_per_page' => $params['per_page'],
-            'paged'          => $params['page'],
-            'meta_query'   => [
-                [
-                    'key'     => 'bogo_vendor_id',
-                    'value'   => $params['id'],
-                    'compare' => '=',
-                ],
-            ],
-        ];
-
-        $items = $this->get_bogo()->get_items( $args );
-
-        $data = [];
-        foreach ( $items['data'] as $item ) {
-            $item_data = $this->prepare_item_for_response( $item, $request );
-            $data[]    = $this->prepare_response_for_collection( $item_data );
-        }
-
-        $response = rest_ensure_response( $data );
-
-        return $this->format_collection_response( $response, $request, $items['total_items'] );
+    protected function get_query_filters( $request ) {
+        // Filter offers by the current vendor's ID
+        $vendor_id = dokan_get_current_user_id();
+        
+        return ['created_by' => $vendor_id];
     }
 
     /**
-     * Get Item.
+     * Override query options to customize ordering for vendor offers.
      *
      * @since 1.12.0
-     *
      * @param WP_REST_Request $request Rest Request.
-     *
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+     * @return array Query options for BogoDataManager.
      */
-    public function get_item( $request ) {
-        $id   = $request->get_param( 'id' );
-        $item = $this->get_bogo()->get_item( $id );
+    protected function get_query_options( $request ) {
+        // Get the default pagination options from parent
+        $options = parent::get_query_options( $request );
+        
+        // Customize ordering for vendor offers if needed
+        $options['order_by'] = 'created_at DESC';
+        
+        return $options;
+    }
 
-        if ( ! $item || is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
-        }
 
-        $offer_vendor_id = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
 
-        if ( ! $offer_vendor_id || dokan_get_current_user_id() !== $offer_vendor_id ) {
+    /**
+     * Override permission check for single item access.
+     * Ensures vendors can only access their own BOGO offers.
+     *
+     * @since 1.12.0
+     * @param array $item The BOGO offer data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if permission granted, WP_Error otherwise.
+     */
+    protected function check_single_item_permission( $item, $request ) {
+        $vendor_id = dokan_get_current_user_id();
+        
+        // Check if the current vendor owns this offer
+        if ( ! isset( $item['created_by'] ) || (int) $item['created_by'] !== $vendor_id ) {
             return new WP_Error(
                 'salesbooster_permission_failure',
-                __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
+                __( 'You do not have permission to access this BOGO offer.', 'storegrowth-sales-booster' ),
                 [ 'status' => 403 ]
             );
         }
-
-        $response = $this->prepare_item_for_response( $item, $request );
-        $response->set_status( 200 );
-
-        return $response;
+        
+        return true;
     }
 
     /**
-     * Create item.
+     * Override data preparation to automatically set the created_by field to current vendor.
      *
      * @since 1.12.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return array Modified data for creation.
      */
-    public function create_item( $request ) {
-        $data = $request->get_params();
-
-        if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
-        }
-
-        $target_product_vendor  = dokan_get_vendor_by_product( $data['offered_products'] ?? 0, true );
-
-        if ( ! $target_product_vendor ) {
-            return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster' ) ], 400 );
-        }
-
-        if ( dokan_get_current_user_id() !== $target_product_vendor ) {
-            return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster' ) ], 403 );
-        }
-
-        $result = $this->get_bogo()->create( $data );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        if ( empty( $result ) || ! is_int( $result ) ) {
-            // Likely due to free version restriction, return appropriate message.
-            return new WP_REST_Response(
-                [ 'error' => __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ) ],
-                403
-            );
-        }
-
-        $post = get_post( $result );
-
-        update_post_meta( $post->ID, 'bogo_vendor_id', dokan_get_current_user_id() );
-
-        $created_data = $this->get_bogo()->get_item( $post->ID );
-        $response     = $this->prepare_item_for_response( $created_data, $request );
-
-        $response->set_status( 201 );
-
-        return $response;
+    protected function prepare_data_for_creation( $data, $request ) {
+        // Ensure the offer is created for the current vendor
+        $data['created_by'] = dokan_get_current_user_id();
+        
+        return $data;
     }
 
     /**
-     * Update item.
+     * Override creation limitations to check vendor-specific limits.
      *
      * @since 1.12.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
+     * @param array $data The validated request data.
+     * @param WP_REST_Request $request Rest Request.
+     * @return bool|WP_Error True if allowed, WP_Error otherwise.
      */
-    public function update_item( $request ) {
-        $id   = $request->get_param( 'id' );
-        $data = $request->get_params();
-        $item = $this->get_bogo()->get_item( $id );
-
-        if ( ! $item || is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
+    protected function check_creation_limitations( $data, $request ) {
+        // Check for free version limitations specific to vendor
+        if ( ! SGSB_PRO_ACTIVE ) {
+            $vendor_id = dokan_get_current_user_id();
+            $existing_offers = BogoDataManager::get_bogo_offers(['created_by' => $vendor_id]);
+            if ( count( $existing_offers ) >= 2 ) {
+                return new WP_Error(
+                    'salesbooster_limit_exceeded',
+                    __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
+                    [ 'status' => 403 ]
+                );
+            }
         }
 
-        $offer_vendor_id   = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
-        $current_vendor_id = dokan_get_current_user_id();
-
-        if ( ! $offer_vendor_id || $current_vendor_id !== $offer_vendor_id ) {
-            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster' ) ], 403 );
-        }
-
-        if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No data provided', 'storegrowth-sales-booster' ) ], 400 );
-        }
-
-	    $target_product_vendor  = dokan_get_vendor_by_product( $data['offered_products'] ?? 0, true );
-
-	    if ( ! $target_product_vendor ) {
-		    return new WP_REST_Response( [ 'error' => __( 'Invalid product data provided.', 'storegrowth-sales-booster' ) ], 400 );
-	    }
-
-	    if ( dokan_get_current_user_id() !== $target_product_vendor ) {
-		    return new WP_REST_Response( [ 'error' => __( 'You are not allowed to create a BOGO offer for another seller.', 'storegrowth-sales-booster' ) ], 403 );
-	    }
-
-        $result = $this->get_bogo()->update( $id, $data );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        $post         = get_post( $result );
-        $created_data = $this->get_bogo()->get_item( $post->ID );
-        $response     = $this->prepare_item_for_response( $created_data, $request );
-
-        $response->set_status( 201 );
-
-        return $response;
-    }
-
-    /**
-     * Delete item.
-     *
-     * @since 1.12.0
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
-     */
-    public function delete_item( $request ) {
-        $id   = $request->get_param( 'id' );
-        $item = $this->get_bogo()->get_item( $id );
-
-        if ( ! $item || is_wp_error( $item ) ) {
-            return new WP_REST_Response( [ 'error' => __( 'No item found for the given ID.', 'storegrowth-sales-booster' ) ], 200 );
-        }
-
-        $offer_vendor_id = (int) get_post_meta( $item['id'], 'bogo_vendor_id', true );
-
-        if ( ! $offer_vendor_id || dokan_get_current_user_id() !== $offer_vendor_id ) {
-            return new WP_REST_Response( [ 'error' => __( 'Sorry! You are not permitted to do the current action', 'storegrowth-sales-booster' ) ], 403 );
-        }
-
-        $result = $this->get_bogo()->delete( $id );
-
-        if ( is_wp_error( $result ) ) {
-            return new WP_REST_Response( [ 'error' => $result->get_error_message() ], 400 );
-        }
-
-        return new WP_REST_Response( [ 'deleted' => true ], 200 );
+        return true;
     }
 }
