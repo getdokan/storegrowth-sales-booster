@@ -8,6 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -59,6 +60,10 @@ class CommonHooks implements HookRegistry {
 	 * Output bar html
 	 */
 	public function wp_footer() {
+        if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
+            return;
+        }
+
 		$settings             = Helper::get_settings();
 		$deafault_device_view = array( 'banner-show-desktop' );
 		$device_view          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'banner_device_view', $deafault_device_view );

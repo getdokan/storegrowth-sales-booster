@@ -9,6 +9,7 @@ namespace STOREGROWTH\SPSB\Modules\SalesPop;
 
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,6 +42,10 @@ class SalesPOP implements HookRegistry {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
+        if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
+            return;
+        }
+
 		$popup_properties = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', true );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
