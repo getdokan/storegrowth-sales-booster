@@ -209,4 +209,28 @@ class Helper {
 
 		return in_array( $module_id, $active_modules, true );
 	}
+
+	/**
+	 * Check if The Module is Active.
+	 *
+	 * @since 1.28.14
+	 *
+	 * @param string $module_id The module ID to check.
+	 *
+	 * @return \WP_REST_Request The request object.
+	 */
+	public static function get_rest_request(): \WP_REST_Request {
+		// Get the request object.
+		$server  = rest_get_server();
+		$request = new \WP_REST_Request( $_SERVER['REQUEST_METHOD'] );
+
+		// Set the request parameters.
+		$request->set_query_params( wp_unslash( $_GET ) );
+		$request->set_body_params( wp_unslash( $_POST ) );
+		$request->set_file_params( $_FILES );
+		$request->set_headers( $server->get_headers( wp_unslash( $_SERVER ) ) );
+		$request->set_body( $server::get_raw_data() );
+
+		return $request;
+	}
 }

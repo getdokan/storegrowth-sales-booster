@@ -8,6 +8,7 @@
 namespace STOREGROWTH\SPSB\Modules\BoGo;
 
 use STOREGROWTH\SPSB\Traits\Singleton;
+use STOREGROWTH\SPSB\Helper as HelperUtils;
 use STOREGROWTH\SPSB\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
@@ -48,9 +49,12 @@ class OrderBogo implements HookRegistry {
 
 		// Store API validation for BOGO offers
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( $this, 'prevent_bogo_cart_item_qty_update' ), 10, 4 );
-	}
 
-	public function display_bogo_floating_badge_on_product() {
+        // Prevent BOGO offers product removing option from the cart.
+		add_action( 'woocommerce_remove_cart_item', array( $this, 'prevent_bogo_cart_item_remove' ), 10, 2 );
+    }
+
+    public function display_bogo_floating_badge_on_product() {
 		global $product;
 
 		// Validate product exists
@@ -917,4 +921,35 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 	}
+
+    /**
+     * Prevent quantity updates for BOGO offer products in cart.
+     *
+     * @since 1.28.14
+     *
+     * @param string   $cart_item_key Cart item key.
+     * @param \WC_Cart $cart          WC Cart object.
+     *
+     * @retun void
+     */
+    public function prevent_bogo_cart_item_remove( $cart_item_key, $cart ) {
+		// Check if a product is eligible for BOGO offers.
+	    $server = HelperUtils::get_rest_request()->get_params();
+	    $key    = $server['requests'][0]['body']['key'] ?? '';
+
+		if ( ! $key ) {
+			$key = $_REQUEST['remove_item'] ?? ''; // When try to remove from the Classic cart page.
+		}
+
+		// Prevent offered products removed from the cart.
+	    $cart_item = $cart->get_cart_item( $key );
+        if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
+            $can_remove_offer_product = Helper::get_bogo_settings_option( 'offer_remove_from_cart', false );
+            if ( ! $can_remove_offer_product ) {
+	            throw new \Exception(
+					esc_html__( 'The BOGO offer products cannot be removed manually. It will be automatically added based on your purchase.', 'storegrowth-sales-booster' )
+	            );
+            }
+        }
+    }
 }
