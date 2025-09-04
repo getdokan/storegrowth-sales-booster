@@ -129,15 +129,16 @@ class OrderBumpData {
 
 		// Prepare data for insertion
 		$insert_data = array(
-			'name'              => sanitize_text_field( $data['name'] ),
-			'status'            => sanitize_text_field( $data['status'] ?? 'active' ),
-			'target_type'       => sanitize_text_field( $data['target_type'] ?? 'products' ),
-			'target_products'   => wp_json_encode( $data['target_products'] ?? array() ),
-			'target_categories' => wp_json_encode( $data['target_categories'] ?? array() ),
-			'offer_product_id'  => intval( $data['offer_product_id'] ),
-			'offer_type'        => sanitize_text_field( $data['offer_type'] ?? 'discount' ),
-			'offer_amount'      => floatval( $data['offer_amount'] ?? 0 ),
-			'design_settings'   => wp_json_encode( $data['design_settings'] ?? array() ),
+			'name'                  => sanitize_text_field( $data['name'] ),
+			'status'                => sanitize_text_field( $data['status'] ?? 'active' ),
+			'target_type'           => sanitize_text_field( $data['target_type'] ?? 'products' ),
+			'target_products'       => wp_json_encode( $data['target_products'] ?? array() ),
+			'target_categories'     => wp_json_encode( $data['target_categories'] ?? array() ),
+			'offer_product_id'      => intval( $data['offer_product_id'] ),
+			'offer_type'            => sanitize_text_field( $data['offer_type'] ?? 'discount' ),
+			'offer_amount'          => floatval( $data['offer_amount'] ?? 0 ),
+			'offer_discount_title'  => sanitize_text_field( $data['offer_discount_title'] ?? '' ),
+			'design_settings'       => wp_json_encode( $data['design_settings'] ?? array() ),
 		);
 
 		$result = $wpdb->insert(
@@ -152,6 +153,7 @@ class OrderBumpData {
 				'%d', // offer_product_id
 				'%s', // offer_type
 				'%f', // offer_amount
+				'%s', // offer_discount_title
 				'%s', // design_settings
 			)
 		);
@@ -207,6 +209,10 @@ class OrderBumpData {
 
 		if ( isset( $data['offer_amount'] ) ) {
 			$update_data['offer_amount'] = floatval( $data['offer_amount'] );
+		}
+
+		if ( isset( $data['offer_discount_title'] ) ) {
+			$update_data['offer_discount_title'] = sanitize_text_field( $data['offer_discount_title'] );
 		}
 
 		if ( isset( $data['design_settings'] ) ) {
