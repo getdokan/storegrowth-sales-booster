@@ -45,7 +45,6 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function boot(): void {
         // Run database migration
-        Migration::run_migration();
     }
 
     /**

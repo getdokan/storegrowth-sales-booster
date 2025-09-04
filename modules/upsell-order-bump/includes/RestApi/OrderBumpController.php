@@ -457,6 +457,12 @@ class OrderBumpController extends WP_REST_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'default'     => 0,
 				),
+				'offer_discount_title' => array(
+					'description' => __( 'Title for the discount offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit' ),
+					'default'     => '',
+				),
 				'design_settings'   => array(
 					'description' => __( 'Design settings for the order bump.', 'storegrowth-sales-booster' ),
 					'type'        => 'object',

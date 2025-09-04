@@ -51,6 +51,7 @@ class Migration {
             offer_product_id bigint(20) unsigned NOT NULL,
             offer_type varchar(50) NOT NULL DEFAULT 'percentage',
             offer_amount decimal(10,2) NOT NULL DEFAULT 0.00,
+            offer_discount_title varchar(255) NOT NULL DEFAULT '',
             design_settings longtext,
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

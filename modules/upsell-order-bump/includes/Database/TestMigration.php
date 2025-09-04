@@ -30,8 +30,8 @@ class TestMigration {
             'offer_product_id' => 10,
             'offer_type' => 'percentage',
             'offer_amount' => 20.00,
+            'offer_discount_title' => 'Special Offer!',
             'design_settings' => wp_json_encode([
-                'title' => 'Special Offer!',
                 'description' => 'Add this product to your order',
                 'button_text' => 'Add to Order',
                 'background_color' => '#ffffff',
