@@ -45,6 +45,9 @@ class Bogo {
      * @return array
      */
     public function add_bogo_submenu_on_dokan_vendor_dashboard( $menus ) {
+        if ( ! dokan_is_seller_dashboard() ) {
+            return $menus;
+        }
         $menus['sales_booster']['submenu']['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
