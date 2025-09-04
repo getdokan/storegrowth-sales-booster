@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
@@ -41,6 +42,10 @@ class SalesPOP implements HookRegistry {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
+    if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
+        return;
+    }
+
 		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_popup_products', true );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {

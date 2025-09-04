@@ -59,6 +59,10 @@ class CommonHooks implements HookRegistry {
 	 * Output bar html
 	 */
 	public function wp_footer() {
+        if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
+            return;
+        }
+
 		$settings             = Helper::get_settings();
 		$deafault_device_view = array( 'banner-show-desktop' );
 		$device_view          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'banner_device_view', $deafault_device_view );

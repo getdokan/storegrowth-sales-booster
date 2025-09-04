@@ -233,4 +233,34 @@ class Helper {
 
 		return $request;
 	}
+
+    /**
+     * Check if The Current User Allowed to View Promotions.
+     *
+     * @since 2.0.0
+     *
+     * @return bool
+     */
+    public static function is_current_user_allowed_to_view_promotions(): bool {
+        if ( ! is_user_logged_in() ) {
+            return true;
+        }
+
+        $allowed_roles = apply_filters(
+            'sgsb_allowed_roles_for_promotions',
+            [
+                'customer',
+                'wholesale_customer',
+                'subscriber'
+            ]
+        );
+
+        foreach ( $allowed_roles as $role ) {
+            if ( current_user_can( $role ) ) {
+                return true;
+            }
+        }
+
+        return apply_filters( 'sgsb_current_user_allowed_to_view_promotions', false );
+    }
 }
