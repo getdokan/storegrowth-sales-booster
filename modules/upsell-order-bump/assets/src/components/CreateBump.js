@@ -65,8 +65,8 @@ function CreateBump({navigate, useParams, useSearchParams}) {
 
   const changeTab = ( key ) => {
     // Determine if we're in edit mode
-    const isEditMode = bump_id && action_name === 'edit';
-    const baseRoute = isEditMode ? `/upsell-order-bump/edit-bump/${bump_id}` : "/upsell-order-bump/create-bump";
+    const isEditMode = bump_id && (action_name === 'edit' || !action_name);
+    const baseRoute = isEditMode ? `/upsell-order-bump/${bump_id}` : "/upsell-order-bump/create-bump";
     navigate( `${baseRoute}?tab_name=${key}` );
   };
 
@@ -237,7 +237,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
         }
         if( ( duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ) ){
             // Only show duplicate errors in create mode, not edit mode
-            const isEditMode = bump_id && action_name === 'edit';
+            const isEditMode = bump_id && (action_name === 'edit' || !action_name);
             if ( !isEditMode ) {
                 setDuplicateDataError(duplicateErrs);
                 return false;
