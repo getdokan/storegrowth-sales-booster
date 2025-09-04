@@ -41,18 +41,18 @@ class Migration {
 
         $charset_collate = $wpdb->get_charset_collate();
 
-        $sql = "CREATE TABLE $table_name (
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             name varchar(255) NOT NULL,
             status varchar(20) NOT NULL DEFAULT 'active',
             target_type varchar(50) NOT NULL DEFAULT 'products',
-            target_products longtext,
-            target_categories longtext,
+            target_products TEXT DEFAULT NULL,
+            target_categories TEXT DEFAULT NULL,
             offer_product_id bigint(20) unsigned NOT NULL,
             offer_type varchar(50) NOT NULL DEFAULT 'percentage',
             offer_amount decimal(10,2) NOT NULL DEFAULT 0.00,
             offer_discount_title varchar(255) NOT NULL DEFAULT '',
-            design_settings longtext,
+            design_settings TEXT DEFAULT NULL,
             created_by bigint(20) unsigned DEFAULT NULL,
             updated_by bigint(20) unsigned DEFAULT NULL,
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
