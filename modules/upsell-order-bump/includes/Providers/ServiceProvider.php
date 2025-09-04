@@ -4,11 +4,6 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\ServiceProvider as RestApiServiceProvider;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpAjax;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
 
 /**
  * ServiceProvider for the module.
@@ -29,11 +24,7 @@ class ServiceProvider extends BaseServiceProvider {
      * @var array<class-string>
      */
     protected $services = [
-        UpsellOrderBumpModule::class,
-        OrderBumpData::class,
-        RestApiServiceProvider::class,
-        OrderBumpAjax::class,
-        OrderBumpController::class,
+        UpsellOrderBumpModule::class
     ];
 
     /**
@@ -44,7 +35,6 @@ class ServiceProvider extends BaseServiceProvider {
      * @return void
      */
     public function boot(): void {
-        // Run database migration
     }
 
     /**
