@@ -212,7 +212,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
         }
         let isSameScheduleExist = false;
         for (const newScheduleItem of newTargetSchedules) {
-            if(bumpItem.bump_schedule.includes(newScheduleItem)){
+            if(bumpItem.bump_schedule && bumpItem.bump_schedule.includes(newScheduleItem)){
                 isSameScheduleExist = true;
                 break;
             }
@@ -221,13 +221,13 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             continue;
         }
         for (const newCatItem of newTargetCats) {
-            if(bumpItem.target_categories.includes(newCatItem)){
+            if(bumpItem.target_categories && bumpItem.target_categories.includes(newCatItem)){
                 duplicateErrs.duplicateTargetCats.push(newCatItem);
                 break;
             }
         }
         for (const newProductItem of newTargetProducts) {
-            if(bumpItem.target_products.includes(newProductItem)){
+            if(bumpItem.target_products && bumpItem.target_products.includes(newProductItem)){
                 duplicateErrs.duplicateTargetProducts.push(newProductItem);
                 break;
             }

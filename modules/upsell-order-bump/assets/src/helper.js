@@ -65,6 +65,10 @@ export const convertApiResponseToFrontendFormat = (apiResponse) => {
         offer_product: apiResponse.offer_product_id || '',
         bump_type: apiResponse.target_type || 'products',
         offer_discount_title: apiResponse.offer_discount_title || '',
+        // Ensure arrays are properly initialized
+        target_products: apiResponse.target_products || [],
+        target_categories: apiResponse.target_categories || [],
+        bump_schedule: ['daily'], // Default schedule since API doesn't store this
         // Map design settings from nested object to flat structure
         ...(apiResponse.design_settings || {}),
     };
