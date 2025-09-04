@@ -39,7 +39,7 @@ class ServiceProvider extends BaseServiceProvider implements HookRegistry {
 	 * Register REST API routes.
 	 */
 	public function register_rest_routes() {
-		$controller = $this->container->get( OrderBumpController::class );
+		$controller = new OrderBumpController();
 		$controller->register_routes();
 	}
 

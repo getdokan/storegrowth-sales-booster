@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { Form, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
-import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities } from '../helper';
+import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities, convertApiResponseToFrontendFormat } from '../helper';
 import BasicInfo from './BasicInfo';
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
@@ -34,7 +34,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
         orderBumpApi.getAll()
             .then(response => {
                 setPageLoading( false );
-                const bumpDataParsed = response.map(bumpItem => convertBumpItemHtmlEntitiesToTexts(bumpItem));
+                const bumpDataParsed = response.map(bumpItem => convertApiResponseToFrontendFormat(bumpItem));
                 setallBumpsData( bumpDataParsed );
             })
             .catch(error => {
@@ -94,7 +94,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
       orderBumpApi.getById(bump_id)
         .then(data => {
           setPageLoading(false);
-          const parsedBumpItem = convertBumpItemHtmlEntitiesToTexts(data);
+          const parsedBumpItem = convertApiResponseToFrontendFormat(data);
           setCreateFromData({
             ...createBumpData,
             ...parsedBumpItem,

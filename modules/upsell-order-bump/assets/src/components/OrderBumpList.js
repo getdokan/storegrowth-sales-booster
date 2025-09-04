@@ -3,7 +3,7 @@ import { applyFilters } from '@wordpress/hooks';
 import { Table, Button, notification} from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState } from "@wordpress/element";
-import { convertBumpItemHtmlEntitiesToTexts } from "../helper";
+import { convertApiResponseToFrontendFormat } from "../helper";
 import { Fragment } from "react";
 import UpgradeCard from "../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
 import OfferProductContent from "./OfferProductContent";
@@ -167,7 +167,7 @@ function OrderBumpList({ navigate }) {
       .then(response => {
         setPageLoading(false);
         const bumpDataParsed = response.map((bumpItem) =>
-          convertBumpItemHtmlEntitiesToTexts(bumpItem)
+          convertApiResponseToFrontendFormat(bumpItem)
         );
         setBumpData(bumpDataParsed);
       })
