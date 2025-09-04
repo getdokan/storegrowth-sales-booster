@@ -660,7 +660,10 @@
 
 
 .sgsb-cart-collaterals.cart-collaterals .cart-subtotal td,
-.sgsb-cart-collaterals.cart-collaterals .order-total td {
+.sgsb-cart-collaterals.cart-collaterals .order-total td,
+.sgsb-cart-collaterals.cart-collaterals .tax-total td,
+.sgsb-cart-collaterals.cart-collaterals .tax-rate td,
+.sgsb-cart-collaterals.cart-collaterals tr[class*="tax"] td {
     text-align: right;
     padding: 0 !important;
     background: transparent !important;
