@@ -14,7 +14,7 @@ const Templates = ( { formData, setFormData } ) => {
     
     // List of shipping bar templates.
     templates = applyFilters(
-        "sgsb_floating_notification_bar_templates",
+        "spsg_floating_notification_bar_templates",
         templates,
     );
 
@@ -37,7 +37,7 @@ const Templates = ( { formData, setFormData } ) => {
 
     // Shipping bar template styles.
     templateStyles = applyFilters(
-        "sgsb_floating_notification_bar_template_styles",
+        "spsg_floating_notification_bar_template_styles",
         templateStyles,
     );
 

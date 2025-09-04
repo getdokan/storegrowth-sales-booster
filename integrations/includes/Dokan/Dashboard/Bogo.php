@@ -80,18 +80,18 @@ class Bogo {
         $assets = include $script_assets;
 
         wp_enqueue_script(
-            'sgsb-bogo-dokan-vendor-dashboard',
+            'spsg-bogo-dokan-vendor-dashboard',
 	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.js' ),
             array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
             $assets['version'],
             true
         );
 
-        $admin_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings', [] );
+        $admin_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
 
         wp_localize_script(
-            'sgsb-bogo-dokan-vendor-dashboard',
-            'sgsbBogoDokanVendorDashboard',
+            'spsg-bogo-dokan-vendor-dashboard',
+            'spsgBogoDokanVendorDashboard',
             [
                 'is_pro_active'                               => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
                 'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',

@@ -35,7 +35,7 @@ class CommonHooks implements HookRegistry {
 		}
         // phpcs:disable
 		// Don't load banner on fast fly cart.
-		if ( ! isset( $_GET['sgsb-checkout'] ) ) {
+		if ( ! isset( $_GET['spsg-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 		}

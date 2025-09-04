@@ -21,9 +21,9 @@ const DISPLAY_FIELDS = {
   bogoSchedule: false,
 };
 const BasicInfo = ({ clearErrors }) => {
-  const { setCreateFromData } = useDispatch("sgsb_bogo");
+  const { setCreateFromData } = useDispatch("spsg_bogo");
   const { createBogoData } = useSelect((select) => ({
-    createBogoData: select("sgsb_bogo").getCreateFromData(),
+    createBogoData: select("spsg_bogo").getCreateFromData(),
   }));
 
   const targetProductList = [
@@ -178,7 +178,7 @@ const BasicInfo = ({ clearErrors }) => {
 
   };
 
-  const hidePremiumFeature = applyFilters('sgsb_hide_bogo_premium_options', true);
+  const hidePremiumFeature = applyFilters('spsg_hide_bogo_premium_options', true);
 
   const dealOptions = [
     { key: 'different', value: __('Buy X Get Y', 'storegrowth-sales-booster') },
@@ -276,7 +276,7 @@ const BasicInfo = ({ clearErrors }) => {
         />
 
         {applyFilters(
-          'sgsb_after_bogo_offer_settings',
+          'spsg_after_bogo_offer_settings',
           '',
           createBogoData,
           onFieldChange
@@ -327,7 +327,7 @@ const BasicInfo = ({ clearErrors }) => {
         )}
         {DISPLAY_FIELDS.bogoSchedule &&
           applyFilters(
-            'sgsb_after_bogo_basic_info_settings',
+            'spsg_after_bogo_basic_info_settings',
             '',
             createBogoData,
             onFieldChange,

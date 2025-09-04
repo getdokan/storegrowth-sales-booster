@@ -64,7 +64,7 @@ function DefaultBanner(props) {
     <Fragment>
       <SettingsSection>
         {applyFilters(
-          "sgsb_floating_notification_bar_position_settings",
+          "spsg_floating_notification_bar_position_settings",
           "",
           formData,
           onFieldChange
@@ -94,7 +94,7 @@ function DefaultBanner(props) {
           maxLength={80}
         />
         {applyFilters(
-          "sgsb_floating_notification_bar_icon_radio_box",
+          "spsg_floating_notification_bar_icon_radio_box",
           "",
           iconOptions,
           formData,
@@ -121,7 +121,7 @@ function DefaultBanner(props) {
         />
         <ButtonAction formData={formData} onFieldChange={onFieldChange} />
         {applyFilters(
-          "sgsb_floating_notification_bar_coupon_coundown",
+          "spsg_floating_notification_bar_coupon_coundown",
           "",
           formData,
           onFieldChange,
@@ -129,7 +129,7 @@ function DefaultBanner(props) {
         )}
       </SettingsSection>
       {applyFilters(
-        "sgsb_floating_notification_bar_display_rules_settings",
+        "spsg_floating_notification_bar_display_rules_settings",
         "",
         formData,
         onFieldChange

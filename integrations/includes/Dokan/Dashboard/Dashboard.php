@@ -59,10 +59,10 @@ class Dashboard {
         add_action( 'woocommerce_flush_rewrite_rules', [ $this, 'flush_rewrite_rules' ] );
 
         // Add countdown-timer fields to Dokan product edit page.
-        add_action( 'dokan_product_edit_after_inventory_variants' , [ $this, 'sgsb_add_product_countdown_timer_fields' ], 5, 2 );
+        add_action( 'dokan_product_edit_after_inventory_variants' , [ $this, 'spsg_add_product_countdown_timer_fields' ], 5, 2 );
 
         // Save countdown-timer fields when product is saved.
-        add_action( 'dokan_process_product_meta', [ $this, 'sgsb_save_product_countdown_timer_fields' ], 10, 1 );
+        add_action( 'dokan_process_product_meta', [ $this, 'spsg_save_product_countdown_timer_fields' ], 10, 1 );
     }
 
     /**
@@ -125,7 +125,7 @@ class Dashboard {
      * @param object $post Post object.
      * @param int    $post_id Post ID.
      */
-    public function sgsb_add_product_countdown_timer_fields( $post, $post_id ) {
+    public function spsg_add_product_countdown_timer_fields( $post, $post_id ) {
         if ( ! dokan_is_seller_dashboard() ) {
             return;
         }
@@ -135,9 +135,9 @@ class Dashboard {
         $args = [
             'post_id'      => $post_id,
             'product'      => $product,
-            'discount_key' => '_sgsb_countdown_timer_discount_amount',
-            'start_key'    => '_sgsb_countdown_timer_discount_start',
-            'end_key'      => '_sgsb_countdown_timer_discount_end',
+            'discount_key' => '_spsg_countdown_timer_discount_amount',
+            'start_key'    => '_spsg_countdown_timer_discount_start',
+            'end_key'      => '_spsg_countdown_timer_discount_end',
         ];
 
         // Include the template file directly with variables in scope
@@ -153,7 +153,7 @@ class Dashboard {
      *
      * @return void
      */
-    public function sgsb_save_product_countdown_timer_fields( $post_id ) {
+    public function spsg_save_product_countdown_timer_fields( $post_id ) {
         // Check if we have permission to save
         if ( ! current_user_can( 'dokan_edit_product', $post_id ) ) {
             return;
@@ -161,13 +161,13 @@ class Dashboard {
 
         // Define the meta keys we want to save
         $meta_keys = [
-            '_sgsb_countdown_timer_discount_amount',
-            '_sgsb_countdown_timer_discount_start',
-            '_sgsb_countdown_timer_discount_end',
+            '_spsg_countdown_timer_discount_amount',
+            '_spsg_countdown_timer_discount_start',
+            '_spsg_countdown_timer_discount_end',
         ];
 
         // Apply filter to allow customization of meta keys
-        $meta_keys = apply_filters( 'sgsb_countdown_timer_meta_keys', $meta_keys, $post_id );
+        $meta_keys = apply_filters( 'spsg_countdown_timer_meta_keys', $meta_keys, $post_id );
 
         // Loop through meta keys and save data
         foreach ( $meta_keys as $meta_key ) {
@@ -175,7 +175,7 @@ class Dashboard {
                 $value = sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) );
 
                 // Allow filtering of meta values before saving
-                $value = apply_filters( 'sgsb_countdown_timer_meta_value', $value, $meta_key, $post_id );
+                $value = apply_filters( 'spsg_countdown_timer_meta_value', $value, $meta_key, $post_id );
 
                 update_post_meta( $post_id, $meta_key, $value );
             } else {
@@ -185,6 +185,6 @@ class Dashboard {
         }
 
         // Action hook for after saving countdown timer fields
-        do_action( 'sgsb_after_save_countdown_timer_fields', $post_id );
+        do_action( 'spsg_after_save_countdown_timer_fields', $post_id );
     }
 }

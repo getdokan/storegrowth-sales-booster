@@ -2,7 +2,7 @@ import { Button } from "antd";
 import { applyFilters } from "@wordpress/hooks";
 const Preview = ({storeData}) => {
   const buttonStyles = applyFilters(
-    "sgsb_direct_checkout_button_preview_styles",
+    "spsg_direct_checkout_button_preview_styles",
     {
       color           : storeData?.text_color,
       height          : 'fit-content',

@@ -56,7 +56,7 @@ function DesignTab(props) {
         />
 
         {applyFilters(
-          "sgsb_quick_view_navigation_settings",
+          "spsg_quick_view_navigation_settings",
           "",
           formData,
           onFieldChange

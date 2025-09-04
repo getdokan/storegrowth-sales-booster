@@ -119,12 +119,6 @@ register_activation_hook(
 	__FILE__,
 	function () {
 		add_option( 'storegrowth_activation_redirect', true );
-		
-		// Run BOGO migration if needed
-		$migration_status = \StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::get_migration_status();
-		if ( $migration_status['migration_needed'] ) {
-			\StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::migrate_to_single_table();
-		}
 	}
 );
 
@@ -160,7 +154,7 @@ function storegrowth_get_container(): Container {
  *
  * @return Bootstrap
  */
-function sgsb_plugin(): Bootstrap {
+function sp_store_growth(): Bootstrap {
 	return Bootstrap::instance();
 }
 
@@ -180,4 +174,4 @@ require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
-sgsb_plugin();
+sp_store_growth();

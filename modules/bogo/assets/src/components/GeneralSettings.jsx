@@ -12,10 +12,10 @@ import { useEffect, useState } from "@wordpress/element";
 
 const GeneralSettings = () => {
   const [getButtonLoading, setButtonLoading] = useState(false);
-  const { setBogoGlobalSettings } = useDispatch("sgsb_bogo");
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setBogoGlobalSettings } = useDispatch("spsg_bogo");
+  const { setPageLoading } = useDispatch("spsg");
   const { bogoGlobalSettingsData: currentSettings } = useSelect((select) => ({
-    bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
+    bogoGlobalSettingsData: select("spsg_bogo").getBogoGlobalSettings(),
   }));
 
   const iconStyleNames = [
@@ -66,13 +66,13 @@ const GeneralSettings = () => {
     setButtonLoading(true);
 
     jQuery.post(
-      sgsbAdmin.ajax_url,
+      spsgAdmin.ajax_url,
       {
-        action: "sgsb_bogo_general_save_settings",
+        action: "spsg_bogo_general_save_settings",
         data: JSON.stringify({
           bogo_general_settings_data: currentSettings,
         }),
-        _ajax_nonce: sgsbAdmin.nonce,
+        _ajax_nonce: spsgAdmin.nonce,
       },
       function (response) {
         setBogoGlobalSettings(response.data);
@@ -85,11 +85,11 @@ const GeneralSettings = () => {
     setPageLoading(true);
     let $ = jQuery;
     $.post(
-      sgsbAdmin.ajax_url,
+      spsgAdmin.ajax_url,
       {
-        action: "sgsb_bogo_general_get_settings",
+        action: "spsg_bogo_general_get_settings",
         data: [],
-        _ajax_nonce: sgsbAdmin.nonce,
+        _ajax_nonce: spsgAdmin.nonce,
       },
       function (response) {
         setBogoGlobalSettings({
@@ -138,7 +138,7 @@ const GeneralSettings = () => {
         />
 
         { applyFilters(
-          "sgsb_bogo_global_badge_icon_radio_box",
+          "spsg_bogo_global_badge_icon_radio_box",
           "",
           iconOptions,
           currentSettings,

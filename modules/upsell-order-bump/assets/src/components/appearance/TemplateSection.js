@@ -8,10 +8,10 @@ import SettingsSection from "sales-booster/src/components/settings/Panels/PanelS
 import {Fragment} from "react";
 
 const TemplateSection = () => {
-    const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
+    const { setCreateFromData } = useDispatch( 'spsg_order_bump' );
 
     const { createBumpData } = useSelect( ( select ) => ( {
-        createBumpData: select( 'sgsb_order_bump' ).getCreateFromData()
+        createBumpData: select( 'spsg_order_bump' ).getCreateFromData()
     } ) );
 
     const onFieldChange = ( key, value ) => {

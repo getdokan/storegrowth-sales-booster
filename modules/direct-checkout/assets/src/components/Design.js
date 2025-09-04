@@ -10,14 +10,14 @@ import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings
 import { applyFilters } from "@wordpress/hooks";
 
 function Design({ onFormSave, upgradeTeaser }) {
-  const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
+  const { setCreateFromData } = useDispatch("spsg_direct_checkout");
 
   const { createDirectCheckoutFormData, getButtonLoading } = useSelect(
     (select) => ({
       createDirectCheckoutFormData: select(
-        "sgsb_direct_checkout"
+        "spsg_direct_checkout"
       ).getCreateFromData(),
-      getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
+      getButtonLoading: select("spsg_direct_checkout").getButtonLoading(),
     })
   );
 
@@ -98,7 +98,7 @@ function Design({ onFormSave, upgradeTeaser }) {
             />
 
             { applyFilters(
-              "sgsb_after_direct_checkout_button_design_settings",
+              "spsg_after_direct_checkout_button_design_settings",
               "",
               createDirectCheckoutFormData,
               onFieldChange,

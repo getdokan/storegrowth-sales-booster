@@ -45,10 +45,10 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		wp_enqueue_style(
-			'sgsb-stock-cd-custom-style',
-			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ),
+			'spsg-stock-cd-custom-style',
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
 			array(),
-			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/sgsb-stockbar-style.css' ) )
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
 		);
 
 		wp_enqueue_script(
@@ -61,9 +61,9 @@ class EnqueueScript implements HookRegistry {
 
 		wp_enqueue_script(
 			'stockbar_custom_script',
-			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ),
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stock-bar.js' ),
 			array( 'jquery', 'stockbar_jqmeter' ),
-			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/sgsb-stock-bar.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stock-bar.js' ) ),
 			true
 		);
 
@@ -76,14 +76,14 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' !== $hook ) {
+		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
 			return;
 		}
 
 		$settings_file = require PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sgsb-stock-bar-settings',
+			'spsg-stock-bar-settings',
 			PluginHelper::get_modules_url( 'stock-bar/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
@@ -96,7 +96,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_stock_bar_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_stock_bar_settings' );
 
 		$bar_height   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
 		$bg_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
@@ -107,26 +107,26 @@ class EnqueueScript implements HookRegistry {
 		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
 
 		$custom_css = "
-			.sgsb-stock-progress-bar-section {
+			.spsg-stock-progress-bar-section {
 				border: 2px solid {$border_color};
 			}
-			.sgsb-stock-progress {
+			.spsg-stock-progress {
 				height: {$bar_height}px;
 				background: {$fg_color};
 			}
-			.sgsb-stock-progress-bar {
+			.spsg-stock-progress-bar {
 				background-color: {$bg_color};
 			}
 		";
 
 		if ( $is_twenty_one_theme ) {
 			$custom_css .= '
-                .sgsb-stock-counter-and-bar {
+                .spsg-stock-counter-and-bar {
                     margin-top: 18px;
                 }
             ';
 		}
 
-		wp_add_inline_style( 'sgsb-stock-cd-custom-style', $custom_css );
+		wp_add_inline_style( 'spsg-stock-cd-custom-style', $custom_css );
 	}
 }

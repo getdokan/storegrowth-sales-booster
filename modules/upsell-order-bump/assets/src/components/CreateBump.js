@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { Form, notification } from 'antd';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect,useState } from '@wordpress/element';
-import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities } from '../helper';
+import { convertBumpItemHtmlEntitiesToTexts, convertBumpItemTextDatasToHtmlEntities, convertApiResponseToFrontendFormat } from '../helper';
 import BasicInfo from './BasicInfo';
 import PanelPreview from "sales-booster/src/components/settings/Panels/PanelPreview";
 import PanelRow from "sales-booster/src/components/settings/Panels/PanelRow";
@@ -13,32 +13,38 @@ import { createBumpForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import OverViewArea from "./appearance/template/overview-area/OverViewArea";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
+import orderBumpApi from '../services/OrderBumpApi';
 
 function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { setPageLoading } = useDispatch( 'sgsb' );
+  const { setPageLoading } = useDispatch( 'spsg' );
   const [buttonLoading, setButtonLoading] = useState(false);
-  const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
+  const { setCreateFromData, resetCreateFromData } = useDispatch( 'spsg_order_bump' );
   let {bump_id,action_name} = useParams();
 
   const { bumpData, createBumpData } = useSelect( ( select ) => ({
-    createBumpData: select('sgsb_order_bump').getCreateFromData(),
-    bumpData: wp.data.select('sgsb_order_bump').getBumpData()
+    createBumpData: select('spsg_order_bump').getCreateFromData(),
+    bumpData: wp.data.select('spsg_order_bump').getBumpData()
   }));
   useEffect(() => {
     if(!bumpData?.length > 0){
         setPageLoading( true );
-        jQuery.post( bump_save_url.ajax_url, {
-            'action': 'bump_list',
-            'data': [],
-            '_ajax_nonce': bump_save_url.ajd_nonce
-            }, function ( bumpDataFromAjax ) {
-            setPageLoading( false );
-            const bumpDataParsed = bumpDataFromAjax.data.map(bumpItem => convertBumpItemHtmlEntitiesToTexts(bumpItem));
-            setallBumpsData( bumpDataParsed );
-        } );
+        orderBumpApi.getAll()
+            .then(response => {
+                setPageLoading( false );
+                const bumpDataParsed = response.map(bumpItem => convertApiResponseToFrontendFormat(bumpItem));
+                setallBumpsData( bumpDataParsed );
+            })
+            .catch(error => {
+                setPageLoading( false );
+                console.error('Error fetching order bumps:', error);
+                notification.error({
+                    message: 'Error',
+                    description: 'Failed to fetch order bumps',
+                });
+            });
     }else{
         setallBumpsData( bumpData );
     }
@@ -58,40 +64,57 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   };
 
   const changeTab = ( key ) => {
-    navigate( "/upsell-order-bump/create-bump?tab_name=" + key );
+    // Determine if we're in edit mode
+    const isEditMode = bump_id && (action_name === 'edit' || !action_name);
+    const baseRoute = isEditMode ? `/upsell-order-bump/${bump_id}` : "/upsell-order-bump/create-bump";
+    navigate( `${baseRoute}?tab_name=${key}` );
   };
 
   if( action_name == 'delete' ) {
     setPageLoading(true);
-    let $ = jQuery;
-    $.post( bump_save_url.ajax_url, { 'action': 'bump_delete', 'data': bump_id, '_ajax_nonce' : bump_save_url.ajd_nonce }, function ( data ) {
-      setPageLoading(false);
-      notification['error'] ( {
-        message: 'Order Bump deleted',
-      } );
-      navigate("/upsell-order-bump");
-    });
+    orderBumpApi.delete(bump_id)
+      .then(() => {
+        setPageLoading(false);
+        notification.error({
+          message: 'Order Bump deleted',
+        });
+        navigate("/upsell-order-bump");
+      })
+      .catch(error => {
+        setPageLoading(false);
+        console.error('Error deleting order bump:', error);
+        notification.error({
+          message: 'Error',
+          description: 'Failed to delete order bump',
+        });
+      });
   }
 
   if( bump_id ) {
 
     useEffect( () => {
       setPageLoading( true );
-      let $ = jQuery;
-     $.post( bump_save_url.ajax_url, { 'action': 'bump_list', 'data': bump_id, '_ajax_nonce' : bump_save_url.ajd_nonce }, function ( data ) {
-      setPageLoading(false);
-
-      const parsedBumpItem = convertBumpItemHtmlEntitiesToTexts(data.data)
-      setCreateFromData({
-        ...createBumpData,
-        ...parsedBumpItem,
-        offer_product_id:bump_id
-      });
-       
-    } );
-
-    
-    }, []);
+      orderBumpApi.getById(bump_id)
+        .then(data => {
+          setPageLoading(false);
+          const parsedBumpItem = convertApiResponseToFrontendFormat(data);
+          // Don't spread createBumpData here as it might be empty on reload
+          // Instead, merge with default form data to ensure all fields are present
+          setCreateFromData({
+            ...createBumpForm,
+            ...parsedBumpItem,
+            offer_product_id: bump_id
+          });
+        })
+        .catch(error => {
+          setPageLoading(false);
+          console.error('Error fetching order bump:', error);
+          notification.error({
+            message: 'Error',
+            description: 'Failed to fetch order bump',
+          });
+        });
+    }, [bump_id]);
 
   } else {
     useEffect( () => {
@@ -194,7 +217,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
         }
         let isSameScheduleExist = false;
         for (const newScheduleItem of newTargetSchedules) {
-            if(bumpItem.bump_schedule.includes(newScheduleItem)){
+            if(bumpItem.bump_schedule && bumpItem.bump_schedule.includes(newScheduleItem)){
                 isSameScheduleExist = true;
                 break;
             }
@@ -203,19 +226,21 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             continue;
         }
         for (const newCatItem of newTargetCats) {
-            if(bumpItem.target_categories.includes(newCatItem)){
+            if(bumpItem.target_categories && bumpItem.target_categories.includes(newCatItem)){
                 duplicateErrs.duplicateTargetCats.push(newCatItem);
                 break;
             }
         }
         for (const newProductItem of newTargetProducts) {
-            if(bumpItem.target_products.includes(newProductItem)){
+            if(bumpItem.target_products && bumpItem.target_products.includes(newProductItem)){
                 duplicateErrs.duplicateTargetProducts.push(newProductItem);
                 break;
             }
         }
         if( ( duplicateErrs.duplicateTargetCats.length > 0 || duplicateErrs.duplicateTargetProducts.length > 0 ) ){
-            if ( window.location.hash === '#/upsell-order-bump/create-bump' ) {
+            // Only show duplicate errors in create mode, not edit mode
+            const isEditMode = bump_id && (action_name === 'edit' || !action_name);
+            if ( !isEditMode ) {
                 setDuplicateDataError(duplicateErrs);
                 return false;
             }
@@ -226,25 +251,70 @@ function CreateBump({navigate, useParams, useSearchParams}) {
     if ( ! ( isDuplicateCatsFound || isDuplicateProductsFound ) ) {
       setButtonLoading( true );
       const bumpDataParsedToEntities = convertBumpItemTextDatasToHtmlEntities(createBumpData);
-      let $ = jQuery;
-      $.post( bump_save_url.ajax_url, {
-          'action'    : 'bump_create',
-          'data'      : bumpDataParsedToEntities,
-          '_ajax_nonce' : bump_save_url.ajd_nonce
-        }, function ( data ) {
-        setCreateFromData( {
-                ...bumpDataParsedToEntities,
-                offer_product_id: data
-            } );
-        setButtonLoading( false );
+      
+      // Prepare data for REST API
+      const apiData = {
+        name: bumpDataParsedToEntities.name_of_order_bump,
+        target_type: bumpDataParsedToEntities.bump_type || 'products',
+        target_products: bumpDataParsedToEntities.target_products || [],
+        target_categories: bumpDataParsedToEntities.target_categories || [],
+        offer_product_id: bumpDataParsedToEntities.offer_product,
+        offer_type: bumpDataParsedToEntities.offer_type,
+        offer_amount: bumpDataParsedToEntities.offer_amount,
+        design_settings: {
+          box_border_style: bumpDataParsedToEntities.box_border_style,
+          box_border_color: bumpDataParsedToEntities.box_border_color,
+          box_top_margin: bumpDataParsedToEntities.box_top_margin,
+          box_bottom_margin: bumpDataParsedToEntities.box_bottom_margin,
+          discount_background_color: bumpDataParsedToEntities.discount_background_color,
+          discount_text_color: bumpDataParsedToEntities.discount_text_color,
+          discount_font_size: bumpDataParsedToEntities.discount_font_size,
+          product_description_text_color: bumpDataParsedToEntities.product_description_text_color,
+          product_description_font_size: bumpDataParsedToEntities.product_description_font_size,
+          accept_offer_background_color: bumpDataParsedToEntities.accept_offer_background_color,
+          accept_offer_text_color: bumpDataParsedToEntities.accept_offer_text_color,
+          accept_offer_font_size: bumpDataParsedToEntities.accept_offer_font_size,
+          offer_description_background_color: bumpDataParsedToEntities.offer_description_background_color,
+          offer_description_text_color: bumpDataParsedToEntities.offer_description_text_color,
+          offer_description_font_size: bumpDataParsedToEntities.offer_description_font_size,
+          offer_image_url: bumpDataParsedToEntities.offer_image_url,
+          offer_product_title: bumpDataParsedToEntities.offer_product_title,
+          offer_discount_title: bumpDataParsedToEntities.offer_discount_title,
+          offer_fixed_price_title: bumpDataParsedToEntities.offer_fixed_price_title,
+          product_description: bumpDataParsedToEntities.product_description,
+          selection_title: bumpDataParsedToEntities.selection_title,
+          offer_description: bumpDataParsedToEntities.offer_description,
+          offer_product_regular_price: bumpDataParsedToEntities.offer_product_regular_price,
+        }
+      };
 
-        notification['success']({
-                message     : 'Order Bump Creation',
-                description : 'Data for order bump creation saved successfully',
-            });
+      const apiCall = bumpDataParsedToEntities.offer_product_id 
+        ? orderBumpApi.update(bumpDataParsedToEntities.offer_product_id, apiData)
+        : orderBumpApi.create(apiData);
 
-        navigate( "/upsell-order-bump" );
-      });
+      apiCall
+        .then(response => {
+          setCreateFromData({
+            ...bumpDataParsedToEntities,
+            offer_product_id: response.id || bumpDataParsedToEntities.offer_product_id
+          });
+          setButtonLoading(false);
+
+          notification.success({
+            message: 'Order Bump Creation',
+            description: 'Data for order bump creation saved successfully',
+          });
+
+          navigate("/upsell-order-bump");
+        })
+        .catch(error => {
+          setButtonLoading(false);
+          console.error('Error saving order bump:', error);
+          notification.error({
+            message: 'Error',
+            description: 'Failed to save order bump',
+          });
+        });
     }
 
   }

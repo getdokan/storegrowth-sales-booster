@@ -52,12 +52,12 @@ class Ajax {
 	public function __construct() {
 		$this->plugin_file = plugin_dir_path( __FILE__ ) . '../storegrowth-sales-booster.php';
 		$this->plugin_name = basename( $this->plugin_file, '.php' );
-		add_action( 'wp_ajax_sgsb_admin_ajax', array( $this, 'admin_ajax' ) );
+		add_action( 'wp_ajax_spsg_admin_ajax', array( $this, 'admin_ajax' ) );
 		/**
 		 * Register ajax callback
 		*/
-		add_action( 'wp_ajax_sgsb_process_user_concent_data', array( $this, 'sgsb_process_user_concent_data' ) );
-		add_action( 'wp_ajax_sgsb_inisetup_flag_update', array( $this, 'sgsb_inisetup_flag_update' ) );
+		add_action( 'wp_ajax_spsg_process_user_concent_data', array( $this, 'spsg_process_user_concent_data' ) );
+		add_action( 'wp_ajax_spsg_inisetup_flag_update', array( $this, 'spsg_inisetup_flag_update' ) );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Ajax {
 	 * @uses update_module_status
 	 */
 	public function admin_ajax() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
 		if ( ! isset( $_POST['method'] ) ) {
 			wp_die();
@@ -139,7 +139,7 @@ class Ajax {
 		$plugin = get_plugin_data( $this->plugin_file );
 		return $plugin;
 	}
-	public function sgsb_collect_non_sensitive_data() {
+	public function spsg_collect_non_sensitive_data() {
 		$body = array(
 			'plugin_slug'   => sanitize_text_field( $this->plugin_name ),
 			'url'           => get_bloginfo( 'url' ),
@@ -221,8 +221,8 @@ class Ajax {
 	/**
 	 * Process Consent Data
 	 */
-	public function sgsb_process_user_concent_data() {
-		check_ajax_referer( 'sgsb_ajax_nonce', '_ajax_nonce' );
+	public function spsg_process_user_concent_data() {
+		check_ajax_referer( 'spsg_ajax_nonce', '_ajax_nonce' );
 		$post_data = json_decode( wp_unslash( stripslashes( $_POST['data'] ) ) );
 
 		$update_news  = $post_data->update_news;
@@ -232,7 +232,7 @@ class Ajax {
             return;
 		}
 
-		$data_to_send = $this->sgsb_collect_non_sensitive_data();
+		$data_to_send = $this->spsg_collect_non_sensitive_data();
 
         $request_args = [
             'data_to_send' => $data_to_send,
@@ -248,9 +248,9 @@ class Ajax {
             'data_format'  => 'body',
         ];
 
-        $old_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_user_consent_data', [] );
+        $old_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_user_consent_data', [] );
         array_push( $old_data, $request_args );
-        update_option( 'sgsb_user_consent_data', $old_data );
+        update_option( 'spsg_user_consent_data', $old_data );
 
 //      TODO: we can use this code to send data to different server in future.
 
@@ -275,10 +275,10 @@ class Ajax {
 	/**
 	 * Process Consent Data
 	 */
-	public function sgsb_inisetup_flag_update() {
-		check_ajax_referer( 'sgsb_ajax_nonce', '_ajax_nonce' );
-		$flag_data = isset( $_POST['sgsb_ini_completion'] );
-		update_option( 'sgsb_ini_completion', $flag_data );
+	public function spsg_inisetup_flag_update() {
+		check_ajax_referer( 'spsg_ajax_nonce', '_ajax_nonce' );
+		$flag_data = isset( $_POST['spsg_ini_completion'] );
+		update_option( 'spsg_ini_completion', $flag_data );
 		wp_send_json_success( array( 'message' => 'Success message' ) );
 		wp_die();
 	}

@@ -61,7 +61,7 @@ class CommonHooks implements HookRegistry {
 			// Adds the new tab.
 			$tabs['countdown_timer_tab'] = array(
 				'label'  => __( 'Countdown Timer', 'storegrowth-sales-booster' ),
-				'target' => 'sgsb-countdown-timer-tab',
+				'target' => 'spsg-countdown-timer-tab',
 			);
 		}
 		return $tabs;
@@ -86,27 +86,27 @@ class CommonHooks implements HookRegistry {
 		$discount_end_date   = '';
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		if ( isset( $_POST['_sgsb_countdown_timer_discount_start'] ) ) {
-			$discount_start_date = wc_clean( wp_unslash( $_POST['_sgsb_countdown_timer_discount_start'] ) ); //phpcs:ignore
+		if ( isset( $_POST['_spsg_countdown_timer_discount_start'] ) ) {
+			$discount_start_date = wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_start'] ) ); //phpcs:ignore
 
 			if ( $discount_start_date ) {
 				$discount_start_date = gmdate( 'Y-m-d 00:00:00', strtotime( $discount_start_date ) );
 			}
 		}
 
-		if ( isset( $_POST['_sgsb_countdown_timer_discount_end'] ) ) {
-			$discount_end_date = wc_clean( wp_unslash( $_POST['_sgsb_countdown_timer_discount_end'] ) ); // phpcs:ignore
+		if ( isset( $_POST['_spsg_countdown_timer_discount_end'] ) ) {
+			$discount_end_date = wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_end'] ) ); // phpcs:ignore
 
 			if ( $discount_end_date ) {
 				$discount_end_date = gmdate( 'Y-m-d 23:59:59', strtotime( $discount_end_date ) );
 			}
 		}
 
-		$stock_discount_amount = isset( $_POST['_sgsb_countdown_timer_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_sgsb_countdown_timer_discount_amount'] ) ) : null; // phpcs:ignore
+		$stock_discount_amount = isset( $_POST['_spsg_countdown_timer_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_amount'] ) ) : null; // phpcs:ignore
 
-		update_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_start', $discount_start_date );
-		update_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_end', $discount_end_date );
-		update_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', $stock_discount_amount );
+		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_start', $discount_start_date );
+		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', $discount_end_date );
+		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', $stock_discount_amount );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
@@ -120,7 +120,7 @@ class CommonHooks implements HookRegistry {
 		// Check countdown discount is set.
 		if ( Helper::is_product_discountable( $product->get_id() ) ) {
 			$current_price = floatval( $price );
-			$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
+			$discount_amount = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 			$discount_amount = 100 - intval( $discount_amount );
 
 			return ( $current_price * $discount_amount ) / 100;

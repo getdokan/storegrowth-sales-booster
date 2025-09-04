@@ -3,10 +3,10 @@
 @import url(../fonts/Inter-semibold/stylesheet.css);
 @import url(../fonts/inter-bold/stylesheet.css);
 
-.sgsb-stock-stockbar-status {
+.spsg-stock-stockbar-status {
 	width: 100%;
 }
-.sgsb-stock-stockbar-status::after {
+.spsg-stock-stockbar-status::after {
 	display: table;
 	content: " ";
 	clear: both;
@@ -16,18 +16,18 @@
 	margin: 0;
 }
 
-.sgsb-stock-progress {
+.spsg-stock-progress {
 	width: 0;
 	border-radius: 5px;
 }
 
-.sgsb-stock-progress-bar {
+.spsg-stock-progress-bar {
 	width: 100%;
 	border-radius: 5px;
 	margin-top: 5px;
 }
 
-.sgsb-stock-progress-bar-section {
+.spsg-stock-progress-bar-section {
     gap: 16px;
     display: grid;
     background: #fff;
@@ -36,21 +36,21 @@
     padding: 15px 15px 15px;
 }
 
-.sgsb-stock-progress-title {
+.spsg-stock-progress-title {
     display: flex;
     line-height: 1;
 	justify-content: space-between;
 }
 
-.sgsb-stock-progress-available-title{
+.spsg-stock-progress-available-title{
 	float: right;
 }
-.sgsb-stock-progress-sold-title,
-.sgsb-stock-progress-available-title {
+.spsg-stock-progress-sold-title,
+.spsg-stock-progress-available-title {
     font-size: 14px;
 	color: #073b4c;
 }
-.sgsb-stock-progress-count {
+.spsg-stock-progress-count {
 	color: #000;
 	font-weight: 600;
 }

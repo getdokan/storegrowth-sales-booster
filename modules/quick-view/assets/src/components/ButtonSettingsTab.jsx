@@ -28,7 +28,7 @@ function ButtonSettingsTab(props) {
   ];
 
   buttonPositions = applyFilters(
-    "sgsb_quick_view_button_position_settings",
+    "spsg_quick_view_button_position_settings",
     "",
     buttonPositions
   )
@@ -73,7 +73,7 @@ function ButtonSettingsTab(props) {
           title={__("Button Position", "storegrowth-sales-booster")}
         />
         {applyFilters(
-          "sgsb_quick_view_button_icon_settings",
+          "spsg_quick_view_button_icon_settings",
           "",
           onFieldChange,
           formData,
@@ -97,7 +97,7 @@ function ButtonSettingsTab(props) {
           )}
         />
         {applyFilters(
-          "sgsb_quick_after_modal_close_button_settings",
+          "spsg_quick_after_modal_close_button_settings",
           "",
           formData,
           onFieldChange

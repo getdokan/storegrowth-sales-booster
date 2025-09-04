@@ -46,7 +46,7 @@ class BogoValidator {
 			return false;
 		}
 
-		return apply_filters( 'sgsb_is_bogo_applicable_product', true, $product_id, $bogo_settings );
+		return apply_filters( 'spsg_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
 
 	/**
@@ -475,7 +475,7 @@ class BogoValidator {
 			$prepared['offered_products'] = array( $product_id );
 		}
 
-		return apply_filters( 'sgsb_bogo_validator_prepared_settings', $prepared, $settings, $type, $product_id, $variation_id );
+		return apply_filters( 'spsg_bogo_validator_prepared_settings', $prepared, $settings, $type, $product_id, $variation_id );
 	}
 
 	/**

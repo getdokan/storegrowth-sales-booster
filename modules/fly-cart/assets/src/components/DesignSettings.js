@@ -51,7 +51,7 @@ const DesignSettings = ({
     };
 
     positionContents = applyFilters(
-        'sgsb_quick_cart_position_settings',
+        'spsg_quick_cart_position_settings',
         positionContents,
         positionIcons
     );

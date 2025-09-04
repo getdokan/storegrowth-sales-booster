@@ -219,11 +219,11 @@ function TargetProductAndCategory({ catList, productList }) {
 }
 
 function BogoList({ navigate }) {
-  const { setPageLoading } = useDispatch("sgsb");
-  const { setBogoData } = useDispatch("sgsb_bogo");
+  const { setPageLoading } = useDispatch("spsg");
+  const { setBogoData } = useDispatch("spsg_bogo");
 
   const { bogoListData } = useSelect((select) => ({
-    bogoListData: select("sgsb_bogo").getBogoData(),
+    bogoListData: select("spsg_bogo").getBogoData(),
   }));
   useEffect(() => {
     setPageLoading(true);
@@ -339,14 +339,14 @@ function BogoList({ navigate }) {
   }
 
   let data = applyFilters(
-    "sgsb_upsell_order_bogo_data",
+    "spsg_upsell_order_bogo_data",
     bogoListData.map(mapBogoData),
     bogoListData,
     mapBogoData
   );
 
   const isDisableBogoCreation = applyFilters(
-    "sgsb_control_upsell_order_bogo_data",
+    "spsg_control_upsell_order_bogo_data",
     bogoListData?.length >= 2
   );
 

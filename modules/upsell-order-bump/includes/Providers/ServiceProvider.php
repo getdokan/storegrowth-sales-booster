@@ -12,7 +12,7 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
  *
  * @since 2.0.0
  *
- * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 
@@ -24,7 +24,7 @@ class ServiceProvider extends BaseServiceProvider {
      * @var array<class-string>
      */
     protected $services = [
-        UpsellOrderBumpModule::class,
+        UpsellOrderBumpModule::class
     ];
 
     /**
@@ -35,7 +35,6 @@ class ServiceProvider extends BaseServiceProvider {
      * @return void
      */
     public function boot(): void {
-
     }
 
     /**

@@ -11,8 +11,8 @@ import {UpgradeCrown} from "../../../settings/Panels";
 
 // Handle stock bar modules pro settings prompts.
 addFilter( 
-    'sgsb_shop_stock_bar_enable_settings',
-    'sgsb_shop_stock_bar_enable_settings_callback',
+    'spsg_shop_stock_bar_enable_settings',
+    'spsg_shop_stock_bar_enable_settings_callback',
     ( component ) =>  { 
         return ( 
             <SingleCheckBox
@@ -30,8 +30,8 @@ addFilter(
     }
 );
 addFilter( 
-    'sgsb_variation_product_stock_bar_enable_settings',
-    'sgsb_variation_product_stock_bar_enable_settings_callback',
+    'spsg_variation_product_stock_bar_enable_settings',
+    'spsg_variation_product_stock_bar_enable_settings_callback',
     ( component ) =>  { 
         return ( 
             <SingleCheckBox
@@ -52,8 +52,8 @@ addFilter(
      }
 );
 addFilter( 
-    'sgsb_bar_color_stock_bar_settings',
-    'sgsb_bar_color_stock_bar_settings_callback',
+    'spsg_bar_color_stock_bar_settings',
+    'spsg_bar_color_stock_bar_settings_callback',
     ( component ) =>  { 
         return ( 
             <ColourPicker
@@ -66,8 +66,8 @@ addFilter(
     }
 );
 addFilter( 
-    'sgsb_design_panel_stock_bar_settings',
-    'sgsb_design_panel_stock_bar_settings_callback',
+    'spsg_design_panel_stock_bar_settings',
+    'spsg_design_panel_stock_bar_settings_callback',
     ( component ) =>  { 
         const barDisplayFormat = [
             {
@@ -137,8 +137,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_append_after_stock_status_settings',
-    'sgsb_append_after_stock_status_settings_callback',
+    'spsg_append_after_stock_status_settings',
+    'spsg_append_after_stock_status_settings_callback',
     () => {
         return (
             <Fragment>
@@ -171,8 +171,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_before_stock_bar_preview_end',
-    'sgsb_before_stock_bar_preview_end_callback',
+    'spsg_before_stock_bar_preview_end',
+    'spsg_before_stock_bar_preview_end_callback',
     () => {
         return (
             <Fragment>
@@ -197,8 +197,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_before_stock_bar_preview_template_end',
-    'sgsb_before_stock_bar_preview_template_end_callback',
+    'spsg_before_stock_bar_preview_template_end',
+    'spsg_before_stock_bar_preview_template_end_callback',
     () => {
         return (
             <Fragment>

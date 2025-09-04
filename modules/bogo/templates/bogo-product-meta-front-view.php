@@ -66,11 +66,11 @@ if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_ur
                         }
 
                         // Get apply product id.
-                        $apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $offered_product, $variation_id );
+                        $apply_able_product_id = apply_filters( 'spsg_bogo_get_apply_able_product_id', $offered_product, $variation_id );
 
                         // Prepare settings for BOGO apply.
                         $bogo_settings = Helper::get_product_bogo_settings_for_cart( $apply_able_product_id );
-                        $bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $offered_product, $variation_id );
+                        $bogo_settings = apply_filters( 'spsg_get_bogo_settings_for_cart', $bogo_settings, $offered_product, $variation_id );
 
                         $product_id = Helper::get_offer_product_id( $bogo_settings, $apply_able_product_id );
 

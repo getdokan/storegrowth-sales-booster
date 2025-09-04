@@ -28,7 +28,7 @@
     /* Other font properties like font-weight and font-style can also be defined here */
 }
 
-body.show_floating_notification_bar .sgsb-floating-notification-bar-wrapper {
+body.show_floating_notification_bar .spsg-floating-notification-bar-wrapper {
     transition: 0.5s;
 }
 
@@ -36,7 +36,7 @@ body:not(.show_floating_notification_bar) {
     padding-top: 0;
 }
 
-.sgsb-floating-notification-bar-wrapper {
+.spsg-floating-notification-bar-wrapper {
     display: none;
     position: absolute;
     left: 0;
@@ -50,7 +50,7 @@ body:not(.show_floating_notification_bar) {
     padding: 8px 0px;
 }
 
-.sgsb-floating-notification-bar {
+.spsg-floating-notification-bar {
     display: flex;
     justify-content: space-between;
     width: 97%;
@@ -60,26 +60,26 @@ body:not(.show_floating_notification_bar) {
     padding: 0px 20px;
 }
 
-.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
+.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-icon svg {
     margin-top: 8px;
     fill: #fff;
     width: 25px;
     height: 25px;
 }
 
-.sgsb-floating-notification-bar-text-container {
+.spsg-floating-notification-bar-text-container {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
     align-items: center;
 }
 
-.sgsb-floating-notification-bar-text {
+.spsg-floating-notification-bar-text {
     font-size: 20px;
     font-weight: 600;
 }
 
-.sgsb-floating-notification-bar-remove {
+.spsg-floating-notification-bar-remove {
     cursor: pointer;
 }
 
@@ -100,7 +100,7 @@ body:not(.show_floating_notification_bar) {
     opacity: 0.95;
 }
 
-body.admin-bar .sgsb-floating-notification-bar-wrapper {
+body.admin-bar .spsg-floating-notification-bar-wrapper {
     top: 32px;
     max-width: 100%;
 }
@@ -116,39 +116,39 @@ body {
     /* Adjust the transition duration and timing function as needed */
 }
 
-.sgsb-coupon-container .sgsb-coupon-code {
+.spsg-coupon-container .spsg-coupon-code {
     color: #FFF;
     font-size: 20px;
     font-weight: 700;
 }
 
-.sgsb-coupon-container {
+.spsg-coupon-container {
     padding: 7px;
     border: 1px dashed white;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.sgsb-fn-bar-countdown {
+.spsg-fn-bar-countdown {
     display: flex;
     font-size: 18px;
     font-weight: 800;
     gap: 20px;
 }
 
-.sgsb-fn-bar-countdown .sgsb-fn-bar-countdown-value {
+.spsg-fn-bar-countdown .spsg-fn-bar-countdown-value {
     gap: 8px;
     display: flex;
     line-height: 1;
     flex-direction: column;
 }
 
-.sgsb-countdown-content {
+.spsg-countdown-content {
     font-size: 12px;
     font-weight: 400;
 }
 
-.sgsb-fn-bar-data-content {
+.spsg-fn-bar-data-content {
     display: flex;
     flex-flow: wrap;
     gap: 48px;
@@ -157,33 +157,33 @@ body {
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1024px) {
-    .sgsb-floating-notification-bar-wrapper {
+    .spsg-floating-notification-bar-wrapper {
         height: auto !important;
     }
-    .sgsb-floating-notification-bar{
+    .spsg-floating-notification-bar{
         padding:20px 20px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .sgsb-floating-notification-bar-text-container {
+    .spsg-floating-notification-bar-text-container {
         display: block;
     }
 
-    .sgsb-floating-notification-bar-wrapper {
+    .spsg-floating-notification-bar-wrapper {
         height: auto !important;
     }
 
-    body.admin-bar .sgsb-floating-notification-bar-wrapper {
+    body.admin-bar .spsg-floating-notification-bar-wrapper {
         top: 46px;
     }
 
-    .sgsb-fn-bar-data-content{
+    .spsg-fn-bar-data-content{
         flex-direction: column;
         gap: 15px;
     }
 
-    .sgsb-floating-notification-bar{
+    .spsg-floating-notification-bar{
         padding:20px 20px;
     }
 }

@@ -3,28 +3,30 @@ import { applyFilters } from '@wordpress/hooks';
 import { Table, Button, notification} from "antd";
 import { useDispatch, useSelect } from "@wordpress/data";
 import { useEffect, useState } from "@wordpress/element";
-import { convertBumpItemHtmlEntitiesToTexts } from "../helper";
+import { convertApiResponseToFrontendFormat } from "../helper";
 import { Fragment } from "react";
 import UpgradeCard from "../../../../../assets/src/components/settings/Panels/PanelSettings/UpgradeCard";
 import OfferProductContent from "./OfferProductContent";
+import orderBumpApi from '../services/OrderBumpApi';
 
 const deleteBump = (stateUpdateCallback) => (id) => {
   stateUpdateCallback(true);
-  jQuery.post(
-    bump_save_url.ajax_url,
-    {
-      action: "bump_delete",
-      data: id,
-      _ajax_nonce: bump_save_url.ajd_nonce,
-    },
-    function () {
-      notification["error"]({
+  orderBumpApi.delete(id)
+    .then(() => {
+      notification.error({
         message: "Order Bump deleted",
       });
       stateUpdateCallback(false);
       location.reload();
-    }
-  );
+    })
+    .catch(error => {
+      console.error('Error deleting order bump:', error);
+      notification.error({
+        message: 'Error',
+        description: 'Failed to delete order bump',
+      });
+      stateUpdateCallback(false);
+    });
 };
 
 function ActionButton({ navigate, bump_id }) {
@@ -151,32 +153,32 @@ function TargetProductAndCategory({ type, catList, productList }) {
 }
 
 function OrderBumpList({ navigate }) {
-  const { setPageLoading } = useDispatch("sgsb");
-  const { setBumpData } = useDispatch("sgsb_order_bump");
+  const { setPageLoading } = useDispatch("spsg");
+  const { setBumpData } = useDispatch("spsg_order_bump");
 
   const { bumpListData } = useSelect((select) => ({
-    bumpListData: select("sgsb_order_bump").getBumpData(),
+    bumpListData: select("spsg_order_bump").getBumpData(),
   }));
 
   useEffect(() => {
     setPageLoading(true);
 
-    jQuery.post(
-      bump_save_url.ajax_url,
-      {
-        action: "bump_list",
-        data: [],
-        _ajax_nonce: bump_save_url.ajd_nonce,
-      },
-      function (bumpDataFromAjax) {
+    orderBumpApi.getAll()
+      .then(response => {
         setPageLoading(false);
-
-        const bumpDataParsed = bumpDataFromAjax.data.map((bumpItem) =>
-          convertBumpItemHtmlEntitiesToTexts(bumpItem)
+        const bumpDataParsed = response.map((bumpItem) =>
+          convertApiResponseToFrontendFormat(bumpItem)
         );
         setBumpData(bumpDataParsed);
-      }
-    );
+      })
+      .catch(error => {
+        setPageLoading(false);
+        console.error('Error fetching order bumps:', error);
+        notification.error({
+          message: 'Error',
+          description: 'Failed to fetch order bumps',
+        });
+      });
   }, []);
 
   const columns = [
@@ -238,14 +240,14 @@ function OrderBumpList({ navigate }) {
   }
 
   let data = applyFilters(
-    'sgsb_upsell_order_bump_data',
+    'spsg_upsell_order_bump_data',
     bumpListData.slice(-2).map(mapBumpData),
     bumpListData,
     mapBumpData
   );
 
   const isDisableBumpCreation = applyFilters(
-    'sgsb_control_upsell_order_bump_data',
+    'spsg_control_upsell_order_bump_data',
     bumpListData?.length >= 2
   );
 

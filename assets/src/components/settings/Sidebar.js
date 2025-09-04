@@ -40,8 +40,8 @@ function Sidebar({ routes }) {
             if (response.success) {
                 // Set active routes for settings panel.
                 setAllRoutes([...allRoutes?.filter(route => route?.name === module?.name || route?.status !== false)]);
-                const sgsbSettingsURL = `admin.php?page=sgsb-settings#/${module.name}`;
-                window.location.href = sgsbSettingsURL;
+                const spsgSettingsURL = `admin.php?page=spsg-settings#/${module.name}`;
+                window.location.href = spsgSettingsURL;
                 window.location.reload();
             }
         });
@@ -71,7 +71,7 @@ function Sidebar({ routes }) {
     };
 
     const dashboardRedirect = () => {
-        window.location.href = 'admin.php?page=sgsb-modules';
+        window.location.href = 'admin.php?page=spsg-modules';
     };
 
     useEffect(() => {
@@ -100,18 +100,18 @@ function Sidebar({ routes }) {
         return <Navigate to={`${firstItem.path}`} replace={true} />;
     }
     else if (location.pathname === "/" && filteredRoute.length === 0) {
-        window.location.href = "admin.php?page=sgsb-modules";
+        window.location.href = "admin.php?page=spsg-modules";
     }
 
     return (
         <Layout.Sider
-            className="site-layout-background sgsb__settings-sidebar"
+            className="site-layout-background spsg__settings-sidebar"
             style={{
                 minHeight: "100vh",
             }}
         >
-            <div className="sgsb-admin-setting-dashboard-sideabr">
-                <div className="sgsb-logo">
+            <div className="spsg-admin-setting-dashboard-sideabr">
+                <div className="spsg-logo">
                     <Image preview={false} width={164} src={logo} />
                 </div>
 
@@ -119,7 +119,7 @@ function Sidebar({ routes }) {
                     <Link
                         to={`/dashboard/overview`}
                         data-route-name={`dashboard`}
-                        className={selectedMenu === "dashboard" ? "sgsb-selected-link" : ""}
+                        className={selectedMenu === "dashboard" ? "spsg-selected-link" : ""}
                     >
                         {/*<Image preview={ false } width={ 19 } src={ dashboardIcon } />*/}
                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -174,7 +174,7 @@ function Sidebar({ routes }) {
                                     <Link
                                         key={route.name}
                                         className={
-                                            selectedMenu === route.name ? "sgsb-selected-link" : ""
+                                            selectedMenu === route.name ? "spsg-selected-link" : ""
                                         }
                                         data-route-name={route.name}
                                         to={route?.status !== false ? route.path : '#'}
@@ -184,7 +184,7 @@ function Sidebar({ routes }) {
                                             onClick={() => route?.status === false ? handleModalAlert(route) : handleLiClick(route.name)} // Handle the click event on <li>
                                             className={
                                                 selectedMenu === route.name
-                                                    ? `sgsb-selected-module ${route.name}`
+                                                    ? `spsg-selected-module ${route.name}`
                                                     : `${route.name}`
                                             }
                                         >

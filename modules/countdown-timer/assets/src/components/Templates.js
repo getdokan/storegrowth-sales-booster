@@ -15,7 +15,7 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
 
     // List of sales countdown templates.
     templates = applyFilters(
-        "sgsb_sales_countdown_timer_templates",
+        "spsg_sales_countdown_timer_templates",
         templates,
     );
 
@@ -50,7 +50,7 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
 
     // Sales countdown template styles.
     templateStyles = applyFilters(
-        "sgsb_countdown_timer_template_styles",
+        "spsg_countdown_timer_template_styles",
         templateStyles,
     );
 

@@ -15,9 +15,9 @@ $button_action = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings
 $redirect_url  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'redirect_url', '#' );
 
 ?>
-<div class="sgsb-floating-notification-bar-wrapper">
-	<div class="sgsb-floating-notification-bar">
-		<div class='sgsb-floating-notification-bar-icon'>
+<div class="spsg-floating-notification-bar-wrapper">
+	<div class="spsg-floating-notification-bar">
+		<div class='spsg-floating-notification-bar-icon'>
 			<?php if ( 'notify-bar-icon-1' === $banner_icon ) : ?>
 				<svg viewBox="0 0 200 200" style="width: 40px; height: 40px">
 					<g>
@@ -61,8 +61,8 @@ $redirect_url  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings
 				</svg>
 			<?php endif; ?>
 		</div>
-		<div class="sgsb-floating-notification-bar-text-container">
-      <span class="sgsb-floating-notification-bar-text">
+		<div class="spsg-floating-notification-bar-text-container">
+      <span class="spsg-floating-notification-bar-text">
 			<?php
       /**
        * Banner text filter.
@@ -74,7 +74,7 @@ $redirect_url  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings
 		</span>
       <?php require plugin_dir_path( __FILE__ ) . 'action-button.php'; ?>
     </div>
-		<div class="sgsb-floating-notification-bar-remove">
+		<div class="spsg-floating-notification-bar-remove">
 			<svg width="16" height="16" viewBox="0 0 16 16">
 				<g>
 					<path

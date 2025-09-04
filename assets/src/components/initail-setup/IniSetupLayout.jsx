@@ -56,8 +56,8 @@ const IniSetupLayout = () => {
 
   const getUserDetails = async () => {
     const params = {
-      _ajax_nonce: sgsbAdmin.nonce,
-      action: "sgsb_process_user_concent_data",
+      _ajax_nonce: spsgAdmin.nonce,
+      action: "spsg_process_user_concent_data",
       data: JSON.stringify(agreementData),
     };
     return await fetchData("/wp-admin/admin-ajax.php", params);
@@ -65,9 +65,9 @@ const IniSetupLayout = () => {
 
   const iniSetupChecker = async () => {
     const params = {
-      _ajax_nonce: sgsbAdmin.nonce,
-      action: "sgsb_inisetup_flag_update",
-      sgsb_ini_completion: true,
+      _ajax_nonce: spsgAdmin.nonce,
+      action: "spsg_inisetup_flag_update",
+      spsg_ini_completion: true,
     };
     return await fetchData("/wp-admin/admin-ajax.php", params);
   };
@@ -87,7 +87,7 @@ const IniSetupLayout = () => {
     setCurrent(current - 1);
   };
 
-  const redirectHandler = () => { window.location.href = 'admin.php?page=sgsb-settings#/dashboard/overview' };
+  const redirectHandler = () => { window.location.href = 'admin.php?page=spsg-settings#/dashboard/overview' };
   const skipHandler = (event) => {
     if (current !== (stepSize - 1)) {
       next();
@@ -107,8 +107,8 @@ const IniSetupLayout = () => {
 
   return (
     <Fragment>
-      <div ref={contentLayoutRef} className="sgsb-ini-setup-page">
-        <div className="sgsb-ini-page-container">
+      <div ref={contentLayoutRef} className="spsg-ini-setup-page">
+        <div className="spsg-ini-page-container">
           <div className="storegrowth-icon">
             <img src={StoreGrowthIcon} alt="storegrowth-icon" />
             <Steps

@@ -40,7 +40,7 @@ class EnqueueScript implements HookRegistry {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$layout   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'layout', 'side' );
 		if ( is_checkout() || is_cart() ) {
 			return;
@@ -54,7 +54,7 @@ class EnqueueScript implements HookRegistry {
 		);
 
 		wp_enqueue_style(
-			'sgsb-ffc-style',
+			'spsg-ffc-style',
 			PluginHelper::get_modules_url( 'fly-cart/assets/css/wfc-style.css' ),
 			array(),
 			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/css/wfc-style.css' ) )
@@ -72,7 +72,7 @@ class EnqueueScript implements HookRegistry {
 		$this->qc_basic_inline_styles();
 
 		if ( 'center' === $layout && SGSB_PRO_ACTIVE ) {
-				do_action( 'sgsb_ffc_wp_enqueue_scripts' );
+				do_action( 'spsg_ffc_wp_enqueue_scripts' );
 		} else {
 				$this->qc_side_cart_styles();
 		}
@@ -90,7 +90,7 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_spsg-settings' === $hook ) {
 			// Add the color picker css file.
 			wp_enqueue_style( 'wp-color-picker' );
 
@@ -100,7 +100,7 @@ class EnqueueScript implements HookRegistry {
 			$settings_file['dependencies'][] = 'wp-color-picker';
 
 			wp_enqueue_script(
-				'sgsb-fly-cart-settings',
+				'spsg-fly-cart-settings',
 				PluginHelper::get_modules_url( 'fly-cart/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -114,7 +114,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function qc_basic_inline_styles() {
 		// Get style options.
-		$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$wfc_color             = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
 		$widget_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
 		$product_card_bg_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
@@ -132,22 +132,22 @@ class EnqueueScript implements HookRegistry {
 			.wfc-widget-sidebar {
 				background-color: {$widget_bg_color};
 			}
-			.sgsb-cart-widget-buttons a {
+			.spsg-cart-widget-buttons a {
 				background-color: {$wfc_btn_bgcolor};
 				border-color: {$wfc_btn_bgcolor};
 			}
-			.sgsb-cart-widget-buttons .sgsb-cart-widget-shooping-button {
+			.spsg-cart-widget-buttons .spsg-cart-widget-shooping-button {
 				background-color: {$shop_btn_bgcolor};
 			}
-			.sgsb-widget-shopping-cart-content .sgsb-woocommerce-cart-form .sgsb-fly-cart-table tr.woocommerce-cart-form__cart-item.cart_item {
+			.spsg-widget-shopping-cart-content .spsg-woocommerce-cart-form .spsg-fly-cart-table tr.woocommerce-cart-form__cart-item.cart_item {
 				background-color: {$product_card_bg_color};
 			}
-			.wfc-widget-sidebar .promocode-form button.sgsb-apply-coupon {
+			.wfc-widget-sidebar .promocode-form button.spsg-apply-coupon {
                 background: {$wfc_btn_bgcolor} !important;
             }
 		";
 
-		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
+		wp_add_inline_style( 'spsg-ffc-style', $custom_css );
 	}
 
 	/**
@@ -162,12 +162,12 @@ class EnqueueScript implements HookRegistry {
                 top: 0;
                 right: 0;
             }
-            .sgsb-widget-shopping-cart-content-wrapper{
+            .spsg-widget-shopping-cart-content-wrapper{
                 width:460px;
             }
         ';
 
-		wp_add_inline_style( 'sgsb-ffc-style', $custom_css );
+		wp_add_inline_style( 'spsg-ffc-style', $custom_css );
 	}
 
 	/**
@@ -175,8 +175,8 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function frontend_widget_script() {
 		// Get checkout redirection data.
-		$qcart_settings           = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
-		$dir_checkout_settings    = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' );
+		$qcart_settings           = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
+		$dir_checkout_settings    = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
 		$cart_layout_type         = \StorePulse\StoreGrowth\Helper::find_option_settings( $qcart_settings, 'layout', 'side' );
 		$is_add_to_qcart_redirect = \StorePulse\StoreGrowth\Helper::find_option_settings( $qcart_settings, 'enable_add_to_cart_redirect', true );
 		$checkout_redirect        = \StorePulse\StoreGrowth\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
@@ -193,14 +193,14 @@ class EnqueueScript implements HookRegistry {
 
 		wp_localize_script(
 			'wfc-script',
-			'sgsbFrontend',
+			'spsgFrontend',
 			array(
 				'checkoutRedirect'  => $is_checkout_redirect,
 				'quickCartRedirect' => $is_add_to_qcart_redirect,
 				'cartLayoutType'    => $cart_layout_type,
 				'checkoutUrl'       => wc_get_checkout_url(),
 				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
-				'nonce'             => wp_create_nonce( 'sgsb_frontend_ajax' ),
+				'nonce'             => wp_create_nonce( 'spsg_frontend_ajax' ),
 				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 			)
 		);

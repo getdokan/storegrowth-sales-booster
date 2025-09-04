@@ -18,9 +18,9 @@ function CreateMessage({ navigate, useParams }) {
     __('Buy 1, unit of any product from this category and get 1 unit free of the same product', 'storegrowth-sales-booster')
   );
 
-  const { setBogoGlobalSettings } = useDispatch("sgsb_bogo");
+  const { setBogoGlobalSettings } = useDispatch("spsg_bogo");
   const { bogoGlobalSettingsData: currentSettings } = useSelect((select) => ({
-    bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
+    bogoGlobalSettingsData: select("spsg_bogo").getBogoGlobalSettings(),
   }));
 
   const layout = {

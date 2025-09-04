@@ -20,7 +20,7 @@ function FreeShippingBarLayout({
   useSearchParams,
   moduleId,
 }) {
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setPageLoading } = useDispatch("spsg");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   let [searchParams, setSearchParams] = useSearchParams("general");
@@ -34,7 +34,7 @@ function FreeShippingBarLayout({
     btn_color                      : "#ffffff",
     text_color                     : "#ffffff",
     icon_color                     : "#ffffff",
-    btn_target                     : sgsbFsbData?.cartUrl,
+    btn_target                     : spsgFsbData?.cartUrl,
     font_family                    : "poppins",
     banner_delay                   : 7,
     bar_position                   : "top",
@@ -88,18 +88,18 @@ function FreeShippingBarLayout({
     },
   ];
 
-  const isProEnabled = sgsbAdmin.isPro;
+  const isProEnabled = spsgAdmin.isPro;
 
   const getSettings = () => {
     setPageLoading(true);
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data: {
-          action: "sgsb_pd_banner_get_settings",
-          _ajax_nonce: sgsbAdmin.nonce,
+          action: "spsg_pd_banner_get_settings",
+          _ajax_nonce: spsgAdmin.nonce,
         },
       })
       .success((response) => {
@@ -201,14 +201,14 @@ function FreeShippingBarLayout({
     setButtonLoading(true);
 
     const data = {
-      action: "sgsb_pd_banner_save_settings",
-      _ajax_nonce: sgsbAdmin.nonce,
+      action: "spsg_pd_banner_save_settings",
+      _ajax_nonce: spsgAdmin.nonce,
       form_data: JSON.stringify({ shipping_bar_data: formData }),
     };
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data,
       })

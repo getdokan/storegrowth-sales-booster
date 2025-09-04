@@ -51,7 +51,7 @@ export const menuFix = (slug) => {
     $("#toplevel_page_sales-booster-for-woocommerce ul > li > a").each(function (
         e
     ) {
-        if ($(this).attr("href").indexOf("?page=go-sgsb-pro") > 0) {
+        if ($(this).attr("href").indexOf("?page=go-spsg-pro") > 0) {
             $(this).attr("target", "_blank");
             // Add hover effect
             $(this).hover(
@@ -63,7 +63,7 @@ export const menuFix = (slug) => {
                 }
             );
         }
-        if ($(this).attr("href").indexOf("?page=go-sgsb-docs") > 0) {
+        if ($(this).attr("href").indexOf("?page=go-spsg-docs") > 0) {
             $(this).attr("target", "_blank");
         }
     });
@@ -153,8 +153,8 @@ export const deactivatorHandler = (moduleID) => {
         status: false,
     }).success((response) => {
         if (response.success) {
-            const sgsbSettingsURL = `admin.php?page=sgsb-modules`;
-            window.location.href = sgsbSettingsURL;
+            const spsgSettingsURL = `admin.php?page=spsg-modules`;
+            window.location.href = spsgSettingsURL;
         }
     });
 };

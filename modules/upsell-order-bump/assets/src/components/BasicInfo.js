@@ -15,9 +15,9 @@ import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSett
 
 
 const BasicInfo = ({ clearErrors }) => {
-  const { setCreateFromData } = useDispatch("sgsb_order_bump");
+  const { setCreateFromData } = useDispatch("spsg_order_bump");
   const { createBumpData } = useSelect((select) => ({
-    createBumpData: select("sgsb_order_bump").getCreateFromData(),
+    createBumpData: select("spsg_order_bump").getCreateFromData(),
   }));
 
   const offerProductId = parseInt(createBumpData?.offer_product);

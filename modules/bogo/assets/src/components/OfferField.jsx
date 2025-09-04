@@ -22,7 +22,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
   return (
     <Fragment>
       <Col className="gutter-row" span={24}>
-        <Card className={`sgsb-settings-card`}>
+        <Card className={`spsg-settings-card`}>
           <Row>
             <Col span={9}>
               <div className={`card-heading`}>
@@ -30,7 +30,7 @@ const OfferField = ({ createBogoData, offerOptions, onFieldChange }) => {
                   {__("Offer Price/Discount", "storegrowth-sales-booster")}
                 </Title>
                 <SettingsTooltip
-                  content={`The discount offer can be specific price(${sgsbAdmin.currencySymbol}) or percentage(%).`}
+                  content={`The discount offer can be specific price(${spsgAdmin.currencySymbol}) or percentage(%).`}
                 />
               </div>
             </Col>

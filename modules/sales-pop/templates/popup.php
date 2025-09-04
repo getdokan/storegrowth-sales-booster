@@ -16,7 +16,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 ?>
 <section class="custom-social-proof" style="display: none;">
 	<div class="custom-notification" style="<?php echo isset( $main_div_style ) ? esc_attr( $main_div_style ) : null; ?>">
-		<div class="custom-notification-container" style="<?php do_action( 'sgsb_sales_pop_image_position', $popup_properties['image_position'] ); ?>" >
+		<div class="custom-notification-container" style="<?php do_action( 'spsg_sales_pop_image_position', $popup_properties['image_position'] ); ?>" >
 
 			<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
 				<?php

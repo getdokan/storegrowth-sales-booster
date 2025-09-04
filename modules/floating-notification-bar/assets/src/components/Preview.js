@@ -24,8 +24,8 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
     const selectedFont = getLabelByValue( formData.font_family, fontFamily );
 
     return (
-        <div className='sgsb-pd-banner-bar-wrapper'>
-            <div className='sgsb-pd-banner-bar' style={ bannerStyle }>
+        <div className='spsg-pd-banner-bar-wrapper'>
+            <div className='spsg-pd-banner-bar' style={ bannerStyle }>
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
                         { isProActive && formData?.default_banner_custom_icon ? (
@@ -58,7 +58,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
 
                   {/* Title start */}
                   <span
-                    className='sgsb-pd-banner-text'
+                    className='spsg-pd-banner-text'
                     style={{
                       textAlign: 'center',
                       fontFamily: selectedFont,
@@ -72,7 +72,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                   {/* Countdown start */}
                   { formData.countdown_show_enable &&
                     <div
-                      className='sgsb-fn-bar-countdown'
+                      className='spsg-fn-bar-countdown'
                       style={ {
                         gap        : 10,
                         display    : 'flex',
@@ -81,7 +81,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                       } }
                     >
                       <div
-                        className='sgsb-fn-bar-countdown-value'
+                        className='spsg-fn-bar-countdown-value'
                         style={ {
                           gap           : 8,
                           display       : 'flex',
@@ -89,11 +89,11 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                           flexDirection : 'column',
                         } }
                       >
-                        <span className='sgsb-countdown-value days'>
+                        <span className='spsg-countdown-value days'>
                             { __( '21', 'storegrowth-sales-booster' ) }
                         </span>
                         <span
-                          className='sgsb-countdown-content'
+                          className='spsg-countdown-content'
                           style={ {
                             fontSize   : 10,
                             fontWeight : 400,
@@ -103,7 +103,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                         </span>
                       </div>
                       <div
-                        className='sgsb-fn-bar-countdown-value'
+                        className='spsg-fn-bar-countdown-value'
                         style={ {
                           gap           : 8,
                           lineHeight    : 1,
@@ -113,7 +113,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                       >
                         { __( '10', 'storegrowth-sales-booster' ) }
                         <span
-                          className='sgsb-countdown-content'
+                          className='spsg-countdown-content'
                           style={ {
                             fontSize   : 10,
                             fontWeight : 400,
@@ -123,7 +123,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                         </span>
                       </div>
                       <div
-                        className='sgsb-fn-bar-countdown-value'
+                        className='spsg-fn-bar-countdown-value'
                         style={ {
                           gap           : 8,
                           lineHeight    : 1,
@@ -131,11 +131,11 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                           flexDirection : 'column',
                         } }
                       >
-                        <span className='sgsb-countdown-value minutes'>
+                        <span className='spsg-countdown-value minutes'>
                             { __( '36', 'storegrowth-sales-booster' ) }
                         </span>
                         <span
-                          className='sgsb-countdown-content'
+                          className='spsg-countdown-content'
                           style={ {
                             fontSize   : 10,
                             fontWeight : 400,
@@ -145,7 +145,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                         </span>
                       </div>
                       <div
-                        className='sgsb-fn-bar-countdown-value'
+                        className='spsg-fn-bar-countdown-value'
                         style={ {
                           gap           : 8,
                           lineHeight    : 1,
@@ -153,11 +153,11 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                           flexDirection : 'column',
                         } }
                       >
-                        <span className='sgsb-countdown-value seconds'>
+                        <span className='spsg-countdown-value seconds'>
                             { __( '20', 'storegrowth-sales-booster' ) }
                         </span>
                         <span
-                          className='sgsb-countdown-content'
+                          className='spsg-countdown-content'
                           style={ {
                             fontSize   : 10,
                             fontWeight : 400,
@@ -189,7 +189,7 @@ const Preview = ({ isProActive, formData, fontFamily } ) => {
                 </div>
 
                 <div
-                    className='sgsb-pd-banner-bar-remove'
+                    className='spsg-pd-banner-bar-remove'
                     style={{
                         display    : 'flex',
                         alignItems : 'center',

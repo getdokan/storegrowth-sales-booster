@@ -19,6 +19,6 @@ let dashboardRoutes = [
     },
 ];
 
-dashboardRoutes = applyFilters('sgsb_dashboard_route_components', dashboardRoutes);
+dashboardRoutes = applyFilters('spsg_dashboard_route_components', dashboardRoutes);
 
 export default dashboardRoutes;

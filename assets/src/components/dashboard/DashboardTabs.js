@@ -10,7 +10,7 @@ const DashboardTabs = () => {
         { path: '/dashboard/faq', label: __( 'FAQs', 'storegrowth-sales-booster' ) },
     ];
 
-    routes = applyFilters( "sgsb_dashboard_routes", routes );
+    routes = applyFilters( "spsg_dashboard_routes", routes );
 
     const activeNavStyle = {
         color      : '#FFF',

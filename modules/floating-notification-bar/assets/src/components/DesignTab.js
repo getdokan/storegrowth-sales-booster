@@ -22,7 +22,7 @@ function DesignTab(props) {
     <Fragment>
       <SettingsSection>
         {applyFilters(
-          "sgsb_floating_notification_bar_height_settings",
+          "spsg_floating_notification_bar_height_settings",
           "",
           formData,
           onFieldChange
@@ -39,7 +39,7 @@ function DesignTab(props) {
           )}
         />
         {applyFilters(
-          "sgsb_floating_notification_bar_font_size",
+          "spsg_floating_notification_bar_font_size",
           "",
           formData,
           onFieldChange

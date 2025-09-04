@@ -2,8 +2,8 @@ import { Layout } from "antd";
 
 function Header() {
   return (
-      <Layout.Header className="sgsb-header">
-        <div className="sgsb-logo">
+      <Layout.Header className="spsg-header">
+        <div className="spsg-logo">
         </div>
       </Layout.Header>
   );

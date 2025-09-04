@@ -6,16 +6,18 @@ import { useState } from 'react';
 
 
 function OverViewArea(props) {
-    const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
+    const { setCreateFromData } = useDispatch( 'spsg_order_bump' );
     const { createBumpData } = useSelect((select) => ({
-        createBumpData: select('sgsb_order_bump').getCreateFromData()
+        createBumpData: select('spsg_order_bump').getCreateFromData()
     }));
 
     var offerAmout = 999999999;
     var offerMessage = "20% off only for you";
 
     if ( createBumpData.offer_type === 'discount' ) {
-        offerAmout = createBumpData.offer_product_regular_price - createBumpData.offer_product_regular_price*createBumpData.offer_amount/100;
+        // Use the current price (sale price if available, otherwise regular price) for discount calculation
+        const currentPrice = createBumpData.offer_product_regular_price;
+        offerAmout = currentPrice - currentPrice*createBumpData.offer_amount/100;
         offerMessage = createBumpData.offer_amount + "% off only for you";
     } else if ( createBumpData.offer_type === 'price' ) {
         offerAmout = createBumpData.offer_amount;

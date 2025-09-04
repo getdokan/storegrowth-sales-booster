@@ -2,7 +2,7 @@ import { Hooks } from '@wordpress/hooks';
 import WooCommerceAccounting from './woocommerce-accounting.d';
 
 /**
- * To get sgsb supports just import like a normal js file
+ * To get spsg supports just import like a normal js file
  * Ex: import '../path.../src/definitions/window-types';
  */
 
@@ -25,7 +25,7 @@ declare global {
             hooks: Hooks;
         };
         accounting: WooCommerceAccounting.AccountingStatic;
-        sgsb?: StoreGrowth;
+        spsg?: StoreGrowth;
     }
 }
 

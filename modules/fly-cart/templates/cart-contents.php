@@ -17,7 +17,7 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
-$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 $show_product_image   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
 $show_remove_icon     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_remove_icon', true );
 $show_quantity_picker = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
@@ -25,15 +25,15 @@ $show_product_price   = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_coupon', true );
 ?>
 
-<form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
-	<div class="sgsb-cart-notification-popup">
-		<div class="sgsb-cart-notification-content">
-		<span class="sgsb-cart-notification-message">Stock limit reached</span>
+<form class="spsg-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
+	<div class="spsg-cart-notification-popup">
+		<div class="spsg-cart-notification-content">
+		<span class="spsg-cart-notification-message">Stock limit reached</span>
 		</div>
 	</div>
 	<?php do_action( 'woocommerce_before_cart_table' ); ?>
 
-	<table class="sgsb-fly-cart-table" cellspacing="0">
+	<table class="spsg-fly-cart-table" cellspacing="0">
 		<tbody>
 		<?php do_action( 'woocommerce_before_cart_contents' ); ?>
 		<?php
@@ -65,8 +65,8 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 					<?php endif; ?>
 
 					<td class="product-name">
-						<div class="sgsb-product-detail-container">
-						<div class="sgsb-product-title">
+						<div class="spsg-product-detail-container">
+						<div class="spsg-product-title">
 							<?php
 							if ( ! $product_permalink ) {
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key ) . '&nbsp;' );
@@ -92,9 +92,9 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 										if ( isset( $cart_item['bogo_offer_price'] ) ) {
 												$product_quantity = woocommerce_quantity_input( $input_args, $_product, false );
 										} else {
-												$product_quantity  = '<button type="button" class="sgsb-minus-icon">-</button>';
+												$product_quantity  = '<button type="button" class="spsg-minus-icon">-</button>';
 												$product_quantity .= woocommerce_quantity_input( $input_args, $_product, false );
-												$product_quantity .= '<button type="button" class="sgsb-plus-icon">+</button>';
+												$product_quantity .= '<button type="button" class="spsg-plus-icon">+</button>';
 										}
 								}
 							// phpcs:ignore
@@ -102,7 +102,7 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 								?>
 						</div>
 						</div>
-							<div class="sgsb-product-detail-container">
+							<div class="spsg-product-detail-container">
 
 								<?php if ( $show_product_price ) : ?>
 							<div class="product-subtotal" >
@@ -127,7 +127,7 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 								echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									'woocommerce_cart_item_remove_link',
 									sprintf(
-										'<a href="%s" class="sgsb-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">
+										'<a href="%s" class="spsg-fly-cart-remove" aria-label="%s" data-product_id="%s" data-product_sku="%s">
                                         <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                                             <path
                                                 fill="#073B4C"
@@ -147,7 +147,7 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 						<?php endif; ?>
 						</div>
 					</td>
-                    <?php do_action( 'sgsb_fly_cart_after_single_item_columns', $_product ); ?>
+                    <?php do_action( 'spsg_fly_cart_after_single_item_columns', $_product ); ?>
 				</tr>
 				<?php
 			}
@@ -173,9 +173,9 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 	</table>
 				<?php do_action( 'woocommerce_after_cart_table' ); ?>
 </form>
-				<?php do_action( 'sgsb_woocommerce_before_cart_collaterals' ); ?>
+				<?php do_action( 'spsg_woocommerce_before_cart_collaterals' ); ?>
 
-<div class="sgsb-cart-collaterals cart-collaterals">
+<div class="spsg-cart-collaterals cart-collaterals">
 				<?php
 				/**
 				 * Cart collaterals hook.

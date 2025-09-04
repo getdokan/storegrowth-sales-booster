@@ -25,7 +25,7 @@ const Preview = ({ storeData }) => {
     }
 
     const { bogoGlobalSettingsData: currentSettings } = useSelect((select) => ({
-        bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
+        bogoGlobalSettingsData: select("spsg_bogo").getBogoGlobalSettings(),
     }));
 
     return (

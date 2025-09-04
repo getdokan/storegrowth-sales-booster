@@ -7,13 +7,13 @@
 
 ?>
 
-<div id="sgsb-direct-checkout-data" class="panel woocommerce_options_panel hidden">
+<div id="spsg-direct-checkout-data" class="panel woocommerce_options_panel hidden">
 		<div class="options_group">
 			<?php
 			woocommerce_wp_radio(
 				array(
-					'id'          => '_sgsb_direct_checkout_button_layout',
-					'value'       => get_post_meta( $post->ID, '_sgsb_direct_checkout_button_layout', true ),
+					'id'          => '_spsg_direct_checkout_button_layout',
+					'value'       => get_post_meta( $post->ID, '_spsg_direct_checkout_button_layout', true ),
 					'label'       => 'Button Layout Setting',
 					'description' => 'This is the visibility setting of the Direct checkout button',
 					'desc_tip'    => true,

@@ -98,7 +98,7 @@ function DesignTab( props ) {
 
         {/* Rendered countdown settings. */}
         { applyFilters(
-          'sgsb_append_countdown_design_settings',
+          'spsg_append_countdown_design_settings',
           '',
           formData,
           onFieldChange,

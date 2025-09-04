@@ -6,9 +6,9 @@ import { getBogoOffers } from "../utils/restApi";
 
 const CreateBogoButton = ({ navigate }) => {
   const { bogoListData } = useSelect((select) => ({
-    bogoListData: select("sgsb_bogo").getBogoData(),
+    bogoListData: select("spsg_bogo").getBogoData(),
   }));
-  const { setBogoData } = useDispatch("sgsb_bogo");
+  const { setBogoData } = useDispatch("spsg_bogo");
 
   useEffect(() => {
     getBogoOffers()
@@ -34,8 +34,8 @@ const CreateBogoButton = ({ navigate }) => {
     "bogo?tab_name=general",
   ].some((pattern) => pattern === hash);
 
-  const isDisableBogoCreation = bogoListData?.length >= 2 && !sgsbAdmin.isPro;
-  const isDisableMessageCreation = !sgsbAdmin.isPro;
+  const isDisableBogoCreation = bogoListData?.length >= 2 && !spsgAdmin.isPro;
+  const isDisableMessageCreation = !spsgAdmin.isPro;
 
   const commonButtonProps = {
     shape: "square",

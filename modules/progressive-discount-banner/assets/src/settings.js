@@ -6,8 +6,8 @@ import { InsertRowAboveOutlined } from "@ant-design/icons";
  * Add routes to sidebar.
  */
 addFilter(
-  "sgsb_routes",
-  "sgsb",
+  "spsg_routes",
+  "spsg",
   (routes, outlet, navigate, useParams, useSearchParams) => {
     const moduleName = "progressive-discount-banner";
 
@@ -33,7 +33,7 @@ addFilter(
 /**
  * Add sidebar menu items
  */
-addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
+addFilter("sidebar_menu_items", "spsg", (items, Link) => {
   items.push({
     label: <Link to="/progressive-discount-banner">Discount Banner</Link>,
     key: "progressive-discount-banner",

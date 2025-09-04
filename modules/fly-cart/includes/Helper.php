@@ -27,10 +27,10 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_query_string_for_http_ajax_referer( $url_only = false ) {
-		$nonce = wp_create_nonce( 'sgsb_frontend_ajax' );
+		$nonce = wp_create_nonce( 'spsg_frontend_ajax' );
 
 		$ajax_referer = sprintf(
-			'%1$s?action=sgsb_fly_cart_frontend&method=get_cart_contents&_ajax_nonce=%2$s',
+			'%1$s?action=spsg_fly_cart_frontend&method=get_cart_contents&_ajax_nonce=%2$s',
 			admin_url( 'admin-ajax.php' ),
 			$nonce
 		);

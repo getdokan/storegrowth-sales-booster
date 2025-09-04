@@ -38,7 +38,7 @@ class CommonHooks implements HookRegistry {
 		 * @since 1.0.0
 		 */
 	public function content_loader_hooks() {
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 
 		$actions = array(
 			'show_title'       => array(
@@ -73,7 +73,7 @@ class CommonHooks implements HookRegistry {
 
 		foreach ( $actions as $setting => $data ) {
 			if ( \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, $setting, true ) ) {
-					add_action( 'sgsbqcv_product_summary', $data['action'], $data['priority'] );
+					add_action( 'spsgqcv_product_summary', $data['action'], $data['priority'] );
 			}
 		}
 	}
@@ -100,7 +100,7 @@ class CommonHooks implements HookRegistry {
 		 * @since 1.1.3
 		 */
 	public function button_positon_hooks() {
-		$settings        = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings        = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 		$button_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_position', 'after_add_to_cart' );
 		$hook            = 'woocommerce_after_shop_loop_item';
 		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
@@ -115,8 +115,8 @@ class CommonHooks implements HookRegistry {
 		global $product;
 
 		$product_id                    = get_the_ID();
-		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
-		$settings                      = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$direct_checkout_button_layout = get_post_meta( $product_id, '_spsg_direct_checkout_button_layout', true );
+		$settings                      = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 
 		include __DIR__ . '/../templates/quick-view-button.php';
 	}
@@ -136,9 +136,9 @@ class CommonHooks implements HookRegistry {
 	 * @since 1.25.7
 	 */
 	public function add_to_cart_redirect( $url ) {
-		if ( apply_filters( 'sgsbqcv_redirect', true ) ) {
-			if ( ! empty( $_REQUEST['sgsbqcv-redirect'] ) ) {
-				return apply_filters( 'sgsbqcv_redirect_url', add_query_arg( 'added_to_cart', '1', sanitize_url( $_REQUEST['sgsbqcv-redirect'] ) ) );
+		if ( apply_filters( 'spsgqcv_redirect', true ) ) {
+			if ( ! empty( $_REQUEST['spsgqcv-redirect'] ) ) {
+				return apply_filters( 'spsgqcv_redirect_url', add_query_arg( 'added_to_cart', '1', sanitize_url( $_REQUEST['spsgqcv-redirect'] ) ) );
 			}
 		}
 		return $url;

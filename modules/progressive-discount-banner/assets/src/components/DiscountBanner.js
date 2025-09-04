@@ -47,7 +47,7 @@ function DiscountBanner(props) {
     ];
     const { discount_amount_mode } = formData;
     const discount_mode_text = discount_amount_mode === "fixed-amount" ? "Amount" : "Percentage";
-    const discount_mode_symbol = discount_amount_mode === "fixed-amount" ? sgsbAdmin.currencySymbol : "%";
+    const discount_mode_symbol = discount_amount_mode === "fixed-amount" ? spsgAdmin.currencySymbol : "%";
 
 
     const iconStyleNames = [
@@ -73,7 +73,7 @@ function DiscountBanner(props) {
         <Fragment>
             <SettingsSection>
                 { applyFilters(
-                    'sgsb_free_shipping_bar_position_settings',
+                    'spsg_free_shipping_bar_position_settings',
                     '',
                     formData,
                     onFieldChange
@@ -126,7 +126,7 @@ function DiscountBanner(props) {
 
                 <Number
                     min={0}
-                    addonBefore={`${sgsbAdmin.currencySymbol}`}
+                    addonBefore={`${spsgAdmin.currencySymbol}`}
                     name={`cart_minimum_amount`}
                     changeHandler={onFieldChange}
                     fieldValue={formData.cart_minimum_amount}
@@ -142,7 +142,7 @@ function DiscountBanner(props) {
                 />
 
                 { applyFilters(
-                    'sgsb_free_shipping_bar_icon_radio_box',
+                    'spsg_free_shipping_bar_icon_radio_box',
                     '',
                     iconOptions,
                     formData,
@@ -230,7 +230,7 @@ function DiscountBanner(props) {
             </SettingsSection>
             <SettingsSection>
                 { applyFilters(
-                    'sgsb_free_shipping_bar_display_rules_settings',
+                    'spsg_free_shipping_bar_display_rules_settings',
                     '',
                     formData,
                     onFieldChange

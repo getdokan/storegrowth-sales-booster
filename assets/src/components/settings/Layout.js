@@ -17,13 +17,13 @@ import dashboardRoutes from "../dashboard/DashboardRoutes";
 function ModuleSettings({ routes }) {
   let element = useRoutes(routes);
   return (
-    <Layout className="sgsb-layout-relative">
+    <Layout className="spsg-layout-relative">
       <Sidebar routes={routes} />
 
       <Layout>
         <HeadBar />
         <Layout.Content
-          className="sgsb-module-setting-layout"
+          className="spsg-module-setting-layout"
         >
           {element}
         </Layout.Content>
@@ -47,7 +47,7 @@ function AppLayout() {
   let navigate = useNavigate();
 
   let routes = applyFilters(
-    'sgsb_routes',
+    'spsg_routes',
     [ ...dashboardRoutes ],
     Outlet,
     navigate,

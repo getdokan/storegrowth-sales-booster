@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 use StorePulse\StoreGrowth\BaseModule;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers\BootstrapServiceProvider;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -101,5 +102,12 @@ class UpsellOrderBumpModule extends BaseModule {
 	 */
 	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
 		return new BootstrapServiceProvider();
+	}
+
+	public function activate(): bool
+	{
+        Migration::run_migration();
+
+		return parent::activate();
 	}
 }

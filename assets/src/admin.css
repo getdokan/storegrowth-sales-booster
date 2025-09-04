@@ -10,33 +10,33 @@ body {
     line-height: 1.4em;
 }
 
-.storegrowth_page_sgsb-modules #wpcontent, .storegrowth_page_sgsb-settings #wpcontent {
+.storegrowth_page_spsg-modules #wpcontent, .storegrowth_page_spsg-settings #wpcontent {
     background: #F4F7FF;
     padding-left: 14px !important;
 
 }
 
-.storegrowth_page_sgsb-modules #wpcontent .wrap, .storegrowth_page_sgsb-settings #wpcontent .wrap {
+.storegrowth_page_spsg-modules #wpcontent .wrap, .storegrowth_page_spsg-settings #wpcontent .wrap {
     /* margin: 0; */
 
 }
 
-.storegrowth_page_sgsb-modules #wpcontent #sbooster-modules-page .ant-layout, 
-.storegrowth_page_sgsb-settings #sbooster-settings-page .ant-layout {
+.storegrowth_page_spsg-modules #wpcontent #sbooster-modules-page .ant-layout, 
+.storegrowth_page_spsg-settings #sbooster-settings-page .ant-layout {
     background: #F4F7FF;
 }
 
-.sgsb-header.ant-layout-header {
+.spsg-header.ant-layout-header {
     background-color: #fff;
     padding: 0;
     margin: 0;
 
 }
 
-.sgsb-logo {
+.spsg-logo {
     font-size: 23px;
 }
-.sgsb-module-card img {
+.spsg-module-card img {
     width: 100%;
     height: auto;
 
@@ -48,10 +48,10 @@ li.ant-menu-item a:focus {
 }
 
 /* Page loading effect */
-.sgsb-layout-relative {
+.spsg-layout-relative {
     position: relative;
 }
-@keyframes sgsb-loader-ld-spin {
+@keyframes spsg-loader-ld-spin {
     0% {
         animation-timing-function: cubic-bezier(0.5856, 0.0703, 0.4143, 0.9297);
         transform: rotate(0deg);
@@ -60,7 +60,7 @@ li.ant-menu-item a:focus {
         transform: rotate(360deg);
     }
 }
-.sgsb-page-loader {
+.spsg-page-loader {
     position: absolute;
     left: 0;
     top: 0;
@@ -68,7 +68,7 @@ li.ant-menu-item a:focus {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
 }
-.sgsb-page-loader-ring {
+.spsg-page-loader-ring {
     top: 50%;
     left: 50%;
     position: absolute;
@@ -78,9 +78,9 @@ li.ant-menu-item a:focus {
     transition: all .3s;
     transition-timing-function: ease-in;
     box-sizing: content-box;
-    animation: sgsb-loader-ld-spin 1s infinite linear;
+    animation: spsg-loader-ld-spin 1s infinite linear;
 }
-.sgsb-page-loader-ring:after {
+.spsg-page-loader-ring:after {
     content: " ";
     display: block;
     width: 6em;
@@ -102,11 +102,11 @@ li.ant-menu-item a:focus {
 .ant-form .ant-form-item-label label {
     font-weight: 600;
 }
-.sgsb-field-upgrade-pro-label {
+.spsg-field-upgrade-pro-label {
     color: #1890ff;
 }
 /* Form end */
 
-.sgsb-module-card {
+.spsg-module-card {
     margin-bottom: 10px;
 }

@@ -8,11 +8,11 @@ import { __ } from "@wordpress/i18n";
 import { applyFilters } from '@wordpress/hooks';
 
 function Design( { onFormSave, upgradeTeaser } ) {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsg_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    createPopupFormData : select( 'spsg_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'spsg_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {
@@ -38,7 +38,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
         <Fragment>
           {/* Rendered sales pop before section settings. */}
           { applyFilters(
-            'sgsb_prepend_sales_pop_section_settings',
+            'spsg_prepend_sales_pop_section_settings',
             '',
             createPopupFormData,
             onFieldChange
@@ -88,7 +88,7 @@ function Design( { onFormSave, upgradeTeaser } ) {
 
           {/* Rendered sales pop before section settings. */}
           { applyFilters(
-            'sgsb_append_sales_pop_section_settings',
+            'spsg_append_sales_pop_section_settings',
             '',
             createPopupFormData,
             onFieldChange

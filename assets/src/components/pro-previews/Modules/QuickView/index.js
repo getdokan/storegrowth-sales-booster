@@ -6,8 +6,8 @@ import { Switcher } from "../../../settings/Panels";
 
 // Handle stock bar modules pro settings prompts.
 addFilter(
-    "sgsb_quick_view_navigation_settings",
-    "sgsb_quick_view_navigation_settings_callback",
+    "spsg_quick_view_navigation_settings",
+    "spsg_quick_view_navigation_settings_callback",
     (component) => {
         return (
             <Fragment>
@@ -22,8 +22,8 @@ addFilter(
     }
 );
 addFilter(
-    "sgsb_quick_view_button_position_settings",
-    "sgsb_quick_view_button_position_settings_callback",
+    "spsg_quick_view_button_position_settings",
+    "spsg_quick_view_button_position_settings_callback",
     (component, buttonPositions) => {
         return [
             ...buttonPositions,
@@ -37,8 +37,8 @@ addFilter(
     }
 );
 addFilter(
-    "sgsb_quick_after_modal_close_button_settings",
-    "sgsb_quick_after_modal_close_button_settings_callback",
+    "spsg_quick_after_modal_close_button_settings",
+    "spsg_quick_after_modal_close_button_settings_callback",
     (component) => {
         return (
             <Switcher
@@ -56,8 +56,8 @@ addFilter(
     }
 );
 addFilter(
-    "sgsb_quick_view_button_icon_settings",
-    "sgsb_quick_view_button_icon_settings_callback",
+    "spsg_quick_view_button_icon_settings",
+    "spsg_quick_view_button_icon_settings_callback",
     (component) => {
         return (
             <>
@@ -78,8 +78,8 @@ addFilter(
 );
 
 addFilter(
-    "sgsb_quick_view_add_to_cart_redirection_settings",
-    "sgsb_quick_view_add_to_cart_redirection_settings_callback",
+    "spsg_quick_view_add_to_cart_redirection_settings",
+    "spsg_quick_view_add_to_cart_redirection_settings_callback",
     (component, addToCartRedirection) => {
         return [
             ...addToCartRedirection,

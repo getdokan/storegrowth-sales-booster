@@ -10,7 +10,7 @@ if ( ! StorePulse\StoreGrowth\Modules\CountdownTimer\Helper::is_product_discount
 	return;
 }
 
-$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_countdown_timer_settings' );
+$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_countdown_timer_settings' );
 $enable_countdown_in_product_page = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_page_countdown_enable', true );
 $layout_class                     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 
@@ -18,10 +18,10 @@ if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
 }
 
-$start_date = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_start', true );
-$end_date   = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_end', true );
+$start_date = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_start', true );
+$end_date   = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
 
-$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
+$discount_amount = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 
 $heading_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
@@ -46,7 +46,7 @@ $heading_color = ( $layout_class !== 'ct-layout-2' ? $heading_color : ( $heading
 $font_family   = ! empty( $families[ $font_family ] ) ? $families[ $font_family ] : $font_family;
 
 $widget_style = apply_filters(
-    'sgsb_countdown_timer_styles',
+    'spsg_countdown_timer_styles',
     array(
         'day_text_color'           => $layout_class === 'ct-layout-1' ? '#1B1B50' : '#FFFFFF',
         'hour_text_color'          => $layout_class === 'ct-layout-1' ? '#1B1B50' : '#FFFFFF',
@@ -66,23 +66,23 @@ if ( $layout_class === 'ct-layout-1' ) {
 }
 ?>
 <div
-	class="sgsb-countdown-timer <?php echo esc_attr( $layout_class ); ?>"
+	class="spsg-countdown-timer <?php echo esc_attr( $layout_class ); ?>"
 	style='border: 1px solid <?php echo esc_attr( $border_color ); ?>; background: <?php echo esc_attr( $background_color ); ?> !important'
 >
 
-	<div class="sgsb-countdown-timer-wrapper">
+	<div class="spsg-countdown-timer-wrapper">
 		<?php if ( $heading_text ) : ?>
 			<p
-                class='sgsb-countdown-timer-heading <?php echo esc_attr( $layout_class . ' ' . $heading_color ); ?>'
+                class='spsg-countdown-timer-heading <?php echo esc_attr( $layout_class . ' ' . $heading_color ); ?>'
                 style='color: <?php echo esc_attr( $heading_color ); ?>; font-family: <?php echo esc_attr( $font_family ); ?>;'
 			>
 				<?php echo wp_kses_post( $heading ); ?>
 			</p>
 		<?php endif; ?>
 
-		<div class="sgsb-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
 			<div
-                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
                 style="
                     font-family: <?php echo esc_attr( $font_family ); ?>;
                     color: <?php echo esc_attr( $widget_style['day_text_color'] ) ?>;
@@ -90,15 +90,15 @@ if ( $layout_class === 'ct-layout-1' ) {
                     border: 1px solid <?php echo esc_attr( $widget_style['counter_border_color'] ) ?>;
                 "
             >
-				<strong class="sgsb-countdown-timer-item-days">00</strong>
+				<strong class="spsg-countdown-timer-item-days">00</strong>
 				<span>Days</span>
 			</div>
 			<span
                 style='color: <?php echo esc_attr( $colon_color ); ?>;'
-                class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-colon <?php echo esc_attr( $layout_class ); ?>"
 			>:</span>
 			<div
-                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
                 style="
                     font-family: <?php echo esc_attr( $font_family ); ?>;
                     color: <?php echo esc_attr( $widget_style['hour_text_color'] ) ?>;
@@ -106,15 +106,15 @@ if ( $layout_class === 'ct-layout-1' ) {
                     border: 1px solid <?php echo esc_attr( $widget_style['counter_border_color'] ) ?>;
                 "
             >
-				<strong class="sgsb-countdown-timer-item-hours">00</strong>
+				<strong class="spsg-countdown-timer-item-hours">00</strong>
 				<span>Hours</span>
 			</div>
 			<span
                 style='color: <?php echo esc_attr( $colon_color ); ?>;'
-                class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-colon <?php echo esc_attr( $layout_class ); ?>"
 			>:</span>
 			<div
-                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
                 style="
                     font-family: <?php echo esc_attr( $font_family ); ?>;
                     color: <?php echo esc_attr( $widget_style['minute_text_color'] ) ?>;
@@ -122,15 +122,15 @@ if ( $layout_class === 'ct-layout-1' ) {
                     border: 1px solid <?php echo esc_attr( $widget_style['counter_border_color'] ) ?>;
                 "
             >
-				<strong class="sgsb-countdown-timer-item-minutes">00</strong>
+				<strong class="spsg-countdown-timer-item-minutes">00</strong>
 				<span>Min</span>
 			</div>
 			<span
                 style='color: <?php echo esc_attr( $colon_color ); ?>;'
-                class="sgsb-colon <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-colon <?php echo esc_attr( $layout_class ); ?>"
 			>:</span>
 			<div
-                class="sgsb-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
+                class="spsg-countdown-timer-item <?php echo esc_attr( $layout_class ); ?>"
                 style="
                     font-family: <?php echo esc_attr( $font_family ); ?>;
                     color: <?php echo esc_attr( $widget_style['second_text_color'] ) ?>;
@@ -138,7 +138,7 @@ if ( $layout_class === 'ct-layout-1' ) {
                     border: 1px solid <?php echo esc_attr( $widget_style['counter_border_color'] ) ?>;
                 "
             >
-				<strong class="sgsb-countdown-timer-item-seconds">00</strong>
+				<strong class="spsg-countdown-timer-item-seconds">00</strong>
 				<span>Sec</span>
 			</div>
 		</div>
