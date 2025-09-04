@@ -27,9 +27,9 @@ class Helper {
      * @return bool
      */
     public static function is_product_discountable( $product_id ) {
-        $discount_amount = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_amount', true );
-        $start_date      = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_start', true );
-        $end_date        = get_post_meta( $product_id, '_sgsb_countdown_timer_discount_end', true );
+        $discount_amount = get_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', true );
+        $start_date      = get_post_meta( $product_id, '_spsg_countdown_timer_discount_start', true );
+        $end_date        = get_post_meta( $product_id, '_spsg_countdown_timer_discount_end', true );
 
         // If data is not set.
         if ( ! $discount_amount || ! $end_date ) {

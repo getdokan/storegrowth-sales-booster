@@ -15,8 +15,8 @@ import Preview from "./Preview";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
-  const isProEnabled = sgsbAdmin.isPro;
-  const { setPageLoading } = useDispatch("sgsb");
+  const isProEnabled = spsgAdmin.isPro;
+  const { setPageLoading } = useDispatch("spsg");
   const [buttonLoading, setButtonLoading] = useState(false);
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
@@ -72,14 +72,14 @@ function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
     setButtonLoading(true);
 
     let data = {
-      action: "sgsb_stock_bar_save_settings",
-      _ajax_nonce: sgsbAdmin.nonce,
+      action: "spsg_stock_bar_save_settings",
+      _ajax_nonce: spsgAdmin.nonce,
       form_data: formData,
     };
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data: data,
       })
@@ -94,11 +94,11 @@ function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data: {
-          action: "sgsb_stock_bar_get_settings",
-          _ajax_nonce: sgsbAdmin.nonce,
+          action: "spsg_stock_bar_get_settings",
+          _ajax_nonce: spsgAdmin.nonce,
         },
       })
       .success((response) => {

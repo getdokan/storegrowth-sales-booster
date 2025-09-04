@@ -3,19 +3,19 @@
 
   const directCheckOut = {
     init: function () {
-      jQuery( '.product' ).on( 'click', '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page', this.handleProductDirectCheckout );
+      jQuery( '.product' ).on( 'click', '.spsg_buy_now_button, .spsg_buy_now_button_product_page', this.handleProductDirectCheckout );
     },
   
     handleProductDirectCheckout: function( event ) {
       event.stopPropagation();
       event.preventDefault();
 
-        if ( event?.target?.classList.contains('sgsb_buy_now_button_disabled') ) {
+        if ( event?.target?.classList.contains('spsg_buy_now_button_disabled') ) {
             return;
         }
 
       // Check quick cart checkout availability first.
-      if ( sgsbDcFrontend?.isPro && sgsbDcFrontend?.isQuickCartCheckout ) return;
+      if ( spsgDcFrontend?.isPro && spsgDcFrontend?.isQuickCartCheckout ) return;
       let productId = jQuery( event?.target ).data( 'id' ),
         checkOutUrl = event?.target?.href;
   
@@ -23,7 +23,7 @@
       productId = typeof productId === 'undefined' ? jQuery( event?.target ).data( 'product_id' ) : productId;
   
       jQuery.ajax({
-        url     : sgsbDcFrontend?.ajax_url,
+        url     : spsgDcFrontend?.ajax_url,
         type    : 'POST',
         data    : {
           'action'     : 'woocommerce_add_to_cart',
@@ -47,16 +47,16 @@
 })(jQuery);
 
 
-const sgsbDirectChecoutQuick = {
+const spsgDirectChecoutQuick = {
   init: function () {
-    jQuery( '.product' ).on( 'click', '.sgsb_buy_now_button, .sgsb_buy_now_button_product_page', this.handleProductDirectCheckout );
+    jQuery( '.product' ).on( 'click', '.spsg_buy_now_button, .spsg_buy_now_button_product_page', this.handleProductDirectCheckout );
   },
 
   handleProductDirectCheckout: function( event ) {
     event.stopPropagation();
     event.preventDefault();
 
-    if ( event?.target?.classList.contains('sgsb_buy_now_button_disabled') ) {
+    if ( event?.target?.classList.contains('spsg_buy_now_button_disabled') ) {
       return;
     }
 
@@ -68,7 +68,7 @@ const sgsbDirectChecoutQuick = {
     productId = typeof productId === 'undefined' ? jQuery( event?.target ).data( 'product_id' ) : productId;
 
     jQuery.ajax({
-      url     : sgsbDcFrontend?.ajax_url,
+      url     : spsgDcFrontend?.ajax_url,
       type    : 'POST',
       data    : {
         'action'     : 'woocommerce_add_to_cart',

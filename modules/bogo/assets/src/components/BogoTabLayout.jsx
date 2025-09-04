@@ -42,7 +42,7 @@ function BogoTabLayout({ navigate, useSearchParams }) {
      */
 
     // {
-    //   proBadge : applyFilters('sgsb_bogo_category_tab_prompts', true),
+    //   proBadge : applyFilters('spsg_bogo_category_tab_prompts', true),
     //   key      : 'messages',
     //   panel    : <CategoryMessages navigate={navigate} />,
     //   title    : __( 'Messages', 'storegrowth-sales-booster' ),
@@ -50,7 +50,7 @@ function BogoTabLayout({ navigate, useSearchParams }) {
   ];
 
   const filteredTabPanels = applyFilters(
-    'sgsb_bogo_tab_panels',
+    'spsg_bogo_tab_panels',
     tabPanels
   );
 

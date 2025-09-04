@@ -261,7 +261,6 @@
           background-color: #f37a50;
 
           a {
-
             color: white;
           }
         }
@@ -352,7 +351,7 @@
       flex-direction: column;
       gap: 10px;
 
-      .sgsb-pricing-heading {
+      .spsg-pricing-heading {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -419,17 +418,21 @@
           colgroup {
             .bg {
               width: 179px;
-              background: linear-gradient(to top,
-                  #f6f9ff 0%,
-                  #f6f9ff 80%,
-                  #fff 80%,
-                  #fff 100%);
+              background: linear-gradient(
+                to top,
+                #f6f9ff 0%,
+                #f6f9ff 80%,
+                #fff 80%,
+                #fff 100%
+              );
             }
 
             .sg-most-popular-package-coloumn {
-              background: linear-gradient(180deg,
-                  #e3edff 0%,
-                  rgba(241, 245, 254, 0) 100%);
+              background: linear-gradient(
+                180deg,
+                #e3edff 0%,
+                rgba(241, 245, 254, 0) 100%
+              );
             }
           }
 
@@ -444,7 +447,7 @@
             text-transform: capitalize;
             padding: 15px 0px;
 
-            .sgsb-pricing-table-header {
+            .spsg-pricing-table-header {
               border-bottom: 2px solid #eff4ff;
             }
 
@@ -452,7 +455,7 @@
               font-weight: 700;
             }
 
-            .sgsb-pricing-table-header-popular {
+            .spsg-pricing-table-header-popular {
               border-bottom: 2px solid #0875ff;
             }
 
@@ -467,7 +470,7 @@
                 font-weight: 600;
               }
 
-              .sgsb-popular-packages {
+              .spsg-popular-packages {
                 position: absolute;
                 top: -64px;
                 width: 100%;
@@ -509,7 +512,7 @@
                 }
               }
 
-              .sgsb-pricing-data-content {
+              .spsg-pricing-data-content {
                 h3 {
                   font-size: 32px;
                   font-weight: 600;
@@ -524,7 +527,7 @@
                   }
                 }
 
-                .sgsb-billing-type {
+                .spsg-billing-type {
                   line-height: 30px;
                   font-weight: 400;
                   opacity: 0.6;
@@ -591,7 +594,6 @@
               height: 9px;
               width: 15px;
             }
-
           }
         }
       }
@@ -609,9 +611,6 @@
     }
 
     //License Container
-
-
-
   }
 
   @media (max-width: 1024px) {
@@ -684,7 +683,7 @@
       }
 
       .sg_pricing_table {
-        .sgsb-pricing-heading {
+        .spsg-pricing-heading {
           .gaurantee-badge {
             right: 13vw;
             bottom: 60px;
@@ -728,7 +727,7 @@
       }
 
       .sg_pricing_table {
-        .sgsb-pricing-heading {
+        .spsg-pricing-heading {
           h3 {
             font-size: 24px;
           }
@@ -738,8 +737,8 @@
           }
         }
 
-        .sgsb-pricing-table-header,
-        .sgsb-pricing-table-header-popular {
+        .spsg-pricing-table-header,
+        .spsg-pricing-table-header-popular {
           .sg-package-title {
             font-size: 16px !important;
           }
@@ -750,8 +749,7 @@
             padding: 8px 8% !important;
           }
 
-          .sgsb-pricing-data-content {
-
+          .spsg-pricing-data-content {
             .yearly-price,
             .monthly-price {
               font-size: 24px !important;
@@ -783,7 +781,7 @@
 }
 
 // Promotion block design
-.sgsb-promotion-block {
+.spsg-promotion-block {
   margin: auto;
 
   .sg_pro_btm_btm {

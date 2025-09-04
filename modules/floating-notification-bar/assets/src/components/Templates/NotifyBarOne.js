@@ -74,7 +74,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                 </div>
                 { coutdownEnable &&
                     <div
-                        className='sgsb-fn-bar-countdown'
+                        className='spsg-fn-bar-countdown'
                         style={ {
                             gap        : 10,
                             display    : 'flex',
@@ -83,7 +83,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                         } }
                     >
                         <div
-                            className='sgsb-fn-bar-countdown-value'
+                            className='spsg-fn-bar-countdown-value'
                             style={ {
                                 gap           : 8,
                                 display       : 'flex',
@@ -91,11 +91,11 @@ const NotifyBarOne = ({coutdownEnable}) => {
                                 flexDirection : 'column',
                             } }
                         >
-                              <span className='sgsb-countdown-value days'>
+                              <span className='spsg-countdown-value days'>
                                   { __( '21', 'storegrowth-sales-booster' ) }
                               </span>
                             <span
-                                className='sgsb-countdown-content'
+                                className='spsg-countdown-content'
                                 style={ {
                                     fontSize   : 10,
                                     fontWeight : 400,
@@ -105,7 +105,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                               </span>
                         </div>
                         <div
-                            className='sgsb-fn-bar-countdown-value'
+                            className='spsg-fn-bar-countdown-value'
                             style={ {
                                 gap           : 8,
                                 lineHeight    : 1,
@@ -115,7 +115,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                         >
                             { __( '10', 'storegrowth-sales-booster' ) }
                             <span
-                                className='sgsb-countdown-content'
+                                className='spsg-countdown-content'
                                 style={ {
                                     fontSize   : 10,
                                     fontWeight : 400,
@@ -125,7 +125,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                               </span>
                         </div>
                         <div
-                            className='sgsb-fn-bar-countdown-value'
+                            className='spsg-fn-bar-countdown-value'
                             style={ {
                                 gap           : 8,
                                 lineHeight    : 1,
@@ -133,11 +133,11 @@ const NotifyBarOne = ({coutdownEnable}) => {
                                 flexDirection : 'column',
                             } }
                         >
-                            <span className='sgsb-countdown-value minutes'>
+                            <span className='spsg-countdown-value minutes'>
                                 { __( '36', 'storegrowth-sales-booster' ) }
                             </span>
                             <span
-                                className='sgsb-countdown-content'
+                                className='spsg-countdown-content'
                                 style={ {
                                     fontSize   : 10,
                                     fontWeight : 400,
@@ -147,7 +147,7 @@ const NotifyBarOne = ({coutdownEnable}) => {
                               </span>
                         </div>
                         <div
-                            className='sgsb-fn-bar-countdown-value'
+                            className='spsg-fn-bar-countdown-value'
                             style={ {
                                 gap           : 8,
                                 lineHeight    : 1,
@@ -155,11 +155,11 @@ const NotifyBarOne = ({coutdownEnable}) => {
                                 flexDirection : 'column',
                             } }
                         >
-                            <span className='sgsb-countdown-value seconds'>
+                            <span className='spsg-countdown-value seconds'>
                                 { __( '20', 'storegrowth-sales-booster' ) }
                             </span>
                             <span
-                                className='sgsb-countdown-content'
+                                className='spsg-countdown-content'
                                 style={ {
                                     fontSize   : 10,
                                     fontWeight : 400,

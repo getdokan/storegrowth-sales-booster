@@ -25,7 +25,7 @@
 	</style>
 </head>
 
-<body <?php body_class( 'sgsb-checkout' ); ?>>
+<body <?php body_class( 'spsg-checkout' ); ?>>
 
 	<?php
 		the_post();

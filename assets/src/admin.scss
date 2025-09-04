@@ -11,7 +11,8 @@ $white-color: #ffffff;
 }
 
 // Usage
-@include font-face("IBM Plex Sans",
+@include font-face(
+  "IBM Plex Sans",
   "../fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf"
 );
 @include font-face("Lato", "../fonts/Lato/Lato-Regular.ttf");
@@ -19,13 +20,13 @@ $white-color: #ffffff;
 @include font-face("Poppins", "../fonts/Poppins/Poppins-Regular.ttf");
 @include font-face("Roboto", "../fonts/Roboto/Roboto-Regular.ttf");
 
-.sgsb-header {
+.spsg-header {
   padding: 0 20px !important;
   display: inline-flex;
   align-items: center;
 }
 
-.sgsb-logo {
+.spsg-logo {
   // background: url("../images/logo.svg");
   // background-repeat: no-repeat;
   // background-size: contain;
@@ -36,7 +37,7 @@ $white-color: #ffffff;
   text-align: center;
 }
 
-.sgsb-heading[class] {
+.spsg-heading[class] {
   font-weight: 600;
   font-size: 32px;
   line-height: 48px;
@@ -58,7 +59,7 @@ Module Card Style
 }
 
 .site-card-wrapper {
-  .sgsb-module-card {
+  .spsg-module-card {
     border-radius: 10px;
     background: #fff;
 
@@ -157,7 +158,7 @@ Module Card Style
       min-height: 180px;
     }
 
-    .sgsb__module-footer {
+    .spsg__module-footer {
       background: #ddf0ff;
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
@@ -189,7 +190,7 @@ Module Card Style
         // padding-left: 6px !important;
         // padding-right: 6px !important;
 
-        &>div {
+        & > div {
           // gap : 3px !important;
         }
 
@@ -218,7 +219,7 @@ Module Card Style
 /*=============================
 Pagination Style
 =============================*/
-.sgsb__module-pagination {
+.spsg__module-pagination {
   li {
     min-width: 47px;
     height: 47px;
@@ -250,7 +251,7 @@ Pagination Style
   }
 }
 
-.sgsb-search-section {
+.spsg-search-section {
   .search-bar {
     padding-right: 10px;
 
@@ -422,7 +423,7 @@ Pagination Style
 /*===============================
 Settings Sidebar
 ===============================*/
-main.ant-layout-content.sgsb-module-setting-layout {
+main.ant-layout-content.spsg-module-setting-layout {
   background: #f6f9ff;
   border-top-left-radius: 15px;
   z-index: 2;
@@ -430,7 +431,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
   margin-top: -1px;
 }
 
-.sgsb-admin-setting-dashboard {
+.spsg-admin-setting-dashboard {
   background: #f6f9ff;
 
   @media (max-width: 767px) {
@@ -562,7 +563,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
           max-height: 500px; // Show immediately when hidden class is removed
         }
 
-        .sgsb-selected-module {
+        .spsg-selected-module {
           background: #0875ff;
           color: #ffffff !important;
           border-top-right-radius: 8px;
@@ -670,18 +671,15 @@ main.ant-layout-content.sgsb-module-setting-layout {
           &.bogo {
             &:before {
               content: "";
-              background: url('../images/menu/bogo.svg');
+              background: url("../images/menu/bogo.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/bogo-white.svg');
-
+                background: url("../images/menu/bogo-white.svg");
               }
-
             }
           }
 
@@ -747,21 +745,17 @@ main.ant-layout-content.sgsb-module-setting-layout {
           &.quick-view {
             &:before {
               content: "";
-              background: url('../images/menu/quickview-icon.svg');
+              background: url("../images/menu/quickview-icon.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/quickview-icon-white.svg');
-
+                background: url("../images/menu/quickview-icon-white.svg");
               }
-
             }
           }
-
         }
 
         a {
@@ -781,7 +775,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
         }
 
-        li.sgsb-selected-module {
+        li.spsg-selected-module {
           a {
             color: #ffffff; // Set the color to white when the anchor is within a selected module
           }
@@ -825,11 +819,11 @@ main.ant-layout-content.sgsb-module-setting-layout {
           }
 
           &.quick-view::before {
-            background: url('../images/menu/quickview-icon-white.svg');
+            background: url("../images/menu/quickview-icon-white.svg");
           }
 
           &.bogo::before {
-            background: url('../images/menu/bogo-white.svg');
+            background: url("../images/menu/bogo-white.svg");
           }
         }
 
@@ -867,7 +861,7 @@ main.ant-layout-content.sgsb-module-setting-layout {
   }
 }
 
-.sgsb__settings-sidebar {
+.spsg__settings-sidebar {
   background: $white-color;
 
   @media (min-width: 1800px) {
@@ -888,7 +882,7 @@ End Settings Sidebar
 ===============================*/
 
 // progressive discount banner css start
-.sgsb-removable-icon-picker-wrapper {
+.spsg-removable-icon-picker-wrapper {
   position: relative;
 
   .clear-icon {
@@ -911,7 +905,7 @@ End Settings Sidebar
 
 // progressive discount banner css end
 // Premium warning message card
-.sgsb-upgrade-premium-notice-card {
+.spsg-upgrade-premium-notice-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -919,7 +913,7 @@ End Settings Sidebar
   border-radius: 5px;
   background: #e0f6e5;
 
-  .sgsb-premium-limit-warning-message {
+  .spsg-premium-limit-warning-message {
     color: #073b4c;
     display: block;
     font-size: 16px;
@@ -961,7 +955,7 @@ End Settings Sidebar
 
 // upsell order bump css end
 
-.sgsb-admin-dashboard {
+.spsg-admin-dashboard {
   display: flex;
   flex-flow: row wrap;
   // background: #f4f7fe;
@@ -1099,7 +1093,7 @@ End Settings Sidebar
           max-height: 500px; // Show immediately when hidden class is removed
         }
 
-        .sgsb-selected-module {
+        .spsg-selected-module {
           background: #0875ff;
           color: #ffffff !important;
           border-top-right-radius: 8px;
@@ -1207,18 +1201,15 @@ End Settings Sidebar
           &.bogo {
             &:before {
               content: "";
-              background: url('../images/menu/bogo.svg');
+              background: url("../images/menu/bogo.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/bogo-white.svg');
-
+                background: url("../images/menu/bogo-white.svg");
               }
-
             }
           }
 
@@ -1285,21 +1276,17 @@ End Settings Sidebar
           &.quick-view {
             &:before {
               content: "";
-              background: url('../images/menu/quickview-icon.svg');
+              background: url("../images/menu/quickview-icon.svg");
               width: 19px;
-
             }
 
             &:hover {
               &:before {
                 content: "";
-                background: url('../images/menu/quickview-icon-white.svg');
-
+                background: url("../images/menu/quickview-icon-white.svg");
               }
-
             }
           }
-
         }
 
         a {
@@ -1319,7 +1306,7 @@ End Settings Sidebar
           }
         }
 
-        li.sgsb-selected-module {
+        li.spsg-selected-module {
           a {
             color: #ffffff; // Set the color to white when the anchor is within a selected module
           }
@@ -1520,7 +1507,7 @@ End Settings Sidebar
     // }
 
     @media (min-width: 1800px) {
-      .sgsb__module-pagination {
+      .spsg__module-pagination {
         padding-left: 38px !important;
       }
     }
@@ -1530,12 +1517,12 @@ End Settings Sidebar
         max-width: 64%;
       }
 
-      .sgsb__module-pagination {
+      .spsg__module-pagination {
         padding-left: 8px !important;
       }
 
       .dashboard-faq-page {
-        .sgsb-promotion-block {
+        .spsg-promotion-block {
           .request__feature-block {
             margin: 120px 0px 0;
 
@@ -1547,13 +1534,12 @@ End Settings Sidebar
       }
 
       .dashboard-pricing-page {
-
         .dashboad-content,
         .sg_pricing_table {
           margin-top: 20px;
         }
 
-        .sgsb-promotion-block {
+        .spsg-promotion-block {
           .request__feature-block {
             margin: 120px 0px 0;
 
@@ -1576,9 +1562,9 @@ End Settings Sidebar
         max-width: 68%;
       }
 
-      .sgsb-module-card {
+      .spsg-module-card {
         .ant-card-body {
-          &>div {
+          & > div {
             &.ant-row {
               display: block;
             }
@@ -1587,7 +1573,6 @@ End Settings Sidebar
       }
 
       .dashboard-pricing-page {
-
         .dashboad-content,
         .sg_pricing_table {
           margin-top: 20px;
@@ -1596,8 +1581,8 @@ End Settings Sidebar
     }
 
     @media (min-width: 1200px) and (max-width: 1300px) {
-      .sgsb-module-card {
-        .sgsb__module-footer[class] {
+      .spsg-module-card {
+        .spsg__module-footer[class] {
           padding: 8px !important;
 
           .doc-btn {
@@ -1612,8 +1597,8 @@ End Settings Sidebar
     }
 
     @media (min-width: 1301px) and (max-width: 1439px) {
-      .sgsb-module-card {
-        .sgsb__module-footer[class] {
+      .spsg-module-card {
+        .spsg__module-footer[class] {
           padding: 8px !important;
 
           .footer-btn[class] {
@@ -1626,9 +1611,9 @@ End Settings Sidebar
     @media (min-width: 1025px) and (max-width: 1199px) {
       // flex-basis: 76%;
 
-      .sgsb-module-card {
+      .spsg-module-card {
         .ant-card-body {
-          &>div {
+          & > div {
             &.ant-row {
               display: block;
             }
@@ -1693,9 +1678,9 @@ End Settings Sidebar
         // padding-left: 0 !important;
         padding: 30px 0 0 30px;
 
-        .sgsb-module-card {
+        .spsg-module-card {
           .ant-card-body {
-            &>div {
+            & > div {
               &.ant-row {
                 display: block;
               }
@@ -1826,7 +1811,7 @@ End Settings Sidebar
       &-box-content {
         display: block;
 
-        &>div {
+        & > div {
           max-width: 100% !important;
         }
 
@@ -1836,9 +1821,9 @@ End Settings Sidebar
           }
         }
 
-        .sgsb-module-card {
+        .spsg-module-card {
           .ant-card-body {
-            &>div {
+            & > div {
               display: block;
             }
           }
@@ -1848,9 +1833,9 @@ End Settings Sidebar
 
     @media (min-width: 1440px) and (max-width: 2000px) {
       &-box-content {
-        .sgsb-module-card {
+        .spsg-module-card {
           .ant-card-body {
-            &>div {
+            & > div {
               display: block;
             }
           }
@@ -1862,7 +1847,7 @@ End Settings Sidebar
       &-box-content {
         padding: 6px 0 0 14px;
 
-        .sgsb__module-footer {
+        .spsg__module-footer {
           padding: 15px !important;
 
           .switch-btn[class] {
@@ -1876,10 +1861,10 @@ End Settings Sidebar
 }
 
 #sbooster-settings-page {
-  .sgsb-header {
+  .spsg-header {
     display: inline-block;
 
-    .sgsb-logo {
+    .spsg-logo {
       margin: 15px auto 10px;
       display: inline-block;
     }
@@ -1931,7 +1916,7 @@ End Settings Sidebar
           }
         }
 
-        .sgsb-settings-card {
+        .spsg-settings-card {
           height: 100%;
           border-radius: 5px;
           border-color: #dde6f9;
@@ -2153,8 +2138,6 @@ End Settings Sidebar
 
               &.textarea-field,
               &.textinput-field {
-
-
                 &.field-gap {
                   margin-bottom: 15px;
                 }
@@ -2175,7 +2158,6 @@ End Settings Sidebar
                     opacity: 0.5;
                   }
                 }
-
               }
 
               &.textinput-field {
@@ -2325,7 +2307,7 @@ End Settings Sidebar
                       flex-flow: column;
                       margin-bottom: 9px;
 
-                      .sgsb-field-upgrade-pro-label {
+                      .spsg-field-upgrade-pro-label {
                         gap: 10px;
                         display: flex;
                         align-items: center;
@@ -2496,12 +2478,12 @@ End Settings Sidebar
             }
           }
 
-          .sgsb-field-upgrade-pro-label {
+          .spsg-field-upgrade-pro-label {
             gap: 10px;
             display: flex;
             align-items: center;
 
-            span.sgsb-pro-badge {
+            span.spsg-pro-badge {
               font-size: 10px;
               font-weight: 600;
               line-height: 1;
@@ -2606,7 +2588,7 @@ End Settings Sidebar
           color: #dde6f9;
         }
 
-        .sgsb-collapse-settings {
+        .spsg-collapse-settings {
           overflow: hidden;
           border-color: #dde6f9;
           border-radius: 5px;
@@ -2721,15 +2703,15 @@ End Settings Sidebar
 
       .ant-tabs-tab {
         .prompt-tab {
-          gap: .5rem;
-          margin: 0 .5rem;
+          gap: 0.5rem;
+          margin: 0 0.5rem;
           display: flex;
 
-          .sgsb-pro-badge {
+          .spsg-pro-badge {
             font-size: 10px;
             font-weight: 600;
             line-height: 1;
-            background: #FFAC27;
+            background: #ffac27;
             color: white;
             border-radius: 10px;
             padding: 4px 7px;
@@ -2756,12 +2738,12 @@ End Settings Sidebar
         font-weight: 600;
       }
 
-      .sgsb-field-upgrade-pro-label {
+      .spsg-field-upgrade-pro-label {
         margin-top: 2px;
       }
     }
 
-    .sgsb-settings-actions {
+    .spsg-settings-actions {
       gap: 10px;
       right: 50px;
       bottom: 50px;
@@ -2770,7 +2752,7 @@ End Settings Sidebar
       position: fixed;
       align-items: center;
 
-      .sgsb-settings-save-button {
+      .spsg-settings-save-button {
         border: 0;
         margin: 0;
         color: #fff;
@@ -2788,7 +2770,7 @@ End Settings Sidebar
         }
       }
 
-      .sgsb-settings-reset-button {
+      .spsg-settings-reset-button {
         height: auto;
         z-index: 9999;
         color: #073b4c;
@@ -2896,12 +2878,12 @@ End Settings Sidebar
       display: flex;
       align-items: center;
 
-      .sgsb-field-upgrade-pro-label {
+      .spsg-field-upgrade-pro-label {
         gap: 10px;
         display: flex;
         align-items: center;
 
-        span.sgsb-pro-badge {
+        span.spsg-pro-badge {
           font-size: 10px;
           font-weight: 600;
           line-height: 1;
@@ -3059,7 +3041,7 @@ End Settings Sidebar
 /**
 * starting of the intial setup page design.
 */
-.sgsb-ini-setup-page {
+.spsg-ini-setup-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3071,7 +3053,7 @@ End Settings Sidebar
   margin-right: -20px;
   padding: 30px 30px 20px;
 
-  .sgsb-ini-page-container {
+  .spsg-ini-page-container {
     max-width: 1100px;
     width: -webkit-fill-available;
     display: flex;
@@ -3092,7 +3074,7 @@ End Settings Sidebar
       .steps-skipper-controller {
         width: 18%;
         text-align: center;
-        color: #1B49F6;
+        color: #1b49f6;
         font-weight: 500;
         cursor: pointer;
       }
@@ -3106,8 +3088,8 @@ End Settings Sidebar
       }
     }
 
-    .sgsb-return-dashboard {
-      .sgsb-dashboard-cta {
+    .spsg-return-dashboard {
+      .spsg-dashboard-cta {
         height: auto;
         padding: 20px 30px;
         border-radius: 5px;
@@ -3116,9 +3098,8 @@ End Settings Sidebar
       }
     }
 
-    .sgsb-ini-setup-content-layout {
-
-      .sgsb-steps-controller {
+    .spsg-ini-setup-content-layout {
+      .spsg-steps-controller {
         display: flex;
         gap: 10px;
         justify-content: center;
@@ -3159,7 +3140,7 @@ End Settings Sidebar
       }
 
       // Welcome step layout
-      .sgsb-ini-setup-welcome {
+      .spsg-ini-setup-welcome {
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -3182,7 +3163,7 @@ End Settings Sidebar
             gap: 10px;
             max-width: 530px;
 
-            .sgsb-content-heading {
+            .spsg-content-heading {
               color: var(--Secoundary-Color, #073b4c);
               text-align: center;
               font-size: 36px;
@@ -3196,9 +3177,9 @@ End Settings Sidebar
               }
             }
 
-            .sgsb-sub-heading {
+            .spsg-sub-heading {
               // white-space: pre-line;
-              color: var(--Secoundary-Color, #5A5A5F);
+              color: var(--Secoundary-Color, #5a5a5f);
               text-align: center;
               font-size: 16px;
               font-style: normal;
@@ -3227,15 +3208,15 @@ End Settings Sidebar
               }
 
               &.youtube {
-                background: #FFD5D5;
+                background: #ffd5d5;
               }
 
               &.get-support {
-                background: #B7DFFF;
+                background: #b7dfff;
               }
 
               &.documentation {
-                background: #FFE7D9;
+                background: #ffe7d9;
               }
             }
           }
@@ -3247,7 +3228,7 @@ End Settings Sidebar
             justify-content: center;
             align-items: center;
             gap: 10px;
-            background-color: #0875FF;
+            background-color: #0875ff;
             color: #fff;
           }
         }
@@ -3263,16 +3244,15 @@ End Settings Sidebar
             .ant-checkbox-checked {
               .ant-checkbox-inner {
                 background-color: #fff;
-                border-color: #B7DFFF;
+                border-color: #b7dfff;
 
                 &::after {
-                  border: 1.5px solid #008DFF;
+                  border: 1.5px solid #008dff;
                   border-left: none;
                   border-top: none;
                 }
               }
             }
-
 
             .user-agreement {
               display: flex;
@@ -3286,15 +3266,12 @@ End Settings Sidebar
                 }
               }
             }
-
           }
-
         }
       }
 
       //Modules page
-      .sgsb-admin-dashboard-module {
-
+      .spsg-admin-dashboard-module {
         .ini-setup-announce-container {
           display: flex;
           flex-direction: column;
@@ -3308,7 +3285,7 @@ End Settings Sidebar
             gap: 10px;
             max-width: 530px;
 
-            .sgsb-content-heading {
+            .spsg-content-heading {
               color: var(--Secoundary-Color, #073b4c);
               text-align: center;
               font-size: 36px;
@@ -3322,9 +3299,9 @@ End Settings Sidebar
               }
             }
 
-            .sgsb-sub-heading {
+            .spsg-sub-heading {
               // white-space: pre-line;
-              color: var(--Secoundary-Color, #5A5A5F);
+              color: var(--Secoundary-Color, #5a5a5f);
               text-align: center;
               font-size: 16px;
               font-style: normal;
@@ -3334,7 +3311,7 @@ End Settings Sidebar
           }
         }
 
-        .sgsb-admin-dashboard-module-box-content {
+        .spsg-admin-dashboard-module-box-content {
           padding: 0px !important;
           background: none;
           margin-bottom: 14px;
@@ -3342,12 +3319,12 @@ End Settings Sidebar
       }
 
       //Setup Completion page
-      .sgsb-step-completion {
+      .spsg-step-completion {
         display: flex;
         flex-direction: column;
         gap: 50px;
 
-        .sgsb-inisetup-heading-content {
+        .spsg-inisetup-heading-content {
           display: flex;
           justify-content: center;
           flex-direction: column;
@@ -3382,8 +3359,8 @@ End Settings Sidebar
           }
         }
 
-        .sgsb-ini-setup-completion {
-          .sgsb-intro-video {
+        .spsg-ini-setup-completion {
+          .spsg-intro-video {
             iframe {
               width: 36vw;
               height: 19vw;
@@ -3398,7 +3375,7 @@ End Settings Sidebar
             margin-left: 8%;
           }
 
-          .sgsb-support-doc-cta {
+          .spsg-support-doc-cta {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -3439,5 +3416,4 @@ End Settings Sidebar
       }
     }
   }
-
 }

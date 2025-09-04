@@ -46,17 +46,17 @@ class EnqueueScript implements HookRegistry {
 		$style_file = PluginHelper::get_modules_path( 'floating-notification-bar/assets/css/floating-notification-bar.css' );
 
 		wp_enqueue_style(
-			'sgsb-floating-notification-bar-style',
+			'spsg-floating-notification-bar-style',
 			PluginHelper::get_modules_url( 'floating-notification-bar/assets/css/floating-notification-bar.css' ),
 			array(),
 			filemtime( $style_file )
 		);
 
 		wp_enqueue_script(
-			'sgsb-floating-notification-bar-remove',
-			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ),
+			'spsg-floating-notification-bar-remove',
+			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/spsg-pd-banner-bar-remove.js' ),
 			array( 'jquery' ),
-			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/spsg-pd-banner-bar-remove.js' ) ),
 			true
 		);
 
@@ -71,7 +71,7 @@ class EnqueueScript implements HookRegistry {
                 }
 
 		// Use wp_localize_script to pass the data to your script.
-		wp_localize_script( 'sgsb-floating-notification-bar-remove', 'sgsb_fnb_data', $localized_fnb_data );
+		wp_localize_script( 'spsg-floating-notification-bar-remove', 'spsg_fnb_data', $localized_fnb_data );
 		$this->inline_styles();
 	}
 
@@ -81,12 +81,12 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_spsg-settings' === $hook ) {
 			$settings_file = require PluginHelper::get_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
 
 			wp_enqueue_media();
 			wp_enqueue_script(
-				'sgsb-floating-notification-bar-settings',
+				'spsg-floating-notification-bar-settings',
 				PluginHelper::get_modules_url( 'floating-notification-bar/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -96,7 +96,7 @@ class EnqueueScript implements HookRegistry {
             $localized_fnb_data = Helper::available_coupon_codes();
 
 			// Use wp_localize_script to pass the data to your script.
-			wp_localize_script( 'sgsb-floating-notification-bar-settings', 'sgsb_fnb_coupon_data', $localized_fnb_data );
+			wp_localize_script( 'spsg-floating-notification-bar-settings', 'spsg_fnb_coupon_data', $localized_fnb_data );
 		}
 	}
 
@@ -164,11 +164,11 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
-				.sgsb-floating-notification-bar-wrapper {
+				.spsg-floating-notification-bar-wrapper {
 					top: auto !important;
 					bottom: 0;
 				}
-				body.admin-bar .sgsb-floating-notification-bar-wrapper {
+				body.admin-bar .spsg-floating-notification-bar-wrapper {
 					top: ' . ( 0 ) . 'px;
 			}
 			body {
@@ -184,18 +184,18 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		$css .= "
-			.sgsb-floating-notification-bar-wrapper {
+			.spsg-floating-notification-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
 				height: {$banner_height}px;
 			}
-			.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-icon svg {
+			.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-icon svg {
 				fill: {$icon_color};
 			}
-			.sgsb-floating-notification-bar-wrapper .sgsb-floating-notification-bar-remove svg {
+			.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-remove svg {
 				fill: {$close_icon_color};
 			}
-			.sgsb-floating-notification-bar-text {
+			.spsg-floating-notification-bar-text {
 				font-size: {$font_size}px;
 				font-family: {$selected_font};
 			}
@@ -206,23 +206,23 @@ class EnqueueScript implements HookRegistry {
 		";
 		if ( 'sticky' === $bar_type ) {
 			$css .= '
-			.sgsb-floating-notification-bar-wrapper {
+			.spsg-floating-notification-bar-wrapper {
 				position: fixed;
 			}';
 		} elseif ( 'normal' === $bar_type ) {
 			if ( 'bottom' === $bar_position ) {
 				$css .= '
-			.sgsb-floating-notification-bar-wrapper {
+			.spsg-floating-notification-bar-wrapper {
 				position: inherit;
 			}';
 			} else {
 				$css .= '
-			.sgsb-floating-notification-bar-wrapper {
+			.spsg-floating-notification-bar-wrapper {
 				position: absolute;
 			}';
 			}
 		}
 
-		wp_add_inline_style( 'sgsb-floating-notification-bar-style', $css );
+		wp_add_inline_style( 'spsg-floating-notification-bar-style', $css );
 	}
 }

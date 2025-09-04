@@ -52,7 +52,7 @@ const Preview = ( { storeData } ) => {
                         >
                         { __( 'Shopping Cart', 'storegrowth-sales-booster' ) }
                         <span
-                            className='sgsb-cart-item-count'
+                            className='spsg-cart-item-count'
                             style={ {
                                 fontWeight: 300,
                                 color: '#fff',
@@ -70,7 +70,7 @@ const Preview = ( { storeData } ) => {
                         </span>
                         </div>
                         <span
-                            className='wfc-close-btn sgsb-cart-widget-close'
+                            className='wfc-close-btn spsg-cart-widget-close'
                             style={ {
                                 float: 'right',
                                 display: 'flex',
@@ -85,10 +85,10 @@ const Preview = ( { storeData } ) => {
                     </span>
                     </Title>
                 </div>
-                <div className='sgsb-widget-shopping-cart-content-wrapper'>
-                    <div className='sgsb-widget-shopping-cart-content'>
+                <div className='spsg-widget-shopping-cart-content-wrapper'>
+                    <div className='spsg-widget-shopping-cart-content'>
                         <div
-                            className='sgsb-fly-cart-table'
+                            className='spsg-fly-cart-table'
                             style={ {
                                 width: '100%',
                                 padding:"12px 12px",
@@ -96,7 +96,7 @@ const Preview = ( { storeData } ) => {
                             } }
                         >
                             <div 
-                            className='sgsb-fly-cart-table-body'
+                            className='spsg-fly-cart-table-body'
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -137,21 +137,21 @@ const Preview = ( { storeData } ) => {
                                         } }
                                     >
                                     <div 
-                                        className='sgsb-product-detail-container'
+                                        className='spsg-product-detail-container'
                                         style={ {
                                             display:"flex",
                                             justifyContent:'space-between',
                                             alignItems: "center",
                                         } }
                                     >
-                                        <div className='sgsb-product-title'>
+                                        <div className='spsg-product-title'>
                                             <div
                                                 style={ {
                                                     fontSize: 14,
                                                     fontWeight: 500,
                                                     color: '#073B4C',
                                                 } }
-                                                className='sgsb-product-name'
+                                                className='spsg-product-name'
                                             >
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
@@ -172,7 +172,7 @@ const Preview = ( { storeData } ) => {
                                     ) }
                                     </div>
                                     <div 
-                                    className='sgsb-product-detail-container'
+                                    className='spsg-product-detail-container'
                                     style={ {
                                         display:"flex",
                                         justifyContent:'space-between',
@@ -194,7 +194,7 @@ const Preview = ( { storeData } ) => {
                                                 } }
                                             >
                                                 <span 
-                                                className='sgsb-minus-icon' 
+                                                className='spsg-minus-icon' 
                                                 style={{
                                                     border: '1px solid #EBEBEB',
                                                     height: 'fit-content',
@@ -212,7 +212,7 @@ const Preview = ( { storeData } ) => {
                                                 }}
                                                 >1</span>
                                                 <span 
-                                                className='sgsb-plus-icon'
+                                                className='spsg-plus-icon'
                                                 style={{
                                                     border: '1px solid #EBEBEB',
                                                     height: 'fit-content',
@@ -277,21 +277,21 @@ const Preview = ( { storeData } ) => {
                                         } }
                                     >
                                     <div 
-                                        className='sgsb-product-detail-container'
+                                        className='spsg-product-detail-container'
                                         style={ {
                                             display:"flex",
                                             justifyContent:'space-between',
                                             alignItems: "center",
                                         } }
                                     >
-                                        <div className='sgsb-product-title'>
+                                        <div className='spsg-product-title'>
                                             <div
                                                 style={ {
                                                     fontSize: 14,
                                                     fontWeight: 500,
                                                     color: '#073B4C',
                                                 } }
-                                                className='sgsb-product-name'
+                                                className='spsg-product-name'
                                             >
                                                 { __( 'Hoodie with Zipper', 'storegrowth-sales-booster' ) }
                                             </div>
@@ -312,7 +312,7 @@ const Preview = ( { storeData } ) => {
                                     ) }
                                     </div>
                                     <div 
-                                    className='sgsb-product-detail-container'
+                                    className='spsg-product-detail-container'
                                     style={ {
                                         display:"flex",
                                         justifyContent:'space-between',
@@ -334,7 +334,7 @@ const Preview = ( { storeData } ) => {
                                                 } }
                                             >
                                                 <span 
-                                                className='sgsb-minus-icon' 
+                                                className='spsg-minus-icon' 
                                                 style={{
                                                     border: '1px solid #EBEBEB',
                                                     height: 'fit-content',
@@ -352,7 +352,7 @@ const Preview = ( { storeData } ) => {
                                                 }}
                                                 >1</span>
                                                 <span 
-                                                className='sgsb-plus-icon'
+                                                className='spsg-plus-icon'
                                                 style={{
                                                     border: '1px solid #EBEBEB',
                                                     height: 'fit-content',
@@ -387,14 +387,14 @@ const Preview = ( { storeData } ) => {
                             </div>
                         </div>
 
-                        <div className='sgsb-cart-collaterals cart-collaterals'
+                        <div className='spsg-cart-collaterals cart-collaterals'
                             style={{
                                 padding:12,
                             }}
                         >
                             {/* Render contents before cart total preview. */}
                             { applyFilters(
-                                'sgsb_before_quick_cart_total_preview',
+                                'spsg_before_quick_cart_total_preview',
                                 '',
                                 storeData
                             ) }
@@ -461,14 +461,14 @@ const Preview = ( { storeData } ) => {
                                 </div>
                                 <div className='wc-proceed-to-checkout'>
                                     <div
-                                        className='sgsb-cart-widget-buttons'
+                                        className='spsg-cart-widget-buttons'
                                         style={ {
                                             gap: 16,
                                             display: 'flex',
                                         } }
                                     >
                                         <div
-                                            className='sgsb-cart-widget-shooping-button sgsb-cart-widget-close'
+                                            className='spsg-cart-widget-shooping-button spsg-cart-widget-close'
                                             style={ {
                                                 fontSize: 15,
                                                 height:"fit-content",
@@ -485,7 +485,7 @@ const Preview = ( { storeData } ) => {
                                             { __( 'Keep Shopping', 'storegrowth-sales-booster' ) }
                                         </div>
                                         <div
-                                            className='sgsb-cart-widget-checkout-button'
+                                            className='spsg-cart-widget-checkout-button'
                                             style={ {
                                                 height:"fit-content",
                                                 fontSize: 15,

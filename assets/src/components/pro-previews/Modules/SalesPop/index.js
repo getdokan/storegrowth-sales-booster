@@ -11,8 +11,8 @@ import VisibilityControl from '../../../../../../modules/sales-pop/assets/src/co
 
 // Handle sales pop modules pro settings prompts.
 addFilter(
-    'sgsb_after_sales_pop_enable_settings',
-    'sgsb_after_sales_pop_enable_settings_callback',
+    'spsg_after_sales_pop_enable_settings',
+    'spsg_after_sales_pop_enable_settings_callback',
     () => {
         return (
             <Switcher
@@ -30,8 +30,8 @@ addFilter(
      }
 );
 addFilter(
-    'sgsb_prepend_sales_pop_product_settings',
-    'sgsb_prepend_sales_pop_product_settings_callback',
+    'spsg_prepend_sales_pop_product_settings',
+    'spsg_prepend_sales_pop_product_settings_callback',
     () => {
         return (
             <Switcher
@@ -48,15 +48,15 @@ addFilter(
      }
 );
 addFilter(
-    'sgsb_append_sales_pop_product_settings',
-    'sgsb_append_sales_pop_product_settings_callback',
+    'spsg_append_sales_pop_product_settings',
+    'spsg_append_sales_pop_product_settings_callback',
     () => {
         return <VisibilityControl />;
      }
 );
 addFilter(
-    'sgsb_sales_pop_image_style_settings',
-    'sgsb_sales_pop_image_style_settings_callback',
+    'spsg_sales_pop_image_style_settings',
+    'spsg_sales_pop_image_style_settings_callback',
     () => {
         const imgPositions = [
             { value: 'left', label: __( 'Left', 'storegrowth-sales-booster' ) },
@@ -109,8 +109,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_sales_popup_style_settings',
-    'sgsb_sales_popup_style_settings_callback',
+    'spsg_sales_popup_style_settings',
+    'spsg_sales_popup_style_settings_callback',
     () => {
         const popupPositions = [
             { value: 'left_bottom', label: __( 'Left Bottom', 'storegrowth-sales-booster' ) },
@@ -160,8 +160,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_sales_pop_action_settings',
-    'sgsb_sales_pop_action_settings_callback',
+    'spsg_sales_pop_action_settings',
+    'spsg_sales_pop_action_settings_callback',
     () => {
         return (
             <Fragment>
@@ -184,8 +184,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_prepend_sales_pop_section_settings',
-    'sgsb_prepend_sales_pop_section_settings_callback',
+    'spsg_prepend_sales_pop_section_settings',
+    'spsg_prepend_sales_pop_section_settings_callback',
     () => {
         return (
             <SectionSettings
@@ -202,8 +202,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_append_sales_pop_section_settings',
-    'sgsb_append_sales_pop_section_settings_callback',
+    'spsg_append_sales_pop_section_settings',
+    'spsg_append_sales_pop_section_settings_callback',
     () => {
         return (
             <Fragment>
@@ -235,8 +235,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_sales_pop_message_panel_settings',
-    'sgsb_sales_pop_message_panel_settings_callback',
+    'spsg_sales_pop_message_panel_settings',
+    'spsg_sales_pop_message_panel_settings_callback',
     () => {
         return (
             <SettingsSection>
@@ -261,8 +261,8 @@ addFilter(
      }
 );
 addFilter(
-    'sgsb_sales_pop_time_panel_settings',
-    'sgsb_sales_pop_time_panel_settings_callback',
+    'spsg_sales_pop_time_panel_settings',
+    'spsg_sales_pop_time_panel_settings_callback',
     () => {
         return (
             <SettingsSection>

@@ -4,11 +4,11 @@ import { useDispatch, useSelect } from "@wordpress/data";
 
 
 function DirectCheckout({ outlet: Outlet }) {
-  const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setCreateFromData } = useDispatch("spsg_direct_checkout");
+  const { setPageLoading } = useDispatch("spsg");
   const { createDirectCheckoutForm } = useSelect((select) => ({
     createDirectCheckoutForm: select(
-      "sgsb_direct_checkout"
+      "spsg_direct_checkout"
     ).getCreateFromData(),
   }));
   const layout = {
@@ -24,11 +24,11 @@ function DirectCheckout({ outlet: Outlet }) {
     setPageLoading(true);
     let $ = jQuery;
     $.post(
-      sgsbAdmin.ajax_url,
+      spsgAdmin.ajax_url,
       {
-        action: "sgsb_direct_checkout_get_settings",
+        action: "spsg_direct_checkout_get_settings",
         data: [],
-        _ajax_nonce: sgsbAdmin.nonce,
+        _ajax_nonce: spsgAdmin.nonce,
       },
       function (response) {
         setPageLoading(false);

@@ -25,7 +25,7 @@ abstract class BaseModule implements ModuleSkeleton {
      * 
      * @var string
      */
-    protected $active_modules_option_key = 'sgsb_active_module_ids';
+    protected $active_modules_option_key = 'spsg_active_module_ids';
 
     /**
      * Get the bootstrap service provider for this module.
@@ -64,7 +64,7 @@ abstract class BaseModule implements ModuleSkeleton {
      * Activate the module.
      * 
      * This method adds the module ID to the active modules list and
-     * boots the module. It also fires the 'sgsb_module_activated' action.
+     * boots the module. It also fires the 'spsg_module_activated' action.
      * 
      * @since 1.0.0
      * @return bool True if activation was successful, false otherwise.
@@ -79,7 +79,7 @@ abstract class BaseModule implements ModuleSkeleton {
         $this->boot();
 
         // WordPress function
-        do_action( 'sgsb_module_activated', $this->get_id() );
+        do_action( 'spsg_module_activated', $this->get_id() );
 
         return $activated;
     }
@@ -88,7 +88,7 @@ abstract class BaseModule implements ModuleSkeleton {
      * Deactivate the module.
      * 
      * This method removes the module ID from the active modules list.
-     * It also fires the 'sgsb_module_deactivated' action.
+     * It also fires the 'spsg_module_deactivated' action.
      * 
      * @since 1.0.0
      * @return bool True if deactivation was successful, false otherwise.
@@ -103,7 +103,7 @@ abstract class BaseModule implements ModuleSkeleton {
         );
 
         // WordPress function
-        do_action( 'sgsb_module_deactivated', $this->get_id() );
+        do_action( 'spsg_module_deactivated', $this->get_id() );
 
         return $this->update_active_modules_option_data( $filter_data );
     }

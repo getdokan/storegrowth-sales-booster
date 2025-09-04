@@ -19,14 +19,14 @@ function CreateBump({navigate, useParams, useSearchParams}) {
   const [allBumpsData, setallBumpsData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { setPageLoading } = useDispatch( 'sgsb' );
+  const { setPageLoading } = useDispatch( 'spsg' );
   const [buttonLoading, setButtonLoading] = useState(false);
-  const { setCreateFromData, resetCreateFromData } = useDispatch( 'sgsb_order_bump' );
+  const { setCreateFromData, resetCreateFromData } = useDispatch( 'spsg_order_bump' );
   let {bump_id,action_name} = useParams();
 
   const { bumpData, createBumpData } = useSelect( ( select ) => ({
-    createBumpData: select('sgsb_order_bump').getCreateFromData(),
-    bumpData: wp.data.select('sgsb_order_bump').getBumpData()
+    createBumpData: select('spsg_order_bump').getCreateFromData(),
+    bumpData: wp.data.select('spsg_order_bump').getBumpData()
   }));
   useEffect(() => {
     if(!bumpData?.length > 0){

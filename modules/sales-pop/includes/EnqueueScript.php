@@ -48,7 +48,7 @@ class EnqueueScript implements HookRegistry {
 			'posts_per_page' => -1,
 		);
 		$products         = get_posts( $args );
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_popup_products', false );
+		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', false );
 
 		if ( false !== $popup_properties ) {
 			$popup_properties  = maybe_unserialize( $popup_properties );
@@ -122,14 +122,14 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $screen name of screen.
 	 */
 	public function admin_enqueue_scripts( $screen ) {
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_popup_products', true );
+		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', true );
 
-		if ( 'storegrowth_page_sgsb-settings' === $screen ) {
+		if ( 'storegrowth_page_spsg-settings' === $screen ) {
 			add_action( 'admin_head', array( $this, 'admin_css' ) );
 			$settings_file = require PluginHelper::get_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 
 			wp_enqueue_script(
-				'sgsb-sales-pop-settings',
+				'spsg-sales-pop-settings',
 				PluginHelper::get_modules_url( 'sales-pop/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -137,7 +137,7 @@ class EnqueueScript implements HookRegistry {
 			);
 
 			wp_localize_script(
-				'sgsb-sales-pop-settings',
+				'spsg-sales-pop-settings',
 				'sales_pop_data',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),

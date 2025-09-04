@@ -28,17 +28,17 @@ class Ajax implements HookRegistry {
      * @return void
      */
     public function register_hooks(): void {
-		add_action( 'wp_ajax_sgsb_quick_view_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sgsb_quick_view_get_settings', array( $this, 'get_settings' ) );
-		add_action( 'wp_ajax_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
-		add_action( 'wp_ajax_nopriv_sgsbqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_spsg_quick_view_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_spsg_quick_view_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_spsgqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
+		add_action( 'wp_ajax_nopriv_spsgqcv_quickview', array( $this, 'ajax_quickview_callback' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
@@ -47,7 +47,7 @@ class Ajax implements HookRegistry {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
 		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
 
-		update_option( 'sgsb_quick_view_settings', $form_data );
+		update_option( 'spsg_quick_view_settings', $form_data );
 
 		wp_send_json_success();
 	}
@@ -56,9 +56,9 @@ class Ajax implements HookRegistry {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -67,10 +67,10 @@ class Ajax implements HookRegistry {
 	 * Quick view Ajax call.
 	 */
 	public function ajax_quickview_callback() {
-		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
+		check_ajax_referer( 'spsgqcv-security', 'nonce' );
 
 		global $post, $product;
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 
 		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );
@@ -132,23 +132,23 @@ class Ajax implements HookRegistry {
 				}
 			}
 
-			$thumb_ids = apply_filters( 'sgsbqcv_thumbnails', $thumb_ids, $product );
+			$thumb_ids = apply_filters( 'spsgqcv_thumbnails', $thumb_ids, $product );
 			$thumb_ids = array_unique( $thumb_ids );
 
-				echo '<div id="sgsbqcv-popup" class="sgsbqcv-popup mfp-with-anim ' . esc_attr( $content_view_details_button ? 'view-details' : '' ) . '">';
+				echo '<div id="spsgqcv-popup" class="spsgqcv-popup mfp-with-anim ' . esc_attr( $content_view_details_button ? 'view-details' : '' ) . '">';
 			?>
-			<div class="woocommerce single-product sgsbqcv-product">
+			<div class="woocommerce single-product spsgqcv-product">
 				<div id="product-<?php echo esc_attr( $product_id ); ?>" <?php wc_product_class( '', $product ); ?>>
 					<div class="thumbnails">
 						<?php
-						do_action( 'sgsbqcv_before_thumbnails', $product );
+						do_action( 'spsgqcv_before_thumbnails', $product );
 
 						echo '<div class="images">';
 
-						$image_sz = apply_filters( 'sgsbqcv_image_size', 'default' );
+						$image_sz = apply_filters( 'spsgqcv_image_size', 'default' );
 
 						if ( 'default' === $image_sz ) {
-							$image_size = 'sgsbqcv';
+							$image_size = 'spsgqcv';
 						} else {
 							$image_size = $image_sz;
 						}
@@ -177,24 +177,24 @@ class Ajax implements HookRegistry {
 
 						echo '</div>';
 
-						do_action( 'sgsbqcv_after_thumbnails', $product );
+						do_action( 'spsgqcv_after_thumbnails', $product );
 						?>
 					</div>
 					<div class="summary entry-summary">
-						<?php do_action( 'sgsbqcv_before_summary', $product ); ?>
+						<?php do_action( 'spsgqcv_before_summary', $product ); ?>
 
 						<div class="summary-content">
-							<?php do_action( 'sgsbqcv_product_summary', $product ); ?>
+							<?php do_action( 'spsgqcv_product_summary', $product ); ?>
 						</div>
 
-						<?php do_action( 'sgsbqcv_after_summary', $product ); ?>
+						<?php do_action( 'spsgqcv_after_summary', $product ); ?>
 					</div>
 				</div>
 			</div><!-- /woocommerce single-product -->
 			<?php
 			$permalink = $product->get_permalink();
-			do_action( 'sgsb_quick_view_details_button', $permalink, $content_view_details_button );
-				echo '</div><!-- #sgsbqcv-popup -->';
+			do_action( 'spsg_quick_view_details_button', $permalink, $content_view_details_button );
+				echo '</div><!-- #spsgqcv-popup -->';
 			wp_reset_postdata();
 		}
 

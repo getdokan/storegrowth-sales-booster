@@ -29,7 +29,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 *
 	 * @var string
 	 */
-	protected $namespace = 'sgsb/v1';
+	protected $namespace = 'spsg/v1';
 
 	/**
 	 * The base of this controller's route.

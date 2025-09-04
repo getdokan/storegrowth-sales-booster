@@ -3,10 +3,10 @@ import { useEffect } from "@wordpress/element";
 import { useDispatch, useSelect } from "@wordpress/data";
 
 function SalesPop({ outlet: Outlet }) {
-  const { setCreateFromData } = useDispatch("sgsb_order_sales_pop");
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setCreateFromData } = useDispatch("spsg_order_sales_pop");
+  const { setPageLoading } = useDispatch("spsg");
   const { createPopupForm } = useSelect((select) => ({
-    createPopupForm: select("sgsb_order_sales_pop").getCreateFromData(),
+    createPopupForm: select("spsg_order_sales_pop").getCreateFromData(),
   }));
   const layout = {
     labelCol: {

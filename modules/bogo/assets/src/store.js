@@ -119,7 +119,7 @@ const selectors = {
   },
 };
 
-export default createReduxStore("sgsb_bogo", {
+export default createReduxStore("spsg_bogo", {
   reducer,
   actions,
   selectors,

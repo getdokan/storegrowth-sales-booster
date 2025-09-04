@@ -3,13 +3,13 @@ import { __ } from '@wordpress/i18n';
 
 const ActionsHandler = ( { resetHandler, saveHandler, loadingHandler, isDisabled } ) => {
     return (
-        <div className={ `sgsb-settings-actions` }>
+        <div className={ `spsg-settings-actions` }>
             <Button
                 htmlType  = 'reset'
                 type      = 'secondary'
                 disabled  = { isDisabled }
                 onClick   = { resetHandler }
-                className = 'sgsb-settings-reset-button'
+                className = 'spsg-settings-reset-button'
             >
                 { __( 'Reset', 'storegrowth-sales-booster' ) }
             </Button>
@@ -19,7 +19,7 @@ const ActionsHandler = ( { resetHandler, saveHandler, loadingHandler, isDisabled
                 disabled  = { isDisabled }
                 onClick   = { saveHandler }
                 loading   = { loadingHandler }
-                className = 'sgsb-settings-save-button'
+                className = 'spsg-settings-save-button'
             >
                 { __( 'Save', 'storegrowth-sales-booster' ) }
             </Button>

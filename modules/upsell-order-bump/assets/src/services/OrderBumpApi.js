@@ -4,7 +4,7 @@
 
 class OrderBumpApi {
     constructor() {
-        this.namespace = 'sgsb/v1';
+        this.namespace = 'spsg/v1';
         this.restBase = 'order-bumps';
         this.baseUrl = `${window.wpApiSettings?.root || '/wp-json/'}${this.namespace}/${this.restBase}`;
     }

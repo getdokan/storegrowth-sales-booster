@@ -6,7 +6,7 @@ import ModuleCard from './ModuleCard';
 const ModuleList = ({ modules, filterActiveModules = false, searchModule = "" }) => {
   return (
     <>
-      <Row className="sgsb-admin-dashboard-module-box-content">
+      <Row className="spsg-admin-dashboard-module-box-content">
         {modules
           .filter((module) =>
             module.name.toLowerCase().includes(searchModule.toLowerCase())

@@ -5,11 +5,11 @@ import { Ajax } from "../../ajax";
 import { __ } from "@wordpress/i18n";
 
 function ModulesSetup() {
-  const { updateModules } = useDispatch("sgsb");
+  const { updateModules } = useDispatch("spsg");
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
-    allModules: select("sgsb").getModules(),
+    allModules: select("spsg").getModules(),
   }));
 
   useEffect(() => {
@@ -19,12 +19,12 @@ function ModulesSetup() {
   }, []);
 
   return (
-    <div className="site-card-wrapper sgsb-admin-dashboard">
-      <div className="sgsb-admin-dashboard-module">
+    <div className="site-card-wrapper spsg-admin-dashboard">
+      <div className="spsg-admin-dashboard-module">
       <div className='ini-setup-announce-container'>
           <div className='annouce-contents'>
-            <h3 className='sgsb-content-heading'>{__("Choose and Enable Modules", "storegrowth-sales-booster")}</h3>
-            <span className='sgsb-sub-heading'>{__(`This is a list of all the modules of StoreGrowth. Enable your desired modules and get them ready for your next sales campaign.`, 'storegrowth-sales-booster')}</span>
+            <h3 className='spsg-content-heading'>{__("Choose and Enable Modules", "storegrowth-sales-booster")}</h3>
+            <span className='spsg-sub-heading'>{__(`This is a list of all the modules of StoreGrowth. Enable your desired modules and get them ready for your next sales campaign.`, 'storegrowth-sales-booster')}</span>
           </div>
         </div>
         <ModuleList

@@ -6,8 +6,8 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
  * Add routes to sidebar.
  */
 addFilter(
-  "sgsb_routes",
-  "sgsb",
+  "spsg_routes",
+  "spsg",
   (routes, outlet, navigate, useParams, useSearchParams) => {
     const moduleName = "fly-cart";
     routes.push({
@@ -30,7 +30,7 @@ addFilter(
 /**
  * Add sidebar menu items
  */
-addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
+addFilter("sidebar_menu_items", "spsg", (items, Link) => {
   items.push({
     label: <Link to="/fly-cart">Fly Cart</Link>,
     key: "fly-cart",

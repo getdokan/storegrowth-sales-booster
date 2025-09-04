@@ -1,25 +1,25 @@
 "use strict";
 
 jQuery(document).ready(function ($) {
-  sgsb_countdown_timer_methods();
+  spsg_countdown_timer_methods();
 });
 
-function sgsb_countdown_timer_methods() {
-  jQuery(".sgsb-countdown-timer-items").each(function () {
+function spsg_countdown_timer_methods() {
+  jQuery(".spsg-countdown-timer-items").each(function () {
     jQuery(this)
       .countdown(jQuery(this).data("end-date"))
       .on("update.countdown", function (event) {
         jQuery(this)
-          .find("strong.sgsb-countdown-timer-item-days")
+          .find("strong.spsg-countdown-timer-item-days")
           .html(event.strftime("%D"));
           jQuery(this)
-          .find("strong.sgsb-countdown-timer-item-hours")
+          .find("strong.spsg-countdown-timer-item-hours")
           .html(event.strftime("%H"));
           jQuery(this)
-          .find("strong.sgsb-countdown-timer-item-minutes")
+          .find("strong.spsg-countdown-timer-item-minutes")
           .html(event.strftime("%M"));
           jQuery(this)
-          .find("strong.sgsb-countdown-timer-item-seconds")
+          .find("strong.spsg-countdown-timer-item-seconds")
           .html(event.strftime("%S"));
       });
   });

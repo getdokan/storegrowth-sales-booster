@@ -14,7 +14,7 @@ class Migration {
      *
      * @since 2.0.0
      */
-    const TABLE_NAME = 'sgsb_order_bumps';
+    const TABLE_NAME = 'spsg_order_bumps';
 
     /**
      * Run the migration.

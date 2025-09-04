@@ -1,6 +1,6 @@
 <?php 
 global $post;
-$heading = apply_filters( 'sgsb_product_description_heading', __( 'Description', 'woocommerce' ) );
+$heading = apply_filters( 'spsg_product_description_heading', __( 'Description', 'woocommerce' ) );
 ?>
 
 <?php if ( $heading ) : ?>

@@ -4,8 +4,8 @@ import CouponPreview from "./CouponPreview";
 
 // Handle quick cart settings pro prompts stuff.
 addFilter(
-    'sgsb_quick_cart_layout_settings',
-    'sgsb_quick_cart_layout_settings_callback',
+    'spsg_quick_cart_layout_settings',
+    'spsg_quick_cart_layout_settings_callback',
     ( layoutOptions, centeredCartPopupImg ) => {
         return [
             ...layoutOptions,
@@ -20,8 +20,8 @@ addFilter(
 );
 
 addFilter(
-    'sgsb_quick_cart_content_settings',
-    'sgsb_quick_cart_content_settings_callback',
+    'spsg_quick_cart_content_settings',
+    'spsg_quick_cart_content_settings_callback',
     ( contentOptions ) => {
         return [
             ...contentOptions,
@@ -39,14 +39,14 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_before_quick_cart_total_preview',
-    'sgsb_before_quick_cart_total_preview_callback',
+    'spsg_before_quick_cart_total_preview',
+    'spsg_before_quick_cart_total_preview_callback',
     () => <CouponPreview />
 );
 
 addFilter(
-    'sgsb_quick_cart_position_settings',
-    'sgsb_quick_cart_position_settings_callback',
+    'spsg_quick_cart_position_settings',
+    'spsg_quick_cart_position_settings_callback',
     ( positionContents, positionIcons ) => {
 
         return [

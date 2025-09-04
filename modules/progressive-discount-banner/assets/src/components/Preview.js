@@ -16,7 +16,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
     };
 
     const cart_min_amount =
-        sgsbAdmin.currencySymbol + formData.cart_minimum_amount;
+        spsgAdmin.currencySymbol + formData.cart_minimum_amount;
 
     const dynamicText = formData.progressive_banner_text.replace(
         '[amount]',
@@ -31,8 +31,8 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
     const selectedFont = getLabelByValue(formData.font_family, fontFamily);
 
     return (
-        <div className='sgsb-pd-banner-bar-wrapper'>
-            <div className='sgsb-pd-banner-bar' style={bannerStyle}>
+        <div className='spsg-pd-banner-bar-wrapper'>
+            <div className='spsg-pd-banner-bar' style={bannerStyle}>
                 <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '24px', color: '#000', padding: '2px' }}>
                         { isProActive && formData?.progressive_banner_custom_icon ? (
@@ -53,7 +53,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                     </div>
                 </div>
                 <span
-                    className='sgsb-pd-banner-text'
+                    className='spsg-pd-banner-text'
                     style={{
                         textAlign: 'center',
                         fontFamily: selectedFont,
@@ -79,7 +79,7 @@ const Preview = ( { isProActive, formData, fontFamily } ) => {
                     </span>
                 ) }
                 <div
-                    className='sgsb-pd-banner-bar-remove'
+                    className='spsg-pd-banner-bar-remove'
                     style={{
                         display    : 'flex',
                         alignItems : 'center',

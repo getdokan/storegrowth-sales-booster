@@ -8,7 +8,7 @@
 global $product;
 $product_id            = $product->get_ID();
 $product_type          = $product->get_type();
-$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 $button_label          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_label', 'Quick View' );
 $modal_effect          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 $quick_view_icon_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
@@ -19,8 +19,8 @@ $is_icon_active        = \StorePulse\StoreGrowth\Helper::find_option_settings( $
 		array_filter(
 			array(
 				'button',
-				' sgsbqcv-btn-' . $product_id,
-				'sgsbqcv-btn',
+				' spsgqcv-btn-' . $product_id,
+				'spsgqcv-btn',
 			)
 		)
 	);
@@ -30,7 +30,7 @@ $is_icon_active        = \StorePulse\StoreGrowth\Helper::find_option_settings( $
 <a href="#" data-id="<?php echo absint( $product_id ); ?>" data-context="default" data-effect="<?php echo esc_attr( $modal_effect ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
 <?php
 if ( $is_icon_active && SGSB_PRO_ACTIVE ) {
-	do_action( 'sgsb_quick_view_icon_button', $quick_view_icon_color );
+	do_action( 'spsg_quick_view_icon_button', $quick_view_icon_color );
 } else {
 	echo esc_html( sprintf( '%1$s', $button_label ) );
 }

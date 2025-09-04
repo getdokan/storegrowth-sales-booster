@@ -42,14 +42,14 @@ class EnqueueScript implements HookRegistry {
 	public function wp_enqueue_scripts() {
 
 		wp_enqueue_style(
-			'sgsb-cd-timer-custom-style',
+			'spsg-cd-timer-custom-style',
 			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/wpbs-style.css' ),
 			array(),
 			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/wpbs-style.css' ) )
 		);
 
 		wp_enqueue_script(
-			'sgsb-jquery-countdown',
+			'spsg-jquery-countdown',
 			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ),
 			array( 'jquery' ),
 			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/jquery.countdown.min.js' ) ),
@@ -59,7 +59,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_script(
 			'wpbsc_custom_script',
 			PluginHelper::get_modules_url( 'countdown-timer/assets/scripts/custom.js' ),
-			array( 'jquery', 'sgsb-jquery-countdown' ),
+			array( 'jquery', 'spsg-jquery-countdown' ),
 			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/scripts/custom.js' ) ),
 			true
 		);
@@ -73,7 +73,7 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' !== $hook ) {
+		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
 			return;
 		}
 
@@ -81,7 +81,7 @@ class EnqueueScript implements HookRegistry {
 		$style_file    = require PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sgsb-countdown-timer-settings',
+			'spsg-countdown-timer-settings',
 			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
@@ -89,7 +89,7 @@ class EnqueueScript implements HookRegistry {
 		);
 
 		wp_enqueue_style(
-			'sgsb-countdown-timer-style',
+			'spsg-countdown-timer-style',
 			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.css' ),
 			array(),
 			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.css' ) )
@@ -101,7 +101,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_countdown_timer_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_countdown_timer_settings' );
 
 		$widget_bg_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
 		$border_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );
@@ -115,11 +115,11 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'ct-layout-1' === $selected_theme ) {
 			$custom_css = "
-			.sgsb-countdown-timer.ct-custom {
+			.spsg-countdown-timer.ct-custom {
 				border-color: {$border_color};
 				background-color: {$widget_bg_color};
 			}
-			.sgsb-countdown-timer-heading.ct-custom {
+			.spsg-countdown-timer-heading.ct-custom {
 				color: {$heading_text_color};
             }
 		";
@@ -129,7 +129,7 @@ class EnqueueScript implements HookRegistry {
 
 		if ( $is_twenty_one_theme ) {
 			$custom_css .= '
-                .sgsb-countdown-timer {
+                .spsg-countdown-timer {
                     margin-top: 18px;
                 }
             ';
@@ -137,16 +137,16 @@ class EnqueueScript implements HookRegistry {
 
 		if ( $is_twenty_four_theme ) {
 			$custom_css .= '
-                .sgsb-countdown-timer {
+                .spsg-countdown-timer {
                     padding-left: 0px;
                     padding-right: 0px; 
                 }
-                .sgsb-countdown-timer-item {
+                .spsg-countdown-timer-item {
                     height: 40px;
                 }
             ';
 		}
 
-		wp_add_inline_style( 'sgsb-cd-timer-custom-style', $custom_css );
+		wp_add_inline_style( 'spsg-cd-timer-custom-style', $custom_css );
 	}
 }

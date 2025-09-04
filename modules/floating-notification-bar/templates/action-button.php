@@ -2,7 +2,7 @@
 
 $button_class = 'fn-bar-action-button';
 if ( 'ba-close' === $button_action ) {
-	$button_class .= ' sgsb-floating-notification-bar-remove';
+	$button_class .= ' spsg-floating-notification-bar-remove';
 }
 
 if ( 'ba-url-redirect' === $button_action ) {

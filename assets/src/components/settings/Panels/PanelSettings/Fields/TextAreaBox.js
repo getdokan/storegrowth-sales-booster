@@ -27,7 +27,7 @@ const TextAreaBox = ( {
 } ) => {
     // Render textarea content after settings field, if needed.
     const renderAreaContent = applyFilters(
-        "sgsb_after_textarea_settings",
+        "spsg_after_textarea_settings",
         '',
     );
 

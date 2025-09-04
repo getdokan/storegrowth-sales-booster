@@ -65,7 +65,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	 * @return void
 	 */
 	public function set_initial_banner_data() {
-		$flags = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_discount_banner_flags', array() );
+		$flags = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_discount_banner_flags', array() );
 		if ( isset( $flags['done_setting_initial_banner_data'] ) ) {
 			return;
 		}
@@ -74,10 +74,10 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 			'progressive_banner_text' => 'Add more [amount] to get free shipping.',
 			'goal_completion_text'    => 'You have successfully acquired free shipping.',
 		);
-		delete_option( 'sgsb_progressive_discount_banner_settings' );
-		$result = update_option( 'sgsb_progressive_discount_banner_settings', $default_data );
+		delete_option( 'spsg_progressive_discount_banner_settings' );
+		$result = update_option( 'spsg_progressive_discount_banner_settings', $default_data );
 		if ( $result ) {
-			update_option( 'sgsb_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
+			update_option( 'spsg_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
 		}
 	}
 }

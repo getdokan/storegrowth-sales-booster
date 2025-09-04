@@ -6,12 +6,12 @@ const Welcome = ({ next, agreementData, handleCheckbox, getUserDetails }) => {
 
   return (
     <Fragment>
-      <div className='sgsb-ini-setup-welcome'>
+      <div className='spsg-ini-setup-welcome'>
         <div className='ini-setup-announce-container'>
           <img className='annouce-image' src={WelcomeAnnounce} alt="storegrowth-icon" />
           <div className='annouce-contents'>
-            <h3 className='sgsb-content-heading'>{__("Welcome To StoreGrowth", "storegrowth-sales-booster")}</h3>
-            <span className='sgsb-sub-heading'>{__(`Conversion Boosting Toolkit for WooCommerce`, 'storegrowth-sales-booster')}</span>
+            <h3 className='spsg-content-heading'>{__("Welcome To StoreGrowth", "storegrowth-sales-booster")}</h3>
+            <span className='spsg-sub-heading'>{__(`Conversion Boosting Toolkit for WooCommerce`, 'storegrowth-sales-booster')}</span>
           </div>
           <button onClick={() => { next(); getUserDetails(); }} type="button" className='steps-button get-started'>{__(`Get Started`, 'storegrowth-sales-booster')}</button>
         </div>

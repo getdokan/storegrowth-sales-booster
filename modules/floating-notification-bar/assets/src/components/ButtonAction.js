@@ -63,7 +63,7 @@ const ButtonAction = ({ formData, onFieldChange }) => {
               </div>
             )}
             {applyFilters(
-              "sgsb_floating_notification_bar_button_redirection",
+              "spsg_floating_notification_bar_button_redirection",
               "",
               formData,
               onFieldChange

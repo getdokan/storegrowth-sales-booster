@@ -38,7 +38,7 @@ function GeneralSettingTab(props) {
         />
 
         {applyFilters(
-          "sgsb_shop_sales_countdown_enable_settings",
+          "spsg_shop_sales_countdown_enable_settings",
           "",
           formData,
           onFieldChange,

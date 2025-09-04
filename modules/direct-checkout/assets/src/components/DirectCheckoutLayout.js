@@ -18,16 +18,16 @@ function DirectCheckoutLayout({
   useSearchParams,
   moduleId,
 }) {
-  const isProEnabled = sgsbAdmin.isPro;
+  const isProEnabled = spsgAdmin.isPro;
 
   const { setCreateFromData, setButtonLoading } = useDispatch(
-    "sgsb_direct_checkout"
+    "spsg_direct_checkout"
   );
   let [searchParams, setSearchParams] = useSearchParams("general");
   const tabName = searchParams.get("tab_name") || "general";
   const { createDirectCheckoutForm } = useSelect((select) => ({
     createDirectCheckoutForm: select(
-      "sgsb_direct_checkout"
+      "spsg_direct_checkout"
     ).getCreateFromData(),
   }));
 
@@ -55,13 +55,13 @@ function DirectCheckoutLayout({
     setButtonLoading(true);
 
     jQuery.post(
-      sgsbAdmin.ajax_url,
+      spsgAdmin.ajax_url,
       {
-        action: "sgsb_direct_checkout_save_settings",
+        action: "spsg_direct_checkout_save_settings",
         data: JSON.stringify({
           direct_checkout_data: createDirectCheckoutForm,
         }),
-        _ajax_nonce: sgsbAdmin.nonce,
+        _ajax_nonce: spsgAdmin.nonce,
       },
       function (response) {
         setCreateFromData(response.data);

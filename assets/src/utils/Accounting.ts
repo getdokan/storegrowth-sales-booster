@@ -12,29 +12,29 @@ export const formatPrice = (
         return price;
     }
 
-    if ( ! window?.sgsb?.currency ) {
+    if ( ! window?.spsg?.currency ) {
         console.warn( 'StoreGrowth Currency Data Not Found' );
         return price;
     }
 
     if ( ! currencySymbol ) {
-        currencySymbol = window?.sgsb?.currency.symbol;
+        currencySymbol = window?.spsg?.currency.symbol;
     }
 
     if ( ! precision ) {
-        precision = window?.sgsb?.currency.precision;
+        precision = window?.spsg?.currency.precision;
     }
 
     if ( ! thousand ) {
-        thousand = window?.sgsb?.currency.thousand;
+        thousand = window?.spsg?.currency.thousand;
     }
 
     if ( ! decimal ) {
-        decimal = window?.sgsb?.currency.decimal;
+        decimal = window?.spsg?.currency.decimal;
     }
 
     if ( ! format ) {
-        format = window?.sgsb?.currency.format;
+        format = window?.spsg?.currency.format;
     }
 
     return window.accounting.formatMoney(
@@ -57,7 +57,7 @@ export const formatNumber = ( value ) => {
         return value;
     }
 
-    if ( ! window?.sgsb?.currency ) {
+    if ( ! window?.spsg?.currency ) {
         console.warn( 'StoreGrowth Currency Data Not Found' );
         return value;
     }
@@ -65,9 +65,9 @@ export const formatNumber = ( value ) => {
     return window.accounting.formatNumber(
         value,
         // @ts-ignore
-        window?.sgsb?.currency.precision,
-        window?.sgsb?.currency.thousand,
-        window?.sgsb?.currency.decimal
+        window?.spsg?.currency.precision,
+        window?.spsg?.currency.thousand,
+        window?.spsg?.currency.decimal
     );
 };
 
@@ -77,6 +77,6 @@ export const unformatNumber = ( value ) => {
     }
     return window.accounting.unformat(
         value,
-        window?.sgsb?.currency.decimal
+        window?.spsg?.currency.decimal
     );
 };

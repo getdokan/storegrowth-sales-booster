@@ -9,7 +9,7 @@ if ( ! $product->managing_stock() ) {
 	return;
 }
 
-$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_stock_bar_settings' );
+$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_stock_bar_settings' );
 $enable_stock_bar_in_product_page = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_page_stock_bar_enable', true );
 
 if ( is_product() && ! $enable_stock_bar_in_product_page ) {
@@ -30,7 +30,7 @@ $available_item_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $se
 // Vars for threshold warning msg.
 $show_stock_status = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_stock_status', true );
 $stock_contents    = apply_filters(
-    'sgsb_stock_bar_warning_contents',
+    'spsg_stock_bar_warning_contents',
     array(
         'quantity_required' => 10,
         'status_text_color' => '#073B4C',
@@ -42,9 +42,9 @@ $stock_contents    = apply_filters(
 
 ?>
 
-<div class="sgsb-stock-bar">
+<div class="spsg-stock-bar">
 	<div
-		class="sgsb-stock-progress-bar-section wpbsc_total_sale sgsb-stock-stock-bar-format-<?php echo esc_attr( $sd_format ); ?>"
+		class="spsg-stock-progress-bar-section wpbsc_total_sale spsg-stock-stock-bar-format-<?php echo esc_attr( $sd_format ); ?>"
 		total-sale="<?php echo esc_attr( $total_sales ); ?>"
 		total-stock="<?php echo esc_attr( $total_stock ); ?>"
 		data-height="<?php echo esc_attr( $bar_height ); ?>"
@@ -52,16 +52,16 @@ $stock_contents    = apply_filters(
 		data-fgcolor="<?php echo esc_attr( $fg_color ); ?>"
 	>
 		<?php if ( 'above' === $sd_format ) : ?>
-		<div class="sgsb-stock-progress-title">
-			<span class="sgsb-stock-progress-sold-title">
+		<div class="spsg-stock-progress-title">
+			<span class="spsg-stock-progress-sold-title">
 				<?php echo esc_html( sprintf( '%1$s:', $total_sell_text ) ); ?>
-				<span class="sgsb-stock-progress-count">
+				<span class="spsg-stock-progress-count">
 					<?php echo esc_html( sprintf( '%1$s', $total_sales ) ); ?>
 				</span>
 			</span>
-			<span class="sgsb-stock-progress-available-title">
+			<span class="spsg-stock-progress-available-title">
 				<?php echo esc_html( sprintf( '%1$s:', $available_item_text ) ); ?>
-				<span class="sgsb-stock-progress-count">
+				<span class="spsg-stock-progress-count">
 					<?php echo esc_html( sprintf( '%1$s', $stock ) ); ?>
 				</span>
 			</span>
@@ -71,7 +71,7 @@ $stock_contents    = apply_filters(
 		<?php
 		if ( 'below' === $sd_format ) :
 				/* translators: %s: Left items in stock */
-				do_action( 'sgsb_stock_bar_stock_below' );
+				do_action( 'spsg_stock_bar_stock_below' );
 			endif;
 		?>
 

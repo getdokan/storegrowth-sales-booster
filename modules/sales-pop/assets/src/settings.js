@@ -12,8 +12,8 @@ register(SalesPopStore);
  * Add routes to sidebar.
  */
 addFilter(
-  "sgsb_routes",
-  "sgsb",
+  "spsg_routes",
+  "spsg",
   (routes, outlet, navigate, useParams, useSearchParams) => {
     const moduleName = "sales-pop";
     routes.push({
@@ -51,7 +51,7 @@ addFilter(
 /**
  * Add sidebar menu items
  */
-addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
+addFilter("sidebar_menu_items", "spsg", (items, Link) => {
   items.push({
     label: <Link to="/sales-pop?tab_name=general">Sales Pop</Link>,
     key: "sales-pop",

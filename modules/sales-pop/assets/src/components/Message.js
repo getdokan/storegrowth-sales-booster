@@ -7,11 +7,11 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import { Fragment } from "react";
 
 function Message( { onFormSave, upgradeTeaser } ) {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsg_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    createPopupFormData : select( 'spsg_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'spsg_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFormReset = () => {
@@ -26,8 +26,8 @@ function Message( { onFormSave, upgradeTeaser } ) {
    * @return string
    */
   addFilter(
-    'sgsb_after_textarea_settings',
-    'sgsb_after_textarea_settings_callback',
+    'spsg_after_textarea_settings',
+    'spsg_after_textarea_settings_callback',
     () => {
       return (
         <div className={ `textarea-content` }>
@@ -44,7 +44,7 @@ function Message( { onFormSave, upgradeTeaser } ) {
     <Fragment>
       {/* Rendered sales pop time panel settings. */}
       { applyFilters(
-        'sgsb_sales_pop_message_panel_settings',
+        'spsg_sales_pop_message_panel_settings',
         '',
         createPopupFormData,
         setCreateFromData

@@ -14,8 +14,8 @@ register(BogoStore);
  * Add routes to sidebar.
  */
 addFilter(
-  "sgsb_routes",
-  "sgsb",
+  "spsg_routes",
+  "spsg",
   (routes, outlet, navigate, useParams, useSearchParams) => {
     routes.push({
       path: "/bogo",
@@ -106,7 +106,7 @@ addFilter(
 /**
  * Add sidebar menu items
  */
-addFilter("sidebar_menu_items", "sgsb", (items, Link) => {
+addFilter("sidebar_menu_items", "spsg", (items, Link) => {
   items.push({
     label: <Link to="/bogo">BOGO</Link>,
     key: "bogo",

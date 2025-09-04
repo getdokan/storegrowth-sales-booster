@@ -77,7 +77,7 @@ const selectors = {
   }
 };
 
-export default createReduxStore( 'sgsb_order_bump', {
+export default createReduxStore( 'spsg_order_bump', {
   reducer,
   actions,
   selectors

@@ -31,7 +31,7 @@ class CommonHooks implements HookRegistry {
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
-		add_action( 'sgsb_woocommerce_before_cart_collaterals', array( $this, 'sgsb_before_cart_collaterals' ) );
+		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'spsg_before_cart_collaterals' ) );
 
 		add_filter( 'template_include', array( $this, 'set_custom_checkout_template' ), 20 );
 	}
@@ -60,7 +60,7 @@ class CommonHooks implements HookRegistry {
 			return;
 		}
 
-		$settings      = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$settings      = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$icon_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
 		$icon_name     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
 
@@ -70,7 +70,7 @@ class CommonHooks implements HookRegistry {
 	/**
 	 * Hook woocommerce_before_cart_collaterals
 	 */
-	public function sgsb_before_cart_collaterals() {
+	public function spsg_before_cart_collaterals() {
 		remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
 		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 
@@ -93,7 +93,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function set_custom_checkout_template( $template ) {
 		// phpcs:ignore
-		if ( ! is_checkout() || empty( $_GET['sgsb-checkout'] ) ) {
+		if ( ! is_checkout() || empty( $_GET['spsg-checkout'] ) ) {
 			return $template;
 		}
 

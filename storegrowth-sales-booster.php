@@ -154,7 +154,7 @@ function storegrowth_get_container(): Container {
  *
  * @return Bootstrap
  */
-function sgsb_plugin(): Bootstrap {
+function spsg_plugin(): Bootstrap {
 	return Bootstrap::instance();
 }
 
@@ -174,4 +174,4 @@ require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
-sgsb_plugin();
+spsg_plugin();

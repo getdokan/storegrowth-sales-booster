@@ -79,7 +79,7 @@ const Templates = ({ formData, setFormData }) => {
   };
 
   // List of shipping bar templates.
-  templates = applyFilters("sgsb_shipping_bar_templates", templates);
+  templates = applyFilters("spsg_shipping_bar_templates", templates);
 
   const onTemplateChange = (name, value) => {
     setFormData({

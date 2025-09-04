@@ -66,7 +66,7 @@ const Templates = ( {
 
     // List of shipping bar templates.
     templates = applyFilters(
-        "sgsb_shipping_bar_templates",
+        "spsg_shipping_bar_templates",
         templates,
     );
 

@@ -24,7 +24,7 @@
     /* Other font properties like font-weight and font-style can also be defined here */
   }
 
-body.show_discount_banner .sgsb-pd-banner-bar-wrapper{
+body.show_discount_banner .spsg-pd-banner-bar-wrapper{
     transition: 0.5s;
 }
 
@@ -32,7 +32,7 @@ body:not(.show_discount_banner){
     padding-top: 0;
 }
 
-.sgsb-pd-banner-bar-wrapper {
+.spsg-pd-banner-bar-wrapper {
     display: none;
     position: absolute;
     left: 0;
@@ -45,7 +45,7 @@ body:not(.show_discount_banner){
     /* height: 60px; */
     padding: 8px 0px;
 }
-.sgsb-pd-banner-bar {
+.spsg-pd-banner-bar {
     display: flex;
     justify-content: space-between;
     width: 97%;
@@ -55,23 +55,23 @@ body:not(.show_discount_banner){
     padding: 0px 20px;
 }
 
-.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
+.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg {
     margin-top: 8px;
     fill: #fff;
     width: 25px;
     height: 25px;
 }
 
-.sgsb-pd-banner-text{
+.spsg-pd-banner-text{
     font-size: 20px;
     font-weight: 600;
 }
 
-.sgsb-pd-banner-bar-remove {
+.spsg-pd-banner-bar-remove {
     cursor: pointer;
 }
 
-body.admin-bar .sgsb-pd-banner-bar-wrapper {
+body.admin-bar .spsg-pd-banner-bar-wrapper {
     top: 32px;
     max-width: 100%;
 }

@@ -5,10 +5,10 @@ import { SettingsSection, TextAreaBox } from "sales-booster/src/components/setti
 import {applyFilters} from "@wordpress/hooks";
 
 const ContentSection = () => {
-  const { setCreateFromData } = useDispatch("sgsb_bogo");
+  const { setCreateFromData } = useDispatch("spsg_bogo");
 
   const { createBogoData } = useSelect((select) => ({
-    createBogoData: select("sgsb_bogo").getCreateFromData(),
+    createBogoData: select("spsg_bogo").getCreateFromData(),
   }));
 
   const onFieldChange = (key, value) => {
@@ -31,7 +31,7 @@ const ContentSection = () => {
           name={'shop_page_message'}
           fieldValue={createBogoData?.shop_page_message}
           changeHandler={onFieldChange}
-          readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}
+          readOnly={applyFilters( 'spsg_edit_bogo_message', true )}
           title={__('Shop Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Buy This Product and Get Another Product', 'storegrowth-sales-booster')}
           tooltip={__('Enter the text for shop page', 'storegrowth-sales-booster')}
@@ -41,7 +41,7 @@ const ContentSection = () => {
           name={'product_page_message'}
           fieldValue={createBogoData?.product_page_message}
           changeHandler={onFieldChange}
-          readOnly={applyFilters( 'sgsb_edit_bogo_message', true )}
+          readOnly={applyFilters( 'spsg_edit_bogo_message', true )}
           title={__('Product Page Message', 'storegrowth-sales-booster')}
           placeHolderText={__('Free Gift', 'storegrowth-sales-booster')}
           tooltip={__('Enter the text for product page', 'storegrowth-sales-booster')}

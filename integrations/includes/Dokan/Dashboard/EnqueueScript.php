@@ -43,7 +43,7 @@ class EnqueueScript
         }
 
         wp_enqueue_style(
-            'sgsb-dokan-dashboard-products',
+            'spsg-dokan-dashboard-products',
 	        Helper::get_integrations_path( 'assets/build/dokan-dashboard-products.css' ),
             $products_file['dependencies'],
             $products_file['version']

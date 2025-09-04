@@ -26,14 +26,14 @@ class Assets {
 	 *
 	 * @var string
 	 */
-	private $modules_page_hook = 'storegrowth_page_sgsb-modules';
+	private $modules_page_hook = 'storegrowth_page_spsg-modules';
 
 	/**
 	 * Module settings page slug.
 	 *
 	 * @var string
 	 */
-	private $settings_page_hook = 'storegrowth_page_sgsb-settings';
+	private $settings_page_hook = 'storegrowth_page_spsg-settings';
 
 	/**
 	 * Constructor of Enqueue class.
@@ -51,17 +51,17 @@ class Assets {
      */
     public function register_all_scripts() {
         wp_register_script(
-            'sgsb-accounting',
+            'spsg-accounting',
             WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
             [ 'jquery' ]
         );
 
         // localize dokan frontend script
         wp_localize_script(
-            'sgsb-accounting',
-            'sgsb',
+            'spsg-accounting',
+            'spsg',
             apply_filters(
-                'sgsb_global_common_localized_args',
+                'spsg_global_common_localized_args',
                 array(
                     'currency' => array(
                         'precision' => wc_get_price_decimals(),
@@ -85,9 +85,9 @@ class Assets {
 		if ( $this->modules_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/modules.asset.php' );
 
-            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
 			wp_enqueue_script(
-				'sgsb-modules-script',
+				'spsg-modules-script',
 				Helper::get_plugin_assets_url( 'build/modules.js' ),
                 $dependencies,
 				$settings_file['version'],
@@ -95,11 +95,11 @@ class Assets {
 			);
 
 			wp_localize_script(
-				'sgsb-modules-script',
-				'sgsbAdmin',
+				'spsg-modules-script',
+				'spsgAdmin',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'sgsb_ajax_nonce' ),
+					'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
 					'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 				)
 			);
@@ -108,9 +108,9 @@ class Assets {
 		if ( $this->settings_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/settings.asset.php' );
 
-            $dependencies = array_merge( $settings_file['dependencies'], [ 'sgsb-accounting' ] );
+            $dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
 			wp_enqueue_script(
-				'sgsb-settings-script',
+				'spsg-settings-script',
 				Helper::get_plugin_assets_url( 'build/settings.js' ),
                 $dependencies,
 				$settings_file['version'],
@@ -118,11 +118,11 @@ class Assets {
 			);
 
 			wp_localize_script(
-				'sgsb-settings-script',
-				'sgsbAdmin',
+				'spsg-settings-script',
+				'spsgAdmin',
 				array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
-					'nonce'          => wp_create_nonce( 'sgsb_ajax_nonce' ),
+					'nonce'          => wp_create_nonce( 'spsg_ajax_nonce' ),
 					'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
@@ -141,7 +141,7 @@ class Assets {
 			|| $this->settings_page_hook === $hook
 		) {
 			wp_enqueue_style(
-				'sgsb-admin-style',
+				'spsg-admin-style',
 				Helper::get_plugin_assets_url( 'build/modules.css' ),
 				array(),
 				filemtime( Helper::get_plugin_path( 'assets/build/modules.css' ) )

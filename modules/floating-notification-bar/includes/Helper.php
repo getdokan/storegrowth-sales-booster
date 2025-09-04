@@ -27,7 +27,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_floating_notification_bar_settings', array() );
+		return \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_floating_notification_bar_settings', array() );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Helper {
 	 * @return false|string|void
 	 */
 	public static function get_bar_content( $is_echo = true ) {
-		$path = apply_filters( 'sgsb_floating_bar_content_pro', __DIR__ . '/../templates/bar.php' );
+		$path = apply_filters( 'spsg_floating_bar_content_pro', __DIR__ . '/../templates/bar.php' );
 
 		if ( ! $path ) {
 			return;

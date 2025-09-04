@@ -153,11 +153,11 @@ function TargetProductAndCategory({ type, catList, productList }) {
 }
 
 function OrderBumpList({ navigate }) {
-  const { setPageLoading } = useDispatch("sgsb");
-  const { setBumpData } = useDispatch("sgsb_order_bump");
+  const { setPageLoading } = useDispatch("spsg");
+  const { setBumpData } = useDispatch("spsg_order_bump");
 
   const { bumpListData } = useSelect((select) => ({
-    bumpListData: select("sgsb_order_bump").getBumpData(),
+    bumpListData: select("spsg_order_bump").getBumpData(),
   }));
 
   useEffect(() => {
@@ -240,14 +240,14 @@ function OrderBumpList({ navigate }) {
   }
 
   let data = applyFilters(
-    'sgsb_upsell_order_bump_data',
+    'spsg_upsell_order_bump_data',
     bumpListData.slice(-2).map(mapBumpData),
     bumpListData,
     mapBumpData
   );
 
   const isDisableBumpCreation = applyFilters(
-    'sgsb_control_upsell_order_bump_data',
+    'spsg_control_upsell_order_bump_data',
     bumpListData?.length >= 2
   );
 
