@@ -19,8 +19,9 @@ class ModuleManager {
 	 * @return array<string, ModuleSkeleton>
 	 */
 	public function get_all( bool $force_load = false ): array {
-		if ( empty( $this->module_list ) || $force_load ) {
-			$container = storegrowth_get_container();
+		$container = storegrowth_get_container();
+		
+		if ( (empty( $this->module_list ) || $force_load) && $container->has(ModuleSkeleton::class) ) {
 			$modules   = $container->get(ModuleSkeleton::class);
 			$this->module_list = apply_filters( 'sgsb_modules', $modules );
 		}

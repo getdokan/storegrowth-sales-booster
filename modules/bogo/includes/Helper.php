@@ -31,7 +31,9 @@ class Helper {
 		$offer_applied_ids                   = wp_list_pluck( $offers, 'offered_products' );
 		$is_variable_product                 = $product->is_type( 'variable' );
 		$offer_available_for_current_product = in_array( $product_id, $offer_applied_ids );
-
+		error_log ('is_variable_product: ' .  print_r( $is_variable_product, true) );
+		error_log ('product count: ' .  print_r( count( $offers ), true) );
+		error_log ('offer_available_for_current_product: ' .  print_r( $offer_available_for_current_product, true) );
 		// BOGO settings will be available for simple product &
 		return apply_filters(
 			'sgsb_load_product_bogo_offer',
@@ -60,9 +62,8 @@ class Helper {
 	 *
 	 * @return array|null
 	 */
-	public static function get_product_bogo_settings( $product_id ) {
-		$bogo_settings = get_post_meta( $product_id, 'sgsb_product_bogo_settings', true );
-		return $bogo_settings;
+	public static function get_product_bogo_settings( $product_id, $variation_id = 0, array $query_args = [] ) {
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id, $variation_id, $query_args );
 	}
 
 	/**
@@ -73,12 +74,7 @@ class Helper {
 	 * @return \WP_POST[]|int[]
 	 */
 	public static function get_global_offered_products() {
-		$args_bogo = array(
-			'post_type'      => 'sgsb_bogo',
-			'posts_per_page' => -1,
-		);
-
-		return get_posts( $args_bogo );
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
 	}
 
 	/**
@@ -89,11 +85,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_global_offered_product_list() {
-		$bogo_list = self::get_global_offered_products();
-		$offers    = wp_list_pluck( $bogo_list, 'post_excerpt' );
-
-		// Convert the serialized data into an array
-		return array_map( 'maybe_unserialize', $offers );
+		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_offered_product_list();
 	}
 
 
@@ -148,16 +140,28 @@ class Helper {
      */
     public static function get_product_bogo_settings_for_cart( $product_id ) {
         $product_settings = Helper::get_product_bogo_settings( $product_id );
-        if ( isset( $product_settings['bogo_status'] ) && $product_settings['bogo_status'] === 'yes' ) {
+        if ( isset( $product_settings['status'] ) && $product_settings['status'] === 'active' ) {
             return $product_settings;
         }
 
         $offers = self::get_global_offered_product_list();
         foreach ( $offers as $offer ) {
-            if ( intval( $offer['offered_products'] ) === $product_id ) {
-                return $offer;
+            $offered_products = $offer['offered_products'] ?? array();
+            
+            // Handle both array and string formats for backward compatibility
+            if ( is_array( $offered_products ) ) {
+                if ( in_array( $product_id, $offered_products ) ) {
+                    return $offer;
+                }
+            } else {
+                // Backward compatibility for string format
+                if ( intval( $offered_products ) === $product_id ) {
+                    return $offer;
+                }
             }
         }
+        
+        return null;
     }
 
     /**
@@ -170,28 +174,28 @@ class Helper {
      *
      * @return int|mixed|null
      */
-    public static function get_offer_product_id( $settings, $product_id ) {
-        $deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
+    	public static function get_offer_product_id( $settings, $product_id ) {
+		$deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
 
-        // Return same product as offer for same deal.
-        if ( $deal_type === 'same' ) {
-            return $product_id;
-        }
+		// Return same product as offer for same deal.
+		if ( $deal_type === 'same' ) {
+			return $product_id;
+		}
 
-        // Return buy y product for different deal.
-        if ( ! empty( $settings['get_different_product_field'] ) ) {
-            return intval( $settings['get_different_product_field'] );
-        }
+		// Return buy y product for different deal.
+		if ( ! empty( $settings['get_different_product_field'] ) ) {
+			return intval( $settings['get_different_product_field'] );
+		}
 
-        // Return alternate first product as offer for buy y product.
-        $alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
-        return apply_filters(
-            'sgsb_bogo_offer_product_id_for_cart',
-            ! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
-            $settings,
-            $product_id
-        );
-    }
+		// Return alternate first product as offer for buy y product.
+		$alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
+		return apply_filters(
+			'sgsb_bogo_offer_product_id_for_cart',
+			! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
+			$settings,
+			$product_id
+		);
+	}
 
     /**
      * Get alternate offer products for BOGO apply.

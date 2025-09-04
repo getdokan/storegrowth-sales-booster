@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Typography } from 'antd';
 import { __ } from '@wordpress/i18n';
 import PreviewImg from '../../images/bump-preview.svg';
-import { useSelect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 const { Title } = Typography;
 
