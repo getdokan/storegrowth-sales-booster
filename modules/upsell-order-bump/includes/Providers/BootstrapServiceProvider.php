@@ -6,7 +6,7 @@ use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpAjax;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpAjax;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
 
 /**

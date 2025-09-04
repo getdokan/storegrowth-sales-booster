@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi;
+namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 

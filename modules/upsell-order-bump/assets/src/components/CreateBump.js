@@ -98,10 +98,12 @@ function CreateBump({navigate, useParams, useSearchParams}) {
         .then(data => {
           setPageLoading(false);
           const parsedBumpItem = convertApiResponseToFrontendFormat(data);
+          // Don't spread createBumpData here as it might be empty on reload
+          // Instead, merge with default form data to ensure all fields are present
           setCreateFromData({
-            ...createBumpData,
+            ...createBumpForm,
             ...parsedBumpItem,
-            offer_product_id:bump_id
+            offer_product_id: bump_id
           });
         })
         .catch(error => {
@@ -112,7 +114,7 @@ function CreateBump({navigate, useParams, useSearchParams}) {
             description: 'Failed to fetch order bump',
           });
         });
-    }, []);
+    }, [bump_id]);
 
   } else {
     useEffect( () => {

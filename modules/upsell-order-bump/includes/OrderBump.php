@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\BumpOfferValidator;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,10 +32,18 @@ class OrderBump implements HookRegistry {
 	private $order_bump_data;
 
 	/**
+	 * BumpOfferValidator instance.
+	 *
+	 * @var BumpOfferValidator
+	 */
+	private $bumpOfferValidator;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->order_bump_data = new OrderBumpData();
+		$this->bumpOfferValidator = new BumpOfferValidator($this->order_bump_data);
 	}
 
 	/**
@@ -208,42 +217,7 @@ class OrderBump implements HookRegistry {
 	 * @param array $removed_item_ids Array of removed product/variation IDs.
 	 */
 	private function validate_bump_products_after_removal( $removed_item_ids ) {
-		// Get all active bump offers
-		$bump_list = $this->order_bump_data->get_all( array( 'status' => 'active' ) );
-
-		foreach ( $bump_list as $bump ) {
-			$bump_type = $bump['target_type'];
-			$offer_product_id = $bump['offer_product_id'];
-
-			// Check if the removed item was a target for this bump offer
-			$was_target = false;
-
-			if ( $bump_type === 'products' ) {
-				$target_products = $bump['target_products'];
-				$was_target = ! empty( array_intersect( $removed_item_ids, $target_products ) );
-			} else {
-				// For category-based bumps, check if removed product was in target categories
-				$was_target = false;
-				foreach ( $removed_item_ids as $removed_item_id ) {
-					$removed_product_categories = wp_get_post_terms( $removed_item_id, 'product_cat', array( 'fields' => 'ids' ) );
-					$target_categories = $bump['target_categories'];
-					if ( ! empty( array_intersect( $removed_product_categories, $target_categories ) ) ) {
-						$was_target = true;
-						break;
-					}
-				}
-			}
-
-			if ( $was_target ) {
-				// Check if there are still other target products in cart
-				$remaining_targets = $this->get_remaining_target_products( $bump, $bump_type );
-
-				if ( empty( $remaining_targets ) ) {
-					// No more target products in cart, remove or reset the bump product
-					$this->handle_orphaned_bump_product( $offer_product_id );
-				}
-			}
-		}
+		$this->bumpOfferValidator->validateBumpOffersAfterRemoval($removed_item_ids);
 	}
 
 	/**
