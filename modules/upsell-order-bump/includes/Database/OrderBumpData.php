@@ -138,6 +138,8 @@ class OrderBumpData {
 			'offer_type'            => sanitize_text_field( $data['offer_type'] ?? 'discount' ),
 			'offer_amount'          => floatval( $data['offer_amount'] ?? 0 ),
 			'offer_discount_title'  => sanitize_text_field( $data['offer_discount_title'] ?? '' ),
+			'created_by'            => intval( $data['created_by'] ?? get_current_user_id() ),
+			'updated_by'            => intval( $data['updated_by'] ?? get_current_user_id() ),
 			'design_settings'       => wp_json_encode( $data['design_settings'] ?? array() ),
 		);
 
@@ -154,6 +156,8 @@ class OrderBumpData {
 				'%s', // offer_type
 				'%f', // offer_amount
 				'%s', // offer_discount_title
+				'%d', // created_by
+				'%d', // updated_by
 				'%s', // design_settings
 			)
 		);
@@ -214,6 +218,9 @@ class OrderBumpData {
 		if ( isset( $data['offer_discount_title'] ) ) {
 			$update_data['offer_discount_title'] = sanitize_text_field( $data['offer_discount_title'] );
 		}
+
+		// Always update the updated_by field when updating
+		$update_data['updated_by'] = get_current_user_id();
 
 		if ( isset( $data['design_settings'] ) ) {
 			$update_data['design_settings'] = wp_json_encode( $data['design_settings'] );

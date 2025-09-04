@@ -53,12 +53,16 @@ class Migration {
             offer_amount decimal(10,2) NOT NULL DEFAULT 0.00,
             offer_discount_title varchar(255) NOT NULL DEFAULT '',
             design_settings longtext,
+            created_by bigint(20) unsigned DEFAULT NULL,
+            updated_by bigint(20) unsigned DEFAULT NULL,
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
             KEY status (status),
             KEY target_type (target_type),
-            KEY offer_product_id (offer_product_id)
+            KEY offer_product_id (offer_product_id),
+            KEY created_by (created_by),
+            KEY updated_by (updated_by)
         ) $charset_collate;";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';

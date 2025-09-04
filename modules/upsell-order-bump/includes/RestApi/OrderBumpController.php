@@ -463,6 +463,18 @@ class OrderBumpController extends WP_REST_Controller {
 					'context'     => array( 'view', 'edit' ),
 					'default'     => '',
 				),
+				'created_by'        => array(
+					'description' => __( 'ID of the user who created the order bump.', 'storegrowth-sales-booster' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
+				'updated_by'        => array(
+					'description' => __( 'ID of the user who last updated the order bump.', 'storegrowth-sales-booster' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit' ),
+					'readonly'    => true,
+				),
 				'design_settings'   => array(
 					'description' => __( 'Design settings for the order bump.', 'storegrowth-sales-booster' ),
 					'type'        => 'object',
