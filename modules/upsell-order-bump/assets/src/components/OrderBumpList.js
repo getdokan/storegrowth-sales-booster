@@ -163,22 +163,22 @@ function OrderBumpList({ navigate }) {
   useEffect(() => {
     setPageLoading(true);
 
-    jQuery.post(
-      bump_save_url.ajax_url,
-      {
-        action: "bump_list",
-        data: [],
-        _ajax_nonce: bump_save_url.ajd_nonce,
-      },
-      function (bumpDataFromAjax) {
+    orderBumpApi.getAll()
+      .then(response => {
         setPageLoading(false);
-
-        const bumpDataParsed = bumpDataFromAjax.data.map((bumpItem) =>
+        const bumpDataParsed = response.map((bumpItem) =>
           convertBumpItemHtmlEntitiesToTexts(bumpItem)
         );
         setBumpData(bumpDataParsed);
-      }
-    );
+      })
+      .catch(error => {
+        setPageLoading(false);
+        console.error('Error fetching order bumps:', error);
+        notification.error({
+          message: 'Error',
+          description: 'Failed to fetch order bumps',
+        });
+      });
   }, []);
 
   const columns = [
