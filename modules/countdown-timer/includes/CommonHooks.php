@@ -118,8 +118,7 @@ class CommonHooks implements HookRegistry {
 	public function woocommerce_product_get_price( $price, $product ) {
 		// Check countdown discount is set.
 		if ( Helper::is_product_discountable( $product->get_id() ) ) {
-			// Use sale price if available, otherwise fallback to regular price
-			$base_price = $product->get_sale_price() ? floatval( $product->get_sale_price() ) : floatval( $product->get_regular_price() );
+			$base_price = floatval( $product->get_price() );
 			$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
 			$discount_amount = 100 - intval( $discount_amount );
 
