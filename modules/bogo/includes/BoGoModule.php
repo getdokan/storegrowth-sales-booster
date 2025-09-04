@@ -102,4 +102,15 @@ class BoGoModule extends BaseModule {
 	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
 		return new BootstrapServiceProvider();
 	}
+
+	public function activate(): bool
+	{
+		// Run BOGO migration if needed
+		$migration_status = \StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::get_migration_status();
+		if ( $migration_status['migration_needed'] ) {
+			\StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::migrate_to_single_table();
+		}
+
+		return parent::activate();
+	}
 }
