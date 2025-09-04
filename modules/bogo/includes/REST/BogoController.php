@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\BoGo\REST;
+namespace StorePulse\StoreGrowth\Modules\BoGo\REST;
 
 use WP_Error;
 use WP_HTTP_Response;
@@ -8,7 +8,7 @@ use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 
 defined( 'ABSPATH' ) || exit();
 

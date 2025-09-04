@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\DependencyManagement\Providers;
+namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
-use STOREGROWTH\SPSB\ModuleManager;
+use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\ModuleManager;
 
 class ModuleServiceProvider extends BaseServiceProvider {
 	/**

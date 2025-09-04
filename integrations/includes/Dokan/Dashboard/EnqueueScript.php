@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\Dashboard;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
-use STOREGROWTH\SPSB\Helper;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 class EnqueueScript
 

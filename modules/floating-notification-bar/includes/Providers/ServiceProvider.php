@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Providers;
+namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
-use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\FloatingNotificationBarModule;
+use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\FloatingNotificationBarModule;
 
 /**
  * ServiceProvider for the module.
@@ -12,7 +12,7 @@ use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\FloatingNotificationBarModu
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 

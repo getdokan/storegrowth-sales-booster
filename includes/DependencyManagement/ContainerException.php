@@ -3,7 +3,7 @@
  * ExtendedContainer class file.
  */
 
-namespace STOREGROWTH\SPSB\DependencyManagement;
+namespace StorePulse\StoreGrowth\DependencyManagement;
 
 /**
  * Class ContainerException.

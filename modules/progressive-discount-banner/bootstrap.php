@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers\ServiceProvider;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

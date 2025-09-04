@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\Dashboard;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
-use STOREGROWTH\SPSB\Helper;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 /**
  * Dashboard Bogo Class.
@@ -84,7 +84,7 @@ class Bogo {
             true
         );
 
-        $admin_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings', [] );
+        $admin_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_dokan_vendors_settings', [] );
 
         wp_localize_script(
             'sgsb-bogo-dokan-vendor-dashboard',

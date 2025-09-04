@@ -3,9 +3,9 @@
  * ExtendedContainer class file.
  */
 
-namespace STOREGROWTH\SPSB\DependencyManagement;
+namespace StorePulse\StoreGrowth\DependencyManagement;
 
-use STOREGROWTH\SPSB\ThirdParty\Packages\League\Container\Container as BaseContainer;
+use StorePulse\StoreGrowth\ThirdParty\Packages\League\Container\Container as BaseContainer;
 
 /**
  * This class extends the original League's Container object by adding some functionality

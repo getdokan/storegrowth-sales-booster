@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\Frontend;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\Frontend;
 
-use STOREGROWTH\SPSB\Helper;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Traits\Singleton;
 use WC_Product;
 
 /**
@@ -45,7 +45,7 @@ class Frontend {
      * @return void
      */
     public function display_dokan_vendor_info( WC_Product $product ) {
-        $settings              = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
+        $settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
         $is_store_name_visible = Helper::find_option_settings( $settings, 'show_quick_cart_dokan_store_names', true );
         $is_store_link_enabled = Helper::find_option_settings( $settings, 'enable_quick_cart_dokan_store_links', true );
 

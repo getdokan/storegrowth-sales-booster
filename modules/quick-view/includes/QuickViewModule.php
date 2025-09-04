@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView;
+namespace StorePulse\StoreGrowth\Modules\QuickView;
 
-use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\QuickView\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\BaseModule;
+use StorePulse\StoreGrowth\Modules\QuickView\Providers\BootstrapServiceProvider;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

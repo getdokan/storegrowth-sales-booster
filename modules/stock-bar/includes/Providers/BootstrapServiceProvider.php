@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\StockBar\Providers;
+namespace StorePulse\StoreGrowth\Modules\StockBar\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\StockBar\Ajax;
-use STOREGROWTH\SPSB\Modules\StockBar\CommonHooks;
-use STOREGROWTH\SPSB\Modules\StockBar\EnqueueScript;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\StockBar\Ajax;
+use StorePulse\StoreGrowth\Modules\StockBar\CommonHooks;
+use StorePulse\StoreGrowth\Modules\StockBar\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\StockBar\EnqueueScript;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

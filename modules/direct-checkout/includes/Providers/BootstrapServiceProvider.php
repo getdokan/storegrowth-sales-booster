@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout\Providers;
+namespace StorePulse\StoreGrowth\Modules\DirectCheckout\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\DirectCheckout\Ajax;
-use STOREGROWTH\SPSB\Modules\DirectCheckout\CommonHooks;
-use STOREGROWTH\SPSB\Modules\DirectCheckout\EnqueueScript;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\DirectCheckout\Ajax;
+use StorePulse\StoreGrowth\Modules\DirectCheckout\CommonHooks;
+use StorePulse\StoreGrowth\Modules\DirectCheckout\EnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\DirectCheckout\EnqueueScript;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

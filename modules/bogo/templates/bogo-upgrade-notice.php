@@ -4,7 +4,7 @@
 		<?php esc_html_e( 'Attention Admin: Product Meta Update Required. Please review and update the meta data for your products.', 'storegrowth-sales-booster' ); ?>
 	</p>
 	<div class="bogo-settings-preview upgrade-overlay">
-		<img src="<?php echo esc_url( \STOREGROWTH\SPSB\Helper::get_modules_url( 'bogo/assets/images/bogo-variation-preview.png' ) ); ?>" alt="">
+		<img src="<?php echo esc_url( \StorePulse\StoreGrowth\Helper::get_modules_url( 'bogo/assets/images/bogo-variation-preview.png' ) ); ?>" alt="">
 	</div>
 	<div class="bogo sgsb-upgrade-notice">
 		<a class='upgrade-btn' href="https://storegrowth.io/pricing/" target="_blank" rel="noopener noreferrer">Upgrade To Pro <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10" fill="none">

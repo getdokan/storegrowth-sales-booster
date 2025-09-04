@@ -1,8 +1,8 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Providers;
+namespace StorePulse\StoreGrowth\Integrations\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 
 /**
  * ServiceProvider for the module.
@@ -11,7 +11,7 @@ use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BootableServiceProvider {
     /**

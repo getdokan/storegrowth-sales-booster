@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
+namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

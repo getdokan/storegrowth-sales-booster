@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\Admin;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\Admin;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper;
 
 /**
  * Admin EnqueueScript Class.

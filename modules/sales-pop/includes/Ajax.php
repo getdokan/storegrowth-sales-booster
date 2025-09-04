@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop;
+namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

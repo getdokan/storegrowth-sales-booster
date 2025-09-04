@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB;
+namespace StorePulse\StoreGrowth;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

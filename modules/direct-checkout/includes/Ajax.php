@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
+namespace StorePulse\StoreGrowth\Modules\DirectCheckout;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,7 +48,7 @@ class Ajax implements HookRegistry {
 			$direct_checkout_data = $data['direct_checkout_data'];
 
 			update_option( 'sgsb_direct_checkout_settings', $direct_checkout_data );
-			wp_send_json_success( maybe_unserialize( \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' ) ) );
+			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' ) ) );
 		}
 	}
 
@@ -59,7 +59,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

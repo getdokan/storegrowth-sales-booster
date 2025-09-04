@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView;
+namespace StorePulse\StoreGrowth\Modules\QuickView;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,7 +38,7 @@ class CommonHooks implements HookRegistry {
 		 * @since 1.0.0
 		 */
 	public function content_loader_hooks() {
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
 
 		$actions = array(
 			'show_title'       => array(
@@ -72,7 +72,7 @@ class CommonHooks implements HookRegistry {
 		);
 
 		foreach ( $actions as $setting => $data ) {
-			if ( \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, $setting, true ) ) {
+			if ( \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, $setting, true ) ) {
 					add_action( 'sgsbqcv_product_summary', $data['action'], $data['priority'] );
 			}
 		}
@@ -100,8 +100,8 @@ class CommonHooks implements HookRegistry {
 		 * @since 1.1.3
 		 */
 	public function button_positon_hooks() {
-		$settings        = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
-		$button_position = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_position', 'after_add_to_cart' );
+		$settings        = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$button_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_position', 'after_add_to_cart' );
 		$hook            = 'woocommerce_after_shop_loop_item';
 		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
 
@@ -116,7 +116,7 @@ class CommonHooks implements HookRegistry {
 
 		$product_id                    = get_the_ID();
 		$direct_checkout_button_layout = get_post_meta( $product_id, '_sgsb_direct_checkout_button_layout', true );
-		$settings                      = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings                      = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
 
 		include __DIR__ . '/../templates/quick-view-button.php';
 	}

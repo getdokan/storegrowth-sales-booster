@@ -6,7 +6,7 @@
  */
 
 // Check if the variables are set before using them.
-use STOREGROWTH\SPSB\Modules\BoGo\Helper;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	// Simple helper function to get design values from JSON

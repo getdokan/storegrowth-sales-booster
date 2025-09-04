@@ -5,10 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
+namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -66,7 +65,7 @@ class CommonHooks implements HookRegistry {
 
 		$settings             = Helper::get_settings();
 		$deafault_device_view = array( 'banner-show-desktop' );
-		$device_view          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'banner_device_view', $deafault_device_view );
+		$device_view          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'banner_device_view', $deafault_device_view );
 
 		if ( empty( $device_view ) ) {
 			return;} else {

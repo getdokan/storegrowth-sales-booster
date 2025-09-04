@@ -1,12 +1,12 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Providers;
+namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\Ajax;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\CommonHooks;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\EnqueueScript;
-use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Ajax;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\CommonHooks;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -15,7 +15,7 @@ use STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
@@ -65,7 +65,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	 * @return void
 	 */
 	public function set_initial_banner_data() {
-		$flags = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_discount_banner_flags', array() );
+		$flags = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_discount_banner_flags', array() );
 		if ( isset( $flags['done_setting_initial_banner_data'] ) ) {
 			return;
 		}

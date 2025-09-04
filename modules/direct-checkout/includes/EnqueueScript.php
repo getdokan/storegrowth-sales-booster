@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
+namespace StorePulse\StoreGrowth\Modules\DirectCheckout;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -57,8 +57,8 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-		$dir_checkout_settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
-		$checkout_redirect     = \STOREGROWTH\SPSB\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
+		$dir_checkout_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' );
+		$checkout_redirect     = \StorePulse\StoreGrowth\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
 		$is_checkout_redirect  = ( 'quick-cart-checkout' === $checkout_redirect );
 		wp_localize_script(
 			'sgsb-dc-script',
@@ -92,7 +92,7 @@ class EnqueueScript implements HookRegistry {
 			$settings_file['version'],
 			false
 		);
-		$sgsb_active_module_ids  = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_active_module_ids' );
+		$sgsb_active_module_ids  = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_active_module_ids' );
 		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $sgsb_active_module_ids );
 		wp_localize_script(
 			'sgsb-direct-checkout-settings',
@@ -108,11 +108,11 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function dc_button_inline_styles() {
 		// Get style options.
-		$settings             = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
-		$button_color         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
-		$text_color           = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
-		$font_size            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_size', '16' );
-		$button_border_radius = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_border_radius', '5' );
+		$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' );
+		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
+		$text_color           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
+		$font_size            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', '16' );
+		$button_border_radius = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_border_radius', '5' );
 
 		$theme                 = wp_get_theme();
 		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;

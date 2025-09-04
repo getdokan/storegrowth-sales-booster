@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
+namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -142,15 +142,15 @@ class EnqueueScript implements HookRegistry {
 		);
 		// Get style options.
 		$settings      = Helper::get_settings();
-		$bar_position  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_position', 'top' );
-		$bg_color      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
-		$text_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
-		$icon_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#ffffff' );
-		$close_color   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'close_icon_color', '#ffffff' );
-		$banner_height = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'banner_height', 60 );
-		$bar_type      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'bar_type', 'normal' );
-		$font_family   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_family', 'poppins' );
-		$font_size     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_size', 20 );
+		$bar_position  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'bar_position', 'top' );
+		$bg_color      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
+		$text_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
+		$icon_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#ffffff' );
+		$close_color   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'close_icon_color', '#ffffff' );
+		$banner_height = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'banner_height', 60 );
+		$bar_type      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'bar_type', 'normal' );
+		$font_family   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_family', 'poppins' );
+		$font_size     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', 20 );
 		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( 'bottom' === $bar_position ) {
