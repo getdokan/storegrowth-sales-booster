@@ -217,7 +217,7 @@ class Helper {
 	 *
 	 * @param string $module_id The module ID to check.
 	 *
-	 * @return boolean True if the module is active, false otherwise.
+	 * @return \WP_REST_Request The request object.
 	 */
 	public static function get_rest_request(): \WP_REST_Request {
 		// Get the request object.

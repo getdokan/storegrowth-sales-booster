@@ -938,7 +938,7 @@ class OrderBogo implements HookRegistry {
 	    $key    = $server['requests'][0]['body']['key'] ?? '';
 
 		if ( ! $key ) {
-			return;
+			$key = $_REQUEST['remove_item'] ?? ''; // When try to remove from the Classic cart page.
 		}
 
 		// Prevent offered products removed from the cart.
