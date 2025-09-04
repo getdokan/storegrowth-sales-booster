@@ -16,9 +16,9 @@ $button_text       = \StorePulse\StoreGrowth\Helper::find_option_settings( $sett
 $redirect_url      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'btn_target', wc_get_cart_url() );
 $button_text_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'btn_text_color', '#073b4c' );
 ?>
-<div class='sgsb-pd-banner-bar-wrapper'>
-	<div class='sgsb-pd-banner-bar'>
-		<div class='sgsb-pd-banner-bar-icon'>
+<div class='spsg-pd-banner-bar-wrapper'>
+	<div class='spsg-pd-banner-bar'>
+		<div class='spsg-pd-banner-bar-icon'>
 			<?php if ( 'shipping-bar-icon-1' === $banner_icon ) : ?>
 				<svg
 					viewBox="0 0 200 200"
@@ -64,8 +64,8 @@ $button_text_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $sett
 				</svg>
 			<?php endif; ?>
 		</div>
-        <div class="sgsb-fn-bar-data-content">
-            <span class='sgsb-pd-banner-text'>
+        <div class="spsg-fn-bar-data-content">
+            <span class='spsg-pd-banner-text'>
 			<?php
             /**
              * Banner text filter.
@@ -82,7 +82,7 @@ $button_text_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $sett
                 </a>
             <?php endif; ?>
         </div>
-		<div class='sgsb-pd-banner-bar-remove'>
+		<div class='spsg-pd-banner-bar-remove'>
 			<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'>
 				<g clip-path='url(#clip0_205_1006)'>
 					<path

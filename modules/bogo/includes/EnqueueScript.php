@@ -46,14 +46,14 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function register_enqueue_scripts() {
 		wp_register_style(
-			'sgsb-bogo-admin-style',
+			'spsg-bogo-admin-style',
 			PluginHelper::get_modules_url( 'bogo/assets/css/product-bogo-settings.css' ),
 			null,
 			filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/product-bogo-settings.css' ) )
 		);
 
 		wp_register_script(
-			'sgsb-bogo-admin-script',
+			'spsg-bogo-admin-script',
 			PluginHelper::get_modules_url( 'bogo/assets/js/product-bogo-settings.js' ),
 			array( 'jquery', 'jquery-ui-datepicker', 'select2' ),
 			filemtime( PluginHelper::get_modules_path( 'bogo/assets/js/product-bogo-settings.js' ) ),
@@ -73,18 +73,18 @@ class EnqueueScript implements HookRegistry {
 
         wp_enqueue_media();
 		if ( ( $hook == 'post-new.php' || $hook == 'post.php' ) && 'product' === $post->post_type ) {
-			wp_enqueue_style( 'sgsb-bogo-admin-style' );
+			wp_enqueue_style( 'spsg-bogo-admin-style' );
 
 			wp_enqueue_script( 'select2' );
-			wp_enqueue_script( 'sgsb-bogo-admin-script' );
+			wp_enqueue_script( 'spsg-bogo-admin-script' );
 		}
 
-		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_spsg-settings' === $hook ) {
 			$settings_file                   = require PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
 			wp_enqueue_script(
-				'sgsb-bogo-settings',
+				'spsg-bogo-settings',
 				PluginHelper::get_modules_url( 'bogo/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -95,7 +95,7 @@ class EnqueueScript implements HookRegistry {
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(
-				'sgsb-bogo-settings',
+				'spsg-bogo-settings',
 				'bogo_products_and_categories',
 				array(
 					'product_list'          => $this->prodcut_list(),
@@ -106,7 +106,7 @@ class EnqueueScript implements HookRegistry {
 			);
 
 			wp_localize_script(
-				'sgsb-bogo-settings',
+				'spsg-bogo-settings',
 				'bogo_save_url',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
@@ -126,14 +126,14 @@ class EnqueueScript implements HookRegistry {
 		$ftime_template = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-template.css' ) );
 
 		wp_enqueue_style(
-			'sgsb-bogo-custom-admin-css',
+			'spsg-bogo-custom-admin-css',
 			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-custom-admin.css' ),
 			null,
 			$ftime
 		);
 
 		wp_enqueue_style(
-			'sgsb-bogo-template-css',
+			'spsg-bogo-template-css',
 			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-template.css' ),
 			null,
 			$ftime_template
@@ -147,7 +147,7 @@ class EnqueueScript implements HookRegistry {
 		$ftime = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-front.css' ) );
 
 		wp_enqueue_style(
-			'sgsb-bogo-front-css',
+			'spsg-bogo-front-css',
 			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-front.css' ),
 			null,
 			$ftime
@@ -161,7 +161,7 @@ class EnqueueScript implements HookRegistry {
 		$ftime = filemtime( PluginHelper::get_modules_path( 'bogo/assets/js/order-bogo-custom.js' ) );
 
 		wp_enqueue_script(
-			'sgsb-bogo-front-js',
+			'spsg-bogo-front-js',
 			PluginHelper::get_modules_url( 'bogo/assets/js/order-bogo-custom.js' ),
 			'jquery',
 			$ftime,
@@ -171,7 +171,7 @@ class EnqueueScript implements HookRegistry {
 		$action    = 'ajd_protected';
 		$ajd_nonce = wp_create_nonce( $action );
 		wp_localize_script(
-			'sgsb-bogo-front-js',
+			'spsg-bogo-front-js',
 			'bogo_save_url',
 			array(
 				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
@@ -250,7 +250,7 @@ class EnqueueScript implements HookRegistry {
 			$product_title_by_id[ $product->ID ] = $product->post_title;
 		}
 
-		$product_info['productListForSelect']  = apply_filters( 'sgsb_bogo_select_product_list', $product_list_for_select, $products );
+		$product_info['productListForSelect']  = apply_filters( 'spsg_bogo_select_product_list', $product_list_for_select, $products );
 		$product_info['simpleProductForOffer'] = $simple_product_for_offer;
 		$product_info['productTitleById']      = $product_title_by_id;
 
@@ -315,7 +315,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function order_bogo_list() {
 		$args_bogo = array(
-			'post_type'      => 'sgsb_bogo',
+			'post_type'      => 'spsg_bogo',
 			'posts_per_page' => -1,
 		);
 		$bogo_list = get_posts( $args_bogo );

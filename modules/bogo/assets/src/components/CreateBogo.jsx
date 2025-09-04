@@ -21,14 +21,14 @@ import ContentSection from "./appearance/ContentSection";
 function CreateBogo({ navigate, useParams, useSearchParams }) {
   const [allBogosData, setallBogosData] = useState([]);
   const [duplicateDataError, setDuplicateDataError] = useState({});
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setPageLoading } = useDispatch("spsg");
   const [buttonLoading, setButtonLoading] = useState(false);
-  const { setCreateFromData, resetCreateFromData } = useDispatch("sgsb_bogo");
+  const { setCreateFromData, resetCreateFromData } = useDispatch("spsg_bogo");
   let { bogo_id, action_name } = useParams();
 
   const { bogoData, createBogoData } = useSelect((select) => ({
-    createBogoData: select("sgsb_bogo").getCreateFromData(),
-    bogoData: wp.data.select("sgsb_bogo").getBogoData(),
+    createBogoData: select("spsg_bogo").getCreateFromData(),
+    bogoData: wp.data.select("spsg_bogo").getBogoData(),
   }));
   useEffect(() => {
     if (!bogoData?.length > 0) {

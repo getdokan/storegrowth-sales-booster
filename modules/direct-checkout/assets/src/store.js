@@ -68,7 +68,7 @@ const selectors = {
   },
 };
 
-export default createReduxStore("sgsb_direct_checkout", {
+export default createReduxStore("spsg_direct_checkout", {
   reducer,
   actions,
   selectors,

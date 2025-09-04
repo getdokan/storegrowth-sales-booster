@@ -11,7 +11,7 @@ import './admin.css';
 import { menuFix } from "./utils/helper";
 
 // Load pro prompts in premium product unavailable.
-if ( !sgsbAdmin?.isPro ) {
+if ( !spsgAdmin?.isPro ) {
     import( './components/pro-previews' ).then( ( module ) => module.default );
 }
 

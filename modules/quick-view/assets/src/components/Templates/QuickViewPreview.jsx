@@ -10,7 +10,7 @@ const QuickViewPreview = ({ formData }) => {
     color: formData?.button_text_color,
   };
 
-  const buttonContent = formData.enable_qucik_view_icon && sgsbAdmin.isPro ? (
+  const buttonContent = formData.enable_qucik_view_icon && spsgAdmin.isPro ? (
     <QuickViewIcon
       activeIcon={true}
       iconName={formData?.quick_view_icon}
@@ -50,7 +50,7 @@ const QuickViewPreview = ({ formData }) => {
                 {/* <img
                   
                   src={}
-                  className="attachment-sgsbqcv size-sgsbqcv"
+                  className="attachment-spsgqcv size-spsgqcv"
                 /> */}
               </div>
             </div>

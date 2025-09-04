@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 
 function OverViewArea(props) {
-    const { setCreateFromData } = useDispatch( 'sgsb_order_bump' );
+    const { setCreateFromData } = useDispatch( 'spsg_order_bump' );
     const { createBumpData } = useSelect((select) => ({
-        createBumpData: select('sgsb_order_bump').getCreateFromData()
+        createBumpData: select('spsg_order_bump').getCreateFromData()
     }));
 
     var offerAmout = 999999999;

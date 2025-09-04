@@ -78,7 +78,7 @@ class BogoMigration {
 		// Get all products with BOGO meta.
 		$products = $wpdb->get_results(
 			"SELECT post_id, meta_value FROM {$wpdb->postmeta} 
-			 WHERE meta_key = 'sgsb_product_bogo_settings'"
+			 WHERE meta_key = 'spsg_product_bogo_settings'"
 		);
 
 		foreach ( $products as $product ) {
@@ -120,7 +120,7 @@ class BogoMigration {
 		// Get all BOGO posts.
 		$posts = $wpdb->get_results(
 			"SELECT ID, post_title, post_excerpt, post_author FROM {$wpdb->posts} 
-			 WHERE post_type = 'sgsb_bogo'"
+			 WHERE post_type = 'spsg_bogo'"
 		);
 
 		foreach ( $posts as $post ) {
@@ -152,13 +152,13 @@ class BogoMigration {
 		// Backup product meta.
 		$product_meta_backup = $wpdb->get_results(
 			"SELECT post_id, meta_value FROM {$wpdb->postmeta} 
-			 WHERE meta_key = 'sgsb_product_bogo_settings'"
+			 WHERE meta_key = 'spsg_product_bogo_settings'"
 		);
 
 		// Backup global posts.
 		$global_posts_backup = $wpdb->get_results(
 			"SELECT ID, post_title, post_excerpt FROM {$wpdb->posts} 
-			 WHERE post_type = 'sgsb_bogo'"
+			 WHERE post_type = 'spsg_bogo'"
 		);
 
 		$backup_data = array(
@@ -167,7 +167,7 @@ class BogoMigration {
 			'global_posts' => $global_posts_backup,
 		);
 
-		update_option( 'sgsb_bogo_migration_backup', $backup_data );
+		update_option( 'spsg_bogo_migration_backup', $backup_data );
 	}
 
 	/**
@@ -184,14 +184,14 @@ class BogoMigration {
 
 		try {
 			// Get backup data.
-			$backup_data = get_option( 'sgsb_bogo_migration_backup' );
+			$backup_data = get_option( 'spsg_bogo_migration_backup' );
 			if ( ! $backup_data ) {
 				throw new \Exception( 'No backup data found for rollback.' );
 			}
 
 					// Drop the new table.
 		global $wpdb;
-		$table = $wpdb->prefix . 'sgsb_bogo_settings';
+		$table = $wpdb->prefix . 'spsg_bogo_settings';
 		$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
 
 			$results['messages'][] = 'Migration rolled back successfully.';
@@ -213,7 +213,7 @@ class BogoMigration {
 		global $wpdb;
 
 		// Check if new table exists.
-		$table = $wpdb->prefix . 'sgsb_bogo_settings';
+		$table = $wpdb->prefix . 'spsg_bogo_settings';
 		$table_exists = $wpdb->get_var( "SHOW TABLES LIKE '{$table}'" );
 
 		if ( ! $table_exists ) {
@@ -225,11 +225,11 @@ class BogoMigration {
 
 		// Check if there's old data to migrate.
 		$old_product_data = $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'sgsb_product_bogo_settings'"
+			"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'spsg_product_bogo_settings'"
 		);
 
 		$old_global_data = $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'sgsb_bogo'"
+			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'spsg_bogo'"
 		);
 
 		$total_old_data = intval( $old_product_data ) + intval( $old_global_data );
@@ -255,7 +255,7 @@ class BogoMigration {
 		);
 
 		// Check new table.
-		$table = $wpdb->prefix . 'sgsb_bogo_settings';
+		$table = $wpdb->prefix . 'spsg_bogo_settings';
 		$status['new_table_exists'] = $wpdb->get_var( "SHOW TABLES LIKE '{$table}'" ) ? true : false;
 
 		if ( $status['new_table_exists'] ) {
@@ -264,18 +264,18 @@ class BogoMigration {
 
 		// Check old data.
 		$status['old_product_data_count'] = intval( $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'sgsb_product_bogo_settings'"
+			"SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = 'spsg_product_bogo_settings'"
 		) );
 
 		$status['old_global_data_count'] = intval( $wpdb->get_var(
-			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'sgsb_bogo'"
+			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'spsg_bogo'"
 		) );
 
 		// Check if migration is needed.
 		$status['migration_needed'] = self::is_migration_needed();
 
 		// Check if backup exists.
-		$status['backup_exists'] = get_option( 'sgsb_bogo_migration_backup' ) ? true : false;
+		$status['backup_exists'] = get_option( 'spsg_bogo_migration_backup' ) ? true : false;
 
 		return $status;
 	}
@@ -298,13 +298,13 @@ class BogoMigration {
 			// Delete old product meta.
 			$deleted_product_meta = $wpdb->delete(
 				$wpdb->postmeta,
-				array( 'meta_key' => 'sgsb_product_bogo_settings' )
+				array( 'meta_key' => 'spsg_product_bogo_settings' )
 			);
 
 			// Delete old global posts.
 			$deleted_global_posts = $wpdb->delete(
 				$wpdb->posts,
-				array( 'post_type' => 'sgsb_bogo' )
+				array( 'post_type' => 'spsg_bogo' )
 			);
 
 			$results['messages'][] = "Deleted {$deleted_product_meta} product meta records.";

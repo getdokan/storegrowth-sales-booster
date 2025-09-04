@@ -11,7 +11,7 @@ import Number from "../../../../../assets/src/components/settings/Panels/PanelSe
 
 const BasicDesign = (props) => {
 
-    const isProEnabled = sgsbAdmin.isPro;
+    const isProEnabled = spsgAdmin.isPro;
     const upgradeTeaser = !isProEnabled;
 
     const imgPositions = [
@@ -46,7 +46,7 @@ const BasicDesign = (props) => {
                 {/* Rendered sales pop image style settings. */}
                 { Boolean( props.createPopupForm.image_style ) && (
                     applyFilters(
-                        'sgsb_sales_pop_image_style_settings',
+                        'spsg_sales_pop_image_style_settings',
                         '',
                         props.createPopupForm,
                         props.onFieldChange
@@ -64,7 +64,7 @@ const BasicDesign = (props) => {
                 {/* Rendered sales popup style settings. */}
                 { Boolean( props.createPopupForm.popup_style ) && (
                     applyFilters(
-                        'sgsb_sales_popup_style_settings',
+                        'spsg_sales_popup_style_settings',
                         '',
                         props.createPopupForm,
                         props.onFieldChange
@@ -75,7 +75,7 @@ const BasicDesign = (props) => {
             <SettingsSection>
                 {/* Rendered sales pop action settings. */}
                 { applyFilters(
-                    'sgsb_sales_pop_action_settings',
+                    'spsg_sales_pop_action_settings',
                     '',
                     props.createPopupForm,
                     props.onFieldChange

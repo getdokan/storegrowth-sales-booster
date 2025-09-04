@@ -247,7 +247,7 @@ class Helper {
         }
 
         $allowed_roles = apply_filters(
-            'sgsb_allowed_roles_for_promotions',
+            'spsg_allowed_roles_for_promotions',
             [
                 'customer',
                 'wholesale_customer',
@@ -261,6 +261,6 @@ class Helper {
             }
         }
 
-        return apply_filters( 'sgsb_current_user_allowed_to_view_promotions', false );
+        return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
     }
 }

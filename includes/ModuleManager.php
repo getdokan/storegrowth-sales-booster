@@ -23,7 +23,7 @@ class ModuleManager {
 		
 		if ( (empty( $this->module_list ) || $force_load) && $container->has(ModuleSkeleton::class) ) {
 			$modules   = $container->get(ModuleSkeleton::class);
-			$this->module_list = apply_filters( 'sgsb_modules', $modules );
+			$this->module_list = apply_filters( 'spsg_modules', $modules );
 		}
 
 		return $this->module_list;

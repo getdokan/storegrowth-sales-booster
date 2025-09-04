@@ -29,7 +29,7 @@ function DesignTab(props) {
           title={__("Foreground Color", "storegrowth-sales-booster")}
         />
         { applyFilters(
-          'sgsb_bar_color_stock_bar_settings',
+          'spsg_bar_color_stock_bar_settings',
           '',
           formData,
           onFieldChange
@@ -42,7 +42,7 @@ function DesignTab(props) {
         />
 
         { applyFilters(
-          'sgsb_design_panel_stock_bar_settings',
+          'spsg_design_panel_stock_bar_settings',
           '',
           formData,
           onFieldChange
@@ -57,7 +57,7 @@ function DesignTab(props) {
         />
 
         { Boolean( formData.show_stock_status ) && applyFilters(
-          'sgsb_append_after_stock_status_settings',
+          'spsg_append_after_stock_status_settings',
           '',
           formData,
           onFieldChange

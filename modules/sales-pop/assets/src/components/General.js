@@ -9,11 +9,11 @@ import SettingsSection from "../../../../../assets/src/components/settings/Panel
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 function General( { onFormSave } ) {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsg_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    createPopupFormData : select( 'spsg_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'spsg_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFieldChange = ( key, value ) => {
@@ -48,7 +48,7 @@ function General( { onFormSave } ) {
         />
         {/* Rendered all necessary sales pop settings after popup enable settings. */}
         { applyFilters(
-          'sgsb_after_sales_pop_enable_settings',
+          'spsg_after_sales_pop_enable_settings',
           '',
           createPopupFormData,
           onFieldChange

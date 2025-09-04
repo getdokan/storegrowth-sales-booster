@@ -4,7 +4,7 @@ import { Button, Card, Col, Image, Row, Space, Switch } from "antd";
 import { Ajax } from '../../ajax';
 
 function ModuleSwitch({ module }) {
-  const { updateSingleModule, setPageLoading } = useDispatch( 'sgsb' );
+  const { updateSingleModule, setPageLoading } = useDispatch( 'spsg' );
 
   const onChange = (checked) => {
     setPageLoading(true);
@@ -48,7 +48,7 @@ function ModuleCard( { module } ) {
     >
       <Card
         bordered={false}
-        className="sgsb-module-card"
+        className="spsg-module-card"
         
         
       >
@@ -92,7 +92,7 @@ function ModuleCard( { module } ) {
           style={{
             padding: '19px'
           }}
-          className="sgsb__module-footer"
+          className="spsg__module-footer"
         >
           <Space align='center' size={size}>
            <div className='doc-btn'>
@@ -102,7 +102,7 @@ function ModuleCard( { module } ) {
                     className='setting-btn footer-btn'
                     type="default"
                     shape="default"
-                    href={ `admin.php?page=sgsb-settings#/${module?.id}` }
+                    href={ `admin.php?page=spsg-settings#/${module?.id}` }
                   >
                     Settings
                   </Button>

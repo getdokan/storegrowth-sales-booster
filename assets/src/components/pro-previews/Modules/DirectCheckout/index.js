@@ -9,8 +9,8 @@ import ColourPicker from "../../../settings/Panels/PanelSettings/Fields/ColorPic
 
 // Handle direct checkout modules pro settings prompts.
 addFilter(
-    'sgsb_prepend_direct_checkout_settings',
-    'sgsb_prepend_direct_checkout_settings_callback',
+    'spsg_prepend_direct_checkout_settings',
+    'spsg_prepend_direct_checkout_settings_callback',
     () => {
         return (
             <TextInput
@@ -29,8 +29,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_direct_checkout_button_layout_options',
-    'sgsb_direct_checkout_button_layout_options_callback',
+    'spsg_direct_checkout_button_layout_options',
+    'spsg_direct_checkout_button_layout_options_callback',
     ( buttonLayoutOptions ) => {
         buttonLayoutOptions?.splice(
             0, 0,
@@ -61,8 +61,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_direct_checkout_page_options',
-    'sgsb_direct_checkout_page_options_callback',
+    'spsg_direct_checkout_page_options',
+    'spsg_direct_checkout_page_options_callback',
     ( checkoutPageOptions ) => {
         checkoutPageOptions?.push(
             {
@@ -81,8 +81,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_direct_checkout_before_product_page_settings',
-    'sgsb_direct_checkout_before_product_page_settings_callback',
+    'spsg_direct_checkout_before_product_page_settings',
+    'spsg_direct_checkout_before_product_page_settings_callback',
     () => {
         return (
             <SingleCheckBox
@@ -100,8 +100,8 @@ addFilter(
     }
 );
 addFilter(
-    'sgsb_after_direct_checkout_button_design_settings',
-    'sgsb_after_direct_checkout_button_design_settings_callback',
+    'spsg_after_direct_checkout_button_design_settings',
+    'spsg_after_direct_checkout_button_design_settings_callback',
     () => {
         const fontFamily = [
             {

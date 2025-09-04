@@ -63,7 +63,7 @@ const selectors = {
 	}
 };
 
-export default createReduxStore( 'sgsb_order_sales_pop', {
+export default createReduxStore( 'spsg_order_sales_pop', {
 	reducer,
 	actions,
 	selectors

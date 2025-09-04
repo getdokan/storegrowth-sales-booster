@@ -14,8 +14,8 @@ import { __ } from "@wordpress/i18n";
 import ActivationAlert from "./ActivationAlert";
 
 function Modules() {
-  const proPluginActivated = sgsbAdmin.isPro;
-  const { updateModules, setPageLoading } = useDispatch("sgsb");
+  const proPluginActivated = spsgAdmin.isPro;
+  const { updateModules, setPageLoading } = useDispatch("spsg");
   const [searchModule, setSearchModule] = useState("");
   const [selectFilter, setSelectFilter] = useState({
     modules: [],
@@ -27,7 +27,7 @@ function Modules() {
 
   // Get from WP data.
   const { allModules } = useSelect((select) => ({
-    allModules: select("sgsb").getModules(),
+    allModules: select("spsg").getModules(),
   }));
 
   // check only tha activated Modules
@@ -51,14 +51,14 @@ function Modules() {
       status: true,
     }).success((response) => {
       if (response.success) {
-        const sgsbSettingsURL = `admin.php?page=sgsb-settings#${module.id}`;
-        window.location.href = sgsbSettingsURL;
+        const spsgSettingsURL = `admin.php?page=spsg-settings#${module.id}`;
+        window.location.href = spsgSettingsURL;
       }
     });
   };
 
   const handleLiClick = (routeName) => {
-    const link = `admin.php?page=sgsb-settings#/${routeName}`;
+    const link = `admin.php?page=spsg-settings#/${routeName}`;
     window.location.href = link;
   };
 
@@ -91,18 +91,18 @@ function Modules() {
   }, [activatedModules]);
 
   return (
-    <div className="site-card-wrapper sgsb-admin-dashboard">
-      <div className="sgsb-admin-dashboard-sideabr">
-        <div className="sgsb-logo">
+    <div className="site-card-wrapper spsg-admin-dashboard">
+      <div className="spsg-admin-dashboard-sideabr">
+        <div className="spsg-logo">
           <Image preview={false} width={164} src={logo} />
         </div>
 
         <h3 className={`${activeModule === "dashboard" ? "active-menu" : ""}`}>
           <a
-            className={activeModule === "dashboard" ? "sgsb-selected-link" : ""}
+            className={activeModule === "dashboard" ? "spsg-selected-link" : ""}
             href={`${
               window.location.origin + window.location.pathname
-            }?page=sgsb-settings#/dashboard/overview`}
+            }?page=spsg-settings#/dashboard/overview`}
           >
             {/*<Image preview={ false } width={ 19 } src={ dashboardIcon } />*/}
             <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
@@ -174,10 +174,10 @@ function Modules() {
 
         {!proPluginActivated && <PremiumBox />}
       </div>
-      <div className="sgsb-admin-dashboard-module">
-        <div className="sgsb-admin-dashboard-module-top-bar">
+      <div className="spsg-admin-dashboard-module">
+        <div className="spsg-admin-dashboard-module-top-bar">
           <Row
-            className="sgsb-search-section"
+            className="spsg-search-section"
             align="middle"
             justify="espace-betweennd"
           >

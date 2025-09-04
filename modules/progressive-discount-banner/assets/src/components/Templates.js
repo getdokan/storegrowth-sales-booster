@@ -13,7 +13,7 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
 
     // List of shipping bar templates.
     templates = applyFilters(
-        "sgsb_shipping_bar_templates",
+        "spsg_shipping_bar_templates",
         templates,
     );
 
@@ -25,7 +25,7 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
             btn_color                      : "#ffffff",
             text_color                     : "#ffffff",
             icon_color                     : "#ffffff",
-            btn_target                     : sgsbFsbData?.cartUrl,
+            btn_target                     : spsgFsbData?.cartUrl,
             font_family                    : "poppins",
             bar_template                   : 'shipping_bar_one',
             banner_height                  : 60,
@@ -41,7 +41,7 @@ const Templates = ( { formData, setFormData, showUndoIcon } ) => {
 
     // Shipping bar template styles.
     templateStyles = applyFilters(
-        "sgsb_shipping_bar_template_styles",
+        "spsg_shipping_bar_template_styles",
         templateStyles,
     );
 

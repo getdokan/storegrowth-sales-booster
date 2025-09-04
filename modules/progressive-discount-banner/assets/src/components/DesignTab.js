@@ -27,7 +27,7 @@ function DesignTab(props) {
         <Fragment>
             <SettingsSection>
                 { applyFilters(
-                    'sgsb_free_shipping_bar_height_settings',
+                    'spsg_free_shipping_bar_height_settings',
                     '',
                     formData,
                     onFieldChange
@@ -46,7 +46,7 @@ function DesignTab(props) {
                 />
 
                 { applyFilters(
-                    'sgsb_free_shipping_bar_font_size',
+                    'spsg_free_shipping_bar_font_size',
                     '',
                     formData,
                     onFieldChange

@@ -11,10 +11,10 @@ import { Fragment } from "react";
 import Switcher from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 
 const TemplateSection = () => {
-  const { setCreateFromData } = useDispatch("sgsb_bogo");
+  const { setCreateFromData } = useDispatch("spsg_bogo");
 
   const { createBogoData } = useSelect((select) => ({
-    createBogoData: select("sgsb_bogo").getCreateFromData(),
+    createBogoData: select("spsg_bogo").getCreateFromData(),
   }));
 
   const onFieldChange = (key, value) => {
@@ -72,7 +72,7 @@ const TemplateSection = () => {
         {/* Rendered BOGO image style settings. */}
         { enable_custom_badge_image && (
           applyFilters(
-            'sgsb_bogo_single_badge_icon_radio_box',
+            'spsg_bogo_single_badge_icon_radio_box',
             '',
             iconOptions,
             createBogoData,

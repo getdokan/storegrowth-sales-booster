@@ -8,8 +8,8 @@ import SelectBox from "../../../settings/Panels/PanelSettings/Fields/SelectBox";
 // Handle Free Shipping Bar Modules pro settings prompts.
 
 addFilter(
-  "sgsb_free_shipping_bar_position_settings",
-  "sgsb_free_shipping_bar_position_settings_callback",
+  "spsg_free_shipping_bar_position_settings",
+  "spsg_free_shipping_bar_position_settings_callback",
   (component) => {
     const barPositions = [
       {
@@ -30,8 +30,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_free_shipping_bar_icon_radio_box",
-  "sgsb_free_shipping_bar_icon_radio_box_callback",
+  "spsg_free_shipping_bar_icon_radio_box",
+  "spsg_free_shipping_bar_icon_radio_box_callback",
   (component, iconOptions, formData, onBarChange) => {
     return (
       <RadioBox
@@ -48,8 +48,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_free_shipping_bar_height_settings",
-  "sgsb_free_shipping_bar_height_settings_callback",
+  "spsg_free_shipping_bar_height_settings",
+  "spsg_free_shipping_bar_height_settings_callback",
   (component) => {
     return (
       <InputNumber
@@ -67,8 +67,8 @@ addFilter(
   }
 );
 addFilter(
-  "sgsb_free_shipping_bar_font_size",
-  "sgsb_free_shipping_bar_font_size_callback",
+  "spsg_free_shipping_bar_font_size",
+  "spsg_free_shipping_bar_font_size_callback",
   (component) => {
     return (
       <InputNumber
@@ -87,8 +87,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_free_shipping_bar_display_rules_settings",
-  "sgsb_free_shipping_bar_display_rules_settings_callback",
+  "spsg_free_shipping_bar_display_rules_settings",
+  "spsg_free_shipping_bar_display_rules_settings_callback",
   (component) => {
     return <DisplayRules />;
   }

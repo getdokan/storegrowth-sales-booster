@@ -119,11 +119,11 @@ const TargetProductAndCategory = ({ catName }) => {
 }
 
 const CategoryMessages = ({ navigate }) => {
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setPageLoading } = useDispatch("spsg");
 
-  const { setBogoGlobalSettings } = useDispatch("sgsb_bogo");
+  const { setBogoGlobalSettings } = useDispatch("spsg_bogo");
   const { bogoGlobalSettingsData: currentSettings } = useSelect((select) => ({
-    bogoGlobalSettingsData: select("sgsb_bogo").getBogoGlobalSettings(),
+    bogoGlobalSettingsData: select("spsg_bogo").getBogoGlobalSettings(),
   }));
 
   useEffect(() => {
@@ -187,7 +187,7 @@ const CategoryMessages = ({ navigate }) => {
     catInfoByCatId = bogo_products_and_categories.category_list.catNameById;
 
   data = applyFilters(
-    'sgsb_bogo_category_messages_data',
+    'spsg_bogo_category_messages_data',
     data,
     [...currentSettings?.bogo_category_messages],
     catInfoByCatId,
@@ -195,7 +195,7 @@ const CategoryMessages = ({ navigate }) => {
   );
 
   const isDisableMessageCreation = applyFilters(
-    "sgsb_bogo_render_upgrade_message",
+    "spsg_bogo_render_upgrade_message",
     true
   );
 

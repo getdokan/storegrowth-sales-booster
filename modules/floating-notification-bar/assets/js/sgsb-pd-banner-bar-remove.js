@@ -1,17 +1,17 @@
 (function ($) {
-  // Check if sgsbLocalizedData is defined and not empty
+  // Check if spsgLocalizedData is defined and not empty
 
-  if (typeof sgsb_fnb_data !== "undefined") {
-    let banner_device_view = sgsb_fnb_data.banner_device_view;
-    let bar_position = sgsb_fnb_data.bar_position;
-    let banner_delay = sgsb_fnb_data.banner_delay;
-    let scroll_banner_delay = sgsb_fnb_data.scroll_banner_delay;
-    let banner_trigger = sgsb_fnb_data.banner_trigger;
-    let banner_height = sgsb_fnb_data.banner_height;
-    let button_view = sgsb_fnb_data.button_view;
-    let countdown_start_date = sgsb_fnb_data.countdown_start_date;
-    let countdown_end_date = sgsb_fnb_data.countdown_end_date;
-    let coupon_code = sgsb_fnb_data?.cupon_code?.toUpperCase();
+  if (typeof spsg_fnb_data !== "undefined") {
+    let banner_device_view = spsg_fnb_data.banner_device_view;
+    let bar_position = spsg_fnb_data.bar_position;
+    let banner_delay = spsg_fnb_data.banner_delay;
+    let scroll_banner_delay = spsg_fnb_data.scroll_banner_delay;
+    let banner_trigger = spsg_fnb_data.banner_trigger;
+    let banner_height = spsg_fnb_data.banner_height;
+    let button_view = spsg_fnb_data.button_view;
+    let countdown_start_date = spsg_fnb_data.countdown_start_date;
+    let countdown_end_date = spsg_fnb_data.countdown_end_date;
+    let coupon_code = spsg_fnb_data?.cupon_code?.toUpperCase();
     let body_top_padding = parseInt(banner_height) + 10;
     const fn_banner_hidden_time = localStorage.getItem("fn_banner_hidden_time");
 
@@ -36,7 +36,7 @@
       document.body.classList.add("body-padding-transition");
       if('top'===bar_position){
         if(isMobileDevice){
-          let offsetHeight = $('.sgsb-floating-notification-bar-wrapper').height();
+          let offsetHeight = $('.spsg-floating-notification-bar-wrapper').height();
           return (document.body.style.paddingTop = `${offsetHeight+10}px`);
         }
         return (document.body.style.paddingTop = `${body_top_padding}px`);
@@ -44,32 +44,32 @@
     };
 
     const bannerShow = () => {
-      $(".sgsb-floating-notification-bar-wrapper").fadeIn(1000);
+      $(".spsg-floating-notification-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
       updateBannerPosition();
     };
 
     const updateBannerPosition = () => {
-      let enableShippingBanner = sgsb_fnb_data?.enable_shipping_banner,
-        shippingBannerPosition = sgsb_fnb_data?.shipping_banner_position,
+      let enableShippingBanner = spsg_fnb_data?.enable_shipping_banner,
+        shippingBannerPosition = spsg_fnb_data?.shipping_banner_position,
         pdBannerHiddenTime = localStorage.getItem( 'banner_hidden_time' ),
         isPDBannerVisible = ! pdBannerHiddenTime || parseInt( pdBannerHiddenTime ) < now;
 
       if ( enableShippingBanner && isPDBannerVisible && 'top' === shippingBannerPosition ) {
-        let shippingBannerHeight = sgsb_fnb_data?.shipping_banner_height,
+        let shippingBannerHeight = spsg_fnb_data?.shipping_banner_height,
           offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
-        $( '.sgsb-floating-notification-bar-wrapper' ).css({
+        $( '.spsg-floating-notification-bar-wrapper' ).css({
           top: `${ parseInt( shippingBannerHeight ) + offset }px`,
         });
       }
     }
 
     const bannerHide = () => {
-      $(".sgsb-floating-notification-bar-wrapper").hide();
+      $(".spsg-floating-notification-bar-wrapper").hide();
       paddingRemoverBody();
     };
     const bannerExists = () => {
-      $(".sgsb-floating-notification-bar-wrapper").length === 0;
+      $(".spsg-floating-notification-bar-wrapper").length === 0;
     };
 
     function isMobileDevice() {
@@ -94,7 +94,7 @@
         banner_device_view.includes("banner-show-desktop") && !isMobile;
 
       if (!shouldHideMobile && !shouldHideDesktop) {
-        $(".sgsb-floating-notification-bar-wrapper").remove();
+        $(".spsg-floating-notification-bar-wrapper").remove();
         paddingRemoverBody();
       } else {
         if (!fn_banner_hidden_time || parseInt(fn_banner_hidden_time) < now) {
@@ -129,10 +129,10 @@
 
       $(document).on(
         "click",
-        ".sgsb-floating-notification-bar-remove",
+        ".spsg-floating-notification-bar-remove",
         function () {
           const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
-          $('.sgsb-floating-notification-bar-wrapper').css('transform', slideDirection);
+          $('.spsg-floating-notification-bar-wrapper').css('transform', slideDirection);
           paddingRemoverBody();
           setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
           localStorage.setItem("fn_banner_hidden_time", now + 10 * 60 * 1000);
@@ -142,7 +142,7 @@
       // Handle WooCommerce AJAX add to cart
       $( document.body ).on( 'added_to_cart', function() {
         const offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
-        $( '.sgsb-floating-notification-bar-wrapper' ).css( { top: `${offset}px` } );
+        $( '.spsg-floating-notification-bar-wrapper' ).css( { top: `${offset}px` } );
       });
     });
 
@@ -170,7 +170,7 @@
         }
       }
 
-      $(".sgsb-coupon-code")
+      $(".spsg-coupon-code")
         .on("mouseenter", function () {
           var couponText = $(this).text();
           var tempInput = $("<input>");
@@ -186,7 +186,7 @@
         });
 
       // Click event to copy to clipboard
-      $(".sgsb-coupon-code").click(function () {
+      $(".spsg-coupon-code").click(function () {
         // var couponText = $(this).text(); // Get the coupon code text
         copyToClipboard(coupon_code);
         $(this).text("Copied");
@@ -225,7 +225,7 @@
         }, 1000);
       } else if (now < startDate) {
         //countdown not started yet and the template removed.
-        $(".sgsb-fn-bar-countdown").remove();
+        $(".spsg-fn-bar-countdown").remove();
       } else {
         return;
       }
@@ -243,14 +243,14 @@
         const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
 
-        $(".sgsb-countdown-value.days").text(days.toString().padStart(2, "0"));
-        $(".sgsb-countdown-value.hours").text(
+        $(".spsg-countdown-value.days").text(days.toString().padStart(2, "0"));
+        $(".spsg-countdown-value.hours").text(
           hours.toString().padStart(2, "0")
         );
-        $(".sgsb-countdown-value.minutes").text(
+        $(".spsg-countdown-value.minutes").text(
           minutes.toString().padStart(2, "0")
         );
-        $(".sgsb-countdown-value.seconds").text(
+        $(".spsg-countdown-value.seconds").text(
           seconds.toString().padStart(2, "0")
         );
       }

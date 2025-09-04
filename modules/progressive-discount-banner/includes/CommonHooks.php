@@ -35,7 +35,7 @@ class CommonHooks implements HookRegistry {
 		}
         // phpcs:disable
 		// Don't load banner on fast fly cart.
-		if ( ! isset( $_GET['sgsb-checkout'] ) ) {
+		if ( ! isset( $_GET['spsg-checkout'] ) ) {
 			add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
@@ -82,7 +82,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function woocommerce_add_to_cart_fragments( $fragments ) {
 
-		$fragments['div.sgsb-pd-banner-bar-wrapper'] = Helper::get_bar_content( false );
+		$fragments['div.spsg-pd-banner-bar-wrapper'] = Helper::get_bar_content( false );
 
 		return $fragments;
 	}

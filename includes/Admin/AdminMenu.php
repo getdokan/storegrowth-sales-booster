@@ -41,8 +41,8 @@ class AdminMenu {
 	public function highlight_admin_submenu( $submenu_file ) {
 		global $current_screen;
 
-		if ( 'storegrowth_page_sgsb-dashboard' === $current_screen->id ) {
-			$submenu_file = 'admin.php?page=sgsb-settings#/dashboard/overview';
+		if ( 'storegrowth_page_spsg-dashboard' === $current_screen->id ) {
+			$submenu_file = 'admin.php?page=spsg-settings#/dashboard/overview';
 		}
 
 		return $submenu_file;
@@ -68,7 +68,7 @@ class AdminMenu {
 			__( 'Dashboard - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'sgsb-settings#/dashboard/overview',
+			'spsg-settings#/dashboard/overview',
 			array( $this, 'dashboard_callback' )
 		);
 
@@ -77,7 +77,7 @@ class AdminMenu {
 			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'sgsb-modules',
+			'spsg-modules',
 			array( $this, 'modules_callback' )
 		);
 
@@ -86,7 +86,7 @@ class AdminMenu {
 			__( 'Settings - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'sgsb-settings',
+			'spsg-settings',
 			array( $this, 'settings_callback' )
 		);
 
@@ -95,7 +95,7 @@ class AdminMenu {
 			__( 'Documentation', 'storegrowth-sales-booster' ),
 			__( 'Documentation', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'go-sgsb-docs',
+			'go-spsg-docs',
 			array( $this, 'handle_external_redirects' )
 		);
 
@@ -104,7 +104,7 @@ class AdminMenu {
 			__( 'Initial Setup - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Initial Setup', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'sgsb-modules#/ini-setup',
+			'spsg-modules#/ini-setup',
 			array( $this, 'initial_setup_page_callback' )
 		);
 
@@ -114,7 +114,7 @@ class AdminMenu {
 				__( 'Upgrade to Pro', 'storegrowth-sales-booster' ),
 				'<span class="dashicons dashicons-star-filled" style="font-size: 17px"></span> ' . esc_html__( 'Upgrade to Pro', 'storegrowth-sales-booster' ),
 				'manage_options',
-				'go-sgsb-pro',
+				'go-spsg-pro',
 				array( $this, 'handle_external_redirects' )
 			);
 		}
@@ -141,7 +141,7 @@ class AdminMenu {
 	 * Display Dashboard page content.
 	 */
 	public function dashboard_callback() {
-		$redirect_url = admin_url( 'admin.php?page=sgsb-settings#/dashboard/overview' );
+		$redirect_url = admin_url( 'admin.php?page=spsg-settings#/dashboard/overview' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
@@ -150,7 +150,7 @@ class AdminMenu {
 	 * Display Initail Setup page content.
 	 */
 	public function initial_setup_page_callback() {
-		$redirect_url = admin_url( 'admin.php?page=sgsb-modules#/ini-setup' );
+		$redirect_url = admin_url( 'admin.php?page=spsg-modules#/ini-setup' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
@@ -172,8 +172,8 @@ class AdminMenu {
 	 */
 	public function handle_external_redirects() {
 		$redirect_pages = array(
-			'go-sgsb-pro'  => 'https://www.storegrowth.io/pricing',
-			'go-sgsb-docs' => 'https://storegrowth.io/docs/',
+			'go-spsg-pro'  => 'https://www.storegrowth.io/pricing',
+			'go-spsg-docs' => 'https://storegrowth.io/docs/',
 		);
 
 		if ( ! empty( $_GET['page'] ) && isset( $redirect_pages[ $_GET['page'] ] ) ) {

@@ -24,7 +24,7 @@ const GeneralSettings = ({
     ];
 
     layoutContents = applyFilters(
-        'sgsb_quick_cart_layout_settings',
+        'spsg_quick_cart_layout_settings',
         layoutContents,
         CenteredPopupLayout
     );
@@ -48,7 +48,7 @@ const GeneralSettings = ({
         contentOptions = contentOptions.filter( item => item.name !== 'show_product_price' );
     }
 
-    contentOptions = applyFilters( 'sgsb_quick_cart_content_settings', contentOptions );
+    contentOptions = applyFilters( 'spsg_quick_cart_content_settings', contentOptions );
 
     return (
         <SettingsSection>

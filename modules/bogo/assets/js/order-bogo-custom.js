@@ -52,12 +52,12 @@ function extraProducts(product_id, check_status, offer_price) {
 
     const disableOfferProductActions = () => {
         // Make disabled the offered product from cart page.
-        $( '.sgsb-bogo-offer-applied' ).each( function() {
+        $( '.spsg-bogo-offer-applied' ).each( function() {
             $( this ).find( 'input.qty' ).prop( 'disabled', true ).prop( 'readonly', true );
         });
 
         // Make disabled the offered product remove option.
-        $( '.sgsb-disable-bogo-offer-removed-option' ).each( function() {
+        $( '.spsg-disable-bogo-offer-removed-option' ).each( function() {
             $( this ).find( '.remove' ).remove();
         });
     }

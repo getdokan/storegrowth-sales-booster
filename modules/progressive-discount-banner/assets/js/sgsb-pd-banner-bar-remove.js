@@ -1,13 +1,13 @@
 (function ($) {
-  // Check if sgsbLocalizedData is defined and not empty
+  // Check if spsgLocalizedData is defined and not empty
 
-  if (typeof sgsb_fsb_data !== "undefined") {
-    let banner_device_view = sgsb_fsb_data.banner_device_view;
-    let bar_position = sgsb_fsb_data.bar_position;
-    let banner_delay = sgsb_fsb_data.banner_delay;
-    let scroll_banner_delay = sgsb_fsb_data.scroll_banner_delay;
-    let banner_trigger = sgsb_fsb_data.banner_trigger;
-    let banner_height = sgsb_fsb_data.banner_height;
+  if (typeof spsg_fsb_data !== "undefined") {
+    let banner_device_view = spsg_fsb_data.banner_device_view;
+    let bar_position = spsg_fsb_data.bar_position;
+    let banner_delay = spsg_fsb_data.banner_delay;
+    let scroll_banner_delay = spsg_fsb_data.scroll_banner_delay;
+    let banner_trigger = spsg_fsb_data.banner_trigger;
+    let banner_height = spsg_fsb_data.banner_height;
     let body_top_padding = parseInt(banner_height) + 10;
     const banner_hidden_time = localStorage.getItem("banner_hidden_time");
     const now = Date.now();
@@ -37,16 +37,16 @@
     };
 
     const bannerShow = () => {
-      $(".sgsb-pd-banner-bar-wrapper").fadeIn(1000);
+      $(".spsg-pd-banner-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
     };
 
     const bannerHide = () => {
-      $(".sgsb-pd-banner-bar-wrapper").hide();
+      $(".spsg-pd-banner-bar-wrapper").hide();
       paddingRemoverBody();
     };
     const bannerExists = () => {
-      $(".sgsb-pd-banner-bar-wrapper").length === 0;
+      $(".spsg-pd-banner-bar-wrapper").length === 0;
     };
 
     function isMobileDevice() {
@@ -71,7 +71,7 @@
         banner_device_view?.includes("banner-show-desktop") && !isMobile;
 
       if (!shouldHideMobile && !shouldHideDesktop) {
-        $(".sgsb-pd-banner-bar-wrapper").remove();
+        $(".spsg-pd-banner-bar-wrapper").remove();
         paddingRemoverBody();
       } else {
         if (
@@ -106,14 +106,14 @@
         removeClassToBodyToHandleBannerVisibility();
       }
 
-      $(document).on("click", ".sgsb-pd-banner-bar-remove", function () {
+      $(document).on("click", ".spsg-pd-banner-bar-remove", function () {
         const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)',
           offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
-        $( '.sgsb-pd-banner-bar-wrapper' ).css( 'transform', slideDirection );
+        $( '.spsg-pd-banner-bar-wrapper' ).css( 'transform', slideDirection );
         paddingRemoverBody();
         setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
-        $( '.sgsb-floating-notification-bar-wrapper' ).css({ top: `${ offset }px` });
+        $( '.spsg-floating-notification-bar-wrapper' ).css({ top: `${ offset }px` });
       });
     });
   } else {

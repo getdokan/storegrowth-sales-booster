@@ -44,7 +44,7 @@ function GeneralSettingsTab(props) {
   ];
 
   addToCartRedirection = applyFilters(
-    "sgsb_quick_view_add_to_cart_redirection_settings",
+    "spsg_quick_view_add_to_cart_redirection_settings",
     "",
     addToCartRedirection
   )
@@ -84,7 +84,7 @@ function GeneralSettingsTab(props) {
     <Fragment>
       <SettingsSection>
         {applyFilters(
-          "sgsb_shop_quick_view_enable_settings",
+          "spsg_shop_quick_view_enable_settings",
           "",
           formData,
           onFieldChange
@@ -139,7 +139,7 @@ function GeneralSettingsTab(props) {
         
         {
           applyFilters(
-          "sgsb_quick_view_fly_cart_settings",
+          "spsg_quick_view_fly_cart_settings",
           "",
           formData,
           onFieldChange
@@ -152,7 +152,7 @@ function GeneralSettingsTab(props) {
           title={__("Quick View Contents:", "storegrowth-sales-booster")}
         />
         {applyFilters(
-          "sgsb_variation_product_quick_view_enable_settings",
+          "spsg_variation_product_quick_view_enable_settings",
           "",
           formData,
           onFieldChange

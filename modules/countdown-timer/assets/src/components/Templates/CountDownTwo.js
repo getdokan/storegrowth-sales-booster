@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n';
 const CountDownTwo = () => {
     return (
         <div
-            className='sgsb-countdown-timer ct-layout-2'
+            className='spsg-countdown-timer ct-layout-2'
             style={ {
                 width        : '100%',
                 height       : '100%',
@@ -15,7 +15,7 @@ const CountDownTwo = () => {
             } }
         >
             <div
-                className='sgsb-countdown-timer-wrapper'
+                className='spsg-countdown-timer-wrapper'
                 style={ {
                     display       : 'flex',
                     alignItems    : 'center',
@@ -23,7 +23,7 @@ const CountDownTwo = () => {
                 } }
             >
                 <p
-                    className='sgsb-countdown-timer-heading ct-layout-2'
+                    className='spsg-countdown-timer-heading ct-layout-2'
                     style={ {
                         margin               : '0 0 10px 0',
                         fontSize             : 40,
@@ -39,7 +39,7 @@ const CountDownTwo = () => {
                     { __( '50% OFF', 'storegrowth-sales-booster' ) }
                 </p>
                 <div
-                    className='sgsb-countdown-timer-items ct-layout-2'
+                    className='spsg-countdown-timer-items ct-layout-2'
                     data-end-date='2023-10-10 23:59:59'
                     style={ {
                         color          : '#fff',
@@ -53,7 +53,7 @@ const CountDownTwo = () => {
                     } }
                 >
                     <div
-                        className='sgsb-countdown-timer-item ct-layout-2'
+                        className='spsg-countdown-timer-item ct-layout-2'
                         style={ {
                             width         : 64,
                             height        : 64,
@@ -66,7 +66,7 @@ const CountDownTwo = () => {
                         } }
                     >
                         <strong
-                            className='sgsb-countdown-timer-item-days'
+                            className='spsg-countdown-timer-item-days'
                             style={ {
                                 display    : 'block',
                                 fontSize   : 24,
@@ -82,14 +82,14 @@ const CountDownTwo = () => {
                         </span>
                     </div>
                     <span
-                        className='sgsb-colon ct-layout-2'
+                        className='spsg-colon ct-layout-2'
                         style={ {
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
                     >:</span>
                     <div
-                        className='sgsb-countdown-timer-item ct-layout-2'
+                        className='spsg-countdown-timer-item ct-layout-2'
                         style={ {
                             width         : 64,
                             height        : 64,
@@ -102,7 +102,7 @@ const CountDownTwo = () => {
                         } }
                     >
                         <strong
-                            className='sgsb-countdown-timer-item-hours'
+                            className='spsg-countdown-timer-item-hours'
                             style={ {
                                 display    : 'block',
                                 fontSize   : 24,
@@ -118,14 +118,14 @@ const CountDownTwo = () => {
                         </span>
                     </div>
                     <span
-                        className='sgsb-colon ct-layout-2'
+                        className='spsg-colon ct-layout-2'
                         style={ {
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
                     >:</span>
                     <div
-                        className='sgsb-countdown-timer-item ct-layout-2'
+                        className='spsg-countdown-timer-item ct-layout-2'
                         style={ {
                             width         : 64,
                             height        : 64,
@@ -138,7 +138,7 @@ const CountDownTwo = () => {
                         } }
                     >
                         <strong
-                            className='sgsb-countdown-timer-item-minutes'
+                            className='spsg-countdown-timer-item-minutes'
                             style={ {
                                 display    : 'block',
                                 fontSize   : 24,
@@ -154,14 +154,14 @@ const CountDownTwo = () => {
                         </span>
                     </div>
                     <span
-                        className='sgsb-colon ct-layout-2'
+                        className='spsg-colon ct-layout-2'
                         style={ {
                             margin     : '0 14px',
                             lineHeight : 4,
                         } }
                     >:</span>
                     <div
-                        className='sgsb-countdown-timer-item ct-layout-2'
+                        className='spsg-countdown-timer-item ct-layout-2'
                         style={ {
                             width         : 64,
                             height        : 64,
@@ -174,7 +174,7 @@ const CountDownTwo = () => {
                         } }
                     >
                         <strong
-                            className='sgsb-countdown-timer-item-seconds'
+                            className='spsg-countdown-timer-item-seconds'
                             style={ {
                                 display    : 'block',
                                 fontSize   : 24,

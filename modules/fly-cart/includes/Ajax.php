@@ -28,18 +28,18 @@ class Ajax implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_ajax_sgsb_fly_cart_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sgsb_fly_cart_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_spsg_fly_cart_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_spsg_fly_cart_get_settings', array( $this, 'get_settings' ) );
 
-		add_action( 'wp_ajax_nopriv_sgsb_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
-		add_action( 'wp_ajax_sgsb_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
+		add_action( 'wp_ajax_nopriv_spsg_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
+		add_action( 'wp_ajax_spsg_fly_cart_frontend', array( $this, 'fly_cart_frontend' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
@@ -48,10 +48,10 @@ class Ajax implements HookRegistry {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
 		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
 
-		$get_form_data = Helper::get_settings( 'sgsb_fly_cart_settings', array() );
+		$get_form_data = Helper::get_settings( 'spsg_fly_cart_settings', array() );
 		$merged_data   = array_merge( $get_form_data, $form_data );
 
-		update_option( 'sgsb_fly_cart_settings', $merged_data );
+		update_option( 'spsg_fly_cart_settings', $merged_data );
 
 		wp_send_json_success();
 	}
@@ -60,9 +60,9 @@ class Ajax implements HookRegistry {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		$form_data = Helper::get_settings( 'sgsb_fly_cart_settings', array() );
+		$form_data = Helper::get_settings( 'spsg_fly_cart_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -73,7 +73,7 @@ class Ajax implements HookRegistry {
 	 * @uses get_cart_contents
 	 */
 	public function fly_cart_frontend() {
-		check_ajax_referer( 'sgsb_frontend_ajax' );
+		check_ajax_referer( 'spsg_frontend_ajax' );
 		if ( ! isset( $_REQUEST['method'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Method Not Found', 'storegrowth-sales-booster' ) ) );
 		}

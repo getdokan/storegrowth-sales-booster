@@ -41,7 +41,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function wp_enqueue_scripts() {
 
-		$settings            = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings            = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 		$modal_effect        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
 		$enable_close_button = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_close_button', true );
 		$enable_in_mobile    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_in_mobile', true );
@@ -49,7 +49,7 @@ class EnqueueScript implements HookRegistry {
 		$cart_redirect       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_url_redirection', false );
 		$fly_cart_open       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'auto_open_fly_cart', false );
 		// Pass AJAX URL to script.
-		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( 'spsg-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
 		wp_enqueue_script( 'wc-add-to-cart' );
@@ -93,7 +93,7 @@ class EnqueueScript implements HookRegistry {
 
 		// feather icons.
 		wp_enqueue_style(
-			'sgsbqcv-feather',
+			'spsgqcv-feather',
 			PluginHelper::get_modules_url( 'quick-view/assets/libs/feather/feather.css' ),
 			array(),
 			filemtime( PluginHelper::get_modules_path( 'quick-view/assets/libs/feather/feather.css' ) )
@@ -101,13 +101,13 @@ class EnqueueScript implements HookRegistry {
 
 		// main style & js.
 		wp_enqueue_style(
-			'sgsbqcv-frontend',
+			'spsgqcv-frontend',
 			PluginHelper::get_modules_url( 'quick-view/assets/scripts/frontend.css' ),
 			array(),
 			filemtime( PluginHelper::get_modules_path( 'quick-view/assets/scripts/frontend.css' ) )
 		);
 		wp_enqueue_script(
-			'sgsbqcv-frontend',
+			'spsgqcv-frontend',
 			PluginHelper::get_modules_url( 'quick-view/assets/scripts/frontend.js' ),
 			array(
 				'jquery',
@@ -117,11 +117,11 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 		wp_localize_script(
-			'sgsbqcv-frontend',
-			'sgsbqcv_vars',
+			'spsgqcv-frontend',
+			'spsgqcv_vars',
 			array(
 				'ajax_url'                => admin_url( 'admin-ajax.php' ),
-				'nonce'                   => wp_create_nonce( 'sgsbqcv-security' ),
+				'nonce'                   => wp_create_nonce( 'spsgqcv-security' ),
 				'effect'                  => $modal_effect,
 				'enable_close_button'     => $enable_close_button,
 				'enable_in_mobile'        => $enable_in_mobile,
@@ -136,10 +136,10 @@ class EnqueueScript implements HookRegistry {
 				'prev'                    => self::localization( 'prev', esc_html__( 'Previous (Left arrow key)', 'storegrowth-sales-booster' ) ),
 				'thumbnails_effect'       => $enable_zoom_box,
 				'related_slick_params'    => apply_filters(
-					'sgsbqcv_related_slick_params',
+					'spsgqcv_related_slick_params',
 					wp_json_encode(
 						apply_filters(
-							'sgsbqcv_related_slick_params_arr',
+							'spsgqcv_related_slick_params_arr',
 							array(
 								'slidesToShow'   => 2,
 								'slidesToScroll' => 2,
@@ -152,10 +152,10 @@ class EnqueueScript implements HookRegistry {
 					)
 				),
 				'thumbnails_slick_params' => apply_filters(
-					'sgsbqcv_thumbnails_slick_params',
+					'spsgqcv_thumbnails_slick_params',
 					wp_json_encode(
 						apply_filters(
-							'sgsbqcv_thumbnails_slick_params_arr',
+							'spsgqcv_thumbnails_slick_params_arr',
 							array(
 								'slidesToShow'   => 1,
 								'slidesToScroll' => 1,
@@ -168,10 +168,10 @@ class EnqueueScript implements HookRegistry {
 					)
 				),
 				'thumbnails_zoom_params'  => apply_filters(
-					'sgsbqcv_thumbnails_zoom_params',
+					'spsgqcv_thumbnails_zoom_params',
 					wp_json_encode(
 						apply_filters(
-							'sgsbqcv_thumbnails_zoom_params_arr',
+							'spsgqcv_thumbnails_zoom_params_arr',
 							array(
 								'duration' => 120,
 								'magnify'  => 1,
@@ -201,7 +201,7 @@ class EnqueueScript implements HookRegistry {
 			$str = $defaul;
 		}
 
-		return apply_filters( 'sgsbqcv_localization_' . $key, $str );
+		return apply_filters( 'spsgqcv_localization_' . $key, $str );
 	}
 
 	/**
@@ -210,14 +210,14 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' !== $hook ) {
+		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
 			return;
 		}
 
 		$settings_file = require PluginHelper::get_modules_path( 'quick-view/assets/build/settings.asset.php' );
 
 		wp_enqueue_script(
-			'sgsb-quick-view-settings',
+			'spsg-quick-view-settings',
 			PluginHelper::get_modules_url( 'quick-view/assets/build/settings.js' ),
 			$settings_file['dependencies'],
 			$settings_file['version'],
@@ -230,7 +230,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 
 		$modal_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_background_color', '#ffffff' );
 		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#0875FF' );
@@ -239,21 +239,21 @@ class EnqueueScript implements HookRegistry {
 		$show_image           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_image', 4 );
 
 		$custom_css = "
-			.sgsbqcv-btn {
+			.spsgqcv-btn {
 				border-radius: {$button_border_radius}px !important;
 				background-color: {$button_color} !important;
 				color: {$button_text_color} !important;
 			}
-			.sgsbqcv-product > .product .summary {
+			.spsgqcv-product > .product .summary {
 				background-color: {$modal_bg_color};
 		} 
 		";
 		if ( ! $show_image ) {
-			$custom_css .= ' .sgsbqcv-popup.mfp-with-anim .thumbnails{
+			$custom_css .= ' .spsgqcv-popup.mfp-with-anim .thumbnails{
 				display:none;
 			}';
 		}
-		$custom_css = apply_filters( 'sgsb_qcv_inline_styles', $custom_css );
-		wp_add_inline_style( 'sgsbqcv-frontend', $custom_css );
+		$custom_css = apply_filters( 'spsg_qcv_inline_styles', $custom_css );
+		wp_add_inline_style( 'spsgqcv-frontend', $custom_css );
 	}
 }

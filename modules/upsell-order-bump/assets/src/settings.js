@@ -14,7 +14,7 @@ register( OrderBumpStore );
 /**
  * Add routes to sidebar.
  */
-addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams,useSearchParams) => {
+addFilter( 'spsg_routes', 'spsg', (routes, outlet, navigate,useParams,useSearchParams) => {
   const moduleName = 'upsell-order-bump';
 
   routes.push( {
@@ -49,7 +49,7 @@ addFilter( 'sgsb_routes', 'sgsb', (routes, outlet, navigate,useParams,useSearchP
 /**
  * Add sidebar menu items
  */
-addFilter( 'sidebar_menu_items', 'sgsb', (items, Link) => {
+addFilter( 'sidebar_menu_items', 'spsg', (items, Link) => {
   items.push( {
     label: <Link to="/upsell-order-bump">Upsell Order Bump</Link>,
     key: 'upsell-order-bump',

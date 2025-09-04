@@ -3,7 +3,7 @@ import {__} from "@wordpress/i18n";
 const UpgradeCrown = ( { classes, proBadge = true, proCrown = true } ) => {
     return (
         // Render upgrade to pro preview by using this component.
-        <div className={ `sgsb-field-upgrade-pro-label ${ classes }` }>
+        <div className={ `spsg-field-upgrade-pro-label ${ classes }` }>
             { proCrown && (
                 <svg width='18' height='14' fill='none'>
                     <path
@@ -13,7 +13,7 @@ const UpgradeCrown = ( { classes, proBadge = true, proCrown = true } ) => {
                 </svg>
             ) }
             { proBadge && (
-                <span className='sgsb-pro-badge'>
+                <span className='spsg-pro-badge'>
                     { __( 'PRO', 'storegrowth-sales-booster' ) }
                 </span>
             ) }

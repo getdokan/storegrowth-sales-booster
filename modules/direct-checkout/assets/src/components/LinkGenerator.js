@@ -3,14 +3,14 @@ const { TextArea } = Input;
 import { useDispatch, useSelect } from "@wordpress/data";
 
 function LinkGenerator({ onFormSave }) {
-  const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
+  const { setCreateFromData } = useDispatch("spsg_direct_checkout");
 
   const { createDirectCheckoutForm, getButtonLoading } = useSelect(
     (select) => ({
       createDirectCheckoutForm: select(
-        "sgsb_direct_checkout"
+        "spsg_direct_checkout"
       ).getCreateFromData(),
-      getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
+      getButtonLoading: select("spsg_direct_checkout").getButtonLoading(),
     })
   );
 

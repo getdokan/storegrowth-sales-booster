@@ -14,8 +14,8 @@ import CuponCode from "./CuponCode";
 // Handle Floating Notification Bar Modules pro settings prompts.
 
 addFilter(
-  "sgsb_floating_notification_bar_position_settings",
-  "sgsb_floating_notification_bar_position_settings_callback",
+  "spsg_floating_notification_bar_position_settings",
+  "spsg_floating_notification_bar_position_settings_callback",
   (component) => {
     const barPositions = [
       {
@@ -36,8 +36,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_floating_notification_bar_icon_radio_box",
-  "sgsb_floating_notification_bar_icon_radio_box_callback",
+  "spsg_floating_notification_bar_icon_radio_box",
+  "spsg_floating_notification_bar_icon_radio_box_callback",
   (component, iconOptions, formData, onBarChange) => {
     return (
       <RadioBox
@@ -54,8 +54,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_floating_notification_bar_height_settings",
-  "sgsb_floating_notification_bar_height_settings_callback",
+  "spsg_floating_notification_bar_height_settings",
+  "spsg_floating_notification_bar_height_settings_callback",
   (component) => {
     return (
       <InputNumber
@@ -73,8 +73,8 @@ addFilter(
   }
 );
 addFilter(
-  "sgsb_floating_notification_bar_font_size",
-  "sgsb_floating_notification_bar_font_size_callback",
+  "spsg_floating_notification_bar_font_size",
+  "spsg_floating_notification_bar_font_size_callback",
   (component) => {
     return (
       <InputNumber
@@ -93,15 +93,15 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_floating_notification_bar_display_rules_settings",
-  "sgsb_floating_notification_bar_display_rules_settings_callback",
+  "spsg_floating_notification_bar_display_rules_settings",
+  "spsg_floating_notification_bar_display_rules_settings_callback",
   (component) => {
     return <DisplayRules />;
   }
 );
 addFilter(
-  "sgsb_floating_notification_bar_button_redirection",
-  "sgsb_floating_notification_bar_button_redirection_callback",
+  "spsg_floating_notification_bar_button_redirection",
+  "spsg_floating_notification_bar_button_redirection_callback",
   (component) => {
     return (
       <label className={"single-disabled-checkbox"}>
@@ -118,8 +118,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_floating_notification_bar_coupon_coundown",
-  "sgsb_floating_notification_bar_coupon_coundown_callback",
+  "spsg_floating_notification_bar_coupon_coundown",
+  "spsg_floating_notification_bar_coupon_coundown_callback",
   (component) => {
     return (
       <Fragment>

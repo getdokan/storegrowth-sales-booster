@@ -9,16 +9,16 @@ import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSe
 import { createDirectCheckoutForm } from "../helper";
 
 function General({ onFormSave, upgradeTeaser }) {
-  const { setCreateFromData } = useDispatch("sgsb_direct_checkout");
+  const { setCreateFromData } = useDispatch("spsg_direct_checkout");
   const { createDirectCheckoutFormData, getButtonLoading } = useSelect(
     (select) => ({
       createDirectCheckoutFormData: select(
-        "sgsb_direct_checkout"
+        "spsg_direct_checkout"
       ).getCreateFromData(),
-      getButtonLoading: select("sgsb_direct_checkout").getButtonLoading(),
+      getButtonLoading: select("spsg_direct_checkout").getButtonLoading(),
     })
   );
-  const isQuickCartActive = sgsbAdminQuickCartValidate.isQuickCartActivated;
+  const isQuickCartActive = spsgAdminQuickCartValidate.isQuickCartActivated;
   const onFieldChange = (key, value) => {
     setCreateFromData({
       ...createDirectCheckoutFormData,
@@ -44,7 +44,7 @@ function General({ onFormSave, upgradeTeaser }) {
   ];
 
   buttonLayoutOptions = applyFilters(
-    'sgsb_direct_checkout_button_layout_options',
+    'spsg_direct_checkout_button_layout_options',
     buttonLayoutOptions,
     createDirectCheckoutFormData
   );
@@ -62,7 +62,7 @@ function General({ onFormSave, upgradeTeaser }) {
   ];
 
   checkoutPageOptions = applyFilters(
-    'sgsb_direct_checkout_page_options',
+    'spsg_direct_checkout_page_options',
     checkoutPageOptions,
     isQuickCartActive
   );
@@ -72,7 +72,7 @@ function General({ onFormSave, upgradeTeaser }) {
       <SettingsSection>
         {/* Rendered direct checkout settings. */}
         { applyFilters(
-          'sgsb_prepend_direct_checkout_settings',
+          'spsg_prepend_direct_checkout_settings',
           '',
           createDirectCheckoutFormData,
           onFieldChange
@@ -91,7 +91,7 @@ function General({ onFormSave, upgradeTeaser }) {
 
         {/* Rendered direct checkout buy now settings instructions. */}
         { applyFilters(
-          'sgsb_after_direct_checkout_buy_now_settings',
+          'spsg_after_direct_checkout_buy_now_settings',
           '',
           createDirectCheckoutFormData
         ) }
@@ -108,7 +108,7 @@ function General({ onFormSave, upgradeTeaser }) {
         >
           {/* Rendered direct checkout settings. */}
           { applyFilters(
-            'sgsb_inside_direct_checkout_redirection_settings',
+            'spsg_inside_direct_checkout_redirection_settings',
             '',
             isQuickCartActive
           ) }
@@ -116,7 +116,7 @@ function General({ onFormSave, upgradeTeaser }) {
 
         {/* Rendered sales pop action settings. */}
         { applyFilters(
-          'sgsb_direct_checkout_before_product_page_settings',
+          'spsg_direct_checkout_before_product_page_settings',
           '',
           createDirectCheckoutFormData,
           onFieldChange

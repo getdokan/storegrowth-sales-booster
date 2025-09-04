@@ -17,7 +17,7 @@ import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPrev
 import { applyFilters } from "@wordpress/hooks";
 
 function FlyCart({ navigate, useSearchParams, moduleId }) {
-  const { setPageLoading } = useDispatch("sgsb");
+  const { setPageLoading } = useDispatch("spsg");
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const quickCartState = {
@@ -38,7 +38,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
   };
 
   const filteredQuickCartState = applyFilters(
-    'sgsb_quick_cart_state',
+    'spsg_quick_cart_state',
     quickCartState
   );
 
@@ -49,11 +49,11 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data: {
-          action: "sgsb_fly_cart_get_settings",
-          _ajax_nonce: sgsbAdmin.nonce,
+          action: "spsg_fly_cart_get_settings",
+          _ajax_nonce: spsgAdmin.nonce,
         },
       })
       .success((response) => {
@@ -70,7 +70,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
   }, []);
 
   const initializeColorPicker = () => {
-    jQuery(".sgsb-flycart-color-picker").wpColorPicker({
+    jQuery(".spsg-flycart-color-picker").wpColorPicker({
       change(event, ui) {
         // Not sure why it is needed, But it is required to work properly.;
         const fieldName = event.target.name;
@@ -110,14 +110,14 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
     setButtonLoading(true);
 
     let data = {
-      action: "sgsb_fly_cart_save_settings",
-      _ajax_nonce: sgsbAdmin.nonce,
+      action: "spsg_fly_cart_save_settings",
+      _ajax_nonce: spsgAdmin.nonce,
       form_data: formData,
     };
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: "POST",
         data: data,
       })

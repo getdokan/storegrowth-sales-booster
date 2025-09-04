@@ -4,7 +4,7 @@ This document describes the implementation of user tracking for BOGO (Buy One Ge
 
 ## Overview
 
-The BOGO settings table (`sgsb_bogo_settings`) has been enhanced with two new fields:
+The BOGO settings table (`spsg_bogo_settings`) has been enhanced with two new fields:
 - `created_by` - Stores the user ID who created the BOGO setting (set once, never changed)
 - `updated_by` - Stores the user ID who last updated the BOGO setting (updated on every change)
 
@@ -13,7 +13,7 @@ The BOGO settings table (`sgsb_bogo_settings`) has been enhanced with two new fi
 ### New Columns Added
 
 ```sql
-ALTER TABLE `sgsb_bogo_settings` 
+ALTER TABLE `spsg_bogo_settings` 
 ADD COLUMN `created_by` BIGINT DEFAULT NULL AFTER `status`,
 ADD COLUMN `updated_by` BIGINT DEFAULT NULL AFTER `created_by`;
 ```
@@ -21,7 +21,7 @@ ADD COLUMN `updated_by` BIGINT DEFAULT NULL AFTER `created_by`;
 ### New Indexes Added
 
 ```sql
-ALTER TABLE `sgsb_bogo_settings` 
+ALTER TABLE `spsg_bogo_settings` 
 ADD INDEX `idx_created_by` (`created_by`),
 ADD INDEX `idx_updated_by` (`updated_by`);
 ```
@@ -49,8 +49,8 @@ The code has been refactored to eliminate duplication between product and global
 
 All user tracking fields support WordPress filters for maximum extensibility:
 
-- **`sgsb_bogo_created_by`** - Filter for the user ID who created the record
-- **`sgsb_bogo_updated_by`** - Filter for the user ID who last updated the record
+- **`spsg_bogo_created_by`** - Filter for the user ID who created the record
+- **`spsg_bogo_updated_by`** - Filter for the user ID who last updated the record
 
 ### Migration Support
 
@@ -132,7 +132,7 @@ The filters allow you to implement custom user tracking logic:
 
 ```php
 // Override the created_by user ID
-add_filter('sgsb_bogo_created_by', function($user_id, $product_id, $variation_id, $settings) {
+add_filter('spsg_bogo_created_by', function($user_id, $product_id, $variation_id, $settings) {
     // Custom logic to determine who should be credited with creating this BOGO
     if (isset($settings['_custom_creator'])) {
         return $settings['_custom_creator'];
@@ -141,7 +141,7 @@ add_filter('sgsb_bogo_created_by', function($user_id, $product_id, $variation_id
 }, 10, 4);
 
 // Override the updated_by user ID
-add_filter('sgsb_bogo_updated_by', function($user_id, $record_id, $data) {
+add_filter('spsg_bogo_updated_by', function($user_id, $record_id, $data) {
     // Custom logic to determine who should be credited with updating this BOGO
     if (isset($data['_custom_updater'])) {
         return $data['_custom_updater'];
@@ -150,12 +150,12 @@ add_filter('sgsb_bogo_updated_by', function($user_id, $record_id, $data) {
 }, 10, 3);
 
 // Log all BOGO user tracking changes
-add_filter('sgsb_bogo_created_by', function($user_id, $product_id, $variation_id, $settings) {
+add_filter('spsg_bogo_created_by', function($user_id, $product_id, $variation_id, $settings) {
     error_log("BOGO created by user {$user_id} for product {$product_id}");
     return $user_id;
 }, 10, 4);
 
-add_filter('sgsb_bogo_updated_by', function($user_id, $record_id, $data) {
+add_filter('spsg_bogo_updated_by', function($user_id, $record_id, $data) {
     error_log("BOGO updated by user {$user_id} for record {$record_id}");
     return $user_id;
 }, 10, 3);
@@ -176,20 +176,20 @@ If you need to manually add the columns to an existing table, you can run the SQ
 
 ```sql
 -- Add created_by column
-ALTER TABLE `wp_sgsb_bogo_settings` 
+ALTER TABLE `wp_spsg_bogo_settings` 
 ADD COLUMN `created_by` BIGINT DEFAULT NULL AFTER `status`;
 
 -- Add updated_by column  
-ALTER TABLE `wp_sgsb_bogo_settings` 
+ALTER TABLE `wp_spsg_bogo_settings` 
 ADD COLUMN `updated_by` BIGINT DEFAULT NULL AFTER `created_by`;
 
 -- Add indexes for performance
-ALTER TABLE `wp_sgsb_bogo_settings` 
+ALTER TABLE `wp_spsg_bogo_settings` 
 ADD INDEX `idx_created_by` (`created_by`),
 ADD INDEX `idx_updated_by` (`updated_by`);
 
 -- Update existing records with default user ID (replace 1 with your admin user ID)
-UPDATE `wp_sgsb_bogo_settings` SET `created_by` = 1, `updated_by` = 1 
+UPDATE `wp_spsg_bogo_settings` SET `created_by` = 1, `updated_by` = 1 
 WHERE `created_by` IS NULL OR `updated_by` IS NULL;
 ```
 
@@ -232,8 +232,8 @@ WHERE `created_by` IS NULL OR `updated_by` IS NULL;
 Check if the columns exist by running this SQL query:
 
 ```sql
-SHOW COLUMNS FROM `wp_sgsb_bogo_settings` LIKE 'created_by';
-SHOW COLUMNS FROM `wp_sgsb_bogo_settings` LIKE 'updated_by';
+SHOW COLUMNS FROM `wp_spsg_bogo_settings` LIKE 'created_by';
+SHOW COLUMNS FROM `wp_spsg_bogo_settings` LIKE 'updated_by';
 ```
 
 ### Logs

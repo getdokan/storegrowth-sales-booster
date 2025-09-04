@@ -27,15 +27,15 @@ class Ajax implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_ajax_sgsb_direct_checkout_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sgsb_direct_checkout_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_spsg_direct_checkout_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_spsg_direct_checkout_get_settings', array( $this, 'get_settings' ) );
 	}
 
 	/**
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
 		if ( ! isset( $_POST['data'] ) ) {
 			wp_send_json_error();
@@ -47,8 +47,8 @@ class Ajax implements HookRegistry {
 		if ( isset( $data['direct_checkout_data'] ) ) {
 			$direct_checkout_data = $data['direct_checkout_data'];
 
-			update_option( 'sgsb_direct_checkout_settings', $direct_checkout_data );
-			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' ) ) );
+			update_option( 'spsg_direct_checkout_settings', $direct_checkout_data );
+			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' ) ) );
 		}
 	}
 
@@ -57,9 +57,9 @@ class Ajax implements HookRegistry {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

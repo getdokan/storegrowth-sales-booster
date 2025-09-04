@@ -7,10 +7,10 @@ const TabPanels = ( { tabPanels, activeTab, changeHandler, classes } ) => {
     const items = tabPanels?.map( tab => ({
         key: tab?.key,
         label: (
-            <span className={ `${ tab?.proBadge ? 'prompt-tab' : 'sgsb-tab' }` }>
+            <span className={ `${ tab?.proBadge ? 'prompt-tab' : 'spsg-tab' }` }>
                 { tab?.title }
                 { tab?.proBadge && (
-                    <span className='sgsb-pro-badge'>
+                    <span className='spsg-pro-badge'>
                         {__( 'PRO', 'storegrowth-sales-booster' )}
                     </span>
                 ) }

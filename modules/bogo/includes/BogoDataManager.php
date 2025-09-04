@@ -26,7 +26,7 @@ class BogoDataManager {
 	 *
 	 * @var string
 	 */
-	private static $table_name = 'sgsb_bogo_settings';
+	private static $table_name = 'spsg_bogo_settings';
 
 	/**
 	 * Get the full table name with prefix.
@@ -49,7 +49,7 @@ class BogoDataManager {
 		$where_parts = array();
 		$where_values = array();
 
-		$conditions = apply_filters( 'sgsb_bogo_query_args', $conditions, $options );
+		$conditions = apply_filters( 'spsg_bogo_query_args', $conditions, $options );
 
 		// Build WHERE clause based on conditions
 		if ( ! empty( $conditions ) ) {
@@ -243,7 +243,7 @@ class BogoDataManager {
 			'offer_start'             => self::normalize_date_field( $data['offer_start'] ?? null ),
 			'offer_end'               => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
-			'status'                  => apply_filters( 'sgsb_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
+			'status'                  => apply_filters( 'spsg_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
 			// Design settings as JSON
 			'design_settings'         => wp_json_encode( array(
 				'box_border_style'        => $data['box_border_style'] ?? 'solid',
@@ -270,7 +270,7 @@ class BogoDataManager {
 			$mapped_data['offered_categories'] = wp_json_encode( $data['offered_categories'] ?? array() );
 		}
 
-		return apply_filters( 'sgsb_bogo_mapped_data', $mapped_data, $type, $product_id, $variation_id );
+		return apply_filters( 'spsg_bogo_mapped_data', $mapped_data, $type, $product_id, $variation_id );
 	}
 
 	/**
@@ -297,12 +297,12 @@ class BogoDataManager {
 
 		if ( $existing ) {
 			// For updates, only set updated_by, never change created_by
-			$data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $existing, $settings );
+			$data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $existing, $settings );
 			return $wpdb->update( $table, $data, array( 'id' => $existing ) );
 		} else {
 			// For new records, set both created_by and updated_by
-			$data['created_by'] = apply_filters( 'sgsb_bogo_created_by', get_current_user_id(), $product_id, $variation_id, $settings );
-			$data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), 0, $settings );
+			$data['created_by'] = apply_filters( 'spsg_bogo_created_by', get_current_user_id(), $product_id, $variation_id, $settings );
+			$data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), 0, $settings );
 			return $wpdb->insert( $table, $data );
 		}
 	}
@@ -378,8 +378,8 @@ class BogoDataManager {
 		$insert_data = self::map_bogo_data( $data, 'global' );
 		
 		// Add user tracking with filters
-		$insert_data['created_by'] = apply_filters( 'sgsb_bogo_created_by', $data['created_by'] ?? get_current_user_id(), 0, $data );
-		$insert_data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), 0, $data );
+		$insert_data['created_by'] = apply_filters( 'spsg_bogo_created_by', $data['created_by'] ?? get_current_user_id(), 0, $data );
+		$insert_data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), 0, $data );
 
 		$result  = $wpdb->insert( $table, $insert_data );
 
@@ -407,7 +407,7 @@ class BogoDataManager {
 		unset( $update_data['type'], $update_data['status'] );
 		
 		// Add user tracking with filter
-		$update_data['updated_by'] = apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $id, $data );
+		$update_data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $id, $data );
 
 		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );
 	}
@@ -440,7 +440,7 @@ class BogoDataManager {
 
 		$update_data = array(
 			'status' => $status,
-			'updated_by' => apply_filters( 'sgsb_bogo_updated_by', get_current_user_id(), $id, array( 'status' => $status ) ),
+			'updated_by' => apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $id, array( 'status' => $status ) ),
 		);
 
 		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );

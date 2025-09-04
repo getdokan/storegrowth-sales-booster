@@ -150,7 +150,7 @@ class WoocommerceDiscount implements HookRegistry {
 		// Add discount as fee.
 		$fees_api->add_fee(
 			array(
-				'id'     => 'sgsb-pd-banner-discount',
+				'id'     => 'spsg-pd-banner-discount',
 				'name'   => 'Discount',
 				'amount' => - $discount_amount, // Negative value to decrease the total.
 			)

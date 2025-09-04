@@ -36,7 +36,7 @@ class Helper {
 		error_log ('offer_available_for_current_product: ' .  print_r( $offer_available_for_current_product, true) );
 		// BOGO settings will be available for simple product &
 		return apply_filters(
-			'sgsb_load_product_bogo_offer',
+			'spsg_load_product_bogo_offer',
 			! ( $is_variable_product || ( count( $offers ) >= 2 && ! $offer_available_for_current_product ) )
 		);
 	}
@@ -100,7 +100,7 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function get_bogo_settings_option( $option, $default = '' ) {
-		$options = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
+		$options = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
 
 		if ( isset( $options[ $option ] ) ) {
 			return $options[ $option ];
@@ -190,7 +190,7 @@ class Helper {
 		// Return alternate first product as offer for buy y product.
 		$alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
 		return apply_filters(
-			'sgsb_bogo_offer_product_id_for_cart',
+			'spsg_bogo_offer_product_id_for_cart',
 			! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
 			$settings,
 			$product_id
@@ -216,13 +216,13 @@ class Helper {
         }
 
         $bogo_settings = Helper::get_product_bogo_settings_for_cart( $product_id );
-        $bogo_settings = apply_filters( 'sgsb_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
+        $bogo_settings = apply_filters( 'spsg_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
         // Fetch full product details.
         $product_ids     = ! empty( $bogo_settings['get_alternate_products'] ) ? $bogo_settings['get_alternate_products'] : array();
         $product_objects = ! empty( $product_ids ) ? array_map( 'wc_get_product', $product_ids ) : array();
 
-        return apply_filters( 'sgsb_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
+        return apply_filters( 'spsg_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
     }
 
     /**
@@ -239,7 +239,7 @@ class Helper {
     public static function prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id ) {
         // Prepare settings for BOGO apply.
         return apply_filters(
-            'sgsb_get_bogo_settings_for_cart',
+            'spsg_get_bogo_settings_for_cart',
             Helper::get_product_bogo_settings_for_cart( $apply_able_product_id ),
             $product_id,
             $variation_id

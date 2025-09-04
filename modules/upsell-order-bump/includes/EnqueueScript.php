@@ -45,13 +45,13 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_spsg-settings' === $hook ) {
 
 			$settings_file                   = require PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 
 			wp_enqueue_script(
-				'sgsb-order-bump-settings',
+				'spsg-order-bump-settings',
 				PluginHelper::get_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -62,7 +62,7 @@ class EnqueueScript implements HookRegistry {
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(
-				'sgsb-order-bump-settings',
+				'spsg-order-bump-settings',
 				'products_and_categories',
 				array(
 					'product_list'          => $this->prodcut_list(),
@@ -73,7 +73,7 @@ class EnqueueScript implements HookRegistry {
 			);
 
 			wp_localize_script(
-				'sgsb-order-bump-settings',
+				'spsg-order-bump-settings',
 				'bump_save_url',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
@@ -92,14 +92,14 @@ class EnqueueScript implements HookRegistry {
 		$ftime_template = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
 
 		wp_enqueue_style(
-			'sgsb-order-bump-custom-admin-css',
+			'spsg-order-bump-custom-admin-css',
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
 			null,
 			$ftime
 		);
 
 		wp_enqueue_style(
-			'sgsb-order-bump-template-css',
+			'spsg-order-bump-template-css',
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
 			null,
 			$ftime_template
@@ -117,7 +117,7 @@ class EnqueueScript implements HookRegistry {
 		$ftime = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-front.css' ) );
 
 		wp_enqueue_style(
-			'sgsb-order-bump-front-css',
+			'spsg-order-bump-front-css',
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-front.css' ),
 			null,
 			$ftime
@@ -131,7 +131,7 @@ class EnqueueScript implements HookRegistry {
 		$ftime = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
 
 		wp_enqueue_script(
-			'sgsb-order-bump-front-js',
+			'spsg-order-bump-front-js',
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/js/order-bump-custom.js' ),
 			'jquery',
 			$ftime,
@@ -141,7 +141,7 @@ class EnqueueScript implements HookRegistry {
 		$action    = 'ajd_protected';
 		$ajd_nonce = wp_create_nonce( $action );
 		wp_localize_script(
-			'sgsb-order-bump-front-js',
+			'spsg-order-bump-front-js',
 			'bump_save_url',
 			array(
 				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
@@ -350,7 +350,7 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function order_bump_list() {
 		$args_bump = array(
-			'post_type'      => 'sgsb_order_bump',
+			'post_type'      => 'spsg_order_bump',
 			'posts_per_page' => -1,
 		);
 		$bump_list = get_posts( $args_bump );

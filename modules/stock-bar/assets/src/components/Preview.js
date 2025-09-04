@@ -5,7 +5,7 @@ import {applyFilters} from "@wordpress/hooks";
 const Preview = ( { formData } ) => {
     return (
         <div
-            className='sgsb-stock-bar'
+            className='spsg-stock-bar'
             style={ {
                 height       : '100%',
                 border       : `2px solid ${ formData?.stockbar_border_color }`,
@@ -16,7 +16,7 @@ const Preview = ( { formData } ) => {
             } }
         >
             <div
-                className='sgsb-stock-progress-bar-section wpbsc_total_sale'
+                className='spsg-stock-progress-bar-section wpbsc_total_sale'
                 style={ {
                     gap     : 16,
                     display : 'grid',
@@ -25,7 +25,7 @@ const Preview = ( { formData } ) => {
                 { formData?.stock_display_format === 'above' ? (
                     <Fragment>
                         <div
-                            className='sgsb-stock-progress-title'
+                            className='spsg-stock-progress-title'
                             style={ {
                                 justifyContent : 'space-between',
                                 lineHeight     : 1,
@@ -34,20 +34,20 @@ const Preview = ( { formData } ) => {
                                 color          : '#073B4C',
                             } }
                         >
-                            <span className='sgsb-stock-progress-sold-title'>
+                            <span className='spsg-stock-progress-sold-title'>
                                 { formData?.total_sell_count_text }:
                                 <span
                                     style={ { fontWeight: 600 } }
-                                    className='sgsb-stock-progress-count'
+                                    className='spsg-stock-progress-count'
                                 >
                                     { __( ' 247', 'storegrowth-sales-booster' ) }
                                 </span>
                             </span>
-                            <span className='sgsb-stock-progress-available-title'>
+                            <span className='spsg-stock-progress-available-title'>
                                 { formData?.available_item_count_text }:
                                 <span
                                     style={ { fontWeight: 500 } }
-                                    className='sgsb-stock-progress-count'
+                                    className='spsg-stock-progress-count'
                                 >
                                     { __( ' 123', 'storegrowth-sales-booster' ) }
                                 </span>
@@ -99,7 +99,7 @@ const Preview = ( { formData } ) => {
                             ></div>
                         </div>
                         <div
-                            className='sgsb-stock-progress-title'
+                            className='spsg-stock-progress-title'
                             style={ {
                                 justifyContent : 'space-between',
                                 lineHeight     : 1,
@@ -108,20 +108,20 @@ const Preview = ( { formData } ) => {
                                 color          : '#073B4C',
                             } }
                         >
-                            <span className='sgsb-stock-progress-sold-title'>
+                            <span className='spsg-stock-progress-sold-title'>
                                 { formData?.total_sell_count_text }:
                                 <span
                                     style={ { fontWeight: 600 } }
-                                    className='sgsb-stock-progress-count'
+                                    className='spsg-stock-progress-count'
                                 >
                                     { __( ' 247', 'storegrowth-sales-booster' ) }
                                 </span>
                             </span>
-                            <span className='sgsb-stock-progress-available-title'>
+                            <span className='spsg-stock-progress-available-title'>
                                 { formData?.available_item_count_text }:
                                 <span
                                     style={ { fontWeight: 500 } }
-                                    className='sgsb-stock-progress-count'
+                                    className='spsg-stock-progress-count'
                                 >
                                     { __( ' 123', 'storegrowth-sales-booster' ) }
                                 </span>
@@ -131,7 +131,7 @@ const Preview = ( { formData } ) => {
                 ) }
 
                 { Boolean( formData.show_stock_status ) && applyFilters(
-                    'sgsb_before_stock_bar_preview_end',
+                    'spsg_before_stock_bar_preview_end',
                     '',
                     formData,
                 ) }

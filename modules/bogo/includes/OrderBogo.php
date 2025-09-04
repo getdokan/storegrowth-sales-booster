@@ -155,7 +155,7 @@ class OrderBogo implements HookRegistry {
 		}
 
 		// Load and include the badge template
-		$path = apply_filters( 'sgsb_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
+		$path = apply_filters( 'spsg_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', $selected_offer );
 		if ( ! file_exists( $path ) ) {
 			return;
 		}
@@ -305,7 +305,7 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$free_product_quantity = apply_filters( 'sgsb_free_product_quantity_for_cart_update', $quantity, $bogo_settings, $cart_item );
+		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', $quantity, $bogo_settings, $cart_item );
 		
 		// Validate the calculated quantity
 		if ( ! is_numeric( $free_product_quantity ) || $free_product_quantity < 0 ) {
@@ -400,7 +400,7 @@ class OrderBogo implements HookRegistry {
 
 	public function add_offer_product_to_cart( $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item ) {
 		// Get apply product id.
-		$apply_able_product_id = apply_filters( 'sgsb_bogo_get_apply_able_product_id', $product_id, $variation_id );
+		$apply_able_product_id = apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, $variation_id );
 		$bogo_settings         = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
 		// Apply BOGO product if not offer product, different apply & applicable.
@@ -581,7 +581,7 @@ class OrderBogo implements HookRegistry {
 		if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_offer'] ) {
 			$can_remove_offer_product = Helper::get_bogo_settings_option( 'offer_remove_from_cart', false );
 			// Append custom class for BOGO offered product.
-			$class .= $can_remove_offer_product ? ' sgsb-bogo-offer-applied' : ' sgsb-bogo-offer-applied sgsb-disable-bogo-offer-removed-option';
+			$class .= $can_remove_offer_product ? ' spsg-bogo-offer-applied' : ' spsg-bogo-offer-applied spsg-disable-bogo-offer-removed-option';
 		}
 
 		return $class;
@@ -822,12 +822,12 @@ class OrderBogo implements HookRegistry {
 	 */
 	public function save_bogo_settings( $post_id ) {
 		// Check if nonce is set.
-		if ( ! isset( $_POST['_sgsb_bogo_settings_nonce'] ) ) {
+		if ( ! isset( $_POST['_spsg_bogo_settings_nonce'] ) ) {
 			return;
 		}
 
 		// Verify that the nonce is valid.
-		if ( ! wp_verify_nonce( $_POST['_sgsb_bogo_settings_nonce'], 'sgsb_bogo_settings' ) ) {
+		if ( ! wp_verify_nonce( $_POST['_spsg_bogo_settings_nonce'], 'spsg_bogo_settings' ) ) {
 			return;
 		}
 
@@ -886,7 +886,7 @@ class OrderBogo implements HookRegistry {
 		$bogo_settings_data['offered_products'] = [ $post_id ];
 
 		$bogo_settings_data = apply_filters(
-			'sgsb_before_save_bogo_settings_data',
+			'spsg_before_save_bogo_settings_data',
 			$bogo_settings_data,
 			$is_variable_product
 		);

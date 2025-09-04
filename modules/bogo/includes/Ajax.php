@@ -33,8 +33,8 @@ class Ajax implements HookRegistry {
         add_action( 'wp_ajax_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
         add_action( 'wp_ajax_nopriv_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
 
-		add_action( 'wp_ajax_sgsb_bogo_general_save_settings', array( $this, 'save_settings' ) );
-		add_action( 'wp_ajax_sgsb_bogo_general_get_settings', array( $this, 'get_settings' ) );
+		add_action( 'wp_ajax_spsg_bogo_general_save_settings', array( $this, 'save_settings' ) );
+		add_action( 'wp_ajax_spsg_bogo_general_get_settings', array( $this, 'get_settings' ) );
 
 		add_action( 'wp_ajax_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
 		add_action( 'wp_ajax_nopriv_offer_product_add_to_cart', array( $this, 'offer_product_add_to_cart' ) );
@@ -102,7 +102,7 @@ class Ajax implements HookRegistry {
 	 * Ajax action for save settings
 	 */
 	public function save_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
 		if ( ! isset( $_POST['data'] ) ) {
 			wp_send_json_error();
@@ -114,8 +114,8 @@ class Ajax implements HookRegistry {
 		if ( isset( $data['bogo_general_settings_data'] ) ) {
 			$bogo_general_settings_data = $data['bogo_general_settings_data'];
 
-			update_option( 'sgsb_bogo_general_settings', $bogo_general_settings_data );
-			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings' ) ) );
+			update_option( 'spsg_bogo_general_settings', $bogo_general_settings_data );
+			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings' ) ) );
 		}
 	}
 
@@ -124,9 +124,9 @@ class Ajax implements HookRegistry {
 	 * Ajax action for get settings.
 	 */
 	public function get_settings() {
-		check_ajax_referer( 'sgsb_ajax_nonce' );
+		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -142,7 +142,7 @@ class Ajax implements HookRegistry {
         }
 
         $data          = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
-        $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
+        $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         $cat_ids       = ! empty( $bogo_settings['bogo_category_messages'] ) ? wp_list_pluck( $bogo_settings['bogo_category_messages'], 'id' ) : array();
         if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids ) ) {
             $index = array_search( $data['editableId'], $cat_ids );
@@ -154,7 +154,7 @@ class Ajax implements HookRegistry {
             $bogo_settings['bogo_category_messages'][] = $data;
         }
 
-        $status = update_option( 'sgsb_bogo_general_settings', $bogo_settings );
+        $status = update_option( 'spsg_bogo_general_settings', $bogo_settings );
         wp_send_json_success( $status );
     }
 
@@ -164,7 +164,7 @@ class Ajax implements HookRegistry {
     public function bogo_category_msg_list() {
         check_ajax_referer( 'ajd_protected' );
 
-        $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
+        $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         if ( empty( $bogo_settings['bogo_category_messages'] ) ) {
             wp_send_json_error( __( 'Category message not found.' ) );
         }

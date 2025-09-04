@@ -8,14 +8,14 @@ const { Title } = Typography;
 const OfferField = ({ createBumpData, offerOptions, onFieldChange }) => {
   return (
     <>
-      <Card className={`sgsb-settings-card`}>
+      <Card className={`spsg-settings-card`}>
         <Row>
           <Col span={9}>
             <div className={`card-heading`}>
               <Title level={3} className={`settings-heading`}>
                 {__("Offer Price/Discount", "storegrowth-sales-booster")}
               </Title>
-              <SettingsTooltip content={`The discount offer can be specific price(${sgsbAdmin.currencySymbol}) or percentage(%).`} />
+              <SettingsTooltip content={`The discount offer can be specific price(${spsgAdmin.currencySymbol}) or percentage(%).`} />
             </div>
           </Col>
           <Col span={15}>

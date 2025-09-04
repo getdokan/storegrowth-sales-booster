@@ -20,7 +20,7 @@ function FloatingNotificationBarLayout({
   useSearchParams,
   moduleId
 }) {
-  const { setPageLoading } = useDispatch('sgsb');
+  const { setPageLoading } = useDispatch('spsg');
   const [buttonLoading, setButtonLoading] = useState(false);
   const [isValidURL, setIsValidURL] = useState(true);
   const [hasValidationError, setHasValidationError] = useState(false);
@@ -92,18 +92,18 @@ function FloatingNotificationBarLayout({
     },
   ];
 
-  const isProEnabled = sgsbAdmin.isPro;
+  const isProEnabled = spsgAdmin.isPro;
 
   const getSettings = () => {
     setPageLoading(true);
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: 'POST',
         data: {
-          action: 'sgsb_floating_notification_bar_get_settings',
-          _ajax_nonce: sgsbAdmin.nonce,
+          action: 'spsg_floating_notification_bar_get_settings',
+          _ajax_nonce: spsgAdmin.nonce,
         },
       })
       .success((response) => {
@@ -173,14 +173,14 @@ function FloatingNotificationBarLayout({
       }
     }
     const data = {
-      action: 'sgsb_floating_notification_bar_save_settings',
-      _ajax_nonce: sgsbAdmin.nonce,
+      action: 'spsg_floating_notification_bar_save_settings',
+      _ajax_nonce: spsgAdmin.nonce,
       form_data: JSON.stringify({ shipping_bar_data: formData }),
     };
 
     jQuery
       .ajax({
-        url: sgsbAdmin.ajax_url,
+        url: spsgAdmin.ajax_url,
         method: 'POST',
         data,
       })

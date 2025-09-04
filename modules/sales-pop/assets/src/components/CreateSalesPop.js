@@ -15,11 +15,11 @@ import OrderProductCount from "sales-booster/src/components/settings/Panels/Pane
 const WarningMessage =({warningColor}) => <span style={{color:warningColor || "#00000099", fontStyle:"italic", marginLeft: '10px'}}>{warningColor ? "warning" : "note" }: Upgrade to add more than 5 names</span>;
 
 function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsg_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    createPopupFormData : select( 'spsg_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'spsg_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFormReset = () => {
@@ -58,7 +58,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
 
   // Handle selection available product list.
   let productListForSelect = applyFilters(
-    'sgsb_sales_pop_selection_available_product_list',
+    'spsg_sales_pop_selection_available_product_list',
     allProductListForSelect.filter( item => !externalProductsIds.includes( item.value ) ),
     allProductListForSelect,
     createPopupFormData
@@ -111,7 +111,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
       <SettingsSection>
         {/* Rendered all necessary sales pop settings before product settings. */}
         { applyFilters(
-          'sgsb_prepend_sales_pop_product_settings',
+          'spsg_prepend_sales_pop_product_settings',
           '',
           createPopupFormData,
           onFieldChange
@@ -186,7 +186,7 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
 
         {/* Rendered all necessary sales pop settings after product settings. */}
         { applyFilters(
-          'sgsb_append_sales_pop_product_settings',
+          'spsg_append_sales_pop_product_settings',
           '',
           createPopupFormData,
           onFieldChange

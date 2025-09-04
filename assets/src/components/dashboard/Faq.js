@@ -19,10 +19,10 @@ const Faq = () => {
   };
 
   return (
-    <div className="site-card-wrapper sgsb-admin-dashboard">
-      <div className="sgsb-admin-dashboard-module">
+    <div className="site-card-wrapper spsg-admin-dashboard">
+      <div className="spsg-admin-dashboard-module">
         <div
-          className="sgsb-dasboard-container"
+          className="spsg-dasboard-container"
           style={{ padding: "30px 0px 0px 0px" }}
         >
           <PanelContainer>

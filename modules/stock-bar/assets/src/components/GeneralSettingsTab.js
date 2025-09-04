@@ -14,7 +14,7 @@ function GeneralSettingsTab(props) {
     <Fragment>
       <SettingsSection>
         {applyFilters(
-          "sgsb_shop_stock_bar_enable_settings",
+          "spsg_shop_stock_bar_enable_settings",
           "",
           formData,
           onFieldChange
@@ -31,7 +31,7 @@ function GeneralSettingsTab(props) {
           )}
         />
         {applyFilters(
-          "sgsb_variation_product_stock_bar_enable_settings",
+          "spsg_variation_product_stock_bar_enable_settings",
           "",
           formData,
           onFieldChange

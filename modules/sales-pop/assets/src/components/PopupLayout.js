@@ -18,16 +18,16 @@ import Template from "./Template";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 
 function PopupLayout({ outlet: Outlet, navigate, useSearchParams , moduleId}) {
-  const isProEnabled = sgsbAdmin.isPro;
+  const isProEnabled = spsgAdmin.isPro;
 
   const { setCreateFromData, setButtonLoading } = useDispatch(
-    "sgsb_order_sales_pop"
+    "spsg_order_sales_pop"
   );
   let [searchParams, setSearchParams] = useSearchParams();
 
   const tabName = searchParams.get("tab_name");
   const { createPopupForm } = useSelect((select) => ({
-    createPopupForm: select("sgsb_order_sales_pop").getCreateFromData(),
+    createPopupForm: select("spsg_order_sales_pop").getCreateFromData(),
   }));
 
   const changeTab = (key) => {

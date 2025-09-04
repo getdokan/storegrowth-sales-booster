@@ -46,11 +46,11 @@ class SalesPOP implements HookRegistry {
         return;
     }
 
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_popup_products', true );
+		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', true );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';
-			$path = apply_filters( 'sgsb_sales_pop_visbility_controller', __DIR__ . '/../templates/popup.php' );
+			$path = apply_filters( 'spsg_sales_pop_visbility_controller', __DIR__ . '/../templates/popup.php' );
 			if ( ! $path ) {
 				return;
 			}

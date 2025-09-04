@@ -8,9 +8,9 @@
  * @package SBFW
  */
 
-$settings   = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+$settings   = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 $layout     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'layout', 'side' );
-$class_name = 'center' === $layout ? 'sgsb-quick-cart-center-layout' : '';
+$class_name = 'center' === $layout ? 'spsg-quick-cart-center-layout' : '';
 
 $cart_icon_color      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#FFF' );
 $action_btn_active_bg = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
@@ -109,16 +109,16 @@ $action_btn_active_bg = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 				<?php echo esc_html( wc()->cart->get_cart_contents_count() ); ?>
 		</div>
 		</h3>
-		<span class="wfc-close-btn sgsb-cart-widget-close" title="Close">
+		<span class="wfc-close-btn spsg-cart-widget-close" title="Close">
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
 			<path d="M13.9697 15.0303C14.2626 15.3232 14.7374 15.3232 15.0303 15.0303C15.3232 14.7374 15.3232 14.2626 15.0303 13.9697L11.0607 10L15.0303 6.03033C15.3232 5.73744 15.3232 5.26256 15.0303 4.96967C14.7374 4.67678 14.2626 4.67678 13.9697 4.96967L10 8.93934L6.03033 4.96967C5.73744 4.67678 5.26256 4.67678 4.96967 4.96967C4.67678 5.26256 4.67678 5.73744 4.96967 6.03033L8.93934 10L4.96967 13.9697C4.67678 14.2626 4.67678 14.7374 4.96967 15.0303C5.26256 15.3232 5.73744 15.3232 6.03033 15.0303L10 11.0607L13.9697 15.0303Z" fill="#303030"/>
 			</svg>
 		</span>
 	</div>
-	<div class="sgsb-widget-shopping-cart-content-wrapper">
-		<div class="sgsb-widget-shopping-cart-content"></div>
-		<div class="sgsb-page-loader sgsb-fly-cart-loader">
-			<div class="sgsb-page-loader-ring"></div>
+	<div class="spsg-widget-shopping-cart-content-wrapper">
+		<div class="spsg-widget-shopping-cart-content"></div>
+		<div class="spsg-page-loader spsg-fly-cart-loader">
+			<div class="spsg-page-loader-ring"></div>
 		</div>
 	</div>
 </div>

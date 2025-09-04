@@ -4,7 +4,7 @@ import {applyFilters} from "@wordpress/hooks";
 const StockBarThree = ( { activeTemplate } ) => {
     return (
         <div
-            className='sgsb-stock-bar'
+            className='spsg-stock-bar'
             style={ {
                 height          : '100%',
                 border          : `2px solid #${ activeTemplate ? '008DFF' : 'ae89ff33' }`,
@@ -17,14 +17,14 @@ const StockBarThree = ( { activeTemplate } ) => {
             } }
         >
             <div
-                className='sgsb-stock-progress-bar-section wpbsc_total_sale'
+                className='spsg-stock-progress-bar-section wpbsc_total_sale'
                 style={ {
                     gap     : 16,
                     display : 'grid',
                 } }
             >
                 <div
-                    className='sgsb-stock-progress-title'
+                    className='spsg-stock-progress-title'
                     style={ {
                         justifyContent : 'space-between',
                         lineHeight     : 1,
@@ -33,20 +33,20 @@ const StockBarThree = ( { activeTemplate } ) => {
                         color          : '#073B4C',
                     } }
                 >
-                    <span className='sgsb-stock-progress-sold-title'>
+                    <span className='spsg-stock-progress-sold-title'>
                         { __( 'Total Sold: ', 'storegrowth-sales-booster' ) }
                         <span
                             style={ { fontWeight: 600 } }
-                            className='sgsb-stock-progress-count'
+                            className='spsg-stock-progress-count'
                         >
                             { __( '247', 'storegrowth-sales-booster' ) }
                         </span>
                     </span>
-                    <span className='sgsb-stock-progress-available-title'>
+                    <span className='spsg-stock-progress-available-title'>
                         { __( 'Available Item: ', 'storegrowth-sales-booster' ) }
                         <span
                             style={ { fontWeight: 500 } }
-                            className='sgsb-stock-progress-count'
+                            className='spsg-stock-progress-count'
                         >
                             { __( '123', 'storegrowth-sales-booster' ) }
                         </span>
@@ -74,7 +74,7 @@ const StockBarThree = ( { activeTemplate } ) => {
                     ></div>
                 </div>
 
-                { applyFilters( 'sgsb_before_stock_bar_preview_template_end', '' ) }
+                { applyFilters( 'spsg_before_stock_bar_preview_template_end', '' ) }
             </div>
         </div>
     );

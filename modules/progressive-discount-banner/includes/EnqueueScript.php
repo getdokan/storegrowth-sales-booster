@@ -46,24 +46,24 @@ class EnqueueScript implements HookRegistry {
 		$style_file = PluginHelper::get_modules_path( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' );
 
 		wp_enqueue_style(
-			'sgsb-pd-banner-style',
+			'spsg-pd-banner-style',
 			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' ),
 			array(),
 			filemtime( $style_file )
 		);
 
 		wp_enqueue_script(
-			'sgsb-pd-banner-bar-remove',
-			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ),
+			'spsg-pd-banner-bar-remove',
+			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/js/spsg-pd-banner-bar-remove.js' ),
 			array( 'jquery' ),
-			filemtime( PluginHelper::get_modules_path( 'progressive-discount-banner/assets/js/sgsb-pd-banner-bar-remove.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'progressive-discount-banner/assets/js/spsg-pd-banner-bar-remove.js' ) ),
 			true
 		);
 
 		$localized_fsb_data = Helper::get_settings();
 
 		// Use wp_localize_script to pass the data to your script.
-		wp_localize_script( 'sgsb-pd-banner-bar-remove', 'sgsb_fsb_data', $localized_fsb_data );
+		wp_localize_script( 'spsg-pd-banner-bar-remove', 'spsg_fsb_data', $localized_fsb_data );
 
 		$this->inline_styles();
 	}
@@ -74,12 +74,12 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_sgsb-settings' === $hook ) {
+		if ( 'storegrowth_page_spsg-settings' === $hook ) {
 			$settings_file = require PluginHelper::get_modules_path( 'progressive-discount-banner/assets/build/settings.asset.php' );
 
 			wp_enqueue_media();
 			wp_enqueue_script(
-				'sgsb-pd-banner-settings',
+				'spsg-pd-banner-settings',
 				PluginHelper::get_modules_url( 'progressive-discount-banner/assets/build/settings.js' ),
 				$settings_file['dependencies'],
 				$settings_file['version'],
@@ -87,7 +87,7 @@ class EnqueueScript implements HookRegistry {
 			);
 
             // Pass the Cart URL to the JavaScript file
-            wp_localize_script('sgsb-pd-banner-settings', 'sgsbFsbData', array(
+            wp_localize_script('spsg-pd-banner-settings', 'spsgFsbData', array(
                 'cartUrl' => wc_get_cart_url(), // WooCommerce Cart URL
             ));
 		}
@@ -155,11 +155,11 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
-				.sgsb-pd-banner-bar-wrapper {
+				.spsg-pd-banner-bar-wrapper {
 					top: auto !important;
 					bottom: 0;
 				}
-				body.admin-bar .sgsb-pd-banner-bar-wrapper {
+				body.admin-bar .spsg-pd-banner-bar-wrapper {
 					top: ' . ( 0 ) . 'px;
 				}
 				body {
@@ -175,18 +175,18 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		$css .= "
-			.sgsb-pd-banner-bar-wrapper {
+			.spsg-pd-banner-bar-wrapper {
 				background-color: {$bg_color};
 				color: {$text_color};
 				height: {$banner_height}px;
 			}
-			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-icon svg {
+			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg {
 				fill: {$icon_color};
 			}
-			.sgsb-pd-banner-bar-wrapper .sgsb-pd-banner-bar-remove svg path {
+			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-remove svg path {
 			    fill: {$close_color};
 			}
-			.sgsb-pd-banner-text{
+			.spsg-pd-banner-text{
 				font-size: {$font_size}px;
 				font-family: {$selected_font};
 			}
@@ -194,23 +194,23 @@ class EnqueueScript implements HookRegistry {
 
 		if ( 'sticky' === $bar_type ) {
 			$css .= '
-			.sgsb-pd-banner-bar-wrapper{
+			.spsg-pd-banner-bar-wrapper{
 				position: fixed;
 			}';
 		} elseif ( 'normal' === $bar_type ) {
 			if ( 'bottom' === $bar_position ) {
 				$css .= '
-			.sgsb-pd-banner-bar-wrapper{
+			.spsg-pd-banner-bar-wrapper{
 				position: inherit;
 			}';
 			} else {
 				$css .= '
-			.sgsb-pd-banner-bar-wrapper{
+			.spsg-pd-banner-bar-wrapper{
 				position: absolute;
 			}';
 			}
 		}
 
-		wp_add_inline_style( 'sgsb-pd-banner-style', $css );
+		wp_add_inline_style( 'spsg-pd-banner-style', $css );
 	}
 }

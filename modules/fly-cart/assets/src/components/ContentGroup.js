@@ -46,7 +46,7 @@ const ContentGroup = ( {
                         } }
                     >
                         <Card
-                            className={ `sgsb-settings-card content-group-settings ${ option?.needUpgrade ? 'disabled-settings' : '' }` }
+                            className={ `spsg-settings-card content-group-settings ${ option?.needUpgrade ? 'disabled-settings' : '' }` }
                             style={ { background: formData?.[ option?.name ] && !option?.needUpgrade ? '#F4F7FF' : '#FFF' } }
                         >
                             <Row justify={ `start` } align={ `middle` }>

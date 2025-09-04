@@ -6,11 +6,11 @@ import { createPopupForm, noop } from '../helper';
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 
 function Time( { onFormSave, upgradeTeaser } ) {
-  const { setCreateFromData } = useDispatch( 'sgsb_order_sales_pop' );
+  const { setCreateFromData } = useDispatch( 'spsg_order_sales_pop' );
 
   const { createPopupFormData, getButtonLoading } = useSelect( ( select ) => ({
-    createPopupFormData : select( 'sgsb_order_sales_pop' ).getCreateFromData(),
-    getButtonLoading    : select( 'sgsb_order_sales_pop' ).getButtonLoading()
+    createPopupFormData : select( 'spsg_order_sales_pop' ).getCreateFromData(),
+    getButtonLoading    : select( 'spsg_order_sales_pop' ).getButtonLoading()
   }) );
 
   const onFormReset = () => {
@@ -21,7 +21,7 @@ function Time( { onFormSave, upgradeTeaser } ) {
     <Fragment>
       {/* Rendered sales pop time panel settings. */}
       { applyFilters(
-        'sgsb_sales_pop_time_panel_settings',
+        'spsg_sales_pop_time_panel_settings',
         '',
         createPopupFormData,
         setCreateFromData

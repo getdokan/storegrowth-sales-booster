@@ -17,7 +17,7 @@
 		$different_deal_type = ! empty( $bogo_settings['bogo_deal_type'] ) ? esc_html( $bogo_settings['bogo_deal_type'] ) : 'different';
 		$different_bogo_type = ! empty( $bogo_settings['bogo_type'] ) ? esc_html( $bogo_settings['bogo_type'] ) : 'products';
 		// Add a nonce field for BOGO settings panel.
-		wp_nonce_field( 'sgsb_bogo_settings', '_sgsb_bogo_settings_nonce' );
+		wp_nonce_field( 'spsg_bogo_settings', '_spsg_bogo_settings_nonce' );
 		// Enable/Disable for BOGO
 		woocommerce_wp_checkbox(
 			array(
@@ -35,7 +35,7 @@
 
             // Display the select dropdown with modified options using apply_filters
             $deal_types = apply_filters(
-                'sgsb_bogo_deal_types',
+                'spsg_bogo_deal_types',
                 array( 'different' => __( 'Buy X Get Y Free', 'storegrowth-sales-booster' ) ),
             );
 
@@ -53,17 +53,17 @@
 
 			if ( ! $is_variable_product ) :
 				?>
-				<div class="sgsb-bogo-box-title">
+				<div class="spsg-bogo-box-title">
 					<?php esc_html_e( 'Offered Product', 'storegrowth-sales-booster' ); ?>
 					<span
-						class="dashicons dashicons-editor-help sgsb-section-tip"
+						class="dashicons dashicons-editor-help spsg-section-tip"
 						title="<?php esc_html_e( 'Click this button to submit the form', 'storegrowth-sales-booster' ); ?>"
 					></span>
 				</div>
 
 				<p id="different-product-field" class="form-field <?php echo esc_attr( $different_deal_type === 'different' ? 'active-product-field' : 'disable-product-field' ); ?>">
-					<label for="_sgsb_get_product_field"><?php esc_html_e( 'Get different product', 'storegrowth-sales-booster' ); ?></label>
-					<select class="select short" id="_sgsb_get_product_field" name="get_different_product_field" data-allow_clear="true"
+					<label for="_spsg_get_product_field"><?php esc_html_e( 'Get different product', 'storegrowth-sales-booster' ); ?></label>
+					<select class="select short" id="_spsg_get_product_field" name="get_different_product_field" data-allow_clear="true"
 						data-placeholder="<?php esc_attr_e( 'Select product', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
 						<option value=""><?php esc_html_e( 'Select product', 'storegrowth-sales-booster' ); ?></option>
 						<?php
@@ -101,9 +101,9 @@
 
 				woocommerce_wp_text_input(
 					array(
-						'id'                => '_sgsb_bogo_product_discount_percentage',
+						'id'                => '_spsg_bogo_product_discount_percentage',
 						'name'              => 'discount_amount',
-						'class'             => 'sgsb_bogo_product_discount_percentage',
+						'class'             => 'spsg_bogo_product_discount_percentage',
 						'value'             => $discount_percentage,
 						'wrapper_class'     => ( $is_bogo_discount === 'discount' ) ? 'enable_bogo_product_discount' : 'disable_bogo_product_discount',
 						'label'             => __( 'Discount', 'storegrowth-sales-booster' ),
@@ -124,14 +124,14 @@
                  *
                  * @param array $bogo_settings
                  */
-                do_action( 'sgsb_after_bogo_offer_settings', $bogo_settings );
+                do_action( 'spsg_after_bogo_offer_settings', $bogo_settings );
 				?>
 
 				<hr />
 				<?php
 				// Display the select dropdown with modified options using apply_filters
 				$options = apply_filters(
-					'options_sgsb_bogo_type',
+					'options_spsg_bogo_type',
 					array(
 						'products' => __( 'Products', 'storegrowth-sales-booster' ),
 					),
@@ -149,8 +149,8 @@
 
 				?>
 				<p class="form-field alt-bogo-products">
-					<label for="_sgsb_get_multiple_product_field"><?php esc_html_e( 'Alternate option of the offered products', 'storegrowth-sales-booster' ); ?></label>
-					<select class="select short" id="_sgsb_get_multiple_product_field" name="get_alternate_products[]" multiple="multiple"
+					<label for="_spsg_get_multiple_product_field"><?php esc_html_e( 'Alternate option of the offered products', 'storegrowth-sales-booster' ); ?></label>
+					<select class="select short" id="_spsg_get_multiple_product_field" name="get_alternate_products[]" multiple="multiple"
 						data-placeholder="<?php esc_attr_e( 'Select a product', 'storegrowth-sales-booster' ); ?>" style="width: 50%;">
 						<option value=""><?php esc_html_e( 'Select a product', 'storegrowth-sales-booster' ); ?></option>
 						<?php
@@ -176,7 +176,7 @@
 						<?php endforeach; ?>
 					</select>
 				</p>
-				<?php  do_action( 'sgsb_after_bogo_offer_type_field', $bogo_settings ); ?>
+				<?php  do_action( 'spsg_after_bogo_offer_type_field', $bogo_settings ); ?>
 
 				<?php
 				$product_page_msg = ! empty( $bogo_settings['product_page_message'] ) ? esc_html( $bogo_settings['product_page_message'] ) : '';
@@ -233,7 +233,7 @@
 			 * @param bool        $is_variable_product
 			 * @param array       $bogo_settings
 			 */
-			do_action( 'sgsb_after_bogo_settings_panel', $current_product, $is_variable_product, $bogo_settings );
+			do_action( 'spsg_after_bogo_settings_panel', $current_product, $is_variable_product, $bogo_settings );
 			?>
 		</div>
 	</div>
