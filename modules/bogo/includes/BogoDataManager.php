@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\BoGo;
+namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use Exception;
 

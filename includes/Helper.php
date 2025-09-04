@@ -1,6 +1,6 @@
 <?php
 
-namespace STOREGROWTH\SPSB;
+namespace StorePulse\StoreGrowth;
 
 defined( 'ABSPATH' ) || exit;
 

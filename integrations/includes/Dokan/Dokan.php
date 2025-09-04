@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan;
+namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
-use STOREGROWTH\SPSB\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
-use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Dashboard;
-use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
+use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\Dashboard;
+use StorePulse\StoreGrowth\Integrations\Dokan\Frontend\Frontend;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 /**
  * Dokan Class.

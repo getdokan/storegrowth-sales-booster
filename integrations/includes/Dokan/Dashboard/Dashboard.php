@@ -1,10 +1,10 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\Dashboard;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
-use STOREGROWTH\SPSB\ModuleManager;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Modules;
+use StorePulse\StoreGrowth\ModuleManager;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Modules;
 
 /**
  * Dashboard Class.

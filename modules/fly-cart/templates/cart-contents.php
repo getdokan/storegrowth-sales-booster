@@ -8,7 +8,7 @@
  * @package SBFW
  */
 
-use STOREGROWTH\SPSB\Modules\FlyCart\Helper;
+use StorePulse\StoreGrowth\Modules\FlyCart\Helper;
 
 // phpcs:disable WooCommerce.Commenting.CommentHooks.MissingHookComment
 // Show empty cart notice if cart is empty.
@@ -17,12 +17,12 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
-$settings             = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
-$show_product_image   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_product_image', true );
-$show_remove_icon     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_remove_icon', true );
-$show_quantity_picker = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
-$show_product_price   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_product_price', true );
-$show_coupon          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_coupon', true );
+$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+$show_product_image   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
+$show_remove_icon     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_remove_icon', true );
+$show_quantity_picker = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
+$show_product_price   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_price', true );
+$show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_coupon', true );
 ?>
 
 <form class="sgsb-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">

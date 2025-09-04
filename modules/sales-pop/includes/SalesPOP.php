@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\SalesPop;
+namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,7 +41,7 @@ class SalesPOP implements HookRegistry {
 	 * Popup for frontend
 	 */
 	public function footer_files() {
-		$popup_properties = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_popup_products', true );
+		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_popup_products', true );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';

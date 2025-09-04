@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan;
+namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Integrations\Dokan\REST\VendorBogoController;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Integrations\Dokan\REST\VendorBogoController;
 
 defined( 'ABSPATH' ) || exit;
 

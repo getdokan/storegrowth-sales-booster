@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\SalesPop\Providers\ServiceProvider;
+use StorePulse\StoreGrowth\Modules\SalesPop\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

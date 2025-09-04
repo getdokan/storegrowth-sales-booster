@@ -8,8 +8,8 @@
 global $product;
 $product_id           = $product->get_ID();
 $product_type         = $product->get_type();
-$settings             = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
-$buy_now_button_label = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buy_now_button_label', 'Buy Now' );
+$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' );
+$buy_now_button_label = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buy_now_button_label', 'Buy Now' );
 $product_page         = is_product() ? '_product_page' : '';
 $stock_class_name     = $product->is_in_stock() ? ' ' : 'sgsb_buy_now_button_disabled';
 	$classes          = implode(

@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Admin;
+namespace StorePulse\StoreGrowth\Admin;
 
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -52,7 +52,7 @@ class AdminHooks {
 	 */
 
 	public function sgsb_redirect_initial_setup() {
-		$ini_setup_completion = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_ini_completion' );
+		$ini_setup_completion = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_ini_completion' );
 		if ( $ini_setup_completion ) {
 			return;}
 

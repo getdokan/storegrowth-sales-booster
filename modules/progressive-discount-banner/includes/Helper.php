@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
+namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -25,7 +25,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_progressive_discount_banner_settings', array() );
+		return \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_progressive_discount_banner_settings', array() );
 	}
 
 	/**
@@ -38,15 +38,15 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_text( $settings ) {
-		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// If customer already added enough to cart.
 		if ( $cart_amount >= $minimum_amount ) {
-			return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'goal_completion_text' );
+			return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'goal_completion_text' );
 		}
 
-		$pbanner_text = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_text' );
+		$pbanner_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_text' );
 
 		return str_replace( '[amount]', wc_price( $minimum_amount - $cart_amount ), $pbanner_text );
 	}
@@ -89,7 +89,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_icon( $settings ) {
-		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_icon_name' );
+		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_icon_name' );
 	}
 
 	/**
@@ -102,6 +102,6 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_custom_icon( $settings ) {
-		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
+		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
 	}
 }

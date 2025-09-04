@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump;
+namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
-use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\BaseModule;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers\BootstrapServiceProvider;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

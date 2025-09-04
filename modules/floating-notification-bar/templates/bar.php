@@ -5,14 +5,14 @@
  * @package SBFW
  */
 
-use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Helper;
+use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Helper;
 
 $settings      = Helper::get_settings();
 $banner_text   = Helper::get_banner_text( $settings );
 $banner_icon   = Helper::get_banner_icon( $settings );
-$button_text   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'ac_button_text', 'Shop Now' );
-$button_action = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_action', 'ba-url-redirect' );
-$redirect_url  = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'redirect_url', '#' );
+$button_text   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'ac_button_text', 'Shop Now' );
+$button_action = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_action', 'ba-url-redirect' );
+$redirect_url  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'redirect_url', '#' );
 
 ?>
 <div class="sgsb-floating-notification-bar-wrapper">

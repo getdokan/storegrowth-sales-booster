@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\UpsellOrderBump\Providers;
+namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\Ajax;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\EnqueueScript;
-use STOREGROWTH\SPSB\Modules\UpsellOrderBump\OrderBump;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Ajax;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -14,7 +14,7 @@ use STOREGROWTH\SPSB\Modules\UpsellOrderBump\OrderBump;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 

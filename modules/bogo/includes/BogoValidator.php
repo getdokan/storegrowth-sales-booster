@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\BoGo;
+namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

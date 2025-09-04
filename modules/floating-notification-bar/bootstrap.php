@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\FloatingNotificationBar\Providers\ServiceProvider;
+use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

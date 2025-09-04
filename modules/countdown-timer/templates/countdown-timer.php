@@ -6,13 +6,13 @@
  */
 
 
-if ( ! STOREGROWTH\SPSB\Modules\CountdownTimer\Helper::is_product_discountable( $product->get_id() ) ) {
+if ( ! StorePulse\StoreGrowth\Modules\CountdownTimer\Helper::is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 
-$settings                         = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_countdown_timer_settings' );
-$enable_countdown_in_product_page = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_page_countdown_enable', true );
-$layout_class                     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
+$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_countdown_timer_settings' );
+$enable_countdown_in_product_page = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_page_countdown_enable', true );
+$layout_class                     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 
 if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
@@ -23,7 +23,7 @@ $end_date   = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount
 
 $discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
 
-$heading_text = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
+$heading_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'countdown_heading', 'Last chance! [discount]% OFF' );
 $heading      = str_replace( '[discount]', $discount_amount, $heading_text );
 
 $families = [
@@ -36,10 +36,10 @@ $families = [
 ];
 
 // Countdown Styles.
-$font_family      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'font_family', 'roboto' );
-$border_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'border_color', '#1677FF' );
-$heading_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'heading_text_color', '#008DFF' );
-$background_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_background_color', '#FFF' );
+$font_family      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_family', 'roboto' );
+$border_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'border_color', '#1677FF' );
+$heading_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'heading_text_color', '#008DFF' );
+$background_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_background_color', '#FFF' );
 
 // Get countdown heading template conditionally.
 $heading_color = ( $layout_class !== 'ct-layout-2' ? $heading_color : ( $heading_color !== 'transparent' ? $heading_color: 'default' ) );

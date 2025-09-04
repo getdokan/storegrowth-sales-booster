@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\ProgressiveDiscountBanner;
+namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,13 +48,13 @@ class WoocommerceDiscount implements HookRegistry {
 		}
 
 		$settings      = Helper::get_settings();
-		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
+		$discount_type = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -102,13 +102,13 @@ class WoocommerceDiscount implements HookRegistry {
 	 */
 	public function woocommerce_cart_calculate_fees() {
 		$settings      = Helper::get_settings();
-		$discount_type = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_type', false );
+		$discount_type = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'discount_type', false );
 
 		if ( ! $discount_type ) {
 			return;
 		}
 
-		$minimum_amount = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
+		$minimum_amount = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// Check customer is not eligible for discount.
@@ -130,7 +130,7 @@ class WoocommerceDiscount implements HookRegistry {
 	private function set_discount_amount( $settings, $cart_amount ) {
 		$discount_amount = 0;
 
-		$discount_amount_value = floatval( \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'discount_amount_value', 0 ) );
+		$discount_amount_value = floatval( \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'discount_amount_value', 0 ) );
 
 		if ( 'fixed-amount' === $settings['discount_amount_mode'] ) {
 			$discount_amount = $discount_amount_value;

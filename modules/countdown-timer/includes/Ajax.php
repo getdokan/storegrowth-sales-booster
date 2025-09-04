@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
+namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
-use STOREGROWTH\SPSB\Helper;
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -56,7 +56,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_countdown_timer_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_countdown_timer_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

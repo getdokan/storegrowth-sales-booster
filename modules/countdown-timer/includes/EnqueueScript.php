@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
+namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -101,12 +101,12 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_countdown_timer_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_countdown_timer_settings' );
 
-		$widget_bg_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
-		$border_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );
-		$heading_text_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'heading_text_color', '#000000' );
-		$selected_theme     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
+		$widget_bg_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
+		$border_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );
+		$heading_text_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'heading_text_color', '#000000' );
+		$selected_theme     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 
 		// Check current theme status.
 		$theme                = wp_get_theme();

@@ -13,7 +13,7 @@
  * @package SGSB
  */
 
-use STOREGROWTH\SPSB\Bootstrap;
+use StorePulse\StoreGrowth\Bootstrap;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -121,15 +121,15 @@ register_activation_hook(
 		add_option( 'storegrowth_activation_redirect', true );
 		
 		// Run BOGO migration if needed
-		$migration_status = \STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::get_migration_status();
+		$migration_status = \StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::get_migration_status();
 		if ( $migration_status['migration_needed'] ) {
-			\STOREGROWTH\SPSB\Modules\BoGo\BogoMigration::migrate_to_single_table();
+			\StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::migrate_to_single_table();
 		}
 	}
 );
 
 // Use the necessary namespace.
-use STOREGROWTH\SPSB\DependencyManagement\Container;
+use StorePulse\StoreGrowth\DependencyManagement\Container;
 
 // Declare the $dokan_container as global to access from the inside of the function.
 global $storegrowth_container;
@@ -138,7 +138,7 @@ global $storegrowth_container;
 $storegrowth_container = new Container();
 
 // Register the service providers.
-$storegrowth_container->addServiceProvider( new \STOREGROWTH\SPSB\DependencyManagement\Providers\ServiceProvider() );
+$storegrowth_container->addServiceProvider( new \StorePulse\StoreGrowth\DependencyManagement\Providers\ServiceProvider() );
 
 /**
  * Get the container.

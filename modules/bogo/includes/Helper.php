@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\BoGo;
+namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -63,7 +63,7 @@ class Helper {
 	 * @return array|null
 	 */
 	public static function get_product_bogo_settings( $product_id, $variation_id = 0, array $query_args = [] ) {
-		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id, $variation_id, $query_args );
+		return \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_product_bogo_settings( $product_id, $variation_id, $query_args );
 	}
 
 	/**
@@ -74,7 +74,7 @@ class Helper {
 	 * @return \WP_POST[]|int[]
 	 */
 	public static function get_global_offered_products() {
-		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
+		return \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_global_bogo_offers();
 	}
 
 	/**
@@ -85,7 +85,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_global_offered_product_list() {
-		return \STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager::get_global_offered_product_list();
+		return \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_global_offered_product_list();
 	}
 
 
@@ -100,7 +100,7 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function get_bogo_settings_option( $option, $default = '' ) {
-		$options = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
+		$options = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_bogo_general_settings', array() );
 
 		if ( isset( $options[ $option ] ) ) {
 			return $options[ $option ];

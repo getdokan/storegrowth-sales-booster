@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\DirectCheckout;
+namespace StorePulse\StoreGrowth\Modules\DirectCheckout;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

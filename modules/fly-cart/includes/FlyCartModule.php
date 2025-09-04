@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart;
+namespace StorePulse\StoreGrowth\Modules\FlyCart;
 
-use STOREGROWTH\SPSB\BaseModule;
-use STOREGROWTH\SPSB\Modules\FlyCart\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\BaseModule;
+use StorePulse\StoreGrowth\Modules\FlyCart\Providers\BootstrapServiceProvider;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

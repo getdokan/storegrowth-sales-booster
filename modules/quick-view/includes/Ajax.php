@@ -5,10 +5,10 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView;
+namespace StorePulse\StoreGrowth\Modules\QuickView;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Helper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Helper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,7 +58,7 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'sgsb_ajax_nonce' );
 
-		$form_data = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings', array() );
+		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -70,12 +70,12 @@ class Ajax implements HookRegistry {
 		check_ajax_referer( 'sgsbqcv-security', 'nonce' );
 
 		global $post, $product;
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
 
 		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );
 		$content_image               = 'all';
-		$content_view_details_button = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_view_details_button', false );
+		$content_view_details_button = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_view_details_button', false );
 		$content_image_lightbox      = 'no';
 
 		if ( $product ) {

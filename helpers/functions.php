@@ -5,7 +5,7 @@
  * @package WPBP
  */
 
-use STOREGROWTH\SPSB\Helper;
+use StorePulse\StoreGrowth\Helper;
 
 if ( ! function_exists( 'sgsb_assets_url' ) ) {
 	/**
