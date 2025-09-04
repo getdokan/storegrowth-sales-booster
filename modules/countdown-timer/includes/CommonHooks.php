@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\CountdownTimer;
+namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,13 +27,14 @@ class CommonHooks implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// return;
 		add_action( 'woocommerce_before_add_to_cart_form', array( $this, 'show_countdown_timer_template' ) );
 
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'woocommerce_product_data_tabs' ), 10, 1 );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'woocommerce_product_data_panels' ) );
 		add_action( 'woocommerce_admin_process_product_object', array( $this, 'woocommerce_admin_process_product_object' ) );
 
-		add_filter( 'woocommerce_product_get_price', array( $this, 'woocommerce_product_get_price' ), 10, 2 );
+		add_filter( 'woocommerce_product_get_price', array( $this, 'get_product_price' ), 10, 2 );
 
 		add_filter( 'woocommerce_product_is_on_sale', array( $this, 'woocommerce_product_is_on_sale' ), 10, 2 );
 	}
@@ -115,10 +116,10 @@ class CommonHooks implements HookRegistry {
 	 * @param float       $price Product price.
 	 * @param \WC_Product $product WooCommerce product object.
 	 */
-	public function woocommerce_product_get_price( $price, $product ) {
+	public function get_product_price( $price, $product ) {
 		// Check countdown discount is set.
 		if ( Helper::is_product_discountable( $product->get_id() ) ) {
-			$current_price = floatval( $product->get_price() );
+			$current_price = floatval( $price );
 			$discount_amount = get_post_meta( $product->get_id(), '_sgsb_countdown_timer_discount_amount', true );
 			$discount_amount = 100 - intval( $discount_amount );
 

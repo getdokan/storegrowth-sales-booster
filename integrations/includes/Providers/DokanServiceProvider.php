@@ -1,17 +1,17 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Providers;
+namespace StorePulse\StoreGrowth\Integrations\Providers;
 
-use STOREGROWTH\SPSB\Integrations\Dokan\Dokan;
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Modules\BoGo\Providers\BootstrapServiceProvider;
-use STOREGROWTH\SPSB\Integrations\Dokan\Ajax;
-use STOREGROWTH\SPSB\Integrations\Dokan\Api;
-use STOREGROWTH\SPSB\Integrations\Dokan\Frontend\Frontend;
-use STOREGROWTH\SPSB\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
-use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Dashboard;
-use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\Bogo;
-use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\EnqueueScript as DashboardEnqueueScript;
+use StorePulse\StoreGrowth\Integrations\Dokan\Dokan;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Modules\BoGo\Providers\BootstrapServiceProvider;
+use StorePulse\StoreGrowth\Integrations\Dokan\Ajax;
+use StorePulse\StoreGrowth\Integrations\Dokan\Api;
+use StorePulse\StoreGrowth\Integrations\Dokan\Frontend\Frontend;
+use StorePulse\StoreGrowth\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
+use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\Dashboard;
+use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\Bogo;
+use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\EnqueueScript as DashboardEnqueueScript;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -20,7 +20,7 @@ use STOREGROWTH\SPSB\Integrations\Dokan\Dashboard\EnqueueScript as DashboardEnqu
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class DokanServiceProvider extends BootstrapServiceProvider {
     /**

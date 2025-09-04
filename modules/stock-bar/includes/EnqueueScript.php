@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\StockBar;
+namespace StorePulse\StoreGrowth\Modules\StockBar;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -96,12 +96,12 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_stock_bar_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_stock_bar_settings' );
 
-		$bar_height   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
-		$bg_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
-		$fg_color     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
-		$border_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_border_color', '#dde6f9' );
+		$bar_height   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
+		$bg_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
+		$fg_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
+		$border_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_border_color', '#dde6f9' );
 
 		$theme               = wp_get_theme();
 		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;

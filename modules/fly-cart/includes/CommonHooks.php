@@ -5,9 +5,9 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart;
+namespace StorePulse\StoreGrowth\Modules\FlyCart;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,9 +60,9 @@ class CommonHooks implements HookRegistry {
 			return;
 		}
 
-		$settings      = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
-		$icon_position = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
-		$icon_name     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
+		$settings      = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$icon_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
+		$icon_name     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
 
 		include __DIR__ . '/../templates/fly-cart.php';
 	}

@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FlyCart;
+namespace StorePulse\StoreGrowth\Modules\FlyCart;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -40,8 +40,8 @@ class EnqueueScript implements HookRegistry {
 	 * Enqueue CSS and JS for fly cart.
 	 */
 	public function wp_enqueue_scripts() {
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
-		$layout   = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'layout', 'side' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$layout   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'layout', 'side' );
 		if ( is_checkout() || is_cart() ) {
 			return;
 		}
@@ -114,12 +114,12 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function qc_basic_inline_styles() {
 		// Get style options.
-		$settings              = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
-		$wfc_color             = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
-		$widget_bg_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
-		$product_card_bg_color = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
-		$wfc_btn_bgcolor       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
-		$shop_btn_bgcolor      = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'shopping_button_bg_color', '#073B4C' );
+		$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$wfc_color             = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
+		$widget_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
+		$product_card_bg_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
+		$wfc_btn_bgcolor       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
+		$shop_btn_bgcolor      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'shopping_button_bg_color', '#073B4C' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {
@@ -175,11 +175,11 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function frontend_widget_script() {
 		// Get checkout redirection data.
-		$qcart_settings           = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_fly_cart_settings' );
-		$dir_checkout_settings    = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_direct_checkout_settings' );
-		$cart_layout_type         = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'layout', 'side' );
-		$is_add_to_qcart_redirect = \STOREGROWTH\SPSB\Helper::find_option_settings( $qcart_settings, 'enable_add_to_cart_redirect', true );
-		$checkout_redirect        = \STOREGROWTH\SPSB\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
+		$qcart_settings           = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_fly_cart_settings' );
+		$dir_checkout_settings    = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_direct_checkout_settings' );
+		$cart_layout_type         = \StorePulse\StoreGrowth\Helper::find_option_settings( $qcart_settings, 'layout', 'side' );
+		$is_add_to_qcart_redirect = \StorePulse\StoreGrowth\Helper::find_option_settings( $qcart_settings, 'enable_add_to_cart_redirect', true );
+		$checkout_redirect        = \StorePulse\StoreGrowth\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
 
 		$is_checkout_redirect = ( 'quick-cart-checkout' === $checkout_redirect );
 

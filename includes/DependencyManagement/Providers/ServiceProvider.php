@@ -1,8 +1,8 @@
 <?php
 
-namespace STOREGROWTH\SPSB\DependencyManagement\Providers;
+namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 
 /**
  * ServiceProvider Class

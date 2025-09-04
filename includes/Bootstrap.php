@@ -5,13 +5,13 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB;
+namespace StorePulse\StoreGrowth;
 
-use STOREGROWTH\SPSB\Admin\AdminMenu;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Admin\AdminHooks;
-use STOREGROWTH\SPSB\DependencyManagement\Container;
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Admin\AdminMenu;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Admin\AdminHooks;
+use StorePulse\StoreGrowth\DependencyManagement\Container;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use WP_REST_Controller;
 
 // If this file is called directly, abort.

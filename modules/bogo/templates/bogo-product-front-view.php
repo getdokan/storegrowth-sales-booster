@@ -6,7 +6,7 @@
  */
 
 // Check if essential variables are set before using them.
-use STOREGROWTH\SPSB\Modules\BoGo\Helper;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 // Helper function to get design values from JSON design_settings
 function get_design_value( $bogo_info, $property ) {

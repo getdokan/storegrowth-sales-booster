@@ -3,9 +3,9 @@
  * An extension to the Definition class to prevent constructor injection from being possible.
  */
 
-namespace STOREGROWTH\SPSB\DependencyManagement;
+namespace StorePulse\StoreGrowth\DependencyManagement;
 
-use STOREGROWTH\SPSB\ThirdParty\Packages\League\Container\Definition\Definition as BaseDefinition;
+use StorePulse\StoreGrowth\ThirdParty\Packages\League\Container\Definition\Definition as BaseDefinition;
 
 /**
  * An extension of the definition class that replaces constructor injection with method injection.

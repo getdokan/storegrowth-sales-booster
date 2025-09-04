@@ -1,8 +1,8 @@
 <?php
 
-namespace STOREGROWTH\SPSB;
+namespace StorePulse\StoreGrowth;
 
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
+use StorePulse\StoreGrowth\Interfaces\ModuleSkeleton;
 
 class ModuleManager {
 	/**

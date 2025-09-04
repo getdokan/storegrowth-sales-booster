@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Modules\StockBar\Providers;
+namespace StorePulse\StoreGrowth\Modules\StockBar\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
-use STOREGROWTH\SPSB\Modules\StockBar\StockBarModule;
+use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\StockBar\StockBarModule;
 
 /**
  * ServiceProvider for the module.
@@ -12,7 +12,7 @@ use STOREGROWTH\SPSB\Modules\StockBar\StockBarModule;
  *
  * @since 2.0.0
  *
- * @package STOREGROWTH\SPSB\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 

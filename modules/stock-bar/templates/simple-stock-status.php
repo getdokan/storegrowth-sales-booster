@@ -9,8 +9,8 @@ if ( ! $product->managing_stock() ) {
 	return;
 }
 
-$settings                         = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_stock_bar_settings' );
-$enable_stock_bar_in_product_page = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'product_page_stock_bar_enable', true );
+$settings                         = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_stock_bar_settings' );
+$enable_stock_bar_in_product_page = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_page_stock_bar_enable', true );
 
 if ( is_product() && ! $enable_stock_bar_in_product_page ) {
 	return;
@@ -20,15 +20,15 @@ $total_sales = intval( $product->get_total_sales() );
 $stock       = intval( $product->get_stock_quantity() );
 $total_stock = $stock + $total_sales;
 
-$bar_height          = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
-$bg_color            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
-$fg_color            = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
-$sd_format           = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'stock_display_format', 'above' );
-$total_sell_text     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'total_sell_count_text', 'Total Sold' );
-$available_item_text = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'available_item_count_text', 'Available Item' );
+$bar_height          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
+$bg_color            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
+$fg_color            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
+$sd_format           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stock_display_format', 'above' );
+$total_sell_text     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'total_sell_count_text', 'Total Sold' );
+$available_item_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'available_item_count_text', 'Available Item' );
 
 // Vars for threshold warning msg.
-$show_stock_status = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_stock_status', true );
+$show_stock_status = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_stock_status', true );
 $stock_contents    = apply_filters(
     'sgsb_stock_bar_warning_contents',
     array(

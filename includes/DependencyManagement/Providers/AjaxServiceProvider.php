@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\DependencyManagement\Providers;
+namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
-use STOREGROWTH\SPSB\Ajax;
+use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Ajax;
 
 /**
  * Class AjaxServiceProvider

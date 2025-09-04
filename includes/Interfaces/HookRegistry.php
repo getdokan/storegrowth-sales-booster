@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Interfaces;
+namespace StorePulse\StoreGrowth\Interfaces;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {

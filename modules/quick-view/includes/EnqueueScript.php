@@ -5,11 +5,11 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\QuickView;
+namespace StorePulse\StoreGrowth\Modules\QuickView;
 
-use STOREGROWTH\SPSB\Interfaces\HookRegistry;
-use STOREGROWTH\SPSB\Traits\Singleton;
-use STOREGROWTH\SPSB\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Traits\Singleton;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -41,13 +41,13 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function wp_enqueue_scripts() {
 
-		$settings            = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
-		$modal_effect        = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
-		$enable_close_button = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_close_button', true );
-		$enable_in_mobile    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_in_mobile', true );
-		$enable_zoom_box     = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'enable_zoom_box', false );
-		$cart_redirect       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'cart_url_redirection', false );
-		$fly_cart_open       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'auto_open_fly_cart', false );
+		$settings            = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$modal_effect        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
+		$enable_close_button = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_close_button', true );
+		$enable_in_mobile    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_in_mobile', true );
+		$enable_zoom_box     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_zoom_box', false );
+		$cart_redirect       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_url_redirection', false );
+		$fly_cart_open       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'auto_open_fly_cart', false );
 		// Pass AJAX URL to script.
 		wp_localize_script( 'sgsb-quick-view-custom-script', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -230,13 +230,13 @@ class EnqueueScript implements HookRegistry {
 	 */
 	private function inline_styles() {
 		// Get settings options.
-		$settings = \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_quick_view_settings' );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_quick_view_settings' );
 
-		$modal_bg_color       = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'modal_background_color', '#ffffff' );
-		$button_color         = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_color', '#0875FF' );
-		$button_text_color    = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
-		$button_border_radius = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'button_border_radius', 4 );
-		$show_image           = \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'show_image', 4 );
+		$modal_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_background_color', '#ffffff' );
+		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#0875FF' );
+		$button_text_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
+		$button_border_radius = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_border_radius', 4 );
+		$show_image           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_image', 4 );
 
 		$custom_css = "
 			.sgsbqcv-btn {

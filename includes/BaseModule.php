@@ -1,11 +1,11 @@
 <?php
 
-namespace STOREGROWTH\SPSB;
+namespace StorePulse\StoreGrowth;
 
-use STOREGROWTH\SPSB\DependencyManagement\BaseServiceProvider;
-use STOREGROWTH\SPSB\Interfaces\ModuleSkeleton;
-use STOREGROWTH\SPSB\DependencyManagement\Container;
-use STOREGROWTH\SPSB\Traits\Singleton;
+use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Interfaces\ModuleSkeleton;
+use StorePulse\StoreGrowth\DependencyManagement\Container;
+use StorePulse\StoreGrowth\Traits\Singleton;
 
 /**
  * Base module class that provides common functionality for all modules.

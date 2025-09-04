@@ -1,9 +1,9 @@
 <?php
 
-namespace STOREGROWTH\SPSB\Integrations\Dokan\REST;
+namespace StorePulse\StoreGrowth\Integrations\Dokan\REST;
 
-use STOREGROWTH\SPSB\Modules\BoGo\REST\BogoController;
-use STOREGROWTH\SPSB\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\BoGo\REST\BogoController;
+use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;

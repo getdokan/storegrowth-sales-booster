@@ -1,5 +1,5 @@
 <?php
 
-use STOREGROWTH\SPSB\Modules\BoGo\Providers\ServiceProvider;
+use StorePulse\StoreGrowth\Modules\BoGo\Providers\ServiceProvider;
 
 storegrowth_get_container()->addServiceProvider( new ServiceProvider() );

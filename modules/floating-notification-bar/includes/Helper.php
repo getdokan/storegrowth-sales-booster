@@ -5,7 +5,7 @@
  * @package SBFW
  */
 
-namespace STOREGROWTH\SPSB\Modules\FloatingNotificationBar;
+namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
 // If this file is called directly, abort.
 use PHP_CodeSniffer\Generators\HTML;
@@ -27,7 +27,7 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \STOREGROWTH\SPSB\Helper::get_settings( 'sgsb_floating_notification_bar_settings', array() );
+		return \StorePulse\StoreGrowth\Helper::get_settings( 'sgsb_floating_notification_bar_settings', array() );
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Helper {
 	 */
 	public static function get_banner_text( $settings ) {
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
-		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_text', $banner_text );
+		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_icon( $settings ) {
-		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_icon_name' );
+		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_icon_name' );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_custom_banner_icon( $settings ) {
-		return \STOREGROWTH\SPSB\Helper::find_option_settings( $settings, 'default_banner_custom_icon' );
+		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_custom_icon' );
 	}
 
 	/**
