@@ -663,7 +663,9 @@
 .sgsb-cart-collaterals.cart-collaterals .order-total td,
 .sgsb-cart-collaterals.cart-collaterals .tax-total td,
 .sgsb-cart-collaterals.cart-collaterals .tax-rate td,
-.sgsb-cart-collaterals.cart-collaterals tr[class*="tax"] td {
+.sgsb-cart-collaterals.cart-collaterals tr[class*="tax"] td,
+.sgsb-cart-collaterals.cart-collaterals .cart-discount td,
+.sgsb-cart-collaterals.cart-collaterals tr[class*="coupon"] td {
     text-align: right;
     padding: 0 !important;
     background: transparent !important;
