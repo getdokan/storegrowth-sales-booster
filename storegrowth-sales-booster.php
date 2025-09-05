@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: StoreGrowth - Sales Booster For WooCommerce Lite
+ * Plugin Name: StoreGrowth
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
  * Version:     1.28.13
  * Author:      Dokan Inc.
