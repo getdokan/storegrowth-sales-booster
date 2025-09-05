@@ -115,7 +115,7 @@ class Bootstrap {
 	/**
 	 * Magic getter to bypass referencing objects
 	 *
-	 * @since 1.29.0
+	 * @since 2.0.0
 	 *
 	 * @param string $prop
 	 *
@@ -130,7 +130,7 @@ class Bootstrap {
 	/**
 	 * Retrieve the container instance.
 	 *
-	 * @since 1.29.0
+	 * @since 2.0.0
 	 *
 	 * @return Container
 	 */
