@@ -186,7 +186,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_script(
 			'wfc-script',
 			PluginHelper::get_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'wfc-flyto' ),
 			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
 			true
 		);
