@@ -77,7 +77,7 @@ class BogoValidator {
 	 * @return bool True if date range is valid, false otherwise.
 	 */
 	private static function is_date_range_valid( $bogo_settings ) {
-		$is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
+		$is_pro = sp_store_growth()->has_pro();
 		
 		if ( ! $is_pro ) {
 			return true; // No date restrictions for free version
@@ -111,7 +111,7 @@ class BogoValidator {
 	 * @return bool True if schedule is valid, false otherwise.
 	 */
 	private static function is_schedule_valid( $bogo_settings ) {
-		$is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
+		$is_pro = sp_store_growth()->has_pro();
 		
 		if ( ! $is_pro ) {
 			return true; // No schedule restrictions for free version

@@ -26,7 +26,7 @@ class AdminHooks {
 	 * Constructor of Admin_Hooks class.
 	 */
 	private function __construct() {
-		add_filter( 'plugin_action_links_' . STOREGROWTH_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . STOREGROWTH_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_action( 'admin_init', array( $this, 'spsg_redirect_initial_setup' ) );
 	}
 

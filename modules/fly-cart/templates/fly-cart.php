@@ -96,7 +96,7 @@ $action_btn_active_bg = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 </div>
 
 <div class="wfc-overlay wfc-hide"></div>
-<div class="wfc-widget-sidebar <?php echo esc_attr( SGSB_PRO_ACTIVE ? $class_name : '' ); ?> wfc-slide ">
+<div class="wfc-widget-sidebar <?php echo esc_attr( SPSG_PRO_ACTIVE ? $class_name : '' ); ?> wfc-slide ">
 <span class="qc-close-nav">
 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
 <path d="M1 1L4.72223 5.3426C5.91952 6.73944 8.08048 6.73944 9.27777 5.3426L13 1" stroke="#073B4C" stroke-width="2" stroke-linecap="round"/>

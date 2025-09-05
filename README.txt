@@ -1,4 +1,4 @@
-=== StoreGrowth - WooCommerce Sales Booster: Fly Cart, Direct Checkout, Live Sales Notifications, Upsell, Countdown Timer & More ===
+=== StoreGrowth: Fly Cart, Direct Checkout, Live Sales Notifications, Upsell, Countdown Timer & More ===
 Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: woocommerce direct checkout, sales notification, Fly Cart, Upsell, Sales Countdown timer 
 

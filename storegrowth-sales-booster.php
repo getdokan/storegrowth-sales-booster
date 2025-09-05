@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: StoreGrowth - Sales Booster For WooCommerce Lite
+ * Plugin Name: StoreGrowth
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
  * Version:     1.28.13
  * Author:      Dokan Inc.
@@ -10,7 +10,7 @@
  * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
  *
- * @package SGSB
+ * @package SPSG
  */
 
 use StorePulse\StoreGrowth\Bootstrap;
@@ -29,52 +29,22 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * Define plugin __FILE__
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_FILE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'STOREGROWTH_FILE' ) ) {
+	define( 'STOREGROWTH_FILE', __FILE__ );
 }
 
 /**
  * Define plugin directory URL.
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_URL' ) ) {
-	define( 'STOREGROWTH_PLUGIN_DIR_URL', plugin_dir_url( STOREGROWTH_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_DIR_URL' ) ) {
+	define( 'STOREGROWTH_DIR_URL', plugin_dir_url( STOREGROWTH_FILE ) );
 }
 
 /**
  * Define plugin directory path.
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
-	define( 'STOREGROWTH_PLUGIN_DIR_PATH', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) );
-}
-
-/**
- * Define The Template's Folder Constant
- */
-if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'modules/' );
-}
-
-/**
- * Define The Stock Count Down Template Constant
- */
-
-if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
-	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
-}
-
-/**
- * Define The Free Shipping Bar Template Constant
- */
-
-if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
-	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
-}
-
-/**
- * Define plugin basename.
- */
-if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
-	define( 'STOREGROWTH_PLUGIN_BASENAME', plugin_basename( STOREGROWTH_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_DIR_PATH' ) ) {
+	define( 'STOREGROWTH_DIR_PATH', plugin_dir_path( STOREGROWTH_FILE ) );
 }
 
 /**
@@ -82,6 +52,14 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
  */
 if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
 	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
+}
+
+
+/**
+ * Define plugin basename.
+ */
+if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
+	define( 'STOREGROWTH_BASENAME', plugin_basename( STOREGROWTH_FILE ) );
 }
 
 /**
@@ -95,7 +73,7 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		function () {
 			$message = sprintf(
 					// translators: %s is a placeholder for the WooCommerce plugin link.
-				__( 'StoreGrowth - Sales Booster requires %s to be installed and active.', 'storegrowth_sales_booster' ),
+				__( 'StoreGrowth requires %s to be installed and active.', 'storegrowth_sales_booster' ),
 				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 			);
 
@@ -107,9 +85,9 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 }
 
 if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
-	define( 'SGSB_PRO_ACTIVE', true );
+	define( 'SPSG_PRO_ACTIVE', true );
 } else {
-	define( 'SGSB_PRO_ACTIVE', false );
+	define( 'SPSG_PRO_ACTIVE', false );
 }
 
 /**
@@ -171,7 +149,7 @@ require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 
 // Load integrations bootstrap files.
-require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
+require_once STOREGROWTH_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
 sp_store_growth();
