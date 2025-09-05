@@ -69,7 +69,7 @@ const DisplayRules = (props) => {
           handleCheckboxChange={onFieldChange}
           title={__("Show Banner", "storegrowth-sales-booster")}
           needUpgrade={upgradeTeaser}
-          tooltip={__("Banner Dispaly in Devices", "storegrowth_sales_booster")}
+          tooltip={__("Banner Dispaly in Devices", "storegrowth-sales-booster")}
           headColSpan={16}
           checkboxColSpan={8}
           showProIcon={false}

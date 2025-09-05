@@ -9,7 +9,10 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
- *
+ * Requires Plugins: woocommerce
+ * Requires at least: 6.8
+ * Requires PHP: 7.4
+ * 
  * @package SPSG
  */
 
@@ -54,7 +57,6 @@ if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
 	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
 }
 
-
 /**
  * Define plugin basename.
  */
@@ -62,33 +64,6 @@ if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
 	define( 'STOREGROWTH_BASENAME', plugin_basename( STOREGROWTH_FILE ) );
 }
 
-/**
- * Check free plugin is active or not.
- */
-require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-	add_action(
-		'admin_notices',
-		function () {
-			$message = sprintf(
-					// translators: %s is a placeholder for the WooCommerce plugin link.
-				__( 'StoreGrowth requires %s to be installed and active.', 'storegrowth_sales_booster' ),
-				'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
-			);
-
-			printf( '<div class="%1$s"><p><strong>%2$s</strong></p></div>', esc_attr( 'notice notice-error' ), wp_kses_post( $message ) );
-		}
-	);
-
-	return;
-}
-
-if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
-	defined( 'SPSG_PRO_ACTIVE' ) || define( 'SPSG_PRO_ACTIVE', true );
-} else {
-	defined( 'SPSG_PRO_ACTIVE' ) || define( 'SPSG_PRO_ACTIVE', false );
-}
 
 /**
  * add option when plugin is activated.

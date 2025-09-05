@@ -108,7 +108,7 @@ class AdminMenu {
 			array( $this, 'initial_setup_page_callback' )
 		);
 
-		if ( ! SPSG_PRO_ACTIVE ) {
+		if ( ! sp_store_growth()->has_pro() && ! defined( 'STOREGROWTH_PRO_FILE' ) ) {
 			add_submenu_page(
 				'sales-booster-for-woocommerce',
 				__( 'Upgrade to Pro', 'storegrowth-sales-booster' ),
