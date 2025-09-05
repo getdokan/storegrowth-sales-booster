@@ -30,6 +30,28 @@ class Bootstrap {
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
+		add_action( 'woocommerce_loaded', [ $this, 'on_wc_loaded' ] );
+		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_is_not_active' ] );
+	}
+
+	public function show_notice_if_wc_is_not_active(): void {
+		if ( function_exists( 'WC' ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			// translators: %s is a placeholder for the WooCommerce plugin link.
+			__( 'StoreGrowth requires %s to be installed and active.', 'storegrowth_sales_booster' ),
+			'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
+		);
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p></div>', esc_attr( 'notice notice-error' ), wp_kses_post( $message ) );
+	}
+
+	public function on_wc_loaded(): void {
+
+		do_action( 'storegrowth_before_load' );
+		
 		// Include module classes.
 		$this->load_module_classes();
 
@@ -47,6 +69,8 @@ class Bootstrap {
 
 		// Include integration classes.
 		$this->load_integration_classes();
+
+		do_action( 'storegrowth_loaded' );
 	}
 
 	/**
@@ -159,6 +183,6 @@ class Bootstrap {
 	 * @return boolean
 	 */
 	public function has_pro(): bool {
-		return SPSG_PRO_ACTIVE;
+		return apply_filters( 'spsg_pro_is_active', false );
 	}
 }

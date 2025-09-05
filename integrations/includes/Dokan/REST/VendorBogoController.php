@@ -130,7 +130,7 @@ class VendorBogoController extends BogoController {
      */
     protected function check_creation_limitations( $data, $request ) {
         // Check for free version limitations specific to vendor
-        if ( ! SPSG_PRO_ACTIVE ) {
+        if ( ! sp_store_growth()->has_pro() ) {
             $vendor_id = dokan_get_current_user_id();
             $existing_offers = BogoDataManager::get_bogo_offers(['created_by' => $vendor_id]);
             if ( count( $existing_offers ) >= 2 ) {

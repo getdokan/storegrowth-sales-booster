@@ -72,7 +72,7 @@ class CommonHooks implements HookRegistry {
 	 * @return string
 	 */
 	public function show_signle_direct_checkout_button_shop( $add_to_cart ) {
-		if ( $this->should_display_buy_now_button( 'shop_page_checkout_enable' ) && SPSG_PRO_ACTIVE ) {
+		if ( $this->should_display_buy_now_button( 'shop_page_checkout_enable' ) && sp_store_growth()->has_pro() ) {
 			ob_start();
 			global $product;
 			$product_id                    = get_the_ID();
@@ -107,7 +107,7 @@ class CommonHooks implements HookRegistry {
 	 * @return string
 	 */
 	public function show_direct_checkout_button_shop( $add_to_cart ) {
-		if ( $this->should_display_buy_now_button( 'shop_page_checkout_enable' ) && SPSG_PRO_ACTIVE ) {
+		if ( $this->should_display_buy_now_button( 'shop_page_checkout_enable' ) && sp_store_growth()->has_pro() ) {
 			ob_start();
 			$this->display_buy_now_button();
 			$buy_now_button = ob_get_contents();

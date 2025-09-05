@@ -29,7 +29,7 @@ $is_icon_active        = \StorePulse\StoreGrowth\Helper::find_option_settings( $
 
 <a href="#" data-id="<?php echo absint( $product_id ); ?>" data-context="default" data-effect="<?php echo esc_attr( $modal_effect ); ?>" class="<?php echo esc_attr( $classes ); ?>" rel="nofollow">
 <?php
-if ( $is_icon_active && SPSG_PRO_ACTIVE ) {
+if ( $is_icon_active && sp_store_growth()->has_pro() ) {
 	do_action( 'spsg_quick_view_icon_button', $quick_view_icon_color );
 } else {
 	echo esc_html( sprintf( '%1$s', $button_label ) );
