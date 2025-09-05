@@ -35,7 +35,7 @@ const DisplayRules = () => {
           selectedOptions={['banner-show-desktop']}
           title={__("Show Banner", "storegrowth-sales-booster")}
           needUpgrade={true}
-          tooltip={__("Banner Dispaly in Devices", "storegrowth_sales_booster")}
+          tooltip={__("Banner Dispaly in Devices", "storegrowth-sales-booster")}
           showSingleCheckOverlay={false}
           headColSpan={16}
           checkboxColSpan={8}

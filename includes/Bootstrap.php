@@ -41,7 +41,7 @@ class Bootstrap {
 
 		$message = sprintf(
 			// translators: %s is a placeholder for the WooCommerce plugin link.
-			__( 'StoreGrowth requires %s to be installed and active.', 'storegrowth_sales_booster' ),
+			__( 'StoreGrowth requires %s to be installed and active.', 'storegrowth-sales-booster' ),
 			'<a href="https://wordpress.org/plugins/woocommerce/">WooCommerce</a>'
 		);
 
@@ -51,7 +51,7 @@ class Bootstrap {
 	public function on_wc_loaded(): void {
 
 		do_action( 'storegrowth_before_load' );
-		
+
 		// Include module classes.
 		$this->load_module_classes();
 
