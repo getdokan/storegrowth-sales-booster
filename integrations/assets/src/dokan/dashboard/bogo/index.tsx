@@ -15,6 +15,7 @@ import moduleStore from "../../../../../../assets/src/modules-store";
 import CreateBogo from "../../../../../../modules/bogo/assets/src/components/CreateBogo";
 import BogoStore from "../../../../../../modules/bogo/assets/src/store";
 import BogoList from "./components/BogoOffers";
+import { useParams } from "react-router-dom";
 
 register(BogoStore);
 register(moduleStore);
@@ -79,8 +80,9 @@ domReady(() => {
         title: __("StoreGrowth BOGO Create", "storegrowth-sales-booster"),
         path: "/bogo/create-bogo",
         exact: true,
-        // @ts-ignore
-        element: <CreateBogo />,
+        element: (props) => {
+          return <CreateBogo {...props} useParams={useParams} />;
+        },
         backUrl: "/bogo",
       });
 
@@ -98,8 +100,9 @@ domReady(() => {
         title: __("StoreGrowth BOGO Edit", "storegrowth-sales-booster"),
         path: "/bogo/:bogo_id",
         exact: true,
-        // @ts-ignore
-        element: <CreateBogo />,
+        element: (props) => {
+          return <CreateBogo {...props} useParams={useParams} />;
+        },
         backUrl: "/bogo",
       });
 
