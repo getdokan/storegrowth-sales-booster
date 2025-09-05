@@ -201,7 +201,7 @@ class EnqueueScript implements HookRegistry {
 				'checkoutUrl'       => wc_get_checkout_url(),
 				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 				'nonce'             => wp_create_nonce( 'spsg_frontend_ajax' ),
-				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+				'isPro'             => sp_store_growth()->has_pro(),
 			)
 		);
 	}

@@ -152,4 +152,13 @@ class Bootstrap {
 	 */
 	private function load_integration_classes() {
 	}
+
+	/**
+	 * Check if the pro plugin is active.
+	 *
+	 * @return boolean
+	 */
+	public function has_pro(): bool {
+		return SPSG_PRO_ACTIVE;
+	}
 }
