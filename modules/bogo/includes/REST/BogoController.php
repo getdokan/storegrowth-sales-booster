@@ -268,7 +268,7 @@ class BogoController extends WP_REST_Controller {
      */
     protected function check_creation_limitations( $data, $request ) {
         // Check for free version limitations
-        if ( ! SGSB_PRO_ACTIVE ) {
+        if ( ! SPSG_PRO_ACTIVE ) {
             $existing_offers = BogoDataManager::get_global_bogo_offers();
             if ( count( $existing_offers ) >= 2 ) {
                 return new WP_Error(

@@ -71,7 +71,7 @@ class EnqueueScript implements HookRegistry {
 		$this->frontend_widget_script();
 		$this->qc_basic_inline_styles();
 
-		if ( 'center' === $layout && SGSB_PRO_ACTIVE ) {
+		if ( 'center' === $layout && SPSG_PRO_ACTIVE ) {
 				do_action( 'spsg_ffc_wp_enqueue_scripts' );
 		} else {
 				$this->qc_side_cart_styles();

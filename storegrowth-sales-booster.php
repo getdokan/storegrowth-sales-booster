@@ -10,7 +10,7 @@
  * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
  *
- * @package SGSB
+ * @package SPSG
  */
 
 use StorePulse\StoreGrowth\Bootstrap;
@@ -85,9 +85,9 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 }
 
 if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
-	define( 'SGSB_PRO_ACTIVE', true );
+	define( 'SPSG_PRO_ACTIVE', true );
 } else {
-	define( 'SGSB_PRO_ACTIVE', false );
+	define( 'SPSG_PRO_ACTIVE', false );
 }
 
 /**
