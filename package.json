@@ -1,6 +1,6 @@
 {
   "name": "storegrowth-sales-booster",
-  "version": "1.28.13",
+  "version": "2.0.0",
   "type": "module",
   "description": "=== StoreGrowth - Sales Booster === Contributors: Dokan Inc. Tags: booster, sales booster, for woocommerce, fly cart, sales notification, upsell, order bump, cross sell, stock countdown, Quick View Requires at least: 5.4 Tested up to: 6.2.2 Stable tag: 1.0.0 Requires PHP: 7.4 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
   "main": "index.js",
@@ -8,7 +8,8 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "archiver": "node archiver.js",
-    "release": "npm run build && npm run archiver",
+    "makepot": "wp i18n make-pot --domain='storegrowth-sales-booster' --include='assets/src,includes,lib,modules,storegrowth-sales-booster.php' . --headers='{\"Report-Msgid-Bugs-To\":\"https://storegrowth.io/contact-us/\"}' --file-comment=\"Copyright (c) $(date +'%Y') All Rights Reserved by weDevs.\" languages/storegrowth-sales-booster.pot",
+    "release": "composer i --no-dev -o && npm i && npm run build && npm run makepot && npm run archiver",
     "watch:sales-booster": "lerna run start --scope='sales-booster'",
     "watch:sales-countdown": "lerna run start --scope='sales-booster-sales-countdown'",
     "watch:direct-checkout": "lerna run start --scope='sales-booster-direct-checkout'",
@@ -39,7 +40,8 @@
   "workspaces": {
     "packages": [
       "assets",
-      "Includes/Modules/*/assets"
+      "modules/*/assets",
+      "integrations/assets"
     ]
   },
   "devDependencies": {

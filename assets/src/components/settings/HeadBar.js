@@ -6,12 +6,12 @@ function HeadBar() {
   const pricingPath = window.location.hash === '#/dashboard/pricing';
 
   return (
-    <Layout.Header className="sgsb-admin-dashboard-module-top-bar">
+    <Layout.Header className="spsg-admin-dashboard-module-top-bar">
       <div>
         <Row align="middle" justify="espace-betweennd">
           <Col span={24}>
             <Row justify="end">
-              {(!sgsbAdmin.isPro && !pricingPath) && (
+              {(!spsgAdmin.isPro && !pricingPath) && (
                 <div className="premium-btn">
                   <Button
                     width="210px"

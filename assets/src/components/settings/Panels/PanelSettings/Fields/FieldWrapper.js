@@ -11,7 +11,7 @@ const FieldWrapper = ({
     return (
         // Settings field wrapper component with card preview.
         <Col className="gutter-row" style={{ padding: "0px 8px" }}span={colSpan}>
-            <Card className={`sgsb-settings-card ${upgradeClass}`}>
+            <Card className={`spsg-settings-card ${upgradeClass}`}>
                 <Row justify={justify} align={align}>
                     {children}
                 </Row>

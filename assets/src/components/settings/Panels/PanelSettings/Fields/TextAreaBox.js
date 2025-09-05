@@ -21,11 +21,13 @@ const TextAreaBox = ( {
     needUpgrade = false,
     upgradeOverlay =true,
     inputRestrictor =false,
-    renderTextAreaContent =false
+    renderTextAreaContent =false,
+    status = '',
+    maxLength
 } ) => {
     // Render textarea content after settings field, if needed.
     const renderAreaContent = applyFilters(
-        "sgsb_after_textarea_settings",
+        "spsg_after_textarea_settings",
         '',
     );
 
@@ -55,6 +57,8 @@ const TextAreaBox = ( {
                     (event.nativeEvent.inputType==="deleteContentBackward"?changeHandler( name, event.target.value ):""):
                     changeHandler( name, event.target.value )} }
                     readOnly={ readOnly }
+                    maxLength={ maxLength }
+                    status={ status }
                 />
                 { renderTextAreaContent && renderAreaContent }
             </Col>

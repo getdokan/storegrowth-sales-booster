@@ -84,7 +84,7 @@ const selectors = {
   }
 };
 
-const store = createReduxStore( 'sgsb', {
+const store = createReduxStore( 'spsg', {
   reducer,
   actions,
   selectors

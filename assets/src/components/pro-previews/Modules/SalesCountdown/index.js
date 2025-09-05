@@ -6,8 +6,8 @@ import ColourPicker from "../../../settings/Panels/PanelSettings/Fields/ColorPic
 
 // Handle stock bar modules pro settings prompts.
 addFilter( 
-    'sgsb_shop_sales_countdown_enable_settings',
-    'sgsb_shop_sales_countdown_enable_settings_callback',
+    'spsg_shop_sales_countdown_enable_settings',
+    'spsg_shop_sales_countdown_enable_settings_callback',
     ( component ) =>  { 
         return ( 
             <SingleCheckBox
@@ -26,8 +26,8 @@ addFilter(
 );
 
 addFilter(
-    'sgsb_append_countdown_design_settings',
-    'sgsb_append_countdown_design_settings_callback',
+    'spsg_append_countdown_design_settings',
+    'spsg_append_countdown_design_settings_callback',
     () =>  {
         return (
             <Fragment>

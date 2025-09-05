@@ -2,14 +2,68 @@
   "name": "dokan/storegrowth-lite",
   "autoload": {
     "psr-4": {
-      "STOREGROWTH\\SPSB\\": "Includes/"
+      "StorePulse\\StoreGrowth\\": "includes/",
+      "StorePulse\\StoreGrowth\\Integrations\\": "integrations/includes/",
+      "StorePulse\\StoreGrowth\\ThirdParty\\Packages\\": "lib/packages/",
+      "StorePulse\\StoreGrowth\\Modules\\BoGo\\": "modules/bogo/includes",
+      "StorePulse\\StoreGrowth\\Modules\\CountdownTimer\\": "modules/countdown-timer/includes",
+      "StorePulse\\StoreGrowth\\Modules\\DirectCheckout\\": "modules/direct-checkout/includes",
+      "StorePulse\\StoreGrowth\\Modules\\FloatingNotificationBar\\": "modules/floating-notification-bar/includes",
+      "StorePulse\\StoreGrowth\\Modules\\FlyCart\\": "modules/fly-cart/includes",
+      "StorePulse\\StoreGrowth\\Modules\\ProgressiveDiscountBanner\\": "modules/progressive-discount-banner/includes",
+      "StorePulse\\StoreGrowth\\Modules\\QuickView\\": "modules/quick-view/includes",
+      "StorePulse\\StoreGrowth\\Modules\\SalesPop\\": "modules/sales-pop/includes",
+      "StorePulse\\StoreGrowth\\Modules\\StockBar\\": "modules/stock-bar/includes",
+      "StorePulse\\StoreGrowth\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump/includes"
     },
-    "files": [ "Includes/functions.php" ]
+    "files": [
+      "helpers/functions.php"
+    ]
+  },
+ "require-dev": {
+    "league/container": "^4.0",
+    "coenjacobs/mozart": "^0.7.1"
   },
   "authors": [
     {
       "name": "Dokan Inc.",
       "email": "support@dokan.co"
     }
-  ]
+  ],
+  "scripts": {
+    "post-install-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ],
+    "post-update-cmd": [
+        "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
+        "composer dump-autoload"
+    ]
+  },
+  "extra": {
+    "mozart": {
+        "dep_namespace": "StorePulse\\StoreGrowth\\ThirdParty\\Packages\\",
+        "dep_directory": "/lib/packages/",
+        "classmap_directory": "/lib/classes/",
+        "classmap_prefix": "STOREGROWTH_SPSB_",
+        "packages": [
+            "league/container"
+        ],
+        "excluded_packages": [
+            "psr/http-client",
+            "psr/http-message"
+        ],
+        "override_autoload": {
+            "google/apiclient": {
+                "classmap": [
+                    "src/"
+                ]
+            }
+        },
+        "delete_vendor_directories": true
+    }
+  },
+
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -3,8 +3,8 @@ import { Button ,Image} from 'antd'
 import crownIcon from "../../../../../images/cap-icon.svg"
 const UpgradeCard = ({message}) => {
   return (
-    <div className="sgsb-upgrade-premium-notice-card">
-    <span className="sgsb-premium-limit-warning-message">
+    <div className="spsg-upgrade-premium-notice-card">
+    <span className="spsg-premium-limit-warning-message">
       {message}
     </span>
     <div className="premium-btn">

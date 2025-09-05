@@ -5,16 +5,16 @@ import CongratsAnnounce from '../../../images/congrats-announce.svg'
 const Ready = () => {
   return (
     <Fragment>
-      <div className='sgsb-ini-setup-welcome'>
+      <div className='spsg-ini-setup-welcome'>
         <div className='ini-setup-announce-container congratulation'>
           <img className='annouce-image' src={CongratsAnnounce} alt="storegrowth-icon" />
           <div className='annouce-contents'>
-            <h3 className='sgsb-content-heading'>{__("Congratulation!", "storegrowth-sales-booster")}</h3>
-            <span className='sgsb-sub-heading'>{__(`You are at the last step to complete the setup process and start using the exciting features of StoreGrowth`, 'storegrowth-sales-booster')}</span>
+            <h3 className='spsg-content-heading'>{__("Congratulation!", "storegrowth-sales-booster")}</h3>
+            <span className='spsg-sub-heading'>{__(`You are at the last step to complete the setup process and start using the exciting features of StoreGrowth`, 'storegrowth-sales-booster')}</span>
           </div>
           <div className="social-links">
             <a
-              href="https://www.youtube.com/@Invizo-io"
+              href="https://www.youtube.com/playlist?list=PLJorZsV2RVv9t0NTRb27PoS0pUkywfowX"
               target="_blank"
               className="social-link youtube"
               onClick={null}

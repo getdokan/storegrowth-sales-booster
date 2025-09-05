@@ -1,0 +1,185 @@
+@import url(../fonts/inter-regular/stylesheet.css);
+@import url(../fonts/inter-medium/stylesheet.css);
+@import url(../fonts/Inter-semibold/stylesheet.css);
+@import url(../fonts/inter-bold/stylesheet.css);
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
+
+
+.spsg-countdown-timer {
+	max-width: 100%;
+	padding: 15px 40px 10px;
+	margin-bottom: 25px;
+	border-radius: 8px;
+}
+
+.products .spsg-countdown-timer {
+    padding: 12px 40px 5px;
+}
+
+.spsg-countdown-timer-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.spsg-countdown-timer-heading {
+	margin: 0 0 10px 0;
+	text-align: center;
+	font-size: 40px;
+	font-weight: 600;
+	line-height: 1.2;
+}
+.products-block-post-template .spsg-countdown-timer-heading,
+.products .spsg-countdown-timer-heading  {
+    font-size: 20px;
+}
+
+
+.spsg-countdown-timer-items {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.products-block-post-template.spsg-countdown-timer-items,
+.products .spsg-countdown-timer-items {
+    height: 50px;
+}
+
+.spsg-countdown-timer-item {
+	text-align: center;
+	font-size: 12px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	/* height: 64px; */
+	width: 64px;
+	border-radius: 8px;
+	padding: 14px 0;
+	font-family: 'Inter';
+}
+
+.products-block-post-template .spsg-countdown-timer-item,
+.products .spsg-countdown-timer-item {
+    width: 44px;
+    height: 44px;
+    font-size: 8px;
+    padding-top: 12px;
+}
+
+.spsg-countdown-timer-item strong {
+	display: block;
+	font-size: 24px;
+	line-height: .75;
+	font-weight: 500;
+	margin-bottom: 6px;
+}
+
+.products-block-post-template .spsg-countdown-timer-item strong 
+.products .spsg-countdown-timer-item strong {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.spsg-colon{
+	margin: 0 14px;
+	line-height: 4;
+}
+
+.products-block-post-template .spsg-colon,
+.products .spsg-colon {
+    margin: 0 3px;
+}
+
+/* custom layout style start*/
+.spsg-countdown-timer.ct-custom{
+	border: 1px solid transparent;
+}
+.spsg-countdown-timer-item.ct-custom{
+	color: #989FAB;
+	border: 1px solid #ECEDF0;
+}
+
+.spsg-colon.ct-custom {
+	color: #008DFF;
+}
+
+.spsg-countdown-timer-item.ct-custom strong {
+	color: #1B1B50;
+}
+/* custom layout style end*/
+
+/* layout-1 styles start*/
+.spsg-countdown-timer-item.ct-layout-1{
+    color: #989FAB;
+	border: 1px solid #ECEDF0;
+}
+
+.products-block-post-template .spsg-countdown-timer-item.ct-layout-1 
+.products .spsg-countdown-timer-item.ct-layout-1 {
+    width: 45px;
+    height: 50px;
+}
+
+.spsg-countdown-timer-heading.ct-layout-1{
+	color: #008DFF ;
+}
+
+.spsg-colon.ct-layout-1 {
+	color: #008DFF;
+}
+
+.products-block-post-template .spsg-colon.ct-layout-1,
+.products .spsg-colon.ct-layout-1 {
+    margin: -4px 4px 0;
+}
+
+.spsg-countdown-timer-item.ct-layout-1 strong {
+	color: #1B1B50;
+}
+/* layout-1 styles end*/
+
+/* layout-2 styles start */
+.spsg-countdown-timer.ct-layout-2 {
+	background: linear-gradient(180deg, aliceblue 70%, #FFFF 0%) !important;
+}
+
+.spsg-countdown-timer-items.ct-layout-2 {
+border-radius: 6px;
+color: #fff;
+background: var(--gradient, linear-gradient(90deg, #32DBBE 0%, #008DFF 100%));
+box-shadow: 0px 12px 48px 0px rgba(27, 27, 80, 0.10);
+width: fit-content;
+
+}
+
+.spsg-countdown-timer-heading.ct-layout-2.default {
+	background: linear-gradient(90deg, #32DBBE 0%, #008DFF 100%) text;
+	-webkit-text-fill-color: transparent;
+}
+
+.spsg-countdown-timer-heading.ct-layout-2 {
+-webkit-background-clip: text;
+}
+
+/* layout2  styles end */
+
+@media (max-width: 430px) {
+    .spsg-countdown-timer-items {
+        align-items: center;
+
+        .spsg-countdown-timer-item {
+            font-size: 6px;
+            padding-top: 7px;
+
+            &.ct-layout-1 {
+                width: 37px;
+                height: 40px;
+            }
+
+            &.ct-layout-2 {
+                width: 38px;
+                height: 38px;
+            }
+        }
+    }
+}

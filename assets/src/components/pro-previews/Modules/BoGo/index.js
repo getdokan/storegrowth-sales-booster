@@ -6,8 +6,8 @@ import {InputNumber, MultiSelectBox} from "../../../settings/Panels";
 import DateField from "../../../settings/Panels/PanelSettings/Fields/DateField";
 
 addFilter(
-  'sgsb_bogo_global_badge_icon_radio_box',
-  'sgsb_bogo_global_badge_icon_radio_box_callback',
+  'spsg_bogo_global_badge_icon_radio_box',
+  'spsg_bogo_global_badge_icon_radio_box_callback',
   ( component, iconOptions, currentSettings, onBarChange ) => {
     return (
       <RadioBox
@@ -25,8 +25,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_bogo_single_badge_icon_radio_box",
-  "sgsb_bogo_single_badge_icon_radio_box_callback",
+  "spsg_bogo_single_badge_icon_radio_box",
+  "spsg_bogo_single_badge_icon_radio_box_callback",
   (component, iconOptions, createBogoData, onBarChange) => {
     return (
       <RadioBox
@@ -43,8 +43,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_after_bogo_offer_settings",
-  "sgsb_bogo_after_offer_settings_callback",
+  "spsg_after_bogo_offer_settings",
+  "spsg_bogo_after_offer_settings_callback",
   () => {
     return (
       <InputNumber
@@ -60,8 +60,8 @@ addFilter(
 );
 
 addFilter(
-  "sgsb_after_bogo_basic_info_settings",
-  "sgsb_after_bogo_basic_info_settings_callback",
+  "spsg_after_bogo_basic_info_settings",
+  "spsg_after_bogo_basic_info_settings_callback",
   () => {
     const bogoSchedules = [
       { value: "daily", label: __("Daily", "storegrowth-sales-booster") },
