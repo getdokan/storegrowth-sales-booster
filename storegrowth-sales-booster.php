@@ -85,9 +85,9 @@ if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 }
 
 if ( is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ) ) {
-	define( 'SPSG_PRO_ACTIVE', true );
+	defined( 'SPSG_PRO_ACTIVE' ) || define( 'SPSG_PRO_ACTIVE', true );
 } else {
-	define( 'SPSG_PRO_ACTIVE', false );
+	defined( 'SPSG_PRO_ACTIVE' ) || define( 'SPSG_PRO_ACTIVE', false );
 }
 
 /**
