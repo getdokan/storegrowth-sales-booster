@@ -172,7 +172,7 @@ class AdminMenu {
 	 */
 	public function handle_external_redirects() {
 		$redirect_pages = array(
-			'go-spsg-pro'  => 'https://www.storegrowth.io/pricing',
+			'go-spsg-pro'  => 'https://storegrowth.io/pricing',
 			'go-spsg-docs' => 'https://storegrowth.io/docs/',
 		);
 
