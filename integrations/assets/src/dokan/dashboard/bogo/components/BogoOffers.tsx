@@ -115,9 +115,7 @@ const BogoOffers = ( { navigate } ) => {
             const updatedItem = await apiFetch( {
                 path: addQueryArgs(
                     `/sales-booster/v1/bogo/offers/${ item?.id }/status`,
-                    {
-                        ...queryArgs,
-                    }
+                    queryArgs
                 ),
                 method: 'POST',
             } );
@@ -157,7 +155,7 @@ const BogoOffers = ( { navigate } ) => {
         try {
             await apiFetch( {
                 // @ts-ignore
-                path: `/sales-booster/v1/bogo/${ currentOffer?.id }`,
+                path: `/sales-booster/v1/bogo/offers/${ currentOffer?.id }`,
                 method: 'DELETE',
             } );
 
