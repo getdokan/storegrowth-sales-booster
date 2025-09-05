@@ -660,12 +660,12 @@
 
 
 .sgsb-cart-collaterals.cart-collaterals .cart-subtotal td,
-.spsb-cart-collaterals.cart-collaterals .order-total td,
-.spsb-cart-collaterals.cart-collaterals .tax-total td,
-.spsb-cart-collaterals.cart-collaterals .tax-rate td,
-.spsb-cart-collaterals.cart-collaterals tr[class*="tax"] td,
-.spsb-cart-collaterals.cart-collaterals .cart-discount td,
-.spsb-cart-collaterals.cart-collaterals tr[class*="coupon"] td {
+.spsg-cart-collaterals.cart-collaterals .order-total td,
+.spsg-cart-collaterals.cart-collaterals .tax-total td,
+.spsg-cart-collaterals.cart-collaterals .tax-rate td,
+.spsg-cart-collaterals.cart-collaterals tr[class*="tax"] td,
+.spsg-cart-collaterals.cart-collaterals .cart-discount td,
+.spsg-cart-collaterals.cart-collaterals tr[class*="coupon"] td {
     text-align: right;
     padding: 0 !important;
     background: transparent !important;
