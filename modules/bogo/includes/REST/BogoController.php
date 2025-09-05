@@ -130,7 +130,7 @@ class BogoController extends WP_REST_Controller {
      * Get query filters for fetching BOGO offers.
      * This method can be overridden by child classes to customize query filters.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request Rest Request.
      * @return array Query filters for BogoDataManager.
      */
@@ -142,7 +142,7 @@ class BogoController extends WP_REST_Controller {
      * Get query options for fetching BOGO offers.
      * This method can be overridden by child classes to customize query options.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request Rest Request.
      * @return array Query options for BogoDataManager.
      */
@@ -162,7 +162,7 @@ class BogoController extends WP_REST_Controller {
      * Get total count of BOGO offers for pagination.
      * This method can be overridden by child classes to customize count logic.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $query_filters Query filters.
      * @param WP_REST_Request $request Rest Request.
      * @return int Total count of offers.
@@ -179,7 +179,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Get BOGO offers with pagination.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request Rest Request.
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
      */
@@ -208,7 +208,7 @@ class BogoController extends WP_REST_Controller {
      * Check permission for accessing a single BOGO offer.
      * This method can be overridden by child classes to implement custom permission logic.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $item The BOGO offer data.
      * @param WP_REST_Request $request Rest Request.
      * @return bool|WP_Error True if permission granted, WP_Error otherwise.
@@ -220,7 +220,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Get a single BOGO offer.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request Rest Request.
      * @return WP_Error|WP_HTTP_Response|WP_REST_Response
      */
@@ -248,7 +248,7 @@ class BogoController extends WP_REST_Controller {
      * Prepare data before creating a BOGO offer.
      * This method can be overridden by child classes to customize data before creation.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $data The validated request data.
      * @param WP_REST_Request $request Rest Request.
      * @return array Modified data for creation.
@@ -261,7 +261,7 @@ class BogoController extends WP_REST_Controller {
      * Check creation limitations before creating a BOGO offer.
      * This method can be overridden by child classes to implement custom limitations.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $data The validated request data.
      * @param WP_REST_Request $request Rest Request.
      * @return bool|WP_Error True if allowed, WP_Error otherwise.
@@ -285,7 +285,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Create a BOGO offer.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param \WP_REST_Request $request The REST request.
      * @return WP_REST_Response
      */
@@ -328,7 +328,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Update a BOGO offer.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request The REST request.
      * @return WP_REST_Response
      */
@@ -366,7 +366,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Delete a BOGO offer.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request The REST request.
      * @return WP_REST_Response
      */
@@ -396,7 +396,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Update BOGO offer status.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request The REST request.
      * @return WP_REST_Response
      */
@@ -417,7 +417,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Validate and normalize request data.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $data The request data.
      * @return array|WP_Error Normalized data or error if validation fails.
      */
@@ -479,7 +479,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Normalize request data for backward compatibility.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $data The request data.
      * @return array Normalized data.
      */
@@ -571,7 +571,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Custom validation for offered_products field.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param mixed $value The value to validate.
      * @param WP_REST_Request $request The request object.
      * @param string $param The parameter name.
@@ -584,7 +584,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Custom validation for offered_categories field.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param mixed $value The value to validate.
      * @param WP_REST_Request $request The request object.
      * @param string $param The parameter name.
@@ -597,7 +597,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Custom validation for get_alternate_products field.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param mixed $value The value to validate.
      * @param WP_REST_Request $request The request object.
      * @param string $param The parameter name.
@@ -610,7 +610,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Permission checker.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Request $request Rest Request.
      * @return bool|WP_Error
      */
@@ -629,7 +629,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Get endpoint arguments for create item.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @return array
      */
     public function get_endpoint_args_for_create_item() {
@@ -910,7 +910,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Prepare item for the REST API response.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param array $item BOGO offer data.
      * @param WP_REST_Request $request Request object.
      * @return WP_REST_Response
@@ -974,7 +974,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Format item's collection for response.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @param WP_REST_Response $response
      * @param WP_REST_Request $request
      * @param int $total_items
@@ -1013,7 +1013,7 @@ class BogoController extends WP_REST_Controller {
     /**
      * Get the item schema.
      *
-     * @since 1.29.0
+     * @since 2.0.0
      * @return array
      */
     public function get_item_schema() {

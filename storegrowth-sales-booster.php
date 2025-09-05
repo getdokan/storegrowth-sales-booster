@@ -90,7 +90,7 @@ $storegrowth_container->addServiceProvider( new \StorePulse\StoreGrowth\Dependen
 /**
  * Get the container.
  *
- * @since 1.29.0
+ * @since 2.0.0
  *
  * @return Container The global container instance.
  */
