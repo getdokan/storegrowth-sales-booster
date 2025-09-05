@@ -29,29 +29,29 @@ require_once __DIR__ . '/vendor/autoload.php';
 /**
  * Define plugin __FILE__
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_FILE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_FILE', __FILE__ );
+if ( ! defined( 'STOREGROWTH_FILE' ) ) {
+	define( 'STOREGROWTH_FILE', __FILE__ );
 }
 
 /**
  * Define plugin directory URL.
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_URL' ) ) {
-	define( 'STOREGROWTH_PLUGIN_DIR_URL', plugin_dir_url( STOREGROWTH_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_DIR_URL' ) ) {
+	define( 'STOREGROWTH_DIR_URL', plugin_dir_url( STOREGROWTH_FILE ) );
 }
 
 /**
  * Define plugin directory path.
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_DIR_PATH' ) ) {
-	define( 'STOREGROWTH_PLUGIN_DIR_PATH', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_DIR_PATH' ) ) {
+	define( 'STOREGROWTH_DIR_PATH', plugin_dir_path( STOREGROWTH_FILE ) );
 }
 
 /**
  * Define The Template's Folder Constant
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_PLUGIN_FILE ) . 'modules/' );
+if ( ! defined( 'STOREGROWTH_TEMPLATES_PATH_LITE' ) ) {
+	define( 'STOREGROWTH_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_FILE ) . 'modules/' );
 }
 
 /**
@@ -59,7 +59,7 @@ if ( ! defined( 'STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE' ) ) {
  */
 
 if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
-	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
+	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
 }
 
 /**
@@ -67,14 +67,14 @@ if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
  */
 
 if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
-	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_PLUGIN_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
+	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
 }
 
 /**
  * Define plugin basename.
  */
-if ( ! defined( 'STOREGROWTH_PLUGIN_BASENAME' ) ) {
-	define( 'STOREGROWTH_PLUGIN_BASENAME', plugin_basename( STOREGROWTH_PLUGIN_FILE ) );
+if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
+	define( 'STOREGROWTH_BASENAME', plugin_basename( STOREGROWTH_FILE ) );
 }
 
 /**
@@ -171,7 +171,7 @@ require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 
 // Load integrations bootstrap files.
-require_once STOREGROWTH_PLUGIN_DIR_PATH . '/integrations/bootstrap.php';
+require_once STOREGROWTH_DIR_PATH . '/integrations/bootstrap.php';
 
 // Call initialization function.
 sp_store_growth();
