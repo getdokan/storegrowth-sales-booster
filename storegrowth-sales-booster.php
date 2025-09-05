@@ -48,40 +48,18 @@ if ( ! defined( 'STOREGROWTH_DIR_PATH' ) ) {
 }
 
 /**
- * Define The Template's Folder Constant
+ * Define module directory.
  */
-if ( ! defined( 'STOREGROWTH_TEMPLATES_PATH_LITE' ) ) {
-	define( 'STOREGROWTH_TEMPLATES_PATH_LITE', plugin_dir_path( STOREGROWTH_FILE ) . 'modules/' );
+if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
+	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
 }
 
-/**
- * Define The Stock Count Down Template Constant
- */
-
-if ( ! defined( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH' ) ) {
-	define( 'STOREGROWTH_STOCK_COUNTDOWN_TEMPLATES_PATH', STOREGROWTH_TEMPLATES_PATH_LITE . 'countdown-timer/templates/' );
-}
-
-/**
- * Define The Free Shipping Bar Template Constant
- */
-
-if ( ! defined( 'FREE_SHIPPING_BAR_TEMPLATES_PATH' ) ) {
-	define( 'FREE_SHIPPING_BAR_TEMPLATES_PATH', STOREGROWTH_TEMPLATES_PATH_LITE . 'progressive-discount-banner/templates/' );
-}
 
 /**
  * Define plugin basename.
  */
 if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
 	define( 'STOREGROWTH_BASENAME', plugin_basename( STOREGROWTH_FILE ) );
-}
-
-/**
- * Define module directory.
- */
-if ( ! defined( 'STOREGROWTH_MODULE_DIR' ) ) {
-	define( 'STOREGROWTH_MODULE_DIR', __DIR__ . '/modules' );
 }
 
 /**
