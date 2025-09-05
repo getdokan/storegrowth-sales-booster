@@ -1,20 +1,21 @@
-import { useEffect, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 // @ts-ignore
 import { addQueryArgs } from '@wordpress/url';
 // @ts-ignore
-import apiFetch from '@wordpress/api-fetch';
 import { ToggleSwitch, useToast } from '@getdokan/dokan-ui';
 // @ts-ignore
-import { DataViews, DokanModal, DokanLink, PriceHtml } from '@dokan/components';
+import apiFetch from '@wordpress/api-fetch';
+// @ts-ignore
+import { DataViews, DokanLink, DokanModal, PriceHtml } from '@dokan/components';
 
-const BogoOffers = ( { navigate, vendorId } ) => {
+const BogoOffers = ( { navigate } ) => {
     const toast = useToast();
     const [ isLoading, setIsLoading ] = useState( true );
     const [ offersData, setOffersData ] = useState( [] );
     const [ currentOffer, setCurrentOffer ] = useState( null );
     const [ totalOffers, setTotalOffers ] = useState( 0 );
-    const [ productIds, setProductIds ] = useState( [] );
+    const [ productIds, setProductIds ] = useState< number[] >( [] );
     const [ productsMap, setProductsMap ] = useState( {} );
     const [ isConfirmationModalOpen, setIsConfirmationModalOpen ] =
         useState( false );
@@ -59,14 +60,11 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                 page: view?.page ?? 1,
             };
 
-            const response: Response = await apiFetch( {
+            const response = await apiFetch< any >( {
                 path: addQueryArgs(
-                    `/sales-booster/v1/bogo/offers/vendor/${ vendorId }`,
-                    {
-                        ...queryArgs,
-                    }
+                    `/sales-booster/v1/bogo/offers`,
+                    queryArgs
                 ),
-                method: 'GET',
                 parse: false,
             } );
 
@@ -98,27 +96,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             } );
         } catch ( error ) {
             // Handling the case where `error` is a Response object
-            if ( error instanceof Response ) {
-                const errorData = await error.json().catch( () => null );
-
-                if ( 'no_offer_items' === errorData?.code ) {
-                    return;
-                }
-
-                toast( {
-                    type: 'error',
-                    title:
-                        __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster' ) +
-                        ( errorData?.message ||
-                            error.statusText ||
-                            __( 'Unknown error', 'storegrowth-sales-booster' ) ),
-                } );
-            } else {
-                toast( {
-                    type: 'error',
-                    title: __( 'Error fetching BOGO offers: ', 'storegrowth-sales-booster' ) + error,
-                } );
-            }
+            console.log('Error fetching BOGO offers:', error);
         } finally {
             setIsLoading( false );
         }
@@ -131,16 +109,12 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         try {
             // Query arguments.
             const queryArgs = {
-                bogo_status: checked ? 'yes' : 'no',
-                name_of_order_bogo: item?.name_of_order_bogo,
-                offer_type: item?.offer_type,
-                offered_products: item?.offered_products,
-                get_different_product_field: item?.get_different_product_field,
+                status: checked ? 'yes' : 'no',
             };
 
             const updatedItem = await apiFetch( {
                 path: addQueryArgs(
-                    `/sales-booster/v1/bogo/vendor-offers/${ item?.id }`,
+                    `/sales-booster/v1/bogo/offers/${ item?.id }/status`,
                     {
                         ...queryArgs,
                     }
@@ -181,17 +155,16 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         setIsLoading( true );
 
         try {
-            const deletedItem = await apiFetch( {
-                path: `/sales-booster/v1/bogo/vendor-offers/${ currentOffer?.id }`,
+            await apiFetch( {
+                // @ts-ignore
+                path: `/sales-booster/v1/bogo/${ currentOffer?.id }`,
                 method: 'DELETE',
             } );
 
-            if ( deletedItem ) {
-                toast( {
-                    type: 'success',
-                    title: __( 'BOGO offer deleted successfully.', 'storegrowth-sales-booster' ),
-                } );
-            }
+            toast( {
+                type: 'success',
+                title: __( 'BOGO offer deleted successfully.', 'storegrowth-sales-booster' ),
+            } );
 
             await fetchBogoOffers();
         } catch ( error ) {
@@ -218,7 +191,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                         <DokanLink
                             as="div"
                             onClick={ () => {
-                                navigate( `/sales-booster/bogo/update/${ item.id }` );
+                                navigate( `/bogo/${ item.id }` );
                             } }
                             className="font-bold cursor-pointer"
                         >
@@ -231,7 +204,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             enableGlobalSearch: false,
         },
         {
-            id: 'bogo_status',
+            id: 'status',
             label: __( 'Status', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
                 <div>
@@ -239,7 +212,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
                         <span className="block w-10 h-3 rounded bg-gray-200 animate-pulse"></span>
                     ) : (
                         <ToggleSwitch
-                            checked={ 'yes' === item.bogo_status }
+                            checked={ 'active' === item.status }
                             onChange={ (status) => handleStatusChange( status, item ) }
                         />
                     ) }
@@ -254,11 +227,11 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             id: 'offered_products',
             label: __( 'Target Product', 'storegrowth-sales-booster' ),
             render: ( { item } ) => (
-                <div>
+                <div className='dokan-bogo-product-name'>
                     { isLoading ? (
                         <span className="block w-20 h-3 rounded bg-gray-200 animate-pulse"></span>
                     ) : (
-                        <span><strong>{ getProductName( item?.offered_products ) }</strong></span>
+                        <RawHTML>{ getProductName( item?.offered_products ) }</RawHTML>
                     ) }
                 </div>
             ),
@@ -301,7 +274,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
             isEligible: ( item ) => !! item.id,
             callback: ( offers ) => {
                 const offer = offers[ 0 ];
-                navigate( `/sales-booster/bogo/update/${ offer.id }` );
+                navigate( `/bogo/${ offer.id }` );
             },
             icon: () => (
                 <span
@@ -346,7 +319,7 @@ const BogoOffers = ( { navigate, vendorId } ) => {
         type: 'table',
         titleField: 'id',
         status: 'completed,failed,cancelled',
-        layout: { ...defaultLayouts },
+        layout: defaultLayouts,
         fields: fields.map( ( field ) =>
             field.id !== 'id' ? field.id : ''
         ),
@@ -354,26 +327,24 @@ const BogoOffers = ( { navigate, vendorId } ) => {
 
     // Fetch offers when view changes.
     useEffect( () => {
-        if ( ! vendorId ) {
-            return;
-        }
-
         fetchBogoOffers();
-    }, [ vendorId, view ] );
+    }, [ view.page, view.perPage ] );
 
     // Fetch products data when product IDs change.
     useEffect( () => {
         productIds.forEach( async ( productId ) => {
             if ( ! productsMap[ productId ] ) {
-                let product = await apiFetch( {
-                    path: `/dokan/v1/products/${ productId }`,
-                    method: 'GET',
-                } );
+                if(productId > 0) {
+                    let product = await apiFetch( {
+                        path: `/dokan/v1/products/${ productId }`,
+                        method: 'GET',
+                    } );
 
-                setProductsMap( prevMap => ( {
-                    ...prevMap,
-                    [ productId ]: product,
-                } ) );
+                    setProductsMap( prevMap => ( {
+                        ...prevMap,
+                        [ productId ]: product,
+                    } ) );
+                }
             }
         } );
     }, [ productIds ] );

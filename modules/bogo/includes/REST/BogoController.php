@@ -615,7 +615,7 @@ class BogoController extends WP_REST_Controller {
      * @return bool|WP_Error
      */
     public function check_permission( $request ) {
-        if ( current_user_can( 'manage_options' ) ) {
+        if ( current_user_can( 'manage_options' ) || current_user_can( 'dokandar' ) ) {
             return true;
         }
 

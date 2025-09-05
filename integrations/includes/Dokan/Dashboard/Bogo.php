@@ -51,10 +51,10 @@ class Bogo {
         $menus['sales_booster']['submenu']['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
-            'url'        => dokan_get_navigation_url( 'sales-booster/bogo' ),
+            'url'        => dokan_get_navigation_url( '/bogo' ),
             'pos'        => 10,
             'permission' => 'dokandar',
-            'react_route' => 'sales-booster/bogo',
+            'react_route' => '/bogo',
         ];
 
         return $menus;
@@ -79,12 +79,54 @@ class Bogo {
 
         $assets = include $script_assets;
 
+        wp_enqueue_style(
+            'spsg-bogo-dokan-vendor-dashboard',
+	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.css' ),
+            [],
+            $assets['version'],
+        );
+
         wp_enqueue_script(
             'spsg-bogo-dokan-vendor-dashboard',
 	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.js' ),
-            array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
+            array_merge( $assets['dependencies'], [ 'dokan-react-components'] ),
             $assets['version'],
             true
+        );
+        wp_localize_script(
+            'spsg-bogo-dokan-vendor-dashboard',
+            'spsgAdmin',
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
+                'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+            )
+        );
+        $action    = 'ajd_protected';
+        $ajd_nonce = wp_create_nonce( $action );
+
+        $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
+
+        wp_localize_script(
+            'spsg-bogo-dokan-vendor-dashboard',
+            'bogo_products_and_categories',
+            array(
+                'product_list'          => $script->prodcut_list(),
+                'product_list_for_view' => $script->prodcut_list_for_view(),
+                'category_list'         => $script->category_list(),
+                'order_bogo_list'       => $script->order_bogo_list(),
+            )
+        );
+
+        wp_localize_script(
+            'spsg-bogo-dokan-vendor-dashboard',
+            'bogo_save_url',
+            array(
+                'ajax_url'     => admin_url( 'admin-ajax.php' ),
+                'ajd_nonce'    => $ajd_nonce,
+                'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
+                'image_folder' => Helper::get_modules_url( 'BoGo/assets/images' ),
+            )
         );
 
         $admin_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
