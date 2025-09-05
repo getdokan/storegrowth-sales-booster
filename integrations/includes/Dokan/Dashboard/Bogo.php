@@ -89,7 +89,7 @@ class Bogo {
         wp_enqueue_script(
             'spsg-bogo-dokan-vendor-dashboard',
 	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.js' ),
-            array_merge( $assets['dependencies'], [ 'dokan-react-components'] ),
+            array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
             $assets['version'],
             true
         );
