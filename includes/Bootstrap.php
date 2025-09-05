@@ -183,6 +183,6 @@ class Bootstrap {
 	 * @return boolean
 	 */
 	public function has_pro(): bool {
-		return apply_filters( 'spsg_pro_is_active', false );
+		return apply_filters( 'storegrowth_pro_is_active', false );
 	}
 }
