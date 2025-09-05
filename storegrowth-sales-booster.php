@@ -9,7 +9,10 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
- *
+ * Requires Plugins: woocommerce
+ * Requires at least: 6.8
+ * Requires PHP: 7.4
+ * 
  * @package SPSG
  */
 
