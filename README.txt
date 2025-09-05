@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Side Cart
 
 Requires at least: 5.4
 Tested up to: 6.7.1
-Stable tag: 1.28.13
+Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -273,29 +273,52 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
+= 2.0.0 (Sep 05, 2025) =
+
+* New: Complete plugin rebrand to StoreGrowth with standardized asset prefixes and constants.
+* New: Introduced custom database tables and automatic migration system for Upsell Order Bump.
+* New: Migrated BOGO module to a unified data source with full migration support.
+* New: Implemented new container architecture with dependency injection for cleaner module bootstrapping.
+* New: Added REST API endpoints for BOGO and Order Bump with unified data layers and automatic migrations.
+* New: Role-based visibility for promotional banners (only visible to customers, subscribers, and guests).
+* New: Real-time cart updates for upsell product interactions.
+* Improvement: Countdown Timer now uses product sale price for discount calculations.
+* Improvement: Pagination only displays when more than 6 items are present.
+* Improvement: Enhanced admin screens with improved validation, error handling, and clearer notices.
+* Improvement: Optimized DB queries and asset loading for better performance.
+* Improvement: Added indexes to improve query speed.
+* Improvement: Security hardening for REST endpoints (nonce verification, input validation, sanitization, capability checks).
+* Improvement: Consistent animation timing and styling across promotional elements.
+* Improvement: Updated documentation, README, FAQs, and screenshots to reflect the new branding.
+* Fix: Quick Cart – fixed alignment of tax, discount, and coupon rows; corrected script dependency loading.
+* Fix: Order Bump – resolved issue where offer products failed to appear during checkout.
+* Fix: Cart Totals – improved consistency between UI-displayed and backend-calculated totals.
+* Fix: BOGO – fixed badge rendering issues and improved cart deduplication logic.
+* Fix: Countdown Timer – corrected discount logic when a sale price exists.
+* Fix: Quick View – resolved icon rendering issues and template fallback problems.
+* Fix: Direct Checkout – improved button behavior and detection of Pro features.
+* Fix: Admin – fixed issues with license/notice display and translation domains in tooltips.
+* Fix: Suppressed PHP notices caused by uninitialized array values.
+
 = 1.28.8 (Apr 23, 2024) =  
 
-- Fixed countdown timer  
-
-- Enhanced variable product support for Upsell Order Bump  
+* Fix: countdown timer
+* Improvement: Enhanced variable product support for Upsell Order Bump
 
 = 1.27.7–1.27.8 (Mar - Apr 2024) =  
 
-- Released BOGO module  
-
-- Fixed order bump pricing  
+* New: Released BOGO module
+* Fix: Fixed order bump pricing
 
 = 1.26.7–1.25.7 (Mar 2024) =  
 
-- Released Quick View module  
-
-- Added onboarding screen  
+* New: Released Quick View module
+* Improvement: Added onboarding screen
 
 = 1.24.7–1.24.5 (Mar 2024) = 
 
-- Fly Cart UI & icon updates 
-
-- Countdown, Buy Now, Free Shipping Bar improvements  
+* Improvement: Fly Cart UI & icon updates
+* Improvement: Countdown, Buy Now, Free Shipping Bar improvements
 
 👉 [Check the Full Changelog](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md)
 

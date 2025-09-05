@@ -1,3 +1,30 @@
+### 2.0.0 (Sep 05, 2025) ###
+
+- **new:** Complete plugin rebrand to StoreGrowth with standardized asset prefixes and constants.
+- **new:** Introduced custom database tables and automatic migration system for Upsell Order Bump.
+- **new:** Migrated BOGO module to a unified data source with full migration support.
+- **new:** Implemented new container architecture with dependency injection for cleaner module bootstrapping.
+- **new:** Added REST API endpoints for BOGO and Order Bump with unified data layers and automatic migrations.
+- **new:** Role-based visibility for promotional banners (only visible to customers, subscribers, and guests).
+- **new:** Real-time cart updates for upsell product interactions.
+- **enhance:** Countdown Timer now uses product sale price for discount calculations.
+- **enhance:** Pagination only displays when more than 6 items are present.
+- **enhance:** Enhanced admin screens with improved validation, error handling, and clearer notices.
+- **enhance:** Optimized DB queries and asset loading for better performance.
+- **enhance:** Added indexes to improve query speed.
+- **enhance:** Security hardening for REST endpoints (nonce verification, input validation, sanitization, capability checks).
+- **enhance:** Consistent animation timing and styling across promotional elements.
+- **enhance:** Updated documentation, README, FAQs, and screenshots to reflect the new branding.
+- **fix:** Quick Cart – fixed alignment of tax, discount, and coupon rows; corrected script dependency loading.
+- **fix:** Order Bump – resolved issue where offer products failed to appear during checkout.
+- **fix:** Cart Totals – improved consistency between UI-displayed and backend-calculated totals.
+- **fix:** BOGO – fixed badge rendering issues and improved cart deduplication logic.
+- **fix:** Countdown Timer – corrected discount logic when a sale price exists.
+- **fix:** Quick View – resolved icon rendering issues and template fallback problems.
+- **fix:** Direct Checkout – improved button behavior and detection of Pro features.
+- **fix:** Admin – fixed issues with license/notice display and translation domains in tooltips.
+- **fix:** Suppressed PHP notices caused by uninitialized array values.
+
 ### 1.28.8 ( April 23, 2024 ) ###
 
 - **fix:** Countdown timer script issue.
