@@ -14,7 +14,7 @@ use StorePulse\StoreGrowth\Interfaces\HookRegistry;
  */
 class Dokan implements HookRegistry {
     public function register_hooks(): void {
-        add_action( 'dokan_loaded', [ $this, 'init_classes' ] );
+        $this->init_classes();
     }
 
     /**
