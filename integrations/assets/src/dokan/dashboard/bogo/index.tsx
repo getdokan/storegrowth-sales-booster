@@ -15,7 +15,6 @@ import moduleStore from "../../../../../../assets/src/modules-store";
 import CreateBogo from "../../../../../../modules/bogo/assets/src/components/CreateBogo";
 import BogoStore from "../../../../../../modules/bogo/assets/src/store";
 import BogoList from "./components/BogoOffers";
-import { useParams } from "react-router-dom";
 
 register(BogoStore);
 register(moduleStore);
