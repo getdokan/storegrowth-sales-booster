@@ -31,7 +31,7 @@ class Bogo {
      * @return void
      */
     private function init_hooks() {
-        add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_bogo_submenu_on_dokan_vendor_dashboard' ] );
+        add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
     }
 
@@ -44,11 +44,11 @@ class Bogo {
      *
      * @return array
      */
-    public function add_bogo_submenu_on_dokan_vendor_dashboard( $menus ) {
+    public function add_nav_menu( $menus ): array {
         if ( ! dokan_is_seller_dashboard() ) {
             return $menus;
         }
-        $menus['sales_booster']['submenu']['bogo'] = [
+        $menus['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
             'url'        => dokan_get_navigation_url( '/bogo' ),
