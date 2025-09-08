@@ -81,7 +81,7 @@ domReady(() => {
         path: "/bogo/create-bogo",
         exact: true,
         element: (props) => {
-          return <CreateBogo {...props} useParams={useParams} />;
+          return <CreateBogo {...props} />;
         },
         backUrl: "/bogo",
       });
@@ -101,7 +101,7 @@ domReady(() => {
         path: "/bogo/:bogo_id",
         exact: true,
         element: (props) => {
-          return <CreateBogo {...props} useParams={useParams} />;
+          return <CreateBogo {...props} />;
         },
         backUrl: "/bogo",
       });

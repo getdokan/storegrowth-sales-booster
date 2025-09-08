@@ -17,7 +17,6 @@ import { createBogoForm } from "../helper";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import TouchPreview from "sales-booster/src/components/settings/Panels/TouchPreview";
 import ContentSection from "./appearance/ContentSection";
-import useLocationWatcher from "../location";
 
 function CreateBogo({ navigate, useParams, useSearchParams }) {
   const [allBogosData, setallBogosData] = useState([]);
@@ -296,22 +295,8 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   const isDuplicateProductsFound =
     duplicateDataError?.duplicateTargetProducts?.length > 0;
 
-  const [searchParams] = typeof useSearchParams === 'function' ? useSearchParams() : [];
-  const initialTabName = searchParams ? searchParams.get('tab_name') : 'basic';
-  const [tabName, setTabName] = useState(initialTabName);
-  const location = typeof useSearchParams !== 'function' ? useLocationWatcher() : null;
-
-  useEffect(() => {
-    if (location) {
-      const url = window.location.href;
-      const params = new URLSearchParams(url.split('?')[1]);
-      setTabName(params.get('tab_name'));
-    }
-  }, [location]);
-
-  useEffect(() => {
-    setTabName(initialTabName);
-  }, [initialTabName]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabName = searchParams.get("tab_name");
 
   const tabPanels = [
     {
