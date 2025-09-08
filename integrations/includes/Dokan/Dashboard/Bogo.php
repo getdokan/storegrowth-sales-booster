@@ -135,7 +135,7 @@ class Bogo {
             'spsg-bogo-dokan-vendor-dashboard',
             'spsgBogoDokanVendorDashboard',
             [
-                'is_pro_active'                               => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+                'is_pro_active'                               => sp_store_growth()->has_pro(),
                 'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',
                 'vendors_can_schedule_offers'                 => $admin_settings['vendors_can_schedule_offers'] ?? '',
                 'vendors_can_set_shop_page_custom_message'    => $admin_settings['vendors_can_set_shop_page_custom_message'] ?? '',

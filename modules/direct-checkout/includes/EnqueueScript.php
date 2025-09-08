@@ -65,9 +65,7 @@ class EnqueueScript implements HookRegistry {
 			'spsgDcFrontend',
 			array(
 				'isQuickCartCheckout' => $is_checkout_redirect,
-				'isPro'               => is_plugin_active(
-					'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php',
-				),
+				'isPro'               => sp_store_growth()->has_pro(),
 				'ajax_url'            => '/wp-admin/admin-ajax.php',
 			)
 		);

@@ -54,9 +54,9 @@ class EnqueueScript implements HookRegistry {
 
 		wp_enqueue_script(
 			'spsg-floating-notification-bar-remove',
-			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/spsg-pd-banner-bar-remove.js' ),
+			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/banner-bar-remove.js' ),
 			array( 'jquery' ),
-			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/spsg-pd-banner-bar-remove.js' ) ),
+			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/banner-bar-remove.js' ) ),
 			true
 		);
 

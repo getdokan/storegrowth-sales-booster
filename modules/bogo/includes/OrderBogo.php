@@ -139,7 +139,7 @@ class OrderBogo implements HookRegistry {
 		}
 
 		// Set badge icon and URL
-		$is_pro = is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' );
+		$is_pro = sp_store_growth()->has_pro();
 		
 		if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
 			$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';

@@ -71,7 +71,7 @@ class EnqueueScript implements HookRegistry {
 		$this->frontend_widget_script();
 		$this->qc_basic_inline_styles();
 
-		if ( 'center' === $layout && SGSB_PRO_ACTIVE ) {
+		if ( 'center' === $layout && sp_store_growth()->has_pro() ) {
 				do_action( 'spsg_ffc_wp_enqueue_scripts' );
 		} else {
 				$this->qc_side_cart_styles();
@@ -186,7 +186,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_script(
 			'wfc-script',
 			PluginHelper::get_modules_url( 'fly-cart/assets/js/wfc-script.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'wfc-flyto' ),
 			filemtime( PluginHelper::get_modules_path( 'fly-cart/assets/js/wfc-script.js' ) ),
 			true
 		);
@@ -201,7 +201,7 @@ class EnqueueScript implements HookRegistry {
 				'checkoutUrl'       => wc_get_checkout_url(),
 				'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 				'nonce'             => wp_create_nonce( 'spsg_frontend_ajax' ),
-				'isPro'             => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+				'isPro'             => sp_store_growth()->has_pro(),
 			)
 		);
 	}

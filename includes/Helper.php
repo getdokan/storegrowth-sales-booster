@@ -21,7 +21,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_plugin_assets_url( string $path ): string {
-		return STOREGROWTH_PLUGIN_DIR_URL . 'assets/' . $path;
+		return STOREGROWTH_DIR_URL . 'assets/' . $path;
 	}
 
 	/**
@@ -34,7 +34,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_modules_url( string $path ): string {
-		return STOREGROWTH_PLUGIN_DIR_URL . 'modules/' . $path;
+		return STOREGROWTH_DIR_URL . 'modules/' . $path;
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_modules_path( string $path ): string {
-		return STOREGROWTH_PLUGIN_DIR_PATH . 'modules/' . $path;
+		return STOREGROWTH_DIR_PATH . 'modules/' . $path;
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_integrations_path( string $path ): string {
-		return STOREGROWTH_PLUGIN_DIR_URL . 'integrations/' . $path;
+		return STOREGROWTH_DIR_URL . 'integrations/' . $path;
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_plugin_path( string $path ): string {
-		return STOREGROWTH_PLUGIN_DIR_PATH . $path;
+		return STOREGROWTH_DIR_PATH . $path;
 	}
 
 	/**
@@ -88,7 +88,7 @@ class Helper {
 	public static function get_file_content( string $path ): string {
 		ob_start();
 
-		require STOREGROWTH_PLUGIN_DIR_PATH . $path;
+		require STOREGROWTH_DIR_PATH . $path;
 
 		return ob_get_clean();
 	}

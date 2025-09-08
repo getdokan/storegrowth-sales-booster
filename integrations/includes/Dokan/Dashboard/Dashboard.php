@@ -141,7 +141,7 @@ class Dashboard {
         ];
 
         // Include the template file directly with variables in scope
-        include STOREGROWTH_PLUGIN_DIR_PATH . '/Modules/countdown-timer/templates/dokan-countdown-timer-fields.php';
+        include STOREGROWTH_DIR_PATH . '/Modules/countdown-timer/templates/dokan-countdown-timer-fields.php';
     }
 
     /**

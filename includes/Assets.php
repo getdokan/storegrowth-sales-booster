@@ -100,7 +100,7 @@ class Assets {
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
-					'isPro'    => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+					'isPro'    => sp_store_growth()->has_pro(),
 				)
 			);
 		}
@@ -123,7 +123,7 @@ class Assets {
 				array(
 					'ajax_url'       => admin_url( 'admin-ajax.php' ),
 					'nonce'          => wp_create_nonce( 'spsg_ajax_nonce' ),
-					'isPro'          => is_plugin_active( 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php' ),
+					'isPro'          => sp_store_growth()->has_pro(),
 					'currencySymbol' => get_woocommerce_currency_symbol(),
 				)
 			);
