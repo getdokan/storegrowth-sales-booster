@@ -55,7 +55,7 @@ class Bogo {
             'url'        => dokan_get_navigation_url( '/bogo' ),
             'pos'        => 10,
             'permission' => 'dokandar',
-            'react_route' => '/bogo',
+            'react_route' => 'bogo',
         ];
 
         return $menus;
