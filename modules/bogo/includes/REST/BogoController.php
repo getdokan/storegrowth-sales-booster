@@ -186,6 +186,9 @@ class BogoController extends WP_REST_Controller {
     public function get_items( $request ) {
         // Get custom query filters and options from child classes
         $query_filters = $this->get_query_filters( $request );
+		if( ! current_user_can('manage_options') ) {
+			$query_filters['created_by'] = dokan_get_current_user_id();
+		}
         $query_options = $this->get_query_options( $request );
         
         // Get total count for pagination
