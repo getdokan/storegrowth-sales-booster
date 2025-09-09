@@ -33,6 +33,7 @@ class Bogo {
     private function init_hooks() {
         add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
+		add_filter('spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
     }
 
     /**
@@ -59,6 +60,16 @@ class Bogo {
 
         return $menus;
     }
+
+	public function add_bogo_product_args( $args ): array {
+		if ( ! dokan_is_seller_dashboard() ) {
+            return $args;
+        }
+
+		$args['author'] = dokan_get_current_user_id();
+
+		return $args;
+	}
 
     /**
      * Enqueue Scripts for Dokan Vendor Dashbaord.

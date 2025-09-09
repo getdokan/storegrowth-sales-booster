@@ -38,7 +38,7 @@ registerPlugin("storegrowth-dokan-vendor-bogo", {
 
 domReady(() => {
   // @ts-ignore
-  if (window.spsgAdmin.isPro) {
+  if (window.spsgAdmin?.isPro) {
     addFilter(
       "spsg_hide_bogo_premium_options",
       "spsg_bogo_render_upgrade_message_callback",
