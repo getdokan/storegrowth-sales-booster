@@ -7,7 +7,9 @@ const VendorInfo = ({storeData}) => {
     return (
         <div>
             <strong>{__('Vendor ', 'dokan')}:</strong>
-            {__('Bright Star Market', 'dokan')}
+            <span style={ storeData?.enable_quick_cart_dokan_store_links ? {textDecoration: 'underline'} : {} }>
+                {__('Bright Star Market', 'dokan')}
+            </span>
         </div>
     );
 }
