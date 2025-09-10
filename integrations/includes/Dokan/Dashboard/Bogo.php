@@ -34,7 +34,7 @@ class Bogo {
         add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
 		add_filter( 'spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
-		add_filter( 'spsg_bogo_query_args', [ $this, 'add_bogo_query_args' ] );
+		add_filter( 'spsg_bogo_rest_query_filters', [ $this, 'add_bogo_rest_query_args' ] );
 		add_filter( 'spsg_bogo_created_by', [ $this, 'add_bogo_created_by' ] );
 		add_filter( 'spsg_bogo_check_permission', [ $this, 'check_bogo_permission' ] );
     }
@@ -78,12 +78,12 @@ class Bogo {
 
 		return $args;
 	}
-	public function add_bogo_query_args( $conditions ): array {
+	public function add_bogo_rest_query_args( $args ): array {
 		if ( ! current_user_can('manage_options') ) {
-            $conditions['created_by'] = dokan_get_current_user_id();
+            $args['created_by'] = dokan_get_current_user_id();
         }
 
-		return $conditions;
+		return $args;
 	}
 
 	public function add_bogo_created_by( $user_id ) {

@@ -135,7 +135,7 @@ class BogoController extends WP_REST_Controller {
      * @return array Query filters for BogoDataManager.
      */
     protected function get_query_filters( $request ) {
-        return [];
+        return apply_filters( 'spsg_bogo_rest_query_filters', [], $request );
     }
 
     /**
