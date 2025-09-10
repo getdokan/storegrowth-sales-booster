@@ -38,7 +38,7 @@ registerPlugin("storegrowth-dokan-vendor-bogo", {
 
 domReady(() => {
   // @ts-ignore
-  if (window.spsgAdmin?.isPro) {
+  if (spsgAdmin?.isPro) {
     addFilter(
       "spsg_hide_bogo_premium_options",
       "spsg_bogo_render_upgrade_message_callback",
@@ -49,6 +49,10 @@ domReady(() => {
       "spsg_edit_bogo_message_callback",
       () => false
     );
+  }
+  // @ts-ignore
+  if(!spsgAdmin.enableForVendor) {
+      return;
   }
 
   // @ts-ignore
