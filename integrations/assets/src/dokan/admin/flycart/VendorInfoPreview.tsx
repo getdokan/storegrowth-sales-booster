@@ -1,6 +1,6 @@
 import {__} from "@wordpress/i18n";
 
-const VendorInfo = ({storeData}) => {
+const VendorInfoPreview = ({storeData}) => {
     if (!storeData?.show_quick_cart_dokan_store_names) {
         return null
     }
@@ -14,4 +14,4 @@ const VendorInfo = ({storeData}) => {
     );
 }
 
-export default VendorInfo;
+export default VendorInfoPreview;
