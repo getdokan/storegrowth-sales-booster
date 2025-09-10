@@ -33,7 +33,10 @@ class Bogo {
     private function init_hooks() {
         add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
-		add_filter('spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
+		add_filter( 'spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
+		add_filter( 'spsg_bogo_query_args', [ $this, 'add_bogo_query_args' ] );
+		add_filter( 'spsg_bogo_created_by', [ $this, 'add_bogo_created_by' ] );
+		add_filter( 'spsg_bogo_check_permission', [ $this, 'check_bogo_permission' ] );
     }
 
     /**
@@ -69,6 +72,27 @@ class Bogo {
 		$args['author'] = dokan_get_current_user_id();
 
 		return $args;
+	}
+	public function add_bogo_query_args( $conditions ): array {
+		if ( ! current_user_can('manage_options') ) {
+            $conditions['created_by'] = dokan_get_current_user_id();
+        }
+
+		return $conditions;
+	}
+
+	public function add_bogo_created_by( $user_id ) {
+		if ( ! current_user_can('manage_options') ) {
+			return dokan_get_current_user_id();
+		}
+		return $user_id;
+	}
+
+	public function check_bogo_permission( $has_permission ) {
+		if ( ! current_user_can('manage_options') ) {
+            return current_user_can( 'dokandar' );
+        }
+		return $has_permission;
 	}
 
     /**
@@ -113,21 +137,22 @@ class Bogo {
                 'isPro'    => sp_store_growth()->has_pro(),
             )
         );
-        $action    = 'ajd_protected';
+        $action    = 'spsg_protected';
         $ajd_nonce = wp_create_nonce( $action );
 
         $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
 
-        wp_localize_script(
-            'spsg-bogo-dokan-vendor-dashboard',
-            'bogo_products_and_categories',
-            array(
-                'product_list'          => $script->prodcut_list(),
-                'product_list_for_view' => $script->prodcut_list_for_view(),
-                'category_list'         => $script->category_list(),
-                'order_bogo_list'       => $script->order_bogo_list(),
-            )
-        );
+		$args = [
+			'product_list'          => $script->prodcut_list(),
+            'product_list_for_view' => $script->prodcut_list_for_view(),
+            'category_list'         => $script->category_list(),
+            'order_bogo_list'       => $script->order_bogo_list(),
+		];
+
+		wp_add_inline_script(
+			'spsg-bogo-dokan-vendor-dashboard',
+			'const bogo_products_and_categories = ' . wp_json_encode( $args ) . ';',
+		);
 
         wp_localize_script(
             'spsg-bogo-dokan-vendor-dashboard',
@@ -138,20 +163,6 @@ class Bogo {
                 'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
                 'image_folder' => Helper::get_modules_url( 'BoGo/assets/images' ),
             )
-        );
-
-        $admin_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
-
-        wp_localize_script(
-            'spsg-bogo-dokan-vendor-dashboard',
-            'spsgBogoDokanVendorDashboard',
-            [
-                'is_pro_active'                               => sp_store_growth()->has_pro(),
-                'vendors_can_create_buy_x_get_x'              => $admin_settings['vendors_can_create_buy_x_get_x'] ?? '',
-                'vendors_can_schedule_offers'                 => $admin_settings['vendors_can_schedule_offers'] ?? '',
-                'vendors_can_set_shop_page_custom_message'    => $admin_settings['vendors_can_set_shop_page_custom_message'] ?? '',
-                'vendors_can_set_product_page_custom_message' => $admin_settings['vendors_can_set_product_page_custom_message'] ?? '',
-            ]
         );
     }
 }

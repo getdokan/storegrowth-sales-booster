@@ -186,9 +186,6 @@ class BogoController extends WP_REST_Controller {
     public function get_items( $request ) {
         // Get custom query filters and options from child classes
         $query_filters = $this->get_query_filters( $request );
-		if( ! current_user_can('manage_options') ) {
-			$query_filters['created_by'] = dokan_get_current_user_id();
-		}
         $query_options = $this->get_query_options( $request );
         
         // Get total count for pagination
@@ -217,7 +214,7 @@ class BogoController extends WP_REST_Controller {
      * @return bool|WP_Error True if permission granted, WP_Error otherwise.
      */
     protected function check_single_item_permission( $item, $request ) {
-        return true;
+        return apply_filters( 'spsg_bogo_single_item_permission', true,  $item, $request );
     }
 
     /**
@@ -618,7 +615,7 @@ class BogoController extends WP_REST_Controller {
      * @return bool|WP_Error
      */
     public function check_permission( $request ) {
-        if ( current_user_can( 'manage_options' ) || current_user_can( 'dokandar' ) ) {
+        if ( apply_filters( 'spsg_bogo_check_permission', current_user_can( 'manage_options' ), $request ) ) {
             return true;
         }
 
