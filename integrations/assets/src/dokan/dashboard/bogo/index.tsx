@@ -50,10 +50,6 @@ domReady(() => {
       () => false
     );
   }
-  // @ts-ignore
-  if(!spsgAdmin.enableForVendor) {
-      return;
-  }
 
   // @ts-ignore
   window.wp.hooks.addFilter(
