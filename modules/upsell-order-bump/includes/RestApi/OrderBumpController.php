@@ -445,9 +445,9 @@ class OrderBumpController extends WP_REST_Controller {
 					'required'    => true,
 				),
 				'offer_type'        => array(
-					'description' => __( 'Type of offer (discount or fixed_price).', 'storegrowth-sales-booster' ),
+					'description' => __( 'Type of offer (discount or price).', 'storegrowth-sales-booster' ),
 					'type'        => 'string',
-					'enum'        => array( 'discount', 'fixed_price' ),
+					'enum'        => array( 'discount', 'price' ),
 					'context'     => array( 'view', 'edit' ),
 					'default'     => 'discount',
 				),
