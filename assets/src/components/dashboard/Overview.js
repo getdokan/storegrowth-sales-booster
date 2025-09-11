@@ -94,10 +94,10 @@ const Overview = () => {
                               encounter. We're just an email away!
                             </p>
                             <a
-                              href={baseUrlStoregrowth + links?.support}
+                              href={'https://storegrowth.io/contact-us/'}
                               target="_blank"
                             >
-                              Contact Us
+                              {__("Contact Us", "storegrowth-sales-booster")}
                             </a>
                           </div>
                         </div>
@@ -127,10 +127,10 @@ const Overview = () => {
                       </p>
                       <span className="feature-requests-submit-button">
                         <a
-                          href={baseUrlStoregrowth + links?.featureRequest}
+                          href={`https://storegrowth.io/contact-us/`}
                           target="_blank"
                         >
-                          Submit Request
+                          {__("Submit Request", "storegrowth-sales-booster")}
                         </a>
                       </span>
                     </div>

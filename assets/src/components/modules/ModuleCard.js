@@ -2,6 +2,7 @@ import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { Button, Card, Col, Image, Row, Space, Switch } from "antd";
 import { Ajax } from '../../ajax';
+import { __ } from '@wordpress/i18n';
 
 function ModuleSwitch({ module }) {
   const { updateSingleModule, setPageLoading } = useDispatch( 'spsg' );
@@ -113,10 +114,10 @@ function ModuleCard( { module } ) {
                 className='doc-btn footer-btn'
                 type="default"
                 shape="default"
-                href={`https://storegrowth.io/docs/${docSlug}/`}
+                href={ module.doc_link || `https://storegrowth.io/docs/` }
                 target='_blank'
               >
-                Documentation
+                { __( 'Documentation', 'storegrowth-sales-booster' ) }
               </Button>
           </div>
             <Col span={3} style={{ float: 'right' }} className='switch-btn'>

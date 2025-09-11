@@ -189,7 +189,7 @@ function Modules() {
                 <div className="help-btn">
                   <Button
                     width="210px"
-                    href="https://dokan.co/contact/"
+                    href="https://storegrowth.io/contact-us/"
                     target="_blank"
                     type="primary"
                   >
