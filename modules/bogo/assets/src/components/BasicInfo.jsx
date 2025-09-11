@@ -232,7 +232,7 @@ const BasicInfo = ({ clearErrors }) => {
           title={__("BOGO Deal Type", "storegrowth-sales-booster-pro")}
           classes={""}
           tooltip={__("this is an example", "storegrowth-sales-booster-pro")}
-          options={[...dealOptions]}
+          options={applyFilters('spsg_bogo_deal_type_options', [...dealOptions])}
           fieldValue={createBogoData?.bogo_deal_type}
           changeHandler={onFieldChange}
         />

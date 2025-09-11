@@ -142,7 +142,7 @@ class Bogo {
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
                 'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
                 'isPro'    => sp_store_growth()->has_pro(),
-				'enableForVendor' => $is_enable,
+				'buyXGetXEnableForVendor' => $is_enable,
             ]
         );
         $action    = 'spsg_protected';

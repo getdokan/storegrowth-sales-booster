@@ -15,9 +15,23 @@ import moduleStore from "../../../../../../assets/src/modules-store";
 import CreateBogo from "../../../../../../modules/bogo/assets/src/components/CreateBogo";
 import BogoStore from "../../../../../../modules/bogo/assets/src/store";
 import BogoList from "./components/BogoOffers";
+import { useParams } from 'react-router-dom';
 
 register(BogoStore);
 register(moduleStore);
+
+/*
+* A fallback for useSearchParams in case it's not available (for older dokan version) script won't break
+* TODO: It will be removed once we drop support for older dokan versions
+* @see https://github.com/getdokan/dokan/pull/2893 Ref PR where useSearchParams was added
+*/
+const useSearchParamsFallback = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    return [
+        searchParams,
+        () => {}
+    ]
+}
 
 const AddOfferCreateButton = () => {
   return (
@@ -51,6 +65,18 @@ domReady(() => {
     );
   }
 
+  addFilter(
+      'spsg_bogo_deal_type_options',
+      'spsg_bogo_deal_type_options_callback',
+      (options) => {
+          // @ts-ignore
+          if(spsgAdmin.buyXGetXEnableForVendor && spsgAdmin.isPro) {
+              return options;
+          }
+          return options.filter((option) => option.key !== 'same');
+      }
+  );
+
   // @ts-ignore
   window.wp.hooks.addFilter(
     "dokan-dashboard-routes",
@@ -80,7 +106,7 @@ domReady(() => {
         path: "/bogo/create-bogo",
         exact: true,
         element: (props) => {
-          return <CreateBogo {...props} />;
+          return <CreateBogo useParams={useParams} useSearchParams={useSearchParamsFallback} {...props} />;
         },
         backUrl: "/bogo",
       });
@@ -100,7 +126,7 @@ domReady(() => {
         path: "/bogo/:bogo_id",
         exact: true,
         element: (props) => {
-          return <CreateBogo {...props} />;
+          return <CreateBogo useParams={useParams} useSearchParams={useSearchParamsFallback} {...props} />;
         },
         backUrl: "/bogo",
       });
