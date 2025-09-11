@@ -5,6 +5,8 @@
  * @package SBFW
  */
 
+use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
+
 global $product_object;
 
 $dates_from = get_post_meta( $product_object->get_id(), '_spsg_countdown_timer_discount_start', true );
@@ -12,7 +14,7 @@ $dates_to   = get_post_meta( $product_object->get_id(), '_spsg_countdown_timer_d
 
 $dates_from = $dates_from ? gmdate( 'Y-m-d', strtotime( $dates_from ) ) : $dates_from;
 $dates_to   = $dates_to ? gmdate( 'Y-m-d', strtotime( $dates_to ) ) : $dates_to;
-
+$doc_link = storegrowth_get_container()->get(CountdownTimerModule::get_id())->get_doc_link();
 ?>
 <div id="spsg-countdown-timer-tab" class="panel woocommerce_options_panel hidden">
 	<div class="options_group">
@@ -56,7 +58,7 @@ $dates_to   = $dates_to ? gmdate( 'Y-m-d', strtotime( $dates_to ) ) : $dates_to;
 		</p>
 		<p class="form-field" style="margin: 0; padding-top: 0 !important;">
 			<span class="description" style="margin: 0; color: #2271b2; font-weight: bold;">To learn more, please view the
-				<b><a href="https://storegrowth.io/docs/sales-countdown/" target="_blank">Documentation</a></b>
+				<b><a href="<?php echo esc_url( $doc_link ); ?>" target="_blank"><?php esc_html_e( 'Documentation', 'storegrowth-sales-booster' ); ?></a></b>
 			</span>
 		</p>
 	</div>

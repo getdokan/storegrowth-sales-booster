@@ -6,6 +6,9 @@
  *
  * @var array $args
  */
+
+use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
+
 // Get settings from the main plugin's options
 $settings = \StorePulse\StoreGrowth\Helper::get_settings('spsg_countdown_timer_settings', array());
 
@@ -48,7 +51,7 @@ $dates_to   = $dates_to ? gmdate('Y-m-d', strtotime($dates_to)) : '';
 
 // Use settings from options for permissions
 
-
+$doc_link = storegrowth_get_container()->get(CountdownTimerModule::get_id())->get_doc_link();
 $show_date_fields = ($vendor_can_create_countdown_discount && $vendor_can_create_schedule_timer);
 ?>
 
@@ -89,7 +92,7 @@ $show_date_fields = ($vendor_can_create_countdown_discount && $vendor_can_create
                 <span class="description " >
                     <?php
                     echo wp_kses(
-                        __( 'All the fields are required to show the countdown. To learn more, please view the <b><a href="https://storegrowth.io/docs/sales-countdown/" target="_blank">Documentation</a></b>', 'storegrowth-sales-booster' ),
+                        sprintf( __( 'All the fields are required to show the countdown. To learn more, please view the <b><a href="%s" target="_blank">%s</a></b>', 'storegrowth-sales-booster' ), $doc_link, __( 'Documentation', 'storegrowth-sales-booster' ) ),
                         [
                             'b' => [],
                             'a' => [

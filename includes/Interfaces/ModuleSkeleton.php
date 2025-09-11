@@ -86,4 +86,12 @@ interface ModuleSkeleton {
 	 * @return void
 	 */
 	public function boot(): void;
+
+
+	/**
+	 * Get the documentation link for the module.
+	 *
+	 * @return string
+	 */
+	public function get_doc_link(): string;
 }
