@@ -50,6 +50,7 @@ class ModuleManager {
 				'description' => $module->get_description(),
 				'category'    => $module->get_module_category(),
 				'status'      => $module->is_active(),
+				'doc_link'    => $module->get_doc_link(),
 			);
 		}
 

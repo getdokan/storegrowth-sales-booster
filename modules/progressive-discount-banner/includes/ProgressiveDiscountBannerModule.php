@@ -102,4 +102,8 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	protected function get_bootstrap_service_provider(): BootstrapServiceProvider {
 		return new BootstrapServiceProvider();
 	}
+
+	public function get_doc_link(): string {
+		return 'https://storegrowth.io/docs/storegrowth-helpcenter/modules/free-shipping-rules/';
+	}
 }

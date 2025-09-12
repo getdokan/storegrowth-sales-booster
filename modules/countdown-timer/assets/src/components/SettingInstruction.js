@@ -2,6 +2,7 @@ import Image from "antd/es/image";
 import React from "react";
 import scInstruction from "../../images/sales-countdown-meta.png";
 import FieldWrapper from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/FieldWrapper";
+import { __ } from "@wordpress/i18n";
 
 const SettingInstruction = () => {
   return (
@@ -44,12 +45,12 @@ const SettingInstruction = () => {
             }}
             onClick={() =>
               window.open(
-                "https://storegrowth.io/docs/sales-countdown/",
+                "https://storegrowth.io/docs/storegrowth-helpcenter/modules/countdown-timer/",
                 "_blank",
               )
             }
           >
-            Documentation
+            { __('Documentation', 'storegrowth-sales-booster') }
           </button>
         </div>
       </div>

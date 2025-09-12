@@ -43,7 +43,7 @@ const SettingInstruction = () => {
             }}
             onClick={() =>
               window.open(
-                "https://storegrowth.io/docs/stock-bar/",
+                "https://storegrowth.io/docs/storegrowth-helpcenter/modules/stock-bar/",
                 "_blank"
               )
             }

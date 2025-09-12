@@ -159,4 +159,8 @@ abstract class BaseModule implements ModuleSkeleton {
         do_action( 'storegrowth_module_after_boot', $this->get_id() );
 
 	}
+
+    public function get_doc_link(): string {
+        return 'https://storegrowth.io/docs/storegrowth-helpcenter/modules/' . $this->get_id() . '/';
+    }
 }
