@@ -3,8 +3,8 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: BOGO, Upsells, Direct Checkout, Quick View, Side Cart
 
 Requires at least: 5.4
-Tested up to: 6.7.1
-Stable tag: 2.0.0
+Tested up to: 6.8.2
+Stable tag: 2.0.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -272,6 +272,20 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.0.1 (Sep 12, 2025) =
+
+* New: Dokan compatibility is now fully supported across StoreGrowth modules.
+* New: Full vendor dashboard compatibility is now supported.
+* New: Vendors can create and manage Buy 1 Get 1 (BOGO) offers directly from their dashboard.
+* New: Vendors can create Countdown Timer product discount offers from their vendor dashboard.
+* New: Vendors can create Buy X Get Y and Buy X Get X offers from their BOGO menu in the vendor dashboard.
+* New: Fly Cart now displays the vendor store name for each item when the setting is enabled. Vendor names can optionally appear as links to the vendor's store.
+* New: Admin control for vendor offer creation has been added, allowing administrators to manage vendor offer creation permissions.
+* Improvement: Updated API validation for `offer_type` to accept `discount` or `price` (replacing `fixed_price`). Requests using `fixed_price` should migrate to `price`.
+* Improvement: Updated documentation links throughout the plugin to use the new StoreGrowth documentation structure.
+* Fix: Resolved BOGO offer price saving calculation issue.
+* Update: Updated promotional video link across the plugin.
 
 = 2.0.0 (Sep 05, 2025) =
 

@@ -1,14 +1,14 @@
 # Copyright (c) 2025 All Rights Reserved by weDevs.
 msgid ""
 msgstr ""
-"Project-Id-Version: StoreGrowth 2.0.0\n"
+"Project-Id-Version: StoreGrowth 2.0.1\n"
 "Report-Msgid-Bugs-To: https://storegrowth.io/contact-us/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-05T10:20:48+00:00\n"
+"POT-Creation-Date: 2025-09-12T05:16:33+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: storegrowth-sales-booster\n"
@@ -17,7 +17,6 @@ msgstr ""
 #: storegrowth-sales-booster.php
 #: includes/Admin/AdminMenu.php:57
 #: includes/Admin/AdminMenu.php:58
-#: integrations/includes/Dokan/Dashboard/Dashboard.php:83
 #: modules/sales-pop/assets/build/settings.js:1
 #: modules/sales-pop/assets/src/components/Preview.js:156
 #: modules/sales-pop/assets/src/components/Template.js:224
@@ -70,8 +69,13 @@ msgstr ""
 
 #: includes/Admin/AdminMenu.php:95
 #: includes/Admin/AdminMenu.php:96
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:95
+#: modules/countdown-timer/templates/wc-product-data-panels.php:61
 #: assets/src/components/dashboard/Overview.js:61
 #: assets/src/components/initail-setup/Ready.jsx:56
+#: assets/src/components/modules/ModuleCard.js:120
+#: modules/countdown-timer/assets/build/settings.js:1
+#: modules/countdown-timer/assets/src/components/SettingInstruction.js:53
 msgid "Documentation"
 msgstr ""
 
@@ -142,7 +146,7 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
-#: integrations/includes/Dokan/Dashboard/Bogo.php:52
+#: integrations/includes/Dokan/Dashboard/Bogo.php:61
 #: modules/bogo/includes/BoGoModule.php:73
 #: modules/bogo/includes/OrderBogo.php:785
 msgid "BOGO"
@@ -734,7 +738,7 @@ msgstr ""
 
 #: modules/countdown-timer/includes/CommonHooks.php:63
 #: modules/countdown-timer/includes/CountdownTimerModule.php:66
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:57
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:60
 msgid "Countdown Timer"
 msgstr ""
 
@@ -748,48 +752,48 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:58
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:61
 msgid "Configure countdown timer settings for this product"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:68
-#: modules/countdown-timer/templates/wc-product-data-panels.php:23
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:71
+#: modules/countdown-timer/templates/wc-product-data-panels.php:25
 msgid "Product Discount (%)"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:69
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:72
 msgid "Set the discount as percentage"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:70
-#: modules/countdown-timer/templates/wc-product-data-panels.php:26
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:73
+#: modules/countdown-timer/templates/wc-product-data-panels.php:28
 msgid "Set the countdown timer discount as percentage."
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:75
-#: modules/countdown-timer/templates/wc-product-data-panels.php:37
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:78
+#: modules/countdown-timer/templates/wc-product-data-panels.php:39
 msgid "Discount dates"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:77
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:80
 msgid "Start date... YYYY-MM-DD"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:78
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:81
 msgid "to"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:79
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:82
 msgid "End date... YYYY-MM-DD"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:82
-#: modules/countdown-timer/templates/wc-product-data-panels.php:50
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:85
+#: modules/countdown-timer/templates/wc-product-data-panels.php:52
 msgid "The sale will start at 00:00:00 of \"Start\" date and end at 23:59:59 of \"End\" date."
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:92
-msgid "All the fields are required to show the countdown. To learn more, please view the <b><a href=\"https://storegrowth.io/docs/sales-countdown/\" target=\"_blank\">Documentation</a></b>"
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:95
+msgid "All the fields are required to show the countdown. To learn more, please view the <b><a href=\"%s\" target=\"_blank\">%s</a></b>"
 msgstr ""
 
 #: modules/direct-checkout/includes/CommonHooks.php:156
@@ -833,13 +837,13 @@ msgstr ""
 
 #: modules/fly-cart/templates/cart-checkout-buttons.php:11
 #: modules/fly-cart/assets/build/settings.js:1
-#: modules/fly-cart/assets/src/components/Preview.js:485
+#: modules/fly-cart/assets/src/components/Preview.js:487
 msgid "Keep Shopping"
 msgstr ""
 
 #: modules/fly-cart/templates/cart-checkout-buttons.php:15
 #: modules/fly-cart/assets/build/settings.js:1
-#: modules/fly-cart/assets/src/components/Preview.js:502
+#: modules/fly-cart/assets/src/components/Preview.js:504
 msgid "Checkout"
 msgstr ""
 
@@ -991,7 +995,7 @@ msgid "ID of the offer product."
 msgstr ""
 
 #: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:448
-msgid "Type of offer (discount or fixed_price)."
+msgid "Type of offer (discount or price)."
 msgstr ""
 
 #: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:455
@@ -1047,8 +1051,16 @@ msgstr ""
 msgid "Email Support"
 msgstr ""
 
+#: assets/src/components/dashboard/Overview.js:100
+msgid "Contact Us"
+msgstr ""
+
 #: assets/src/components/dashboard/Overview.js:115
 msgid "Have Any Thoughts or Feature Request?"
+msgstr ""
+
+#: assets/src/components/dashboard/Overview.js:133
+msgid "Submit Request"
 msgstr ""
 
 #: assets/src/components/initail-setup/ContentLayout.jsx:28
@@ -2159,7 +2171,7 @@ msgstr ""
 #: modules/bogo/assets/src/components/Preview.jsx:82
 #: modules/fly-cart/assets/build/settings.js:1
 #: modules/fly-cart/assets/src/components/Preview.js:125
-#: modules/fly-cart/assets/src/components/Preview.js:265
+#: modules/fly-cart/assets/src/components/Preview.js:266
 #: modules/sales-pop/assets/build/settings.js:1
 #: modules/sales-pop/assets/src/components/Preview.js:41
 #: modules/sales-pop/assets/src/components/Template.js:107
@@ -3004,29 +3016,29 @@ msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
 #: modules/fly-cart/assets/src/components/Preview.js:156
-#: modules/fly-cart/assets/src/components/Preview.js:296
+#: modules/fly-cart/assets/src/components/Preview.js:297
 msgid "Hoodie with Zipper"
 msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
 #: modules/fly-cart/assets/src/components/Preview.js:169
-#: modules/fly-cart/assets/src/components/Preview.js:309
+#: modules/fly-cart/assets/src/components/Preview.js:310
 msgid "$42.00"
 msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
-#: modules/fly-cart/assets/src/components/Preview.js:420
+#: modules/fly-cart/assets/src/components/Preview.js:422
 msgid "Subtotal"
 msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
-#: modules/fly-cart/assets/src/components/Preview.js:429
-#: modules/fly-cart/assets/src/components/Preview.js:455
+#: modules/fly-cart/assets/src/components/Preview.js:431
+#: modules/fly-cart/assets/src/components/Preview.js:457
 msgid "$126.00"
 msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
-#: modules/fly-cart/assets/src/components/Preview.js:443
+#: modules/fly-cart/assets/src/components/Preview.js:445
 msgid "Total"
 msgstr ""
 

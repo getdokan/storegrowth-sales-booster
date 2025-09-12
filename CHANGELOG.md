@@ -1,3 +1,17 @@
+### v2.0.1 (Sep 12, 2025) ###
+
+- **new:** Dokan compatibility is now fully supported across StoreGrowth modules.  
+- **new:** Full vendor dashboard compatibility is now supported.  
+- **new:** Vendors can create and manage Buy 1 Get 1 (BOGO) offers directly from their dashboard.
+- **new:** Vendors can create Countdown Timer product discount offers from their vendor dashboard.  
+- **new:** Vendors can create Buy X Get Y and Buy X Get X offers from their BOGO menu in the vendor dashboard.  
+- **new:** Fly Cart now displays the vendor store name for each item when the setting is enabled. Vendor names can optionally appear as links to the vendor's store.  
+- **new:** Admin control for vendor offer creation has been added, allowing administrators to manage vendor offer creation permissions.  
+- **enhance:** Updated API validation for `offer_type` to accept `discount` or `price` (replacing `fixed_price`). Requests using `fixed_price` should migrate to `price`.  
+- **enhance:** Updated documentation links throughout the plugin to use the new StoreGrowth documentation structure.  
+- **fix:** Resolved BOGO offer price saving calculation issue.  
+- **update:** Updated promotional video link across the plugin.
+
 ### 2.0.0 (Sep 05, 2025) ###
 
 - **new:** Complete plugin rebrand to StoreGrowth with standardized asset prefixes and constants.
