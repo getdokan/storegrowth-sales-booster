@@ -107,6 +107,10 @@ class EnqueueScript implements HookRegistry {
 	private function dc_button_inline_styles() {
 		// Get style options.
 		$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
+		$button_style         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_style', true );
+        if ( ! $button_style ) {
+            return;
+        }
 		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
 		$text_color           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
 		$font_size            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', '16' );
