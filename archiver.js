@@ -35,6 +35,14 @@ function shouldExcludeFile(file) {
     "lerna.json",
     "package-lock.json",
     "archiver.js",
+    ".github",
+    ".idea",
+    ".vscode",
+    ".distignore",
+    ".gitignore",
+    ".editorconfig",
+    ".svnignore",
+     "phpcs.xml",
   ];
 
   return excludedFiles.some(excludedFile => file === excludedFile || file.includes(excludedFile));
@@ -65,7 +73,15 @@ async function archive() {
     "package-lock.json",
     "archiver.js",
     "composer.json",
-    "composer.lock"
+    "composer.lock",
+    ".github",
+    ".idea",
+    ".vscode",
+    ".distignore",
+    ".gitignore",
+    ".editorconfig",
+    ".svnignore",
+    "phpcs.xml",
   ];
 
   const archive = archiver("zip", {
