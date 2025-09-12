@@ -107,7 +107,7 @@ const VendorsSettings = () => {
           isEnable={currentVendorsSettings?.vendors_can_create_buy_x_get_x}
           changeHandler={onFieldChange}
         />
-        <Switcher
+          {/* <Switcher
           name="vendors_can_schedule_offers"
           title={__("Vendors Can Schedule Offers", "storegrowth-sales-booster")}
           tooltip={__(
@@ -146,7 +146,7 @@ const VendorsSettings = () => {
             currentVendorsSettings?.vendors_can_set_product_page_custom_message
           }
           changeHandler={onFieldChange}
-        />
+        /> */}
       </div>
       <ActionsHandler
         resetHandler={onFormReset}

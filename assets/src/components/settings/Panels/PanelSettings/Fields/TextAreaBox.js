@@ -62,7 +62,7 @@ const TextAreaBox = ( {
                 />
                 { renderTextAreaContent && renderAreaContent }
             </Col>
-            <UpgradeOverlay /> 
+            { (needUpgrade&&upgradeOverlay) && <UpgradeOverlay /> }
         </FieldWrapper>
     );
 }

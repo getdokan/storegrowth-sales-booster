@@ -185,18 +185,18 @@ class EnqueueScript implements HookRegistry {
 	 * Product list.
 	 */
 	public function prodcut_list() {
-		$args = array(
+		$args = apply_filters('spsg_bogo_product_args', [
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
-			'tax_query'      => array(
-				array(
+			'tax_query'      => [
+				[
 					'taxonomy' => 'product_type',
 					'field'    => 'slug',
 					'terms'    => 'external',
 					'operator' => 'NOT IN',
-				),
-			),
-		);
+				],
+			],
+		] );
 
 		$products = get_posts( $args );
 

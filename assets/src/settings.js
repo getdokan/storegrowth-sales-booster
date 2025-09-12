@@ -1,5 +1,5 @@
 import { register } from '@wordpress/data';
-import { render, StrictMode } from '@wordpress/element';
+import { createRoot, StrictMode } from '@wordpress/element';
 import { HashRouter } from 'react-router-dom';
 
 import './components/settings';
@@ -17,13 +17,14 @@ if ( !spsgAdmin?.isPro ) {
 
 register( settingsStore );
 
-render(
+const container = document.getElementById( 'sbooster-settings-page' );
+const root = createRoot( container );
+root.render(
   <StrictMode>
     <HashRouter>
       <Layout />
     </HashRouter>
   </StrictMode>,
-  document.getElementById( "sbooster-settings-page" )
 );
 
 menuFix( 'sales-booster-for-woocommerce' );
