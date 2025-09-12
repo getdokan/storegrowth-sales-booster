@@ -1,8 +1,12 @@
-/.wordpress-org
 /.git
 /.github
 /node_modules
-modules/**/node_modules
+/modules/**/node_modules
+/modules/**/assets/src/
+/integrations/**/src/
+/integrations/**/node_modules
+/.idea
+/.vscode
 
 .distignore
 .gitignore
@@ -13,3 +17,6 @@ lerna-debug.log
 composer.json
 composer.lock
 archiver.js
+.DS_Store
+phpcs.xml
+.editorconfig

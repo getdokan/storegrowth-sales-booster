@@ -8,16 +8,25 @@ jobs:
     name: Deploy Plugin
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Build
         run: |
           composer install
-          composer dump-autoload
+          composer install --no-dev -o
           npm install
           npm run build
       - name: WordPress Plugin Deploy
-        uses: 10up/action-wordpress-plugin-deploy@stable
+        uses: 10up/action-wordpress-plugin-deploy@v2
+        with:
+          generate-zip: true
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SLUG: storegrowth-sales-booster
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{github.workspace}}/${{ github.event.repository.name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
