@@ -2,7 +2,7 @@
 /.github
 /node_modules
 /modules/**/node_modules
-/modules/**/assets/src/
+/modules/**/src/
 /integrations/**/src/
 /integrations/**/node_modules
 /.idea
