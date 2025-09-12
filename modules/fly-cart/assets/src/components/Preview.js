@@ -241,6 +241,7 @@ const Preview = ( { storeData } ) => {
                                         </div>
                                     ) }
                                     </div>
+                                        { applyFilters('spsg_cart_product_detail_after', '', storeData) }
                                     </div> 
                                 </div>
                                 <div
@@ -381,6 +382,7 @@ const Preview = ( { storeData } ) => {
                                         </div>
                                     ) }
                                     </div>
+                                        { applyFilters('spsg_cart_product_detail_after', '', storeData) }
                                     </div> 
                                 </div>
                                 

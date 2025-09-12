@@ -1,5 +1,6 @@
 import { addFilter } from "@wordpress/hooks";
 import { __ } from "@wordpress/i18n";
+import VendorInfoPreview from "./VendorInfoPreview";
 
 addFilter(
   "spsg_quick_cart_content_settings",
@@ -26,3 +27,9 @@ addFilter("spsg_quick_cart_state", "spsg_quick_cart_state_callback", (data) => {
     enable_quick_cart_dokan_store_links: true,
   };
 });
+
+addFilter(
+    'spsg_cart_product_detail_after',
+    'spsg_fly_cart_product_detail_after_callback',
+    (data, storeData) => <VendorInfoPreview storeData={storeData} />
+)
