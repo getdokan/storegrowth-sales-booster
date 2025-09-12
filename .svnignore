@@ -1,5 +1,13 @@
-bin
+.git
+.github
+.svnignore
+.gitignore
+.distignore
 node_modules
+/modules/**/node_modules
+/modules/**/src
+/integrations/**/src
+/integrations/**/node_modules
 assets/src
 assets/css/style.css.map
 tests
@@ -7,11 +15,8 @@ nbproject
 Gruntfile.js
 package.json
 changelog.txt
-.gitignore
-.travis.yml
 debug.log
 phpunit.xml
-.svnignore
 README.md
 package-lock.json
 phpcs.ruleset.xml
@@ -23,9 +28,5 @@ composer.lock
 composer.json
 .editorconfig
 .wordpress-org
-.distignore
-.git
-.github
-docs
 CHANGELOG.md
 DEVELOPER.md
