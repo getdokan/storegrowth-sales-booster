@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use WC_Product;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -43,9 +44,13 @@ class CommonHooks implements HookRegistry {
 	 * Hook for WooCommerce before add-to-cart form.
 	 */
 	public function show_countdown_timer_template() {
+		/** @var WC_Product $product */
 		global $product;
 		$stock_status = $product->get_stock_status();
-		if ( $product->is_type( 'simple' ) && 'outofstock' !== $stock_status ) {
+
+		$supported_types = apply_filters( 'spsg_countdown_timer_supported_product_type', [ 'simple', 'variable' ] );
+
+		if ( in_array( $product->get_type(), $supported_types, true ) && 'outofstock' !== $stock_status ) {
 			include __DIR__ . '/../templates/countdown-timer.php';
 		}
 	}
