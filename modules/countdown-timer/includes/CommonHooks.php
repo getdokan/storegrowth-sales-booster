@@ -48,9 +48,9 @@ class CommonHooks implements HookRegistry {
 		global $product;
 		$stock_status = $product->get_stock_status();
 
-		$supported_types = apply_filters( 'spsg_countdown_timer_supported_product_type', [ 'simple', 'variable' ] );
+		$is_allow = apply_filters( 'spsg_allow_countdown_timer_render', true, $product );
 
-		if ( in_array( $product->get_type(), $supported_types, true ) && 'outofstock' !== $stock_status ) {
+		if ( $is_allow && 'outofstock' !== $stock_status ) {
 			include __DIR__ . '/../templates/countdown-timer.php';
 		}
 	}
