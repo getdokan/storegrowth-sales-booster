@@ -34,8 +34,8 @@ class CartValidator implements HookRegistry {
 		return $quantity;
 	}
 
-	public function after_checkout_validation( $data, WP_Error $errors ) {
-		$this->should_render_validation_error( $errors );
+	public function after_checkout_validation( $data, WP_Error $error ) {
+		$this->maybe_render_validation_error( $error );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class CartValidator implements HookRegistry {
 	 *
 	 * @return void
 	 */
-	public function should_render_validation_error( WP_Error $wp_error ) {
+	public function maybe_render_validation_error( WP_Error $wp_error ) {
 		if ( $this->is_invalid_cart() ) {
 			foreach ( $this->errors as $error ) {
 				$wp_error->add( $error['type'], $error['message'] );
