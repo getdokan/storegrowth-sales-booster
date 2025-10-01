@@ -36,7 +36,7 @@ class CommonHooks implements HookRegistry {
 		add_action( 'woocommerce_admin_process_product_object', array( $this, 'woocommerce_admin_process_product_object' ) );
 
 		add_filter( 'woocommerce_product_get_price', array( $this, 'get_product_price' ), 10, 2 );
-
+		add_filter( 'woocommerce_product_variation_get_price', array( $this, 'get_product_price' ), 10, 2 );
 		add_filter( 'woocommerce_product_is_on_sale', array( $this, 'woocommerce_product_is_on_sale' ), 10, 2 );
 	}
 
@@ -109,10 +109,13 @@ class CommonHooks implements HookRegistry {
 
 		$stock_discount_amount = isset( $_POST['_spsg_countdown_timer_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_amount'] ) ) : null; // phpcs:ignore
 
-		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_start', $discount_start_date );
-		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', $discount_end_date );
-		update_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', $stock_discount_amount );
+		$product_ids = array_merge( [ $product->get_id() ], $product->get_children() );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		foreach( $product_ids as $product_id ) {
+			update_post_meta( $product_id, '_spsg_countdown_timer_discount_start', $discount_start_date );
+			update_post_meta( $product_id, '_spsg_countdown_timer_discount_end', $discount_end_date );
+			update_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', $stock_discount_amount );
+		}
 	}
 
 	/**
