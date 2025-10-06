@@ -7,6 +7,7 @@ import SingleCheckBox from "../../../../../assets/src/components/settings/Panels
 import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
 import { createDirectCheckoutForm } from "../helper";
+import RadioGroup from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/RadioGroup";
 
 function General({ onFormSave, upgradeTeaser }) {
   const { setCreateFromData } = useDispatch("spsg_direct_checkout");
@@ -52,10 +53,10 @@ function General({ onFormSave, upgradeTeaser }) {
   // Define select options.
   let checkoutPageOptions = [
     {
-      label: __("Legacy Checkout", "storegrowth-sales-booster"),
+      label: __("Checkout Page", "storegrowth-sales-booster"),
       value: "legacy-checkout",
       tooltip: __(
-        "The Chekout will redirect to the default checkout page.",
+        "Buy Now button will redirect to the default checkout page",
         "storegrowth-sales-booster"
       ),
     },
@@ -96,15 +97,15 @@ function General({ onFormSave, upgradeTeaser }) {
           createDirectCheckoutFormData
         ) }
 
-        <CheckboxGroup
+        <RadioGroup
           name={"checkout_redirect"}
           options={checkoutPageOptions}
           selectedOptions={createDirectCheckoutFormData.checkout_redirect}
-          handleCheckboxChange={onFieldChange}
+          handleChange={onFieldChange}
           isSingleMode={true}
           title={__("Checkout Redirect", "storegrowth-sales-booster")}
           headColSpan={9}
-          checkboxColSpan={15}
+          radioColSpan={15}
         >
           {/* Rendered direct checkout settings. */}
           { applyFilters(
@@ -112,7 +113,7 @@ function General({ onFormSave, upgradeTeaser }) {
             '',
             isQuickCartActive
           ) }
-        </CheckboxGroup>
+        </RadioGroup>
 
         {/* Rendered sales pop action settings. */}
         { applyFilters(
