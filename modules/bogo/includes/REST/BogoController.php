@@ -2,6 +2,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo\REST;
 
+use Exception;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Controller;
@@ -287,7 +288,8 @@ class BogoController extends WP_REST_Controller {
      *
      * @since 2.0.0
      * @param \WP_REST_Request $request The REST request.
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
+     * @throws Exception if any error
      */
     public function create_item( $request ) {
         $data = $request->get_params();
@@ -307,6 +309,19 @@ class BogoController extends WP_REST_Controller {
 
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
+
+		// check the duplicate bogo offer
+		$existing = BogoDataManager::get_bogo_offers([
+			'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
+			'offer_product_id' => $data['get_different_product_field']
+		]);
+
+		if ( ! empty( $existing ) ) {
+			return new WP_Error(
+				'bogo_offer_exists',
+				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', '')
+			);
+		}
 
         $result = BogoDataManager::create_global_offer( $data );
 
