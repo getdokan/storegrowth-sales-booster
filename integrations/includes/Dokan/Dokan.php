@@ -31,10 +31,10 @@ class Dokan implements HookRegistry {
 
         if ( function_exists( 'dokan_is_seller_dashboard' ) ) {
             Dashboard::instance();
+			Frontend::instance();
         }
 
         Ajax::instance();
-        Frontend::instance();
         Api::instance();
     }
 }
