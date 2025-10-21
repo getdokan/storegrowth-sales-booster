@@ -48,7 +48,7 @@ function Sidebar({ routes }) {
     };
 
     useEffect(() => {
-        Ajax("get_all_modules").success((response) => {
+        Ajax("get_all_modules").then((response) => {
             const dashboardRoutes = [];
             const availableRoutes = allRoutes.map(availableRoute => availableRoute?.name);
             response?.map(route => {
