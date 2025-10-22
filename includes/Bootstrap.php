@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Admin\AdminMenu;
+use StorePulse\StoreGrowth\Providers\ServiceProvider;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Admin\AdminHooks;
 use StorePulse\StoreGrowth\DependencyManagement\Container;
@@ -66,6 +67,9 @@ class Bootstrap {
 
 		// Register hooks.
 		$this->register_hooks();
+
+		// add core service provider
+		storegrowth_get_container()->addServiceProvider( new ServiceProvider() );
 
 		// Include integration classes.
 		$this->load_integration_classes();
