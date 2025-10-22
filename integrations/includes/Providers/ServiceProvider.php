@@ -28,7 +28,7 @@ class ServiceProvider extends BootableServiceProvider {
      * @return void
      */
     public function boot(): void {
-		if ( function_exists('dokan') ) {
+		if ( function_exists( 'dokan' ) ) {
 			$this->getContainer()->addServiceProvider( new DokanServiceProvider() );
 		}
     }

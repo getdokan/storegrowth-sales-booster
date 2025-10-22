@@ -34,7 +34,7 @@ class Dokan implements HookRegistry {
         }
 
         Ajax::instance();
-		Frontend::instance();
+        Frontend::instance();
         Api::instance();
     }
 }
