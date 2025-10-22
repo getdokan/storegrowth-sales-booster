@@ -64,7 +64,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     }
   };
 
-  if (action_name == "delete") {
+  if (action_name === "delete") {
     Modal.confirm({
       title: __("Delete BOGO Offer", "storegrowth-sales-booster"),
       content: __("Are you sure you want to delete this BOGO offer? This action cannot be undone.", "storegrowth-sales-booster"),
@@ -140,8 +140,8 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     }
 
     if (
-      createBogoData.offered_products.length == 0 &&
-      createBogoData.offered_categories.length == 0
+      createBogoData.offered_products.length === 0 &&
+      createBogoData.offered_categories.length === 0
     ) {
       notification["error"]({
         message:
@@ -151,7 +151,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
-    if (createBogoData.offer_schedule.length == 0) {
+    if (createBogoData.offer_schedule.length === 0) {
       notification["error"]({
         message: "Please select bogo schedule",
       });
