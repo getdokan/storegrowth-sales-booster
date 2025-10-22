@@ -8,6 +8,7 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpAjax;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\CartValidator;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -32,6 +33,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         OrderBump::class,
         OrderBumpAjax::class,
         OrderBumpController::class,
+	    CartValidator::class,
     ];
 
     /**
