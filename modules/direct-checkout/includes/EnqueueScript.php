@@ -90,8 +90,8 @@ class EnqueueScript implements HookRegistry {
 			$settings_file['version'],
 			false
 		);
-		$spsg_active_module_ids  = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_active_module_ids' );
-		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $spsg_active_module_ids );
+		$modules        = storegrowth_get_container()->get( \StorePulse\StoreGrowth\ModuleManager::class );
+		$is_quick_cart_activated = ! $modules->is_active_module('fly-cart');
 		wp_localize_script(
 			'spsg-direct-checkout-settings',
 			'spsgAdminQuickCartValidate',
