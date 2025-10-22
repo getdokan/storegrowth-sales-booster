@@ -15,38 +15,33 @@ const BogoOffers = ({ navigate }) => {
   const [offersData, setOffersData] = useState([]);
   const [currentOffer, setCurrentOffer] = useState(null);
   const [totalOffers, setTotalOffers] = useState(0);
-  const [productIds, setProductIds] = useState<number[]>([]);
-  const [productsMap, setProductsMap] = useState({});
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
+  const getOfferProduct = (item)  => {
+      return item.bogo_deal_type === 'same'
+          ? item?.get_offered_product_info
+          : item?.get_different_product_info;
+  }
+
   // Get product name.
-  const getProductName = (productId) => {
-    if (productId && productsMap[productId] && productsMap[productId].name) {
-      return productsMap[productId].name;
-    }
-    return "";
+  const getProductName = (item) => {
+      const offerProduct = getOfferProduct(item);
+    return offerProduct?.name || '-';
   };
 
   // Get product price.
-  const getProductPrice = (productId) => {
-    if (productId && productsMap[productId] && productsMap[productId].price) {
-      return productsMap[productId].price;
-    }
-    return "";
+  const getProductPrice = (item) => {
+    const offerProduct = getOfferProduct(item);
+    return offerProduct?.price || '-';
   };
 
   // Get offer discounted amount.
   const getDiscountedAmount = (item) => {
     let discountedPrice = 0.0;
-    let productId =
-      "same" === item?.bogo_deal_type
-        ? item?.offered_products
-        : item?.get_different_product_field;
-    let product = productId ? productsMap[productId] : null;
+    const offerProduct = getOfferProduct(item);
 
-    if ("discount" === item?.offer_type && product) {
-      discountedPrice =
-        product.price - product.price * (item?.discount_amount / 100);
+    if ("discount" === item?.offer_type && offerProduct) {
+      discountedPrice = offerProduct.price - offerProduct.price * (item?.discount_amount / 100);
     }
 
     return discountedPrice;
@@ -73,27 +68,6 @@ const BogoOffers = ({ navigate }) => {
 
       setOffersData(offers);
       setTotalOffers(totalItems); // Set total items count.
-
-      // Include product IDs from offers.
-      offers.forEach((offer) => {
-        if (offer.offered_products) {
-          const productId = offer.offered_products;
-          if (!productIds.includes(productId)) {
-            setProductIds((prevData) => {
-              return [...prevData, productId];
-            });
-          }
-        }
-
-        if (offer.get_different_product_field) {
-          const productId = offer.get_different_product_field;
-          if (!productIds.includes(productId)) {
-            setProductIds((prevData) => {
-              return [...prevData, productId];
-            });
-          }
-        }
-      });
     } catch (error) {
       // Handling the case where `error` is a Response object
       console.log("Error fetching BOGO offers:", error);
@@ -239,7 +213,7 @@ const BogoOffers = ({ navigate }) => {
           {isLoading ? (
             <span className="block w-20 h-3 rounded bg-gray-200 animate-pulse"></span>
           ) : (
-            <RawHTML>{getProductName(item?.offered_products)}</RawHTML>
+            <RawHTML>{item?.get_offered_product_info?.name || '-'}</RawHTML>
           )}
         </div>
       ),
@@ -263,21 +237,13 @@ const BogoOffers = ({ navigate }) => {
             <ul className="dokan-bogo-product-name">
               <li>
                 <RawHTML>
-                  {getProductName(
-                    item?.get_different_product_field
-                      ? item.get_different_product_field
-                      : item?.offered_products
-                  )}
+                  {getProductName(item)}
                 </RawHTML>
               </li>
               <li className="flex items-center gap-1">
                 {__("Product Price: ", "storegrowth-sales-booster")}
                 <PriceHtml
-                  price={getProductPrice(
-                    item?.get_different_product_field
-                      ? item.get_different_product_field
-                      : item?.offered_products
-                  )}
+                  price={getProductPrice(item)}
                 />
               </li>
               <li className="flex items-center gap-1">
@@ -353,27 +319,8 @@ const BogoOffers = ({ navigate }) => {
 
   // Fetch offers when view changes.
   useEffect(() => {
-    fetchBogoOffers();
+    void fetchBogoOffers();
   }, [view.page, view.perPage]);
-
-  // Fetch products data when product IDs change.
-  useEffect(() => {
-    productIds.forEach(async (productId) => {
-      if (!productsMap[productId]) {
-        if (productId > 0) {
-          let product = await apiFetch({
-            path: `/dokan/v1/products/${productId}`,
-            method: "GET",
-          });
-
-          setProductsMap((prevMap) => ({
-            ...prevMap,
-            [productId]: product,
-          }));
-        }
-      }
-    });
-  }, [productIds]);
 
   return (
     <>

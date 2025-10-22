@@ -151,7 +151,6 @@ class Bogo {
         $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
 
 		$args = [
-			'product_list'          => $script->prodcut_list(),
             'product_list_for_view' => $script->prodcut_list_for_view(),
             'category_list'         => $script->category_list(),
             'order_bogo_list'       => $script->order_bogo_list(),

@@ -963,6 +963,8 @@ class BogoController extends WP_REST_Controller {
             $data['get_alternate_products'] = $item['alternate_products'];
         }
 
+		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
+
 		if ( isset( $data['get_different_product_field'] ) ) {
 			$product = wc_get_product( $data['get_different_product_field'] );
 			if ( $product ) {
@@ -970,6 +972,7 @@ class BogoController extends WP_REST_Controller {
 					'id' => $product->get_id(),
 					'name' => $product->get_title(),
 					'price' => $product->get_price(),
+					'currency' => $currency
 				];
 			}
 		}
@@ -981,6 +984,7 @@ class BogoController extends WP_REST_Controller {
 					'id' => $product->get_id(),
 					'name' => $product->get_title(),
 					'price' => $product->get_price(),
+					'currency' => $currency
 				];
 			}
 		}

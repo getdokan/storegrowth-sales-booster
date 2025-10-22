@@ -124,7 +124,7 @@ const BasicInfo = ({ clearErrors }) => {
 
   const getProducts = async (query, type = '') => {
       return await apiFetch({
-          path: `/sales-booster/v1/products?search=${query}&product_type=${type}`,
+          path: `/sales-booster/v1/products?search=${query}&product_type=${type}&per_page=30`,
       });
   }
 
@@ -137,7 +137,7 @@ const BasicInfo = ({ clearErrors }) => {
           }
       })
       setOriginalProductListForSelect(products)
-  }, 500)
+  }, 500);
 
     const onDifferentProductSearch = debounce(async (value = '') => {
       const response = await getProducts(value, 'simple');
@@ -148,7 +148,7 @@ const BasicInfo = ({ clearErrors }) => {
           }
       })
       setSimpleProductForOffer(products)
-  }, 500)
+  }, 500);
 
   return (
     <Fragment>
