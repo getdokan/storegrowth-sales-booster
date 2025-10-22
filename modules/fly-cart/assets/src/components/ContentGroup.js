@@ -39,6 +39,7 @@ const ContentGroup = ( {
                 { options && options?.map( ( option, index ) => (
                     <Col
                         span={ 12 }
+                        key={ index }
                         className="gutter-row"
                         style={ {
                             paddingLeft: ( index % 2 === 0 ) ? 0 : 6,

@@ -90,8 +90,8 @@ class EnqueueScript implements HookRegistry {
 			$settings_file['version'],
 			false
 		);
-		$spsg_active_module_ids  = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_active_module_ids' );
-		$is_quick_cart_activated = ! array_key_exists( 'fly-cart', $spsg_active_module_ids );
+		$modules        = storegrowth_get_container()->get( \StorePulse\StoreGrowth\ModuleManager::class );
+		$is_quick_cart_activated = ! $modules->is_active_module('fly-cart');
 		wp_localize_script(
 			'spsg-direct-checkout-settings',
 			'spsgAdminQuickCartValidate',
@@ -107,6 +107,10 @@ class EnqueueScript implements HookRegistry {
 	private function dc_button_inline_styles() {
 		// Get style options.
 		$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
+		$button_style         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_style', true );
+        if ( ! $button_style ) {
+            return;
+        }
 		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
 		$text_color           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
 		$font_size            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', '16' );

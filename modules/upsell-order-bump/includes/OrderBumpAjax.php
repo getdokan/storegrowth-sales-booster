@@ -61,7 +61,7 @@ class OrderBumpAjax implements HookRegistry {
 		} else {
 			$custom_price = $bump_price;
 			// Cart item data to send & save in order.
-			$cart_item_data = array( 'custom_price' => $custom_price );
+			$cart_item_data = array( 'custom_price' => $custom_price, '_spsg_order_bump_product' => true );
 			// Woocommerce function to add product into cart check its documentation also.
 			$woocommerce->cart->add_to_cart( $offer_product_id, 1, $offer_variation_id, $variation = array(), $cart_item_data );
 			// Calculate totals.
