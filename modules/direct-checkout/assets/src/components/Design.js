@@ -39,7 +39,7 @@ function Design({ onFormSave, upgradeTeaser }) {
           name={ 'button_style' }
           changeHandler={ onFieldChange }
           isEnable={ Boolean( createDirectCheckoutFormData.button_style ) }
-          title={ __( 'Button Style', 'storegrowth-sales-booster' ) }
+          title={ __( 'Custom Button Style', 'storegrowth-sales-booster' ) }
           tooltip={ __( 'Will be able to achieve the control of the button style in the product.', 'storegrowth-sales-booster' ) }
         />
 
