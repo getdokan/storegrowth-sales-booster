@@ -127,7 +127,7 @@ const Overview = () => {
                       </p>
                       <span className="feature-requests-submit-button">
                         <a
-                          href={`https://storegrowth.io/contact-us/`}
+                          href={`https://feedback.storepulse.co/b/store-growth`}
                           target="_blank"
                         >
                           {__("Submit Request", "storegrowth-sales-booster")}
