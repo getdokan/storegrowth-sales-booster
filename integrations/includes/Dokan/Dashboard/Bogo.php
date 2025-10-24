@@ -41,12 +41,9 @@ class Bogo {
     }
 
 	public function add_product_query_args ( $args, $request ) {
-		if ( current_user_can( 'manage_options' )) {
-			return $args;
+		if ( ! current_user_can( 'manage_woocommerce' ) && function_exists('dokan_get_current_user_id') ) {
+			$args['author'] = dokan_get_current_user_id();
 		}
-
-		$args['author'] = ! isset( $request['id'] ) ? dokan_get_current_user_id() : $request['id'];
-
 		return $args;
 	}
 
