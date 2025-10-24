@@ -13,7 +13,7 @@ function ModulesSetup() {
   }));
 
   useEffect(() => {
-    Ajax("get_all_modules").success((response) => {
+    Ajax("get_all_modules").then((response) => {
       updateModules(response);
     });
   }, []);

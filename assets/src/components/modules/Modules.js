@@ -70,7 +70,7 @@ function Modules() {
 
   useEffect(() => {
     setPageLoading(true);
-    Ajax("get_all_modules").success((response) => {
+    Ajax("get_all_modules").then((response) => {
       // Update to WP data.
       updateModules(response);
       setPageLoading(false);
