@@ -1,6 +1,10 @@
 import { __ } from "@wordpress/i18n";
 
 const OfferProductContent = ({ offerProduct, bogoItem }) => {
+    if (!offerProduct) {
+        return null;
+    }
+
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -17,11 +21,11 @@ const OfferProductContent = ({ offerProduct, bogoItem }) => {
   return (
     <div>
       <span style={{ marginBottom: 12, display: "inline-block" }}>
-        {offerProduct.name}
+        {offerProduct?.name}
       </span>
       <br />
       <span style={{ marginBottom: 12, display: "inline-block" }}>
-        {__("Product price: ", "storegrowth-sales-booster") + offerProduct?.price}
+        {__("Product price: ", "storegrowth-sales-booster") + offerProduct?.currency + offerProduct?.price}
       </span>
       <br />
       <span style={{ marginBottom: 12, display: "inline-block" }}>

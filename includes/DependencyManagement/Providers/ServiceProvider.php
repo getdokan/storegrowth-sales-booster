@@ -29,6 +29,7 @@ class ServiceProvider extends BootableServiceProvider {
     public function boot(): void {
         $this->getContainer()->addServiceProvider( new AjaxServiceProvider() );
         $this->getContainer()->addServiceProvider( new ModuleServiceProvider() );
+		$this->getContainer()->addServiceProvider( new CommonServiceProvider() );
     }
 
     /**

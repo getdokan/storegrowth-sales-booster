@@ -1,12 +1,11 @@
 import {__} from "@wordpress/i18n";
 import {notification} from "antd";
-import apiFetch from '@wordpress/api-fetch';
 import {useDispatch, useSelect} from "@wordpress/data";
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, useState} from "@wordpress/element";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
-import SelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
+import ProductAsyncSelect from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ProductAsyncSelect";
 import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 import OfferField from "./OfferField";
 import {applyFilters} from "@wordpress/hooks";
@@ -35,13 +34,11 @@ const BasicInfo = ({ clearErrors }) => {
     { value: "discount", label: __("Discount%", "storegrowth-sales-booster-pro") },
   ];
 
-  const handleProductSelection = (key, value, list, infoKey) => {
-    const product = list.find(item => parseInt(item.value) === parseInt(value));
-
+  const handleProductSelection = (key, value, infoKey, item) => {
     setCreateFromData({
         ...createBogoData,
         [infoKey]: {
-            name: product?.label || ''
+            name: item?.name || ''
         },
         [key]: value
     });
@@ -71,26 +68,6 @@ const BasicInfo = ({ clearErrors }) => {
       });
     }
 
-    if (key === 'offered_products') {
-        handleProductSelection(
-            key,
-            value,
-            originalProductListForSelect,
-            'get_offered_product_info'
-        );
-        return;
-    }
-
-    if (key === 'get_different_product_field') {
-        handleProductSelection(
-            key,
-            value,
-            simpleProductForOffer,
-            'get_different_product_info'
-        );
-        return;
-    }
-
     setCreateFromData({
         ...createBogoData,
         [key]: value,
@@ -109,47 +86,6 @@ const BasicInfo = ({ clearErrors }) => {
     { key: 'categories', disabled: hidePremiumFeature, needUpgrade: hidePremiumFeature, value: __('Categories', 'storegrowth-sales-booster') },
   ];
 
-  function debounce(func, delay) {
-      let timeoutId; // This will store the timer ID
-      return function(...args) { // Returns a new function that will be debounced
-        const context = this; // Preserve the 'this' context
-
-        clearTimeout(timeoutId); // Clear any previous timer
-
-        timeoutId = setTimeout(() => { // Set a new timer
-          func.apply(context, args); // Execute the original function after the delay
-        }, delay);
-      };
-  }
-
-  const getProducts = async (query, type = '') => {
-      return await apiFetch({
-          path: `/sales-booster/v1/products?search=${query}&product_type=${type}&per_page=30`,
-      });
-  }
-
-  const onOfferProductSearch = debounce(async (value = '') => {
-      const response = await getProducts(value);
-      const products = response.map(product => {
-          return {
-              label: product.formatted_name,
-              value: product.id,
-          }
-      })
-      setOriginalProductListForSelect(products)
-  }, 500);
-
-    const onDifferentProductSearch = debounce(async (value = '') => {
-      const response = await getProducts(value, 'simple');
-      const products = response.map(product => {
-          return {
-              label: product.formatted_name,
-              value: product.id,
-          }
-      })
-      setSimpleProductForOffer(products)
-  }, 500);
-
   return (
     <Fragment>
       <SettingsSection>
@@ -164,14 +100,10 @@ const BasicInfo = ({ clearErrors }) => {
             "storegrowth-sales-booster-pro"
           )}
         />
-        <SelectBox
+        <ProductAsyncSelect
           colSpan={24}
-          showSearch={true}
-          fieldWidth={"100%"}
-          classes={`search-single-select`}
-          name={"offered_products"}
-          changeHandler={onFieldChange}
-          options={originalProductListForSelect}
+          name="offered_products"
+          changeHandler={(key, value, item) => handleProductSelection(key, value, 'get_offered_product_info', item)}
           fieldValue={ createBogoData?.get_offered_product_info?.name }
           title={__("Select Target Product(s)", "storegrowth-sales-booster-pro")}
           placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
@@ -179,18 +111,6 @@ const BasicInfo = ({ clearErrors }) => {
             "The target product indicates for which specific products the upsell order bogo option will be displayed.",
             "storegrowth-sales-booster-pro"
           )}
-          filterOption={(inputValue, option) =>
-            option?.children?.[0]
-              ?.toString()
-              ?.toLowerCase()
-              ?.includes(inputValue.toLowerCase())
-          }
-          onSearch={onOfferProductSearch}
-          onOpenChange={() => {
-            if(!originalProductListForSelect.length) {
-             onOfferProductSearch( '');
-            }
-          }}
         />
 
         <TextRadioBox
@@ -203,14 +123,11 @@ const BasicInfo = ({ clearErrors }) => {
         />
 
         {createBogoData?.bogo_deal_type !== "same" &&
-          (<SelectBox
+          (<ProductAsyncSelect
             colSpan={24}
-            showSearch={true}
             fieldWidth={"100%"}
             name={`get_different_product_field`}
-            changeHandler={onFieldChange}
-            options={simpleProductForOffer}
-            classes={`search-single-select`}
+            changeHandler={(key, value, item) => handleProductSelection(key, value, 'get_different_product_info', item)}
             title={__("Offer Product", "storegrowth-sales-booster-pro")}
             tooltip={__(
               "The specific product that will be available in the order bogo with an offer.",
@@ -227,11 +144,8 @@ const BasicInfo = ({ clearErrors }) => {
                 ?.toLowerCase()
                 ?.includes(inputValue.toLowerCase())
             }
-            onSearch={onDifferentProductSearch}
-            onOpenChange={() => {
-                if(!simpleProductForOffer.length) {
-                 onDifferentProductSearch( '');
-                }
+            queryArgs={{
+                product_type: 'simple'
             }}
           />)
         }
