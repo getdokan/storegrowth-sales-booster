@@ -12,7 +12,7 @@ class CartValidator implements HookRegistry {
 	public function register_hooks(): void {
 		add_filter( 'woocommerce_cart_item_quantity', [ $this, 'maybe_disable_cart_item_quantity' ], 8, 3 );
 		add_action( 'woocommerce_after_checkout_validation', [ $this, 'after_checkout_validation' ], 10, 2 );
-		add_action( 'woocommerce_store_api_cart_errors', [ $this, 'should_render_validation_error' ] );
+		add_action( 'woocommerce_store_api_cart_errors', [ $this, 'maybe_render_validation_error' ] );
 	}
 
 	/**
