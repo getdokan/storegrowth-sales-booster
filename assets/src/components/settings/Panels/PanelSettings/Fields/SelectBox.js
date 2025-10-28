@@ -21,6 +21,7 @@ const SelectBox = ( {
     colSpan = 24,
     showSearch = false,
     needUpgrade = false,
+    ...props
 } ) => {
     return (
         // Make settings select component with card preview.
@@ -38,6 +39,7 @@ const SelectBox = ( {
             <Col span={ fieldWidth ? 15 : 9 }>
                 {/* Handle settings select field by using dynamic props */}
                 <Select
+                    { ...props }
                     value={ fieldValue }
                     disabled={ needUpgrade }
                     showSearch={ showSearch }

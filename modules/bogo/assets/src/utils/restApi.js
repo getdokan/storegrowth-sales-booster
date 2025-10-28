@@ -29,7 +29,6 @@ const makeRestRequest = async (endpoint, options = {}) => {
     };
 
     try {
-        console.log(requestOptions, 'requestOptions');
         // Use WordPress apiFetch which automatically handles wp-json prefix and nonce
         const data = await apiFetch(requestOptions);
         

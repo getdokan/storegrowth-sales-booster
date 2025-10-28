@@ -37,7 +37,15 @@ class Bogo {
 		add_filter( 'spsg_bogo_rest_query_filters', [ $this, 'add_bogo_rest_query_args' ] );
 		add_filter( 'spsg_bogo_created_by', [ $this, 'add_bogo_created_by' ] );
 		add_filter( 'spsg_bogo_check_permission', [ $this, 'check_bogo_permission' ] );
+		add_filter( 'spsg_product_query_args', [ $this, 'add_product_query_args' ], 10, 2 );
     }
+
+	public function add_product_query_args ( $args, $request ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) && function_exists('dokan_get_current_user_id') ) {
+			$args['author'] = dokan_get_current_user_id();
+		}
+		return $args;
+	}
 
     /**
      * Add BOGO Sub-menu on Dokan Vendor Dashboard.
@@ -151,7 +159,6 @@ class Bogo {
         $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
 
 		$args = [
-			'product_list'          => $script->prodcut_list(),
             'product_list_for_view' => $script->prodcut_list_for_view(),
             'category_list'         => $script->category_list(),
             'order_bogo_list'       => $script->order_bogo_list(),

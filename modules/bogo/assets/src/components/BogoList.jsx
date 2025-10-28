@@ -288,7 +288,6 @@ function BogoList({ navigate }) {
   ];
 
   let catInfoByCatId = bogo_products_and_categories.category_list.catNameById;
-  let productInfoById = bogo_products_and_categories.product_list.productTitleById;
 
   function mapBogoData(item) {
     // Use offered_ prefix consistently
@@ -305,23 +304,9 @@ function BogoList({ navigate }) {
       }
     }
 
-    let products = item.offered_products || [];
-    let productList = "";
-
-    if (Array.isArray(products)) {
-      for (const key in products) {
-        if (Object.keys(products).length - 1 > key) {
-          productList = productList + productInfoById[products[key]] + ", ";
-        } else {
-          productList = productList + productInfoById[products[key]];
-        }
-      }
-    }
-
-    let offerProduct = "";
-    offerProduct = item.bogo_deal_type === 'same' 
-      ? productInfoById[products[0]] 
-      : productInfoById[item.offer_product_id];
+    const offerProduct = item.bogo_deal_type === 'same'
+      ? item.get_offered_product_info
+      : item.get_different_product_info
 
     return {
       key: item.id,
@@ -329,7 +314,7 @@ function BogoList({ navigate }) {
       type: item.type || 'global', // Default to global for old format
       status: <ActionToggler bogo_id={item.id} bogo_status={item.status} item={item} />,
       product_category: (
-        <TargetProductAndCategory catList={catList} productList={productList} />
+        <TargetProductAndCategory catList={catList} productList={item?.get_offered_product_info?.name || '-'} />
       ),
       offers: (
         <OfferProductContent offerProduct={offerProduct} bogoItem={item} />

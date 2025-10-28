@@ -98,7 +98,6 @@ class EnqueueScript implements HookRegistry {
 				'spsg-bogo-settings',
 				'bogo_products_and_categories',
 				array(
-					'product_list'          => $this->prodcut_list(),
 					'product_list_for_view' => $this->prodcut_list_for_view(),
 					'category_list'         => $this->category_list(),
 					'order_bogo_list'       => $this->order_bogo_list(),

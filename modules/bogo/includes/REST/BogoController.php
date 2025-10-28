@@ -344,7 +344,7 @@ class BogoController extends WP_REST_Controller {
      *
      * @since 2.0.0
      * @param WP_REST_Request $request The REST request.
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function update_item( $request ) {
         $id = $request->get_param( 'id' );
@@ -382,7 +382,7 @@ class BogoController extends WP_REST_Controller {
      *
      * @since 2.0.0
      * @param WP_REST_Request $request The REST request.
-     * @return WP_REST_Response
+     * @return WP_REST_Response|WP_Error
      */
     public function delete_item( $request ) {
         $id = $request->get_param( 'id' );
@@ -976,6 +976,32 @@ class BogoController extends WP_REST_Controller {
         if ( isset( $item['alternate_products'] ) && ! isset( $data['get_alternate_products'] ) ) {
             $data['get_alternate_products'] = $item['alternate_products'];
         }
+
+		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
+
+		if ( isset( $data['get_different_product_field'] ) ) {
+			$product = wc_get_product( $data['get_different_product_field'] );
+			if ( $product ) {
+				$data['get_different_product_info'] = [
+					'id' => $product->get_id(),
+					'name' => $product->get_title(),
+					'price' => $product->get_price(),
+					'currency' => $currency
+				];
+			}
+		}
+
+		if ( isset( $data['offered_products'] ) ) {
+			$product = wc_get_product( $data['offered_products'][0] ?? 0 );
+			if ( $product ) {
+				$data['get_offered_product_info'] = [
+					'id' => $product->get_id(),
+					'name' => $product->get_title(),
+					'price' => $product->get_price(),
+					'currency' => $currency
+				];
+			}
+		}
 
         $context = ! empty( $request['context'] ) ? $request['context'] : 'view';
         $data = $this->filter_response_by_context( $data, $context );
