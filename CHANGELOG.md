@@ -1,3 +1,17 @@
+### v2.0.2 (Oct 28, 2025) ###
+
+- **new:** Updated "Submit Request" button to redirect users to the new roadmap link.
+- **new:** Updated Checkout Redirect section in Direct Checkout.
+- **fix:** Fixed incompatibility with the FlyWP Helper plugin.
+- **fix:** Fixed countdown timer not working for variable products.
+- **fix:** Variable and Grouped Product Compatibility – Added support for countdown timers on variable and grouped products.
+- **fix:** Fixed fatal error when creating duplicate BOGO offers for the same product.
+- **fix:** Fixed order bump quantity issue – bumped product quantity could be increased in cart but not on place order.
+- **fix:** Fixed infinite loading when removing a product from the Flycart sidebar.
+- **fix:** Fixed issue where countdown timer fields were missing on Dokan vendor product pages.
+- **fix:** Fixed fatal error on in Storegrowth with large product data.
+
+
 ### v2.0.1 (Sep 12, 2025) ###
 
 - **new:** Dokan compatibility is now fully supported across StoreGrowth modules.  
