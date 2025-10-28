@@ -36,7 +36,7 @@ function Sidebar({ routes }) {
         Ajax("update_module_status", {
             module_id: module.name,
             status: true,
-        }).success((response) => {
+        }).then((response) => {
             if (response.success) {
                 // Set active routes for settings panel.
                 setAllRoutes([...allRoutes?.filter(route => route?.name === module?.name || route?.status !== false)]);

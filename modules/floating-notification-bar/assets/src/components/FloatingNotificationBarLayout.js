@@ -106,7 +106,7 @@ function FloatingNotificationBarLayout({
           _ajax_nonce: spsgAdmin.nonce,
         },
       })
-      .success((response) => {
+      .then((response) => {
         if (response.success && response.data) {
           setFormData({ ...formData, ...response.data });
           setTimeout(() => setPageLoading(false), 500);
@@ -184,7 +184,7 @@ function FloatingNotificationBarLayout({
         method: 'POST',
         data,
       })
-      .success(() => {
+      .then(() => {
         setButtonLoading(false);
         notificationMessage(type);
       });

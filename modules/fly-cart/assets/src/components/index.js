@@ -56,7 +56,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
           _ajax_nonce: spsgAdmin.nonce,
         },
       })
-      .success((response) => {
+      .then((response) => {
         if (response.success) {
           updateFormData({ ...formData, ...response.data });
           setTimeout(() => initializeColorPicker(), 10);
@@ -121,7 +121,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
         method: "POST",
         data: data,
       })
-      .success(() => {
+      .then(() => {
         setButtonLoading(false);
         notificationMessage(type);
       });

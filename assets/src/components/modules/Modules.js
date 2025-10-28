@@ -49,7 +49,7 @@ function Modules() {
     Ajax("update_module_status", {
       module_id: module.id,
       status: true,
-    }).success((response) => {
+    }).then((response) => {
       if (response.success) {
         const spsgSettingsURL = `admin.php?page=spsg-settings#${module.id}`;
         window.location.href = spsgSettingsURL;
