@@ -102,7 +102,7 @@ function FreeShippingBarLayout({
           _ajax_nonce: spsgAdmin.nonce,
         },
       })
-      .success((response) => {
+      .then((response) => {
         if (response.success && response.data) {
           setFormData({ ...formData, ...response.data });
           setUndoData({ ...undoData, ...response.data });
@@ -212,7 +212,7 @@ function FreeShippingBarLayout({
         method: "POST",
         data,
       })
-      .success(() => {
+      .then(() => {
         setShowUndo(false);
         setButtonLoading(false);
         notificationMessage(type);
