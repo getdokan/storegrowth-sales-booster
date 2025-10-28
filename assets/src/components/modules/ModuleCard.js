@@ -13,7 +13,7 @@ function ModuleSwitch({ module }) {
     Ajax( 'update_module_status', {
       module_id: module.id,
       status: checked
-    }).success((response) => {
+    }).then((response) => {
       if (response.success) {
         updateSingleModule(module.id, checked);
         setPageLoading(false);

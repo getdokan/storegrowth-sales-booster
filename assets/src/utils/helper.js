@@ -151,7 +151,7 @@ export const deactivatorHandler = (moduleID) => {
     Ajax("update_module_status", {
         module_id: moduleID,
         status: false,
-    }).success((response) => {
+    }).then((response) => {
         if (response.success) {
             const spsgSettingsURL = `admin.php?page=spsg-modules`;
             window.location.href = spsgSettingsURL;

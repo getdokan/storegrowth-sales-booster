@@ -154,7 +154,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
         method: "POST",
         data: data,
       })
-      .success(() => {
+      .then(() => {
         setShowUndo(false);
         setButtonLoading(false);
         notificationMessage(type);
@@ -174,7 +174,7 @@ function SalesCountdownLayout({ navigate, useSearchParams, moduleId }) {
           _ajax_nonce: spsgAdmin.nonce,
         },
       })
-      .success((response) => {
+      .then((response) => {
         if (response.success) {
           setFormData({ ...formData, ...response.data });
           setUndoData({ ...undoData, ...response.data });

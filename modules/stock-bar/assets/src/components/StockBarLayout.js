@@ -83,7 +83,7 @@ function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
         method: "POST",
         data: data,
       })
-      .success(() => {
+      .then(() => {
         setButtonLoading(false);
         notificationMessage(type);
       });
@@ -101,7 +101,7 @@ function StockBarLayout({ navigate, useSearchParams ,moduleId}) {
           _ajax_nonce: spsgAdmin.nonce,
         },
       })
-      .success((response) => {
+      .then((response) => {
         if (response.success) {
           setFormData({ ...formData, ...response.data });
           setTimeout(() => setPageLoading(false), 500);
