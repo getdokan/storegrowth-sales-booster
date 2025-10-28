@@ -313,7 +313,6 @@ class BogoController extends WP_REST_Controller {
 		// check the duplicate bogo offer
 		$existing = BogoDataManager::get_bogo_offers([
 			'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
-			'offer_product_id' => $data['get_different_product_field']
 		]);
 
 		if ( ! empty( $existing ) ) {

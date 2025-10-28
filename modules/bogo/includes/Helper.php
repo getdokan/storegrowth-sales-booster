@@ -245,4 +245,12 @@ class Helper {
             $variation_id
         );
     }
+
+	public static function get_design_value( $bogo_info, $property ) {
+	    if ( isset( $bogo_info->design_settings ) && is_string( $bogo_info->design_settings ) ) {
+	        $design_data = json_decode( $bogo_info->design_settings, true );
+	        return $design_data[ $property ] ?? '';
+	    }
+	    return '';
+	}
 }
