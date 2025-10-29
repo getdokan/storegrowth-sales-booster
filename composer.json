@@ -1,5 +1,10 @@
 {
   "name": "dokan/storegrowth-lite",
+  "require": {
+    "php": ">=7.4",
+    "appsero/client": "^2.0",
+    "appsero/updater": "^2.3"
+  },
   "autoload": {
     "psr-4": {
       "StorePulse\\StoreGrowth\\": "includes/",
