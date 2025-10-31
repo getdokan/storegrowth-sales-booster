@@ -1,13 +1,16 @@
 import metadata from './blocks/block.json'
-import UpSellOrderBump from "./blocks/UpSellOrderBump";
+import OrderBumpTemplate from "./blocks/OrderBumpTemplate";
 
 const {registerCheckoutBlock, ExperimentalOrderMeta} = window.wc.blocksCheckout;
+const bumpData = window.wc.wcSettings.getSetting('storegrowth-upsell-order-bump_data') || [];
 
 
-const OrderBump = (props) => {
+const OrderBump = () => {
     return (
         <ExperimentalOrderMeta>
-            <UpSellOrderBump {...props} />
+            {bumpData.map((item, index) => (
+                <OrderBumpTemplate design={item.design_settings} offerData={item} key={index}/>
+            ))}
         </ExperimentalOrderMeta>
     )
 }
