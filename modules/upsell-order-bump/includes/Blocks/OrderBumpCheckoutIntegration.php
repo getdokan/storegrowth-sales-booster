@@ -36,12 +36,18 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 	}
 
 	public function get_script_data(): array {
-		global $woocommerce;
 		$order_bump_data = new OrderBumpData();
-
-		$all_cart_products     = $woocommerce->cart->get_cart();
+		$cart = WC()->cart;
+		if ( empty( $cart ) ) {
+			return [];
+		}
+		$all_cart_products     = $cart->get_cart();
 		$all_cart_product_ids  = array();
 		$all_cart_category_ids = array();
+
+		if( empty( $all_cart_products ) ) {
+			return [];
+		}
 
 		foreach ( $all_cart_products as $value ) {
 			// Get categories from the current cart item (variation or simple product)
