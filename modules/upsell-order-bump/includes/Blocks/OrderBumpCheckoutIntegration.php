@@ -138,12 +138,13 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 				$variation_id     = 0;
 			}
 
-			$product_id         = $bump_info->offer_product;
-			$product_categories = wp_get_post_terms( $product_id, 'product_cat' );
-
+			$product_id = $bump_info->offer_product ?? 0;
 			$category_names = array();
-			foreach ( $product_categories as $category ) {
-				$category_names[] = $category->name;
+			if( $product_id ) {
+				$product_categories = wp_get_post_terms( $product_id, 'product_cat' );
+				foreach ( $product_categories as $category ) {
+					$category_names[] = $category->name;
+				}
 			}
 
 			$bump_info->offer_price      = $offer_price;
