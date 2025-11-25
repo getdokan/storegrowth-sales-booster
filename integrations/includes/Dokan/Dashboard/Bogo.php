@@ -66,6 +66,7 @@ class Bogo {
         $menus['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
+            'icon_name'  => 'PackagePlus',
             'url'        => dokan_get_navigation_url( '/bogo' ),
             'pos'        => 10,
             'permission' => 'dokandar',
