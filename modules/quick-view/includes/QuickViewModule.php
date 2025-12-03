@@ -50,7 +50,7 @@ class QuickViewModule extends BaseModule {
 	 * @return string The URL to the module icon.
 	 */
 	public function get_icon(): string {
-		return PluginHelper::get_modules_url( 'quick-view/assets/images/quickview-icon-blue.svg' );
+		return PluginHelper::get_modules_url( 'quick-view/assets/images/quickview-icon-Blue.svg' );
 	}
 
 	/**

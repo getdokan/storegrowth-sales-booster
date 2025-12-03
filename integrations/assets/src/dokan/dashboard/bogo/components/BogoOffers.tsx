@@ -263,14 +263,13 @@ const BogoOffers = ({ navigate }) => {
   const actions = [
     {
       id: "offer-edit",
-      label: "",
       isPrimary: true,
       isEligible: (item) => !!item.id,
       callback: (offers) => {
         const offer = offers[0];
         navigate(`/bogo/${offer.id}`);
       },
-      icon: () => (
+      label: () => (
         <span
           className={`px-2 bg-transparent font-medium text-dokan-link hover:text-dokan-link-hover pr-r text-sm`}
         >
@@ -280,10 +279,9 @@ const BogoOffers = ({ navigate }) => {
     },
     {
       id: "offer-delete",
-      label: "",
       isPrimary: true,
       isEligible: (item) => !!item.id,
-      icon: () => {
+      label: () => {
         return (
           <span
             className={`px-2 bg-transparent font-medium text-dokan-danger hover:text-dokan-danger-hover text-sm`}

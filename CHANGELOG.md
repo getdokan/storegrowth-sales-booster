@@ -1,3 +1,10 @@
+### v2.0.3 (Nov 26, 2025) ###
+
+- **fix:** Repositioned the BOGO menu item in the Dokan vendor dashboard that was shifted during the new layout update.
+- **fix:** Resolved layout shift issue on the Dokan vendor dashboard by preventing the floating toolbar from causing visual jumps during page load.
+- **fix:** Corrected logo positioning conflict between StoreGrowth and Dokan Live Chat, ensuring both logos display properly without overlap.
+
+
 ### v2.0.2 (Oct 28, 2025) ###
 
 - **new:** "Submit Request" button now redirects to our product roadmap page

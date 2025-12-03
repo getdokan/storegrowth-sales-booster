@@ -57,9 +57,7 @@ class Bogo {
      * @return array
      */
     public function add_nav_menu( $menus ): array {
-        if ( ! dokan_is_seller_dashboard() ) {
-            return $menus;
-        }
+		// dokan_is_seller_dashboard is checked before this class init
 		$settings = Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
 
 		if ( isset( $settings['vendors_can_create_buy_x_get_x'] ) && ! $settings['vendors_can_create_buy_x_get_x'] ) {
@@ -68,6 +66,7 @@ class Bogo {
         $menus['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
+            'icon_name'  => 'PackagePlus',
             'url'        => dokan_get_navigation_url( '/bogo' ),
             'pos'        => 10,
             'permission' => 'dokandar',
