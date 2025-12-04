@@ -319,7 +319,7 @@
 
 .spsg-fly-cart-table .product-quantity .quantity .ct-increase, 
 .spsg-fly-cart-table .product-quantity .quantity .ct-decrease {
-    visibility: hidden;
+    display: none;
 }
 
 
