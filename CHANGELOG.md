@@ -1,3 +1,12 @@
+== Changelog ==
+
+### v2.0.4 (Dec 05, 2025) ###
+
+- **fix:** Resolved an issue where an extra quantity button appeared in the FlyCart product quantity selector.
+- **fix:** Improved compatibility to display Upsell Order Bumps properly on the Block Checkout.
+- **fix:** Updated BogoOffers by replacing action icons with clear text labels for better usability.
+- **fix:** Fixed an issue where the Quick View module icon was not appearing on the Modules page.
+
 ### v2.0.3 (Nov 26, 2025) ###
 
 - **fix:** Repositioned the BOGO menu item in the Dokan vendor dashboard that was shifted during the new layout update.
