@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wp-scripts start src/settings.js",
-    "build": "wp-scripts build src/settings.js"
+    "start": "wp-scripts start src/settings.js src/blocks.js",
+    "build": "wp-scripts build src/settings.js src/blocks.js"
   },
   "author": "",
   "license": "ISC",

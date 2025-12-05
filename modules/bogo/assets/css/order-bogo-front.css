@@ -92,6 +92,10 @@
   align-items: center;
   line-height: normal;
   justify-content: space-between;
+  gap: 5px;
+}
+.offer-main-wrap .product-image-and-title .wc-block-components-checkbox {
+    margin-top: 0;
 }
 
 .offer-main-wrap .product-image-and-title .offer-product-image-title{

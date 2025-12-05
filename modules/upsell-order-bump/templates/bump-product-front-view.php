@@ -60,7 +60,7 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 
 					<?php
 // Collect offer product categories.
-$product_id = $bump_info->offer_product;
+$product_id = $bump_info->offer_product ?? 0;
 $product_categories = wp_get_post_terms($product_id, 'product_cat');
 
 $category_names = array();
