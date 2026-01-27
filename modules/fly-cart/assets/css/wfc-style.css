@@ -1012,39 +1012,3 @@ iframe.spsg-fast-cart-checkout-frame {
         opacity: 1;
     }
 }
-/*=======================
-* Center Layout Fix
-========================*/
-
-/* 1. Reset positioning and use transform to center */
-.wfc-widget-sidebar.spsg-quick-cart-center-layout {
-    left: 50% !important;
-    top: 50% !important;
-    right: auto !important;
-    transform: translate(-50%, -50%) !important;
-    
-    /* Ensure it doesn't look like a sidebar */
-    height: auto !important;
-    max-height: 90vh;
-    width: 500px !important; /* Adjust width as needed */
-    border-radius: 12px;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.2);
-}
-
-/* 2. Remove the 'slide' offset when in center mode */
-.wfc-widget-sidebar.spsg-quick-cart-center-layout.wfc-slide {
-    display: none !important; /* Hide when closed instead of sliding right */
-}
-
-/* 3. Hide the sidebar "close" tab since it's now a modal */
-.wfc-widget-sidebar.spsg-quick-cart-center-layout .qc-close-nav {
-    display: none !important;
-}
-
-/* 4. Responsive adjustment for center layout on mobile */
-@media only screen and (max-width: 767px) {
-    .wfc-widget-sidebar.spsg-quick-cart-center-layout {
-        width: 90vw !important;
-        left: 50% !important;
-    }
-}
