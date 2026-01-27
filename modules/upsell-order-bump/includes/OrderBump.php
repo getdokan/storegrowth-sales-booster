@@ -140,6 +140,9 @@ class OrderBump implements HookRegistry {
 			$bump_info = (object) array_merge( $bump, $bump['design_settings'] );
 			$bump_info->bump_type = $bump['target_type'];
 
+			// Check if product is available for purchase (in stock or allows backorders)
+			$is_purchasable = $_product->is_in_stock() || $_product->backorders_allowed();
+
 			include __DIR__ . '/../templates/bump-product-front-view.php';
 		}
 	}
