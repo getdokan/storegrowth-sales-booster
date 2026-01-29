@@ -32,12 +32,12 @@ const ActivationAlert = ({
             />
           </div>
           <h3 className="modal-content-heading">
-            {`Do you want to active ${ isDashboard ? activeModalData?.label : activeModalData?.name }?`}
+            {`Do you want to activate ${ isDashboard ? activeModalData?.label : activeModalData?.name }?`}
           </h3>
           <p className="modal-content">
             After activating the <strong>{ isDashboard ? activeModalData?.label : activeModalData?.name }</strong>{" "}
             module, you will be redirected to the module settings page where you
-            can set up this module's features..
+            can set up this module's features.
           </p>
           <div className="modal-controller-action-button">
             <Button
