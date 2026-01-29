@@ -94,7 +94,11 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 				$checked = 'checked';
 			}
 
-			$_product      = wc_get_product( $offer_product_id );
+			$_product = wc_get_product( $offer_product_id );
+			if ( ! $_product || ! $_product->is_purchasable() ) {
+				continue;
+			}
+
 			$regular_price = $_product->get_regular_price();
 			// Use sale price if available, otherwise use regular price for discount calculation
 			$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
