@@ -36,6 +36,7 @@ const OrderBumpTemplate = ({design, offerData}) => {
         offer_price,
         category_names = [],
         currency_symbol,
+        is_purchasable = true,
     } = offerData || {};
 
     const [isChecked, setIsChecked] = useState(checked === "checked");
@@ -159,14 +160,23 @@ const OrderBumpTemplate = ({design, offerData}) => {
 						</span>
                     </div>
 
-                    {/* Checkbox */}
+                    {/* Checkbox or Out of Stock */}
                     <div className="product-checkbox-and-excitement-message">
-                        <CheckboxControl
-                            checked={isChecked}
-                            id={`order_bump_${offer_product_id}`}
-                            onChange={handleChange}
-                            label={__("Select", "storegrowth-sales-booster")}
-                        />
+                        {is_purchasable ? (
+                            <CheckboxControl
+                                checked={isChecked}
+                                id={`order_bump_${offer_product_id}`}
+                                onChange={handleChange}
+                                label={__("Select", "storegrowth-sales-booster")}
+                            />
+                        ) : (
+                            <span
+                                className="out-of-stock-message"
+                                style={{ color: '#dc3545', fontWeight: 500 }}
+                            >
+                                {__("Out of Stock", "storegrowth-sales-booster")}
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

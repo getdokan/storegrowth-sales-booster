@@ -158,6 +158,8 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 			$bump_info->checked          = $checked;
 			$bump_info->currency_symbol  = html_entity_decode( get_woocommerce_currency_symbol() );
 			$bump_info->category_names   = $category_names;
+			// Check if product is available for purchase (in stock or allows backorders)
+			$bump_info->is_purchasable   = $_product->is_in_stock() || $_product->backorders_allowed();
 
 			$data[] = $bump_info;
 
