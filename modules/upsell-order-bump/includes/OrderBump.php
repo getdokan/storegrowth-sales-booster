@@ -108,6 +108,12 @@ class OrderBump implements HookRegistry {
 			}
 
 			$_product      = wc_get_product( $offer_product_id );
+
+			// FIX: If the offer product doesn't exist (deleted or invalid ID), skip it to avoid a fatal error.
+			if ( ! $_product ) {
+				continue;
+			}
+
 			$regular_price = $_product->get_regular_price();
 			// Use sale price if available, otherwise use regular price for discount calculation
 			$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
