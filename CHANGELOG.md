@@ -1,5 +1,14 @@
 == Changelog ==
 
+### v2.0.5 (Feb 05, 2025) ###
+
+- **fix:** Resolved cart overlay layout corruption and corrected pricing discrepancies.
+- **fix:** Fixed the Fly Cart center popout not rendering properly.
+- **fix:** Prevented out-of-stock products from being selectable in the Upsell Order Bump.
+- **fix:** Resolved a fatal error occurring when the Order Bump product was missing or deleted.
+- **fix:** Corrected a typo in the Module Activation process.
+
+
 ### v2.0.4 (Dec 05, 2025) ###
 
 - **fix:** Resolved an issue where an extra quantity button appeared in the FlyCart product quantity selector.
