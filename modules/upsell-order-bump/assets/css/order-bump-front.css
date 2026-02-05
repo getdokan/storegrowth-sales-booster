@@ -48,7 +48,7 @@
 
 .template-overview-area{
   width: 100%;
-  float: left;
+  box-sizing: border-box;
 }
 
 .offer-overview-top-text{
