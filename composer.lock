@@ -4,20 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dde3f88d48f898fb297aa7de44d6d952",
-    "packages": [
+    "content-hash": "a2cb3be46fe7e1c151a40c2b1a8ecfd6",
+    "packages": [],
+    "packages-dev": [
         {
             "name": "appsero/client",
-            "version": "v2.0.4",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Appsero/client.git",
-                "reference": "12ff65b9770286d21edf314e7acfcd26fdde3315"
+                "reference": "2e553be6a47b387a7b05496f6a6e8d8595dd0d08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Appsero/client/zipball/12ff65b9770286d21edf314e7acfcd26fdde3315",
-                "reference": "12ff65b9770286d21edf314e7acfcd26fdde3315",
+                "url": "https://api.github.com/repos/Appsero/client/zipball/2e553be6a47b387a7b05496f6a6e8d8595dd0d08",
+                "reference": "2e553be6a47b387a7b05496f6a6e8d8595dd0d08",
                 "shasum": ""
             },
             "require": {
@@ -56,9 +57,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Appsero/client/issues",
-                "source": "https://github.com/Appsero/client/tree/v2.0.4"
+                "source": "https://github.com/Appsero/client/tree/v2.0.6"
             },
-            "time": "2024-11-25T05:58:23+00:00"
+            "time": "2026-02-24T04:46:05+00:00"
         },
         {
             "name": "appsero/updater",
@@ -96,9 +97,7 @@
                 "source": "https://github.com/Appsero/updater/tree/v2.3.5"
             },
             "time": "2025-07-17T09:51:28+00:00"
-        }
-    ],
-    "packages-dev": [
+        },
         {
             "name": "coenjacobs/mozart",
             "version": "0.7.1",
