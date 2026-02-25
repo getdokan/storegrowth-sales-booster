@@ -108,6 +108,12 @@ class OrderBump implements HookRegistry {
 			}
 
 			$_product      = wc_get_product( $offer_product_id );
+
+			// FIX: If the offer product doesn't exist (deleted or invalid ID), skip it to avoid a fatal error.
+			if ( ! $_product ) {
+				continue;
+			}
+
 			$regular_price = $_product->get_regular_price();
 			// Use sale price if available, otherwise use regular price for discount calculation
 			$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
@@ -139,6 +145,9 @@ class OrderBump implements HookRegistry {
 			// Convert bump data to object for template compatibility
 			$bump_info = (object) array_merge( $bump, $bump['design_settings'] );
 			$bump_info->bump_type = $bump['target_type'];
+
+			// Check if product is available for purchase (in stock or allows backorders)
+			$is_purchasable = $_product->is_in_stock() || $_product->backorders_allowed();
 
 			include __DIR__ . '/../templates/bump-product-front-view.php';
 		}

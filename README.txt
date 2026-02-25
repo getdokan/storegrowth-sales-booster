@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Side Cart
 
 Requires at least: 5.4
 Tested up to: 6.8.2
-Stable tag: 2.0.2
+Stable tag: 2.0.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -272,6 +272,20 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.0.5 (Feb 05, 2025) =
+
+* Fix: Resolved cart overlay layout corruption and corrected pricing discrepancies.
+* Fix: Fixed the Fly Cart center popout not rendering properly.
+* Fix: Prevented out-of-stock products from being selectable in the Upsell Order Bump.
+* Fix: Resolved a fatal error occurring when the Order Bump product was missing or deleted.
+* Fix: Corrected a typo in the Module Activation process.
+
+= v2.0.3 (Nov 26, 2025) =
+
+* Fix: Repositioned the BOGO menu item in the Dokan vendor dashboard that was shifted during the new layout update.
+* Fix: Resolved layout shift issue on the Dokan vendor dashboard by preventing the floating toolbar from causing visual jumps during page load.
+* Fix: Corrected logo positioning conflict between StoreGrowth and Dokan Live Chat, ensuring both logos display properly without overlap.
 
 = v2.0.1 (Sep 12, 2025) =
 

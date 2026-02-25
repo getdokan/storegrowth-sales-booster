@@ -60,7 +60,7 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 
 					<?php
 // Collect offer product categories.
-$product_id = $bump_info->offer_product;
+$product_id = $bump_info->offer_product ?? 0;
 $product_categories = wp_get_post_terms($product_id, 'product_cat');
 
 $category_names = array();
@@ -90,6 +90,7 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 			<span style=""><?php echo esc_html(get_woocommerce_currency_symbol()) . esc_attr(number_format((float) $offer_price, 2)); ?></span>
 			</div>
 			<div class="product-checkbox-and-excitement-message" >
+			<?php if ( $is_purchasable ) : ?>
 				<input
 					type     = "checkbox"
 					class    = 'custom-checkbox'
@@ -101,6 +102,11 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 				<label for='test_<?php echo esc_attr($product_offer_id); ?>'>
 					<?php esc_html_e('Select', 'storegrowth-sales-booster');?>
 				</label>
+			<?php else : ?>
+				<span class="out-of-stock-message" style="color: #dc3545; font-weight: 500;">
+					<?php esc_html_e('Out of Stock', 'storegrowth-sales-booster'); ?>
+				</span>
+			<?php endif; ?>
 			</div>
 		</div>
 		</div>

@@ -1,3 +1,28 @@
+== Changelog ==
+
+### v2.0.5 (Feb 05, 2025) ###
+
+- **fix:** Resolved cart overlay layout corruption and corrected pricing discrepancies.
+- **fix:** Fixed the Fly Cart center popout not rendering properly.
+- **fix:** Prevented out-of-stock products from being selectable in the Upsell Order Bump.
+- **fix:** Resolved a fatal error occurring when the Order Bump product was missing or deleted.
+- **fix:** Corrected a typo in the Module Activation process.
+
+
+### v2.0.4 (Dec 05, 2025) ###
+
+- **fix:** Resolved an issue where an extra quantity button appeared in the FlyCart product quantity selector.
+- **fix:** Improved compatibility to display Upsell Order Bumps properly on the Block Checkout.
+- **fix:** Updated BogoOffers by replacing action icons with clear text labels for better usability.
+- **fix:** Fixed an issue where the Quick View module icon was not appearing on the Modules page.
+
+### v2.0.3 (Nov 26, 2025) ###
+
+- **fix:** Repositioned the BOGO menu item in the Dokan vendor dashboard that was shifted during the new layout update.
+- **fix:** Resolved layout shift issue on the Dokan vendor dashboard by preventing the floating toolbar from causing visual jumps during page load.
+- **fix:** Corrected logo positioning conflict between StoreGrowth and Dokan Live Chat, ensuring both logos display properly without overlap.
+
+
 ### v2.0.2 (Oct 28, 2025) ###
 
 - **new:** "Submit Request" button now redirects to our product roadmap page

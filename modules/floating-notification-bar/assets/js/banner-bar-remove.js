@@ -44,6 +44,9 @@
     };
 
     const bannerShow = () => {
+      if (!bannerExists()) {
+        return;
+      }
       $(".spsg-floating-notification-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
       updateBannerPosition();
@@ -69,7 +72,7 @@
       paddingRemoverBody();
     };
     const bannerExists = () => {
-      $(".spsg-floating-notification-bar-wrapper").length === 0;
+      return $(".spsg-floating-notification-bar-wrapper").length > 0;
     };
 
     function isMobileDevice() {
