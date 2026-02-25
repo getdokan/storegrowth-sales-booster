@@ -2,8 +2,8 @@
 
 namespace StorePulse\StoreGrowth;
 
-use Appsero\Client;
-use Appsero\Insights;
+use StorePulse\StoreGrowth\ThirdParty\Packages\Appsero\Client;
+use StorePulse\StoreGrowth\ThirdParty\Packages\Appsero\Insights;
 
 /**
  * StoreGrowth tracker
