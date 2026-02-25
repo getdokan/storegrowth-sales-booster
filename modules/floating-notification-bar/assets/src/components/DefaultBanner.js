@@ -4,7 +4,6 @@ import { __ } from "@wordpress/i18n";
 import TextAreaBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
 import CheckboxGroup from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/CheckboxGroup";
 import SelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/SelectBox";
-import TextInput from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import BarIcon from "./BarIcon";
 import ButtonAction from "./ButtonAction";
@@ -110,14 +109,6 @@ function DefaultBanner(props) {
           title={__("Show Button", "storegrowth-sales-booster")}
           headColSpan={14}
           checkboxColSpan={10}
-        />
-        <TextInput
-          name={"ac_button_text"}
-          placeHolderText={__("Button Text Here", "storegrowth-sales-booster")}
-          fieldValue={formData.ac_button_text}
-          className={`settings-field input-field`}
-          changeHandler={onFieldChange}
-          title={__("Button Text", "storegrowth-sales-booster")}
         />
         <ButtonAction formData={formData} onFieldChange={onFieldChange} />
         {applyFilters(
