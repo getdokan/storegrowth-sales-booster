@@ -66,7 +66,7 @@ class EnqueueScript implements HookRegistry {
 			array(
 				'isQuickCartCheckout' => $is_checkout_redirect,
 				'isPro'               => sp_store_growth()->has_pro(),
-				'ajax_url'            => '/wp-admin/admin-ajax.php',
+				'ajax_url'            => admin_url( 'admin-ajax.php' ),
 			)
 		);
 	}
