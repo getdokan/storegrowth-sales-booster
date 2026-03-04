@@ -55,7 +55,7 @@ class OrderBogo implements HookRegistry {
 
 		// FlyCart integration: show BOGO badge and original price on free items.
 		add_action( 'spsg_fly_cart_item_bogo_badge', array( $this, 'display_bogo_badge_in_fly_cart' ), 10, 3 );
-		add_filter( 'spsg_fly_cart_item_price_html', array( $this, 'modify_fly_cart_bogo_price_html' ), 10, 4 );
+		add_filter( 'spsg_fly_cart_item_price_html', array( $this, 'modify_fly_cart_bogo_price_html' ), 10, 3 );
     }
 
     public function display_bogo_floating_badge_on_product() {
@@ -1034,14 +1034,13 @@ class OrderBogo implements HookRegistry {
 	 * Hooked into `spsg_fly_cart_item_price_html` (filter) so that the FlyCart template
 	 * does not need any direct knowledge of BOGO logic.
 	 *
-	 * @param string     $price_html    Current price HTML (already computed by the template).
-	 * @param array      $cart_item     Cart item data.
-	 * @param string     $cart_item_key Cart item key.
-	 * @param WC_Product $_product      Product object.
+	 * @param string     $price_html Current price HTML (already computed by the template).
+	 * @param array      $cart_item  Cart item data.
+	 * @param WC_Product $_product   Product object.
 	 *
 	 * @return string Modified price HTML.
 	 */
-	public function modify_fly_cart_bogo_price_html( $price_html, $cart_item, $cart_item_key, $_product ) {
+	public function modify_fly_cart_bogo_price_html( $price_html, $cart_item, $_product ) {
 		if ( empty( $cart_item['bogo_offer'] ) || ! isset( $cart_item['bogo_offer_price'] ) ) {
 			return $price_html;
 		}

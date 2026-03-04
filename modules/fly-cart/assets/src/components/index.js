@@ -35,6 +35,7 @@ function FlyCart({ navigate, useSearchParams, moduleId }) {
     show_quantity_picker: true,
     fly_cart_badge_icon: true,
     show_stock_status: false,
+    show_free_shipping_message: false,
     shopping_button_bg_color: "#073B4C",
     enable_add_to_cart_redirect: true,
   };

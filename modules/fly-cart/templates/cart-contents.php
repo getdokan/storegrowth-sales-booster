@@ -118,7 +118,7 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 										$sub_total = WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] );
 									}
 
-									$sub_total = apply_filters( 'spsg_fly_cart_item_price_html', $sub_total, $cart_item, $cart_item_key, $_product );
+									$sub_total = apply_filters( 'spsg_fly_cart_item_price_html', $sub_total, $cart_item, $_product );
 
 						 	// phpcs:ignore
 							echo apply_filters( 'woocommerce_cart_item_subtotal', $sub_total, $cart_item, $cart_item_key );
