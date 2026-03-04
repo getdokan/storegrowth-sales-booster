@@ -151,7 +151,7 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 						</div>
 						<?php endif; ?>
 						</div>
-						<?php if ( $show_stock_status && $_product->managing_stock() ) : ?>
+						<?php if ( $show_stock_status && $_product->managing_stock() && $_product->get_stock_quantity() > 0 ) : ?>
 						<div class="spsg-fly-cart-stock-status">
 							<?php echo esc_html( sprintf( /* translators: %d: available stock quantity */ __( 'Available: %d', 'storegrowth-sales-booster' ), $_product->get_stock_quantity() ) ); ?>
 						</div>

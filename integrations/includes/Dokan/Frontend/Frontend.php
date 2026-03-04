@@ -54,7 +54,7 @@ class Frontend {
             return;
         }
 
-        $has_stock_info = $show_stock_status && $product->managing_stock();
+        $has_stock_info = $show_stock_status && $product->managing_stock() && $product->get_stock_quantity() > 0;
         $row_padding    = $has_stock_info ? '55px' : '35px';
         ?>
 
