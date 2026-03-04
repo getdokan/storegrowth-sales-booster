@@ -167,6 +167,18 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
+    if (
+      createBogoData.bogo_deal_type !== 'same' &&
+      createBogoData.get_different_product_field &&
+      createBogoData.offered_products.map(Number).includes(Number(createBogoData.get_different_product_field))
+    ) {
+      notification["error"]({
+        message: "Offer product cannot be the same as a target product. Use 'Buy X Get X' deal type for same product offers.",
+      });
+
+      return null;
+    }
+
     if (!createBogoData.offer_type || createBogoData.offer_type.length === 0) {
       notification["error"]({
         message: "Please select offer type",

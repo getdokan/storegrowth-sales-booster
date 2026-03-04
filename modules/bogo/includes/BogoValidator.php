@@ -287,6 +287,18 @@ class BogoValidator {
 			if ( ! $offer_product_id ) {
 				$errors[] = 'Offer product ID is required for different deal type';
 				$valid = false;
+			} else {
+				// Prevent selecting the same product as both target and offer (that would be Buy X Get X)
+				$offered_products = $bogo_settings['offered_products'] ?? array();
+				if ( is_array( $offered_products ) && in_array( (int) $offer_product_id, array_map( 'intval', $offered_products ), true ) ) {
+					$errors[] = 'Offer product cannot be the same as a target product in Buy X Get Y deal';
+					$valid = false;
+				}
+				// For product-type BOGO, also check against the product itself
+				if ( ! empty( $bogo_settings['product_id'] ) && (int) $offer_product_id === (int) $bogo_settings['product_id'] ) {
+					$errors[] = 'Offer product cannot be the same as the target product in Buy X Get Y deal';
+					$valid = false;
+				}
 			}
 		}
 
