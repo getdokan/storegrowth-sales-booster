@@ -242,7 +242,12 @@ const Preview = ( { storeData } ) => {
                                     ) }
                                     </div>
                                         { applyFilters('spsg_cart_product_detail_after', '', storeData) }
-                                    </div> 
+                                        { storeData?.show_stock_status && (
+                                            <div style={ { fontSize: '0.82em', color: '#e74c3c', marginTop: 2 } }>
+                                                { __( 'Available: 10', 'storegrowth-sales-booster' ) }
+                                            </div>
+                                        ) }
+                                    </div>
                                 </div>
                                 <div
                                     style={ {
@@ -258,26 +263,38 @@ const Preview = ( { storeData } ) => {
                                     { storeData?.show_product_image && (
                                         <div
                                             className='product-thumbnail'
-                                            style={ { marginRight: 14 } }
+                                            style={ { marginRight: 14, position: 'relative' } }
                                         >
                                             <Image
                                                 preview={ false }
                                                 src={ PreviewImg }
                                                 alt={ __( 'Product Image', 'storegrowth-sales-booster' ) }
                                             />
+                                            { storeData?.fly_cart_badge_icon && (
+                                                <div style={ { position: 'absolute', top: 0, left: 0 } }>
+                                                    <svg width="28" height="28" viewBox="0 0 50 44" fill="none">
+                                                        <rect x={23.5462} y={0.0293961} width={32.4421} height={32.4421} rx={4} transform="rotate(45 23.5462 0.0293961)" fill="#EE262D" />
+                                                        <path d="M2.33298 28.5206C2.13302 28.1874 2.37308 27.7634 2.76172 27.7634H44.3306C44.7193 27.7634 44.9593 28.1874 44.7594 28.5206L42.7149 31.9281C42.6199 32.0864 42.6199 32.2842 42.7149 32.4426L44.7594 35.85C44.9593 36.1833 44.7193 36.6073 44.3306 36.6073H2.76173C2.37308 36.6073 2.13302 36.1833 2.33298 35.85L4.37745 32.4426C4.47246 32.2842 4.47246 32.0864 4.37745 31.9281L2.33298 28.5206Z" fill="#FFDC0D" />
+                                                        <path d="M17.4335 23.391V15.6727H20.3385C20.9337 15.6727 21.433 15.7757 21.8364 15.9817C22.2424 16.1877 22.5488 16.4767 22.7556 16.8485C22.9649 17.2178 23.0696 17.6487 23.0696 18.1412C23.0696 18.6361 22.9637 19.0658 22.7518 19.4301C22.5425 19.7919 22.2336 20.072 21.8251 20.2705C21.4166 20.4665 20.9148 20.5644 20.3196 20.5644H18.2505V19.4037H20.1305C20.4785 19.4037 20.7634 19.3559 20.9854 19.2605C21.2073 19.1625 21.3712 19.0205 21.4771 18.8346C21.5855 18.6462 21.6397 18.415 21.6397 18.1412C21.6397 17.8673 21.5855 17.6336 21.4771 17.4402C21.3687 17.2442 21.2035 17.096 20.9816 16.9955C20.7597 16.8925 20.4734 16.841 20.1229 16.841H18.8368V23.391H17.4335ZM21.4355 19.8936L23.3533 23.391H21.7873L19.9035 19.8936H21.4355Z" fill="white" />
+                                                        <path d="M11.1922 23.391V15.6727H16.155V16.8447H12.5955V18.9401H15.8145V20.1122H12.5955V23.391H11.1922Z" fill="white" />
+                                                        <path d="M24.3613 23.391V15.6727H29.3997V16.8447H25.7647V18.9401H29.1387V20.1122H25.7647V22.2189H29.43V23.391H24.3613Z" fill="white" />
+                                                        <path d="M30.8315 23.391V15.6727H35.8699V16.8447H32.2348V18.9401H35.6089V20.1122H32.2348V22.2189H35.9001V23.391H30.8315Z" fill="white" />
+                                                    </svg>
+                                                </div>
+                                            ) }
                                         </div>
                                     ) }
 
                                     <div
                                         className='product-name'
-                                        style={ { 
+                                        style={ {
                                             display: 'flex',
                                             flexDirection: 'column',
                                             gap: 6,
                                             width: '100%',
                                         } }
                                     >
-                                    <div 
+                                    <div
                                         className='spsg-product-detail-container'
                                         style={ {
                                             display:"flex",
@@ -299,20 +316,12 @@ const Preview = ( { storeData } ) => {
                                         </div>
                                         { storeData?.show_quantity_picker && storeData?.show_product_price && (
                                         <div className='product-subtotal'>
-                                        <span
-                                            className='woocommerce-Price-amount amount'
-                                            style={ {
-                                                fontSize: 13,
-                                                fontWeight: 700,
-                                                color: '#073B4C',
-                                            } }
-                                        >
-                                            { __( '$42.00', 'storegrowth-sales-booster' ) }
-                                        </span>
+                                            <span style={ { display: 'block', color: '#999', fontSize: '0.82em', textDecoration: 'line-through' } }>{ __( '$42.00', 'storegrowth-sales-booster' ) }</span>
+                                            <span className='woocommerce-Price-amount amount' style={ { fontSize: 13, fontWeight: 700, color: '#073B4C' } }>{ __( '$0.00', 'storegrowth-sales-booster' ) }</span>
                                         </div>
                                     ) }
                                     </div>
-                                    <div 
+                                    <div
                                     className='spsg-product-detail-container'
                                     style={ {
                                         display:"flex",
@@ -334,8 +343,8 @@ const Preview = ( { storeData } ) => {
                                                     color: '#073B4C',
                                                 } }
                                             >
-                                                <span 
-                                                className='spsg-minus-icon' 
+                                                <span
+                                                className='spsg-minus-icon'
                                                 style={{
                                                     border: '1px solid #EBEBEB',
                                                     height: 'fit-content',
@@ -343,7 +352,7 @@ const Preview = ( { storeData } ) => {
                                                     padding: '2px 8px',
                                                     borderRadius: '4px 0px 0px 4px'
                                                 }}>-</span>
-                                                <span 
+                                                <span
                                                 className='product-count'
                                                 style={{
                                                     border: '1px solid #EBEBEB',
@@ -352,7 +361,7 @@ const Preview = ( { storeData } ) => {
                                                     padding: '2px 12px',
                                                 }}
                                                 >1</span>
-                                                <span 
+                                                <span
                                                 className='spsg-plus-icon'
                                                 style={{
                                                     border: '1px solid #EBEBEB',
@@ -383,11 +392,27 @@ const Preview = ( { storeData } ) => {
                                     ) }
                                     </div>
                                         { applyFilters('spsg_cart_product_detail_after', '', storeData) }
-                                    </div> 
+                                    </div>
                                 </div>
-                                
+
                             </div>
                         </div>
+
+                        { storeData?.show_free_shipping_message && (
+                            <div
+                                className='spsg-fly-cart-free-shipping-notice'
+                                style={ {
+                                    padding: '10px 15px',
+                                    background: '#f0f8ff',
+                                    borderTop: '1px solid #d0e8f8',
+                                    textAlign: 'center',
+                                    fontSize: '0.88em',
+                                    color: '#1a6a9a',
+                                } }
+                            >
+                                { __( 'Add more $75.00 to get free shipping.', 'storegrowth-sales-booster' ) }
+                            </div>
+                        ) }
 
                         <div className='spsg-cart-collaterals cart-collaterals'
                             style={{

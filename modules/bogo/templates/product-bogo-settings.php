@@ -12,7 +12,7 @@
 		<?php
 		global $post;
 
-		$bogo_settings       = \StorePulse\StoreGrowth\Modules\BoGo\Helper::get_product_bogo_settings( $post->I, 0, ['status' => ''] );
+		$bogo_settings       = \StorePulse\StoreGrowth\Modules\BoGo\Helper::get_product_bogo_settings( $post->ID, 0, ['status' => ''] );
 		$is_enable_bogo      = ! empty( $bogo_settings['status'] ) ? esc_html( $bogo_settings['status'] ) : 'no';
 		$different_deal_type = ! empty( $bogo_settings['bogo_deal_type'] ) ? esc_html( $bogo_settings['bogo_deal_type'] ) : 'different';
 		$different_bogo_type = ! empty( $bogo_settings['bogo_type'] ) ? esc_html( $bogo_settings['bogo_type'] ) : 'products';

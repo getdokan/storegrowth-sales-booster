@@ -49,6 +49,12 @@ const GeneralSettings = ({
     }
 
     contentOptions = applyFilters( 'spsg_quick_cart_content_settings', contentOptions );
+    contentOptions = [
+        ...contentOptions,
+        { name: 'show_stock_status', title: __( 'Show Stock Status', 'storegrowth-sales-booster' ), needUpgrade: !spsgAdmin.isPro },
+        { name: 'fly_cart_badge_icon', title: __( 'Show BOGO Badge', 'storegrowth-sales-booster' ), needUpgrade: !spsgAdmin.isPro },
+        { name: 'show_free_shipping_message', title: __( 'Show Free Shipping Message', 'storegrowth-sales-booster' ), needUpgrade: !spsgAdmin.isPro },
+    ];
 
     return (
         <SettingsSection>

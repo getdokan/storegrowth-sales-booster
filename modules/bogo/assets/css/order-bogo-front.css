@@ -360,3 +360,34 @@ a.custom-choose-product {
 .fade-out {
   animation: fadeOut 0.3s ease-in-out;
 }
+
+/* -------------------------------------------------------
+   BOGO integration with FlyCart
+   ------------------------------------------------------- */
+
+/* Allow the badge (position:absolute) to be anchored to the thumbnail cell */
+.spsg-fly-cart-table .spsg-fly-cart-thumbnail-cell {
+	position: relative;
+}
+
+/* Badge overrides inside FlyCart: smaller scale, top-left of thumbnail */
+.spsg-fly-cart-table .bogo-badge-image {
+	top: 0;
+	left: 0;
+	height: 28px;
+	z-index: 2;
+}
+
+/* Strikethrough original price in FlyCart */
+.spsg-bogo-fly-cart-original-price {
+	display: block;
+	color: #999;
+	font-size: 0.82em;
+	line-height: 1.2;
+}
+
+/* Free offer price in FlyCart */
+.spsg-bogo-fly-cart-offer-price {
+	display: block;
+	font-weight: 700;
+}

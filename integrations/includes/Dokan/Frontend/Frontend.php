@@ -48,16 +48,20 @@ class Frontend {
         $settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
         $is_store_name_visible = Helper::find_option_settings( $settings, 'show_quick_cart_dokan_store_names', true );
         $is_store_link_enabled = Helper::find_option_settings( $settings, 'enable_quick_cart_dokan_store_links', true );
+        $show_stock_status     = apply_filters( 'spsg_fly_cart_show_stock_status_enabled', false );
 
         if ( ! $is_store_name_visible ) {
             return;
         }
+
+        $has_stock_info = $show_stock_status && $product->managing_stock();
+        $row_padding    = $has_stock_info ? '55px' : '35px';
         ?>
 
         <style>
             tr:has(td.dokan-vendor-store-info) {
                 position: relative;
-                padding-bottom: 35px !important;
+                padding-bottom: <?php echo esc_attr( $row_padding ); ?> !important;
             }
 
             td.dokan-vendor-store-info {
@@ -97,6 +101,11 @@ class Frontend {
                     <?php endif; ?>
                 </span>
             </h5>
+            <?php if ( $has_stock_info ) : ?>
+            <p class="spsg-fly-cart-stock-status" style="margin: 2px 0 0;">
+                <?php echo esc_html( sprintf( /* translators: %d: available stock quantity */ __( 'Available: %d', 'storegrowth-sales-booster' ), $product->get_stock_quantity() ) ); ?>
+            </p>
+            <?php endif; ?>
         </td>
         <?php
     }
