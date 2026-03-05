@@ -316,8 +316,10 @@ const Preview = ( { storeData } ) => {
                                         </div>
                                         { storeData?.show_quantity_picker && storeData?.show_product_price && (
                                         <div className='product-subtotal'>
-                                            <span style={ { display: 'block', color: '#999', fontSize: '0.82em', textDecoration: 'line-through' } }>{ __( '$42.00', 'storegrowth-sales-booster' ) }</span>
-                                            <span className='woocommerce-Price-amount amount' style={ { fontSize: 13, fontWeight: 700, color: '#073B4C' } }>{ __( '$0.00', 'storegrowth-sales-booster' ) }</span>
+                                            { storeData?.fly_cart_badge_icon && (
+                                                <span style={ { display: 'block', color: '#999', fontSize: '0.82em', textDecoration: 'line-through' } }>{ __( '$42.00', 'storegrowth-sales-booster' ) }</span>
+                                            ) }
+                                            <span className='woocommerce-Price-amount amount' style={ { fontSize: 13, fontWeight: 700, color: '#073B4C' } }>{ storeData?.fly_cart_badge_icon ? __( '$0.00', 'storegrowth-sales-booster' ) : __( '$42.00', 'storegrowth-sales-booster' ) }</span>
                                         </div>
                                     ) }
                                     </div>
