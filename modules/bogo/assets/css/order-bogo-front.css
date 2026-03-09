@@ -229,6 +229,51 @@
     /* fill: #fff; */
 }
 
+/* BOGO Gift Variation Selectors */
+
+.bogo-gift-variations {
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 5px;
+}
+
+.bogo-variation-field {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+
+.bogo-variation-field .bogo-variation-label {
+  min-width: 60px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.bogo-variation-field select.bogo-gift-attribute {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #c8e6c9;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 13px;
+  color: #666;
+  outline: none;
+  cursor: pointer;
+  appearance: auto;
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  max-width: 100%;
+}
+
+.bogo-variation-field select.bogo-gift-attribute:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
 /* Starting of the modal seletion styling */
 
 a.custom-choose-product {
