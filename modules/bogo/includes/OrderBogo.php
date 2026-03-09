@@ -559,12 +559,29 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 
-		// Fallback: use the first available variation.
+		// Fallback: use the default variation, or first available.
 		if ( ! $variation_id ) {
 			$available_variations = $product->get_available_variations();
 			if ( ! empty( $available_variations ) ) {
-				$variation_id         = $available_variations[0]['variation_id'];
-				$variation_attributes = $available_variations[0]['attributes'];
+				$default_variation_id = 0;
+				$default_attributes   = $product->get_default_attributes();
+
+				if ( ! empty( $default_attributes ) ) {
+					$prefixed_defaults    = array_combine(
+						array_map( fn( $key ) => 'attribute_' . $key, array_keys( $default_attributes ) ),
+						array_values( $default_attributes )
+					);
+					$data_store           = \WC_Data_Store::load( 'product' );
+					$default_variation_id = $data_store->find_matching_product_variation( $product, $prefixed_defaults );
+				}
+
+				if ( $default_variation_id ) {
+					$variation_id         = $default_variation_id;
+					$variation_attributes = wc_get_product( $variation_id )->get_variation_attributes();
+				} else {
+					$variation_id         = $available_variations[0]['variation_id'];
+					$variation_attributes = $available_variations[0]['attributes'];
+				}
 			}
 		}
 
