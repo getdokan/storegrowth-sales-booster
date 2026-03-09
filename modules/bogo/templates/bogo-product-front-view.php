@@ -94,38 +94,6 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 					</span>
 				</div>
 			</div>
-
-			<?php
-			// Show variation selectors if the gift product is a variable product.
-			$_gift_product = wc_get_product( $offer_product_id );
-
-			if ( $_gift_product && $_gift_product->is_type( 'variable' ) ) :
-				$available_variations = $_gift_product->get_available_variations();
-				$variation_attributes = $_gift_product->get_variation_attributes();
-
-				if ( ! empty( $variation_attributes ) ) :
-					?>
-					<div class="bogo-gift-variations" data-product-id="<?php echo esc_attr( $offer_product_id ); ?>">
-						<?php foreach ( $variation_attributes as $attribute_name => $options ) :
-							$label = wc_attribute_label( $attribute_name );
-							?>
-							<div class="bogo-variation-field">
-								<label class="bogo-variation-label"><?php echo esc_html( strtoupper( $label ) ); ?></label>
-								<select class="bogo-gift-attribute" data-attribute="attribute_<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
-									<option value=""><?php echo esc_html( sprintf( __( 'Select %s', 'storegrowth-sales-booster' ), strtolower( $label ) ) ); ?></option>
-									<?php foreach ( $options as $option ) : ?>
-										<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( ucfirst( $option ) ); ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						<?php endforeach; ?>
-						<input type="hidden" class="bogo-gift-variation-id" value="" />
-						<script type="application/json" class="bogo-gift-variations-data"><?php echo wp_json_encode( $available_variations ); ?></script>
-					</div>
-					<?php
-				endif;
-			endif;
-			?>
 		</div>
 	</div>
 

@@ -480,39 +480,18 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$variation_id         = 0;
-		$variation_attributes = array();
-		$price_product        = $product; // Product used for price calculation.
-
-		// Handle variable gift products - resolve the variation to add.
-		if ( $product->is_type( 'variable' ) ) {
-			$resolved = $this->resolve_gift_variation( $offer_product_id, $product );
-
-			if ( empty( $resolved ) ) {
-				return; // No purchasable variation available.
-			}
-
-			$variation_id         = $resolved['variation_id'];
-			$variation_attributes = $resolved['attributes'];
-			$price_product        = wc_get_product( $variation_id );
-
-			if ( ! $price_product ) {
-				return;
-			}
-		}
-
 		// Determine the cost of the offer product (if necessary)
 		$offer_product_cost = 0; // Assume free by default
 		if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
-			$offer_product_cost = max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
+			$offer_product_cost = max( $product->get_price() - ( $product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
 		}
 
 		// Add the offer product to the cart for different offer.
 		$free_product_key = WC()->cart->add_to_cart(
 			$offer_product_id,
 			$quantity, // Quantity of the offer product
-			$variation_id,
-			$variation_attributes,
+			'',
+			'',
 			array(
 				'parent_key'            => $cart_item_key,
 				'bogo_offer'            => true,
@@ -525,57 +504,6 @@ class OrderBogo implements HookRegistry {
 		if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
 			WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
 		}
-	}
-
-	/**
-	 * Resolve the variation to use for a variable gift product.
-	 *
-	 * Checks $_POST for user-selected variation first, falls back to first available variation.
-	 *
-	 * @param int         $offer_product_id The parent variable product ID.
-	 * @param \WC_Product $product          The variable product object.
-	 * @return array|null Array with 'variation_id' and 'attributes', or null if none available.
-	 */
-	private function resolve_gift_variation( $offer_product_id, $product ) {
-		$variation_id         = 0;
-		$variation_attributes = array();
-
-		// Check if user selected a variation via the frontend form.
-		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified by WooCommerce add-to-cart flow.
-		$posted_gift_product_id = ! empty( $_POST['bogo_gift_product_id'] ) ? intval( $_POST['bogo_gift_product_id'] ) : 0;
-
-		if ( $posted_gift_product_id === $offer_product_id ) {
-			$variation_id         = ! empty( $_POST['bogo_gift_variation_id'] ) ? intval( $_POST['bogo_gift_variation_id'] ) : 0;
-			$variation_attributes = ! empty( $_POST['bogo_gift_variation'] ) ? wc_clean( wp_unslash( $_POST['bogo_gift_variation'] ) ) : array();
-		}
-		// phpcs:enable WordPress.Security.NonceVerification.Missing
-
-		// Validate the posted variation belongs to this product.
-		if ( $variation_id ) {
-			$variation_product = wc_get_product( $variation_id );
-			if ( ! $variation_product || $variation_product->get_parent_id() !== $offer_product_id ) {
-				$variation_id         = 0;
-				$variation_attributes = array();
-			}
-		}
-
-		// Fallback: use the first available variation.
-		if ( ! $variation_id ) {
-			$available_variations = $product->get_available_variations();
-			if ( ! empty( $available_variations ) ) {
-				$variation_id         = $available_variations[0]['variation_id'];
-				$variation_attributes = $available_variations[0]['attributes'];
-			}
-		}
-
-		if ( ! $variation_id ) {
-			return null;
-		}
-
-		return array(
-			'variation_id' => $variation_id,
-			'attributes'   => $variation_attributes,
-		);
 	}
 
 	/**

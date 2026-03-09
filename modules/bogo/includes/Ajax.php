@@ -75,26 +75,12 @@ class Ajax implements HookRegistry {
 			}
 		}
 
-		// Handle variable product gifts - resolve variation.
-		$variation_id         = 0;
-		$variation_attributes = array();
-		$selected_product     = wc_get_product( $selected_product_id );
-
-		/** @var WC_Product_Variable $selected_product */
-		if ( $selected_product && $selected_product->is_type( 'variable' ) ) {
-			$available_variations = $selected_product->get_available_variations();
-			if ( ! empty( $available_variations ) ) {
-				$variation_id         = $available_variations[0]['variation_id'];
-				$variation_attributes = $available_variations[0]['attributes'];
-			}
-		}
-
 		// Add the selected product as the new offer product
 		$free_product_key = WC()->cart->add_to_cart(
 			$selected_product_id,
 			$offer_product_quantity,
-			$variation_id,
-			$variation_attributes,
+			'',
+			'',
 			array(
 				'bogo_offer'            => true,
                 'parent_key'            => $item_key,
