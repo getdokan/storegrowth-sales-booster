@@ -274,7 +274,7 @@ function BogoList({ navigate }) {
       dataIndex: "status",
     },
     {
-      title: "Target Product(s) and Categories",
+      title: "Target Product(s)",
       dataIndex: "product_category",
     },
     {
