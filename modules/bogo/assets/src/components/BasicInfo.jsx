@@ -69,10 +69,17 @@ const BasicInfo = ({ clearErrors }) => {
       });
     }
 
-    setCreateFromData({
+    const updatedData = {
       ...createBogoData,
       [key]: value,
-    });
+    };
+
+    // Clear end date if start date is changed to after current end date.
+    if (key === 'offer_start' && createBogoData?.offer_end && value > createBogoData.offer_end) {
+      updatedData.offer_end = '';
+    }
+
+    setCreateFromData(updatedData);
   };
 
   const hidePremiumFeature = applyFilters('spsg_hide_bogo_premium_options', true);
