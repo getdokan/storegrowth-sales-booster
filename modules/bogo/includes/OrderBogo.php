@@ -547,6 +547,7 @@ class OrderBogo implements HookRegistry {
 		if ( $posted_gift_product_id === $offer_product_id ) {
 			$variation_id         = ! empty( $_POST['bogo_gift_variation_id'] ) ? intval( $_POST['bogo_gift_variation_id'] ) : 0;
 			$variation_attributes = ! empty( $_POST['bogo_gift_variation'] ) ? wc_clean( wp_unslash( $_POST['bogo_gift_variation'] ) ) : array();
+			$variation_attributes = is_array( $variation_attributes ) ? $variation_attributes : array();
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
