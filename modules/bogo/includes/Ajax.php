@@ -82,10 +82,62 @@ class Ajax implements HookRegistry {
 
 		/** @var WC_Product_Variable $selected_product */
 		if ( $selected_product && $selected_product->is_type( 'variable' ) ) {
-			$available_variations = $selected_product->get_available_variations();
-			if ( ! empty( $available_variations ) ) {
-				$variation_id         = $available_variations[0]['variation_id'];
-				$variation_attributes = $available_variations[0]['attributes'];
+			$posted_variation_id = isset( $data['variation_id'] ) ? intval( $data['variation_id'] ) : 0;
+			$posted_attributes   = isset( $data['variation_attributes'] ) && is_array( $data['variation_attributes'] )
+				? array_map( 'sanitize_text_field', $data['variation_attributes'] )
+				: array();
+
+			// 1. Use the posted variation_id if valid.
+			if ( $posted_variation_id ) {
+				$variation_product = wc_get_product( $posted_variation_id );
+				if ( $variation_product && $variation_product->get_parent_id() === $selected_product_id ) {
+					$variation_id         = $posted_variation_id;
+					$variation_attributes = $variation_product->get_variation_attributes();
+				}
+			}
+
+			// 2. Try to resolve from posted attributes.
+			if ( ! $variation_id && ! empty( $posted_attributes ) ) {
+				$data_store = \WC_Data_Store::load( 'product' );
+				$matched_id = $data_store->find_matching_product_variation( $selected_product, $posted_attributes );
+
+				if ( $matched_id ) {
+					$variation_id         = $matched_id;
+					$variation_attributes = $posted_attributes;
+				}
+			}
+
+			// 3. Fallback: default variation, then first available.
+			if ( ! $variation_id ) {
+				$available_variations = $selected_product->get_available_variations();
+				if ( ! empty( $available_variations ) ) {
+					$default_variation_id = 0;
+					$default_attributes   = $selected_product->get_default_attributes();
+
+					if ( ! empty( $default_attributes ) ) {
+						$prefixed_defaults    = array_combine(
+							array_map( fn( $key ) => 'attribute_' . $key, array_keys( $default_attributes ) ),
+							array_values( $default_attributes )
+						);
+						$data_store           = \WC_Data_Store::load( 'product' );
+						$default_variation_id = $data_store->find_matching_product_variation( $selected_product, $prefixed_defaults );
+					}
+
+					if ( $default_variation_id ) {
+						$default_variation_product = wc_get_product( $default_variation_id );
+						if ( $default_variation_product ) {
+							$variation_id         = $default_variation_id;
+							$variation_attributes = $default_variation_product->get_variation_attributes();
+						}
+					} else {
+						$variation_id         = $available_variations[0]['variation_id'];
+						$variation_attributes = $available_variations[0]['attributes'];
+					}
+				}
+			}
+
+			if ( ! $variation_id ) {
+				wp_send_json_error( __( 'No available variation found for this product.', 'storegrowth-sales-booster' ) );
 			}
 		}
 

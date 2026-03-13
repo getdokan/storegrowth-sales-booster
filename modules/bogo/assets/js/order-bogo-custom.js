@@ -26,25 +26,52 @@ function extraProducts(product_id, check_status, offer_price) {
             offerProductCost = $( this ).data( 'offer-product-cost' ),
             cartItemKey = $( this ).data( 'item-key' );
 
+        // Collect variation data if the gift product has variation selectors.
+        var postData = {
+            cart_item_key       : cartItemKey,
+            main_product_id     : mainProductId,
+            product_link_key    : productLinkKey,
+            offer_product_cost  : offerProductCost,
+            selected_product_id : selectedProductId,
+        };
+
+        var $variationContainer = $( this ).closest('.offer-main-wrap').find('.bogo-gift-variations');
+        if ( $variationContainer.length ) {
+            var variationId = $variationContainer.find('.bogo-gift-variation-id').val();
+            if ( variationId ) {
+                postData.variation_id = variationId;
+            }
+
+            var variationAttributes = {};
+            $variationContainer.find('.bogo-gift-attribute').each(function() {
+                var attrName = $( this ).data('attribute');
+                var attrValue = $( this ).val();
+                if ( attrName && attrValue ) {
+                    variationAttributes[ attrName ] = attrValue;
+                }
+            });
+
+            if ( Object.keys( variationAttributes ).length ) {
+                postData.variation_attributes = variationAttributes;
+            }
+        }
+
         $.post(
             bogo_save_url.ajax_url_for_front,
             {
                 action      : 'update_offer_product',
                 _ajax_nonce : bogo_save_url.ajd_nonce,
-                data        : {
-                    cart_item_key       : cartItemKey,
-                    main_product_id     : mainProductId,
-                    product_link_key    : productLinkKey,
-                    offer_product_cost  : offerProductCost,
-                    selected_product_id : selectedProductId,
-                }
+                data        : postData
             },
             function ( response ) {
                 if ( response.success ) {
                     // Optionally, refresh the page to update the cart
                     location.reload();
                 } else {
-                    alert('Failed to update the product.');
+                    var msg = ( response.data && typeof response.data === 'string' )
+                        ? response.data
+                        : 'Failed to update the product.';
+                    alert( msg );
                 }
             }
         );

@@ -530,7 +530,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * Resolve the variation to use for a variable gift product.
 	 *
-	 * Checks $_POST for user-selected variation first, falls back to first available variation.
+	 * Priority: user-selected variation → default variation → first available variation.
 	 *
 	 * @param int         $offer_product_id The parent variable product ID.
 	 * @param \WC_Product $product          The variable product object.
