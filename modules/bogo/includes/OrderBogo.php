@@ -576,8 +576,12 @@ class OrderBogo implements HookRegistry {
 				}
 
 				if ( $default_variation_id ) {
+					$default_variation_product = wc_get_product( $default_variation_id );
+					if ( ! $default_variation_product ) {
+						return null;
+					}
 					$variation_id         = $default_variation_id;
-					$variation_attributes = wc_get_product( $variation_id )->get_variation_attributes();
+					$variation_attributes = $default_variation_product->get_variation_attributes();
 				} else {
 					$variation_id         = $available_variations[0]['variation_id'];
 					$variation_attributes = $available_variations[0]['attributes'];

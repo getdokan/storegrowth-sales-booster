@@ -126,30 +126,59 @@ function extraProducts(product_id, check_status, offer_price) {
 
                 // Inject hidden fields into the WooCommerce add-to-cart form
                 var $form = $('form.cart');
-                $form.append('<input type="hidden" name="bogo_gift_variation_id" class="bogo-gift-hidden-field" value="' + matchingVariation.variation_id + '" />');
-                $form.append('<input type="hidden" name="bogo_gift_product_id" class="bogo-gift-hidden-field" value="' + productId + '" />');
+                $form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'bogo_gift_variation_id',
+                    class: 'bogo-gift-hidden-field',
+                    value: matchingVariation.variation_id
+                }));
+                $form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'bogo_gift_product_id',
+                    class: 'bogo-gift-hidden-field',
+                    value: productId
+                }));
 
                 $.each(selectedAttributes, function (key, value) {
-                    $form.append('<input type="hidden" name="bogo_gift_variation[' + key + ']" class="bogo-gift-hidden-field" value="' + value + '" />');
+                    $form.append($('<input>', {
+                        type: 'hidden',
+                        name: 'bogo_gift_variation[' + key + ']',
+                        class: 'bogo-gift-hidden-field',
+                        value: value
+                    }));
                 });
 
                 // Update price display if variation has a different price
                 var $priceContainer = $container.closest('.offer-main-wrap').find('.offer-price');
                 if ($priceContainer.length && matchingVariation.display_price !== undefined) {
-                    var currencySymbol = $priceContainer.find('span:last').text().replace(/[0-9.,]/g, '').trim();
-                    if (!currencySymbol) {
-                        currencySymbol = '';
-                    }
-                    // Only update the offer price span (last span)
-                    var formattedPrice = parseFloat(0).toFixed(2);
                     var $offerSpan = $priceContainer.find('span:last');
 
-                    // Check if bogo is free or discounted
                     if ($offerSpan.length) {
                         var currentText = $offerSpan.text();
                         // Extract currency symbol from existing text
                         var sym = currentText.replace(/[0-9.,\s]/g, '');
+
+                        // Calculate offer price based on offer type
+                        var variationPrice = parseFloat(matchingVariation.display_price);
+                        var $offerWrap = $container.closest('.offer-main-wrap');
+                        var discountPercent = $offerWrap.data('discount-amount');
+                        var offerType = $offerWrap.data('offer-type');
+                        var formattedPrice;
+
+                        if (offerType === 'discount' && discountPercent) {
+                            formattedPrice = Math.max(variationPrice - (variationPrice * (parseFloat(discountPercent) / 100)), 0).toFixed(2);
+                        } else {
+                            formattedPrice = parseFloat(0).toFixed(2);
+                        }
+
                         $offerSpan.text(sym + formattedPrice);
+
+                        // Also update the regular/strikethrough price
+                        var $regularSpan = $priceContainer.find('span:first');
+                        if ($regularSpan.length && $regularSpan.css('text-decoration').indexOf('line-through') !== -1) {
+                            var regSym = $regularSpan.text().replace(/[0-9.,\s]/g, '');
+                            $regularSpan.text(regSym + variationPrice.toFixed(2));
+                        }
                     }
                 }
             } else {

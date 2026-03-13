@@ -20,6 +20,8 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 	<div class='template-overview-area'>
 		<div
             class="offer-main-wrap"
+            data-offer-type="<?php echo esc_attr( ! empty( $bogo_info->offer_type ) ? $bogo_info->offer_type : 'free' ); ?>"
+            data-discount-amount="<?php echo esc_attr( ! empty( $bogo_info->discount_amount ) ? $bogo_info->discount_amount : 0 ); ?>"
             style="
                 <?php
                     $border_style = Helper::get_design_value( $bogo_info, 'box_border_style' );
@@ -97,11 +99,11 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 
 			<?php
 			// Show variation selectors if the gift product is a variable product.
-			$_gift_product = wc_get_product( $offer_product_id );
+			$gift_product = wc_get_product( $offer_product_id );
 
-			if ( $_gift_product && $_gift_product->is_type( 'variable' ) ) :
-				$available_variations = $_gift_product->get_available_variations();
-				$variation_attributes = $_gift_product->get_variation_attributes();
+			if ( $gift_product && $gift_product->is_type( 'variable' ) ) :
+				$available_variations = $gift_product->get_available_variations();
+				$variation_attributes = $gift_product->get_variation_attributes();
 
 				if ( ! empty( $variation_attributes ) ) :
 					?>
@@ -120,7 +122,17 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 							</div>
 						<?php endforeach; ?>
 						<input type="hidden" class="bogo-gift-variation-id" value="" />
-						<script type="application/json" class="bogo-gift-variations-data"><?php echo wp_json_encode( $available_variations ); ?></script>
+						<script type="application/json" class="bogo-gift-variations-data"><?php
+						echo wp_json_encode( array_map( function ( $v ) {
+							return array(
+								'variation_id'   => $v['variation_id'],
+								'attributes'     => $v['attributes'],
+								'is_purchasable' => $v['is_purchasable'],
+								'is_in_stock'    => $v['is_in_stock'],
+								'display_price'  => $v['display_price'],
+							);
+						}, $available_variations ) );
+					?></script>
 					</div>
 					<?php
 				endif;
