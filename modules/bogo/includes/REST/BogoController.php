@@ -310,9 +310,11 @@ class BogoController extends WP_REST_Controller {
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
 
-		// check the duplicate bogo offer
+		// check the duplicate bogo offer among active global offers only
 		$existing = BogoDataManager::get_bogo_offers([
 			'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
+			'type'             => 'global',
+			'status'           => 'active',
 		]);
 
 		if ( ! empty( $existing ) ) {
