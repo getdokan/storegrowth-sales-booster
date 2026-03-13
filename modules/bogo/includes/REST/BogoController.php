@@ -318,7 +318,7 @@ class BogoController extends WP_REST_Controller {
 		if ( ! empty( $existing ) ) {
 			return new WP_Error(
 				'bogo_offer_exists',
-				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', '')
+				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster')
 			);
 		}
 
