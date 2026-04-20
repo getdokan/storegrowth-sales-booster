@@ -192,7 +192,7 @@ class Ajax {
 			 */
 			$plugin = $this->plugin_data();
 		if ( empty( $plugin ) ) {
-			$body['message'] .= __( 'We can\'t detect any plugin information. This is most probably because you have not included the code in the plugin main file.', 'plugin-usage-tracker' );
+			$body['message'] = ( $body['message'] ?? '' ) . __( 'We can\'t detect any plugin information. This is most probably because you have not included the code in the plugin main file.', 'storegrowth-sales-booster' );
 			$body['status']   = 'NOT FOUND';
 		} else {
 			if ( isset( $plugin['Name'] ) ) {
