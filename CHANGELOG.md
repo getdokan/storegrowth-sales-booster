@@ -1,6 +1,6 @@
 == Changelog ==
 
-### v2.0.6 (April 20, 2026) ###
+### v2.0.6 (April 28, 2026) ###
 
 - **fix:** Fixed incorrect text domains in translation functions.
 - **fix:** Scoped BOGO duplicate check to active global offers only.

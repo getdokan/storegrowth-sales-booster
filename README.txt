@@ -273,7 +273,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= v2.0.6 (April 20, 2026) =
+= v2.0.6 (April 28, 2026) =
 
 * Fix: Fixed incorrect text domains in translation functions.
 * Fix: Scoped BOGO duplicate check to active global offers only.
