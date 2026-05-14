@@ -1,6 +1,6 @@
 === StoreGrowth: Smart Sales Booster for WooCommerce | BOGO, Upsells, Direct Checkout, Quick View, Side Cart ===
 Contributors: wedevs, tareq1988, nizamuddinbabu
-Tags: BOGO, Upsells, Direct Checkout, Quick View, Side Cart
+Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 5.4
 Tested up to: 6.8.2
@@ -13,7 +13,7 @@ WooCommerce Sales Booster with BOGO, upsells, direct checkout, quick view, side 
 
 == Description == 
 
-= Boost your WooCommerce sales with StoreGrowth’s advanced marketing modules, including Side Cart, Direct Checkout, Add-to-Cart Redirect, BOGO offers, Quick View, Upsell Order Bumps, Sales Countdown, Live Sales Notifications, and more! =
+= Sell more with BOGO, upsells, order bumps, FOMO alerts and countdown timers for Woo. Built by weDevs, a trusted name in WordPress for over 13 years. =
 
 Your WooCommerce Store Is Leaking Sales. StoreGrowth Fixes It.
 
