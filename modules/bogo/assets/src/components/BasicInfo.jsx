@@ -31,8 +31,8 @@ const BasicInfo = ({ clearErrors }) => {
   const [productListForSelect, setProductListForSelect] = useState([]);
 
   const offerOptions = [
-    { value: "free", label: __("Free", "storegrowth-sales-booster-pro") },
-    { value: "discount", label: __("Discount%", "storegrowth-sales-booster-pro") },
+    { value: "free", label: __("Free", "storegrowth-sales-booster") },
+    { value: "discount", label: __("Discount%", "storegrowth-sales-booster") },
   ];
 
   const handleProductSelection = (key, value, infoKey, item) => {
@@ -53,7 +53,7 @@ const BasicInfo = ({ clearErrors }) => {
         return notification["error"]({
           message: __(
             "Discount offer can't be greater than 100 percent!",
-            "storegrowth-sales-booster-pro"
+            "storegrowth-sales-booster"
           ),
         });
       }
@@ -65,7 +65,7 @@ const BasicInfo = ({ clearErrors }) => {
       createBogoData?.offered_products.length === 0 // Check if no target products are selected
     ) {
       return notification["error"]({
-        message: __("Please select target products first", "storegrowth-sales-booster-pro"),
+        message: __("Please select target products first", "storegrowth-sales-booster"),
       });
     }
 
@@ -102,10 +102,10 @@ const BasicInfo = ({ clearErrors }) => {
           name={`name_of_order_bogo`}
           changeHandler={onFieldChange}
           fieldValue={createBogoData.name_of_order_bogo}
-          title={__("Name of BOGO", "storegrowth-sales-booster-pro")}
+          title={__("Name of BOGO", "storegrowth-sales-booster")}
           placeHolderText={__(
             "Enter BOGO Name",
-            "storegrowth-sales-booster-pro"
+            "storegrowth-sales-booster"
           )}
         />
         <ProductAsyncSelect
@@ -113,11 +113,11 @@ const BasicInfo = ({ clearErrors }) => {
           name="offered_products"
           changeHandler={(key, value, item) => handleProductSelection(key, value, 'get_offered_product_info', item)}
           fieldValue={createBogoData?.get_offered_product_info?.name}
-          title={__("Select Target Product(s)", "storegrowth-sales-booster-pro")}
-          placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
+          title={__("Select Target Product(s)", "storegrowth-sales-booster")}
+          placeHolderText={__("Search for products", "storegrowth-sales-booster")}
           tooltip={__(
             "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-            "storegrowth-sales-booster-pro"
+            "storegrowth-sales-booster"
           )}
         />
 
@@ -136,14 +136,14 @@ const BasicInfo = ({ clearErrors }) => {
             fieldWidth={"100%"}
             name={`get_different_product_field`}
             changeHandler={(key, value, item) => handleProductSelection(key, value, 'get_different_product_info', item)}
-            title={__("Offer Product", "storegrowth-sales-booster-pro")}
+            title={__("Offer Product", "storegrowth-sales-booster")}
             tooltip={__(
               "The specific product that will be available in the order bogo with an offer.",
-              "storegrowth-sales-booster-pro"
+              "storegrowth-sales-booster"
             )}
             placeHolderText={__(
               "Search for offer product",
-              "storegrowth-sales-booster-pro"
+              "storegrowth-sales-booster"
             )}
             fieldValue={createBogoData?.get_different_product_info?.name}
             filterOption={(inputValue, option) =>
@@ -191,9 +191,9 @@ const BasicInfo = ({ clearErrors }) => {
         {DISPLAY_FIELDS.bogoType && (
           <TextRadioBox
             name={`bogo_type`}
-            title={__("Select BOGO Type", "storegrowth-sales-booster-pro")}
+            title={__("Select BOGO Type", "storegrowth-sales-booster")}
             classes={""}
-            tooltip={__("this is an example", "storegrowth-sales-booster-pro")}
+            tooltip={__("this is an example", "storegrowth-sales-booster")}
             options={[...dealCategories]}
             fieldValue={createBogoData?.bogo_type}
             changeHandler={onFieldChange}
@@ -207,11 +207,11 @@ const BasicInfo = ({ clearErrors }) => {
                 changeHandler={onFieldChange}
                 options={productListForSelect}
                 fieldValue={createBogoData?.get_alternate_products ? createBogoData?.get_alternate_products.map(Number) : []}
-                title={__("Alternate option of the offered products", "storegrowth-sales-booster-pro")}
-                placeHolderText={__("Search for products", "storegrowth-sales-booster-pro")}
+                title={__("Alternate option of the offered products", "storegrowth-sales-booster")}
+                placeHolderText={__("Search for products", "storegrowth-sales-booster")}
                 tooltip={__(
                   "The target product indicates for which specific products the upsell order bogo option will be displayed.",
-                  "storegrowth-sales-booster-pro"
+                  "storegrowth-sales-booster"
                 )}
               />
             ) : (
@@ -221,11 +221,11 @@ const BasicInfo = ({ clearErrors }) => {
                   changeHandler={onFieldChange}
                   fieldValue={createBogoData?.get_alternate_categories ? createBogoData?.get_alternate_categories.map(Number) : []}
                   options={bogo_products_and_categories?.category_list?.catForSelect}
-                  title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster-pro")}
-                  placeHolderText={__("Search for Categories", "storegrowth-sales-booster-pro")}
+                  title={__("Offer this category product as alternate product for this offer", "storegrowth-sales-booster")}
+                  placeHolderText={__("Search for Categories", "storegrowth-sales-booster")}
                   tooltip={__(
                     "The target categories indicate for which specific categories the upsell order bogo option will be displayed.",
-                    "storegrowth-sales-booster-pro"
+                    "storegrowth-sales-booster"
                   )}
                 />
               </Fragment>

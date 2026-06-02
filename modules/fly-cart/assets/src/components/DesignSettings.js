@@ -124,7 +124,7 @@ const DesignSettings = ({
                 name={ `product_card_bg_color` }
                 changeHandler={ onFieldChange }
                 fieldValue={ formData.product_card_bg_color }
-                title={ __( 'Product Card Backgorund Color', 'storegrowth-sales-booster' ) }
+                title={ __( 'Product Card Background Color', 'storegrowth-sales-booster' ) }
             />
             <ActionsHandler
                 saveHandler={ onFormSave }
