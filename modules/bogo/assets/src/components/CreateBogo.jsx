@@ -45,7 +45,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
           setPageLoading(false);
           console.error('Failed to fetch BOGO offers:', error);
           notification["error"]({
-            message: "Failed to load BOGO offers",
+            message: __("Failed to load BOGO offers", "storegrowth-sales-booster"),
             description: error.message,
           });
         });
@@ -111,7 +111,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
           setPageLoading(false);
           console.error('Failed to fetch BOGO offer:', error);
           notification["error"]({
-            message: "Failed to load BOGO offer",
+            message: __("Failed to load BOGO offer", "storegrowth-sales-booster"),
             description: error.message,
           });
         });
@@ -134,7 +134,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
   const onFormSave = () => {
     if (!createBogoData.name_of_order_bogo) {
       notification["error"]({
-        message: "Please enter name of order bogo",
+        message: __("Please enter name of order bogo", "storegrowth-sales-booster"),
       });
       return null;
     }
@@ -144,8 +144,10 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       createBogoData.offered_categories.length === 0
     ) {
       notification["error"]({
-        message:
+        message: __(
           "You have to select target products or target categories or both",
+          "storegrowth-sales-booster"
+        ),
       });
 
       return null;
@@ -153,7 +155,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     if (createBogoData.offer_schedule.length === 0) {
       notification["error"]({
-        message: "Please select bogo schedule",
+        message: __("Please select bogo schedule", "storegrowth-sales-booster"),
       });
 
       return null;
@@ -161,7 +163,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     if (!createBogoData.get_different_product_field && createBogoData.bogo_deal_type !== 'same') {
       notification["error"]({
-        message: "Please select offer product",
+        message: __("Please select offer product", "storegrowth-sales-booster"),
       });
 
       return null;
@@ -173,7 +175,10 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       createBogoData.offered_products.map(Number).includes(Number(createBogoData.get_different_product_field))
     ) {
       notification["error"]({
-        message: "Offer product cannot be the same as a target product. Use 'Buy X Get X' deal type for same product offers.",
+        message: __(
+          "Offer product cannot be the same as a target product. Use 'Buy X Get X' deal type for same product offers.",
+          "storegrowth-sales-booster"
+        ),
       });
 
       return null;
@@ -181,7 +186,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     if (!createBogoData.offer_type || createBogoData.offer_type.length === 0) {
       notification["error"]({
-        message: "Please select offer type",
+        message: __("Please select offer type", "storegrowth-sales-booster"),
       });
 
       return null;
@@ -189,7 +194,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     if (createBogoData.offer_type !== "free" && !createBogoData.discount_amount) {
       notification["error"]({
-        message: "Please select offer amount",
+        message: __("Please select offer amount", "storegrowth-sales-booster"),
       });
 
       return null;
