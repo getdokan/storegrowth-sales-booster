@@ -310,15 +310,17 @@ class BogoController extends WP_REST_Controller {
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
 
-		// check the duplicate bogo offer
+		// check the duplicate bogo offer among active global offers only
 		$existing = BogoDataManager::get_bogo_offers([
 			'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
+			'type'             => 'global',
+			'status'           => 'active',
 		]);
 
 		if ( ! empty( $existing ) ) {
 			return new WP_Error(
 				'bogo_offer_exists',
-				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', '')
+				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster')
 			);
 		}
 
