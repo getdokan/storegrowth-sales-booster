@@ -34,7 +34,7 @@ require_once __DIR__ . '/vendor/autoload.php';
  * Define plugin __FILE__
  */
 if ( ! defined( 'STOREGROWTH_VERSION' ) ) {
-	define( 'STOREGROWTH_VERSION', '2.0.2' );
+	define( 'STOREGROWTH_VERSION', '2.0.6' );
 }
 
 /**
