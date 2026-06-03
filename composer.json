@@ -1,5 +1,8 @@
 {
   "name": "dokan/storegrowth-lite",
+  "require": {
+    "php": ">=7.4"
+  },
   "autoload": {
     "psr-4": {
       "StorePulse\\StoreGrowth\\": "includes/",
@@ -21,6 +24,8 @@
     ]
   },
  "require-dev": {
+    "appsero/client": "^2.0",
+    "appsero/updater": "^2.3",
     "league/container": "^4.0",
     "coenjacobs/mozart": "^0.7.1"
   },
@@ -47,7 +52,9 @@
         "classmap_directory": "/lib/classes/",
         "classmap_prefix": "STOREGROWTH_SPSB_",
         "packages": [
-            "league/container"
+            "league/container",
+            "appsero/client",
+            "appsero/updater"
         ],
         "excluded_packages": [
             "psr/http-client",
