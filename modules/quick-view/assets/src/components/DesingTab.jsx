@@ -52,7 +52,7 @@ function DesignTab(props) {
           name={"modal_background_color"}
           fieldValue={formData?.modal_background_color}
           changeHandler={onFieldChange}
-          title={__("Modal Backgroud Color", "storegrowth-sales-booster")}
+          title={__("Modal Background Color", "storegrowth-sales-booster")}
         />
 
         {applyFilters(
