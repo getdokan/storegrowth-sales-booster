@@ -26,10 +26,13 @@ class Bootstrap {
 
 	use Singleton;
 
+	public ?Tracker $tracker = null;
+
 	/**
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
+		$this->tracker = new Tracker();
 		add_action( 'woocommerce_loaded', [ $this, 'on_wc_loaded' ] );
 		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_is_not_active' ] );
 	}

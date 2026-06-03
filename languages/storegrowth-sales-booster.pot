@@ -1,14 +1,14 @@
 # Copyright (c) 2026 All Rights Reserved by weDevs.
 msgid ""
 msgstr ""
-"Project-Id-Version: StoreGrowth 2.0.5\n"
+"Project-Id-Version: StoreGrowth 2.0.6\n"
 "Report-Msgid-Bugs-To: https://storegrowth.io/contact-us/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-05T04:07:25+00:00\n"
+"POT-Creation-Date: 2026-04-20T11:17:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: storegrowth-sales-booster\n"
@@ -92,6 +92,10 @@ msgstr ""
 msgid "Upgrade to Pro"
 msgstr ""
 
+#: includes/Ajax.php:195
+msgid "We can't detect any plugin information. This is most probably because you have not included the code in the plugin main file."
+msgstr ""
+
 #. translators: %s is a placeholder for the WooCommerce plugin link.
 #: includes/Bootstrap.php:44
 msgid "StoreGrowth requires %s to be installed and active."
@@ -161,7 +165,7 @@ msgid "Vendor: "
 msgstr ""
 
 #: integrations/includes/Dokan/REST/VendorBogoController.php:46
-#: modules/bogo/includes/REST/BogoController.php:638
+#: modules/bogo/includes/REST/BogoController.php:640
 msgid "Sorry! You are not permitted to do the current action."
 msgstr ""
 
@@ -201,436 +205,440 @@ msgstr ""
 msgid "No BOGO offer found for the given ID."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:328
+#: modules/bogo/includes/REST/BogoController.php:323
+msgid "This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one."
+msgstr ""
+
+#: modules/bogo/includes/REST/BogoController.php:330
 msgid "Failed to create BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:333
+#: modules/bogo/includes/REST/BogoController.php:335
 msgid "Failed to retrieve created BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:362
-#: modules/bogo/includes/REST/BogoController.php:392
+#: modules/bogo/includes/REST/BogoController.php:364
+#: modules/bogo/includes/REST/BogoController.php:394
 msgid "BOGO offer not found."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:404
+#: modules/bogo/includes/REST/BogoController.php:406
 msgid "Failed to delete BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:425
+#: modules/bogo/includes/REST/BogoController.php:427
 msgid "Failed to update BOGO offer status."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:442
+#: modules/bogo/includes/REST/BogoController.php:444
 msgid "No data provided"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:454
+#: modules/bogo/includes/REST/BogoController.php:456
 msgid "Missing or empty required field: name_of_order_bogo"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:462
+#: modules/bogo/includes/REST/BogoController.php:464
 msgid "Missing or empty required field: offer_type"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:484
+#: modules/bogo/includes/REST/BogoController.php:486
 msgid "Missing or empty required design field: "
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:654
+#: modules/bogo/includes/REST/BogoController.php:656
 msgid "Name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:659
+#: modules/bogo/includes/REST/BogoController.php:661
 msgid "Name of the BOGO offer (alternative to name_of_order_bogo)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:665
+#: modules/bogo/includes/REST/BogoController.php:667
 msgid "Array of target product IDs or comma-separated string."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:670
-#: modules/bogo/includes/REST/BogoController.php:1146
+#: modules/bogo/includes/REST/BogoController.php:672
+#: modules/bogo/includes/REST/BogoController.php:1148
 msgid "ID of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:679
+#: modules/bogo/includes/REST/BogoController.php:681
 msgid "Type of BOGO deal."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:685
+#: modules/bogo/includes/REST/BogoController.php:687
 msgid "Offer types: free, discount."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:690
+#: modules/bogo/includes/REST/BogoController.php:692
 msgid "Discount value or percentage."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:697
+#: modules/bogo/includes/REST/BogoController.php:699
 msgid "Whether the BOGO applies to products or categories."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:703
+#: modules/bogo/includes/REST/BogoController.php:705
 msgid "Minimum quantity required to trigger the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:709
-#: modules/bogo/includes/REST/BogoController.php:913
+#: modules/bogo/includes/REST/BogoController.php:711
+#: modules/bogo/includes/REST/BogoController.php:915
 msgid "Offer start date."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:715
-#: modules/bogo/includes/REST/BogoController.php:918
+#: modules/bogo/includes/REST/BogoController.php:717
+#: modules/bogo/includes/REST/BogoController.php:920
 msgid "Offer end date."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:721
+#: modules/bogo/includes/REST/BogoController.php:723
 msgid "Default badge icon name."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:727
+#: modules/bogo/includes/REST/BogoController.php:729
 msgid "Enable custom badge image."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:732
+#: modules/bogo/includes/REST/BogoController.php:734
 msgid "Custom badge image URL or ID."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:738
+#: modules/bogo/includes/REST/BogoController.php:740
 msgid "Target category IDs (array or comma-separated string)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:744
+#: modules/bogo/includes/REST/BogoController.php:746
 msgid "Alternate product IDs for GET BOGO type (array or comma-separated string)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:750
+#: modules/bogo/includes/REST/BogoController.php:752
 msgid "Alternate category IDs for GET BOGO type."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:756
+#: modules/bogo/includes/REST/BogoController.php:758
 msgid "Product IDs to exclude."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:762
+#: modules/bogo/includes/REST/BogoController.php:764
 msgid "Offer schedule types (e.g., daily)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:767
+#: modules/bogo/includes/REST/BogoController.php:769
 msgid "Enable smart offer logic."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:772
+#: modules/bogo/includes/REST/BogoController.php:774
 msgid "Border style for display box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:777
+#: modules/bogo/includes/REST/BogoController.php:779
 msgid "Box border color."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:782
+#: modules/bogo/includes/REST/BogoController.php:784
 msgid "Top margin for the box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:787
+#: modules/bogo/includes/REST/BogoController.php:789
 msgid "Bottom margin for the box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:792
+#: modules/bogo/includes/REST/BogoController.php:794
 msgid "Background color for discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:797
+#: modules/bogo/includes/REST/BogoController.php:799
 msgid "Color of discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:802
-#: modules/bogo/includes/REST/BogoController.php:1219
+#: modules/bogo/includes/REST/BogoController.php:804
+#: modules/bogo/includes/REST/BogoController.php:1221
 msgid "Font size for discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:807
+#: modules/bogo/includes/REST/BogoController.php:809
 msgid "Color of product description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:812
+#: modules/bogo/includes/REST/BogoController.php:814
 msgid "Font size of product description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:817
+#: modules/bogo/includes/REST/BogoController.php:819
 msgid "Background color for accept offer button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:822
+#: modules/bogo/includes/REST/BogoController.php:824
 msgid "Text color for accept offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:827
+#: modules/bogo/includes/REST/BogoController.php:829
 msgid "Font size for accept offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:832
+#: modules/bogo/includes/REST/BogoController.php:834
 msgid "Background color for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:837
+#: modules/bogo/includes/REST/BogoController.php:839
 msgid "Text color for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:842
+#: modules/bogo/includes/REST/BogoController.php:844
 msgid "Font size for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:847
+#: modules/bogo/includes/REST/BogoController.php:849
 msgid "Image URL for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:852
+#: modules/bogo/includes/REST/BogoController.php:854
 msgid "Title shown for the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:857
+#: modules/bogo/includes/REST/BogoController.php:859
 msgid "Product ID of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:862
+#: modules/bogo/includes/REST/BogoController.php:864
 msgid "Discount title shown on frontend."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:867
+#: modules/bogo/includes/REST/BogoController.php:869
 msgid "Fixed price title for offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:872
+#: modules/bogo/includes/REST/BogoController.php:874
 msgid "Product description shown on the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:877
+#: modules/bogo/includes/REST/BogoController.php:879
 msgid "Title for product selection."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:882
+#: modules/bogo/includes/REST/BogoController.php:884
 msgid "Detailed offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:887
-#: modules/bogo/includes/REST/BogoController.php:1305
+#: modules/bogo/includes/REST/BogoController.php:889
+#: modules/bogo/includes/REST/BogoController.php:1307
 msgid "Regular price of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:892
+#: modules/bogo/includes/REST/BogoController.php:894
 msgid "Message shown on product page."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:897
+#: modules/bogo/includes/REST/BogoController.php:899
 msgid "Message shown on shop page."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:902
-#: modules/bogo/includes/REST/BogoController.php:1320
+#: modules/bogo/includes/REST/BogoController.php:904
+#: modules/bogo/includes/REST/BogoController.php:1322
 msgid "Badge image for the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:908
+#: modules/bogo/includes/REST/BogoController.php:910
 msgid "Array of alternate product IDs."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1066
+#: modules/bogo/includes/REST/BogoController.php:1068
 msgid "Unique identifier for the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1072
+#: modules/bogo/includes/REST/BogoController.php:1074
 msgid "The internal name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1077
+#: modules/bogo/includes/REST/BogoController.php:1079
 msgid "The name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1082
+#: modules/bogo/includes/REST/BogoController.php:1084
 #: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:428
 msgid "Array of target product IDs."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1089
+#: modules/bogo/includes/REST/BogoController.php:1091
 msgid "The deal type for BOGO (e.g., same or different products)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1094
+#: modules/bogo/includes/REST/BogoController.php:1096
 msgid "The target type of the BOGO deal, such as products or categories."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1099
+#: modules/bogo/includes/REST/BogoController.php:1101
 msgid "Minimum quantity required to trigger the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1104
+#: modules/bogo/includes/REST/BogoController.php:1106
 msgid "The formatted start date of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1110
+#: modules/bogo/includes/REST/BogoController.php:1112
 msgid "The formatted end date of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1116
+#: modules/bogo/includes/REST/BogoController.php:1118
 msgid "The start date in YYYY-MM-DD format."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1122
+#: modules/bogo/includes/REST/BogoController.php:1124
 msgid "The end date in YYYY-MM-DD format."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1128
+#: modules/bogo/includes/REST/BogoController.php:1130
 msgid "Array of category IDs eligible for BOGO."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1134
+#: modules/bogo/includes/REST/BogoController.php:1136
 msgid "Recurring schedule settings for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1140
+#: modules/bogo/includes/REST/BogoController.php:1142
 msgid "Whether the offer is a smart (dynamic) offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1151
-#: modules/bogo/includes/REST/BogoController.php:1157
+#: modules/bogo/includes/REST/BogoController.php:1153
+#: modules/bogo/includes/REST/BogoController.php:1159
 msgid "Array of alternate product IDs for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1163
+#: modules/bogo/includes/REST/BogoController.php:1165
 msgid "Type of benefit offered (free, fixed price, etc.)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1168
+#: modules/bogo/includes/REST/BogoController.php:1170
 msgid "Amount of discount applied in the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1173
+#: modules/bogo/includes/REST/BogoController.php:1175
 msgid "Name of the default badge icon."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1178
+#: modules/bogo/includes/REST/BogoController.php:1180
 msgid "Whether a custom badge image is enabled (0 or 1)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1184
+#: modules/bogo/includes/REST/BogoController.php:1186
 msgid "URL or path to the custom badge image."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1189
+#: modules/bogo/includes/REST/BogoController.php:1191
 msgid "CSS style for box border (e.g., solid, dashed)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1194
+#: modules/bogo/includes/REST/BogoController.php:1196
 msgid "Color code of the border."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1199
+#: modules/bogo/includes/REST/BogoController.php:1201
 msgid "Top margin value of the BOGO box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1204
+#: modules/bogo/includes/REST/BogoController.php:1206
 msgid "Bottom margin value of the BOGO box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1209
+#: modules/bogo/includes/REST/BogoController.php:1211
 msgid "Background color of the discount box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1214
+#: modules/bogo/includes/REST/BogoController.php:1216
 msgid "Text color for discount information."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1224
+#: modules/bogo/includes/REST/BogoController.php:1226
 msgid "Text color for product descriptions."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1229
+#: modules/bogo/includes/REST/BogoController.php:1231
 msgid "Font size for product descriptions."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1234
+#: modules/bogo/includes/REST/BogoController.php:1236
 msgid "Background color of the \"Accept Offer\" button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1239
+#: modules/bogo/includes/REST/BogoController.php:1241
 msgid "Text color of the \"Accept Offer\" button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1244
+#: modules/bogo/includes/REST/BogoController.php:1246
 msgid "Font size for the \"Accept Offer\" button text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1249
+#: modules/bogo/includes/REST/BogoController.php:1251
 msgid "Background color for the offer description box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1254
+#: modules/bogo/includes/REST/BogoController.php:1256
 msgid "Text color for the offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1259
+#: modules/bogo/includes/REST/BogoController.php:1261
 msgid "Font size of the offer description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1264
+#: modules/bogo/includes/REST/BogoController.php:1266
 msgid "URL to the promotional image or icon."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1270
+#: modules/bogo/includes/REST/BogoController.php:1272
 msgid "Title of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1275
+#: modules/bogo/includes/REST/BogoController.php:1277
 msgid "Product ID for the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1280
+#: modules/bogo/includes/REST/BogoController.php:1282
 msgid "Title shown for the discount."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1285
+#: modules/bogo/includes/REST/BogoController.php:1287
 msgid "Title for fixed-price deals."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1290
+#: modules/bogo/includes/REST/BogoController.php:1292
 msgid "Short description for the offer product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1295
+#: modules/bogo/includes/REST/BogoController.php:1297
 msgid "Title shown during offer product selection."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1300
+#: modules/bogo/includes/REST/BogoController.php:1302
 msgid "The long description of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1310
+#: modules/bogo/includes/REST/BogoController.php:1312
 msgid "Message shown on the product page for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1315
+#: modules/bogo/includes/REST/BogoController.php:1317
 msgid "Message shown on the shop page for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1325
+#: modules/bogo/includes/REST/BogoController.php:1327
 msgid "Type of BOGO offer (global or product)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1331
+#: modules/bogo/includes/REST/BogoController.php:1333
 msgid "Status of the BOGO offer (active or inactive)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1337
+#: modules/bogo/includes/REST/BogoController.php:1339
 msgid "Creation timestamp of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1343
+#: modules/bogo/includes/REST/BogoController.php:1345
 msgid "Last update timestamp of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1349
+#: modules/bogo/includes/REST/BogoController.php:1351
 msgid "Schedule configuration for offers."
 msgstr ""
 
@@ -685,6 +693,8 @@ msgid "Offer Type"
 msgstr ""
 
 #: modules/bogo/templates/product-bogo-settings.php:96
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:33
 msgid "Free"
 msgstr ""
 
@@ -716,6 +726,7 @@ msgid "Bogo Type"
 msgstr ""
 
 #: modules/bogo/templates/product-bogo-settings.php:152
+#: modules/bogo/assets/src/components/BasicInfo.jsx:184
 msgid "Alternate option of the offered products"
 msgstr ""
 
@@ -1096,7 +1107,7 @@ msgid "This is a list of all the modules of StoreGrowth. Enable your desired mod
 msgstr ""
 
 #: assets/src/components/initail-setup/Ready.jsx:12
-msgid "Congratulation!"
+msgid "Congratulations!"
 msgstr ""
 
 #: assets/src/components/initail-setup/Ready.jsx:13
@@ -2049,6 +2060,25 @@ msgid "Offer Price/Discount"
 msgstr ""
 
 #: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:34
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:53
+msgid "Discount%"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:53
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:85
+msgid "Discount offer can't be greater than 100 percent!"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:67
+msgid "Please select target products first"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
 #: modules/bogo/assets/src/components/BasicInfo.jsx:80
 msgid "Buy X Get Y"
 msgstr ""
@@ -2066,13 +2096,66 @@ msgid "Categories"
 msgstr ""
 
 #: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:97
+msgid "Name of BOGO"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:98
+msgid "Enter BOGO Name"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:108
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:146
+msgid "Select Target Product(s)"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:109
+#: modules/bogo/assets/src/components/BasicInfo.jsx:185
+#: modules/sales-pop/assets/build/settings.js:1
+#: modules/sales-pop/assets/src/components/CreateSalesPop.js:158
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:147
+msgid "Search for products"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:110
+#: modules/bogo/assets/src/components/BasicInfo.jsx:186
+msgid "The target product indicates for which specific products the upsell order bogo option will be displayed."
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
 #: modules/bogo/assets/src/components/BasicInfo.jsx:118
 msgid "BOGO Deal Type"
 msgstr ""
 
 #: modules/bogo/assets/build/settings.js:1
 #: modules/bogo/assets/src/components/BasicInfo.jsx:119
+#: modules/bogo/assets/src/components/BasicInfo.jsx:170
 msgid "this is an example"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:131
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:199
+msgid "Offer Product"
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:132
+msgid "The specific product that will be available in the order bogo with an offer."
+msgstr ""
+
+#: modules/bogo/assets/build/settings.js:1
+#: modules/bogo/assets/src/components/BasicInfo.jsx:136
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:204
+msgid "Search for offer product"
 msgstr ""
 
 #: modules/bogo/assets/build/settings.js:1
@@ -2429,6 +2512,24 @@ msgstr ""
 #: modules/bogo/assets/build/settings.js:1
 #: modules/bogo/assets/src/components/CreateMessage.jsx:98
 msgid "BOGO category message has been created successfully"
+msgstr ""
+
+#: modules/bogo/assets/src/components/BasicInfo.jsx:168
+msgid "Select BOGO Type"
+msgstr ""
+
+#: modules/bogo/assets/src/components/BasicInfo.jsx:198
+msgid "Offer this category product as alternate product for this offer"
+msgstr ""
+
+#: modules/bogo/assets/src/components/BasicInfo.jsx:199
+#: modules/upsell-order-bump/assets/build/settings.js:1
+#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:163
+msgid "Search for Categories"
+msgstr ""
+
+#: modules/bogo/assets/src/components/BasicInfo.jsx:200
+msgid "The target categories indicate for which specific categories the upsell order bogo option will be displayed."
 msgstr ""
 
 #: modules/bogo/assets/src/components/CategoryMessages.jsx:16
@@ -2991,7 +3092,7 @@ msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
 #: modules/fly-cart/assets/src/components/DesignSettings.js:127
-msgid "Product Card Backgorund Color"
+msgid "Product Card Background Color"
 msgstr ""
 
 #: modules/fly-cart/assets/build/settings.js:1
@@ -3321,7 +3422,7 @@ msgstr ""
 
 #: modules/quick-view/assets/build/settings.js:1
 #: modules/quick-view/assets/src/components/DesingTab.jsx:55
-msgid "Modal Backgroud Color"
+msgid "Modal Background Color"
 msgstr ""
 
 #: modules/quick-view/assets/build/settings.js:1
@@ -3412,13 +3513,6 @@ msgstr ""
 #: modules/sales-pop/assets/build/settings.js:1
 #: modules/sales-pop/assets/src/components/CreateSalesPop.js:157
 msgid "Select Popup Products"
-msgstr ""
-
-#: modules/sales-pop/assets/build/settings.js:1
-#: modules/sales-pop/assets/src/components/CreateSalesPop.js:158
-#: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:147
-msgid "Search for products"
 msgstr ""
 
 #: modules/sales-pop/assets/build/settings.js:1
@@ -3764,11 +3858,6 @@ msgid "Upgrade to premium to create more than two order bumps."
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:53
-msgid "Discount%"
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
 #: modules/upsell-order-bump/assets/src/components/BasicInfo.js:54
 msgid "Price"
 msgstr ""
@@ -3776,11 +3865,6 @@ msgstr ""
 #: modules/upsell-order-bump/assets/build/settings.js:1
 #: modules/upsell-order-bump/assets/src/components/BasicInfo.js:76
 msgid "Offer price can't be greater than product price!"
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:85
-msgid "Discount offer can't be greater than 100 percent!"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1
@@ -3804,11 +3888,6 @@ msgid "Select the target bump type"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:146
-msgid "Select Target Product(s)"
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
 #: modules/upsell-order-bump/assets/src/components/BasicInfo.js:151
 msgid "The target product indicates for which specific products the upsell order bump option will be displayed."
 msgstr ""
@@ -3816,11 +3895,6 @@ msgstr ""
 #: modules/upsell-order-bump/assets/build/settings.js:1
 #: modules/upsell-order-bump/assets/src/components/BasicInfo.js:162
 msgid "Select Target Categories"
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:163
-msgid "Search for Categories"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1
@@ -3844,18 +3918,8 @@ msgid "Offer Section"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:199
-msgid "Offer Product"
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
 #: modules/upsell-order-bump/assets/src/components/BasicInfo.js:200
 msgid "The specific product that will be available in the order bump with an offer."
-msgstr ""
-
-#: modules/upsell-order-bump/assets/build/settings.js:1
-#: modules/upsell-order-bump/assets/src/components/BasicInfo.js:204
-msgid "Search for offer product"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/build/settings.js:1

@@ -1,6 +1,13 @@
 == Changelog ==
 
-### v2.0.5 (Feb 05, 2025) ###
+### v2.0.6 (April 28, 2026) ###
+
+- **fix:** Fixed incorrect text domains in translation functions.
+- **fix:** Scoped BOGO duplicate check to active global offers only.
+- **fix:** Updated AJAX URL to use `admin_url` function for better compatibility.
+- **chore:** Added new banner and screenshot images for WordPress.org.
+
+### v2.0.5 (Feb 05, 2026) ###
 
 - **fix:** Resolved cart overlay layout corruption and corrected pricing discrepancies.
 - **fix:** Fixed the Fly Cart center popout not rendering properly.
