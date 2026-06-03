@@ -21,11 +21,17 @@ const ProductAsyncSelect = (props) => {
     }
 
     const getProducts = async (args) => {
-        const query = new URLSearchParams({
+        const params = {
             search: args.search || '',
             product_type: args.product_type || '',
             per_page: args.per_page || 30
-        })
+        }
+        // Only constrain by status when the caller asks for it, so the default
+        // behaviour of this shared field stays unchanged for other consumers.
+        if (args.status) {
+            params.status = args.status
+        }
+        const query = new URLSearchParams(params)
         return await apiFetch({
             path: `/sales-booster/v1/products?${query.toString()}`,
         });

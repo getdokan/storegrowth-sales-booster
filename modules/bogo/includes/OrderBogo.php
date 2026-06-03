@@ -985,8 +985,35 @@ class OrderBogo implements HookRegistry {
 			$is_variable_product
 		);
 
+		// Only persist a product BOGO when the merchant has actually configured one.
+		// Without this guard a row was written on every product create/update, leaving
+		// empty "inactive" BOGO entries for products that never used the feature.
+		// An already-existing row is still saved so it can be edited or disabled.
+		$is_bogo_enabled   = ( 'active' === $bogo_enabled );
+		$has_offer_product = ! empty( $bogo_settings_data['get_different_product_field'] );
+		$has_existing_bogo = ! empty(
+			\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
+				'type'         => 'product',
+				'product_id'   => $post_id,
+				'variation_id' => 0,
+				'status'       => '',
+			) )
+		);
+
+		$should_save_bogo = apply_filters(
+			'spsg_should_save_product_bogo',
+			$is_bogo_enabled || $has_offer_product || $has_existing_bogo,
+			$post_id,
+			$bogo_settings_data,
+			$is_variable_product
+		);
+
+		if ( ! $should_save_bogo ) {
+			return;
+		}
+
 		\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::save_product_bogo_settings( $post_id, 0, $bogo_settings_data );
-		
+
 		// Sync offer schedules between product and global offers
 		\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::sync_offer_schedules( $post_id );
 	}
