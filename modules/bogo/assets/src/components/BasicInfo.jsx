@@ -1,14 +1,15 @@
-import {__} from "@wordpress/i18n";
-import {notification} from "antd";
-import {useDispatch, useSelect} from "@wordpress/data";
-import {Fragment, useState} from "@wordpress/element";
+import { __ } from "@wordpress/i18n";
+import { notification } from "antd";
+import { useDispatch, useSelect } from "@wordpress/data";
+import { Fragment, useState } from "@wordpress/element";
 import TextInput from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextInput";
 import SettingsSection from "sales-booster/src/components/settings/Panels/PanelSettings/SettingsSection";
 import MultiSelectBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
 import ProductAsyncSelect from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/ProductAsyncSelect";
 import TextRadioBox from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/TextRadioBox";
 import OfferField from "./OfferField";
-import {applyFilters} from "@wordpress/hooks";
+import DateField from "sales-booster/src/components/settings/Panels/PanelSettings/Fields/DateField";
+import { applyFilters } from "@wordpress/hooks";
 /**
 * TODO: Enable BOGO Type, Alternate Products, and BOGO Schedule fields once the backend is ready.
 * @see https://github.com/getdokan/plugin-internal-tasks/issues/891
@@ -36,13 +37,13 @@ const BasicInfo = ({ clearErrors }) => {
 
   const handleProductSelection = (key, value, infoKey, item) => {
     setCreateFromData({
-        ...createBogoData,
-        [infoKey]: {
-            name: item?.name || ''
-        },
-        [key]: value
+      ...createBogoData,
+      [infoKey]: {
+        name: item?.name || ''
+      },
+      [key]: value
     });
-};
+  };
 
   const onFieldChange = (key, value) => {
     clearErrors();
@@ -68,10 +69,17 @@ const BasicInfo = ({ clearErrors }) => {
       });
     }
 
-    setCreateFromData({
-        ...createBogoData,
-        [key]: value,
-    });
+    const updatedData = {
+      ...createBogoData,
+      [key]: value,
+    };
+
+    // Clear end date if start date is changed to after current end date.
+    if (key === 'offer_start' && createBogoData?.offer_end && value > createBogoData.offer_end) {
+      updatedData.offer_end = '';
+    }
+
+    setCreateFromData(updatedData);
   };
 
   const hidePremiumFeature = applyFilters('spsg_hide_bogo_premium_options', true);
@@ -104,7 +112,7 @@ const BasicInfo = ({ clearErrors }) => {
           colSpan={24}
           name="offered_products"
           changeHandler={(key, value, item) => handleProductSelection(key, value, 'get_offered_product_info', item)}
-          fieldValue={ createBogoData?.get_offered_product_info?.name }
+          fieldValue={createBogoData?.get_offered_product_info?.name}
           title={__("Select Target Product(s)", "storegrowth-sales-booster")}
           placeHolderText={__("Search for products", "storegrowth-sales-booster")}
           tooltip={__(
@@ -137,7 +145,7 @@ const BasicInfo = ({ clearErrors }) => {
               "Search for offer product",
               "storegrowth-sales-booster"
             )}
-            fieldValue={ createBogoData?.get_different_product_info?.name }
+            fieldValue={createBogoData?.get_different_product_info?.name}
             filterOption={(inputValue, option) =>
               option?.children?.[0]
                 ?.toString()
@@ -145,7 +153,7 @@ const BasicInfo = ({ clearErrors }) => {
                 ?.includes(inputValue.toLowerCase())
             }
             queryArgs={{
-                product_type: 'simple'
+              product_type: 'simple'
             }}
           />)
         }
@@ -156,22 +164,40 @@ const BasicInfo = ({ clearErrors }) => {
           onFieldChange={onFieldChange}
         />
 
+        <DateField
+          name="offer_start"
+          title={__("Offer Start Date", "storegrowth-sales-booster")}
+          fieldValue={createBogoData?.offer_start}
+          changeHandler={onFieldChange}
+          fullWidth={true}
+        />
+
+        <DateField
+          name="offer_end"
+          title={__("Offer End Date", "storegrowth-sales-booster")}
+          fieldValue={createBogoData?.offer_end}
+          changeHandler={onFieldChange}
+          endDateDisable={true}
+          startDateValue={createBogoData?.offer_start}
+          fullWidth={true}
+        />
+
         {applyFilters(
           'spsg_after_bogo_offer_settings',
           '',
           createBogoData,
           onFieldChange
         )}
-       {DISPLAY_FIELDS.bogoType && (
-        <TextRadioBox
-          name={`bogo_type`}
-          title={__("Select BOGO Type", "storegrowth-sales-booster")}
-          classes={""}
-          tooltip={__("this is an example", "storegrowth-sales-booster")}
-          options={[...dealCategories]}
-          fieldValue={createBogoData?.bogo_type}
-          changeHandler={onFieldChange}
-        />
+        {DISPLAY_FIELDS.bogoType && (
+          <TextRadioBox
+            name={`bogo_type`}
+            title={__("Select BOGO Type", "storegrowth-sales-booster")}
+            classes={""}
+            tooltip={__("this is an example", "storegrowth-sales-booster")}
+            options={[...dealCategories]}
+            fieldValue={createBogoData?.bogo_type}
+            changeHandler={onFieldChange}
+          />
         )}
         {DISPLAY_FIELDS.alternateProducts && (
           <>
@@ -204,7 +230,7 @@ const BasicInfo = ({ clearErrors }) => {
                 />
               </Fragment>
             )}
-            </>
+          </>
         )}
         {DISPLAY_FIELDS.bogoSchedule &&
           applyFilters(
