@@ -246,12 +246,12 @@ class BogoValidator {
 
 		// Check required fields
 		if ( empty( $bogo_settings['status'] ) ) {
-			$errors[] = 'BOGO status is required';
+			$errors[] = __( 'BOGO status is required', 'storegrowth-sales-booster' );
 			$valid = false;
 		}
 
 		if ( empty( $bogo_settings['bogo_deal_type'] ) ) {
-			$errors[] = 'BOGO deal type is required';
+			$errors[] = __( 'BOGO deal type is required', 'storegrowth-sales-booster' );
 			$valid = false;
 		}
 
@@ -260,10 +260,10 @@ class BogoValidator {
 		if ( 'product' === $type ) {
 			if ( empty( $bogo_settings['product_id'] ) ) {
 				if ( $strict_mode ) {
-					$errors[] = 'Product ID is required for product type BOGO';
+					$errors[] = __( 'Product ID is required for product type BOGO', 'storegrowth-sales-booster' );
 					$valid = false;
 				} else {
-					$warnings[] = 'Product ID is empty for product type BOGO';
+					$warnings[] = __( 'Product ID is empty for product type BOGO', 'storegrowth-sales-booster' );
 				}
 			}
 		} elseif ( 'global' === $type ) {
@@ -273,10 +273,10 @@ class BogoValidator {
 			
 			if ( ! $has_products && ! $has_categories ) {
 				if ( $strict_mode ) {
-					$errors[] = 'Global BOGO must specify either offered products or categories';
+					$errors[] = __( 'Global BOGO must specify either offered products or categories', 'storegrowth-sales-booster' );
 					$valid = false;
 				} else {
-					$warnings[] = 'Global BOGO has no offered products or categories specified';
+					$warnings[] = __( 'Global BOGO has no offered products or categories specified', 'storegrowth-sales-booster' );
 				}
 			}
 		}
@@ -285,8 +285,20 @@ class BogoValidator {
 		if ( isset( $bogo_settings['bogo_deal_type'] ) && 'different' === $bogo_settings['bogo_deal_type'] ) {
 			$offer_product_id = self::get_offer_product_id( $bogo_settings, 0 );
 			if ( ! $offer_product_id ) {
-				$errors[] = 'Offer product ID is required for different deal type';
+				$errors[] = __( 'Offer product ID is required for different deal type', 'storegrowth-sales-booster' );
 				$valid = false;
+			} else {
+				// Prevent selecting the same product as both target and offer (that would be Buy X Get X)
+				$offered_products = $bogo_settings['offered_products'] ?? array();
+				if ( is_array( $offered_products ) && in_array( (int) $offer_product_id, array_map( 'intval', $offered_products ), true ) ) {
+					$errors[] = __( 'Offer product cannot be the same as a target product in Buy X Get Y deal', 'storegrowth-sales-booster' );
+					$valid = false;
+				}
+				// For product-type BOGO, also check against the product itself
+				if ( ! empty( $bogo_settings['product_id'] ) && (int) $offer_product_id === (int) $bogo_settings['product_id'] ) {
+					$errors[] = __( 'Offer product cannot be the same as the target product in Buy X Get Y deal', 'storegrowth-sales-booster' );
+					$valid = false;
+				}
 			}
 		}
 
@@ -294,7 +306,7 @@ class BogoValidator {
 		if ( isset( $bogo_settings['offer_type'] ) && 'discount' === $bogo_settings['offer_type'] ) {
 			$discount_amount = floatval( $bogo_settings['discount_amount'] ?? 0 );
 			if ( $discount_amount <= 0 || $discount_amount > 100 ) {
-				$errors[] = 'Discount amount must be between 1 and 100';
+				$errors[] = __( 'Discount amount must be between 1 and 100', 'storegrowth-sales-booster' );
 				$valid = false;
 			}
 		}
@@ -305,44 +317,48 @@ class BogoValidator {
 
 		// Check for invalid date formats
 		if ( ! empty( $offer_start ) && '0000-00-00' === $offer_start ) {
-			$warnings[] = 'Offer start date has invalid format (0000-00-00)';
+			$warnings[] = __( 'Offer start date has invalid format (0000-00-00)', 'storegrowth-sales-booster' );
 			$offer_start = null; // Treat as empty
 		}
 
 		if ( ! empty( $offer_end ) && '0000-00-00' === $offer_end ) {
-			$warnings[] = 'Offer end date has invalid format (0000-00-00)';
+			$warnings[] = __( 'Offer end date has invalid format (0000-00-00)', 'storegrowth-sales-booster' );
 			$offer_end = null; // Treat as empty
 		}
 
 		// Validate date range
 		if ( ! empty( $offer_start ) && ! empty( $offer_end ) ) {
 			if ( $offer_start > $offer_end ) {
-				$errors[] = 'Offer start date must be before end date';
+				$errors[] = __( 'Offer start date must be before end date', 'storegrowth-sales-booster' );
 				$valid = false;
 			}
 		}
 
 		// Check for empty display messages (warnings only)
 		if ( empty( $bogo_settings['product_page_message'] ) && empty( $bogo_settings['shop_page_message'] ) ) {
-			$warnings[] = 'No display messages specified - users may not see BOGO offer information';
+			$warnings[] = __( 'No display messages specified - users may not see BOGO offer information', 'storegrowth-sales-booster' );
 		}
 
 		// Check for empty badge image
 		if ( empty( $bogo_settings['bogo_badge_image'] ) ) {
-			$warnings[] = 'No badge image specified - offer may not be visually prominent';
+			$warnings[] = __( 'No badge image specified - offer may not be visually prominent', 'storegrowth-sales-booster' );
 		}
 
 		// Validate minimum quantity
 		$min_qty = intval( $bogo_settings['minimum_quantity_required'] ?? 1 );
 		if ( $min_qty < 1 ) {
-			$errors[] = 'Minimum quantity required must be at least 1';
+			$errors[] = __( 'Minimum quantity required must be at least 1', 'storegrowth-sales-booster' );
 			$valid = false;
 		}
 
 		// Validate status field
 		$status = $bogo_settings['status'] ?? 'active';
 		if ( ! in_array( $status, array( 'active', 'inactive' ), true ) ) {
-			$warnings[] = 'Invalid status value: ' . $status . ' (should be active or inactive)';
+			$warnings[] = sprintf(
+				/* translators: %s: the invalid status value */
+				__( 'Invalid status value: %s (should be active or inactive)', 'storegrowth-sales-booster' ),
+				$status
+			);
 		}
 
 		return array(
