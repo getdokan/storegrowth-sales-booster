@@ -40,12 +40,14 @@ class Tracker {
         $this->insights = $client->insights();
 
         $this->insights->add_extra(
-             [
-                'products'      => $this->insights->get_post_count( 'product' ),
-                'is_pro'        => sp_store_growth()->has_pro() ? 'Yes' : 'No',
-                'wc_version'    => function_exists( 'WC' ) ? WC()->version : null,
-                'storegrowth_version' => STOREGROWTH_VERSION,
-            ]
+            function () {
+                return [
+                    'products'      => $this->insights->get_post_count( 'product' ),
+                    'is_pro'        => sp_store_growth()->has_pro() ? 'Yes' : 'No',
+                    'wc_version'    => function_exists( 'WC' ) ? WC()->version : null,
+                    'storegrowth_version' => STOREGROWTH_VERSION,
+                ];
+            }
         );
 
         $this->insights->init_plugin();
