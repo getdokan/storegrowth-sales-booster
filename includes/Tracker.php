@@ -35,19 +35,17 @@ class Tracker {
      *
      */
     public function appsero_init_tracker_dokan() {
-        $client = new Client( '512b82bc-5d26-46d3-9d14-e51642c15ff3', 'StoreGrowth', STOREGROWTH_FILE );
+        $client = new Client( '5942e12f-6282-4507-8727-5713addb7801', 'StoreGrowth', STOREGROWTH_FILE );
 
         $this->insights = $client->insights();
 
         $this->insights->add_extra(
-            function () {
-                return [
-                    'products'      => $this->insights->get_post_count( 'product' ),
-                    'is_pro'        => sp_store_growth()->has_pro() ? 'Yes' : 'No',
-                    'wc_version'    => function_exists( 'WC' ) ? WC()->version : null,
-                    'storegrowth_version' => STOREGROWTH_VERSION,
-                ];
-            }
+             [
+                'products'      => $this->insights->get_post_count( 'product' ),
+                'is_pro'        => sp_store_growth()->has_pro() ? 'Yes' : 'No',
+                'wc_version'    => function_exists( 'WC' ) ? WC()->version : null,
+                'storegrowth_version' => STOREGROWTH_VERSION,
+            ]
         );
 
         $this->insights->init_plugin();
