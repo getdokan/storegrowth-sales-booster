@@ -17,12 +17,15 @@ if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_ur
 		}
 		return '';
 	}
-	// "Free Gift" wording only applies when the offer is actually free (offer price 0,
-	// i.e. a free offer or a 100% discount). For a partial discount, show the amount off.
+	// Header text: show the offer message like the other BOGO offers do — the discount
+	// percent for a partial discount, otherwise the offer message ("Free Gift" by
+	// default, or the merchant's custom product page message). Never empty.
 	if ( (float) $offer_price > 0 ) {
-		$bogo_message = sprintf( esc_html__( '%s%% Off', 'storegrowth-sales-booster' ), (float) ( $bogo_info->discount_amount ?? 0 ) );
+		$bogo_message = sprintf( /* translators: %s: discount percent. */ __( '%s%% Off', 'storegrowth-sales-booster' ), (float) ( $bogo_info->discount_amount ?? 0 ) );
 	} else {
-		$bogo_message = $bogo_info->product_page_message;
+		$bogo_message = ! empty( $bogo_info->product_page_message )
+			? $bogo_info->product_page_message
+			: __( 'Free Gift', 'storegrowth-sales-booster' );
 		$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
 		$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
 	}

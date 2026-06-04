@@ -38,6 +38,7 @@ class OrderBogo implements HookRegistry {
 		add_filter( 'woocommerce_product_data_tabs', array( $this, 'add_bogo_product_data_tab' ) );
 		add_action( 'woocommerce_product_data_panels', array( $this, 'add_bogo_product_data_fields' ) );
 		add_action( 'woocommerce_process_product_meta', array( $this, 'save_bogo_settings' ) );
+		add_action( 'admin_notices', array( $this, 'show_bogo_product_save_notice' ) );
 
 		add_action( 'woocommerce_cart_item_removed', array( $this, 'remove_linked_bogo_product' ), 10, 2 );
 		add_filter( 'woocommerce_cart_item_class', array( $this, 'add_custom_class_to_offer_product' ), 10, 3 );
@@ -57,6 +58,25 @@ class OrderBogo implements HookRegistry {
 		add_action( 'spsg_fly_cart_item_bogo_badge', array( $this, 'display_bogo_badge_in_fly_cart' ), 10, 3 );
 		add_filter( 'spsg_fly_cart_item_price_html', array( $this, 'modify_fly_cart_bogo_price_html' ), 10, 3 );
     }
+
+	/**
+	 * Show a one-time admin notice when a product BOGO could not be enabled on save
+	 * (e.g. "Enable BOGO" was checked but no offer product was selected).
+	 */
+	public function show_bogo_product_save_notice() {
+		$key     = 'spsg_bogo_product_notice_' . get_current_user_id();
+		$message = get_transient( $key );
+
+		if ( empty( $message ) ) {
+			return;
+		}
+
+		delete_transient( $key );
+		printf(
+			'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
+			esc_html( $message )
+		);
+	}
 
     public function display_bogo_floating_badge_on_product() {
 		global $product;
@@ -726,10 +746,17 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 
-		// Check for product-specific BOGO settings first
-		$product_bogo_settings = Helper::get_product_bogo_settings( $current_product_id );
-		
-		if ( $product_bogo_settings && isset( $product_bogo_settings['status'] ) && 'active' === $product_bogo_settings['status'] ) {
+		// A product-specific (type=product) offer takes precedence: if one is active,
+		// show ONLY it and do not also render global offers for this product.
+		$product_offers        = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
+			'type'         => 'product',
+			'product_id'   => $current_product_id,
+			'variation_id' => 0,
+			'status'       => 'active',
+		) );
+		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
+
+		if ( $product_bogo_settings ) {
 			// Resolve the actual gift product. For a "Buy X Get Y" offer this is a
 			// different product; passing the current product id would render the wrong
 			// same-product template and hide the gift product on the product page.
@@ -737,11 +764,13 @@ class OrderBogo implements HookRegistry {
 
 			if ( $offer_product_id ) {
 				$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $offer_product_id );
-				$showed_bogo_product_id[] = $offer_product_id;
+				return; // Product offer shown; it overrides any global offer.
 			}
+			// Active product offer without a usable gift product: fall through to
+			// global offers instead of showing nothing.
 		}
 
-		// Check for global BOGO offers
+		// No applicable product-specific offer → show global BOGO offers.
 		$global_bogo_offers = Helper::get_global_offered_products();
 		
 		foreach ( $global_bogo_offers as $bogo_offer ) {
@@ -800,8 +829,8 @@ class OrderBogo implements HookRegistry {
 			'box_border_color' => $bogo_settings['box_border_color'] ?? '#e0e0e0',
 			'box_top_margin' => $bogo_settings['box_top_margin'] ?? 10,
 			'box_bottom_margin' => $bogo_settings['box_bottom_margin'] ?? 10,
-			'discount_background_color' => $bogo_settings['discount_background_color'] ?? '#ff6b6b',
-			'discount_text_color' => $bogo_settings['discount_text_color'] ?? '#ffffff',
+			'discount_background_color' => $bogo_settings['discount_background_color'] ?? '#E1FFF4',
+			'discount_text_color' => $bogo_settings['discount_text_color'] ?? '#02AC6E',
 			'discount_font_size' => $bogo_settings['discount_font_size'] ?? 14,
 			'product_description_text_color' => $bogo_settings['product_description_text_color'] ?? '#333333',
 			'product_description_font_size' => $bogo_settings['product_description_font_size'] ?? 12,
@@ -1005,6 +1034,21 @@ class OrderBogo implements HookRegistry {
 			$bogo_settings_data,
 			$is_variable_product
 		);
+
+		// Validate an enabled "Buy X Get Y" offer like the admin BOGO form: it must
+		// have an offer product. Otherwise force it inactive so we never create an
+		// active-but-empty product offer that silently shadows global offers, and
+		// surface a notice so the merchant knows it was not enabled.
+		if ( ! $is_variable_product && 'active' === $bogo_enabled && 'same' !== $deal_type
+			&& empty( $bogo_settings_data['get_different_product_field'] ) ) {
+			$bogo_enabled                 = 'inactive';
+			$bogo_settings_data['status'] = 'inactive';
+			set_transient(
+				'spsg_bogo_product_notice_' . get_current_user_id(),
+				__( 'BOGO was not enabled for this product — please select an offer product for a "Buy X Get Y" offer.', 'storegrowth-sales-booster' ),
+				60
+			);
+		}
 
 		// Only persist a product BOGO when the merchant has actually configured one.
 		// Without this guard a row was written on every product create/update, leaving
