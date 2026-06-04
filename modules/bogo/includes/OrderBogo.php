@@ -52,6 +52,10 @@ class OrderBogo implements HookRegistry {
 
         // Prevent BOGO offers product removing option from the cart.
 		add_action( 'woocommerce_remove_cart_item', array( $this, 'prevent_bogo_cart_item_remove' ), 10, 2 );
+
+		// FlyCart integration: show BOGO badge and original price on free items.
+		add_action( 'spsg_fly_cart_item_bogo_badge', array( $this, 'display_bogo_badge_in_fly_cart' ), 10, 3 );
+		add_filter( 'spsg_fly_cart_item_price_html', array( $this, 'modify_fly_cart_bogo_price_html' ), 10, 3 );
     }
 
     public function display_bogo_floating_badge_on_product() {
@@ -952,4 +956,105 @@ class OrderBogo implements HookRegistry {
             }
         }
     }
+	/**
+	 * Display the BOGO badge on free items shown in the FlyCart.
+	 *
+	 * Hooked into `spsg_fly_cart_item_bogo_badge` (action) by the BOGO module so that
+	 * the FlyCart template does not need any direct knowledge of BOGO logic.
+	 *
+	 * @param array      $cart_item     Cart item data.
+	 * @param string     $cart_item_key Cart item key.
+	 * @param WC_Product $_product      Product object.
+	 */
+	public function display_bogo_badge_in_fly_cart( $cart_item, $cart_item_key, $_product ) {
+		if ( empty( $cart_item['bogo_offer'] ) ) {
+			return;
+		}
+
+		/**
+		 * Controls whether the BOGO badge is shown on free items in the FlyCart.
+		 * Defaults to true (badge always visible for free-plugin users).
+		 * Pro plugin hooks here to read the `fly_cart_badge_icon` setting.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param bool  $enabled      Whether the badge should be displayed.
+		 * @param array $cart_item    Cart item data.
+		 * @param string $cart_item_key Cart item key.
+		 */
+		if ( ! apply_filters( 'spsg_bogo_fly_cart_badge_enabled', true, $cart_item, $cart_item_key ) ) {
+			return;
+		}
+
+		$is_pro          = sp_store_growth()->has_pro();
+		$offer_badge     = '';
+		$offer_badge_url = '';
+		$shop_page_msg   = '';
+		$product_page_msg = '';
+
+		// Try to load badge settings from the parent product's BOGO offer.
+		$parent_product_id = ! empty( $cart_item['bogo_product_for'] ) ? intval( $cart_item['bogo_product_for'] ) : 0;
+		if ( $parent_product_id ) {
+			$bogo_settings = Helper::get_product_bogo_settings( $parent_product_id );
+			if ( ! empty( $bogo_settings ) ) {
+				if ( ! empty( $bogo_settings['enable_custom_badge_image'] ) ) {
+					$offer_badge     = ! empty( $bogo_settings['default_badge_icon_name'] ) ? esc_html( $bogo_settings['default_badge_icon_name'] ) : '';
+					$offer_badge_url = $is_pro && ! empty( $bogo_settings['default_custom_badge_icon'] ) ? esc_url( $bogo_settings['default_custom_badge_icon'] ) : '';
+				} else {
+					$offer_badge     = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
+					$offer_badge_url = $is_pro ? Helper::get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
+				}
+				$shop_page_msg    = ! empty( $bogo_settings['shop_page_message'] ) ? esc_html( $bogo_settings['shop_page_message'] ) : '';
+				$product_page_msg = ! empty( $bogo_settings['product_page_message'] ) ? esc_html( $bogo_settings['product_page_message'] ) : '';
+			}
+		}
+
+		// Fallback to global BOGO badge settings.
+		if ( empty( $offer_badge ) && empty( $offer_badge_url ) ) {
+			$offer_badge     = Helper::get_bogo_settings_option( 'default_badge_icon_name' );
+			$offer_badge_url = $is_pro ? Helper::get_bogo_settings_option( 'default_custom_badge_icon' ) : '';
+		}
+
+		if ( empty( $offer_badge ) && empty( $offer_badge_url ) ) {
+			return;
+		}
+
+		$path = apply_filters( 'spsg_load_bogo_badge_content', __DIR__ . '/../templates/bogo-offer-badge.php', array() );
+		if ( ! file_exists( $path ) ) {
+			return;
+		}
+
+		include $path;
+	}
+
+	/**
+	 * Show the original (regular) price with strikethrough alongside the free offer
+	 * price for BOGO items displayed inside the FlyCart.
+	 *
+	 * Hooked into `spsg_fly_cart_item_price_html` (filter) so that the FlyCart template
+	 * does not need any direct knowledge of BOGO logic.
+	 *
+	 * @param string     $price_html Current price HTML (already computed by the template).
+	 * @param array      $cart_item  Cart item data.
+	 * @param WC_Product $_product   Product object.
+	 *
+	 * @return string Modified price HTML.
+	 */
+	public function modify_fly_cart_bogo_price_html( $price_html, $cart_item, $_product ) {
+		if ( empty( $cart_item['bogo_offer'] ) || ! isset( $cart_item['bogo_offer_price'] ) ) {
+			return $price_html;
+		}
+
+		$regular_price = floatval( $_product->get_regular_price() );
+		if ( $regular_price <= 0 ) {
+			return $price_html;
+		}
+
+		$quantity      = intval( $cart_item['quantity'] );
+		$original_html = wc_price( $regular_price * $quantity );
+
+		return '<span class="spsg-bogo-fly-cart-original-price"><s>' . $original_html . '</s></span>'
+			. '<span class="spsg-bogo-fly-cart-offer-price">' . $price_html . '</span>';
+	}
+
 }

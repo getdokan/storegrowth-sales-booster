@@ -23,6 +23,7 @@ $show_remove_icon     = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 $show_quantity_picker = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
 $show_product_price   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_price', true );
 $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_coupon', true );
+$show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled', false );
 ?>
 
 <form class="spsg-woocommerce-cart-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">
@@ -47,7 +48,7 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 				<tr class="woocommerce-cart-form__cart-item <?php echo esc_attr( apply_filters( 'woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key ) ); ?>">
 
 					<?php if ( $show_remove_icon || $show_product_image ) : ?>
-					<td class="product-thumbnail">
+					<td class="product-thumbnail spsg-fly-cart-thumbnail-cell">
 							<?php
 
 
@@ -60,6 +61,8 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 									printf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $thumbnail ); // phpcs:ignore
 								}
 							}
+
+							do_action( 'spsg_fly_cart_item_bogo_badge', $cart_item, $cart_item_key, $_product );
 							?>
 					</td>
 					<?php endif; ?>
@@ -115,6 +118,8 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 										$sub_total = WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] );
 									}
 
+									$sub_total = apply_filters( 'spsg_fly_cart_item_price_html', $sub_total, $cart_item, $_product );
+
 						 	// phpcs:ignore
 							echo apply_filters( 'woocommerce_cart_item_subtotal', $sub_total, $cart_item, $cart_item_key );
 									?>
@@ -146,6 +151,11 @@ $show_coupon          = \StorePulse\StoreGrowth\Helper::find_option_settings( $s
 						</div>
 						<?php endif; ?>
 						</div>
+						<?php if ( $show_stock_status && $_product->managing_stock() && $_product->get_stock_quantity() > 0 ) : ?>
+						<div class="spsg-fly-cart-stock-status">
+							<?php echo esc_html( sprintf( /* translators: %d: available stock quantity */ __( 'Available: %d', 'storegrowth-sales-booster' ), $_product->get_stock_quantity() ) ); ?>
+						</div>
+						<?php endif; ?>
 					</td>
                     <?php do_action( 'spsg_fly_cart_after_single_item_columns', $_product ); ?>
 				</tr>

@@ -1048,3 +1048,24 @@ iframe.spsg-fast-cart-checkout-frame {
         left: 50% !important;
     }
 }
+
+.spsg-fly-cart-stock-status {
+	font-size: 0.82em;
+	color: #e74c3c;
+	margin-top: 4px;
+}
+
+/* When Dokan vendor row is present, stock status is shown inside the vendor td instead */
+tr:has(td.dokan-vendor-store-info) td.product-name .spsg-fly-cart-stock-status {
+	display: none;
+}
+
+/* Free Shipping progress notice in FlyCart */
+.spsg-fly-cart-free-shipping-notice {
+	padding: 10px 15px;
+	background: #f0f8ff;
+	border-top: 1px solid #d0e8f8;
+	text-align: center;
+	font-size: 0.88em;
+	color: #1a6a9a;
+}
