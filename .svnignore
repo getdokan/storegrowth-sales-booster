@@ -4,6 +4,7 @@
 .gitignore
 .distignore
 node_modules
+bin
 /modules/**/node_modules
 /modules/**/src
 /integrations/**/src

@@ -7,6 +7,7 @@
 /integrations/**/node_modules
 /.idea
 /.vscode
+/bin
 
 .distignore
 .gitignore

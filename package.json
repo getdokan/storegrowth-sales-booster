@@ -8,8 +8,9 @@
     "start": "lerna run start",
     "build": "lerna run build",
     "archiver": "node archiver.js",
+    "version": "bash bin/version-replace.sh",
     "makepot": "wp i18n make-pot --domain='storegrowth-sales-booster' --include='assets/src,includes,lib,modules,storegrowth-sales-booster.php' . --headers='{\"Report-Msgid-Bugs-To\":\"https://storegrowth.io/contact-us/\"}' --file-comment=\"Copyright (c) $(date +'%Y') All Rights Reserved by weDevs.\" languages/storegrowth-sales-booster.pot",
-    "release": "composer i --no-dev -o && npm i && npm run build && npm run makepot && npm run archiver",
+    "release": "composer i --no-dev -o && npm i && npm run build && npm run version && npm run makepot && npm run archiver",
     "watch:sales-booster": "lerna run start --scope='sales-booster'",
     "watch:sales-countdown": "lerna run start --scope='sales-booster-sales-countdown'",
     "watch:direct-checkout": "lerna run start --scope='sales-booster-direct-checkout'",
@@ -47,8 +48,10 @@
   "devDependencies": {
     "archiver": "^6.0.1",
     "fs": "^0.0.1-security",
+    "fs-extra": "^10.1.0",
     "jszip": "^3.10.1",
-    "lerna": "^7.2.0"
+    "lerna": "^7.2.0",
+    "replace-in-file": "^6.3.5"
   },
   "dependencies": {
     "colorette": "^2.0.20"
