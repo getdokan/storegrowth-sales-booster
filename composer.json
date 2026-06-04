@@ -27,7 +27,17 @@
     "appsero/client": "^2.0",
     "appsero/updater": "^2.3",
     "league/container": "^4.0",
-    "coenjacobs/mozart": "^0.7.1"
+    "coenjacobs/mozart": "^0.7.1",
+    "squizlabs/php_codesniffer": "^3.9",
+    "wp-coding-standards/wpcs": "^3.1",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "woocommerce/woocommerce-sniffs": "^1.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
   "authors": [
     {
@@ -43,6 +53,12 @@
     "post-update-cmd": [
         "[ $COMPOSER_DEV_MODE -eq 0 ] || \"vendor/bin/mozart\" compose",
         "composer dump-autoload"
+    ],
+    "phpcs": [
+        "vendor/bin/phpcs -p -s"
+    ],
+    "phpcbf": [
+        "vendor/bin/phpcbf -p"
     ]
   },
   "extra": {
