@@ -13,13 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so the PR base branch is reachable for the diff.
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           coverage: none
-          tools: cs2pr, composer:v2
+          tools: composer:v2
 
       - name: Get composer cache directory
         id: composercache
@@ -35,6 +38,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress || composer update --prefer-dist --no-progress
 
+      # phpcs-changed reports only the violations on lines this PR actually
+      # changed, so pre-existing legacy violations in touched files don't fail
+      # CI. Installed globally to avoid touching the repo's composer.lock.
+      - name: Install phpcs-changed
+        run: |
+          composer global require sirbrillig/phpcs-changed --no-interaction --no-progress
+          echo "$(composer global config bin-dir --absolute -q)" >> "$GITHUB_PATH"
+
       - name: Collect changed PHP files
         id: changes
         run: |
@@ -46,6 +57,13 @@ jobs:
             | xargs)
           echo "files=$FILES" >> $GITHUB_OUTPUT
 
-      - name: Detect coding standard violations
+      # Diff against the PR base, reporting only newly introduced violations.
+      - name: Detect coding standard violations on changed lines
         if: steps.changes.outputs.files != ''
-        run: vendor/bin/phpcs ${{ steps.changes.outputs.files }} -q --report=checkstyle | cs2pr --graceful-warnings
+        run: |
+          git fetch --no-tags origin \
+            "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+          phpcs-changed \
+            --git --git-base "origin/${{ github.base_ref }}" \
+            --phpcs-path vendor/bin/phpcs \
+            ${{ steps.changes.outputs.files }}
