@@ -12,7 +12,7 @@ jobs:
     name: Run PHPCS inspection
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           # Full history so the PR base branch is reachable for the diff.
           fetch-depth: 0
