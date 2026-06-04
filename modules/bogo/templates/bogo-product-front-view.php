@@ -11,10 +11,16 @@ use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 
-	$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :
-        __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' );
-	$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
-	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
+	// "Free Gift" wording only applies when the gift is actually free (offer price 0,
+	// i.e. a free offer or a 100% discount). For a partial discount, show the amount off.
+	if ( (float) $offer_price > 0 ) {
+		$bogo_message = sprintf( esc_html__( '%s%% Off', 'storegrowth-sales-booster' ), (float) ( $bogo_info->discount_amount ?? 0 ) );
+	} else {
+		$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :
+			__( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' );
+		$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
+		$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
+	}
 	?>
 
 	<div class='template-overview-area'>

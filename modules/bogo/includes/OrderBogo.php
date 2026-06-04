@@ -726,7 +726,15 @@ class OrderBogo implements HookRegistry {
 		$product_bogo_settings = Helper::get_product_bogo_settings( $current_product_id );
 		
 		if ( $product_bogo_settings && isset( $product_bogo_settings['status'] ) && 'active' === $product_bogo_settings['status'] ) {
-			$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $current_product_id );
+			// Resolve the actual gift product. For a "Buy X Get Y" offer this is a
+			// different product; passing the current product id would render the wrong
+			// same-product template and hide the gift product on the product page.
+			$offer_product_id = BogoValidator::get_offer_product_id( $product_bogo_settings, $current_product_id );
+
+			if ( $offer_product_id ) {
+				$this->display_bogo_offer( $product_bogo_settings, $current_product_id, $offer_product_id );
+				$showed_bogo_product_id[] = $offer_product_id;
+			}
 		}
 
 		// Check for global BOGO offers
@@ -763,6 +771,11 @@ class OrderBogo implements HookRegistry {
 		$discount_amount = $bogo_settings['discount_amount'] ?? 0;
 		
 		$image_url = get_the_post_thumbnail_url( $offer_product_id, 'full' );
+		// Fall back to WooCommerce's standard "no image" placeholder (not the
+		// upsell-bump graphic) when the offer product has no featured image.
+		if ( empty( $image_url ) ) {
+			$image_url = wc_placeholder_img_src( 'woocommerce_thumbnail' );
+		}
 		$_product  = wc_get_product( $offer_product_id );
 		
 		// Check if product exists before accessing its methods
@@ -794,6 +807,10 @@ class OrderBogo implements HookRegistry {
 		
 		// Include the appropriate template
 		if ( $current_product_id === $offer_product_id ) {
+			// The same-product ("Buy X Get X") template guards on $product, which is
+			// the current/offer product here. Without it the box renders nothing.
+			$product = $_product;
+
 			$template_path = __DIR__ . '/../templates/bogo-product-meta-front-view.php';
 			if ( file_exists( $template_path ) ) {
 				include $template_path;
