@@ -748,12 +748,15 @@ class OrderBogo implements HookRegistry {
 
 		// A product-specific (type=product) offer takes precedence: if one is active,
 		// show ONLY it and do not also render global offers for this product.
-		$product_offers        = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
-			'type'         => 'product',
-			'product_id'   => $current_product_id,
-			'variation_id' => 0,
-			'status'       => 'active',
-		) );
+		$product_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+			array(
+				'type'         => 'product',
+				'product_id'   => $current_product_id,
+				'variation_id' => 0,
+				'status'       => 'active',
+			)
+		);
+
 		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
 
 		if ( $product_bogo_settings ) {
@@ -809,7 +812,7 @@ class OrderBogo implements HookRegistry {
 		if ( empty( $image_url ) ) {
 			$image_url = wc_placeholder_img_src( 'woocommerce_thumbnail' );
 		}
-		$_product  = wc_get_product( $offer_product_id );
+		$_product = wc_get_product( $offer_product_id );
 		
 		// Check if product exists before accessing its methods
 		if ( ! $_product ) {
@@ -829,8 +832,8 @@ class OrderBogo implements HookRegistry {
 			'box_border_color' => $bogo_settings['box_border_color'] ?? '#e0e0e0',
 			'box_top_margin' => $bogo_settings['box_top_margin'] ?? 10,
 			'box_bottom_margin' => $bogo_settings['box_bottom_margin'] ?? 10,
-			'discount_background_color' => $bogo_settings['discount_background_color'] ?? '#E1FFF4',
-			'discount_text_color' => $bogo_settings['discount_text_color'] ?? '#02AC6E',
+			'discount_background_color' => $bogo_settings['discount_background_color'] ?? '#ff6b6b',
+			'discount_text_color' => $bogo_settings['discount_text_color'] ?? '#ffffff',
 			'discount_font_size' => $bogo_settings['discount_font_size'] ?? 14,
 			'product_description_text_color' => $bogo_settings['product_description_text_color'] ?? '#333333',
 			'product_description_font_size' => $bogo_settings['product_description_font_size'] ?? 12,
@@ -1057,14 +1060,24 @@ class OrderBogo implements HookRegistry {
 		$is_bogo_enabled   = ( 'active' === $bogo_enabled );
 		$has_offer_product = ! empty( $bogo_settings_data['get_different_product_field'] );
 		$has_existing_bogo = ! empty(
-			\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
-				'type'         => 'product',
-				'product_id'   => $post_id,
-				'variation_id' => 0,
-				'status'       => '',
-			) )
+			\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+				array(
+					'type'         => 'product',
+					'product_id'   => $post_id,
+					'variation_id' => 0,
+					'status'       => '',
+				)
+			)
 		);
 
+		/**
+		 * Filters whether a product-specific BOGO offer should be saved on product save.
+		 *
+		 * @param bool  $should_save         Whether to persist the product BOGO.
+		 * @param int   $post_id             Product ID.
+		 * @param array $bogo_settings_data  BOGO settings being saved.
+		 * @param bool  $is_variable_product Whether the product is variable.
+		 */
 		$should_save_bogo = apply_filters(
 			'spsg_should_save_product_bogo',
 			$is_bogo_enabled || $has_offer_product || $has_existing_bogo,

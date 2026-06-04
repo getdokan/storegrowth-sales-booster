@@ -16,12 +16,14 @@
 		// offer here: this tab edits the product-specific BOGO, and showing global
 		// data would make "Enable BOGO" appear on and cause an empty product BOGO to
 		// be saved that shadows the global offer.
-		$product_bogo_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
-			'type'         => 'product',
-			'product_id'   => $post->ID,
-			'variation_id' => 0,
-			'status'       => '',
-		) );
+		$product_bogo_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+			array(
+				'type'         => 'product',
+				'product_id'   => $post->ID,
+				'variation_id' => 0,
+				'status'       => '',
+			)
+		);
 		$bogo_settings       = ! empty( $product_bogo_offers ) ? $product_bogo_offers[0] : array();
 		$is_enable_bogo      = ! empty( $bogo_settings['status'] ) ? esc_html( $bogo_settings['status'] ) : 'no';
 		$different_deal_type = ! empty( $bogo_settings['bogo_deal_type'] ) ? esc_html( $bogo_settings['bogo_deal_type'] ) : 'different';
@@ -32,10 +34,12 @@
 		// (global offers are managed under StoreGrowth → BOGO, not from this tab).
 		$covering_global_offer = null;
 		if ( empty( $bogo_settings ) ) {
-			$global_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers( array(
-				'type'   => 'global',
-				'status' => 'active',
-			) );
+			$global_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+				array(
+					'type'   => 'global',
+					'status' => 'active',
+				)
+			);
 			foreach ( $global_offers as $global_offer ) {
 				$offered = $global_offer['offered_products'] ?? array();
 				$offered = is_array( $offered ) ? array_map( 'intval', $offered ) : array( (int) $offered );
