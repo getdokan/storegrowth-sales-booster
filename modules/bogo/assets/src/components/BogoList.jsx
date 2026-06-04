@@ -274,7 +274,7 @@ function BogoList({ navigate }) {
       dataIndex: "status",
     },
     {
-      title: "Target Product(s) and Categories",
+      title: __("Target Product(s)", "storegrowth-sales-booster"),
       dataIndex: "product_category",
     },
     {

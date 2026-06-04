@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
- * Version:     2.0.5
+ * Version:     2.0.6
  * Author:      Dokan Inc.
  * Author URI:  https://storegrowth.io
  * License:     GPL-2.0+
@@ -28,6 +28,14 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
+
+
+/**
+ * Define plugin __FILE__
+ */
+if ( ! defined( 'STOREGROWTH_VERSION' ) ) {
+	define( 'STOREGROWTH_VERSION', '2.0.6' );
+}
 
 /**
  * Define plugin __FILE__
