@@ -5,6 +5,7 @@
 .distignore
 node_modules
 bin
+.claude
 /modules/**/node_modules
 /modules/**/src
 /integrations/**/src
@@ -31,3 +32,4 @@ composer.json
 .wordpress-org
 CHANGELOG.md
 DEVELOPER.md
+CLAUDE.md

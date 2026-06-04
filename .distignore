@@ -8,6 +8,7 @@
 /.idea
 /.vscode
 /bin
+/.claude
 
 .distignore
 .gitignore
@@ -20,4 +21,14 @@ composer.lock
 archiver.js
 .DS_Store
 phpcs.xml
+CONTRIBUTING.md
+config.json
+phpcs.xml.dist
+webpack.config.js
+composer.lock
+composer.json
 .editorconfig
+.wordpress-org
+CHANGELOG.md
+DEVELOPER.md
+CLAUDE.md
