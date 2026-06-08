@@ -2,7 +2,6 @@
 #
 # Replace the SPSG_VERSION placeholder with the current plugin version.
 #
-# Mirrors dokan-lite's bin/version-replace.js. Any occurrence of the
 # SPSG_VERSION placeholder in source files (typically `@since SPSG_VERSION`
 # docblocks on newly added code) is replaced with the "version" value from
 # package.json. Run on release via `npm run version`.
