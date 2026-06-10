@@ -92,7 +92,7 @@ class CommonHooks implements HookRegistry {
 	/**
 	 * Display free shipping progress message inside the FlyCart.
 	 *
-	 * @since 1.12.0
+	 * @since SPSG_VERSION
 	 *
 	 * @return void
 	 */

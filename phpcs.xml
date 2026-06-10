@@ -17,7 +17,7 @@
     <exclude-pattern>modules/upsell-order-bump/assets/*</exclude-pattern>
     <!-- Configs -->
     <config name="minimum_supported_wp_version" value="5.0" />
-    <config name="testVersion" value="7.0-"/>
+    <config name="testVersion" value="7.4-"/>
 
     <arg name="basepath" value="."/>
 
@@ -26,7 +26,12 @@
 
     <rule ref="PHPCompatibilityWP" />
 
-    <rule ref="WooCommerce-Core" />
+    <rule ref="WooCommerce-Core">
+        <!-- The SPSG_VERSION placeholder is a required convention (see CLAUDE.md);
+             it is swapped for a real version at release by bin/version-replace.sh.
+             This sniff rejects the placeholder, so exclude it. -->
+        <exclude name="WooCommerce.Commenting.CommentHooks.MissingSinceVersionComment" />
+    </rule>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
