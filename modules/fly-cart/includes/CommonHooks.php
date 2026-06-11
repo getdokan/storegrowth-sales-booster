@@ -32,8 +32,116 @@ class CommonHooks implements HookRegistry {
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'spsg_before_cart_collaterals' ) );
+		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'render_free_shipping_notice' ) );
 
 		add_filter( 'template_include', array( $this, 'set_custom_checkout_template' ), 20 );
+	}
+
+	/**
+	 * Render the free-shipping progress notice inside the FlyCart.
+	 *
+	 * Self-contained: the threshold comes from WooCommerce's own free-shipping
+	 * methods, so FlyCart depends only on WooCommerce (core) and not on any other
+	 * module. Gated by the `spsg_fly_cart_show_free_shipping_enabled` filter,
+	 * which Pro toggles via the "Show Free Shipping Message" setting.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function render_free_shipping_notice() {
+		/**
+		 * Whether to show the FlyCart free-shipping notice. Defaults to false
+		 * (off in the free plugin); Pro enables it from its setting.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool $enabled Whether the notice should be displayed.
+		 */
+		if ( ! apply_filters( 'spsg_fly_cart_show_free_shipping_enabled', false ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) {
+			return;
+		}
+
+		if ( ! \StorePulse\StoreGrowth\Helper::is_current_user_allowed_to_view_promotions() ) {
+			return;
+		}
+
+		$threshold = $this->get_free_shipping_threshold();
+		if ( $threshold <= 0 ) {
+			// No min-amount free shipping configured — nothing to progress toward.
+			return;
+		}
+
+		$cart_total = (float) WC()->cart->get_displayed_subtotal();
+
+		if ( $cart_total >= $threshold ) {
+			$message = __( 'You have unlocked free shipping!', 'storegrowth-sales-booster' );
+		} else {
+			$message = sprintf(
+				/* translators: %s: remaining amount, formatted as a price. */
+				__( 'Add %s more to get free shipping', 'storegrowth-sales-booster' ),
+				wc_price( $threshold - $cart_total )
+			);
+		}
+		?>
+		<div class="spsg-fly-cart-free-shipping-notice">
+			<span class="spsg-fly-cart-free-shipping-text">
+				<?php echo wp_kses_post( $message ); ?>
+			</span>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Lowest "min amount" across all enabled WooCommerce free-shipping methods.
+	 *
+	 * Scans every shipping zone (plus the "Rest of the World" zone) for enabled
+	 * `free_shipping` methods that unlock on order amount alone, and returns the
+	 * smallest threshold so the notice promises the closest achievable free
+	 * shipping. Methods needing a coupon too (`requires = both`) are skipped, and
+	 * 0 is returned when no amount-based free shipping is configured.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return float
+	 */
+	private function get_free_shipping_threshold() {
+		if ( ! class_exists( '\WC_Shipping_Zones' ) ) {
+			return 0;
+		}
+
+		$zone_ids   = wp_list_pluck( \WC_Shipping_Zones::get_zones(), 'zone_id' );
+		$zone_ids[] = 0; // "Rest of the World" zone.
+
+		$thresholds = array();
+		foreach ( $zone_ids as $zone_id ) {
+			$zone = \WC_Shipping_Zones::get_zone( $zone_id );
+			if ( ! $zone ) {
+				continue;
+			}
+
+			foreach ( $zone->get_shipping_methods( true ) as $method ) {
+				if ( 'free_shipping' !== $method->id ) {
+					continue;
+				}
+
+				$requires = $method->get_option( 'requires' );
+				if ( ! in_array( $requires, array( 'min_amount', 'either' ), true ) ) {
+					continue;
+				}
+
+				$min_amount = (float) $method->get_option( 'min_amount' );
+				if ( $min_amount > 0 ) {
+					$thresholds[] = $min_amount;
+				}
+			}
+		}
+
+		return empty( $thresholds ) ? 0 : min( $thresholds );
 	}
 
 	/**

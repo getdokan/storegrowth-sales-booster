@@ -41,8 +41,6 @@ class CommonHooks implements HookRegistry {
 			add_filter( 'woocommerce_add_to_cart_fragments', array( $this, 'woocommerce_add_to_cart_fragments' ) );
 		}
 		// phpcs:enable
-
-		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'display_in_fly_cart' ) );
 	}
 
 	/**
@@ -87,36 +85,5 @@ class CommonHooks implements HookRegistry {
 		$fragments['div.spsg-pd-banner-bar-wrapper'] = Helper::get_bar_content( false );
 
 		return $fragments;
-	}
-
-	/**
-	 * Display free shipping progress message inside the FlyCart.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @return void
-	 */
-	public function display_in_fly_cart() {
-		if ( ! apply_filters( 'spsg_fly_cart_show_free_shipping_enabled', false ) ) {
-			return;
-		}
-
-		if ( ! PluginHelper::is_current_user_allowed_to_view_promotions() ) {
-			return;
-		}
-
-		$settings    = Helper::get_settings();
-		$banner_text = Helper::get_banner_text( $settings );
-
-		if ( empty( $banner_text ) ) {
-			return;
-		}
-		?>
-		<div class="spsg-fly-cart-free-shipping-notice">
-			<span class="spsg-fly-cart-free-shipping-text">
-				<?php echo wp_kses_post( $banner_text ); ?>
-			</span>
-		</div>
-		<?php
 	}
 }
