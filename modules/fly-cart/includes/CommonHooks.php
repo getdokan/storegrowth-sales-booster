@@ -38,12 +38,13 @@ class CommonHooks implements HookRegistry {
 	}
 
 	/**
-	 * Render the free-shipping progress notice inside the FlyCart.
+	 * Render the Free Shipping Rules progress notice inside the FlyCart.
 	 *
-	 * Self-contained: the threshold comes from WooCommerce's own free-shipping
-	 * methods, so FlyCart depends only on WooCommerce (core) and not on any other
-	 * module. Gated by the `spsg_fly_cart_show_free_shipping_enabled` filter,
-	 * which Pro toggles via the "Show Free Shipping Message" setting.
+	 * FlyCart triggers the render so the notice shows whenever its "Show Free
+	 * Shipping Message" toggle is on — even when the Free Shipping Rules module is
+	 * deactivated. The message text is still produced by that module's Helper
+	 * (its class autoloads regardless of activation), so the logic is unchanged;
+	 * only where it is triggered from moves.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -51,8 +52,8 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function render_free_shipping_notice() {
 		/**
-		 * Whether to show the FlyCart free-shipping notice. Defaults to false
-		 * (off in the free plugin); Pro enables it from its setting.
+		 * Whether the FlyCart free-shipping notice is enabled. Pro sets this from
+		 * the "Show Free Shipping Message" setting; defaults off.
 		 *
 		 * @since SPSG_VERSION
 		 *
@@ -62,86 +63,23 @@ class CommonHooks implements HookRegistry {
 			return;
 		}
 
-		if ( ! function_exists( 'WC' ) || ! WC()->cart || WC()->cart->is_empty() ) {
-			return;
-		}
-
 		if ( ! \StorePulse\StoreGrowth\Helper::is_current_user_allowed_to_view_promotions() ) {
 			return;
 		}
 
-		$threshold = $this->get_free_shipping_threshold();
-		if ( $threshold <= 0 ) {
-			// No min-amount free shipping configured — nothing to progress toward.
+		$settings    = \StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper::get_settings();
+		$banner_text = \StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper::get_banner_text( $settings );
+
+		if ( empty( $banner_text ) ) {
 			return;
-		}
-
-		$cart_total = (float) WC()->cart->get_displayed_subtotal();
-
-		if ( $cart_total >= $threshold ) {
-			$message = __( 'You have unlocked free shipping!', 'storegrowth-sales-booster' );
-		} else {
-			$message = sprintf(
-				/* translators: %s: remaining amount, formatted as a price. */
-				__( 'Add %s more to get free shipping', 'storegrowth-sales-booster' ),
-				wc_price( $threshold - $cart_total )
-			);
 		}
 		?>
 		<div class="spsg-fly-cart-free-shipping-notice">
 			<span class="spsg-fly-cart-free-shipping-text">
-				<?php echo wp_kses_post( $message ); ?>
+				<?php echo wp_kses_post( $banner_text ); ?>
 			</span>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Lowest "min amount" across all enabled WooCommerce free-shipping methods.
-	 *
-	 * Scans every shipping zone (plus the "Rest of the World" zone) for enabled
-	 * `free_shipping` methods that unlock on order amount alone, and returns the
-	 * smallest threshold so the notice promises the closest achievable free
-	 * shipping. Methods needing a coupon too (`requires = both`) are skipped, and
-	 * 0 is returned when no amount-based free shipping is configured.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @return float
-	 */
-	private function get_free_shipping_threshold() {
-		if ( ! class_exists( '\WC_Shipping_Zones' ) ) {
-			return 0;
-		}
-
-		$zone_ids   = wp_list_pluck( \WC_Shipping_Zones::get_zones(), 'zone_id' );
-		$zone_ids[] = 0; // "Rest of the World" zone.
-
-		$thresholds = array();
-		foreach ( $zone_ids as $zone_id ) {
-			$zone = \WC_Shipping_Zones::get_zone( $zone_id );
-			if ( ! $zone ) {
-				continue;
-			}
-
-			foreach ( $zone->get_shipping_methods( true ) as $method ) {
-				if ( 'free_shipping' !== $method->id ) {
-					continue;
-				}
-
-				$requires = $method->get_option( 'requires' );
-				if ( ! in_array( $requires, array( 'min_amount', 'either' ), true ) ) {
-					continue;
-				}
-
-				$min_amount = (float) $method->get_option( 'min_amount' );
-				if ( $min_amount > 0 ) {
-					$thresholds[] = $min_amount;
-				}
-			}
-		}
-
-		return empty( $thresholds ) ? 0 : min( $thresholds );
 	}
 
 	/**
