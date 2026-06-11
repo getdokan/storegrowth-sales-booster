@@ -164,6 +164,18 @@
     overflow: visible !important;
 }
 
+/* Keep the WooCommerce star rating / reviews link from overlapping the BOGO card.
+   The card is injected into woocommerce_single_product_summary at priority 6 — i.e.
+   between the product title (priority 5) and the rating (priority 10). Storefront and
+   many WooCommerce themes give the rating a negative top margin (e.g. -0.875em) so it
+   snugs up under the title; with the BOGO card sitting in between, that negative margin
+   instead drags the rating up over the card's bottom edge. Neutralise it only when the
+   rating directly follows the BOGO card, so non-BOGO products keep their normal spacing. */
+.template-overview-area + .woocommerce-product-rating,
+.bogo-template-overview-area + .woocommerce-product-rating {
+    margin-top: 0 !important;
+}
+
 .bogo-badge-tooltip {
     cursor: pointer;
     position: relative;
