@@ -1167,9 +1167,10 @@ class OrderBogo implements HookRegistry {
 		}
 
 		/**
-		 * Controls whether the BOGO badge is shown on free items in the FlyCart.
-		 * Defaults to true (badge always visible for free-plugin users).
-		 * Pro plugin hooks here to read the `fly_cart_badge_icon` setting.
+		 * Controls whether the BOGO badge is shown on items in the FlyCart.
+		 * Defaults to false: the "Show BOGO Badge" control is a Pro feature, so
+		 * the badge stays hidden in the free plugin. Pro hooks here to honor the
+		 * `fly_cart_badge_icon` setting.
 		 *
 		 * @since SPSG_VERSION
 		 *
@@ -1177,7 +1178,7 @@ class OrderBogo implements HookRegistry {
 		 * @param array $cart_item    Cart item data.
 		 * @param string $cart_item_key Cart item key.
 		 */
-		if ( ! apply_filters( 'spsg_bogo_fly_cart_badge_enabled', true, $cart_item, $cart_item_key ) ) {
+		if ( ! apply_filters( 'spsg_bogo_fly_cart_badge_enabled', false, $cart_item, $cart_item_key ) ) {
 			return;
 		}
 
@@ -1245,8 +1246,18 @@ class OrderBogo implements HookRegistry {
 			return $price_html;
 		}
 
-		$quantity      = intval( $cart_item['quantity'] );
-		$original_html = wc_price( $regular_price * $quantity );
+		$quantity = intval( $cart_item['quantity'] );
+
+		// Honor the store's tax display setting so the struck-through original
+		// matches the tax-in/exclusive prices shown elsewhere in the cart.
+		$display_price = wc_get_price_to_display(
+			$_product,
+			array(
+				'price' => $regular_price,
+				'qty'   => $quantity,
+			)
+		);
+		$original_html = wc_price( $display_price );
 
 		return '<span class="spsg-bogo-fly-cart-original-price"><s>' . $original_html . '</s></span>'
 			. '<span class="spsg-bogo-fly-cart-offer-price">' . $price_html . '</span>';

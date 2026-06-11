@@ -10,6 +10,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\BoGo\BogoValidator;
 
 defined( 'ABSPATH' ) || exit();
 
@@ -488,6 +489,29 @@ class BogoController extends WP_REST_Controller {
                 );
             }
         }
+
+		// Prevent the same product being both target and offer in a Buy X Get Y
+		// ("different") deal — that is the Buy X Get X deal type. Enforced here so
+		// direct REST calls cannot bypass the matching guard in CreateBogo.jsx.
+		$deal_type = $data['bogo_deal_type'] ?? 'different';
+		if ( 'different' === $deal_type ) {
+			$offer_product_id = BogoValidator::get_offer_product_id( $data, 0 );
+			if ( $offer_product_id ) {
+				$offered_products = $data['offered_products'] ?? array();
+				$same_as_target   = is_array( $offered_products )
+					&& in_array( (int) $offer_product_id, array_map( 'intval', $offered_products ), true );
+				$same_as_product  = ! empty( $data['product_id'] )
+					&& (int) $offer_product_id === (int) $data['product_id'];
+
+				if ( $same_as_target || $same_as_product ) {
+					return new WP_Error(
+						'bogo_same_product',
+						__( "Offer product cannot be the same as a target product. Use 'Buy X Get X' deal type for same product offers.", 'storegrowth-sales-booster' ),
+						array( 'status' => 400 )
+					);
+				}
+			}
+		}
 
         return $data;
     }
