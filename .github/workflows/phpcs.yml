@@ -50,8 +50,20 @@ jobs:
         id: changes
         run: |
           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-          FILES=$(curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -s -X GET -G "$URL" \
-            | jq -r '.[] | select(.status != "removed") | .filename' \
+          # The files endpoint paginates at 30 by default (100 max), so walk every
+          # page — otherwise changed files past the first page escape phpcs-changed.
+          NAMES=""
+          page=1
+          while :; do
+            RESP=$(curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -s -G "$URL" \
+              --data-urlencode "per_page=100" --data-urlencode "page=$page")
+            COUNT=$(echo "$RESP" | jq 'length')
+            [ "$COUNT" = "0" ] && break
+            NAMES="$NAMES"$'\n'"$(echo "$RESP" | jq -r '.[] | select(.status != "removed") | .filename')"
+            [ "$COUNT" -lt 100 ] && break
+            page=$((page + 1))
+          done
+          FILES=$(echo "$NAMES" \
             | grep -E '\.php$' \
             | while read -r f; do [ -f "$f" ] && echo "$f"; done \
             | xargs)
