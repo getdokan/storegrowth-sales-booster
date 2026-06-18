@@ -118,7 +118,9 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 					<div class="bogo-gift-variations" data-product-id="<?php echo esc_attr( $offer_product_id ); ?>">
 						<?php foreach ( $variation_attributes as $attribute_name => $options ) :
 							$label    = wc_attribute_label( $attribute_name );
-							$field_id = 'bogo-attr-' . esc_attr( sanitize_title( $attribute_name ) );
+							// Prefix with the gift product id so ids/labels stay unique when
+							// multiple offer instances render on the same product page.
+							$field_id = 'bogo-attr-' . absint( $offer_product_id ) . '-' . sanitize_title( $attribute_name );
 							?>
 							<div class="bogo-variation-field">
 								<label class="bogo-variation-label" for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( strtoupper( $label ) ); ?></label>
