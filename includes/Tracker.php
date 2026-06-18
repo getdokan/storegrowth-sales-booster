@@ -42,10 +42,10 @@ class Tracker {
         $this->insights->add_extra(
             function () {
                 return [
-                    'products'      => $this->insights->get_post_count( 'product' ),
                     'is_pro'        => sp_store_growth()->has_pro() ? 'Yes' : 'No',
                     'wc_version'    => function_exists( 'WC' ) ? WC()->version : null,
                     'storegrowth_version' => STOREGROWTH_VERSION,
+                    'active_modules'      => array_values( (array) get_option( 'spsg_active_module_ids', [] ) ),
                 ];
             }
         );
