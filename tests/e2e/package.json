@@ -1,0 +1,25 @@
+{
+  "name": "storegrowth-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright UI (E2E) + API test suite for the StoreGrowth Sales Booster WordPress plugin.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --project=ui",
+    "test:api": "playwright test --project=api",
+    "test:headed": "playwright test --project=ui --headed",
+    "test:debug": "PWDEBUG=1 playwright test --project=ui",
+    "codegen": "playwright codegen",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0-alpha-2026-06-21",
+    "@types/node": "^22.10.2",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.7.2"
+  }
+}

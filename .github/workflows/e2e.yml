@@ -1,0 +1,101 @@
+name: E2E & API Tests
+
+# Run the full Playwright suite on every published release, and allow manual runs.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (UI + API)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      # wp-env serves the dev site on :8888 with default admin/password creds.
+      BASE_URL: http://localhost:8888
+      WP_ADMIN_USER: admin
+      WP_ADMIN_PASSWORD: password
+      WP_API_USER: admin
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ---- Build the plugin so its PHP autoloader + React assets exist ----
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Build plugin (composer + assets)
+        run: |
+          composer install --no-interaction --prefer-dist
+          npm ci
+          npm run build
+
+      # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
+      # .wp-env.json lives in tests/e2e, so wp-env runs from there.
+      - name: Start WordPress (wp-env)
+        working-directory: tests/e2e
+        run: |
+          npm -g install @wordpress/env
+          wp-env start
+
+      - name: Create REST Application Password
+        working-directory: tests/e2e
+        run: |
+          APP_PASSWORD=$(wp-env run cli wp user application-password create admin "ci-e2e" --porcelain)
+          echo "::add-mask::$APP_PASSWORD"
+          echo "WP_APP_PASSWORD=$APP_PASSWORD" >> "$GITHUB_ENV"
+
+      # ---- Install test deps + browsers, then run the suite ----
+      - name: Install test dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      - name: Install Playwright browser
+        working-directory: tests/e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        working-directory: tests/e2e
+        run: npm test
+
+      # ---- Always publish reports/artifacts, even on failure ----
+      - name: Upload HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e/playwright-report
+          retention-days: 14
+
+      - name: Upload JUnit results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: tests/e2e/results/junit.xml
+          retention-days: 14
+
+      - name: Upload traces & screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: tests/e2e/test-results
+          retention-days: 7
