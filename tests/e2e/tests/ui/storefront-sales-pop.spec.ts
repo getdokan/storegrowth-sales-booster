@@ -70,6 +70,29 @@ test.describe('Storefront · Sales Notification', () => {
     await expect(guestPage.locator(POPUP_JS)).toHaveCount(1);
   });
 
+  // ---- Design tab (server-rendered popup container) --------------------------
+
+  test('Design settings render on the popup container', async ({ page, guestPage }) => {
+    const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
+    // Background + border radius are inline on the server-rendered container; a long
+    // initial delay keeps it present (the JS only shows/cycles it after the delay).
+    await saveSalesPop(page, {
+      enable: true,
+      external_link: false,
+      popup_products: [id],
+      virtual_locations: 'New York',
+      background_color: '#abcdef',
+      popup_border_radius: '12',
+      initial_time_delay: '30',
+    });
+
+    await guestPage.goto('/shop/');
+    const style = await guestPage.locator('.custom-notification').first().getAttribute('style');
+    // The browser normalises the inline #abcdef → rgb(171, 205, 239).
+    expect(style).toContain('rgb(171, 205, 239)');
+    expect(style).toContain('border-radius: 12px');
+  });
+
   // ---- Negative --------------------------------------------------------------
 
   test('does not load the popup script when the module is inactive', async ({ page, guestPage }) => {
@@ -84,7 +107,7 @@ test.describe('Storefront · Sales Notification', () => {
     page,
     guestPage,
   }) => {
-    test.fail(); // enqueue_scripts explode()s an array → fatal → script never loads.
+    test.fail(); // enqueue_scripts explode()s an array → fatal → script never loads (still reproduces under Pro).
     const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
     await saveSalesPop(page, { enable: true, external_link: false, popup_products: [id], virtual_locations: [] });
 

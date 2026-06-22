@@ -24,6 +24,14 @@ export async function gotoCart(page: Page): Promise<void> {
   await page.waitForLoadState('domcontentloaded');
 }
 
+/** Computed CSS property of the first matching element on a page. */
+export async function computedStyle(page: Page, selector: string, prop: string): Promise<string> {
+  return page
+    .locator(selector)
+    .first()
+    .evaluate((el: Element, p: string) => getComputedStyle(el).getPropertyValue(p).trim(), prop);
+}
+
 /** Add a product to the cart via the WooCommerce add-to-cart URL (server-side). */
 export async function addToCart(page: Page, productId: number): Promise<void> {
   await page.goto(`/?add-to-cart=${productId}`);

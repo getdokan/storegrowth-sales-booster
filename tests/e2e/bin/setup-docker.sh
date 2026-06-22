@@ -18,8 +18,14 @@ ADMIN_USER="admin"
 ADMIN_PASS="password"
 ADMIN_EMAIL="admin@example.com"
 
+# Pro license key, preserved across .env regeneration. Read from the environment
+# or the existing .env so re-running setup keeps it. Used to activate Pro.
+LICENSE_KEY="${LICENSE_KEY:-$(grep -E '^LICENSE_KEY=' .env 2>/dev/null | cut -d= -f2- | tr -d '\r' || true)}"
+
 # Run a WP-CLI command inside the one-off cli container.
 wp() { docker compose run --rm -T cli wp "$@"; }
+# Same, but with the license key exposed to the container (for provisioning).
+wp_licensed() { docker compose run --rm -T -e LICENSE_KEY="$LICENSE_KEY" cli wp "$@"; }
 
 echo "==> Booting containers (db + wordpress)…"
 docker compose up -d db wordpress
@@ -73,11 +79,21 @@ echo "==> Installing + activating WP-API Basic-Auth (plain Basic auth for REST)�
 wp plugin is-active basic-auth >/dev/null 2>&1 || \
   wp plugin install "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip" --activate >/dev/null
 
+# Activate the Pro plugin if it is mounted (docker-compose mounts the sibling
+# plugin). Done in its own step so it is loaded by the time provisioning runs
+# the Appsero license activation.
+if wp plugin is-installed storegrowth-sales-booster-pro >/dev/null 2>&1; then
+  echo "==> Activating StoreGrowth Pro…"
+  wp plugin activate storegrowth-sales-booster-pro >/dev/null
+  [ -n "$LICENSE_KEY" ] && echo "    (will activate Pro license from \$LICENSE_KEY during provisioning)" || \
+    echo "    (no LICENSE_KEY set — Pro features stay locked; add it to .env)"
+fi
+
 # Shared, environment-agnostic site config (same script CI runs via wp-env):
 # pretty permalinks, publish storefront, classic checkout, activate ALL modules,
 # seed products, mark initial setup complete. See bin/provision-site.php.
-echo "==> Provisioning the site (all modules, products, classic checkout)…"
-wp eval-file /var/www/html/wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
+echo "==> Provisioning the site (all modules, products, classic checkout, Pro license)…"
+wp_licensed eval-file /var/www/html/wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
 
 echo "==> Writing tests/e2e/.env…"
 # With Basic-Auth active, the REST API accepts the admin user/password directly,
@@ -91,6 +107,10 @@ WP_ADMIN_PASSWORD=$ADMIN_PASS
 
 # REST auth: WP-API Basic-Auth accepts the admin credentials directly.
 WP_API_USER=$ADMIN_USER
+
+# StoreGrowth Pro license key (Appsero). Activated during provisioning to unlock
+# Pro features. Leave empty to run lite-only.
+LICENSE_KEY=$LICENSE_KEY
 EOF
 
 echo ""

@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 import { setModuleActive } from '../../helpers/ajax';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
-import { addToCart, emptyCart } from '../../helpers/storefront';
+import { addToCart, emptyCart, computedStyle } from '../../helpers/storefront';
 import { getProductIdBySlug, apiFetch } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
@@ -29,15 +29,40 @@ async function deleteAllBumps(page: any) {
   }
 }
 
-async function createBump(page: any, targetId: number, offerId: number) {
+/**
+ * Create a bump with all Form-tab fields and Design-tab fields configured (the
+ * same payload the admin create form posts). `design_settings` is merged into the
+ * bump and read flat by the checkout template.
+ */
+async function createBump(
+  page: any,
+  targetId: number,
+  offerId: number,
+  { design = {}, ...extra }: { design?: Record<string, any> } & Record<string, any> = {},
+) {
   const res = await apiFetch(page, 'post', REST, {
     name: 'E2E Checkout Bump',
     status: 'active',
     target_type: 'products',
     target_products: [targetId],
+    bump_schedule: ['daily'],
     offer_product_id: offerId,
     offer_type: 'discount',
     offer_amount: '10',
+    offer_discount_title: '% OFF TODAY',
+    design_settings: {
+      box_border_style: 'solid',
+      box_border_color: '#0000ff',
+      box_top_margin: '10',
+      box_bottom_margin: '10',
+      discount_background_color: '#ff0000',
+      discount_text_color: '#ffffff',
+      discount_font_size: '16',
+      product_description_text_color: '#333333',
+      product_description_font_size: '13',
+      ...design,
+    },
+    ...extra,
   });
   expect(res.status()).toBe(201);
   return (await res.json()).id as number | string;
@@ -82,6 +107,51 @@ test.describe('Storefront · Upsell Order Bump', () => {
 
     await expect(page.locator(BUMP).first()).toBeVisible();
     await expect(page.locator(`${BUMP} input[type="checkbox"]`).first()).toBeVisible();
+  });
+
+  // ---- Form + Design fields reflected on checkout ----------------------------
+
+  test('every configured Form & Design field is reflected on the checkout bump', async ({ page }) => {
+    const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
+    const offerId = await getProductIdBySlug(page, PRODUCTS.b.slug);
+    createdBumpId = await createBump(page, targetId, offerId, {
+      design: { offer_product_title: PRODUCTS.b.name },
+    });
+
+    await addToCart(page, targetId);
+    await page.goto('/checkout/');
+
+    const bump = page.locator(BUMP).first();
+    await expect(bump).toBeVisible();
+
+    // Form: the offer product (B) title is shown.
+    await expect(bump.locator('.offer-product-title')).toContainText(PRODUCTS.b.name);
+    // Form: offer type "discount" + amount + discount title → "10% OFF TODAY".
+    await expect(bump.locator('.dynamic-offer-text')).toContainText('10');
+    await expect(bump.locator('.dynamic-offer-text')).toContainText('% OFF TODAY');
+
+    // Design: discount_background_color (#ff0000) → header background.
+    expect(await computedStyle(page, `${BUMP} .dynamic-offer-text`, 'background-color')).toBe('rgb(255, 0, 0)');
+    // Design: box_border_color (#0000ff) + solid style → wrapper border.
+    expect(await computedStyle(page, BUMP, 'border-top-color')).toBe('rgb(0, 0, 255)');
+    expect(await computedStyle(page, BUMP, 'border-top-style')).toBe('solid');
+    // Design: product_description_text_color (#333333) → offer title colour.
+    expect(await computedStyle(page, `${BUMP} .offer-product-title h3`, 'color')).toBe('rgb(51, 51, 51)');
+  });
+
+  test('the bump applies the offer product to the order when accepted', async ({ page }) => {
+    const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
+    const offerId = await getProductIdBySlug(page, PRODUCTS.b.slug);
+    createdBumpId = await createBump(page, targetId, offerId);
+
+    await addToCart(page, targetId);
+    await page.goto('/checkout/');
+
+    // Accept the offer via the bump checkbox → the offer product is added to the order review.
+    await page.locator(`${BUMP} input[type="checkbox"]`).first().check();
+    await expect(page.locator('.woocommerce-checkout-review-order, #order_review')).toContainText(PRODUCTS.b.name, {
+      timeout: 15000,
+    });
   });
 
   // ---- Negative --------------------------------------------------------------

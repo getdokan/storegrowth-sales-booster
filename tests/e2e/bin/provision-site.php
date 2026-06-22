@@ -72,6 +72,41 @@ if ( file_exists( WP_PLUGIN_DIR . '/' . $pro_plugin ) && ! is_plugin_active( $pr
 	activate_plugin( $pro_plugin );
 }
 
+/* -- Activate the Pro license from $LICENSE_KEY (Appsero), if available. ------
+ * Requires Pro to be loaded in this request (the setup activates the Pro plugin
+ * in a prior step). Hits the Appsero license API once; skips if already valid.
+ */
+$license_key   = getenv( 'LICENSE_KEY' );
+$appsero_client = '\\StorePulse\\StoreGrowthPro\\Dependencies\\Appsero\\Client';
+if ( $license_key && defined( 'STOREGROWTH_PRO_FILE' ) && class_exists( $appsero_client ) ) {
+	$client  = new $appsero_client( '512b82bc-5d26-46d3-9d14-e51642c15ff3', 'StoreGrowth Sales Booster Pro', STOREGROWTH_PRO_FILE );
+	$license = $client->license();
+	if ( ! $license->is_valid() ) {
+		$resp = $license->activate( trim( $license_key ) );
+		if ( ! empty( $resp['success'] ) ) {
+			update_option(
+				'appsero_' . md5( $client->slug ) . '_manage_license',
+				array(
+					'key'              => trim( $license_key ),
+					'status'           => 'activate',
+					'remaining'        => $resp['remaining'] ?? '',
+					'activation_limit' => $resp['activation_limit'] ?? '',
+					'expiry_days'      => $resp['expiry_days'] ?? '',
+					'title'            => $resp['title'] ?? '',
+					'source_id'        => $resp['source_identifier'] ?? '',
+					'recurring'        => $resp['recurring'] ?? '',
+				),
+				false
+			);
+			if ( class_exists( 'WP_CLI' ) ) {
+				WP_CLI::log( '    Pro license activated.' );
+			}
+		} elseif ( class_exists( 'WP_CLI' ) ) {
+			WP_CLI::warning( 'Pro license activation failed: ' . ( $resp['error'] ?? 'unknown' ) );
+		}
+	}
+}
+
 /* -- Activate ALL modules via ModuleManager (fires hooks + migrations). ------ */
 if ( function_exists( 'storegrowth_get_container' ) ) {
 	$module_manager = storegrowth_get_container()->get( \StorePulse\StoreGrowth\ModuleManager::class );

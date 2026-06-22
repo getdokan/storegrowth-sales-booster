@@ -66,6 +66,20 @@ export async function spsgAdminAjax(
 }
 
 /**
+ * Whether StoreGrowth Pro is active (license valid). Read from the localised
+ * `window.spsgAdmin.isPro` flag on a StoreGrowth admin screen. Use to skip
+ * Pro-only tests on a lite environment (e.g. CI).
+ */
+export async function getIsPro(page: Page): Promise<boolean> {
+  let val = await page.evaluate(() => (window as any).spsgAdmin?.isPro);
+  if (val === undefined) {
+    await gotoModules(page);
+    val = await page.evaluate(() => (window as any).spsgAdmin?.isPro);
+  }
+  return Boolean(val);
+}
+
+/**
  * Activate/deactivate a module via the core ajax dispatcher, then VERIFY it
  * settled by reading the catalog back — retrying the toggle if needed.
  *

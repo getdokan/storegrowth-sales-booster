@@ -60,6 +60,9 @@ jobs:
       # (WordPress, WooCommerce, Storefront and Basic-Auth come from .wp-env.json;
       # Basic-Auth lets the api project authenticate with the admin login, so no
       # Application Password is needed.)
+      # CI runs the lite plugin (Pro isn't bundled in .wp-env.json), so Pro-only
+      # tests skip themselves (see hasPro fixture). Pro is exercised against the
+      # Docker stack, where LICENSE_KEY in .env activates it during setup.
       - name: Provision the site
         working-directory: tests/e2e
         run: |
