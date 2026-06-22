@@ -3,11 +3,16 @@
   "phpVersion": "8.2",
   "plugins": [
     "../../",
-    "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip"
+    "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
+    "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip"
+  ],
+  "themes": [
+    "https://downloads.wordpress.org/theme/storefront.latest-stable.zip"
   ],
   "config": {
     "WP_DEBUG": true,
     "WP_DEBUG_LOG": true,
-    "WP_DEBUG_DISPLAY": false
+    "WP_DEBUG_DISPLAY": false,
+    "WP_ENVIRONMENT_TYPE": "local"
   }
 }

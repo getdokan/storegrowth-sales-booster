@@ -16,9 +16,13 @@ if (isCI) reporter.push(['github']);
 export default defineConfig({
   testDir: './tests',
 
-  // Run spec files in parallel; deterministic worker count keeps CI stable.
-  fullyParallel: true,
-  workers: isCI ? 2 : undefined,
+  // Single worker: module state lives in ONE site-wide option
+  // (`spsg_active_module_ids`) and the plugin's `update_module_status` does a
+  // non-atomic read-modify-write of it, so concurrent module toggles from
+  // different workers clobber each other (see ISSUES.md #2). Serialising keeps
+  // the suite deterministic. The suite is fast, so the cost is negligible.
+  fullyParallel: false,
+  workers: 1,
 
   // Guardrails: never let a stray `.only` pass CI; retry only to absorb infra flake.
   forbidOnly: isCI,
@@ -34,7 +38,8 @@ export default defineConfig({
     baseURL: env.baseURL,
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
-    headless: false,
+    // Headed by default for local debugging; CI and `HEADLESS=1` force headless.
+    headless: isCI || process.env.HEADLESS === '1',
     // Capture debug artifacts only when something actually fails / retries.
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',

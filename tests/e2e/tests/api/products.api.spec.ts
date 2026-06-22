@@ -1,26 +1,46 @@
 import { test, expect } from '../../fixtures/test';
+import { PRODUCTS } from '../../data/products';
 
 /**
- * Exercises the plugin's own REST surface: the product picker used by the
- * settings UI (includes/REST/ProductController.php, namespace sales-booster/v1).
+ * The plugin's product picker (ProductController, namespace sales-booster/v1) —
+ * extends the WooCommerce products controller, used by the settings UI.
  */
 test.describe('API · StoreGrowth product picker', () => {
-  test('lists products for the settings UI', async ({ api }) => {
-    const res = await api.get('/wp-json/sales-booster/v1/products', {
-      params: { per_page: 5 },
-    });
-
+  test('lists seeded products', async ({ api }) => {
+    const res = await api.get('/wp-json/sales-booster/v1/products', { params: { per_page: 20 } });
     expect(res.ok()).toBeTruthy();
+
     const products = await res.json();
     expect(Array.isArray(products)).toBeTruthy();
+    expect(products.length).toBeGreaterThanOrEqual(3);
+
+    // Each item carries at least an id and a name.
+    for (const p of products) {
+      expect(p).toHaveProperty('id');
+      expect(p).toHaveProperty('name');
+    }
   });
 
-  test('supports search filtering', async ({ api }) => {
-    const res = await api.get('/wp-json/sales-booster/v1/products', {
-      params: { search: 'no-such-product-xyz', per_page: 5 },
-    });
-
+  test('respects per_page', async ({ api }) => {
+    const res = await api.get('/wp-json/sales-booster/v1/products', { params: { per_page: 1 } });
     expect(res.ok()).toBeTruthy();
-    expect(Array.isArray(await res.json())).toBeTruthy();
+    expect((await res.json()).length).toBe(1);
+  });
+
+  test('search filters by name', async ({ api }) => {
+    const res = await api.get('/wp-json/sales-booster/v1/products', {
+      params: { search: PRODUCTS.a.name, per_page: 20 },
+    });
+    expect(res.ok()).toBeTruthy();
+    const names = (await res.json()).map((p: any) => p.name);
+    expect(names).toContain(PRODUCTS.a.name);
+  });
+
+  test('search for a non-existent product yields an empty list', async ({ api }) => {
+    const res = await api.get('/wp-json/sales-booster/v1/products', {
+      params: { search: 'no-such-product-xyz-000', per_page: 5 },
+    });
+    expect(res.ok()).toBeTruthy();
+    expect(await res.json()).toEqual([]);
   });
 });

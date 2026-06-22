@@ -55,12 +55,16 @@ jobs:
           npm -g install @wordpress/env
           wp-env start
 
-      - name: Create REST Application Password
+      # Same shared site setup the Docker stack runs: pretty permalinks, publish
+      # storefront, activate ALL modules, classic checkout, seed products.
+      # (WordPress, WooCommerce, Storefront and Basic-Auth come from .wp-env.json;
+      # Basic-Auth lets the api project authenticate with the admin login, so no
+      # Application Password is needed.)
+      - name: Provision the site
         working-directory: tests/e2e
         run: |
-          APP_PASSWORD=$(wp-env run cli wp user application-password create admin "ci-e2e" --porcelain)
-          echo "::add-mask::$APP_PASSWORD"
-          echo "WP_APP_PASSWORD=$APP_PASSWORD" >> "$GITHUB_ENV"
+          wp-env run cli wp eval-file \
+            wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
 
       # ---- Install test deps + browsers, then run the suite ----
       - name: Install test dependencies

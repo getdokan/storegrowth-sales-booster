@@ -17,12 +17,25 @@ export async function gotoModules(page: Page): Promise<void> {
 }
 
 /**
+ * Locate a module's Ant Design toggle (`role="switch"`).
+ *
+ * Each module renders as an `.ant-card.spsg-module-card` whose body starts with
+ * the module name; the activation toggle lives in that card's footer. We scope
+ * to the card so the module name in the "Premium" docs sidebar (a second match
+ * for names like "Quick View") can't hijack the locator.
+ */
+export function moduleToggle(page: Page, moduleName: string) {
+  return page
+    .locator('.spsg-module-card', { hasText: moduleName })
+    .getByRole('switch');
+}
+
+/**
  * Ensure a module is in the desired enabled/disabled state.
  *
- * The Modules UI is built with Ant Design, whose toggle renders as
- * `role="switch"` with an `aria-checked` attribute — so we locate the closest
- * card ancestor of the module title that owns a switch, then drive that.
- * Idempotent: a no-op when the module is already in the target state.
+ * Idempotent: a no-op when the module is already in the target state. State is
+ * persisted via admin-ajax; we wait for `aria-checked` to settle rather than a
+ * fixed timeout.
  *
  * @param moduleName Human-readable module name as shown on the card.
  * @param enabled    Desired state.
@@ -34,17 +47,12 @@ export async function setModuleState(
 ): Promise<void> {
   await gotoModules(page);
 
-  const card = page
-    .getByText(moduleName, { exact: false })
-    .locator('xpath=ancestor-or-self::*[.//*[@role="switch"]][1]')
-    .first();
-
-  const toggle = card.getByRole('switch');
+  const toggle = moduleToggle(page, moduleName);
+  await expect(toggle).toBeVisible();
   const isOn = (await toggle.getAttribute('aria-checked')) === 'true';
 
   if (isOn !== enabled) {
     await toggle.click();
-    // State is persisted via admin-ajax; wait for the toggle to settle.
     await expect(toggle).toHaveAttribute('aria-checked', String(enabled));
   }
 }

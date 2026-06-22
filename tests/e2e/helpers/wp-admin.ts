@@ -23,7 +23,21 @@ export async function login(
 
 /**
  * Navigate to a wp-admin page by its `?page=` slug, e.g. `spsg-settings`.
+ *
+ * Pass an optional hash route (e.g. `#/dashboard/overview`) for HashRouter SPAs.
  */
-export async function gotoAdminPage(page: Page, slug: string): Promise<void> {
-  await page.goto(`/wp-admin/admin.php?page=${slug}`);
+export async function gotoAdminPage(page: Page, slug: string, hash = ''): Promise<void> {
+  await page.goto(`/wp-admin/admin.php?page=${slug}${hash}`);
+}
+
+/**
+ * Open the Settings SPA and wait for it to mount.
+ *
+ * The bare `?page=spsg-settings` URL bounces to the Modules screen — the app
+ * only stays put when deep-linked to a hash route (the plugin's own menu link
+ * uses `#/dashboard/overview`). So always navigate via the hash route.
+ */
+export async function gotoSettings(page: Page): Promise<void> {
+  await gotoAdminPage(page, 'spsg-settings', '#/dashboard/overview');
+  await expect(page.locator('#sbooster-settings-page')).toBeVisible();
 }

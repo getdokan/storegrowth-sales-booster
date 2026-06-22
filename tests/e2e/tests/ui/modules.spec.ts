@@ -1,19 +1,60 @@
 import { test, expect } from '../../fixtures/test';
-import { gotoModules, setModuleState } from '../../helpers/modules';
-import { MODULES } from '../../data/modules';
+import { gotoModules, setModuleState, moduleToggle } from '../../helpers/modules';
+import { MODULES, BASELINE_ACTIVE } from '../../data/modules';
 
 test.describe('Admin · Modules catalog', () => {
-  test('renders the module catalog', async ({ page }) => {
+  test('mounts the modules React app', async ({ page }) => {
     await gotoModules(page);
-
-    // A couple of always-present free modules should be listed.
-    await expect(page.getByText(MODULES.bogo.name, { exact: false }).first()).toBeVisible();
-    await expect(page.getByText(MODULES.quickView.name, { exact: false }).first()).toBeVisible();
+    await expect(page.locator('#sbooster-modules-page')).toBeVisible();
   });
 
-  test('a module can be activated and deactivated', async ({ page }) => {
-    // Leave the environment as we found it: enable, assert, then disable again.
-    await setModuleState(page, MODULES.quickView.name, true);
-    await setModuleState(page, MODULES.quickView.name, false);
+  test('renders a card for every module', async ({ page }) => {
+    await gotoModules(page);
+
+    for (const mod of Object.values(MODULES)) {
+      await expect(
+        page.locator('.spsg-module-card', { hasText: mod.name }),
+        `module card for "${mod.name}" should render`,
+      ).toBeVisible();
+    }
+  });
+
+  test('exposes exactly ten module cards each with a toggle', async ({ page }) => {
+    await gotoModules(page);
+    await expect(page.locator('.spsg-module-card')).toHaveCount(Object.keys(MODULES).length);
+  });
+
+  test('baseline modules show as active', async ({ page }) => {
+    await gotoModules(page);
+    for (const id of BASELINE_ACTIVE) {
+      const mod = Object.values(MODULES).find((m) => m.id === id)!;
+      await expect(moduleToggle(page, mod.name)).toHaveAttribute('aria-checked', 'true');
+    }
+  });
+
+  // NOTE: baseline is "all modules active"; each toggling test restores its
+  // module to active so later specs see the baseline. This file owns Direct
+  // Checkout + Floating Bar for toggling.
+  test('a module can be deactivated and reactivated (idempotent, leaves state as found)', async ({
+    page,
+  }) => {
+    const name = MODULES.directCheckout.name; // baseline active
+    await setModuleState(page, name, false);
+    await expect(moduleToggle(page, name)).toHaveAttribute('aria-checked', 'false');
+
+    await setModuleState(page, name, true);
+    await expect(moduleToggle(page, name)).toHaveAttribute('aria-checked', 'true');
+  });
+
+  test('toggled state persists across a reload', async ({ page }) => {
+    const name = MODULES.floatingBar.name;
+    await setModuleState(page, name, false); // change from the active baseline
+
+    await page.reload();
+    await expect(page.locator('#sbooster-modules-page')).toBeVisible();
+    await expect(moduleToggle(page, name)).toHaveAttribute('aria-checked', 'false');
+
+    // Restore baseline (active).
+    await setModuleState(page, name, true);
   });
 });

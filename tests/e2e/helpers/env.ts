@@ -18,13 +18,21 @@ export const env = {
   adminUser: process.env.WP_ADMIN_USER ?? 'admin',
   adminPassword: process.env.WP_ADMIN_PASSWORD ?? 'password',
 
-  /** REST auth via a WP Application Password (HTTP Basic over the wire). */
+  /**
+   * REST auth over HTTP Basic.
+   *
+   * The Docker stack installs the WP-API Basic-Auth plugin, so the plain admin
+   * username/password authenticate the REST API directly — no Application
+   * Password needed. `WP_APP_PASSWORD` still works as an override if set (e.g.
+   * against a site that only allows Application Passwords).
+   */
   apiUser: process.env.WP_API_USER ?? process.env.WP_ADMIN_USER ?? 'admin',
-  apiAppPassword: process.env.WP_APP_PASSWORD ?? '',
+  apiPassword:
+    process.env.WP_APP_PASSWORD ?? process.env.WP_ADMIN_PASSWORD ?? 'password',
 
   /** Pre-built `Authorization` header for authenticated REST requests. */
   get basicAuthHeader(): string {
-    const token = Buffer.from(`${this.apiUser}:${this.apiAppPassword}`).toString('base64');
+    const token = Buffer.from(`${this.apiUser}:${this.apiPassword}`).toString('base64');
     return `Basic ${token}`;
   },
 };
