@@ -119,6 +119,9 @@ const BasicInfo = ({ clearErrors }) => {
             "The target product indicates for which specific products the upsell order bogo option will be displayed.",
             "storegrowth-sales-booster"
           )}
+          queryArgs={{
+            status: 'publish'
+          }}
         />
 
         <TextRadioBox
@@ -153,7 +156,8 @@ const BasicInfo = ({ clearErrors }) => {
                 ?.includes(inputValue.toLowerCase())
             }
             queryArgs={{
-              product_type: 'simple'
+              product_type: 'simple',
+              status: 'publish'
             }}
           />)
         }

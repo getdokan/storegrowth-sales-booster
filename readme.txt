@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 5.4
 Tested up to: 6.8.2
-Stable tag: 2.0.6
+Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -272,6 +272,19 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.1.0 (June 18, 2026) =
+
+* New: BOGO now supports variable products — customers pick a gift variation (color, size, etc.) from inline dropdowns and claim it without leaving the page.
+* New: BOGO offers can be scheduled with optional start and end dates — offers activate and expire automatically, and an expired free gift is removed on the next cart update.
+* New: Added Appsero usage tracking and a deactivation feedback form.
+* Enhancement: Floating Bar default trigger delay reduced from 7s to 1s, and removed the redundant "Button Text" field.
+* Enhancement: Restyled the BOGO offer box with updated badge colors and a clearer "Free Gift" / "X% Off" header.
+* Fix: "Enable BOGO" no longer auto-creates empty or active offers for new products; the product tab now loads only that product's own offer.
+* Fix: BOGO target and offer product dropdowns now list only published products.
+* Fix: Blocked selecting the same product as both target and offer in a Buy X Get Y deal — validated on the client, server, and REST API.
+* Fix: Repaired Buy X Get Y saving and the product-page BOGO box (gift resolution, placeholder image, and the star rating no longer overlapping the card).
+* Fix: Prevented a fatal error when calculating the offer price for products with no price set.
 
 = v2.0.6 (April 28, 2026) =
 

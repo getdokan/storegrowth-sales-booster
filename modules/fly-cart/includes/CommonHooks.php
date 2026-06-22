@@ -32,8 +32,54 @@ class CommonHooks implements HookRegistry {
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'spsg_before_cart_collaterals' ) );
+		add_action( 'spsg_woocommerce_before_cart_collaterals', array( $this, 'render_free_shipping_notice' ) );
 
 		add_filter( 'template_include', array( $this, 'set_custom_checkout_template' ), 20 );
+	}
+
+	/**
+	 * Render the Free Shipping Rules progress notice inside the FlyCart.
+	 *
+	 * FlyCart triggers the render so the notice shows whenever its "Show Free
+	 * Shipping Message" toggle is on — even when the Free Shipping Rules module is
+	 * deactivated. The message text is still produced by that module's Helper
+	 * (its class autoloads regardless of activation), so the logic is unchanged;
+	 * only where it is triggered from moves.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function render_free_shipping_notice() {
+		/**
+		 * Whether the FlyCart free-shipping notice is enabled. Pro sets this from
+		 * the "Show Free Shipping Message" setting; defaults off.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool $enabled Whether the notice should be displayed.
+		 */
+		if ( ! apply_filters( 'spsg_fly_cart_show_free_shipping_enabled', false ) ) {
+			return;
+		}
+
+		if ( ! \StorePulse\StoreGrowth\Helper::is_current_user_allowed_to_view_promotions() ) {
+			return;
+		}
+
+		$settings    = \StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper::get_settings();
+		$banner_text = \StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper::get_banner_text( $settings );
+
+		if ( empty( $banner_text ) ) {
+			return;
+		}
+		?>
+		<div class="spsg-fly-cart-free-shipping-notice">
+			<span class="spsg-fly-cart-free-shipping-text">
+				<?php echo wp_kses_post( $banner_text ); ?>
+			</span>
+		</div>
+		<?php
 	}
 
 	/**

@@ -139,8 +139,20 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
       return null;
     }
 
+    // The target product field is a single-select, so `offered_products` may be a
+    // scalar id (or empty string) rather than an array. Normalize it before any
+    // array operations below, otherwise `.map`/`.length`/`for..of` throw and the
+    // save handler aborts silently (clicking Save appears to do nothing).
+    const offeredProducts = Array.isArray(createBogoData.offered_products)
+      ? createBogoData.offered_products
+      : createBogoData.offered_products === "" ||
+        createBogoData.offered_products === null ||
+        createBogoData.offered_products === undefined
+        ? []
+        : [createBogoData.offered_products];
+
     if (
-      createBogoData.offered_products.length === 0 &&
+      offeredProducts.length === 0 &&
       createBogoData.offered_categories.length === 0
     ) {
       notification["error"]({
@@ -172,7 +184,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     if (
       createBogoData.bogo_deal_type !== 'same' &&
       createBogoData.get_different_product_field &&
-      createBogoData.offered_products.map(Number).includes(Number(createBogoData.get_different_product_field))
+      offeredProducts.map(Number).includes(Number(createBogoData.get_different_product_field))
     ) {
       notification["error"]({
         message: __(
@@ -216,7 +228,7 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
 
     const newOfferProduct = createBogoData.get_different_product_field;
     const newTargetCats = createBogoData?.offered_categories;
-    const newTargetProducts = createBogoData.offered_products;
+    const newTargetProducts = offeredProducts;
     const newTargetSchedules = createBogoData.offer_schedule;
 
     for (const bogoItem of filteredBogosData) {
@@ -259,8 +271,10 @@ function CreateBogo({ navigate, useParams, useSearchParams }) {
     // Check if bogo order not duplicate then saved.
     if (!(isDuplicateCatsFound || isDuplicateProductsFound)) {
       setButtonLoading(true);
-      const bogoDataParsedToEntities =
-        convertBogoItemTextDatasToHtmlEntities(createBogoData);
+      const bogoDataParsedToEntities = convertBogoItemTextDatasToHtmlEntities({
+        ...createBogoData,
+        offered_products: offeredProducts,
+      });
       
       const apiCall = isEditingExistingBogoItem 
         ? updateBogoOffer(parseInt(bogo_id), bogoDataParsedToEntities)
