@@ -45,9 +45,13 @@ jobs:
           php-version: '8.2'
           tools: composer
 
+      # --ignore-platform-reqs: the committed composer.lock pins old dev-only
+      # packages (e.g. symfony/service-contracts) that cap at PHP <8.0. They're
+      # build-time only (mozart prefixes them into the committed lib/), so the
+      # platform mismatch is harmless for the runtime autoloader on PHP 8.2.
       - name: Build plugin (composer + assets)
         run: |
-          composer install --no-interaction --prefer-dist
+          composer install --no-interaction --prefer-dist --ignore-platform-reqs
           npm install
           npm run build
 
