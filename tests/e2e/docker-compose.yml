@@ -52,6 +52,9 @@ services:
       - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
       # Pro plugin (sibling on the host) — mounted so Pro features are testable.
       - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
+      # Expose WP_DEBUG_LOG to the host so setup/runtime errors are trackable
+      # from bin/debug.log (WP_DEBUG_LOG=true writes to wp-content/debug.log).
+      - ./bin/debug.log:/var/www/html/wp-content/debug.log
 
   # One-off WP-CLI runner (shares the WordPress volume + network). Not started by
   # `up`; invoked via `docker compose run --rm cli wp ...` from the setup script.
@@ -75,6 +78,8 @@ services:
       - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
       # Pro plugin (sibling on the host) — mounted so Pro features are testable.
       - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
+      # Same debug.log mount so WP-CLI setup errors are captured to the host too.
+      - ./bin/debug.log:/var/www/html/wp-content/debug.log
 
 volumes:
   sg_db:

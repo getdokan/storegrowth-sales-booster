@@ -6,3 +6,4 @@ test-results/
 results/
 blob-report/
 playwright/.cache/
+bin/debug.log

@@ -107,7 +107,7 @@ test.describe('Storefront · Sales Notification', () => {
     page,
     guestPage,
   }) => {
-    test.fail(); // enqueue_scripts explode()s an array → fatal → script never loads (still reproduces under Pro).
+     // enqueue_scripts explode()s an array → fatal → script never loads (still reproduces under Pro).
     const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
     await saveSalesPop(page, { enable: true, external_link: false, popup_products: [id], virtual_locations: [] });
 
