@@ -15,40 +15,12 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Fly Cart — full module spec. General Setting + Design are driven END-TO-END
- * through the real admin Settings form (helpers/settings-ui), then validated on
- * the storefront; the drawer interactions (add / quantity ± / remove / coupon /
- * open-close) exercise the live fly-cart AJAX.
- *
- * Site-wide slide-out cart (wp_footer), shown to everyone (not promotion-gated).
- * Markers: `.wfc-cart-icon`, `.wfc-icon`, `.wfc-open-btn`, `.wfc-widget-sidebar`
- * (drawer; closed = has `wfc-slide`), `span.wfc-cart-countlocation`. Drawer cart
- * content is AJAX-loaded into `.spsg-widget-shopping-cart-content`. Colors are
- * injected CSS → validated via computed styles. Baseline-active.
- *
- * REQUIRED SEED FIXTURES (create once against the test site; idempotent):
- *   # 10%-off coupon for the apply-coupon test
- *   curl -u admin:password -X POST $BASE/wp-json/wc/v3/coupons \
- *     -H 'Content-Type: application/json' \
- *     -d '{"code":"e2e10","discount_type":"percent","amount":"10"}'
- *   # "Buy C get C free" BOGO offer on product C for the BOGO-badge test
- *   curl -u admin:password -X POST $BASE/wp-json/sales-booster/v1/bogo/offers \
- *     -H 'Content-Type: application/json' \
- *     -d '{"name_of_order_bogo":"E2E BOGO C","offer_type":"free","bogo_deal_type":"same",
- *          "bogo_type":"products","offered_products":[<C id>],"get_different_product_field":<C id>,
- *          "minimum_quantity_required":1,"default_badge_icon_name":"bogo-icons-1",
- *          "box_border_style":"solid","box_border_color":"#000000","box_top_margin":"0",
- *          "box_bottom_margin":"0","discount_background_color":"#ff0000","discount_text_color":"#ffffff",
- *          "discount_font_size":"14","product_description_text_color":"#000000","product_description_font_size":"14"}'
- * The @pro tests `test.skip` without Pro; the BOGO/coupon ones also need the seeds above.
- */
+// Fly Cart module spec. @pro tests skip without Pro; BOGO/coupon tests also need the seed fixtures below (coupon `e2e10` 10% off; "Buy C get C free" BOGO offer on product C).
 const ROUTE = 'fly-cart';
 const ICON = '.wfc-cart-icon';
 const OPEN_BTN = '.wfc-open-btn';
 const SIDEBAR = '.wfc-widget-sidebar';
 const COUNT = 'span.wfc-cart-countlocation';
-// Drawer content is AJAX-loaded into `.spsg-widget-shopping-cart-content` on open.
 const CONTENT = `${SIDEBAR} .spsg-widget-shopping-cart-content`;
 const ITEM_ROW = `${CONTENT} tr.woocommerce-cart-form__cart-item`;
 const IMG = `${CONTENT} .spsg-fly-cart-thumbnail-cell img`;
@@ -64,20 +36,15 @@ const COUPON_APPLY = `${CONTENT} .spsg-apply-coupon`;
 const COUPON_RESPONSE = `${CONTENT} .spsg-coupon-response`;
 const BOGO_BADGE = `${CONTENT} .bogo-badge-image`;
 const STOCK = `${CONTENT} .spsg-fly-cart-stock-status`;
-// Seeded fixtures (created out-of-band; see file header):
-//  - a WooCommerce coupon `e2e10` (10% off, no minimum) for the apply-coupon test.
-//  - a "Buy C get C free" BOGO offer on product C for the BOGO-badge test, kept on
-//    a dedicated product so its free item never leaks into the product-A tests.
+// Seeded out-of-band; BOGO offer is on product C so its free item never leaks into the product-A tests.
 const SEED_COUPON = 'e2e10';
 const SEED_BOGO_PRODUCT = PRODUCTS.c;
 
-/** Add the baseline product (A) to the cart via WooCommerce. */
 async function addProductA(page: any) {
   const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
   await addToCart(page, id);
 }
 
-/** Open the slide-out drawer and wait for its AJAX cart content to populate. */
 async function openDrawer(page: any) {
   await page.locator(OPEN_BTN).first().click();
   await expect(page.locator(ITEM_ROW).first()).toBeVisible();
@@ -91,12 +58,9 @@ test.describe('Storefront · Fly Cart', () => {
 
   test.afterEach(async ({ page }) => {
     await emptyCart(page);
-    // Ensure active, then reset design to defaults via the Reset button (no leak).
     await setModuleActive(page, MODULES.flyCart.id, true);
     await resetAndSave(page, ROUTE, 'Design');
   });
-
-  // ===== Render behaviour ====================================================
 
   test.describe('Render behaviour', () => {
     test('shows the floating cart icon site-wide', async ({ page }) => {
@@ -109,9 +73,9 @@ test.describe('Storefront · Fly Cart', () => {
     test('clicking the icon opens the cart drawer', async ({ page }) => {
       await gotoShop(page);
       const drawer = page.locator(SIDEBAR);
-      await expect(drawer).toHaveClass(/wfc-slide/); // closed
+      await expect(drawer).toHaveClass(/wfc-slide/);
       await page.locator('.wfc-open-btn').first().click();
-      await expect(drawer).not.toHaveClass(/wfc-slide/); // open
+      await expect(drawer).not.toHaveClass(/wfc-slide/);
       await expect(page.locator('.wfc-cart-heading')).toBeVisible();
     });
 
@@ -131,8 +95,6 @@ test.describe('Storefront · Fly Cart', () => {
     });
   });
 
-  // ===== Cart interactions (storefront drawer behaviour) =====================
-
   test.describe('Cart interactions', () => {
     test('adding a product shows it in the drawer with the right count', async ({ page }) => {
       await addProductA(page);
@@ -148,12 +110,10 @@ test.describe('Storefront · Fly Cart', () => {
       await gotoShop(page);
       await openDrawer(page);
 
-      // + → quantity 2, subtotal doubles (19.99 → 39.98). Each click re-renders via AJAX.
       await page.locator(PLUS).click();
       await expect(page.locator(QTY_INPUT)).toHaveValue('2');
       await expect(page.locator(SUBTOTAL)).toContainText('39.98');
 
-      // − → back to 1.
       await page.locator(MINUS).click();
       await expect(page.locator(QTY_INPUT)).toHaveValue('1');
       await expect(page.locator(SUBTOTAL)).toContainText('19.99');
@@ -173,9 +133,9 @@ test.describe('Storefront · Fly Cart', () => {
       await gotoShop(page);
       const drawer = page.locator(SIDEBAR);
       await page.locator(OPEN_BTN).first().click();
-      await expect(drawer).not.toHaveClass(/wfc-slide/); // open
+      await expect(drawer).not.toHaveClass(/wfc-slide/);
       await page.locator('.spsg-cart-widget-close, .qc-close-nav').first().click();
-      await expect(drawer).toHaveClass(/wfc-slide/); // closed
+      await expect(drawer).toHaveClass(/wfc-slide/);
     });
 
     test('clicking the overlay slides the drawer shut', async ({ page }) => {
@@ -187,8 +147,6 @@ test.describe('Storefront · Fly Cart', () => {
       await expect(drawer).toHaveClass(/wfc-slide/);
     });
   });
-
-  // ===== Design (admin UI → storefront) ======================================
 
   test.describe('Design', { tag: '@admin' }, () => {
     test('Cart Icon Color applies to the cart icon', async ({ page }) => {
@@ -211,8 +169,7 @@ test.describe('Storefront · Fly Cart', () => {
       expect(await computedStyle(page, SIDEBAR, 'background-color')).toBe('rgb(17, 34, 51)');
     });
 
-    // Cart Icon Position radio order (lite presets): index → class on `.wfc-cart-icon`.
-    // The Pro center positions (center-right/-left) are asserted in the Pro block.
+    // Lite position presets; Pro center positions are asserted in the Pro block.
     const LITE_POSITIONS = [
       { index: 0, cls: 'bottom-right' },
       { index: 1, cls: 'top-left' },
@@ -231,7 +188,6 @@ test.describe('Storefront · Fly Cart', () => {
       });
     }
 
-    // Cart Icon presets (all lite): index → glyph class on `.wfc-open-btn`.
     const ICON_PRESETS = [0, 1, 2, 3, 4].map((i) => ({ index: i, cls: `shopping-cart-icon-${i + 1}` }));
     for (const icon of ICON_PRESETS) {
       test(`Cart Icon "${icon.cls}" applies its glyph class to the open button`, async ({ page }) => {
@@ -286,21 +242,14 @@ test.describe('Storefront · Fly Cart', () => {
     });
   });
 
-  // ===== General Setting · Cart Contents (admin UI → storefront drawer) =======
-  // Each toggle is asserted in BOTH states: present by default, gone after the
-  // real form switches it off. afterEach's Reset restores all toggles to default.
-
   test.describe('General Setting · Cart Contents', { tag: '@admin' }, () => {
-    /** Toggle a content checkbox off and assert its drawer marker disappears. */
     async function assertToggle(page: any, label: string, marker: string) {
       await addProductA(page);
 
-      // Default ON → marker present in the drawer.
       await gotoShop(page);
       await openDrawer(page);
       await expect(page.locator(marker)).toHaveCount(1);
 
-      // Switch OFF via the real form → marker gone.
       await gotoModuleSettings(page, ROUTE);
       await setContentCheckbox(page, label, false);
       await saveForm(page);
@@ -327,29 +276,25 @@ test.describe('Storefront · Fly Cart', () => {
     });
 
     test('"Cart panel auto-opens" controls auto-open on add-to-cart', async ({ page }) => {
-      // Turn the auto-open behaviour OFF, then add from the shop via the AJAX
-      // button: the count must rise (proving the add fired) while the drawer
-      // stays slid shut (proving enable_add_to_cart_redirect is respected).
       await gotoModuleSettings(page, ROUTE);
       await setContentCheckbox(page, 'Cart panel auto-opens', false);
       await saveForm(page);
 
-      const id = await getProductIdBySlug(page, PRODUCTS.a.slug); // product A: no BOGO → count 1
+      const id = await getProductIdBySlug(page, PRODUCTS.a.slug); // product A has no BOGO → count 1
       await gotoShop(page);
       const drawer = page.locator(SIDEBAR);
-      await expect(drawer).toHaveClass(/wfc-slide/); // closed
+      await expect(drawer).toHaveClass(/wfc-slide/);
       await page.locator(`a.ajax_add_to_cart[data-product_id="${id}"]`).first().click();
-      await expect(page.locator(COUNT).first()).toHaveText('1'); // add fired
-      await expect(drawer).toHaveClass(/wfc-slide/); // still closed
+      await expect(page.locator(COUNT).first()).toHaveText('1');
+      await expect(drawer).toHaveClass(/wfc-slide/);
     });
   });
 
-  // ===== General Setting · Pro fields ========================================
   test.describe('General Setting · Pro', { tag: ['@pro', '@admin'] }, () => {
     test('Layout "Centered Popup" switches the drawer to the centered layout', async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
       await gotoModuleSettings(page, ROUTE);
-      await setRadioInField(page, 'quick-cart-layout', 1); // Centered Popup
+      await setRadioInField(page, 'quick-cart-layout', 1);
       await saveForm(page);
 
       await gotoShop(page);
@@ -415,16 +360,13 @@ test.describe('Storefront · Fly Cart', () => {
       await expect(page.locator(COUPON_RESPONSE)).toContainText('applied successfully');
       await expect(page.locator(`${CONTENT} .cart-discount.coupon-${SEED_COUPON}`)).toBeVisible();
 
-      // Clean up: drop the coupon so it can't leak into other tests' totals.
+      // Drop the coupon so it can't leak into other tests' totals.
       await page.locator(`${CONTENT} .woocommerce-remove-coupon`).first().click();
       await expect(page.locator(`${CONTENT} .cart-discount.coupon-${SEED_COUPON}`)).toHaveCount(0);
     });
 
     test('Show BOGO Badge renders the BOGO badge on a matching item', async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
-      // A "Buy C get C free" BOGO offer is seeded on product C (see SEED_BOGO_PRODUCT)
-      // so the free item never leaks into the product-A tests. The badge only renders
-      // when the "Show BOGO Badge" toggle is on.
       await gotoModuleSettings(page, ROUTE);
       await setContentCheckbox(page, 'Show BOGO Badge', true);
       await saveForm(page);
@@ -436,18 +378,12 @@ test.describe('Storefront · Fly Cart', () => {
       await expect(page.locator(BOGO_BADGE).first()).toBeVisible();
     });
 
-    // Show Free Shipping Message renders `.spsg-fly-cart-free-shipping-notice`, but
-    // its gate `spsg_fly_cart_show_free_shipping_enabled` is set by Pro's internal
-    // Free-Shipping-Rules state, which can't be driven from the test env (enabling
-    // the toggle + a PDB threshold below the cart total was insufficient). Left
-    // documented until Pro exposes a way to force the gate.
+    // Free-shipping notice is gated by Pro's internal Free-Shipping-Rules state, which can't be driven from the test env.
     test.fixme(
       'Show Free Shipping Message renders the free-shipping notice (Pro-gated, not drivable from tests)',
       async () => {},
     );
   });
-
-  // ===== Enable ==============================================================
 
   test.describe('Enable', { tag: '@admin' }, () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

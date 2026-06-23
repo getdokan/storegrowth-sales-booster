@@ -1,12 +1,6 @@
 import { test, expect } from '../../fixtures/test';
 import type { APIRequestContext } from '@playwright/test';
 
-/**
- * Upsell Order Bump REST surface (OrderBumpController, namespace spsg/v1).
- * Requires the upsell-order-bump module active — provisioning keeps it in the
- * baseline (and ran its table migration). Create needs `name` +
- * `offer_product_id`.
- */
 const BASE = '/wp-json/spsg/v1/order-bumps';
 
 async function createBump(api: APIRequestContext, overrides: Record<string, unknown> = {}) {
@@ -49,7 +43,6 @@ test.describe('API · Upsell Order Bumps', () => {
       expect([200, 204]).toContain(deleted.status());
       id = undefined;
 
-      // Confirm it is gone.
       const gone = await api.get(`${BASE}/${id}`);
       expect(gone.status()).toBe(404);
     } finally {
@@ -67,7 +60,6 @@ test.describe('API · Upsell Order Bumps', () => {
 
   test('matching requires its cart params', async ({ api }) => {
     const res = await api.get(`${BASE}/matching`);
-    // Required params missing → 400 from REST arg validation.
     expect(res.status()).toBe(400);
   });
 });

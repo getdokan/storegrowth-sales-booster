@@ -7,30 +7,15 @@ import { gotoModuleSettings, openTab, saveForm, setColor } from '../../helpers/s
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Direct Checkout — the full module spec (render behaviour + design + shop page).
- *
- * Adds a "Buy Now" button that links straight to checkout. Default mode
- * `cart-with-buy-now` appends it on the single product page
- * (`.spsg_buy_now_button_product_page`) and — when Pro is active and
- * `shop_page_checkout_enable` is on — on the shop loop (`.spsg_buy_now_button`).
- *
- * Design settings (`button_color`, `text_color`, `font_size`,
- * `button_border_radius`, gated by `button_style`) are emitted as an injected
- * <style>, so they are validated via the button's COMPUTED style. Settings save
- * via the JSON `direct_checkout_data` ajax. Direct Checkout is baseline-active.
- */
 const PRODUCT_BTN = '.summary .spsg_buy_now_button_product_page';
 const SHOP_BTN = '.spsg_buy_now_button';
 
-/** Save direct-checkout settings (option payload is JSON `direct_checkout_data`). */
 async function saveDirectCheckout(page: any, data: Record<string, unknown>) {
   return moduleAjax(page, 'spsg_direct_checkout_save_settings', {
     data: JSON.stringify({ direct_checkout_data: data }),
   });
 }
 
-/** Read a computed CSS property of the first matching element. */
 async function computed(page: any, selector: string, prop: string): Promise<string> {
   return page
     .locator(selector)
@@ -38,7 +23,6 @@ async function computed(page: any, selector: string, prop: string): Promise<stri
     .evaluate((el: Element, p: string) => getComputedStyle(el).getPropertyValue(p).trim(), prop);
 }
 
-/** A base config that shows the button on product + shop with custom styling on. */
 function baseConfig(overrides: Record<string, unknown> = {}) {
   return {
     buy_now_button_setting: 'cart-with-buy-now',
@@ -52,17 +36,14 @@ function baseConfig(overrides: Record<string, unknown> = {}) {
 test.describe('Storefront · Direct Checkout', () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.directCheckout.id, true);
-    // Clean, known base config (default label/colors, button on product + shop)
-    // so tests don't inherit a previous test's/run's settings.
+    // Known base config so tests don't inherit prior settings.
     await saveDirectCheckout(page, baseConfig());
   });
 
   test.afterEach(async ({ page }) => {
-    await saveDirectCheckout(page, {}); // reset to defaults
+    await saveDirectCheckout(page, {});
     await setModuleActive(page, MODULES.directCheckout.id, true);
   });
-
-  // ===== Render behaviour =====================================================
 
   test.describe('Render behaviour', () => {
     test('adds a Buy Now button linking to checkout on the product page', async ({ page }) => {
@@ -83,7 +64,6 @@ test.describe('Storefront · Direct Checkout', () => {
       await saveDirectCheckout(page, { buy_now_button_setting: 'default-add-to-cart' });
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator('.spsg_buy_now_button_product_page')).toHaveCount(0);
-      // Normal add-to-cart remains.
       await expect(page.locator('.summary button.single_add_to_cart_button, .summary .single_add_to_cart_button').first()).toBeVisible();
     });
 
@@ -100,7 +80,7 @@ test.describe('Storefront · Direct Checkout', () => {
     });
 
     test('clicking Buy Now adds the product and checkout shows the exact price', async ({ page }) => {
-      // Product A at its regular price ($19.99 — no countdown discount), empty cart.
+      // Force Product A to its regular price ($19.99 — clear any countdown discount).
       const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
       await setProductMeta(page, id, {
         _spsg_countdown_timer_discount_amount: '',
@@ -109,13 +89,11 @@ test.describe('Storefront · Direct Checkout', () => {
       await emptyCart(page);
 
       await gotoProduct(page, PRODUCTS.a.slug);
-      // Buy Now adds the product via ajax then redirects toward checkout.
       await Promise.all([
         page.waitForURL(/\/(checkout|cart)\//),
         page.locator(PRODUCT_BTN).click(),
       ]);
 
-      // The exact-price intent: checkout reflects product A × 1 at $19.99.
       await page.goto('/checkout/');
       const review = page.locator('.woocommerce-checkout-review-order-table');
       await expect(review).toBeVisible();
@@ -127,8 +105,6 @@ test.describe('Storefront · Direct Checkout', () => {
       await emptyCart(page);
     });
   });
-
-  // ===== Design (computed styles) ============================================
 
   test.describe('Design', () => {
     test('button color is applied', async ({ page }) => {
@@ -158,12 +134,10 @@ test.describe('Storefront · Direct Checkout', () => {
     test('custom styles are NOT applied when Custom Button Style is off', async ({ page }) => {
       await saveDirectCheckout(page, baseConfig({ button_style: false, button_color: '#ff0000' }));
       await gotoProduct(page, PRODUCTS.a.slug);
-      // With the toggle off, the injected <style> is skipped → not the custom red.
+      // Toggle off → injected <style> is skipped, so not the custom red.
       expect(await computed(page, PRODUCT_BTN, 'background-color')).not.toBe('rgb(255, 0, 0)');
     });
   });
-
-  // ===== Shop page (Pro) =====================================================
 
   test.describe('Shop page', () => {
     test('shows a Buy Now button per product on the shop loop when enabled (Pro)', async ({ page }) => {
@@ -176,7 +150,6 @@ test.describe('Storefront · Direct Checkout', () => {
       await expect(buttons.first()).toHaveAttribute('href', /\/checkout\/?/);
       const products = await page.locator('ul.products li.product').count();
       expect(await buttons.count()).toBe(products);
-      // Design applies on the shop button too.
       expect(await computed(page, SHOP_BTN, 'background-color')).toBe('rgb(255, 0, 0)');
     });
 
@@ -187,8 +160,6 @@ test.describe('Storefront · Direct Checkout', () => {
       await expect(page.locator(SHOP_BTN)).toHaveCount(0);
     });
   });
-
-  // ===== Admin form → storefront (driven through the real Settings UI) ========
 
   test.describe('Admin form', () => {
     test('editing the Button Color via the Settings form updates the button', async ({ page }) => {
@@ -201,8 +172,6 @@ test.describe('Storefront · Direct Checkout', () => {
       expect(await computed(page, PRODUCT_BTN, 'background-color')).toBe('rgb(255, 0, 0)');
     });
   });
-
-  // ===== Module enable (last) ================================================
 
   test.describe('Enable', () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

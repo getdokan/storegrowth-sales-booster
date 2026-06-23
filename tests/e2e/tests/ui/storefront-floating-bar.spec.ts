@@ -14,30 +14,14 @@ import {
 } from '../../helpers/settings-ui';
 import { MODULES } from '../../data/modules';
 
-/**
- * Floating Bar — full module spec, driven END-TO-END through the real admin
- * Settings form (Banner Setting + Design tabs), then validated on the storefront.
- *
- * Each test changes a setting via the actual Ant Design control (textarea, color
- * picker, select), clicks the form's Save button, then asserts the guest-facing
- * bar reflects it. The bar is a "promotion" (guest/customer only,
- * Helper::is_current_user_allowed_to_view_promotions), so storefront checks use
- * the logged-out `guestPage`.
- *
- * Markers (verified live): `.spsg-floating-notification-bar-wrapper`,
- * `.spsg-floating-notification-bar-text`, `.spsg-floating-notification-bar-icon svg`,
- * `a.fn-bar-action-button`. Colors come from injected CSS, so they are checked
- * via COMPUTED styles. Floating Bar is baseline-active.
- */
+// Floating Bar module spec. The bar is a guest/customer-only promotion, so storefront checks use the logged-out `guestPage`.
 const ROUTE = 'floating-notification-bar';
 const WRAP = '.spsg-floating-notification-bar-wrapper';
 const TEXT = '.spsg-floating-notification-bar-text';
-// Scope to the floating bar's wrapper — the Free Shipping banner reuses the
-// `.fn-bar-action-button` class, so an unscoped selector collides when both are active.
+// Scoped to the wrapper: the Free Shipping banner reuses `.fn-bar-action-button`, so an unscoped selector collides.
 const BTN = `${WRAP} a.fn-bar-action-button`;
 const ICON = `${WRAP} .spsg-floating-notification-bar-icon svg`;
 
-/** Reset the option to a clean base (setup only — not the thing under test). */
 async function resetBar(page: any) {
   await moduleAjax(page, 'spsg_floating_notification_bar_save_settings', {
     form_data: JSON.stringify({
@@ -52,7 +36,6 @@ async function resetBar(page: any) {
   });
 }
 
-/** Computed CSS property of the first match on the given page. */
 async function computedOn(p: any, selector: string, prop: string): Promise<string> {
   return p
     .locator(selector)
@@ -63,7 +46,7 @@ async function computedOn(p: any, selector: string, prop: string): Promise<strin
 test.describe('Storefront · Floating Bar', () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.floatingBar.id, true);
-    await resetBar(page); // known clean base
+    await resetBar(page);
   });
 
   test.afterEach(async ({ page }) => {
@@ -72,8 +55,6 @@ test.describe('Storefront · Floating Bar', () => {
     });
     await setModuleActive(page, MODULES.floatingBar.id, true);
   });
-
-  // ===== Banner Setting tab (admin UI → storefront) ==========================
 
   test.describe('Banner Setting', { tag: '@admin' }, () => {
     test('editing Default Banner Text updates the bar text', async ({ page, guestPage }) => {
@@ -109,20 +90,14 @@ test.describe('Storefront · Floating Bar', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // bar_type=normal + bar_position=top (default) → position: absolute (EnqueueScript inline CSS).
+      // bar_type=normal + bar_position=top (default) → position: absolute.
       expect(await computedOn(guestPage, WRAP, 'position')).toBe('absolute');
     });
 
     test('editing Redirect URL updates the action button link', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
-      // The Redirect URL field is the Button Action's plain text input (placeholder
-      // "http://example.com"); it only renders while Button Action is "URL Redirect",
-      // which resetBar() guarantees. The value is run through esc_url() into the href.
-      //
-      // The control validates the URL one change BEHIND (ButtonAction passes the
-      // *previous* value's validity to onFieldChange, which gates Save). So we fill
-      // all-but-the-last char, then type the last one: that final onChange sees an
-      // already-valid value and flips the form's isValidURL true so Save persists.
+      // The URL field validates one change BEHIND (onFieldChange gets the previous value's validity), so fill
+      // all-but-the-last char then type the last: that final onChange sees a valid value and lets Save persist.
       const url = 'https://example.com/flash-sale';
       const input = page.locator('#sbooster-settings-page').getByPlaceholder('http://example.com');
       await input.fill(url.slice(0, -1));
@@ -142,8 +117,7 @@ test.describe('Storefront · Floating Bar', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // ba-close renders `<a class="fn-bar-action-button spsg-floating-notification-bar-remove">`
-      // with NO href (vs. the URL-redirect anchor that always has one).
+      // ba-close renders the action anchor with NO href (vs. the URL-redirect anchor that always has one).
       const btn = guestPage.locator(BTN);
       await expect(btn).toHaveClass(/spsg-floating-notification-bar-remove/);
       await expect(btn).not.toHaveAttribute('href', /.*/);
@@ -158,17 +132,16 @@ test.describe('Storefront · Floating Bar', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // bar_position=bottom → inline CSS sets `top: auto; bottom: 0` on the wrapper.
+      // bar_position=bottom → inline CSS sets `top: auto; bottom: 0`.
       expect(await computedOn(guestPage, WRAP, 'bottom')).toBe('0px');
     });
 
     test('selecting a Banner Icon renders an icon in the bar', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
-      await setBannerIcon(page, 1); // 2nd preset (notify-bar-icon-2)
+      await setBannerIcon(page, 1);
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // bar.php emits the matching inline <svg> inside the icon container.
       await expect(guestPage.locator(ICON)).toHaveCount(1);
     });
 
@@ -177,8 +150,7 @@ test.describe('Storefront · Floating Bar', () => {
       guestPage,
     }) => {
       await gotoModuleSettings(page, ROUTE);
-      // Default banner_device_view is ['banner-show-desktop']; clearing Desktop empties
-      // it, and the server (CommonHooks::wp_footer) renders nothing for an empty view.
+      // Clearing Desktop empties banner_device_view; the server renders nothing for an empty view.
       await setGroupCheckbox(page, 'Show Banner', 'Desktop', false);
       await saveForm(page);
 
@@ -191,14 +163,13 @@ test.describe('Storefront · Floating Bar', () => {
       guestPage,
     }) => {
       await gotoModuleSettings(page, ROUTE);
-      // button_view drives a client-side removal: with Desktop off, banner-bar-remove.js
-      // strips `.fn-bar-action-button` on desktop while the bar itself stays.
+      // With Desktop off, banner-bar-remove.js strips the button client-side while the bar itself stays.
       await setGroupCheckbox(page, 'Show Button', 'Desktop', false);
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      await expect(guestPage.locator(WRAP)).toHaveCount(1); // bar still present…
-      await expect(guestPage.locator(BTN)).toHaveCount(0); // …but its button is gone
+      await expect(guestPage.locator(WRAP)).toHaveCount(1);
+      await expect(guestPage.locator(BTN)).toHaveCount(0);
     });
 
     test('Trigger "After a few Seconds" reveals the hidden bar on load', async ({
@@ -206,8 +177,7 @@ test.describe('Storefront · Floating Bar', () => {
       guestPage,
     }) => {
       await gotoModuleSettings(page, ROUTE);
-      // The bar ships display:none and banner-bar-remove.js fadeIn()s it after
-      // banner_delay (default 1s) when the trigger is the timed one.
+      // The bar ships display:none and is faded in after banner_delay (default 1s) with the timed trigger.
       await page
         .locator('#sbooster-settings-page')
         .getByText('After a few Seconds', { exact: true })
@@ -219,12 +189,7 @@ test.describe('Storefront · Floating Bar', () => {
     });
   });
 
-  // ===== Banner Setting · Pro-only fields ====================================
-  // Coupon Code, Countdown and Page Targeting are rendered/gated by StoreGrowth
-  // Pro. Each sets the field through the module's save-ajax — the Coupon picker
-  // needs a seeded coupon and Countdown uses a DatePicker, both awkward to drive
-  // reliably via the admin UI — then asserts the resulting guest-facing marker.
-  // Tagged @pro and skipped when Pro is inactive (e.g. the lite CI environment).
+  // Pro-only fields set via the module's save-ajax (the Coupon picker / Countdown DatePicker are awkward to drive via the admin UI).
   test.describe('Banner Setting · Pro', { tag: ['@pro', '@admin'] }, () => {
     const proSave = (page: any, extra: Record<string, unknown>) =>
       moduleAjax(page, 'spsg_floating_notification_bar_save_settings', {
@@ -260,7 +225,7 @@ test.describe('Storefront · Floating Bar', () => {
 
       await guestPage.goto('/shop/');
       await expect(guestPage.locator(`${WRAP} .spsg-fn-bar-countdown`)).toHaveCount(1);
-      await expect(guestPage.locator(`${WRAP} .spsg-countdown-value`)).toHaveCount(4); // d/h/m/s
+      await expect(guestPage.locator(`${WRAP} .spsg-countdown-value`)).toHaveCount(4);
     });
 
     test('Page Targeting "Show on Selected" hides the bar on non-targeted pages', async ({
@@ -268,15 +233,13 @@ test.describe('Storefront · Floating Bar', () => {
       guestPage,
     }) => {
       test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
-      // Restrict to an (empty) page set → the bar must not render on the shop page.
+      // Restrict to an empty page set → the bar must not render on the shop page.
       await proSave(page, { banner_show_option: 'banner-show-selected', slected_page_option: [] });
 
       await guestPage.goto('/shop/');
       await expect(guestPage.locator(WRAP)).toHaveCount(0);
     });
   });
-
-  // ===== Layout (Design tab numeric settings) ================================
 
   test.describe('Layout', { tag: '@admin' }, () => {
     test('Banner Height applies to the bar wrapper', async ({ page, guestPage }) => {
@@ -299,8 +262,6 @@ test.describe('Storefront · Floating Bar', () => {
       expect(await computedOn(guestPage, TEXT, 'font-size')).toBe('24px');
     });
   });
-
-  // ===== Design tab (admin UI → storefront, computed styles) =================
 
   test.describe('Design', { tag: '@admin' }, () => {
     test('Background Color applies to the bar', async ({ page, guestPage }) => {
@@ -360,7 +321,6 @@ test.describe('Storefront · Floating Bar', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // Inline CSS targets `.spsg-…-icon svg { fill: <icon_color> }`.
       expect(await computedOn(guestPage, ICON, 'fill')).toBe('rgb(18, 52, 86)');
     });
 
@@ -374,15 +334,12 @@ test.describe('Storefront · Floating Bar', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // The X lives in `.spsg-…-remove svg`; resetBar uses ba-url-redirect so the
-      // action button does NOT carry that class — only the close icon matches.
+      // resetBar uses ba-url-redirect so the action button lacks the -remove class; only the close icon matches.
       expect(
         await computedOn(guestPage, `${WRAP} .spsg-floating-notification-bar-remove svg`, 'fill'),
       ).toBe('rgb(101, 67, 33)');
     });
   });
-
-  // ===== Visibility ==========================================================
 
   test.describe('Visibility', () => {
     test('bar content is not shown to a logged-in admin (promotions are guest-only)', async ({ page }) => {
@@ -397,8 +354,6 @@ test.describe('Storefront · Floating Bar', () => {
       await expect(guestPage.locator(TEXT)).toHaveCount(0);
     });
   });
-
-  // ===== Module enable (last) ================================================
 
   test.describe('Enable', { tag: '@admin' }, () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

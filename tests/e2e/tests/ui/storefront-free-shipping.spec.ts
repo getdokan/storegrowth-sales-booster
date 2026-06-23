@@ -16,24 +16,10 @@ import {
 } from '../../helpers/settings-ui';
 import { MODULES } from '../../data/modules';
 
-/**
- * Free Shipping Rules (progressive-discount-banner) — every Banner Setting +
- * Design field driven END-TO-END through the real admin form, then validated on
- * the guest storefront banner.
- *
- * Same architecture as the Floating Bar: the bar is server-rendered (wp_footer),
- * shown to guests/customers only (promotion-gated → use `guestPage`), and starts
- * `display:none`, faded in by JS after the trigger. Crucially, the JS only
- * *removes* the wrapper when `banner_device_view` is empty/mismatched — so every
- * test first saves the FULL form (resetBar seeds a complete base incl. desktop
- * view), keeping `.spsg-pd-banner-bar-wrapper` reliably in the guest DOM. Colors
- * come from injected CSS / inline styles, so they are checked via COMPUTED styles
- * (which resolve even while display:none).
- *
- * Markers: `.spsg-pd-banner-bar-wrapper`, `.spsg-pd-banner-text`,
- * `${WRAP} a.fn-bar-action-button` (scoped — the Floating Bar reuses that class),
- * `${WRAP} .spsg-pd-banner-bar-icon svg`, `${WRAP} .spsg-pd-banner-bar-remove svg`.
- */
+// Promotion-gated bar: guests only (use `guestPage`); JS removes the wrapper when
+// banner_device_view is empty/mismatched, so every test first saves the FULL form
+// (resetBar) to keep the wrapper in the DOM. Colors checked via COMPUTED styles
+// since the bar starts display:none.
 const ROUTE = 'progressive-discount-banner';
 const WRAP = '.spsg-pd-banner-bar-wrapper';
 const TEXT = `${WRAP} .spsg-pd-banner-text`;
@@ -42,9 +28,8 @@ const ICON = `${WRAP} .spsg-pd-banner-bar-icon svg`;
 const REMOVE = `${WRAP} .spsg-pd-banner-bar-remove svg path`;
 const GET = 'spsg_pd_banner_get_settings';
 
-/** A complete, known-good base. The save REPLACES the whole option, so it must be
- * full: device view set (wrapper survives JS), a high minimum (guest empty cart <
- * minimum → the progressive text shows, not the goal text), CTA on. */
+// Save REPLACES the whole option, so this base must be complete: device view set
+// (wrapper survives JS) and a high minimum (empty cart < minimum → progressive text).
 const DEFAULTS = {
   bar_type: 'normal',
   bar_position: 'top',
@@ -80,7 +65,6 @@ async function getSettings(page: any) {
   return (await moduleAjax(page, GET)).body?.data ?? {};
 }
 
-/** Computed CSS property of the first match on the given page. */
 async function computedOn(p: any, selector: string, prop: string): Promise<string> {
   return p
     .locator(selector)
@@ -91,15 +75,13 @@ async function computedOn(p: any, selector: string, prop: string): Promise<strin
 test.describe('Storefront · Free Shipping Rules', () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.freeShipping.id, true);
-    await resetBar(page); // full, known clean base
+    await resetBar(page);
   });
 
   test.afterEach(async ({ page }) => {
     await resetBar(page);
     await setModuleActive(page, MODULES.freeShipping.id, true);
   });
-
-  // ===== Banner Setting (admin UI → guest storefront) ========================
 
   test.describe('Banner Setting', { tag: '@admin' }, () => {
     test('Banner Text updates the bar text', async ({ page, guestPage }) => {
@@ -116,7 +98,7 @@ test.describe('Storefront · Free Shipping Rules', () => {
       await setNumber(page, 'Cart Minimum Amount', 250);
       await saveForm(page);
 
-      // Guest cart is empty → [amount] = 250 − 0 = $250.00.
+      // Empty guest cart → [amount] = 250 − 0 = $250.00.
       await guestPage.goto('/shop/');
       await expect(guestPage.locator(TEXT)).toContainText('$250.00');
     });
@@ -124,7 +106,7 @@ test.describe('Storefront · Free Shipping Rules', () => {
     test('Goal Completion Text shows once the cart clears the minimum', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
       await setTextField(page, 'Goal Completion Text', 'Goal reached — free shipping!');
-      await setNumber(page, 'Cart Minimum Amount', 0); // empty cart (0) ≥ 0 → goal text
+      await setNumber(page, 'Cart Minimum Amount', 0); // empty cart (0) ≥ 0 → goal text shows
       await saveForm(page);
 
       await guestPage.goto('/shop/');
@@ -160,7 +142,7 @@ test.describe('Storefront · Free Shipping Rules', () => {
 
     test('Banner Icon renders an icon in the bar', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
-      await setBannerIcon(page, 1); // 2nd preset (shipping-bar-icon-2)
+      await setBannerIcon(page, 1);
       await saveForm(page);
 
       await guestPage.goto('/shop/');
@@ -187,7 +169,7 @@ test.describe('Storefront · Free Shipping Rules', () => {
 
     test('CTA Target URI updates the button link', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
-      // CTA Target URI is a type="url" input, so target it by placeholder.
+      // CTA Target URI is a type="url" input → target by placeholder.
       await page
         .locator('#sbooster-settings-page')
         .getByPlaceholder('Write CTA button target url')
@@ -200,8 +182,7 @@ test.describe('Storefront · Free Shipping Rules', () => {
 
     test('Show Banner: unchecking Desktop removes the bar on desktop', async ({ page, guestPage }) => {
       await gotoModuleSettings(page, ROUTE);
-      // Default banner_device_view is ['banner-show-desktop']; clearing Desktop
-      // empties it → CommonHooks::wp_footer renders nothing.
+      // Clearing Desktop empties banner_device_view → wp_footer renders nothing.
       await setGroupCheckbox(page, 'Show Banner', 'Desktop', false);
       await saveForm(page);
 
@@ -221,9 +202,8 @@ test.describe('Storefront · Free Shipping Rules', () => {
       await expect(guestPage.locator(WRAP)).toBeVisible({ timeout: 8000 });
     });
 
-    // Discount Type / Mode / Amount drive the cart-total discount logic
-    // (WoocommerceDiscount.php), not the banner markup — so they are validated by
-    // round-tripping through the admin GET rather than against a banner marker.
+    // Discount Type/Mode/Amount drive cart-total discount logic, not banner markup,
+    // so they are validated by round-tripping through the admin GET.
     test('Discount Type "Discount Amount" persists with its mode and value', async ({ page }) => {
       await gotoModuleSettings(page, ROUTE);
       await setSelect(page, 'Discount Type', 'Discount Amount');
@@ -236,8 +216,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
       expect(String(s.discount_amount_value)).toBe('15');
     });
   });
-
-  // ===== Banner Setting · Pro ================================================
 
   test.describe('Banner Setting · Pro', { tag: ['@pro', '@admin'] }, () => {
     test('Page Targeting "Show on Selected" hides the bar on non-targeted pages', async ({
@@ -253,8 +231,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
       await expect(guestPage.locator(WRAP)).toHaveCount(0);
     });
   });
-
-  // ===== Design (admin UI → guest storefront, computed styles) ===============
 
   test.describe('Design', { tag: '@admin' }, () => {
     test('Background Color applies to the bar', async ({ page, guestPage }) => {
@@ -304,7 +280,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
       await saveForm(page);
 
       await guestPage.goto('/shop/');
-      // bar.php writes the colour as an inline style on the anchor.
       expect(await computedOn(guestPage, BTN, 'background-color')).toBe('rgb(170, 0, 0)');
     });
 
@@ -318,7 +293,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
       expect(await computedOn(guestPage, BTN, 'color')).toBe('rgb(0, 187, 0)');
     });
 
-    // Every Font Family preset → injected `font-family` on the bar text.
     const FONT_FAMILIES = ['Poppins', 'Roboto', 'Lato', 'Montserrat', 'IBM Plex Sans'];
     for (const font of FONT_FAMILIES) {
       test(`Font Family "${font}" applies to the bar text`, async ({ page, guestPage }) => {
@@ -353,8 +327,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
     });
   });
 
-  // ===== Storefront flag / Visibility ========================================
-
   test.describe('Storefront', () => {
     test('marks the storefront as showing the discount banner for a guest', async ({ guestPage }) => {
       await guestPage.goto('/shop/');
@@ -373,8 +345,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
     });
   });
 
-  // ===== Reset button ========================================================
-
   test.describe('Reset', { tag: '@admin' }, () => {
     test('the Reset button reverts a changed banner text', async ({ page }) => {
       await gotoModuleSettings(page, ROUTE);
@@ -388,8 +358,6 @@ test.describe('Storefront · Free Shipping Rules', () => {
       expect((await getSettings(page)).progressive_banner_text).not.toBe('Temporary text 999');
     });
   });
-
-  // ===== Enable ==============================================================
 
   test.describe('Enable', { tag: '@admin' }, () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

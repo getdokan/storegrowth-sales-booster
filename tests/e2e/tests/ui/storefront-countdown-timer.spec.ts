@@ -7,21 +7,9 @@ import { gotoModuleSettings, openTab, saveForm, setTextField, setColor } from '.
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Countdown Timer — the full module spec (render behaviour + design settings +
- * countdown accuracy). One spec per module.
- *
- * Render gate (CommonHooks + template + Helper::is_product_discountable): module
- * active, product in stock, and a valid per-product discount (amount + end set,
- * start ≤ now ≤ end). When it renders it also discounts the price and marks the
- * product on sale, and the JS ticks down to the configured end date.
- *
- * Marker: `.spsg-countdown-timer` with `.spsg-countdown-timer-items[data-end-date]`.
- * Per-product config = the meta the Countdown Timer product tab writes
- * (`_spsg_countdown_timer_discount_{amount,start,end}`). Module/global design
- * settings live in `spsg_countdown_timer_settings` (flat form_data ajax) and map
- * to inline styles on the storefront. Countdown Timer is baseline-active.
- */
+// Render gate: module active, product in stock, and a valid per-product discount
+// (amount + end set, start ≤ now ≤ end). Per-product config is product meta;
+// global design settings live in spsg_countdown_timer_settings (flat form_data).
 const MARKER = '.spsg-countdown-timer';
 const HEADING = '.spsg-countdown-timer-heading';
 const ITEM = '.spsg-countdown-timer-item';
@@ -32,7 +20,6 @@ const META = {
   end: '_spsg_countdown_timer_discount_end',
 };
 
-/** Configure a current, valid discount on a product (optionally a precise end). */
 async function setDiscount(page: any, id: number, amount = '20', end = dateOffset(30, '23:59:59')) {
   await setProductMeta(page, id, {
     [META.amount]: amount,
@@ -41,19 +28,17 @@ async function setDiscount(page: any, id: number, amount = '20', end = dateOffse
   });
 }
 
-/** Remove any countdown config from a product. */
 async function clearDiscount(page: any, id: number) {
   await setProductMeta(page, id, { [META.amount]: '', [META.start]: '', [META.end]: '' });
 }
 
-/** Save global countdown settings (flat form_data; replaces the option). */
+// Replaces the whole option, so the base form_data must be complete.
 async function saveCountdown(page: any, overrides: Record<string, unknown> = {}) {
   return moduleAjax(page, 'spsg_countdown_timer_save_settings', {
     form_data: { selected_theme: 'ct-layout-1', product_page_countdown_enable: '1', ...overrides },
   });
 }
 
-/** Inline style of the first matching element on the current page. */
 async function styleOf(page: any, selector: string): Promise<string> {
   return (await page.locator(selector).first().getAttribute('style')) ?? '';
 }
@@ -64,7 +49,6 @@ test.describe('Storefront · Countdown Timer', () => {
   });
 
   test.afterEach(async ({ page }) => {
-    // Restore baseline: default settings, no product discounts, stock restored.
     await saveCountdown(page, { selected_theme: 'ct-custom' });
     for (const slug of [PRODUCTS.a.slug, PRODUCTS.b.slug, PRODUCTS.c.slug]) {
       await clearDiscount(page, await getProductIdBySlug(page, slug));
@@ -76,8 +60,6 @@ test.describe('Storefront · Countdown Timer', () => {
     });
     await setModuleActive(page, MODULES.countdownTimer.id, true);
   });
-
-  // ===== Render behaviour ====================================================
 
   test.describe('Render behaviour', () => {
     test('renders the timer on a product with a valid, current discount', async ({ page }) => {
@@ -101,7 +83,7 @@ test.describe('Storefront · Countdown Timer', () => {
     });
 
     test('discounts the price and marks the product on sale', async ({ page }) => {
-      const id = await getProductIdBySlug(page, PRODUCTS.a.slug); // $19.99 → 20% → $15.99
+      const id = await getProductIdBySlug(page, PRODUCTS.a.slug); // $19.99 → 20% off → $15.99
       await setDiscount(page, id, '20');
       await gotoProduct(page, PRODUCTS.a.slug);
       const price = page.locator('.summary p.price');
@@ -157,23 +139,18 @@ test.describe('Storefront · Countdown Timer', () => {
     });
   });
 
-  // ===== Countdown accuracy ==================================================
-
   test.describe('Accuracy', () => {
     test('counts down to the exact end date configured on the product', async ({ page }) => {
       const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const end = dateOffset(3, '08:30:00'); // a precise future moment
+      const end = dateOffset(3, '08:30:00');
       await setDiscount(page, id, '20', end);
 
       await gotoProduct(page, PRODUCTS.a.slug);
 
-      // The end the merchant set is wired through to the widget verbatim.
       await expect(page.locator(ITEMS)).toHaveAttribute('data-end-date', end);
-      // The JS populates the units (days no longer the server placeholder "00").
       await expect(page.locator('.spsg-countdown-timer-item-days')).not.toHaveText('00');
 
-      // The displayed remaining time matches the time-to-end (computed in-browser
-      // so the timezone is identical to the countdown JS). Allow tick latency.
+      // Compute remaining time in-browser so the timezone matches the countdown JS.
       const deltaSec = await page.evaluate(() => {
         const n = (s: string) => parseInt(document.querySelector(s)!.textContent!.trim(), 10);
         const d = n('.spsg-countdown-timer-item-days');
@@ -192,7 +169,7 @@ test.describe('Storefront · Countdown Timer', () => {
 
     test('a shorter end date shows fewer days remaining', async ({ page }) => {
       const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      await setDiscount(page, id, '20', dateOffset(1, '23:59:59')); // ~1 day left
+      await setDiscount(page, id, '20', dateOffset(1, '23:59:59'));
       await gotoProduct(page, PRODUCTS.a.slug);
       const days = parseInt(
         (await page.locator('.spsg-countdown-timer-item-days').textContent())!.trim(),
@@ -201,8 +178,6 @@ test.describe('Storefront · Countdown Timer', () => {
       expect(days).toBeLessThanOrEqual(1);
     });
   });
-
-  // ===== Design / General settings → storefront ==============================
 
   test.describe('Design', () => {
     test.beforeEach(async ({ page }) => {
@@ -213,8 +188,8 @@ test.describe('Storefront · Countdown Timer', () => {
 
     for (const layout of ['ct-layout-1', 'ct-layout-2', 'ct-custom']) {
       test(`layout "${layout}" is applied to the timer`, async ({ page }) => {
-        // Selecting a layout also sets counter_background_color; for non-ct-layout-1
-        // the template keeps the layout class only when that is 'transparent'.
+        // For non-ct-layout-1 the template keeps the layout class only when
+        // counter_background_color is 'transparent'.
         await saveCountdown(page, { selected_theme: layout, counter_background_color: 'transparent' });
         await gotoProduct(page, PRODUCTS.a.slug);
         await expect(page.locator(MARKER).first()).toHaveClass(new RegExp(layout));
@@ -287,27 +262,23 @@ test.describe('Storefront · Countdown Timer', () => {
 
     test('shop countdown hidden on the shop loop when disabled (Pro)', async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
-      await saveCountdown(page, {}); // shop enable omitted → off
+      await saveCountdown(page, {}); // shop enable omitted → defaults off
       await gotoShop(page);
       await expect(page.locator(MARKER)).toHaveCount(0);
     });
   });
-
-  // ===== Admin form → storefront (driven through the real Settings UI) ========
 
   test.describe('Admin form', () => {
     test('editing heading + border via the Settings form updates the timer', async ({ page }) => {
       const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
       await setDiscount(page, id, '20'); // discountable so the timer renders
 
-      // Change settings through the actual admin controls, then Save.
       await gotoModuleSettings(page, 'countdown-timer');
       await setTextField(page, 'Countdown Heading', 'Ends soon: [discount]% OFF');
       await openTab(page, 'Design');
       await setColor(page, 'Border Color', '#ff0000');
       await saveForm(page);
 
-      // The storefront timer reflects exactly what was set from the admin form.
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(HEADING)).toContainText('Ends soon: 20% OFF');
       const borderColor = await page
@@ -318,8 +289,7 @@ test.describe('Storefront · Countdown Timer', () => {
     });
   });
 
-  // ===== Module enable (last: the UI toggle churns shared state) ==============
-
+  // Last: the UI toggle churns shared state.
   test.describe('Enable', () => {
     test('can be enabled from the Modules screen', async ({ page }) => {
       await setModuleState(page, MODULES.countdownTimer.name, false);

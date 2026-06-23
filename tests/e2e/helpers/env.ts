@@ -4,12 +4,6 @@ import * as dotenv from 'dotenv';
 // Load tests/e2e/.env when present. In CI the values come from the job env instead.
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
-/**
- * Centralised, typed access to test configuration.
- *
- * Keeping every `process.env` read in one place means tests never touch raw
- * env vars and we get one obvious place to document/validate configuration.
- */
 export const env = {
   /** Base URL of the WordPress site under test. */
   baseURL: process.env.BASE_URL ?? 'http://localhost:8888',
@@ -18,14 +12,9 @@ export const env = {
   adminUser: process.env.WP_ADMIN_USER ?? 'admin',
   adminPassword: process.env.WP_ADMIN_PASSWORD ?? 'password',
 
-  /**
-   * REST auth over HTTP Basic.
-   *
-   * The Docker stack installs the WP-API Basic-Auth plugin, so the plain admin
-   * username/password authenticate the REST API directly — no Application
-   * Password needed. `WP_APP_PASSWORD` still works as an override if set (e.g.
-   * against a site that only allows Application Passwords).
-   */
+  // REST auth over HTTP Basic: the Docker stack installs the WP-API Basic-Auth
+  // plugin, so the admin user/password authenticate REST directly (no App
+  // Password needed). WP_APP_PASSWORD still works as an override if set.
   apiUser: process.env.WP_API_USER ?? process.env.WP_ADMIN_USER ?? 'admin',
   apiPassword:
     process.env.WP_APP_PASSWORD ?? process.env.WP_ADMIN_PASSWORD ?? 'password',

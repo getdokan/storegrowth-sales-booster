@@ -14,13 +14,6 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * BOGO — full module spec. A global BOGO offer (created via the REST API the
- * admin UI uses) renders a gift-offer block on the matching product's single
- * page (woocommerce_single_product_summary → `.offer-main-wrap`). General-tab
- * settings are driven through the real admin form (helpers/settings-ui).
- * Baseline-active.
- */
 const ROUTE = 'bogo';
 const OFFER = '.offer-main-wrap';
 const REST = '/wp-json/sales-booster/v1/bogo/offers';
@@ -52,7 +45,7 @@ async function deleteAllOffers(page: any) {
   } catch {
     return;
   }
-  if (!Array.isArray(offers)) return; // route gone (module inactive)
+  if (!Array.isArray(offers)) return; // route gone when module inactive
   for (const o of offers) {
     await apiFetch(page, 'delete', `${REST}/${o.id}`).catch(() => {});
   }
@@ -70,8 +63,6 @@ test.describe('Storefront · BOGO', () => {
     await deleteAllOffers(page);
   });
 
-  // ===== Render behaviour ====================================================
-
   test.describe('Render behaviour', () => {
     test('shows the gift offer on a product that has a BOGO offer', async ({ page }) => {
       const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
@@ -81,7 +72,6 @@ test.describe('Storefront · BOGO', () => {
 
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(OFFER)).toBeVisible();
-      // The gift product (B) is shown in the offer.
       await expect(page.locator(`${OFFER} .offer-product-title`)).toContainText(PRODUCTS.b.name);
     });
 
@@ -100,8 +90,6 @@ test.describe('Storefront · BOGO', () => {
       await expect(page.locator(OFFER)).toHaveCount(0);
     });
   });
-
-  // ===== Offer (Lists) fields → storefront ===================================
 
   test.describe('Offer fields', () => {
     test('the custom product-page message shows in the offer header', async ({ page }) => {
@@ -128,14 +116,10 @@ test.describe('Storefront · BOGO', () => {
       await apiFetch(page, 'post', REST, offerPayload(a, b));
 
       await gotoProduct(page, PRODUCTS.a.slug);
-      // discount_background_color (#ff0000) → header background.
       expect(await computedStyle(page, `${OFFER} .dynamic-offer-text`, 'background-color')).toBe('rgb(255, 0, 0)');
-      // box_border_color (#0000ff) → wrapper border.
       expect(await computedStyle(page, OFFER, 'border-top-color')).toBe('rgb(0, 0, 255)');
     });
   });
-
-  // ===== General settings (admin UI → persistence) ===========================
 
   test.describe('General settings', () => {
     test('"Show Regular Price" toggle persists via the form', async ({ page }) => {
@@ -143,7 +127,6 @@ test.describe('Storefront · BOGO', () => {
       await setSwitch(page, 'Show Regular Price', true);
       await saveForm(page);
 
-      // Re-open the form; the toggle stays on (persisted from the admin end).
       await gotoModuleSettings(page, ROUTE);
       await expect(switchControl(page, 'Show Regular Price')).toHaveAttribute('aria-checked', 'true');
 
@@ -156,14 +139,12 @@ test.describe('Storefront · BOGO', () => {
       const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
       await apiFetch(page, 'post', REST, offerPayload(a, b));
 
-      // ON → the badge overlay (`.bogo-badge-image`) shows on the target product.
       await gotoModuleSettings(page, ROUTE);
       await setSwitch(page, 'Product Page Badge Icon', true);
       await saveForm(page);
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator('.bogo-badge-image').first()).toBeVisible();
 
-      // OFF → the badge is gone.
       await gotoModuleSettings(page, ROUTE);
       await setSwitch(page, 'Product Page Badge Icon', false);
       await saveForm(page);
@@ -172,10 +153,7 @@ test.describe('Storefront · BOGO', () => {
     });
   });
 
-  // ===== Create via the real "Create New" admin form =========================
-
   test.describe('Create New form', { tag: '@admin' }, () => {
-    // The 3-tab create form, with every field grouped by tab.
     const FIELDS = {
       'Basic Information': [
         'Name of BOGO',
@@ -205,7 +183,6 @@ test.describe('Storefront · BOGO', () => {
       }
     });
 
-    // Open a product search-select, type to filter, and click the matching option.
     async function pickSearch(page: any, heading: string, text: string) {
       await page
         .locator('#sbooster-settings-page')
@@ -225,10 +202,9 @@ test.describe('Storefront · BOGO', () => {
       await page.locator('#sbooster-settings-page').getByRole('button', { name: 'Create New' }).click();
       await expect(page).toHaveURL(/create-bogo/);
 
-      // --- Basic Information (design fields keep their pre-filled defaults) ---
       await page.getByPlaceholder('Enter BOGO Name').fill('E2E UI BOGO');
-      await pickSearch(page, 'Select Target Product(s)', PRODUCTS.a.name); // Buy A…
-      await pickSearch(page, 'Offer Product', PRODUCTS.b.name); // …get B
+      await pickSearch(page, 'Select Target Product(s)', PRODUCTS.a.name);
+      await pickSearch(page, 'Offer Product', PRODUCTS.b.name);
       // Offer type is a non-search "combine" select; on a fresh form ArrowDown→Enter
       // lands on "Discount%", which enables the adjacent amount input.
       await page.locator('#sbooster-settings-page .ant-select.combine-select').click();
@@ -239,8 +215,7 @@ test.describe('Storefront · BOGO', () => {
       await page.locator('#sbooster-settings-page .combine-field .ant-input-number-input').fill('25');
       await setNumber(page, 'Select Min Quantity', 2);
 
-      // --- Save → success toast + redirect to the Lists tab ---
-      // The form footer re-renders continuously, so a normal click can't stabilise;
+      // Form footer re-renders continuously, so a normal click can't stabilise;
       // trigger the visible Save button's React handler directly.
       await page.evaluate(() => {
         const root = document.querySelector('#sbooster-settings-page');
@@ -253,17 +228,13 @@ test.describe('Storefront · BOGO', () => {
         timeout: 10000,
       });
 
-      // --- Lists: the new offer shows in the table ---
       await expect(page.locator('#sbooster-settings-page .ant-table')).toContainText('E2E UI BOGO');
 
-      // --- Storefront: the offer renders on target product A ---
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(OFFER)).toBeVisible();
       await expect(page.locator(`${OFFER} .offer-product-title`)).toContainText(PRODUCTS.b.name);
     });
   });
-
-  // ===== Enable ==============================================================
 
   test.describe('Enable', () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

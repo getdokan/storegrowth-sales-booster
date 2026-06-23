@@ -1,8 +1,5 @@
 import { test, expect } from '../../fixtures/test';
 
-/**
- * The StoreGrowth top-level admin menu and its submenus (AdminMenu.php).
- */
 test.describe('Admin · StoreGrowth menu', () => {
   test('top-level StoreGrowth menu is present', async ({ page }) => {
     await page.goto('/wp-admin/');
@@ -13,12 +10,11 @@ test.describe('Admin · StoreGrowth menu', () => {
   });
 
   test('Modules and Settings submenus navigate to their SPAs', async ({ page }) => {
-    // Modules.
     await page.goto('/wp-admin/admin.php?page=spsg-modules');
     await expect(page.locator('#sbooster-modules-page')).toBeVisible();
     await expect(page).toHaveTitle(/Modules.*StoreGrowth/i);
 
-    // Settings (via its hash route — the supported entry point).
+    // Settings via its hash route — the supported entry point.
     await page.goto('/wp-admin/admin.php?page=spsg-settings#/dashboard/overview');
     await expect(page.locator('#sbooster-settings-page')).toBeVisible();
   });

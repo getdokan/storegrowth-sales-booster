@@ -1,14 +1,6 @@
-/**
- * Stable test data for StoreGrowth modules.
- *
- * `id`   — module slug stored in the `spsg_active_module_ids` option.
- * `name` — exact label rendered on the Modules screen (from each *Module::get_name()).
- *
- * Baseline state provisioned by bin/setup-docker.sh: ALL modules are active.
- * Specs treat "all active" as the baseline — negative tests deactivate a module,
- * assert, then restore it to active. Keeping everything active mirrors a fully
- * configured store and keeps module state stable across the run.
- */
+// `id` is the module slug in `spsg_active_module_ids`; `name` is the exact label
+// on the Modules screen. Baseline (provisioned by bin/setup-docker.sh) is ALL
+// modules active; negative tests deactivate one, assert, then restore it.
 export const MODULES = {
   bogo: { id: 'bogo', name: 'BOGO' },
   countdownTimer: { id: 'countdown-timer', name: 'Countdown Timer' },
@@ -24,14 +16,9 @@ export const MODULES = {
 
 export type ModuleKey = keyof typeof MODULES;
 
-/** Provisioning activates every module; tests restore modules to active. */
 export const BASELINE_ACTIVE: string[] = Object.values(MODULES).map((m) => m.id);
 
-/**
- * Storefront DOM markers that were *verified live* (module active → marker
- * present on the listed page). Each is the strongest, least-flaky selector for
- * that module. Used by the storefront behavior specs.
- */
+/** Storefront DOM markers verified live (module active → marker present on the page). */
 export const STOREFRONT_MARKERS = {
   stockBar: { module: MODULES.stockBar, page: 'product', selector: '.spsg-stock-bar' },
   flyCart: { module: MODULES.flyCart, page: 'any', selector: '.wfc-cart-icon' },

@@ -7,20 +7,12 @@ import { gotoModuleSettings, openTab, saveForm, setTextField, setNumber, setChec
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Stock Bar — full module spec. Design driven END-TO-END through the real admin
- * Settings form (helpers/settings-ui), validated on the storefront.
- *
- * Renders on the single product page (before the add-to-cart form) for
- * stock-managed, in-stock products. The page's *related products* also render
- * their own bars, so assertions scope to the main product's `.entry-summary`.
- * Baseline-active.
- */
+// Related products render their own bars, so assertions scope to the main product's `.entry-summary`.
 const ROUTE = 'stock-bar';
 const MAIN_BAR = '.entry-summary .spsg-stock-bar';
 const MAIN_SECTION = '.entry-summary .spsg-stock-progress-bar-section';
 
-/** Reset stock-bar settings to a clean enabled base (flat form_data can't be cleared empty). */
+// Flat form_data can't be cleared empty, so reset to a clean enabled base.
 async function resetStockBar(page: any) {
   await moduleAjax(page, 'spsg_stock_bar_save_settings', {
     form_data: { product_page_stock_bar_enable: '1' },
@@ -43,8 +35,6 @@ test.describe('Storefront · Stock Bar', () => {
     });
     await setModuleActive(page, MODULES.stockBar.id, true);
   });
-
-  // ===== Render behaviour ====================================================
 
   test.describe('Render behaviour', () => {
     test('shows on a stock-managed, in-stock product', async ({ page }) => {
@@ -73,8 +63,6 @@ test.describe('Storefront · Stock Bar', () => {
       await expect(page.locator('.spsg-stock-bar')).toHaveCount(0);
     });
   });
-
-  // ===== Design / settings (admin UI → storefront) ===========================
 
   test.describe('Design', () => {
     test('Available Item Count Text appears on the bar', async ({ page }) => {
@@ -116,8 +104,6 @@ test.describe('Storefront · Stock Bar', () => {
       await expect(page.locator(MAIN_BAR)).toHaveCount(0);
     });
   });
-
-  // ===== Enable ==============================================================
 
   test.describe('Enable', () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

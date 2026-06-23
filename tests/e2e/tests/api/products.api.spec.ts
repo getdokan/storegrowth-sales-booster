@@ -1,10 +1,6 @@
 import { test, expect } from '../../fixtures/test';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * The plugin's product picker (ProductController, namespace sales-booster/v1) —
- * extends the WooCommerce products controller, used by the settings UI.
- */
 test.describe('API · StoreGrowth product picker', () => {
   test('lists seeded products', async ({ api }) => {
     const res = await api.get('/wp-json/sales-booster/v1/products', { params: { per_page: 20 } });
@@ -14,7 +10,6 @@ test.describe('API · StoreGrowth product picker', () => {
     expect(Array.isArray(products)).toBeTruthy();
     expect(products.length).toBeGreaterThanOrEqual(3);
 
-    // Each item carries at least an id and a name.
     for (const p of products) {
       expect(p).toHaveProperty('id');
       expect(p).toHaveProperty('name');

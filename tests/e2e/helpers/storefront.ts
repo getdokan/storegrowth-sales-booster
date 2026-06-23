@@ -1,11 +1,6 @@
 import { Page } from '@playwright/test';
 import { STORE_PAGES, productPath } from '../data/products';
 
-/**
- * Storefront navigation helpers. These visit the public (anonymous-rendered but
- * here authenticated-session) WooCommerce pages where modules inject markup.
- */
-
 /** Open a single product page by slug and wait for the DOM to settle. */
 export async function gotoProduct(page: Page, slug: string): Promise<void> {
   await page.goto(productPath(slug));
@@ -38,12 +33,8 @@ export async function addToCart(page: Page, productId: number): Promise<void> {
   await page.waitForLoadState('domcontentloaded');
 }
 
-/**
- * Empty the cart via the WooCommerce Store API (reliable, server-side).
- *
- * The Store API shares the page's session cookies; a GET returns the write
- * `Nonce` header, which the DELETE needs. Falls back silently if unavailable.
- */
+// Empty the cart via the Store API. A GET returns the write `Nonce` header that
+// the DELETE needs; falls back silently if unavailable.
 export async function emptyCart(page: Page): Promise<void> {
   const get = await page.request.get('/wp-json/wc/store/v1/cart');
   const nonce = get.headers()['nonce'];

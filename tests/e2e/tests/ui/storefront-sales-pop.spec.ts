@@ -6,22 +6,9 @@ import { getProductIdBySlug } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Sales Notification (sales-pop) — live "social-proof" popups for guests
- * (Helper::is_current_user_allowed_to_view_promotions), driven by
- * `popup-custom.js` + the `spsg_popup_products` config.
- *
- * The server-rendered `.custom-notification-container` is consumed/removed by the
- * popup JS at runtime, so it is not a stable DOM signal. The reliable signal is
- * whether the module's frontend boots cleanly: `popup-custom.js` is enqueued.
- * Config goes through the `create_popup` ajax (nonce `ajd_protected` →
- * `window.sales_pop_data.ajd_nonce` on Settings). Owns the `sales-pop` module.
- *
- * KNOWN BUG #6 (ISSUES.md): EnqueueScript::enqueue_scripts does
- * `explode("\n", $virtual_locations)`, but the value is an array unless supplied
- * as a string → TypeError that fatals the storefront (so the script never
- * loads). Documented by the `test.fail` below.
- */
+// The popup container is consumed/removed by popup JS at runtime; the stable signal is whether
+// `popup-custom.js` enqueues. BUG #6 (ISSUES.md): enqueue_scripts explode()s virtual_locations,
+// which fatals the storefront when it's an array — see the BUG #6 test below.
 const POPUP_JS = 'script[src*="popup-custom.js"]';
 
 async function saveSalesPop(page: any, popupData: Record<string, unknown>) {
@@ -40,21 +27,17 @@ test.describe('Storefront · Sales Notification', () => {
   });
 
   test.afterEach(async ({ page }) => {
-    // Ensure active (so the nonce localizes), reset to a non-fatal config, then deactivate.
+    // Must be active so the nonce localizes before resetting to a non-fatal config.
     await setModuleActive(page, MODULES.salesPop.id, true);
     await saveSalesPop(page, { enable: false, popup_products: [], virtual_locations: '' });
     await setModuleActive(page, MODULES.salesPop.id, true);
   });
-
-  // ---- Enable ----------------------------------------------------------------
 
   test('can be enabled from the Modules screen', async ({ page }) => {
     await setModuleState(page, MODULES.salesPop.name, false);
     await setModuleState(page, MODULES.salesPop.name, true);
     await expect(moduleToggle(page, MODULES.salesPop.name)).toHaveAttribute('aria-checked', 'true');
   });
-
-  // ---- Positive (guest) ------------------------------------------------------
 
   test('loads the popup script on the storefront with a valid config', async ({ page, guestPage }) => {
     const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
@@ -70,12 +53,9 @@ test.describe('Storefront · Sales Notification', () => {
     await expect(guestPage.locator(POPUP_JS)).toHaveCount(1);
   });
 
-  // ---- Design tab (server-rendered popup container) --------------------------
-
   test('Design settings render on the popup container', async ({ page, guestPage }) => {
     const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
-    // Background + border radius are inline on the server-rendered container; a long
-    // initial delay keeps it present (the JS only shows/cycles it after the delay).
+    // A long initial delay keeps the container present (JS only shows/cycles it after the delay).
     await saveSalesPop(page, {
       enable: true,
       external_link: false,
@@ -93,15 +73,11 @@ test.describe('Storefront · Sales Notification', () => {
     expect(style).toContain('border-radius: 12px');
   });
 
-  // ---- Negative --------------------------------------------------------------
-
   test('does not load the popup script when the module is inactive', async ({ page, guestPage }) => {
     await setModuleActive(page, MODULES.salesPop.id, false);
     await guestPage.goto('/shop/');
     await expect(guestPage.locator(POPUP_JS)).toHaveCount(0);
   });
-
-  // ---- Known bug -------------------------------------------------------------
 
   test('an array virtual_locations must not break the storefront enqueue [BUG #6]', async ({
     page,

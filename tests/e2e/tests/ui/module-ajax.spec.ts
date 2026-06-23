@@ -2,14 +2,6 @@ import { test, expect } from '../../fixtures/test';
 import { spsgAdminAjax } from '../../helpers/ajax';
 import { MODULES } from '../../data/modules';
 
-/**
- * The core admin-ajax dispatcher (`wp_ajax_spsg_admin_ajax`) that powers the
- * Modules screen: `get_all_modules` and `update_module_status`. Driven with the
- * real `spsg_ajax_nonce` read from the page (see helpers/ajax.ts).
- *
- * `get_all_modules` returns an array of `{ id, name, status: boolean, ... }`
- * (ModuleManager::list_all_modules).
- */
 const findModule = (catalog: any[], id: string) => catalog.find((m) => m.id === id);
 
 test.describe('Admin · module ajax', () => {
@@ -22,7 +14,6 @@ test.describe('Admin · module ajax', () => {
     for (const mod of Object.values(MODULES)) {
       expect(ids, `catalog should include ${mod.id}`).toContain(mod.id);
     }
-    // Every entry carries the documented shape.
     for (const m of body) {
       expect(m).toMatchObject({ id: expect.any(String), name: expect.any(String) });
       expect(typeof m.status).toBe('boolean');
@@ -30,7 +21,7 @@ test.describe('Admin · module ajax', () => {
   });
 
   test('update_module_status deactivates then reactivates a module', async ({ page }) => {
-    // Owns Sales Notification; baseline is active, so toggle off → on and leave active.
+    // Owns Sales Notification; toggle off → on and leave active.
     const id = MODULES.salesPop.id;
 
     const off = await spsgAdminAjax(page, 'update_module_status', { module_id: id, status: 'false' });

@@ -1,18 +1,9 @@
 import { Page, expect } from '@playwright/test';
 
-/**
- * WooCommerce REST helpers for arranging storefront test state from a UI test.
- *
- * These run through the authenticated `page` (admin cookie session) plus the
- * core REST nonce (`window.wpApiSettings.nonce`). NOTE: the browserless `api`
- * fixture can't be used here — in the `ui` project it inherits the admin
- * storageState cookies, and REST cookie-auth without a nonce is rejected. WC
- * REST also treats a Basic-auth header as consumer key/secret, so the cookie +
- * nonce path is the reliable one for the UI project.
- *
- * They set up the *preconditions* a merchant configures; assertions still happen
- * on the storefront.
- */
+// WC REST helpers driven through the authenticated `page` (admin cookie + core
+// REST nonce). The browserless `api` fixture can't be used here: in the `ui`
+// project it inherits admin cookies, and WC REST rejects cookie-auth without a
+// nonce while treating Basic-auth as consumer key/secret.
 
 /** Read the core REST nonce, navigating to wp-admin first if it isn't localised. */
 async function restNonce(page: Page): Promise<string> {
@@ -67,11 +58,7 @@ export async function updateProduct(
   expect(res.ok(), `update product ${id} (status ${res.status()})`).toBeTruthy();
 }
 
-/**
- * Authenticated REST call through the admin cookie session + nonce. Use for
- * plugin REST namespaces (e.g. spsg/v1) from a UI test, where the browserless
- * `api` fixture can't be used (see note above).
- */
+/** Authenticated REST call through the admin cookie session + nonce (see note above). */
 export async function apiFetch(
   page: Page,
   method: 'get' | 'post' | 'put' | 'delete',

@@ -9,26 +9,12 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Quick View — full module spec across ALL tabs (General Setting, Button
- * Settings, Design), driven END-TO-END through the real admin Settings form
- * (helpers/settings-ui) and validated on the storefront.
- *
- * The button `.spsgqcv-btn` is added per shop-loop product; clicking it opens
- * the modal `.spsgqcv-popup` (built by ajax_quickview_callback via the
- * `spsgqcv_product_summary` hooks — each "Show X" toggle adds/removes a section).
- * Button styling is injected CSS → computed styles. Baseline-active.
- */
 const ROUTE = 'quick-view';
 const BTN = '.spsgqcv-btn';
 const POPUP = '.spsgqcv-popup';
 
-/**
- * Open a product's Quick View modal from the shop loop on the given page.
- * The modal HTML is fetched via a cacheable GET (`?product_id=`), so tests that
- * change content settings must open it in a FRESH context (guestPage) to avoid a
- * stale cached modal. Quick View is not promotion-gated, so guests see it too.
- */
+// Modal HTML is fetched via a cacheable GET (`?product_id=`), so tests that change
+// content settings must open it in a FRESH context (guestPage) to dodge a stale cache.
 async function openModal(targetPage: any, id: number) {
   await gotoShop(targetPage);
   await targetPage.locator(`.spsgqcv-btn-${id}`).click();
@@ -42,10 +28,8 @@ test.describe('Storefront · Quick View', () => {
 
   test.afterEach(async ({ page }) => {
     await setModuleActive(page, MODULES.quickView.id, true);
-    await resetAndSave(page, ROUTE, 'Design'); // reset all settings to defaults
+    await resetAndSave(page, ROUTE, 'Design');
   });
-
-  // ===== Render behaviour ====================================================
 
   test.describe('Render behaviour', () => {
     test('adds a Quick View button to every product in the shop loop', async ({ page }) => {
@@ -74,10 +58,7 @@ test.describe('Storefront · Quick View', () => {
     });
   });
 
-  // ===== General Setting tab (content toggles → modal) =======================
-
   test.describe('General Setting', () => {
-    // Each "Show X" toggle adds/removes a section in the modal.
     const contentToggles = [
       { label: 'Show Title', selector: '.product_title' },
       { label: 'Show Price', selector: '.price' },
@@ -88,11 +69,10 @@ test.describe('Storefront · Quick View', () => {
     for (const t of contentToggles) {
       test(`"${t.label}" off removes ${t.selector} from the modal`, async ({ page, guestPage }) => {
         const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
-        await gotoModuleSettings(page, ROUTE); // General Setting is the default tab
+        await gotoModuleSettings(page, ROUTE);
         await setContentCheckbox(page, t.label, false);
         await saveForm(page);
 
-        // Fresh context → no cached modal HTML.
         await openModal(guestPage, id);
         await expect(guestPage.locator(`${POPUP} ${t.selector}`)).toHaveCount(0);
       });
@@ -106,8 +86,6 @@ test.describe('Storefront · Quick View', () => {
       }
     });
   });
-
-  // ===== Design tab (admin UI → storefront, computed styles) =================
 
   test.describe('Design', () => {
     test('Button Color is applied to the Quick View button', async ({ page }) => {
@@ -163,8 +141,6 @@ test.describe('Storefront · Quick View', () => {
       expect(await computedStyle(page, BTN, 'background-color')).not.toBe('rgb(255, 0, 0)');
     });
   });
-
-  // ===== Enable ==============================================================
 
   test.describe('Enable', () => {
     test('can be enabled from the Modules screen', async ({ page }) => {

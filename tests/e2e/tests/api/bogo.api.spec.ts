@@ -1,15 +1,8 @@
 import { test, expect } from '../../fixtures/test';
 import type { APIRequestContext } from '@playwright/test';
 
-/**
- * BOGO offers REST surface (BogoController, namespace sales-booster/v1).
- * Requires the bogo module active — provisioning keeps it in the baseline.
- *
- * A valid create payload needs name_of_order_bogo + offer_type + all design
- * fields (see BogoController::validate_and_normalize_data). The duplicate guard
- * rejects a second *active* offer on the same products, so each test uses
- * distinct products and deletes what it creates.
- */
+// The duplicate guard rejects a second *active* offer on the same products, so
+// each test uses distinct products and deletes what it creates.
 const BASE = '/wp-json/sales-booster/v1/bogo/offers';
 
 function offerPayload(overrides: Record<string, unknown> = {}) {
@@ -48,7 +41,6 @@ test.describe('API · BOGO offers', () => {
   test('full lifecycle: create → read → update → toggle status → delete', async ({ api }) => {
     let id: number | undefined;
     try {
-      // Create.
       const created = await api.post(BASE, {
         data: offerPayload({ name_of_order_bogo: 'E2E Lifecycle', offered_products: [10] }),
       });
@@ -58,19 +50,16 @@ test.describe('API · BOGO offers', () => {
       expect(offer.name).toBe('E2E Lifecycle');
       expect(offer.status).toBe('active');
 
-      // Read by id.
       const read = await api.get(`${BASE}/${id}`);
       expect(read.status()).toBe(200);
       expect((await read.json()).id).toBe(id);
 
-      // Update name.
       const updated = await api.put(`${BASE}/${id}`, {
         data: offerPayload({ name_of_order_bogo: 'E2E Lifecycle Renamed', offered_products: [10] }),
       });
       expect(updated.status()).toBe(200);
       expect((await updated.json()).name).toBe('E2E Lifecycle Renamed');
 
-      // Toggle status off.
       const status = await api.put(`${BASE}/${id}/status`, { data: { status: 'no' } });
       expect(status.status()).toBe(200);
       expect((await status.json()).status).toBe('no');

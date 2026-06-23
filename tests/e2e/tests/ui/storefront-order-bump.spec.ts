@@ -6,18 +6,7 @@ import { getProductIdBySlug, apiFetch } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-/**
- * Upsell Order Bump — an offer shown on the checkout page when the cart matches
- * a configured bump (OrderBump::bump_product_frontend_view on the classic
- * `woocommerce_review_order_before_submit` hook).
- *
- * Requires the CLASSIC checkout (provisioning sets the `[woocommerce_checkout]`
- * shortcode — the block checkout does not fire the hook; ISSUES.md #7), a bump
- * whose target matches a cart product, and that product in the cart.
- *
- * Marker (verified live): `.offer-main-wrap` (with an opt-in checkbox).
- * `upsell-order-bump` is baseline-active; this spec restores it to active.
- */
+// Requires the CLASSIC checkout: block checkout does not fire the hook (ISSUES.md #7).
 const BUMP = '.offer-main-wrap';
 const REST = '/wp-json/spsg/v1/order-bumps';
 
@@ -29,11 +18,6 @@ async function deleteAllBumps(page: any) {
   }
 }
 
-/**
- * Create a bump with all Form-tab fields and Design-tab fields configured (the
- * same payload the admin create form posts). `design_settings` is merged into the
- * bump and read flat by the checkout template.
- */
 async function createBump(
   page: any,
   targetId: number,
@@ -73,7 +57,7 @@ test.describe('Storefront · Upsell Order Bump', () => {
 
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.upsellOrderBump.id, true);
-    await deleteAllBumps(page); // isolation: no bumps from other runs
+    await deleteAllBumps(page);
     await emptyCart(page);
   });
 
@@ -83,11 +67,8 @@ test.describe('Storefront · Upsell Order Bump', () => {
       createdBumpId = undefined;
     }
     await emptyCart(page);
-    // Restore baseline: order bump stays active.
     await setModuleActive(page, MODULES.upsellOrderBump.id, true);
   });
-
-  // ---- Enable ----------------------------------------------------------------
 
   test('can be enabled from the Modules screen', async ({ page }) => {
     await setModuleState(page, MODULES.upsellOrderBump.name, false);
@@ -95,21 +76,17 @@ test.describe('Storefront · Upsell Order Bump', () => {
     await expect(moduleToggle(page, MODULES.upsellOrderBump.name)).toHaveAttribute('aria-checked', 'true');
   });
 
-  // ---- Positive --------------------------------------------------------------
-
   test('shows the order bump on checkout when the cart matches', async ({ page }) => {
     const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
     const offerId = await getProductIdBySlug(page, PRODUCTS.b.slug);
     createdBumpId = await createBump(page, targetId, offerId);
 
-    await addToCart(page, targetId); // target product in cart
+    await addToCart(page, targetId);
     await page.goto('/checkout/');
 
     await expect(page.locator(BUMP).first()).toBeVisible();
     await expect(page.locator(`${BUMP} input[type="checkbox"]`).first()).toBeVisible();
   });
-
-  // ---- Form + Design fields reflected on checkout ----------------------------
 
   test('every configured Form & Design field is reflected on the checkout bump', async ({ page }) => {
     const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
@@ -124,18 +101,13 @@ test.describe('Storefront · Upsell Order Bump', () => {
     const bump = page.locator(BUMP).first();
     await expect(bump).toBeVisible();
 
-    // Form: the offer product (B) title is shown.
     await expect(bump.locator('.offer-product-title')).toContainText(PRODUCTS.b.name);
-    // Form: offer type "discount" + amount + discount title → "10% OFF TODAY".
     await expect(bump.locator('.dynamic-offer-text')).toContainText('10');
     await expect(bump.locator('.dynamic-offer-text')).toContainText('% OFF TODAY');
 
-    // Design: discount_background_color (#ff0000) → header background.
     expect(await computedStyle(page, `${BUMP} .dynamic-offer-text`, 'background-color')).toBe('rgb(255, 0, 0)');
-    // Design: box_border_color (#0000ff) + solid style → wrapper border.
     expect(await computedStyle(page, BUMP, 'border-top-color')).toBe('rgb(0, 0, 255)');
     expect(await computedStyle(page, BUMP, 'border-top-style')).toBe('solid');
-    // Design: product_description_text_color (#333333) → offer title colour.
     expect(await computedStyle(page, `${BUMP} .offer-product-title h3`, 'color')).toBe('rgb(51, 51, 51)');
   });
 
@@ -147,14 +119,11 @@ test.describe('Storefront · Upsell Order Bump', () => {
     await addToCart(page, targetId);
     await page.goto('/checkout/');
 
-    // Accept the offer via the bump checkbox → the offer product is added to the order review.
     await page.locator(`${BUMP} input[type="checkbox"]`).first().check();
     await expect(page.locator('.woocommerce-checkout-review-order, #order_review')).toContainText(PRODUCTS.b.name, {
       timeout: 15000,
     });
   });
-
-  // ---- Negative --------------------------------------------------------------
 
   test('no order bump on checkout when no bump is configured', async ({ page }) => {
     const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
@@ -169,7 +138,6 @@ test.describe('Storefront · Upsell Order Bump', () => {
     const offerId = await getProductIdBySlug(page, PRODUCTS.b.slug);
     createdBumpId = await createBump(page, targetId, offerId);
 
-    // Put a DIFFERENT, non-targeted product in the cart.
     const otherId = await getProductIdBySlug(page, PRODUCTS.c.slug);
     await addToCart(page, otherId);
     await page.goto('/checkout/');

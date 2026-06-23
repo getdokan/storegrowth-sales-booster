@@ -4,31 +4,25 @@ import { ADMIN_STORAGE_STATE } from './fixtures/test';
 
 const isCI = !!process.env.CI;
 
-// list = readable local output, html = browsable report, junit = CI ingestion.
 const reporter: ReporterDescription[] = [
   ['list'],
   ['html', { open: 'never', outputFolder: 'playwright-report' }],
   ['junit', { outputFile: 'results/junit.xml' }],
 ];
-// Inline annotations on the PR/checks UI when running in GitHub Actions.
 if (isCI) reporter.push(['github']);
 
 export default defineConfig({
   testDir: './tests',
 
-  // Single worker: module state lives in ONE site-wide option
-  // (`spsg_active_module_ids`) and the plugin's `update_module_status` does a
-  // non-atomic read-modify-write of it, so concurrent module toggles from
-  // different workers clobber each other (see ISSUES.md #2). Serialising keeps
-  // the suite deterministic. The suite is fast, so the cost is negligible.
+  // Single worker: `update_module_status` does a non-atomic read-modify-write of
+  // the site-wide `spsg_active_module_ids` option, so concurrent toggles from
+  // different workers clobber each other (see ISSUES.md #2).
   fullyParallel: false,
   workers: 1,
 
-  // Guardrails: never let a stray `.only` pass CI; retry only to absorb infra flake.
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
 
-  // Tight timeouts = fast, honest failures.
   timeout: 60_000,
   expect: { timeout: 10_000 },
 
@@ -40,20 +34,18 @@ export default defineConfig({
     navigationTimeout: 30_000,
     // Headed by default for local debugging; CI and `HEADLESS=1` force headless.
     headless: isCI || process.env.HEADLESS === '1',
-    // Capture debug artifacts only when something actually fails / retries.
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
 
   projects: [
-    // 1) Authenticate once and persist the admin session to disk.
     {
       name: 'setup',
       testMatch: /auth\.setup\.ts/,
     },
 
-    // 2) UI / E2E — reuse the saved session, so no test pays the login cost.
+    // UI/E2E — reuses the saved session from `setup`.
     {
       name: 'ui',
       testDir: './tests/ui',
@@ -64,7 +56,7 @@ export default defineConfig({
       },
     },
 
-    // 3) API — browserless; auth handled by the `api` fixture (App Password).
+    // API — browserless; auth handled by the `api` fixture.
     {
       name: 'api',
       testDir: './tests/api',

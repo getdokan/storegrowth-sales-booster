@@ -10,9 +10,8 @@ test.describe('API · REST health', () => {
 
   test('exposes both StoreGrowth namespaces', async ({ api }) => {
     const body = await (await api.get('/wp-json/')).json();
-    // ProductController is always registered under sales-booster/v1.
     expect(body.namespaces).toContain('sales-booster/v1');
-    // spsg/v1 is registered by the (baseline-active) upsell-order-bump module.
+    // spsg/v1 is registered by the upsell-order-bump module.
     expect(body.namespaces).toContain('spsg/v1');
   });
 

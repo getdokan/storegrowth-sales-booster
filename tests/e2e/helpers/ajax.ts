@@ -1,24 +1,12 @@
 import { Page, expect } from '@playwright/test';
 import { gotoModules } from './modules';
 
-/**
- * StoreGrowth admin-ajax helpers.
- *
- * The plugin localises `window.spsgAdmin = { ajax_url, nonce, ... }` on its
- * Modules and Settings admin screens (Assets::admin_enqueue_scripts). These
- * helpers read that object from the page, then POST to admin-ajax through
- * `page.request` so the admin session cookies ride along. The nonce action is
- * `spsg_ajax_nonce`, verified server-side via `check_ajax_referer()` (which
- * accepts the `_ajax_nonce` field).
- */
+// `window.spsgAdmin = { ajax_url, nonce }` is localised on Modules/Settings admin screens; these
+// helpers read it then POST via `page.request` so admin session cookies ride along.
 
 type SpsgAdmin = { ajax_url: string; nonce: string };
 
-/**
- * Read the localised ajax config (`window.spsgAdmin`). If it is not present —
- * the test hasn't navigated to a StoreGrowth admin screen yet — we open the
- * Modules screen (where it is localised) and read it from there.
- */
+// Falls back to opening the Modules screen if spsgAdmin isn't localised yet.
 export async function getSpsgAdmin(page: Page): Promise<SpsgAdmin> {
   let cfg = await page.evaluate(() => (window as unknown as { spsgAdmin?: SpsgAdmin }).spsgAdmin);
   if (!cfg) {
@@ -29,7 +17,7 @@ export async function getSpsgAdmin(page: Page): Promise<SpsgAdmin> {
   return cfg as SpsgAdmin;
 }
 
-/** Flatten a nested params object into PHP-style form keys: { data: { a: 1 } } -> { 'data[a]': '1' }. */
+// Flatten a nested object into PHP-style form keys: { data: { a: 1 } } -> { 'data[a]': '1' }.
 function toFormFields(obj: Record<string, unknown>, prefix = ''): Record<string, string> {
   const out: Record<string, string> = {};
   for (const [k, v] of Object.entries(obj)) {
@@ -43,10 +31,6 @@ function toFormFields(obj: Record<string, unknown>, prefix = ''): Record<string,
   return out;
 }
 
-/**
- * Call the core ajax dispatcher (`action=spsg_admin_ajax`) with a `method` and
- * optional `data`. Returns the parsed JSON body.
- */
 export async function spsgAdminAjax(
   page: Page,
   method: string,
@@ -65,11 +49,7 @@ export async function spsgAdminAjax(
   return { status: res.status(), body: text ? JSON.parse(text) : null };
 }
 
-/**
- * Whether StoreGrowth Pro is active (license valid). Read from the localised
- * `window.spsgAdmin.isPro` flag on a StoreGrowth admin screen. Use to skip
- * Pro-only tests on a lite environment (e.g. CI).
- */
+// Read `window.spsgAdmin.isPro`; use to skip Pro-only tests on a lite environment (e.g. CI).
 export async function getIsPro(page: Page): Promise<boolean> {
   let val = await page.evaluate(() => (window as any).spsgAdmin?.isPro);
   if (val === undefined) {
@@ -79,15 +59,8 @@ export async function getIsPro(page: Page): Promise<boolean> {
   return Boolean(val);
 }
 
-/**
- * Activate/deactivate a module via the core ajax dispatcher, then VERIFY it
- * settled by reading the catalog back — retrying the toggle if needed.
- *
- * Module state is one shared option; under a long run a single toggle can
- * occasionally not be reflected by the next storefront request, so we confirm
- * before the caller loads the storefront. Deterministic in place of a bare
- * update_module_status call.
- */
+// Module state is one shared option; a single toggle can occasionally not be reflected by the next
+// request, so verify by reading the catalog back and retry before the caller loads the storefront.
 export async function setModuleActive(
   page: Page,
   moduleId: string,
@@ -106,11 +79,6 @@ export async function setModuleActive(
   throw new Error(`module ${moduleId} did not reach active=${active}`);
 }
 
-/**
- * Call a per-module settings ajax action directly (e.g.
- * `spsg_stock_bar_save_settings`). Extra fields (like `form_data`) are flattened
- * into PHP form keys.
- */
 export async function moduleAjax(
   page: Page,
   action: string,

@@ -32,13 +32,12 @@ test.describe('Admin · Modules catalog', () => {
     }
   });
 
-  // NOTE: baseline is "all modules active"; each toggling test restores its
-  // module to active so later specs see the baseline. This file owns Direct
-  // Checkout + Floating Bar for toggling.
+  // Each toggling test must restore its module to active so later specs see the
+  // baseline. This file owns Direct Checkout + Floating Bar for toggling.
   test('a module can be deactivated and reactivated (idempotent, leaves state as found)', async ({
     page,
   }) => {
-    const name = MODULES.directCheckout.name; // baseline active
+    const name = MODULES.directCheckout.name;
     await setModuleState(page, name, false);
     await expect(moduleToggle(page, name)).toHaveAttribute('aria-checked', 'false');
 
@@ -48,13 +47,12 @@ test.describe('Admin · Modules catalog', () => {
 
   test('toggled state persists across a reload', async ({ page }) => {
     const name = MODULES.floatingBar.name;
-    await setModuleState(page, name, false); // change from the active baseline
+    await setModuleState(page, name, false);
 
     await page.reload();
     await expect(page.locator('#sbooster-modules-page')).toBeVisible();
     await expect(moduleToggle(page, name)).toHaveAttribute('aria-checked', 'false');
 
-    // Restore baseline (active).
     await setModuleState(page, name, true);
   });
 });

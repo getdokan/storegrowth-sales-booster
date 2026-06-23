@@ -1,28 +1,20 @@
 import { Page, expect } from '@playwright/test';
 
-/**
- * Helpers to drive the StoreGrowth Settings SPA (Ant Design) end-to-end — i.e.
- * change settings through the REAL admin form controls and Save, rather than
- * posting to the ajax endpoint. Use these when a test must prove the full
- * admin-UI → storefront chain.
- */
+// Drive the Settings SPA through the real admin form controls + Save, to prove the
+// full admin-UI → storefront chain (rather than posting to the ajax endpoint directly).
 const ROOT = '#sbooster-settings-page';
 
-/** Open a module's settings page by its hash route and wait for the SPA to mount. */
 export async function gotoModuleSettings(page: Page, route: string): Promise<void> {
   await page.goto(`/wp-admin/admin.php?page=spsg-settings#/${route}`);
   await expect(page.locator(ROOT)).toBeVisible();
-  // Let the form hydrate with saved values.
-  await page.waitForTimeout(800);
+  await page.waitForTimeout(800); // let the form hydrate with saved values
 }
 
-/** Switch to a tab by its visible label (e.g. "Design", "Banner Setting"). */
 export async function openTab(page: Page, label: string): Promise<void> {
   await page.locator(`${ROOT} [role="tab"]`, { hasText: label }).first().click();
   await page.waitForTimeout(300);
 }
 
-/** Click the form's Save button and wait for the save request to complete. */
 export async function saveForm(page: Page): Promise<void> {
   await Promise.all([
     page
@@ -36,13 +28,12 @@ export async function saveForm(page: Page): Promise<void> {
   await page.waitForTimeout(300);
 }
 
-/** Click the form's (visible) Reset button. Reverts fields to defaults; persist with Save. */
+// Reverts fields to defaults; persist with Save.
 export async function resetForm(page: Page): Promise<void> {
   await page.locator(`${ROOT} .spsg-settings-reset-button:visible`).first().click();
   await page.waitForTimeout(300);
 }
 
-/** Reset a module's design to defaults via the Reset button + Save (cleanup + exercises Reset). */
 export async function resetAndSave(page: Page, route: string, tab = 'Design'): Promise<void> {
   await gotoModuleSettings(page, route);
   await openTab(page, tab).catch(() => {});
@@ -50,7 +41,6 @@ export async function resetAndSave(page: Page, route: string, tab = 'Design'): P
   await saveForm(page);
 }
 
-/** The field control following a given card-heading label (heading is in one column, control the next). */
 function controlAfter(page: Page, label: string, controlSelectorClass: string) {
   return page
     .locator(ROOT)
@@ -60,7 +50,6 @@ function controlAfter(page: Page, label: string, controlSelectorClass: string) {
     );
 }
 
-/** Fill a text input / textarea found by its card-heading label. */
 export async function setTextField(page: Page, label: string, value: string): Promise<void> {
   const field = page
     .locator(ROOT)
@@ -69,7 +58,6 @@ export async function setTextField(page: Page, label: string, value: string): Pr
   await field.first().fill(value);
 }
 
-/** Set an Ant ColorPicker (by card-heading label) to a hex value via its popover hex input. */
 export async function setColor(page: Page, label: string, hex: string): Promise<void> {
   await controlAfter(page, label, 'ant-color-picker-trigger').first().click();
   const hexInput = page.locator('.ant-color-picker .ant-input').first();
@@ -77,11 +65,9 @@ export async function setColor(page: Page, label: string, hex: string): Promise<
   await hexInput.fill(hex.replace('#', ''));
   await hexInput.press('Enter');
   await page.keyboard.press('Escape'); // close the popover
-  // Let the ColorPicker onChange propagate into the form state before Save.
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(400); // let ColorPicker onChange propagate into form state before Save
 }
 
-/** Choose an option in an Ant Select (by card-heading label). */
 export async function setSelect(page: Page, label: string, optionText: string): Promise<void> {
   await controlAfter(page, label, 'ant-select').first().click();
   // Scope to the OPEN dropdown — sibling selects may keep hidden dropdowns in the
@@ -93,7 +79,6 @@ export async function setSelect(page: Page, label: string, optionText: string): 
     .click();
 }
 
-/** Fill an Ant DatePicker (by card-heading label) by typing the date + Enter. */
 export async function setDate(page: Page, label: string, dateStr: string): Promise<void> {
   const input = page
     .locator(ROOT)
@@ -106,7 +91,6 @@ export async function setDate(page: Page, label: string, dateStr: string): Promi
   await page.waitForTimeout(200);
 }
 
-/** Set an Ant InputNumber (by card-heading label). */
 export async function setNumber(page: Page, label: string, value: number | string): Promise<void> {
   const input = page
     .locator(ROOT)
@@ -117,7 +101,6 @@ export async function setNumber(page: Page, label: string, value: number | strin
   await page.waitForTimeout(200);
 }
 
-/** Set an Ant Switch (by card-heading label) to the desired on/off state. */
 export async function setSwitch(page: Page, label: string, on: boolean): Promise<void> {
   const sw = page
     .locator(ROOT)
@@ -130,7 +113,6 @@ export async function setSwitch(page: Page, label: string, on: boolean): Promise
   }
 }
 
-/** The Ant Switch control following a card-heading label (for assertions). */
 export function switchControl(page: Page, label: string) {
   return page
     .locator(ROOT)
@@ -138,12 +120,8 @@ export function switchControl(page: Page, label: string) {
     .locator('xpath=following::button[@role="switch"][1]');
 }
 
-/**
- * Set a "content group" checkbox (e.g. Quick View / Fly Cart "Show X" options).
- * These render the checkbox BEFORE the heading label, with the label `htmlFor`
- * bound to the checkbox id — so we toggle by clicking the label (matched by its
- * exact text), which is the only reliable target.
- */
+// "Content group" checkboxes render BEFORE the heading label, so toggle via the label
+// (htmlFor-bound to the checkbox id) — the only reliable target.
 export async function setContentCheckbox(page: Page, labelText: string, checked: boolean): Promise<void> {
   const label = page
     .locator(`${ROOT} label.content-field-heading`)
@@ -157,11 +135,6 @@ export async function setContentCheckbox(page: Page, labelText: string, checked:
   }
 }
 
-/**
- * Toggle one option inside an Ant `Checkbox.Group` (e.g. the "Show Button" /
- * "Show Banner" Desktop·Mobile groups) by the option's visible label. The group
- * is located by its card-heading; the option by its `.ant-checkbox-wrapper` text.
- */
 export async function setGroupCheckbox(
   page: Page,
   heading: string,
@@ -181,17 +154,11 @@ export async function setGroupCheckbox(
   }
 }
 
-/**
- * Click the nth (0-based) option of an Ant radio-button group identified by a
- * field wrapper class (e.g. `quick-cart-position`, `quick-icon-layout`,
- * `quick-cart-layout`). Used for image/icon RadioBox fields.
- */
 export async function setRadioInField(page: Page, fieldClass: string, index: number): Promise<void> {
   await page.locator(`${ROOT} .${fieldClass} .ant-radio-button-wrapper`).nth(index).click();
   await page.waitForTimeout(200);
 }
 
-/** Choose the nth (0-based) icon in the "Banner Icon" Ant radio-button group. */
 export async function setBannerIcon(page: Page, index: number): Promise<void> {
   await page
     .locator(ROOT)
@@ -202,7 +169,6 @@ export async function setBannerIcon(page: Page, index: number): Promise<void> {
   await page.waitForTimeout(200);
 }
 
-/** Set an Ant Checkbox (by card-heading label) to the desired checked state. */
 export async function setCheckbox(page: Page, label: string, checked: boolean): Promise<void> {
   const wrapper = page
     .locator(ROOT)
