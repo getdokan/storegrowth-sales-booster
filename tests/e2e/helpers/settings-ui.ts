@@ -84,11 +84,26 @@ export async function setColor(page: Page, label: string, hex: string): Promise<
 /** Choose an option in an Ant Select (by card-heading label). */
 export async function setSelect(page: Page, label: string, optionText: string): Promise<void> {
   await controlAfter(page, label, 'ant-select').first().click();
+  // Scope to the OPEN dropdown — sibling selects may keep hidden dropdowns in the
+  // DOM that list the same option text (e.g. two product pickers).
   await page
-    .locator('.ant-select-dropdown')
+    .locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)')
     .locator('.ant-select-item-option', { hasText: optionText })
     .first()
     .click();
+}
+
+/** Fill an Ant DatePicker (by card-heading label) by typing the date + Enter. */
+export async function setDate(page: Page, label: string, dateStr: string): Promise<void> {
+  const input = page
+    .locator(ROOT)
+    .locator('.card-heading', { hasText: label })
+    .locator('xpath=following::input[1]')
+    .first();
+  await input.click();
+  await input.fill(dateStr);
+  await input.press('Enter');
+  await page.waitForTimeout(200);
 }
 
 /** Set an Ant InputNumber (by card-heading label). */
@@ -140,6 +155,51 @@ export async function setContentCheckbox(page: Page, labelText: string, checked:
     await label.click();
     await page.waitForTimeout(400);
   }
+}
+
+/**
+ * Toggle one option inside an Ant `Checkbox.Group` (e.g. the "Show Button" /
+ * "Show Banner" Desktop·Mobile groups) by the option's visible label. The group
+ * is located by its card-heading; the option by its `.ant-checkbox-wrapper` text.
+ */
+export async function setGroupCheckbox(
+  page: Page,
+  heading: string,
+  optionLabel: string,
+  checked: boolean,
+): Promise<void> {
+  const wrapper = page
+    .locator(ROOT)
+    .locator('.card-heading', { hasText: heading })
+    .locator(
+      `xpath=following::label[contains(concat(" ", normalize-space(@class), " "), " ant-checkbox-wrapper ")][normalize-space(.)="${optionLabel}"][1]`,
+    );
+  const isOn = await wrapper.evaluate((el) => !!el.querySelector('.ant-checkbox-checked'));
+  if (isOn !== checked) {
+    await wrapper.click();
+    await page.waitForTimeout(200);
+  }
+}
+
+/**
+ * Click the nth (0-based) option of an Ant radio-button group identified by a
+ * field wrapper class (e.g. `quick-cart-position`, `quick-icon-layout`,
+ * `quick-cart-layout`). Used for image/icon RadioBox fields.
+ */
+export async function setRadioInField(page: Page, fieldClass: string, index: number): Promise<void> {
+  await page.locator(`${ROOT} .${fieldClass} .ant-radio-button-wrapper`).nth(index).click();
+  await page.waitForTimeout(200);
+}
+
+/** Choose the nth (0-based) icon in the "Banner Icon" Ant radio-button group. */
+export async function setBannerIcon(page: Page, index: number): Promise<void> {
+  await page
+    .locator(ROOT)
+    .locator('.card-heading', { hasText: 'Banner Icon' })
+    .locator('xpath=following::label[contains(concat(" ", normalize-space(@class), " "), " ant-radio-button-wrapper ")]')
+    .nth(index)
+    .click();
+  await page.waitForTimeout(200);
 }
 
 /** Set an Ant Checkbox (by card-heading label) to the desired checked state. */

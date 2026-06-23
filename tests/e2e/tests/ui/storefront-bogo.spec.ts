@@ -3,7 +3,14 @@ import { setModuleActive } from '../../helpers/ajax';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
 import { gotoProduct, computedStyle } from '../../helpers/storefront';
 import { getProductIdBySlug, apiFetch } from '../../helpers/wc';
-import { gotoModuleSettings, saveForm, setSwitch, switchControl } from '../../helpers/settings-ui';
+import {
+  gotoModuleSettings,
+  openTab,
+  saveForm,
+  setSwitch,
+  switchControl,
+  setNumber,
+} from '../../helpers/settings-ui';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
@@ -142,6 +149,117 @@ test.describe('Storefront · BOGO', () => {
 
       await setSwitch(page, 'Show Regular Price', false);
       await saveForm(page);
+    });
+
+    test('"Product Page Badge Icon" toggles the offer badge on the product page', async ({ page }) => {
+      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
+      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
+      await apiFetch(page, 'post', REST, offerPayload(a, b));
+
+      // ON → the badge overlay (`.bogo-badge-image`) shows on the target product.
+      await gotoModuleSettings(page, ROUTE);
+      await setSwitch(page, 'Product Page Badge Icon', true);
+      await saveForm(page);
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator('.bogo-badge-image').first()).toBeVisible();
+
+      // OFF → the badge is gone.
+      await gotoModuleSettings(page, ROUTE);
+      await setSwitch(page, 'Product Page Badge Icon', false);
+      await saveForm(page);
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator('.bogo-badge-image')).toHaveCount(0);
+    });
+  });
+
+  // ===== Create via the real "Create New" admin form =========================
+
+  test.describe('Create New form', { tag: '@admin' }, () => {
+    // The 3-tab create form, with every field grouped by tab.
+    const FIELDS = {
+      'Basic Information': [
+        'Name of BOGO',
+        'Select Target Product(s)',
+        'BOGO Deal Type',
+        'Offer Product',
+        'Offer Price/Discount',
+        'Offer Start Date',
+        'Offer End Date',
+        'Select Min Quantity',
+      ],
+      Design: ['Offer Icon', 'Overview Border', 'Border Color', 'Top Margin', 'Bottom Margin', 'Background Color', 'Text Color', 'Font Size'],
+      Content: ['Product Page Message'],
+    };
+
+    test('the Create New form exposes every field across its three tabs', async ({ page }) => {
+      await gotoModuleSettings(page, ROUTE);
+      await page.locator('#sbooster-settings-page').getByRole('button', { name: 'Create New' }).click();
+      await expect(page).toHaveURL(/create-bogo/);
+
+      const root = page.locator('#sbooster-settings-page');
+      for (const [tab, labels] of Object.entries(FIELDS)) {
+        await openTab(page, tab);
+        for (const label of labels) {
+          await expect(root.locator('.card-heading', { hasText: label }).first()).toBeVisible();
+        }
+      }
+    });
+
+    // Open a product search-select, type to filter, and click the matching option.
+    async function pickSearch(page: any, heading: string, text: string) {
+      await page
+        .locator('#sbooster-settings-page')
+        .locator('.card-heading', { hasText: heading })
+        .locator('xpath=following::*[contains(concat(" ", normalize-space(@class), " "), " ant-select ")][1]')
+        .click();
+      const dd = page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').first();
+      await dd.waitFor({ state: 'visible' });
+      await page.keyboard.type(text);
+      await page.waitForTimeout(400);
+      await dd.getByText(text, { exact: true }).last().click();
+      await page.waitForTimeout(300);
+    }
+
+    test('creates a BOGO through the form and renders it on the storefront', async ({ page }) => {
+      await gotoModuleSettings(page, ROUTE);
+      await page.locator('#sbooster-settings-page').getByRole('button', { name: 'Create New' }).click();
+      await expect(page).toHaveURL(/create-bogo/);
+
+      // --- Basic Information (design fields keep their pre-filled defaults) ---
+      await page.getByPlaceholder('Enter BOGO Name').fill('E2E UI BOGO');
+      await pickSearch(page, 'Select Target Product(s)', PRODUCTS.a.name); // Buy A…
+      await pickSearch(page, 'Offer Product', PRODUCTS.b.name); // …get B
+      // Offer type is a non-search "combine" select; on a fresh form ArrowDown→Enter
+      // lands on "Discount%", which enables the adjacent amount input.
+      await page.locator('#sbooster-settings-page .ant-select.combine-select').click();
+      await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').first().waitFor({ state: 'visible' });
+      await page.keyboard.press('ArrowDown');
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(300);
+      await page.locator('#sbooster-settings-page .combine-field .ant-input-number-input').fill('25');
+      await setNumber(page, 'Select Min Quantity', 2);
+
+      // --- Save → success toast + redirect to the Lists tab ---
+      // The form footer re-renders continuously, so a normal click can't stabilise;
+      // trigger the visible Save button's React handler directly.
+      await page.evaluate(() => {
+        const root = document.querySelector('#sbooster-settings-page');
+        const btn = [...(root?.querySelectorAll('button') ?? [])].find(
+          (b) => /^Save$/.test(b.textContent?.trim() ?? '') && (b as HTMLElement).offsetParent !== null,
+        ) as HTMLButtonElement | undefined;
+        btn?.click();
+      });
+      await expect(page.locator('.ant-notification-notice-message')).toContainText('Order Bogo Creation', {
+        timeout: 10000,
+      });
+
+      // --- Lists: the new offer shows in the table ---
+      await expect(page.locator('#sbooster-settings-page .ant-table')).toContainText('E2E UI BOGO');
+
+      // --- Storefront: the offer renders on target product A ---
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(OFFER)).toBeVisible();
+      await expect(page.locator(`${OFFER} .offer-product-title`)).toContainText(PRODUCTS.b.name);
     });
   });
 
