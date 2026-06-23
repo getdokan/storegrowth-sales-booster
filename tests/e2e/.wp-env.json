@@ -2,9 +2,9 @@
   "core": null,
   "phpVersion": "8.2",
   "plugins": [
-    "../../",
     "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
-    "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip"
+    "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip",
+    "../../"
   ],
   "themes": [
     "https://downloads.wordpress.org/theme/storefront.latest-stable.zip"
