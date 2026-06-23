@@ -3,7 +3,7 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 5.4
-Tested up to: 6.8.2
+Tested up to: 7.0
 Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
