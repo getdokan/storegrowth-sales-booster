@@ -36,7 +36,7 @@ class BogoValidator {
 			return false;
 		}
 
-		// Check date range (Pro feature)
+		// Check date range
 		if ( ! self::is_date_range_valid( $bogo_settings ) ) {
 			return false;
 		}
@@ -77,14 +77,10 @@ class BogoValidator {
 	 * @return bool True if date range is valid, false otherwise.
 	 */
 	private static function is_date_range_valid( $bogo_settings ) {
-		$is_pro = sp_store_growth()->has_pro();
-		
-		if ( ! $is_pro ) {
-			return true; // No date restrictions for free version
-		}
+		// Use the site's local date (not UTC) so the window flips at the
+		// store's midnight, matching what the merchant set in the date pickers.
+		$current_date = current_time( 'Y-m-d' );
 
-		$current_date = date( 'Y-m-d' );
-		
 		// Check offer start date
 		$offer_start = $bogo_settings['offer_start'] ?? null;
 		if ( ! empty( $offer_start ) && '0000-00-00' !== $offer_start ) {

@@ -26,25 +26,52 @@ function extraProducts(product_id, check_status, offer_price) {
             offerProductCost = $( this ).data( 'offer-product-cost' ),
             cartItemKey = $( this ).data( 'item-key' );
 
+        // Collect variation data if the gift product has variation selectors.
+        var postData = {
+            cart_item_key       : cartItemKey,
+            main_product_id     : mainProductId,
+            product_link_key    : productLinkKey,
+            offer_product_cost  : offerProductCost,
+            selected_product_id : selectedProductId,
+        };
+
+        var $variationContainer = $( this ).closest('.offer-main-wrap').find('.bogo-gift-variations');
+        if ( $variationContainer.length ) {
+            var variationId = $variationContainer.find('.bogo-gift-variation-id').val();
+            if ( variationId ) {
+                postData.variation_id = variationId;
+            }
+
+            var variationAttributes = {};
+            $variationContainer.find('.bogo-gift-attribute').each(function() {
+                var attrName = $( this ).data('attribute');
+                var attrValue = $( this ).val();
+                if ( attrName && attrValue ) {
+                    variationAttributes[ attrName ] = attrValue;
+                }
+            });
+
+            if ( Object.keys( variationAttributes ).length ) {
+                postData.variation_attributes = variationAttributes;
+            }
+        }
+
         $.post(
             bogo_save_url.ajax_url_for_front,
             {
                 action      : 'update_offer_product',
                 _ajax_nonce : bogo_save_url.ajd_nonce,
-                data        : {
-                    cart_item_key       : cartItemKey,
-                    main_product_id     : mainProductId,
-                    product_link_key    : productLinkKey,
-                    offer_product_cost  : offerProductCost,
-                    selected_product_id : selectedProductId,
-                }
+                data        : postData
             },
             function ( response ) {
                 if ( response.success ) {
                     // Optionally, refresh the page to update the cart
                     location.reload();
                 } else {
-                    alert('Failed to update the product.');
+                    var msg = ( response.data && typeof response.data === 'string' )
+                        ? response.data
+                        : 'Failed to update the product.';
+                    alert( msg );
                 }
             }
         );
@@ -68,6 +95,125 @@ function extraProducts(product_id, check_status, offer_price) {
     // Re-apply when any AJAX request completes.
     $(document).ajaxComplete(function() {
         disableOfferProductActions();
+    });
+
+    // BOGO Gift Variation Selector
+    function findMatchingVariation(variations, selectedAttributes) {
+        for (var i = 0; i < variations.length; i++) {
+            var variation = variations[i];
+            var match = true;
+
+            for (var attrName in selectedAttributes) {
+                if (!selectedAttributes.hasOwnProperty(attrName)) continue;
+                var variationAttr = variation.attributes[attrName];
+                // Empty string in variation attributes means "any value"
+                if (variationAttr !== '' && variationAttr !== selectedAttributes[attrName]) {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match && variation.is_purchasable && variation.is_in_stock) {
+                return variation;
+            }
+        }
+        return null;
+    }
+
+    $('.bogo-gift-variations').on('change', '.bogo-gift-attribute', function () {
+        var $container = $(this).closest('.bogo-gift-variations');
+        var productId = $container.data('product-id');
+        var variationsData = [];
+
+        try {
+            variationsData = JSON.parse($container.find('.bogo-gift-variations-data').text());
+        } catch (e) {
+            return;
+        }
+
+        var selectedAttributes = {};
+        var allSelected = true;
+
+        $container.find('.bogo-gift-attribute').each(function () {
+            var attrName = $(this).data('attribute');
+            var attrValue = $(this).val();
+            selectedAttributes[attrName] = attrValue;
+            if (!attrValue) {
+                allSelected = false;
+            }
+        });
+
+        // Remove old hidden fields from the add-to-cart form
+        $('form.cart').find('.bogo-gift-hidden-field').remove();
+
+        if (allSelected) {
+            var matchingVariation = findMatchingVariation(variationsData, selectedAttributes);
+            if (matchingVariation) {
+                $container.find('.bogo-gift-variation-id').val(matchingVariation.variation_id);
+
+                // Inject hidden fields into the WooCommerce add-to-cart form
+                var $form = $('form.cart');
+                $form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'bogo_gift_variation_id',
+                    class: 'bogo-gift-hidden-field',
+                    value: matchingVariation.variation_id
+                }));
+                $form.append($('<input>', {
+                    type: 'hidden',
+                    name: 'bogo_gift_product_id',
+                    class: 'bogo-gift-hidden-field',
+                    value: productId
+                }));
+
+                $.each(selectedAttributes, function (key, value) {
+                    $form.append($('<input>', {
+                        type: 'hidden',
+                        name: 'bogo_gift_variation[' + key + ']',
+                        class: 'bogo-gift-hidden-field',
+                        value: value
+                    }));
+                });
+
+                // Update price display if variation has a different price
+                var $priceContainer = $container.closest('.offer-main-wrap').find('.offer-price');
+                if ($priceContainer.length && matchingVariation.display_price !== undefined) {
+                    var $offerSpan = $priceContainer.find('span:last');
+
+                    if ($offerSpan.length) {
+                        var currentText = $offerSpan.text();
+                        // Extract currency symbol from existing text
+                        var sym = currentText.replace(/[0-9.,\s]/g, '');
+
+                        // Calculate offer price based on offer type
+                        var variationPrice = parseFloat(matchingVariation.display_price);
+                        var $offerWrap = $container.closest('.offer-main-wrap');
+                        var discountPercent = $offerWrap.data('discount-amount');
+                        var offerType = $offerWrap.data('offer-type');
+                        var formattedPrice;
+
+                        if (offerType === 'discount' && discountPercent) {
+                            formattedPrice = Math.max(variationPrice - (variationPrice * (parseFloat(discountPercent) / 100)), 0).toFixed(2);
+                        } else {
+                            formattedPrice = parseFloat(0).toFixed(2);
+                        }
+
+                        $offerSpan.text(sym + formattedPrice);
+
+                        // Also update the regular/strikethrough price
+                        var $regularSpan = $priceContainer.find('span:first');
+                        if ($regularSpan.length && $regularSpan.css('text-decoration').indexOf('line-through') !== -1) {
+                            var regSym = $regularSpan.text().replace(/[0-9.,\s]/g, '');
+                            $regularSpan.text(regSym + variationPrice.toFixed(2));
+                        }
+                    }
+                }
+            } else {
+                $container.find('.bogo-gift-variation-id').val('');
+            }
+        } else {
+            $container.find('.bogo-gift-variation-id').val('');
+        }
     });
 
     //Modal Controller

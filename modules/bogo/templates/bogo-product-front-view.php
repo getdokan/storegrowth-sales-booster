@@ -11,15 +11,25 @@ use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 
-	$bogo_message = ! empty( $bogo_info->product_page_message ) ? esc_html( $bogo_info->product_page_message ) :
-        __( 'Buy 1, unit of any product from this product and get 1 unit free of the same product', 'storegrowth-sales-booster' );
-	$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
-	$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
+	// Header text: show the offer message like the other BOGO offers do — the discount
+	// percent for a partial discount, otherwise the offer message ("Free Gift" by
+	// default, or the merchant's custom product page message). Never empty.
+	if ( (float) $offer_price > 0 ) {
+		$bogo_message = sprintf( /* translators: %s: discount percent. */ __( '%s%% Off', 'storegrowth-sales-booster' ), (float) ( $bogo_info->discount_amount ?? 0 ) );
+	} else {
+		$bogo_message = ! empty( $bogo_info->product_page_message )
+			? $bogo_info->product_page_message
+			: __( 'Free Gift', 'storegrowth-sales-booster' );
+		$bogo_message = str_replace( '[offered_product]', get_the_title( $offered_product ), $bogo_message );
+		$bogo_message = str_replace( '[offered_product]', get_the_title( $offer_product_id ), $bogo_message );
+	}
 	?>
 
 	<div class='template-overview-area'>
 		<div
             class="offer-main-wrap"
+            data-offer-type="<?php echo esc_attr( ! empty( $bogo_info->offer_type ) ? $bogo_info->offer_type : 'free' ); ?>"
+            data-discount-amount="<?php echo esc_attr( ! empty( $bogo_info->discount_amount ) ? $bogo_info->discount_amount : 0 ); ?>"
             style="
                 <?php
                     $border_style = Helper::get_design_value( $bogo_info, 'box_border_style' );
@@ -94,6 +104,51 @@ if ( isset( $bogo_info, $offered_product, $offer_product_id, $image_url, $regula
 					</span>
 				</div>
 			</div>
+
+			<?php
+			// Show variation selectors if the gift product is a variable product.
+			$gift_product = wc_get_product( $offer_product_id );
+
+			if ( $gift_product && $gift_product->is_type( 'variable' ) ) :
+				$available_variations = $gift_product->get_available_variations();
+				$variation_attributes = $gift_product->get_variation_attributes();
+
+				if ( ! empty( $variation_attributes ) ) :
+					?>
+					<div class="bogo-gift-variations" data-product-id="<?php echo esc_attr( $offer_product_id ); ?>">
+						<?php foreach ( $variation_attributes as $attribute_name => $options ) :
+							$label    = wc_attribute_label( $attribute_name );
+							// Prefix with the gift product id so ids/labels stay unique when
+							// multiple offer instances render on the same product page.
+							$field_id = 'bogo-attr-' . absint( $offer_product_id ) . '-' . sanitize_title( $attribute_name );
+							?>
+							<div class="bogo-variation-field">
+								<label class="bogo-variation-label" for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( strtoupper( $label ) ); ?></label>
+								<select id="<?php echo esc_attr( $field_id ); ?>" class="bogo-gift-attribute" data-attribute="attribute_<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
+									<option value=""><?php echo esc_html( sprintf( __( 'Select %s', 'storegrowth-sales-booster' ), strtolower( $label ) ) ); ?></option>
+									<?php foreach ( $options as $option ) : ?>
+										<option value="<?php echo esc_attr( $option ); ?>"><?php echo esc_html( ucfirst( $option ) ); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						<?php endforeach; ?>
+						<input type="hidden" class="bogo-gift-variation-id" value="" />
+						<script type="application/json" class="bogo-gift-variations-data"><?php
+						echo wp_json_encode( array_map( function ( $v ) {
+							return array(
+								'variation_id'   => $v['variation_id'],
+								'attributes'     => $v['attributes'],
+								'is_purchasable' => $v['is_purchasable'],
+								'is_in_stock'    => $v['is_in_stock'],
+								'display_price'  => $v['display_price'],
+							);
+						}, $available_variations ) );
+					?></script>
+					</div>
+					<?php
+				endif;
+			endif;
+			?>
 		</div>
 	</div>
 

@@ -12,12 +12,79 @@
 		<?php
 		global $post;
 
-		$bogo_settings       = \StorePulse\StoreGrowth\Modules\BoGo\Helper::get_product_bogo_settings( $post->ID, 0, ['status' => ''] );
+		// Load only THIS product's own BOGO settings. Do not fall back to a global
+		// offer here: this tab edits the product-specific BOGO, and showing global
+		// data would make "Enable BOGO" appear on and cause an empty product BOGO to
+		// be saved that shadows the global offer.
+		$product_bogo_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+			array(
+				'type'         => 'product',
+				'product_id'   => $post->ID,
+				'variation_id' => 0,
+				'status'       => '',
+			)
+		);
+		$bogo_settings       = ! empty( $product_bogo_offers ) ? $product_bogo_offers[0] : array();
 		$is_enable_bogo      = ! empty( $bogo_settings['status'] ) ? esc_html( $bogo_settings['status'] ) : 'no';
 		$different_deal_type = ! empty( $bogo_settings['bogo_deal_type'] ) ? esc_html( $bogo_settings['bogo_deal_type'] ) : 'different';
 		$different_bogo_type = ! empty( $bogo_settings['bogo_type'] ) ? esc_html( $bogo_settings['bogo_type'] ) : 'products';
+
+		// If there is no product-specific BOGO, surface any active GLOBAL offer that
+		// already covers this product as read-only info, so the merchant can see it
+		// (global offers are managed under StoreGrowth → BOGO, not from this tab).
+		$covering_global_offer = null;
+		if ( empty( $bogo_settings ) ) {
+			$global_offers = \StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::get_bogo_offers(
+				array(
+					'type'   => 'global',
+					'status' => 'active',
+				)
+			);
+			foreach ( $global_offers as $global_offer ) {
+				$offered = $global_offer['offered_products'] ?? array();
+				$offered = is_array( $offered ) ? array_map( 'intval', $offered ) : array( (int) $offered );
+				if ( in_array( (int) $post->ID, $offered, true ) ) {
+					$covering_global_offer = $global_offer;
+					break;
+				}
+			}
+		}
+
 		// Add a nonce field for BOGO settings panel.
 		wp_nonce_field( 'spsg_bogo_settings', '_spsg_bogo_settings_nonce' );
+
+		// Read-only summary of the active global offer that already covers this product,
+		// with a link into the StoreGrowth → BOGO (React) editor to manage it.
+		if ( $covering_global_offer ) {
+			$g_name      = $covering_global_offer['name'] ?? '';
+			$g_deal      = ( ( $covering_global_offer['bogo_deal_type'] ?? 'different' ) === 'same' )
+				? __( 'Buy X Get X', 'storegrowth-sales-booster' )
+				: __( 'Buy X Get Y', 'storegrowth-sales-booster' );
+			$g_gift_id   = \StorePulse\StoreGrowth\Modules\BoGo\BogoValidator::get_offer_product_id( $covering_global_offer, $post->ID );
+			$g_gift_name = $g_gift_id ? get_the_title( $g_gift_id ) : '';
+			$g_discount  = (float) ( $covering_global_offer['discount_amount'] ?? 0 );
+			$g_offer_lbl = ( ( $covering_global_offer['offer_type'] ?? 'free' ) === 'discount' && $g_discount > 0 )
+				? sprintf( /* translators: %s: discount percent. */ __( '%s%% off', 'storegrowth-sales-booster' ), $g_discount )
+				: __( 'Free', 'storegrowth-sales-booster' );
+			$g_edit_url  = admin_url( 'admin.php?page=spsg-settings#/bogo/' . (int) ( $covering_global_offer['id'] ?? 0 ) );
+			?>
+			<div class="spsg-bogo-global-notice" style="padding:12px 14px;margin:0 0 14px;background:#eef6ff;border:1px solid #c5d9f1;border-radius:4px;">
+				<strong><?php esc_html_e( 'This product is part of a global BOGO offer', 'storegrowth-sales-booster' ); ?></strong>
+				<ul style="margin:8px 0 10px;list-style:disc;padding-left:18px;">
+					<li><?php esc_html_e( 'Name', 'storegrowth-sales-booster' ); ?>: <strong><?php echo esc_html( $g_name ); ?></strong></li>
+					<li><?php esc_html_e( 'Deal', 'storegrowth-sales-booster' ); ?>: <?php echo esc_html( $g_deal ); ?></li>
+					<?php if ( $g_gift_name ) : ?>
+						<li><?php esc_html_e( 'Gift product', 'storegrowth-sales-booster' ); ?>: <?php echo esc_html( $g_gift_name ); ?> (<?php echo esc_html( $g_offer_lbl ); ?>)</li>
+					<?php endif; ?>
+				</ul>
+				<a href="<?php echo esc_url( $g_edit_url ); ?>" class="button button-secondary" target="_blank" rel="noopener">
+					<?php esc_html_e( 'Edit this offer in StoreGrowth → BOGO', 'storegrowth-sales-booster' ); ?>
+				</a>
+				<p style="margin:8px 0 0;color:#555;"><?php esc_html_e( 'Enable below only to set a product-specific offer that overrides this global one.', 'storegrowth-sales-booster' ); ?></p>
+			</div>
+			<?php
+		}
+
 		// Enable/Disable for BOGO
 		woocommerce_wp_checkbox(
 			array(

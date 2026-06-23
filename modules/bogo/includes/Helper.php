@@ -118,6 +118,11 @@ class Helper {
 	 * @return float  The calculated offer price.
 	 */
 	public static function calculate_offer_price( $offer_type, $regular_price, $discount_amount ) {
+		// WC_Product::get_price() returns '' for unpriced products; cast to
+		// avoid a TypeError on string arithmetic (PHP 8+).
+		$regular_price   = (float) $regular_price;
+		$discount_amount = (float) $discount_amount;
+
 		if ( 'discount' === $offer_type ) {
 			$offer_price = ( $regular_price - ( $regular_price * $discount_amount / 100 ) );
 		} else {
