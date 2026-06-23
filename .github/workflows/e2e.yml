@@ -31,11 +31,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # No npm cache: lock files are gitignored in this repo, so setup-node has
+      # nothing to hash and `npm ci` can't run. Use `npm install` below instead.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       # ---- Build the plugin so its PHP autoloader + React assets exist ----
       - name: Setup PHP
@@ -47,7 +48,7 @@ jobs:
       - name: Build plugin (composer + assets)
         run: |
           composer install --no-interaction --prefer-dist
-          npm ci
+          npm install
           npm run build
 
       # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
@@ -75,7 +76,7 @@ jobs:
       # ---- Install test deps + browsers, then run the suite ----
       - name: Install test dependencies
         working-directory: tests/e2e
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright browser
         working-directory: tests/e2e
