@@ -26,24 +26,59 @@ jobs:
       WP_ADMIN_USER: admin
       WP_ADMIN_PASSWORD: password
       WP_API_USER: admin
+      # Pro is optional: when these repo secrets exist, CI clones + builds Pro
+      # and activates its Appsero license; otherwise the suite runs lite-only and
+      # Pro-only tests skip themselves (see the hasPro fixture). Referenced via
+      # env (not `secrets` directly) so steps can gate on them in `if:`.
+      PRO_REPO_TOKEN: ${{ secrets.PRO_REPO_TOKEN }}
+      LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # No npm cache: lock files are gitignored in this repo, so setup-node has
-      # nothing to hash and `npm ci` can't run. Use `npm install` below instead.
+      # No npm cache here: lock files are gitignored in this repo, so setup-node
+      # has nothing to hash. We cache ~/.npm + node_modules ourselves below.
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # ---- Build the plugin so its PHP autoloader + React assets exist ----
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           tools: composer
+          coverage: none
+
+      # ---- Caches. Lock files are gitignored, so key on the manifests. The
+      # restore-keys give a warm partial cache even when a manifest changes. ----
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/composer
+            vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Cache npm + node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            tests/e2e/node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('package.json', 'tests/e2e/package.json') }}
+          restore-keys: ${{ runner.os }}-npm-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/e2e/package.json') }}
+          restore-keys: ${{ runner.os }}-playwright-
 
       # --ignore-platform-reqs: the committed composer.lock pins old dev-only
       # packages (e.g. symfony/service-contracts) that cap at PHP <8.0. They're
@@ -52,8 +87,35 @@ jobs:
       - name: Build plugin (composer + assets)
         run: |
           composer install --no-interaction --prefer-dist --ignore-platform-reqs
-          npm install
+          npm install --prefer-offline --no-audit --no-fund
           npm run build
+
+      # ---- StoreGrowth Pro (optional, gated on PRO_REPO_TOKEN) --------------
+      # Pro ships no built artifacts, so clone + composer + build it, then map it
+      # into the wp-env site via .wp-env.override.json (deep-merged over
+      # .wp-env.json). provision-site.php activates the plugin + license later.
+      - name: Build StoreGrowth Pro
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        run: |
+          git clone --depth=1 --branch develop \
+            "https://x-access-token:${PRO_REPO_TOKEN}@github.com/getdokan/storegrowth-sales-booster-pro.git" \
+            "$RUNNER_TEMP/storegrowth-sales-booster-pro"
+          cd "$RUNNER_TEMP/storegrowth-sales-booster-pro"
+          composer install --no-interaction --prefer-dist --ignore-platform-reqs
+          npm ci --prefer-offline --no-audit --no-fund
+          npm run build
+
+      - name: Map Pro into wp-env
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        working-directory: tests/e2e
+        run: |
+          cat > .wp-env.override.json <<JSON
+          {
+            "mappings": {
+              "wp-content/plugins/storegrowth-sales-booster-pro": "${RUNNER_TEMP}/storegrowth-sales-booster-pro"
+            }
+          }
+          JSON
 
       # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
       # .wp-env.json lives in tests/e2e, so wp-env runs from there.
@@ -64,23 +126,20 @@ jobs:
           wp-env start
 
       # Same shared site setup the Docker stack runs: pretty permalinks, publish
-      # storefront, activate ALL modules, classic checkout, seed products.
-      # (WordPress, WooCommerce, Storefront and Basic-Auth come from .wp-env.json;
-      # Basic-Auth lets the api project authenticate with the admin login, so no
-      # Application Password is needed.)
-      # CI runs the lite plugin (Pro isn't bundled in .wp-env.json), so Pro-only
-      # tests skip themselves (see hasPro fixture). Pro is exercised against the
-      # Docker stack, where LICENSE_KEY in .env activates it during setup.
+      # storefront, activate ALL modules, classic checkout, seed products, and —
+      # when LICENSE_KEY is set — activate the Pro Appsero license. LICENSE_KEY is
+      # injected into the cli container's shell so provision-site.php's getenv()
+      # sees it (empty for lite-only runs, which simply skip license activation).
       - name: Provision the site
         working-directory: tests/e2e
         run: |
-          wp-env run cli wp eval-file \
-            wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
+          wp-env run cli sh -c \
+            "LICENSE_KEY='${LICENSE_KEY}' wp eval-file wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php"
 
       # ---- Install test deps + browsers, then run the suite ----
       - name: Install test dependencies
         working-directory: tests/e2e
-        run: npm install
+        run: npm install --prefer-offline --no-audit --no-fund
 
       - name: Install Playwright browser
         working-directory: tests/e2e
