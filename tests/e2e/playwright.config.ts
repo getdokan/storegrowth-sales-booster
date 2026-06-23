@@ -21,7 +21,9 @@ export default defineConfig({
   workers: 1,
 
   forbidOnly: isCI,
-  retries: isCI ? 2 : 0,
+  // One retry absorbs genuine infra flake without tripling the cost of a real
+  // failure; CI shards the suite across parallel jobs to claw back wall-clock.
+  retries: isCI ? 1 : 0,
 
   timeout: 60_000,
   expect: { timeout: 10_000 },

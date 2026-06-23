@@ -16,9 +16,24 @@ concurrency:
 
 jobs:
   playwright:
-    name: Playwright (UI + API)
+    name: Playwright (${{ matrix.name }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
+
+    # Parallel jobs, each with its OWN wp-env site. The suite can't use multiple
+    # workers within one site (the spsg_active_module_ids option has a non-atomic
+    # read-modify-write race, ISSUES #2), so parallelism comes from separate
+    # sites. The browserless API project gets one dedicated job; the heavier UI
+    # project is sharded across three. fail-fast: false so one job's failure
+    # doesn't cancel the others.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: api,  cmd: '--project=api' }
+          - { name: ui-1, cmd: '--project=ui --shard=1/3' }
+          - { name: ui-2, cmd: '--project=ui --shard=2/3' }
+          - { name: ui-3, cmd: '--project=ui --shard=3/3' }
 
     env:
       # wp-env serves the dev site on :8888 with default admin/password creds.
@@ -142,20 +157,22 @@ jobs:
         working-directory: tests/e2e
         run: npm install --prefer-offline --no-audit --no-fund
 
+      # The API project is browserless, so only the UI shards need Chromium.
       - name: Install Playwright browser
+        if: ${{ matrix.name != 'api' }}
         working-directory: tests/e2e
         run: npx playwright install --with-deps chromium
 
-      - name: Run Playwright tests
+      - name: Run Playwright tests (${{ matrix.name }})
         working-directory: tests/e2e
-        run: npm test
+        run: npx playwright test ${{ matrix.cmd }}
 
       # ---- Always publish reports/artifacts, even on failure ----
       - name: Upload HTML report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.name }}
           path: tests/e2e/playwright-report
           retention-days: 14
 
@@ -163,7 +180,7 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: junit-results
+          name: junit-results-${{ matrix.name }}
           path: tests/e2e/results/junit.xml
           retention-days: 14
 
@@ -171,6 +188,6 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.name }}
           path: tests/e2e/test-results
           retention-days: 7
