@@ -46,7 +46,7 @@ class CommonHooks implements HookRegistry {
 	 * (its class autoloads regardless of activation), so the logic is unchanged;
 	 * only where it is triggered from moves.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.0
 	 *
 	 * @return void
 	 */
@@ -55,7 +55,7 @@ class CommonHooks implements HookRegistry {
 		 * Whether the FlyCart free-shipping notice is enabled. Pro sets this from
 		 * the "Show Free Shipping Message" setting; defaults off.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.0
 		 *
 		 * @param bool $enabled Whether the notice should be displayed.
 		 */

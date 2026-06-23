@@ -1172,7 +1172,7 @@ class OrderBogo implements HookRegistry {
 		 * the badge stays hidden in the free plugin. Pro hooks here to honor the
 		 * `fly_cart_badge_icon` setting.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.0
 		 *
 		 * @param bool  $enabled      Whether the badge should be displayed.
 		 * @param array $cart_item    Cart item data.

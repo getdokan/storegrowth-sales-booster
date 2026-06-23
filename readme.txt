@@ -273,7 +273,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= v2.1.0 (June 18, 2026) =
+= v2.1.0 (June 23, 2026) =
 
 * New: BOGO now supports variable products — customers pick a gift variation (color, size, etc.) from inline dropdowns and claim it without leaving the page.
 * New: BOGO offers can be scheduled with optional start and end dates — offers activate and expire automatically, and an expired free gift is removed on the next cart update.
