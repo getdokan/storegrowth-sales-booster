@@ -1,10 +1,13 @@
 name: E2E & API Tests
 
 # Run the full Playwright suite on every published release, and allow manual runs.
+# Also run on pull requests so the suite can be exercised before the workflow
+# reaches the default branch (release/workflow_dispatch only fire from default).
 on:
   release:
     types: [published]
   workflow_dispatch:
+  pull_request:
 
 # Cancel superseded runs on the same ref to save CI minutes.
 concurrency:
