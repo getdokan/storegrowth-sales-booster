@@ -30,8 +30,9 @@ jobs:
       # and activates its Appsero license; otherwise the suite runs lite-only and
       # Pro-only tests skip themselves (see the hasPro fixture). Referenced via
       # env (not `secrets` directly) so steps can gate on them in `if:`.
-      PRO_REPO_TOKEN: ${{ secrets.PRO_REPO_TOKEN }}
-      LICENSE_KEY: ${{ secrets.LICENSE_KEY }}
+      # (LICENSE_KEY keeps its name so provision-site.php's getenv() finds it.)
+      PRO_REPO_TOKEN: ${{ secrets.SG_PRO_TOKEN }}
+      LICENSE_KEY: ${{ secrets.SG_LICENSE_KEY }}
 
     steps:
       - name: Checkout
