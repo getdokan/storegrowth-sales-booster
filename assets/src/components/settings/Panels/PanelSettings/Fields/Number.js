@@ -6,7 +6,7 @@ import UpgradeOverlay from "../UpgradeOverlay";
 
 const { Title } = Typography;
 
-const Number = ({
+const NumberField = ({
   name,
   title,
   tooltip,
@@ -49,7 +49,7 @@ const Number = ({
           max={max}
           placeholder={placeHolderText}
           disabled={needUpgrade || disabled}
-          value={fieldValue ? fieldValue : 0}
+          value={fieldValue ?? min}
           className={`settings-field number-field`}
           onChange={(value) => changeHandler(name, value)}
           status={status}
@@ -60,4 +60,4 @@ const Number = ({
   );
 };
 
-export default Number;
+export default NumberField;

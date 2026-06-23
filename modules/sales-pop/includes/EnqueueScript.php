@@ -61,7 +61,8 @@ class EnqueueScript implements HookRegistry {
 					if ( ! in_array( $product->ID, $popup_products, true ) ) {
 						continue;
 					}
-					if ( $popup_properties['external_link'] || ( ! $popup_properties['external_link'] && ! wc_get_product( $product->ID )->is_type( 'external' ) ) ) {
+					$external_link = ! empty( $popup_properties['external_link'] );
+					if ( $external_link || ! wc_get_product( $product->ID )->is_type( 'external' ) ) {
 						$product_list[]      = $product->post_title;
 						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
 						$product_image_url[] = isset( $image_url[0] ) ? $image_url[0] : false;
@@ -86,8 +87,15 @@ class EnqueueScript implements HookRegistry {
 			}
 		}
 
-		$virtual_locations = isset( $popup_properties['virtual_locations'] ) ? $popup_properties['virtual_locations'] : '';
-		$virtual_locations = explode( "\n", $virtual_locations );
+		$virtual_locations = array();
+
+		if ( isset( $popup_properties['virtual_locations'] ) ) {
+			if ( is_string( $popup_properties['virtual_locations'] ) ) {
+				$virtual_locations = explode( "\n", $popup_properties['virtual_locations'] );
+			} elseif ( is_array( $popup_properties['virtual_locations'] ) ) {
+				$virtual_locations = $popup_properties['virtual_locations'];
+			}
+		}
 
 		$popup_info = array(
 			'product_list'         => $product_list,

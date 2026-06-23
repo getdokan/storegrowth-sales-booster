@@ -142,8 +142,9 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
             disabled={ !productListForSelect?.length }
             changeHandler={ onFieldChange }
             title={  __( 'Number of Orders', 'storegrowth-sales-booster' ) }
-            style={ { width: 100, padding: '4px 0' } }
-            tooltip={ __( 'Number of latest orders that are to be shown in the sales pop.', 'storegrowth-sales-booster' ) }
+            style={ { width: 130, padding: '4px 0' } }
+            addonAfter={ `/ ${ productListForSelect?.length || 0 }` }
+            tooltip={ __( 'Number of latest products (from your orders) to show in the sales pop. Capped at the number of available products.', 'storegrowth-sales-booster' ) }
           />
         ) }
 
