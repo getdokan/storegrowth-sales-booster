@@ -3,7 +3,7 @@ Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 5.4
-Tested up to: 6.8.2
+Tested up to: 7.0
 Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -273,7 +273,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= v2.1.0 (June 18, 2026) =
+= v2.1.0 (June 23, 2026) =
 
 * New: BOGO now supports variable products — customers pick a gift variation (color, size, etc.) from inline dropdowns and claim it without leaving the page.
 * New: BOGO offers can be scheduled with optional start and end dates — offers activate and expire automatically, and an expired free gift is removed on the next cart update.
