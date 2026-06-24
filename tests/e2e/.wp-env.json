@@ -1,6 +1,6 @@
 {
   "core": null,
-  "phpVersion": "8.2",
+  "phpVersion": "8.5",
   "plugins": [
     "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
     "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip",
