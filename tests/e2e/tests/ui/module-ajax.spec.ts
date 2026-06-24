@@ -4,7 +4,7 @@ import { MODULES } from '../../data/modules';
 
 const findModule = (catalog: any[], id: string) => catalog.find((m) => m.id === id);
 
-test.describe('Admin · module ajax', () => {
+test.describe('Admin · module ajax', { tag: '@ui' }, () => {
   test('get_all_modules returns the full catalog', async ({ page }) => {
     const { status, body } = await spsgAdminAjax(page, 'get_all_modules');
     expect(status).toBe(200);

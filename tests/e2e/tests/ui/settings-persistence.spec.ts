@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/test';
 import { spsgAdminAjax, moduleAjax } from '../../helpers/ajax';
 import { MODULES } from '../../data/modules';
 
-test.describe('Admin · settings persistence (Countdown Timer)', () => {
+test.describe('Admin · settings persistence (Countdown Timer)', { tag: '@ui' }, () => {
   const id = MODULES.countdownTimer.id;
 
   test.afterEach(async ({ page }) => {

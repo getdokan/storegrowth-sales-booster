@@ -50,7 +50,7 @@ async function openDrawer(page: any) {
   await expect(page.locator(ITEM_ROW).first()).toBeVisible();
 }
 
-test.describe('Storefront · Fly Cart', () => {
+test.describe('Storefront · Fly Cart', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.flyCart.id, true);
     await emptyCart(page);

@@ -43,7 +43,7 @@ async function computedOn(p: any, selector: string, prop: string): Promise<strin
     .evaluate((el: Element, pr: string) => getComputedStyle(el).getPropertyValue(pr).trim(), prop);
 }
 
-test.describe('Storefront · Floating Bar', () => {
+test.describe('Storefront · Floating Bar', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.floatingBar.id, true);
     await resetBar(page);

@@ -163,9 +163,16 @@ jobs:
         working-directory: tests/e2e
         run: npx playwright install --with-deps chromium
 
+      # Run @pro-tagged tests only when Pro was actually built + mapped in
+      # (PRO_REPO_TOKEN set). Without it, exclude them by tag so they never run
+      # against the lite build. The runtime getIsPro() skip inside those tests is
+      # a backstop; --grep-invert avoids even spinning them up.
       - name: Run Playwright tests (${{ matrix.name }})
         working-directory: tests/e2e
-        run: npx playwright test ${{ matrix.cmd }}
+        run: |
+          FILTER=""
+          if [ -z "$PRO_REPO_TOKEN" ]; then FILTER="--grep-invert @pro"; fi
+          npx playwright test ${{ matrix.cmd }} $FILTER
 
       # ---- Always publish reports/artifacts, even on failure ----
       - name: Upload HTML report

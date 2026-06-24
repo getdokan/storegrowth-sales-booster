@@ -19,7 +19,7 @@ async function resetStockBar(page: any) {
   });
 }
 
-test.describe('Storefront · Stock Bar', () => {
+test.describe('Storefront · Stock Bar', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.stockBar.id, true);
     await resetStockBar(page);

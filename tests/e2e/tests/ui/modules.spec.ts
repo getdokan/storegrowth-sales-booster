@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/test';
 import { gotoModules, setModuleState, moduleToggle } from '../../helpers/modules';
 import { MODULES, BASELINE_ACTIVE } from '../../data/modules';
 
-test.describe('Admin · Modules catalog', () => {
+test.describe('Admin · Modules catalog', { tag: '@ui' }, () => {
   test('mounts the modules React app', async ({ page }) => {
     await gotoModules(page);
     await expect(page.locator('#sbooster-modules-page')).toBeVisible();

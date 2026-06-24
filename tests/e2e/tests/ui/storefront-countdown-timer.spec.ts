@@ -43,7 +43,7 @@ async function styleOf(page: any, selector: string): Promise<string> {
   return (await page.locator(selector).first().getAttribute('style')) ?? '';
 }
 
-test.describe('Storefront · Countdown Timer', () => {
+test.describe('Storefront · Countdown Timer', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.countdownTimer.id, true);
   });
@@ -238,7 +238,7 @@ test.describe('Storefront · Countdown Timer', () => {
       await expect(page.locator(MARKER)).toHaveCount(0);
     });
 
-    test('counter unit text/background/border colours apply (Pro)', async ({ page }) => {
+    test('counter unit text/background/border colours apply (Pro)', { tag: ['@pro', '@admin'] }, async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
       await saveCountdown(page, {
         day_text_color: '#00ff00',
@@ -252,7 +252,7 @@ test.describe('Storefront · Countdown Timer', () => {
       expect(itemStyle).toContain('#333333');
     });
 
-    test('shop countdown shows on the shop loop when enabled (Pro)', async ({ page }) => {
+    test('shop countdown shows on the shop loop when enabled (Pro)', { tag: ['@pro', '@admin'] }, async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
       await saveCountdown(page, { shop_page_countdown_enable: '1', border_color: '#ff0000' });
       await gotoShop(page);
@@ -260,7 +260,7 @@ test.describe('Storefront · Countdown Timer', () => {
       expect(await styleOf(page, MARKER)).toContain('#ff0000');
     });
 
-    test('shop countdown hidden on the shop loop when disabled (Pro)', async ({ page }) => {
+    test('shop countdown hidden on the shop loop when disabled (Pro)', { tag: ['@pro', '@admin'] }, async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
       await saveCountdown(page, {}); // shop enable omitted → defaults off
       await gotoShop(page);

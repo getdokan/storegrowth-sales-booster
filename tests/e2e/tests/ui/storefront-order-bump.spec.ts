@@ -52,7 +52,7 @@ async function createBump(
   return (await res.json()).id as number | string;
 }
 
-test.describe('Storefront · Upsell Order Bump', () => {
+test.describe('Storefront · Upsell Order Bump', { tag: '@ui' }, () => {
   let createdBumpId: number | string | undefined;
 
   test.beforeEach(async ({ page }) => {

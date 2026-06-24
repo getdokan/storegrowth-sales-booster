@@ -21,7 +21,7 @@ async function openModal(targetPage: any, id: number) {
   await expect(targetPage.locator(POPUP)).toBeVisible();
 }
 
-test.describe('Storefront · Quick View', () => {
+test.describe('Storefront · Quick View', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.quickView.id, true);
   });

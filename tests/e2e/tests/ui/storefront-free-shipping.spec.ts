@@ -72,7 +72,7 @@ async function computedOn(p: any, selector: string, prop: string): Promise<strin
     .evaluate((el: Element, pr: string) => getComputedStyle(el).getPropertyValue(pr).trim(), prop);
 }
 
-test.describe('Storefront · Free Shipping Rules', () => {
+test.describe('Storefront · Free Shipping Rules', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.freeShipping.id, true);
     await resetBar(page);

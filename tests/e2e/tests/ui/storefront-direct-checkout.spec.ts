@@ -33,7 +33,7 @@ function baseConfig(overrides: Record<string, unknown> = {}) {
   };
 }
 
-test.describe('Storefront · Direct Checkout', () => {
+test.describe('Storefront · Direct Checkout', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.directCheckout.id, true);
     // Known base config so tests don't inherit prior settings.
@@ -140,7 +140,7 @@ test.describe('Storefront · Direct Checkout', () => {
   });
 
   test.describe('Shop page', () => {
-    test('shows a Buy Now button per product on the shop loop when enabled (Pro)', async ({ page }) => {
+    test('shows a Buy Now button per product on the shop loop when enabled (Pro)', { tag: ['@pro', '@admin'] }, async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
       await saveDirectCheckout(page, baseConfig({ button_color: '#ff0000' }));
       await gotoShop(page);
@@ -153,7 +153,7 @@ test.describe('Storefront · Direct Checkout', () => {
       expect(await computed(page, SHOP_BTN, 'background-color')).toBe('rgb(255, 0, 0)');
     });
 
-    test('hides the shop Buy Now button when shop display is off (Pro)', async ({ page }) => {
+    test('hides the shop Buy Now button when shop display is off (Pro)', { tag: ['@pro', '@admin'] }, async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'requires Pro');
       await saveDirectCheckout(page, { buy_now_button_setting: 'cart-with-buy-now', shop_page_checkout_enable: false });
       await gotoShop(page);

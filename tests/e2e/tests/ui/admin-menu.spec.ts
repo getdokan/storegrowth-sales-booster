@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test';
 
-test.describe('Admin · StoreGrowth menu', () => {
+test.describe('Admin · StoreGrowth menu', { tag: '@ui' }, () => {
   test('top-level StoreGrowth menu is present', async ({ page }) => {
     await page.goto('/wp-admin/');
     await expect(page.locator('#wpadminbar')).toBeVisible();

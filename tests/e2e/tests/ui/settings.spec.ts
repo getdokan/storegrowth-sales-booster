@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 import { gotoSettings, gotoAdminPage } from '../../helpers/wp-admin';
 
-test.describe('Admin · Settings screen', () => {
+test.describe('Admin · Settings screen', { tag: '@ui' }, () => {
   test('mounts the settings React app at the dashboard route', async ({ page }) => {
     await gotoSettings(page);
 

@@ -21,7 +21,7 @@ async function saveSalesPop(page: any, popupData: Record<string, unknown>) {
   expect(res.status()).toBe(200);
 }
 
-test.describe('Storefront · Sales Notification', () => {
+test.describe('Storefront · Sales Notification', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.salesPop.id, true);
   });

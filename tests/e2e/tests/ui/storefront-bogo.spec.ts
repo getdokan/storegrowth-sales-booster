@@ -51,7 +51,7 @@ async function deleteAllOffers(page: any) {
   }
 }
 
-test.describe('Storefront · BOGO', () => {
+test.describe('Storefront · BOGO', { tag: '@ui' }, () => {
   test.beforeEach(async ({ page }) => {
     await setModuleActive(page, MODULES.bogo.id, true);
     await deleteAllOffers(page);
