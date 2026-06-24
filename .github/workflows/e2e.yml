@@ -107,16 +107,26 @@ jobs:
           npm run build
 
       # ---- StoreGrowth Pro (optional, gated on PRO_REPO_TOKEN) --------------
-      # Pro ships no built artifacts, so clone + composer + build it, then map it
-      # into the wp-env site via .wp-env.override.json (deep-merged over
+      # Pro ships no built artifacts, so check it out + composer + build it, then
+      # map it into the wp-env site via .wp-env.override.json (deep-merged over
       # .wp-env.json). provision-site.php activates the plugin + license later.
+      # checkout's path must live under the workspace; that nests Pro inside the
+      # lite plugin mount, but WordPress only scans one dir deep so the nested
+      # copy is inert — the override below mounts the real Pro at the right path.
+      - name: Checkout StoreGrowth Pro
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: getdokan/storegrowth-sales-booster-pro
+          ref: develop
+          token: ${{ secrets.SG_PRO_TOKEN }}
+          path: storegrowth-sales-booster-pro
+          fetch-depth: 1
+
       - name: Build StoreGrowth Pro
         if: ${{ env.PRO_REPO_TOKEN != '' }}
+        working-directory: storegrowth-sales-booster-pro
         run: |
-          git clone --depth=1 --branch develop \
-            "https://x-access-token:${PRO_REPO_TOKEN}@github.com/getdokan/storegrowth-sales-booster-pro.git" \
-            "$RUNNER_TEMP/storegrowth-sales-booster-pro"
-          cd "$RUNNER_TEMP/storegrowth-sales-booster-pro"
           composer install --no-interaction --prefer-dist --ignore-platform-reqs
           npm ci --prefer-offline --no-audit --no-fund
           npm run build
@@ -128,7 +138,7 @@ jobs:
           cat > .wp-env.override.json <<JSON
           {
             "mappings": {
-              "wp-content/plugins/storegrowth-sales-booster-pro": "${RUNNER_TEMP}/storegrowth-sales-booster-pro"
+              "wp-content/plugins/storegrowth-sales-booster-pro": "${{ github.workspace }}/storegrowth-sales-booster-pro"
             }
           }
           JSON
