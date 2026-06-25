@@ -1,0 +1,10 @@
+node_modules/
+.env
+.wp-env.override.json
+.auth/
+playwright-report/
+test-results/
+results/
+blob-report/
+playwright/.cache/
+bin/debug.log

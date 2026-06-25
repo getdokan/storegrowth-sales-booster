@@ -1,0 +1,220 @@
+name: E2E & API Tests
+
+# Run the full Playwright suite on every published release, and allow manual runs.
+# Also run on pull requests so the suite can be exercised before the workflow
+# reaches the default branch (release/workflow_dispatch only fire from default).
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+  pull_request:
+
+# Cancel superseded runs on the same ref to save CI minutes.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    # Parallel jobs, each with its OWN wp-env site. The suite can't use multiple
+    # workers within one site (the spsg_active_module_ids option has a non-atomic
+    # read-modify-write race, ISSUES #2), so parallelism comes from separate
+    # sites. The browserless API project gets one dedicated job; the heavier UI
+    # project is sharded across three. fail-fast: false so one job's failure
+    # doesn't cancel the others.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: api,  cmd: '--project=api' }
+          - { name: ui-1, cmd: '--project=ui --shard=1/3' }
+          - { name: ui-2, cmd: '--project=ui --shard=2/3' }
+          - { name: ui-3, cmd: '--project=ui --shard=3/3' }
+
+    env:
+      # wp-env serves the dev site on :8888 with default admin/password creds.
+      BASE_URL: http://localhost:8888
+      WP_ADMIN_USER: admin
+      WP_ADMIN_PASSWORD: password
+      WP_API_USER: admin
+      # Pro is optional: when these repo secrets exist, CI clones + builds Pro
+      # and activates its Appsero license; otherwise the suite runs lite-only and
+      # Pro-only tests skip themselves (see the hasPro fixture). Referenced via
+      # env (not `secrets` directly) so steps can gate on them in `if:`.
+      # (LICENSE_KEY keeps its name so provision-site.php's getenv() finds it.)
+      PRO_REPO_TOKEN: ${{ secrets.SG_PRO_TOKEN }}
+      LICENSE_KEY: ${{ secrets.SG_LICENSE_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # No npm cache here: lock files are gitignored in this repo, so setup-node
+      # has nothing to hash. We cache ~/.npm + node_modules ourselves below.
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+
+      # ---- Caches. Lock files are gitignored, so key on the manifests. The
+      # restore-keys give a warm partial cache even when a manifest changes. ----
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/composer
+            vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Cache npm + node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            tests/e2e/node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('package.json', 'tests/e2e/package.json') }}
+          restore-keys: ${{ runner.os }}-npm-
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/e2e/package.json') }}
+          restore-keys: ${{ runner.os }}-playwright-
+
+      # --ignore-platform-reqs: the committed composer.lock pins old dev-only
+      # packages (e.g. symfony/service-contracts) that cap at PHP <8.0. They're
+      # build-time only (mozart prefixes them into the committed lib/), so the
+      # platform mismatch is harmless for the runtime autoloader on PHP 8.2.
+      - name: Build plugin (composer + assets)
+        run: |
+          composer install --no-interaction --prefer-dist --ignore-platform-reqs
+          npm install --prefer-offline --no-audit --no-fund
+          npm run build
+
+      # ---- StoreGrowth Pro (optional, gated on PRO_REPO_TOKEN) --------------
+      # Pro ships no built artifacts, so check it out + composer + build it, then
+      # map it into the wp-env site via .wp-env.override.json (deep-merged over
+      # .wp-env.json). provision-site.php activates the plugin + license later.
+      # checkout's path must live under the workspace; that nests Pro inside the
+      # lite plugin mount, but WordPress only scans one dir deep so the nested
+      # copy is inert — the override below mounts the real Pro at the right path.
+      - name: Checkout StoreGrowth Pro
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        uses: actions/checkout@v4
+        with:
+          repository: getdokan/storegrowth-sales-booster-pro
+          ref: develop
+          token: ${{ secrets.SG_PRO_TOKEN }}
+          path: storegrowth-sales-booster-pro
+          fetch-depth: 1
+
+      - name: Build StoreGrowth Pro
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        working-directory: storegrowth-sales-booster-pro
+        run: |
+          composer install --no-interaction --prefer-dist --ignore-platform-reqs
+          npm ci --prefer-offline --no-audit --no-fund
+          npm run build
+
+      - name: Map Pro into wp-env
+        if: ${{ env.PRO_REPO_TOKEN != '' }}
+        working-directory: tests/e2e
+        run: |
+          cat > .wp-env.override.json <<JSON
+          {
+            "mappings": {
+              "wp-content/plugins/storegrowth-sales-booster-pro": "${{ github.workspace }}/storegrowth-sales-booster-pro"
+            }
+          }
+          JSON
+
+      # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
+      # .wp-env.json lives in tests/e2e, so wp-env runs from there.
+      - name: Start WordPress (wp-env)
+        working-directory: tests/e2e
+        run: |
+          npm -g install @wordpress/env
+          wp-env start
+
+      # Storefront is a classic theme; the storefront specs assert against its
+      # classic WooCommerce markup (.summary / .entry-summary / ul.products).
+      # wp-env doesn't activate the themes it installs, and if its bundled block
+      # theme stays active WooCommerce serves blockified product/shop templates
+      # without that markup. Install + activate Storefront explicitly (mirrors
+      # bin/setup-docker.sh) so the suite runs against the intended theme.
+      - name: Activate Storefront theme
+        working-directory: tests/e2e
+        run: wp-env run cli wp theme install storefront --activate
+
+      # Same shared site setup the Docker stack runs: pretty permalinks, publish
+      # storefront, activate ALL modules, classic checkout, seed products, and —
+      # when LICENSE_KEY is set — activate the Pro Appsero license. LICENSE_KEY is
+      # injected into the cli container's shell so provision-site.php's getenv()
+      # sees it (empty for lite-only runs, which simply skip license activation).
+      - name: Provision the site
+        working-directory: tests/e2e
+        run: |
+          wp-env run cli sh -c \
+            "LICENSE_KEY='${LICENSE_KEY}' wp eval-file wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php"
+
+      # ---- Install test deps + browsers, then run the suite ----
+      - name: Install test dependencies
+        working-directory: tests/e2e
+        run: npm install --prefer-offline --no-audit --no-fund
+
+      # The API project is browserless, so only the UI shards need Chromium.
+      - name: Install Playwright browser
+        if: ${{ matrix.name != 'api' }}
+        working-directory: tests/e2e
+        run: npx playwright install --with-deps chromium
+
+      # Run @pro-tagged tests only when Pro was actually built + mapped in
+      # (PRO_REPO_TOKEN set). Without it, exclude them by tag so they never run
+      # against the lite build. The runtime getIsPro() skip inside those tests is
+      # a backstop; --grep-invert avoids even spinning them up.
+      - name: Run Playwright tests (${{ matrix.name }})
+        working-directory: tests/e2e
+        run: |
+          FILTER=""
+          if [ -z "$PRO_REPO_TOKEN" ]; then FILTER="--grep-invert @pro"; fi
+          npx playwright test ${{ matrix.cmd }} $FILTER
+
+      # ---- Always publish reports/artifacts, even on failure ----
+      - name: Upload HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.name }}
+          path: tests/e2e/playwright-report
+          retention-days: 14
+
+      - name: Upload JUnit results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results-${{ matrix.name }}
+          path: tests/e2e/results/junit.xml
+          retention-days: 14
+
+      - name: Upload traces & screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.name }}
+          path: tests/e2e/test-results
+          retention-days: 7

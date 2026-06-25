@@ -1,0 +1,86 @@
+# Disposable WordPress + WooCommerce + StoreGrowth stack for the E2E/API suite.
+#
+# The plugin source is bind-mounted from the repo root (../../) so the container
+# always runs the working tree — no rebuild/copy step. Provision it with
+# `bin/setup-docker.sh` (installs WP core, WooCommerce, activates the plugin,
+# creates an Application Password, and seeds storefront products).
+#
+#   bin/setup-docker.sh           # one-shot: boot + provision + write .env
+#   docker compose up -d          # just boot
+#   docker compose down -v        # tear down and wipe data
+name: sg-test-automation
+
+services:
+  db:
+    image: mariadb:11
+    container_name: sg-test-automation-db
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+    volumes:
+      - sg_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: sg-test-automation
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8888:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+      # 'local' lets WP issue/accept Application Passwords over plain HTTP
+      # (otherwise REST Basic-auth is rejected on a non-SSL site).
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG_LOG', true );
+        define( 'WP_DEBUG_DISPLAY', false );
+        define( 'WP_ENVIRONMENT_TYPE', 'local' );
+    volumes:
+      - sg_wp:/var/www/html
+      - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
+      # Pro plugin (sibling on the host) — mounted so Pro features are testable.
+      - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
+      # Expose WP_DEBUG_LOG to the host so setup/runtime errors are trackable
+      # from bin/debug.log (WP_DEBUG_LOG=true writes to wp-content/debug.log).
+      - ./bin/debug.log:/var/www/html/wp-content/debug.log
+
+  # One-off WP-CLI runner (shares the WordPress volume + network). Not started by
+  # `up`; invoked via `docker compose run --rm cli wp ...` from the setup script.
+  cli:
+    image: wordpress:cli-php8.2
+    profiles: ["cli"]
+    user: "33:33"
+    environment:
+      HOME: /tmp
+      # wp-config.php resolves these via getenv_docker(); the CLI shares the same
+      # config file, so it needs the same DB env to connect (else falls to 'mysql').
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - sg_wp:/var/www/html
+      - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
+      # Pro plugin (sibling on the host) — mounted so Pro features are testable.
+      - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
+      # Same debug.log mount so WP-CLI setup errors are captured to the host too.
+      - ./bin/debug.log:/var/www/html/wp-content/debug.log
+
+volumes:
+  sg_db:
+  sg_wp:
