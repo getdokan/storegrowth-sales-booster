@@ -66,10 +66,11 @@ async function getSettings(page: any) {
 }
 
 async function computedOn(p: any, selector: string, prop: string): Promise<string> {
-  return p
-    .locator(selector)
-    .first()
-    .evaluate((el: Element, pr: string) => getComputedStyle(el).getPropertyValue(pr).trim(), prop);
+  const el = p.locator(selector).first();
+  // Wait until the bar is laid out; CI can read styles before Pro's JS positions
+  // it, yielding an empty computed value.
+  await el.waitFor({ state: 'visible' });
+  return el.evaluate((el: Element, pr: string) => getComputedStyle(el).getPropertyValue(pr).trim(), prop);
 }
 
 test.describe('Storefront · Free Shipping Rules', { tag: '@ui' }, () => {

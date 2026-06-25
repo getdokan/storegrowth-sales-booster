@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test';
-import { setModuleActive, getIsPro } from '../../helpers/ajax';
+import { setModuleActive, getIsPro, moduleAjax } from '../../helpers/ajax';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
 import { gotoShop, gotoProduct, addToCart, emptyCart, computedStyle } from '../../helpers/storefront';
 import { getProductIdBySlug } from '../../helpers/wc';
@@ -35,6 +35,7 @@ const COUPON_INPUT = `${CONTENT} .coupon-input-text`;
 const COUPON_APPLY = `${CONTENT} .spsg-apply-coupon`;
 const COUPON_RESPONSE = `${CONTENT} .spsg-coupon-response`;
 const BOGO_BADGE = `${CONTENT} .bogo-badge-image`;
+const FREE_SHIP_NOTICE = `${CONTENT} .spsg-fly-cart-free-shipping-notice`;
 const STOCK = `${CONTENT} .spsg-fly-cart-stock-status`;
 // Seeded out-of-band; BOGO offer is on product C so its free item never leaks into the product-A tests.
 const SEED_COUPON = 'e2e10';
@@ -378,11 +379,35 @@ test.describe('Storefront · Fly Cart', { tag: '@ui' }, () => {
       await expect(page.locator(BOGO_BADGE).first()).toBeVisible();
     });
 
-    // Free-shipping notice is gated by Pro's internal Free-Shipping-Rules state, which can't be driven from the test env.
-    test.fixme(
-      'Show Free Shipping Message renders the free-shipping notice (Pro-gated, not drivable from tests)',
-      async () => {},
-    );
+    test('Show Free Shipping Message renders the free-shipping notice', async ({ page, guestPage }) => {
+      test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
+      // The notice text comes from the Progressive Discount Banner helper. Its
+      // save replaces the whole option, so give it (under shipping_bar_data) a
+      // progressive message and a minimum far above the cart so the "add more"
+      // text renders rather than the goal text.
+      await moduleAjax(page, 'spsg_pd_banner_save_settings', {
+        form_data: JSON.stringify({
+          shipping_bar_data: {
+            discount_type: 'free-shipping',
+            cart_minimum_amount: 100000,
+            progressive_banner_text: 'Add [amount] more to get FREE SHIPPING.',
+            goal_completion_text: 'You unlocked free shipping!',
+          },
+        }),
+      });
+
+      await gotoModuleSettings(page, ROUTE);
+      await setContentCheckbox(page, 'Show Free Shipping Message', true);
+      await saveForm(page);
+
+      // The notice is a guest/customer-only promotion, so assert it on guestPage.
+      const id = await getProductIdBySlug(page, PRODUCTS.a.slug);
+      await addToCart(guestPage, id);
+      await gotoShop(guestPage);
+      await openDrawer(guestPage);
+      await expect(guestPage.locator(FREE_SHIP_NOTICE)).toBeVisible();
+      await expect(guestPage.locator(FREE_SHIP_NOTICE)).toContainText('FREE SHIPPING');
+    });
   });
 
   test.describe('Enable', { tag: '@admin' }, () => {

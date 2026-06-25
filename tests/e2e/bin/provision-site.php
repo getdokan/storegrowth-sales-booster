@@ -151,6 +151,48 @@ if ( class_exists( 'WC_Product_Simple' ) ) {
 	}
 }
 
+/* -- Seed the `e2e10` coupon (10% off) the Fly Cart coupon test applies. ------ */
+if ( class_exists( 'WC_Coupon' ) && function_exists( 'wc_get_coupon_id_by_code' ) && ! wc_get_coupon_id_by_code( 'e2e10' ) ) {
+	$coupon = new WC_Coupon();
+	$coupon->set_code( 'e2e10' );
+	$coupon->set_discount_type( 'percent' );
+	$coupon->set_amount( 10 );
+	$coupon->save();
+}
+
+/* -- Seed a global "Buy C get C free" BOGO offer for the Fly Cart badge test. -
+ * Lives here (not "out of band") so every environment is self-contained. The
+ * BOGO module's table is created during its activation above. */
+$bogo_manager = '\\StorePulse\\StoreGrowth\\Modules\\BoGo\\BogoDataManager';
+$bogo_product = get_page_by_path( 'e2e-sale-product-c', OBJECT, 'product' );
+if ( $bogo_product && class_exists( $bogo_manager ) ) {
+	$existing = $bogo_manager::get_bogo_offers(
+		array(
+			'offered_products' => wp_json_encode( array( (int) $bogo_product->ID ) ),
+			'type'             => 'global',
+			'status'           => 'active',
+		)
+	);
+	if ( empty( $existing ) ) {
+		try {
+			$bogo_manager::create_global_offer(
+				array(
+					'name_of_order_bogo'     => 'E2E Fly Cart BOGO (Buy C get C free)',
+					'offer_type'             => 'free',
+					'bogo_deal_type'         => 'different',
+					'offered_products'       => array( (int) $bogo_product->ID ),
+					'get_alternate_products' => array( (int) $bogo_product->ID ),
+					'status'                 => 'active',
+				)
+			);
+		} catch ( \Exception $e ) {
+			if ( class_exists( 'WP_CLI' ) ) {
+				WP_CLI::warning( 'Could not seed BOGO offer: ' . $e->getMessage() );
+			}
+		}
+	}
+}
+
 if ( class_exists( 'WP_CLI' ) ) {
 	WP_CLI::success( 'StoreGrowth E2E site provisioned (all modules active, products seeded, classic checkout).' );
 }
