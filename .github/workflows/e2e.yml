@@ -151,6 +151,16 @@ jobs:
           npm -g install @wordpress/env
           wp-env start
 
+      # Storefront is a classic theme; the storefront specs assert against its
+      # classic WooCommerce markup (.summary / .entry-summary / ul.products).
+      # wp-env doesn't activate the themes it installs, and if its bundled block
+      # theme stays active WooCommerce serves blockified product/shop templates
+      # without that markup. Install + activate Storefront explicitly (mirrors
+      # bin/setup-docker.sh) so the suite runs against the intended theme.
+      - name: Activate Storefront theme
+        working-directory: tests/e2e
+        run: wp-env run cli wp theme install storefront --activate
+
       # Same shared site setup the Docker stack runs: pretty permalinks, publish
       # storefront, activate ALL modules, classic checkout, seed products, and —
       # when LICENSE_KEY is set — activate the Pro Appsero license. LICENSE_KEY is
