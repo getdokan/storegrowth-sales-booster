@@ -366,8 +366,8 @@ test.describe('Storefront · Fly Cart', { tag: '@ui' }, () => {
       await expect(page.locator(`${CONTENT} .cart-discount.coupon-${SEED_COUPON}`)).toHaveCount(0);
     });
 
-    test.skip('Show BOGO Badge renders the BOGO badge on a matching item', async ({ page }) => {
-      // test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
+    test.fixme('Show BOGO Badge renders the BOGO badge on a matching item', async ({ page }) => {
+      test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
       await gotoModuleSettings(page, ROUTE);
       await setContentCheckbox(page, 'Show BOGO Badge', true);
       await saveForm(page);
