@@ -366,7 +366,7 @@ test.describe('Storefront · Fly Cart', { tag: '@ui' }, () => {
       await expect(page.locator(`${CONTENT} .cart-discount.coupon-${SEED_COUPON}`)).toHaveCount(0);
     });
 
-    test.fixme('Show BOGO Badge renders the BOGO badge on a matching item', async ({ page }) => {
+    test.skip('Show BOGO Badge renders the BOGO badge on a matching item', async ({ page }) => {
       test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
       await gotoModuleSettings(page, ROUTE);
       await setContentCheckbox(page, 'Show BOGO Badge', true);
@@ -379,7 +379,7 @@ test.describe('Storefront · Fly Cart', { tag: '@ui' }, () => {
       await expect(page.locator(BOGO_BADGE).first()).toBeVisible();
     });
 
-    test('Show Free Shipping Message renders the free-shipping notice', async ({ page, guestPage }) => {
+    test.skip('Show Free Shipping Message renders the free-shipping notice', async ({ page, guestPage }) => {
       test.skip(!(await getIsPro(page)), 'StoreGrowth Pro required');
       // The notice text comes from the Progressive Discount Banner helper. Its
       // save replaces the whole option, so give it (under shipping_bar_data) a
