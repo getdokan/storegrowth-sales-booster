@@ -1,18 +1,25 @@
 name: E2E & API Tests
 
-# Run the full Playwright suite on every published release, and allow manual runs.
-# Also run on pull requests so the suite can be exercised before the workflow
-# reaches the default branch (release/workflow_dispatch only fire from default).
+# Gate every pull request on the full Playwright suite, and also run it on
+# pushes to the long-lived branches, on published releases, and on demand.
+# Make "E2E Tests" a required status check in branch protection so a PR can
+# only merge once this whole workflow is green.
 on:
+  pull_request:
+  push:
+    branches: [develop, main, master]
   release:
     types: [published]
   workflow_dispatch:
-  pull_request:
 
-# Cancel superseded runs on the same ref to save CI minutes.
+# Cancel superseded runs on the same ref/PR to save CI minutes.
 concurrency:
-  group: e2e-${{ github.ref }}
+  group: e2e-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
   cancel-in-progress: true
+
+# Least-privilege defaults; the report job widens to write checks/PR comments.
+permissions:
+  contents: read
 
 jobs:
   playwright:
@@ -25,7 +32,7 @@ jobs:
     # read-modify-write race, ISSUES #2), so parallelism comes from separate
     # sites. The browserless API project gets one dedicated job; the heavier UI
     # project is sharded across three. fail-fast: false so one job's failure
-    # doesn't cancel the others.
+    # doesn't cancel the others (and so the report job sees every shard).
     strategy:
       fail-fast: false
       matrix:
@@ -194,14 +201,17 @@ jobs:
           if [ -z "$PRO_REPO_TOKEN" ]; then FILTER="--grep-invert @pro"; fi
           npx playwright test ${{ matrix.cmd }} $FILTER
 
-      # ---- Always publish reports/artifacts, even on failure ----
-      - name: Upload HTML report
+      # ---- Always publish per-shard artifacts, even on failure ----
+      # The blob report is the machine-mergeable form consumed by the `report`
+      # job below; the JUnit XML feeds the test-reporter Check. Traces/videos
+      # are uploaded only on failure to keep storage lean.
+      - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.name }}
-          path: tests/e2e/playwright-report
-          retention-days: 14
+          name: blob-report-${{ matrix.name }}
+          path: tests/e2e/blob-report
+          retention-days: 7
 
       - name: Upload JUnit results
         if: ${{ !cancelled() }}
@@ -218,3 +228,123 @@ jobs:
           name: test-results-${{ matrix.name }}
           path: tests/e2e/test-results
           retention-days: 7
+
+  # --------------------------------------------------------------------------
+  # Fancy report: merge the sharded blob reports into ONE HTML report, render a
+  # rich GitHub Checks report from the JUnit results, and write a summary table
+  # to the run's Summary tab. Runs even when shards fail so failures are visible.
+  # --------------------------------------------------------------------------
+  report:
+    name: Test report
+    if: ${{ always() && needs.playwright.result != 'skipped' }}
+    needs: playwright
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download blob reports
+        uses: actions/download-artifact@v4
+        with:
+          path: tests/e2e/all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Download JUnit results
+        uses: actions/download-artifact@v4
+        with:
+          path: tests/e2e/all-junit
+          pattern: junit-results-*
+
+      # Merge every shard's blob into a single, browsable HTML report.
+      - name: Merge into one HTML report
+        working-directory: tests/e2e
+        run: |
+          npm install --prefer-offline --no-audit --no-fund
+          npx playwright merge-reports --reporter html ./all-blob-reports
+        env:
+          PLAYWRIGHT_HTML_REPORT: playwright-report
+
+      - name: Upload merged HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/e2e/playwright-report
+          retention-days: 14
+
+      # Rich, per-test pass/fail report rendered as a GitHub Check (shows up in
+      # the PR's Checks tab and as inline annotations on failing tests).
+      - name: Publish test report
+        uses: dorny/test-reporter@v1
+        if: ${{ always() }}
+        with:
+          name: Playwright results
+          path: 'tests/e2e/all-junit/**/junit.xml'
+          reporter: java-junit
+          fail-on-error: false
+          fail-on-empty: false
+
+      # Compact pass/fail/skip totals on the run's Summary tab.
+      - name: Write summary
+        if: ${{ always() }}
+        run: |
+          python3 - "$GITHUB_STEP_SUMMARY" <<'PY'
+          import glob, sys, xml.etree.ElementTree as ET
+          tests = failures = errors = skipped = 0
+          time = 0.0
+          for f in glob.glob('tests/e2e/all-junit/**/junit.xml', recursive=True):
+              try:
+                  root = ET.parse(f).getroot()
+              except ET.ParseError:
+                  continue
+              for ts in root.iter('testsuite'):
+                  tests += int(ts.get('tests', 0))
+                  failures += int(ts.get('failures', 0))
+                  errors += int(ts.get('errors', 0))
+                  skipped += int(ts.get('skipped', 0))
+                  time += float(ts.get('time', 0) or 0)
+          passed = tests - failures - errors - skipped
+          ok = failures == 0 and errors == 0
+          out = open(sys.argv[1], 'a')
+          out.write('## Playwright E2E & API results\n\n')
+          out.write(f"{'✅ All tests passed' if ok else '❌ Tests failed'}\n\n")
+          out.write('| Result | Count |\n|---|---|\n')
+          out.write(f'| ✅ Passed | {passed} |\n')
+          out.write(f'| ❌ Failed | {failures} |\n')
+          out.write(f'| 💥 Errors | {errors} |\n')
+          out.write(f'| ⏭️ Skipped | {skipped} |\n')
+          out.write(f'| 📊 Total | {tests} |\n')
+          out.write(f'| ⏱️ Duration | {time:.1f}s |\n\n')
+          out.write('Download the **playwright-report** artifact for the full HTML report.\n')
+          out.close()
+          PY
+
+  # --------------------------------------------------------------------------
+  # Single, stable required check for branch protection. Because the matrix job
+  # names contain the shard (and can change), protecting them directly is
+  # brittle — protect THIS job instead. It fails if any shard failed/was
+  # cancelled, so "all green here" == "safe to merge".
+  # --------------------------------------------------------------------------
+  e2e-status:
+    name: E2E Tests
+    if: ${{ always() }}
+    needs: playwright
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify every shard succeeded
+        run: |
+          echo "playwright matrix result: ${{ needs.playwright.result }}"
+          if [ "${{ needs.playwright.result }}" != "success" ]; then
+            echo "::error::One or more Playwright shards failed or were cancelled."
+            exit 1
+          fi
+          echo "All Playwright shards passed."

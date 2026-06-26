@@ -4,19 +4,21 @@ import { ADMIN_STORAGE_STATE } from './fixtures/test';
 
 const isCI = !!process.env.CI;
 
-const reporter: ReporterDescription[] = [
-  ['list'],
-  ['html', { open: 'never', outputFolder: 'playwright-report' }],
-  ['junit', { outputFile: 'results/junit.xml' }],
-];
-if (isCI) reporter.push(['github']);
+const reporter: ReporterDescription[] = isCI
+  ? [
+      ['list'],
+      ['github'],
+      ['junit', { outputFile: 'results/junit.xml' }],
+      ['blob', { outputDir: 'blob-report' }],
+    ]
+  : [
+      ['list'],
+      ['html', { open: 'never', outputFolder: 'playwright-report' }],
+      ['junit', { outputFile: 'results/junit.xml' }],
+    ];
 
 export default defineConfig({
   testDir: './tests',
-
-  // Single worker: `update_module_status` does a non-atomic read-modify-write of
-  // the site-wide `spsg_active_module_ids` option, so concurrent toggles from
-  // different workers clobber each other (see ISSUES.md #2).
   fullyParallel: false,
   workers: 1,
 
