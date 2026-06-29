@@ -118,8 +118,28 @@ suite runs `workers: 1`.
 
 ## CI/CD
 
-`.github/workflows/e2e.yml` runs on every **published release** (and on demand).
-It builds the plugin (composer + `npm run build`), boots `wp-env`, generates an
-Application Password, runs the suite, and **uploads the HTML report, JUnit XML,
-and failure traces/screenshots as artifacts**. Any failing test exits non-zero
-and fails the pipeline.
+`.github/workflows/e2e.yml` runs on **every pull request**, on pushes to
+`develop`/`main`/`master`, on every **published release**, and on demand. It
+builds the plugin (composer + `npm run build`), boots `wp-env`, generates an
+Application Password, and runs the suite. Any failing test fails the pipeline.
+
+**Sharding.** The suite is split across four parallel jobs — one `api` job plus
+three `ui` shards — each on its own isolated `wp-env` site (a single site can't
+run multiple workers, see [ISSUES.md](#) #2). `fail-fast: false` lets every shard
+finish so the report is complete.
+
+**Fancy report.** Each shard emits a Playwright `blob` report and a JUnit XML.
+A downstream `report` job (`if: always()`) then:
+
+- merges the four blobs into **one browsable HTML report**, uploaded as the
+  `playwright-report` artifact;
+- renders a per-test **GitHub Check** ("Playwright results") via
+  `dorny/test-reporter`, so passes/failures show in the PR's **Checks** tab with
+  inline annotations on failing tests;
+- writes a **pass/fail/skip/duration summary table** to the run's **Summary** tab.
+
+**Merge gating.** The `E2E Tests` job is a single, stable status check that
+fails unless **every** shard passed. Mark it (alongside `Run PHPCS inspection`)
+as a **required status check** in the repo's branch-protection rule for
+`develop`, so a PR can only merge once CI is fully green — matching the
+"tests must pass before merge" flow.
