@@ -34,8 +34,8 @@ test.describe('API · sales-pop create_popup authorization', () => {
       form: { action: 'create_popup', data: payload },
     });
     const noNonceBody = (await noNonce.text()).trim();
-    // `0` (no nopriv handler) or `-1`/403 (nonce failure) — both are rejections.
-    expect([200, 403], 'anon create_popup status').toContain(noNonce.status());
+    // `0` with HTTP 400 (no nopriv handler) or `-1`/403 (nonce failure) — both are rejections.
+    expect([200, 400, 403], 'anon create_popup status').toContain(noNonce.status());
     expect(['0', '-1'], 'anon create_popup body').toContain(noNonceBody);
     expect(noNonceBody).not.toContain(marker);
 
@@ -56,7 +56,7 @@ test.describe('API · sales-pop create_popup authorization', () => {
 
     const res = await anon.post(AJAX, { form: { action: 'popup_products', data: '[]' } });
     const body = (await res.text()).trim();
-    expect([200, 403]).toContain(res.status());
+    expect([200, 400, 403]).toContain(res.status());
     expect(['0', '-1']).toContain(body);
 
     await anon.dispose();
