@@ -52,6 +52,9 @@ class EnqueueScript implements HookRegistry {
 
 		if ( false !== $popup_properties ) {
 			$popup_properties  = maybe_unserialize( $popup_properties );
+			// Neutralize any HTML/script that may already be stored (e.g. from
+			// a payload saved before the create_popup handler was hardened).
+			$popup_properties  = Ajax::sanitize_popup_data( $popup_properties );
       $popup_products    = $popup_properties['popup_products'] ?? array();
 			$product_list      = array();
 			$product_url       = array();

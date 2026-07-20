@@ -273,6 +273,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
+= v2.1.1 (July 20, 2026) =
+
+* Security: Hardened the Sales Pop and BOGO AJAX endpoints — configuration actions now require an administrator, and stored popup content is sanitized before it is rendered on the storefront.
+
 = v2.1.0 (June 23, 2026) =
 
 * New: BOGO now supports variable products — customers pick a gift variation (color, size, etc.) from inline dropdowns and claim it without leaving the page.

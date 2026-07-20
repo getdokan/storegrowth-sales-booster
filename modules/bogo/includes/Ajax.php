@@ -28,10 +28,8 @@ class Ajax implements HookRegistry {
 	 */
 	public function register_hooks(): void {
         add_action( 'wp_ajax_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
-        add_action( 'wp_ajax_nopriv_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
 
         add_action( 'wp_ajax_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
-        add_action( 'wp_ajax_nopriv_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
 
 		add_action( 'wp_ajax_spsg_bogo_general_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_spsg_bogo_general_get_settings', array( $this, 'get_settings' ) );
@@ -203,6 +201,10 @@ class Ajax implements HookRegistry {
     public function bogo_category_msg_create() {
         check_ajax_referer( 'ajd_protected' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
         if ( empty( $_POST['data'] ) || empty( $_POST['data']['id'] ) ) {
             wp_send_json_error( __( 'Category message id can\'nt be empty.' ) );
         }
@@ -229,6 +231,10 @@ class Ajax implements HookRegistry {
      */
     public function bogo_category_msg_list() {
         check_ajax_referer( 'ajd_protected' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
         $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         if ( empty( $bogo_settings['bogo_category_messages'] ) ) {
