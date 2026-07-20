@@ -51,11 +51,13 @@ class EnqueueScript implements HookRegistry {
 		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', false );
 
 		if ( false !== $popup_properties ) {
-			$popup_properties  = maybe_unserialize( $popup_properties );
+			$popup_properties = maybe_unserialize( $popup_properties );
+
 			// Neutralize any HTML/script that may already be stored (e.g. from
 			// a payload saved before the create_popup handler was hardened).
-			$popup_properties  = Ajax::sanitize_popup_data( $popup_properties );
-      $popup_products    = $popup_properties['popup_products'] ?? array();
+			$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
+
+			$popup_products    = $popup_properties['popup_products'] ?? array();
 			$product_list      = array();
 			$product_url       = array();
 			$product_image_url = array();
