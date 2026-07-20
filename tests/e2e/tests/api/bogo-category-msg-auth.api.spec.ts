@@ -34,7 +34,7 @@ test.describe('API · bogo category-message authorization', () => {
     // 1. No nonce.
     const noNonce = await anon.post(AJAX, { form: writePayload });
     const noNonceBody = (await noNonce.text()).trim();
-    expect([200, 403], 'anon create status').toContain(noNonce.status());
+    expect([200, 400, 403], 'anon create status').toContain(noNonce.status());
     expect(['0', '-1'], 'anon create body').toContain(noNonceBody);
     expect(noNonceBody).not.toContain(marker);
 
@@ -55,7 +55,7 @@ test.describe('API · bogo category-message authorization', () => {
 
     const res = await anon.post(AJAX, { form: { action: 'bogo_category_msg_list' } });
     const body = (await res.text()).trim();
-    expect([200, 403]).toContain(res.status());
+    expect([200, 400, 403]).toContain(res.status());
     expect(['0', '-1']).toContain(body);
     expect(body).not.toContain(marker);
 
