@@ -39,7 +39,7 @@ class Ajax implements HookRegistry {
 	 * unauthenticated visitors.
 	 */
 	public function popup_products() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_protected' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
@@ -55,7 +55,7 @@ class Ajax implements HookRegistry {
 	 * fields that are later rendered on the storefront.
 	 */
 	public function create_popup() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_protected' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );

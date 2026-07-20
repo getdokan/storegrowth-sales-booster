@@ -91,7 +91,10 @@ class EnqueueScript implements HookRegistry {
 				true
 			);
 
-			$action    = 'ajd_protected';
+			// Admin-only nonce for privileged option-writing ajax (create/list
+			// category messages). Kept distinct from the frontend `ajd_protected`
+			// nonce so a scraped storefront nonce can't authorize admin actions.
+			$action    = 'spsg_admin_protected';
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(

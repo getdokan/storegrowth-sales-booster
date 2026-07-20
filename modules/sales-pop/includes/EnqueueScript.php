@@ -154,7 +154,7 @@ class EnqueueScript implements HookRegistry {
 				'sales_pop_data',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
-					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
+					'ajd_nonce'    => wp_create_nonce( 'spsg_admin_protected' ),
 					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
 					'product_list' => $this->product_list(),
 				)

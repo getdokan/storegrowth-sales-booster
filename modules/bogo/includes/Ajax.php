@@ -199,7 +199,7 @@ class Ajax implements HookRegistry {
      * Bogo category message creation.
      */
     public function bogo_category_msg_create() {
-        check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_protected' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
@@ -230,7 +230,7 @@ class Ajax implements HookRegistry {
      * Bogo category message list.
      */
     public function bogo_category_msg_list() {
-        check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_protected' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
