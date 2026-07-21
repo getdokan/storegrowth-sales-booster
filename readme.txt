@@ -1,4 +1,4 @@
-=== StoreGrowth: Smart Sales Booster for WooCommerce | BOGO, Upsells, Direct Checkout, Quick View, Side Cart ===
+=== StoreGrowth - Upsell, BOGO, Quick View, Direct Checkout & Side Cart for WooCommerce ===
 Contributors: wedevs, tareq1988, nizamuddinbabu
 Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
@@ -9,213 +9,271 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-WooCommerce Sales Booster with BOGO, upsells, direct checkout, quick view, side cart, countdowns, floating bar, free shipping & stock bar.
+Sales booster for WooCommerce with BOGO, upsells, order bumps, direct checkout, quick view and side cart. Lift AOV without extra plugins.
 
 == Description == 
 
 = Sell more with BOGO, upsells, order bumps, FOMO alerts and countdown timers for Woo. Built by weDevs, a trusted name in WordPress for over 13 years. =
 
-Your WooCommerce Store Is Leaking Sales. StoreGrowth Fixes It.
+Running a WooCommerce store is tough. You work hard to bring visitors in, but lose them to abandoned carts, slow product discovery, checkout friction, weak urgency, or single-item orders.
 
-Running a WooCommerce store is tough. You work hard to get visitors, but lose them to abandoned carts, checkout friction, or single-item orders. Juggling multiple plugins only slows your site and creates conflicts.
+[StoreGrowth](https://storepulse.co/storegrowth/) fixes this with one modular WooCommerce sales booster. It brings together **BOGO deals, upsells, cross sells, Direct Checkout, Buy Now buttons, Quick View, Fly Cart / Side Cart, Upsell Order Bump, Free Shipping Bar, Countdown Timer, Floating Announcement Bar, Live Sales Popups, Sales Notification and Stock Bar** so you can increase WooCommerce sales without juggling multiple separate plugins.
 
-[StoreGrowth](https://storegrowth.io/) fixes this with one lightweight toolkit. Packed with **BOGO deals, Upsells, Direct Checkout, Quick View, and Side Cart, plus countdowns, stock bars, live sales notifications, and free shipping motivators** - it’s the fastest way to boost sales, increase AOV, and cut cart abandonment.
+StoreGrowth is built and maintained by weDevs - a WordPress-focused software company with 13 years in the ecosystem, trusted by over 1 million users across its product portfolio.
 
-[youtube https://youtu.be/3XCAOyrD89E?si=Z1gkBE8RcG0tBnUW]
+[youtube https://www.youtube.com/watch?v=MFcXkKzaGwM]
 
-== Who Is StoreGrowth For? ==
+= Who Is StoreGrowth For? =
 
-StoreGrowth is designed for anyone who wants to sell more with WooCommerce:  
+StoreGrowth is designed for anyone who wants to sell more with WooCommerce:
 
-- **E-commerce entrepreneurs:** Boost AOV and margins without hiring developers.   
+* **E-commerce entrepreneurs:** Increase average order value, reduce cart abandonment and promote offers without hiring developers.
+* **Marketing teams:** Launch BOGO deals, flash sales, free shipping campaigns, sales countdown timers and checkout upsells from one toolkit.
+* **Store managers:** Improve the shopping journey with Quick View, WooCommerce Side Cart, Buy Now buttons and Direct Checkout.
+* **Agencies:** Deploy one reliable WooCommerce conversion plugin across client stores instead of managing a stack of separate add-ons.
+* **Marketplace owners:** Use selected StoreGrowth features with Dokan to help vendors create stronger promotional campaigns.
 
-- **Marketing teams:** Add urgency, social proof, and conversion boosters with zero hassle.  
+If your default WooCommerce setup is not enough, StoreGrowth is built for you.
 
-- **Store managers:** Simplify checkout with a modern Side Cart and friction-free Direct Checkout.  
+= The StoreGrowth Advantage =
 
-- **Agencies:** Deploy one reliable sales toolkit across all client sites.  
+[StoreGrowth](https://storepulse.co/storegrowth/) is more than a feature list. It is a practical WooCommerce conversion toolkit built around the moments where stores usually lose revenue.
 
-If your default WooCommerce setup isn’t enough, StoreGrowth is built for you.
+=== Replace multiple WooCommerce sales plugins ===
 
-== The StoreGrowth Advantage ==
+Many stores use one plugin for quick view, side cart, direct checkout, WooCommerce order bump offers, countdown timers, and sales notifications. StoreGrowth brings the core sales modules into one place so your team can launch campaigns faster and manage fewer moving parts.
 
-StoreGrowth isn’t just another plugin; it’s a complete conversion system. With one install, you can:  
+=== Improve the full buying journey ===
 
-- 🚀 *Increase AOV with Upsells & BOGO* - turn single-item sales into multi-product orders.  
+StoreGrowth supports the full path from product browsing to checkout. Quick View helps shoppers inspect products faster. Fly Cart keeps the cart visible. Direct Checkout and Buy Now buttons reduce extra clicks. Upsell Order Bump, WooCommerce cart upsell offers and cross sell campaigns help increase AOV. BOGO deals, free shipping bars, stock bars and countdown timers add urgency, value and motivation.
 
-- 🛒 *Reduce Cart Abandonment* - a sleek Side Cart and Direct Checkout keep buyers moving.  
+=== Activate only what you need ===
 
-- ⏳ *Create Urgency & Scarcity* - countdowns and stock bars trigger action now, not later.  
+StoreGrowth is modular. You can turn modules on or off from the StoreGrowth dashboard, so your store only uses the features needed for your current sales strategy.
 
-- 🔥 *Build Trust with Social Proof* - real-time notifications show your store is active.  
+= The StoreGrowth Playbook: A Module-by-Module Guide =
 
-- ✅ *Replace 10+ Plugins* - enjoy faster sites and simpler management with one toolkit. 
+You’ve seen the powerful results you can achieve. Now, let’s explore the tools.
 
-== The StoreGrowth Playbook: A Module-by-Module Guide ==
+= Use Case 1: Fix Cart Abandonment & Checkout Friction =
 
-You've seen the powerful results you can achieve. Now, let's explore the tools. 
+Before you increase AOV, you need to stop losing the orders customers already want to place. StoreGrowth helps shorten the path from browsing to buying with Fly Cart, Direct Checkout, Buy Now buttons and Quick View.
 
-=== Use Case 1: Fix Cart Abandonment & Checkout Friction ===
+=== Fly Cart / WooCommerce Side Cart ===
 
-Before you can increase your AOV, you have to stop losing the sales you already have. We make the path from Browse to buying ridiculously fast and frictionless.
+The [Fly Cart](https://storepulse.co/storegrowth/features/fly-cart/) module, previously named Quick Cart, adds a modern WooCommerce side cart that opens instantly after a product is added. Shoppers can review items, update quantities, apply coupons, check subtotals and continue to checkout without leaving the current page.
 
-==== ✅ Fly Cart (AJAX Cart) Module ====
+This module is ideal for stores that want a smoother AJAX cart, faster cart review, better coupon visibility and fewer interruptions between Add to Cart and checkout.
 
-Keep the shopping flow uninterrupted with a **sleek [WooCommerce Side Cart](https://storegrowth.io/quick-cart/)** that updates instantly.
+Key side cart features:
+* AJAX cart updates without page reloads.
+* Side cart or centered popup layout.
+* Product image, price, quantity and remove controls.
+* Coupon field inside the cart drawer.
+* Auto-open behavior after Add to Cart.
+* Cart icon position, color and design controls. 
 
-- Sleek Side Cart with real-time AJAX updates  
+[👉 Fly Cart Documentation](https://storepulse.co/storegrowth/docs/modules/fly-cart/)
 
-- Apply coupons directly inside the cart  
+=== WooCommerce Direct Checkout / Buy Now Button ===
 
-- Alternative centered popup layout for higher visibility  
+The [Direct Checkout](https://storepulse.co/storegrowth/features/direct-checkout) module is built for high-intent shoppers who are ready to buy. Add a customizable **Buy Now** button, redirect customers straight to checkout, or reduce extra cart steps that can cause hesitation.
 
-- Customize cart icon, position, colors, and design  
+[youtube https://www.youtube.com/watch?v=2SxjP61pbmc]
 
-- Auto-open Side Cart whenever an item is added  
+Use WooCommerce Direct Checkout for single-product stores, flash sales, paid ad landing pages, digital products, campaign pages and products where speed matters.
 
-==== ✅ WooCommerce Direct Checkout (Skip Cart) Module ====
+With StoreGrowth Direct Checkout, you can:
+* Add a Buy Now button beside or instead of the default Add to Cart button.
+* Send shoppers directly to the WooCommerce checkout page.
+* Display direct checkout buttons on product pages, shop pages or category pages.
+* Customize button text, style, typography, spacing and placement.
+* Combine Direct Checkout with Fly Cart for a faster cart-to-checkout flow.
 
-Let decisive buyers skip extra clicks and head straight to purchase with **[Direct Checkout](https://storegrowth.io/direct-checkout/)**.
+[👉 Direct Checkout Documentation](https://storepulse.co/storegrowth/docs/modules/direct-checkout/)
 
-- Add a “Buy Now” button that sends shoppers directly to checkout  
+=== Quick View for WooCommerce ===
 
-- Replace the default Add to Cart with Direct Checkout for fewer steps  
+[Quick View](https://storepulse.co/storegrowth/features/quick-view) helps customers inspect products without opening a separate product page. Shoppers can preview images, price, short description, variations and Add to Cart options inside a popup from the shop or category page.
 
-- Redirect cart activity directly to checkout  
+[youtube https://www.youtube.com/watch?v=WzPZWGf26AM]
 
-- Display Direct Checkout buttons on product pages or the shop grid  
+A quick view plugin for WooCommerce is useful when shoppers compare many products, browse collections, or need a faster way to decide. It reduces unnecessary page loads and keeps visitors in the buying flow.
 
-- Full control over design - button text, style, colors, and placement  
+StoreGrowth Quick View includes:
+* Quick View product popups from shop and archive pages.
+* AJAX Add to Cart support from the modal.
+* Image gallery, product details and variation support.
+* Button placement options, including icon, text button or image overlay.
+* Popup styling controls for a branded product preview experience.
 
-==== ✅ Quick View Module ====
+[👉 Direct Checkout Documentation](https://storepulse.co/storegrowth/docs/modules/quick-view/)
 
-Keep customers engaged with product previews that boost conversions. The **[Quick View module](https://storegrowth.io/quick-view/)** gives instant access without leaving the shop page.
 
-- Quick View popups with smooth animations and full mobile support 
+= Use Case 2: Maximize Average Order Value =
 
-- AJAX Add to Cart from Quick View (no page reload)  
+A store can get more revenue from the same traffic when customers add more relevant products to each order. StoreGrowth helps you increase average order value with WooCommerce upsells, cross sells, cart upsell offers, checkout upsells, order bumps, BOGO deals and free shipping goals.
 
-- Zoom, image gallery, and product details in a single modal  
+=== Upsell Order Bump, art upsell and WooCommerce cross sell offers ===
 
-- Flexible button placement - over images, text button, or icon-only  
+The [Upsell Order Bump](https://storepulse.co/storegrowth/features/upsell-order-bump) module shows one-click offers during checkout. Because the offer appears at the moment of highest purchase intent, customers can add a related product, upgrade, accessory, warranty, sample pack, refill, bundle item or discounted add-on without leaving checkout.
 
-- Full customization of modal design, fonts, and colors  
+[youtube https://www.youtube.com/watch?v=6JSHwbF21UM]
 
-=== Use Case 2: Maximize Average Order Value (AOV) ===
+Use this module when you need a WooCommerce upsell plugin, WooCommerce order bump, checkout upsell, cart upsell workflow or cross sell offer in one place.
 
-This is where you stop settling for single-item orders and start turning every transaction into a more profitable win.
+With Upsell Order Bump, you can:
+* Create checkout order bump campaigns.
+* Target offers by selected products or categories.
+* Offer free, fixed-price or percentage discount add-ons.
+* Schedule order bump campaigns for seasonal promotions.
+* Customize the offer box copy, colors, spacing and design.
+* Let shoppers accept the offer without interrupting checkout.
 
-==== ✅ Upsell Order Bump Module ====
+[👉Upsell Order Bump Documentation](https://storepulse.co/storegrowth/docs/modules/upsell-order-bump/)
 
-Increase checkout AOV instantly by offering **irresistible [Upsells](https://storegrowth.io/upsell-order-bump/)** right on the checkout page.
+=== BOGO Deals / Buy One Get One for WooCommerce ===
 
-- Unlimited Upsells and order bump campaigns  
+[BOGO](https://storepulse.co/storegrowth/features/bogo) is one of the clearest ways to encourage larger orders. StoreGrowth lets you create WooCommerce BOGO deals such as Buy X Get X, Buy X Get Y, buy one get one free, discounted second-item offers, free gift campaigns and product or category based promotions.
 
-- Target Upsells by product, category, or cart contents  
+[youtube https://www.youtube.com/watch?v=Q52ySsAcxzk]
 
-- Flexible pricing - free, flat rate, or % discount  
+Use BOGO deals to move inventory, promote bundles, create seasonal offers, improve cart value and give shoppers a strong reason to buy now.
 
-- Full design customization of Upsell boxes at checkout  
+StoreGrowth BOGO supports:
+* Buy X Get X and Buy X Get Y deal types.
+* Product-based and category-based BOGO rules.
+* Minimum quantity requirements.
+* Free or discounted offer product settings.
+* BOGO offer boxes, badges and promotional messages.
+* Campaign scheduling for limited-time BOGO offers.
 
-- One-click Upsell add-ons for seamless conversions  
+[👉BOGO Documentation](https://storepulse.co/storegrowth/docs/modules/bogo/)
 
-==== ✅ BOGO (Buy One, Get One) Deals Module ====
+=== Free Shipping Bar ===
 
-Drive volume and clear stock with **compelling [BOGO offers](https://storegrowth.io/bogo/)** customers love.
+Free shipping works better when customers can see how close they are to unlocking it. StoreGrowth includes [Free Shipping Bar](https://storepulse.co/storegrowth/features/free-shipping-bar/) so you can show dynamic cart progress messages based on order value.
 
-- Flexible BOGO creation: Buy X Get X, Buy X Get Y  
+[youtube https://www.youtube.com/watch?v=1PNxBY_ECYQ]
 
-- Apply BOGO rules to products or categories  
+Use the Free Shipping Bar to encourage larger carts, reduce shipping-related hesitation and turn a shipping threshold into an average order value strategy.
 
-- Minimum quantity requirements for unlocking BOGO deals  
+You can configure:
+* Free shipping goal amount.
+* Dynamic progress messages.
+* Sticky or static display positions.
+* CTA text, colors, icons and design settings.
+* Storewide or targeted promotional display.
 
-- Custom BOGO badges and in-cart messaging  
+[👉 Free Shipping Bar Documentation](https://storepulse.co/storegrowth/docs/modules/free-shipping-rules/)
 
-- Schedule BOGO promotions with start/end dates  
+= Use Case 3: Create Urgency, Scarcity & FOMO =
 
-==== ✅ Free Shipping Bar Module ====
+Customers often delay purchases when the offer feels open-ended and FOMO driven. StoreGrowth helps create urgency with Countdown Timer, Sales Countdown, Stock Bar, BOGO scheduling and time-sensitive promotional messages.
 
-Turn shipping fees into a motivator with a **dynamic [Free Shipping Bar](https://storegrowth.io/free-shipping-bar/)** that encourages customers to add more.
+=== Countdown Timer / Sales Countdown ===
 
-- Sticky or static Free Shipping Bar across your store  
+The [Sales Countdown Timer](https://storepulse.co/storegrowth/features/sales-countdown/) module helps you display campaign deadlines for WooCommerce promotions. Use it for flash sales, holiday offers, limited-time discounts, product launches, coupon deadlines and seasonal campaigns.
 
-- Custom cart goals for free shipping or discounts 
+A sales countdown timer gives shoppers a clear reason to act now instead of postponing the purchase. You can use it on product pages, selected offers or store campaigns where timing matters.
 
-- Personalize bar content, CTA text, and styles  
+Countdown Timer helps you:
 
-- Position bar top or bottom with advanced display rules  
+* Add timers to WooCommerce promotions.
+* Show campaign deadlines clearly.
+* Support flash sales and limited-time discounts.
+* Customize the timer style to match your store.
+* Combine urgency with BOGO, free shipping or checkout upsells.
 
-- Add branded icons or graphics to your Free Shipping Bar  
+[👉 Countdown Timer Documentation](https://storepulse.co/storegrowth/docs/modules/countdown-timer/)
 
-=== Use Case 3: Create Powerful Urgency & Scarcity (FOMO) ===
+=== Stock Bar / Stock Countdown Bar ===
 
-The ultimate cure for "I'll think about it." Give customers a compelling reason to buy NOW.
+The [Stock Bar](https://storepulse.co/storegrowth/features/stock-countdown-bar/) module helps show inventory urgency by displaying stock progress or low-stock messages on product pages. It is useful for bestsellers, limited inventory, seasonal products, exclusive drops and high-demand items.
 
-==== ✅ Sales Countdown Timer Module ====
+[youtube https://www.youtube.com/watch?v=2ib1uQXQ7zs]
 
-Encourage fast action with a ticking **[Countdown Timer](https://storegrowth.io/stock-countdown-bar/) that builds urgency**.
+Use the WooCommerce stock bar or stock progress bar when customers need a visible signal that a product may run out. It can support faster purchase decisions without relying only on discounts.
 
-- Unlimited timers for promotions or flash sales  
+[👉 Stock Count Bar Documentation](https://storepulse.co/storegrowth/docs/modules/stock-bar/)
 
-- Display timers on product pages or shop page  
+= Use Case 4: Build Trust & Keep Offers Visible =
 
-- Customizable fonts, styles, and colors  
+Strong offers fail when shoppers do not notice them or do not trust the store enough to complete the order. StoreGrowth helps with social proof, floating announcements and visible promotional messaging.
 
-- Full design control for a branded countdown experience  
+=== Sales Notification / Live Sales Popups ===
 
-==== ✅ Stock Countdown Bar Module ====
+The [Sales Notification](https://storepulse.co/storegrowth/features/sales-notification/) module, previously named Sales Pop, shows live sales popups or recent purchase notifications. These WooCommerce sales notification popups help visitors see that your store is active and that other customers are buying.
 
-Show customers when inventory is running low with a **visual [Stock Countdown Bar](https://storegrowth.io/stock-count-bar/)**.
+[youtube https://www.youtube.com/watch?v=KGuWQe2O8xA]
 
-- Real-time inventory progress bars on product pages  
+Use Live Sales Popups for new visitors, product launches, high-traffic campaigns, seasonal offers and stores that need stronger trust signals.
 
-- Support for variable products (size, color, etc.)  
+You can configure:
 
-- Custom scarcity messages like “Only 3 left in stock!”  
+* Real or virtual sales notifications.
+* Product links inside notification popups.
+* Timing, delay, loop and display duration.
+* Page, device and product targeting.
+* Popup position, text, image and design settings.
 
-- Trigger bar only when stock is below your set limit  
+[👉 Sales Notification Documentation](https://storepulse.co/storegrowth/docs/modules/sales-notification/)
 
-- Flexible design to match store branding  
+=== Floating Announcement Bar / Floating Bar ===
 
-=== Use Case 4: Build Trust & Drive Action ===
+The [Floating Announcement Bar](https://storepulse.co/storegrowth/features/woocommerce-notification-floating-bar/) keeps your most important sales message visible while visitors browse. Use it for coupons, flash sale announcements, free shipping campaigns, BOGO promotions, holiday offers, launch notices or storewide updates.
 
-Reinforce the buying decision and keep your offers top-of-mind with these powerful tools.
+A floating bar is useful when your offer is too important to hide inside a product description or banner. Place it at the top or bottom of the screen and keep the CTA visible without taking shoppers away from the product page.
 
-==== ✅ Sales Notifications (Social Proof) Module ====
+[👉 Floating Bar Documentation](https://storepulse.co/storegrowth/docs/modules/floating-bar/)
 
-Build instant credibility with **live [Sales Popups](https://storegrowth.io/sales-countdown/)** that show recent activity.
+= How StoreGrowth Supports WooCommerce Conversion Rate Optimization =
 
-- Show real or virtual purchase notifications  
+StoreGrowth helps with WooCommerce conversion rate optimization by improving the areas that influence buying decisions: product discovery, cart experience, checkout speed, offer visibility, average order value, urgency and trust.
 
-- Link notifications directly to product pages  
+For ecommerce checkout optimization, combine Direct Checkout, Buy Now buttons and Upsell Order Bump. For average order value growth, combine BOGO deals, WooCommerce cross sell offers, cart upsells and Free Shipping Bar. For promotional urgency, use Countdown Timer, Stock Bar, Floating Announcement Bar and Sales Notification together during campaign periods.
 
-- Advanced targeting - by device, page, or product  
+This gives store owners a practical way to test different sales boosters without custom development.
 
-- Custom timing: loop, delay, and display duration  
+= Campaign Ideas You Can Build with StoreGrowth =
 
-- Full control over popup design, placement, and style  
+StoreGrowth is useful because the modules can work together as campaign building blocks, not just separate features.
 
-==== ✅ Floating Notification Bar Module ====
+=== Flash Sale Campaign ===
 
-Highlight your biggest offers with a sticky, always-visible **[Floating Bar](https://storegrowth.io/woocommerce-notification-floating-bar/)**.
+Use Countdown Timer, Floating Announcement Bar, Direct Checkout and Buy Now buttons to create a faster path from offer awareness to purchase. This is useful for weekend sales, limited-time discounts, product launches and holiday promotions.
 
-- Sticky Floating Bar visible as shoppers scroll 
+=== Increasing Average Order Value ===
 
-- Add coupons, messages, or CTAs in the bar  
+Use Upsell Order Bump, WooCommerce cart upsell offers, cross sells, BOGO deals and Free Shipping Bar together when your goal is to increase average order value. Customers see relevant add-ons at checkout, promotional BOGO offers while browsing, and a clear reason to add more items before payment.
 
-- Insert live countdown timers inside your Floating Bar  
+=== Reducing Cart Abandonment ===
 
-- Advanced targeting by page, device, or time delay  
+Use Fly Cart, Quick View and Direct Checkout when customers browse multiple products but leave before checkout. Quick View reduces product-page back-and-forth, Fly Cart keeps the cart visible, and WooCommerce quick checkout options help ready buyers complete orders faster.
 
-- Fully customizable design and placement  
+=== Social Proof and Urgency ===
 
-## Documentation and Support
+Use Sales Notification, Live Sales Popups, Stock Bar and Sales Countdown to make your store feel active and time-sensitive. This works well for new visitors, product drops, low-stock products and promotional landing pages.
 
-Explore our comprehensive documentation and tutorials on our [Documentation](https://storegrowth.io/documentation/) page to make the most out of StoreGrowth features.
+= StoreGrowth and Dokan Marketplaces =
 
-If you have additional questions or need assistance, please visit our [Support](https://dokan.co/contact/) 
+StoreGrowth also supports [Dokan integration](https://dokan.co/docs/wordpress/integrations/storegrowth/) for selected marketplace growth features. Admins can enable supported modules so vendors can create stronger promotions from their vendor workflow.
 
-For detailed information about features, frequently asked questions (FAQs), and comprehensive documentation, visit our official website at [StoreGrowth](https://storegrowth.io/).
+Supported Dokan use cases include vendor BOGO offers, Fly Cart improvements and Countdown Timer campaigns, depending on your StoreGrowth and Dokan setup.
+
+= Built by weDevs =
+
+StoreGrowth is developed by [weDevs](https://wedevs.com/), the team behind trusted WordPress and WooCommerce products. It is built for store owners who want practical conversion tools, clear module controls, tutorials, documentation and ongoing product improvements.
+
+= Helpful StoreGrowth Links =
+
+* [Visit Our Website](https://storepulse.co/storegrowth/)
+* [View All Features](https://storepulse.co/storegrowth/features/)
+* [Go Pro](https://storepulse.co/storegrowth/pricing/)
+* [Documentation](https://storepulse.co/storegrowth/docs/)
+* [Read Our Blog](https://storepulse.co/storegrowth/blog/)
+* [Get Support](https://wordpress.org/support/plugin/storegrowth-sales-booster/)
+* [Video Tutorials](https://www.youtube.com/@wedevs/search?query=storegrowth)
 
 == Frequently Asked Questions ==
 
@@ -370,3 +428,16 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 👉 [Check the Full Changelog](https://github.com/getdokan/storegrowth-sales-booster/blob/develop/CHANGELOG.md)
 
+== Upgrade Notice ==
+
+= 2.0.6 =
+Recommended update. This release improves WooCommerce compatibility, fixes translation text domains, improves BOGO duplicate offer handling, and updates AJAX URL handling for better site compatibility.
+
+= 2.0.5 =
+Recommended update for stores using Fly Cart, cart overlay, or Upsell Order Bump. This release fixes cart layout issues, pricing display issues, missing order bump product errors, and out-of-stock product selection in order bumps.
+
+= 2.0.1 =
+Recommended update for Dokan marketplace stores. This release adds Dokan compatibility, vendor dashboard support, vendor-created BOGO offers, vendor countdown timer offers, and improved StoreGrowth documentation links.
+
+= 2.0.0 =
+Major StoreGrowth update. This release includes the full StoreGrowth rebrand, improved module architecture, database migrations for BOGO and Upsell Order Bump, REST API improvements, better cart updates, performance improvements, security hardening, and multiple fixes across Quick Cart, Order Bump, BOGO, Countdown Timer, Quick View, and Direct Checkout.
