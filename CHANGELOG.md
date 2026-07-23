@@ -1,9 +1,5 @@
 == Changelog ==
 
-### v2.1.1 (July 20, 2026) ###
-
-- **security:** Hardened the Sales Pop and BOGO AJAX endpoints — configuration actions now require an administrator, and stored popup content is sanitized before it is rendered on the storefront.
-
 ### v2.0.6 (April 28, 2026) ###
 
 - **fix:** Fixed incorrect text domains in translation functions.
