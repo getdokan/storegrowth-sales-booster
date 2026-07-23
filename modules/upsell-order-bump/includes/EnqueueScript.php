@@ -58,7 +58,8 @@ class EnqueueScript implements HookRegistry {
 				true
 			);
 
-			$action    = 'ajd_protected';
+			// Admin-only nonce (settings screen). Distinct from the frontend cart nonce.
+			$action    = 'spsg_admin_protected';
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(
@@ -138,7 +139,8 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-		$action    = 'ajd_protected';
+		// Frontend-only nonce for the public order-bump add-to-cart action.
+		$action    = 'spsg_frontend_protected';
 		$ajd_nonce = wp_create_nonce( $action );
 		wp_localize_script(
 			'spsg-order-bump-front-js',
