@@ -91,7 +91,10 @@ class EnqueueScript implements HookRegistry {
 				true
 			);
 
-			$action    = 'ajd_protected';
+			// Admin-only nonce for privileged option-writing ajax (create/list
+			// category messages). Kept distinct from the frontend cart nonce so a
+			// scraped storefront nonce can't authorize admin actions.
+			$action    = 'spsg_admin_ajax_nonce';
 			$ajd_nonce = wp_create_nonce( $action );
 
 			wp_localize_script(
@@ -167,7 +170,10 @@ class EnqueueScript implements HookRegistry {
 			true
 		);
 
-		$action    = 'ajd_protected';
+		// Frontend-only nonce for the public storefront cart actions
+		// (add/update BOGO gift). Deliberately NOT the admin nonce — a scraped
+		// storefront nonce must never authorize a settings write.
+		$action    = 'spsg_frontend_ajax_nonce';
 		$ajd_nonce = wp_create_nonce( $action );
 		wp_localize_script(
 			'spsg-bogo-front-js',

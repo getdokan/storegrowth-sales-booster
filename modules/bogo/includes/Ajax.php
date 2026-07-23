@@ -28,10 +28,8 @@ class Ajax implements HookRegistry {
 	 */
 	public function register_hooks(): void {
         add_action( 'wp_ajax_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
-        add_action( 'wp_ajax_nopriv_bogo_category_msg_create', array( $this, 'bogo_category_msg_create' ) );
 
         add_action( 'wp_ajax_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
-        add_action( 'wp_ajax_nopriv_bogo_category_msg_list', array( $this, 'bogo_category_msg_list' ) );
 
 		add_action( 'wp_ajax_spsg_bogo_general_save_settings', array( $this, 'save_settings' ) );
 		add_action( 'wp_ajax_spsg_bogo_general_get_settings', array( $this, 'get_settings' ) );
@@ -48,7 +46,7 @@ class Ajax implements HookRegistry {
 	}
 
 	public function handle_update_offer_product() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_frontend_ajax_nonce' );
 
 		$data = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
 		if ( empty( $data ) ) {
@@ -201,17 +199,31 @@ class Ajax implements HookRegistry {
      * Bogo category message creation.
      */
     public function bogo_category_msg_create() {
-        check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
         if ( empty( $_POST['data'] ) || empty( $_POST['data']['id'] ) ) {
             wp_send_json_error( __( 'Category message id can\'nt be empty.' ) );
         }
 
-        $data          = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
+		$data          = ! empty( $_POST['data'] ) ? wc_clean( wp_unslash( $_POST['data'] ) ) : array();
         $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         $cat_ids       = ! empty( $bogo_settings['bogo_category_messages'] ) ? wp_list_pluck( $bogo_settings['bogo_category_messages'], 'id' ) : array();
-        if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids ) ) {
-            $index = array_search( $data['editableId'], $cat_ids );
+
+		// Ids are term ids — keep them integers. Existing rows may still hold
+		// numeric strings, so normalize both sides before comparing.
+		$data['id'] = absint( $data['id'] );
+		$cat_ids    = array_map( 'absint', $cat_ids );
+
+		if ( ! empty( $data['editableId'] ) ) {
+			$data['editableId'] = absint( $data['editableId'] );
+		}
+
+		if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids, true ) ) {
+			$index = array_search( $data['editableId'], $cat_ids, true );
 
             $bogo_settings['bogo_category_messages'][ $index ]['id']             = $data['id'];
             $bogo_settings['bogo_category_messages'][ $index ]['message']        = $data['message'];
@@ -228,7 +240,11 @@ class Ajax implements HookRegistry {
      * Bogo category message list.
      */
     public function bogo_category_msg_list() {
-        check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_admin_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
         $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         if ( empty( $bogo_settings['bogo_category_messages'] ) ) {
@@ -247,7 +263,7 @@ class Ajax implements HookRegistry {
 	 * Bogo product add to cart.
 	 */
 	public function offer_product_add_to_cart() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_frontend_ajax_nonce' );
 
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();

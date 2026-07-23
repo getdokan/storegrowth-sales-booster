@@ -51,8 +51,13 @@ class EnqueueScript implements HookRegistry {
 		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', false );
 
 		if ( false !== $popup_properties ) {
-			$popup_properties  = maybe_unserialize( $popup_properties );
-      $popup_products    = $popup_properties['popup_products'] ?? array();
+			$popup_properties = maybe_unserialize( $popup_properties );
+
+			// Neutralize any HTML/script that may already be stored (e.g. from
+			// a payload saved before the create_popup handler was hardened).
+			$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
+
+			$popup_products    = $popup_properties['popup_products'] ?? array();
 			$product_list      = array();
 			$product_url       = array();
 			$product_image_url = array();
@@ -149,7 +154,7 @@ class EnqueueScript implements HookRegistry {
 				'sales_pop_data',
 				array(
 					'ajax_url'     => admin_url( 'admin-ajax.php' ),
-					'ajd_nonce'    => wp_create_nonce( 'ajd_protected' ),
+					'ajd_nonce'    => wp_create_nonce( 'spsg_admin_ajax_nonce' ),
 					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
 					'product_list' => $this->product_list(),
 				)

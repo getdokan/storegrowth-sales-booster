@@ -14,6 +14,18 @@
 	
 	message_popup             = message_popup?message_popup:'please prepare you message';
 
+	// Escape a stored config value before it is interpolated into markup.
+	// Covers the attribute context too (quotes), so a colour/font-size field
+	// can't break out of `style="…"`.
+	function escapeHtml( value ) {
+		return String( value === null || value === undefined ? '' : value )
+			.replace( /&/g, '&amp;' )
+			.replace( /</g, '&lt;' )
+			.replace( />/g, '&gt;' )
+			.replace( /"/g, '&quot;' )
+			.replace( /'/g, '&#039;' );
+	}
+
     // for city
     const cityColor       = popup_all_properties.city_text_color;
     const cityFontSize    = popup_all_properties.city_text_font_size+"px";
@@ -30,12 +42,18 @@
     const countryFontWeight = popup_all_properties.country_text_font_weight;
     const countryStyle      = "color:" + countryColor+ ";font-size:" + countryFontSize +";font-weight:" + countryFontWeight;
 
+    // Style strings are built from stored config, so escape them once for the
+    // `style="…"` attribute context below.
+    const cityStyleAttr    = escapeHtml( cityStyle );
+    const stateStyleAttr   = escapeHtml( stateStyle );
+    const countryStyleAttr = escapeHtml( countryStyle );
+
 	let countryArray     = Array.isArray(popup_info.virtual_locations) ? popup_info.virtual_locations : [];
 	countryArray = countryArray.map((item,i)=>{
 			const countryStringToArray = (typeof item === 'string' ? item : "").split(',');
-            const city    = countryStringToArray[0] ? `<span style="${cityStyle}" >${countryStringToArray[0]}</span>` : "";
-            const state   = countryStringToArray[1] ? `<span style="${stateStyle}" >${city ? ',' : ''} ${countryStringToArray[1]}</span>` : "";
-            const country = countryStringToArray[2] ? `<span style="${countryStyle}" >${city || state ? ',' : ''} ${countryStringToArray[2]}</span>` : "";
+            const city    = countryStringToArray[0] ? `<span style="${cityStyleAttr}" >${escapeHtml( countryStringToArray[0] )}</span>` : "";
+            const state   = countryStringToArray[1] ? `<span style="${stateStyleAttr}" >${city ? ',' : ''} ${escapeHtml( countryStringToArray[1] )}</span>` : "";
+            const country = countryStringToArray[2] ? `<span style="${countryStyleAttr}" >${city || state ? ',' : ''} ${escapeHtml( countryStringToArray[2] )}</span>` : "";
             return `${city}${state}${country}`;
 	})
 	var product_image = popup_info.product_image_url;
@@ -60,6 +78,10 @@
 		productAndImage = getRandomProductImage();
 
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
+		// `.html()` is required: the entries carry the per-segment city/state/
+		// country style spans built above. The location text itself is escaped
+		// with escapeHtml() there, so nothing from the stored
+		// `virtual_locations` field can introduce markup.
 		$('#country').html( countryArray[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
         $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
@@ -127,6 +149,13 @@
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
+	// `.html()` is required here: the placeholders above are replaced with real
+	// markup from the template (`#popup_title` carries the product <a> link), so
+	// `.text()` would print the tags instead of rendering the link. Every value
+	// that reaches this string is neutralized before it gets here — the popup
+	// config is run through Ajax::sanitize_popup_data() on save and again before
+	// it is localized, and the product/name/time fragments are injected with
+	// jQuery `.text()` above, which escapes them.
 	$('.custom-notification-content').html(testMessage);
 	if(link_new_tab){
 		$("#product_url_title").attr( "target", '_blank' );
