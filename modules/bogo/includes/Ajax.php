@@ -46,7 +46,7 @@ class Ajax implements HookRegistry {
 	}
 
 	public function handle_update_offer_product() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_frontend_protected' );
 
 		$data = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
 		if ( empty( $data ) ) {
@@ -253,7 +253,7 @@ class Ajax implements HookRegistry {
 	 * Bogo product add to cart.
 	 */
 	public function offer_product_add_to_cart() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_frontend_protected' );
 
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();

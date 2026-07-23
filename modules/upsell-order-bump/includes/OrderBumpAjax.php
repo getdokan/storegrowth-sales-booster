@@ -31,7 +31,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * Bump product add to cart.
 	 */
 	public function upsell_offer_product_add_to_cart() {
-		check_ajax_referer( 'ajd_protected' );
+		check_ajax_referer( 'spsg_frontend_protected' );
 		
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();
