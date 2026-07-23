@@ -114,7 +114,7 @@ class EnqueueScript implements HookRegistry {
 	 * needs to be emitted anywhere else. Filterable because the WooCommerce
 	 * checkout block can be placed on a page `is_checkout()` does not match.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.1
 	 *
 	 * @return bool
 	 */
@@ -122,7 +122,7 @@ class EnqueueScript implements HookRegistry {
 		/**
 		 * Filters whether the order bump frontend assets are enqueued.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.1
 		 *
 		 * @param bool $needed Whether the current request renders the order bump.
 		 */

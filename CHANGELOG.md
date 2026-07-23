@@ -1,5 +1,12 @@
 == Changelog ==
 
+### v2.1.1 (July 23, 2026) ###
+
+- **security:** Hardened the Sales Pop and BOGO admin ajax endpoints — administrator capability plus a dedicated admin nonce is now required, and the `nopriv` registrations were removed.
+- **security:** Sanitized the Sales Pop popup configuration on save and again before it is localized to the storefront.
+- **security:** Separated the privileged admin ajax nonce (`spsg_admin_ajax_nonce`) from the public storefront nonce (`spsg_frontend_ajax_nonce`).
+- **enhancement:** Scoped the Upsell Order Bump frontend script and style to the checkout page, filterable via `spsg_order_bump_needs_front_assets`.
+
 ### v2.0.6 (April 28, 2026) ###
 
 - **fix:** Fixed incorrect text domains in translation functions.

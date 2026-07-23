@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 5.4
 Tested up to: 7.0
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -330,6 +330,13 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.1.1 (July 23, 2026) =
+
+* Security: Hardened the Sales Pop and BOGO admin AJAX endpoints — they now require an administrator and a dedicated admin nonce, and are no longer reachable by logged-out visitors.
+* Security: Sales Pop popup settings are sanitized on save and again before they are rendered on the storefront.
+* Security: Separated the privileged admin AJAX nonce from the public storefront nonce so a nonce read from the storefront cannot authorize a settings change.
+* Enhancement: Upsell Order Bump frontend assets are now loaded only on the checkout page.
 
 = v2.1.0 (June 23, 2026) =
 

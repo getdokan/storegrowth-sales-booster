@@ -98,7 +98,7 @@ class Ajax implements HookRegistry {
 	 * Used both on save and before the data is localized to the storefront,
 	 * so previously stored payloads are neutralized on render too.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.1
 	 *
 	 * @param mixed  $data Raw popup configuration value.
 	 * @param string $key  Key the value was stored under, when recursing.
@@ -133,7 +133,7 @@ class Ajax implements HookRegistry {
 	 * Values under these keys are cast to positive integers instead of being
 	 * treated as free text.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.1
 	 *
 	 * @return string[]
 	 */
@@ -141,7 +141,7 @@ class Ajax implements HookRegistry {
 		/**
 		 * Filters the popup configuration keys treated as product id lists.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.1
 		 *
 		 * @param string[] $fields Configuration keys holding product ids.
 		 */
