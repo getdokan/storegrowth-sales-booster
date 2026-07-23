@@ -10,7 +10,7 @@ import { env } from '../../helpers/env';
  * actions must reject unauthenticated callers. After the fix they are:
  *   - no longer registered for `wp_ajax_nopriv_*` (so a guest hits no handler),
  *   - guarded by `current_user_can( 'manage_options' )`, and
- *   - verified against the admin-only `spsg_admin_protected` nonce, which is
+ *   - verified against the admin-only `spsg_admin_ajax_nonce` nonce, which is
  *     never emitted on the storefront — so the frontend `ajd_protected` nonce a
  *     visitor could scrape cannot authorize these actions.
  *

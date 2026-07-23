@@ -46,7 +46,7 @@ class Ajax implements HookRegistry {
 	}
 
 	public function handle_update_offer_product() {
-		check_ajax_referer( 'spsg_frontend_protected' );
+		check_ajax_referer( 'spsg_frontend_ajax_nonce' );
 
 		$data = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
 		if ( empty( $data ) ) {
@@ -199,7 +199,7 @@ class Ajax implements HookRegistry {
      * Bogo category message creation.
      */
     public function bogo_category_msg_create() {
-		check_ajax_referer( 'spsg_admin_protected' );
+		check_ajax_referer( 'spsg_admin_ajax_nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
@@ -230,7 +230,7 @@ class Ajax implements HookRegistry {
      * Bogo category message list.
      */
     public function bogo_category_msg_list() {
-		check_ajax_referer( 'spsg_admin_protected' );
+		check_ajax_referer( 'spsg_admin_ajax_nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
@@ -253,7 +253,7 @@ class Ajax implements HookRegistry {
 	 * Bogo product add to cart.
 	 */
 	public function offer_product_add_to_cart() {
-		check_ajax_referer( 'spsg_frontend_protected' );
+		check_ajax_referer( 'spsg_frontend_ajax_nonce' );
 
 		global $woocommerce;
 		$all_cart_products = $woocommerce->cart->get_cart();

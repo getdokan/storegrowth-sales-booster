@@ -9,9 +9,9 @@ import { env } from '../../helpers/env';
  * option and must reject unauthenticated callers. After the class fix they are:
  *   - no longer registered for `wp_ajax_nopriv_*` (a guest hits no handler),
  *   - guarded by `current_user_can( 'manage_options' )`, and
- *   - verified against the admin-only `spsg_admin_protected` nonce, which is
+ *   - verified against the admin-only `spsg_admin_ajax_nonce` nonce, which is
  *     never emitted on the storefront. The frontend now emits only the
- *     unprivileged `spsg_frontend_protected` cart nonce, so the `ajd_protected`
+ *     unprivileged `spsg_frontend_ajax_nonce` cart nonce, so the `ajd_protected`
  *     nonce a visitor used to scrape is gone entirely.
  *
  * A rejected request never reaches `update_option`, so the option is unchanged.

@@ -152,7 +152,9 @@ class Bogo {
 				'buyXGetXEnableForVendor' => $is_enable,
             ]
         );
-        $action    = 'spsg_protected';
+		// The vendor dashboard is a frontend screen, so it carries the
+		// unprivileged frontend nonce — never the admin one.
+		$action    = 'spsg_frontend_ajax_nonce';
         $ajd_nonce = wp_create_nonce( $action );
 
         $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
