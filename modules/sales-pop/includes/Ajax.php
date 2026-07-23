@@ -93,20 +93,28 @@ class Ajax implements HookRegistry {
 	 * Strips any HTML/script from every string value while preserving
 	 * newlines (needed for the `virtual_locations` / `message_popup`
 	 * textarea fields) and leaving booleans, numbers and null untouched.
+	 * Product id lists are cast with `absint()` so the strict `in_array()`
+	 * lookup in EnqueueScript can never miss on a numeric string.
 	 * Used both on save and before the data is localized to the storefront,
 	 * so previously stored payloads are neutralized on render too.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param mixed $data Raw popup configuration value.
+	 * @param mixed  $data Raw popup configuration value.
+	 * @param string $key  Key the value was stored under, when recursing.
 	 *
 	 * @return mixed Sanitized value.
 	 */
-	public static function sanitize_popup_data( $data ) {
+	public static function sanitize_popup_data( $data, $key = '' ) {
+		if ( in_array( $key, self::get_id_list_fields(), true ) ) {
+			return array_values( array_map( 'absint', (array) $data ) );
+		}
+
 		if ( is_array( $data ) ) {
 			$sanitized = array();
-			foreach ( $data as $key => $value ) {
-				$sanitized[ sanitize_text_field( $key ) ] = self::sanitize_popup_data( $value );
+			foreach ( $data as $data_key => $value ) {
+				$data_key               = is_string( $data_key ) ? sanitize_text_field( $data_key ) : $data_key;
+				$sanitized[ $data_key ] = self::sanitize_popup_data( $value, (string) $data_key );
 			}
 
 			return $sanitized;
@@ -117,5 +125,26 @@ class Ajax implements HookRegistry {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Popup configuration keys that hold a list of product ids.
+	 *
+	 * Values under these keys are cast to positive integers instead of being
+	 * treated as free text.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string[]
+	 */
+	protected static function get_id_list_fields(): array {
+		/**
+		 * Filters the popup configuration keys treated as product id lists.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param string[] $fields Configuration keys holding product ids.
+		 */
+		return apply_filters( 'spsg_sales_pop_id_list_fields', array( 'popup_products' ) );
 	}
 }

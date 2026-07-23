@@ -209,11 +209,21 @@ class Ajax implements HookRegistry {
             wp_send_json_error( __( 'Category message id can\'nt be empty.' ) );
         }
 
-        $data          = ! empty( $_POST['data'] ) ? wc_clean( $_POST['data'] ) : array();
+		$data          = ! empty( $_POST['data'] ) ? wc_clean( wp_unslash( $_POST['data'] ) ) : array();
         $bogo_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
         $cat_ids       = ! empty( $bogo_settings['bogo_category_messages'] ) ? wp_list_pluck( $bogo_settings['bogo_category_messages'], 'id' ) : array();
-        if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids ) ) {
-            $index = array_search( $data['editableId'], $cat_ids );
+
+		// Ids are term ids — keep them integers. Existing rows may still hold
+		// numeric strings, so normalize both sides before comparing.
+		$data['id'] = absint( $data['id'] );
+		$cat_ids    = array_map( 'absint', $cat_ids );
+
+		if ( ! empty( $data['editableId'] ) ) {
+			$data['editableId'] = absint( $data['editableId'] );
+		}
+
+		if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids, true ) ) {
+			$index = array_search( $data['editableId'], $cat_ids, true );
 
             $bogo_settings['bogo_category_messages'][ $index ]['id']             = $data['id'];
             $bogo_settings['bogo_category_messages'][ $index ]['message']        = $data['message'];

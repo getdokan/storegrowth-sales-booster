@@ -108,10 +108,32 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
+	 * Whether the order bump frontend assets are needed on the current request.
+	 *
+	 * The bump only renders on checkout, so neither the script nor its nonce
+	 * needs to be emitted anywhere else. Filterable because the WooCommerce
+	 * checkout block can be placed on a page `is_checkout()` does not match.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	protected function needs_front_assets(): bool {
+		/**
+		 * Filters whether the order bump frontend assets are enqueued.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool $needed Whether the current request renders the order bump.
+		 */
+		return (bool) apply_filters( 'spsg_order_bump_needs_front_assets', is_checkout() );
+	}
+
+	/**
 	 * Style for frontend.
 	 */
 	public function front_styles() {
-		if ( ! is_checkout() ) {
+		if ( ! $this->needs_front_assets() ) {
 			return;
 		}
 
@@ -129,6 +151,10 @@ class EnqueueScript implements HookRegistry {
 	 * Script for frontend.
 	 */
 	public function front_scripts() {
+		if ( ! $this->needs_front_assets() ) {
+			return;
+		}
+
 		$ftime = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/js/order-bump-custom.js' ) );
 
 		wp_enqueue_script(

@@ -60,7 +60,9 @@
 		productAndImage = getRandomProductImage();
 
 		$('#virtual_name').text( virtual_name[ nameRandom ] );
-		$('#country').html( countryArray[countryRandom] );
+		// Locations are plain text — inject them as text so no markup can be
+		// introduced through the stored `virtual_locations` field.
+		$('#country').text( countryArray[countryRandom] );
 		$("#product_url").attr( "href", product_url[ productAndImage ] );
         $("#image_of_product").attr( "src", product_image[ productAndImage ] || popup_info.fallback_image_url );
         $('#product').text( products[ productAndImage ] );
@@ -127,6 +129,13 @@
 	var testMessage = testMessage.replace('{time}', $("#popup_time").html());
 	var testMessage = testMessage.replaceAll(/\s+/g,' ').trim();
 	var testMessage = testMessage.replaceAll('<>', '');
+	// `.html()` is required here: the placeholders above are replaced with real
+	// markup from the template (`#popup_title` carries the product <a> link), so
+	// `.text()` would print the tags instead of rendering the link. Every value
+	// that reaches this string is neutralized before it gets here — the popup
+	// config is run through Ajax::sanitize_popup_data() on save and again before
+	// it is localized, and the product/name/time fragments are injected with
+	// jQuery `.text()` above, which escapes them.
 	$('.custom-notification-content').html(testMessage);
 	if(link_new_tab){
 		$("#product_url_title").attr( "target", '_blank' );
