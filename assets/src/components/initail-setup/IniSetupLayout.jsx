@@ -54,15 +54,6 @@ const IniSetupLayout = () => {
     }
   };
 
-  const getUserDetails = async () => {
-    const params = {
-      _ajax_nonce: spsgAdmin.nonce,
-      action: "spsg_process_user_concent_data",
-      data: JSON.stringify(agreementData),
-    };
-    return await fetchData("/wp-admin/admin-ajax.php", params);
-  };
-
   const iniSetupChecker = async () => {
     const params = {
       _ajax_nonce: spsgAdmin.nonce,
@@ -114,12 +105,7 @@ const IniSetupLayout = () => {
             <Steps
               size="small"
               current={current}
-              onChange={(value) => {
-                setCurrent(value);
-                if (value !== 0) {
-                  getUserDetails();
-                }
-              }}
+              onChange={(value) => setCurrent(value)}
               items={steps}
             />
             <div className="steps-skipper-controller">
@@ -141,7 +127,6 @@ const IniSetupLayout = () => {
               stepSize={stepSize}
               agreementData={agreementData}
               handleCheckbox={handleCheckbox}
-              getUserDetails={getUserDetails}
               iniSetupChecker={iniSetupChecker}
             />
           </div>

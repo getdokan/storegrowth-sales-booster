@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\LegacyDataCleanup;
 use StorePulse\StoreGrowth\REST\ProductController;
 
 class CommonServiceProvider extends BootableServiceProvider {
@@ -12,7 +13,8 @@ class CommonServiceProvider extends BootableServiceProvider {
      */
 
     protected $services = [
-		ProductController::class
+		ProductController::class,
+		LegacyDataCleanup::class,
     ];
 
     /**
