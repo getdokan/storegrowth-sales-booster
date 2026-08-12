@@ -5,6 +5,9 @@ import AdminNotices from "./components/notices/AdminNotices";
 // TODO: It will merge with in future with base tailwind styles and will be removed from here. For now, it is required to make the plugin-ui work.
 import "@wedevs/plugin-ui/styles.css";
 
+// Must load after the plugin-ui styles, see the file for why.
+import "./preflight-reset.css";
+
 /**
  * Standalone app for the WPKit notice feed.
  *
