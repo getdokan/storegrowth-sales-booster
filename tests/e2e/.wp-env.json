@@ -1,6 +1,7 @@
 {
   "core": "WordPress/WordPress#6.9.6",
   "phpVersion": "7.4",
+  "testsEnvironment": false,
   "plugins": [
     "https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip",
     "https://github.com/WP-API/Basic-Auth/archive/refs/heads/master.zip",
