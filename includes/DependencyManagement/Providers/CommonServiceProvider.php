@@ -24,10 +24,10 @@ class CommonServiceProvider extends BootableServiceProvider {
 	 *
 	 * @var string[]
 	 */
-	protected $services = array(
+	protected $services = [
 		ProductController::class,
 		Upgrader::class,
-	);
+	];
 
 	/**
 	 * Boot the provider.
