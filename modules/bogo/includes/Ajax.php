@@ -222,6 +222,17 @@ class Ajax implements HookRegistry {
 			$data['editableId'] = absint( $data['editableId'] );
 		}
 
+		/**
+		 * Maximum number of stored BOGO category messages.
+		 *
+		 * Caps the option so it cannot be grown without bound.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param int $max Maximum category messages.
+		 */
+		$max_messages = (int) apply_filters( 'spsg_bogo_max_category_messages', 100 );
+
 		if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids, true ) ) {
 			$index = array_search( $data['editableId'], $cat_ids, true );
 
@@ -229,6 +240,17 @@ class Ajax implements HookRegistry {
             $bogo_settings['bogo_category_messages'][ $index ]['message']        = $data['message'];
             $bogo_settings['bogo_category_messages'][ $index ]['categoryStatus'] = $data['categoryStatus'];
         } else {
+            if ( count( $cat_ids ) >= $max_messages ) {
+                wp_send_json_error(
+                    sprintf(
+                        /* translators: %d: maximum number of category messages. */
+                        __( 'You can store at most %d category messages.', 'storegrowth-sales-booster' ),
+                        $max_messages
+                    ),
+                    400
+                );
+            }
+
             $bogo_settings['bogo_category_messages'][] = $data;
         }
 

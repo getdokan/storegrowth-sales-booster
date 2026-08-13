@@ -47,7 +47,7 @@ if ( ! empty( $offer_products ) ) : ?>
 						<li>
 							<div class="alternate-product-container">
 							<img src="<?php echo esc_url( $image_url[0] ); ?>" alt="product">
-							<div class="altenate-product-heading"><h3><?php echo $product->get_title(); ?></h3>
+							<div class="altenate-product-heading"><h3><?php echo esc_html( $product->get_title() ); ?></h3>
 							<span class="choosen-offer-product"
 								data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
                                 data-item-key="<?php echo esc_attr( $cart_item['parent_key'] ); ?>"
