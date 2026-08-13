@@ -39,7 +39,7 @@ function AdvancedSettings() {
       .then((res) => {
         setRemoveData(!!res?.remove_data_on_uninstall);
         notification.success({
-          message: __("Advanced settings", "storegrowth-sales-booster"),
+          message: __("Settings", "storegrowth-sales-booster"),
           description: __(
             "Your settings were saved.",
             "storegrowth-sales-booster"
@@ -48,7 +48,7 @@ function AdvancedSettings() {
       })
       .catch(() => {
         notification.error({
-          message: __("Advanced settings", "storegrowth-sales-booster"),
+          message: __("Settings", "storegrowth-sales-booster"),
           description: __(
             "Could not save your settings. Please try again.",
             "storegrowth-sales-booster"
@@ -61,7 +61,7 @@ function AdvancedSettings() {
   return (
     <div className="spsg-advanced-settings">
       <Card
-        title={__("Advanced", "storegrowth-sales-booster")}
+        title={__("Settings", "storegrowth-sales-booster")}
         style={{ maxWidth: 760, margin: "24px auto" }}
       >
         <Space direction="vertical" size="large" style={{ width: "100%" }}>

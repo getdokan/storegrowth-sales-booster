@@ -12,7 +12,7 @@ import AdvancedSettings from "./AdvancedSettings";
 addFilter("spsg_routes", "spsg/advanced", (routes) => {
   routes.push({
     name: "advanced",
-    label: __("Advanced", "storegrowth-sales-booster"),
+    label: __("Settings", "storegrowth-sales-booster"),
     path: "/advanced",
     element: <AdvancedSettings />,
   });
