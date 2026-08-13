@@ -36,48 +36,169 @@ class EnqueueScript implements HookRegistry {
 
 		// Assets for Admin Panel.
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+		// Invalidate the cached storefront popup payload when the popup config
+		// or any product changes.
+		add_action( 'update_option_spsg_popup_products', array( $this, 'flush_popup_cache' ) );
+		add_action( 'save_post_product', array( $this, 'flush_popup_cache' ) );
+		add_action( 'woocommerce_update_product', array( $this, 'flush_popup_cache' ) );
+		add_action( 'woocommerce_new_product', array( $this, 'flush_popup_cache' ) );
+		add_action( 'woocommerce_delete_product', array( $this, 'flush_popup_cache' ) );
+		add_action( 'woocommerce_trash_product', array( $this, 'flush_popup_cache' ) );
+	}
+
+	/**
+	 * Transient key for the resolved storefront popup payload.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const POPUP_CACHE_KEY = 'spsg_sales_pop_popup_info';
+
+	/**
+	 * Per-request memo for the resolved popup payload. `false` = not resolved
+	 * yet; `null` = resolved to "nothing to show".
+	 *
+	 * @var array|null|false
+	 */
+	private $popup_info_memo = false;
+
+	/**
+	 * Delete the cached storefront popup payload.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function flush_popup_cache(): void {
+		$this->popup_info_memo = false;
+		delete_transient( self::POPUP_CACHE_KEY );
 	}
 
 	/**
 	 * Add JS scripts.
+	 *
+	 * Only enqueues when the popup will actually display, and localizes a
+	 * payload resolved from the configured products alone.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'popup-custom-js', PluginHelper::get_modules_url( 'sales-pop/assets/js/popup-custom.js' ), array( 'jquery' ), time(), true );
-		$args             = array(
-			'post_type'      => 'product',
-			'posts_per_page' => -1,
+		$popup_info = $this->get_storefront_popup_info();
+
+		if ( null === $popup_info ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'popup-custom-js',
+			PluginHelper::get_modules_url( 'sales-pop/assets/js/popup-custom.js' ),
+			array( 'jquery' ),
+			STOREGROWTH_VERSION,
+			true
 		);
-		$products         = get_posts( $args );
+
+		wp_localize_script( 'popup-custom-js', 'popup_info', $popup_info );
+	}
+
+	/**
+	 * Add CSS files.
+	 */
+	public function enqueue_styles() {
+		if ( null === $this->get_storefront_popup_info() ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'popup-custom-css',
+			PluginHelper::get_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
+			array(),
+			STOREGROWTH_VERSION
+		);
+
+		// The Font Awesome CDN enqueue was removed: this module renders no
+		// FontAwesome icons and the stackpath CDN it pointed at is retired, so
+		// it was a guaranteed failed, unconsented third-party request per page.
+	}
+
+	/**
+	 * Resolve the storefront popup payload, querying only the configured
+	 * products instead of the whole catalogue.
+	 *
+	 * Returns null when there is nothing to display, so callers can skip
+	 * enqueuing assets entirely. The result is memoized per request and cached
+	 * in a transient that is flushed on popup or product changes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array|null
+	 */
+	private function get_storefront_popup_info(): ?array {
+		if ( false !== $this->popup_info_memo ) {
+			return $this->popup_info_memo;
+		}
+
+		$cached = get_transient( self::POPUP_CACHE_KEY );
+		if ( is_array( $cached ) ) {
+			$this->popup_info_memo = $cached;
+			return $cached;
+		}
+
 		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', false );
 
-		if ( false !== $popup_properties ) {
-			$popup_properties = maybe_unserialize( $popup_properties );
+		if ( false === $popup_properties || empty( $popup_properties ) ) {
+			$this->popup_info_memo = null;
+			return null;
+		}
 
-			// Neutralize any HTML/script that may already be stored (e.g. from
-			// a payload saved before the create_popup handler was hardened).
-			$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
+		$popup_properties = maybe_unserialize( $popup_properties );
 
-			$popup_products    = $popup_properties['popup_products'] ?? array();
-			$product_list      = array();
-			$product_url       = array();
-			$product_image_url = array();
-			if ( $popup_products ) {
-				foreach ( $products as $product ) {
-					if ( ! in_array( $product->ID, $popup_products, true ) ) {
-						continue;
-					}
-					$external_link = ! empty( $popup_properties['external_link'] );
-					if ( $external_link || ! wc_get_product( $product->ID )->is_type( 'external' ) ) {
-						$product_list[]      = $product->post_title;
-						$image_url           = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
-						$product_image_url[] = isset( $image_url[0] ) ? $image_url[0] : false;
-						$product_url[]       = get_permalink( $product->ID );
+		// Neutralize any HTML/script that may already be stored (e.g. from a
+		// payload saved before the create_popup handler was hardened).
+		$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
 
-					}
-				}
+		$popup_products = $popup_properties['popup_products'] ?? array();
+		$popup_products = array_values( array_filter( array_map( 'absint', (array) $popup_products ) ) );
+
+		if ( empty( $popup_products ) ) {
+			$this->popup_info_memo = null;
+			return null;
+		}
+
+		// Query ONLY the configured products (bounded by their count),
+		// preserving the date-DESC order the previous full-catalogue scan
+		// produced.
+		$products = get_posts(
+			array(
+				'post_type'      => 'product',
+				'post__in'       => $popup_products,
+				'posts_per_page' => count( $popup_products ),
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'post_status'    => 'publish',
+			)
+		);
+
+		$external_link     = ! empty( $popup_properties['external_link'] );
+		$product_list      = array();
+		$product_url       = array();
+		$product_image_url = array();
+
+		foreach ( $products as $product ) {
+			$wc_product = wc_get_product( $product->ID );
+
+			if ( ! $wc_product ) {
+				continue;
 			}
-		} else {
-			return;
+
+			if ( ! $external_link && $wc_product->is_type( 'external' ) ) {
+				continue;
+			}
+
+			$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $product->ID ), 'single-post-thumbnail' );
+
+			$product_list[]      = $product->post_title;
+			$product_image_url[] = isset( $image_url[0] ) ? $image_url[0] : false;
+			$product_url[]       = get_permalink( $product->ID );
 		}
 
 		$virtual_name = array();
@@ -85,9 +206,7 @@ class EnqueueScript implements HookRegistry {
 		if ( isset( $popup_properties['virtual_name'] ) ) {
 			if ( is_string( $popup_properties['virtual_name'] ) ) {
 				$virtual_name = explode( ',', $popup_properties['virtual_name'] );
-			}
-
-			if ( is_array( $popup_properties['virtual_name'] ) ) {
+			} elseif ( is_array( $popup_properties['virtual_name'] ) ) {
 				$virtual_name = $popup_properties['virtual_name'];
 			}
 		}
@@ -109,24 +228,13 @@ class EnqueueScript implements HookRegistry {
 			'virtual_locations'    => $virtual_locations,
 			'virtual_name'         => $virtual_name,
 			'popup_all_properties' => $popup_properties,
-			'fallback_image_url'   => $default_product_image_url = plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
+			'fallback_image_url'   => plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
 		);
 
-		wp_localize_script( 'popup-custom-js', 'popup_info', $popup_info );
-	}
+		set_transient( self::POPUP_CACHE_KEY, $popup_info, DAY_IN_SECONDS );
+		$this->popup_info_memo = $popup_info;
 
-	/**
-	 * Add CSS files.
-	 */
-	public function enqueue_styles() {
-		$ftime = filemtime( PluginHelper::get_modules_path( 'sales-pop/assets/css/popup-custom.css' ) );
-		wp_enqueue_style(
-			'popup-custom-css',
-			PluginHelper::get_modules_url( 'sales-pop/assets/css/popup-custom.css' ),
-			null,
-			$ftime
-		);
-		wp_enqueue_style( 'font-awesome-css', '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', null, '1.0' );
+		return $popup_info;
 	}
 
 	/**
