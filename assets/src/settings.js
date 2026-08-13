@@ -3,6 +3,7 @@ import { createRoot, StrictMode } from '@wordpress/element';
 import { HashRouter } from 'react-router-dom';
 
 import './components/settings';
+import './components/advanced';
 import settingsStore from './settings-store';
 import Layout from "./components/settings/Layout";
 
