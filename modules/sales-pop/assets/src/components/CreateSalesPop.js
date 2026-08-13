@@ -5,7 +5,7 @@ import { applyFilters } from '@wordpress/hooks';
 import SettingsSection from "../../../../../assets/src/components/settings/Panels/PanelSettings/SettingsSection";
 import Switcher from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/Switcher";
 import TextAreaBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/TextAreaBox";
-import MultiSelectBox from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/MultiSelectBox";
+import ProductAsyncMultiSelect from "../../../../../assets/src/components/settings/Panels/PanelSettings/Fields/ProductAsyncMultiSelect";
 import { createPopupForm } from "../helper";
 import { Fragment } from "react";
 import ActionsHandler from "sales-booster/src/components/settings/Panels/PanelSettings/ActionsHandler";
@@ -149,10 +149,9 @@ function CreateSalesPop( { onFormSave, upgradeTeaser } ) {
         ) }
 
         { parseInt( createPopupFormData?.product_source ) === 1 && (
-          <MultiSelectBox
+          <ProductAsyncMultiSelect
             name={ 'popup_products' }
             changeHandler={ onFieldChange }
-            options={ productListForSelect }
             fieldValue={ selectedPopupProducts?.map( Number ) }
             needUpgrade={ isProductsSelectReachedlimit? upgradeTeaser : false }
             title={ __( 'Select Popup Products', 'storegrowth-sales-booster' ) }

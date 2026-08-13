@@ -350,11 +350,25 @@ class EnqueueScript implements HookRegistry {
 	 * @return array|int[]|\WP_Post[]
 	 */
 	public function get_billing_product_list() {
-		// Get all orders.
+		/**
+		 * How many recent orders the "Latest Orders" source scans.
+		 *
+		 * Bounded so the query no longer grows with total order history. The
+		 * products this source offers are derived from these most-recent
+		 * orders rather than every order ever placed.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param int $limit Number of recent orders to scan.
+		 */
+		$orders_limit = (int) apply_filters( 'spsg_sales_pop_billing_orders_limit', 100 );
+
 		$orders = wc_get_orders(
 			array(
-				'limit'  => -1,
-				'status' => array( 'processing', 'completed', 'on-hold' ),
+				'limit'   => $orders_limit,
+				'orderby' => 'date',
+				'order'   => 'DESC',
+				'status'  => array( 'processing', 'completed', 'on-hold' ),
 			)
 		);
 
@@ -380,8 +394,9 @@ class EnqueueScript implements HookRegistry {
 		$ordered_products = array();
 		if ( ! empty( $ordered_product_ids ) ) {
 			$args = array(
-				'posts_per_page' => -1,
+				'posts_per_page' => count( $ordered_product_ids ), // Bounded by the ids already gathered.
 				'post_type'      => 'product',
+				'post_status'    => 'publish',
 				'post__in'       => $ordered_product_ids, // Limit posts to ordered product IDs.
 			);
 
@@ -400,9 +415,26 @@ class EnqueueScript implements HookRegistry {
 	 * @return int[]|\WP_Post[]
 	 */
 	public function get_selection_product_list() {
+		/**
+		 * How many recent products seed the selection list.
+		 *
+		 * The lite "Select Products" source searches the full catalogue live
+		 * through the REST products endpoint, so this bounded seed is only a
+		 * fallback (and the source list the Pro category filter reads). It no
+		 * longer loads the whole catalogue.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param int $limit Number of recent products to seed with.
+		 */
+		$product_limit = (int) apply_filters( 'spsg_sales_pop_selection_products_limit', 200 );
+
 		$args = array(
 			'post_type'      => 'product',
-			'posts_per_page' => -1,
+			'post_status'    => 'publish',
+			'posts_per_page' => $product_limit,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
 		);
 
 		return get_posts( $args );
@@ -450,8 +482,9 @@ class EnqueueScript implements HookRegistry {
 
 			// Fetch product objects.
 			$args = array(
-				'posts_per_page' => -1,
+				'posts_per_page' => count( $product_ids ), // Already capped to 10 ids above.
 				'post_type'      => 'product',
+				'post_status'    => 'publish',
 				'post__in'       => $product_ids, // Limit posts to ordered product IDs.
 			);
 
@@ -469,31 +502,45 @@ class EnqueueScript implements HookRegistry {
 	 * @return array
 	 */
 	public function get_category_product_list() {
-		// Get all product categories.
-		$categories = $this->category_list();
+		/**
+		 * Product cap when grouping products by category.
+		 *
+		 * Replaces the previous per-category query loop, which ran one
+		 * unbounded query per category and scaled with the number of
+		 * categories. This scans a bounded set of recent products once.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param int $limit Maximum products scanned across all categories.
+		 */
+		$product_limit = (int) apply_filters( 'spsg_sales_pop_category_products_limit', 200 );
 
-		// Create an empty array to store the category name as the key and products as the value.
+		$product_ids = get_posts(
+			array(
+				'post_type'      => 'product',
+				'post_status'    => 'publish',
+				'posts_per_page' => $product_limit,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'fields'         => 'ids',
+			)
+		);
+
 		$category_products = array();
 
-		// Loop through the categories.
-		foreach ( $categories as $category_id => $category_name ) {
-			// Get the products in the current category.
-			$args = array(
-				'post_type'      => 'product',
-				'posts_per_page' => -1,
-				'fields'         => 'ids',
-				'tax_query'      => array(
-					array(
-						'taxonomy' => 'product_cat',
-						'field'    => 'term_id',
-						'terms'    => $category_id,
-					),
-				),
-			);
+		if ( empty( $product_ids ) ) {
+			return $category_products;
+		}
 
-			$products = get_posts( $args );
-			// Assign products to the category id.
-			$category_products[ $category_id ] = $products;
+		// One term query for every scanned product, grouped by category id.
+		$terms = wp_get_object_terms( $product_ids, 'product_cat', array( 'fields' => 'all_with_object_id' ) );
+
+		if ( is_wp_error( $terms ) ) {
+			return $category_products;
+		}
+
+		foreach ( $terms as $term ) {
+			$category_products[ $term->term_id ][] = $term->object_id;
 		}
 
 		return $category_products;
