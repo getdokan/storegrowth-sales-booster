@@ -51,9 +51,15 @@ class Ajax {
 
 		$method = sanitize_text_field( wp_unslash( $_POST['method'] ) );
 
-		if ( method_exists( $this, $method ) ) {
-			call_user_func( array( $this, $method ) );
+		// Only these methods may be dispatched from this endpoint. Never call an
+		// arbitrary method name taken from the request.
+		$allowed_methods = array( 'get_all_modules', 'update_module_status' );
+
+		if ( ! in_array( $method, $allowed_methods, true ) || ! method_exists( $this, $method ) ) {
+			wp_send_json_error( __( 'Method not allowed.', 'storegrowth-sales-booster' ), 400 );
 		}
+
+		call_user_func( array( $this, $method ) );
 
 		wp_die();
 	}

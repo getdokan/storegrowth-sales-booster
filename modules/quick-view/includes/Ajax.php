@@ -73,6 +73,11 @@ class Ajax implements HookRegistry {
 
 	/**
 	 * Quick view Ajax call.
+	 *
+	 * Intentionally public (registered on `wp_ajax_nopriv_*`): quick view is a
+	 * storefront feature anonymous shoppers use. It carries no capability check
+	 * by design — it is guarded by a frontend nonce and only renders read-only
+	 * product markup for a requested product id, writing nothing.
 	 */
 	public function ajax_quickview_callback() {
 		check_ajax_referer( 'spsgqcv-security', 'nonce' );

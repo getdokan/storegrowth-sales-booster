@@ -78,6 +78,12 @@ class Ajax implements HookRegistry {
 	/**
 	 * Frontend ajax.
 	 *
+	 * Intentionally public (registered on `wp_ajax_nopriv_*`): the fly cart is
+	 * a storefront feature anonymous shoppers use. It carries no capability
+	 * check by design — it is guarded by a frontend nonce, dispatches only the
+	 * allow-listed `get_cart_contents`, and reads only the current visitor's
+	 * own cart via `WC()->cart`, writing nothing.
+	 *
 	 * @uses get_cart_contents
 	 */
 	public function fly_cart_frontend() {
