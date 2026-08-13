@@ -255,11 +255,25 @@ jobs:
 
       # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
       # .wp-env.json lives in tests/e2e, so wp-env runs from there.
+      # wp-env pulls WooCommerce, Basic-Auth and Storefront over the network on
+      # boot. With four shards starting at once, downloads.wordpress.org resets
+      # the occasional connection (ECONNRESET mid-TLS) and takes the whole shard
+      # down — it hit 2 of 4 on one run and both passed on a plain rerun. Retry
+      # in place rather than burn a rerun; `wp-env start` is idempotent, so a
+      # second attempt resumes the half-built environment.
       - name: Start WordPress (wp-env)
         working-directory: tests/e2e
         run: |
           npm -g install @wordpress/env
-          wp-env start
+          for attempt in 1 2 3; do
+            if wp-env start; then
+              exit 0
+            fi
+            echo "::warning::wp-env start failed (attempt ${attempt}/3); retrying"
+            sleep $(( attempt * 15 ))
+          done
+          echo "::error::wp-env start failed after 3 attempts."
+          exit 1
 
       # Storefront is a classic theme; the storefront specs assert against its
       # classic WooCommerce markup (.summary / .entry-summary / ul.products).
