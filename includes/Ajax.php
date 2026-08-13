@@ -41,6 +41,10 @@ class Ajax {
 	public function admin_ajax() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		if ( ! isset( $_POST['method'] ) ) {
 			wp_die();
 		}
@@ -103,6 +107,11 @@ class Ajax {
 	 */
 	public function spsg_inisetup_flag_update() {
 		check_ajax_referer( 'spsg_ajax_nonce', '_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		$flag_data = isset( $_POST['spsg_ini_completion'] );
 		update_option( 'spsg_ini_completion', $flag_data );
 		wp_send_json_success( array( 'message' => 'Success message' ) );

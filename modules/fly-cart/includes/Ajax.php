@@ -41,6 +41,10 @@ class Ajax implements HookRegistry {
 	public function save_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		if ( ! isset( $_POST['form_data'] ) ) {
 			wp_send_json_error();
 		}
@@ -62,6 +66,10 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		$form_data = Helper::get_settings( 'spsg_fly_cart_settings', array() );
 
 		wp_send_json_success( $form_data );
@@ -74,22 +82,35 @@ class Ajax implements HookRegistry {
 	 */
 	public function fly_cart_frontend() {
 		check_ajax_referer( 'spsg_frontend_ajax' );
-		if ( ! isset( $_REQUEST['method'] ) ) {
+
+		$method = isset( $_REQUEST['method'] ) ? sanitize_key( $_REQUEST['method'] ) : '';
+
+		/**
+		 * Methods callable from the public (nopriv) fly-cart endpoint.
+		 *
+		 * This is an explicit allow-list. The handler must never dispatch to an
+		 * arbitrary method name taken from the request, so any name not listed
+		 * here is rejected before `call_user_func`.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param string[] $allowed_methods Method names callable on this class.
+		 */
+		$allowed_methods = apply_filters( 'spsg_fly_cart_frontend_allowed_methods', array( 'get_cart_contents' ) );
+
+		if ( ! in_array( $method, $allowed_methods, true ) ) {
 			wp_send_json_error( array( 'message' => __( 'Method Not Found', 'storegrowth-sales-booster' ) ) );
 		}
-		$method = isset( $_REQUEST['method'] ) ? sanitize_key( $_REQUEST['method'] ) : '';
-		if ( method_exists( $this, $method ) ) {
-			$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array(); //phpcs:ignore
-			$data = wp_unslash( $data );
-			$data = array_map( 'sanitize_text_field', $data );
-			wp_send_json_success(
-				array(
-					'cartCountLocation' => esc_html( wc()->cart->get_cart_contents_count() ),
-					'htmlResponse'      => call_user_func( array( $this, $method ), $data ),
-				)
-			);
-		}
-		wp_die();
+
+		$data = isset( $_REQUEST['data'] ) ? wp_unslash( $_REQUEST['data'] ) : array(); //phpcs:ignore
+		$data = array_map( 'sanitize_text_field', $data );
+
+		wp_send_json_success(
+			array(
+				'cartCountLocation' => esc_html( wc()->cart->get_cart_contents_count() ),
+				'htmlResponse'      => call_user_func( array( $this, $method ), $data ),
+			)
+		);
 	}
 
 	/**

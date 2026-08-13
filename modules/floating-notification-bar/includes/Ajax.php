@@ -37,6 +37,10 @@ class Ajax implements HookRegistry {
 	public function save_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		$form_data = isset( $_POST['form_data'] ) ? json_decode( wp_unslash( $_POST['form_data'] ), true ) : array(); 
 
 		$bar_data = isset( $form_data['shipping_bar_data'] ) ? $form_data['shipping_bar_data'] : array();
@@ -56,6 +60,10 @@ class Ajax implements HookRegistry {
 	 */
 	public function get_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
 		wp_send_json_success( Helper::get_settings() );
 	}
