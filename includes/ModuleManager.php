@@ -120,10 +120,15 @@ class ModuleManager {
 	 * @return ModuleSkeleton|null
 	 */
 	public function get( string $module_id ): ?ModuleSkeleton {
-		$module =  array_find( $this->get_all(), function ( ModuleSkeleton $module ) use ( $module_id ) {
-			return $module->get_id() === $module_id;
-		} );
+		// A plain loop instead of array_find(): the latter is a PHP 8.4 function
+		// only polyfilled by WordPress core from 6.8 onward, so it fataled when
+		// toggling a module on WordPress < 6.8 with PHP < 8.4.
+		foreach ( $this->get_all() as $module ) {
+			if ( $module->get_id() === $module_id ) {
+				return $module;
+			}
+		}
 
-		return $module;
+		return null;
 	}
 }
