@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper as PD_Helper;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
