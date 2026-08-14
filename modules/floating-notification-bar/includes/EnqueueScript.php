@@ -129,7 +129,7 @@ class EnqueueScript implements HookRegistry {
 	 * stripping quotes, braces, semicolons and angle brackets, so a stored
 	 * value can never break out of the CSS rule it is interpolated into.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @param mixed $value Stored colour value.
 	 *

@@ -251,7 +251,7 @@ class Ajax implements HookRegistry {
 		 *
 		 * Caps the option so it cannot be grown without bound.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.2
 		 *
 		 * @param int $max Maximum category messages.
 		 */
@@ -359,7 +359,7 @@ class Ajax implements HookRegistry {
 	 * Returns null when no active offer that the current cart qualifies for
 	 * authorises adding this product as its reward, so callers add nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @param int $offer_product_id Requested reward product id (parent id for a
 	 *                              variable gift).

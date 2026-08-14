@@ -20,21 +20,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Notice asking the merchant to run the pending database migrations.
  *
- * @since SPSG_VERSION
+ * @since 2.1.2
  */
 class UpgradeNoticeProvider implements NoticeProviderInterface {
 
 	/**
 	 * Key identifying the notice.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	const NOTICE_KEY = 'spsg_database_upgrade_required';
 
 	/**
 	 * Migration manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var MigrationManager
 	 */
@@ -43,7 +43,7 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @param MigrationManager $manager Migration manager.
 	 */
@@ -54,7 +54,7 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 	/**
 	 * Return the upgrade notice while migrations are pending.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return array
 	 */

@@ -84,7 +84,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * Returns null when no bump the current cart qualifies for offers this
 	 * product, so callers add nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @param int $offer_product_id Requested bump product id.
 	 *

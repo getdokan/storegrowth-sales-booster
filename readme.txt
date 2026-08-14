@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 Requires PHP: 7.4
 WC requires at least: 8.0
 License: GPLv2 or later
@@ -331,6 +331,16 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.1.2 (August 14, 2026) =
+
+* Security: BOGO and Upsell Order Bump prices are now derived on the server from the saved offer configuration — a price sent by the browser is ignored, so a visitor can no longer add an offer product at a price of their own choosing.
+* Security: Stored settings are escaped before output — BOGO popup product titles, Sales Pop product markup, and the Floating Notification Bar colour and size values.
+* Enhancement: Declared compatibility with WooCommerce High-Performance Order Storage (HPOS), so the plugin is no longer listed as incompatible on HPOS stores.
+* Enhancement: Removed the unused consent data collection and added a one-time cleanup that deletes the leftover, autoloaded `spsg_user_consent_data` option.
+* Fix: Toggling a module no longer triggers a fatal error on WordPress below 6.8 with PHP below 8.4. The minimum supported WordPress version is now stated as 6.2 consistently.
+* Fix: The Floating Notification Bar again offsets itself when the Progressive Discount Banner is active, so the two bars no longer overlap.
+* Fix: The Dokan integration no longer loads its admin scripts outside the StoreGrowth settings page, removing the "Missing Dependencies" notice when BOGO is disabled.
 
 = v2.1.1 (July 23, 2026) =
 

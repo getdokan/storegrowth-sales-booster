@@ -98,7 +98,7 @@ class Ajax implements HookRegistry {
 		 * arbitrary method name taken from the request, so any name not listed
 		 * here is rejected before `call_user_func`.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.1.2
 		 *
 		 * @param string[] $allowed_methods Method names callable on this class.
 		 */
