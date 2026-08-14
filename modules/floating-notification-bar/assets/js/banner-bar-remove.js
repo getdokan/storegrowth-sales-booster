@@ -2,13 +2,13 @@
   // Check if spsgLocalizedData is defined and not empty
 
   if (typeof spsg_fnb_data !== "undefined") {
-    let banner_device_view = spsg_fnb_data.banner_device_view;
+    let banner_device_view = spsg_fnb_data.banner_device_view || [];
     let bar_position = spsg_fnb_data.bar_position;
     let banner_delay = spsg_fnb_data.banner_delay;
     let scroll_banner_delay = spsg_fnb_data.scroll_banner_delay;
     let banner_trigger = spsg_fnb_data.banner_trigger;
     let banner_height = spsg_fnb_data.banner_height;
-    let button_view = spsg_fnb_data.button_view;
+    let button_view = spsg_fnb_data.button_view || [];
     let countdown_start_date = spsg_fnb_data.countdown_start_date;
     let countdown_end_date = spsg_fnb_data.countdown_end_date;
     let coupon_code = spsg_fnb_data?.cupon_code?.toUpperCase();
@@ -259,6 +259,6 @@
       }
     });
   } else {
-    console.lo("banner_device_view is undefined or empty.");
+    console.log("banner_device_view is undefined or empty.");
   }
 })(jQuery);
