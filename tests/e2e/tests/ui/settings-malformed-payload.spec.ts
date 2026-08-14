@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test';
-import { spsgAdminAjax, moduleAjax, getSpsgAdmin } from '../../helpers/ajax';
+import { spsgAdminAjax, moduleAjax } from '../../helpers/ajax';
 import { MODULES } from '../../data/modules';
 
 // Regression guard for the settings-wipe reported on PR #550.
@@ -90,14 +90,11 @@ test.describe('Admin · settings survive a malformed payload', { tag: '@ui' }, (
       const marker = `survives-${h.moduleId}`;
       await saveViaAjax(page, h.save, { form_data: { e2e_marker: marker } });
 
-      // A scalar `form_data` is what array_map() choked on.
-      const { ajax_url, nonce } = await getSpsgAdmin(page);
+      // A scalar `form_data` is what array_map() choked on. The handler answers
+      // 400, so read the body regardless of status.
       for (const scalar of ['not-an-array', '5']) {
-        const res = await page.request.post(ajax_url, {
-          form: { action: h.save, _ajax_nonce: nonce, form_data: scalar },
-        });
-        const body = res.status() === 200 ? JSON.parse((await res.text()) || 'null') : null;
-        expect(body?.success, `${h.save} must not report success for form_data="${scalar}"`).toBe(false);
+        const res = await moduleAjax(page, h.save, { form_data: scalar });
+        expect(res.body?.success, `${h.save} must not report success for form_data="${scalar}"`).toBe(false);
       }
 
       const get = await moduleAjax(page, h.get);
