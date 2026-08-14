@@ -37,6 +37,10 @@ class Ajax implements HookRegistry {
 	public function save_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		if ( ! isset( $_POST['data'] ) ) {
 			wp_send_json_error();
 		}
@@ -58,6 +62,10 @@ class Ajax implements HookRegistry {
 	 */
 	public function get_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
 		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings', array() );
 

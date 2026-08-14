@@ -41,15 +41,25 @@ class Ajax {
 	public function admin_ajax() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		if ( ! isset( $_POST['method'] ) ) {
 			wp_die();
 		}
 
 		$method = sanitize_text_field( wp_unslash( $_POST['method'] ) );
 
-		if ( method_exists( $this, $method ) ) {
-			call_user_func( array( $this, $method ) );
+		// Only these methods may be dispatched from this endpoint. Never call an
+		// arbitrary method name taken from the request.
+		$allowed_methods = array( 'get_all_modules', 'update_module_status' );
+
+		if ( ! in_array( $method, $allowed_methods, true ) || ! method_exists( $this, $method ) ) {
+			wp_send_json_error( __( 'Method not allowed.', 'storegrowth-sales-booster' ), 400 );
 		}
+
+		call_user_func( array( $this, $method ) );
 
 		wp_die();
 	}
@@ -103,6 +113,11 @@ class Ajax {
 	 */
 	public function spsg_inisetup_flag_update() {
 		check_ajax_referer( 'spsg_ajax_nonce', '_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		$flag_data = isset( $_POST['spsg_ini_completion'] );
 		update_option( 'spsg_ini_completion', $flag_data );
 		wp_send_json_success( array( 'message' => 'Success message' ) );
