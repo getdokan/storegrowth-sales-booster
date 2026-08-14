@@ -31,6 +31,8 @@ function shouldExcludeFile(file) {
   const excludedFiles = [
     ".git",
     ".gitignore",
+    ".wordpress-org",
+    ".claude",
     "node_modules",
     "package.json",
     "lerna-debug.log",
@@ -72,6 +74,8 @@ async function archive() {
     ".git",
     ".gitignore",
     "node_modules",
+    ".claude",
+    ".wordpress-org",
     "package.json",
     "lerna-debug.log",
     "lerna.json",
