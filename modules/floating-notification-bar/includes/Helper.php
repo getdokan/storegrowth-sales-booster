@@ -25,7 +25,7 @@ class Helper {
 	 * Mirrors the defaults used by the settings UI so that a site which has
 	 * never saved the module settings still gets usable values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return array
 	 */

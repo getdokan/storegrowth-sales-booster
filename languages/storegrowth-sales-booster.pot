@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-14T05:27:24+00:00\n"
+"POT-Creation-Date: 2026-08-14T11:05:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: storegrowth-sales-booster\n"
@@ -101,21 +101,21 @@ msgstr ""
 #: modules/bogo/includes/Ajax.php:229
 #: modules/bogo/includes/Ajax.php:292
 #: modules/countdown-timer/includes/Ajax.php:42
-#: modules/countdown-timer/includes/Ajax.php:64
+#: modules/countdown-timer/includes/Ajax.php:67
 #: modules/direct-checkout/includes/Ajax.php:41
 #: modules/direct-checkout/includes/Ajax.php:67
 #: modules/floating-notification-bar/includes/Ajax.php:41
-#: modules/floating-notification-bar/includes/Ajax.php:65
+#: modules/floating-notification-bar/includes/Ajax.php:77
 #: modules/fly-cart/includes/Ajax.php:45
-#: modules/fly-cart/includes/Ajax.php:70
+#: modules/fly-cart/includes/Ajax.php:73
 #: modules/progressive-discount-banner/includes/Ajax.php:41
-#: modules/progressive-discount-banner/includes/Ajax.php:65
+#: modules/progressive-discount-banner/includes/Ajax.php:77
 #: modules/quick-view/includes/Ajax.php:44
-#: modules/quick-view/includes/Ajax.php:66
+#: modules/quick-view/includes/Ajax.php:69
 #: modules/sales-pop/includes/Ajax.php:45
 #: modules/sales-pop/includes/Ajax.php:61
 #: modules/stock-bar/includes/Ajax.php:42
-#: modules/stock-bar/includes/Ajax.php:64
+#: modules/stock-bar/includes/Ajax.php:67
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -964,6 +964,16 @@ msgstr ""
 msgid "Upload a custom image."
 msgstr ""
 
+#: modules/countdown-timer/includes/Ajax.php:49
+#: modules/floating-notification-bar/includes/Ajax.php:55
+#: modules/fly-cart/includes/Ajax.php:52
+#: modules/progressive-discount-banner/includes/Ajax.php:55
+#: modules/quick-view/includes/Ajax.php:51
+#: modules/sales-pop/includes/Ajax.php:75
+#: modules/stock-bar/includes/Ajax.php:49
+msgid "Invalid settings payload."
+msgstr ""
+
 #: modules/countdown-timer/includes/CommonHooks.php:68
 #: modules/countdown-timer/includes/CountdownTimerModule.php:66
 #: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:60
@@ -1046,11 +1056,11 @@ msgstr ""
 msgid "Discount Banner"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Helper.php:43
+#: modules/floating-notification-bar/includes/Helper.php:63
 msgid "Shop More Than $100 to get Free Shipping"
 msgstr ""
 
-#: modules/fly-cart/includes/Ajax.php:108
+#: modules/fly-cart/includes/Ajax.php:111
 msgid "Method Not Found"
 msgstr ""
 

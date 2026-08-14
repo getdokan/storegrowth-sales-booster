@@ -32,7 +32,7 @@ class CommonServiceProvider extends BootableServiceProvider {
 	/**
 	 * Whether the services have already been registered.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var bool
 	 */
