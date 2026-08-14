@@ -44,8 +44,11 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		if ( ! isset( $_POST['form_data'] ) ) {
-			wp_send_json_error();
+		// array_map() over a non-array returns null on PHP 7.4 (and throws on
+		// PHP 8), so an unvalidated payload would overwrite the stored settings
+		// with nothing. Reject it instead.
+		if ( ! isset( $_POST['form_data'] ) || ! is_array( $_POST['form_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
