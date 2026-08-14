@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 import { setModuleActive } from '../../helpers/ajax';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
-import { addToCart, emptyCart, computedStyle } from '../../helpers/storefront';
+import { addToCart, emptyCart, computedStyle, placeOrderClassicCOD } from '../../helpers/storefront';
 import { getProductIdBySlug, apiFetch } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
@@ -123,6 +123,44 @@ test.describe('Storefront · Upsell Order Bump', { tag: '@ui' }, () => {
     await expect(page.locator('.woocommerce-checkout-review-order, #order_review')).toContainText(PRODUCTS.b.name, {
       timeout: 15000,
     });
+  });
+
+  test('an accepted bump stamps campaign attribution onto the placed order', async ({ page, api }) => {
+    // Cash on Delivery lets the classic checkout complete without a real gateway.
+    await api.put('/wp-json/wc/v3/payment_gateways/cod', { data: { enabled: true } });
+
+    const targetId = await getProductIdBySlug(page, PRODUCTS.a.slug);
+    const offerId = await getProductIdBySlug(page, PRODUCTS.b.slug);
+    createdBumpId = await createBump(page, targetId, offerId); // offer_type discount, 10%
+
+    await addToCart(page, targetId);
+    await page.goto('/checkout/');
+    await page.locator(`${BUMP} input[type="checkbox"]`).first().check();
+    await expect(page.locator('.woocommerce-checkout-review-order, #order_review')).toContainText(PRODUCTS.b.name, {
+      timeout: 15000,
+    });
+
+    const orderId = await placeOrderClassicCOD(page);
+
+    const res = await api.get(`/wp-json/wc/v3/orders/${orderId}`);
+    expect(res.ok()).toBeTruthy();
+    const order = await res.json();
+
+    // Order-level aggregate records the influencing campaign.
+    const aggregate = (order.meta_data ?? []).find((m: any) => m.key === '_spsg_influencing_offers');
+    expect(aggregate, 'order carries _spsg_influencing_offers').toBeTruthy();
+    expect(String(aggregate.value)).toContain(`order_bump:${createdBumpId}`);
+
+    // The bump line item carries the stamp.
+    const metaOf = (li: any, key: string) => (li.meta_data ?? []).find((m: any) => m.key === key)?.value;
+    const bumpLine = (order.line_items ?? []).find(
+      (li: any) => metaOf(li, '_spsg_campaign_id') === `order_bump:${createdBumpId}`,
+    );
+    expect(bumpLine, 'a line item carries the order_bump stamp').toBeTruthy();
+    expect(metaOf(bumpLine, '_spsg_campaign_type')).toBe('order_bump');
+    expect(metaOf(bumpLine, '_spsg_reward_type')).toBe('discount');
+
+    await api.delete(`/wp-json/wc/v3/orders/${orderId}`, { params: { force: 'true' } }).catch(() => {});
   });
 
   test('no order bump on checkout when no bump is configured', async ({ page }) => {

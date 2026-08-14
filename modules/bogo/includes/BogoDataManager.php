@@ -340,6 +340,10 @@ class BogoDataManager {
 		return array_map( function( $offer ) {
 			// Use the same formatting as get_bogo_offer for consistency
 			$formatted_offer = array(
+				// Stable identity for revenue attribution — the database row id and
+				// type flow through to the cart injection sites unchanged.
+				'id'               => $offer['id'] ?? null,
+				'type'             => $offer['type'] ?? 'global',
 				'offered_products' => $offer['offered_products'] ?? null,
 				'bogo_deal_type'   => $offer['bogo_deal_type'] ?? 'different',
 				'offer_type'       => $offer['offer_type'] ?? 'free',

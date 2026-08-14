@@ -42,3 +42,37 @@ export async function emptyCart(page: Page): Promise<void> {
     headers: nonce ? { Nonce: nonce } : {},
   });
 }
+
+/**
+ * Complete the classic (shortcode) checkout with Cash on Delivery and return
+ * the created order id. Requires the classic checkout page and an enabled COD
+ * gateway. Fills the standard required billing fields defensively.
+ */
+export async function placeOrderClassicCOD(page: Page): Promise<number> {
+  await page.goto(STORE_PAGES.checkout);
+  await page.waitForLoadState('domcontentloaded');
+
+  const fill = async (id: string, value: string) => {
+    const el = page.locator(`#${id}`);
+    if (await el.count()) await el.fill(value);
+  };
+  await fill('billing_first_name', 'E2E');
+  await fill('billing_last_name', 'Buyer');
+  await fill('billing_address_1', '123 Test Street');
+  await fill('billing_city', 'Testville');
+  await fill('billing_postcode', '12345');
+  await fill('billing_phone', '5555555555');
+  await fill('billing_email', 'e2e-buyer@example.com');
+
+  const cod = page.locator('#payment_method_cod');
+  if (await cod.count()) await cod.check();
+
+  await Promise.all([
+    page.waitForURL(/order-received\/(\d+)/, { timeout: 30000 }),
+    page.locator('#place_order').click(),
+  ]);
+
+  const match = page.url().match(/order-received\/(\d+)/);
+  if (!match) throw new Error(`Could not read order id from URL: ${page.url()}`);
+  return Number(match[1]);
+}

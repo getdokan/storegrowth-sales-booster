@@ -22,7 +22,12 @@
     <arg name="basepath" value="."/>
 
     <!-- Rules -->
-    <rule ref="WordPress" />
+    <rule ref="WordPress">
+        <!-- The plugin autoloads PSR-4 (StorePulse\StoreGrowth\ => PascalCase
+             filenames), so the WordPress lowercase-hyphen / class- filename
+             convention does not apply and the whole tree already diverges. -->
+        <exclude name="WordPress.Files.FileName" />
+    </rule>
 
     <rule ref="PHPCompatibilityWP" />
 
