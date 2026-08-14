@@ -29,12 +29,22 @@ class Bootstrap {
 	public ?Tracker $tracker = null;
 
 	/**
+	 * Minimum WooCommerce version the plugin supports.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const MIN_WC_VERSION = '8.0';
+
+	/**
 	 * Constructor of Bootstrap class.
 	 */
 	private function __construct() {
 		$this->tracker = new Tracker();
 		add_action( 'woocommerce_loaded', [ $this, 'on_wc_loaded' ] );
 		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_is_not_active' ] );
+		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_below_minimum' ] );
 	}
 
 	public function show_notice_if_wc_is_not_active(): void {
@@ -49,6 +59,29 @@ class Bootstrap {
 		);
 
 		printf( '<div class="%1$s"><p><strong>%2$s</strong></p></div>', esc_attr( 'notice notice-error' ), wp_kses_post( $message ) );
+	}
+
+	/**
+	 * Warn, without disabling anything, when WooCommerce is older than the
+	 * supported floor.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function show_notice_if_wc_below_minimum(): void {
+		if ( ! defined( 'WC_VERSION' ) || version_compare( WC_VERSION, self::MIN_WC_VERSION, '>=' ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			// translators: 1: required WooCommerce version, 2: active WooCommerce version.
+			__( 'StoreGrowth is built for WooCommerce %1$s or newer. You are running %2$s; please update WooCommerce for full compatibility.', 'storegrowth-sales-booster' ),
+			esc_html( self::MIN_WC_VERSION ),
+			esc_html( WC_VERSION )
+		);
+
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p></div>', esc_attr( 'notice notice-warning' ), wp_kses_post( $message ) );
 	}
 
 	public function on_wc_loaded(): void {
