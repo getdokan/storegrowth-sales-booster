@@ -1,0 +1,30 @@
+/**
+ * plugin-ui ships Tailwind preflight, which resets every element on the page,
+ * not only the ones inside the notice app. Its media rules collapse the
+ * dashboard icons of the settings and modules apps to zero width.
+ *
+ * Give those two roots the browser defaults back for exactly the properties
+ * preflight sets. `:where()` keeps the selector at the same specificity as
+ * preflight, so it wins on order alone and never overrides what the apps set
+ * themselves. Sizing is deliberately left alone for the embed elements: a
+ * `width`/`height` declaration of any origin beats the `width`/`height`
+ * attributes an iframe carries, which would collapse the dashboard video to the
+ * 150px default.
+ */
+:where(#sbooster-settings-page, #sbooster-modules-page) img,
+:where(#sbooster-settings-page, #sbooster-modules-page) svg,
+:where(#sbooster-settings-page, #sbooster-modules-page) video,
+:where(#sbooster-settings-page, #sbooster-modules-page) canvas,
+:where(#sbooster-settings-page, #sbooster-modules-page) audio,
+:where(#sbooster-settings-page, #sbooster-modules-page) iframe,
+:where(#sbooster-settings-page, #sbooster-modules-page) embed,
+:where(#sbooster-settings-page, #sbooster-modules-page) object {
+	display: revert;
+	vertical-align: revert;
+}
+
+:where(#sbooster-settings-page, #sbooster-modules-page) img,
+:where(#sbooster-settings-page, #sbooster-modules-page) video {
+	max-width: revert;
+	height: revert;
+}

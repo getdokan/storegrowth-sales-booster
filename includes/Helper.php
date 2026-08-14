@@ -204,10 +204,12 @@ class Helper {
 	 * @return boolean True if the module is active, false otherwise.
 	 */
 	public static function is_module_active( string $module_id ): bool {
-		$modules        = new ModuleManager();
-		$active_modules = $modules->get_active_modules();
+		// `get_active_modules()` returns ModuleSkeleton objects, so a string ID
+		// is never strictly equal to any element. Resolve by ID and read the
+		// module's own state instead, which also returns false for unknown IDs.
+		$modules = new ModuleManager();
 
-		return in_array( $module_id, $active_modules, true );
+		return $modules->is_active_module( $module_id );
 	}
 
 	/**

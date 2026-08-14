@@ -7,8 +7,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wp-scripts start src/settings.js src/modules.js",
-    "build": "wp-scripts build src/settings.js src/modules.js"
+    "start": "wp-scripts start src/settings.js src/modules.js src/notices.js",
+    "build": "wp-scripts build src/settings.js src/modules.js src/notices.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "@wordpress/scripts": "^30.17.0"
   },
   "dependencies": {
+    "@wedevs/plugin-ui": "github:getdokan/plugin-ui",
     "@wordpress/i18n": "^4.24.0",
     "antd": "^5.5.0",
     "dayjs": "^1.11.9",

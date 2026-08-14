@@ -127,14 +127,14 @@ class AdminMenu {
 	 * Display module page content.
 	 */
 	public function modules_callback() {
-		echo '<div class="wrap"><div id="sbooster-modules-page"></div></div>';
+		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-modules-page"></div></div>';
 	}
 
 	/**
 	 * Display settings page content.
 	 */
 	public function settings_callback() {
-		echo '<div class="wrap"><div id="sbooster-settings-page"></div></div>';
+		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-settings-page"></div></div>';
 	}
 
 	/**
@@ -162,7 +162,9 @@ class AdminMenu {
 	 */
 	private function redirect_to_url( $url ) {
 		if ( ! empty( $url ) ) {
-			wp_redirect( $url );
+			// Deliberate off-site redirect to storegrowth.io; wp_safe_redirect() would
+			// reject the external host and bounce back to wp-admin.
+			wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 			exit;
 		}
 	}
@@ -176,9 +178,12 @@ class AdminMenu {
 			'go-spsg-docs' => 'https://storegrowth.io/docs/',
 		);
 
-		if ( ! empty( $_GET['page'] ) && isset( $redirect_pages[ $_GET['page'] ] ) ) {
-			$redirect_url = $redirect_pages[ $_GET['page'] ];
-			$this->redirect_to_url( $redirect_url );
+		// Reads the admin menu slug only; no form data is processed, so there is
+		// no nonce to verify. The value is matched against a fixed whitelist below.
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		if ( isset( $redirect_pages[ $page ] ) ) {
+			$this->redirect_to_url( $redirect_pages[ $page ] );
 		}
 	}
 }

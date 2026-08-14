@@ -16,26 +16,43 @@
     <exclude-pattern>modules/direct-checkout/assets/*</exclude-pattern>
     <exclude-pattern>modules/upsell-order-bump/assets/*</exclude-pattern>
     <!-- Configs -->
-    <config name="minimum_supported_wp_version" value="5.0" />
+    <config name="minimum_supported_wp_version" value="6.2" />
     <config name="testVersion" value="7.4-"/>
 
     <arg name="basepath" value="."/>
 
     <!-- Rules -->
-    <rule ref="WordPress" />
+    <rule ref="WordPress">
+        <!-- Short array syntax is the house style, so allow `[]` over `array()`.
+             WPCS 3 pulls this sniff from PHPCSExtra as Universal.*, not Generic.*. -->
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+
+        <!-- Class files are PSR-4 autoloaded (StudlyCase, no `class-` prefix),
+             so the WordPress core file naming rules do not apply. -->
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+    </rule>
 
     <rule ref="PHPCompatibilityWP" />
 
-    <rule ref="WooCommerce-Core">
-        <!-- The SPSG_VERSION placeholder is a required convention (see CLAUDE.md);
-             it is swapped for a real version at release by bin/version-replace.sh.
-             This sniff rejects the placeholder, so exclude it. -->
-        <exclude name="WooCommerce.Commenting.CommentHooks.MissingSinceVersionComment" />
+    <rule ref="WooCommerce-Core" />
+
+    <!-- The SPSG_VERSION placeholder is a required convention (see CLAUDE.md);
+         it is swapped for a real version at release by bin/version-replace.sh.
+         This sniff rejects the placeholder, so silence it. An <exclude> inside
+         the WooCommerce-Core ref does not take, because the sniff is re-registered
+         through that ruleset's own includes. -->
+    <rule ref="WooCommerce.Commenting.CommentHooks.MissingSinceVersionComment">
+        <severity>0</severity>
     </rule>
 
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="storegrowth-sales-booster" />
+            <!-- Comma-separated array values are deprecated in PHPCS 3.3+ and
+                 removed in 4.0; pass them as <element> nodes instead. -->
+            <property name="text_domain" type="array">
+                <element value="storegrowth-sales-booster" />
+            </property>
         </properties>
     </rule>
 </ruleset>

@@ -10,9 +10,10 @@
  * Text Domain: storegrowth-sales-booster
  * Domain Path: /languages
  * Requires Plugins: woocommerce
- * Requires at least: 6.8
+ * Requires at least: 6.2
  * Requires PHP: 7.4
- * 
+ * WC requires at least: 8.0
+ *
  * @package SPSG
  */
 
@@ -74,12 +75,34 @@ if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
 
 
 /**
- * add option when plugin is activated.
+ * Add option when plugin is activated.
  */
 register_activation_hook(
 	__FILE__,
 	function () {
 		add_option( 'storegrowth_activation_redirect', true );
+
+		// A fresh install has nothing to migrate, so it starts at the current
+		// database version and never sees the upgrade notice.
+		\StorePulse\StoreGrowth\Upgrader::maybe_stamp_fresh_install();
+	}
+);
+
+/**
+ * Declare compatibility with WooCommerce High-Performance Order Storage (HPOS).
+ *
+ * The plugin writes no order or order-item meta and reads orders only through
+ * the WooCommerce CRUD API, so it is HPOS-safe. Any future code that stores
+ * order data must use the CRUD API (never update_post_meta) to keep this true.
+ *
+ * @since SPSG_VERSION
+ */
+add_action(
+	'before_woocommerce_init',
+	function () {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', STOREGROWTH_FILE, true );
+		}
 	}
 );
 
@@ -103,9 +126,9 @@ $storegrowth_container->addServiceProvider( new \StorePulse\StoreGrowth\Dependen
  * @return Container The global container instance.
  */
 function storegrowth_get_container(): Container {
-    global $storegrowth_container;
+	global $storegrowth_container;
 
-    return $storegrowth_container;
+	return $storegrowth_container;
 }
 
 /**
