@@ -85,6 +85,7 @@ To add a module: create the directory following the shape above, add its `requir
 - Singletons use the `Traits\Singleton` trait.
 - All user-facing strings use text domain `storegrowth-sales-booster`.
 - Extension points are WordPress hooks: `storegrowth_before_load`, `storegrowth_loaded`, `storegrowth_module_before_boot`/`_after_boot`, filter `storegrowth_pro_is_active` (gates pro features).
+- **HPOS (High-Performance Order Storage):** both plugins declare `custom_order_tables` compatibility on `before_woocommerce_init`. This is only honest while the plugin reads orders through `wc_get_orders()` and stores order / order-item data through the WooCommerce CRUD API (`$order->update_meta_data()` / `$order->save()`), **never** `update_post_meta()` on an order ID. Any new code that writes order data must use the CRUD API or the HPOS declaration must be revisited.
 
 ### Version placeholder — REQUIRED when writing code
 When adding any new symbol, **always** tag it with the literal placeholder `SPSG_VERSION` in its `@since` (and `@deprecated`) docblock tag — never hardcode a version number. This applies to new functions, classes, methods, properties, parameters, hooks (`do_action`/`apply_filters`), and REST routes. Example:

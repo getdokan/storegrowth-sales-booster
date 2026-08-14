@@ -16,7 +16,7 @@
     <exclude-pattern>modules/direct-checkout/assets/*</exclude-pattern>
     <exclude-pattern>modules/upsell-order-bump/assets/*</exclude-pattern>
     <!-- Configs -->
-    <config name="minimum_supported_wp_version" value="5.0" />
+    <config name="minimum_supported_wp_version" value="6.2" />
     <config name="testVersion" value="7.4-"/>
 
     <arg name="basepath" value="."/>
