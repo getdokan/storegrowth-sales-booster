@@ -4,13 +4,13 @@ import Welcome from './Welcome';
 import ModulesSetup from './ModulesSetup';
 import Ready from './Ready';
 
-const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handleCheckbox, getUserDetails, iniSetupChecker }) => {
+const ContentLayout = ({ current, next, prev, stepSize = 0, agreementData, handleCheckbox, iniSetupChecker }) => {
 
 
   const renderContent = () => {
     switch (parseInt(current)) {
       case 0:
-        return <Welcome current={current} next={next} agreementData={agreementData} handleCheckbox={handleCheckbox} getUserDetails={getUserDetails} />;
+        return <Welcome current={current} next={next} agreementData={agreementData} handleCheckbox={handleCheckbox} />;
       case 1:
         return <ModulesSetup />;
       case 2:

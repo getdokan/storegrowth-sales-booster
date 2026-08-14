@@ -39,42 +39,51 @@ class Assets {
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
-        add_action( 'init', array( $this, 'register_all_scripts' ) );
+		add_action( 'init', array( $this, 'register_all_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
 
-    /**
-     * Register scripts here.
-     *
-     * @return void
-     */
-    public function register_all_scripts() {
-        wp_register_script(
-            'spsg-accounting',
-            WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
-            [ 'jquery' ]
-        );
+	/**
+	 * Register scripts here.
+	 *
+	 * @return void
+	 */
+	public function register_all_scripts() {
+		wp_register_script(
+			'spsg-accounting',
+			WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
+			[ 'jquery' ],
+			WC()->version,
+			false
+		);
 
-        // localize dokan frontend script
-        wp_localize_script(
-            'spsg-accounting',
-            'spsg',
-            apply_filters(
-                'spsg_global_common_localized_args',
-                array(
-                    'currency' => array(
-                        'precision' => wc_get_price_decimals(),
-                        'symbol'    => html_entity_decode( get_woocommerce_currency_symbol() ),
-                        'decimal'   => esc_attr( wc_get_price_decimal_separator() ),
-                        'thousand'  => esc_attr( wc_get_price_thousand_separator() ),
-                        'position'  => esc_attr( get_option( 'woocommerce_currency_pos' ) ),
-                        'format'    => esc_attr( str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], get_woocommerce_price_format() ) ), // For accounting JS
-                    ),
-                )
-            ),
-        );
-    }
+		// Localize the accounting script shared by every admin screen.
+		wp_localize_script(
+			'spsg-accounting',
+			'spsg',
+			/**
+			 * Filters the arguments localized for the shared `spsg` script object.
+			 *
+			 * @since 2.0.1
+			 *
+			 * @param array $args Localized arguments, keyed by name.
+			 */
+			apply_filters(
+				'spsg_global_common_localized_args',
+				array(
+					'currency' => array(
+						'precision' => wc_get_price_decimals(),
+						'symbol'    => html_entity_decode( get_woocommerce_currency_symbol() ),
+						'decimal'   => esc_attr( wc_get_price_decimal_separator() ),
+						'thousand'  => esc_attr( wc_get_price_thousand_separator() ),
+						'position'  => esc_attr( get_option( 'woocommerce_currency_pos' ) ),
+						'format'    => esc_attr( str_replace( [ '%1$s', '%2$s' ], [ '%s', '%v' ], get_woocommerce_price_format() ) ), // For accounting JS.
+					),
+				)
+			),
+		);
+	}
 
 	/**
 	 * Add JS scripts to admin.
@@ -82,14 +91,38 @@ class Assets {
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
+		if (
+			$this->modules_page_hook === $hook
+			|| $this->settings_page_hook === $hook
+		) {
+			$notices_file = require Helper::get_plugin_path( 'assets/build/notices.asset.php' );
+
+			wp_enqueue_script(
+				'spsg-notices-script',
+				Helper::get_plugin_assets_url( 'build/notices.js' ),
+				$notices_file['dependencies'],
+				$notices_file['version'],
+				true
+			);
+
+			wp_localize_script(
+				'spsg-notices-script',
+				'spsgNotices',
+				[
+					'noticesUrl' => rest_url( Upgrader::REST_NAMESPACE . '/notices/admin' ),
+					'actionUrl'  => rest_url( Upgrader::REST_NAMESPACE . '/migration/upgrade' ),
+				]
+			);
+		}
+
 		if ( $this->modules_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/modules.asset.php' );
 
-            $dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
+			$dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
 			wp_enqueue_script(
 				'spsg-modules-script',
 				Helper::get_plugin_assets_url( 'build/modules.js' ),
-                $dependencies,
+				$dependencies,
 				$settings_file['version'],
 				true
 			);
@@ -108,11 +141,11 @@ class Assets {
 		if ( $this->settings_page_hook === $hook ) {
 			$settings_file = require Helper::get_plugin_path( 'assets/build/settings.asset.php' );
 
-            $dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
+			$dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
 			wp_enqueue_script(
 				'spsg-settings-script',
 				Helper::get_plugin_assets_url( 'build/settings.js' ),
-                $dependencies,
+				$dependencies,
 				$settings_file['version'],
 				true
 			);
@@ -145,6 +178,14 @@ class Assets {
 				Helper::get_plugin_assets_url( 'build/modules.css' ),
 				array(),
 				filemtime( Helper::get_plugin_path( 'assets/build/modules.css' ) )
+			);
+
+			// Styles of the standalone admin notice app.
+			wp_enqueue_style(
+				'spsg-notices-style',
+				Helper::get_plugin_assets_url( 'build/notices.css' ),
+				[ 'spsg-admin-style' ],
+				filemtime( Helper::get_plugin_path( 'assets/build/notices.css' ) )
 			);
 		}
 	}
