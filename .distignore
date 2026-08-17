@@ -32,3 +32,8 @@ composer.json
 CHANGELOG.md
 DEVELOPER.md
 CLAUDE.md
+
+# Test suite
+tests
+phpunit.xml
+.phpunit.result.cache

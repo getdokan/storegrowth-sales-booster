@@ -33,7 +33,8 @@
     "build:upsell-order-bump": "lerna run build --scope='sales-booster-upsell-order-bump'",
     "build:bogo": "lerna run build --scope='sales-booster-bogo'",
     "build:quick-view": "lerna run build --scope='sales-booster-quick-view'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run phpunit",
+    "phpunit": "vendor/bin/phpunit -c phpunit.xml"
   },
   "author": "",
   "license": "ISC",

@@ -10,3 +10,6 @@ integrations/assets/build/
 lib/packages/
 .vscode/
 
+
+# PHPUnit
+.phpunit.result.cache
