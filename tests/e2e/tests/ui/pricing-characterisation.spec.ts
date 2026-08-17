@@ -129,8 +129,11 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
     test('a percentage BOGO gift discounts the gift line only', async ({ page }) => {
       const ids = await productIds(page);
 
+      // The vocabulary is `free` | `discount` — `OrderBogo` discounts only when
+      // offer_type === 'discount', and both the REST description and the admin
+      // Preview component agree. `discount_amount` is then read as a percentage.
       await createBogoOffer(page, {
-        offer_type: 'percentage',
+        offer_type: 'discount',
         discount_amount: 50,
         offered_products: [ids.trigger],
         get_different_product_field: ids.gift,
@@ -157,6 +160,36 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       expect(totals.total).toBe(
         trigger!.lineTotal + trigger!.lineTax + gift!.lineTotal + gift!.lineTax,
       );
+    });
+
+    test('an unrecognised offer_type is accepted and gives the gift away free', async ({
+      page,
+    }) => {
+      const ids = await productIds(page);
+
+      // `offer_type` carries no enum: the REST controller only requires a
+      // non-empty string and runs sanitize_text_field over it. A value outside
+      // { free, discount } is therefore stored happily, and `OrderBogo` falls
+      // through its `=== 'discount'` check to the free default — so a merchant
+      // who saves an unexpected value gives the product away at full loss with
+      // no error anywhere.
+      //
+      // Recorded as current behaviour. Adding an enum would change this.
+      await createBogoOffer(page, {
+        offer_type: 'percentage', // not a value the cart understands
+        discount_amount: 50,
+        offered_products: [ids.trigger],
+        get_different_product_field: ids.gift,
+        bogo_deal_type: 'different',
+        minimum_quantity_required: 1,
+      });
+
+      await addToCartApi(page, ids.trigger, 1);
+      const totals = await getCartTotals(page);
+      const gift = lineFor(totals, PRODUCTS.b.name);
+
+      expect(gift, 'the gift is still added').toBeTruthy();
+      expect(gift!.lineTotal, 'and it is free, not 50% off').toBe(0);
     });
 
     test('the gift quantity scales with the trigger quantity', async ({ page }) => {
