@@ -421,7 +421,19 @@ class BogoController extends WP_REST_Controller {
         $id = $request->get_param( 'id' );
         $status = $request->get_param( 'status' );
         $table_status = ( $status === 'yes' ) ? 'active' : 'inactive';
-        
+
+        $existing_offer = BogoDataManager::get_bogo_offer( $id );
+
+        if ( ! $existing_offer ) {
+            return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
+        }
+
+        // Check custom permission logic from child classes.
+        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
+        if ( is_wp_error( $permission_check ) ) {
+            return $permission_check;
+        }
+
         $result = BogoDataManager::set_bogo_status( $id, $table_status );
 
         if ( ! $result ) {
