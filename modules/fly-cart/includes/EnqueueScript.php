@@ -113,13 +113,15 @@ class EnqueueScript implements HookRegistry {
 	 * All inline styles
 	 */
 	private function qc_basic_inline_styles() {
-		// Get style options.
-		$settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
-		$wfc_color             = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#fff' );
-		$widget_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_bg_color', '#fff' );
-		$product_card_bg_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'product_card_bg_color', '#fff' );
-		$wfc_btn_bgcolor       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' );
-		$shop_btn_bgcolor      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'shopping_button_bg_color', '#073B4C' );
+		// Get style options. Each value is interpolated into a <style> block, so
+		// colours are constrained to safe CSS colour characters — a stored value
+		// can never break out of the CSS context.
+		$settings              = PluginHelper::get_settings( 'spsg_fly_cart_settings' );
+		$wfc_color             = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#fff' ), '#fff' );
+		$widget_bg_color       = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'widget_bg_color', '#fff' ), '#fff' );
+		$product_card_bg_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'product_card_bg_color', '#fff' ), '#fff' );
+		$wfc_btn_bgcolor       = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'buttons_bg_color', '#0875FF' ), '#0875FF' );
+		$shop_btn_bgcolor      = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'shopping_button_bg_color', '#073B4C' ), '#073B4C' );
 
 		$custom_css = "
 			.wfc-cart-icon .wfc-icon {

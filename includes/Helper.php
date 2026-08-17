@@ -175,6 +175,46 @@ class Helper {
 	}
 
 	/**
+	 * Constrain a stored value to a valid CSS colour.
+	 *
+	 * Stored colour settings are interpolated into inline `<style>` blocks that
+	 * are served to every visitor, so a value that closes the declaration would
+	 * let an admin-authored option inject arbitrary CSS into the storefront.
+	 * This validates against an allow-list of colour notations — hex, the
+	 * `rgb()/rgba()/hsl()/hsla()` functions with numeric arguments only, and
+	 * bare keywords such as `red` or `transparent` — and returns `$fallback`
+	 * for anything else, so `url()`, `expression()`, braces, semicolons and
+	 * angle brackets can never reach the CSS context.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed  $value    Stored colour value.
+	 * @param string $fallback Value returned when `$value` is not a valid colour.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_color( $value, string $fallback = '' ): string {
+		$value = trim( (string) $value );
+
+		// Hex notation: #rgb, #rgba, #rrggbb, #rrggbbaa.
+		if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
+			return $value;
+		}
+
+		// Functional notation with numeric arguments only (legacy comma and modern space syntax).
+		if ( preg_match( '/^(?:rgba?|hsla?)\(\s*[0-9.,%\s\/-]+\)$/i', $value ) ) {
+			return $value;
+		}
+
+		// Bare keywords: named colours, `transparent`, `currentColor`, `inherit`.
+		if ( preg_match( '/^[a-z]+$/i', $value ) ) {
+			return $value;
+		}
+
+		return $fallback;
+	}
+
+	/**
 	 * Get Days for Schedule.
 	 *
 	 * @since 2.0.0
