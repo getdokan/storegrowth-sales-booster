@@ -531,19 +531,23 @@ class OrderBogo implements HookRegistry {
 			$offer_product_cost = max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
 		}
 
+		// Cart item data, plus additive campaign attribution keys for revenue reporting.
+		$cart_item_data = array(
+			'parent_key'            => $cart_item_key,
+			'bogo_offer'            => true,
+			'bogo_product_for'      => $product_id,
+			'bogo_offer_price'      => $offer_product_cost,
+			'linked_to_product_key' => $cart_item_key,
+		);
+		$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $settings, $price_product ) );
+
 		// Add the offer product to the cart for different offer.
 		$free_product_key = WC()->cart->add_to_cart(
 			$offer_product_id,
 			$quantity, // Quantity of the offer product
 			$variation_id,
 			$variation_attributes,
-			array(
-				'parent_key'            => $cart_item_key,
-				'bogo_offer'            => true,
-				'bogo_product_for'      => $product_id,
-				'bogo_offer_price'      => $offer_product_cost,
-				'linked_to_product_key' => $cart_item_key,
-			)
+			$cart_item_data
 		);
 
 		if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {

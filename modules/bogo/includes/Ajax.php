@@ -155,20 +155,29 @@ class Ajax implements HookRegistry {
 			}
 		}
 
+		// Cart item data, plus additive campaign attribution keys for revenue reporting.
+		$cart_item_data = array(
+			'bogo_offer'            => true,
+			'parent_key'            => $item_key,
+			'bogo_product_for'      => $main_product_id,
+			'bogo_offer_price'      => $offer_product_cost,
+			'changed_product_id'    => $selected_product_id,
+			'linked_to_product_key' => $product_link_key,
+		);
+
+		$stamp_settings = Helper::get_product_bogo_settings_for_cart( $main_product_id );
+		$price_product  = $variation_id ? wc_get_product( $variation_id ) : $selected_product;
+		if ( ! empty( $stamp_settings ) && $price_product ) {
+			$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $stamp_settings, $price_product ) );
+		}
+
 		// Add the selected product as the new offer product
 		$free_product_key = WC()->cart->add_to_cart(
 			$selected_product_id,
 			$offer_product_quantity,
 			$variation_id,
 			$variation_attributes,
-			array(
-				'bogo_offer'            => true,
-                'parent_key'            => $item_key,
-                'bogo_product_for'      => $main_product_id,
-				'bogo_offer_price'      => $offer_product_cost,
-                'changed_product_id'    => $selected_product_id,
-                'linked_to_product_key' => $product_link_key,
-			)
+			$cart_item_data
 		);
 
         if ( $free_product_key && isset( WC()->cart->cart_contents[ $item_key ] ) ) {
@@ -344,6 +353,15 @@ class Ajax implements HookRegistry {
 		// `custom_price`, which is the Upsell Order Bump key and left the gift
 		// full-priced whenever that module was inactive.
 		$cart_item_data = array( 'bogo_offer_price' => $offer_price );
+
+		// Attribution stamp — resolve the offer that produced this gift from
+		// the cart's trigger products, then add the campaign identity keys.
+		$stamp_settings = Helper::resolve_bogo_settings_for_gift( $offer_product_id );
+		$price_product  = wc_get_product( $offer_product_id );
+		if ( ! empty( $stamp_settings ) && $price_product ) {
+			$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $stamp_settings, $price_product ) );
+		}
+
 		$woocommerce->cart->add_to_cart( $offer_product_id, 1, 0, array(), $cart_item_data );
 		$woocommerce->cart->calculate_totals();
 		$woocommerce->cart->set_session();
