@@ -33,3 +33,5 @@ composer.json
 CHANGELOG.md
 DEVELOPER.md
 CLAUDE.md
+.wp-env.json
+.wp-env.override.json

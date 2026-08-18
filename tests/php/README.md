@@ -19,6 +19,37 @@ test the mocks rather than the pricing.
 
 ## Running
 
+### With wp-env (no local WordPress needed)
+
+`.wp-env.json` at the repo root describes the environment: WordPress, WooCommerce
+and this plugin. It is a separate site from the Playwright one in `tests/e2e`, on
+ports 8890/8891 so both can run at once.
+
+```bash
+npm -g install @wordpress/env   # once
+composer install                # vendor/ is mounted into the container
+npm run env:start
+npm run phpunit:env
+```
+
+Run a single case by appending PHPUnit's own flags:
+
+```bash
+npm run phpunit:env -- --filter test_offer_inside_date_range_is_applicable
+```
+
+The suite runs in the **`tests-cli`** container, never `cli`. wp-env exports
+`WP_TESTS_DIR=/wordpress-phpunit` there and points it at the throwaway
+`tests-wordpress` database; `bootstrap.php` prefers that variable, so WordPress'
+own test library is used and `phpunit-wp-config.php` is not consulted. WordPress'
+test bootstrap drops and recreates every table it owns, which is why this must
+not run against the `cli` container serving the development site.
+
+`npm run env:stop` when finished, or `npm run env:destroy` to discard the
+database along with it.
+
+### Against a local MySQL + WordPress
+
 Needs a MySQL server, WordPress core, and WooCommerce as a sibling plugin
 directory — the usual local plugin-development layout already satisfies this.
 
@@ -30,12 +61,12 @@ composer test                 # or: npm run phpunit
 composer test-f -- --filter test_offer_inside_date_range_is_applicable
 ```
 
-**The suite DROPS ALL TABLES prefixed `unit_`.** The prefix is deliberately not
+**This path DROPS ALL TABLES prefixed `unit_`.** The prefix is deliberately not
 the site's own, so the suite can share a development database without destroying
 the site next to it. Never point it at production.
 
-Database connection is overridable, so the same config serves a local MySQL, a
-wp-env container and CI:
+Database connection is overridable, so the same config serves a local MySQL and
+CI:
 
 | Variable | Default |
 |---|---|
@@ -43,8 +74,6 @@ wp-env container and CI:
 | `WP_DB_USER` | `root` |
 | `WP_DB_PASS` | *(empty)* |
 | `WP_DB_HOST` | `localhost` |
-
-Against wp-env, set `WP_DB_HOST=mysql`.
 
 ## Layout
 
@@ -62,4 +91,7 @@ Test classes are PSR-4 under `StorePulse\StoreGrowth\Test\` via `autoload-dev`.
 
 `.github/workflows/phpunit.yml` runs on every pull request at PHP 7.4 — the same
 default as the E2E workflow, so a difference between the suites is never just a
-PHP version difference.
+PHP version difference. It boots the environment with wp-env from the same
+`.wp-env.json` used locally, so CI and a developer's machine describe the site
+once rather than twice. A `workflow_dispatch` run takes a `php_version` input,
+applied through a generated `.wp-env.override.json`.

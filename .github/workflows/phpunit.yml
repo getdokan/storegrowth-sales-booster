@@ -2,11 +2,18 @@ name: PHPUnit Tests
 
 # Characterisation tests for offer eligibility and the BOGO data layer.
 #
+# WordPress + WooCommerce come from wp-env, the same way the E2E workflow boots
+# its site, so both suites run against one description of the environment
+# (`.wp-env.json`) instead of two hand-rolled setups that can drift apart.
+#
+# The suite runs inside the `tests-cli` container, never `cli`: wp-env exports
+# WP_TESTS_DIR=/wordpress-phpunit there and points it at the disposable
+# `tests-wordpress` database. WordPress' test bootstrap drops and recreates every
+# table it owns, which would destroy the development site the `cli` container
+# serves.
+#
 # PHP 7.4 matches the default of the E2E workflow, so a behaviour difference
-# between the two suites is never just a PHP version difference. The suite boots
-# a real WordPress + WooCommerce through wp-phpunit, so the job lays the
-# workspace out the way a WordPress install expects: core at the root, the
-# plugin and WooCommerce under wp-content/plugins.
+# between the two suites is never just a PHP version difference.
 
 on:
   push:
@@ -28,32 +35,14 @@ jobs:
     name: PHPUnit (PHP ${{ github.event.inputs.php_version || '7.4' }})
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-          MYSQL_DATABASE: spsg_phpunit_tests
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    env:
-      WP_DB_NAME: spsg_phpunit_tests
-      WP_DB_USER: root
-      WP_DB_PASS: ''
-      WP_DB_HOST: 127.0.0.1
-
     steps:
       - name: Checkout plugin
         uses: actions/checkout@v4
-        with:
-          path: wp-content/plugins/storegrowth-sales-booster
 
+      # Composer runs on the host, and `.wp-env.json` mounts this checkout —
+      # vendor/ included — into the container as the plugin. So the host PHP has
+      # to match the container's, or the autoloader and phpunit binary are built
+      # against the wrong version. `composer.json` also pins platform php to 7.4.
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -62,24 +51,8 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      # WordPress core at the workspace root and WooCommerce beside the plugin:
-      # tests/php/bootstrap.php resolves WooCommerce as a sibling plugin
-      # directory, and phpunit-wp-config.php walks up to the workspace root for
-      # ABSPATH.
-      - name: Download WordPress core
-        run: |
-          curl -sSL https://wordpress.org/latest.tar.gz -o /tmp/wp.tar.gz
-          tar -xzf /tmp/wp.tar.gz -C /tmp
-          cp -r /tmp/wordpress/. "$GITHUB_WORKSPACE/"
-
-      - name: Download WooCommerce
-        run: |
-          curl -sSL https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip -o /tmp/wc.zip
-          unzip -q /tmp/wc.zip -d "$GITHUB_WORKSPACE/wp-content/plugins/"
-
       - name: Get composer cache directory
         id: composercache
-        working-directory: wp-content/plugins/storegrowth-sales-booster
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
@@ -90,16 +63,38 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        working-directory: wp-content/plugins/storegrowth-sales-booster
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Wait for MySQL
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # .wp-env.override.json is deep-merged over .wp-env.json, so a manual run
+      # can test another PHP without editing the committed config.
+      - name: Configure wp-env override (PHP version)
+        env:
+          PHP_VERSION: ${{ github.event.inputs.php_version || '7.4' }}
         run: |
-          for i in $(seq 1 30); do
-            mysqladmin ping -h 127.0.0.1 -u root --silent && break
-            sleep 2
-          done
+          jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          cat .wp-env.override.json
+
+      - name: Start WordPress (wp-env)
+        run: |
+          npm -g install @wordpress/env
+          wp-env start
+
+      # Prove the container really is on the requested PHP, so a run labelled
+      # "PHP 7.4" can't quietly have tested something else.
+      - name: Report the PHP version under test
+        run: |
+          wp-env run tests-cli php -v
+          echo "PHP under test: $(wp-env run tests-cli php -r 'echo PHP_VERSION;' 2>/dev/null | tr -d '\r')" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run PHPUnit
-        working-directory: wp-content/plugins/storegrowth-sales-booster
-        run: vendor/bin/phpunit -c phpunit.xml
+        run: wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster vendor/bin/phpunit -c phpunit.xml
+
+      # A failed boot says nothing useful on its own; the container logs do.
+      - name: Container logs on failure
+        if: failure()
+        run: wp-env logs tests --watch=false
