@@ -175,6 +175,49 @@ class Helper {
 	}
 
 	/**
+	 * Check whether one of the plugin's custom tables exists.
+	 *
+	 * Both custom tables are created from their module's `activate()` callback,
+	 * so a site that had a module active before the release which introduced its
+	 * table — and that updated in place without ever toggling the module off and
+	 * on — never gets the table. Queries against it then return `null`, and code
+	 * that maps or iterates over the result fatals on PHP 8. Callers use this to
+	 * return an empty result instead.
+	 *
+	 * Only a positive answer is cached. A table that exists cannot disappear
+	 * mid-request, while a missing one may be created by a migration during the
+	 * same request, so the negative case is re-checked and self-heals.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $table Fully prefixed table name.
+	 *
+	 * @return bool
+	 */
+	public static function table_exists( string $table ): bool {
+		static $known = [];
+
+		if ( isset( $known[ $table ] ) ) {
+			return true;
+		}
+
+		global $wpdb;
+
+		// `_` and `%` are LIKE wildcards, and table names contain `_`.
+		$found = $wpdb->get_var(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) )
+		);
+
+		if ( $found === $table ) {
+			$known[ $table ] = true;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get Days for Schedule.
 	 *
 	 * @since 2.0.0

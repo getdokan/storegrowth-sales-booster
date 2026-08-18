@@ -7,6 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database;
 
+use StorePulse\StoreGrowth\Helper;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -52,6 +54,13 @@ class OrderBumpData {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// The table is created on module activation, so a site that updated in
+		// place without toggling the module never got it. Answer with no bumps
+		// rather than querying a missing table.
+		if ( ! $this->table_exists() ) {
+			return array();
+		}
+
 		$where_clause = '';
 		$where_values = array();
 
@@ -81,6 +90,12 @@ class OrderBumpData {
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
+		// `get_results()` answers `null` on a query error, which `array_map()`
+		// rejects outright on PHP 8.
+		if ( ! is_array( $results ) ) {
+			return array();
+		}
+
 		// Process results to decode JSON fields
 		return array_map( array( $this, 'process_bump_data' ), $results );
 	}
@@ -94,6 +109,10 @@ class OrderBumpData {
 	 */
 	public function get_by_id( $id ) {
 		global $wpdb;
+
+		if ( ! $this->table_exists() ) {
+			return null;
+		}
 
 		$sql = $wpdb->prepare(
 			"SELECT * FROM {$this->table_name} WHERE id = %d",
@@ -297,10 +316,20 @@ class OrderBumpData {
 	public function get_matching_bumps( $cart_product_ids, $cart_category_ids ) {
 		global $wpdb;
 
+		// Runs on the storefront cart, so a missing table must degrade to "no
+		// bumps" rather than fatal while iterating a `null` result.
+		if ( ! $this->table_exists() ) {
+			return array();
+		}
+
 		$sql = "SELECT * FROM {$this->table_name} WHERE status = 'active'";
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
 		$matching_bumps = array();
+
+		if ( ! is_array( $results ) ) {
+			return $matching_bumps;
+		}
 
 		foreach ( $results as $bump ) {
 			$bump = $this->process_bump_data( $bump );
@@ -368,11 +397,8 @@ class OrderBumpData {
 	 * @return bool True if table exists, false otherwise.
 	 */
 	public function table_exists() {
-		global $wpdb;
-
-		$table_name = $this->get_table_name();
-		$result = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) );
-
-		return $result === $table_name;
+		// Delegates to the shared helper, which caches a positive answer for the
+		// rest of the request so the read guards do not each cost a SHOW TABLES.
+		return Helper::table_exists( $this->get_table_name() );
 	}
 }
