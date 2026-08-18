@@ -40,8 +40,15 @@ class Ajax implements HookRegistry {
 	public function save_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		if ( ! isset( $_POST['form_data'] ) ) {
-			wp_send_json_error();
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
+		// array_map() over a non-array returns null on PHP 7.4 (and throws on
+		// PHP 8), so an unvalidated payload would overwrite the stored settings
+		// with nothing. Reject it instead.
+		if ( ! isset( $_POST['form_data'] ) || ! is_array( $_POST['form_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
@@ -58,6 +65,10 @@ class Ajax implements HookRegistry {
 	public function get_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
+
 		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings', array() );
 
 		wp_send_json_success( $form_data );
@@ -65,6 +76,11 @@ class Ajax implements HookRegistry {
 
 	/**
 	 * Quick view Ajax call.
+	 *
+	 * Intentionally public (registered on `wp_ajax_nopriv_*`): quick view is a
+	 * storefront feature anonymous shoppers use. It carries no capability check
+	 * by design — it is guarded by a frontend nonce and only renders read-only
+	 * product markup for a requested product id, writing nothing.
 	 */
 	public function ajax_quickview_callback() {
 		check_ajax_referer( 'spsgqcv-security', 'nonce' );

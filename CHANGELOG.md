@@ -1,5 +1,15 @@
 == Changelog ==
 
+### v2.1.2 (August 14, 2026) ###
+
+- **security:** Derived BOGO and Upsell Order Bump cart prices server-side from the saved offer configuration; `bogo_price`, `offer_product_cost` and `bump_price` sent by the client are ignored.
+- **security:** Escaped stored settings on output — BOGO popup product titles (`esc_html()`), Sales Pop product markup (`wp_kses_post()`), and the Floating Notification Bar colour/size inline styles (new `sanitize_css_color()` plus `absint()`).
+- **enhancement:** Declared WooCommerce High-Performance Order Storage (HPOS) compatibility via `FeaturesUtil` on `before_woocommerce_init`.
+- **enhancement:** Removed the dead consent data collection and shipped a versioned migration that deletes the autoloaded `spsg_user_consent_data` option.
+- **fix:** Replaced `array_find()` in `ModuleManager::get()` with a plain loop — toggling a module fataled on WordPress < 6.8 with PHP < 8.4. Aligned the minimum WordPress version to 6.2.
+- **fix:** `Helper::is_module_active()` strict-compared a string ID against `ModuleSkeleton` objects and always returned false, so the Floating Notification Bar never offset for the Progressive Discount Banner.
+- **fix:** Scoped the Dokan integration admin bundles to the `storegrowth_page_spsg-settings` screen and gated each on its own module, removing the "Missing Dependencies" notice.
+
 ### v2.1.1 (July 23, 2026) ###
 
 - **security:** Hardened the Sales Pop and BOGO admin ajax endpoints — administrator capability plus a dedicated admin nonce is now required, and the `nopriv` registrations were removed.

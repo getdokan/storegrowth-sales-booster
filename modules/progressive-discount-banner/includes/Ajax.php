@@ -37,9 +37,25 @@ class Ajax implements HookRegistry {
 	public function save_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
 
-		$form_data = isset( $_POST['form_data'] ) ? json_decode( wp_unslash( $_POST['form_data'] ), true ) : array();
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
-		$bar_data = isset( $form_data['shipping_bar_data'] ) ? $form_data['shipping_bar_data'] : array();
+		// json_decode() takes a string. An array here decodes to null on PHP 7.4
+		// and throws on PHP 8, and a string that is valid JSON can still be
+		// missing the key. Every one of those used to fall through to an
+		// unconditional update_option() and wipe the stored settings, so the
+		// payload is validated before anything is written.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; decoded and validated below.
+		$raw_form_data = isset( $_POST['form_data'] ) && is_string( $_POST['form_data'] ) ? wp_unslash( $_POST['form_data'] ) : '';
+
+		$form_data = json_decode( $raw_form_data, true );
+
+		if ( ! is_array( $form_data ) || ! isset( $form_data['shipping_bar_data'] ) || ! is_array( $form_data['shipping_bar_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
+		}
+
+		$bar_data = $form_data['shipping_bar_data'];
 
 		$icon_validator = array(
 			'default_banner_icon_html',
@@ -56,6 +72,10 @@ class Ajax implements HookRegistry {
 	 */
 	public function get_settings() {
 		check_ajax_referer( 'spsg_ajax_nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
+		}
 
 		wp_send_json_success( Helper::get_settings() );
 	}

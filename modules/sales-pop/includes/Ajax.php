@@ -61,8 +61,21 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		$popup_data     = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); //phpcs:ignore
-		$popup_products = isset( $popup_data['popup_data'] ) ? $popup_data['popup_data'] : array();
+		// json_decode() takes a string. An array here decodes to null on PHP 7.4
+		// and throws on PHP 8, and a string that is valid JSON can still be
+		// missing the key. Every one of those used to fall through to an
+		// unconditional update_option() and wipe the stored popups, so the
+		// payload is validated before anything is written.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; decoded and validated below.
+		$raw_popup_data = isset( $_POST['data'] ) && is_string( $_POST['data'] ) ? wp_unslash( $_POST['data'] ) : '';
+
+		$popup_data = json_decode( $raw_popup_data, true );
+
+		if ( ! is_array( $popup_data ) || ! isset( $popup_data['popup_data'] ) || ! is_array( $popup_data['popup_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
+		}
+
+		$popup_products = $popup_data['popup_data'];
 		$popup_products = $this->form_validation( $popup_products );
 		$popup_products = self::sanitize_popup_data( $popup_products );
 		update_option( 'spsg_popup_products', $popup_products );

@@ -32,7 +32,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider {
      * @return bool True if the service provider can provide the service, false otherwise.
      */
     public function provides( string $alias ): bool {
-        static $implements = array();
+        $implements = array();
 
         foreach ( $this->services as $class ) {
             if ( ! class_exists( $class ) ) {

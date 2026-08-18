@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import archiver from "archiver";
-import { green, blue } from 'colorette';
+import { green, blue } from "colorette";
 
 async function recursiveReadDir(dir, excludedFiles) {
   let results = [];
@@ -13,7 +13,9 @@ async function recursiveReadDir(dir, excludedFiles) {
     const stat = await fs.promises.stat(fullPath);
     if (stat.isDirectory()) {
       if (!excludedFiles.includes(file)) {
-        results = results.concat(await recursiveReadDir(fullPath, excludedFiles));
+        results = results.concat(
+          await recursiveReadDir(fullPath, excludedFiles)
+        );
       }
     } else {
       if (!shouldExcludeFile(file)) {
@@ -29,6 +31,8 @@ function shouldExcludeFile(file) {
   const excludedFiles = [
     ".git",
     ".gitignore",
+    ".wordpress-org",
+    ".claude",
     "node_modules",
     "package.json",
     "lerna-debug.log",
@@ -42,10 +46,13 @@ function shouldExcludeFile(file) {
     ".gitignore",
     ".editorconfig",
     ".svnignore",
-     "phpcs.xml",
+    "phpcs.xml",
+    "CLAUDE.md",
   ];
 
-  return excludedFiles.some(excludedFile => file === excludedFile || file.includes(excludedFile));
+  return excludedFiles.some(
+    (excludedFile) => file === excludedFile || file.includes(excludedFile)
+  );
 }
 
 function formatSize(size) {
@@ -67,6 +74,8 @@ async function archive() {
     ".git",
     ".gitignore",
     "node_modules",
+    ".claude",
+    ".wordpress-org",
     "package.json",
     "lerna-debug.log",
     "lerna.json",
@@ -74,6 +83,7 @@ async function archive() {
     "archiver.js",
     "composer.json",
     "composer.lock",
+    "CLAUDE.md",
     ".github",
     ".idea",
     ".vscode",
@@ -82,18 +92,22 @@ async function archive() {
     ".editorconfig",
     ".svnignore",
     "phpcs.xml",
+    "tests",
+    "bin",
   ];
 
   const archive = archiver("zip", {
-    zlib: { level: 9 } // Configure the compression level
+    zlib: { level: 9 }, // Configure the compression level
   });
 
   const output = fs.createWriteStream(outputPath);
   // Listen for close event to know when the archiving is done
   output.on("close", function () {
-    console.log(green(`Zip created successfully as ${outputFilename} `) +
-      " " +
-      blue(`Size ${formatSize(archive.pointer())}`));
+    console.log(
+      green(`Zip created successfully as ${outputFilename} `) +
+        " " +
+        blue(`Size ${formatSize(archive.pointer())}`)
+    );
     renameZipFileWithVersion(outputFilename);
   });
 

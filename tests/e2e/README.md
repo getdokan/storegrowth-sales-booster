@@ -119,9 +119,14 @@ suite runs `workers: 1`.
 ## CI/CD
 
 `.github/workflows/e2e.yml` runs on **every pull request**, on pushes to
-`develop`/`main`/`master`, on every **published release**, and on demand. It
-builds the plugin (composer + `npm run build`), boots `wp-env`, generates an
-Application Password, and runs the suite. Any failing test fails the pipeline.
+`develop`/`main`/`master`, on every **published release**, and on demand. A
+single `build` job builds the plugin (composer + `npm run build`, plus Pro when
+the repo secrets are set) and uploads the generated output — `vendor/`,
+`lib/packages/` and every `build/` dir — as one artifact. Each shard then
+unpacks that over its checkout instead of rebuilding, boots its own `wp-env`
+site, generates an Application Password, and runs its slice of the suite.
+Docker can't be shared across matrix jobs (separate runners), so the wp-env boot
+stays per shard. Any failing test fails the pipeline.
 
 **Sharding.** The suite is split across four parallel jobs — one `api` job plus
 three `ui` shards — each on its own isolated `wp-env` site (a single site can't

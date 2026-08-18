@@ -146,8 +146,12 @@ class Bogo {
             'spsg-bogo-dokan-vendor-dashboard',
             'spsgAdmin',
             [
+                // The admin write nonce (`spsg_ajax_nonce`) is intentionally NOT
+                // localized on this frontend vendor screen. Emitting it would
+                // hand any dashboard viewer a token the privileged settings
+                // handlers accept. Vendor operations use the REST / frontend
+                // nonces in `bogo_save_url` below.
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
                 'isPro'    => sp_store_growth()->has_pro(),
 				'buyXGetXEnableForVendor' => $is_enable,
             ]

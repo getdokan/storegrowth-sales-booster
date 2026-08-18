@@ -20,6 +20,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
 	/**
+	 * Get the default settings for this module.
+	 *
+	 * Mirrors the defaults used by the settings UI so that a site which has
+	 * never saved the module settings still gets usable values.
+	 *
+	 * @since 2.1.2
+	 *
+	 * @return array
+	 */
+	public static function get_default_settings() {
+		return array(
+			'banner_device_view' => array( 'banner-show-desktop' ),
+			'button_view'        => array( 'button-desktop-enable' ),
+		);
+	}
+
+	/**
 	 * Get settings for this module.
 	 *
 	 * @since 1.0.2
@@ -27,7 +44,10 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_floating_notification_bar_settings', array() );
+		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_floating_notification_bar_settings', array() );
+
+		// Only fills in keys that are absent, so an explicitly emptied setting is preserved.
+		return wp_parse_args( $settings, self::get_default_settings() );
 	}
 
 	/**

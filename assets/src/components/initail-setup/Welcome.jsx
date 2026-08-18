@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Checkbox } from 'antd';
 import { __ } from '@wordpress/i18n';
 import WelcomeAnnounce from '../../../images/welcome-announce.svg'
-const Welcome = ({ next, agreementData, handleCheckbox, getUserDetails }) => {
+const Welcome = ({ next, agreementData, handleCheckbox }) => {
 
   return (
     <Fragment>
@@ -13,7 +13,7 @@ const Welcome = ({ next, agreementData, handleCheckbox, getUserDetails }) => {
             <h3 className='spsg-content-heading'>{__("Welcome To StoreGrowth", "storegrowth-sales-booster")}</h3>
             <span className='spsg-sub-heading'>{__(`Conversion Boosting Toolkit for WooCommerce`, 'storegrowth-sales-booster')}</span>
           </div>
-          <button onClick={() => { next(); getUserDetails(); }} type="button" className='steps-button get-started'>{__(`Get Started`, 'storegrowth-sales-booster')}</button>
+          <button onClick={() => next()} type="button" className='steps-button get-started'>{__(`Get Started`, 'storegrowth-sales-booster')}</button>
         </div>
         <div className="ini-setup user-agreement">
           <div className="getting-updates">
