@@ -167,7 +167,9 @@ class BogoMigration {
 			'global_posts' => $global_posts_backup,
 		);
 
-		update_option( 'spsg_bogo_migration_backup', $backup_data );
+		// Not autoloaded: a full pre-migration snapshot that only the migration
+		// and rollback paths read, so it must never ride along in alloptions.
+		update_option( 'spsg_bogo_migration_backup', $backup_data, false );
 	}
 
 	/**

@@ -23,11 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 class BogoDataManager {
 
 	/**
-	 * Table name for BOGO settings.
+	 * Unprefixed table name for BOGO settings.
+	 *
+	 * Canonical source for this table's name, also read by the uninstall
+	 * cleanup so the two never drift.
+	 *
+	 * @since SPSG_VERSION
 	 *
 	 * @var string
 	 */
-	private static $table_name = 'spsg_bogo_settings';
+	const TABLE_NAME = 'spsg_bogo_settings';
 
 	/**
 	 * Get the full table name with prefix.
@@ -36,7 +41,7 @@ class BogoDataManager {
 	 */
 	private static function get_table_name() {
 		global $wpdb;
-		return $wpdb->prefix . self::$table_name;
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
 	/**

@@ -560,7 +560,7 @@ main.ant-layout-content.spsg-module-setting-layout {
         }
 
         &:not(.ant-menu-hidden) {
-          max-height: 500px; // Show immediately when hidden class is removed
+          max-height: 900px; // Show immediately when hidden class is removed. Tall enough for every module route plus the Settings entry.
         }
 
         .spsg-selected-module {
@@ -1090,7 +1090,7 @@ End Settings Sidebar
         }
 
         &:not(.ant-menu-hidden) {
-          max-height: 500px; // Show immediately when hidden class is removed
+          max-height: 900px; // Show immediately when hidden class is removed. Tall enough for every module route plus the Settings entry.
         }
 
         .spsg-selected-module {
@@ -3415,5 +3415,27 @@ End Settings Sidebar
         }
       }
     }
+  }
+}
+
+/**
+ * "Settings" (advanced) entry in the settings sidebar.
+ *
+ * The per-module icons are set with `li.<module>::before` rules; this global
+ * route has no module class of its own, so its gear icon is defined here.
+ * Default, hover and selected (white) variants match the other menu items.
+ */
+.widgets-menu {
+  li.advanced::before {
+    width: 18px;
+    height: 18px;
+    background: url("../images/menu/advanced.svg") no-repeat center;
+    background-size: contain;
+  }
+
+  li.advanced:hover::before,
+  li.spsg-selected-module.advanced::before {
+    background: url("../images/menu/advanced-white.svg") no-repeat center;
+    background-size: contain;
   }
 }
