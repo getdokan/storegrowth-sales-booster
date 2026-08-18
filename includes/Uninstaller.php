@@ -23,7 +23,9 @@ defined( 'ABSPATH' ) || exit;
  * Option and post-meta keys are matched by the plugin's `spsg_` naming
  * convention rather than a hand-maintained list, so options added later are
  * cleaned up without touching this class. Table names are read from the
- * constants on their owning classes, so the two can never drift.
+ * constants on their owning classes, so the two can never drift. The only
+ * hand-maintained list is {@see Uninstaller::extra_options()}, for the handful
+ * of keys that predate the convention or belong to a bundled third party.
  *
  * @since SPSG_VERSION
  */
@@ -58,6 +60,18 @@ class Uninstaller {
 	 * @var string[]
 	 */
 	const META_PREFIXES = array( 'spsg_', '_spsg_' );
+
+	/**
+	 * Slug Appsero keys its telemetry options on.
+	 *
+	 * Appsero takes it from the plugin's directory name, which is fixed for a
+	 * WordPress.org install.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const APPSERO_SLUG = 'storegrowth-sales-booster';
 
 	/**
 	 * Run the uninstall cleanup, multisite-aware.
@@ -123,6 +137,33 @@ class Uninstaller {
 	}
 
 	/**
+	 * Option names the `spsg_` prefix does not match.
+	 *
+	 * Two sources predate or sit outside the naming convention:
+	 *
+	 * - `storegrowth_activation_redirect`, written on activation and normally
+	 *   deleted on the first admin load, so it only survives when the plugin is
+	 *   deleted before wp-admin is ever opened.
+	 * - Appsero's telemetry options, keyed on {@see Uninstaller::APPSERO_SLUG}.
+	 *   Its deactivation hook clears its cron and `_tracking_notice`, but for a
+	 *   plugin it leaves the remaining keys behind; `_tracking_notice` is listed
+	 *   anyway so the cleanup does not depend on that hook having run.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string[]
+	 */
+	public static function extra_options(): array {
+		return array(
+			'storegrowth_activation_redirect',
+			self::APPSERO_SLUG . '_allow_tracking',
+			self::APPSERO_SLUG . '_tracking_last_send',
+			self::APPSERO_SLUG . '_tracking_skipped',
+			self::APPSERO_SLUG . '_tracking_notice',
+		);
+	}
+
+	/**
 	 * Clean the current site if — and only if — it opted in.
 	 *
 	 * @since SPSG_VERSION
@@ -137,6 +178,7 @@ class Uninstaller {
 		self::drop_tables();
 		self::delete_options();
 		self::delete_post_meta();
+		self::delete_order_meta();
 		self::delete_transients();
 		self::clear_scheduled_events();
 	}
@@ -175,6 +217,10 @@ class Uninstaller {
 		$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like )
 		);
+
+		foreach ( self::extra_options() as $option ) {
+			delete_option( $option );
+		}
 	}
 
 	/**
@@ -193,6 +239,46 @@ class Uninstaller {
 			$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 				$wpdb->prepare( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s", $like )
 			);
+		}
+	}
+
+	/**
+	 * Delete the plugin's meta rows from WooCommerce's own order tables.
+	 *
+	 * Campaign attribution stamps the offer that produced a line onto the order
+	 * line item, and an aggregate record onto the order. Line-item meta always
+	 * lives in `woocommerce_order_itemmeta`, and order meta lives in
+	 * `wc_orders_meta` whenever HPOS is the active storage. Neither is
+	 * `$wpdb->postmeta`, so `delete_post_meta()` never reaches them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	private static function delete_order_meta(): void {
+		global $wpdb;
+
+		$tables = array(
+			$wpdb->prefix . 'woocommerce_order_itemmeta',
+			$wpdb->prefix . 'wc_orders_meta',
+		);
+
+		foreach ( $tables as $table ) {
+			// WooCommerce may already be gone, and `wc_orders_meta` only exists
+			// on WooCommerce versions that ship HPOS.
+			if ( ! Helper::table_exists( $table ) ) {
+				continue;
+			}
+
+			foreach ( self::META_PREFIXES as $prefix ) {
+				$like = $wpdb->esc_like( $prefix ) . '%';
+
+				// Table identifiers cannot be passed through prepare(); these
+				// names are built from the WordPress table prefix, never input.
+				$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+					$wpdb->prepare( "DELETE FROM `{$table}` WHERE meta_key LIKE %s", $like ) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				);
+			}
 		}
 	}
 
