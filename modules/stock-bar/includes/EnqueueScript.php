@@ -95,13 +95,15 @@ class EnqueueScript implements HookRegistry {
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_stock_bar_settings' );
+		// Get settings options. Each value is interpolated into a <style> block,
+		// so colours are constrained to safe CSS colour characters and sizes to
+		// integers — a stored value can never break out of the CSS context.
+		$settings = PluginHelper::get_settings( 'spsg_stock_bar_settings' );
 
-		$bar_height   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
-		$bg_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' );
-		$fg_color     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' );
-		$border_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_border_color', '#dde6f9' );
+		$bar_height   = absint( PluginHelper::find_option_settings( $settings, 'stockbar_height', '10' ) );
+		$bg_color     = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'stockbar_bg_color', '#e7efff' ), '#e7efff' );
+		$fg_color     = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'stockbar_fg_color', '#0875ff' ), '#0875ff' );
+		$border_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'stockbar_border_color', '#dde6f9' ), '#dde6f9' );
 
 		$theme               = wp_get_theme();
 		$is_twenty_one_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;

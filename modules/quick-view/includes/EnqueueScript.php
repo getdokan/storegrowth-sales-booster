@@ -229,14 +229,16 @@ class EnqueueScript implements HookRegistry {
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
+		// Get settings options. Each value is interpolated into a <style> block,
+		// so colours are constrained to safe CSS colour characters and sizes to
+		// integers — a stored value can never break out of the CSS context.
+		$settings = PluginHelper::get_settings( 'spsg_quick_view_settings' );
 
-		$modal_bg_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_background_color', '#ffffff' );
-		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#0875FF' );
-		$button_text_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
-		$button_border_radius = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_border_radius', 4 );
-		$show_image           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_image', 4 );
+		$modal_bg_color       = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'modal_background_color', '#ffffff' ), '#ffffff' );
+		$button_color         = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#0875FF' ), '#0875FF' );
+		$button_text_color    = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_text_color', '#ffffff' ), '#ffffff' );
+		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', 4 ) );
+		$show_image           = PluginHelper::find_option_settings( $settings, 'show_image', 4 );
 
 		$custom_css = "
 			.spsgqcv-btn {

@@ -175,6 +175,89 @@ class Helper {
 	}
 
 	/**
+	 * Constrain a stored value to a valid CSS colour.
+	 *
+	 * Stored colour settings are interpolated into inline `<style>` blocks that
+	 * are served to every visitor, so a value that closes the declaration would
+	 * let an admin-authored option inject arbitrary CSS into the storefront.
+	 * This validates against an allow-list of colour notations — hex, the
+	 * `rgb()/rgba()/hsl()/hsla()` functions with numeric arguments only, and
+	 * bare keywords such as `red` or `transparent` — and returns `$fallback`
+	 * for anything else, so `url()`, `expression()`, braces, semicolons and
+	 * angle brackets can never reach the CSS context.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed  $value    Stored colour value.
+	 * @param string $fallback Value returned when `$value` is not a valid colour.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_color( $value, string $fallback = '' ): string {
+		$value = trim( (string) $value );
+
+		// Hex notation: #rgb, #rgba, #rrggbb, #rrggbbaa.
+		if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
+			return $value;
+		}
+
+		// Functional notation with numeric arguments only (legacy comma and modern space syntax).
+		if ( preg_match( '/^(?:rgba?|hsla?)\(\s*[0-9.,%\s\/-]+\)$/i', $value ) ) {
+			return $value;
+		}
+
+		// Bare keywords: named colours, `transparent`, `currentColor`, `inherit`.
+		if ( preg_match( '/^[a-z]+$/i', $value ) ) {
+			return $value;
+		}
+
+		return $fallback;
+	}
+
+	/**
+	 * Check whether one of the plugin's custom tables exists.
+	 *
+	 * Both custom tables are created from their module's `activate()` callback,
+	 * so a site that had a module active before the release which introduced its
+	 * table — and that updated in place without ever toggling the module off and
+	 * on — never gets the table. Queries against it then return `null`, and code
+	 * that maps or iterates over the result fatals on PHP 8. Callers use this to
+	 * return an empty result instead.
+	 *
+	 * Only a positive answer is cached. A table that exists cannot disappear
+	 * mid-request, while a missing one may be created by a migration during the
+	 * same request, so the negative case is re-checked and self-heals.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $table Fully prefixed table name.
+	 *
+	 * @return bool
+	 */
+	public static function table_exists( string $table ): bool {
+		static $known = [];
+
+		if ( isset( $known[ $table ] ) ) {
+			return true;
+		}
+
+		global $wpdb;
+
+		// `_` and `%` are LIKE wildcards, and table names contain `_`.
+		$found = $wpdb->get_var(
+			$wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) )
+		);
+
+		if ( $found === $table ) {
+			$known[ $table ] = true;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get Days for Schedule.
 	 *
 	 * @since 2.0.0

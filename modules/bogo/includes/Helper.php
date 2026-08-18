@@ -7,6 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Attribution\OfferAttribution;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -254,5 +256,86 @@ class Helper {
 	        return $design_data[ $property ] ?? '';
 	    }
 	    return '';
+	}
+
+	/**
+	 * Build the campaign attribution stamp for a BOGO offer.
+	 *
+	 * Produces the underscore-prefixed campaign keys to merge into a cart
+	 * item's data. Returns an empty array when the offer carries no stable
+	 * database id, so the caller adds nothing rather than a broken stamp.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array       $settings      BOGO offer settings (expects 'id').
+	 * @param \WC_Product $price_product Product used for price calculation (gift or variation).
+	 *
+	 * @return array<string, string>
+	 */
+	public static function build_offer_stamp( $settings, $price_product ) {
+		$offer_id = isset( $settings['id'] ) ? (int) $settings['id'] : 0;
+
+		if ( ! $offer_id || ! $price_product instanceof \WC_Product ) {
+			return array();
+		}
+
+		$reward_type = ( isset( $settings['offer_type'] ) && 'discount' === $settings['offer_type'] ) ? 'discount' : 'free';
+		$base_price  = (float) $price_product->get_price();
+
+		// Per-unit discount contributed: the whole price when free, else the percentage off.
+		$discount_value = $base_price;
+		if ( 'discount' === $reward_type ) {
+			$discount_percent = isset( $settings['discount_amount'] ) ? (float) $settings['discount_amount'] : 0;
+			$discount_value   = $base_price * ( $discount_percent / 100 );
+		}
+
+		return OfferAttribution::stamp( 'bogo', $offer_id, $reward_type, $discount_value );
+	}
+
+	/**
+	 * Resolve the BOGO offer that produced a gift product now in the cart.
+	 *
+	 * Scans the cart's trigger products and returns the settings of the first
+	 * offer whose reward is the requested gift, so the campaign can be
+	 * identified server-side without trusting client-supplied ids.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $gift_product_id Gift product id added to the cart.
+	 *
+	 * @return array|null Offer settings, or null when no trigger offers this gift.
+	 */
+	public static function resolve_bogo_settings_for_gift( $gift_product_id ) {
+		$gift_product_id = (int) $gift_product_id;
+
+		if ( ! $gift_product_id || is_null( WC()->cart ) ) {
+			return null;
+		}
+
+		$gift_parent_id = (int) wp_get_post_parent_id( $gift_product_id );
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			// Only inspect trigger products, never the injected gift lines.
+			if ( ! empty( $cart_item['bogo_offer'] ) ) {
+				continue;
+			}
+
+			$trigger_id = isset( $cart_item['product_id'] ) ? (int) $cart_item['product_id'] : 0;
+			if ( ! $trigger_id ) {
+				continue;
+			}
+
+			$settings = self::get_product_bogo_settings_for_cart( $trigger_id );
+			if ( empty( $settings ) ) {
+				continue;
+			}
+
+			$offer_product_id = (int) self::get_offer_product_id( $settings, $trigger_id );
+			if ( $offer_product_id === $gift_product_id || ( $gift_parent_id && $offer_product_id === $gift_parent_id ) ) {
+				return $settings;
+			}
+		}
+
+		return null;
 	}
 }

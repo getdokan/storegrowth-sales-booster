@@ -7,9 +7,11 @@
 
 namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
+use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Upgrader;
 use StorePulse\StoreGrowth\REST\ProductController;
+use StorePulse\StoreGrowth\REST\SettingsController;
 
 /**
  * CommonServiceProvider Class
@@ -27,6 +29,8 @@ class CommonServiceProvider extends BootableServiceProvider {
 	protected $services = [
 		ProductController::class,
 		Upgrader::class,
+		SettingsController::class,
+		OfferAttribution::class,
 	];
 
 	/**
