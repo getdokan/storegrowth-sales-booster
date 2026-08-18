@@ -192,7 +192,7 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       expect(gift!.lineTotal, 'and it is free, not 50% off').toBe(0);
     });
 
-    test('the gift quantity scales with the trigger quantity', async ({ page }) => {
+    test('the gift quantity follows the trigger quantity on a single add', async ({ page }) => {
       const ids = await productIds(page);
 
       await createBogoOffer(page, {
@@ -203,13 +203,26 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
         minimum_quantity_required: 2,
       });
 
-      // `OrderBogo` computes floor( trigger qty / minimum_quantity_required ).
+      // `OrderBogo` carries two different rules, and which one applies depends on
+      // how the cart arrived at this state:
+      //
+      //   - a single add runs `handle_regular_product_bogo_update()`, which passes
+      //     the trigger quantity straight through (OrderBogo.php:332);
+      //   - editing the quantity in the cart runs
+      //     `handle_bogo_offer_quantity_update()`, which computes
+      //     floor( trigger / minimum ) (OrderBogo.php:287).
+      //
+      // So four triggers added in one go grant four gifts, where adding one and
+      // then raising it to four grants two. Recorded here, not endorsed.
       await addToCartApi(page, ids.trigger, 4);
       const totals = await getCartTotals(page);
 
       const gift = lineFor(totals, PRODUCTS.b.name);
       expect(gift, 'a gift is granted once the minimum is met').toBeTruthy();
-      expect(gift!.quantity, '4 triggers at a minimum of 2 grants 2 gifts').toBe(2);
+      expect(
+        gift!.quantity,
+        '4 triggers added at once grant 4 gifts, not floor( 4 / 2 )'
+      ).toBe(4);
     });
 
     test('no gift is granted below the minimum quantity', async ({ page }) => {
