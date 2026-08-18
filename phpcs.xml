@@ -27,10 +27,10 @@
              WPCS 3 pulls this sniff from PHPCSExtra as Universal.*, not Generic.*. -->
         <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
 
-        <!-- Class files are PSR-4 autoloaded (StudlyCase, no `class-` prefix),
-             so the WordPress core file naming rules do not apply. -->
-        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+        <!-- The plugin autoloads PSR-4 (StorePulse\StoreGrowth\ => PascalCase
+             filenames), so the WordPress lowercase-hyphen / class- filename
+             convention does not apply and the whole tree already diverges. -->
+        <exclude name="WordPress.Files.FileName" />
     </rule>
 
     <rule ref="PHPCompatibilityWP" />
