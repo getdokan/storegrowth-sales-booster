@@ -100,13 +100,15 @@ class EnqueueScript implements HookRegistry {
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		// Get settings options.
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_countdown_timer_settings' );
+		// Get settings options. Each value is interpolated into a <style> block,
+		// so colours are constrained to safe CSS colour characters — a stored
+		// value can never break out of the CSS context.
+		$settings = PluginHelper::get_settings( 'spsg_countdown_timer_settings' );
 
-		$widget_bg_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'widget_background_color', '#ffffff' );
-		$border_color       = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'border_color', '#cccccc' );
-		$heading_text_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'heading_text_color', '#000000' );
-		$selected_theme     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
+		$widget_bg_color    = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'widget_background_color', '#ffffff' ), '#ffffff' );
+		$border_color       = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'border_color', '#cccccc' ), '#cccccc' );
+		$heading_text_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'heading_text_color', '#000000' ), '#000000' );
+		$selected_theme     = PluginHelper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
 
 		// Check current theme status.
 		$theme                = wp_get_theme();

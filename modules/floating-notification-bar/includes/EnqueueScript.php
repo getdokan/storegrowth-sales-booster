@@ -123,23 +123,6 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Constrain a stored colour value to characters valid in a CSS colour.
-	 *
-	 * Keeps hex, `rgb()/rgba()`, `hsl()`, named colours and percentages while
-	 * stripping quotes, braces, semicolons and angle brackets, so a stored
-	 * value can never break out of the CSS rule it is interpolated into.
-	 *
-	 * @since 2.1.2
-	 *
-	 * @param mixed $value Stored colour value.
-	 *
-	 * @return string
-	 */
-	private function sanitize_css_color( $value ): string {
-		return preg_replace( '/[^a-zA-Z0-9#(),.%\s-]/', '', (string) $value );
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
@@ -171,14 +154,14 @@ class EnqueueScript implements HookRegistry {
 		$settings          = Helper::get_settings();
 		$bar_position      = PluginHelper::find_option_settings( $settings, 'bar_position', 'top' );
 		$bar_type          = PluginHelper::find_option_settings( $settings, 'bar_type', 'normal' );
-		$bg_color          = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#008DFF' ) );
-		$text_color        = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ) );
-		$icon_color        = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#ffffff' ) );
-		$close_icon_color  = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'close_icon_color', '#ffffff' ) );
+		$bg_color          = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#008DFF' ), '#008DFF' );
+		$text_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
+		$icon_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#ffffff' ), '#ffffff' );
+		$close_icon_color  = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'close_icon_color', '#ffffff' ), '#ffffff' );
 		$banner_height     = absint( PluginHelper::find_option_settings( $settings, 'banner_height', 60 ) );
 		$font_size         = absint( PluginHelper::find_option_settings( $settings, 'font_size', 20 ) );
-		$button_color      = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#ffffff' ) );
-		$button_text_color = $this->sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_text_color', '#ffffff' ) );
+		$button_color      = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#ffffff' ), '#ffffff' );
+		$button_text_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_text_color', '#ffffff' ), '#ffffff' );
 		$font_family       = PluginHelper::find_option_settings( $settings, 'font_family', 'poppins' );
 		$selected_font     = $this->get_label_by_value( $font_family, $font_family_arr );
 

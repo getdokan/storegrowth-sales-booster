@@ -105,16 +105,18 @@ class EnqueueScript implements HookRegistry {
 	 * All inline styles
 	 */
 	private function dc_button_inline_styles() {
-		// Get style options.
-		$settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
-		$button_style         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_style', true );
+		// Get style options. Each value is interpolated into a <style> block, so
+		// colours are constrained to safe CSS colour characters and sizes to
+		// integers — a stored value can never break out of the CSS context.
+		$settings             = PluginHelper::get_settings( 'spsg_direct_checkout_settings' );
+		$button_style         = PluginHelper::find_option_settings( $settings, 'button_style', true );
         if ( ! $button_style ) {
             return;
         }
-		$button_color         = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_color', '#008dff' );
-		$text_color           = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
-		$font_size            = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', '16' );
-		$button_border_radius = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_border_radius', '5' );
+		$button_color         = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
+		$text_color           = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
+		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) );
+		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', '5' ) );
 
 		$theme                 = wp_get_theme();
 		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;

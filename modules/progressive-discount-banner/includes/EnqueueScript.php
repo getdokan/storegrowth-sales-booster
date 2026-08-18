@@ -140,17 +140,19 @@ class EnqueueScript implements HookRegistry {
 				'label' => 'IBM Plex Sans',
 			),
 		);
-		// Get style options.
+		// Get style options. Each value is interpolated into a <style> block,
+		// so colours are constrained to safe CSS colour characters and sizes to
+		// integers — a stored value can never break out of the CSS context.
 		$settings      = Helper::get_settings();
-		$bar_position  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'bar_position', 'top' );
-		$bg_color      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'background_color', '#008DFF' );
-		$text_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'text_color', '#ffffff' );
-		$icon_color    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_color', '#ffffff' );
-		$close_color   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'close_icon_color', '#ffffff' );
-		$banner_height = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'banner_height', 60 );
-		$bar_type      = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'bar_type', 'normal' );
-		$font_family   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_family', 'poppins' );
-		$font_size     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'font_size', 20 );
+		$bar_position  = PluginHelper::find_option_settings( $settings, 'bar_position', 'top' );
+		$bg_color      = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#008DFF' ), '#008DFF' );
+		$text_color    = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
+		$icon_color    = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#ffffff' ), '#ffffff' );
+		$close_color   = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'close_icon_color', '#ffffff' ), '#ffffff' );
+		$banner_height = absint( PluginHelper::find_option_settings( $settings, 'banner_height', 60 ) );
+		$bar_type      = PluginHelper::find_option_settings( $settings, 'bar_type', 'normal' );
+		$font_family   = PluginHelper::find_option_settings( $settings, 'font_family', 'poppins' );
+		$font_size     = absint( PluginHelper::find_option_settings( $settings, 'font_size', 20 ) );
 		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
 
 		if ( 'bottom' === $bar_position ) {
