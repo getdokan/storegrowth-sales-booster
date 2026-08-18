@@ -186,7 +186,7 @@ class Helper {
 	 * for anything else, so `url()`, `expression()`, braces, semicolons and
 	 * angle brackets can never reach the CSS context.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param mixed  $value    Stored colour value.
 	 * @param string $fallback Value returned when `$value` is not a valid colour.
@@ -228,7 +228,7 @@ class Helper {
 	 * mid-request, while a missing one may be created by a migration during the
 	 * same request, so the negative case is re-checked and self-heals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param string $table Fully prefixed table name.
 	 *

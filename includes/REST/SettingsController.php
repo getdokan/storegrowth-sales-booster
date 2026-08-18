@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * Currently a single setting: whether uninstalling the plugin removes its
  * data. Kept as its own controller so more global settings can join it.
  *
- * @since SPSG_VERSION
+ * @since 2.2.0
  */
 class SettingsController extends WP_REST_Controller {
 
@@ -42,7 +42,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * Only administrators may read or change global plugin settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return bool
 	 */
@@ -81,7 +81,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * Return the current settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -94,7 +94,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * Persist the settings sent from the UI.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -117,7 +117,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * The settings as the UI consumes them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return array
 	 */
@@ -130,7 +130,7 @@ class SettingsController extends WP_REST_Controller {
 	/**
 	 * Item schema.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return array
 	 */

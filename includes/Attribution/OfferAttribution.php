@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Persists offer attribution data captured on cart items.
  *
- * @since SPSG_VERSION
+ * @since 2.2.0
  */
 class OfferAttribution implements HookRegistry {
 
@@ -72,7 +72,7 @@ class OfferAttribution implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -93,7 +93,7 @@ class OfferAttribution implements HookRegistry {
 	 * Namespacing by type keeps a BOGO offer and an Order Bump with the same
 	 * numeric database id from colliding.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param string $type Campaign type ("bogo" | "order_bump").
 	 * @param int    $id   Database row id of the offer.
@@ -110,7 +110,7 @@ class OfferAttribution implements HookRegistry {
 	 * Returned array is merged into the cart item data at an injection site.
 	 * Keys are additive; they never replace an existing pricing/marker key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param string $type           Campaign type ("bogo" | "order_bump").
 	 * @param int    $id             Database row id of the offer.
@@ -131,7 +131,7 @@ class OfferAttribution implements HookRegistry {
 	/**
 	 * Copy the campaign stamp from a cart item onto its order line item.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param WC_Order_Item $item          Order line item being created.
 	 * @param string        $cart_item_key Cart item key.
@@ -158,7 +158,7 @@ class OfferAttribution implements HookRegistry {
 	 * blocks checkout contexts) and sums the per-unit discount by quantity so
 	 * each campaign's total contribution to the order is recorded.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param WC_Order $order Order being created.
 	 *

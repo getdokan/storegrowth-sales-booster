@@ -18,7 +18,6 @@ lerna.json
 lerna-debug.log
 composer.json
 composer.lock
-archiver.js
 .DS_Store
 phpcs.xml
 CONTRIBUTING.md

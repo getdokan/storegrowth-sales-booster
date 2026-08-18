@@ -24,7 +24,7 @@ npm run watch:sales-booster # watch the admin/settings UI (root assets)
 
 npm run makepot             # regenerate languages/storegrowth-sales-booster.pot
 npm run version             # replace SPSG_VERSION placeholder with package.json version (bin/version-replace.sh)
-npm run archiver            # zip a distributable build (archiver.js, honors .distignore)
+npm run archiver            # zip a distributable build (bin/archiver.js)
 npm run release             # composer no-dev + build + version + makepot + archiver (full release artifact)
 ```
 

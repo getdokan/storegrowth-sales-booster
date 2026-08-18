@@ -49,7 +49,7 @@ npm install
 npm run build               # build all JS (lerna + wp-scripts)
 npm run makepot             # regenerate languages/storegrowth-sales-booster.pot
 npm run version             # replace SPSG_VERSION -> package.json version
-npm run archiver            # zip per .distignore (node archiver.js)
+npm run archiver            # zip a distributable build (node bin/archiver.js)
 npm run release             # composer no-dev + build + version + makepot + archiver
 ```
 

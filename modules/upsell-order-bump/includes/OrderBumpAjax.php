@@ -90,7 +90,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * bump applied. Returns an empty array when no active bump offers the
 	 * product, so the caller adds nothing rather than a broken stamp.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param int $offer_product_id   Offer (parent) product id being added.
 	 * @param int $offer_variation_id Offer variation id, or 0 for a simple product.

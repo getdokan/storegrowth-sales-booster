@@ -27,14 +27,14 @@ defined( 'ABSPATH' ) || exit;
  * hand-maintained list is {@see Uninstaller::extra_options()}, for the handful
  * of keys that predate the convention or belong to a bundled third party.
  *
- * @since SPSG_VERSION
+ * @since 2.2.0
  */
 class Uninstaller {
 
 	/**
 	 * Option that opts a merchant in to data removal on uninstall.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string
 	 */
@@ -43,7 +43,7 @@ class Uninstaller {
 	/**
 	 * Prefix every plugin option name shares.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string
 	 */
@@ -55,7 +55,7 @@ class Uninstaller {
 	 * Some keys are underscore-hidden (`_spsg_…`) and some are not (`spsg_…`),
 	 * so both are matched.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string[]
 	 */
@@ -67,7 +67,7 @@ class Uninstaller {
 	 * Appsero takes it from the plugin's directory name, which is fixed for a
 	 * WordPress.org install.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string
 	 */
@@ -79,7 +79,7 @@ class Uninstaller {
 	 * On multisite the cleanup runs once per site; the opt-in option is read
 	 * per site, so a network can preserve on some sites and remove on others.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -107,7 +107,7 @@ class Uninstaller {
 	/**
 	 * Whether the current site has opted in to data removal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return bool
 	 */
@@ -118,7 +118,7 @@ class Uninstaller {
 	/**
 	 * Unprefixed custom table names, read from their owning classes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return string[]
 	 */
@@ -149,7 +149,7 @@ class Uninstaller {
 	 *   plugin it leaves the remaining keys behind; `_tracking_notice` is listed
 	 *   anyway so the cleanup does not depend on that hook having run.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return string[]
 	 */
@@ -166,7 +166,7 @@ class Uninstaller {
 	/**
 	 * Clean the current site if — and only if — it opted in.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -186,7 +186,7 @@ class Uninstaller {
 	/**
 	 * Drop the plugin's custom tables. No-ops when a table is already gone.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -205,7 +205,7 @@ class Uninstaller {
 	/**
 	 * Delete every option whose name starts with the plugin prefix.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -226,7 +226,7 @@ class Uninstaller {
 	/**
 	 * Delete every post-meta row whose key starts with a plugin prefix.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -251,7 +251,7 @@ class Uninstaller {
 	 * `wc_orders_meta` whenever HPOS is the active storage. Neither is
 	 * `$wpdb->postmeta`, so `delete_post_meta()` never reaches them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -285,7 +285,7 @@ class Uninstaller {
 	/**
 	 * Delete the plugin's transients (and their timeout rows).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -314,7 +314,7 @@ class Uninstaller {
 	 * The free build schedules nothing today; the filter lets modules and the
 	 * Pro build contribute their own cron hooks without editing this class.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -322,7 +322,7 @@ class Uninstaller {
 		/**
 		 * Cron hook names to clear on uninstall.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.2.0
 		 *
 		 * @param string[] $hooks Scheduled hook names.
 		 */

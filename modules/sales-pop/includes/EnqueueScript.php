@@ -50,7 +50,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Transient key for the resolved storefront popup payload.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string
 	 */
@@ -67,7 +67,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Delete the cached storefront popup payload.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return void
 	 */
@@ -128,7 +128,7 @@ class EnqueueScript implements HookRegistry {
 	 * enqueuing assets entirely. The result is memoized per request and cached
 	 * in a transient that is flushed on popup or product changes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @return array|null
 	 */
@@ -357,7 +357,7 @@ class EnqueueScript implements HookRegistry {
 		 * products this source offers are derived from these most-recent
 		 * orders rather than every order ever placed.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.2.0
 		 *
 		 * @param int $limit Number of recent orders to scan.
 		 */
@@ -423,7 +423,7 @@ class EnqueueScript implements HookRegistry {
 		 * fallback (and the source list the Pro category filter reads). It no
 		 * longer loads the whole catalogue.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.2.0
 		 *
 		 * @param int $limit Number of recent products to seed with.
 		 */
@@ -509,7 +509,7 @@ class EnqueueScript implements HookRegistry {
 		 * unbounded query per category and scaled with the number of
 		 * categories. This scans a bounded set of recent products once.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 2.2.0
 		 *
 		 * @param int $limit Maximum products scanned across all categories.
 		 */

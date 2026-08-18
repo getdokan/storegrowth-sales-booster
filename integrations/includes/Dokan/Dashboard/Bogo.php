@@ -120,7 +120,7 @@ class Bogo {
 	 * Mirrors `VendorBogoController::check_single_item_permission()`, which
 	 * already enforces the same rule on the vendor-scoped mirror routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param bool|\WP_Error   $has_permission Permission resolved so far.
 	 * @param array            $item           The BOGO offer being addressed.

@@ -3,7 +3,58 @@ import path from "path";
 import archiver from "archiver";
 import { green, blue } from "colorette";
 
-async function recursiveReadDir(dir, excludedFiles) {
+/**
+ * Everything kept out of the zip, matched by name against both files and
+ * directories: version control, editor state, packaging manifests, developer
+ * tooling and the test suites. None of it belongs in the plugin a merchant
+ * installs.
+ *
+ * One list rather than one per walk step — the two that were here had drifted,
+ * so `composer.json`, `composer.lock`, `tests` and `bin` were skipped as
+ * directories but still shipped when they appeared as files.
+ */
+const EXCLUDED = [
+  ".claude",
+  ".distignore",
+  ".editorconfig",
+  ".git",
+  ".gitattributes",
+  ".github",
+  ".gitignore",
+  ".idea",
+  ".svnignore",
+  ".vscode",
+  ".wordpress-org",
+  "bin",
+  "CLAUDE.md",
+  "composer.json",
+  "composer.lock",
+  "lerna-debug.log",
+  "lerna.json",
+  "node_modules",
+  "package-lock.json",
+  "package.json",
+  "phpcs.xml",
+  "phpcs.xml.dist",
+  "phpcs.xml.dist.sample",
+  "tests",
+];
+
+/**
+ * Whether a file or directory name is excluded from the archive.
+ *
+ * Matched exactly: a substring test would drop innocent names that merely
+ * contain a listed one — `bin` alone would take out `binary.php`.
+ *
+ * @param {string} name Base name of the entry.
+ *
+ * @return {boolean}
+ */
+function isExcluded(name) {
+  return EXCLUDED.includes(name);
+}
+
+async function recursiveReadDir(dir) {
   let results = [];
 
   const list = await fs.promises.readdir(dir);
@@ -11,48 +62,19 @@ async function recursiveReadDir(dir, excludedFiles) {
   for (const file of list) {
     const fullPath = path.join(dir, file);
     const stat = await fs.promises.stat(fullPath);
+
+    if (isExcluded(file)) {
+      continue;
+    }
+
     if (stat.isDirectory()) {
-      if (!excludedFiles.includes(file)) {
-        results = results.concat(
-          await recursiveReadDir(fullPath, excludedFiles)
-        );
-      }
+      results = results.concat(await recursiveReadDir(fullPath));
     } else {
-      if (!shouldExcludeFile(file)) {
-        results.push(fullPath);
-      }
+      results.push(fullPath);
     }
   }
 
   return results;
-}
-
-function shouldExcludeFile(file) {
-  const excludedFiles = [
-    ".git",
-    ".gitignore",
-    ".wordpress-org",
-    ".claude",
-    "node_modules",
-    "package.json",
-    "lerna-debug.log",
-    "lerna.json",
-    "package-lock.json",
-    "archiver.js",
-    ".github",
-    ".idea",
-    ".vscode",
-    ".distignore",
-    ".gitignore",
-    ".editorconfig",
-    ".svnignore",
-    "phpcs.xml",
-    "CLAUDE.md",
-  ];
-
-  return excludedFiles.some(
-    (excludedFile) => file === excludedFile || file.includes(excludedFile)
-  );
 }
 
 function formatSize(size) {
@@ -68,33 +90,6 @@ async function archive() {
   const rootPathName = path.basename(folderPath);
   const outputFilename = `${rootPathName}.zip`;
   const outputPath = path.resolve("../", outputFilename);
-
-  // List of files and directories to exclude
-  const excludedFiles = [
-    ".git",
-    ".gitignore",
-    "node_modules",
-    ".claude",
-    ".wordpress-org",
-    "package.json",
-    "lerna-debug.log",
-    "lerna.json",
-    "package-lock.json",
-    "archiver.js",
-    "composer.json",
-    "composer.lock",
-    "CLAUDE.md",
-    ".github",
-    ".idea",
-    ".vscode",
-    ".distignore",
-    ".gitignore",
-    ".editorconfig",
-    ".svnignore",
-    "phpcs.xml",
-    "tests",
-    "bin",
-  ];
 
   const archive = archiver("zip", {
     zlib: { level: 9 }, // Configure the compression level
@@ -113,7 +108,7 @@ async function archive() {
 
   archive.pipe(output);
 
-  const files = await recursiveReadDir(folderPath, excludedFiles);
+  const files = await recursiveReadDir(folderPath);
   const totalFiles = files.length;
   let processedFiles = 0;
 

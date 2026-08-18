@@ -265,7 +265,7 @@ class Helper {
 	 * item's data. Returns an empty array when the offer carries no stable
 	 * database id, so the caller adds nothing rather than a broken stamp.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param array       $settings      BOGO offer settings (expects 'id').
 	 * @param \WC_Product $price_product Product used for price calculation (gift or variation).
@@ -299,7 +299,7 @@ class Helper {
 	 * offer whose reward is the requested gift, so the campaign can be
 	 * identified server-side without trusting client-supplied ids.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @param int $gift_product_id Gift product id added to the cart.
 	 *

@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 2.1.2
+Stable tag: 2.2.0
 Requires PHP: 7.4
 WC requires at least: 8.0
 License: GPLv2 or later
@@ -331,6 +331,16 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v2.2.0 (August 18, 2026) =
+
+* New: Campaign attribution — every order now records which BOGO or Upsell Order Bump offer influenced it, on both the line item and the order, so offer-driven revenue can be reported on.
+* New: Optional data removal on uninstall. Off by default; switch it on under Settings → Advanced and deleting the plugin also removes its options, custom tables, product and order meta, and transients.
+* Security: Stored colour settings are validated before being written into inline CSS across six modules, so a saved value can no longer inject arbitrary CSS into the storefront.
+* Security: BOGO offers are checked for ownership on the admin-scoped REST routes, so a Dokan vendor can no longer read, disable or delete another vendor's offers.
+* Enhancement: Sales Pop no longer runs catalogue-wide product queries on every page load, no longer requests a CDN file that has been removed, and no longer cache-busts its assets on every request.
+* Enhancement: The vendor dashboard BOGO table works with Dokan 5.0, which replaced the DataViews component it is built on.
+* Fix: Stores whose BOGO or Order Bump table was never created no longer hit a fatal error; the affected queries return an empty result instead.
 
 = v2.1.2 (August 14, 2026) =
 

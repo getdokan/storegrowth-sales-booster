@@ -28,7 +28,7 @@ class BogoDataManager {
 	 * Canonical source for this table's name, also read by the uninstall
 	 * cleanup so the two never drift.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.2.0
 	 *
 	 * @var string
 	 */
