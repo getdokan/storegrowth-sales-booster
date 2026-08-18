@@ -33,7 +33,12 @@
     "build:upsell-order-bump": "lerna run build --scope='sales-booster-upsell-order-bump'",
     "build:bogo": "lerna run build --scope='sales-booster-bogo'",
     "build:quick-view": "lerna run build --scope='sales-booster-quick-view'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run phpunit",
+    "phpunit": "vendor/bin/phpunit -c phpunit.xml",
+    "phpunit:env": "wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster vendor/bin/phpunit -c phpunit.xml",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:destroy": "wp-env destroy"
   },
   "author": "",
   "license": "ISC",

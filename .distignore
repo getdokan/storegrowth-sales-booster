@@ -32,3 +32,10 @@ composer.json
 CHANGELOG.md
 DEVELOPER.md
 CLAUDE.md
+
+# Test suite
+tests
+phpunit.xml
+.phpunit.result.cache
+.wp-env.json
+.wp-env.override.json

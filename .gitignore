@@ -10,3 +10,9 @@ integrations/assets/build/
 lib/packages/
 .vscode/
 
+
+# PHPUnit
+.phpunit.result.cache
+
+# wp-env
+.wp-env.override.json

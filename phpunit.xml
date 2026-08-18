@@ -1,0 +1,17 @@
+<phpunit
+	bootstrap="tests/php/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	>
+    <php>
+        <env name="WP_PHPUNIT__TESTS_CONFIG" value="tests/php/phpunit-wp-config.php" />
+    </php>
+	<testsuites>
+		<testsuite name="StoreGrowth Test Suite">
+			<directory prefix="" suffix="Test.php">./tests/php/src</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

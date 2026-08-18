@@ -1,0 +1,100 @@
+name: PHPUnit Tests
+
+# Characterisation tests for offer eligibility and the BOGO data layer.
+#
+# WordPress + WooCommerce come from wp-env, the same way the E2E workflow boots
+# its site, so both suites run against one description of the environment
+# (`.wp-env.json`) instead of two hand-rolled setups that can drift apart.
+#
+# The suite runs inside the `tests-cli` container, never `cli`: wp-env exports
+# WP_TESTS_DIR=/wordpress-phpunit there and points it at the disposable
+# `tests-wordpress` database. WordPress' test bootstrap drops and recreates every
+# table it owns, which would destroy the development site the `cli` container
+# serves.
+#
+# PHP 7.4 matches the default of the E2E workflow, so a behaviour difference
+# between the two suites is never just a PHP version difference.
+
+on:
+  push:
+    branches: [ develop, trunk ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version'
+        required: false
+        default: '7.4'
+
+concurrency:
+  group: phpunit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    name: PHPUnit (PHP ${{ github.event.inputs.php_version || '7.4' }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout plugin
+        uses: actions/checkout@v4
+
+      # Composer runs on the host, and `.wp-env.json` mounts this checkout —
+      # vendor/ included — into the container as the plugin. So the host PHP has
+      # to match the container's, or the autoloader and phpunit binary are built
+      # against the wrong version. `composer.json` also pins platform php to 7.4.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ github.event.inputs.php_version || '7.4' }}
+          extensions: mysqli, zip, gd
+          tools: composer:v2
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composercache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # .wp-env.override.json is deep-merged over .wp-env.json, so a manual run
+      # can test another PHP without editing the committed config.
+      - name: Configure wp-env override (PHP version)
+        env:
+          PHP_VERSION: ${{ github.event.inputs.php_version || '7.4' }}
+        run: |
+          jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          cat .wp-env.override.json
+
+      - name: Start WordPress (wp-env)
+        run: |
+          npm -g install @wordpress/env
+          wp-env start
+
+      # Prove the container really is on the requested PHP, so a run labelled
+      # "PHP 7.4" can't quietly have tested something else.
+      - name: Report the PHP version under test
+        run: |
+          wp-env run tests-cli php -v
+          echo "PHP under test: $(wp-env run tests-cli php -r 'echo PHP_VERSION;' 2>/dev/null | tr -d '\r')" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run PHPUnit
+        run: wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster vendor/bin/phpunit -c phpunit.xml
+
+      # A failed boot says nothing useful on its own; the container logs do.
+      - name: Container logs on failure
+        if: failure()
+        run: wp-env logs tests --watch=false
