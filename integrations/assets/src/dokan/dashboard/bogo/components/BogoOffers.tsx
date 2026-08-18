@@ -1,4 +1,4 @@
-import { RawHTML, useEffect, useState } from "@wordpress/element";
+import { RawHTML, useCallback, useEffect, useMemo, useState } from "@wordpress/element";
 import { __ } from "@wordpress/i18n";
 // @ts-ignore
 import { addQueryArgs } from "@wordpress/url";
@@ -7,32 +7,39 @@ import { ToggleSwitch, useToast } from "@getdokan/dokan-ui";
 // @ts-ignore
 import apiFetch from "@wordpress/api-fetch";
 // @ts-ignore
-import { DataViews, DokanLink, DokanModal, PriceHtml } from "@dokan/components";
+import { DataViews, DokanLink, PriceHtml } from "@dokan/components";
+
+// Layout config for the table. Density lives inside the layout it belongs to;
+// only the layouts offered in the switcher are declared.
+const DEFAULT_LAYOUTS = {
+  table: { density: "comfortable" },
+  list: {},
+};
+
+const DEFAULT_PER_PAGE = 10;
 
 const BogoOffers = ({ navigate }) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [offersData, setOffersData] = useState([]);
-  const [currentOffer, setCurrentOffer] = useState(null);
   const [totalOffers, setTotalOffers] = useState(0);
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
-  const getOfferProduct = (item)  => {
-      return item.bogo_deal_type === 'same'
-          ? item?.get_offered_product_info
-          : item?.get_different_product_info;
-  }
+  const getOfferProduct = (item) => {
+    return item.bogo_deal_type === "same"
+      ? item?.get_offered_product_info
+      : item?.get_different_product_info;
+  };
 
   // Get product name.
   const getProductName = (item) => {
-      const offerProduct = getOfferProduct(item);
-    return offerProduct?.name || '-';
+    const offerProduct = getOfferProduct(item);
+    return offerProduct?.name || "-";
   };
 
   // Get product price.
   const getProductPrice = (item) => {
     const offerProduct = getOfferProduct(item);
-    return offerProduct?.price || '-';
+    return offerProduct?.price || "-";
   };
 
   // Get offer discounted amount.
@@ -41,20 +48,38 @@ const BogoOffers = ({ navigate }) => {
     const offerProduct = getOfferProduct(item);
 
     if ("discount" === item?.offer_type && offerProduct) {
-      discountedPrice = offerProduct.price - offerProduct.price * (item?.discount_amount / 100);
+      discountedPrice =
+        offerProduct.price - offerProduct.price * (item?.discount_amount / 100);
     }
 
     return discountedPrice;
   };
 
-  // Handle orders fetching from the server.
-  const fetchBogoOffers = async () => {
+  // View state for the table.
+  const [view, setView] = useState({
+    type: "table",
+    page: 1,
+    perPage: DEFAULT_PER_PAGE,
+    search: "",
+    fields: ["name_of_order_bogo", "status", "offered_products", "offers"],
+    layout: {
+      styles: {
+        name_of_order_bogo: { width: "25%" },
+        status: { width: "10%" },
+        offered_products: { width: "30%" },
+        offers: { width: "35%" },
+      },
+    },
+  });
+
+  // Handle offers fetching from the server.
+  const fetchBogoOffers = useCallback(async () => {
     setIsLoading(true);
 
     try {
       // Query arguments.
       const queryArgs = {
-        per_page: view?.perPage ?? 10,
+        per_page: view?.perPage ?? DEFAULT_PER_PAGE,
         page: view?.page ?? 1,
       };
 
@@ -74,7 +99,7 @@ const BogoOffers = ({ navigate }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [view.page, view.perPage]);
 
   // Handle offer status change.
   const handleStatusChange = async (checked, item) => {
@@ -119,15 +144,10 @@ const BogoOffers = ({ navigate }) => {
     }
   };
 
-  // Handle delete offer confirmation.
-  const handleOfferDeletion = (item) => {
-    setCurrentOffer(item);
-    setIsConfirmationModalOpen(true);
-  };
-
-  // Handle delete offer.
-  const deleteOffer = async () => {
-    if (!currentOffer) {
+  // Handle delete offer. The confirmation dialog is rendered by DataViews
+  // itself for actions flagged `isDestructive`, and this only runs on confirm.
+  const deleteOffer = async (offer) => {
+    if (!offer) {
       return;
     }
 
@@ -136,7 +156,7 @@ const BogoOffers = ({ navigate }) => {
     try {
       await apiFetch({
         // @ts-ignore
-        path: `/sales-booster/v1/bogo/offers/${currentOffer?.id}`,
+        path: `/sales-booster/v1/bogo/offers/${offer?.id}`,
         method: "DELETE",
       });
 
@@ -158,207 +178,133 @@ const BogoOffers = ({ navigate }) => {
       });
     } finally {
       setIsLoading(false);
-      setIsConfirmationModalOpen(false);
     }
   };
 
-  // Fields for handle the table columns.
-  const fields = [
-    {
-      id: "name_of_order_bogo",
-      label: __("Offer Name", "storegrowth-sales-booster"),
-      render: ({ item }) => (
-        <div>
-          {isLoading ? (
-            <span className="block w-24 h-3 rounded bg-gray-200 animate-pulse"></span>
-          ) : (
-            <DokanLink
-              as="div"
-              onClick={() => {
-                navigate(`/bogo/${item.id}`);
-              }}
-              className="font-bold cursor-pointer"
-            >
-              {item.name_of_order_bogo}
-            </DokanLink>
-          )}
-        </div>
-      ),
-      enableSorting: false,
-      enableGlobalSearch: false,
-    },
-    {
-      id: "status",
-      label: __("Status", "storegrowth-sales-booster"),
-      render: ({ item }) => (
-        <div>
-          {isLoading ? (
-            <span className="block w-10 h-3 rounded bg-gray-200 animate-pulse"></span>
-          ) : (
-            <ToggleSwitch
-              checked={"active" === item.status}
-              onChange={(status) => handleStatusChange(status, item)}
-            />
-          )}
-        </div>
-      ),
-      enableSorting: false,
-      enableGlobalSearch: false,
-    },
-    {
-      id: "offered_products",
-      label: __("Target Product", "storegrowth-sales-booster"),
-      render: ({ item }) => (
-        <div className="dokan-bogo-product-name">
-          {isLoading ? (
-            <span className="block w-20 h-3 rounded bg-gray-200 animate-pulse"></span>
-          ) : (
-            <RawHTML>{item?.get_offered_product_info?.name || '-'}</RawHTML>
-          )}
-        </div>
-      ),
-      enableSorting: false,
-      enableGlobalSearch: false,
-    },
-    {
-      id: "offers",
-      label: __("Offers", "storegrowth-sales-booster"),
-      render: ({ item }) => (
-        <div>
-          {isLoading ? (
-            <>
-              <span className="block w-24 h-3 rounded bg-gray-200 animate-pulse mb-2"></span>
-              <span className="block w-20 h-3 rounded bg-gray-200 animate-pulse mb-2"></span>
-              <span className="block w-16 h-3 rounded bg-gray-200 animate-pulse mb-2"></span>
-              <span className="block w-28 h-3 rounded bg-gray-200 animate-pulse mb-2"></span>
-              <span className="block w-16 h-3 rounded bg-gray-200 animate-pulse"></span>
-            </>
-          ) : (
-            <ul className="dokan-bogo-product-name">
-              <li>
-                <RawHTML>
-                  {getProductName(item)}
-                </RawHTML>
-              </li>
-              <li className="flex items-center gap-1">
-                {__("Product Price: ", "storegrowth-sales-booster")}
-                <PriceHtml
-                  price={getProductPrice(item)}
-                />
-              </li>
-              <li className="flex items-center gap-1">
-                {__("Discounted Price: ", "storegrowth-sales-booster")}{" "}
-                <PriceHtml price={getDiscountedAmount(item)} />
-              </li>
-            </ul>
-          )}
-        </div>
-      ),
-      enableSorting: false,
-      enableGlobalSearch: false,
-    },
-  ];
-
-  // Necessary actions for the table rows.
-  const actions = [
-    {
-      id: "offer-edit",
-      isPrimary: true,
-      isEligible: (item) => !!item.id,
-      callback: (offers) => {
-        const offer = offers[0];
-        navigate(`/bogo/${offer.id}`);
-      },
-      label: () => (
-        <span
-          className={`px-2 bg-transparent font-medium text-dokan-link hover:text-dokan-link-hover pr-r text-sm`}
-        >
-          {__("Edit", "storegrowth-sales-booster")}
-        </span>
-      ),
-    },
-    {
-      id: "offer-delete",
-      isPrimary: true,
-      isEligible: (item) => !!item.id,
-      label: () => {
-        return (
-          <span
-            className={`px-2 bg-transparent font-medium text-dokan-danger hover:text-dokan-danger-hover text-sm`}
+  // Fields for handle the table columns. DataViews renders its own skeleton
+  // rows while `isLoading`, so no per-cell placeholders are needed here.
+  const fields = useMemo(
+    () => [
+      {
+        id: "name_of_order_bogo",
+        label: __("Offer Name", "storegrowth-sales-booster"),
+        enableSorting: false,
+        render: ({ item }) => (
+          <DokanLink
+            as="div"
+            onClick={() => {
+              navigate(`/bogo/${item.id}`);
+            }}
+            className="font-bold cursor-pointer"
           >
-            {__("Delete", "storegrowth-sales-booster")}
-          </span>
-        );
+            {item.name_of_order_bogo}
+          </DokanLink>
+        ),
       },
-      callback: (offers) => {
-        handleOfferDeletion(offers[0]);
+      {
+        id: "status",
+        label: __("Status", "storegrowth-sales-booster"),
+        enableSorting: false,
+        render: ({ item }) => (
+          <ToggleSwitch
+            checked={"active" === item.status}
+            onChange={(status) => handleStatusChange(status, item)}
+          />
+        ),
       },
-    },
-  ];
+      {
+        id: "offered_products",
+        label: __("Target Product", "storegrowth-sales-booster"),
+        enableSorting: false,
+        render: ({ item }) => (
+          <div className="dokan-bogo-product-name">
+            <RawHTML>{item?.get_offered_product_info?.name || "-"}</RawHTML>
+          </div>
+        ),
+      },
+      {
+        id: "offers",
+        label: __("Offers", "storegrowth-sales-booster"),
+        enableSorting: false,
+        render: ({ item }) => (
+          <ul className="dokan-bogo-product-name">
+            <li>
+              <RawHTML>{getProductName(item)}</RawHTML>
+            </li>
+            <li className="flex items-center gap-1">
+              {__("Product Price: ", "storegrowth-sales-booster")}
+              <PriceHtml price={getProductPrice(item)} />
+            </li>
+            <li className="flex items-center gap-1">
+              {__("Discounted Price: ", "storegrowth-sales-booster")}{" "}
+              <PriceHtml price={getDiscountedAmount(item)} />
+            </li>
+          </ul>
+        ),
+      },
+    ],
+    [navigate, fetchBogoOffers]
+  );
 
-  // Data view default layout.
-  const defaultLayouts = {
-    table: {},
-    grid: {},
-    list: {},
-    density: "comfortable", // Use density pre-defined values: comfortable, compact, cozy
-  };
-
-  // View state for handle the table view.
-  const [view, setView] = useState({
-    perPage: 10,
-    page: 1,
-    type: "table",
-    titleField: "id",
-    status: "completed,failed,cancelled",
-    layout: defaultLayouts,
-    fields: fields.map((field) => (field.id !== "id" ? field.id : "")),
-  });
+  // Necessary actions for the table rows. Labels must resolve to plain
+  // strings — DataViews also uses them for the row menu's accessible name.
+  const actions = useMemo(
+    () => [
+      {
+        id: "offer-edit",
+        isEligible: (item) => !!item.id,
+        label: () => __("Edit", "storegrowth-sales-booster"),
+        callback: (offers) => {
+          const offer = offers[0];
+          navigate(`/bogo/${offer.id}`);
+        },
+      },
+      {
+        id: "offer-delete",
+        isEligible: (item) => !!item.id,
+        label: () => __("Delete", "storegrowth-sales-booster"),
+        isDestructive: true,
+        confirmTitle: __("Delete Offer", "storegrowth-sales-booster"),
+        confirmMessage: __(
+          "This BOGO offer will be removed permanently and will stop applying to any product it is attached to.",
+          "storegrowth-sales-booster"
+        ),
+        confirmButtonLabel: __("Yes, Delete", "storegrowth-sales-booster"),
+        cancelButtonLabel: __("Close", "storegrowth-sales-booster"),
+        callback: (offers) => deleteOffer(offers[0]),
+      },
+    ],
+    [navigate, fetchBogoOffers]
+  );
 
   // Fetch offers when view changes.
   useEffect(() => {
     void fetchBogoOffers();
-  }, [view.page, view.perPage]);
+  }, [fetchBogoOffers]);
 
   return (
-    <>
-      <DataViews
-        data={offersData}
-        namespace="dokan-vendor-subscription-orders-data-view"
-        defaultLayouts={{ ...defaultLayouts }}
-        fields={fields}
-        getItemId={(item) => item.id}
-        onChangeView={setView}
-        search={false}
-        paginationInfo={{
-          // Pagination data for the table.
-          totalItems: totalOffers,
-          totalPages: Math.ceil(totalOffers / view.perPage),
-        }}
-        view={view}
-        actions={actions}
-        isLoading={isLoading}
-        topPanel={false}
-      />
-
-      <DokanModal
-        isOpen={isConfirmationModalOpen}
-        namespace="storegrowth-dokan-vendor-bogo-offer-delete"
-        dialogTitle={__("Delete Offer", "storegrowth-sales-booster")}
-        confirmationTitle={__(
-          "Are you sure you want to proceed?",
-          "storegrowth-sales-booster"
-        )}
-        confirmationDescription={__(
-          "Deleting this offer will prevent further completion of this subscription purchase.",
-          "storegrowth-sales-booster"
-        )}
-        confirmButtonText={__("Yes, Delete", "storegrowth-sales-booster")}
-        cancelButtonText={__("Close", "storegrowth-sales-booster")}
-        onConfirm={() => deleteOffer()}
-        onClose={() => setIsConfirmationModalOpen(false)}
-      />
-    </>
+    <DataViews
+      data={offersData}
+      namespace="storegrowth-vendor-bogo-offers-data-view"
+      defaultLayouts={DEFAULT_LAYOUTS}
+      fields={fields}
+      getItemId={(item) => String(item.id)}
+      onChangeView={setView}
+      search={false}
+      paginationInfo={{
+        // Pagination data for the table.
+        totalItems: totalOffers,
+        totalPages: Math.ceil(totalOffers / view.perPage),
+      }}
+      view={view}
+      actions={actions}
+      isLoading={isLoading}
+      emptyTitle={__("No BOGO offers yet", "storegrowth-sales-booster")}
+      emptyDescription={__(
+        "Create your first offer to start giving away or discounting products.",
+        "storegrowth-sales-booster"
+      )}
+    />
   );
 };
 

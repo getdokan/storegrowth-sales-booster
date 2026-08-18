@@ -37,6 +37,7 @@ class Bogo {
 		add_filter( 'spsg_bogo_rest_query_filters', [ $this, 'add_bogo_rest_query_args' ] );
 		add_filter( 'spsg_bogo_created_by', [ $this, 'add_bogo_created_by' ] );
 		add_filter( 'spsg_bogo_check_permission', [ $this, 'check_bogo_permission' ] );
+		add_filter( 'spsg_bogo_single_item_permission', [ $this, 'check_bogo_single_item_permission' ], 10, 3 );
 		add_filter( 'spsg_product_query_args', [ $this, 'add_product_query_args' ], 10, 2 );
     }
 
@@ -104,6 +105,43 @@ class Bogo {
 		if ( ! current_user_can('manage_options') ) {
             return current_user_can( 'dokandar' );
         }
+		return $has_permission;
+	}
+
+	/**
+	 * Restrict a vendor to BOGO offers they own.
+	 *
+	 * `check_bogo_permission()` opens the admin-scoped BOGO routes to every
+	 * `dokandar` user, because the vendor dashboard lists offers through
+	 * `GET /bogo/offers`. That grant is capability-wide and carries no notion of
+	 * ownership, so without this filter a vendor could address a single-offer
+	 * route with another vendor's offer ID and read, edit, disable or delete it.
+	 *
+	 * Mirrors `VendorBogoController::check_single_item_permission()`, which
+	 * already enforces the same rule on the vendor-scoped mirror routes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param bool|\WP_Error   $has_permission Permission resolved so far.
+	 * @param array            $item           The BOGO offer being addressed.
+	 * @param \WP_REST_Request $request        Rest request.
+	 *
+	 * @return bool|\WP_Error True when permitted, WP_Error otherwise.
+	 */
+	public function check_bogo_single_item_permission( $has_permission, $item, $request ) {
+		// Administrators keep whatever the core controller resolved.
+		if ( current_user_can( 'manage_options' ) ) {
+			return $has_permission;
+		}
+
+		if ( ! is_array( $item ) || ! isset( $item['created_by'] ) || (int) $item['created_by'] !== dokan_get_current_user_id() ) {
+			return new \WP_Error(
+				'salesbooster_permission_failure',
+				__( 'You do not have permission to access this BOGO offer.', 'storegrowth-sales-booster' ),
+				[ 'status' => 403 ]
+			);
+		}
+
 		return $has_permission;
 	}
 
