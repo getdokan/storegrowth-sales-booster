@@ -31,7 +31,7 @@ class Bootstrap {
 	/**
 	 * Minimum WooCommerce version the plugin supports.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var string
 	 */
@@ -65,7 +65,7 @@ class Bootstrap {
 	 * Warn, without disabling anything, when WooCommerce is older than the
 	 * supported floor.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return void
 	 */

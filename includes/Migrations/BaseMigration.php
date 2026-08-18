@@ -19,17 +19,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Base class of every StoreGrowth migration.
  *
  * Binds the WPKit migration runner to the plugin database version option. Child
- * classes are named after the version they ship in (`V_2_2_0` => `2.2.0`) and
+ * classes are named after the version they ship in (`V_2_1_2` => `2.1.2`) and
  * every public static method they declare is executed by the runner.
  *
- * @since SPSG_VERSION
+ * @since 2.1.2
  */
 abstract class BaseMigration extends WPKitMigration {
 
 	/**
 	 * Option key holding the migrated database version.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var string
 	 */

@@ -20,10 +20,12 @@ $image_without_link = '<img id="image_of_product" src="#"
 
 			<div class="custom-notification-image-wrapper" style="padding:<?php echo isset( $image_spacing ) ? esc_attr( $image_spacing ) : null; ?>px">
 				<?php
+				// Product image markup (an <img>, optionally wrapped in an <a>).
+				// wp_kses_post keeps that markup while stripping scripts/handlers.
 				if ( $popup_properties['link_image_to_product'] ) {
-                    echo $image_with_link; //phpcs:ignore
+					echo wp_kses_post( $image_with_link );
 				} else {
-                    echo $image_without_link; //phpcs:ignore
+					echo wp_kses_post( $image_without_link );
 				}
 				?>
 			</div>

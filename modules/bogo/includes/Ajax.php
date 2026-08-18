@@ -56,11 +56,18 @@ class Ajax implements HookRegistry {
 		$item_key            = isset( $data['cart_item_key'] ) ? intval( $data['cart_item_key'] ) : 0;
 		$main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
 		$product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
-		$offer_product_cost  = isset( $data['offer_product_cost'] ) ? floatval( $data['offer_product_cost'] ) : 0;
 		$selected_product_id = isset( $data['selected_product_id'] ) ? intval( $data['selected_product_id'] ) : 0;
 
 		if ( ! $selected_product_id || ! $main_product_id ) {
 			wp_send_json_error( 'Invalid product ID.' );
+		}
+
+		// The gift price is derived from the offer configuration server-side; any
+		// client-sent `offer_product_cost` is ignored. Authorise the swap before
+		// touching the cart so a rejected request leaves the current gift intact.
+		$offer_product_cost = $this->resolve_authorized_bogo_price( $selected_product_id );
+		if ( null === $offer_product_cost ) {
+			wp_send_json_error( __( 'This gift is not available for your cart.', 'storegrowth-sales-booster' ), 403 );
 		}
 
 		// Logic to remove the existing offer product and add the new one.
@@ -139,20 +146,38 @@ class Ajax implements HookRegistry {
 			}
 		}
 
+		// Refine the derived price for the resolved variation (variation prices
+		// differ from the parent). Authorisation already passed above.
+		if ( $variation_id ) {
+			$variation_price = $this->resolve_authorized_bogo_price( $selected_product_id, $variation_id );
+			if ( null !== $variation_price ) {
+				$offer_product_cost = $variation_price;
+			}
+		}
+
+		// Cart item data, plus additive campaign attribution keys for revenue reporting.
+		$cart_item_data = array(
+			'bogo_offer'            => true,
+			'parent_key'            => $item_key,
+			'bogo_product_for'      => $main_product_id,
+			'bogo_offer_price'      => $offer_product_cost,
+			'changed_product_id'    => $selected_product_id,
+			'linked_to_product_key' => $product_link_key,
+		);
+
+		$stamp_settings = Helper::get_product_bogo_settings_for_cart( $main_product_id );
+		$price_product  = $variation_id ? wc_get_product( $variation_id ) : $selected_product;
+		if ( ! empty( $stamp_settings ) && $price_product ) {
+			$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $stamp_settings, $price_product ) );
+		}
+
 		// Add the selected product as the new offer product
 		$free_product_key = WC()->cart->add_to_cart(
 			$selected_product_id,
 			$offer_product_quantity,
 			$variation_id,
 			$variation_attributes,
-			array(
-				'bogo_offer'            => true,
-                'parent_key'            => $item_key,
-                'bogo_product_for'      => $main_product_id,
-				'bogo_offer_price'      => $offer_product_cost,
-                'changed_product_id'    => $selected_product_id,
-                'linked_to_product_key' => $product_link_key,
-			)
+			$cart_item_data
 		);
 
         if ( $free_product_key && isset( WC()->cart->cart_contents[ $item_key ] ) ) {
@@ -230,6 +255,17 @@ class Ajax implements HookRegistry {
 			$data['editableId'] = absint( $data['editableId'] );
 		}
 
+		/**
+		 * Maximum number of stored BOGO category messages.
+		 *
+		 * Caps the option so it cannot be grown without bound.
+		 *
+		 * @since 2.1.2
+		 *
+		 * @param int $max Maximum category messages.
+		 */
+		$max_messages = (int) apply_filters( 'spsg_bogo_max_category_messages', 100 );
+
 		if ( ! empty( $data['editableId'] ) && in_array( $data['editableId'], $cat_ids, true ) ) {
 			$index = array_search( $data['editableId'], $cat_ids, true );
 
@@ -237,6 +273,17 @@ class Ajax implements HookRegistry {
             $bogo_settings['bogo_category_messages'][ $index ]['message']        = $data['message'];
             $bogo_settings['bogo_category_messages'][ $index ]['categoryStatus'] = $data['categoryStatus'];
         } else {
+            if ( count( $cat_ids ) >= $max_messages ) {
+                wp_send_json_error(
+                    sprintf(
+                        /* translators: %d: maximum number of category messages. */
+                        __( 'You can store at most %d category messages.', 'storegrowth-sales-booster' ),
+                        $max_messages
+                    ),
+                    400
+                );
+            }
+
             $bogo_settings['bogo_category_messages'][] = $data;
         }
 
@@ -269,49 +316,123 @@ class Ajax implements HookRegistry {
 
 	/**
 	 * Bogo product add to cart.
+	 *
+	 * The reward price is derived server-side from the offer configuration; any
+	 * `bogo_price` in the request is ignored. The request is rejected — nothing
+	 * added — unless an active offer the current cart qualifies for authorises
+	 * this product as its reward.
 	 */
 	public function offer_product_add_to_cart() {
 		check_ajax_referer( 'spsg_frontend_ajax_nonce' );
 
 		global $woocommerce;
-		$all_cart_products = $woocommerce->cart->get_cart();
 
-		foreach ( $all_cart_products as $value ) {
-			$cat_ids = $value['data']->get_category_ids();
-			foreach ( $cat_ids as $cat_id ) {
-				$all_cart_category_ids[] = $cat_id;
-			}
-			$all_cart_product_ids[] = $value['product_id'];
-		}
-
-		$bogo_price       = isset( $_POST['data']['bogo_price'] ) ? floatval( wp_unslash( $_POST['data']['bogo_price'] ) ) : null;
 		$checked          = isset( $_POST['data']['checked'] ) ? boolval( wp_unslash( $_POST['data']['checked'] ) ) : null;
 		$offer_product_id = isset( $_POST['data']['offer_product_id'] ) ? intval( wp_unslash( $_POST['data']['offer_product_id'] ) ) : null;
 
 		if ( $checked ) {
-			$product_id      = $offer_product_id;
-			$product_cart_id = WC()->cart->generate_cart_id( $product_id );
-			$cart_item_key   = WC()->cart->find_product_in_cart( $product_cart_id );
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 				if ( $cart_item['product_id'] === $offer_product_id ) {
 					WC()->cart->remove_cart_item( $cart_item_key );
 				}
 			}
-		} else {
-			$custom_price = $bogo_price;
-			// Cart item data to send & save in order.
-			$cart_item_data = array( 'custom_price' => $custom_price );
-			// Woocommerce function to add product into cart check its documentation also.
-			$woocommerce->cart->add_to_cart( $offer_product_id, 1, $variation_id = 0, $variation = array(), $cart_item_data );
-			// Calculate totals.
-			$woocommerce->cart->calculate_totals();
-			// Save cart to session.
-			$woocommerce->cart->set_session();
-			// Maybe set cart cookies.
-			$woocommerce->cart->maybe_set_cart_cookies();
 
+			die();
 		}
 
+		if ( ! $offer_product_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'storegrowth-sales-booster' ) ), 400 );
+		}
+
+		$offer_price = $this->resolve_authorized_bogo_price( $offer_product_id );
+		if ( null === $offer_price ) {
+			wp_send_json_error( array( 'message' => __( 'This offer is not available.', 'storegrowth-sales-booster' ) ), 403 );
+		}
+
+		// Use the BOGO price key so OrderBogo prices the gift — never
+		// `custom_price`, which is the Upsell Order Bump key and left the gift
+		// full-priced whenever that module was inactive.
+		$cart_item_data = array( 'bogo_offer_price' => $offer_price );
+
+		// Attribution stamp — resolve the offer that produced this gift from
+		// the cart's trigger products, then add the campaign identity keys.
+		$stamp_settings = Helper::resolve_bogo_settings_for_gift( $offer_product_id );
+		$price_product  = wc_get_product( $offer_product_id );
+		if ( ! empty( $stamp_settings ) && $price_product ) {
+			$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $stamp_settings, $price_product ) );
+		}
+
+		$woocommerce->cart->add_to_cart( $offer_product_id, 1, 0, array(), $cart_item_data );
+		$woocommerce->cart->calculate_totals();
+		$woocommerce->cart->set_session();
+		$woocommerce->cart->maybe_set_cart_cookies();
+
 		die();
+	}
+
+	/**
+	 * Resolve the price a BOGO reward may be added at, deriving it from the
+	 * offer configuration instead of trusting the client.
+	 *
+	 * Returns null when no active offer that the current cart qualifies for
+	 * authorises adding this product as its reward, so callers add nothing.
+	 *
+	 * @since 2.1.2
+	 *
+	 * @param int $offer_product_id Requested reward product id (parent id for a
+	 *                              variable gift).
+	 * @param int $variation_id     Resolved variation id, if any.
+	 *
+	 * @return float|null Authorised price, or null when unauthorised.
+	 */
+	private function resolve_authorized_bogo_price( int $offer_product_id, int $variation_id = 0 ) {
+		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+			return null;
+		}
+
+		$price_product = wc_get_product( $variation_id ? $variation_id : $offer_product_id );
+		if ( ! $price_product ) {
+			return null;
+		}
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$trigger_product_id = (int) $cart_item['product_id'];
+
+			$settings = BogoValidator::get_product_bogo_settings( $trigger_product_id );
+			if ( empty( $settings ) ) {
+				continue;
+			}
+
+			$trigger_category_ids = $cart_item['data'] instanceof \WC_Product ? $cart_item['data']->get_category_ids() : array();
+			if ( ! BogoValidator::should_display_offer( $settings, $trigger_product_id, $trigger_category_ids ) ) {
+				continue;
+			}
+
+			// The trigger must meet the offer's minimum quantity condition.
+			$min_qty = max( 1, intval( $settings['minimum_quantity_required'] ?? 1 ) );
+			if ( (int) $cart_item['quantity'] < $min_qty ) {
+				continue;
+			}
+
+			// The requested product must be this offer's configured reward or one
+			// of its configured alternates.
+			$reward_id  = (int) BogoValidator::get_offer_product_id( $settings, $trigger_product_id );
+			$alternates = $settings['alternate_products'] ?? $settings['get_alternate_products'] ?? array();
+			$authorized = array_map( 'intval', array_merge( array( $reward_id ), (array) $alternates ) );
+
+			if ( ! in_array( (int) $offer_product_id, $authorized, true ) ) {
+				continue;
+			}
+
+			// Price derived from the offer, matching OrderBogo::apply_bogo_product()
+			// and OrderBogo.php:531 exactly (filtered product price).
+			if ( isset( $settings['offer_type'] ) && 'discount' === $settings['offer_type'] ) {
+				return (float) max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
+			}
+
+			return 0.0; // Free offer.
+		}
+
+		return null;
 	}
 }

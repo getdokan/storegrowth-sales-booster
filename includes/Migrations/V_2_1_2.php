@@ -1,6 +1,6 @@
 <?php
 /**
- * File for V_2_2_0 migration class.
+ * File for V_2_1_2 migration class.
  *
  * @package SBFW
  */
@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Migration shipped with 2.2.0.
+ * Migration shipped with 2.1.2.
  *
- * @since SPSG_VERSION
+ * @since 2.1.2
  */
-class V_2_2_0 extends BaseMigration {
+class V_2_1_2 extends BaseMigration {
 
 	/**
 	 * Drop the consent records left behind by the removed setup wizard handler.
@@ -28,7 +28,7 @@ class V_2_2_0 extends BaseMigration {
 	 * never sent anywhere, and the telemetry it duplicated is collected by the
 	 * Appsero client instead.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return void
 	 */

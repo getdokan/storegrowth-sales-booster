@@ -8,7 +8,7 @@
 namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
-use StorePulse\StoreGrowth\Migrations\V_2_2_0;
+use StorePulse\StoreGrowth\Migrations\V_2_1_2;
 use StorePulse\StoreGrowth\Notices\UpgradeNoticeProvider;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeManager;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeRESTController;
@@ -29,35 +29,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  * pending through the REST backed notice feed, and the upgrade runs when they
  * confirm it, instead of on an arbitrary page load.
  *
- * @since SPSG_VERSION
+ * @since 2.1.2
  */
 class Upgrader implements HookRegistry {
 
 	/**
 	 * Option key holding the migrated database version.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	const DB_VERSION_KEY = 'spsg_db_version';
 
 	/**
 	 * Prefix of the hooks and options owned by the migration runner.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	const PREFIX = 'storegrowth';
 
 	/**
 	 * REST namespace serving the migration and notice routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	const REST_NAMESPACE = 'sales-booster/v1';
 
 	/**
 	 * Options proving the plugin ran before the database version was tracked.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	const LEGACY_INSTALL_OPTIONS = [
 		'spsg_active_module_ids',
@@ -68,7 +68,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Migration registry.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var MigrationRegistry
 	 */
@@ -77,7 +77,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Migration manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var MigrationManager
 	 */
@@ -86,7 +86,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Admin notice manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @var NoticeManager
 	 */
@@ -95,13 +95,13 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Build the migration registry, manager and notice manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 */
 	public function __construct() {
 		$this->registry = new MigrationRegistry( self::DB_VERSION_KEY, STOREGROWTH_VERSION );
 		$this->registry->register_many(
 			[
-				'2.2.0' => V_2_2_0::class,
+				'2.1.2' => V_2_1_2::class,
 			]
 		);
 
@@ -114,7 +114,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return void
 	 */
@@ -127,7 +127,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Register the migration and notice REST routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return void
 	 */
@@ -139,7 +139,7 @@ class Upgrader implements HookRegistry {
 	/**
 	 * Retrieve the migration manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return MigrationManager
 	 */
@@ -155,7 +155,7 @@ class Upgrader implements HookRegistry {
 	 * site that ran an older release keeps its missing version, which leaves the
 	 * pending migrations to run.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 2.1.2
 	 *
 	 * @return void
 	 */

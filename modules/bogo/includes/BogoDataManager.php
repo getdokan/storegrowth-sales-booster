@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use Exception;
+use StorePulse\StoreGrowth\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -93,6 +94,14 @@ class BogoDataManager {
 		global $wpdb;
 
 		$table = self::get_table_name();
+
+		// The table is created on module activation, so a site that updated in
+		// place without toggling the module never got it. Answer with no offers
+		// rather than querying a missing table and mapping over `null`.
+		if ( ! Helper::table_exists( $table ) ) {
+			return [];
+		}
+
 		$options = wp_parse_args( $options, [
 			'order_by' => 'created_at DESC',
 			'limit' => 20,
@@ -121,6 +130,12 @@ class BogoDataManager {
 		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values, [ $order_field ] ) );
 
 		$results = $wpdb->get_results( $prepared_query );
+
+		// `get_results()` answers `null` on a query error, which `array_map()`
+		// rejects outright on PHP 8.
+		if ( ! is_array( $results ) ) {
+			return [];
+		}
 
 		return array_map( array( self::class, 'format_settings' ), $results );
 	}
@@ -345,6 +360,10 @@ class BogoDataManager {
 		return array_map( function( $offer ) {
 			// Use the same formatting as get_bogo_offer for consistency
 			$formatted_offer = array(
+				// Stable identity for revenue attribution — the database row id and
+				// type flow through to the cart injection sites unchanged.
+				'id'               => $offer['id'] ?? null,
+				'type'             => $offer['type'] ?? 'global',
 				'offered_products' => $offer['offered_products'] ?? null,
 				'bogo_deal_type'   => $offer['bogo_deal_type'] ?? 'different',
 				'offer_type'       => $offer['offer_type'] ?? 'free',
@@ -461,6 +480,11 @@ class BogoDataManager {
 		global $wpdb;
 
 		$table = self::get_table_name();
+
+		// No table means no offers to count.
+		if ( ! Helper::table_exists( $table ) ) {
+			return 0;
+		}
 
 		// Build WHERE clause using shared method
 		$where_data = self::build_where_clause( $conditions, [] );

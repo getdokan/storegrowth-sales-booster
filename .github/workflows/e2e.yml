@@ -4,6 +4,13 @@ name: E2E & API Tests
 # pushes to the long-lived branches, on published releases, and on demand.
 # Make "E2E Tests" a required status check in branch protection so a PR can
 # only merge once this whole workflow is green.
+#
+# The PHP version the site under test runs on defaults to 7.4 — the floor the
+# plugin actually claims (`composer.json` "php": ">=7.4", `Requires PHP: 7.4`).
+# Testing the floor is what catches bugs that only surface below 8.1, such as
+# static variables in inherited methods becoming shared with the parent scope
+# in 8.1; an 8.2-only matrix is blind to them. A manual run can pick any other
+# supported version.
 on:
   pull_request:
   push:
@@ -11,6 +18,14 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version for the site under test'
+        type: choice
+        default: '7.4'
+        options: ['7.4', '8.0', '8.1', '8.2', '8.3']
+
+run-name: E2E & API Tests (PHP ${{ github.event.inputs.php_version || '7.4' }})
 
 # Cancel superseded runs on the same ref/PR to save CI minutes.
 concurrency:
@@ -162,7 +177,7 @@ jobs:
           if-no-files-found: error
 
   playwright:
-    name: Playwright (${{ matrix.name }})
+    name: Playwright (${{ matrix.name }} · PHP ${{ github.event.inputs.php_version || '7.4' }})
     runs-on: ubuntu-latest
     needs: build
     timeout-minutes: 25
@@ -238,20 +253,26 @@ jobs:
               -C storegrowth-sales-booster-pro
           fi
 
-      # Map the prebuilt Pro into the wp-env site (.wp-env.override.json is
-      # deep-merged over .wp-env.json). provision-site.php activates the plugin
-      # + license later.
-      - name: Map Pro into wp-env
-        if: ${{ needs.build.outputs.has-pro == 'true' }}
+      # .wp-env.override.json is deep-merged over .wp-env.json. Two things go in
+      # it, so they are written together rather than by competing steps that
+      # would overwrite each other's file: the PHP version under test, and the
+      # mapping for the prebuilt Pro plugin. provision-site.php activates Pro +
+      # its license later.
+      - name: Configure wp-env override (PHP version + Pro mapping)
         working-directory: tests/e2e
+        env:
+          PHP_VERSION: ${{ github.event.inputs.php_version || '7.4' }}
+          PRO_PATH: ${{ github.workspace }}/storegrowth-sales-booster-pro
+          HAS_PRO: ${{ needs.build.outputs.has-pro }}
         run: |
-          cat > .wp-env.override.json <<JSON
-          {
-            "mappings": {
-              "wp-content/plugins/storegrowth-sales-booster-pro": "${{ github.workspace }}/storegrowth-sales-booster-pro"
-            }
-          }
-          JSON
+          if [ "$HAS_PRO" = "true" ]; then
+            jq -n --arg php "$PHP_VERSION" --arg pro "$PRO_PATH" \
+              '{phpVersion: $php, mappings: {"wp-content/plugins/storegrowth-sales-booster-pro": $pro}}' \
+              > .wp-env.override.json
+          else
+            jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          fi
+          cat .wp-env.override.json
 
       # ---- Boot WordPress + WooCommerce + this plugin via wp-env ----
       # .wp-env.json lives in tests/e2e, so wp-env runs from there.
@@ -260,6 +281,14 @@ jobs:
         run: |
           npm -g install @wordpress/env
           wp-env start
+
+      # Prove the site is actually on the requested PHP, so a run labelled
+      # "PHP 7.4" can't quietly have tested 8.2.
+      - name: Report the site's PHP version
+        working-directory: tests/e2e
+        run: |
+          wp-env run cli wp eval 'echo PHP_VERSION, PHP_EOL;'
+          echo "PHP under test: $(wp-env run cli wp eval 'echo PHP_VERSION;' 2>/dev/null | tr -d '\r')" >> "$GITHUB_STEP_SUMMARY"
 
       # Storefront is a classic theme; the storefront specs assert against its
       # classic WooCommerce markup (.summary / .entry-summary / ul.products).
