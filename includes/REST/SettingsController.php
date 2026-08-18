@@ -102,9 +102,12 @@ class SettingsController extends WP_REST_Controller {
 	 */
 	public function update_item( $request ): WP_REST_Response {
 		if ( null !== $request->get_param( 'remove_data_on_uninstall' ) ) {
+			// Not autoloaded: this is read by this route and by the uninstaller,
+			// never on an ordinary page load.
 			update_option(
 				Uninstaller::DATA_REMOVAL_OPTION,
-				rest_sanitize_boolean( $request->get_param( 'remove_data_on_uninstall' ) )
+				rest_sanitize_boolean( $request->get_param( 'remove_data_on_uninstall' ) ),
+				false
 			);
 		}
 
