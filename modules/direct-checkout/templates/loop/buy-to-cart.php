@@ -38,7 +38,7 @@ $product_add_to_cart_text = esc_html( 'simple' === $product_type ? $buy_now_butt
 if ( ! $product->is_in_stock() && is_product() && 'single-product/add-to-cart/simple.php' === $template_name ) {
 	$html_output = '<p class="stock out-of-stock">Out Of Stock</p>';
 } else {
-	$html_output = '<a href="' . $product_checkout_url . '" data-quantity="' . $product_quantity . '" class="' . $product_class . '" ' . $product_attributes . '>' . $product_add_to_cart_text . '</a>';
+	$html_output = '<a href="' . $product_checkout_url . '" data-id="' . absint( $product_id ) . '" data-quantity="' . $product_quantity . '" class="' . $product_class . '" ' . $product_attributes . '>' . $product_add_to_cart_text . '</a>';
 }
 
 
