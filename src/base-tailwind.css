@@ -1,5 +1,5 @@
 /*
- * The single Tailwind v4 stylesheet for the StoreGrowth admin (ADR-004).
+ * The single Tailwind v4 stylesheet for the StoreGrowth admin (ADR-003).
  *
  * Preflight and utilities apply only inside `.spsg-layout`. The class is passed
  * to plugin-ui's ThemeProvider, which puts it on its root element and on every

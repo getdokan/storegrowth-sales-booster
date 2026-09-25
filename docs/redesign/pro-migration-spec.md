@@ -3,7 +3,7 @@
 - Status: Draft
 - Date: 2026-09-25
 - Plugin: `storegrowth-sales-booster-pro` 2.2.0 (`StorePulse\StoreGrowthPro\`)
-- Depends on: lite phases 1–4 (`migration-spec.md`), ADR-001…005, `pro-compat-review.md` (rules R1–R6)
+- Depends on: lite phases 1–4 (`migration-spec.md`), ADR-001…006 (`../adr/`), RDR-001, `pro-compat-review.md` (rules R1–R6)
 - This is lite's phase 5.
 
 ## 1. Goal and key insight
@@ -53,7 +53,7 @@ Pro's PHP runtime (the storefront features) stays unchanged.
 | QuickCart | 4 | Layout, position, content, preview (coupon preview) |
 | SalesCountdown | 3 | Shop display, design colours, premium styles |
 | UpsellOrderBump | 2 | Cap lift, list override |
-| **Total** | **64 `addFilter` calls in `Modules/` (65 distinct hook names in the static scan)** | All target lite JS hooks retired by ADR-005 §4 |
+| **Total** | **64 `addFilter` calls in `Modules/` (65 distinct hook names in the static scan)** | All target lite JS hooks retired by ADR-004 §4 |
 
 ### 2.3 Hooks pro **fires** (frozen, same rules as lite)
 `sales_boster_floating_notification_bar_text`, `sales_boster_pd_banner_text`, `spsg_stock_bar_stock_below`, plus re-fired `woocommerce_cart_coupon` and `woocommerce_date_input_html_pattern`.

@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-002 (`../redesign/adr/`), ADR-003, ADR-004, `../redesign/migration-spec.md`
+- Related: RDR-001 (`../redesign/adr/`), ADR-002, ADR-003, `../redesign/migration-spec.md`
 
 ## Context
 
@@ -46,8 +46,8 @@ It is not a separate webpack config per module.
    - `webpack.config.js`: extends `@wordpress/scripts/config/webpack.config`, filesystem cache, `MiniCssExtractPlugin`, asset rules.
    - `webpack-entries.js`: every entry in one place.
    - `webpack-dependency-mapping.js`: `requestToExternal` / `requestToHandle` for `DependencyExtractionWebpackPlugin`.
-   - `postcss.config.js`: `@tailwindcss/postcss` (ADR-004).
-   - `tsconfig.json`: see ADR-002.
+   - `postcss.config.js`: `@tailwindcss/postcss` (ADR-003).
+   - `tsconfig.json`: see RDR-001.
 3. **Shared runtime bundles, exposed as globals** (the dokan-lite `library: { type: 'window' }` pattern):
 
    | Entry | Global | WP handle | Import specifier |

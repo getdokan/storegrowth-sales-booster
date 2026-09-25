@@ -4,8 +4,8 @@
 |---|---|
 | [migration-spec.md](migration-spec.md) | The plan: target build, file tree, PHP changes, data rules, phases |
 | [modules/](modules/README.md) | Per-module migration specs: core shell + 10 modules, with field maps, data changes, REST, compat, tasks |
-| [adr/ADR-002](adr/ADR-002-typescript-first-full-rewrite.md) | Redesign decision: TypeScript-first full rewrite; pro extends the PHP schema |
-| [../adr/](../adr/README.md) | Core system ADRs (apply beyond the redesign): ADR-001 build, ADR-003 source layout, ADR-004 Tailwind scoping, ADR-005 backward compatibility, ADR-006 storefront standard, ADR-007 admin ajax client |
+| [adr/RDR-001](adr/RDR-001-typescript-first-full-rewrite.md) | Redesign decision: TypeScript-first full rewrite; pro extends the PHP schema |
+| [../adr/](../adr/README.md) | Core system ADRs (apply beyond the redesign): ADR-001 build, ADR-002 source layout, ADR-003 Tailwind scoping, ADR-004 backward compatibility, ADR-005 storefront standard, ADR-006 admin ajax client |
 | [rest-api.md](rest-api.md) | Every REST route needed: existing, to change, new; ajax → REST mapping |
 | [storefront-impact.md](storefront-impact.md) | What changes for shoppers/vendors per module, cross-cutting storefront risks, storefront tests |
 | [pro-migration-spec.md](pro-migration-spec.md) | Moving the pro plugin itself: inventory, handshake, legacy bundle for old lite, build, per-module tasks, release order |

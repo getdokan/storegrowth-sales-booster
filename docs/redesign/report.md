@@ -193,12 +193,12 @@ Superseded by the ADRs in `adr/` and the plan in `migration-spec.md`. Where this
 
 | # | Decision | Status |
 |---|---|---|
-| D1 | TypeScript-first, full rewrite | Accepted — `adr/ADR-002` |
-| D2 | Source layout: root `src/`, `modules/<name>/src/` | Accepted — `../adr/ADR-003` |
+| D1 | TypeScript-first, full rewrite | Accepted — `adr/RDR-001` |
+| D2 | Source layout: root `src/`, `modules/<name>/src/` | Accepted — `../adr/ADR-002` |
 | D3 | Single build following dokan-lite; core bundles + separate module bundles; no monorepo | Accepted — `../adr/ADR-001` |
-| D4 | Tailwind v4, one scoped stylesheet | Accepted — `../adr/ADR-004` |
+| D4 | Tailwind v4, one scoped stylesheet | Accepted — `../adr/ADR-003` |
 | D5 | Custom components (§6 table) owned by StoreGrowth, built on plugin-ui | Accepted |
-| D6 | Settings over REST (§5); pro extends the PHP schema, not JS hooks | Accepted — `adr/ADR-002` item 6, spec §5.4 |
+| D6 | Settings over REST (§5); pro extends the PHP schema, not JS hooks | Accepted — `adr/RDR-001` item 6, spec §5.4 |
 
 The older draft tree and change list below are kept for history. The current tree is in `migration-spec.md` §3.
 

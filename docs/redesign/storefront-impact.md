@@ -3,7 +3,7 @@
 - Date: 2026-09-25
 - Scope: what shoppers and vendors see, meaning the storefront JS/CSS/templates and the Dokan vendor dashboard, as opposed to the wp-admin settings UI.
 
-> **Update:** ADR-006 applies one consistent storefront standard to **every** module: CSS variables, shared font/token/display-rule/template loaders, and previews that use the real storefront CSS. So every module's storefront code is touched, not only the modules marked "Yes" below. The guarantee stays the same: output is identical for sites that don't change their settings, and old classes, selectors, handles and CSS filters remain.
+> **Update:** ADR-005 applies one consistent storefront standard to **every** module: CSS variables, shared font/token/display-rule/template loaders, and previews that use the real storefront CSS. So every module's storefront code is touched, not only the modules marked "Yes" below. The guarantee stays the same: output is identical for sites that don't change their settings, and old classes, selectors, handles and CSS filters remain.
 
 ## 1. What does NOT change (all modules)
 
@@ -14,8 +14,8 @@
 - **Script/style handles:** unchanged (`wfc-script` and the rest). Pro's storefront scripts depend on them.
 - **Localized storefront data:** unchanged (`spsg_fsb_data`, `spsg_fnb_data`, `popup_info`, `wc_cart_params`, …).
 - **Public ajax** (`spsg_fly_cart_frontend`, `spsgqcv_quickview`, `offer_product_add_to_cart`, `update_offer_product`, `upsell_offer_product_add_to_cart`) and their nonces: unchanged.
-- **PHP hooks:** all frozen (ADR-005), so theme and pro storefront customisations keep working.
-- **Tailwind, plugin-ui and React:** admin only. Tailwind must **never** load on the storefront (ADR-004).
+- **PHP hooks:** all frozen (ADR-004), so theme and pro storefront customisations keep working.
+- **Tailwind, plugin-ui and React:** admin only. Tailwind must **never** load on the storefront (ADR-003).
 - **Option keys:** unchanged. The storefront reads the same data.
 
 ## 2. Cross-cutting risks (all modules)

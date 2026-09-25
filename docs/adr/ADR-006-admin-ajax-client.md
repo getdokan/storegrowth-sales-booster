@@ -1,12 +1,12 @@
-# ADR-007: One client for admin-ajax calls from the admin app
+# ADR-006: One client for admin-ajax calls from the admin app
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-002 (TypeScript rewrite, REST-first; `../redesign/adr/`), ADR-005 (ajax actions stay registered), `../redesign/rest-api.md`
+- Related: RDR-001 (TypeScript rewrite, REST-first; `../redesign/adr/`), ADR-004 (ajax actions stay registered), `../redesign/rest-api.md`
 
 ## Context
 
-The admin app talks to the server over REST (`sales-booster/v1`, `src/utilities/api.ts`). ADR-005 keeps every existing `wp_ajax_spsg_*` action registered, and some of them already do exactly what a screen needs, with no REST route. The rebuilt onboarding wizard is the first case: completion goes through the existing `spsg_inisetup_flag_update` action instead of a new route, to keep the API surface unchanged.
+The admin app talks to the server over REST (`sales-booster/v1`, `src/utilities/api.ts`). ADR-004 keeps every existing `wp_ajax_spsg_*` action registered, and some of them already do exactly what a screen needs, with no REST route. The rebuilt onboarding wizard is the first case: completion goes through the existing `spsg_inisetup_flag_update` action instead of a new route, to keep the API surface unchanged.
 
 The old UI called admin-ajax in several different ways: a jQuery helper (`assets/src/ajax.js`), raw `fetch()` with hand-built `URLSearchParams`, and hard-coded `/wp-admin/admin-ajax.php` URLs. Each call site handled the nonce, boolean encoding and errors differently. WordPress also answers a failed nonce or capability check with a bare `-1` / `0`, which none of them turned into a readable error.
 
@@ -42,10 +42,10 @@ Put a typed wrapper next to the REST clients in `src/utilities/api.ts` (e.g. `co
 ### 4. Server side
 - The PHP handler must call `check_ajax_referer( 'spsg_ajax_nonce', '_ajax_nonce' )` **and** a capability check (`current_user_can( 'manage_options' )`). The nonce is shared across the admin, so it's not access control on its own.
 - Reply with `wp_send_json_success()` / `wp_send_json_error( $message, $status )`. Error `data` should be a translatable string.
-- The action name, fields and stored data follow ADR-005: never renamed or removed.
+- The action name, fields and stored data follow ADR-004: never renamed or removed.
 
 ### Out of scope
-Storefront ajax (`wp_ajax_nopriv_*`, nonces `spsg_frontend_ajax*`) stays as it is; see `../redesign/rest-api.md` §6 and ADR-006.
+Storefront ajax (`wp_ajax_nopriv_*`, nonces `spsg_frontend_ajax*`) stays as it is; see `../redesign/rest-api.md` §6 and ADR-005.
 
 ## Consequences
 

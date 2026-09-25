@@ -139,7 +139,7 @@ class Assets {
 			null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Google Fonts versions itself.
 		);
 
-		// Old handle names now resolve to the new app (ADR-005: handles are kept).
+		// Old handle names now resolve to the new app (ADR-004: handles are kept).
 		foreach ( array( 'spsg-settings-script', 'spsg-modules-script', 'spsg-notices-script' ) as $legacy_handle ) {
 			wp_register_script( $legacy_handle, false, array( 'spsg-admin' ), STOREGROWTH_VERSION, true );
 		}
@@ -239,7 +239,7 @@ class Assets {
 			apply_filters(
 				'spsg_admin_localized_data',
 				array(
-					// Kept for back-compat (ADR-005).
+					// Kept for back-compat (ADR-004).
 					'ajax_url'            => admin_url( 'admin-ajax.php' ),
 					'nonce'               => wp_create_nonce( 'spsg_ajax_nonce' ),
 					'isPro'               => sp_store_growth()->has_pro(),

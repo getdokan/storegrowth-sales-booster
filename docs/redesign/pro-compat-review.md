@@ -8,7 +8,7 @@
 
 | Pro 2.2.0 part | How it works | With new lite | Result |
 |---|---|---|---|
-| Module boot | `Modules.php` hooks `storegrowth_module_after_boot( $module_id )` and switches on static `*Module::get_id()` | Hook and static `get_id()` kept (ADR-005 §1–2) | ✅ Works |
+| Module boot | `Modules.php` hooks `storegrowth_module_after_boot( $module_id )` and switches on static `*Module::get_id()` | Hook and static `get_id()` kept (ADR-004 §1–2) | ✅ Works |
 | Pro detection | Pro hooks `storegrowth_pro_is_active`; lite checks `sp_store_growth()->has_pro()` | Unchanged | ✅ Works |
 | Storefront features | 23 PHP hooks, `Helper::find_option_settings` (69 calls), `BogoDataManager`, module helpers | All frozen | ✅ Works |
 | Reading settings | Pro reads pro keys from **lite's options** | Option names, keys and value shapes frozen; new UI writes the same keys | ✅ Works |
@@ -30,12 +30,12 @@
    - Plus any other pro field in `findings-features-A/B.md` missing from a mockup.
 2. **BOGO category messages screen.** Same problem for a whole screen.
 3. **Caps and flags moved from JS to the server.** Order Bump's 2-offer cap is UI-only today and pro lifts it in JS. The new UI must not reimplement the cap in JS. It must come from `has_pro()` on the server.
-4. **Stricter sanitization.** New sanitizers (ADR-005, the fixes in `rest-api.md`) must accept every value pro 2.2.0's storefront writes or expects. Otherwise a save through the new UI silently rewrites a pro value. Examples: `sanitize_hex_color` drops non-hex values; gradient or `rgba` values; template-specific values.
+4. **Stricter sanitization.** New sanitizers (ADR-004, the fixes in `rest-api.md`) must accept every value pro 2.2.0's storefront writes or expects. Otherwise a save through the new UI silently rewrites a pro value. Examples: `sanitize_hex_color` drops non-hex values; gradient or `rgba` values; template-specific values.
 5. **Save must merge.** Quick View's save replaces the whole option today. Any key the new schema doesn't know must survive a save.
 6. **Weight.** Old pro's admin bundle, with antd bundled inside it, still loads on the new settings page and does nothing.
 7. **Reverse case** (new pro on old lite): new pro must not assume the new lite UI exists.
 
-## 3. Rules (added to ADR-005 §3)
+## 3. Rules (added to ADR-004 §3)
 
 | # | Rule |
 |---|---|

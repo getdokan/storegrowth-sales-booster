@@ -2,7 +2,7 @@
 
 - Status: Draft
 - Date: 2026-09-25
-- Decisions: `adr/ADR-002` (redesign) and the core ADRs in `../adr/` (ADR-001, 003–007). **ADR-005 (backward compatibility) overrides anything below that removes or renames a PHP hook, public PHP symbol, option, slug, ajax action or REST route.**
+- Decisions: `adr/RDR-001` (redesign) and the core ADRs in `../adr/` (ADR-001…006). **ADR-004 (backward compatibility) overrides anything below that removes or renames a PHP hook, public PHP symbol, option, slug, ajax action or REST route.**
 - REST surface: `rest-api.md`. Compatibility inventory: `compat-contract.md`.
 - antd is removed completely. There's no legacy UI mode.
 - Feature and design analysis: `report.md`; current settings inventory: `findings-features-A.md`, `findings-features-B.md`
@@ -30,9 +30,9 @@
 | Styling | antd + SCSS + `preflight-reset.css` | One scoped Tailwind v4 stylesheet `build/tailwind.css` |
 | Shared UI | Each bundle inlines its deps | `window.storegrowth.{pluginUI,components,utilities,hooks,settingsStore}` via dependency mapping |
 | Transport | 10 settings ajax pairs + mixed REST | The admin UI calls REST only (`rest-api.md`). Ajax actions stay registered as adapters |
-| Pro fields | ~64 JS `addFilter` + lite teasers | Lite's schema owns every field; pro fields have `pro:true` and are editable when `storegrowth_pro_is_active` (ADR-005 §3) |
-| JS hooks | 83 antd-bound hooks | Retired with antd; new `storegrowth.*` extension points (ADR-005 §4) |
-| PHP hooks | 100 | All kept, unchanged (ADR-005 §1) |
+| Pro fields | ~64 JS `addFilter` + lite teasers | Lite's schema owns every field; pro fields have `pro:true` and are editable when `storegrowth_pro_is_active` (ADR-004 §3) |
+| JS hooks | 83 antd-bound hooks | Retired with antd; new `storegrowth.*` extension points (ADR-004 §4) |
+| PHP hooks | 100 | All kept, unchanged (ADR-004 §1) |
 
 ## 3. Target file tree
 
@@ -163,7 +163,7 @@ Copy dokan-lite's, and change:
 - `exclude`: `node_modules`, `build`, `vendor`, `lib`, `tests`, `assets`, `modules/*/assets`.
 
 ### 4.6 Tailwind
-See ADR-004 for the `src/base-tailwind.css` contents. The app root is `<div id="spsg-app" class="spsg-layout">`, and `ThemeProvider` goes inside it.
+See ADR-003 for the `src/base-tailwind.css` contents. The app root is `<div id="spsg-app" class="spsg-layout">`, and `ThemeProvider` goes inside it.
 
 ## 5. PHP changes
 
@@ -199,9 +199,9 @@ The full list is in `rest-api.md` (38 routes: existing, changed, new). Minimum f
 - `GET/POST /settings/<module>`: a schema registry that maps onto the **existing** option names and key spellings, with pro fields included and gated
 - `GET /dashboard/overview`
 
-When a module migrates, its ajax handlers become adapters over the same service. They are **never removed** (ADR-005 §2).
+When a module migrates, its ajax handlers become adapters over the same service. They are **never removed** (ADR-004 §2).
 
-### 5.5 Compatibility rules (ADR-005)
+### 5.5 Compatibility rules (ADR-004)
 - Every PHP hook in `tests/compat/php-hooks-baseline.txt` keeps firing with the same arguments and timing.
 - Every public PHP symbol in `compat-contract.md` §2 keeps its signature.
 - Admin page slugs `spsg-settings` and `spsg-modules` stay the same, so pro's enqueue check still matches.
@@ -217,7 +217,7 @@ When a module migrates, its ajax handlers become adapters over the same service.
 - `phpcs.xml`: exclude `build/`.
 - CI: add `npm run type-check` and `npm run lint:js`.
 - The old `@wordpress/data` stores (`spsg` ×2, `spsg_bogo`, …) go away with antd. New stores use unique `storegrowth/*` names.
-- CI: add the PHP hook-baseline check and the PHPUnit API reflection test (ADR-005 §5).
+- CI: add the PHP hook-baseline check and the PHPUnit API reflection test (ADR-004 §5).
 
 ## 7. Phases
 
@@ -230,7 +230,7 @@ Each phase is shippable. Old bundles stay enqueued for modules not yet migrated.
 | **2. Pilot: Stock Bar** | Settings registry + `/settings/stock-bar`, shared `LivePreview`, `Accordion`, `SaveBar`, `TemplatePicker`. Stock Bar page in `modules/stock-bar/src`. Delete `modules/stock-bar/assets/src`, its `package.json` and its ajax pair. | Saved values identical to before for every key (migration test). E2E covers save/reset. Storefront unchanged. |
 | **3. Settings modules** | Countdown, Sales Notification, Free Shipping, Floating Bar, Quick View, Fly Cart, Direct Checkout, in that order. Build each custom field as it's first needed (§ report 6 table). Sanitize every save (fixes the unsanitized saves). Pro fields go in lite's schema with `pro:true`. | Same as phase 2, per module. The admin UI makes no ajax calls. The ajax actions are still registered, as adapters. Pro 2.2.0 E2E passes. |
 | **4. CRUD + integrations** | BOGO and Order Bump lists (DataViews) and editors. Order Bump REST is added under `sales-booster/v1`, and `spsg/v1` is kept permanently. Order Bump block bundle. Dokan integration bundles move to `integrations/src` and the new build; the vendor BOGO screen reuses the new editor. | Lerna, antd and `window.SGSettings` fully removed. `assets/src`, `modules/*/assets/src`, `integrations/assets` deleted. PHP hook baseline check passes. |
-| **5. Pro** | New pro version adopts the same build files and dependency mapping (externals to lite globals). It stops using the retired JS filters, uses the new `storegrowth.*` extension points and the PHP schema filter for anything lite's schema doesn't cover, and declares support. Pro 2.2.0 keeps working without an update (ADR-005 §3). | E2E matrix: no pro / pro 2.2.0 / new pro all green. |
+| **5. Pro** | New pro version adopts the same build files and dependency mapping (externals to lite globals). It stops using the retired JS filters, uses the new `storegrowth.*` extension points and the PHP schema filter for anything lite's schema doesn't cover, and declares support. Pro 2.2.0 keeps working without an update (ADR-004 §3). | E2E matrix: no pro / pro 2.2.0 / new pro all green. |
 | **6. Docs** | Update `CLAUDE.md` (build, layout, "add a module"), the `storegrowth-frontend-dev`, `storegrowth-module-dev` and `sg-test-automation` skills. | — |
 
 ## 8. Data compatibility rules

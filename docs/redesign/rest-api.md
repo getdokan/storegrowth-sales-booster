@@ -2,7 +2,7 @@
 
 - Status: Draft
 - Date: 2026-09-25
-- Rules: ADR-005. Existing routes and ajax actions are never removed. Old ajax handlers become thin adapters over the same service the REST controllers use.
+- Rules: ADR-004. Existing routes and ajax actions are never removed. Old ajax handlers become thin adapters over the same service the REST controllers use.
 - Namespace for everything new: `sales-booster/v1`
 - Auth: cookie + `wp_rest` nonce through `apiFetch`
 - Permission: `manage_options` unless stated otherwise

@@ -2,7 +2,7 @@
  * ESLint config for the admin source (`src/`, `modules/*\/src/`, `integrations/src/`).
  *
  * Every directory and file name inside a `src/` directory is lowercase
- * kebab-case (ADR-003 §7a).
+ * kebab-case (ADR-002 §7a).
  */
 module.exports = {
     root: true,

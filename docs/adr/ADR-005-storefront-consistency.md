@@ -1,8 +1,8 @@
-# ADR-006: One consistent storefront implementation across modules
+# ADR-005: One consistent storefront implementation across modules
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-004 (admin Tailwind; never on the storefront), ADR-005 (compatibility), `../redesign/storefront-impact.md`
+- Related: ADR-003 (admin Tailwind; never on the storefront), ADR-004 (compatibility), `../redesign/storefront-impact.md`
 
 ## Context
 
@@ -45,7 +45,7 @@ Standard **S1–S10** applies to every module's storefront. Each module adopts i
 - **Inline `style=""` attributes** in templates are replaced by the variables when a module migrates, but only where the rendered result is identical (snapshot test). The template markup otherwise stays the same.
 
 ### S2. Shared style vocabulary for new settings
-Existing option keys never change (ADR-005). **New** style settings, and the CSS variable names every module uses (old keys are mapped onto them by the module's token map), follow one vocabulary:
+Existing option keys never change (ADR-004). **New** style settings, and the CSS variable names every module uses (old keys are mapped onto them by the module's token map), follow one vocabulary:
 
 | Group | Tokens (suffixes) |
 |---|---|
@@ -107,7 +107,7 @@ Existing option keys never change (ADR-005). **New** style settings, and the CSS
 - **A shared storefront base,** registered by core and loaded only when an active module renders on the page:
   - `spsg-storefront-base.css`: the z-index scale, the shared bar component, reduced-motion rules;
   - `spsg-storefront-core.js`: the display-rules trigger, dismiss/cookie helper, device check.
-- It's plain CSS/JS, **no Tailwind, no React** (ADR-004), dependency-free apart from jQuery, which is already present.
+- It's plain CSS/JS, **no Tailwind, no React** (ADR-003), dependency-free apart from jQuery, which is already present.
 - Existing module handles (`wfc-script`, `spsg-ffc-style`, …) keep their names and add the base as a dependency.
 - Don't add new jQuery plugins; the existing ones (jqMeter, magnific-popup, slick, jquery.countdown) stay until a separate decision.
 
@@ -126,7 +126,7 @@ Existing option keys never change (ADR-005). **New** style settings, and the CSS
 
 **Negative:**
 - Every module's storefront code is touched, including modules the redesign otherwise left alone (Free Shipping, Direct Checkout). The risk is covered by snapshot tests that must be identical for unsaved sites and for no-op saves.
-- Legacy inline CSS filters and old selectors stay forever alongside the new variables (ADR-005).
+- Legacy inline CSS filters and old selectors stay forever alongside the new variables (ADR-004).
 - Step 1d adds work before the Stock Bar pilot.
 
 ## Rollout
@@ -142,6 +142,6 @@ Existing option keys never change (ADR-005). **New** style settings, and the CSS
 | Option | Why rejected |
 |---|---|
 | Leave the storefront alone | Previews would re-implement the CSS and drift; five kinds of inconsistency stay; sanitization gaps stay |
-| Tailwind on the storefront | Theme conflicts, extra CSS weight, contradicts ADR-004 |
-| Rename old keys and classes to the new vocabulary | Breaks pro, themes and custom CSS (ADR-005) |
+| Tailwind on the storefront | Theme conflicts, extra CSS weight, contradicts ADR-003 |
+| Rename old keys and classes to the new vocabulary | Breaks pro, themes and custom CSS (ADR-004) |
 | React/Interactivity API storefront widgets | Large rewrite of working code; out of redesign scope |

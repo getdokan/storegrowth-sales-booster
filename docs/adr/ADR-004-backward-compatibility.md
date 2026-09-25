@@ -1,14 +1,14 @@
-# ADR-005: Never rename or remove hooks; stay compatible with existing pro versions
+# ADR-004: Never rename or remove hooks; stay compatible with existing pro versions
 
 - Status: Accepted
 - Date: 2026-09-25
-- Amends: ADR-001, ADR-002 (item 6, `../redesign/adr/`), `../redesign/migration-spec.md`
+- Amends: ADR-001, RDR-001 (item 6, `../redesign/adr/`), `../redesign/migration-spec.md`
 - Contract inventory: `../redesign/compat-contract.md`, baselines in `tests/compat/`
 - REST surface: `../redesign/rest-api.md`
 
 ## Context
 
-The redesign removes the antd admin UI completely and moves the admin to REST (ADR-002). There is no legacy UI mode.
+The redesign removes the antd admin UI completely and moves the admin to REST (RDR-001). There is no legacy UI mode.
 
 Every shipped pro version (up to 2.2.0) depends on lite through:
 
@@ -104,7 +104,7 @@ The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belong to the antd UI. T
 
 | Earlier item | Replacement |
 |---|---|
-| ADR-002 item 6 ("pro extends via PHP schema filter; lite renders locked states") | Stands, but lite also owns the existing pro fields so old pro keeps working |
+| RDR-001 item 6 ("pro extends via PHP schema filter; lite renders locked states") | Stands, but lite also owns the existing pro fields so old pro keeps working |
 | Spec phase 3 exit ("No `wp_ajax_*_settings` left") | Ajax handlers stay as adapters |
 | Spec phase 4 (Order Bump alias "for one release") | Old route stays permanently |
 | Spec §6 ("rename the two `spsg` stores") | The old stores are deleted along with the antd UI; the new stores use `storegrowth/*` names |

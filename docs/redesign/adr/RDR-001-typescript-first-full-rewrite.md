@@ -1,8 +1,8 @@
-# ADR-002: TypeScript-first full rewrite of the admin UI
+# RDR-001: TypeScript-first full rewrite of the admin UI
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-001, ADR-003, `../report.md`
+- Related: ADR-001, ADR-002, `../report.md`
 
 ## Context
 

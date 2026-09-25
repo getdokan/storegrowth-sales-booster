@@ -1,4 +1,4 @@
-# ADR-004: Tailwind v4, one scoped stylesheet (dokan-lite pattern)
+# ADR-003: Tailwind v4, one scoped stylesheet (dokan-lite pattern)
 
 - Status: Accepted
 - Date: 2026-09-25

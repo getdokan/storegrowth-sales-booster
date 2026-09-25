@@ -18,11 +18,11 @@ interface SpsgModule {
 
 /** App data (`spsgAdmin`, PHP filter `spsg_admin_localized_data`). */
 interface SpsgAdminData {
-    /** Legacy admin-ajax URL, kept for back-compat (ADR-005). */
+    /** Legacy admin-ajax URL, kept for back-compat (ADR-004). */
     ajax_url: string;
-    /** Legacy admin-ajax nonce, kept for back-compat (ADR-005). */
+    /** Legacy admin-ajax nonce, kept for back-compat (ADR-004). */
     nonce: string;
-    /** Kept for back-compat (ADR-005); use `spsgAdminHeader.header_info.is_pro_exists`. */
+    /** Kept for back-compat (ADR-004); use `spsgAdminHeader.header_info.is_pro_exists`. */
     isPro: boolean;
     restNamespace: string;
     modules: SpsgModule[];

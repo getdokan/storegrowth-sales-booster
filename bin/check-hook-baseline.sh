@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Fails when a PHP hook in tests/compat/php-hooks-baseline.txt is no longer
-# fired anywhere in the plugin (ADR-005: hooks are never renamed or removed).
+# fired anywhere in the plugin (ADR-004: hooks are never renamed or removed).
 #
 # Hook names are read from do_action / apply_filters calls with a string
 # literal first argument. New hook names are listed so they can be appended to
@@ -40,7 +40,7 @@ if [[ -n "$added" ]]; then
 fi
 
 if [[ -n "$missing" ]]; then
-    echo "Hooks removed or renamed (not allowed, see docs/adr/ADR-005-backward-compatibility.md):" >&2
+    echo "Hooks removed or renamed (not allowed, see docs/adr/ADR-004-backward-compatibility.md):" >&2
     echo "$missing" | sed 's/^/  - /' >&2
     exit 1
 fi

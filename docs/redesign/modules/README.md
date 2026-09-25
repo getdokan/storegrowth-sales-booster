@@ -1,6 +1,6 @@
 # Module-wise migration specs
 
-One spec per migration unit. They all follow the rules in `../migration-spec.md` and ADR-001…005, so each file lists only what's specific to that unit.
+One spec per migration unit. They all follow the rules in `../migration-spec.md`, ADR-001…006 (`../../adr/`) and RDR-001, so each file lists only what's specific to that unit.
 
 | Spec | Design | Phase | Size | Type |
 |---|---|---|---|---|
@@ -27,9 +27,9 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 0 | plugin-ui upstream: export `ColorPicker`, `RadioImageCard`, `CombineInput`, …; alpha off (U1, U4) | — | 1a |
 | 1a | `00-core-shell`: build system (remove Lerna, webpack trio, TS, Tailwind v4), shared bundles, CI checks (hook baseline, API test) | — | 0 |
 | 1b | `00-core-shell`: shell UI (TopBar, feature rail, deactivated modal), Dashboard, Modules page, `/modules` + `/dashboard` REST | 0, 1a | 1c |
-| 1d | Storefront foundation (ADR-006): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
+| 1d | Storefront foundation (ADR-005): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
 | 1c | Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar` | 1a | 1b |
-| 2 | `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-006 storefront standard | 1b, 1c, 1d | — |
+| 2 | `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
 | 3 | `countdown-timer` — first `BoxModelInput` | 2 | 4 |
 | 4 | `sales-pop` — first `ProductSearch`, `TypographyRow` | 2 | 3 |
 | 5 | `progressive-discount-banner` — first bar fragment, `ModeNumber`, `IconPicker` | 2 | 7, 8 |
@@ -58,7 +58,7 @@ Steps 1c–11 are blocked only by the product decisions in each spec's §9; get 
 - **The mockup is the source of truth.** The HTML/CSS at https://storegrowth-design.vercel.app (`assets/ui.css`, `assets/theme.js`) defines the values. Match them with Tailwind `@theme` tokens and plugin-ui theming. If a plugin-ui component can't reach the mockup through props/className/theme, wrap or restyle it locally; don't accept the component's default look.
 - **Allowed deviations** (the only ones; each must be listed in that module's §9 and signed off by design before merge):
   1. **Mockup bugs listed in the spec:** missing Save buttons, duplicate fields, wrong help text, checkboxes that should be a radio, the Order Bump preview frame. Fixed in the design's own visual style.
-  2. **Compatibility-required UI** (ADR-005, R1/R2): the pro-only "Advanced (Pro)" section and the BOGO category-messages screen, styled with the same components as the rest of the page.
+  2. **Compatibility-required UI** (ADR-004, R1/R2): the pro-only "Advanced (Pro)" section and the BOGO category-messages screen, styled with the same components as the rest of the page.
   3. **Pro lock states:** the mockups don't show them. Use the design's own crown/amber style (`sg-amber-pro`).
   4. **plugin-ui behaviours we accept** (report §3): DataViews bulk bar and pagination, delete confirm dialog.
 - **Visual QA per module before merge:**
@@ -79,7 +79,7 @@ Steps 1c–11 are blocked only by the product decisions in each spec's §9; get 
 10. **Tasks and definition of done.**
 
 ## Definition of done shared by every module
-- Storefront follows ADR-006 (S1–S10):
+- Storefront follows ADR-005 (S1–S10):
   - token map;
   - static CSS reads CSS variables with today's values as fallback;
   - shared font, text-token, display-rule and template loaders;

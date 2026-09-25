@@ -1,7 +1,7 @@
 # Compatibility contract: lite ↔ pro and third parties
 
 - Captured: 2026-09-25 from lite `develop` @ eedd8d8e and pro 2.2.0 (local).
-- Rules: `../adr/ADR-005-backward-compatibility.md`.
+- Rules: `../adr/ADR-004-backward-compatibility.md`.
 - Nothing in this file may be renamed or removed.
 
 ## 1. Hooks
@@ -24,7 +24,7 @@ Pro fires hooks that lite code listens to or documents: `sales_boster_floating_n
 
 ### 1.3 JS hooks pro 2.2.0 listens to (all 65 are fired by lite today)
 
-**These retire with the antd UI (ADR-005 §4).** Lite's schema now renders the fields they used to inject. The list is kept here for the changelog and for mapping each hook to its schema field.
+**These retire with the antd UI (ADR-004 §4).** Lite's schema now renders the fields they used to inject. The list is kept here for the changelog and for mapping each hook to its schema field.
 All lite JS hooks in `tests/compat/js-hooks-baseline.txt` **except** the following, which pro doesn't use but third parties might:
 - `spsg_after_textarea_settings`
 - `spsg_bogo_category_messages_data`, `spsg_bogo_deal_type_options`, `spsg_bogo_tab_panels`
@@ -40,7 +40,7 @@ All lite JS hooks in `tests/compat/js-hooks-baseline.txt` **except** the followi
 - `spsg_shipping_bar_template_styles`, `spsg_shipping_bar_templates`
 - `spsg_shop_quick_view_enable_settings`, `spsg_variation_product_quick_view_enable_settings`
 
-Callback signature today: `( defaultValue, formData, onFieldChange, …extra )`. Callbacks return an antd React element or data. This is why the hooks can't survive the antd removal. Replacements are the `storegrowth.*` JS extension points in ADR-005 §4.
+Callback signature today: `( defaultValue, formData, onFieldChange, …extra )`. Callbacks return an antd React element or data. This is why the hooks can't survive the antd removal. Replacements are the `storegrowth.*` JS extension points in ADR-004 §4.
 
 ## 2. PHP API pro uses
 
@@ -69,12 +69,12 @@ Callback signature today: `( defaultValue, formData, onFieldChange, …extra )`.
 
 - **Screen IDs** `storegrowth_page_spsg-settings` and `storegrowth_page_spsg-modules`. Pro's `includes/Assets.php` enqueues its bundle only on these.
 - **Localized globals:** keep `spsgAdmin` (`ajax_url`, `nonce`, `isPro`), because the kept ajax adapters and old pro's localize calls use it. `spsg`, `bogo_save_url`, `bump_save_url` and `sales_pop_data` belonged to the antd bundles and go with them. Pro adds its own `spsgProAdmin`.
-- **Removed with the antd UI (ADR-005 §4):** `window.SGSettings` (the panel components pro reads *inside* its filter callbacks, which never run once the hooks stop firing, so pro 2.2.0 loads without errors), and the `@wordpress/data` stores `spsg` (×2), `spsg_bogo`, `spsg_order_bump`, `spsg_direct_checkout`, `spsg_order_sales_pop`. New stores use `storegrowth/*` names.
+- **Removed with the antd UI (ADR-004 §4):** `window.SGSettings` (the panel components pro reads *inside* its filter callbacks, which never run once the hooks stop firing, so pro 2.2.0 loads without errors), and the `@wordpress/data` stores `spsg` (×2), `spsg_bogo`, `spsg_order_bump`, `spsg_direct_checkout`, `spsg_order_sales_pop`. New stores use `storegrowth/*` names.
 - **Script/style handles** registered by lite that pro or themes may depend on: keep every current handle. Pro's storefront scripts `qc-coupon.js`, `qc-centered-cart.js` and QuickView `frontend-pro.js` depend on lite's **`wfc-script`**. The new UI adds new handles (`spsg-admin`, `spsg-plugin-ui`, …) and never re-uses old ones for different code.
 
 ## 4. Data
 Option names, keys, value types and custom table columns follow `findings-features-A.md` and `-B.md`. This includes misspelled keys (`enble_visibility`, `dispaly_time`, `slected_page_option`, `cupon_code`, `show_cupon`, `enable_qucik_view_icon`). Pro reads them directly through `Helper::find_option_settings`.
 
 ## 5. Transport
-- **Ajax actions:** every one keeps working (ADR-005 §2), including pro-only `bogo_category_msg_status_handler` / `bogo_category_msg_delete` and the lite handlers pro relies on.
+- **Ajax actions:** every one keeps working (ADR-004 §2), including pro-only `bogo_category_msg_status_handler` / `bogo_category_msg_delete` and the lite handlers pro relies on.
 - **REST routes:** `sales-booster/v1/*` and `spsg/v1/order-bumps` are kept permanently. New routes are additive.

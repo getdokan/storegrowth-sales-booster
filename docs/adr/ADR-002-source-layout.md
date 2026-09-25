@@ -1,8 +1,8 @@
-# ADR-003: Source layout — root `src/`, `modules/<name>/src/`
+# ADR-002: Source layout — root `src/`, `modules/<name>/src/`
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-001, ADR-002
+- Related: ADR-001, RDR-001
 
 ## Context
 
@@ -21,7 +21,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
      api/              # typed apiFetch clients (settings, modules, bogo, order-bumps)
      stores/           # @wordpress/data stores, one per resource
      externals/        # plugin-ui shim (ADR-001)
-     base-tailwind.css # the single Tailwind entry (ADR-004)
+     base-tailwind.css # the single Tailwind entry (ADR-003)
    ```
 2. **Module admin source goes in `modules/<name>/src/`:**
    ```
@@ -55,7 +55,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/`, `build/modules/stock-bar/`.
    - **Enforced by lint:** add `eslint-plugin-check-file` to the wp-scripts ESLint config with `check-file/filename-naming-convention` and `check-file/folder-naming-convention` set to `KEBAB_CASE` for `src/**`, `modules/*/src/**`, `integrations/src/**`. `npm run lint:js` fails otherwise.
    - `legacy/src/` in pro is renamed to kebab-case in the same PR that moves it (e.g. `Modules/BoGo/index.js` → `modules/bogo/index.js`). The build output is unchanged.
-   - **Out of scope:** PHP stays PSR-4 PascalCase (`includes/Settings/SettingsService.php`), because class-to-file autoloading requires it and renaming PHP classes is forbidden (ADR-005). Existing storefront files in `modules/*/assets/` and `templates/` keep their names (theme and pro paths).
+   - **Out of scope:** PHP stays PSR-4 PascalCase (`includes/Settings/SettingsService.php`), because class-to-file autoloading requires it and renaming PHP classes is forbidden (ADR-004). Existing storefront files in `modules/*/assets/` and `templates/` keep their names (theme and pro paths).
 
 8. **Full plugin tree** (admin TS, PHP, storefront and tests; PHP keeps the existing PSR-4 layout and adds folders):
    ```
@@ -64,7 +64,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    ├─ package.json · webpack.config.js · webpack-entries.js · webpack-dependency-mapping.js
    ├─ tsconfig.json · postcss.config.js · composer.json · phpcs.xml
    ├─ types/                         # globals.d.ts, externals.d.ts (@storegrowth/*), styles.d.ts
-   ├─ src/                           # core admin app (TS) — ADR-003 §1
+   ├─ src/                           # core admin app (TS) — ADR-002 §1
    │  ├─ admin/                      # shell, router, pages/{dashboard,modules,settings}
    │  ├─ components/                 # LivePreview, Accordion, SaveBar, ProLock, EditorLayout, …
    │  ├─ fields/                     # ProductSearch, DateRange, BoxModelInput, TemplatePicker, TypographyRow, …
@@ -75,19 +75,19 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    │  ├─ Admin/                      # AdminMenu (slugs spsg-settings / spsg-modules kept)
    │  ├─ REST/                       # existing Settings/Product controllers + new Modules, ModuleSettings, Dashboard, Onboarding, Lookups
    │  ├─ Settings/                   # NEW: SettingsRegistry, SettingsService (merge, sanitize, pro gating), Schema field types
-   │  ├─ Storefront/                 # NEW (ADR-006): StorefrontStyle, StorefrontFonts, StorefrontText, DisplayRules
-   │  ├─ Helper.php                  # + get_template() (ADR-006 S8); existing methods frozen
+   │  ├─ Storefront/                 # NEW (ADR-005): StorefrontStyle, StorefrontFonts, StorefrontText, DisplayRules
+   │  ├─ Helper.php                  # + get_template() (ADR-005 S8); existing methods frozen
    │  └─ …                           # existing Bootstrap, Assets, Ajax, Upgrader, Traits, Interfaces unchanged
    ├─ assets/                        # static + storefront only
-   │  ├─ css/storefront-base.css     # NEW (ADR-006 S9)
-   │  ├─ js/storefront-core.js       # NEW (ADR-006 S9)
+   │  ├─ css/storefront-base.css     # NEW (ADR-005 S9)
+   │  ├─ js/storefront-core.js       # NEW (ADR-005 S9)
    │  └─ images/ · fonts/
    ├─ modules/<name>/
    │  ├─ bootstrap.php
    │  ├─ includes/                   # module PHP (existing classes kept)
    │  │  ├─ <Name>Module.php · Providers/ · Ajax.php (→ adapters) · EnqueueScript.php · CommonHooks.php
    │  │  ├─ Settings/<Name>Schema.php   # NEW: field definitions, defaults, sanitizers, pro flags
-   │  │  ├─ Settings/<Name>TokenMap.php # NEW: option key → CSS token (ADR-006 S2)
+   │  │  ├─ Settings/<Name>TokenMap.php # NEW: option key → CSS token (ADR-005 S2)
    │  │  └─ REST/                    # module CRUD controllers (BOGO; Order Bump's RestApi/ stays, new controllers go in REST/)
    │  ├─ src/                        # module admin UI (TS): index.tsx, schema.ts, preview/, components/, blocks/
    │  ├─ templates/                  # storefront templates (paths unchanged; loaded via Helper::get_template)
