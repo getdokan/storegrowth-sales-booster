@@ -40,7 +40,7 @@ if [[ -n "$added" ]]; then
 fi
 
 if [[ -n "$missing" ]]; then
-    echo "Hooks removed or renamed (not allowed, see docs/redesign/adr/ADR-005-backward-compatibility.md):" >&2
+    echo "Hooks removed or renamed (not allowed, see docs/adr/ADR-005-backward-compatibility.md):" >&2
     echo "$missing" | sed 's/^/  - /' >&2
     exit 1
 fi

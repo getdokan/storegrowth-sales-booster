@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-004 (admin Tailwind; never on the storefront), ADR-005 (compatibility), `../storefront-impact.md`
+- Related: ADR-004 (admin Tailwind; never on the storefront), ADR-005 (compatibility), `../redesign/storefront-impact.md`
 
 ## Context
 
@@ -24,7 +24,7 @@ The redesign already touches every module's settings. It's the natural moment to
 
 ## Decision
 
-Standard **S1–S10** applies to every module's storefront. Each module adopts it during its migration step (see `modules/README.md`). The shared pieces are built once in step 1d.
+Standard **S1–S10** applies to every module's storefront. Each module adopts it during its migration step (see `../redesign/modules/README.md`). The shared pieces are built once in step 1d.
 
 ### S1. Settings → CSS custom properties
 - Every styled widget has one root class, `spsg-<module>`, e.g. `spsg-stock-bar`, `spsg-countdown`, `spsg-fly-cart`.

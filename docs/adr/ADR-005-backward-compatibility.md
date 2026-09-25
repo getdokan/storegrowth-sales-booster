@@ -2,9 +2,9 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Amends: ADR-001, ADR-002 (item 6), `../migration-spec.md`
-- Contract inventory: `../compat-contract.md`, baselines in `tests/compat/`
-- REST surface: `../rest-api.md`
+- Amends: ADR-001, ADR-002 (item 6, `../redesign/adr/`), `../redesign/migration-spec.md`
+- Contract inventory: `../redesign/compat-contract.md`, baselines in `tests/compat/`
+- REST surface: `../redesign/rest-api.md`
 
 ## Context
 
@@ -38,7 +38,7 @@ Lite fires 100 PHP hooks and 83 JS hooks in total. Third-party code may use any 
 
 ### 2. Public PHP API, data and transport freeze
 These keep their names and signatures and may only be extended:
-- the classes, methods, functions and constants in `compat-contract.md` §2;
+- the classes, methods, functions and constants in `../redesign/compat-contract.md` §2;
 - container IDs, module IDs, admin page slugs `spsg-settings` / `spsg-modules`;
 - option names, keys and value shapes, including misspelled keys;
 - custom table columns.
@@ -48,13 +48,13 @@ Ajax and REST rules:
 - **Existing REST routes stay permanently.** Namespace moves add the new route and keep the old one (`spsg/v1/order-bumps`).
 
 ### 3. Pro compatibility without the antd UI
-- **Lite owns the full settings schema for every module, including the pro-only fields**, keyed to the same option keys pro reads today (`findings-features-A.md` / `-B.md`). Each pro field has `pro: true` in the schema.
+- **Lite owns the full settings schema for every module, including the pro-only fields**, keyed to the same option keys pro reads today (`../redesign/findings-features-A.md` / `-B.md`). Each pro field has `pro: true` in the schema.
 - **Gating:** when `storegrowth_pro_is_active` is true, pro fields are editable. Otherwise they render locked (crown + upgrade), and the REST save **ignores** pro keys. That removes today's gap where lite storefront code reads pro keys that were set earlier.
 - **Result:** pro 2.2.0 keeps working with the new lite. Its PHP reads the same options, which are now edited through lite's new UI. Its admin JS bundle no longer has any lite slots to fill, so it renders nothing and has no effect. Pro 2.2.0 needs no update.
-- **Pro-only screens not reachable through the schema** keep their current ajax actions and move to REST routes that lite registers only when pro is active (`rest-api.md` §4):
+- **Pro-only screens not reachable through the schema** keep their current ajax actions and move to REST routes that lite registers only when pro is active (`../redesign/rest-api.md` §4):
   - BOGO category messages
   - BOGO product-tab schedule and variations (PHP-rendered on the product edit screen; not affected)
-- **Rules R1–R6 from `../pro-compat-review.md` are part of this decision:**
+- **Rules R1–R6 from `../redesign/pro-compat-review.md` are part of this decision:**
   - R1: every pro 2.2.0 field is in lite's schema, even if the design drops it (an "Advanced (Pro)" section).
   - R2: lite builds the BOGO category messages screen.
   - R3: caps and flags are decided server-side from `has_pro()`.
@@ -81,7 +81,7 @@ The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belong to the antd UI. T
 
 ### 5. Enforcement
 - **Hook baseline check in CI:** re-extract PHP hook names from `includes/`, `modules/`, `integrations/`, `helpers/`, `templates/` and fail if any name in `php-hooks-baseline.txt` is missing. A JS baseline is started for the new `storegrowth.*` hooks.
-- **API test:** a PHPUnit reflection test asserts every symbol in `compat-contract.md` §2 exists with a compatible signature.
+- **API test:** a PHPUnit reflection test asserts every symbol in `../redesign/compat-contract.md` §2 exists with a compatible signature.
 - **Compatibility matrix in E2E:** new lite × { no pro, pro 2.2.0, new pro }. For each module:
   - pro fields are locked without pro and editable with pro;
   - saved options match the baseline shape;

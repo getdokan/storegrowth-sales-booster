@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-002, ADR-003, ADR-004, `../migration-spec.md`
+- Related: ADR-002 (`../redesign/adr/`), ADR-003, ADR-004, `../redesign/migration-spec.md`
 
 ## Context
 
@@ -78,7 +78,7 @@ It is not a separate webpack config per module.
 
 **Negative:**
 - A full rebuild covers all modules. The filesystem cache keeps rebuilds fast, and a module-only watch can filter entries with `--env module=<id>` (see migration spec).
-- The shim re-exports `@wedevs/plugin-ui/dist/index.js`, so anything missing from plugin-ui's root export (e.g. `ColorPicker`) is still unavailable. This inherits plugin-ui issue U1 (report §6); it doesn't work around it.
+- The shim re-exports `@wedevs/plugin-ui/dist/index.js`, so anything missing from plugin-ui's root export (e.g. `ColorPicker`) is still unavailable. This inherits plugin-ui issue U1 (`../redesign/report.md` §6); it doesn't work around it.
 - All 12 PHP enqueue sites change paths (`assets/build` → `build`).
 - The root `package.json` drops `"type": "module"`, because dokan-lite's webpack files are CommonJS. `bin/archiver.js` (ESM) is renamed to `bin/archiver.mjs`.
 

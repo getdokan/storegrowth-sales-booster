@@ -2,7 +2,7 @@
 
 - Status: Draft
 - Date: 2026-09-25
-- Decisions: `adr/ADR-001` … `adr/ADR-005`. **ADR-005 (backward compatibility) overrides anything below that removes or renames a PHP hook, public PHP symbol, option, slug, ajax action or REST route.**
+- Decisions: `adr/ADR-002` (redesign) and the core ADRs in `../adr/` (ADR-001, 003–007). **ADR-005 (backward compatibility) overrides anything below that removes or renames a PHP hook, public PHP symbol, option, slug, ajax action or REST route.**
 - REST surface: `rest-api.md`. Compatibility inventory: `compat-contract.md`.
 - antd is removed completely. There's no legacy UI mode.
 - Feature and design analysis: `report.md`; current settings inventory: `findings-features-A.md`, `findings-features-B.md`

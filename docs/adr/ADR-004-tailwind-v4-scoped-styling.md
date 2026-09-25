@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-001, report §6 (U10)
+- Related: ADR-001, `../redesign/report.md` §6 (U10)
 
 ## Context
 

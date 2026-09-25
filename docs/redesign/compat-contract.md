@@ -1,7 +1,7 @@
 # Compatibility contract: lite ↔ pro and third parties
 
 - Captured: 2026-09-25 from lite `develop` @ eedd8d8e and pro 2.2.0 (local).
-- Rules: `adr/ADR-005-backward-compatibility.md`.
+- Rules: `../adr/ADR-005-backward-compatibility.md`.
 - Nothing in this file may be renamed or removed.
 
 ## 1. Hooks
