@@ -64,49 +64,54 @@ Existing option keys never change (ADR-004). **New** style settings, and the CSS
 
 ### S4. Fonts
 - **One font list for every module:** `inherit` (theme font, the new default for **new** keys), Inter, Poppins, Roboto, Open Sans, Lato. Stored values outside this list (e.g. existing Countdown fonts) stay valid and keep rendering.
-- **One font loader**, `StorefrontFonts::enqueue( $family )`:
-  - collects the fonts actually in use by the active modules on the page;
-  - makes one request, using locally bundled files where present, otherwise Google Fonts;
-  - Google loading can be disabled with a new filter, `storegrowth_load_google_fonts` (default `true`, keeping today's behaviour).
+- **One font loader**, `StorefrontFonts::request( $family )` (built in 1d):
+  - collects the fonts actually in use by the active modules on the page; fonts requested before `wp_head` load in the head, later ones (from templates) in the footer;
+  - bundled files first, then one Google Fonts request for the rest. 1d maps Merienda to Countdown's bundled file. Today Countdown `@import`s Merienda **from Google** despite that file, so at Countdown's step it moves to the local file (same font, no request to Google): an intended change;
+  - The Free Shipping and Floating bars already bundle IBM Plex Sans, Lato, Montserrat, Poppins and Roboto in `assets/fonts/` (regular weight only, `@font-face` in their CSS). When the bars migrate (steps 5–6), map these into the loader's bundled list so they keep loading locally, not from Google;
+  - Inter: today Fly Cart and Countdown use it, loading their own bundled copies; Stock Bar loads it but never uses it, and Quick View ships an unused copy (four copies). One shared copy and its loader entry are added with the first module that migrates onto Inter (step 2); each module's copy is removed at its step. Until then, don't request Inter through the loader (it would go to Google);
+  - Google loading can be disabled with the filter `spsg_load_google_fonts` (default `true`, keeping today's behaviour).
 - Countdown's `@import` of Merienda in `wpbs-style.css` moves into the loader (same font, same result, one request).
 - **One weight list:** 400, 500, 600, 700 everywhere.
 
 ### S5. Text tokens
 - One replacer, `StorefrontText::replace( $text, $vars )`, accepts **both** `{token}` and `[token]`. The existing `[amount]` / `[discount]` texts keep working.
 - New UI help shows `{token}` as the canonical form.
-- The same token names mean the same thing everywhere: `{amount}`, `{discount}`, `{quantity}`, `{product_title}`, `{virtual_name}`, `{location}`, `{time}`.
+- The same token names mean the same thing everywhere: `{amount}`, `{discount}`, `{quantity}`, `{product_title}`, `{offered_product}` (BOGO), `{virtual_name}`, `{location}`, `{time}`.
+- Values are inserted as given; callers escape for their context, as today (a `wc_price()` value is HTML).
 - Existing filters on the text (`sales_boster_pd_banner_text`, `sales_boster_floating_notification_bar_text`) still fire with the same arguments.
 
 ### S6. Display rules
-- One PHP evaluator, `DisplayRules::should_show( array $settings, string $module ): bool`, reads the **existing keys** (`banner_device_view`, `banner_show_option`, `slected_page_option`, `user_type`).
-- One small storefront JS helper handles the trigger (`banner_trigger`, `banner_delay`, `scroll_banner_delay`) and dismiss state.
+- One PHP evaluator, `DisplayRules::should_show( array $settings, string $module, array $defaults = [] ): bool`. **Corrected in 1d:** it mirrors lite exactly, which today checks only the promotion audience (`Helper::is_current_user_allowed_to_view_promotions()`) and that `banner_device_view` isn't empty. `banner_show_option`, `slected_page_option` and `user_type` are evaluated **only by pro** (`SalesPopPro`, `FloatingBarPro`, `FreeShippingBarPro`); evaluating them in lite would change lite-only sites whose options still hold old pro values, and apply pro's rules twice. The new filter `spsg_display_rules_should_show` runs after lite's checks for anything more. The module passes its own defaults (they differ per module).
+- One small storefront JS helper, `window.spsgStorefront` (`spsg-storefront-core`), handles the device check (`innerWidth <= 768`), the trigger (`banner_trigger`, `banner_delay`, `scroll_banner_delay`) and dismiss state. It copies today's storage exactly: `localStorage` key per widget (`fn_banner_hidden_time`, `banner_hidden_time`), value = time + 10 minutes, so dismissed bars stay dismissed after migration.
 - Used by Free Shipping, Floating Bar and Sales Notification.
 - Existing hooks in the path keep firing (e.g. `spsg_sales_pop_visbility_controller`), so pro's targeting filters still apply after the shared evaluator.
 
 ### S7. Stacking and placement
-- One z-index scale as CSS variables on `:root`, prefixed `--spsg-z-`:
+- One z-index scale as CSS variables on `:root`, prefixed `--spsg-z-`. **Confirmed in 1d:** the draft ladder (9990–9994) would have dropped bars under most sticky headers, so the variables hold **today's values per layer**:
 
-  | Layer | Value |
-  |---|---|
-  | `bar` | 9990 |
-  | `popup` | 9991 |
-  | `fly-cart-button` | 9992 |
-  | `fly-cart-panel` | 9993 |
-  | `modal` | 9994 |
+  | Layer | Value | Today |
+  |---|---|---|
+  | `bar` | 99999 | `.spsg-pd-banner-bar-wrapper`, `.spsg-floating-notification-bar-wrapper` |
+  | `popup` | 99999 | `.custom-social-proof .custom-notification` |
+  | `fly-cart-button` | 999 | `.wfc-cart-icon` |
+  | `fly-cart-overlay` | 100000 | `.wfc-overlay` |
+  | `fly-cart-panel` | 1000001 | `.wfc-widget-sidebar` |
+  | `modal` | 99999970 | Quick View |
 
-  The values match today's highest values per layer; confirm them during step 1d.
+  Oddities, left for their module's step (changing them is visible): the Fly Cart button (999) sits below the bars; the Sales Notification wrapper uses `9999999999999 !important` (beyond 32-bit, effectively the maximum); BOGO's product-selection modal (1000/1001) sits below the bars; Fly Cart's added-to-cart popup uses 9999.
 - Top/bottom bar stacking (today via `spsg_fnb_data`) moves into the shared bar component but keeps the same localized data.
 
 ### S8. Templates (additive)
-- One loader: `Helper::get_template( 'stock-bar/stock-bar.php', $args )`. It looks in the theme at `storegrowth/<module>/<file>` first, then in the plugin.
-- Existing template files, paths and variables stay the same, and the existing include points call the loader.
-- New filter `storegrowth_template_path` (`@since SPSG_VERSION`).
+- One loader: `Helper::get_template( 'stock-bar/stock-bar.php', $args )`. It looks in the theme at `storegrowth/<module>/<file>` first, then in the plugin; `$args` become the template's variables.
+- Existing template files, paths and variables stay the same. The existing `include __DIR__ …` points move to the loader **in each module's step**, not in 1d: several templates read variables from the including method's scope, so each move passes them explicitly and is checked with a snapshot.
+- New filter `spsg_template_path` (`@since SPSG_VERSION`).
 - This is a new capability (theme overrides); it doesn't change output.
 
 ### S9. Assets
 - **A shared storefront base,** registered by core and loaded only when an active module renders on the page:
-  - `spsg-storefront-base.css`: the z-index scale, the shared bar component, reduced-motion rules;
-  - `spsg-storefront-core.js`: the display-rules trigger, dismiss/cookie helper, device check.
+  - `assets/css/storefront-base.css` (handle `spsg-storefront-base`): the z-index scale, reduced-motion rules; the shared bar component joins it in step 5 (Free Shipping), its first user;
+  - `assets/js/storefront-core.js` (handle `spsg-storefront-core`, `window.spsgStorefront`): the device check, trigger and dismiss helpers.
+  - Static files, not built by webpack; no reliance on browser defaults, because the admin preview renders the same classes inside the admin app, where they are reset.
 - It's plain CSS/JS, **no Tailwind, no React** (ADR-003), dependency-free apart from jQuery, which is already present.
 - Existing module handles (`wfc-script`, `spsg-ffc-style`, …) keep their names and add the base as a dependency.
 - Don't add new jQuery plugins; the existing ones (jqMeter, magnific-popup, slick, jquery.countdown) stay until a separate decision.
@@ -133,7 +138,7 @@ Existing option keys never change (ADR-004). **New** style settings, and the CSS
 
 | Step | Work |
 |---|---|
-| **1d** (new, after 1a) | Build `StorefrontStyle`, `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js`, with unit tests |
+| **1d** (done) | `includes/Storefront/`: `StorefrontStyle`, `StorefrontFonts`, `StorefrontText`, `DisplayRules`; `Helper::get_template`, `Helper::sanitize_css_keyword`; `spsg-storefront-base` / `spsg-storefront-core` registered, not enqueued. Checked by `wp eval-file tests/compat/storefront-foundation.php`; storefront output unchanged. Nothing uses them until each module's step |
 | Each module's step | Token map; static CSS moved to variables with fallbacks; templates through the loader; fonts through the loader; display rules through the evaluator (bars and popup); preview loads the storefront CSS |
 | Gate per module | Storefront snapshot identical for (a) a never-saved site and (b) a no-op save; the pro 2.2.0 storefront features still pass |
 

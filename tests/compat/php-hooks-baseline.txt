@@ -35,6 +35,7 @@ spsg_countdown_timer_styles
 spsg_current_user_allowed_to_view_promotions
 spsg_dashboard_overview
 spsg_direct_checkout_button_inline_styles
+spsg_display_rules_should_show
 spsg_ffc_wp_enqueue_scripts
 spsg_floating_bar_content_pro
 spsg_fly_cart_after_single_item_columns
@@ -48,6 +49,7 @@ spsg_get_bogo_settings_for_cart
 spsg_global_common_localized_args
 spsg_is_bogo_applicable_product
 spsg_load_bogo_badge_content
+spsg_load_google_fonts
 spsg_load_product_bogo_offer
 spsg_module_activated
 spsg_module_deactivated
@@ -76,6 +78,7 @@ spsg_settings_schema
 spsg_should_save_product_bogo
 spsg_stock_bar_stock_below
 spsg_stock_bar_warning_contents
+spsg_template_path
 spsg_uninstall_scheduled_hooks
 spsg_woocommerce_before_cart_collaterals
 spsgqcv_after_summary

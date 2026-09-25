@@ -68,6 +68,8 @@ class Assets {
 	 * @return void
 	 */
 	public function register_all_scripts() {
+		$this->register_storefront_base();
+
 		wp_register_script(
 			'spsg-accounting',
 			WC()->plugin_url() . '/assets/js/accounting/accounting.min.js',
@@ -100,6 +102,35 @@ class Assets {
 					),
 				)
 			),
+		);
+	}
+
+	/**
+	 * Register the shared storefront base (ADR-005 S9): the z-index scale and
+	 * reduced-motion rules, and the display-trigger/dismiss helpers.
+	 *
+	 * Registered only. A module's storefront handles add them as dependencies
+	 * when that module migrates, so they load only where a module renders. The
+	 * admin preview loads them too, for preview parity (S10).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	private function register_storefront_base(): void {
+		wp_register_style(
+			'spsg-storefront-base',
+			Helper::get_plugin_url( 'assets/css/storefront-base.css' ),
+			array(),
+			filemtime( Helper::get_plugin_path( 'assets/css/storefront-base.css' ) )
+		);
+
+		wp_register_script(
+			'spsg-storefront-core',
+			Helper::get_plugin_url( 'assets/js/storefront-core.js' ),
+			array(),
+			filemtime( Helper::get_plugin_path( 'assets/js/storefront-core.js' ) ),
+			true
 		);
 	}
 

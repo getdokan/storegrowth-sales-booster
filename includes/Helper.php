@@ -228,6 +228,74 @@ class Helper {
 	}
 
 	/**
+	 * Allow-list a CSS keyword (alignment, border style, position, …) before it
+	 * is printed into a stylesheet.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed    $value    Stored value.
+	 * @param string[] $allowed  Allowed keywords.
+	 * @param string   $fallback Value returned when `$value` is not allowed.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_keyword( $value, array $allowed, string $fallback = '' ): string {
+		$value = is_scalar( $value ) ? strtolower( trim( (string) $value ) ) : '';
+
+		return in_array( $value, $allowed, true ) ? $value : $fallback;
+	}
+
+	/**
+	 * Render a storefront template, letting the theme override it.
+	 *
+	 * Looks for `storegrowth/<module>/<file>` in the child and parent theme
+	 * first, then `modules/<module>/templates/<file>` in the plugin.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $template Template path `<module>/<file>`, e.g. `stock-bar/simple-stock-status.php`.
+	 * @param array  $args     Variables made available to the template.
+	 *
+	 * @return void
+	 */
+	public static function get_template( string $template, array $args = array() ): void {
+		$template = ltrim( str_replace( '\\', '/', $template ), '/' );
+
+		if ( false !== strpos( $template, '..' ) || false === strpos( $template, '/' ) ) {
+			return;
+		}
+
+		list( $module, $file ) = explode( '/', $template, 2 );
+
+		$path = locate_template( 'storegrowth/' . $template );
+
+		if ( ! $path ) {
+			$path = self::get_modules_path( $module . '/templates/' . $file );
+		}
+
+		/**
+		 * Filters the file used for a storefront template.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param string $path     Absolute path of the template file.
+		 * @param string $template Template path `<module>/<file>`.
+		 * @param array  $args     Variables passed to the template.
+		 */
+		$path = (string) apply_filters( 'spsg_template_path', $path, $template, $args );
+
+		if ( ! is_readable( $path ) ) {
+			return;
+		}
+
+		( static function ( string $spsg_template_file, array $spsg_template_args ) {
+			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- Template variables, as passed by the caller.
+			extract( $spsg_template_args, EXTR_SKIP );
+			include $spsg_template_file;
+		} )( $path, $args );
+	}
+
+	/**
 	 * Check whether one of the plugin's custom tables exists.
 	 *
 	 * Both custom tables are created from their module's `activate()` callback,

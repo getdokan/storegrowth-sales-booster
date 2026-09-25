@@ -16,6 +16,7 @@ use StorePulse\StoreGrowth\REST\ModulesController;
 use StorePulse\StoreGrowth\REST\ProductController;
 use StorePulse\StoreGrowth\REST\SettingsController;
 use StorePulse\StoreGrowth\Settings\SettingsService;
+use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
 
 /**
  * CommonServiceProvider Class
@@ -38,6 +39,7 @@ class CommonServiceProvider extends BootableServiceProvider {
 		DashboardController::class,
 		SettingsService::class,
 		ModuleSettingsController::class,
+		StorefrontFonts::class,
 		OfferAttribution::class,
 	];
 

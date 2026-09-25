@@ -27,7 +27,7 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 0 | plugin-ui upstream: export `ColorPicker`, `RadioImageCard`, `CombineInput`, …; alpha off (U1, U4) | — | 1a |
 | 1a | `00-core-shell`: build system (remove Lerna, webpack trio, TS, Tailwind v4), shared bundles, CI checks (hook baseline, API test) | — | 0 |
 | 1b | `00-core-shell`: shell UI (TopBar, feature rail, deactivated modal), Dashboard, Modules page, `/modules` + `/dashboard` REST | 0, 1a | 1c |
-| 1d | Storefront foundation (ADR-005): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
+| 1d | **Done.** Storefront foundation (ADR-005): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
 | 1c | **Done.** Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar`. Field components move to step 2 | 1a | 1b |
 | 2 | `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
 | 3 | `countdown-timer` — first `BoxModelInput` | 2 | 4 |
