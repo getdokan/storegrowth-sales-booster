@@ -27,6 +27,59 @@ class AdminMenu {
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
 		add_filter( 'submenu_file', array( $this, 'highlight_admin_submenu' ) );
+
+		// Capture admin notices so the plugin header renders first on our pages.
+		add_action( 'admin_notices', array( $this, 'inject_before_notices' ), -9999 );
+		add_action( 'admin_notices', array( $this, 'inject_after_notices' ), PHP_INT_MAX );
+	}
+
+	/**
+	 * Whether the current admin screen is a StoreGrowth app page.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	private function is_storegrowth_page(): bool {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+		return $screen && in_array( $screen->id, array( 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ), true );
+	}
+
+	/**
+	 * Open a hidden wrapper before admin notices render.
+	 *
+	 * WordPress core moves `.notice` elements to just after the first
+	 * `.wp-header-end`. Opening the wrapper (with that catcher inside) before
+	 * any notice prints collects them all in a hidden container, which the
+	 * header script moves under the header.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function inject_before_notices(): void {
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		echo '<div class="spsg-notice-list-hide" id="spsg__notice-list">';
+		echo '<div class="wp-header-end" id="spsg__notice-catcher"></div>';
+	}
+
+	/**
+	 * Close the wrapper opened in inject_before_notices().
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function inject_after_notices(): void {
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		echo '</div>';
 	}
 
 	/**
@@ -147,7 +200,12 @@ class AdminMenu {
 	}
 
 	/**
-	 * Mount point of the admin app.
+	 * Mount points of a StoreGrowth page: header → notices → app.
+	 *
+	 * The header mounts in its own root so it paints without waiting for the
+	 * app. The notice slot has no `.spsg-layout` class on purpose: that scope's
+	 * Tailwind preflight would strip core notice styling. Captured notices are
+	 * moved into it by the header script.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -156,6 +214,8 @@ class AdminMenu {
 	 * @return void
 	 */
 	private function render_app( string $default_route ): void {
+		echo '<div id="spsg-admin-header"></div>';
+		echo '<div id="spsg-admin-notices"></div>';
 		printf(
 			'<div id="spsg-admin-app" data-default-route="%s"></div>',
 			esc_attr( $default_route )

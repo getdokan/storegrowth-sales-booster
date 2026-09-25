@@ -134,3 +134,28 @@ body:has(#spsg-admin-app) #wpbody-content {
 body:has(#spsg-admin-app) {
     background: var(--color-sg-page);
 }
+
+/* Plugin header sticks under the WordPress toolbar (32px, 46px on mobile). */
+#spsg-admin-header {
+    position: sticky;
+    top: var(--wp-admin--admin-bar--height, 32px);
+    z-index: 25;
+}
+
+/*
+ * Captured admin notices stay hidden until the header script moves them under
+ * the header, so they never flash above it.
+ */
+.spsg-notice-list-hide {
+    display: none;
+}
+
+#spsg-admin-notices {
+    margin: 0 16px;
+}
+
+@media (min-width: 783px) {
+    #spsg-admin-notices {
+        margin: 0 32px;
+    }
+}

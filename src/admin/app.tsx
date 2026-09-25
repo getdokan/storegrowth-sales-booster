@@ -1,55 +1,53 @@
 /**
- * Admin shell: top bar, notices and the routed page (see ./routes.tsx).
+ * Admin app: notices and the routed page (see ./routes.tsx). The header is its
+ * own bundle (src/header), mounted by PHP above this app.
  *
  * @since SPSG_VERSION
  */
 import { Toaster } from '@wedevs/plugin-ui';
 import { useLayoutEffect, useMemo, useRef } from '@wordpress/element';
-import { AppTopBar } from '@storegrowth/components';
 import { Route, Routes } from '@storegrowth/hooks';
 
 import AdminNotices from './admin-notices';
 import { getRoutes } from './routes';
 
 export default function App() {
-    const topBarRef = useRef< HTMLDivElement >( null );
     const rootRef = useRef< HTMLDivElement >( null );
 
     // Read once: module and pro bundles have registered before the app mounts.
     const routes = useMemo( getRoutes, [] );
 
-    // The feature rail sticks below WordPress's toolbar and our top bar.
+    // The feature rail sticks below WordPress's toolbar and the plugin header.
     useLayoutEffect( () => {
-        const topBar = topBarRef.current;
         const root = rootRef.current;
 
-        if ( ! topBar || ! root ) {
+        if ( ! root ) {
             return;
         }
+
+        const header = document.getElementById( 'spsg-admin-header' );
 
         const update = () => {
             const adminBar = document.getElementById( 'wpadminbar' );
             const offset =
-                ( adminBar?.offsetHeight ?? 0 ) + topBar.offsetHeight;
+                ( adminBar?.offsetHeight ?? 0 ) + ( header?.offsetHeight ?? 0 );
             root.style.setProperty( '--spsg-rail-top', `${ offset }px` );
         };
 
         update();
 
+        if ( ! header ) {
+            return;
+        }
+
         const observer = new ResizeObserver( update );
-        observer.observe( topBar );
+        observer.observe( header );
 
         return () => observer.disconnect();
     }, [] );
 
     return (
-        <div
-            ref={ rootRef }
-            className="flex min-h-[calc(100vh-32px)] w-full flex-col bg-sg-page"
-        >
-            <div ref={ topBarRef } className="sticky top-8 z-[25]">
-                <AppTopBar />
-            </div>
+        <div ref={ rootRef } className="flex w-full flex-col bg-sg-page">
             <AdminNotices />
             <Routes>
                 { routes.map( ( route ) => (

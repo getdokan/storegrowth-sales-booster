@@ -2,6 +2,7 @@ free_shipping_bar_content_pro
 options_spsg_bogo_type
 sales_boster_floating_notification_bar_text
 sales_boster_pd_banner_text
+spsg_admin_header_info
 spsg_admin_localized_data
 spsg_after_bogo_offer_settings
 spsg_after_bogo_offer_type_field

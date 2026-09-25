@@ -23,7 +23,6 @@ import type { ReactNode } from 'react';
 import { Navigate, useModules } from '@storegrowth/hooks';
 
 import DashboardPage from './pages/dashboard';
-import ModulePendingPage from './pages/module-pending';
 import ModulesPage from './pages/modules';
 import SettingsPage from './pages/settings';
 
@@ -49,9 +48,8 @@ function FeaturesRedirect() {
 }
 
 /**
- * Pages every install has. Module pages registered through the filter take
- * precedence over the `/:moduleId` placeholder because react-router ranks
- * static paths above dynamic ones.
+ * Pages every install has. Each module registers its own page through the
+ * filter; a path nobody registered falls through to the dashboard.
  *
  * @since SPSG_VERSION
  */
@@ -61,12 +59,6 @@ const coreRoutes: AdminRoute[] = [
     { id: 'features', path: '/features', element: <FeaturesRedirect /> },
     { id: 'modules', path: '/modules', element: <ModulesPage /> },
     { id: 'settings', path: '/settings', element: <SettingsPage /> },
-    // Feature page for a module that hasn't registered its own page yet.
-    {
-        id: 'module-pending',
-        path: '/:moduleId',
-        element: <ModulePendingPage />,
-    },
     {
         id: 'not-found',
         path: '*',

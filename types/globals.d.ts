@@ -36,8 +36,23 @@ interface SpsgAdminData {
     };
 }
 
+/** Header data (PHP filter `spsg_admin_header_info`). */
+interface SpsgAdminHeaderInfo {
+    lite_version: string;
+    is_pro_exists: boolean;
+    pro_version: string;
+    upgrade_url: string;
+    whats_new_url: string;
+    support_url: string;
+}
+
 interface Window {
     spsgAdmin?: SpsgAdminData;
+    spsgAdminHeader?: {
+        logo_url: string;
+        dashboard_url: string;
+        header_info: SpsgAdminHeaderInfo;
+    };
     /** WPKit notice feed endpoints. */
     spsgNotices?: {
         noticesUrl?: string;

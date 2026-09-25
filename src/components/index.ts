@@ -4,7 +4,6 @@
  *
  * @since SPSG_VERSION
  */
-export { AppTopBar } from './app-top-bar';
 export { CardHead, type CardHeadProps } from './card-head';
 export {
     DeactivatedModuleDialog,

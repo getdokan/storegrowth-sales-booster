@@ -18,6 +18,7 @@
 const coreEntries = {
     tailwind: './src/base-tailwind.css',
     admin: './src/admin/index.tsx',
+    header: './src/header/index.tsx',
     'plugin-ui': {
         import: './src/externals/plugin-ui.js',
         library: { name: [ 'storegrowth', 'pluginUI' ], type: 'window' },

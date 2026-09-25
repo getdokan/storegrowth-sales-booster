@@ -121,6 +121,7 @@ class Assets {
 		}
 
 		$this->register_bundle_script( 'spsg-admin', 'admin' );
+		$this->register_bundle_script( 'spsg-admin-header', 'header' );
 
 		if ( file_exists( Helper::get_plugin_path( 'build/tailwind.css' ) ) ) {
 			wp_register_style(
@@ -225,6 +226,35 @@ class Assets {
 			)
 		);
 
+		wp_enqueue_script( 'spsg-admin-header' );
+
+		wp_localize_script(
+			'spsg-admin-header',
+			'spsgAdminHeader',
+			array(
+				'logo_url'      => Helper::get_plugin_url( 'assets/images/storegrowth-logo.svg' ),
+				'dashboard_url' => admin_url( 'admin.php?page=spsg-settings#/dashboard' ),
+				/**
+				 * Filters the data shown in the StoreGrowth admin header.
+				 *
+				 * @since SPSG_VERSION
+				 *
+				 * @param array $header_info Header data.
+				 */
+				'header_info'   => apply_filters(
+					'spsg_admin_header_info',
+					array(
+						'lite_version'  => STOREGROWTH_VERSION,
+						'is_pro_exists' => sp_store_growth()->has_pro(),
+						'pro_version'   => $this->get_pro_version(),
+						'upgrade_url'   => 'https://storegrowth.io/pricing',
+						'whats_new_url' => 'https://storegrowth.io/changelog/',
+						'support_url'   => 'https://storegrowth.io/contact-us/',
+					)
+				),
+			)
+		);
+
 		wp_localize_script(
 			'spsg-admin',
 			'spsgNotices',
@@ -233,6 +263,26 @@ class Assets {
 				'actionUrl'  => rest_url( Upgrader::REST_NAMESPACE . '/migration/upgrade' ),
 			]
 		);
+	}
+
+	/**
+	 * Installed StoreGrowth Pro version, or an empty string.
+	 *
+	 * Pro has no version constant, so the version is read from its plugin
+	 * header.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string
+	 */
+	private function get_pro_version(): string {
+		if ( ! defined( 'STOREGROWTH_PRO_FILE' ) || ! is_readable( STOREGROWTH_PRO_FILE ) ) {
+			return '';
+		}
+
+		$data = get_file_data( STOREGROWTH_PRO_FILE, array( 'version' => 'Version' ) );
+
+		return (string) ( $data['version'] ?? '' );
 	}
 
 	/**
