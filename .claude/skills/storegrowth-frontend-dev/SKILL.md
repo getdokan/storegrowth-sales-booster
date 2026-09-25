@@ -1,107 +1,122 @@
 ---
 name: storegrowth-frontend-dev
-description: Add or modify StoreGrowth (Sales Booster) frontend code — React, Ant Design, @wordpress/data stores, the admin settings SPA, and the Lerna/wp-scripts build. Use when creating components, stores, admin routes, or touching asset builds.
+description: Add or modify StoreGrowth (Sales Booster) frontend code — the TypeScript admin app (plugin-ui, Tailwind v4, react-router), module settings pages, shared components/hooks/utilities, the settings engine client, live previews, storefront CSS/JS, and the single webpack build. Use when creating a page, component, route, field, preview or storefront widget, or touching the build.
 ---
 
 # StoreGrowth Frontend Development
 
-Guidance for the StoreGrowth admin UI and module front-ends. For PHP enqueue/asset registration see `storegrowth-backend-dev`.
+Rules live in the ADRs (`docs/adr/`); this skill is the how-to. For PHP (REST, enqueue, schema) see `storegrowth-backend-dev`; for a whole new module see `storegrowth-module-dev`.
 
-## Build system
+## Build (ADR-001)
 
-JS is a **Lerna monorepo** built with `@wordpress/scripts` (`wp-scripts` → webpack). Each module's UI is its own npm package under `modules/{slug}/assets/`; the root `assets/` package builds the admin settings SPA.
+One `@wordpress/scripts` webpack build, no monorepo:
+- `webpack-entries.js` — every entry listed by hand. Core: `admin`, `header`, `tailwind`, and the shared bundles `plugin-ui`, `components`, `utilities`, `hooks` (exposed as `window.storegrowth.*`). Modules: `'modules/<id>/admin': './modules/<id>/src/index.tsx'`.
+- `webpack-dependency-mapping.js` — `@wedevs/plugin-ui` and `@storegrowth/*` are externals (handles `spsg-plugin-ui`, `spsg-components`, `spsg-utilities`, `spsg-hooks`); `@wordpress/*` map to WordPress's own scripts.
+- Output `build/` (git-ignored); each bundle gets a `*.asset.php` with its dependencies.
 
 ```bash
-npm install                 # root + all workspaces
-npm run start               # watch ALL packages (lerna run start)
-npm run build               # production build ALL packages
-npm run watch:bogo          # watch ONE module (see package.json for scopes)
-npm run build:bogo          # build ONE module
-npm run watch:sales-booster # watch the admin/settings SPA (root assets)
+npm run start        # watch; restart after adding an entry to webpack-entries.js
+npm run type-check   # tsc --noEmit
+npm run lint:js      # read-only; fix reports by editing, never --fix
 ```
 
-- Lerna packages: `assets`, `integrations/assets`, `modules/*/assets` (`lerna.json`).
-- Each package's `build`/`start` runs `wp-scripts build|start src/settings.js` (root also builds `src/modules.js`). Output → `build/` (committed in releases, ignored from src globs).
+Don't run `npm run build` while the dev server is running; reload the page.
 
-## Tech stack
+## Source layout (ADR-002)
 
-| Tech | Usage |
+- `src/admin/` — app shell (`index.tsx` mounts on `#spsg-admin-app`, `app.tsx`, `routes.tsx`, `pages/*`). `src/header/` — the top bar bundle.
+- `src/components/` → `@storegrowth/components`; `src/hooks/` → `@storegrowth/hooks`; `src/utilities/` → `@storegrowth/utilities`.
+- `modules/<id>/src/` — a module's admin page (`index.tsx` registers the route; page, `preview/`, `types.ts`).
+- TypeScript, 4-space indentation, **kebab-case** file and folder names inside every `src/` (lint-enforced); PascalCase component names.
+
+## Tech
+
+| Need | Use |
 |---|---|
-| React (functional components) | all UI |
-| Ant Design (`antd`) + `@ant-design/icons` | component library |
-| `@wordpress/data` | Redux-like stores (`createReduxStore` / `register`) |
-| `@wordpress/hooks` | extensibility (`addFilter`/`applyFilters`) |
-| `@wordpress/i18n` | translation (`__`, `_n`, `sprintf`) |
-| `react-router-dom` v6 | routing inside the settings SPA |
-| `nanoid`, `dayjs` | ids, dates |
+| UI components | plugin-ui (`@wedevs/plugin-ui`) first, then `@storegrowth/components` |
+| Styling | Tailwind v4 utilities, scoped to `.spsg-layout` (ADR-003); tokens `sg-*` in `src/base-tailwind.css` |
+| Icons | `lucide-react` |
+| Routing | react-router v6 `HashRouter`, imported **only** from `@storegrowth/hooks` (lint blocks `react-router-dom`) |
+| Data | REST `sales-booster/v1` via `@storegrowth/utilities` (`api.ts`); legacy ajax only through `ajax()` (ADR-006) |
+| State | local React state and context; **no global store** |
+| Extensibility | `@wordpress/hooks` filters named `storegrowth.*` |
+| i18n | `@wordpress/i18n`, text domain `storegrowth-sales-booster` |
 
-## The admin settings SPA & route injection
+No antd, no `@wordpress/data` stores, no dokan-ui.
 
-The Settings page renders a single React app (root `assets/src/settings.js`). **Modules inject their own admin pages by filtering `spsg_routes`** via `@wordpress/hooks` — this is the central frontend extension point:
+## Adding a module settings page
 
-```jsx
-import { addFilter } from "@wordpress/hooks";
-import { register } from "@wordpress/data";
-import BogoStore from "./store";
-import BogoLayout from "./components/BogoLayout";
+1. PHP first: the module's `SettingsSchema` (see `storegrowth-backend-dev`) gives `GET/POST sales-booster/v1/settings/<id>`.
+2. `modules/<id>/src/types.ts` — the values interface (API types) and the keys each tab saves.
+3. `modules/<id>/src/<id>-page.tsx`:
 
-register( BogoStore ); // register the module's @wordpress/data store
+```tsx
+const settings = useModuleSettings< StockBarValues >( 'stock-bar' );
+const { values, setValue, isLocked, errors } = settings;
 
-addFilter(
-  "spsg_routes",
-  "spsg",
-  ( routes, outlet, navigate, useParams, useSearchParams ) => {
-    routes.push( {
-      path: "/bogo",
-      name: "bogo",
-      label: "BOGO",
-      element: <BogoLayout outlet={ outlet } navigate={ navigate } useParams={ useParams } useSearchParams={ useSearchParams } />,
-      children: [ /* nested routes */ ],
-    } );
-    return routes;
-  }
-);
+<FeatureLayout moduleId="stock-bar">
+    <CardHead title={ __( 'Stock Bar', 'storegrowth-sales-booster' ) } />
+    <SettingsSplit preview={ <LivePreview widget={ <StockBarWidget values={ values } /> } /> }>
+        <SettingsTabs label={ … } tabs={ [ { id: 'content', label: …, content: … }, … ] } />
+    </SettingsSplit>
+</FeatureLayout>
 ```
 
-A module's `assets/src/settings.js` is its entry point: register its store, then push routes. The Modules page (`modules.js` / `modules-store.js`) lists modules and toggles them via the backend `ModuleManager`.
+   Each tab ends with `<SaveBar onSave={ () => settings.save( keys ) } onReset={ () => settings.reset( keys ) } disabled={ ! settings.isDirty( keys ) } saving={ settings.saving } />`. Toast success/failure with plugin-ui `toast` and `errorMessage()`.
+4. `modules/<id>/src/index.tsx` — register the route:
 
-## State management
-
-Stores use `@wordpress/data`:
-
-```js
-import { createReduxStore } from "@wordpress/data";
-
-const DEFAULT_STATE = { pageLoading: false };
-const reducer = ( state = DEFAULT_STATE, action ) => { /* ... */ return state; };
-
-const store = createReduxStore( "spsg/settings", { reducer, actions, selectors, resolvers } );
-export default store; // register( store ) in the entry file
+```tsx
+addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
+    ...routes.filter( ( route ) => route.id !== '<id>' ),
+    { id: '<id>', path: '/<id>', element: <ModulePage /> },
+] );
 ```
 
-Root stores: `assets/src/settings-store.js`, `assets/src/modules-store.js`. Each module ships its own `store.js`. Use store actions — never mutate state directly. Data is read/written through the `sales-booster/v1` REST API (see `storegrowth-backend-dev`) and `assets/src/ajax.js` for the legacy admin-ajax surface.
+5. Add the webpack entry and enqueue `build/modules/<id>/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview.
 
-## Component conventions
+Reference implementation: `modules/stock-bar/src/`.
 
-- Functional components only; PascalCase files (`BogoLayout.js`, `CreateBogo.js`).
-- Module UI lives in `modules/{slug}/assets/src/components/`; shared helpers in `helper.js` / `utils/`.
-- Use Ant Design components + `@ant-design/icons` rather than hand-rolled widgets, to match the existing look.
+## Fields and shared components
 
-## Enqueueing (PHP side)
+- Fields (`src/components/fields/`): `TextField`, `NumberField` (`suffix="px"`, emits a number), `SelectField`, `ColorField` (6-digit hex swatch), `SwitchField`, `CheckboxField` + `CheckboxGroup`. All take `label`, value/onChange, `locked` (pro field without pro → disabled + Pro badge), `error`, `help`.
+- Frame: `FeatureLayout` (feature rail + page area), `CardHead`, `SettingsSplit`, `SettingsTabs`, `Accordion`, `SaveBar`, `TemplatePicker`, `ColorPicker`.
+- `setValue()` takes the API type (a number, not the input's string), or `isDirty` sees a change that isn't one.
+- Build a new control only when plugin-ui and these parts can't do it; keep it simple and reusable.
 
-Scripts/styles register with the `spsg-` handle prefix. Root admin assets are handled in `includes/Assets.php`; each module registers its own assets in a `EnqueueScript` class implementing `HookRegistry` (see `storegrowth-backend-dev`). Admin page hooks for conditional enqueue: `storegrowth_page_spsg-settings`, `storegrowth_page_spsg-modules`. Build assets are versioned with `filemtime()`.
+## Live preview (ADR-005 S10)
 
-## i18n
+- `LivePreview` gives the device switch, dark toggle, browser frame and a mock product page; the module passes `widget` (or `banner` / `overlay`) as a node or `( { device, theme } ) => node`.
+- The widget renders the **storefront's own markup and classes** inside `.spsg-storefront` (the admin reset skips it), styled by the real storefront stylesheet enqueued on the admin page. Feed live values as the storefront gets them (inline styles or `--spsg-<module>-*` variables).
+- Dark/mobile looks: `group-data-[theme=dark]/frame:` and `group-data-[device=mobile]/frame:` variants.
 
-- Use `@wordpress/i18n`: `import { __, _n, sprintf } from "@wordpress/i18n";`
-- Text domain: `storegrowth-sales-booster`.
-- Add `/* translators: */` comments before `sprintf()` with placeholders; never concatenate translated strings; use `_n()` for plurals.
-- The `SPSG_VERSION` placeholder convention also applies to JS files (version-replace scans `.js`) — use it in `@since` annotations on new code.
+## Styling rules (ADR-003)
 
-## Key reference files
+- Tailwind utilities are `important` and scoped to `.spsg-layout`; preflight is scoped too and stops at `.spsg-wp-notices`, `.spsg-storefront` and `@wordpress/components` roots.
+- Use the `sg-*` tokens (`bg-sg-brand`, `text-sg-text`, `border-sg-stroke`, …) and plugin-ui variants; avoid one-off hex values when a token exists.
+- wp-admin's global CSS leaks into native controls (e.g. `select` gets an arrow and `max-width: 25rem`); override on the component.
+- Match the design reference's layout; visual values come from the design system.
 
-- `assets/src/settings.js`, `assets/src/modules.js` — root SPA entry points
-- `assets/src/settings-store.js`, `assets/src/modules-store.js` — root stores
-- `modules/bogo/assets/src/settings.js` — model for module entry (store register + `spsg_routes`)
-- `assets/package.json`, `modules/*/assets/package.json`, `lerna.json` — build config
-- `includes/Assets.php`, `modules/*/includes/EnqueueScript.php` — PHP enqueue
+## Storefront CSS/JS (ADR-005)
+
+- Plain CSS/JS in `modules/<id>/assets/` — no Tailwind, no React.
+- Settings arrive as `--spsg-<module>-<token>` variables with the default as fallback: `font-size: var(--spsg-stock-bar-count-size, 11px);`. Printed by `StorefrontStyle` only for saved keys.
+- Shared base: `spsg-storefront-base` (z-index scale `--spsg-z-*`) and `spsg-storefront-core` (`window.spsgStorefront`: `isMobile`, `matchesDevice`, `isDismissed`, `dismiss`, `onTrigger`).
+- Never rename or remove existing classes, selectors or handles; themes and pro target them (ADR-004).
+
+## i18n and versions
+
+- `__`, `_n`, `sprintf` from `@wordpress/i18n`; `/* translators: */` before placeholders; never concatenate translated strings.
+- `@since SPSG_VERSION` on new exported functions/components/hooks (version-replace scans `.ts`/`.tsx`).
+
+## Before committing
+
+`npm run type-check`, `npm run lint:js`, test the page in the browser against the design reference and the storefront; run the review agents (`.claude/agents/`: `sg-designer`, `sg-qa`, `sg-architect`).
+
+## Key files
+
+- `src/admin/routes.tsx`, `src/admin/app.tsx` — routes and shell
+- `src/hooks/use-module-settings.ts`, `src/utilities/api.ts`, `src/utilities/ajax.ts`
+- `src/components/index.ts`, `src/components/fields/`, `src/components/live-preview.tsx`
+- `src/base-tailwind.css` — tokens and scoping
+- `modules/stock-bar/src/` — reference module page
+- `webpack-entries.js`, `webpack-dependency-mapping.js`
