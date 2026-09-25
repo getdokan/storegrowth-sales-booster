@@ -32,7 +32,7 @@ class AdminPage implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class AdminPage implements HookRegistry {
 	public function enqueue( $hook ): void {
 		$asset_file = Helper::get_modules_path( 'stock-bar/assets/js/admin.asset.php' );
 
-		if ( ! in_array( $hook, array( 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ), true ) || ! file_exists( $asset_file ) ) {
+		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
 			return;
 		}
 
@@ -58,7 +58,7 @@ class AdminPage implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-stock-cd-custom-style',
 			Helper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
-			array( 'spsg-storefront-base' ),
+			[ 'spsg-storefront-base' ],
 			filemtime( Helper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
 		);
 	}

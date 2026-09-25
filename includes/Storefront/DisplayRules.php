@@ -40,11 +40,11 @@ class DisplayRules {
 	 *
 	 * @return bool
 	 */
-	public static function should_show( array $settings, string $module, array $defaults = array() ): bool {
+	public static function should_show( array $settings, string $module, array $defaults = [] ): bool {
 		$show = Helper::is_current_user_allowed_to_view_promotions();
 
 		if ( $show ) {
-			$devices = Helper::find_option_settings( $settings, 'banner_device_view', $defaults['banner_device_view'] ?? array() );
+			$devices = Helper::find_option_settings( $settings, 'banner_device_view', $defaults['banner_device_view'] ?? [] );
 			$show    = ! empty( $devices );
 		}
 

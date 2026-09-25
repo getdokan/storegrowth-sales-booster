@@ -62,70 +62,70 @@ class ModulesController extends WP_REST_Controller {
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base,
-			array(
-				array(
+			[
+				[
 					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_items' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-				'schema' => array( $this, 'get_public_item_schema' ),
-			)
+					'callback'            => [ $this, 'get_items' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
 		);
 
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/batch',
-			array(
-				array(
+			[
+				[
 					'methods'             => WP_REST_Server::CREATABLE,
-					'callback'            => array( $this, 'batch_update' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => array(
-						'ids'    => array(
+					'callback'            => [ $this, 'batch_update' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => [
+						'ids'    => [
 							'description' => __( 'Module ids to update.', 'storegrowth-sales-booster' ),
 							'type'        => 'array',
-							'items'       => array( 'type' => 'string' ),
+							'items'       => [ 'type' => 'string' ],
 							'required'    => true,
-						),
-						'status' => array(
+						],
+						'status' => [
 							'description' => __( 'True to activate, false to deactivate.', 'storegrowth-sales-booster' ),
 							'type'        => 'boolean',
 							'required'    => true,
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<id>[a-z0-9-]+)',
-			array(
-				'args'   => array(
-					'id' => array(
+			[
+				'args'   => [
+					'id' => [
 						'description' => __( 'Module id.', 'storegrowth-sales-booster' ),
 						'type'        => 'string',
-					),
-				),
-				array(
+					],
+				],
+				[
 					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-				array(
+					'callback'            => [ $this, 'get_item' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+				[
 					'methods'             => WP_REST_Server::EDITABLE,
-					'callback'            => array( $this, 'update_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => array(
-						'status' => array(
+					'callback'            => [ $this, 'update_item' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => [
+						'status' => [
 							'description' => __( 'True to activate, false to deactivate.', 'storegrowth-sales-booster' ),
 							'type'        => 'boolean',
 							'required'    => true,
-						),
-					),
-				),
-				'schema' => array( $this, 'get_public_item_schema' ),
-			)
+						],
+					],
+				],
+				'schema' => [ $this, 'get_public_item_schema' ],
+			]
 		);
 	}
 
@@ -205,7 +205,7 @@ class ModulesController extends WP_REST_Controller {
 	 */
 	public function batch_update( $request ) {
 		$status  = rest_sanitize_boolean( $request['status'] );
-		$modules = array();
+		$modules = [];
 
 		foreach ( (array) $request['ids'] as $id ) {
 			$module = $this->find_module( sanitize_key( $id ) );
@@ -221,7 +221,7 @@ class ModulesController extends WP_REST_Controller {
 			$this->set_status( $module, $status );
 		}
 
-		return rest_ensure_response( array_map( array( $this, 'prepare_module' ), $modules ) );
+		return rest_ensure_response( array_map( [ $this, 'prepare_module' ], $modules ) );
 	}
 
 	/**
@@ -264,7 +264,7 @@ class ModulesController extends WP_REST_Controller {
 				'spsg_module_not_found',
 				/* translators: %s: module id. */
 				sprintf( __( 'Module "%s" does not exist.', 'storegrowth-sales-booster' ), $id ),
-				array( 'status' => 404 )
+				[ 'status' => 404 ]
 			);
 		}
 
@@ -288,7 +288,7 @@ class ModulesController extends WP_REST_Controller {
 			}
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -314,45 +314,45 @@ class ModulesController extends WP_REST_Controller {
 			return $this->add_additional_fields_schema( $this->schema );
 		}
 
-		$this->schema = array(
+		$this->schema = [
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => 'storegrowth-module',
 			'type'       => 'object',
-			'properties' => array(
-				'id'          => array(
+			'properties' => [
+				'id'          => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'name'        => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'name'        => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'icon'        => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'icon'        => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'banner'      => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'banner'      => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'description' => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'description' => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'category'    => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'category'    => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-				'status'      => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'status'      => [
 					'type'    => 'boolean',
-					'context' => array( 'view', 'edit' ),
-				),
-				'doc_link'    => array(
+					'context' => [ 'view', 'edit' ],
+				],
+				'doc_link'    => [
 					'type'    => 'string',
-					'context' => array( 'view', 'edit' ),
-				),
-			),
-		);
+					'context' => [ 'view', 'edit' ],
+				],
+			],
+		];
 
 		return $this->add_additional_fields_schema( $this->schema );
 	}

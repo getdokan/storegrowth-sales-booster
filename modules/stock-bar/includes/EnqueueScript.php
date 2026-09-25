@@ -131,21 +131,21 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	private function design_variables( array $settings ): void {
-		$tokens = array(
-			'card-bg'     => array( 'stockbar_card_bg_color', 'color', '#ffffff' ),
-			'font-family' => array( 'font_family', 'font', 'inherit' ),
-			'count-size'  => array( 'count_text_size', 'px', 11 ),
-			'count-color' => array( 'count_text_color', 'color', '#25252d' ),
-			'status-size' => array( 'status_text_size', 'px', 11 ),
-		);
+		$tokens = [
+			'card-bg'     => [ 'stockbar_card_bg_color', 'color', '#ffffff' ],
+			'font-family' => [ 'font_family', 'font', 'inherit' ],
+			'count-size'  => [ 'count_text_size', 'px', 11 ],
+			'count-color' => [ 'count_text_color', 'color', '#25252d' ],
+			'status-size' => [ 'status_text_size', 'px', 11 ],
+		];
 
 		foreach ( $tokens as $token => $spec ) {
 			if ( isset( $settings[ $spec[0] ] ) ) {
-				$tokens[ $token ] = array(
+				$tokens[ $token ] = [
 					'value'   => $settings[ $spec[0] ],
 					'type'    => $spec[1],
 					'default' => $spec[2],
-				);
+				];
 			} else {
 				unset( $tokens[ $token ] );
 			}

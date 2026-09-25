@@ -33,7 +33,7 @@ class StorefrontFonts implements HookRegistry {
 	 *
 	 * @var string[]
 	 */
-	const FAMILIES = array( 'inherit', 'Inter', 'Poppins', 'Roboto', 'Open Sans', 'Lato' );
+	const FAMILIES = [ 'inherit', 'Inter', 'Poppins', 'Roboto', 'Open Sans', 'Lato' ];
 
 	/**
 	 * Weights loaded for every family.
@@ -42,7 +42,7 @@ class StorefrontFonts implements HookRegistry {
 	 *
 	 * @var int[]
 	 */
-	const WEIGHTS = array( 400, 500, 600, 700 );
+	const WEIGHTS = [ 400, 500, 600, 700 ];
 
 	/**
 	 * Families requested and not yet enqueued.
@@ -51,7 +51,7 @@ class StorefrontFonts implements HookRegistry {
 	 *
 	 * @var array<string, true>
 	 */
-	private static $pending = array();
+	private static $pending = [];
 
 	/**
 	 * Families already enqueued.
@@ -60,7 +60,7 @@ class StorefrontFonts implements HookRegistry {
 	 *
 	 * @var array<string, true>
 	 */
-	private static $loaded = array();
+	private static $loaded = [];
 
 	/**
 	 * Register the hooks.
@@ -70,9 +70,9 @@ class StorefrontFonts implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_enqueue_scripts', array( self::class, 'flush' ), 100 );
+		add_action( 'wp_enqueue_scripts', [ self::class, 'flush' ], 100 );
 		// Before `_wp_footer_scripts` prints late styles (priority 10).
-		add_action( 'wp_print_footer_scripts', array( self::class, 'flush' ), 1 );
+		add_action( 'wp_print_footer_scripts', [ self::class, 'flush' ], 1 );
 	}
 
 	/**
@@ -111,20 +111,20 @@ class StorefrontFonts implements HookRegistry {
 		}
 
 		$local  = self::local_stylesheets();
-		$google = array();
+		$google = [];
 
 		foreach ( array_keys( self::$pending ) as $family ) {
 			self::$loaded[ $family ] = true;
 
 			if ( isset( $local[ $family ] ) ) {
-				wp_enqueue_style( 'spsg-font-' . sanitize_title( $family ), $local[ $family ], array(), STOREGROWTH_VERSION );
+				wp_enqueue_style( 'spsg-font-' . sanitize_title( $family ), $local[ $family ], [], STOREGROWTH_VERSION );
 				continue;
 			}
 
 			$google[] = $family;
 		}
 
-		self::$pending = array();
+		self::$pending = [];
 
 		/**
 		 * Filters whether fonts that the plugin doesn't bundle load from
@@ -144,7 +144,7 @@ class StorefrontFonts implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-fonts-google-' . substr( md5( $url ), 0, 8 ),
 			$url,
-			array(),
+			[],
 			null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Google Fonts versions itself.
 		);
 	}
@@ -160,7 +160,7 @@ class StorefrontFonts implements HookRegistry {
 	 */
 	public static function google_url( array $families ): string {
 		$weights = implode( ';', self::WEIGHTS );
-		$query   = array();
+		$query   = [];
 
 		foreach ( $families as $family ) {
 			$query[] = 'family=' . str_replace( ' ', '+', $family ) . ':wght@' . $weights;
@@ -177,10 +177,10 @@ class StorefrontFonts implements HookRegistry {
 	 * @return array<string, string>
 	 */
 	private static function local_stylesheets(): array {
-		return array(
+		return [
 			'Inter'    => Helper::get_plugin_url( 'assets/fonts/inter/inter.css' ),
 			'Merienda' => Helper::get_modules_url( 'countdown-timer/assets/fonts/merienda/stylesheet.css' ),
-		);
+		];
 	}
 
 	/**
@@ -191,7 +191,7 @@ class StorefrontFonts implements HookRegistry {
 	 * @return void
 	 */
 	public static function reset(): void {
-		self::$pending = array();
-		self::$loaded  = array();
+		self::$pending = [];
+		self::$loaded  = [];
 	}
 }

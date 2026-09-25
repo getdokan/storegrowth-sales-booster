@@ -38,7 +38,7 @@ class SettingsService {
 	 *
 	 * @var string[]
 	 */
-	const FIELD_TYPES = array( 'text', 'textarea', 'number', 'toggle', 'color', 'select' );
+	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select' ];
 
 	/**
 	 * Every registered schema, keyed by module id.
@@ -51,10 +51,10 @@ class SettingsService {
 		$container = storegrowth_get_container();
 
 		if ( ! $container->has( SettingsSchema::class ) ) {
-			return array();
+			return [];
 		}
 
-		$schemas = array();
+		$schemas = [];
 
 		foreach ( (array) $container->get( SettingsSchema::class ) as $schema ) {
 			if ( $schema instanceof SettingsSchema ) {
@@ -91,7 +91,7 @@ class SettingsService {
 		$schema = $this->get_schema( $module_id );
 
 		if ( ! $schema ) {
-			return array();
+			return [];
 		}
 
 		/**
@@ -125,12 +125,12 @@ class SettingsService {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_public_schema( string $module_id ): array {
-		$public = array();
+		$public = [];
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
-				array( 'pro' => false ),
-				array_intersect_key( $field, array_flip( array( 'type', 'default', 'pro', 'min', 'max', 'step', 'options' ) ) )
+				[ 'pro' => false ],
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );
@@ -154,11 +154,11 @@ class SettingsService {
 		$schema = $this->get_schema( $module_id );
 
 		if ( ! $schema ) {
-			return array();
+			return [];
 		}
 
 		$stored = $this->get_stored( $schema );
-		$values = array();
+		$values = [];
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$values[ $key ] = array_key_exists( $key, $stored )
@@ -194,23 +194,23 @@ class SettingsService {
 		$schema = $this->get_schema( $module_id );
 
 		if ( ! $schema ) {
-			return new WP_Error( 'spsg_settings_module_not_found', __( 'This module has no settings.', 'storegrowth-sales-booster' ), array( 'status' => 404 ) );
+			return new WP_Error( 'spsg_settings_module_not_found', __( 'This module has no settings.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
 		}
 
-		$raw = get_option( $schema->get_option_name(), array() );
+		$raw = get_option( $schema->get_option_name(), [] );
 
 		if ( ! is_array( $raw ) && '' !== $raw && false !== $raw ) {
 			return new WP_Error(
 				'spsg_settings_unreadable',
 				__( 'The stored settings are in an unexpected format, so they were not changed.', 'storegrowth-sales-booster' ),
-				array( 'status' => 409 )
+				[ 'status' => 409 ]
 			);
 		}
 
-		$stored    = is_array( $raw ) ? $raw : array();
+		$stored    = is_array( $raw ) ? $raw : [];
 		$has_pro   = sp_store_growth()->has_pro();
-		$sanitized = array();
-		$errors    = array();
+		$sanitized = [];
+		$errors    = [];
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			if ( ! array_key_exists( $key, $input ) || ( ! empty( $field['pro'] ) && ! $has_pro ) ) {
@@ -238,10 +238,10 @@ class SettingsService {
 			return new WP_Error(
 				'spsg_settings_invalid',
 				__( 'Some settings are not valid.', 'storegrowth-sales-booster' ),
-				array(
+				[
 					'status' => 400,
 					'params' => $errors,
-				)
+				]
 			);
 		}
 
@@ -281,9 +281,9 @@ class SettingsService {
 	 * @return array
 	 */
 	private function get_stored( SettingsSchema $schema ): array {
-		$stored = get_option( $schema->get_option_name(), array() );
+		$stored = get_option( $schema->get_option_name(), [] );
 
-		return is_array( $stored ) ? $stored : array();
+		return is_array( $stored ) ? $stored : [];
 	}
 
 	/**
@@ -309,7 +309,7 @@ class SettingsService {
 				return $this->is_integer_field( $field ) ? (int) $value : (float) $value;
 
 			case 'select':
-				$options = (array) ( $field['options'] ?? array() );
+				$options = (array) ( $field['options'] ?? [] );
 				$value   = is_scalar( $value ) ? (string) $value : '';
 
 				return in_array( $value, $options, true ) ? $value : (string) ( $field['default'] ?? '' );
@@ -366,7 +366,7 @@ class SettingsService {
 			case 'select':
 				$value = is_scalar( $value ) ? (string) $value : '';
 
-				if ( ! in_array( $value, (array) ( $field['options'] ?? array() ), true ) ) {
+				if ( ! in_array( $value, (array) ( $field['options'] ?? [] ), true ) ) {
 					return new WP_Error( 'invalid', __( 'Choose one of the listed options.', 'storegrowth-sales-booster' ) );
 				}
 

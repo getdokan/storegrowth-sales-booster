@@ -15,10 +15,10 @@ defined( 'ABSPATH' ) || exit;
  * Turns a module's settings into CSS custom properties on its root class
  * (ADR-005 S1/S3):
  *
- *     StorefrontStyle::render( 'stock-bar', array(
- *         'bar-bg'     => array( 'value' => $s['stockbar_bg_color'], 'type' => 'color', 'default' => '#e7efff' ),
- *         'bar-height' => array( 'value' => $s['stockbar_height'], 'type' => 'px', 'default' => 10 ),
- *     ) );
+ *     StorefrontStyle::render( 'stock-bar', [
+ *         'bar-bg'     => [ 'value' => $s['stockbar_bg_color'], 'type' => 'color', 'default' => '#e7efff' ],
+ *         'bar-height' => [ 'value' => $s['stockbar_height'], 'type' => 'px', 'default' => 10 ],
+ *     ] );
  *     // → .spsg-stock-bar{--spsg-stock-bar-bar-bg:#e7efff;--spsg-stock-bar-bar-height:10px;}
  *
  * The module's static CSS reads them with today's value as the fallback
@@ -50,7 +50,7 @@ class StorefrontStyle {
 	 */
 	public static function render( string $module, array $tokens, string $selector = '' ): string {
 		$module = sanitize_key( $module );
-		$vars   = array();
+		$vars   = [];
 
 		foreach ( $tokens as $name => $token ) {
 			$name = sanitize_key( (string) $name );
@@ -129,7 +129,7 @@ class StorefrontStyle {
 				return self::font_value( $value, (string) $default );
 
 			case 'keyword':
-				$allowed = array_map( 'strtolower', (array) ( $token['allowed'] ?? array() ) );
+				$allowed = array_map( 'strtolower', (array) ( $token['allowed'] ?? [] ) );
 
 				return Helper::sanitize_css_keyword( $value, $allowed, Helper::sanitize_css_keyword( $default, $allowed ) );
 

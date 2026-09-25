@@ -121,14 +121,14 @@ class Assets {
 		wp_register_style(
 			'spsg-storefront-base',
 			Helper::get_plugin_url( 'assets/css/storefront-base.css' ),
-			array(),
+			[],
 			filemtime( Helper::get_plugin_path( 'assets/css/storefront-base.css' ) )
 		);
 
 		wp_register_script(
 			'spsg-storefront-core',
 			Helper::get_plugin_url( 'assets/js/storefront-core.js' ),
-			array(),
+			[],
 			filemtime( Helper::get_plugin_path( 'assets/js/storefront-core.js' ) ),
 			true
 		);

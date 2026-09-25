@@ -58,116 +58,116 @@ class StockBarSettings implements SettingsSchema {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_fields(): array {
-		return array(
+		return [
 			// Content.
-			'total_sell_count_text'           => array(
+			'total_sell_count_text'           => [
 				'type'    => 'text',
 				'default' => __( 'Total Sold', 'storegrowth-sales-booster' ),
 				'pro'     => true,
-			),
-			'available_item_count_text'       => array(
+			],
+			'available_item_count_text'       => [
 				'type'    => 'text',
 				'default' => __( 'Available Item', 'storegrowth-sales-booster' ),
 				'pro'     => true,
-			),
-			'stock_status_text'               => array(
+			],
+			'stock_status_text'               => [
 				'type'    => 'text',
 				'default' => __( 'Hurry! only {quantity} stocks left.', 'storegrowth-sales-booster' ),
 				'pro'     => true,
-			),
+			],
 
 			// Configure.
-			'product_page_stock_bar_enable'   => array(
+			'product_page_stock_bar_enable'   => [
 				'type'    => 'toggle',
 				'default' => true,
-			),
-			'shop_page_stock_bar_enable'      => array(
+			],
+			'shop_page_stock_bar_enable'      => [
 				'type'    => 'toggle',
 				'default' => false,
 				'pro'     => true,
-			),
-			'variation_page_stock_bar_enable' => array(
+			],
+			'variation_page_stock_bar_enable' => [
 				'type'    => 'toggle',
 				'default' => false,
 				'pro'     => true,
-			),
-			'stock_display_format'            => array(
+			],
+			'stock_display_format'            => [
 				'type'    => 'select',
 				'default' => 'above',
 				// `hide` is new: the template shows counts only for above/below.
-				'options' => array( 'above', 'below', 'hide' ),
+				'options' => [ 'above', 'below', 'hide' ],
 				'pro'     => true,
-			),
-			'show_stock_status'               => array(
+			],
+			'show_stock_status'               => [
 				'type'    => 'toggle',
 				'default' => true,
-			),
-			'status_quantity_required'        => array(
+			],
+			'status_quantity_required'        => [
 				'type'    => 'number',
 				'default' => 10,
 				'min'     => 0,
 				'pro'     => true,
-			),
+			],
 
 			// Design.
-			'stockbar_bg_color'               => array(
+			'stockbar_bg_color'               => [
 				'type'    => 'color',
 				'default' => '#e7efff',
-			),
+			],
 			// Not `pro` on the server: templates write it in lite too, as the old
 			// lite templates did. The admin locks the Bar Color field without pro.
-			'stockbar_fg_color'               => array(
+			'stockbar_fg_color'               => [
 				'type'    => 'color',
 				'default' => '#0875ff',
-			),
-			'stockbar_height'                 => array(
+			],
+			'stockbar_height'                 => [
 				'type'    => 'number',
 				'default' => 10,
 				'min'     => 1,
 				'max'     => 100,
 				'pro'     => true,
-			),
-			'stockbar_border_color'           => array(
+			],
+			'stockbar_border_color'           => [
 				'type'    => 'color',
 				'default' => '#dde6f9',
-			),
-			'status_text_color'               => array(
+			],
+			'status_text_color'               => [
 				'type'    => 'color',
 				'default' => '#073B4C',
 				'pro'     => true,
-			),
+			],
 
 			// New in the redesign (Design → Stock Bar Card).
-			'stockbar_card_bg_color'          => array(
+			'stockbar_card_bg_color'          => [
 				'type'    => 'color',
 				'default' => '#ffffff',
-			),
-			'font_family'                     => array(
+			],
+			'font_family'                     => [
 				'type'    => 'select',
 				'default' => 'inherit',
-				'options' => array( 'inherit', 'Inter', 'Poppins', 'Roboto', 'Open Sans', 'Lato' ),
-			),
-			'count_text_size'                 => array(
+				'options' => [ 'inherit', 'Inter', 'Poppins', 'Roboto', 'Open Sans', 'Lato' ],
+			],
+			'count_text_size'                 => [
 				'type'    => 'number',
 				'default' => 11,
 				'min'     => 8,
 				'max'     => 40,
-			),
-			'count_text_color'                => array(
+			],
+			'count_text_color'                => [
 				'type'    => 'color',
 				'default' => '#25252d',
-			),
-			'status_text_size'                => array(
+			],
+			'status_text_size'                => [
 				'type'    => 'number',
 				'default' => 11,
 				'min'     => 8,
 				'max'     => 40,
-			),
-			'stockbar_template'               => array(
+			],
+			'stockbar_template'               => [
 				'type'    => 'select',
 				'default' => 'stock_bar_one',
-				'options' => array( 'stock_bar_one', 'stock_bar_two', 'stock_bar_three' ),
-			),
-		);
+				'options' => [ 'stock_bar_one', 'stock_bar_two', 'stock_bar_three' ],
+			],
+		];
 	}
 }

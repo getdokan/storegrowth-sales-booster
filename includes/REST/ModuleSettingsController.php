@@ -59,31 +59,31 @@ class ModuleSettingsController extends WP_REST_Controller {
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<module>[a-z0-9-]+)',
-			array(
-				'args' => array(
-					'module' => array(
+			[
+				'args' => [
+					'module' => [
 						'description' => __( 'Module id.', 'storegrowth-sales-booster' ),
 						'type'        => 'string',
-					),
-				),
-				array(
+					],
+				],
+				[
 					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-				array(
+					'callback'            => [ $this, 'get_item' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+				[
 					'methods'             => WP_REST_Server::CREATABLE,
-					'callback'            => array( $this, 'update_item' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-					'args'                => array(
-						'values' => array(
+					'callback'            => [ $this, 'update_item' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+					'args'                => [
+						'values' => [
 							'description' => __( 'Values keyed by setting key.', 'storegrowth-sales-booster' ),
 							'type'        => 'object',
 							'required'    => true,
-						),
-					),
-				),
-			)
+						],
+					],
+				],
+			]
 		);
 	}
 
@@ -152,10 +152,10 @@ class ModuleSettingsController extends WP_REST_Controller {
 	 * @return array
 	 */
 	private function response_data( string $module_id ): array {
-		return array(
+		return [
 			'schema' => (object) $this->service()->get_public_schema( $module_id ),
 			'values' => (object) $this->service()->get_values( $module_id ),
-		);
+		];
 	}
 
 	/**
@@ -169,7 +169,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 		return new WP_Error(
 			'spsg_settings_module_not_found',
 			__( 'This module has no settings.', 'storegrowth-sales-booster' ),
-			array( 'status' => 404 )
+			[ 'status' => 404 ]
 		);
 	}
 

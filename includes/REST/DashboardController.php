@@ -54,13 +54,13 @@ class DashboardController extends WP_REST_Controller {
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/overview',
-			array(
-				array(
+			[
+				[
 					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_overview' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-			)
+					'callback'            => [ $this, 'get_overview' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
 		);
 	}
 
@@ -87,12 +87,12 @@ class DashboardController extends WP_REST_Controller {
 	public function get_overview( $request ): WP_REST_Response {
 		$manager = storegrowth_get_container()->get( ModuleManager::class );
 
-		$overview = array(
+		$overview = [
 			'total_modules'  => count( $manager->get_all() ),
 			'active_modules' => count( $manager->get_active_modules() ),
 			'revenue'        => null,
 			'templates'      => null,
-		);
+		];
 
 		/**
 		 * Filters the admin dashboard figures.

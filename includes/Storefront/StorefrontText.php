@@ -36,7 +36,7 @@ class StorefrontText {
 	 * @return string
 	 */
 	public static function replace( string $text, array $vars ): string {
-		$pairs = array();
+		$pairs = [];
 
 		foreach ( $vars as $name => $value ) {
 			if ( ! is_scalar( $value ) && null !== $value ) {

@@ -259,7 +259,7 @@ class Helper {
 	 *
 	 * @return void
 	 */
-	public static function get_template( string $template, array $args = array() ): void {
+	public static function get_template( string $template, array $args = [] ): void {
 		$template = ltrim( str_replace( '\\', '/', $template ), '/' );
 
 		if ( false !== strpos( $template, '..' ) || false === strpos( $template, '/' ) ) {

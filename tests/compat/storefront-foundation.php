@@ -33,59 +33,59 @@ $check = static function ( bool $ok, string $label, $got = null ) use ( &$spsg_f
 echo "\nStorefrontStyle\n";
 $css = StorefrontStyle::render(
 	'stock-bar',
-	array(
-		'bar-bg'      => array( 'value' => '#112233', 'type' => 'color', 'default' => '#e7efff' ),
-		'bar-fg'      => array( 'value' => 'red;}body{x', 'type' => 'color', 'default' => '#0875ff' ),
-		'legacy'      => array( 'value' => 'rgba(0,0,0,.5)', 'type' => 'color', 'default' => '#000000' ),
-		'bar-height'  => array( 'value' => '12', 'type' => 'px', 'default' => 10 ),
-		'bad-height'  => array( 'value' => '12px;', 'type' => 'px', 'default' => 10 ),
-		'line-height' => array( 'value' => '1.4', 'type' => 'number', 'default' => 1 ),
-		'font-family' => array( 'value' => 'Open Sans', 'type' => 'font', 'default' => 'inherit' ),
-		'font-bad'    => array( 'value' => "Evil';}", 'type' => 'font', 'default' => 'inherit' ),
-		'align'       => array( 'value' => 'CENTER', 'type' => 'keyword', 'allowed' => array( 'left', 'center', 'right' ), 'default' => 'left' ),
-		'align-bad'   => array( 'value' => 'expression(x)', 'type' => 'keyword', 'allowed' => array( 'left', 'center' ), 'default' => 'left' ),
-		'unknown'     => array( 'value' => 'x', 'type' => 'nope' ),
-	)
+	[
+		'bar-bg'      => [ 'value' => '#112233', 'type' => 'color', 'default' => '#e7efff' ],
+		'bar-fg'      => [ 'value' => 'red;}body{x', 'type' => 'color', 'default' => '#0875ff' ],
+		'legacy'      => [ 'value' => 'rgba(0,0,0,.5)', 'type' => 'color', 'default' => '#000000' ],
+		'bar-height'  => [ 'value' => '12', 'type' => 'px', 'default' => 10 ],
+		'bad-height'  => [ 'value' => '12px;', 'type' => 'px', 'default' => 10 ],
+		'line-height' => [ 'value' => '1.4', 'type' => 'number', 'default' => 1 ],
+		'font-family' => [ 'value' => 'Open Sans', 'type' => 'font', 'default' => 'inherit' ],
+		'font-bad'    => [ 'value' => "Evil';}", 'type' => 'font', 'default' => 'inherit' ],
+		'align'       => [ 'value' => 'CENTER', 'type' => 'keyword', 'allowed' => [ 'left', 'center', 'right' ], 'default' => 'left' ],
+		'align-bad'   => [ 'value' => 'expression(x)', 'type' => 'keyword', 'allowed' => [ 'left', 'center' ], 'default' => 'left' ],
+		'unknown'     => [ 'value' => 'x', 'type' => 'nope' ],
+	]
 );
 $expected = '.spsg-stock-bar{--spsg-stock-bar-bar-bg:#112233;--spsg-stock-bar-bar-fg:#0875ff;--spsg-stock-bar-legacy:rgba(0,0,0,.5);--spsg-stock-bar-bar-height:12px;--spsg-stock-bar-bad-height:10px;--spsg-stock-bar-line-height:1.4;--spsg-stock-bar-font-family:\'Open Sans\', sans-serif;--spsg-stock-bar-font-bad:inherit;--spsg-stock-bar-align:center;--spsg-stock-bar-align-bad:left;}';
 $check( $expected === $css, 'render(): sanitized variables, invalid → default, legacy rgba kept, unknown type skipped', $css );
-$check( '' === StorefrontStyle::render( 'x', array() ), 'render(): no tokens → empty string' );
-$check( '.a, .b{--spsg-x-c:1px;}' === StorefrontStyle::render( 'x', array( 'c' => array( 'value' => 1, 'type' => 'px' ) ), '.a, .b' ), 'render(): custom selector' );
-$check( '' === Helper::sanitize_css_color( array( 'x' ) ), 'sanitize_css_color(): non-scalar → empty' );
+$check( '' === StorefrontStyle::render( 'x', [] ), 'render(): no tokens → empty string' );
+$check( '.a, .b{--spsg-x-c:1px;}' === StorefrontStyle::render( 'x', [ 'c' => [ 'value' => 1, 'type' => 'px' ] ], '.a, .b' ), 'render(): custom selector' );
+$check( '' === Helper::sanitize_css_color( [ 'x' ] ), 'sanitize_css_color(): non-scalar → empty' );
 
 echo "\nHelper::sanitize_css_keyword\n";
-$check( 'solid' === Helper::sanitize_css_keyword( ' Solid ', array( 'solid', 'dashed' ) ), 'allowed keyword, normalized' );
-$check( 'none' === Helper::sanitize_css_keyword( 'url(x)', array( 'solid' ), 'none' ), 'not allowed → fallback' );
+$check( 'solid' === Helper::sanitize_css_keyword( ' Solid ', [ 'solid', 'dashed' ] ), 'allowed keyword, normalized' );
+$check( 'none' === Helper::sanitize_css_keyword( 'url(x)', [ 'solid' ], 'none' ), 'not allowed → fallback' );
 
 echo "\nStorefrontText\n";
-$check( 'Only 5 left, save $3' === StorefrontText::replace( 'Only {quantity} left, save [amount]', array( 'quantity' => 5, 'amount' => '$3' ) ), '{token} and [token] both replaced' );
+$check( 'Only 5 left, save $3' === StorefrontText::replace( 'Only {quantity} left, save [amount]', [ 'quantity' => 5, 'amount' => '$3' ] ), '{token} and [token] both replaced' );
 $html = '<span class="amount">$3</span>';
-$check( "Add {$html} more" === StorefrontText::replace( 'Add [amount] more', array( 'amount' => $html ) ), 'HTML value passes through (caller escapes)' );
-$check( 'Keep {unknown} and [other]' === StorefrontText::replace( 'Keep {unknown} and [other]', array( 'quantity' => 1 ) ), 'unknown tokens untouched' );
-$check( '5 5' === StorefrontText::replace( '{quantity} {quantity}', array( 'quantity' => 5, 'q' => array( 1 ) ) ), 'repeated token, non-scalar value ignored' );
+$check( "Add {$html} more" === StorefrontText::replace( 'Add [amount] more', [ 'amount' => $html ] ), 'HTML value passes through (caller escapes)' );
+$check( 'Keep {unknown} and [other]' === StorefrontText::replace( 'Keep {unknown} and [other]', [ 'quantity' => 1 ] ), 'unknown tokens untouched' );
+$check( '5 5' === StorefrontText::replace( '{quantity} {quantity}', [ 'quantity' => 5, 'q' => [ 1 ] ] ), 'repeated token, non-scalar value ignored' );
 
 echo "\nDisplayRules\n";
 wp_set_current_user( 0 );
-$check( true === DisplayRules::should_show( array( 'banner_device_view' => array( 'banner-show-desktop' ) ), 'floating-notification-bar' ), 'guest + device chosen → show' );
-$check( false === DisplayRules::should_show( array( 'banner_device_view' => array() ), 'floating-notification-bar' ), 'no device chosen → hide' );
-$check( true === DisplayRules::should_show( array(), 'floating-notification-bar', array( 'banner_device_view' => array( 'banner-show-desktop' ) ) ), 'missing key → module default applies' );
-$check( false === DisplayRules::should_show( array(), 'floating-notification-bar' ), 'missing key, no default → hide' );
-$check( true === DisplayRules::should_show( array( 'banner_device_view' => array( 'x' ), 'banner_show_option' => 'banner-show-specific', 'slected_page_option' => array( 1 ) ), 'floating-notification-bar' ), 'pro page keys are not evaluated in lite' );
-$admin = get_users( array( 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ) );
+$check( true === DisplayRules::should_show( [ 'banner_device_view' => [ 'banner-show-desktop' ] ], 'floating-notification-bar' ), 'guest + device chosen → show' );
+$check( false === DisplayRules::should_show( [ 'banner_device_view' => [] ], 'floating-notification-bar' ), 'no device chosen → hide' );
+$check( true === DisplayRules::should_show( [], 'floating-notification-bar', [ 'banner_device_view' => [ 'banner-show-desktop' ] ] ), 'missing key → module default applies' );
+$check( false === DisplayRules::should_show( [], 'floating-notification-bar' ), 'missing key, no default → hide' );
+$check( true === DisplayRules::should_show( [ 'banner_device_view' => [ 'x' ], 'banner_show_option' => 'banner-show-specific', 'slected_page_option' => [ 1 ] ], 'floating-notification-bar' ), 'pro page keys are not evaluated in lite' );
+$admin = get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] );
 if ( $admin ) {
 	wp_set_current_user( (int) $admin[0] );
-	$check( false === DisplayRules::should_show( array( 'banner_device_view' => array( 'x' ) ), 'floating-notification-bar' ), 'administrator (not in promotion audience) → hide, as today' );
+	$check( false === DisplayRules::should_show( [ 'banner_device_view' => [ 'x' ] ], 'floating-notification-bar' ), 'administrator (not in promotion audience) → hide, as today' );
 	wp_set_current_user( 0 );
 }
 $deny = static function () {
 	return false;
 };
 add_filter( 'spsg_display_rules_should_show', $deny );
-$check( false === DisplayRules::should_show( array( 'banner_device_view' => array( 'x' ) ), 'floating-notification-bar' ), 'spsg_display_rules_should_show filter applies' );
+$check( false === DisplayRules::should_show( [ 'banner_device_view' => [ 'x' ] ], 'floating-notification-bar' ), 'spsg_display_rules_should_show filter applies' );
 remove_filter( 'spsg_display_rules_should_show', $deny );
 
 echo "\nStorefrontFonts\n";
-$check( 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Lato:wght@400;500;600;700&display=swap' === StorefrontFonts::google_url( array( 'Open Sans', 'Lato' ) ), 'one Google URL, standard weights' );
+$check( 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Lato:wght@400;500;600;700&display=swap' === StorefrontFonts::google_url( [ 'Open Sans', 'Lato' ] ), 'one Google URL, standard weights' );
 StorefrontFonts::reset();
 StorefrontFonts::request( 'Merienda' );
 StorefrontFonts::request( 'Merienda' );
@@ -121,7 +121,7 @@ $route = static function ( $path, $template ) use ( $dir ) {
 };
 add_filter( 'spsg_template_path', $route, 10, 2 );
 ob_start();
-Helper::get_template( 'stock-bar/probe.php', array( 'greeting' => 'hi' ) );
+Helper::get_template( 'stock-bar/probe.php', [ 'greeting' => 'hi' ] );
 $out = ob_get_clean();
 remove_filter( 'spsg_template_path', $route, 10 );
 $check( 'probe:hi:static' === $out, 'spsg_template_path filter, args extracted, no $this', $out );

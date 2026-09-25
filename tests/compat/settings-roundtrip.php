@@ -55,11 +55,11 @@ $check = static function ( bool $ok, string $label ) use ( &$spsg_failures ) {
 $call = static function ( string $method, string $module, ?array $values = null ) {
 	$request = new WP_REST_Request( $method, '/sales-booster/v1/settings/' . $module );
 	if ( null !== $values ) {
-		$request->set_body_params( array( 'values' => $values ) );
+		$request->set_body_params( [ 'values' => $values ] );
 	}
 	$response = rest_do_request( $request );
 
-	return array( $response->get_status(), $response->get_data() );
+	return [ $response->get_status(), $response->get_data() ];
 };
 
 /**
@@ -84,10 +84,10 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 
 	try {
 		// Seed: every field in legacy shape, plus values the schema can't show.
-		$seed = array(
+		$seed = [
 			'spsg_unknown_key'           => 'keep me',
 			'product_page_countdown_enable' => true,
-		);
+		];
 		foreach ( $fields as $key => $field ) {
 			$seed[ $key ] = $legacy( $field );
 		}
@@ -119,43 +119,43 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 		$check( get_option( $option ) === $seed, 'round trip leaves the option byte-identical' );
 
 		// 1b. Round trip on a sparse option: defaults sent back are not written.
-		$sparse = array( 'spsg_unknown_key' => 'keep me' );
+		$sparse = [ 'spsg_unknown_key' => 'keep me' ];
 		update_option( $option, $sparse );
 		[ , $data ] = $call( 'GET', $module_id );
 		$call( 'POST', $module_id, (array) $data['values'] );
 		$check( get_option( $option ) === $sparse, 'round trip on a sparse option writes nothing' );
 
 		// 2. One change per type is written in legacy shape; nothing else moves.
-		$changes = array();
+		$changes = [];
 		foreach ( $fields as $key => $field ) {
 			if ( ! empty( $field['pro'] ) && ! sp_store_growth()->has_pro() ) {
 				continue;
 			}
 			switch ( $field['type'] ) {
 				case 'toggle':
-					$changes[ $key ] = array( ! $field['default'], ! $field['default'] );
+					$changes[ $key ] = [ ! $field['default'], ! $field['default'] ];
 					break;
 				case 'number':
 					// 7, moved inside the field's bounds.
 					$n               = min( max( 7, $field['min'] ?? 7 ), $field['max'] ?? PHP_INT_MAX );
-					$changes[ $key ] = array( $n, (string) $n );
+					$changes[ $key ] = [ $n, (string) $n ];
 					break;
 				case 'select':
 					$last            = (string) end( $field['options'] );
-					$changes[ $key ] = array( $last, $last );
+					$changes[ $key ] = [ $last, $last ];
 					break;
 				case 'color':
-					$changes[ $key ] = array( '#123456', '#123456' );
+					$changes[ $key ] = [ '#123456', '#123456' ];
 					break;
 				case 'text':
 				case 'textarea':
-					$changes[ $key ] = array( 'Changed text', 'Changed text' );
+					$changes[ $key ] = [ 'Changed text', 'Changed text' ];
 					break;
 			}
 		}
 		foreach ( $changes as $key => [ $api, $stored ] ) {
 			update_option( $option, $seed );
-			$call( 'POST', $module_id, array( $key => $api ) );
+			$call( 'POST', $module_id, [ $key => $api ] );
 			$expected         = $seed;
 			$expected[ $key ] = $stored;
 			$check( get_option( $option ) === $expected, "change {$fields[ $key ]['type']} `{$key}` → only it changes, stored as " . var_export( $stored, true ) );
@@ -172,13 +172,13 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 		if ( $pro_key ) {
 			update_option( $option, $seed );
 			add_filter( 'storegrowth_pro_is_active', '__return_false', 999 );
-			$call( 'POST', $module_id, array( $pro_key => 'Pro value' ) );
+			$call( 'POST', $module_id, [ $pro_key => 'Pro value' ] );
 			remove_filter( 'storegrowth_pro_is_active', '__return_false', 999 );
 			$check( get_option( $option ) === $seed, "pro key `{$pro_key}` ignored without pro" );
 		}
 
 		// 4. Invalid values: 400 and nothing written.
-		$invalid = array();
+		$invalid = [];
 		foreach ( $fields as $key => $field ) {
 			if ( 'color' === $field['type'] ) {
 				$invalid[ $key ] = 'not-a-colour';
@@ -192,7 +192,7 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 
 		// 5. Unexpected stored format: 409 and nothing written.
 		update_option( $option, 'legacy string value' );
-		[ $status ] = $call( 'POST', $module_id, array( array_key_first( $fields ) => 'x' ) );
+		[ $status ] = $call( 'POST', $module_id, [ array_key_first( $fields ) => 'x' ] );
 		$check( 409 === $status && 'legacy string value' === get_option( $option ), 'non-array option → 409, option unchanged' );
 	} finally {
 		if ( null === $snapshot ) {
