@@ -10,9 +10,12 @@ import { Route, Routes } from '@storegrowth/hooks';
 
 import AdminNotices from './admin-notices';
 import { getRoutes } from './routes';
+import useAdminSubmenu from './use-admin-submenu';
 
 export default function App() {
     const rootRef = useRef< HTMLDivElement >( null );
+
+    useAdminSubmenu();
 
     // Read once: module and pro bundles have registered before the app mounts.
     const routes = useMemo( getRoutes, [] );

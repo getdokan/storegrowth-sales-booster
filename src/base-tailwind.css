@@ -147,6 +147,36 @@ body:has(#spsg-admin-app) #wpfooter {
     display: none;
 }
 
+/*
+ * Feature pages: the white rail column runs the full page height. The page can
+ * be taller than our layout (a long WordPress admin menu), so the column is
+ * painted on <body>, right of the admin menu (160px, or 36px when folded).
+ */
+@media (min-width: 901px) {
+    /* The id keeps this above the `body:has(#spsg-admin-app)` page background. */
+    body:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 160px;
+        background: linear-gradient(
+            to right,
+            var(--color-sg-page) var(--spsg-wp-menu-width),
+            #fff var(--spsg-wp-menu-width),
+            #fff calc(var(--spsg-wp-menu-width) + 210px),
+            var(--color-sg-page) calc(var(--spsg-wp-menu-width) + 210px)
+        );
+    }
+
+    body.folded:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 36px;
+    }
+}
+
+/* WordPress auto-folds its menu between 783px and 960px. */
+@media (min-width: 901px) and (max-width: 960px) {
+    body.auto-fold:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 36px;
+    }
+}
+
 /* Plugin header sticks under the WordPress toolbar (32px, 46px on mobile). */
 #spsg-admin-header {
     position: sticky;
