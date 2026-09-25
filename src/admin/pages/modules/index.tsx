@@ -59,7 +59,7 @@ export default function ModulesPage() {
     };
 
     return (
-        <div className="flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
+        <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
             <div className="flex w-full max-w-[1280px] flex-col items-start">
                 <CardHead
                     className="rounded-b-none"

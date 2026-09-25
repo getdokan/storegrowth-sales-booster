@@ -106,7 +106,7 @@ export default function DashboardPage() {
     const empty = '—';
 
     return (
-        <div className="flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
+        <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
             <div className="flex w-full max-w-[1280px] flex-col items-start gap-6">
                 <div className="flex w-full flex-col items-start gap-1">
                     <h1 className="sg-display text-[24px] font-bold leading-[1.3] text-sg-text">

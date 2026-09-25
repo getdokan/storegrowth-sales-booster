@@ -181,22 +181,23 @@ body:has(#spsg-admin-app) {
     margin-top: 12px;
 }
 
-/*
- * Under the header, notices get the same 48px the pages leave below the header
- * (design gap-12); the page's own top padding then gives 48px below them.
- */
+/* With notices: 24px header -> notices -> content, on every page. */
 #spsg-admin-notices:has(.notice:not(:empty)) {
-    padding-top: 48px;
+    padding-top: 24px;
 }
 
-/* The content-column slot takes no room without notices. */
+body:has(#spsg-admin-notices .notice:not(:empty)) .spsg-layout .spsg-page {
+    padding-top: 24px !important;
+}
+
+/* The content-column slot (feature pages) takes no room without notices. */
 .spsg-wp-notices:not(:has(.notice:not(:empty))) {
     display: none;
 }
 
-/* Feature pages: 32px below the notices, matching the 32px above (page padding). */
+/* Feature pages: page area padding is 32px; pull the notices up to 24px. */
 .spsg-wp-notices:has(.notice:not(:empty)) {
-    margin-bottom: 8px;
+    margin-top: -8px;
 }
 
 @media (min-width: 783px) {
