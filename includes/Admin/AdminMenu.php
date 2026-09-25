@@ -74,6 +74,15 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
+			__( 'Features - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Features', 'storegrowth-sales-booster' ),
+			'manage_options',
+			'spsg-settings#/features',
+			array( $this, 'settings_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
 			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
@@ -127,14 +136,30 @@ class AdminMenu {
 	 * Display module page content.
 	 */
 	public function modules_callback() {
-		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-modules-page"></div></div>';
+		$this->render_app( '/modules' );
 	}
 
 	/**
 	 * Display settings page content.
 	 */
 	public function settings_callback() {
-		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-settings-page"></div></div>';
+		$this->render_app( '/dashboard' );
+	}
+
+	/**
+	 * Mount point of the admin app.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $default_route Route to open when the URL has no hash.
+	 *
+	 * @return void
+	 */
+	private function render_app( string $default_route ): void {
+		printf(
+			'<div id="spsg-admin-app" data-default-route="%s"></div>',
+			esc_attr( $default_route )
+		);
 	}
 
 	/**

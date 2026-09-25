@@ -40,7 +40,7 @@ Standard **S1–S10** applies to every module's storefront. Each module adopts i
   ```
 - **Static CSS** (`modules/<m>/assets/css/*.css`) consumes the variables, using **today's values as the fallback**: `background: var(--spsg-stock-bar-bar-bg, #e7efff);`. A site with no saved value renders exactly as before.
 - **Existing CSS output is kept alongside:**
-  - Existing inline CSS filters keep firing with the same arguments, and their returned CSS is still appended: `spsg_countdown_timer_styles`, `spsg_qcv_inline_styles`, `spsg_direct_checkout_button_inline_styles`, and the rest in `compat/php-hooks-baseline.txt`. Pro's CSS keeps working.
+  - Existing inline CSS filters keep firing with the same arguments, and their returned CSS is still appended: `spsg_countdown_timer_styles`, `spsg_qcv_inline_styles`, `spsg_direct_checkout_button_inline_styles`, and the rest in `tests/compat/php-hooks-baseline.txt`. Pro's CSS keeps working.
   - Existing selectors and classes are **never removed or renamed**, because themes and pro target them. New classes are added next to them.
 - **Inline `style=""` attributes** in templates are replaced by the variables when a module migrates, but only where the rendered result is identical (snapshot test). The template markup otherwise stays the same.
 

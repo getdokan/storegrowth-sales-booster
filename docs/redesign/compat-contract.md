@@ -7,8 +7,8 @@
 ## 1. Hooks
 
 ### 1.1 Full baselines
-- `compat/php-hooks-baseline.txt`: 100 PHP actions and filters that lite fires. This includes the WooCommerce hooks lite re-fires in its fly-cart template, such as `woocommerce_cart_item_name` and `woocommerce_before_cart_table`.
-- `compat/js-hooks-baseline.txt`: 83 JS hooks (`applyFilters` / `doAction`) that lite fires.
+- `tests/compat/php-hooks-baseline.txt`: 100 PHP actions and filters that lite fires. This includes the WooCommerce hooks lite re-fires in its fly-cart template, such as `woocommerce_cart_item_name` and `woocommerce_before_cart_table`.
+- `tests/compat/js-hooks-baseline.txt`: 83 JS hooks (`applyFilters` / `doAction`) that lite fires.
 - Every `wp_ajax_*` / `wp_ajax_nopriv_*` action lite registers (list in `findings-features-B.md`, "All ajax actions").
 
 The baselines were extracted by static search for string-literal hook names, so they have limits:
@@ -25,7 +25,7 @@ Pro fires hooks that lite code listens to or documents: `sales_boster_floating_n
 ### 1.3 JS hooks pro 2.2.0 listens to (all 65 are fired by lite today)
 
 **These retire with the antd UI (ADR-005 §4).** Lite's schema now renders the fields they used to inject. The list is kept here for the changelog and for mapping each hook to its schema field.
-All lite JS hooks in `compat/js-hooks-baseline.txt` **except** the following, which pro doesn't use but third parties might:
+All lite JS hooks in `tests/compat/js-hooks-baseline.txt` **except** the following, which pro doesn't use but third parties might:
 - `spsg_after_textarea_settings`
 - `spsg_bogo_category_messages_data`, `spsg_bogo_deal_type_options`, `spsg_bogo_tab_panels`
 - `spsg_cart_product_detail_after`

@@ -202,7 +202,7 @@ The full list is in `rest-api.md` (38 routes: existing, changed, new). Minimum f
 When a module migrates, its ajax handlers become adapters over the same service. They are **never removed** (ADR-005 §2).
 
 ### 5.5 Compatibility rules (ADR-005)
-- Every PHP hook in `compat/php-hooks-baseline.txt` keeps firing with the same arguments and timing.
+- Every PHP hook in `tests/compat/php-hooks-baseline.txt` keeps firing with the same arguments and timing.
 - Every public PHP symbol in `compat-contract.md` §2 keeps its signature.
 - Admin page slugs `spsg-settings` and `spsg-modules` stay the same, so pro's enqueue check still matches.
 - Old REST routes stay (`spsg/v1/order-bumps` included).

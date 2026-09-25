@@ -37,10 +37,12 @@ class EnqueueScript
      */
     public function dashboard_enqueue_scripts() {
        // products  page
-        $products_file = require Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' );
-        if ( ! file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.js' ) ) ) {
+        // Check before requiring: a missing asset file would otherwise be a fatal error.
+        if ( ! file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' ) ) ) {
             return;
         }
+
+        $products_file = require Helper::get_plugin_path( 'integrations/assets/build/dokan-dashboard-products.asset.php' );
 
         wp_enqueue_style(
             'spsg-dokan-dashboard-products',

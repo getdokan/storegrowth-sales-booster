@@ -10,6 +10,8 @@ namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Upgrader;
+use StorePulse\StoreGrowth\REST\DashboardController;
+use StorePulse\StoreGrowth\REST\ModulesController;
 use StorePulse\StoreGrowth\REST\ProductController;
 use StorePulse\StoreGrowth\REST\SettingsController;
 
@@ -30,6 +32,8 @@ class CommonServiceProvider extends BootableServiceProvider {
 		ProductController::class,
 		Upgrader::class,
 		SettingsController::class,
+		ModulesController::class,
+		DashboardController::class,
 		OfferAttribution::class,
 	];
 

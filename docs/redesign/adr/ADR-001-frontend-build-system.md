@@ -56,15 +56,17 @@ It is not a separate webpack config per module.
    | `components` (`src/components/index.ts`) | `window.storegrowth.components` | `spsg-components` | `@storegrowth/components` |
    | `utilities` (`src/utilities/index.ts`) | `window.storegrowth.utilities` | `spsg-utilities` | `@storegrowth/utilities` |
    | `hooks` (`src/hooks/index.ts`) | `window.storegrowth.hooks` | `spsg-hooks` | `@storegrowth/hooks` |
-   | `settings-store` (`src/stores/settings/index.ts`) | `window.storegrowth.settingsStore` | `spsg-stores-settings` | `@storegrowth/stores/settings` |
+
+   There is no global data store. Shared state (the module list) is a React context in `@storegrowth/hooks`; because that bundle is shared, module bundles get the same context instance as the shell. Everything else is component state.
 
    Module bundles import these bare specifiers. The dependency mapping turns them into globals, and the generated `.asset.php` lists the handles. WordPress then loads core before modules, and each shared library is downloaded once.
-4. **Output layout.** `output.path = build/` with `clean: true`, which is safe because it's a dedicated folder. Entry keys set the file paths:
+4. **Output layout.** `output.path = build/` with `clean: true`, which is safe because it's a dedicated folder. Every entry is listed by hand in `webpack-entries.js` (no auto-discovery); a module or integration is added there when it migrates. Entry keys set the file paths:
    - core: `build/admin.js`, `build/tailwind.css`, `build/plugin-ui.js`, …
    - modules: `build/modules/<name>/admin.js`, `build/modules/upsell-order-bump/blocks.js`
    - integrations: `build/integrations/<bundle>.js`
 5. **Pro plugin.** Pro copies the same `webpack-dependency-mapping.js` rules, externalising `@wedevs/plugin-ui` and `@storegrowth/*` to the lite globals. Otherwise pro would inline its own copy of plugin-ui. Pro's bundles depend on lite handles through `.asset.php`.
-6. **Storefront code is out of scope.** The hand-written storefront JS/CSS in `modules/<name>/assets/{js,css}` isn't built by webpack today and stays as it is. The one built storefront bundle, Order Bump's checkout block, moves into this build as a module entry.
+6. **No legacy admin bundles.** antd, react-fa-icon-picker, `@getdokan/dokan-ui` and the other legacy UI packages are removed; icons come from `lucide-react`. The old antd admin screens (`assets/src`, `modules/*/assets/src`, `integrations/assets/src`) are no longer built, and the PHP that enqueued them skips a missing build file instead of failing. Their sources are deleted as each module migrates.
+7. **Storefront code is out of scope.** The hand-written storefront JS/CSS in `modules/<name>/assets/{js,css}` isn't built by webpack today and stays as it is. The one built storefront bundle, Order Bump's checkout block, moves into this build as a module entry.
 
 ## Consequences
 

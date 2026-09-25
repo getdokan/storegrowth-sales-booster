@@ -102,7 +102,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    ├─ tests/
    │  ├─ php/                        # PHPUnit: settings service, REST, compat API reflection test
    │  ├─ e2e/                        # Playwright: modules, visual QA, compat matrix, storefront snapshots
-   │  └─ compat/                     # hook baselines (moved from docs/redesign/compat) + pro 2.2.0 option fixtures
+   │  └─ compat/                     # hook baselines + pro 2.2.0 option fixtures
    └─ docs/redesign/                 # this documentation
    ```
    Pro mirrors the same shape (`src/`, `legacy/src/`, `build/`, `build/legacy/`, `includes/Modules/*`), see `../pro-migration-spec.md` §7.

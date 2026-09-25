@@ -76,7 +76,8 @@ class EnqueueScript implements HookRegistry {
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
+		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
+		if ( 'storegrowth_page_spsg-settings' !== $hook || ! file_exists( PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' ) ) ) {
 			return;
 		}
 

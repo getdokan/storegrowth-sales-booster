@@ -45,7 +45,8 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 
-		if ( 'storegrowth_page_spsg-settings' === $hook ) {
+		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
+		if ( 'storegrowth_page_spsg-settings' === $hook && file_exists( PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' ) ) ) {
 
 			$settings_file                   = require PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';

@@ -15,7 +15,7 @@
 | [pro-migration-spec.md](pro-migration-spec.md) | Moving the pro plugin itself: inventory, handshake, legacy bundle for old lite, build, per-module tasks, release order |
 | [pro-compat-review.md](pro-compat-review.md) | Review of "update lite only, keep old pro": what works, 7 gaps, rules R1–R6, test matrix |
 | [compat-contract.md](compat-contract.md) | What pro and third parties depend on: hooks, classes, options, slugs |
-| [compat/](compat/) | Hook baselines for the CI check |
+| [tests/compat/](../../tests/compat/) | Hook baselines for the CI check (`npm run check:hooks`) |
 | [report.md](report.md) | Design vs current features vs plugin-ui: gaps, blockers, questions for design/product |
 | [findings-features-A.md](findings-features-A.md) | Current settings: Countdown, Stock Bar, Sales Notification, Free Shipping, Floating Bar |
 | [findings-features-B.md](findings-features-B.md) | Current settings: BOGO, Order Bump, Quick View, Fly Cart, Direct Checkout, admin shell, endpoints |

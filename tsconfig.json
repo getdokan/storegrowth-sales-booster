@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"lib": [ "ESNext", "DOM", "DOM.Iterable" ],
+		"target": "ESNext",
+		"module": "ESNext",
+		"jsx": "react-jsx",
+		"checkJs": false,
+		"moduleResolution": "bundler",
+		"baseUrl": ".",
+		"paths": {
+			"@src/*": [ "./src/*" ],
+			"@storegrowth/components": [ "./src/components" ],
+			"@storegrowth/utilities": [ "./src/utilities" ],
+			"@storegrowth/hooks": [ "./src/hooks" ]
+		},
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noEmit": true,
+		"skipLibCheck": true
+	},
+	"include": [ "src/**/*", "modules/*/src/**/*", "integrations/src/**/*", "types/**/*" ],
+	"exclude": [ "node_modules", "build", "vendor", "lib", "tests", "assets", "modules/*/assets", "integrations/assets" ]
+}

@@ -3,7 +3,7 @@
 - Status: Accepted
 - Date: 2026-09-25
 - Amends: ADR-001, ADR-002 (item 6), `../migration-spec.md`
-- Contract inventory: `../compat-contract.md`, baselines in `../compat/`
+- Contract inventory: `../compat-contract.md`, baselines in `tests/compat/`
 - REST surface: `../rest-api.md`
 
 ## Context
@@ -27,7 +27,7 @@ Lite fires 100 PHP hooks and 83 JS hooks in total. Third-party code may use any 
 ## Decision
 
 ### 1. PHP hook freeze
-- No PHP hook is ever renamed or removed. This covers every entry in `compat/php-hooks-baseline.txt`, dynamic hook patterns, and every `wp_ajax_*` / `wp_ajax_nopriv_*` registration.
+- No PHP hook is ever renamed or removed. This covers every entry in `tests/compat/php-hooks-baseline.txt`, dynamic hook patterns, and every `wp_ajax_*` / `wp_ajax_nopriv_*` registration.
 - Each hook keeps its behaviour:
   - same name, including misspellings (`spsg_sales_pop_visbility_controller`, `sales_boster_*`);
   - same arguments, order and types;
@@ -64,7 +64,7 @@ Ajax and REST rules:
 - **New pro versions** extend through the additive PHP filter `storegrowth_settings_schema_{module}` (for extra fields or options only pro knows about) and additive JS extension points (§4). They don't need the old JS filters.
 
 ### 4. JS hooks — the one deliberate exception
-The 83 JS hooks in `compat/js-hooks-baseline.txt` belong to the antd UI. Their contract is "receive `(value, formData, onFieldChange)` and return an antd element", and it can't be honoured once antd and `window.SGSettings` are gone.
+The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belong to the antd UI. Their contract is "receive `(value, formData, onFieldChange)` and return an antd element", and it can't be honoured once antd and `window.SGSettings` are gone.
 
 - These hook names are **retired with the antd UI**. This is the only exception to "never remove hooks", and it's recorded here on purpose.
 - Nothing breaks at runtime: an `addFilter` on a hook nobody fires is a no-op. The fields pro used to inject are now rendered by lite from the schema (§3).

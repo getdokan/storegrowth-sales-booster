@@ -245,7 +245,8 @@ class EnqueueScript implements HookRegistry {
 	public function admin_enqueue_scripts( $screen ) {
 		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', true );
 
-		if ( 'storegrowth_page_spsg-settings' === $screen ) {
+		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
+		if ( 'storegrowth_page_spsg-settings' === $screen && file_exists( PluginHelper::get_modules_path( 'sales-pop/assets/build/settings.asset.php' ) ) ) {
 			add_action( 'admin_head', array( $this, 'admin_css' ) );
 			$settings_file = require PluginHelper::get_modules_path( 'sales-pop/assets/build/settings.asset.php' );
 

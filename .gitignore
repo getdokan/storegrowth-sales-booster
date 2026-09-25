@@ -2,8 +2,8 @@ node_modules
 .DS_Store
 vendor
 .idea
-lerna-debug.log
 package-lock.json
+/build/
 assets/build/
 modules/*/assets/build/
 integrations/assets/build/

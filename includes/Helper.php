@@ -77,6 +77,19 @@ class Helper {
 	}
 
 	/**
+	 * Get Plugin File URL.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $path Path relative to the plugin root.
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_url( string $path ): string {
+		return STOREGROWTH_DIR_URL . $path;
+	}
+
+	/**
 	 * Get Plugin File Content.
 	 *
 	 * @since 2.0.0

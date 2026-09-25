@@ -36,10 +36,28 @@ class Assets {
 	private $settings_page_hook = 'storegrowth_page_spsg-settings';
 
 	/**
+	 * Shared admin bundles built into `build/`, keyed by script handle.
+	 *
+	 * Other bundles import them by bare specifier and receive the handle as a
+	 * dependency through their `.asset.php` (webpack-dependency-mapping.js).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var array<string, string>
+	 */
+	private $shared_bundles = array(
+		'spsg-plugin-ui'  => 'plugin-ui',
+		'spsg-utilities'  => 'utilities',
+		'spsg-hooks'      => 'hooks',
+		'spsg-components' => 'components',
+	);
+
+	/**
 	 * Constructor of Enqueue class.
 	 */
 	private function __construct() {
 		add_action( 'init', array( $this, 'register_all_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_app' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 	}
@@ -86,81 +104,135 @@ class Assets {
 	}
 
 	/**
+	 * Register the admin app bundles, their shared libraries and the scoped
+	 * Tailwind stylesheet.
+	 *
+	 * A missing build file is logged and its handle skipped: WordPress then
+	 * refuses to enqueue anything that depends on it, which is visible and
+	 * diagnosable, instead of a fatal `require` error.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function register_admin_app(): void {
+		foreach ( $this->shared_bundles as $handle => $bundle ) {
+			$this->register_bundle_script( $handle, $bundle );
+		}
+
+		$this->register_bundle_script( 'spsg-admin', 'admin' );
+
+		if ( file_exists( Helper::get_plugin_path( 'build/tailwind.css' ) ) ) {
+			wp_register_style(
+				'spsg-tailwind',
+				Helper::get_plugin_url( 'build/tailwind.css' ),
+				array( 'wp-components' ),
+				filemtime( Helper::get_plugin_path( 'build/tailwind.css' ) )
+			);
+		}
+
+		wp_register_style(
+			'spsg-font-inter',
+			'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap',
+			array(),
+			null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Google Fonts versions itself.
+		);
+
+		// Old handle names now resolve to the new app (ADR-005: handles are kept).
+		foreach ( array( 'spsg-settings-script', 'spsg-modules-script', 'spsg-notices-script' ) as $legacy_handle ) {
+			wp_register_script( $legacy_handle, false, array( 'spsg-admin' ), STOREGROWTH_VERSION, true );
+		}
+	}
+
+	/**
+	 * Register one webpack bundle from its generated `.asset.php`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $handle Script handle.
+	 * @param string $bundle Bundle path inside `build/`, without extension.
+	 *
+	 * @return void
+	 */
+	private function register_bundle_script( string $handle, string $bundle ): void {
+		$asset_file = Helper::get_plugin_path( "build/{$bundle}.asset.php" );
+
+		if ( ! file_exists( $asset_file ) ) {
+			wc_get_logger()->error(
+				sprintf( 'StoreGrowth: missing build file %s; the "%s" script is not registered. Run npm run build.', $asset_file, $handle ),
+				array( 'source' => 'storegrowth-sales-booster' )
+			);
+
+			return;
+		}
+
+		$asset = require $asset_file;
+
+		wp_register_script(
+			$handle,
+			Helper::get_plugin_url( "build/{$bundle}.js" ),
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+
+		wp_set_script_translations( $handle, 'storegrowth-sales-booster', Helper::get_plugin_path( 'languages' ) );
+	}
+
+	/**
 	 * Add JS scripts to admin.
 	 *
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if (
-			$this->modules_page_hook === $hook
-			|| $this->settings_page_hook === $hook
-		) {
-			$notices_file = require Helper::get_plugin_path( 'assets/build/notices.asset.php' );
-
-			wp_enqueue_script(
-				'spsg-notices-script',
-				Helper::get_plugin_assets_url( 'build/notices.js' ),
-				$notices_file['dependencies'],
-				$notices_file['version'],
-				true
-			);
-
-			wp_localize_script(
-				'spsg-notices-script',
-				'spsgNotices',
-				[
-					'noticesUrl' => rest_url( Upgrader::REST_NAMESPACE . '/notices/admin' ),
-					'actionUrl'  => rest_url( Upgrader::REST_NAMESPACE . '/migration/upgrade' ),
-				]
-			);
+		if ( $this->modules_page_hook !== $hook && $this->settings_page_hook !== $hook ) {
+			return;
 		}
 
-		if ( $this->modules_page_hook === $hook ) {
-			$settings_file = require Helper::get_plugin_path( 'assets/build/modules.asset.php' );
+		wp_enqueue_script( 'spsg-admin' );
 
-			$dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
-			wp_enqueue_script(
-				'spsg-modules-script',
-				Helper::get_plugin_assets_url( 'build/modules.js' ),
-				$dependencies,
-				$settings_file['version'],
-				true
-			);
-
-			wp_localize_script(
-				'spsg-modules-script',
-				'spsgAdmin',
+		wp_localize_script(
+			'spsg-admin',
+			'spsgAdmin',
+			/**
+			 * Filters the data localized for the StoreGrowth admin app.
+			 *
+			 * @since SPSG_VERSION
+			 *
+			 * @param array $data Localized data.
+			 */
+			apply_filters(
+				'spsg_admin_localized_data',
 				array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'nonce'    => wp_create_nonce( 'spsg_ajax_nonce' ),
-					'isPro'    => sp_store_growth()->has_pro(),
+					// Kept for back-compat (ADR-005).
+					'ajax_url'      => admin_url( 'admin-ajax.php' ),
+					'nonce'         => wp_create_nonce( 'spsg_ajax_nonce' ),
+					'isPro'         => sp_store_growth()->has_pro(),
+					// New admin app.
+					'version'       => STOREGROWTH_VERSION,
+					'restNamespace' => 'sales-booster/v1',
+					'modules'       => storegrowth_get_container()->get( ModuleManager::class )->list_all_modules(),
+					'urls'          => array(
+						'admin'          => admin_url( 'admin.php' ),
+						'assets'         => Helper::get_plugin_url( 'assets/' ),
+						'upgrade'        => 'https://storegrowth.io/pricing',
+						'docs'           => 'https://storegrowth.io/docs/',
+						'support'        => 'https://storegrowth.io/contact-us/',
+						'whatsNew'       => 'https://storegrowth.io/changelog/',
+						'featureRequest' => 'https://storegrowth.io/contact-us/',
+					),
 				)
-			);
-		}
+			)
+		);
 
-		if ( $this->settings_page_hook === $hook ) {
-			$settings_file = require Helper::get_plugin_path( 'assets/build/settings.asset.php' );
-
-			$dependencies = array_merge( $settings_file['dependencies'], [ 'spsg-accounting' ] );
-			wp_enqueue_script(
-				'spsg-settings-script',
-				Helper::get_plugin_assets_url( 'build/settings.js' ),
-				$dependencies,
-				$settings_file['version'],
-				true
-			);
-
-			wp_localize_script(
-				'spsg-settings-script',
-				'spsgAdmin',
-				array(
-					'ajax_url'       => admin_url( 'admin-ajax.php' ),
-					'nonce'          => wp_create_nonce( 'spsg_ajax_nonce' ),
-					'isPro'          => sp_store_growth()->has_pro(),
-					'currencySymbol' => get_woocommerce_currency_symbol(),
-				)
-			);
-		}
+		wp_localize_script(
+			'spsg-admin',
+			'spsgNotices',
+			[
+				'noticesUrl' => rest_url( Upgrader::REST_NAMESPACE . '/notices/admin' ),
+				'actionUrl'  => rest_url( Upgrader::REST_NAMESPACE . '/migration/upgrade' ),
+			]
+		);
 	}
 
 	/**
@@ -169,24 +241,11 @@ class Assets {
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_styles( $hook ) {
-		if (
-			$this->modules_page_hook === $hook
-			|| $this->settings_page_hook === $hook
-		) {
-			wp_enqueue_style(
-				'spsg-admin-style',
-				Helper::get_plugin_assets_url( 'build/modules.css' ),
-				array(),
-				filemtime( Helper::get_plugin_path( 'assets/build/modules.css' ) )
-			);
-
-			// Styles of the standalone admin notice app.
-			wp_enqueue_style(
-				'spsg-notices-style',
-				Helper::get_plugin_assets_url( 'build/notices.css' ),
-				[ 'spsg-admin-style' ],
-				filemtime( Helper::get_plugin_path( 'assets/build/notices.css' ) )
-			);
+		if ( $this->modules_page_hook !== $hook && $this->settings_page_hook !== $hook ) {
+			return;
 		}
+
+		wp_enqueue_style( 'spsg-font-inter' );
+		wp_enqueue_style( 'spsg-tailwind' );
 	}
 }

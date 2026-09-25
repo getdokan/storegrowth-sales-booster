@@ -9,6 +9,15 @@
 /.vscode
 /bin
 /.claude
+/src
+/types
+/docs
+/tsconfig.json
+/postcss.config.js
+/webpack-entries.js
+/webpack-dependency-mapping.js
+/.eslintrc.js
+/.prettierrc.js
 
 .distignore
 .gitignore
