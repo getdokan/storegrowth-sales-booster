@@ -61,7 +61,7 @@ src/
 modules/<name>/src/
   admin/index.tsx             # entry → modules/<name>/assets/js/admin.js
   admin/<name>-page.tsx, types.ts, preview/, components/
-  blocks/index.tsx            # entry → modules/<name>/assets/js/blocks.js (Order Bump)
+  storefront/blocks/index.tsx # entry → modules/<name>/assets/js/blocks.js (Order Bump)
 integrations/src/<bundle>/index.tsx
 build/                        # gitignored, shipped
 ```
@@ -118,7 +118,7 @@ const modules = {
   'modules/bogo/admin': './modules/bogo/src/index.tsx',
   'modules/countdown-timer/admin': './modules/countdown-timer/src/index.tsx',
   // … one per module
-  'modules/upsell-order-bump/blocks': './modules/upsell-order-bump/src/blocks/index.tsx',
+  ...moduleEntry( 'upsell-order-bump', 'blocks', './modules/upsell-order-bump/src/storefront/blocks/index.tsx' ),
 };
 
 const integrations = {

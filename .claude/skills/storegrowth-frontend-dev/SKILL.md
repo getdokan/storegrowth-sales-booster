@@ -26,7 +26,8 @@ Don't run `npm run build` while the dev server is running; reload the page.
 
 - `src/admin/` — app shell (`index.tsx` mounts on `#spsg-admin-app`, `app.tsx`, `routes.tsx`, `pages/*`). `src/header/` — the top bar bundle.
 - `src/components/` → `@storegrowth/components`; `src/hooks/` → `@storegrowth/hooks`; `src/utilities/` → `@storegrowth/utilities`.
-- `modules/<id>/src/admin/` — everything for a module's admin page (`index.tsx` registers the route; page, `preview/`, `types.ts`, `components/`). Other module bundles get their own folder in `src/` (e.g. `blocks/`).
+- `modules/<id>/src/admin/` — everything for a module's admin page (`index.tsx` registers the route; page, `preview/`, `types.ts`, `components/`).
+- `modules/<id>/src/storefront/` — **new** storefront code that needs a build (TypeScript, e.g. `blocks/`), a `moduleEntry()` into `assets/js/`. Existing hand-written storefront JS/CSS stays in `modules/<id>/assets/` and isn't moved. `src/` isn't in the release zip, so everything under it must be built.
 - TypeScript, 4-space indentation, **kebab-case** file and folder names inside every `src/` (lint-enforced); PascalCase component names.
 
 ## Tech

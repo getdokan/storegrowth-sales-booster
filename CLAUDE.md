@@ -97,7 +97,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 ### Admin app (redesigned)
 - `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.
 - Shared bundles: `src/components` (`@storegrowth/components`: feature layout, settings split, tabs, accordion, save bar, live preview, template picker, field controls in `fields/`), `src/hooks` (`@storegrowth/hooks`: router, `ModulesProvider`/`useModules`, `useModuleSettings`), `src/utilities` (`@storegrowth/utilities`: REST clients in `api.ts`, `ajax()` helper, admin data). UI is built on plugin-ui (`@wedevs/plugin-ui`); icons are lucide-react.
-- A module's admin page lives in `modules/<id>/src/admin/` and registers its route from its own bundle (see `modules/stock-bar/src/admin/index.tsx`). Other module bundles (e.g. `blocks/`) get their own folder in `src/`.
+- A module's admin page lives in `modules/<id>/src/admin/` and registers its route from its own bundle (see `modules/stock-bar/src/admin/index.tsx`). New storefront code that needs a build (TypeScript, blocks) goes in `modules/<id>/src/storefront/` and is built into `assets/js/`; existing hand-written storefront JS/CSS stays in `modules/<id>/assets/`.
 - No global data store: local React state and context.
 - Mounted on the `spsg-settings` / `spsg-modules` admin pages (`includes/Admin/AdminMenu.php`, `includes/Assets.php`).
 

@@ -64,7 +64,7 @@
 - Order-item meta `_spsg_campaign_*` is still written through WooCommerce CRUD (HPOS).
 - The storefront ajax and the classic `woocommerce_review_order_before_submit` render are unchanged.
 - The lite 2-offer cap moves from the UI to a server-side check, as BOGO does (403 `salesbooster_limit_exceeded`). When pro is active, the cap is lifted through `storegrowth_pro_is_active`. That replaces pro's JS-only lift, so pro 2.2.0 users keep unlimited bumps.
-- The checkout block moves to `modules/upsell-order-bump/src/blocks/` → `modules/upsell-order-bump/assets/js/blocks.js` (add `blocks.js` to `.gitignore`); the block name stays `storegrowth-upsell-order-bump`.
+- The checkout block moves to `modules/upsell-order-bump/src/storefront/blocks/` → `modules/upsell-order-bump/assets/js/blocks.js` (add `blocks.js` to `.gitignore`); the block name stays `storegrowth-upsell-order-bump`.
 - Retired JS hooks → `storegrowth.orderBump.editor.tabs`.
 
 ## 8. Components

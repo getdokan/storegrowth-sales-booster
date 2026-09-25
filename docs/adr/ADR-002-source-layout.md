@@ -23,18 +23,21 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
      externals/        # plugin-ui shim (ADR-001)
      base-tailwind.css # the single Tailwind entry (ADR-003)
    ```
-2. **Module source goes in `modules/<name>/src/`, one folder per bundle.** Everything for the admin page lives in `src/admin/` (entry `src/admin/index.tsx`, bundle `assets/js/admin.js`); other bundles get their own folder beside it:
+2. **Module source goes in `modules/<name>/src/`, split by where it runs:**
    ```
    modules/<name>/src/
-     admin/            # the admin settings page (bundle `admin`)
+     admin/            # the admin settings page → assets/js/admin.js
        index.tsx       # registers the module page with the shell
        <name>-page.tsx # the page
        types.ts        # this module's settings values and tab keys
        templates.tsx   # presets, when the module has them
        preview/        # the LivePreview widget (storefront markup)
        components/     # module-only UI (e.g. BOGO / Order Bump list + editor)
-     blocks/           # storefront block bundle, when needed (Order Bump checkout; bundle `blocks`)
+     storefront/       # new storefront source, built by webpack
+       blocks/         # e.g. Order Bump's checkout block → assets/js/blocks.js
    ```
+   - `src/storefront/` is for **new** storefront code that needs a build (TypeScript, blocks). The existing hand-written storefront JS/CSS stays in `modules/<name>/assets/{js,css,scripts}` and is loaded as-is; it isn't moved.
+   - `src/` is left out of the release zip, so anything under it must be built into `assets/` to reach a site.
 3. **Dokan integration source goes in `integrations/src/`.**
 4. **Global typings go in `types/`** at the root.
 5. **`assets/` and `modules/<name>/assets/` keep static and storefront files:** images, fonts, and the hand-written storefront `js/`/`css/`. No admin source. A module's compiled bundles also land in its `assets/js/` (ADR-001), git-ignored by name.
@@ -92,7 +95,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    │  │  ├─ Settings/<Name>Schema.php   # NEW: field definitions, defaults, sanitizers, pro flags
    │  │  ├─ Settings/<Name>TokenMap.php # NEW: option key → CSS token (ADR-005 S2)
    │  │  └─ REST/                    # module CRUD controllers (BOGO; Order Bump's RestApi/ stays, new controllers go in REST/)
-   │  ├─ src/                        # module admin UI (TS): index.tsx, schema.ts, preview/, components/, blocks/
+   │  ├─ src/                        # admin/ (settings page) and storefront/ (new built storefront code, e.g. blocks/)
    │  ├─ templates/                  # storefront templates (paths unchanged; loaded via Helper::get_template)
    │  └─ assets/{css,js,images,fonts} # storefront static files (unchanged location)
    ├─ integrations/

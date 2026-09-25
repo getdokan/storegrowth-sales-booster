@@ -66,7 +66,7 @@ It is not a separate webpack config per module.
    - integrations: `build/integrations/<bundle>.js`
 5. **Pro plugin.** Pro copies the same `webpack-dependency-mapping.js` rules, externalising `@wedevs/plugin-ui` and `@storegrowth/*` to the lite globals. Otherwise pro would inline its own copy of plugin-ui. Pro's bundles depend on lite handles through `.asset.php`.
 6. **No legacy admin bundles.** antd, react-fa-icon-picker, `@getdokan/dokan-ui` and the other legacy UI packages are removed; icons come from `lucide-react`. The old antd admin screens (`assets/src`, `modules/*/assets/src`, `integrations/assets/src`) are no longer built, and the PHP that enqueued them skips a missing build file instead of failing. Their sources are deleted as each module migrates.
-7. **Storefront code is out of scope.** The hand-written storefront JS/CSS in `modules/<name>/assets/{js,css}` isn't built by webpack today and stays as it is. The one built storefront bundle, Order Bump's checkout block, moves into this build as a module entry.
+7. **Storefront code.** The existing hand-written storefront JS/CSS in `modules/<name>/assets/{js,css,scripts}` isn't built by webpack and stays as it is. New storefront code that needs a build goes in `modules/<name>/src/storefront/` (ADR-002) and is a module entry like the admin bundle (e.g. Order Bump's checkout block: `moduleEntry( 'upsell-order-bump', 'blocks', './modules/upsell-order-bump/src/storefront/blocks/index.tsx' )` → `assets/js/blocks.js`, name added to `.gitignore`).
 
 ## Consequences
 
