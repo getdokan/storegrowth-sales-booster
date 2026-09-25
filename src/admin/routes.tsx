@@ -25,6 +25,7 @@ import { Navigate, useModules } from '@storegrowth/hooks';
 import DashboardPage from './pages/dashboard';
 import FeaturePage from './pages/feature';
 import ModulesPage from './pages/modules';
+import OnboardingPage from './pages/onboarding';
 import SettingsPage from './pages/settings';
 
 export interface AdminRoute {
@@ -61,6 +62,8 @@ const coreRoutes: AdminRoute[] = [
     { id: 'features', path: '/features', element: <FeaturesRedirect /> },
     { id: 'modules', path: '/modules', element: <ModulesPage /> },
     { id: 'settings', path: '/settings', element: <SettingsPage /> },
+    // Legacy path, kept: activation and the "Initial Setup" submenu link here.
+    { id: 'onboarding', path: '/ini-setup', element: <OnboardingPage /> },
     { id: 'feature', path: '/:moduleId', element: <FeaturePage /> },
     {
         id: 'not-found',

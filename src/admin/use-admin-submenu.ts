@@ -20,6 +20,10 @@ function submenuTarget( pathname: string ): string {
         return 'page=spsg-settings#/dashboard';
     }
 
+    if ( pathname.startsWith( '/ini-setup' ) ) {
+        return 'page=spsg-modules#/ini-setup';
+    }
+
     if ( pathname.startsWith( '/modules' ) ) {
         return 'page=spsg-modules';
     }

@@ -85,6 +85,32 @@ export function fetchDashboardOverview(): Promise< DashboardOverview > {
     } );
 }
 
+/** Response of `GET|POST /onboarding`. */
+/**
+ * Mark the onboarding wizard finished, through the existing
+ * `spsg_inisetup_flag_update` ajax action (sets `spsg_ini_completion`).
+ *
+ * @since SPSG_VERSION
+ */
+export async function completeOnboarding(): Promise< void > {
+    const { ajax_url: ajaxUrl, nonce } = getAdminData();
+
+    const response = await window.fetch( ajaxUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: new URLSearchParams( {
+            action: 'spsg_inisetup_flag_update',
+            _ajax_nonce: nonce,
+            spsg_ini_completion: '1',
+        } ),
+    } );
+    const result = await response.json().catch( () => null );
+
+    if ( ! response.ok || ! result?.success ) {
+        throw new Error( typeof result?.data === 'string' ? result.data : '' );
+    }
+}
+
 /**
  * Human-readable message from an apiFetch error.
  *

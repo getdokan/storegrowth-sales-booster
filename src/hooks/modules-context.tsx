@@ -29,6 +29,8 @@ export interface ModulesContextValue {
     getModule: ( id: string ) => SpsgModule | undefined;
     /** Activate or deactivate one module (optimistic; reverts and rethrows on failure). */
     setModuleStatus: ( id: string, status: boolean ) => Promise< void >;
+    /** Activate or deactivate several modules (optimistic; reverts and rethrows on failure). */
+    setModulesStatus: ( ids: string[], status: boolean ) => Promise< void >;
     /** Activate or deactivate every module (optimistic; reverts and rethrows on failure). */
     setAllModulesStatus: ( status: boolean ) => Promise< void >;
 }
@@ -97,10 +99,13 @@ export function ModulesProvider( { children }: { children: ReactNode } ) {
         [ modules, applyStatus, mergeFromServer, track ]
     );
 
-    const setAllModulesStatus = useCallback(
-        async ( status: boolean ) => {
+    const setModulesStatus = useCallback(
+        async ( ids: string[], status: boolean ) => {
+            if ( ! ids.length ) {
+                return;
+            }
+
             const previous = modules;
-            const ids = modules.map( ( module ) => module.id );
 
             applyStatus( ids, status );
             track( ids, true );
@@ -117,15 +122,31 @@ export function ModulesProvider( { children }: { children: ReactNode } ) {
         [ modules, applyStatus, mergeFromServer, track ]
     );
 
+    const setAllModulesStatus = useCallback(
+        ( status: boolean ) =>
+            setModulesStatus(
+                modules.map( ( module ) => module.id ),
+                status
+            ),
+        [ modules, setModulesStatus ]
+    );
+
     const value = useMemo< ModulesContextValue >(
         () => ( {
             modules,
             pending,
             getModule: ( id ) => modules.find( ( module ) => module.id === id ),
             setModuleStatus,
+            setModulesStatus,
             setAllModulesStatus,
         } ),
-        [ modules, pending, setModuleStatus, setAllModulesStatus ]
+        [
+            modules,
+            pending,
+            setModuleStatus,
+            setModulesStatus,
+            setAllModulesStatus,
+        ]
     );
 
     return (

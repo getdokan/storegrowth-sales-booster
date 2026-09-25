@@ -26,6 +26,8 @@ interface SpsgAdminData {
     isPro: boolean;
     restNamespace: string;
     modules: SpsgModule[];
+    /** Onboarding wizard finished or skipped. wp_localize_script sends `'1'` / `''`. */
+    onboardingCompleted: boolean | string;
 }
 
 /** Versions, pro flag and URLs (PHP filter `spsg_admin_header_info`). */

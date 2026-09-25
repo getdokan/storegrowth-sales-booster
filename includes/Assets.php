@@ -240,12 +240,14 @@ class Assets {
 				'spsg_admin_localized_data',
 				array(
 					// Kept for back-compat (ADR-005).
-					'ajax_url'      => admin_url( 'admin-ajax.php' ),
-					'nonce'         => wp_create_nonce( 'spsg_ajax_nonce' ),
-					'isPro'         => sp_store_growth()->has_pro(),
+					'ajax_url'            => admin_url( 'admin-ajax.php' ),
+					'nonce'               => wp_create_nonce( 'spsg_ajax_nonce' ),
+					'isPro'               => sp_store_growth()->has_pro(),
 					// App data.
-					'restNamespace' => 'sales-booster/v1',
-					'modules'       => storegrowth_get_container()->get( ModuleManager::class )->list_all_modules(),
+					'restNamespace'       => 'sales-booster/v1',
+					'modules'             => storegrowth_get_container()->get( ModuleManager::class )->list_all_modules(),
+					// Set by the `spsg_inisetup_flag_update` ajax action.
+					'onboardingCompleted' => (bool) get_option( 'spsg_ini_completion', false ),
 				)
 			)
 		);
