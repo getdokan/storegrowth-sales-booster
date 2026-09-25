@@ -82,6 +82,7 @@ To add a module: create the directory following the shape above, add its `requir
 
 ### Conventions
 - Option/meta/prefix naming uses `spsg_` (and constants `STOREGROWTH_*`); module IDs are lowercase slugs (`bogo`, `fly-cart`, …).
+- **Option autoload:** pass `false` to `add_option()` / `update_option()` for any option that isn't read on most front-end requests (admin-only flags, versions, backups, one-shot state). Leave it out (WordPress's default `auto`) only for options the storefront or every request reads: `spsg_active_module_ids` and the module settings options.
 - Singletons use the `Traits\Singleton` trait.
 - All user-facing strings use text domain `storegrowth-sales-booster`.
 - Extension points are WordPress hooks: `storegrowth_before_load`, `storegrowth_loaded`, `storegrowth_module_before_boot`/`_after_boot`, filter `storegrowth_pro_is_active` (gates pro features).
