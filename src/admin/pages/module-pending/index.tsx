@@ -8,18 +8,16 @@
 import { __ } from '@wordpress/i18n';
 import { Hammer } from 'lucide-react';
 import { CardHead, FeatureLayout } from '@storegrowth/components';
-import { useModules } from '@storegrowth/hooks';
+import { Navigate, useModules, useParams } from '@storegrowth/hooks';
 import { moduleLabel } from '@storegrowth/utilities';
 
-export default function ModulePendingPage( {
-    moduleId,
-}: {
-    moduleId: string;
-} ) {
+export default function ModulePendingPage() {
+    const { moduleId = '' } = useParams();
     const module = useModules().getModule( moduleId );
 
+    // Not a module (e.g. an old or mistyped hash): go to the dashboard.
     if ( ! module ) {
-        return null;
+        return <Navigate to="/dashboard" replace />;
     }
 
     return (

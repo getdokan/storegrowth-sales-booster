@@ -8,7 +8,7 @@ import { toast } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
 import { ArrowUpRight } from 'lucide-react';
 import { CardHead, ToggleSwitch } from '@storegrowth/components';
-import { navigate, useModules } from '@storegrowth/hooks';
+import { Link, useModules } from '@storegrowth/hooks';
 import { assetUrl, errorMessage, moduleLabel } from '@storegrowth/utilities';
 
 export default function ModulesPage() {
@@ -90,12 +90,8 @@ export default function ModulesPage() {
                             key={ module.id }
                             className="flex w-full flex-col items-start gap-6 rounded-[8px] bg-white p-6"
                         >
-                            <a
-                                href={ `#/${ module.id }` }
-                                onClick={ ( event ) => {
-                                    event.preventDefault();
-                                    navigate( `/${ module.id }` );
-                                } }
+                            <Link
+                                to={ `/${ module.id }` }
                                 className="flex w-full flex-col items-start gap-6 text-inherit no-underline focus:shadow-none"
                             >
                                 <div className="aspect-[4/3] w-full overflow-hidden rounded-[8px] bg-[#EDEDED]">
@@ -121,7 +117,7 @@ export default function ModulesPage() {
                                         { module.description }
                                     </p>
                                 </div>
-                            </a>
+                            </Link>
                             <div className="mt-auto flex w-full items-center justify-between gap-4">
                                 <a
                                     href={ module.doc_link }

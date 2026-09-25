@@ -20,7 +20,7 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import { ModuleIcon, StatusPill } from '@storegrowth/components';
-import { navigate, useModules } from '@storegrowth/hooks';
+import { Link, useModules } from '@storegrowth/hooks';
 import {
     DASHBOARD_GROUPS,
     MODULE_CATALOG,
@@ -186,15 +186,9 @@ export default function DashboardPage() {
                                     <div className="h-px w-full shrink-0 bg-sg-line" />
                                     <div className="flex w-full flex-col items-start gap-6 rounded-b-[16px] p-6">
                                         { rows.map( ( module ) => (
-                                            <a
+                                            <Link
                                                 key={ module.id }
-                                                href={ `#/${ module.id }` }
-                                                onClick={ ( event ) => {
-                                                    event.preventDefault();
-                                                    navigate(
-                                                        `/${ module.id }`
-                                                    );
-                                                } }
+                                                to={ `/${ module.id }` }
                                                 className="flex w-full flex-wrap items-center gap-4 rounded-[8px] text-inherit no-underline transition-colors hover:bg-sg-row-hover focus:shadow-none sm:flex-nowrap"
                                             >
                                                 <span className="flex shrink-0 items-center justify-center rounded-full bg-[rgba(8,117,255,.1)] p-1">
@@ -224,7 +218,7 @@ export default function DashboardPage() {
                                                         active={ module.status }
                                                     />
                                                 </span>
-                                            </a>
+                                            </Link>
                                         ) ) }
                                     </div>
                                 </section>

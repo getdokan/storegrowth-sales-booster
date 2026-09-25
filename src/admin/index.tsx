@@ -10,7 +10,7 @@
 import { ThemeProvider } from '@wedevs/plugin-ui';
 import domReady from '@wordpress/dom-ready';
 import { createRoot } from '@wordpress/element';
-import { ModulesProvider } from '@storegrowth/hooks';
+import { HashRouter, ModulesProvider } from '@storegrowth/hooks';
 
 import App from './app';
 import { storegrowthTheme } from './theme';
@@ -40,7 +40,9 @@ domReady( () => {
             storageKey={ false }
         >
             <ModulesProvider>
-                <App />
+                <HashRouter>
+                    <App />
+                </HashRouter>
             </ModulesProvider>
         </ThemeProvider>
     );

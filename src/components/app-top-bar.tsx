@@ -9,7 +9,7 @@ import { TopBar } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
 import { Crown, Headset, Megaphone } from 'lucide-react';
 import { assetUrl, getAdminData } from '@storegrowth/utilities';
-import { navigate } from '@storegrowth/hooks';
+import { Link } from '@storegrowth/hooks';
 
 /**
  * @since SPSG_VERSION
@@ -24,20 +24,13 @@ export function AppTopBar() {
         <TopBar
             className="max-h-none flex-wrap items-center gap-x-4 gap-y-3 bg-white px-4 py-3 shadow-[0_1px_0_0_#E9E9E9] wpsm:px-8 wpsm:py-4 md:py-4"
             logo={
-                <a
-                    href="#/dashboard"
-                    onClick={ ( event ) => {
-                        event.preventDefault();
-                        navigate( '/dashboard' );
-                    } }
-                    className="block"
-                >
+                <Link to="/dashboard" className="block">
                     <img
                         src={ assetUrl( 'images/storegrowth-logo.svg' ) }
                         alt={ __( 'StoreGrowth', 'storegrowth-sales-booster' ) }
                         className="block h-auto w-[124px] wpsm:w-[140px]"
                     />
-                </a>
+                </Link>
             }
             versions={
                 version

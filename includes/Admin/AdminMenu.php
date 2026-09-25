@@ -42,7 +42,7 @@ class AdminMenu {
 		global $current_screen;
 
 		if ( 'storegrowth_page_spsg-dashboard' === $current_screen->id ) {
-			$submenu_file = 'admin.php?page=spsg-settings#/dashboard/overview';
+			$submenu_file = 'admin.php?page=spsg-settings#/dashboard';
 		}
 
 		return $submenu_file;
@@ -68,7 +68,7 @@ class AdminMenu {
 			__( 'Dashboard - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings#/dashboard/overview',
+			'spsg-settings#/dashboard',
 			array( $this, 'dashboard_callback' )
 		);
 
@@ -166,7 +166,7 @@ class AdminMenu {
 	 * Display Dashboard page content.
 	 */
 	public function dashboard_callback() {
-		$redirect_url = admin_url( 'admin.php?page=spsg-settings#/dashboard/overview' );
+		$redirect_url = admin_url( 'admin.php?page=spsg-settings#/dashboard' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}

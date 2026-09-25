@@ -25,5 +25,30 @@ module.exports = {
         // Bundled packages and `@storegrowth/*` externals are resolved by webpack.
         'import/no-unresolved': 'off',
         'import/no-extraneous-dependencies': 'off',
+        // One router instance for the shell, modules and pro: use the re-export.
+        'no-restricted-imports': [
+            'error',
+            {
+                paths: [
+                    {
+                        name: 'react-router-dom',
+                        message:
+                            'Import router APIs from @storegrowth/hooks so every bundle shares the shell’s router.',
+                    },
+                    {
+                        name: 'react-router',
+                        message:
+                            'Import router APIs from @storegrowth/hooks so every bundle shares the shell’s router.',
+                    },
+                ],
+            },
+        ],
     },
+    overrides: [
+        {
+            // The one place allowed to import react-router-dom.
+            files: [ 'src/hooks/router.ts' ],
+            rules: { 'no-restricted-imports': 'off' },
+        },
+    ],
 };

@@ -9,7 +9,7 @@ import { cn, toast } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { errorMessage, moduleLabel } from '@storegrowth/utilities';
-import { navigate, useModules } from '@storegrowth/hooks';
+import { Link, useModules, useNavigate } from '@storegrowth/hooks';
 
 import { DeactivatedModuleDialog } from './deactivated-module-dialog';
 import { ModuleIcon } from './module-icon';
@@ -28,6 +28,7 @@ export interface FeatureMenuProps {
 export function FeatureMenu( { activeId }: FeatureMenuProps ) {
     const { modules, pending, setModuleStatus } = useModules();
     const [ confirmId, setConfirmId ] = useState< string | null >( null );
+    const navigate = useNavigate();
 
     const confirmModule = modules.find( ( module ) => module.id === confirmId );
 
@@ -63,16 +64,14 @@ export function FeatureMenu( { activeId }: FeatureMenuProps ) {
                     const isCurrent = module.id === activeId;
 
                     return (
-                        <a
+                        <Link
                             key={ module.id }
-                            href={ `#/${ module.id }` }
+                            to={ `/${ module.id }` }
                             aria-current={ isCurrent ? 'page' : undefined }
                             onClick={ ( event ) => {
-                                event.preventDefault();
-
-                                if ( module.status ) {
-                                    navigate( `/${ module.id }` );
-                                } else {
+                                // A deactivated module asks to be activated first.
+                                if ( ! module.status ) {
+                                    event.preventDefault();
                                     setConfirmId( module.id );
                                 }
                             } }
@@ -93,7 +92,7 @@ export function FeatureMenu( { activeId }: FeatureMenuProps ) {
                                 ) }
                             />
                             { moduleLabel( module ) }
-                        </a>
+                        </Link>
                     );
                 } ) }
             </nav>
