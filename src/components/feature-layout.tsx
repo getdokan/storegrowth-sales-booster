@@ -48,7 +48,8 @@ export function FeatureLayout( { moduleId, children }: FeatureLayoutProps ) {
     }, [] );
 
     return (
-        <div className="flex w-full flex-col min-[901px]:flex-row">
+        // At least the viewport below the header, so the rail reaches the bottom.
+        <div className="flex w-full flex-col min-[901px]:min-h-[calc(100vh-var(--spsg-rail-top))] min-[901px]:flex-row">
             <FeatureMenu activeId={ moduleId } />
             <div className="mx-auto flex min-w-0 max-w-[min(1280px,100%)] flex-1 flex-col items-center gap-6 p-4 wpsm:p-8 *:w-full">
                 { /* Core styling is kept: the scoped reset stops at `.spsg-wp-notices`. */ }

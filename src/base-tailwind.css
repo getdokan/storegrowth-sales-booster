@@ -142,6 +142,11 @@ body:has(#spsg-admin-app) {
     background: var(--color-sg-page);
 }
 
+/* No WordPress footer ("Thank you for creating with WordPress" / version). */
+body:has(#spsg-admin-app) #wpfooter {
+    display: none;
+}
+
 /* Plugin header sticks under the WordPress toolbar (32px, 46px on mobile). */
 #spsg-admin-header {
     position: sticky;
