@@ -127,6 +127,7 @@ Admin-ajax handlers live in `includes/Ajax.php` (container alias `ajax-service`,
 - Ruleset `phpcs.xml`: `WordPress` + `PHPCompatibilityWP` + `WooCommerce-Core`, text domain enforced.
 - Run `composer phpcs` (and `composer phpcbf` to auto-fix). PRs run PHPCS on changed files (`.github/workflows/phpcs.yml`).
 - PHP 7.4+. Use strict comparisons (`===`/`!==`) and `in_array( $needle, $haystack, true )`.
+- **Module ids come from the module class** (`StockBarModule::get_id()`), not repeated strings, in schemas, admin/enqueue classes and paths.
 - **Short array syntax `[]`, never `array()`,** in new code (house style; `phpcs.xml` allows it). Legacy files keep theirs until rewritten; don't convert unrelated legacy lines.
 
 ## Key reference files

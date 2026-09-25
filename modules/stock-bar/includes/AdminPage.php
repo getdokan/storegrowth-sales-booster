@@ -45,7 +45,8 @@ class AdminPage implements HookRegistry {
 	 * @return void
 	 */
 	public function enqueue( $hook ): void {
-		$asset_file = Helper::get_modules_path( 'stock-bar/assets/js/admin.asset.php' );
+		$id         = StockBarModule::get_id();
+		$asset_file = Helper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
 
 		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
 			return;
@@ -53,13 +54,13 @@ class AdminPage implements HookRegistry {
 
 		$asset = require $asset_file;
 
-		wp_enqueue_script( 'spsg-stock-bar-admin', Helper::get_modules_url( 'stock-bar/assets/js/admin.js' ), $asset['dependencies'], $asset['version'], true );
+		wp_enqueue_script( "spsg-{$id}-admin", Helper::get_modules_url( "{$id}/assets/js/admin.js" ), $asset['dependencies'], $asset['version'], true );
 
 		wp_enqueue_style(
 			'spsg-stock-cd-custom-style',
-			Helper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
+			Helper::get_modules_url( "{$id}/assets/scripts/spsg-stockbar-style.css" ),
 			[ 'spsg-storefront-base' ],
-			filemtime( Helper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
+			filemtime( Helper::get_modules_path( "{$id}/assets/scripts/spsg-stockbar-style.css" ) )
 		);
 	}
 }

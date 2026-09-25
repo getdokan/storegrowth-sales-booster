@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\StockBar\Settings;
 
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
+use StorePulse\StoreGrowth\Modules\StockBar\StockBarModule;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +37,7 @@ class StockBarSettings implements SettingsSchema {
 	 * @return string
 	 */
 	public function get_module_id(): string {
-		return 'stock-bar';
+		return StockBarModule::get_id();
 	}
 
 	/**

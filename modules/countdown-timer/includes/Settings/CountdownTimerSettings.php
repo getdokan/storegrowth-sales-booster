@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer\Settings;
 
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -55,7 +56,7 @@ class CountdownTimerSettings implements SettingsSchema {
 	 * @return string
 	 */
 	public function get_module_id(): string {
-		return 'countdown-timer';
+		return CountdownTimerModule::get_id();
 	}
 
 	/**
