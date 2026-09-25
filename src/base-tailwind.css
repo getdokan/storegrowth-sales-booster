@@ -99,12 +99,19 @@
 }
 
 /*
- * Scoped preflight + utilities. Preflight is deliberately not in a cascade
- * layer: wp-admin's element rules (h1, p, …) are unlayered and would beat any
- * layered reset, while `.spsg-layout p` outranks wp-admin's bare `p`.
+ * Scoped preflight: inside `.spsg-layout` but not inside `.spsg-wp-notices`
+ * (captured WordPress notices shown in the app keep core styling). Not in a
+ * cascade layer, so wp-admin's unlayered element rules (h1, p, …) don't win.
  */
+@scope (.spsg-layout) to (.spsg-wp-notices) {
+    /* `:scope` keeps class-level specificity (`:scope p` = `.spsg-layout p`). */
+    :scope {
+        @import "tailwindcss/preflight.css";
+    }
+}
+
+/* Scoped utilities. */
 .spsg-layout {
-    @import "tailwindcss/preflight.css";
     @import "tailwindcss/utilities.css" important;
 
     /* Preflight's html/body rules don't match inside a container; apply them here. */
@@ -154,9 +161,34 @@ body:has(#spsg-admin-app) {
     margin: 0 16px;
 }
 
+/*
+ * Notices live under the header (#spsg-admin-notices) or, on feature pages, at
+ * the top of the content column (.spsg-wp-notices, see FeatureLayout).
+ * `:not(:empty)` skips placeholder wrappers some plugins print (e.g. Dokan).
+ */
+
 /* Core gives the catcher a -2px margin, which would pull the page under the header. */
-#spsg-admin-notices .wp-header-end {
+:is(#spsg-admin-notices, .spsg-wp-notices) .wp-header-end {
     margin: 0;
+}
+
+/* Even spacing between notices instead of core's 5px top / 15px bottom. */
+:is(#spsg-admin-notices, .spsg-wp-notices) .notice {
+    margin: 0;
+}
+
+:is(#spsg-admin-notices, .spsg-wp-notices) .notice:not(:empty) ~ .notice:not(:empty) {
+    margin-top: 12px;
+}
+
+/* Space above and below the notices under the header, only when there are any. */
+#spsg-admin-notices:has(.notice:not(:empty)) {
+    padding: 16px 0;
+}
+
+/* The content-column slot takes no room without notices. */
+.spsg-wp-notices:not(:has(.notice:not(:empty))) {
+    display: none;
 }
 
 @media (min-width: 783px) {
