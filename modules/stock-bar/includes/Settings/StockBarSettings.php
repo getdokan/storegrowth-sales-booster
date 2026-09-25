@@ -14,9 +14,15 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Fields of `spsg_stock_bar_settings` (docs/redesign/modules/stock-bar.md §4).
  *
- * Defaults are the storefront's fallbacks, so an unsaved site looks the same.
+ * Defaults of the existing keys are the storefront's fallbacks, so unsaved
+ * colours and texts stay as they were. The keys new in the redesign (card
+ * background, font, text sizes, count colour) default to the design's card.
  * `shop_page_countdown_enable` / `product_page_countdown_enable` are unused and
  * left out on purpose: they stay in the option untouched.
+ *
+ * `stockbar_fg_color` may hold a CSS gradient (written by the old third
+ * template). It survives saves (unchanged values are never rewritten) and the
+ * storefront keeps rendering it; the colour picker can't re-create it.
  *
  * @since SPSG_VERSION
  */
@@ -88,7 +94,8 @@ class StockBarSettings implements SettingsSchema {
 			'stock_display_format'            => array(
 				'type'    => 'select',
 				'default' => 'above',
-				'options' => array( 'above', 'below' ),
+				// `hide` is new: the template shows counts only for above/below.
+				'options' => array( 'above', 'below', 'hide' ),
 				'pro'     => true,
 			),
 			'show_stock_status'               => array(
@@ -127,6 +134,33 @@ class StockBarSettings implements SettingsSchema {
 				'type'    => 'color',
 				'default' => '#073B4C',
 				'pro'     => true,
+			),
+
+			// New in the redesign (Design → Stock Bar Card).
+			'stockbar_card_bg_color'          => array(
+				'type'    => 'color',
+				'default' => '#ffffff',
+			),
+			'font_family'                     => array(
+				'type'    => 'select',
+				'default' => 'inherit',
+				'options' => array( 'inherit', 'Inter', 'Poppins', 'Roboto', 'Open Sans', 'Lato' ),
+			),
+			'count_text_size'                 => array(
+				'type'    => 'number',
+				'default' => 11,
+				'min'     => 8,
+				'max'     => 40,
+			),
+			'count_text_color'                => array(
+				'type'    => 'color',
+				'default' => '#25252d',
+			),
+			'status_text_size'                => array(
+				'type'    => 'number',
+				'default' => 11,
+				'min'     => 8,
+				'max'     => 40,
 			),
 			'stockbar_template'               => array(
 				'type'    => 'select',

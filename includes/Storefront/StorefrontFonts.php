@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Modules call `StorefrontFonts::request( $family )` for the fonts they
  * actually render. The loader enqueues each family once: bundled files where
- * the plugin ships them (Merienda for now), otherwise a single Google Fonts
+ * the plugin ships them (Inter, Merienda), otherwise a single Google Fonts
  * request for all the rest. Fonts requested before `wp_head` load in the
  * head; fonts requested later (from templates) load in the footer.
  *
@@ -177,9 +177,8 @@ class StorefrontFonts implements HookRegistry {
 	 * @return array<string, string>
 	 */
 	private static function local_stylesheets(): array {
-		// Inter joins with its shared files when the first module that uses it
-		// migrates (step 2); until then modules keep loading their own copy.
 		return array(
+			'Inter'    => Helper::get_plugin_url( 'assets/fonts/inter/inter.css' ),
 			'Merienda' => Helper::get_modules_url( 'countdown-timer/assets/fonts/merienda/stylesheet.css' ),
 		);
 	}

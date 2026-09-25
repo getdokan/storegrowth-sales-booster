@@ -13,6 +13,7 @@ export {
 } from './deactivated-module-dialog';
 export { FeatureLayout, type FeatureLayoutProps } from './feature-layout';
 export { FeatureMenu, type FeatureMenuProps } from './feature-menu';
+export * from './fields';
 export {
     LivePreview,
     type LivePreviewProps,
@@ -29,4 +30,9 @@ export {
     type SettingsTabsProps,
 } from './settings-tabs';
 export { StatusPill, type StatusPillProps } from './status-pill';
+export {
+    TemplatePicker,
+    type TemplateOption,
+    type TemplatePickerProps,
+} from './template-picker';
 export { ToggleSwitch, type ToggleSwitchProps } from './toggle-switch';

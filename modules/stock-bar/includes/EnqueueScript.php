@@ -10,6 +10,8 @@ namespace StorePulse\StoreGrowth\Modules\StockBar;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
+use StorePulse\StoreGrowth\Storefront\StorefrontStyle;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -71,24 +73,41 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
+	 * Load the Stock Bar settings page into the admin app, with the storefront
+	 * stylesheet its preview renders with (ADR-005 S10).
+	 *
+	 * The bundle registers the `/stock-bar` route; it runs before the app
+	 * mounts on DOM ready. Enqueued on both app pages, since the route is
+	 * reachable from either.
 	 *
 	 * @param string $hook Page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( 'storegrowth_page_spsg-settings' !== $hook || ! file_exists( PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' ) ) ) {
+		if ( ! in_array( $hook, array( 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ), true ) ) {
 			return;
 		}
 
-		$settings_file = require PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' );
+		$asset_file = PluginHelper::get_plugin_path( 'build/modules/stock-bar/admin.asset.php' );
+
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
+
+		$asset = require $asset_file;
 
 		wp_enqueue_script(
-			'spsg-stock-bar-settings',
-			PluginHelper::get_modules_url( 'stock-bar/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
+			'spsg-stock-bar-admin',
+			PluginHelper::get_plugin_url( 'build/modules/stock-bar/admin.js' ),
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+
+		wp_enqueue_style(
+			'spsg-stock-cd-custom-style',
+			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
+			array( 'spsg-storefront-base' ),
+			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
 		);
 	}
 
@@ -111,7 +130,7 @@ class EnqueueScript implements HookRegistry {
 
 		$custom_css = "
 			.spsg-stock-progress-bar-section {
-				border: 2px solid {$border_color};
+				border: 1px solid {$border_color};
 			}
 			.spsg-stock-progress {
 				height: {$bar_height}px;
@@ -131,5 +150,46 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		wp_add_inline_style( 'spsg-stock-cd-custom-style', $custom_css );
+
+		$this->design_variables( $settings );
+	}
+
+	/**
+	 * The redesign's new design settings (card background, font, text sizes,
+	 * count colour) as `--spsg-stock-bar-*` variables (ADR-005 S1), read by
+	 * `spsg-stockbar-style.css` with today's values as the fallback.
+	 *
+	 * Only saved keys are printed, so a site that never saved them gets the
+	 * same page as before.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings Stock Bar settings.
+	 *
+	 * @return void
+	 */
+	private function design_variables( array $settings ): void {
+		$tokens = array(
+			'card-bg'     => array( 'stockbar_card_bg_color', 'color', '#ffffff' ),
+			'font-family' => array( 'font_family', 'font', 'inherit' ),
+			'count-size'  => array( 'count_text_size', 'px', 11 ),
+			'count-color' => array( 'count_text_color', 'color', '#25252d' ),
+			'status-size' => array( 'status_text_size', 'px', 11 ),
+		);
+
+		foreach ( $tokens as $token => $spec ) {
+			if ( isset( $settings[ $spec[0] ] ) ) {
+				$tokens[ $token ] = array(
+					'value'   => $settings[ $spec[0] ],
+					'type'    => $spec[1],
+					'default' => $spec[2],
+				);
+			} else {
+				unset( $tokens[ $token ] );
+			}
+		}
+
+		StorefrontStyle::attach( 'spsg-stock-cd-custom-style', 'stock-bar', $tokens );
+		StorefrontFonts::request( (string) ( $settings['font_family'] ?? '' ) );
 	}
 }

@@ -67,16 +67,19 @@ Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` sta
 - Reuses: `FeatureLayout`, `Accordion`, `SaveBar`, `LivePreview`.
 - Builds: `TemplatePicker` (first user, shared later), preview widget `modules/stock-bar/src/preview/stock-bar-widget.tsx`.
 
-## 9. Open questions / design issues
-- Min quantity default: 100 in the design vs 10 today. Keep 10.
-- Should "Hide Counts" be lite or pro?
-- The "Foreground" / "Bar" labels are confusing; confirm the wording.
+## 9. Decisions (step 2)
+- Min quantity default: keep 10 (design shows 100).
+- "Hide Counts" (`stock_display_format: hide`) is pro, like the rest of that field.
+- Colour labels as designed: "Foreground Color" (track, `stockbar_bg_color`), "Bar Color" (fill, `stockbar_fg_color`).
+- **Storefront restyled to the design's card** (user decision, an intended visible change for every site on update): flex column, 8px gap, 12/14px padding, 1px border, rounded track and fill, counts on one line. New keys default to the design (11px counts `#25252d`, 11px status); existing colour keys keep their defaults. This is the one exception to ADR-005 S1's "unsaved sites look the same".
+- Template presets keep the stored ids `stock_bar_one/two/three` (Blue/Green/Violet) and write the design's palettes. A stored gradient fill (old third template) keeps rendering but can't be re-picked.
+- Preview renders the storefront markup with the real `spsg-stockbar-style.css` (inside `.spsg-storefront`, outside the admin reset), not the mockup's `.sb-*` classes.
 
 ## 10. Tasks and definition of done
-- [ ] PHP schema: fields, defaults, sanitizers, pro flags.
-- [ ] Settings service shared by the REST controller and the ajax adapter.
-- [ ] TS page, schema types, preview widget.
-- [ ] Storefront reads the new keys, with fallbacks.
-- [ ] Characterisation test; E2E for no pro, pro 2.2.0 and new pro.
-- [ ] Delete `modules/stock-bar/assets/src`, `package.json` and `build/`.
+- [x] PHP schema: fields, defaults, sanitizers, pro flags.
+- [x] Settings service shared by the REST controller and the ajax adapter.
+- [x] TS page, schema types, preview widget.
+- [x] Storefront reads the new keys, with fallbacks.
+- [ ] Characterisation test (settings round trip done); E2E for no pro, pro 2.2.0 and new pro.
+- [x] Delete `modules/stock-bar/assets/src`, `package.json` and `build/` (and the unused Inter copy).
 - **Done when:** the shared definition of done in `README.md` is met.

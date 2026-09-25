@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\StockBar;
 
 use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -49,10 +50,16 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
+		// Kept for back-compat (ADR-004): the same settings service as
+		// `POST sales-booster/v1/settings/stock-bar`, which validates every key
+		// and merges into the stored option instead of replacing it.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Each value is validated by the settings service.
 		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
+		$saved     = storegrowth_get_container()->get( SettingsService::class )->save( 'stock-bar', $form_data );
 
-		update_option( 'spsg_stock_bar_settings', $form_data );
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
 
 		wp_send_json_success();
 	}

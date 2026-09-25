@@ -39,10 +39,11 @@ const coreEntries = {
 
 /**
  * Module bundles, e.g.
- * 'modules/stock-bar/admin': './modules/stock-bar/src/index.tsx',
  * 'modules/upsell-order-bump/blocks': './modules/upsell-order-bump/src/blocks/index.tsx',
  */
-const moduleEntries = {};
+const moduleEntries = {
+    'modules/stock-bar/admin': './modules/stock-bar/src/index.tsx',
+};
 
 /**
  * Integration bundles, e.g.

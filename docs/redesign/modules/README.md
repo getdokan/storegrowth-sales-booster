@@ -29,7 +29,7 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 1b | `00-core-shell`: shell UI (TopBar, feature rail, deactivated modal), Dashboard, Modules page, `/modules` + `/dashboard` REST | 0, 1a | 1c |
 | 1d | **Done.** Storefront foundation (ADR-005): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
 | 1c | **Done.** Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar`. Field components move to step 2 | 1a | 1b |
-| 2 | `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
+| 2 | **Done (E2E pending).** `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
 | 3 | `countdown-timer` — first `BoxModelInput` | 2 | 4 |
 | 4 | `sales-pop` — first `ProductSearch`, `TypographyRow` | 2 | 3 |
 | 5 | `progressive-discount-banner` — first bar fragment, `ModeNumber`, `IconPicker` | 2 | 7, 8 |

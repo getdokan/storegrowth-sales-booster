@@ -102,10 +102,11 @@
  * Scoped preflight: inside `.spsg-layout` but not inside `.spsg-wp-notices`
  * (captured WordPress notices shown in the app keep core styling) or inside a
  * `@wordpress/components` control (e.g. the colour picker), whose own padding
- * and margins the reset would wipe. Not in a cascade layer, so wp-admin's
- * unlayered element rules (h1, p, …) don't win.
+ * and margins the reset would wipe, or inside `.spsg-storefront` (a preview
+ * widget rendering the real storefront markup and CSS, ADR-005 S10). Not in a
+ * cascade layer, so wp-admin's unlayered element rules (h1, p, …) don't win.
  */
-@scope (.spsg-layout) to (.spsg-wp-notices, [class^="components-"], [class*=" components-"]) {
+@scope (.spsg-layout) to (.spsg-wp-notices, .spsg-storefront, [class^="components-"], [class*=" components-"]) {
     /* `:scope` keeps class-level specificity (`:scope p` = `.spsg-layout p`). */
     :scope {
         @import "tailwindcss/preflight.css";

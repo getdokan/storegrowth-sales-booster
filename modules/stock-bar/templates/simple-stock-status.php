@@ -78,7 +78,7 @@ $stock_contents    = apply_filters(
         <?php if ( $show_stock_status && ( $stock <= $stock_contents['quantity_required'] ) ) : ?>
             <p
                 class='stock-status-warning-msg'
-                style='color: <?php echo esc_attr( $stock_contents['status_text_color'] ); ?>; margin: 0; font-size: 14px;'
+                style='color: <?php echo esc_attr( $stock_contents['status_text_color'] ); ?>; margin: 0; font-size: var(--spsg-stock-bar-status-size, 11px);'
             >
                 <?php esc_html_e( $stock_contents['stock_status_text'], 'storegrowth-sales-booster' ); ?>
             </p>

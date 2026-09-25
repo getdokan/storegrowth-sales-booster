@@ -129,7 +129,9 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 					$changes[ $key ] = array( ! $field['default'], ! $field['default'] );
 					break;
 				case 'number':
-					$changes[ $key ] = array( 7, '7' );
+					// 7, moved inside the field's bounds.
+					$n               = min( max( 7, $field['min'] ?? 7 ), $field['max'] ?? 7 );
+					$changes[ $key ] = array( $n, (string) $n );
 					break;
 				case 'color':
 					$changes[ $key ] = array( '#123456', '#123456' );
