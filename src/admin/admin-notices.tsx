@@ -15,13 +15,9 @@ export default function AdminNotices() {
     }
 
     return (
-        <div className="flex w-full justify-center px-4 pt-6 empty:hidden sm:px-8">
-            <div className="w-full max-w-[1280px]">
-                <AdminNotice
-                    noticesUrl={ noticesUrl }
-                    actionUrl={ actionUrl }
-                />
-            </div>
+        // One element, so `empty:hidden` removes the spacing when there is no notice.
+        <div className="mx-auto w-full max-w-[1280px] px-4 pt-6 empty:hidden sm:px-8">
+            <AdminNotice noticesUrl={ noticesUrl } actionUrl={ actionUrl } />
         </div>
     );
 }

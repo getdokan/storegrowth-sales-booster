@@ -154,6 +154,11 @@ body:has(#spsg-admin-app) {
     margin: 0 16px;
 }
 
+/* Core gives the catcher a -2px margin, which would pull the page under the header. */
+#spsg-admin-notices .wp-header-end {
+    margin: 0;
+}
+
 @media (min-width: 783px) {
     #spsg-admin-notices {
         margin: 0 32px;
