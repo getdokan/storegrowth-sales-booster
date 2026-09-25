@@ -65,7 +65,7 @@ Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` sta
 
 ## 8. Components
 - Reuses: `FeatureLayout`, `Accordion`, `SaveBar`, `LivePreview`.
-- Builds: `TemplatePicker` (first user, shared later), preview widget `modules/stock-bar/src/preview/stock-bar-widget.tsx`.
+- Builds: `TemplatePicker` (first user, shared later), preview widget `modules/stock-bar/src/admin/preview/stock-bar-widget.tsx`.
 
 ## 9. Decisions (step 2)
 - Min quantity default: keep 10 (design shows 100).

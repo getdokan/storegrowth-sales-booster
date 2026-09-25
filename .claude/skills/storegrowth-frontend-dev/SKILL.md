@@ -10,7 +10,7 @@ Rules live in the ADRs (`docs/adr/`); this skill is the how-to. For PHP (REST, e
 ## Build (ADR-001)
 
 One `@wordpress/scripts` webpack build, no monorepo:
-- `webpack-entries.js` — every entry listed by hand. Core: `admin`, `header`, `tailwind`, and the shared bundles `plugin-ui`, `components`, `utilities`, `hooks` (exposed as `window.storegrowth.*`). Modules: `moduleEntry( '<id>', 'admin', './modules/<id>/src/index.tsx' )`, written to `modules/<id>/assets/js/admin.js`.
+- `webpack-entries.js` — every entry listed by hand. Core: `admin`, `header`, `tailwind`, and the shared bundles `plugin-ui`, `components`, `utilities`, `hooks` (exposed as `window.storegrowth.*`). Modules: `moduleEntry( '<id>', 'admin', './modules/<id>/src/admin/index.tsx' )`, written to `modules/<id>/assets/js/admin.js`.
 - `webpack-dependency-mapping.js` — `@wedevs/plugin-ui` and `@storegrowth/*` are externals (handles `spsg-plugin-ui`, `spsg-components`, `spsg-utilities`, `spsg-hooks`); `@wordpress/*` map to WordPress's own scripts.
 - Output: core in `build/` (git-ignored); module bundles in `modules/<id>/assets/js/`, where only the generated names (`admin.js`, `*.asset.php`, `*.js.map`) are git-ignored — hand-written storefront scripts there stay tracked and must not use those names; a new bundle name needs its own `.gitignore` line. Each bundle gets a `*.asset.php` with its dependencies.
 
@@ -26,7 +26,7 @@ Don't run `npm run build` while the dev server is running; reload the page.
 
 - `src/admin/` — app shell (`index.tsx` mounts on `#spsg-admin-app`, `app.tsx`, `routes.tsx`, `pages/*`). `src/header/` — the top bar bundle.
 - `src/components/` → `@storegrowth/components`; `src/hooks/` → `@storegrowth/hooks`; `src/utilities/` → `@storegrowth/utilities`.
-- `modules/<id>/src/` — a module's admin page (`index.tsx` registers the route; page, `preview/`, `types.ts`).
+- `modules/<id>/src/admin/` — everything for a module's admin page (`index.tsx` registers the route; page, `preview/`, `types.ts`, `components/`). Other module bundles get their own folder in `src/` (e.g. `blocks/`).
 - TypeScript, 4-space indentation, **kebab-case** file and folder names inside every `src/` (lint-enforced); PascalCase component names.
 
 ## Tech
@@ -47,8 +47,8 @@ No antd, no `@wordpress/data` stores, no dokan-ui.
 ## Adding a module settings page
 
 1. PHP first: the module's `SettingsSchema` (see `storegrowth-backend-dev`) gives `GET/POST sales-booster/v1/settings/<id>`.
-2. `modules/<id>/src/types.ts` — the values interface (API types) and the keys each tab saves.
-3. `modules/<id>/src/<id>-page.tsx`:
+2. `modules/<id>/src/admin/types.ts` — the values interface (API types) and the keys each tab saves.
+3. `modules/<id>/src/admin/<id>-page.tsx`:
 
 ```tsx
 const settings = useModuleSettings< StockBarValues >( 'stock-bar' );
@@ -63,7 +63,7 @@ const { values, setValue, isLocked, errors } = settings;
 ```
 
    Each tab ends with `<SaveBar onSave={ () => settings.save( keys ) } onReset={ () => settings.reset( keys ) } disabled={ ! settings.isDirty( keys ) } saving={ settings.saving } />`. Toast success/failure with plugin-ui `toast` and `errorMessage()`.
-4. `modules/<id>/src/index.tsx` — register the route:
+4. `modules/<id>/src/admin/index.tsx` — register the route:
 
 ```tsx
 addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
@@ -74,7 +74,7 @@ addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
 
 5. Add the webpack entry and enqueue `modules/<id>/assets/js/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview, from an `AdminPage` class registered in the always-loaded `ServiceProvider` (so the page works right after the module is switched on). Reference: `modules/stock-bar/includes/AdminPage.php`.
 
-Reference implementation: `modules/stock-bar/src/`.
+Reference implementation: `modules/stock-bar/src/admin/`.
 
 ## Fields and shared components
 
@@ -118,5 +118,5 @@ Reference implementation: `modules/stock-bar/src/`.
 - `src/hooks/use-module-settings.ts`, `src/utilities/api.ts`, `src/utilities/ajax.ts`
 - `src/components/index.ts`, `src/components/fields/`, `src/components/live-preview.tsx`
 - `src/base-tailwind.css` — tokens and scoping
-- `modules/stock-bar/src/` — reference module page
+- `modules/stock-bar/src/admin/` — reference module page
 - `webpack-entries.js`, `webpack-dependency-mapping.js`

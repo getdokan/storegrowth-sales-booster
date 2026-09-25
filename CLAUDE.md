@@ -92,12 +92,12 @@ Every module follows the same shape under `modules/<id>/`:
 
 Module enable/disable state lives in the single `spsg_active_module_ids` option. `BaseModule::activate()`/`deactivate()` mutate that option and fire `spsg_module_activated`/`spsg_module_deactivated`. `ModuleManager` lists modules (`spsg_modules` filter), boots active ones on load, and toggles them.
 
-To add a module: create the directory, add its `require_once .../bootstrap.php` line in `storegrowth-sales-booster.php`, add a PSR-4 entry in `composer.json`, and (for an admin page) add `moduleEntry( '<id>', 'admin', './modules/<id>/src/index.tsx' )` to `webpack-entries.js` and enqueue `modules/<id>/assets/js/admin.js` from an always-loaded `AdminPage` class (see `modules/stock-bar/includes/AdminPage.php`).
+To add a module: create the directory, add its `require_once .../bootstrap.php` line in `storegrowth-sales-booster.php`, add a PSR-4 entry in `composer.json`, and (for an admin page) add `moduleEntry( '<id>', 'admin', './modules/<id>/src/admin/index.tsx' )` to `webpack-entries.js` and enqueue `modules/<id>/assets/js/admin.js` from an always-loaded `AdminPage` class (see `modules/stock-bar/includes/AdminPage.php`).
 
 ### Admin app (redesigned)
 - `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.
 - Shared bundles: `src/components` (`@storegrowth/components`: feature layout, settings split, tabs, accordion, save bar, live preview, template picker, field controls in `fields/`), `src/hooks` (`@storegrowth/hooks`: router, `ModulesProvider`/`useModules`, `useModuleSettings`), `src/utilities` (`@storegrowth/utilities`: REST clients in `api.ts`, `ajax()` helper, admin data). UI is built on plugin-ui (`@wedevs/plugin-ui`); icons are lucide-react.
-- A module's page lives in `modules/<id>/src/` and registers its route from its own bundle (see `modules/stock-bar/src/index.tsx`).
+- A module's admin page lives in `modules/<id>/src/admin/` and registers its route from its own bundle (see `modules/stock-bar/src/admin/index.tsx`). Other module bundles (e.g. `blocks/`) get their own folder in `src/`.
 - No global data store: local React state and context.
 - Mounted on the `spsg-settings` / `spsg-modules` admin pages (`includes/Admin/AdminMenu.php`, `includes/Assets.php`).
 

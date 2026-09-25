@@ -168,7 +168,7 @@ Not blockers — built in this plugin on top of plugin-ui primitives. Form field
 | `ModeNumber` (radio + number whose unit follows it) | Free Shipping, Floating Bar trigger | `RadioGroup`, `LabeledRadio`, `InputGroup` |
 | `ProLock` wrapper (once gating is decided) | any pro field | `CrownIcon`, `Badge`, `Tooltip` |
 
-Location: shared components in `src/components/`, preview widgets next to each module in `modules/<name>/src/preview/` (see §9).
+Location: shared components in `src/components/`, preview widgets next to each module in `modules/<name>/src/admin/preview/` (see §9).
 
 Still upstream in plugin-ui (these are the real blockers): U1 exports, U4 alpha off. Nice-to-have upstream: U2, U3, U7.
 
@@ -213,10 +213,10 @@ src/                              # shared admin app (TS)
   types/                          # shared types (schema, module, offer)
   pages/                          # dashboard, modules grid, settings
   index.tsx
-modules/<name>/src/
+modules/<name>/src/admin/
   index.tsx                       # registers the module route/page with the shell
-  schema.ts                       # field schema (mirrors PHP schema) or types for it
-  preview/                        # widget mock for LivePreview
+  types.ts                        # settings values (mirrors the PHP schema)
+  preview/                        # widget for LivePreview
   components/                     # module-only UI (e.g. BOGO/Order Bump list + editor)
 modules/<name>/assets/            # storefront-only JS/CSS stays here (not admin)
 tsconfig.json                     # paths: @sg/* → src/*, @modules/* → modules/*/src

@@ -59,8 +59,9 @@ src/
   externals/plugin-ui.js      # entry: shim
   base-tailwind.css           # entry
 modules/<name>/src/
-  index.tsx                   # entry → modules/<name>/assets/js/admin.js
-  schema.ts, preview/, components/, blocks/
+  admin/index.tsx             # entry → modules/<name>/assets/js/admin.js
+  admin/<name>-page.tsx, types.ts, preview/, components/
+  blocks/index.tsx            # entry → modules/<name>/assets/js/blocks.js (Order Bump)
 integrations/src/<bundle>/index.tsx
 build/                        # gitignored, shipped
 ```

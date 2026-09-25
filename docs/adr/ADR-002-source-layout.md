@@ -23,19 +23,22 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
      externals/        # plugin-ui shim (ADR-001)
      base-tailwind.css # the single Tailwind entry (ADR-003)
    ```
-2. **Module admin source goes in `modules/<name>/src/`:**
+2. **Module source goes in `modules/<name>/src/`, one folder per bundle.** Everything for the admin page lives in `src/admin/` (entry `src/admin/index.tsx`, bundle `assets/js/admin.js`); other bundles get their own folder beside it:
    ```
    modules/<name>/src/
-     index.tsx         # registers the module page with the shell
-     schema.ts         # types for this module's settings shape
-     preview/          # the LivePreview widget mock
-     components/       # module-only UI (e.g. BOGO / Order Bump list + editor)
-     blocks/           # storefront block bundles, when needed (Order Bump checkout)
+     admin/            # the admin settings page (bundle `admin`)
+       index.tsx       # registers the module page with the shell
+       <name>-page.tsx # the page
+       types.ts        # this module's settings values and tab keys
+       templates.tsx   # presets, when the module has them
+       preview/        # the LivePreview widget (storefront markup)
+       components/     # module-only UI (e.g. BOGO / Order Bump list + editor)
+     blocks/           # storefront block bundle, when needed (Order Bump checkout; bundle `blocks`)
    ```
 3. **Dokan integration source goes in `integrations/src/`.**
 4. **Global typings go in `types/`** at the root.
-5. **`assets/` and `modules/<name>/assets/` keep only static and storefront files:** images, fonts, and the hand-written storefront `js/`/`css/`. No admin source, no build output.
-6. **All build output goes in `build/`** (ADR-001). It's gitignored but ships in the release zip.
+5. **`assets/` and `modules/<name>/assets/` keep static and storefront files:** images, fonts, and the hand-written storefront `js/`/`css/`. No admin source. A module's compiled bundles also land in its `assets/js/` (ADR-001), git-ignored by name.
+6. **Build output:** core in `build/`, module bundles in `modules/<name>/assets/js/` (ADR-001). Git-ignored, shipped in the release zip.
 7. **Module rule:** a module's `src/` may import `@storegrowth/*` shared libraries, but not another module's `src/`. Anything two modules need goes into `src/components` or `src/fields`.
 
 7a. **Naming inside every `src/` directory** (root `src/`, `modules/*/src/`, `integrations/src/`, and pro's `src/` and `legacy/src/`): **every directory and file name is lowercase kebab-case.**
@@ -52,7 +55,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    | Tests next to source | `save-bar.test.tsx` | — |
 
    - A component with several files gets a kebab-case folder with an `index.ts(x)` barrel: `components/live-preview/index.tsx`, `components/live-preview/device-switch.tsx`.
-   - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/` → `modules/stock-bar/assets/js/admin.js`.
+   - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/admin/` → `modules/stock-bar/assets/js/admin.js`.
    - **Enforced by lint:** add `eslint-plugin-check-file` to the wp-scripts ESLint config with `check-file/filename-naming-convention` and `check-file/folder-naming-convention` set to `KEBAB_CASE` for `src/**`, `modules/*/src/**`, `integrations/src/**`. `npm run lint:js` fails otherwise.
    - `legacy/src/` in pro is renamed to kebab-case in the same PR that moves it (e.g. `Modules/BoGo/index.js` → `modules/bogo/index.js`). The build output is unchanged.
    - **Out of scope:** PHP stays PSR-4 PascalCase (`includes/Settings/SettingsService.php`), because class-to-file autoloading requires it and renaming PHP classes is forbidden (ADR-004). Existing storefront files in `modules/*/assets/` and `templates/` keep their names (theme and pro paths).

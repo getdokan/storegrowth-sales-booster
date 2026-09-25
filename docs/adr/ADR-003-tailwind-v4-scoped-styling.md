@@ -63,7 +63,7 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
 3. **The app root element carries `spsg-layout`.** plugin-ui's `ThemeProvider` adds `.pui-root` inside it. Brand tokens are set through `createTheme` (primary `#0875FF`, radius `8px`, Inter), as in report §6.
 4. **Delete** `assets/src/preflight-reset.css` and every per-module admin SCSS file once its module migrates.
 5. **Storefront styles are out of scope.** The storefront CSS under `modules/<name>/assets/css` stays plain CSS. Tailwind must not load on the storefront.
-6. **Preview widgets** (`modules/<name>/src/preview`) render inside the admin, so they use Tailwind. They must mirror the storefront's CSS values (same tokens for colour, radius, spacing) rather than import storefront CSS.
+6. **Preview widgets** (`modules/<name>/src/admin/preview`) render inside the admin, so they use Tailwind. They must mirror the storefront's CSS values (same tokens for colour, radius, spacing) rather than import storefront CSS.
 
 ## Consequences
 

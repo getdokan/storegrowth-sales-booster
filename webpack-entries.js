@@ -54,7 +54,11 @@ const moduleEntry = ( id, bundle, source ) => ( {
 } );
 
 const moduleEntries = {
-    ...moduleEntry( 'stock-bar', 'admin', './modules/stock-bar/src/index.tsx' ),
+    ...moduleEntry(
+        'stock-bar',
+        'admin',
+        './modules/stock-bar/src/admin/index.tsx'
+    ),
 };
 
 /**
