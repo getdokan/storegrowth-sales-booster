@@ -14,11 +14,7 @@ const LINK_CLASS =
 
 export default function AdminBar() {
     const settings = window.spsgAdminHeader;
-    const info = settings?.header_info;
-
-    if ( ! settings || ! info ) {
-        return null;
-    }
+    const info = settings.header_info;
 
     const versions = [
         {

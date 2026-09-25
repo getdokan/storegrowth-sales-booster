@@ -25,7 +25,7 @@ import {
     DASHBOARD_GROUPS,
     MODULE_CATALOG,
     fetchDashboardOverview,
-    getAdminData,
+    getHeaderData,
     moduleLabel,
     type DashboardOverview,
 } from '@storegrowth/utilities';
@@ -84,7 +84,14 @@ function padCount( value: number ): string {
 
 export default function DashboardPage() {
     const { modules } = useModules();
-    const { isPro, urls } = getAdminData();
+    const { header_info: info } = getHeaderData();
+    const isPro = info.is_pro_exists;
+    const urls = {
+        upgrade: info.upgrade_url,
+        support: info.support_url,
+        docs: info.docs_url,
+        featureRequest: info.feature_request_url,
+    };
     const [ overview, setOverview ] = useState< DashboardOverview | null >(
         null
     );

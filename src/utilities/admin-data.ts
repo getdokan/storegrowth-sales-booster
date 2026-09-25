@@ -1,45 +1,27 @@
 /**
- * Data localized by PHP for the admin app (`spsgAdmin`).
+ * Data PHP localizes for the admin: `spsgAdmin` (app data: REST namespace,
+ * modules) and `spsgAdminHeader` (versions, pro flag, URLs), both printed on
+ * every StoreGrowth admin page by includes/Assets.php.
  *
  * @since SPSG_VERSION
  */
-const FALLBACK: SpsgAdminData = {
-    ajax_url: '',
-    nonce: '',
-    isPro: false,
-    version: '',
-    restNamespace: 'sales-booster/v1',
-    modules: [],
-    urls: {
-        admin: '',
-        assets: '',
-        upgrade: 'https://storegrowth.io/pricing',
-        docs: 'https://storegrowth.io/docs/',
-        support: 'https://storegrowth.io/contact-us/',
-        whatsNew: 'https://storegrowth.io/changelog/',
-        featureRequest: 'https://storegrowth.io/contact-us/',
-    },
-};
 
 /**
- * The localized admin data, with safe defaults when it is missing.
+ * App data (`spsgAdmin`).
  *
  * @since SPSG_VERSION
- *
- * @return The admin data.
  */
 export function getAdminData(): SpsgAdminData {
-    const data = window.spsgAdmin;
+    return window.spsgAdmin;
+}
 
-    if ( ! data ) {
-        return FALLBACK;
-    }
-
-    return {
-        ...FALLBACK,
-        ...data,
-        urls: { ...FALLBACK.urls, ...( data.urls || {} ) },
-    };
+/**
+ * Header data (`spsgAdminHeader`): versions, pro flag and URLs.
+ *
+ * @since SPSG_VERSION
+ */
+export function getHeaderData(): SpsgAdminHeaderData {
+    return window.spsgAdminHeader;
 }
 
 /**
@@ -52,5 +34,5 @@ export function getAdminData(): SpsgAdminData {
  * @return Absolute URL.
  */
 export function assetUrl( path: string ): string {
-    return `${ getAdminData().urls.assets }${ path.replace( /^\//, '' ) }`;
+    return `${ getHeaderData().assets_url }${ path.replace( /^\//, '' ) }`;
 }
