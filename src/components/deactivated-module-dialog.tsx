@@ -54,7 +54,7 @@ export function DeactivatedModuleDialog( {
                         aria-hidden
                     />
                 </span>
-                <AlertDialogHeader className="flex w-full flex-col items-center gap-1 text-center">
+                <AlertDialogHeader className="flex! w-full flex-col items-center! gap-1 text-center!">
                     <AlertDialogTitle className="text-[24px] font-bold leading-8 tracking-[-0.24px] text-sg-ink">
                         { sprintf(
                             /* translators: %s: module name. */

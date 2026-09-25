@@ -17,6 +17,11 @@ export default function ModulesPage() {
 
     const allActive = modules.length > 0 && modules.every( ( m ) => m.status );
 
+    // The design lists module cards alphabetically.
+    const cards = [ ...modules ].sort( ( a, b ) =>
+        moduleLabel( a ).localeCompare( moduleLabel( b ) )
+    );
+
     const toggleAll = async ( status: boolean ) => {
         try {
             await setAllModulesStatus( status );
@@ -80,7 +85,7 @@ export default function ModulesPage() {
                     }
                 />
                 <div className="grid w-full grid-cols-1 gap-px rounded-b-[8px] px-px pb-px min-[521px]:grid-cols-2 min-[861px]:grid-cols-3 min-[1181px]:grid-cols-4">
-                    { modules.map( ( module ) => (
+                    { cards.map( ( module ) => (
                         <div
                             key={ module.id }
                             className="flex w-full flex-col items-start gap-6 rounded-[8px] bg-white p-6"

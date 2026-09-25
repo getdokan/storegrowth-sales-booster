@@ -98,9 +98,13 @@
     --breakpoint-wpmd: 961px;
 }
 
-/* Scoped preflight + utilities. */
+/*
+ * Scoped preflight + utilities. Preflight is deliberately not in a cascade
+ * layer: wp-admin's element rules (h1, p, …) are unlayered and would beat any
+ * layered reset, while `.spsg-layout p` outranks wp-admin's bare `p`.
+ */
 .spsg-layout {
-    @import "tailwindcss/preflight.css" layer(base);
+    @import "tailwindcss/preflight.css";
     @import "tailwindcss/utilities.css" important;
 
     /* Preflight's html/body rules don't match inside a container; apply them here. */

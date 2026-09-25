@@ -46,7 +46,7 @@ export function AppTopBar() {
                               version: `v${ version }`,
                               isPro: false,
                               className:
-                                  'hidden! h-auto! rounded-[20px]! border-0! bg-[#EFEAFF]! px-3! py-1.5! text-[12px]! leading-[1.4]! text-[#181894]! min-[561px]:flex!',
+                                  'h-auto! rounded-[20px]! border-0! bg-[#EFEAFF]! px-3! py-1.5! text-[12px]! leading-[1.4]! text-[#181894]! max-[560px]:hidden!',
                           },
                       ]
                     : []
