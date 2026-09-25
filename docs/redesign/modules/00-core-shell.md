@@ -43,9 +43,9 @@
 | Root build files, `types/`, Tailwind entry | root | ADR-001/004 |
 | `plugin-ui` shim | `src/externals/plugin-ui.js` | `window.storegrowth.pluginUI` |
 | Shell | `src/admin/` | TopBar, `FeatureLayout`, router (`/dashboard`, `/modules`, `/settings`, `/<module>`, `/bogo/new`, `/bogo/:id`, `/order-bumps/new`, `/order-bumps/:id`) |
-| Shared components | `src/components/` | `Accordion`, `SaveBar` (Reset + Save), `LivePreview` frame (device switch, dark toggle, product/shop/storefront/checkout frames, slots), `ProLock`, `PageHeader`, `EmptyState` |
-| Settings engine | `src/stores/settings/`, `src/fields/` | Loads `{schema, values}`, tracks dirty state, saves, and registers custom field variants via `storegrowth.settings.fieldTypes` |
-| API client | `src/api/` | Typed `apiFetch` wrappers |
+| Shared components | `src/components/` | Done (1c): `SettingsSplit` (settings + preview columns), `SettingsTabs`, `Accordion`, `SaveBar` (Reset + Save), `LivePreview` (device switch, dark toggle, browser frame, product layout, widget/banner/overlay/footer slots). Later: shop/storefront/checkout preview layouts (with the first module that needs each), `ProLock`, `EmptyState` |
+| Settings engine | `src/hooks/use-module-settings.ts` | Done (1c): `useModuleSettings(id)` loads `{schema, values}`, tracks dirty state per key set, saves, resets to defaults, reports field errors, locks pro fields without pro. Local state, no store. **Next (step 2):** field components (`text`, `number` + unit, colour, `select`, switch, checkbox) and the `storegrowth.settings.fieldTypes` registry |
+| API client | `src/utilities/api.ts` (REST), `src/utilities/ajax.ts` (legacy ajax, ADR-006) | Typed `apiFetch` wrappers |
 | Theme | `src/admin/theme.ts` | `createTheme` (primary `#0875FF`, Inter, radius 8px) |
 
 ## 5. Data changes

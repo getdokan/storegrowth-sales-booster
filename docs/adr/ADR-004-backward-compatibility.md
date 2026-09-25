@@ -43,6 +43,15 @@ These keep their names and signatures and may only be extended:
 - option names, keys and value shapes, including misspelled keys;
 - custom table columns.
 
+**Existing user settings are never lost.** Every settings write goes through `SettingsService::save()` (REST and the ajax adapters), which:
+- writes only the keys in the request; every other stored key stays as it is (no whole-option replace, no deletes);
+- leaves a key alone when the request sends back the value the API reported for it, so stored values the schema can't show (a decimal in a whole-number field, a non-hex colour, a value pro added) survive a save of the whole form;
+- ignores pro keys while pro is inactive;
+- saves nothing when any value is invalid, or when the stored option isn't an array;
+- stores values in the old admin's shape (`../redesign/migration-spec.md` §8).
+
+A sanitizer may never be stricter than what the old admin accepted for a value it could store, or that setting can't be saved again. Every module with a settings schema must pass `wp eval-file tests/compat/settings-roundtrip.php` (round trip byte-identical, one change touches one key, pro keys and invalid values write nothing).
+
 Ajax and REST rules:
 - **Admin ajax actions stay registered** as thin adapters that call the same service as the new REST controllers. Same sanitization, same stored data.
 - **Existing REST routes stay permanently.** Namespace moves add the new route and keep the old one (`spsg/v1/order-bumps`).

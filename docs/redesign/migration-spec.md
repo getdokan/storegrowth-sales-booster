@@ -237,6 +237,7 @@ Each phase is shippable. Old bundles stay enqueued for modules not yet migrated.
 
 - No option is renamed during the redesign. REST maps onto existing option names and keys, including the misspelled ones (`enble_visibility`, `dispaly_time`, `slected_page_option`, `cupon_code`, `show_cupon`, `enable_qucik_view_icon`).
 - Value shapes stay as they are: booleans stay booleans (not wp-kit's `'on'/'off'`), and colours stay 6-digit hex.
+- **Stored vs API shape** (enforced by `SettingsService`): the old admin posted form-encoded values and `Helper::sanitize_form_fields` only turned `'true'/'false'` into booleans, so options hold `toggle` → bool and **every other type as a string** (numbers too: `"10"`), colours as hex. The service stores exactly that shape; the REST API returns typed values (`toggle` bool, `number` int/float, the rest string). Storefront and pro code keep casting numbers themselves.
 - Where the design changes an option set (Quick View effects/redirect/position, Fly Cart layout, Free Shipping discount type, Order Bump schedule), add a versioned migration through the existing WPKit `MigrationManager` in `includes/Upgrader.php`. Don't translate values at read time.
 - Every migrated module gets a characterisation test: save through the old UI, read through the new REST, and the values must match.
 

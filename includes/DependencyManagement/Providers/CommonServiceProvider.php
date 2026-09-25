@@ -11,9 +11,11 @@ use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Upgrader;
 use StorePulse\StoreGrowth\REST\DashboardController;
+use StorePulse\StoreGrowth\REST\ModuleSettingsController;
 use StorePulse\StoreGrowth\REST\ModulesController;
 use StorePulse\StoreGrowth\REST\ProductController;
 use StorePulse\StoreGrowth\REST\SettingsController;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 /**
  * CommonServiceProvider Class
@@ -34,6 +36,8 @@ class CommonServiceProvider extends BootableServiceProvider {
 		SettingsController::class,
 		ModulesController::class,
 		DashboardController::class,
+		SettingsService::class,
+		ModuleSettingsController::class,
 		OfferAttribution::class,
 	];
 

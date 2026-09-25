@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Modules\StockBar\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\StockBar\Settings\StockBarSettings;
 use StorePulse\StoreGrowth\Modules\StockBar\StockBarModule;
 
 /**
@@ -25,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    StockBarModule::class,
+	    StockBarSettings::class,
     ];
 
     /**
@@ -47,5 +49,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( StockBarModule::get_id(), StockBarModule::class, true );
+        // Always registered, so the settings route works while the module is off.
+        $this->add_with_implements_tags( StockBarSettings::class, StockBarSettings::class, true );
     }
 }

@@ -230,9 +230,11 @@ body:has(#spsg-admin-notices .notice:not(:empty)) .spsg-layout .spsg-page {
     display: none;
 }
 
-/* Feature pages: page area padding is 32px; pull the notices up to 24px. */
+/* Feature pages: page area padding is 32px; pull the notices up to 24px and
+   keep 24px to the page content (the page area itself has no gap). */
 .spsg-wp-notices:has(.notice:not(:empty)) {
     margin-top: -8px;
+    margin-bottom: 24px;
 }
 
 @media (min-width: 783px) {

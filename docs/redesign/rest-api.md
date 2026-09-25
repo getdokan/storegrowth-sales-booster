@@ -18,9 +18,11 @@ Legend: **EXISTS** = already registered today; **CHANGE** = exists but needs fix
 | 3 | `POST /modules/batch` `{ ids[], status }` | NEW | "Active All Modules" master switch | — |
 | 4 | `GET /settings` | EXISTS | Global settings (`remove_data_on_uninstall`) | — |
 | 5 | `POST /settings` | EXISTS | Save global settings | — |
-| 6 | `GET /settings/{module}` | NEW | `{ schema, values }` for one module. `schema` includes pro fields with `pro:true`; `values` come from the existing option with defaults filled in | every `spsg_*_get_settings` (below) |
-| 7 | `POST /settings/{module}` `{ values }` | NEW | Validate and sanitize per the schema, drop pro keys when pro is inactive, **merge** into the existing option (same key names and value types), return the saved values | every `spsg_*_save_settings` (below) |
-| 8 | `GET /settings/{module}/defaults` | NEW (optional) | Defaults for the Reset button. Can be skipped if the client reads the defaults from the schema | — |
+| 6 | `GET /settings/{module}` | DONE (1c) | `{ schema, values }` for one module. `schema` includes pro fields with `pro:true`; `values` come from the existing option with defaults filled in. 404 `spsg_settings_module_not_found` for a module without a schema | every `spsg_*_get_settings` (below) |
+| 7 | `POST /settings/{module}` `{ values }` | DONE (1c) | Validate and sanitize per the schema, ignore pro keys when pro is inactive, **merge** into the existing option (same key names and value types), return `{ schema, values }`. 400 `spsg_settings_invalid` with `data.params` (key → message); nothing is saved then | every `spsg_*_save_settings` (below) |
+| 8 | `GET /settings/{module}/defaults` | SKIPPED | The client reads defaults from the schema | — |
+
+Engine: `includes/Settings/SettingsService.php`; each module declares `Interfaces\SettingsSchema` in its always-loaded `ServiceProvider`. Hooks: filter `spsg_settings_schema( $fields, $module_id )` (pro adds fields), action `spsg_settings_saved( $module_id, $new, $old )`. Value shapes: migration-spec §8.
 | 9 | `GET /dashboard/overview` | NEW | Dashboard tiles: module count, active count, revenue, template count | — |
 | 10 | `GET /onboarding` · `POST /onboarding` | NEW | Initial-setup state and completion flag | `spsg_inisetup_flag_update` |
 | 11 | `GET /notices/admin` · `POST /notices/dismiss` | EXISTS | Admin notices (wp-kit) | — |
