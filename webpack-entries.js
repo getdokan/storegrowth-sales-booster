@@ -4,8 +4,8 @@
  * Every entry is listed by hand. When a module or integration moves to the new
  * admin UI, add its entry to `moduleEntries` / `integrationEntries`.
  *
- * Output: core bundles in `build/`, module bundles in `build/modules/<id>/`,
- * integration bundles in `build/integrations/`.
+ * Output: core bundles in `build/`, module bundles in
+ * `modules/<id>/assets/js/`, integration bundles in `build/integrations/`.
  *
  * @since SPSG_VERSION
  */
@@ -38,11 +38,23 @@ const coreEntries = {
 };
 
 /**
- * Module bundles, e.g.
- * 'modules/upsell-order-bump/blocks': './modules/upsell-order-bump/src/blocks/index.tsx',
+ * A module bundle, written to `modules/<id>/assets/js/<bundle>.js` (+ its
+ * `.asset.php`). Entry names are relative to `build/`, so webpack's clean
+ * step (which only clears `build/`) never touches module folders. The
+ * generated names are git-ignored in `.gitignore`; hand-written storefront
+ * scripts in `assets/js/` must not use them.
+ *
+ * @param {string} id     Module id.
+ * @param {string} bundle Bundle name, e.g. `admin`.
+ * @param {string} source Entry file.
+ * @return {Object} Entry map.
  */
+const moduleEntry = ( id, bundle, source ) => ( {
+    [ `../modules/${ id }/assets/js/${ bundle }` ]: source,
+} );
+
 const moduleEntries = {
-    'modules/stock-bar/admin': './modules/stock-bar/src/index.tsx',
+    ...moduleEntry( 'stock-bar', 'admin', './modules/stock-bar/src/index.tsx' ),
 };
 
 /**

@@ -39,6 +39,8 @@ const EXCLUDED = [
   "phpcs.xml.dist",
   "phpcs.xml.dist.sample",
   "postcss.config.js",
+  // TypeScript / legacy sources; the zip ships the built bundles.
+  "src",
   "tests",
   "tsconfig.json",
   "types",

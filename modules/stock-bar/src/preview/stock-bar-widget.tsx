@@ -10,13 +10,41 @@
  *
  * @since SPSG_VERSION
  */
+import { useEffect } from '@wordpress/element';
 import type { CSSProperties } from 'react';
 
 import type { StockBarValues } from '../types';
 
-/** Sample numbers, as in the design. */
+/** Sample sales, as in the design. */
 const SOLD = 247;
-const AVAILABLE = 123;
+
+/** Fonts the plugin bundles or the admin already has; no request needed. */
+const LOCAL_FONTS = [ 'inherit', 'Inter' ];
+
+/**
+ * Load a Google font into the admin page once, when the preview first
+ * needs it.
+ *
+ * @param family Font family.
+ */
+function useFont( family: string ) {
+    useEffect( () => {
+        const id = `spsg-preview-font-${ family.replace( /\s+/g, '-' ) }`;
+
+        if ( LOCAL_FONTS.includes( family ) || document.getElementById( id ) ) {
+            return;
+        }
+
+        const link = document.createElement( 'link' );
+        link.id = id;
+        link.rel = 'stylesheet';
+        link.href = `https://fonts.googleapis.com/css2?family=${ family.replace(
+            / /g,
+            '+'
+        ) }:wght@400;500;600;700&display=swap`;
+        document.head.appendChild( link );
+    }, [ family ] );
+}
 
 export interface StockBarWidgetProps {
     values: StockBarValues;
@@ -31,13 +59,21 @@ export interface StockBarWidgetProps {
 export function StockBarWidget( { values }: StockBarWidgetProps ) {
     const format = values.stock_display_format;
     const height = `${ values.stockbar_height }px`;
+    // The status line shows at or below the threshold, so the sample stock
+    // follows it (as the design's 123, capped by the threshold).
+    const AVAILABLE = Math.min(
+        123,
+        Math.max( 1, values.status_quantity_required )
+    );
+
+    useFont( values.font_family );
 
     const variables = {
         '--spsg-stock-bar-card-bg': values.stockbar_card_bg_color,
         '--spsg-stock-bar-font-family':
             values.font_family === 'inherit'
                 ? 'inherit'
-                : `'${ values.font_family }'`,
+                : `'${ values.font_family }', sans-serif`,
         '--spsg-stock-bar-count-size': `${ values.count_text_size }px`,
         '--spsg-stock-bar-count-color': values.count_text_color,
         '--spsg-stock-bar-status-size': `${ values.status_text_size }px`,

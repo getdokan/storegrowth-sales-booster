@@ -32,8 +32,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-stock-cd-custom-style',
 			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
-			array(),
+			array( 'spsg-storefront-base' ),
 			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
 		);
 
@@ -70,45 +70,6 @@ class EnqueueScript implements HookRegistry {
 		);
 
 		$this->inline_styles();
-	}
-
-	/**
-	 * Load the Stock Bar settings page into the admin app, with the storefront
-	 * stylesheet its preview renders with (ADR-005 S10).
-	 *
-	 * The bundle registers the `/stock-bar` route; it runs before the app
-	 * mounts on DOM ready. Enqueued on both app pages, since the route is
-	 * reachable from either.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( ! in_array( $hook, array( 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ), true ) ) {
-			return;
-		}
-
-		$asset_file = PluginHelper::get_plugin_path( 'build/modules/stock-bar/admin.asset.php' );
-
-		if ( ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		$asset = require $asset_file;
-
-		wp_enqueue_script(
-			'spsg-stock-bar-admin',
-			PluginHelper::get_plugin_url( 'build/modules/stock-bar/admin.js' ),
-			$asset['dependencies'],
-			$asset['version'],
-			true
-		);
-
-		wp_enqueue_style(
-			'spsg-stock-cd-custom-style',
-			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
-			array( 'spsg-storefront-base' ),
-			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
-		);
 	}
 
 	/**
@@ -157,10 +118,11 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * The redesign's new design settings (card background, font, text sizes,
 	 * count colour) as `--spsg-stock-bar-*` variables (ADR-005 S1), read by
-	 * `spsg-stockbar-style.css` with today's values as the fallback.
+	 * `spsg-stockbar-style.css` with the defaults as fallbacks. Only saved keys
+	 * are printed; unsaved ones render the design defaults from the CSS.
 	 *
-	 * Only saved keys are printed, so a site that never saved them gets the
-	 * same page as before.
+	 * The rule also targets `.spsg-stock-progress-bar-section`, the root of
+	 * pro's variation stock bar (it has no `.spsg-stock-bar` wrapper).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -189,7 +151,10 @@ class EnqueueScript implements HookRegistry {
 			}
 		}
 
-		StorefrontStyle::attach( 'spsg-stock-cd-custom-style', 'stock-bar', $tokens );
-		StorefrontFonts::request( (string) ( $settings['font_family'] ?? '' ) );
+		StorefrontStyle::attach( 'spsg-stock-cd-custom-style', 'stock-bar', $tokens, '.spsg-stock-bar, .spsg-stock-progress-bar-section' );
+
+		if ( is_string( $settings['font_family'] ?? null ) ) {
+			StorefrontFonts::request( $settings['font_family'] );
+		}
 	}
 }

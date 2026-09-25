@@ -125,14 +125,15 @@ class Helper {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $settings WP option array.
-	 * @param string $key      Key from option array.
-	 * @param mixed  $default  Default value.
+	 * @param array|mixed $settings WP option array. Anything else counts as empty
+	 *                              (pro 2.2.0's "below" template passes null).
+	 * @param string      $key      Key from option array.
+	 * @param mixed       $default  Default value.
 	 *
 	 * @return mixed
 	 */
-	public static function find_option_settings( array $settings, string $key, $default = '' ) {
-		if ( isset( $settings[ $key ] ) ) {
+	public static function find_option_settings( $settings, string $key, $default = '' ) {
+		if ( is_array( $settings ) && isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
 
@@ -207,7 +208,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function sanitize_css_color( $value, string $fallback = '' ): string {
-		$value = trim( (string) $value );
+		$value = is_scalar( $value ) ? trim( (string) $value ) : '';
 
 		// Hex notation: #rgb, #rgba, #rrggbb, #rrggbbaa.
 		if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {

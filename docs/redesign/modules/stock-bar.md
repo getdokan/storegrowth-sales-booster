@@ -39,7 +39,7 @@
 | Stock Bar Height | `stockbar_height` | int 1–100 / 10 | pro | `number` + px |
 | Background Color (card) | **new** `stockbar_card_bg_color` | hex | lite | `color_picker` |
 | Border Color | `stockbar_border_color` | hex | lite | `color_picker` |
-| Font Family | **new** `font_family` | select / inter | lite | `select` |
+| Font Family | **new** `font_family` | select / inherit (theme font) | lite | `select` |
 | Count Text Size | **new** `count_text_size` | int / 11 | lite | `number` + px |
 | Count Text Color | **new** `count_text_color` | hex | lite | `color_picker` |
 | Status Text Size | **new** `status_text_size` | int / 11 | lite | `number` + px |
@@ -49,7 +49,7 @@
 Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` stay in the option. Don't write them and don't delete them.
 
 ## 5. Data changes
-- New keys (above) are additive. Their defaults reproduce today's storefront look, so nothing changes visually until an admin edits them.
+- New keys (above) are additive. Their defaults are the design's card look; the storefront was restyled to it (see §9).
 - Storefront templates/CSS must read the new keys, with a fallback to the current hard-coded values.
 - `stock_display_format: hide` is a new value. The storefront must handle it (hide the counts row).
 - Pick one default source: PHP `get_defaults()` becomes the only one, and the REST schema exposes it.
@@ -73,6 +73,13 @@ Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` sta
 - Colour labels as designed: "Foreground Color" (track, `stockbar_bg_color`), "Bar Color" (fill, `stockbar_fg_color`).
 - **Storefront restyled to the design's card** (user decision, an intended visible change for every site on update): flex column, 8px gap, 12/14px padding, 1px border, rounded track and fill, counts on one line. New keys default to the design (11px counts `#25252d`, 11px status); existing colour keys keep their defaults. This is the one exception to ADR-005 S1's "unsaved sites look the same".
 - Template presets keep the stored ids `stock_bar_one/two/three` (Blue/Green/Violet) and write the design's palettes. A stored gradient fill (old third template) keeps rendering but can't be re-picked.
+- Templates set both colours in lite too, as the old lite templates did: `stockbar_fg_color` is not `pro` on the server; the admin locks the Bar Color field without pro. A preset shows as selected only while the colours still match it.
+- Font Family keeps a first "Theme font" option (`inherit`), the default (ADR-005 S4); the design lists only named fonts. Google fonts load in the admin only when picked (preview); on the storefront through `StorefrontFonts`, on product and shop pages even when that page has no stock bar (accepted).
+- Stock Bar Height default stays 10 (design shows 6), like min quantity.
+- The preview's dark toggle recolours the mock page only; the widget keeps the saved colours, as the shop would.
+- The preview's sample stock follows Minimum Quantity Required, so the status line shows.
+- Extension: JS filter `storegrowth.preview.stock-bar` ( widget, values ) for pro's preview parts. A fields filter is deferred to the pro migration (step 13).
+- With pro 2.2.0, the shop-page stock bar keeps its own 14px status text (pro's template hard-codes it); the variation stock bar gets the design variables through the `.spsg-stock-progress-bar-section` selector.
 - Preview renders the storefront markup with the real `spsg-stockbar-style.css` (inside `.spsg-storefront`, outside the admin reset), not the mockup's `.sb-*` classes.
 
 ## 10. Tasks and definition of done

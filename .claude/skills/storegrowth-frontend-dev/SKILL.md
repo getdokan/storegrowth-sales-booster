@@ -10,9 +10,9 @@ Rules live in the ADRs (`docs/adr/`); this skill is the how-to. For PHP (REST, e
 ## Build (ADR-001)
 
 One `@wordpress/scripts` webpack build, no monorepo:
-- `webpack-entries.js` — every entry listed by hand. Core: `admin`, `header`, `tailwind`, and the shared bundles `plugin-ui`, `components`, `utilities`, `hooks` (exposed as `window.storegrowth.*`). Modules: `'modules/<id>/admin': './modules/<id>/src/index.tsx'`.
+- `webpack-entries.js` — every entry listed by hand. Core: `admin`, `header`, `tailwind`, and the shared bundles `plugin-ui`, `components`, `utilities`, `hooks` (exposed as `window.storegrowth.*`). Modules: `moduleEntry( '<id>', 'admin', './modules/<id>/src/index.tsx' )`, written to `modules/<id>/assets/js/admin.js`.
 - `webpack-dependency-mapping.js` — `@wedevs/plugin-ui` and `@storegrowth/*` are externals (handles `spsg-plugin-ui`, `spsg-components`, `spsg-utilities`, `spsg-hooks`); `@wordpress/*` map to WordPress's own scripts.
-- Output `build/` (git-ignored); each bundle gets a `*.asset.php` with its dependencies.
+- Output: core in `build/` (git-ignored); module bundles in `modules/<id>/assets/js/`, where only the generated names (`admin.js`, `*.asset.php`, `*.js.map`) are git-ignored — hand-written storefront scripts there stay tracked and must not use those names; a new bundle name needs its own `.gitignore` line. Each bundle gets a `*.asset.php` with its dependencies.
 
 ```bash
 npm run start        # watch; restart after adding an entry to webpack-entries.js
@@ -72,7 +72,7 @@ addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
 ] );
 ```
 
-5. Add the webpack entry and enqueue `build/modules/<id>/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview.
+5. Add the webpack entry and enqueue `modules/<id>/assets/js/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview, from an `AdminPage` class registered in the always-loaded `ServiceProvider` (so the page works right after the module is switched on). Reference: `modules/stock-bar/includes/AdminPage.php`.
 
 Reference implementation: `modules/stock-bar/src/`.
 

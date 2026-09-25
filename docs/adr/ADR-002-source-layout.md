@@ -52,7 +52,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    | Tests next to source | `save-bar.test.tsx` | — |
 
    - A component with several files gets a kebab-case folder with an `index.ts(x)` barrel: `components/live-preview/index.tsx`, `components/live-preview/device-switch.tsx`.
-   - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/`, `build/modules/stock-bar/`.
+   - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/` → `modules/stock-bar/assets/js/admin.js`.
    - **Enforced by lint:** add `eslint-plugin-check-file` to the wp-scripts ESLint config with `check-file/filename-naming-convention` and `check-file/folder-naming-convention` set to `KEBAB_CASE` for `src/**`, `modules/*/src/**`, `integrations/src/**`. `npm run lint:js` fails otherwise.
    - `legacy/src/` in pro is renamed to kebab-case in the same PR that moves it (e.g. `Modules/BoGo/index.js` → `modules/bogo/index.js`). The build output is unchanged.
    - **Out of scope:** PHP stays PSR-4 PascalCase (`includes/Settings/SettingsService.php`), because class-to-file autoloading requires it and renaming PHP classes is forbidden (ADR-004). Existing storefront files in `modules/*/assets/` and `templates/` keep their names (theme and pro paths).
@@ -98,7 +98,7 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
    ├─ helpers/functions.php
    ├─ lib/                           # mozart-prefixed deps (league/container, appsero, wp-kit)
    ├─ languages/
-   ├─ build/                         # generated: core bundles, build/modules/<name>/, build/integrations/
+   ├─ build/                         # generated: core bundles, build/integrations/ (module bundles go to modules/<name>/assets/js/)
    ├─ tests/
    │  ├─ php/                        # PHPUnit: settings service, REST, compat API reflection test
    │  ├─ e2e/                        # Playwright: modules, visual QA, compat matrix, storefront snapshots

@@ -62,7 +62,7 @@ export function SelectField( {
                     // wp-admin gives selects its own arrow and a 25rem max-width.
                     className={ cn(
                         FIELD_CONTROL,
-                        'max-w-none appearance-none bg-none pr-10'
+                        'max-w-none appearance-none border bg-none pr-10 outline-none'
                     ) }
                     value={ value }
                     disabled={ locked }

@@ -34,7 +34,7 @@ dokan-lite (and dokan-pro) already solve this with:
 **Interpretation of "core in a single build, module-specific separate build file":** there is one webpack config and one `npm run build` run. It emits separate output files:
 
 - **Core** (`build/`): the admin app (shell, dashboard, modules page, settings), the shared runtime libraries, and the Tailwind stylesheet.
-- **Per module** (`build/modules/<name>/`): one admin bundle per module, plus any storefront blocks bundle.
+- **Per module** (`modules/<name>/assets/js/`): one admin bundle per module, plus any storefront blocks bundle.
 - **Integrations** (`build/integrations/`): the Dokan bundles.
 
 It is not a separate webpack config per module.
@@ -62,7 +62,7 @@ It is not a separate webpack config per module.
    Module bundles import these bare specifiers. The dependency mapping turns them into globals, and the generated `.asset.php` lists the handles. WordPress then loads core before modules, and each shared library is downloaded once.
 4. **Output layout.** `output.path = build/` with `clean: true`, which is safe because it's a dedicated folder. Every entry is listed by hand in `webpack-entries.js` (no auto-discovery); a module or integration is added there when it migrates. Entry keys set the file paths:
    - core: `build/admin.js`, `build/tailwind.css`, `build/plugin-ui.js`, …
-   - modules: `build/modules/<name>/admin.js`, `build/modules/upsell-order-bump/blocks.js`
+   - modules: `modules/<name>/assets/js/admin.js` (+ `admin.asset.php`), `modules/upsell-order-bump/assets/js/blocks.js`. A module's compiled files live with the module. The entry key is relative to `build/` (`../modules/<name>/assets/js/<bundle>`, helper `moduleEntry()`), so `clean` never touches module folders. **Only the generated names are git-ignored** (`admin.js`, `*.asset.php`, `*.js.map` under `modules/*/assets/js/`): the hand-written storefront scripts in the same folder stay tracked and must not use those names. A new bundle name gets its own `.gitignore` line.
    - integrations: `build/integrations/<bundle>.js`
 5. **Pro plugin.** Pro copies the same `webpack-dependency-mapping.js` rules, externalising `@wedevs/plugin-ui` and `@storegrowth/*` to the lite globals. Otherwise pro would inline its own copy of plugin-ui. Pro's bundles depend on lite handles through `.asset.php`.
 6. **No legacy admin bundles.** antd, react-fa-icon-picker, `@getdokan/dokan-ui` and the other legacy UI packages are removed; icons come from `lucide-react`. The old antd admin screens (`assets/src`, `modules/*/assets/src`, `integrations/assets/src`) are no longer built, and the PHP that enqueued them skips a missing build file instead of failing. Their sources are deleted as each module migrates.

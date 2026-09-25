@@ -127,6 +127,13 @@
     color: var(--color-sg-text);
 }
 
+/* Keyboard focus ring for everything interactive (design rule); controls
+   with their own focus style (fields) override it. */
+.spsg-layout :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-sg-brand);
+    outline-offset: 2px;
+}
+
 /* Large headings use Inter's display optical size, as in the design. */
 .spsg-layout .sg-display {
     font-variation-settings: "opsz" 28;

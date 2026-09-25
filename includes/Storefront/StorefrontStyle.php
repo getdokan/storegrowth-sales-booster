@@ -42,12 +42,13 @@ class StorefrontStyle {
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $module Module id; the rule targets `.spsg-<module>`.
-	 * @param array  $tokens Token name → `{ value, type, default?, allowed? }`.
+	 * @param string $module   Module id; names the variables and, by default, the rule targets `.spsg-<module>`.
+	 * @param array  $tokens   Token name → `{ value, type, default?, allowed? }`.
+	 * @param string $selector Selector for the rule, when the widget has more than one root (e.g. a pro template).
 	 *
 	 * @return string CSS, or '' when no token has a value.
 	 */
-	public static function render( string $module, array $tokens ): string {
+	public static function render( string $module, array $tokens, string $selector = '' ): string {
 		$module = sanitize_key( $module );
 		$vars   = array();
 
@@ -65,7 +66,9 @@ class StorefrontStyle {
 			}
 		}
 
-		return $vars ? ".spsg-{$module}{" . implode( '', $vars ) . '}' : '';
+		$selector = '' !== $selector ? $selector : ".spsg-{$module}";
+
+		return $vars ? $selector . '{' . implode( '', $vars ) . '}' : '';
 	}
 
 	/**
@@ -73,14 +76,15 @@ class StorefrontStyle {
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $handle Registered stylesheet handle.
-	 * @param string $module Module id.
-	 * @param array  $tokens Tokens, as for `render()`.
+	 * @param string $handle   Registered stylesheet handle.
+	 * @param string $module   Module id.
+	 * @param array  $tokens   Tokens, as for `render()`.
+	 * @param string $selector Rule selector, as for `render()`.
 	 *
 	 * @return void
 	 */
-	public static function attach( string $handle, string $module, array $tokens ): void {
-		$css = self::render( $module, $tokens );
+	public static function attach( string $handle, string $module, array $tokens, string $selector = '' ): void {
+		$css = self::render( $module, $tokens, $selector );
 
 		if ( '' !== $css ) {
 			wp_add_inline_style( $handle, $css );
@@ -156,6 +160,6 @@ class StorefrontStyle {
 			return '';
 		}
 
-		return 'inherit' === strtolower( $family ) ? 'inherit' : "'{$family}'";
+		return 'inherit' === strtolower( $family ) ? 'inherit' : "'{$family}', sans-serif";
 	}
 }

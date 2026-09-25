@@ -47,9 +47,11 @@ $css = StorefrontStyle::render(
 		'unknown'     => array( 'value' => 'x', 'type' => 'nope' ),
 	)
 );
-$expected = '.spsg-stock-bar{--spsg-stock-bar-bar-bg:#112233;--spsg-stock-bar-bar-fg:#0875ff;--spsg-stock-bar-legacy:rgba(0,0,0,.5);--spsg-stock-bar-bar-height:12px;--spsg-stock-bar-bad-height:10px;--spsg-stock-bar-line-height:1.4;--spsg-stock-bar-font-family:\'Open Sans\';--spsg-stock-bar-font-bad:inherit;--spsg-stock-bar-align:center;--spsg-stock-bar-align-bad:left;}';
+$expected = '.spsg-stock-bar{--spsg-stock-bar-bar-bg:#112233;--spsg-stock-bar-bar-fg:#0875ff;--spsg-stock-bar-legacy:rgba(0,0,0,.5);--spsg-stock-bar-bar-height:12px;--spsg-stock-bar-bad-height:10px;--spsg-stock-bar-line-height:1.4;--spsg-stock-bar-font-family:\'Open Sans\', sans-serif;--spsg-stock-bar-font-bad:inherit;--spsg-stock-bar-align:center;--spsg-stock-bar-align-bad:left;}';
 $check( $expected === $css, 'render(): sanitized variables, invalid → default, legacy rgba kept, unknown type skipped', $css );
 $check( '' === StorefrontStyle::render( 'x', array() ), 'render(): no tokens → empty string' );
+$check( '.a, .b{--spsg-x-c:1px;}' === StorefrontStyle::render( 'x', array( 'c' => array( 'value' => 1, 'type' => 'px' ) ), '.a, .b' ), 'render(): custom selector' );
+$check( '' === Helper::sanitize_css_color( array( 'x' ) ), 'sanitize_css_color(): non-scalar → empty' );
 
 echo "\nHelper::sanitize_css_keyword\n";
 $check( 'solid' === Helper::sanitize_css_keyword( ' Solid ', array( 'solid', 'dashed' ) ), 'allowed keyword, normalized' );

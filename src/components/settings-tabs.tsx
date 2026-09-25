@@ -70,7 +70,12 @@ export function SettingsTabs( { tabs, label, defaultTab }: SettingsTabsProps ) {
                             type="button"
                             role="tab"
                             id={ `${ baseId }-tab-${ tab.id }` }
-                            aria-controls={ `${ baseId }-panel-${ tab.id }` }
+                            // Only the selected tab's panel is rendered.
+                            aria-controls={
+                                isSelected
+                                    ? `${ baseId }-panel-${ tab.id }`
+                                    : undefined
+                            }
                             aria-selected={ isSelected }
                             tabIndex={ isSelected ? 0 : -1 }
                             className={ cn(

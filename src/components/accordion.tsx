@@ -42,7 +42,7 @@ export function Accordion( {
     return (
         <section
             className={ cn(
-                'flex w-full flex-col items-start gap-3 rounded-[5px] border border-[#E9E9E9] bg-white p-4',
+                'flex w-full flex-col items-start gap-3 rounded-[5px] border border-sg-stroke bg-white p-4',
                 className
             ) }
         >
@@ -50,7 +50,7 @@ export function Accordion( {
                 type="button"
                 className="flex w-full cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-left"
                 aria-expanded={ open }
-                aria-controls={ bodyId }
+                aria-controls={ open ? bodyId : undefined }
                 onClick={ () => setOpen( ( value ) => ! value ) }
             >
                 <span className="flex min-w-px flex-1 flex-col items-start gap-2">

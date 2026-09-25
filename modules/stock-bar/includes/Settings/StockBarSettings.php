@@ -114,10 +114,11 @@ class StockBarSettings implements SettingsSchema {
 				'type'    => 'color',
 				'default' => '#e7efff',
 			),
+			// Not `pro` on the server: templates write it in lite too, as the old
+			// lite templates did. The admin locks the Bar Color field without pro.
 			'stockbar_fg_color'               => array(
 				'type'    => 'color',
 				'default' => '#0875ff',
-				'pro'     => true,
 			),
 			'stockbar_height'                 => array(
 				'type'    => 'number',

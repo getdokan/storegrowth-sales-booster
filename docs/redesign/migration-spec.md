@@ -26,7 +26,7 @@
 | Core admin source | `assets/src/*.js` (antd) | `src/**/*.tsx` (plugin-ui) |
 | Module admin source | `modules/<name>/assets/src/*.js` | `modules/<name>/src/**/*.tsx` |
 | Integration source | `integrations/assets/src` | `integrations/src` |
-| Output | `assets/build/`, `modules/*/assets/build/`, `integrations/assets/build/` | `build/`, `build/modules/<name>/`, `build/integrations/` |
+| Output | `assets/build/`, `modules/*/assets/build/`, `integrations/assets/build/` | `build/`, `modules/<name>/assets/js/` (generated names git-ignored), `build/integrations/` |
 | Styling | antd + SCSS + `preflight-reset.css` | One scoped Tailwind v4 stylesheet `build/tailwind.css` |
 | Shared UI | Each bundle inlines its deps | `window.storegrowth.{pluginUI,components,utilities,hooks,settingsStore}` via dependency mapping |
 | Transport | 10 settings ajax pairs + mixed REST | The admin UI calls REST only (`rest-api.md`). Ajax actions stay registered as adapters |
@@ -59,7 +59,7 @@ src/
   externals/plugin-ui.js      # entry: shim
   base-tailwind.css           # entry
 modules/<name>/src/
-  index.tsx                   # entry → build/modules/<name>/admin.js
+  index.tsx                   # entry → modules/<name>/assets/js/admin.js
   schema.ts, preview/, components/, blocks/
 integrations/src/<bundle>/index.tsx
 build/                        # gitignored, shipped
@@ -178,15 +178,15 @@ See ADR-003 for the `src/base-tailwind.css` contents. The app root is `<div id="
 - Replace the three bundles (`settings`, `modules`, `notices`) with `admin` (+ `notices` if it must load on non-StoreGrowth screens).
 
 ### 5.2 Module enqueue
-Each module's admin enqueue class loads `build/modules/<id>/admin.js` from its `.asset.php`, on the StoreGrowth admin page only, and only when the module is active. Pattern:
+Each module's `AdminPage` class (registered from the always-loaded `ServiceProvider`, so the page works right after the module is switched on) loads `modules/<id>/assets/js/admin.js` from its `.asset.php`, on the StoreGrowth admin pages only (see `modules/stock-bar/includes/AdminPage.php`):
 ```php
-$asset = Helper::get_plugin_path( "build/modules/{$id}/admin.asset.php" );
+$asset = Helper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
 if ( file_exists( $asset ) ) {
     $meta = require $asset;
-    wp_enqueue_script( "spsg-module-{$id}", Helper::get_plugin_url( "build/modules/{$id}/admin.js" ), $meta['dependencies'], $meta['version'], true );
+    wp_enqueue_script( "spsg-{$id}-admin", Helper::get_modules_url( "{$id}/assets/js/admin.js" ), $meta['dependencies'], $meta['version'], true );
 }
 ```
-Order Bump's block registration switches to `build/modules/upsell-order-bump/blocks.*`.
+Order Bump's block registration switches to `modules/upsell-order-bump/assets/js/blocks.*`.
 
 ### 5.3 Admin menu
 `includes/Admin/AdminMenu.php`:

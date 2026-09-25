@@ -42,14 +42,14 @@ export function CheckboxField( {
     return (
         <label
             htmlFor={ inputId }
-            className="flex w-full cursor-pointer items-center gap-3 text-sm leading-[1.3] text-sg-text"
+            className="group flex w-full cursor-pointer items-center gap-3 text-sm leading-[1.3] text-sg-text"
         >
             <Checkbox
                 id={ inputId }
                 checked={ checked }
                 disabled={ locked }
                 onCheckedChange={ onChange }
-                className="data-checked:border-sg-brand data-checked:bg-sg-brand"
+                className="border-sg-stroke group-hover:border-sg-brand data-checked:border-sg-brand data-checked:bg-sg-brand"
             />
             { label }
             { locked && <ProBadge /> }

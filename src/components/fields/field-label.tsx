@@ -35,18 +35,19 @@ export const FIELD_LABEL = 'text-sm font-medium text-sg-text';
  * @since SPSG_VERSION
  */
 export const FIELD_CONTROL =
-    'flex h-10 w-full items-center rounded-[5px] border border-[#E9E9E9] bg-white px-4 text-sm leading-[1.4] text-sg-text placeholder:text-sg-field focus-visible:border-sg-brand focus-visible:shadow-[0_0_0_3px_rgba(8,117,255,.25)] focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-sg-chip';
+    'h-10 w-full rounded-[5px] border-sg-stroke bg-white px-4 text-sm leading-[1.4] text-sg-text shadow-none placeholder:text-sg-field focus-visible:border-sg-brand focus-visible:ring-[3px] focus-visible:ring-sg-brand/25 disabled:cursor-not-allowed disabled:bg-sg-chip disabled:opacity-100';
 
 /**
- * Amber "Pro" pill shown beside a locked field's label.
+ * "Pro" pill beside a locked field's label (same look as the dashboard's
+ * pro pill).
  *
  * @since SPSG_VERSION
  */
 export function ProBadge() {
     return (
-        <span className="inline-flex items-center gap-1 rounded-full bg-sg-amber px-2 py-0.5 text-[11px] font-semibold leading-4 text-black">
-            <Crown className="size-3" strokeWidth={ 2 } aria-hidden />
+        <span className="inline-flex items-center gap-1 rounded-[20px] bg-sg-amber-pro px-2 py-0.5 text-[12px] leading-[1.4] text-black">
             { __( 'Pro', 'storegrowth-sales-booster' ) }
+            <Crown className="size-3.5" strokeWidth={ 1.5 } aria-hidden />
         </span>
     );
 }

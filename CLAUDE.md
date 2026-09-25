@@ -27,7 +27,7 @@ Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first 
 
 ## Build / dev commands
 
-One `@wordpress/scripts` webpack build (ADR-001): `webpack.config.js` + `webpack-entries.js` (every entry listed by hand) + `webpack-dependency-mapping.js` (`@storegrowth/*` and `@wedevs/plugin-ui` are externals). Output goes to `build/` (git-ignored).
+One `@wordpress/scripts` webpack build (ADR-001): `webpack.config.js` + `webpack-entries.js` (every entry listed by hand) + `webpack-dependency-mapping.js` (`@storegrowth/*` and `@wedevs/plugin-ui` are externals). Core output goes to `build/` (git-ignored); each module's bundles go to `modules/<id>/assets/js/` next to its hand-written storefront scripts, with only the generated names (`admin.js`, `*.asset.php`, `*.js.map`) git-ignored.
 
 ```bash
 npm install
@@ -92,7 +92,7 @@ Every module follows the same shape under `modules/<id>/`:
 
 Module enable/disable state lives in the single `spsg_active_module_ids` option. `BaseModule::activate()`/`deactivate()` mutate that option and fire `spsg_module_activated`/`spsg_module_deactivated`. `ModuleManager` lists modules (`spsg_modules` filter), boots active ones on load, and toggles them.
 
-To add a module: create the directory, add its `require_once .../bootstrap.php` line in `storegrowth-sales-booster.php`, add a PSR-4 entry in `composer.json`, and (for an admin page) add `'modules/<id>/admin': './modules/<id>/src/index.tsx'` to `webpack-entries.js` and enqueue it from the module's `EnqueueScript`.
+To add a module: create the directory, add its `require_once .../bootstrap.php` line in `storegrowth-sales-booster.php`, add a PSR-4 entry in `composer.json`, and (for an admin page) add `moduleEntry( '<id>', 'admin', './modules/<id>/src/index.tsx' )` to `webpack-entries.js` and enqueue `modules/<id>/assets/js/admin.js` from an always-loaded `AdminPage` class (see `modules/stock-bar/includes/AdminPage.php`).
 
 ### Admin app (redesigned)
 - `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.

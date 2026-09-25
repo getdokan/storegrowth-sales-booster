@@ -5,7 +5,9 @@
  * @since SPSG_VERSION
  */
 import { toast } from '@wedevs/plugin-ui';
+import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+import type { ReactNode } from 'react';
 import {
     Accordion,
     CardHead,
@@ -24,7 +26,7 @@ import {
     TextField,
 } from '@storegrowth/components';
 import { useModuleSettings } from '@storegrowth/hooks';
-import { errorMessage } from '@storegrowth/utilities';
+import { errorMessage, getHeaderData } from '@storegrowth/utilities';
 
 import { StockBarWidget } from './preview/stock-bar-widget';
 import { PRESETS, templateOptions } from './templates';
@@ -57,6 +59,7 @@ const FORMAT_OPTIONS = [
 export default function StockBarPage() {
     const settings = useModuleSettings< StockBarValues >( 'stock-bar' );
     const { values, setValue, setValues, isLocked, errors } = settings;
+    const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
 
     /**
      * Props shared by every field bound to a setting.
@@ -87,31 +90,39 @@ export default function StockBarPage() {
         }
     };
 
-    const saveBar = ( keys: Array< keyof StockBarValues > ) => (
-        <SaveBar
-            saving={ settings.saving }
-            disabled={ ! settings.isDirty( keys ) }
-            onReset={ () => settings.reset( keys ) }
-            onSave={ () => save( keys ) }
-        />
-    );
+    // Nothing to save or reset on a tab whose fields all need pro.
+    const saveBar = ( keys: Array< keyof StockBarValues > ) =>
+        keys.every( isLocked ) ? null : (
+            <SaveBar
+                saving={ settings.saving }
+                disabled={ ! settings.isDirty( keys ) }
+                onReset={ () => settings.reset( keys ) }
+                onSave={ () => save( keys ) }
+            />
+        );
 
+    // A preset sets both bar colours, in lite too (the Bar Color field itself
+    // needs pro).
     const applyPreset = ( id: string ) => {
         const preset = PRESETS.find( ( item ) => item.id === id );
 
-        if ( ! preset ) {
-            return;
+        if ( preset ) {
+            setValues( {
+                stockbar_template: preset.id,
+                stockbar_bg_color: preset.track,
+                stockbar_fg_color: preset.fill,
+            } );
         }
-
-        setValues( {
-            stockbar_template: preset.id,
-            stockbar_bg_color: preset.track,
-            // The fill colour is a pro setting.
-            ...( isLocked( 'stockbar_fg_color' )
-                ? {}
-                : { stockbar_fg_color: preset.fill } ),
-        } );
     };
+
+    // Highlight a preset only while the colours are still its colours.
+    const activePreset =
+        PRESETS.find(
+            ( preset ) =>
+                preset.id === values.stockbar_template &&
+                preset.track === values.stockbar_bg_color.toLowerCase() &&
+                preset.fill === values.stockbar_fg_color.toLowerCase()
+        )?.id ?? '';
 
     const content = (
         <>
@@ -265,6 +276,8 @@ export default function StockBarPage() {
                         setValue( 'stockbar_fg_color', value )
                     }
                     { ...bind( 'stockbar_fg_color' ) }
+                    // Pro in the UI only: templates set it in lite.
+                    locked={ ! isPro }
                 />
                 <NumberField
                     label={ __(
@@ -374,7 +387,7 @@ export default function StockBarPage() {
             >
                 <TemplatePicker
                     templates={ templateOptions() }
-                    value={ values.stockbar_template }
+                    value={ activePreset }
                     onSelect={ applyPreset }
                     locked={ isLocked( 'stockbar_template' ) }
                 />
@@ -388,24 +401,39 @@ export default function StockBarPage() {
             <CardHead
                 title={ __( 'Stock Bar', 'storegrowth-sales-booster' ) }
             />
-            { settings.loading && (
-                <div className="w-full rounded-b-lg border border-t-0 border-[#EAEAEA] bg-white p-6 text-sm text-sg-muted">
-                    { __( 'Loading…', 'storegrowth-sales-booster' ) }
-                </div>
-            ) }
-            { settings.loadError && (
+            { ( settings.loading || settings.loadError ) && (
                 <div
-                    role="alert"
-                    className="w-full rounded-b-lg border border-t-0 border-[#EAEAEA] bg-white p-6 text-sm text-red-600"
+                    role={ settings.loadError ? 'alert' : undefined }
+                    className={ `w-full rounded-lg border border-sg-cardline bg-white p-6 text-sm ${
+                        settings.loadError
+                            ? 'text-destructive'
+                            : 'text-sg-muted'
+                    }` }
                 >
-                    { settings.loadError }
+                    { settings.loadError ||
+                        __( 'Loading…', 'storegrowth-sales-booster' ) }
                 </div>
             ) }
             { ! settings.loading && ! settings.loadError && (
                 <SettingsSplit
                     preview={
                         <LivePreview
-                            widget={ <StockBarWidget values={ values } /> }
+                            widget={
+                                /**
+                                 * Filters the Stock Bar preview widget, e.g. for
+                                 * pro to add its parts.
+                                 *
+                                 * @since SPSG_VERSION
+                                 *
+                                 * @param {JSX.Element}    widget The preview widget.
+                                 * @param {StockBarValues} values Current (unsaved) settings.
+                                 */
+                                applyFilters(
+                                    'storegrowth.preview.stock-bar',
+                                    <StockBarWidget values={ values } />,
+                                    values
+                                ) as ReactNode
+                            }
                         />
                     }
                 >

@@ -2,7 +2,8 @@
  * Single webpack build for the admin UI (ADR-001).
  *
  * Extends @wordpress/scripts, as dokan-lite does. Core bundles go to `build/`,
- * module bundles to `build/modules/<id>/`, integration bundles to
+ * module bundles to `modules/<id>/assets/js/` (entry names relative to
+ * `build/`, see webpack-entries.js), integration bundles to
  * `build/integrations/<bundle>/`.
  *
  * @since SPSG_VERSION

@@ -182,7 +182,7 @@ export function LivePreview( {
 
     return (
         <>
-            <div className="flex w-full items-center justify-between gap-4 rounded-tr-lg border border-l-0 border-[#EAEAEA] bg-white px-6 py-3 max-[1100px]:rounded-none max-[1100px]:border-l max-[1100px]:border-t-0">
+            <div className="flex w-full items-center justify-between gap-4 rounded-tr-lg border border-l-0 border-sg-cardline bg-white px-6 py-3 @max-[932px]:rounded-none @max-[932px]:border-l @max-[932px]:border-t-0">
                 <div className="min-w-0 flex-1">
                     <h2 className="text-[14px] font-semibold leading-[1.3] text-sg-heading">
                         { __( 'Preview', 'storegrowth-sales-booster' ) }
@@ -246,7 +246,7 @@ export function LivePreview( {
                 </div>
             </div>
 
-            <div className="flex w-full flex-auto flex-col items-center gap-14 rounded-br-lg border border-l-0 border-t-0 border-[#EAEAEA] bg-[#E6E6E6] p-10 max-[1100px]:rounded-b-lg max-[1100px]:border-l max-[782px]:gap-6 max-[782px]:p-4">
+            <div className="flex w-full flex-auto flex-col items-center gap-14 rounded-br-lg border border-l-0 border-t-0 border-sg-cardline bg-sg-preview p-10 @max-[932px]:rounded-b-lg @max-[932px]:border-l max-[782px]:gap-6 max-[782px]:p-4">
                 <div
                     data-device={ device }
                     data-theme={ theme }

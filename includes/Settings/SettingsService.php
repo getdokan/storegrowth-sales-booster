@@ -178,7 +178,8 @@ class SettingsService {
 	 * - pro keys are ignored while pro is inactive;
 	 * - a key sent with the value `get_values()` reports for it is left alone,
 	 *   so a stored value the schema can't show (e.g. `"10.5"` in a whole-number
-	 *   field, or a value pro added) survives a save of the whole form;
+	 *   field, or a value pro added) survives a save of the whole form, and a
+	 *   key never saved isn't written just because its default was sent back;
 	 * - nothing is saved when any value is invalid, or when the stored option
 	 *   isn't an array (it would be overwritten).
 	 *
@@ -216,7 +217,10 @@ class SettingsService {
 				continue;
 			}
 
-			if ( array_key_exists( $key, $stored ) && $this->is_unchanged( $field, $input[ $key ], $stored[ $key ] ) ) {
+			// Unchanged: the stored value, or the default for a key never saved.
+			$current = array_key_exists( $key, $stored ) ? $stored[ $key ] : ( $field['default'] ?? null );
+
+			if ( $this->is_unchanged( $field, $input[ $key ], $current ) ) {
 				continue;
 			}
 
@@ -390,6 +394,11 @@ class SettingsService {
 	 * @return bool
 	 */
 	private function is_unchanged( array $field, $input, $stored ): bool {
+		// Sent back exactly as stored (e.g. a legacy `''` in a number field).
+		if ( is_scalar( $input ) && is_scalar( $stored ) && (string) $input === (string) $stored ) {
+			return true;
+		}
+
 		$current = $this->to_api( $field, $stored );
 
 		switch ( $field['type'] ) {

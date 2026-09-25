@@ -1,8 +1,10 @@
 /**
- * Text field (design `.field` + `.input`): label above a full-width input.
+ * Text field (design `.field` + `.input`): label above a full-width
+ * plugin-ui input.
  *
  * @since SPSG_VERSION
  */
+import { Input } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
 
 import {
@@ -49,13 +51,13 @@ export function TextField( {
             <FieldLabel htmlFor={ inputId } locked={ locked }>
                 { label }
             </FieldLabel>
-            <input
+            <Input
                 id={ inputId }
-                type="text"
                 className={ FIELD_CONTROL }
                 value={ value }
                 placeholder={ placeholder }
                 disabled={ locked }
+                aria-invalid={ !! error }
                 onChange={ ( event ) => onChange( event.target.value ) }
             />
             <FieldNotes help={ help } error={ error } />

@@ -6,6 +6,11 @@ package-lock.json
 /build/
 assets/build/
 modules/*/assets/build/
+# Module bundles built by webpack (webpack-entries.js). Hand-written
+# storefront scripts in assets/js stay tracked; don't give them these names.
+modules/*/assets/js/admin.js
+modules/*/assets/js/*.asset.php
+modules/*/assets/js/*.js.map
 integrations/assets/build/
 lib/packages/
 .vscode/

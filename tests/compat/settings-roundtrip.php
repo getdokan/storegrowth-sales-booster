@@ -118,6 +118,13 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 		$check( 200 === $status, 'POST unchanged values 200' );
 		$check( get_option( $option ) === $seed, 'round trip leaves the option byte-identical' );
 
+		// 1b. Round trip on a sparse option: defaults sent back are not written.
+		$sparse = array( 'spsg_unknown_key' => 'keep me' );
+		update_option( $option, $sparse );
+		[ , $data ] = $call( 'GET', $module_id );
+		$call( 'POST', $module_id, (array) $data['values'] );
+		$check( get_option( $option ) === $sparse, 'round trip on a sparse option writes nothing' );
+
 		// 2. One change per type is written in legacy shape; nothing else moves.
 		$changes = array();
 		foreach ( $fields as $key => $field ) {
@@ -130,8 +137,12 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 					break;
 				case 'number':
 					// 7, moved inside the field's bounds.
-					$n               = min( max( 7, $field['min'] ?? 7 ), $field['max'] ?? 7 );
+					$n               = min( max( 7, $field['min'] ?? 7 ), $field['max'] ?? PHP_INT_MAX );
 					$changes[ $key ] = array( $n, (string) $n );
+					break;
+				case 'select':
+					$last            = (string) end( $field['options'] );
+					$changes[ $key ] = array( $last, $last );
 					break;
 				case 'color':
 					$changes[ $key ] = array( '#123456', '#123456' );

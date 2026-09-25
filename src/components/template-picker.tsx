@@ -56,7 +56,7 @@ export function TemplatePicker( {
                             'flex w-full cursor-pointer flex-col gap-1.5 rounded-lg border-2 border-solid bg-white px-3 py-2.5 text-left disabled:cursor-not-allowed disabled:opacity-60',
                             selected
                                 ? 'border-sg-brand shadow-[0_0_0_3px_rgba(8,117,255,.18)]'
-                                : 'border-[#E9E9E9]'
+                                : 'border-sg-stroke'
                         ) }
                         onClick={ () => onSelect( template.id ) }
                     >
