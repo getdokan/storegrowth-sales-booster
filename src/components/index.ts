@@ -6,6 +6,7 @@
  */
 export { Accordion, type AccordionProps } from './accordion';
 export { CardHead, type CardHeadProps } from './card-head';
+export { ColorPicker, type ColorPickerProps } from './color-picker';
 export {
     DeactivatedModuleDialog,
     type DeactivatedModuleDialogProps,
