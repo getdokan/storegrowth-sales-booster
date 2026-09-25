@@ -79,9 +79,11 @@ Reference implementation: `modules/stock-bar/src/admin/`.
 
 ## Fields and shared components
 
-- Fields (`src/components/fields/`): `TextField`, `NumberField` (`suffix="px"`, emits a number), `SelectField`, `ColorField` (6-digit hex swatch), `SwitchField`, `CheckboxField` + `CheckboxGroup`. All take `label`, value/onChange, `locked` (pro field without pro → disabled + Pro badge), `error`, `help`.
+- Fields (`src/components/fields/`): `TextField`, `NumberField` (`suffix="px"`, emits a number), `SelectField`, `ColorField` (6-digit hex swatch), `SwitchField`, `SwitchCard`, `AlignmentField` (left/center/right), `BoxModelField` (margin/padding, `box` type), `CheckboxField` + `CheckboxGroup`. All take `label`, value/onChange, `locked` (pro field without pro → disabled + Pro badge), `error`, `help`.
 - Frame: `FeatureLayout` (feature rail + page area), `CardHead`, `SettingsSplit`, `SettingsTabs`, `Accordion`, `SaveBar`, `TemplatePicker`, `ColorPicker`.
 - `setValue()` takes the API type (a number, not the input's string), or `isDirty` sees a change that isn't one.
+- **No native `<button>`, `<input>`, `<select>` in admin code.** Use plugin-ui: `Button` (buttons, links styled as buttons), `Toggle` (on/off icon button), `ToggleGroup` / `ToggleGroupItem` (segmented choice; guard `onValueChange` against `[]`, a click on the pressed item empties it), `Tabs`, `Select` (pass `items` so the trigger shows labels), `Input` / `InputGroup`, `Switch` (via `ToggleSwitch`), `Checkbox`, the `Field*` parts. Restyle them to the design with `sg-*` classes.
+- plugin-ui's padding uses logical properties (`ps-*` / `pe-*`); override with the same (`ps-4 pe-4`), `px-4` loses.
 - Build a new control only when plugin-ui and these parts can't do it; keep it simple and reusable.
 
 ## Live preview (ADR-005 S10)
@@ -94,7 +96,7 @@ Reference implementation: `modules/stock-bar/src/admin/`.
 
 - Tailwind utilities are `important` and scoped to `.spsg-layout`; preflight is scoped too and stops at `.spsg-wp-notices`, `.spsg-storefront` and `@wordpress/components` roots.
 - Use the `sg-*` tokens (`bg-sg-brand`, `text-sg-text`, `border-sg-stroke`, …) and plugin-ui variants; avoid one-off hex values when a token exists.
-- wp-admin's global CSS leaks into native controls (e.g. `select` gets an arrow and `max-width: 25rem`); override on the component.
+- plugin-ui portals (select lists, popovers, dialogs) carry the ThemeProvider class, so `.spsg-layout` styles reach them.
 - Match the design reference's layout; visual values come from the design system.
 
 ## Storefront CSS/JS (ADR-005)

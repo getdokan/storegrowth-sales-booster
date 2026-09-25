@@ -1,10 +1,10 @@
 /**
  * Reset + Save buttons at the end of a settings tab (design: right-aligned,
- * outlined Reset, blue Save).
+ * outlined Reset, blue Save), on plugin-ui's Button.
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import { Button, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
 
 export interface SaveBarProps {
@@ -18,8 +18,7 @@ export interface SaveBarProps {
     className?: string;
 }
 
-const BUTTON =
-    'flex shrink-0 cursor-pointer items-center rounded-md px-6 py-2.5 text-sm font-medium leading-5 transition-colors duration-150 ease-out disabled:cursor-not-allowed disabled:opacity-60';
+const BUTTON = 'h-10 rounded-md px-6 leading-5 disabled:opacity-60';
 
 /**
  * @since SPSG_VERSION
@@ -41,24 +40,20 @@ export function SaveBar( {
     return (
         <div className={ cn( 'flex w-full justify-end gap-3', className ) }>
             { onReset && (
-                <button
-                    type="button"
+                <Button
+                    variant="outline"
                     className={ cn(
                         BUTTON,
-                        'border border-sg-stroke bg-white text-sg-text hover:bg-sg-chip'
+                        'border-sg-stroke bg-white text-sg-text hover:bg-sg-chip'
                     ) }
                     disabled={ saving }
                     onClick={ onReset }
                 >
                     { __( 'Reset', 'storegrowth-sales-booster' ) }
-                </button>
+                </Button>
             ) }
-            <button
-                type="button"
-                className={ cn(
-                    BUTTON,
-                    'border-0 bg-sg-brand text-white hover:bg-sg-brand-hover'
-                ) }
+            <Button
+                className={ cn( BUTTON, 'hover:bg-sg-brand-hover' ) }
                 disabled={ saving || disabled }
                 aria-busy={ saving }
                 onClick={ onSave }
@@ -66,7 +61,7 @@ export function SaveBar( {
                 { saving
                     ? __( 'Saving…', 'storegrowth-sales-booster' )
                     : __( 'Save', 'storegrowth-sales-booster' ) }
-            </button>
+            </Button>
         </div>
     );
 }

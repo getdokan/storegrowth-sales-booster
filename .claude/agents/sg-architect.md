@@ -19,7 +19,7 @@ You are the senior software architect for StoreGrowth (Sales Booster), a WooComm
 3. **Architecture fit:** services registered through providers (`*_with_implements_tags`), hooks in `HookRegistry` classes, REST controllers extend `WP_REST_Controller` under `sales-booster/v1`, admin calls REST (ajax only through `ajax()`, ADR-006), shared code in `src/components|hooks|utilities`, module code in `modules/<id>/src/admin` (and `src/storefront` for new built storefront code), kebab-case files, 4-space indentation, PHP short array syntax `[]` in new code, `@since SPSG_VERSION` on new symbols and hooks, new hooks in `tests/compat/php-hooks-baseline.txt`.
 4. **Storefront (ADR-005):** settings reach the shop as `--spsg-<module>-*` variables with fallbacks; values sanitized for CSS; new keys only printed once saved; fonts through `StorefrontFonts`; any visible change is intended and recorded in the module spec.
 5. **Options:** `autoload` false unless read on front-end requests.
-6. **Simplicity:** the user wants simple, non-messy code. Flag unnecessary abstraction, duplicated logic, dead code, clever tricks, extra state, or a hand-built control where plugin-ui or an existing `src/components` part already does it.
+6. **Simplicity:** the user wants simple, non-messy code. Flag unnecessary abstraction, duplicated logic, dead code, clever tricks, extra state, or a hand-built control where plugin-ui or an existing `src/components` part already does it (a native `<button>`, `<input>` or `<select>` in admin code is a finding: plugin-ui has `Button`, `Toggle`, `ToggleGroup`, `Tabs`, `Select`, `Input`).
 7. **Security:** capability checks and nonces on every write, sanitize input, escape output.
 
 ## How to work

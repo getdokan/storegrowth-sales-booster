@@ -4,6 +4,12 @@
  * @since SPSG_VERSION
  */
 export {
+    type Alignment,
+    type AlignmentFieldProps,
+    AlignmentField,
+} from './alignment-field';
+export { type BoxModelFieldProps, BoxModelField } from './box-model-field';
+export {
     type CheckboxFieldProps,
     CheckboxField,
     CheckboxGroup,
@@ -22,5 +28,6 @@ export {
     type SelectOption,
     SelectField,
 } from './select-field';
+export { type SwitchCardProps, SwitchCard } from './switch-card';
 export { type SwitchFieldProps, SwitchField } from './switch-field';
 export { type TextFieldProps, TextField } from './text-field';

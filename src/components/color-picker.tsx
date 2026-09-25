@@ -65,7 +65,7 @@ export function ColorPicker( {
                         : __( 'Choose colour', 'storegrowth-sales-booster' ) )
                 }
                 className={ cn(
-                    'size-8 shrink-0 cursor-pointer rounded-full border border-sg-stroke p-0 disabled:cursor-not-allowed disabled:opacity-60',
+                    'size-8 shrink-0 rounded-full border border-sg-stroke p-0 disabled:opacity-60',
                     className
                 ) }
                 style={ { background: value } }

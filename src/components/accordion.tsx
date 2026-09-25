@@ -4,7 +4,7 @@
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import { Button, cn } from '@wedevs/plugin-ui';
 import { useId, useState } from '@wordpress/element';
 import { ChevronUp } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -46,9 +46,9 @@ export function Accordion( {
                 className
             ) }
         >
-            <button
-                type="button"
-                className="flex w-full cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-left"
+            <Button
+                variant="ghost"
+                className="h-auto w-full justify-start gap-3 whitespace-normal rounded-none border-0 p-0 text-left font-normal hover:bg-transparent aria-expanded:bg-transparent"
                 aria-expanded={ open }
                 aria-controls={ open ? bodyId : undefined }
                 onClick={ () => setOpen( ( value ) => ! value ) }
@@ -71,7 +71,7 @@ export function Accordion( {
                     strokeWidth={ 1.5 }
                     aria-hidden
                 />
-            </button>
+            </Button>
             { open && (
                 <>
                     <div className="h-px w-full bg-sg-line" />

@@ -4,6 +4,7 @@
  *
  * @since SPSG_VERSION
  */
+import { Button } from '@wedevs/plugin-ui';
 import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Check } from 'lucide-react';
@@ -127,13 +128,13 @@ export function OnboardLayout( {
                     </div>
                     <div className="min-w-[120px] text-right">
                         { skipLabel && onSkip && (
-                            <button
-                                type="button"
-                                className="cursor-pointer border-0 bg-transparent p-0 text-base font-medium text-[#1b49f6] hover:underline"
+                            <Button
+                                variant="link"
+                                className="h-auto p-0 text-base font-medium text-[#1b49f6]"
                                 onClick={ onSkip }
                             >
                                 { skipLabel }
-                            </button>
+                            </Button>
                         ) }
                     </div>
                 </div>
@@ -176,8 +177,7 @@ export function Announce( { image, title, subtitle }: AnnounceProps ) {
     );
 }
 
-/** Classes of the wizard's large buttons. */
-export const STEP_BUTTON =
-    'inline-flex h-auto cursor-pointer items-center justify-center rounded-md px-[30px] py-3 text-sm font-bold no-underline';
-export const STEP_BUTTON_PRIMARY = `${ STEP_BUTTON } border-0 bg-sg-brand text-white hover:bg-sg-brand-hover hover:text-white`;
-export const STEP_BUTTON_SECONDARY = `${ STEP_BUTTON } border border-black bg-white text-black hover:bg-sg-chip`;
+/** Classes of the wizard's large buttons (on plugin-ui's Button). */
+export const STEP_BUTTON = 'h-auto rounded-md px-[30px] py-3 text-sm font-bold';
+export const STEP_BUTTON_PRIMARY = `${ STEP_BUTTON } hover:bg-sg-brand-hover`;
+export const STEP_BUTTON_SECONDARY = `${ STEP_BUTTON } border-black bg-white text-black hover:bg-sg-chip`;

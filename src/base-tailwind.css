@@ -134,6 +134,18 @@
     outline-offset: 2px;
 }
 
+/* Pointer on everything clickable, not-allowed when disabled. `:is()` so it
+   outweighs preflight's `button { cursor: default }`; a `cursor-*` utility
+   (important) still wins. */
+.spsg-layout :is(a[href], button, summary, select, label[for], label:has(input, [role="switch"], [role="checkbox"]), [role="button"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="option"], [role="menuitem"]) {
+    cursor: pointer;
+}
+
+.spsg-layout :is(button, select, input, [role="switch"], [role="checkbox"], [role="radio"], [role="tab"], [role="option"]):is(:disabled, [aria-disabled="true"], [data-disabled]),
+.spsg-layout label:has(:disabled, [data-disabled]) {
+    cursor: not-allowed;
+}
+
 /* Large headings use Inter's display optical size, as in the design. */
 .spsg-layout .sg-display {
     font-variation-settings: "opsz" 28;

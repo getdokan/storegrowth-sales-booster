@@ -4,7 +4,7 @@
  *
  * @since SPSG_VERSION
  */
-import { toast } from '@wedevs/plugin-ui';
+import { Button, toast } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
 import { ToggleSwitch } from '@storegrowth/components';
 import { useModules } from '@storegrowth/hooks';
@@ -137,20 +137,16 @@ export function ModulesScreen( { onBack, onNext }: ModulesScreenProps ) {
             </div>
 
             <div className="flex justify-center gap-2.5">
-                <button
-                    type="button"
+                <Button
+                    variant="outline"
                     className={ STEP_BUTTON_SECONDARY }
                     onClick={ onBack }
                 >
                     { __( 'Previous', 'storegrowth-sales-booster' ) }
-                </button>
-                <button
-                    type="button"
-                    className={ STEP_BUTTON_PRIMARY }
-                    onClick={ onNext }
-                >
+                </Button>
+                <Button className={ STEP_BUTTON_PRIMARY } onClick={ onNext }>
                     { __( 'Next Step', 'storegrowth-sales-booster' ) }
-                </button>
+                </Button>
             </div>
         </OnboardLayout>
     );

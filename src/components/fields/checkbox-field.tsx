@@ -42,7 +42,7 @@ export function CheckboxField( {
     return (
         <label
             htmlFor={ inputId }
-            className="group flex w-full cursor-pointer items-center gap-3 text-sm leading-[1.3] text-sg-text"
+            className="group flex w-full items-center gap-3 text-sm leading-[1.3] text-sg-text"
         >
             <Checkbox
                 id={ inputId }

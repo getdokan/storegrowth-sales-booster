@@ -1,11 +1,17 @@
 /**
- * Select field (design `.field` + `.select`): label above a native select.
+ * Select field (design `.field` + `.select`): label above plugin-ui's Select.
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+    cn,
+} from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
-import { ChevronDown } from 'lucide-react';
 
 import {
     type BaseFieldProps,
@@ -56,30 +62,35 @@ export function SelectField( {
             <FieldLabel htmlFor={ selectId } locked={ locked }>
                 { label }
             </FieldLabel>
-            <div className="relative w-full">
-                <select
+            <Select
+                // `items` lets the trigger show the label, not the value.
+                items={ options }
+                value={ value }
+                disabled={ locked }
+                onValueChange={ ( next ) => next !== null && onChange( next ) }
+            >
+                <SelectTrigger
                     id={ selectId }
-                    // wp-admin gives selects its own arrow and a 25rem max-width.
+                    aria-invalid={ !! error }
                     className={ cn(
                         FIELD_CONTROL,
-                        'max-w-none appearance-none border bg-none pr-10 outline-none'
+                        'border ps-4 pe-4 data-[size=default]:h-10 [&>svg]:size-5 [&>svg]:text-sg-text'
                     ) }
-                    value={ value }
-                    disabled={ locked }
-                    onChange={ ( event ) => onChange( event.target.value ) }
                 >
+                    <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
                     { options.map( ( option ) => (
-                        <option key={ option.value } value={ option.value }>
+                        <SelectItem
+                            key={ option.value }
+                            value={ option.value }
+                            className="cursor-pointer"
+                        >
                             { option.label }
-                        </option>
+                        </SelectItem>
                     ) ) }
-                </select>
-                <ChevronDown
-                    className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-sg-text"
-                    strokeWidth={ 1.5 }
-                    aria-hidden
-                />
-            </div>
+                </SelectContent>
+            </Select>
             <FieldNotes help={ help } error={ error } />
         </div>
     );

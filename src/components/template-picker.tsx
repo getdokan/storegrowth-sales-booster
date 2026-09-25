@@ -1,11 +1,11 @@
 /**
- * Template picker (design `.sb-tpl` / `.tpl`): a column of preset buttons,
- * each drawn by the module as a miniature of what it produces. Selecting one
+ * Template picker (design `.sb-tpl` / `.tpl`): a column of preset toggles
+ * (plugin-ui ToggleGroup), each drawn by the module as a miniature of what it produces. Selecting one
  * calls `onSelect`; the module writes the preset's values into its fields.
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import { ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
 
 export interface TemplateOption {
@@ -41,29 +41,25 @@ export function TemplatePicker( {
     locked = false,
 }: TemplatePickerProps ) {
     return (
-        <div className="flex w-full flex-col items-stretch gap-3">
-            { templates.map( ( template ) => {
-                const selected = template.id === value;
-
-                return (
-                    <button
-                        key={ template.id }
-                        type="button"
-                        aria-pressed={ selected }
-                        aria-label={ template.label }
-                        disabled={ locked }
-                        className={ cn(
-                            'flex w-full cursor-pointer flex-col gap-1.5 rounded-lg border-2 border-solid bg-white px-3 py-2.5 text-left disabled:cursor-not-allowed disabled:opacity-60',
-                            selected
-                                ? 'border-sg-brand shadow-[0_0_0_3px_rgba(8,117,255,.18)]'
-                                : 'border-sg-stroke'
-                        ) }
-                        onClick={ () => onSelect( template.id ) }
-                    >
-                        { template.preview }
-                    </button>
-                );
-            } ) }
-        </div>
+        <ToggleGroup
+            orientation="vertical"
+            spacing={ 3 }
+            value={ [ value ] }
+            // Clicking the selected preset empties the group; keep it.
+            onValueChange={ ( next ) => next[ 0 ] && onSelect( next[ 0 ] ) }
+            disabled={ locked }
+            className="w-full"
+        >
+            { templates.map( ( template ) => (
+                <ToggleGroupItem
+                    key={ template.id }
+                    value={ template.id }
+                    aria-label={ template.label }
+                    className="h-auto w-full flex-col items-stretch gap-1.5 whitespace-normal rounded-lg border-2 border-solid border-sg-stroke bg-white px-3 py-2.5 text-left font-normal hover:bg-white disabled:opacity-60 aria-pressed:border-sg-brand aria-pressed:bg-white aria-pressed:shadow-[0_0_0_3px_rgba(8,117,255,.18)]"
+                >
+                    { template.preview }
+                </ToggleGroupItem>
+            ) ) }
+        </ToggleGroup>
     );
 }

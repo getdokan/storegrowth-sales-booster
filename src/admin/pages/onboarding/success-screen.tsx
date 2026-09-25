@@ -3,6 +3,7 @@
  *
  * @since SPSG_VERSION
  */
+import { Button } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
 import { FileText, Headset } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -115,20 +116,16 @@ export function SuccessScreen( { onBack, onFinish }: SuccessScreenProps ) {
             </div>
 
             <div className="flex justify-center gap-2.5">
-                <button
-                    type="button"
+                <Button
+                    variant="outline"
                     className={ STEP_BUTTON_SECONDARY }
                     onClick={ onBack }
                 >
                     { __( 'Previous', 'storegrowth-sales-booster' ) }
-                </button>
-                <button
-                    type="button"
-                    className={ STEP_BUTTON_PRIMARY }
-                    onClick={ onFinish }
-                >
+                </Button>
+                <Button className={ STEP_BUTTON_PRIMARY } onClick={ onFinish }>
                     { __( 'Go to dashboard', 'storegrowth-sales-booster' ) }
-                </button>
+                </Button>
             </div>
         </OnboardLayout>
     );

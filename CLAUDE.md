@@ -124,7 +124,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 - **New hooks** go in `tests/compat/php-hooks-baseline.txt` (sorted); `npm run check:hooks` fails when one stops firing.
 - **Option autoload:** pass `false` to `add_option()` / `update_option()` for any option that isn't read on most front-end requests (admin-only flags, versions, backups, one-shot state). Leave it out (WordPress's default `auto`) only for options the storefront or every request reads: `spsg_active_module_ids` and the module settings options.
 - TypeScript/CSS: 4-space indentation, kebab-case file names inside `src/`. PHP: WordPress coding standards (tabs), PSR-4 PascalCase class files, **short array syntax `[]`, never `array()`** in new code (the house style, allowed in `phpcs.xml`; legacy files keep theirs until they're rewritten).
-- **Keep code simple:** reuse plugin-ui and `src/components` before building a control; no unnecessary abstraction, state or CSS tricks.
+- **Keep code simple:** reuse plugin-ui and `src/components` before building a control; no unnecessary abstraction, state or CSS tricks. Admin code uses plugin-ui controls (`Button`, `Toggle`, `ToggleGroup`, `Tabs`, `Select`, `Input`, …), never a native `<button>` / `<input>` / `<select>`.
 - Singletons use the `Traits\Singleton` trait.
 - All user-facing strings use text domain `storegrowth-sales-booster`.
 - Extension points are WordPress hooks: `storegrowth_before_load`, `storegrowth_loaded`, `storegrowth_module_before_boot`/`_after_boot`, filter `storegrowth_pro_is_active` (gates pro features).

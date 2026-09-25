@@ -11,7 +11,7 @@
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import { Toggle, ToggleGroup, ToggleGroupItem, cn } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
@@ -188,61 +188,52 @@ export function LivePreview( {
                         { __( 'Preview', 'storegrowth-sales-booster' ) }
                     </h2>
                 </div>
-                <div
-                    role="radiogroup"
+                <ToggleGroup
                     aria-label={ __(
                         'Preview width',
                         'storegrowth-sales-booster'
                     ) }
-                    className="inline-flex shrink-0 items-start gap-2"
+                    value={ [ device ] }
+                    // Clicking the pressed device empties the group; keep it.
+                    onValueChange={ ( next ) =>
+                        next[ 0 ] && setDevice( next[ 0 ] as PreviewDevice )
+                    }
+                    spacing={ 2 }
+                    className="shrink-0"
                 >
                     { DEVICES.map( ( { id, label, Icon } ) => (
-                        <button
+                        <ToggleGroupItem
                             key={ id }
-                            type="button"
-                            role="radio"
-                            aria-checked={ device === id }
+                            value={ id }
                             aria-label={ label }
-                            className={ cn(
-                                'flex shrink-0 cursor-pointer items-center justify-center rounded-md border-0 p-2',
-                                device === id
-                                    ? 'bg-sg-brand text-white'
-                                    : 'bg-white text-sg-text'
-                            ) }
-                            onClick={ () => setDevice( id ) }
+                            className="size-9 p-2 text-sg-text hover:bg-sg-chip aria-pressed:bg-sg-brand aria-pressed:text-white"
                         >
                             <Icon
                                 className="size-5"
                                 strokeWidth={ 1.5 }
                                 aria-hidden
                             />
-                        </button>
+                        </ToggleGroupItem>
                     ) ) }
-                </div>
+                </ToggleGroup>
                 <div className="flex flex-1 justify-end">
-                    <button
-                        type="button"
-                        aria-pressed={ theme === 'dark' }
+                    <Toggle
+                        pressed={ theme === 'dark' }
+                        onPressedChange={ ( dark ) =>
+                            setTheme( dark ? 'dark' : 'light' )
+                        }
                         aria-label={ __(
                             'Toggle preview theme',
                             'storegrowth-sales-booster'
                         ) }
-                        className={ cn(
-                            'flex shrink-0 cursor-pointer items-center justify-center rounded-full border-0 p-2',
-                            theme === 'dark'
-                                ? 'bg-sg-brand text-white'
-                                : 'bg-sg-chip text-sg-heading hover:bg-[#E7E9EC]'
-                        ) }
-                        onClick={ () =>
-                            setTheme( theme === 'dark' ? 'light' : 'dark' )
-                        }
+                        className="size-9 rounded-full bg-sg-chip p-2 text-sg-heading hover:bg-[#E7E9EC] aria-pressed:bg-sg-brand aria-pressed:text-white"
                     >
                         <SunMoon
                             className="size-5"
                             strokeWidth={ 1.5 }
                             aria-hidden
                         />
-                    </button>
+                    </Toggle>
                 </div>
             </div>
 

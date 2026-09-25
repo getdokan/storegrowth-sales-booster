@@ -3,7 +3,7 @@
  *
  * @since SPSG_VERSION
  */
-import { Checkbox } from '@wedevs/plugin-ui';
+import { Button, Checkbox, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
 import { assetUrl } from '@storegrowth/utilities';
 
@@ -73,20 +73,19 @@ export function WelcomeScreen( {
                             'storegrowth-sales-booster'
                         ) }
                     />
-                    <button
-                        type="button"
-                        className={ `${ STEP_BUTTON_PRIMARY } text-base` }
+                    <Button
+                        className={ cn( STEP_BUTTON_PRIMARY, 'text-base' ) }
                         onClick={ onNext }
                     >
                         { __( 'Get Started', 'storegrowth-sales-booster' ) }
-                    </button>
+                    </Button>
                 </div>
                 <div className="flex flex-col gap-4">
                     { options.map( ( { key, heading, content } ) => (
                         <label
                             key={ key }
                             htmlFor={ `spsg-onboard-${ key }` }
-                            className="flex cursor-pointer items-start gap-2 text-sm text-[#000012]"
+                            className="flex items-start gap-2 text-sm text-[#000012]"
                         >
                             <Checkbox
                                 id={ `spsg-onboard-${ key }` }
