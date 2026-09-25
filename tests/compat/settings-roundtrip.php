@@ -63,13 +63,18 @@ $call = static function ( string $method, string $module, ?array $values = null 
 };
 
 /**
- * Stored value in the old admin's shape (bool for toggles, string otherwise).
+ * Stored value in the old admin's shape (bool for toggles, string otherwise;
+ * `box` keys are new and store an array of ints).
  *
  * @param array $field Field definition.
  *
  * @return mixed
  */
 $legacy = static function ( array $field ) {
+	if ( 'box' === $field['type'] ) {
+		return array_map( 'intval', $field['default'] );
+	}
+
 	return 'toggle' === $field['type'] ? (bool) $field['default'] : (string) $field['default'];
 };
 
@@ -143,6 +148,10 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 				case 'select':
 					$last            = (string) end( $field['options'] );
 					$changes[ $key ] = [ $last, $last ];
+					break;
+				case 'box':
+					$box             = [ 'top' => 1, 'right' => 2, 'bottom' => 3, 'left' => 4 ];
+					$changes[ $key ] = [ $box, $box ];
 					break;
 				case 'color':
 					$changes[ $key ] = [ '#123456', '#123456' ];

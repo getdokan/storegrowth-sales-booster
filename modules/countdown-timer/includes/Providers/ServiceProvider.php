@@ -4,6 +4,7 @@ namespace StorePulse\StoreGrowth\Modules\CountdownTimer\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\Settings\CountdownTimerSettings;
 
 /**
  * ServiceProvider for the module.
@@ -24,6 +25,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
         CountdownTimerModule::class,
+        CountdownTimerSettings::class,
     ];
 
     /**
@@ -46,5 +48,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( CountdownTimerModule::get_id(), CountdownTimerModule::class, true );
+        // Always registered, so the settings route works while the module is off.
+        $this->add_with_implements_tags( CountdownTimerSettings::class, CountdownTimerSettings::class, true );
     }
 }

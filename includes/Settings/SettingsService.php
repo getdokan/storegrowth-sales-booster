@@ -38,7 +38,17 @@ class SettingsService {
 	 *
 	 * @var string[]
 	 */
-	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select' ];
+	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box' ];
+
+	/**
+	 * Sides of a `box` value (margin/padding), stored and returned as
+	 * `{ top, right, bottom, left }` integers.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	const BOX_SIDES = [ 'top', 'right', 'bottom', 'left' ];
 
 	/**
 	 * Every registered schema, keyed by module id.
@@ -314,9 +324,40 @@ class SettingsService {
 
 				return in_array( $value, $options, true ) ? $value : (string) ( $field['default'] ?? '' );
 
+			case 'box':
+				return $this->box( $value ) ?? $this->box( $field['default'] ?? [] ) ?? array_fill_keys( self::BOX_SIDES, 0 );
+
 			default:
 				return is_scalar( $value ) ? (string) $value : '';
 		}
+	}
+
+	/**
+	 * A `{ top, right, bottom, left }` array of integers, or null when a side
+	 * is missing or not a number.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $value Box value.
+	 *
+	 * @return array<string, int>|null
+	 */
+	private function box( $value ): ?array {
+		if ( ! is_array( $value ) ) {
+			return null;
+		}
+
+		$box = [];
+
+		foreach ( self::BOX_SIDES as $side ) {
+			if ( ! isset( $value[ $side ] ) || ! is_numeric( $value[ $side ] ) ) {
+				return null;
+			}
+
+			$box[ $side ] = (int) $value[ $side ];
+		}
+
+		return $box;
 	}
 
 	/**
@@ -372,6 +413,17 @@ class SettingsService {
 
 				return $value;
 
+			case 'box':
+				$box = $this->box( $value );
+
+				if ( null === $box || min( $box ) < ( $field['min'] ?? 0 ) ) {
+					/* translators: %s: smallest allowed value. */
+					return new WP_Error( 'invalid', sprintf( __( 'Enter a number of %s or more for each side.', 'storegrowth-sales-booster' ), $field['min'] ?? 0 ) );
+				}
+
+				// New keys, so no legacy shape: an array of integers.
+				return $box;
+
 			case 'textarea':
 				return is_scalar( $value ) ? sanitize_textarea_field( (string) $value ) : '';
 
@@ -407,6 +459,9 @@ class SettingsService {
 
 			case 'number':
 				return is_numeric( $input ) && (float) $input === (float) $current;
+
+			case 'box':
+				return $this->box( $input ) === $current;
 
 			default:
 				return is_scalar( $input ) && (string) $input === $current;

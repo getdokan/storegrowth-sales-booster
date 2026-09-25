@@ -18,11 +18,26 @@ export interface DashboardOverview {
 }
 
 /** Setting value in API shape. */
-export type SettingValue = string | number | boolean;
+/** Margin/padding value of a `box` field. */
+export interface BoxValue {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+}
+
+export type SettingValue = string | number | boolean | BoxValue;
 
 /** One field of a module's settings schema (PHP `SettingsSchema`). */
 export interface SettingField {
-    type: 'text' | 'textarea' | 'number' | 'toggle' | 'color' | 'select';
+    type:
+        | 'text'
+        | 'textarea'
+        | 'number'
+        | 'toggle'
+        | 'color'
+        | 'select'
+        | 'box';
     default: SettingValue;
     /** Saved only while pro is active. */
     pro: boolean;

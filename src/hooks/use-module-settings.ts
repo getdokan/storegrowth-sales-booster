@@ -125,7 +125,10 @@ export function useModuleSettings< V extends Values = Values >(
     const changedKeys = useCallback(
         ( keys?: Array< keyof V > ) =>
             ( keys ?? ( Object.keys( values ) as Array< keyof V > ) ).filter(
-                ( key ) => values[ key ] !== saved[ key ] && ! isLocked( key )
+                ( key ) =>
+                    // JSON compares box values ({ top, … }) by content.
+                    JSON.stringify( values[ key ] ) !==
+                        JSON.stringify( saved[ key ] ) && ! isLocked( key )
             ),
         [ values, saved, isLocked ]
     );
