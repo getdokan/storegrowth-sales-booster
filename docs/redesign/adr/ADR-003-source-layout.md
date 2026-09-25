@@ -38,6 +38,75 @@ Today admin source lives in `assets/src/` (core) and `modules/<name>/assets/src/
 6. **All build output goes in `build/`** (ADR-001). It's gitignored but ships in the release zip.
 7. **Module rule:** a module's `src/` may import `@storegrowth/*` shared libraries, but not another module's `src/`. Anything two modules need goes into `src/components` or `src/fields`.
 
+7a. **Naming inside every `src/` directory** (root `src/`, `modules/*/src/`, `integrations/src/`, and pro's `src/` and `legacy/src/`): **every directory and file name is lowercase kebab-case.**
+
+   | Kind | File name | What it exports (unchanged casing) |
+   |---|---|---|
+   | Component | `live-preview.tsx`, `save-bar.tsx`, `product-search.tsx` | `LivePreview`, `SaveBar`, `ProductSearch` (PascalCase) |
+   | Hook | `use-settings.ts`, `use-module-status.ts` | `useSettings`, `useModuleStatus` |
+   | Store | `stores/settings/index.ts`, `stores/settings/selectors.ts` | — |
+   | Types | `settings-schema.ts`, `module.ts` | `SettingsSchema`, `Module` (PascalCase types) |
+   | Preview | `preview/stock-bar-widget.tsx` | `StockBarWidget` |
+   | Styles | `base-tailwind.css`, `live-preview.css` | — |
+   | Directories | `admin/pages/dashboard`, `fields/box-model-input`, `components/save-bar` | — |
+   | Tests next to source | `save-bar.test.tsx` | — |
+
+   - A component with several files gets a kebab-case folder with an `index.ts(x)` barrel: `components/live-preview/index.tsx`, `components/live-preview/device-switch.tsx`.
+   - Module ids already are kebab-case and map 1:1 to folder names: `modules/stock-bar/src/`, `build/modules/stock-bar/`.
+   - **Enforced by lint:** add `eslint-plugin-check-file` to the wp-scripts ESLint config with `check-file/filename-naming-convention` and `check-file/folder-naming-convention` set to `KEBAB_CASE` for `src/**`, `modules/*/src/**`, `integrations/src/**`. `npm run lint:js` fails otherwise.
+   - `legacy/src/` in pro is renamed to kebab-case in the same PR that moves it (e.g. `Modules/BoGo/index.js` → `modules/bogo/index.js`). The build output is unchanged.
+   - **Out of scope:** PHP stays PSR-4 PascalCase (`includes/Settings/SettingsService.php`), because class-to-file autoloading requires it and renaming PHP classes is forbidden (ADR-005). Existing storefront files in `modules/*/assets/` and `templates/` keep their names (theme and pro paths).
+
+8. **Full plugin tree** (admin TS, PHP, storefront and tests; PHP keeps the existing PSR-4 layout and adds folders):
+   ```
+   storegrowth-sales-booster/
+   ├─ storegrowth-sales-booster.php
+   ├─ package.json · webpack.config.js · webpack-entries.js · webpack-dependency-mapping.js
+   ├─ tsconfig.json · postcss.config.js · composer.json · phpcs.xml
+   ├─ types/                         # globals.d.ts, externals.d.ts (@storegrowth/*), styles.d.ts
+   ├─ src/                           # core admin app (TS) — ADR-003 §1
+   │  ├─ admin/                      # shell, router, pages/{dashboard,modules,settings}
+   │  ├─ components/                 # LivePreview, Accordion, SaveBar, ProLock, EditorLayout, …
+   │  ├─ fields/                     # ProductSearch, DateRange, BoxModelInput, TemplatePicker, TypographyRow, …
+   │  ├─ hooks/ · utilities/ · api/ · stores/
+   │  ├─ externals/plugin-ui.js
+   │  └─ base-tailwind.css
+   ├─ includes/                      # core PHP (namespace StorePulse\StoreGrowth\)
+   │  ├─ Admin/                      # AdminMenu (slugs spsg-settings / spsg-modules kept)
+   │  ├─ REST/                       # existing Settings/Product controllers + new Modules, ModuleSettings, Dashboard, Onboarding, Lookups
+   │  ├─ Settings/                   # NEW: SettingsRegistry, SettingsService (merge, sanitize, pro gating), Schema field types
+   │  ├─ Storefront/                 # NEW (ADR-006): StorefrontStyle, StorefrontFonts, StorefrontText, DisplayRules
+   │  ├─ Helper.php                  # + get_template() (ADR-006 S8); existing methods frozen
+   │  └─ …                           # existing Bootstrap, Assets, Ajax, Upgrader, Traits, Interfaces unchanged
+   ├─ assets/                        # static + storefront only
+   │  ├─ css/storefront-base.css     # NEW (ADR-006 S9)
+   │  ├─ js/storefront-core.js       # NEW (ADR-006 S9)
+   │  └─ images/ · fonts/
+   ├─ modules/<name>/
+   │  ├─ bootstrap.php
+   │  ├─ includes/                   # module PHP (existing classes kept)
+   │  │  ├─ <Name>Module.php · Providers/ · Ajax.php (→ adapters) · EnqueueScript.php · CommonHooks.php
+   │  │  ├─ Settings/<Name>Schema.php   # NEW: field definitions, defaults, sanitizers, pro flags
+   │  │  ├─ Settings/<Name>TokenMap.php # NEW: option key → CSS token (ADR-006 S2)
+   │  │  └─ REST/                    # module CRUD controllers (BOGO; Order Bump's RestApi/ stays, new controllers go in REST/)
+   │  ├─ src/                        # module admin UI (TS): index.tsx, schema.ts, preview/, components/, blocks/
+   │  ├─ templates/                  # storefront templates (paths unchanged; loaded via Helper::get_template)
+   │  └─ assets/{css,js,images,fonts} # storefront static files (unchanged location)
+   ├─ integrations/
+   │  ├─ includes/Dokan/             # PHP (unchanged)
+   │  └─ src/<bundle>/               # Dokan admin/vendor UI (TS), replaces integrations/assets
+   ├─ helpers/functions.php
+   ├─ lib/                           # mozart-prefixed deps (league/container, appsero, wp-kit)
+   ├─ languages/
+   ├─ build/                         # generated: core bundles, build/modules/<name>/, build/integrations/
+   ├─ tests/
+   │  ├─ php/                        # PHPUnit: settings service, REST, compat API reflection test
+   │  ├─ e2e/                        # Playwright: modules, visual QA, compat matrix, storefront snapshots
+   │  └─ compat/                     # hook baselines (moved from docs/redesign/compat) + pro 2.2.0 option fixtures
+   └─ docs/redesign/                 # this documentation
+   ```
+   Pro mirrors the same shape (`src/`, `legacy/src/`, `build/`, `build/legacy/`, `includes/Modules/*`), see `../pro-migration-spec.md` §7.
+
 ## Consequences
 
 - Each module stays self-contained: PHP in `includes/`, templates in `templates/`, admin UI in `src/`, storefront files in `assets/`.

@@ -27,8 +27,9 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 0 | plugin-ui upstream: export `ColorPicker`, `RadioImageCard`, `CombineInput`, …; alpha off (U1, U4) | — | 1a |
 | 1a | `00-core-shell`: build system (remove Lerna, webpack trio, TS, Tailwind v4), shared bundles, CI checks (hook baseline, API test) | — | 0 |
 | 1b | `00-core-shell`: shell UI (TopBar, feature rail, deactivated modal), Dashboard, Modules page, `/modules` + `/dashboard` REST | 0, 1a | 1c |
+| 1d | Storefront foundation (ADR-006): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
 | 1c | Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar` | 1a | 1b |
-| 2 | `stock-bar` (pilot) — first `TemplatePicker` | 1b, 1c | — |
+| 2 | `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-006 storefront standard | 1b, 1c, 1d | — |
 | 3 | `countdown-timer` — first `BoxModelInput` | 2 | 4 |
 | 4 | `sales-pop` — first `ProductSearch`, `TypographyRow` | 2 | 3 |
 | 5 | `progressive-discount-banner` — first bar fragment, `ModeNumber`, `IconPicker` | 2 | 7, 8 |
@@ -78,6 +79,13 @@ Steps 1c–11 are blocked only by the product decisions in each spec's §9; get 
 10. **Tasks and definition of done.**
 
 ## Definition of done shared by every module
+- Storefront follows ADR-006 (S1–S10):
+  - token map;
+  - static CSS reads CSS variables with today's values as fallback;
+  - shared font, text-token, display-rule and template loaders;
+  - preview loads the real storefront CSS.
+
+  Storefront snapshots are identical for a never-saved site and after a no-op save.
 - Screen matches the linked mockup (design fidelity rule); visual QA screenshots attached; design sign-off on any listed deviation.
 - Admin page built from `modules/<name>/src/` in TypeScript; no antd import left in the module.
 - `GET/POST /settings/<id>` (or the CRUD routes) is the only transport the UI uses.

@@ -3,6 +3,8 @@
 - Date: 2026-09-25
 - Scope: what shoppers and vendors see, meaning the storefront JS/CSS/templates and the Dokan vendor dashboard, as opposed to the wp-admin settings UI.
 
+> **Update:** ADR-006 applies one consistent storefront standard to **every** module: CSS variables, shared font/token/display-rule/template loaders, and previews that use the real storefront CSS. So every module's storefront code is touched, not only the modules marked "Yes" below. The guarantee stays the same: output is identical for sites that don't change their settings, and old classes, selectors, handles and CSS filters remain.
+
 ## 1. What does NOT change (all modules)
 
 - **Storefront code location and build:**

@@ -8,6 +8,7 @@
 | [adr/ADR-002](adr/ADR-002-typescript-first-full-rewrite.md) | TypeScript-first full rewrite; pro extends the PHP schema |
 | [adr/ADR-003](adr/ADR-003-source-layout.md) | Source layout: root `src/`, `modules/<name>/src/` |
 | [adr/ADR-004](adr/ADR-004-tailwind-v4-scoped-styling.md) | Tailwind v4, one scoped stylesheet |
+| [adr/ADR-006](adr/ADR-006-storefront-consistency.md) | One storefront standard for all modules: CSS variables, shared style vocabulary, fonts, text tokens, display rules, templates, preview parity |
 | [adr/ADR-005](adr/ADR-005-backward-compatibility.md) | Never rename/remove PHP hooks or public API; pro 2.2.0 keeps working; antd removed, JS hooks retired |
 | [rest-api.md](rest-api.md) | Every REST route needed: existing, to change, new; ajax → REST mapping |
 | [storefront-impact.md](storefront-impact.md) | What changes for shoppers/vendors per module, cross-cutting storefront risks, storefront tests |
