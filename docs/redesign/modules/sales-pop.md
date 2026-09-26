@@ -15,7 +15,7 @@
 - **Transient:** `spsg_sales_pop_popup_info` (1 day).
 - **Transport:** ajax `popup_products` / `create_popup`, nonce `spsg_admin_ajax_nonce` + `manage_options`, recursive sanitizer.
 - **Admin page data:** `sales_pop_data.product_list` is built on every page load (100 orders, 200 products).
-- **PHP hooks** (keep): `spsg_sales_pop_visbility_controller`, `spsg_sales_pop_image_position`, `spsg_sales_pop_billing_orders_limit`, `spsg_sales_pop_category_products_limit`, `spsg_sales_pop_selection_products_limit`, `spsg_sales_pop_id_list_fields`, `storegrowth_sales_pop_module_init`.
+- **PHP hooks** (keep): `spsg_sales_pop_visbility_controller`, `spsg_sales_pop_image_position`, `spsg_sales_pop_billing_orders_limit`, `spsg_sales_pop_category_products_limit`, `spsg_sales_pop_selection_products_limit`, `spsg_sales_pop_id_list_fields`. (`storegrowth_sales_pop_module_init` is not fired anywhere; nothing to keep.)
 - **JS hooks** (retire): `spsg_after_sales_pop_enable_settings`, `spsg_prepend_/append_sales_pop_product_settings`, `spsg_prepend_/append_sales_pop_section_settings`, `spsg_sales_pop_action_settings`, `spsg_sales_pop_image_style_settings`, `spsg_sales_popup_style_settings`, `spsg_sales_pop_message_panel_settings`, `spsg_sales_pop_time_panel_settings`, `spsg_sales_pop_selection_available_product_list`.
 
 ## 3. Target design
@@ -47,18 +47,21 @@
 | Popup Style card | `popup_style` + `background_color`, `popup_position`, `popup_border_radius`, `popup_width` | lite switch / pro fields | `switch_group` |
 | Text Style card | `text_style` + `{normal,product_title,time,country,state,city}_text_{color,font_size,font_weight}` | product_title/time/country lite, others pro | `TypographyRow` × 6 |
 
-Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `text_color`, `highlight_color`, `message_checkout`, `product_image_size`, `popup_mobile_image_width`, `screen_*`, `target_categories`, `name_text_*`, `product_link_*`, `date_text_*`) stay in stored data. The schema doesn't expose them and save doesn't touch them.
+Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `text_color`, `highlight_color`, `message_checkout`, `product_image_size`, `popup_mobile_image_width`, `screen_*`, `target_categories`, `product_link_*`, `date_text_*`) stay in stored data. The schema doesn't expose them and save doesn't touch them. `name_text_*` is **not** dead: the storefront styles the name line with it; it's in the schema (defaults) without a field.
 
 ## 5. Data changes
-- `product_source = 2` (Best Sellers) is new. The storefront query needs a best-sellers branch.
-- Keep the existing lite caps (5 products, 5 names), enforced server-side in the REST save. Today they're enforced in the UI only.
-- Stop building `sales_pop_data.product_list` on page load; the preview uses REST #17.
+- New settings type `list` (SettingsService): `popup_products` (int[]), `slected_page_option` (the conditional names pro 2.2.0 evaluates, string[]), `virtual_name` / `virtual_locations` (stored by the old admin as a comma / newline string, read through a separator, saved as arrays — a shape the storefront already reads).
+- Lite caps (5 products, 5 names) are enforced server-side (`lite_max_items`).
+- Saves write only changed keys, so the storefront fills unsaved keys from the schema defaults (`SalesPopSettings::storefront_settings()`); defaults are the old admin's.
+- `product_source = 2` (Best Sellers, decided: lite, snapshot): like Recent Orders, the admin fills `popup_products` on save from `GET sales-pop/source-products` (orders / best sellers by `total_sales`); the storefront keeps showing `popup_products`, no new query.
+- `create_popup` merges through the settings service (a partial payload no longer wipes the rest). `sales_pop_data` keeps only `ajax_url` / `ajd_nonce`; the product lists are no longer built on every settings page load.
+- The storefront CSS's site-wide `a { text-decoration: none }` is scoped to the popup.
 
 ## 6. REST
 - `GET/POST /settings/sales-pop`
 - `GET /products?search` (#13)
-- `GET /sales-pop/preview-products` (#17)
-- `GET /pages` (#15), if page targeting stays
+- `GET /sales-pop/source-products?source=orders|best_sellers&limit=N` (replaces #17)
+- No `/pages`: "Specific Pages" picks page conditions (`is_front_page`, `is_page`, …), not page ids.
 
 ## 7. Compatibility
 - Ajax `popup_products` and `create_popup` become adapters (unprefixed names kept).
@@ -71,10 +74,11 @@ Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `tex
 - Reuses: `TemplatePicker` (image mode), `switch_group`.
 
 ## 9. Open questions / design issues
-- Best Sellers: new feature. Needs approval and a pro/lite call.
-- The page picker for "Specific Pages" isn't drawn.
-- Font weight options (3) differ from Countdown (4).
-- The "Time" weight default: the markup shows Medium, the JS default is 400.
+- Best Sellers: **decided** — lite, snapshot on save (§5).
+- "Hide on Specific Pages": **decided** — dropped until pro supports it; visibility offers Show Everywhere / Show on Specific Pages (what pro 2.2.0 evaluates).
+- Templates: **decided** — keep stored 1–4, redraw the storefront to the design's four (01 avatar, 02 bag icon, 03/04 product photo).
+- Font weights: this module keeps its 3 (400/500/700), as stored.
+- The "Time" weight default stays the stored 500 (the design markup shows Medium).
 
 ## 10. Tasks and definition of done
 - [ ] Schema (about 50 keys) + service + adapters, with lite caps enforced server-side.

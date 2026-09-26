@@ -23,6 +23,11 @@ export {
     FieldNotes,
     ProBadge,
 } from './field-label';
+export {
+    type MultiSelectFieldProps,
+    type MultiSelectOption,
+    MultiSelectField,
+} from './multi-select-field';
 export { type NumberFieldProps, NumberField } from './number-field';
 export {
     type SelectFieldProps,
@@ -32,3 +37,9 @@ export {
 export { type SwitchCardProps, SwitchCard } from './switch-card';
 export { type SwitchFieldProps, SwitchField } from './switch-field';
 export { type TextFieldProps, TextField } from './text-field';
+export {
+    type TextStyleRowProps,
+    TextStyleHeader,
+    TextStyleRow,
+} from './text-style-row';
+export { type TextareaFieldProps, TextareaField } from './textarea-field';

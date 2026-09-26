@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -75,10 +76,16 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		$popup_products = $popup_data['popup_data'];
-		$popup_products = $this->form_validation( $popup_products );
-		$popup_products = self::sanitize_popup_data( $popup_products );
-		update_option( 'spsg_popup_products', $popup_products );
+		// Kept for back-compat (ADR-004): the same settings service as
+		// `POST sales-booster/v1/settings/sales-pop`, which validates every key
+		// and merges into the stored option instead of replacing it, so a
+		// partial payload no longer wipes the other settings.
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( SalesPopModule::get_id(), self::sanitize_popup_data( $popup_data['popup_data'] ) );
+
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
+
 		wp_send_json_success( get_option( 'spsg_popup_products' ) );
 	}
 

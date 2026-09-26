@@ -64,6 +64,11 @@ const moduleEntries = {
         'admin',
         './modules/countdown-timer/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'sales-pop',
+        'admin',
+        './modules/sales-pop/src/admin/index.tsx'
+    ),
 };
 
 /**

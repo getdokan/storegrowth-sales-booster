@@ -5,6 +5,8 @@
  * @since SPSG_VERSION
  */
 import apiFetch from '@wordpress/api-fetch';
+import { decodeEntities } from '@wordpress/html-entities';
+import { addQueryArgs } from '@wordpress/url';
 
 import { getAdminData } from './admin-data';
 import { ajax } from './ajax';
@@ -26,7 +28,10 @@ export interface BoxValue {
     left: number;
 }
 
-export type SettingValue = string | number | boolean | BoxValue;
+/** Value of a `list` field: product ids, names, page conditions, … */
+export type ListValue = Array< string | number >;
+
+export type SettingValue = string | number | boolean | BoxValue | ListValue;
 
 /** One field of a module's settings schema (PHP `SettingsSchema`). */
 export interface SettingField {
@@ -37,15 +42,28 @@ export interface SettingField {
         | 'toggle'
         | 'color'
         | 'select'
-        | 'box';
+        | 'box'
+        | 'list';
     default: SettingValue;
     /** Saved only while pro is active. */
     pro: boolean;
     min?: number;
     max?: number;
     step?: number;
-    /** Allowed values of a `select`. */
+    /** Allowed values of a `select` or `list`. */
     options?: string[];
+    /** `list`: item type. */
+    item?: 'int' | 'text';
+    /** `list`: most items allowed now (the lite cap without pro). */
+    max_items?: number;
+}
+
+/** A product as the pickers show it. */
+export interface ProductOption {
+    id: number;
+    name: string;
+    /** Thumbnail URL, or empty. */
+    image?: string;
 }
 
 /** Response of `GET|POST /settings/{module}`. */
@@ -145,6 +163,71 @@ export function saveModuleSettings< V = Record< string, SettingValue > >(
         method: 'POST',
         data: { values },
     } );
+}
+
+interface WcProduct {
+    id: number;
+    name: string;
+    type?: string;
+    images?: Array< { src: string } >;
+}
+
+const toOption = ( product: WcProduct ): ProductOption => ( {
+    id: product.id,
+    name: decodeEntities( product.name ),
+    image: product.images?.[ 0 ]?.src ?? '',
+} );
+
+/**
+ * Search published products by name (`GET /products?search`), external
+ * products left out.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param search Search text.
+ * @param limit  Most results.
+ */
+export async function searchProducts(
+    search: string,
+    limit = 20
+): Promise< ProductOption[] > {
+    const products = await apiFetch< WcProduct[] >( {
+        path: addQueryArgs( path( '/products' ), {
+            search,
+            per_page: limit,
+            status: 'publish',
+            _fields: 'id,name,type,images',
+        } ),
+    } );
+
+    return products
+        .filter( ( product ) => product.type !== 'external' )
+        .map( toOption );
+}
+
+/**
+ * Products by id, e.g. to show the names of saved ids.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param ids Product ids.
+ */
+export async function fetchProductsByIds(
+    ids: number[]
+): Promise< ProductOption[] > {
+    if ( ! ids.length ) {
+        return [];
+    }
+
+    const products = await apiFetch< WcProduct[] >( {
+        path: addQueryArgs( path( '/products' ), {
+            include: ids.join( ',' ),
+            per_page: ids.length,
+            _fields: 'id,name,type,images',
+        } ),
+    } );
+
+    return products.map( toOption );
 }
 
 /**

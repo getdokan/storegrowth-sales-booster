@@ -3,7 +3,10 @@
 namespace StorePulse\StoreGrowth\Modules\SalesPop\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\SalesPop\AdminPage;
+use StorePulse\StoreGrowth\Modules\SalesPop\REST\SourceProductsController;
 use StorePulse\StoreGrowth\Modules\SalesPop\SalesPopModule;
+use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
 
 /**
  * ServiceProvider for the module.
@@ -25,6 +28,9 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    SalesPopModule::class,
+	    SalesPopSettings::class,
+	    AdminPage::class,
+	    SourceProductsController::class,
     ];
 
     /**
@@ -47,5 +53,9 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( SalesPopModule::get_id(), SalesPopModule::class, true );
+        // Always registered: the settings page and its routes work while the module is off.
+        $this->add_with_implements_tags( SalesPopSettings::class, SalesPopSettings::class, true );
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
+        $this->add_with_implements_tags( SourceProductsController::class, SourceProductsController::class, true );
     }
 }

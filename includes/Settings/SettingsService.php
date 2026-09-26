@@ -19,9 +19,11 @@ defined( 'ABSPATH' ) || exit;
  * Value shapes (docs/redesign/migration-spec.md §8):
  * - **Stored** exactly as the old admin stored them, so the storefront, pro
  *   and third parties read the same values: `toggle` as bool, every other
- *   type as string (numbers included, e.g. `'10'`), colours as hex.
- * - **API** values are typed: `toggle` bool, `number` int/float, the rest
- *   string.
+ *   type as string (numbers included, e.g. `'10'`), colours as hex; `box` and
+ *   `list` (new in the redesign) as arrays. A `list` stored by the old admin
+ *   as a string (e.g. comma-separated names) reads through its `separator`.
+ * - **API** values are typed: `toggle` bool, `number` int/float, `box` and
+ *   `list` arrays, the rest string.
  *
  * Saving merges into the stored option: keys outside the schema are kept.
  * Pro fields are saved only while pro is active; otherwise they're ignored and
@@ -38,7 +40,7 @@ class SettingsService {
 	 *
 	 * @var string[]
 	 */
-	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box' ];
+	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box', 'list' ];
 
 	/**
 	 * Sides of a `box` value (margin/padding), stored and returned as
@@ -140,11 +142,15 @@ class SettingsService {
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
-				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options' ] ) )
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );
 			$public[ $key ]['pro']     = ! empty( $field['pro'] );
+
+			if ( 'list' === $field['type'] && null !== $this->max_items( $field ) ) {
+				$public[ $key ]['max_items'] = $this->max_items( $field );
+			}
 		}
 
 		return $public;
@@ -327,9 +333,66 @@ class SettingsService {
 			case 'box':
 				return $this->box( $value ) ?? $this->box( $field['default'] ?? [] ) ?? array_fill_keys( self::BOX_SIDES, 0 );
 
+			case 'list':
+				return $this->list_items( $field, $value );
+
 			default:
 				return is_scalar( $value ) ? (string) $value : '';
 		}
+	}
+
+	/**
+	 * A stored or incoming `list` value as its items: a legacy string is split
+	 * on the field's `separator`; items are trimmed, empty ones dropped;
+	 * `item: int` keeps positive integers, `options` keeps listed values.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $field Field definition.
+	 * @param mixed $value List value.
+	 *
+	 * @return array<int, int|string>
+	 */
+	private function list_items( array $field, $value ): array {
+		if ( is_string( $value ) && isset( $field['separator'] ) ) {
+			$value = explode( $field['separator'], $value );
+		}
+
+		$items = [];
+
+		foreach ( is_array( $value ) ? $value : [] as $item ) {
+			if ( ! is_scalar( $item ) ) {
+				continue;
+			}
+
+			if ( 'int' === ( $field['item'] ?? 'text' ) ) {
+				$item = filter_var( $item, FILTER_VALIDATE_INT, [ 'options' => [ 'min_range' => 1 ] ] );
+			} else {
+				$item = trim( sanitize_text_field( (string) $item ) );
+				$item = '' === $item || ( isset( $field['options'] ) && ! in_array( $item, (array) $field['options'], true ) ) ? false : $item;
+			}
+
+			if ( false !== $item ) {
+				$items[] = $item;
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Most items a `list` takes: `lite_max_items` without pro, else `max_items`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $field Field definition.
+	 *
+	 * @return int|null
+	 */
+	private function max_items( array $field ): ?int {
+		$max = ! sp_store_growth()->has_pro() && isset( $field['lite_max_items'] ) ? $field['lite_max_items'] : ( $field['max_items'] ?? null );
+
+		return null === $max ? null : (int) $max;
 	}
 
 	/**
@@ -431,6 +494,38 @@ class SettingsService {
 				// New keys, so no legacy shape: an array of integers.
 				return $box;
 
+			case 'list':
+				// The old admin's string form (e.g. comma-separated names) is still accepted.
+				if ( is_string( $value ) && isset( $field['separator'] ) ) {
+					$value = explode( $field['separator'], $value );
+				}
+
+				if ( ! is_array( $value ) ) {
+					return new WP_Error( 'invalid', __( 'Send a list.', 'storegrowth-sales-booster' ) );
+				}
+
+				$items = $this->list_items( $field, $value );
+
+				// Every non-empty item must be kept, or it was invalid.
+				$sent = array_filter(
+					$value,
+					static function ( $item ) {
+						return is_scalar( $item ) && '' !== trim( (string) $item );
+					}
+				);
+
+				if ( count( $items ) !== count( $sent ) ) {
+					return new WP_Error( 'invalid', __( 'Some items are not valid.', 'storegrowth-sales-booster' ) );
+				}
+
+				if ( null !== $this->max_items( $field ) && count( $items ) > $this->max_items( $field ) ) {
+					/* translators: %d: most items allowed. */
+					return new WP_Error( 'invalid', sprintf( __( 'Choose up to %d.', 'storegrowth-sales-booster' ), $this->max_items( $field ) ) );
+				}
+
+				// Stored as an array (the old admin wrote arrays too); `item: int` as integers.
+				return $items;
+
 			case 'textarea':
 				return is_scalar( $value ) ? sanitize_textarea_field( (string) $value ) : '';
 
@@ -469,6 +564,9 @@ class SettingsService {
 
 			case 'box':
 				return $this->box( $input ) === $current;
+
+			case 'list':
+				return ( is_array( $input ) || isset( $field['separator'] ) ) && $this->list_items( $field, $input ) === $current;
 
 			default:
 				return is_scalar( $input ) && (string) $input === $current;

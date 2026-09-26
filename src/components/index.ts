@@ -22,6 +22,7 @@ export {
     type PreviewTheme,
 } from './live-preview';
 export { ModuleIcon, type ModuleIconProps } from './module-icon';
+export { OptionCard, type OptionCardProps } from './option-card';
 export { SaveBar, type SaveBarProps } from './save-bar';
 export { SettingsSplit, type SettingsSplitProps } from './settings-split';
 export {

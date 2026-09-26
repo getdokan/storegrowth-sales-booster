@@ -142,7 +142,13 @@
         setTimeout( popupContentGenerator, next_time_display*1000 );
 	}
 
-    var testMessage = message_popup.replaceAll(/\s+/g,' ').trim();
+	// Each line of the message is a line of the popup (the design); within a
+	// line, runs of whitespace collapse as before.
+	var testMessage = message_popup.split( /\r?\n/ ).map( function ( line ) {
+		return line.replace( /\s+/g, ' ' ).trim();
+	} ).filter( Boolean ).map( function ( line ) {
+		return '<span class="spsg-sales-pop-line">' + line + '</span>';
+	} ).join( '' );
 	var testMessage = testMessage.replace('{product_title}', $("#popup_title").html());
 	var testMessage = testMessage.replace('{virtual_name}', $("#popup_virtual_name").html());
 	var testMessage = testMessage.replace('{location}',$("#popup_location").html());

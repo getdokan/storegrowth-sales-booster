@@ -64,7 +64,8 @@ $call = static function ( string $method, string $module, ?array $values = null 
 
 /**
  * Stored value in the old admin's shape (bool for toggles, string otherwise;
- * `box` keys are new and store an array of ints).
+ * `box` keys are new and store an array of ints; a `list` with a separator
+ * was a joined string, other lists arrays).
  *
  * @param array $field Field definition.
  *
@@ -73,6 +74,10 @@ $call = static function ( string $method, string $module, ?array $values = null 
 $legacy = static function ( array $field ) {
 	if ( 'box' === $field['type'] ) {
 		return array_map( 'intval', $field['default'] );
+	}
+
+	if ( 'list' === $field['type'] ) {
+		return isset( $field['separator'] ) ? implode( $field['separator'], $field['default'] ) : $field['default'];
 	}
 
 	return 'toggle' === $field['type'] ? (bool) $field['default'] : (string) $field['default'];
@@ -152,6 +157,16 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 				case 'box':
 					$box             = [ 'top' => 1, 'right' => 2, 'bottom' => 3, 'left' => 4 ];
 					$changes[ $key ] = [ $box, $box ];
+					break;
+				case 'list':
+					if ( 'int' === ( $field['item'] ?? '' ) ) {
+						$list = [ 7, 8 ];
+					} elseif ( isset( $field['options'] ) ) {
+						$list = array_slice( $field['options'], 0, 2 );
+					} else {
+						$list = [ 'First', 'Second' ];
+					}
+					$changes[ $key ] = [ $list, $list ];
 					break;
 				case 'color':
 					$changes[ $key ] = [ '#123456', '#123456' ];

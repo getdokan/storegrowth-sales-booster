@@ -81,7 +81,7 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_countdown_timer_settings', array() );
+		$form_data = Helper::get_settings( 'spsg_countdown_timer_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}

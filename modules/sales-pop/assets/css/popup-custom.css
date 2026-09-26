@@ -1,117 +1,178 @@
+/*
+ * Sales Notification popup (design `sales-notification.html`, `.sn-card`).
+ *
+ * The settings (width, radius, background, image size and spacing, text
+ * colours and sizes) arrive as inline styles from `templates/popup-style.php`
+ * and `popup-custom.js`; this file draws the layout. Every class and id is the
+ * old markup's, so pro and custom CSS keep working. Templates (`template-N` on
+ * the close button and the popup):
+ * 1 round image, 2 bag icon, 3 and 4 photo; 1 and 2 centre the close button.
+ */
+
 .custom-social-proof {
 	position: fixed;
 	z-index: 9999999999999 !important;
-	transition: top 1.2s ease;	
+	transition: top 1.2s ease;
 }
+
 .custom-social-proof .custom-notification {
-    width: 400px;
-	min-height: 93px;
-	border: 0;
-	text-align: left;
-	z-index: 99999;
-	box-sizing: border-box;
-	font-weight: 400;
-	border-radius: 6px;
-	box-shadow: 2px 2px 10px 2px rgba(11, 10, 10, 0.2);
-	background-color: #fff;
 	position: relative;
+	box-sizing: border-box;
+	width: 400px;
+	max-width: calc(100vw - 40px);
+	border: 1px solid #e4e4e7;
+	border-radius: 8px;
+	background-color: #fff;
+	box-shadow: 0 4px 16px rgba(17, 24, 39, 0.08);
+	text-align: left;
 	cursor: pointer;
 }
+
 .custom-social-proof .custom-notification .custom-notification-container {
 	display: flex !important;
 	align-items: center;
+	gap: 8px;
 	height: auto;
 }
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-image-wrapper {
-    display: flex;
-    justify-content: center;
-}
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-image-wrapper img {
-	max-height: 70px;
-	overflow: hidden;
-	object-fit: cover;
-}
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-content-wrapper {
-	margin: 0;
-	height: 100%;
-	color: gray;
-	padding-left: 14px;
-	padding-right: 20px;
-	border-radius: 0 6px 6px 0;
-	flex: 1;
-	display: flex !important;
-	flex-direction: column;
+
+.custom-social-proof .custom-notification-image-wrapper {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
 	justify-content: center;
 }
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-content-wrapper .custom-notification-content {
-	font-family: inherit !important;
-	margin: 0 !important;
-	padding: 10px 0px;
-	font-size: 14px;
-	line-height: 1;
+
+.custom-social-proof .custom-notification-image-wrapper a {
+	display: block;
+	line-height: 0;
+}
+
+.custom-social-proof .custom-notification-image-wrapper img {
+	display: block;
+	aspect-ratio: 1;
+	height: auto;
+	max-width: none;
+	margin: 0;
+	background: #f2f2f5;
+	object-fit: cover;
+}
+
+/* Template 2: the bag icon instead of the product image. */
+.custom-social-proof .spsg-sales-pop-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1;
+	border-radius: 999px;
+	background: #855fff;
+	color: #fff;
+}
+
+.custom-social-proof .spsg-sales-pop-icon svg {
+	width: 36%;
+	height: auto;
+}
+
+.custom-social-proof .custom-notification-content-wrapper {
+	display: flex !important;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	min-width: 0;
+	margin: 0;
+	padding: 12px 36px 12px 12px;
+	color: #4b5563;
+}
+
+.custom-social-proof .custom-notification-content {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 	max-width: 100%;
+	margin: 0 !important;
+	font-family: inherit !important;
+	line-height: 1.4;
 }
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-content-wrapper .custom-notification-content small {
-	margin-top: 3px !important;
-	display: block !important;
-	font-size: 12px !important;
-	opacity: 0.8;
+
+/* One line of the message (popup-custom.js). */
+.custom-social-proof .spsg-sales-pop-line,
+.custom-social-proof .custom-notification-content p {
+	display: block;
+	overflow: hidden;
+	margin: 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
-.custom-social-proof .custom-notification .custom-notification-container .custom-notification-content-wrapper .custom-notification-content span {
-    line-height: 1.5;
+
+.custom-social-proof .custom-notification-content br {
+	display: none;
 }
+
+.custom-social-proof .custom-notification-content span {
+	line-height: 1.4;
+}
+
+/* Close button: top right (templates 3, 4), centred (templates 1, 2). */
 .custom-social-proof .custom-notification .custom-close {
 	position: absolute;
-	top: 8px;
-	right: 8px;
-	height: 12px;
+	top: 12px;
+	right: 12px;
 	width: 12px;
+	height: 12px;
 	cursor: pointer;
 	transform: rotate(45deg);
 }
-.custom-social-proof .custom-notification .custom-close.template-2,
-.custom-social-proof .custom-notification .custom-close.template-3 {
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%) rotate(45deg);
+
+.custom-social-proof .custom-notification .custom-close.template-1,
+.custom-social-proof .custom-notification .custom-close.template-2 {
+	top: 50%;
+	right: 16px;
+	transform: translateY(-50%) rotate(45deg);
 }
-.custom-social-proof .custom-notification .custom-close::before {
-	content: "";
-	display: block;
-	width: 100%;
-	height: 2px;
-	background-color: gray;
-	position: absolute;
-	left: 0;
-	top: 5px;
-}
+
+.custom-social-proof .custom-notification .custom-close::before,
 .custom-social-proof .custom-notification .custom-close::after {
 	content: "";
-	display: block;
-	height: 100%;
-	width: 2px;
-	background-color: gray;
 	position: absolute;
-	left: 5px;
-	top: 0;
+	display: block;
+	background-color: #9ca3af;
 }
-/* .custom-social-proof .custom-notification:hover .custom-close {
-	opacity: 1;
-} */
+
+.custom-social-proof .custom-notification .custom-close::before {
+	top: 5px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+}
+
+.custom-social-proof .custom-notification .custom-close::after {
+	top: 0;
+	left: 5px;
+	width: 2px;
+	height: 100%;
+}
+
+.custom-social-proof .custom-notification .custom-close:hover::before,
+.custom-social-proof .custom-notification .custom-close:hover::after {
+	background-color: #4b5563;
+}
 
 .poweredby {
-	font-weight: 600;
-	text-decoration: none;
 	margin-left: 3px;
 	color: #3498db;
+	font-weight: 600;
+	text-decoration: none;
 }
 
-.message-line-height{
-	line-height: 1px;
+.message-line-height {
+	line-height: 1.4;
 }
 
-a, a:focus, a:hover, a:visited {
-  text-decoration: none;
+/* Links inside the popup only (this used to target every link on the site). */
+.custom-social-proof a,
+.custom-social-proof a:focus,
+.custom-social-proof a:hover,
+.custom-social-proof a:visited {
+	text-decoration: none;
 	outline: none;
 }
-
