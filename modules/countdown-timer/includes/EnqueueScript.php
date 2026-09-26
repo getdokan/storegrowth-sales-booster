@@ -10,6 +10,9 @@ namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\Settings\CountdownTimerSettings;
+use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
+use StorePulse\StoreGrowth\Storefront\StorefrontStyle;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,6 +26,19 @@ class EnqueueScript implements HookRegistry {
 	use Singleton;
 
 	/**
+	 * Alignment setting → flex alignment.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var array<string, string>
+	 */
+	const FLEX = [
+		'left'   => 'flex-start',
+		'center' => 'center',
+		'right'  => 'flex-end',
+	];
+
+	/**
 	 * Register Hooks.
 	 *
 	 * @since 2.0.0
@@ -30,8 +46,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -68,88 +84,95 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( 'storegrowth_page_spsg-settings' !== $hook || ! file_exists( PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' ) ) ) {
-			return;
-		}
-
-		$settings_file = require PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
-		$style_file    = require PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.asset.php' );
-
-		wp_enqueue_script(
-			'spsg-countdown-timer-settings',
-			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
-		);
-
-		wp_enqueue_style(
-			'spsg-countdown-timer-style',
-			PluginHelper::get_modules_url( 'countdown-timer/assets/build/settings.css' ),
-			array(),
-			filemtime( PluginHelper::get_modules_path( 'countdown-timer/assets/build/settings.css' ) )
-		);
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		// Get settings options. Each value is interpolated into a <style> block,
-		// so colours are constrained to safe CSS colour characters — a stored
-		// value can never break out of the CSS context.
 		$settings = PluginHelper::get_settings( 'spsg_countdown_timer_settings' );
 
-		$widget_bg_color    = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'widget_background_color', '#ffffff' ), '#ffffff' );
-		$border_color       = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'border_color', '#cccccc' ), '#cccccc' );
-		$heading_text_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'heading_text_color', '#000000' ), '#000000' );
-		$selected_theme     = PluginHelper::find_option_settings( $settings, 'selected_theme', 'ct-custom' );
+		if ( 'Twenty Twenty-One' === wp_get_theme()->name ) {
+			wp_add_inline_style( 'spsg-cd-timer-custom-style', '.spsg-countdown-timer { margin-top: 18px; }' );
+		}
 
-		// Check current theme status.
-		$theme                = wp_get_theme();
-		$is_twenty_one_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
-		$is_twenty_four_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+		$this->design_variables( is_array( $settings ) ? $settings : [] );
+	}
 
-		if ( 'ct-layout-1' === $selected_theme ) {
-			$custom_css = "
-			.spsg-countdown-timer.ct-custom {
-				border-color: {$border_color};
-				background-color: {$widget_bg_color};
+	/**
+	 * The widget's design settings as `--spsg-countdown-timer-*` variables
+	 * (ADR-005 S1), read by `wpbs-style.css` with the defaults as fallbacks.
+	 * Only saved keys are printed. The rule targets the widget root, so pro's
+	 * shop template (same classes) gets them too.
+	 *
+	 * The counter colours are not here: they pass through the
+	 * `spsg_countdown_timer_styles` filter, so the template prints them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings Countdown Timer settings.
+	 *
+	 * @return void
+	 */
+	private function design_variables( array $settings ): void {
+		$fields  = storegrowth_get_container()->get( CountdownTimerSettings::class )->get_fields();
+		$has_pro = sp_store_growth()->has_pro();
+		$specs   = [
+			'bg'               => [ 'widget_background_color', 'color' ],
+			'border'           => [ 'border_color', 'color' ],
+			'radius'           => [ 'widget_radius', 'px' ],
+			'margin'           => [ 'widget_margin', 'box' ],
+			'padding'          => [ 'widget_padding', 'box' ],
+			'align'            => [ 'widget_alignment', 'flex' ],
+			'text-align'       => [ 'widget_alignment', 'keyword' ],
+			'heading-color'    => [ 'heading_text_color', 'color' ],
+			'heading-font'     => [ 'font_family', 'font' ],
+			'heading-weight'   => [ 'heading_font_weight', 'number' ],
+			'heading-tracking' => [ 'heading_letter_spacing', 'px' ],
+			'heading-leading'  => [ 'heading_line_height', 'px' ],
+			'counter-radius'   => [ 'counter_radius', 'px' ],
+			'counter-margin'   => [ 'counter_margin', 'box' ],
+			'counter-padding'  => [ 'counter_padding', 'box' ],
+			'counter-align'    => [ 'counter_alignment', 'flex' ],
+			'counter-font'     => [ 'counter_font_family', 'font' ],
+			'counter-weight'   => [ 'counter_font_weight', 'number' ],
+			'counter-tracking' => [ 'counter_letter_spacing', 'px' ],
+		];
+
+		$tokens = [];
+
+		foreach ( $specs as $token => [ $key, $type ] ) {
+			// Saved values only; pro's only while pro is active.
+			if ( ! isset( $settings[ $key ] ) || ( ! empty( $fields[ $key ]['pro'] ) && ! $has_pro ) ) {
+				continue;
 			}
-			.spsg-countdown-timer-heading.ct-custom {
-				color: {$heading_text_color};
-            }
-		";
-		} else {
-			$custom_css = '';
+
+			$value   = $settings[ $key ];
+			$default = $fields[ $key ]['default'];
+			$allowed = array_keys( self::FLEX );
+
+			if ( 'font' === $type ) {
+				$value   = Helper::font_family( $value );
+				$default = Helper::font_family( $default );
+
+				// Pro's shop-loop template; the product template asks for its own.
+				if ( is_shop() || is_product_taxonomy() ) {
+					StorefrontFonts::request( $value );
+				}
+			}
+
+			if ( 'flex' === $type ) {
+				$value   = self::FLEX[ is_string( $value ) ? $value : '' ] ?? self::FLEX[ $default ];
+				$default = self::FLEX[ $default ];
+				$allowed = array_values( self::FLEX );
+				$type    = 'keyword';
+			}
+
+			$tokens[ $token ] = [
+				'value'   => $value,
+				'type'    => $type,
+				'default' => $default,
+				'allowed' => $allowed,
+			];
 		}
 
-		if ( $is_twenty_one_theme ) {
-			$custom_css .= '
-                .spsg-countdown-timer {
-                    margin-top: 18px;
-                }
-            ';
-		}
-
-		if ( $is_twenty_four_theme ) {
-			$custom_css .= '
-                .spsg-countdown-timer {
-                    padding-left: 0px;
-                    padding-right: 0px; 
-                }
-                .spsg-countdown-timer-item {
-                    height: 40px;
-                }
-            ';
-		}
-
-		wp_add_inline_style( 'spsg-cd-timer-custom-style', $custom_css );
+		StorefrontStyle::attach( 'spsg-cd-timer-custom-style', 'countdown-timer', $tokens );
 	}
 }

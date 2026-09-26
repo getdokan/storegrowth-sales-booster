@@ -23,6 +23,8 @@ export interface BoxModelFieldProps extends Omit< BaseFieldProps, 'label' > {
     label: string;
     value: BoxValue;
     onChange: ( value: BoxValue ) => void;
+    /** Accessible name when the label repeats on the page, e.g. "Counter margin". */
+    name?: string;
 }
 
 type Side = keyof BoxValue;
@@ -88,6 +90,7 @@ function SideInput( { value, onChange, ...props }: SideInputProps ) {
  * @param props.locked   Pro field without pro.
  * @param props.error    Error message.
  * @param props.help     Help line.
+ * @param props.name     Accessible name (default: the label).
  */
 export function BoxModelField( {
     label,
@@ -96,6 +99,7 @@ export function BoxModelField( {
     locked,
     error,
     help,
+    name = label,
 }: BoxModelFieldProps ) {
     // Per-side mode when the sides differ; otherwise the pair.
     const [ perSide, setPerSide ] = useState(
@@ -110,14 +114,14 @@ export function BoxModelField( {
         onChange( next );
     };
 
-    const inputs: Array< { sides: Side[]; name: string } > = perSide
+    const inputs: Array< { sides: Side[]; part: string } > = perSide
         ? SIDES.map( ( side ) => ( {
               sides: [ side ],
-              name: SIDE_NAMES[ side ],
+              part: SIDE_NAMES[ side ],
           } ) )
         : [
-              { sides: [ 'top', 'bottom' ], name: VERTICAL },
-              { sides: [ 'left', 'right' ], name: HORIZONTAL },
+              { sides: [ 'top', 'bottom' ], part: VERTICAL },
+              { sides: [ 'left', 'right' ], part: HORIZONTAL },
           ];
 
     return (
@@ -129,12 +133,12 @@ export function BoxModelField( {
                 </span>
                 <div className="flex shrink-0 items-start gap-2">
                     <div className="grid grid-cols-2 gap-2">
-                        { inputs.map( ( { sides, name } ) => (
+                        { inputs.map( ( { sides, part } ) => (
                             <SideInput
-                                key={ name }
+                                key={ part }
                                 value={ value[ sides[ 0 ] ] }
                                 disabled={ locked }
-                                aria-label={ `${ label } ${ name }` }
+                                aria-label={ `${ name } ${ part }` }
                                 onChange={ ( input ) => set( sides, input ) }
                             />
                         ) ) }
@@ -144,12 +148,12 @@ export function BoxModelField( {
                         onPressedChange={ setPerSide }
                         disabled={ locked }
                         aria-label={ sprintf(
-                            /* translators: %s: field label (Margin/Padding). */
+                            /* translators: %s: field name, e.g. "Margin" or "Counter margin". */
                             __(
                                 'Set %s per side',
                                 'storegrowth-sales-booster'
                             ),
-                            label.toLowerCase()
+                            name.toLowerCase()
                         ) }
                         className="h-10 w-8 min-w-8 px-0 text-sg-help hover:bg-sg-chip hover:text-sg-text aria-pressed:bg-transparent aria-pressed:text-sg-brand"
                     >

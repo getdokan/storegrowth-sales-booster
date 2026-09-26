@@ -51,6 +51,15 @@ $expected = '.spsg-stock-bar{--spsg-stock-bar-bar-bg:#112233;--spsg-stock-bar-ba
 $check( $expected === $css, 'render(): sanitized variables, invalid → default, legacy rgba kept, unknown type skipped', $css );
 $check( '' === StorefrontStyle::render( 'x', [] ), 'render(): no tokens → empty string' );
 $check( '.a, .b{--spsg-x-c:1px;}' === StorefrontStyle::render( 'x', [ 'c' => [ 'value' => 1, 'type' => 'px' ] ], '.a, .b' ), 'render(): custom selector' );
+$box_default = [
+	'top'    => 0,
+	'right'  => 0,
+	'bottom' => 25,
+	'left'   => 0,
+];
+$check( '--spsg-x-m:1px 2px 3px 4px;' === StorefrontStyle::declarations( 'x', [ 'm' => [ 'value' => [ 'top' => '1', 'right' => 2, 'bottom' => 3, 'left' => 4 ], 'type' => 'box', 'default' => $box_default ] ] ), 'box: four px lengths in order' );
+$check( '--spsg-x-m:0px 0px 25px 0px;' === StorefrontStyle::declarations( 'x', [ 'm' => [ 'value' => [ 'top' => 'x' ], 'type' => 'box', 'default' => $box_default ] ] ), 'box: invalid sides → default' );
+$check( '' === StorefrontStyle::declarations( 'x', [ 'm' => [ 'value' => 'a;b', 'type' => 'box' ] ] ), 'box: no valid value or default → nothing' );
 $check( '' === Helper::sanitize_css_color( [ 'x' ] ), 'sanitize_css_color(): non-scalar → empty' );
 
 echo "\nHelper::sanitize_css_keyword\n";

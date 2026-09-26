@@ -6,6 +6,7 @@
 export {
     type Alignment,
     type AlignmentFieldProps,
+    ALIGNMENT_FLEX,
     AlignmentField,
 } from './alignment-field';
 export { type BoxModelFieldProps, BoxModelField } from './box-model-field';

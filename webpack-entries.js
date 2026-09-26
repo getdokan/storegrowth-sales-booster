@@ -59,6 +59,11 @@ const moduleEntries = {
         'admin',
         './modules/stock-bar/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'countdown-timer',
+        'admin',
+        './modules/countdown-timer/src/admin/index.tsx'
+    ),
 };
 
 /**

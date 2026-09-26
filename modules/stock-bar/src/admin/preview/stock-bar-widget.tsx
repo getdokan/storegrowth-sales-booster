@@ -10,41 +10,13 @@
  *
  * @since SPSG_VERSION
  */
-import { useEffect } from '@wordpress/element';
 import type { CSSProperties } from 'react';
+import { usePreviewFont } from '@storegrowth/hooks';
 
 import type { StockBarValues } from '../types';
 
 /** Sample sales, as in the design. */
 const SOLD = 247;
-
-/** Fonts the plugin bundles or the admin already has; no request needed. */
-const LOCAL_FONTS = [ 'inherit', 'Inter' ];
-
-/**
- * Load a Google font into the admin page once, when the preview first
- * needs it.
- *
- * @param family Font family.
- */
-function useFont( family: string ) {
-    useEffect( () => {
-        const id = `spsg-preview-font-${ family.replace( /\s+/g, '-' ) }`;
-
-        if ( LOCAL_FONTS.includes( family ) || document.getElementById( id ) ) {
-            return;
-        }
-
-        const link = document.createElement( 'link' );
-        link.id = id;
-        link.rel = 'stylesheet';
-        link.href = `https://fonts.googleapis.com/css2?family=${ family.replace(
-            / /g,
-            '+'
-        ) }:wght@400;500;600;700&display=swap`;
-        document.head.appendChild( link );
-    }, [ family ] );
-}
 
 export interface StockBarWidgetProps {
     values: StockBarValues;
@@ -66,7 +38,7 @@ export function StockBarWidget( { values }: StockBarWidgetProps ) {
         Math.max( 1, values.status_quantity_required )
     );
 
-    useFont( values.font_family );
+    usePreviewFont( values.font_family );
 
     const variables = {
         '--spsg-stock-bar-card-bg': values.stockbar_card_bg_color,

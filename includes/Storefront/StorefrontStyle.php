@@ -38,7 +38,8 @@ class StorefrontStyle {
 	 * - `px`: integer, printed with `px`;
 	 * - `number`: plain number (e.g. line-height);
 	 * - `font`: font family; `inherit` stays a keyword, names are quoted;
-	 * - `keyword`: one of the token's `allowed` values.
+	 * - `keyword`: one of the token's `allowed` values;
+	 * - `box`: `{ top, right, bottom, left }` integers, printed as four `px` lengths.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -49,8 +50,26 @@ class StorefrontStyle {
 	 * @return string CSS, or '' when no token has a value.
 	 */
 	public static function render( string $module, array $tokens, string $selector = '' ): string {
+		$vars     = self::declarations( $module, $tokens );
+		$selector = '' !== $selector ? $selector : '.spsg-' . sanitize_key( $module );
+
+		return '' !== $vars ? $selector . '{' . $vars . '}' : '';
+	}
+
+	/**
+	 * A module's variables as declarations, for a `style` attribute when the
+	 * values differ per rendered widget (e.g. they pass through a filter).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module Module id.
+	 * @param array  $tokens Tokens, as for `render()`.
+	 *
+	 * @return string `--spsg-<module>-<name>:<value>;` pairs, or ''.
+	 */
+	public static function declarations( string $module, array $tokens ): string {
 		$module = sanitize_key( $module );
-		$vars   = [];
+		$vars   = '';
 
 		foreach ( $tokens as $name => $token ) {
 			$name = sanitize_key( (string) $name );
@@ -62,13 +81,11 @@ class StorefrontStyle {
 			$value = self::css_value( $token );
 
 			if ( '' !== $value ) {
-				$vars[] = "--spsg-{$module}-{$name}:{$value};";
+				$vars .= "--spsg-{$module}-{$name}:{$value};";
 			}
 		}
 
-		$selector = '' !== $selector ? $selector : ".spsg-{$module}";
-
-		return $vars ? $selector . '{' . implode( '', $vars ) . '}' : '';
+		return $vars;
 	}
 
 	/**
@@ -133,9 +150,46 @@ class StorefrontStyle {
 
 				return Helper::sanitize_css_keyword( $value, $allowed, Helper::sanitize_css_keyword( $default, $allowed ) );
 
+			case 'box':
+				return self::box_value( $value, $default );
+
 			default:
 				return '';
 		}
+	}
+
+	/**
+	 * Four sides for `margin` / `padding`: `{ top, right, bottom, left }`
+	 * integers, as the settings `box` type stores them. Anything else falls
+	 * back to the default.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $value    Stored sides.
+	 * @param mixed $fallback Default sides.
+	 *
+	 * @return string E.g. `0px 10px 25px 10px`, or ''.
+	 */
+	private static function box_value( $value, $fallback ): string {
+		foreach ( [ $value, $fallback ] as $box ) {
+			if ( ! is_array( $box ) ) {
+				continue;
+			}
+
+			$sides = [];
+
+			foreach ( [ 'top', 'right', 'bottom', 'left' ] as $side ) {
+				if ( ! isset( $box[ $side ] ) || ! is_numeric( $box[ $side ] ) ) {
+					continue 2;
+				}
+
+				$sides[] = (int) $box[ $side ] . 'px';
+			}
+
+			return implode( ' ', $sides );
+		}
+
+		return '';
 	}
 
 	/**

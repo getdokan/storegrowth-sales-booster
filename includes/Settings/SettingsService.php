@@ -350,11 +350,13 @@ class SettingsService {
 		$box = [];
 
 		foreach ( self::BOX_SIDES as $side ) {
-			if ( ! isset( $value[ $side ] ) || ! is_numeric( $value[ $side ] ) ) {
+			$number = isset( $value[ $side ] ) && is_scalar( $value[ $side ] ) ? filter_var( $value[ $side ], FILTER_VALIDATE_INT ) : false;
+
+			if ( false === $number ) {
 				return null;
 			}
 
-			$box[ $side ] = (int) $value[ $side ];
+			$box[ $side ] = $number;
 		}
 
 		return $box;
@@ -418,7 +420,12 @@ class SettingsService {
 
 				if ( null === $box || min( $box ) < ( $field['min'] ?? 0 ) ) {
 					/* translators: %s: smallest allowed value. */
-					return new WP_Error( 'invalid', sprintf( __( 'Enter a number of %s or more for each side.', 'storegrowth-sales-booster' ), $field['min'] ?? 0 ) );
+					return new WP_Error( 'invalid', sprintf( __( 'Enter a whole number of %s or more for each side.', 'storegrowth-sales-booster' ), $field['min'] ?? 0 ) );
+				}
+
+				if ( isset( $field['max'] ) && max( $box ) > $field['max'] ) {
+					/* translators: %s: largest allowed value. */
+					return new WP_Error( 'invalid', sprintf( __( 'Enter %s or less for each side.', 'storegrowth-sales-booster' ), $field['max'] ) );
 				}
 
 				// New keys, so no legacy shape: an array of integers.

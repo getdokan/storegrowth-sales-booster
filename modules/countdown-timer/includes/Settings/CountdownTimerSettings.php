@@ -153,13 +153,16 @@ class CountdownTimerSettings implements SettingsSchema {
 				'default' => 'left',
 				'options' => $align,
 			],
+			// Today's 25px gap before the add-to-cart form.
 			'widget_margin'                 => [
 				'type'    => 'box',
-				'default' => $box( 0 ),
+				'default' => array_merge( $box( 0 ), [ 'bottom' => 25 ] ),
+				'max'     => 200,
 			],
 			'widget_padding'                => [
 				'type'    => 'box',
 				'default' => $box( 10 ),
+				'max'     => 200,
 			],
 
 			// Design → Counter/Timer (Box). The one "Digit Text Color" field
@@ -213,18 +216,20 @@ class CountdownTimerSettings implements SettingsSchema {
 			],
 			'counter_alignment'             => [
 				'type'    => 'select',
-				'default' => 'center',
+				'default' => 'left',
 				'options' => $align,
 				'pro'     => true,
 			],
 			'counter_margin'                => [
 				'type'    => 'box',
 				'default' => $box( 0 ),
+				'max'     => 200,
 				'pro'     => true,
 			],
 			'counter_padding'               => [
 				'type'    => 'box',
 				'default' => $box( 6 ),
+				'max'     => 200,
 				'pro'     => true,
 			],
 

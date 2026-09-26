@@ -49,10 +49,13 @@
 | Dokan: vendor can create discount / schedule | `vendor_can_create_countdown_discount`, `vendor_can_create_schedule_timer` | bool | integration | switch (shown only when Dokan is active) |
 
 ## 5. Data changes
-- About 15 new keys, all additive, with defaults matching today's CSS.
-- `spsg_countdown_timer_styles` output must include them.
+- New keys, all additive (`CountdownTimerSettings`); new keys default to the design, existing keys keep their defaults. Box fields (margin/padding) store `{top,right,bottom,left}` integers, 0–200.
 - The single "Digit Text Color" field writes the same value to the 4 existing per-unit keys, so pro's styles filter keeps working.
-- Fix the JS/PHP default mismatch (`selected_theme`, heading); PHP wins.
+- `selected_theme` accepts the six new templates next to the two old layouts. An unsaved theme (the old `ct-custom` fallback) now renders as `ct-layout-1`.
+- **Storefront restyle (decided):** the widget follows the design on every site, including sites that never saved a design setting: heading 24px/500, left-aligned; boxes min 64px with 10px captions; widget padding 10px, radius 10px; 25px gap below. Type and boxes scale in em (shop loop 11px root). The old Twenty Twenty-Four box-height override is dropped (it would clip the captions).
+- Template colours live in PHP (`Helper::TEMPLATES`) and reach the admin through `AdminPage` (`window.spsgCountdownTimer`), with the font names.
+- Storefront colours: the counter colours (pro fields) are the saved ones only while pro is active; otherwise, and for any not saved, the template's. The template passes these effective settings to `spsg_countdown_timer_styles`, so pro 2.2.0's filter picks up the template's colours too. Other design settings are CSS variables, saved keys only, pro keys only with pro.
+- Fonts (saved or default Roboto) are requested only where the widget renders.
 
 ## 6. REST
 `GET/POST /settings/countdown-timer`. Product meta stays in the PHP product forms (optional `rest-api.md` #36).
@@ -61,6 +64,8 @@
 - All PHP hooks unchanged; the ajax pair becomes adapters; product-meta keys unchanged.
 - The Dokan vendor form keeps working (PHP).
 - Retired JS hooks → `storegrowth.settings.schema.countdown-timer`, `storegrowth.preview.countdown-timer`.
+- Kept: every class of the widget markup (pro's shop template copies it), the `custom.js` selectors, the `spsg_countdown_timer_styles` filter (same default keys and `$settings` argument).
+- **Known gap until the integrations step:** the Dokan "Vendors" switches (`vendor_can_create_*`) had their admin tab in the removed legacy bundle (JS filter `spsg_countdown_timer_tab_panels`). Stored values keep working on the storefront and the vendor form, but they can't be changed from the admin until the Dokan integration gets its REST page.
 
 ## 8. Components
 - Builds: `BoxModelInput` (first user, shared with Direct Checkout), an icon-alignment toggle, and the preview widget with the empty state.
@@ -74,8 +79,9 @@
 - Font weight options: 4 here, 3 on Sales Notification. Align them.
 
 ## 10. Tasks and definition of done
-- [ ] Schema + service + adapters.
-- [ ] New CSS vars wired into storefront output with fallbacks.
-- [ ] `BoxModelInput` in `src/fields/`.
-- [ ] TS page + preview.
-- [ ] Characterisation test + E2E matrix; delete the old module bundle.
+- [x] Schema + service + adapters.
+- [x] New CSS vars wired into storefront output with fallbacks.
+- [x] `BoxModelField` in `src/components/fields/`.
+- [x] TS page + preview.
+- [x] Delete the old module bundle.
+- [ ] E2E matrix (with the other modules' E2E pass).
