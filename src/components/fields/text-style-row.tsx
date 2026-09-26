@@ -1,6 +1,7 @@
 /**
  * One compact text-style row (design Text Style card): label, colour swatch,
- * size and weight side by side. `TextStyleHeader` labels the columns once.
+ * size and weight side by side, and a Pro pill at the end when locked (so
+ * the columns stay aligned). `TextStyleHeader` labels the columns once.
  *
  * @since SPSG_VERSION
  */
@@ -29,7 +30,7 @@ export interface TextStyleRowProps {
     locked?: boolean;
 }
 
-const LABEL = `${ FIELD_LABEL } flex w-[92px] shrink-0 items-center gap-1`;
+const LABEL = `${ FIELD_LABEL } w-[104px] shrink-0 whitespace-nowrap`;
 
 /**
  * Column titles over the rows.
@@ -39,7 +40,7 @@ const LABEL = `${ FIELD_LABEL } flex w-[92px] shrink-0 items-center gap-1`;
 export function TextStyleHeader() {
     return (
         <div className="flex w-full items-center gap-3" aria-hidden>
-            <span className="w-[92px] shrink-0" />
+            <span className="w-[104px] shrink-0" />
             <span className="flex flex-1 items-center gap-2 text-[11px] font-medium text-sg-help">
                 <span className="w-8 shrink-0 text-center">
                     { __( 'Color', 'storegrowth-sales-booster' ) }
@@ -82,10 +83,7 @@ export function TextStyleRow( {
 
     return (
         <div className="flex w-full items-center gap-3">
-            <span className={ LABEL }>
-                { label }
-                { locked && <ProBadge /> }
-            </span>
+            <span className={ LABEL }>{ label }</span>
             <span className="flex min-w-0 flex-1 items-center gap-2">
                 <ColorPicker
                     value={ color }
@@ -138,6 +136,7 @@ export function TextStyleRow( {
                     </SelectContent>
                 </Select>
             </span>
+            { locked && <ProBadge /> }
         </div>
     );
 }

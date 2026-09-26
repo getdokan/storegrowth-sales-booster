@@ -31,6 +31,7 @@ import {
 } from '@storegrowth/components';
 import { useModuleSettings } from '@storegrowth/hooks';
 import {
+    assetUrl,
     errorMessage,
     fetchProductsByIds,
     getHeaderData,
@@ -111,6 +112,20 @@ const TEXT_LABELS: Record< TextRow, string > = {
     city_text: __( 'City', 'storegrowth-sales-booster' ),
 };
 
+/** Message tokens (design legend); each message line is a popup line. */
+const TOKENS = [
+    [
+        '{virtual_name}',
+        __( 'Buyer name + "Just purchased"', 'storegrowth-sales-booster' ),
+    ],
+    [
+        '{product_title}',
+        __( 'Title of product', 'storegrowth-sales-booster' ),
+    ],
+    [ '{location}', __( 'City, state, country', 'storegrowth-sales-booster' ) ],
+    [ '{time}', __( 'Time of the purchase', 'storegrowth-sales-booster' ) ],
+];
+
 const toOptions = ( products: ProductOption[] ) =>
     products.map( ( product ) => ( {
         value: product.id,
@@ -121,7 +136,8 @@ export default function SalesPopPage() {
     const settings = useModuleSettings< SalesPopValues >( 'sales-pop' );
     const { values, setValue, setValues, isLocked, errors, schema } = settings;
     const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
-    const maxProducts = schema.popup_products?.max_items;
+    // Lite caps products picked by hand at 5 (as the old admin did).
+    const maxProducts = isPro ? undefined : 5;
     const [ firstProduct, setFirstProduct ] = useState< ProductOption >();
 
     // The first chosen product, for the preview.
@@ -186,7 +202,7 @@ export default function SalesPopPage() {
             return;
         }
 
-        const limit = Math.min( count || maxProducts || 5, maxProducts ?? 100 );
+        const limit = Math.min( count || 5, 100 );
 
         try {
             const products = await fetchSourceProducts(
@@ -222,8 +238,12 @@ export default function SalesPopPage() {
         product:
             firstProduct?.name ||
             __( 'Your product name', 'storegrowth-sales-booster' ),
-        image: firstProduct?.image || FALLBACK_IMAGE,
-        location: values.virtual_locations?.[ 0 ] ?? '',
+        // A chosen product without an image gets the storefront's fallback.
+        image: firstProduct
+            ? firstProduct.image || FALLBACK_IMAGE
+            : assetUrl( 'images/preview/product.jpeg' ),
+        location:
+            values.virtual_locations?.[ 0 ] || 'New York City, New York, USA',
         minutes: 15,
     };
 
@@ -331,7 +351,6 @@ export default function SalesPopPage() {
                         ) }
                         value={ values.number_of_orders }
                         min={ 0 }
-                        max={ maxProducts }
                         onChange={ ( next ) => {
                             setValue( 'number_of_orders', next );
                             fillFromSource( values.product_source, next );
@@ -354,7 +373,9 @@ export default function SalesPopPage() {
                     resolve={ ( ids ) =>
                         fetchProductsByIds( ids as number[] ).then( toOptions )
                     }
-                    max={ maxProducts }
+                    max={
+                        values.product_source === '1' ? maxProducts : undefined
+                    }
                     placeholder={ __(
                         'Search products…',
                         'storegrowth-sales-booster'
@@ -490,10 +511,15 @@ export default function SalesPopPage() {
                     value={ values.message_popup }
                     rows={ 4 }
                     onChange={ ( next ) => setValue( 'message_popup', next ) }
-                    help={ __(
-                        'One line per row. Use {virtual_name}, {product_title}, {location} and {time}.',
-                        'storegrowth-sales-booster'
-                    ) }
+                    help={
+                        <span className="flex flex-col gap-0.5">
+                            { TOKENS.map( ( [ token, meaning ] ) => (
+                                <span key={ token }>
+                                    <code>{ token }</code> = { meaning }
+                                </span>
+                            ) ) }
+                        </span>
+                    }
                     { ...bind( 'message_popup' ) }
                 />
             </Accordion>
@@ -773,7 +799,23 @@ export default function SalesPopPage() {
                 </div>
             ) }
             { ! settings.loading && ! settings.loadError && (
-                <SettingsSplit preview={ <LivePreview overlay={ overlay } /> }>
+                <SettingsSplit
+                    preview={
+                        <LivePreview
+                            overlay={ overlay }
+                            footer={
+                                ! values.enable && (
+                                    <p className="text-center text-xs text-sg-help">
+                                        { __(
+                                            'The popup is off. Turn on Enable Popup to see it here.',
+                                            'storegrowth-sales-booster'
+                                        ) }
+                                    </p>
+                                )
+                            }
+                        />
+                    }
+                >
                     <SettingsTabs
                         label={ __(
                             'Sales Notification settings',

@@ -15,7 +15,8 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Loads the Sales Notification settings page into the admin app, with the
- * storefront stylesheet its preview renders with (ADR-005 S10).
+ * storefront stylesheet its preview renders with (ADR-005 S10), and keeps
+ * the storefront cache fresh when the settings change.
  *
  * Registered from the always-loaded ServiceProvider, so the page is there
  * right after the module is switched on in the app, without a reload.
@@ -33,6 +34,22 @@ class AdminPage implements HookRegistry {
 	 */
 	public function register_hooks(): void {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+
+		// The settings save while the module is off too, and EnqueueScript (which
+		// flushes the storefront cache on save) runs only while it's on.
+		add_action( 'update_option_spsg_popup_products', [ $this, 'flush_storefront_cache' ] );
+		add_action( 'spsg_module_activated', [ $this, 'flush_storefront_cache' ] );
+	}
+
+	/**
+	 * Drop the cached storefront popup data.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function flush_storefront_cache(): void {
+		delete_transient( EnqueueScript::POPUP_CACHE_KEY );
 	}
 
 	/**

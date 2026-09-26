@@ -51,10 +51,12 @@ Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `tex
 
 ## 5. Data changes
 - New settings type `list` (SettingsService): `popup_products` (int[]), `slected_page_option` (the conditional names pro 2.2.0 evaluates, string[]), `virtual_name` / `virtual_locations` (stored by the old admin as a comma / newline string, read through a separator, saved as arrays — a shape the storefront already reads).
-- Lite caps (5 products, 5 names) are enforced server-side (`lite_max_items`).
+- Lite caps as the old admin had them: 5 names (enforced server-side, `lite_max_items`), 5 products picked by hand (admin only — Recent Orders could fill more, so stored product lists stay uncapped). Number fields have minimums but no maximums (the old admin had none).
+- Storefront still uses `templates/popup-style.php` inline styles, not ADR-005 CSS variables: **deferred** — pro 2.2.0's `spsg_sales_pop_visbility_controller` rebuilds the absolute path to `templates/popup.php`, so moving to the template loader must keep that contract. Colours and weights are sanitized for the CSS context there; invalid stored numbers fall back to the defaults. Without pro, the template's radii apply (`TEMPLATE_RADII`); with pro, the saved radii.
+- The storefront cache (`spsg_sales_pop_popup_info`) is also flushed when the option changes while the module is off, and on module activation.
 - Saves write only changed keys, so the storefront fills unsaved keys from the schema defaults (`SalesPopSettings::storefront_settings()`); defaults are the old admin's.
 - `product_source = 2` (Best Sellers, decided: lite, snapshot): like Recent Orders, the admin fills `popup_products` on save from `GET sales-pop/source-products` (orders / best sellers by `total_sales`); the storefront keeps showing `popup_products`, no new query.
-- `create_popup` merges through the settings service (a partial payload no longer wipes the rest). `sales_pop_data` keeps only `ajax_url` / `ajd_nonce`; the product lists are no longer built on every settings page load.
+- `create_popup` merges through the settings service (a partial payload no longer wipes the rest). `sales_pop_data` keeps `ajax_url` / `ajd_nonce` (plus the preview's `fallback_image` and `template_radii`); the product lists are no longer built on every settings page load.
 - The storefront CSS's site-wide `a { text-decoration: none }` is scoped to the popup.
 
 ## 6. REST
@@ -81,8 +83,10 @@ Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `tex
 - The "Time" weight default stays the stored 500 (the design markup shows Medium).
 
 ## 10. Tasks and definition of done
-- [ ] Schema (about 50 keys) + service + adapters, with lite caps enforced server-side.
-- [ ] Best Sellers source in the storefront query (if approved).
-- [ ] TS page, `TypographyRow`, `ProductSearch`, preview.
-- [ ] Transient cleared on save (same as today).
-- [ ] Characterisation test + E2E matrix; delete the old bundle.
+- [x] Schema + service (`list` type) + adapters; lite caps as the old admin had them.
+- [x] Best Sellers as a snapshot on save (`sales-pop/source-products`).
+- [x] TS page, `TextStyleRow`, `MultiSelectField` (product search), preview.
+- [x] Transient cleared on save (module on or off).
+- [x] Delete the old bundle.
+- [ ] Move the storefront onto ADR-005 CSS variables (keeping pro's template-path contract).
+- [ ] E2E matrix (with the other modules' E2E pass).

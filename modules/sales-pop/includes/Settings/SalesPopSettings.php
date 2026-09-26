@@ -59,8 +59,9 @@ class SalesPopSettings implements SettingsSchema {
 
 	/**
 	 * Corner radii each template draws with: `template` → [ popup, image ].
-	 * A template sets them in lite too, where the radius fields need pro;
-	 * with pro, saved radii win. The admin gets them from `AdminPage`.
+	 * Without pro (the radius fields need pro) the storefront uses these;
+	 * with pro, picking a template writes them into the fields. The admin
+	 * gets them from `AdminPage`.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -69,7 +70,7 @@ class SalesPopSettings implements SettingsSchema {
 	const TEMPLATE_RADII = [
 		1 => [ 999, 999 ],
 		2 => [ 8, 999 ],
-		3 => [ 2, 2 ],
+		3 => [ 0, 0 ],
 		4 => [ 8, 8 ],
 	];
 
@@ -110,12 +111,12 @@ class SalesPopSettings implements SettingsSchema {
 				'pro'     => $pro,
 			];
 		};
-		$number = static function ( int $value, int $min, int $max ): array {
+		// No upper bounds: the old admin had none (ADR-004).
+		$number = static function ( int $value, int $min ): array {
 			return [
 				'type'    => 'number',
 				'default' => $value,
 				'min'     => $min,
-				'max'     => $max,
 				'pro'     => true,
 			];
 		};
@@ -143,13 +144,13 @@ class SalesPopSettings implements SettingsSchema {
 				'type'    => 'number',
 				'default' => 0,
 				'min'     => 0,
-				'max'     => 100,
 			],
+			// No stored cap: the old lite admin capped only products picked by
+			// hand (the admin still does); Recent Orders could fill more.
 			'popup_products'               => [
-				'type'           => 'list',
-				'item'           => 'int',
-				'default'        => [],
-				'lite_max_items' => 5,
+				'type'    => 'list',
+				'item'    => 'int',
+				'default' => [],
 			],
 			'virtual_name'                 => [
 				'type'           => 'list',
@@ -190,10 +191,10 @@ class SalesPopSettings implements SettingsSchema {
 
 			// → Timing (seconds).
 			'loop'                         => $toggle( false, true ),
-			'notification_per_page'        => $number( 5, 0, 1000 ),
-			'next_time_display'            => $number( 5, 0, 3600 ),
-			'initial_time_delay'           => $number( 5, 0, 3600 ),
-			'dispaly_time'                 => $number( 5, 1, 3600 ),
+			'notification_per_page'        => $number( 5, 0 ),
+			'next_time_display'            => $number( 5, 0 ),
+			'initial_time_delay'           => $number( 5, 0 ),
+			'dispaly_time'                 => $number( 5, 0 ),
 
 			// Design → Template (the storefront draws each one).
 			'template'                     => [
@@ -204,15 +205,15 @@ class SalesPopSettings implements SettingsSchema {
 
 			// → Image Style.
 			'image_style'                  => $toggle( true, true ),
-			'spacing_around_image'         => $number( 10, 0, 100 ),
-			'popup_image_border_radius'    => $number( 6, 0, 999 ),
+			'spacing_around_image'         => $number( 10, 0 ),
+			'popup_image_border_radius'    => $number( 6, 0 ),
 			'image_position'               => [
 				'type'    => 'select',
 				'default' => 'left',
 				'options' => [ 'left', 'right' ],
 				'pro'     => true,
 			],
-			'popup_image_width'            => $number( 72, 0, 1000 ),
+			'popup_image_width'            => $number( 72, 0 ),
 
 			// → Popup Style.
 			'popup_style'                  => $toggle( true ),
@@ -227,8 +228,8 @@ class SalesPopSettings implements SettingsSchema {
 				'options' => [ 'left_bottom', 'right_bottom', 'left_top', 'right_top' ],
 				'pro'     => true,
 			],
-			'popup_border_radius'          => $number( 8, 0, 999 ),
-			'popup_width'                  => $number( 400, 0, 2000 ),
+			'popup_border_radius'          => $number( 8, 0 ),
+			'popup_width'                  => $number( 400, 0 ),
 
 			// → Text Style.
 			'text_style'                   => $toggle( true ),
@@ -244,7 +245,6 @@ class SalesPopSettings implements SettingsSchema {
 				'type'    => 'number',
 				'default' => (int) $size,
 				'min'     => 0,
-				'max'     => 200,
 				'pro'     => $pro,
 			];
 			$fields[ "{$prefix}_font_weight" ] = [
@@ -263,8 +263,9 @@ class SalesPopSettings implements SettingsSchema {
 	 * stored shape the storefront reads. Saves write only changed keys, so
 	 * the storefront must not rely on every key being there.
 	 *
-	 * The template's radii apply without pro, and with pro to radii never
-	 * saved.
+	 * A stored number that isn't numeric (old or third-party data) takes the
+	 * default, so the template's arithmetic never fails. Without pro the
+	 * template's radii apply (the radius fields need pro).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -274,20 +275,21 @@ class SalesPopSettings implements SettingsSchema {
 	 */
 	public function storefront_settings( $stored ): array {
 		$stored   = is_array( $stored ) ? $stored : [];
-		$defaults = array_map(
-			static function ( $field ) {
-				return $field['default'];
-			},
-			$this->get_fields()
-		);
+		$settings = $stored;
 
-		$template = absint( $stored['template'] ?? $defaults['template'] );
-		$radii    = self::TEMPLATE_RADII[ $template ] ?? self::TEMPLATE_RADII[4];
-		$radii    = [
-			'popup_border_radius'       => $radii[0],
-			'popup_image_border_radius' => $radii[1],
-		];
+		foreach ( $this->get_fields() as $key => $field ) {
+			if ( ! array_key_exists( $key, $settings ) || ( 'number' === $field['type'] && ! is_numeric( $settings[ $key ] ) ) ) {
+				$settings[ $key ] = $field['default'];
+			}
+		}
 
-		return sp_store_growth()->has_pro() ? $stored + $radii + $defaults : array_merge( $stored + $defaults, $radii );
+		if ( ! sp_store_growth()->has_pro() ) {
+			$radii = self::TEMPLATE_RADII[ absint( $settings['template'] ) ] ?? self::TEMPLATE_RADII[4];
+
+			$settings['popup_border_radius']       = $radii[0];
+			$settings['popup_image_border_radius'] = $radii[1];
+		}
+
+		return $settings;
 	}
 }

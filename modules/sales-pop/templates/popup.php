@@ -24,7 +24,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 				// Template 2: a bag icon instead of the product image.
 				if ( 2 === $template_no ) {
 					?>
-					<span class="spsg-sales-pop-icon" style="width:<?php echo esc_attr( absint( $popup_properties['popup_image_width'] ) ?: 72 ); ?>px" aria-hidden="true">
+					<span class="spsg-sales-pop-icon" style="width:<?php echo esc_attr( $image_width ); ?>px" aria-hidden="true">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
 					</span>
 					<?php
@@ -45,16 +45,16 @@ $image_without_link = '<img id="image_of_product" src="#"
 					<p class="message-line-height" id="popup_virtual_name">
 						<span id="virtual_name" 
 							style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">
-							Someone 
+							<?php esc_html_e( 'Someone', 'storegrowth-sales-booster' ); ?>
 						</span>
-						<span style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>">Just purchased</span> 
+						<span style="<?php echo isset( $name_style ) ? esc_attr( $name_style ) : null; ?>"><?php esc_html_e( 'Just purchased', 'storegrowth-sales-booster' ); ?></span>
 						<br>
 					</p>
 
 					<p class="message-line-height" id="popup_title">
 					<a id="product_url_title" href="#" target="">
 						<span id="product" 
-						style="color:<?php echo esc_attr( $popup_properties['product_title_color'] ); ?>; font-size:<?php echo esc_attr( $popup_properties['product_title_font_size'] ); ?>px ;">
+						style="color:<?php echo esc_attr( $product_title_color ); ?>; font-size:<?php echo esc_attr( $product_title_size ); ?>px ;">
 						hosting
 						</span>
 					</a> 
@@ -67,7 +67,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 					</p>
 					<p id="popup_time">
 						<span id="time" style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">15</span>
-						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>">minutes ago</span> 
+						<span style="<?php echo isset( $time_style ) ? esc_attr( $time_style ) : null; ?>"><?php esc_html_e( 'minutes ago', 'storegrowth-sales-booster' ); ?></span>
 						<br>	
 					</div>
 
@@ -78,7 +78,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 			<?php
 			if ( true === $popup_properties['show_close_button'] ) {
 				?>
-			<div class="custom-close <?php echo esc_attr( 'template-' . $template_no ); ?>"></div>
+			<button type="button" class="custom-close <?php echo esc_attr( 'template-' . $template_no ); ?>" aria-label="<?php esc_attr_e( 'Dismiss', 'storegrowth-sales-booster' ); ?>"></button>
 		<?php } ?>
 		</div>	
 	</div>

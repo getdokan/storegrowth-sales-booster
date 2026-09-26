@@ -500,7 +500,7 @@ class SettingsService {
 					$value = explode( $field['separator'], $value );
 				}
 
-				if ( ! is_array( $value ) ) {
+				if ( ! is_array( $value ) || array_filter( $value, 'is_array' ) ) {
 					return new WP_Error( 'invalid', __( 'Send a list.', 'storegrowth-sales-booster' ) );
 				}
 

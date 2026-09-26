@@ -118,9 +118,19 @@
 	top: 12px;
 	right: 12px;
 	width: 12px;
+	min-width: 0;
 	height: 12px;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+	line-height: 0;
 	cursor: pointer;
 	transform: rotate(45deg);
+	appearance: none;
 }
 
 .custom-social-proof .custom-notification .custom-close.template-1,
@@ -168,11 +178,11 @@
 	line-height: 1.4;
 }
 
-/* Links inside the popup only (this used to target every link on the site). */
+/* Links inside the popup only (this used to target every link on the site);
+   the keyboard focus outline stays. */
 .custom-social-proof a,
 .custom-social-proof a:focus,
 .custom-social-proof a:hover,
 .custom-social-proof a:visited {
 	text-decoration: none;
-	outline: none;
 }

@@ -31,7 +31,7 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 1c | **Done.** Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar`. Field components move to step 2 | 1a | 1b |
 | 2 | **Done (E2E pending).** `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
 | 3 | **Done (E2E pending).** `countdown-timer` — first `BoxModelField` | 2 | 4 |
-| 4 | `sales-pop` — first `ProductSearch`, `TypographyRow` | 2 | 3 |
+| 4 | **Done (E2E pending).** `sales-pop` — first `list` setting, `MultiSelectField` (product search), `TextStyleRow` | 2 | 3 |
 | 5 | `progressive-discount-banner` — first bar fragment, `ModeNumber`, `IconPicker` | 2 | 7, 8 |
 | 6 | `floating-notification-bar` — reuses the bar fragment; first `DateRange` | 5 | 7, 8 |
 | 7 | `quick-view` | 2 | 5, 6, 8 |

@@ -93,7 +93,8 @@ class SourceProductsController extends WP_REST_Controller {
 
 	/**
 	 * The source's products, first `limit`, as `{ id, name, image }`.
-	 * External products are left out, as the product picker does.
+	 * External products are left out, as the product picker does, and so
+	 * are products hidden from the catalog (e.g. subscription packs).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -124,7 +125,7 @@ class SourceProductsController extends WP_REST_Controller {
 		foreach ( $posts as $post ) {
 			$product = $post instanceof WP_Post ? wc_get_product( $post->ID ) : null;
 
-			if ( ! $product || $product->is_type( 'external' ) ) {
+			if ( ! $product || $product->is_type( 'external' ) || 'hidden' === $product->get_catalog_visibility() ) {
 				continue;
 			}
 

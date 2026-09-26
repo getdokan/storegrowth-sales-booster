@@ -241,6 +241,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Product list for pop up selection.
+	 *
+	 * @deprecated SPSG_VERSION The admin searches products through REST.
 	 */
 	public function product_list() {
 		// Set product list from sources.
@@ -367,6 +369,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve select product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION The admin searches products through REST.
 	 *
 	 * @return int[]|\WP_Post[]
 	 */
@@ -400,6 +403,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve latest product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return int[]|\WP_Post[]
 	 */
@@ -418,6 +422,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve recently viewed product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array|int[]|\WP_Post[]
 	 */
@@ -454,6 +459,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve category product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array
 	 */
@@ -506,6 +512,7 @@ class EnqueueScript implements HookRegistry {
 	 * Get category list data.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array
 	 */

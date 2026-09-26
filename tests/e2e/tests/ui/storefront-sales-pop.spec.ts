@@ -27,7 +27,7 @@ test.describe('Storefront · Sales Notification', { tag: '@ui' }, () => {
   });
 
   test.afterEach(async ({ page }) => {
-    // Must be active so the nonce localizes before resetting to a non-fatal config.
+    // Reset to a non-fatal config (the settings page localizes the nonce either way).
     await setModuleActive(page, MODULES.salesPop.id, true);
     await saveSalesPop(page, { enable: false, popup_products: [], virtual_locations: '' });
     await setModuleActive(page, MODULES.salesPop.id, true);
@@ -61,16 +61,18 @@ test.describe('Storefront · Sales Notification', { tag: '@ui' }, () => {
       external_link: false,
       popup_products: [id],
       virtual_locations: 'New York',
-      background_color: '#abcdef',
-      popup_border_radius: '12',
+      // Lite settings, so this holds with or without pro (pro-only keys are
+      // ignored without pro).
+      product_title_color: '#abcdef',
+      product_title_font_size: '18',
       initial_time_delay: '30',
     });
 
     await guestPage.goto('/shop/');
-    const style = await guestPage.locator('.custom-notification').first().getAttribute('style');
+    const style = await guestPage.locator('.custom-social-proof #product').first().getAttribute('style');
     // The browser normalises the inline #abcdef → rgb(171, 205, 239).
     expect(style).toContain('rgb(171, 205, 239)');
-    expect(style).toContain('border-radius: 12px');
+    expect(style).toContain('font-size: 18px');
   });
 
   test('does not load the popup script when the module is inactive', async ({ page, guestPage }) => {
