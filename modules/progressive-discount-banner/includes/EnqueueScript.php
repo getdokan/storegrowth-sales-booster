@@ -56,7 +56,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_script(
 			'spsg-pd-banner-bar-remove',
 			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/js/banner-bar-remove.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'spsg-storefront-core' ),
 			filemtime( PluginHelper::get_modules_path( 'progressive-discount-banner/assets/js/banner-bar-remove.js' ) ),
 			true
 		);

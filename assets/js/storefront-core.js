@@ -121,11 +121,53 @@
         };
     }
 
+    /**
+     * The top bars in stacking order (Free Shipping above the Floating Bar,
+     * as before). A bar script adds `spsg-bar-top` while its bar shows at
+     * the top.
+     */
+    var TOP_BARS = [
+        '.spsg-pd-banner-bar-wrapper.spsg-bar-top',
+        '.spsg-floating-notification-bar-wrapper.spsg-bar-top',
+    ];
+
+    var listening = false;
+
+    /**
+     * Stack the showing top bars under each other (below the admin bar)
+     * and push the page down by their total height, so no bar covers the
+     * page or another bar. Call it whenever a top bar shows or hides.
+     */
+    function stackTopBars() {
+        // The admin bar's space: WordPress sets it as the html margin.
+        var top = parseFloat( window.getComputedStyle( document.documentElement ).marginTop ) || 0;
+        var height = 0;
+
+        TOP_BARS.forEach( function ( selector ) {
+            var bar = document.querySelector( selector );
+
+            if ( ! bar ) {
+                return;
+            }
+            bar.style.top = top + height + 'px';
+            height += bar.offsetHeight;
+        } );
+
+        document.body.style.paddingTop = height ? height + 10 + 'px' : '0px';
+
+        // Bars wrap to two rows on narrow screens.
+        if ( ! listening ) {
+            listening = true;
+            window.addEventListener( 'resize', stackTopBars );
+        }
+    }
+
     window.spsgStorefront = {
         isMobile: isMobile,
         matchesDevice: matchesDevice,
         isDismissed: isDismissed,
         dismiss: dismiss,
         onTrigger: onTrigger,
+        stackTopBars: stackTopBars,
     };
 } )( window, document );
