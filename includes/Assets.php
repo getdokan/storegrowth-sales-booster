@@ -107,7 +107,8 @@ class Assets {
 
 	/**
 	 * Register the shared storefront base (ADR-005 S9): the z-index scale and
-	 * reduced-motion rules, and the display-trigger/dismiss helpers.
+	 * reduced-motion rules, the display-trigger/dismiss helpers, and the
+	 * storefront bars' shared layout.
 	 *
 	 * Registered only. A module's storefront handles add them as dependencies
 	 * when that module migrates, so they load only where a module renders. The
@@ -123,6 +124,14 @@ class Assets {
 			Helper::get_plugin_url( 'assets/css/storefront-base.css' ),
 			[],
 			filemtime( Helper::get_plugin_path( 'assets/css/storefront-base.css' ) )
+		);
+
+		// The storefront bars' shared layout (Free Shipping bar, Floating Bar).
+		wp_register_style(
+			'spsg-storefront-bar',
+			Helper::get_plugin_url( 'assets/css/storefront-bar.css' ),
+			[ 'spsg-storefront-base' ],
+			filemtime( Helper::get_plugin_path( 'assets/css/storefront-bar.css' ) )
 		);
 
 		wp_register_script(

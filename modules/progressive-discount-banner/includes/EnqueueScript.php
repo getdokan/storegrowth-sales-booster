@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Settings\DisplaySettings;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,8 +31,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -48,7 +49,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-pd-banner-style',
 			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/css/progressive-discount-banner.css' ),
-			array(),
+			array( 'spsg-storefront-bar' ),
 			filemtime( $style_file )
 		);
 
@@ -69,78 +70,9 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( 'storegrowth_page_spsg-settings' === $hook && file_exists( PluginHelper::get_modules_path( 'progressive-discount-banner/assets/build/settings.asset.php' ) ) ) {
-			$settings_file = require PluginHelper::get_modules_path( 'progressive-discount-banner/assets/build/settings.asset.php' );
-
-			wp_enqueue_media();
-			wp_enqueue_script(
-				'spsg-pd-banner-settings',
-				PluginHelper::get_modules_url( 'progressive-discount-banner/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				false
-			);
-
-            // Pass the Cart URL to the JavaScript file
-            wp_localize_script('spsg-pd-banner-settings', 'spsgFsbData', array(
-                'cartUrl' => wc_get_cart_url(), // WooCommerce Cart URL
-            ));
-		}
-	}
-
-	/**
-	 * Retrieves the label corresponding to a given value from an array of objects.
-	 *
-	 * This function iterates through the array of objects and matches the provided
-	 * value to the 'value' property of each object. If a match is found, it returns
-	 * the corresponding 'label' property; otherwise, it returns an empty string.
-	 *
-	 * @param mixed[] $value An array of objects where each object has 'value' and 'label' properties.
-	 * @param mixed   $object_array       The value to search for within the array of objects.
-	 *
-	 * @return string The label corresponding to the provided value, or an empty string if not found.
-	 */
-	private function get_label_by_value( $value, $object_array ) {
-		foreach ( $object_array as $object ) {
-			if ( $object['value'] === $value ) {
-				return $object['label'];
-			}
-		}
-		return '';
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		$font_family_arr = array(
-			array(
-				'value' => 'poppins',
-				'label' => 'Poppins',
-			),
-			array(
-				'value' => 'roboto',
-				'label' => 'Roboto',
-			),
-			array(
-				'value' => 'lato',
-				'label' => 'Lato',
-			),
-			array(
-				'value' => 'montserrat',
-				'label' => 'Montserrat',
-			),
-			array(
-				'value' => 'ibm_plex_sans',
-				'label' => 'IBM Plex Sans',
-			),
-		);
 		// Get style options. Each value is interpolated into a <style> block,
 		// so colours are constrained to safe CSS colour characters and sizes to
 		// integers — a stored value can never break out of the CSS context.
@@ -154,7 +86,7 @@ class EnqueueScript implements HookRegistry {
 		$bar_type      = PluginHelper::find_option_settings( $settings, 'bar_type', 'normal' );
 		$font_family   = PluginHelper::find_option_settings( $settings, 'font_family', 'poppins' );
 		$font_size     = absint( PluginHelper::find_option_settings( $settings, 'font_size', 20 ) );
-		$selected_font = $this->get_label_by_value( $font_family, $font_family_arr );
+		$selected_font = DisplaySettings::bar_font( $font_family );
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
@@ -183,8 +115,14 @@ class EnqueueScript implements HookRegistry {
 				color: {$text_color};
 				height: {$banner_height}px;
 			}
+			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon {
+				color: {$icon_color};
+			}
 			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg {
 				fill: {$icon_color};
+			}
+			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-remove {
+				color: {$close_color};
 			}
 			.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-remove svg path {
 			    fill: {$close_color};

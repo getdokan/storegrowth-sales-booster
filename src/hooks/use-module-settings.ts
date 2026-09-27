@@ -41,6 +41,11 @@ export interface ModuleSettings< V extends Values = Values > {
     errors: Partial< Record< keyof V, string > >;
     saving: boolean;
     /**
+     * False while a gated module's settings were never saved (its storefront
+     * output is off until the first save, which sends every key).
+     */
+    published: boolean;
+    /**
      * Save unsaved changes (all, or in `keys` only). On failure sets `errors`
      * and rethrows for the caller's toast.
      */
@@ -68,6 +73,7 @@ export function useModuleSettings< V extends Values = Values >(
         Partial< Record< keyof V, string > >
     >( {} );
     const [ saving, setSaving ] = useState( false );
+    const [ published, setPublished ] = useState( true );
 
     const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
 
@@ -83,6 +89,7 @@ export function useModuleSettings< V extends Values = Values >(
                 setSchema( response.schema );
                 setSaved( response.values );
                 setValuesState( response.values );
+                setPublished( response.published );
                 setLoadError( null );
             } )
             .catch( ( error ) => {
@@ -122,15 +129,19 @@ export function useModuleSettings< V extends Values = Values >(
         setValuesState( ( current ) => ( { ...current, ...next } ) );
     }, [] );
 
+    // Never published: every key counts as a change, so the first save
+    // sends them all and turns the storefront output on.
     const changedKeys = useCallback(
         ( keys?: Array< keyof V > ) =>
             ( keys ?? ( Object.keys( values ) as Array< keyof V > ) ).filter(
                 ( key ) =>
-                    // JSON compares box values ({ top, … }) by content.
-                    JSON.stringify( values[ key ] ) !==
-                        JSON.stringify( saved[ key ] ) && ! isLocked( key )
+                    ! isLocked( key ) &&
+                    ( ! published ||
+                        // JSON compares box values ({ top, … }) by content.
+                        JSON.stringify( values[ key ] ) !==
+                            JSON.stringify( saved[ key ] ) )
             ),
-        [ values, saved, isLocked ]
+        [ values, saved, isLocked, published ]
     );
 
     const isDirty = useCallback(
@@ -159,6 +170,7 @@ export function useModuleSettings< V extends Values = Values >(
                     payload
                 );
                 setSaved( response.values );
+                setPublished( response.published );
                 // Keep unsaved edits in other keys; take the saved ones back
                 // from the server (sanitized).
                 setValuesState( ( current ) => ( {
@@ -216,6 +228,7 @@ export function useModuleSettings< V extends Values = Values >(
             isLocked,
             errors,
             saving,
+            published,
             save,
             reset,
         } ),
@@ -230,6 +243,7 @@ export function useModuleSettings< V extends Values = Values >(
             isLocked,
             errors,
             saving,
+            published,
             save,
             reset,
         ]

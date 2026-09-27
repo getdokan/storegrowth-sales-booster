@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * Field definition (array keyed by the option's existing key):
  *
  *     'stockbar_height' => [
- *         'type'    => 'number',  // text | textarea | number | toggle | color | select | box | list
+ *         'type'    => 'number',  // text | textarea | number | toggle | color | select | box | list | url | date
  *         'default' => 10,        // in API shape (int, bool, string, array)
  *         'pro'     => true,      // optional; saved only while pro is active
  *         'min'     => 1,         // number, box: optional bounds; number: step
@@ -31,7 +31,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * `list` also takes `item` (`int` or `text`), `separator` (how the old admin
  * stored it as a string, e.g. `,`), `max_items` and `lite_max_items` (the cap
- * while pro is inactive).
+ * while pro is inactive). `number` takes `allow_empty` (the old admin stored
+ * `''` for "not set"). `url` is a web address or `''`; `date` is `Y-m-d` or `''`.
  *
  * Keys and their spellings are the ones already stored; never rename them.
  *

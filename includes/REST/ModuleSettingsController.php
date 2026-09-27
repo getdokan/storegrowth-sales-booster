@@ -143,7 +143,9 @@ class ModuleSettingsController extends WP_REST_Controller {
 	}
 
 	/**
-	 * `{ schema, values }` for a module.
+	 * `{ schema, values, published }` for a module. `published` is false
+	 * while a gated module's settings were never saved (its storefront output
+	 * is off until then).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -153,8 +155,9 @@ class ModuleSettingsController extends WP_REST_Controller {
 	 */
 	private function response_data( string $module_id ): array {
 		return [
-			'schema' => (object) $this->service()->get_public_schema( $module_id ),
-			'values' => (object) $this->service()->get_values( $module_id ),
+			'schema'    => (object) $this->service()->get_public_schema( $module_id ),
+			'values'    => (object) $this->service()->get_values( $module_id ),
+			'published' => $this->service()->is_published( $module_id ),
 		];
 	}
 

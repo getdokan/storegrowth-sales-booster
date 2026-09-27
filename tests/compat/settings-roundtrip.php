@@ -171,6 +171,12 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 				case 'color':
 					$changes[ $key ] = [ '#123456', '#123456' ];
 					break;
+				case 'url':
+					$changes[ $key ] = [ 'https://example.com/path', 'https://example.com/path' ];
+					break;
+				case 'date':
+					$changes[ $key ] = [ '2026-10-27', '2026-10-27' ];
+					break;
 				case 'text':
 				case 'textarea':
 					$changes[ $key ] = [ 'Changed text', 'Changed text' ];
@@ -206,6 +212,10 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 		foreach ( $fields as $key => $field ) {
 			if ( 'color' === $field['type'] ) {
 				$invalid[ $key ] = 'not-a-colour';
+			} elseif ( 'url' === $field['type'] ) {
+				$invalid[ $key ] = 'javascript:alert(1)';
+			} elseif ( 'date' === $field['type'] ) {
+				$invalid[ $key ] = '2026-02-30';
 			}
 		}
 		if ( $invalid ) {

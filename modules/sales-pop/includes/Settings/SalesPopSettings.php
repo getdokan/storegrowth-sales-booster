@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\SalesPop\Settings;
 
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
 use StorePulse\StoreGrowth\Modules\SalesPop\SalesPopModule;
+use StorePulse\StoreGrowth\Settings\DisplaySettings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -28,15 +29,6 @@ defined( 'ABSPATH' ) || exit;
  * @since SPSG_VERSION
  */
 class SalesPopSettings implements SettingsSchema {
-
-	/**
-	 * Page conditions pro 2.2.0 evaluates for "Show on Specific Pages".
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @var string[]
-	 */
-	const PAGE_CONDITIONS = [ 'is_front_page', 'is_home', 'is_singular', 'is_page', 'is_attachment', 'is_search', 'is_404', 'is_archive', 'is_category', 'is_tag' ];
 
 	/**
 	 * Text rows of the Text Style card: key prefix of `<prefix>_font_size` /
@@ -163,24 +155,7 @@ class SalesPopSettings implements SettingsSchema {
 				'separator' => "\n",
 				'default'   => [ 'New York City, New York, USA', 'Bernau, Freistaat Bayern, Germany' ],
 			],
-			'banner_show_option'           => [
-				'type'    => 'select',
-				'default' => 'banner-show-everywhere',
-				'options' => [ 'banner-show-everywhere', 'banner-show-selected' ],
-				'pro'     => true,
-			],
-			'slected_page_option'          => [
-				'type'    => 'list',
-				'default' => [],
-				'options' => self::PAGE_CONDITIONS,
-				'pro'     => true,
-			],
-			'user_type'                    => [
-				'type'    => 'select',
-				'default' => 'both',
-				'options' => [ 'both', 'logged_in', 'not_logged_in' ],
-				'pro'     => true,
-			],
+			// (Visibility: DisplaySettings::targeting_fields(), added below.)
 
 			// → Message.
 			'message_popup'                => [
@@ -255,7 +230,7 @@ class SalesPopSettings implements SettingsSchema {
 			];
 		}
 
-		return $fields;
+		return array_merge( $fields, DisplaySettings::targeting_fields() );
 	}
 
 	/**

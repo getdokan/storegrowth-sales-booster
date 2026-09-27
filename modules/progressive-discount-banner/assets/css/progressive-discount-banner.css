@@ -32,52 +32,28 @@ body:not(.show_discount_banner){
     padding-top: 0;
 }
 
+/* Layout: assets/css/storefront-bar.css. Colours and sizes: inline CSS. */
 .spsg-pd-banner-bar-wrapper {
     display: none;
     position: absolute;
-    left: 0;
     top: 0;
-    text-align: center;
-    width: 100%;
     background-color: #008DFF;
     color: #fff;
-    z-index: 99999;
-    /* height: 60px; */
-    padding: 8px 0px;
-}
-.spsg-pd-banner-bar {
-    display: flex;
-    justify-content: space-between;
-    width: 97%;
-    margin:auto;
-    height: 100%;
-    align-items: center;
-    padding: 0px 20px;
 }
 
-.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg {
-    margin-top: 8px;
+/* Pro's own (filled) icons. */
+.spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg:not(.spsg-bar-icon) {
     fill: #fff;
     width: 25px;
     height: 25px;
 }
 
-.spsg-pd-banner-text{
+.spsg-pd-banner-text {
     font-size: 20px;
-    font-weight: 600;
-}
-
-.spsg-pd-banner-bar-remove {
-    cursor: pointer;
 }
 
 body.admin-bar .spsg-pd-banner-bar-wrapper {
     top: 32px;
-    max-width: 100%;
-}
-
-body {
-    padding-top: 70px;
 }
 
 .body-padding-transition {

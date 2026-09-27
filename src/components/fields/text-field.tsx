@@ -18,6 +18,8 @@ export interface TextFieldProps extends BaseFieldProps {
     value: string;
     onChange: ( value: string ) => void;
     placeholder?: string;
+    /** `date` edits a `Y-m-d` value with the browser's date picker. */
+    type?: 'text' | 'url' | 'date';
 }
 
 /**
@@ -32,6 +34,7 @@ export interface TextFieldProps extends BaseFieldProps {
  * @param props.help        Help line.
  * @param props.id          Input id.
  * @param props.placeholder Placeholder.
+ * @param props.type        Input type.
  */
 export function TextField( {
     label,
@@ -42,6 +45,7 @@ export function TextField( {
     help,
     id,
     placeholder,
+    type = 'text',
 }: TextFieldProps ) {
     const fallbackId = useId();
     const inputId = id ?? fallbackId;
@@ -53,6 +57,7 @@ export function TextField( {
             </FieldLabel>
             <Input
                 id={ inputId }
+                type={ type }
                 className={ FIELD_CONTROL }
                 value={ value }
                 placeholder={ placeholder }

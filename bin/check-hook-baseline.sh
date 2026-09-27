@@ -25,7 +25,7 @@ trap 'rm -f "$current"' EXIT
 # Whole-file matching, so calls whose hook name sits on the next line are found too.
 find "$ROOT" -type f -name '*.php' \
     -not -path '*/node_modules/*' -not -path '*/vendor/*' -not -path "$ROOT/lib/*" \
-    -not -path "$ROOT/tests/*" -not -path "$ROOT/build/*" -not -path '*/.git/*' \
+    -not -path "$ROOT/tests/*" -not -path "$ROOT/build/*" -not -path '*/.git/*' -not -path "$ROOT/.claude/*" \
     -print0 \
     | xargs -0 perl -0777 -ne \
         'while ( /\b(?:do_action|apply_filters)(?:_ref_array|_deprecated)?\(\s*[\x27"]([^\x27"]+)/g ) { print "$1\n" }' \

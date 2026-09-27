@@ -69,6 +69,16 @@ const moduleEntries = {
         'admin',
         './modules/sales-pop/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'progressive-discount-banner',
+        'admin',
+        './modules/progressive-discount-banner/src/admin/index.tsx'
+    ),
+    ...moduleEntry(
+        'floating-notification-bar',
+        'admin',
+        './modules/floating-notification-bar/src/admin/index.tsx'
+    ),
 };
 
 /**

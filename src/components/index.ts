@@ -5,6 +5,20 @@
  * @since SPSG_VERSION
  */
 export { Accordion, type AccordionProps } from './accordion';
+export {
+    BAR_FONTS,
+    BarDeviceField,
+    type BarFieldsProps,
+    BarIconPicker,
+    type BarIconPickerProps,
+    type BarKey,
+    BarPlacementFields,
+    BarTriggerFields,
+    BarTypographyFields,
+    type BarValues,
+    barShowsOn,
+    TargetingFields,
+} from './bar-fields';
 export { CardHead, type CardHeadProps } from './card-head';
 export { ColorPicker, type ColorPickerProps } from './color-picker';
 export {

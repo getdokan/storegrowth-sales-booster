@@ -7,8 +7,10 @@
 
 namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Settings\FloatingNotificationBarSettings;
+
 // If this file is called directly, abort.
-use PHP_CodeSniffer\Generators\HTML;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -44,7 +46,11 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_floating_notification_bar_settings', array() );
+		// Saves write only changed keys: the rest come from the defaults (not
+		// for a store that never saved, so its bar stays off as before).
+		$settings = storegrowth_get_container()->get( FloatingNotificationBarSettings::class )->storefront_settings(
+			PluginHelper::get_settings( 'spsg_floating_notification_bar_settings', array() )
+		);
 
 		// Only fills in keys that are absent, so an explicitly emptied setting is preserved.
 		return wp_parse_args( $settings, self::get_default_settings() );

@@ -7,6 +7,9 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings\ProgressiveDiscountBannerSettings;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,7 +28,11 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_progressive_discount_banner_settings', array() );
+		// Saves write only changed keys: the rest come from the defaults (not
+		// for a store that never saved, so its bar stays off as before).
+		return storegrowth_get_container()->get( ProgressiveDiscountBannerSettings::class )->storefront_settings(
+			PluginHelper::get_settings( 'spsg_progressive_discount_banner_settings', array() )
+		);
 	}
 
 	/**

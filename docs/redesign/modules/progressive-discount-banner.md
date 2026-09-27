@@ -5,14 +5,14 @@
 > Build it exactly as designed; see the design-fidelity rule in `README.md`.
 
 ## 1. Summary
-- **Phase:** 3. Build it alongside Floating Bar; they share about 20 keys and one "bar" schema fragment.
+- **Phase:** 3. Build it alongside Floating Bar; they share 13 identical bar keys (`DisplaySettings::bar_fields()`) plus the 3 targeting keys (`DisplaySettings::targeting_fields()`, also Sales Notification), and six parallel-named pairs (`btn_*` / `button_*`, icon and text keys) that stay per module.
 - **Size:** M.
 - **Design:** `free-shipping-rules.html`.
 
 ## 2. Current state
 - **Option:** `spsg_progressive_discount_banner_settings` (flat), plus `spsg_discount_banner_flags` (first-boot seeding). Localized as `spsg_fsb_data`.
 - **Transport:** ajax `spsg_pd_banner_get_settings` / `_save_settings`. **Saves with no sanitization today.**
-- **PHP hooks** (keep): `free_shipping_bar_content_pro` (pro), `sales_boster_pd_banner_text` (pro fires), `storegrowth_free_shipping_bar_module_init`.
+- **PHP hooks** (keep): `free_shipping_bar_content_pro` (pro), `sales_boster_pd_banner_text` (applied by lite's and pro's templates; nothing listens). (`storegrowth_free_shipping_bar_module_init` is never fired; nothing to keep.)
 - **JS hooks** (retire): `spsg_free_shipping_bar_position_settings`, `_icon_radio_box`, `_display_rules_settings`, `_height_settings`, `_font_size`, `spsg_shipping_bar_templates`, `spsg_shipping_bar_template_styles`.
 
 ## 3. Target design
@@ -47,13 +47,20 @@
   |---|---|---|
   | Free Shipping | `free-shipping` | (unchanged) |
   | Percentage | `discount-amount` | `percentage` |
-  | Fixed | `discount-amount` | `fixed` |
+  | Fixed | `discount-amount` | `fixed-amount` |
 
-  The schema exposes one virtual field. The service splits it into the two stored keys.
-- Add sanitization on save (new behaviour, same keys).
+  The admin page maps the design's one select onto the two stored keys (no virtual field in the schema).
+- **Discount amount (decided):** added — `discount_amount_value` shows for Percentage / Fixed (the old admin stored `''` until typed: `allow_empty`).
+- Saves go through the settings service: sanitized (the old ajax stored the payload unsanitized) and merged. New setting types `url` (`btn_target`, custom icons) and `date`.
+- **Never saved = off, as today:** an option holding only the first-boot texts (or nothing) is left as it is, so no bar shows and no discount applies. Once saved, unsaved keys take the schema defaults (the old admin's), for every reader through `Helper::get_settings()` (lite, pro, localized data, discount code).
+- **First save turns the bar on:** the schema is a `GatedSettingsSchema` (`is_saved()`); the settings API returns `published: false` until then, the page enables Save with nothing changed and says the bar shows once saved, and that first save writes every key the tab sends (later saves write only changes).
+- **First-boot seeding is no longer destructive:** it never deletes the option; it adds it when missing, or fills only missing text keys.
+- **Page targeting (decided):** Show Everywhere / Show on Specific Pages + the page conditions pro 2.2.0 evaluates; Everyone / Logged-in / Guests. The design's "Shop / Product pages only" are not stored values.
+- **Scroll trigger (decided):** keeps today's meaning — the scroll delay in seconds after scrolling past the bar's height — not the design's % depth.
+- Fonts: the five old slugs stay; Inter and Open Sans are added.
 
 ## 6. REST
-`GET/POST /settings/progressive-discount-banner`, plus `/pages` if targeting stays.
+`GET/POST /settings/progressive-discount-banner` (no `/pages`: targeting picks page conditions).
 
 ## 7. Compatibility
 - Ajax pair becomes adapters (now sanitized).

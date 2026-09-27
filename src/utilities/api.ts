@@ -70,6 +70,8 @@ export interface ProductOption {
 export interface ModuleSettingsResponse< V = Record< string, SettingValue > > {
     schema: Partial< Record< keyof V, SettingField > >;
     values: V;
+    /** False while a gated module's settings were never saved. */
+    published: boolean;
 }
 
 /**

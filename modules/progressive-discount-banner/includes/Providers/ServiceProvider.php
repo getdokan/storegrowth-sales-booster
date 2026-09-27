@@ -3,7 +3,9 @@
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\AdminPage;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings\ProgressiveDiscountBannerSettings;
 
 /**
  * ServiceProvider for the module.
@@ -25,6 +27,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    ProgressiveDiscountBannerModule::class,
+	    ProgressiveDiscountBannerSettings::class,
+	    AdminPage::class,
     ];
 
     /**
@@ -47,5 +51,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( ProgressiveDiscountBannerModule::get_id(), ProgressiveDiscountBannerModule::class, true );
+        // Always registered: the settings page and route work while the module is off.
+        $this->add_with_implements_tags( ProgressiveDiscountBannerSettings::class, ProgressiveDiscountBannerSettings::class, true );
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
     }
 }

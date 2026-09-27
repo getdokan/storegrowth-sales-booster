@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Settings;
 
+use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
 use WP_Error;
 
@@ -40,7 +41,7 @@ class SettingsService {
 	 *
 	 * @var string[]
 	 */
-	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box', 'list' ];
+	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box', 'list', 'url', 'date' ];
 
 	/**
 	 * Sides of a `box` value (margin/padding), stored and returned as
@@ -142,7 +143,7 @@ class SettingsService {
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
-				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item' ] ) )
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );
@@ -154,6 +155,22 @@ class SettingsService {
 		}
 
 		return $public;
+	}
+
+	/**
+	 * Whether a module's storefront output uses its settings: false only
+	 * while a gated module (`GatedSettingsSchema`) was never saved.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module_id Module id.
+	 *
+	 * @return bool
+	 */
+	public function is_published( string $module_id ): bool {
+		$schema = $this->get_schema( $module_id );
+
+		return ! $schema instanceof GatedSettingsSchema || $schema->is_saved( get_option( $schema->get_option_name(), [] ) );
 	}
 
 	/**
@@ -228,6 +245,10 @@ class SettingsService {
 		$sanitized = [];
 		$errors    = [];
 
+		// The first save of a gated module writes every key sent, so saving
+		// it unchanged still turns its storefront output on.
+		$first_save = $schema instanceof GatedSettingsSchema && ! $schema->is_saved( $stored );
+
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			if ( ! array_key_exists( $key, $input ) || ( ! empty( $field['pro'] ) && ! $has_pro ) ) {
 				continue;
@@ -236,7 +257,7 @@ class SettingsService {
 			// Unchanged: the stored value, or the default for a key never saved.
 			$current = array_key_exists( $key, $stored ) ? $stored[ $key ] : ( $field['default'] ?? null );
 
-			if ( $this->is_unchanged( $field, $input[ $key ], $current ) ) {
+			if ( ! $first_save && $this->is_unchanged( $field, $input[ $key ], $current ) ) {
 				continue;
 			}
 
@@ -318,6 +339,11 @@ class SettingsService {
 				return rest_sanitize_boolean( $value );
 
 			case 'number':
+				// `allow_empty`: the old admin stored '' for "not set".
+				if ( '' === $value && ! empty( $field['allow_empty'] ) ) {
+					return '';
+				}
+
 				if ( ! is_numeric( $value ) ) {
 					$value = $field['default'] ?? 0;
 				}
@@ -441,6 +467,10 @@ class SettingsService {
 				return rest_sanitize_boolean( $value );
 
 			case 'number':
+				if ( '' === $value && ! empty( $field['allow_empty'] ) ) {
+					return '';
+				}
+
 				if ( ! is_numeric( $value ) ) {
 					return new WP_Error( 'invalid', __( 'Enter a number.', 'storegrowth-sales-booster' ) );
 				}
@@ -526,6 +556,26 @@ class SettingsService {
 				// Stored as an array (the old admin wrote arrays too); `item: int` as integers.
 				return $items;
 
+			case 'url':
+				$value = is_scalar( $value ) ? trim( (string) $value ) : '';
+				$url   = '' === $value ? '' : esc_url_raw( $value );
+
+				// esc_url_raw() empties unsafe schemes (e.g. javascript:).
+				if ( '' !== $value && '' === $url ) {
+					return new WP_Error( 'invalid', __( 'Enter a web address.', 'storegrowth-sales-booster' ) );
+				}
+
+				return $url;
+
+			case 'date':
+				$value = is_scalar( $value ) ? trim( (string) $value ) : '';
+
+				if ( '' !== $value && ! $this->is_date( $value ) ) {
+					return new WP_Error( 'invalid', __( 'Enter a date as YYYY-MM-DD.', 'storegrowth-sales-booster' ) );
+				}
+
+				return $value;
+
 			case 'textarea':
 				return is_scalar( $value ) ? sanitize_textarea_field( (string) $value ) : '';
 
@@ -571,6 +621,19 @@ class SettingsService {
 			default:
 				return is_scalar( $input ) && (string) $input === $current;
 		}
+	}
+
+	/**
+	 * Whether a string is a real `Y-m-d` date.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $value Date.
+	 *
+	 * @return bool
+	 */
+	private function is_date( string $value ): bool {
+		return (bool) preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $value, $parts ) && checkdate( (int) $parts[2], (int) $parts[3], (int) $parts[1] );
 	}
 
 	/**

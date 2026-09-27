@@ -42,7 +42,7 @@ $heading_class = 'ct-layout-2' === $layout_class && 'transparent' === PluginHelp
 $has_pro  = sp_store_growth()->has_pro();
 $saved    = is_array( $settings ) ? $settings : [];
 $counter  = array_intersect_key( Helper::template_colors( $layout_class ), array_flip( Helper::COUNTER_KEYS ) );
-$settings = $has_pro ? $saved + $counter : array_merge( $saved, $counter );
+$settings = $has_pro ? array_merge( $counter, $saved ) : array_merge( $saved, $counter );
 
 /**
  * Filters the countdown's counter colours. Pro replaces the template's

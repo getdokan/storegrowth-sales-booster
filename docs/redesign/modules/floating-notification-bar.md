@@ -12,7 +12,7 @@
 ## 2. Current state
 - **Option:** `spsg_floating_notification_bar_settings` (flat). Localized as `spsg_fnb_data`. The coupon list comes from a raw `$wpdb` query.
 - **Transport:** ajax `spsg_floating_notification_bar_get_settings` / `_save_settings`. **Saves with no sanitization today** (payload key `shipping_bar_data`).
-- **PHP hooks** (keep): `spsg_floating_bar_content_pro` (pro), `sales_boster_floating_notification_bar_text` (pro fires), `storegrowth_floating_bar_module_init`.
+- **PHP hooks** (keep): `spsg_floating_bar_content_pro` (pro), `sales_boster_floating_notification_bar_text` (applied by lite's and pro's templates; nothing listens). (`storegrowth_floating_bar_module_init` is never fired; nothing to keep.)
 - **JS hooks** (retire): `spsg_floating_notification_bar_position_settings`, `_icon_radio_box`, `_button_redirection`, `_coupon_coundown`, `_display_rules_settings`, `_height_settings`, `_font_size`, `_templates`, `_template_styles`.
 
 ## 3. Target design
@@ -42,12 +42,16 @@
 | Coupon (not in design) | `show_cupon`, `cupon_code` | pro | **Required by R1:** "Advanced (Pro)" section, coupon search (`/coupons`) |
 
 ## 5. Data changes
-- `button_action: ba-scroll` is new (it needs a target selector field and storefront JS). Only if approved.
+- **Button (decided):** new key `button_enable` (toggle, default on) for the design's "Show" switch; lite's JS enforces it (pro 2.2.0's template prints the button anyway). **No `ba-scroll`**: actions stay Close / Open Link.
 - Making `ac_button_text` lite is a tier change, not a data change.
-- Add sanitization on save.
+- Saves go through the settings service: sanitized (the old ajax stored the payload unsanitized) and merged. `redirect_url` / custom icon are `url`, countdown dates `date` (`Y-m-d`).
+- **Never saved = off, as today:** an empty option is left as it is; once saved, unsaved keys take the schema defaults (the old admin's JS defaults: `button_action` `ba-close`, `button_text_color` #000000, delays 1 s) for every reader through `Helper::get_settings()`.
+- **First save turns the bar on**, as Free Shipping Rules §5 (`GatedSettingsSchema`, `published` in the settings API).
+- Templates: `notify_template` accepts the design's four presets (`notify_bar_one` = blue, `notify_bar_dark`, `notify_bar_red`, `notify_bar_amber`); a preset writes the six colours only.
+- Page targeting, scroll trigger and fonts: as Free Shipping Rules §5 (shared `DisplaySettings`).
 
 ## 6. REST
-`GET/POST /settings/floating-notification-bar`, `/pages`, and `/coupons` if the coupon stays.
+`GET/POST /settings/floating-notification-bar`. No `/pages` (targeting picks page conditions); the coupon list comes with the page (`spsg_fnb_coupon_data`, as before).
 
 ## 7. Compatibility
 - Ajax pair becomes adapters (now sanitized).
