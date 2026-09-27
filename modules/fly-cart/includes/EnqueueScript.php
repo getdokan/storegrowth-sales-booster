@@ -30,8 +30,9 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		// Before pro (10): pro adds its centre-position and popup CSS to
+		// `spsg-ffc-style`, which WordPress drops while it isn't registered.
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ), 9 );
 	}
 
 	/**
@@ -82,32 +83,6 @@ class EnqueueScript implements HookRegistry {
 		 *
 		 * @since 1.0.0
 		 */
-	}
-
-	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( 'storegrowth_page_spsg-settings' === $hook && file_exists( PluginHelper::get_modules_path( 'fly-cart/assets/build/settings.asset.php' ) ) ) {
-			// Add the color picker css file.
-			wp_enqueue_style( 'wp-color-picker' );
-
-			$settings_file = require PluginHelper::get_modules_path( 'fly-cart/assets/build/settings.asset.php' );
-
-			// Extra dependencies.
-			$settings_file['dependencies'][] = 'wp-color-picker';
-
-			wp_enqueue_script(
-				'spsg-fly-cart-settings',
-				PluginHelper::get_modules_url( 'fly-cart/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				false
-			);
-		}
 	}
 
 	/**

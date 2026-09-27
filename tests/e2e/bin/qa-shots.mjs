@@ -10,7 +10,8 @@
  * Run from the plugin folder (WP-CLI must work there). Each shot is
  * `name|path|actions`, actions separated by `;`:
  *   guest        load without the admin login (storefront as a shopper)
- *   click:Text   click the first element with exactly that text
+ *   click:Text   click the tab or button named Text, else the first
+ *                visible element with exactly that text
  *   w:390        set the viewport width
  *   wait:2000    wait (ms)
  * Writes `.claude/scratch/qa/<label>/<name>.<phase>.png` (git-ignored) and
@@ -78,7 +79,17 @@ for ( const shot of shots ) {
 
 	for ( const step of steps ) {
 		if ( step.startsWith( 'click:' ) ) {
-			await page.getByText( step.slice( 6 ), { exact: true } ).first().click();
+			// A tab or button with that name first (the WP admin menu has
+			// links such as "Design"), then the first visible text match.
+			const name = step.slice( 6 );
+			const control = page
+				.getByRole( 'tab', { name, exact: true } )
+				.or( page.getByRole( 'button', { name, exact: true } ) )
+				.filter( { visible: true } );
+			const target = ( await control.count() )
+				? control
+				: page.getByText( name, { exact: true } ).filter( { visible: true } );
+			await target.first().click();
 			await page.waitForTimeout( 600 );
 		} else if ( step.startsWith( 'w:' ) ) {
 			await page.setViewportSize( { width: Number( step.slice( 2 ) ), height: 1000 } );

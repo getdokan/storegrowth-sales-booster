@@ -49,6 +49,11 @@ export {
 } from './live-preview';
 export { ModuleIcon, type ModuleIconProps } from './module-icon';
 export { OptionCard, type OptionCardProps } from './option-card';
+export {
+    type PickerCardOption,
+    PickerCards,
+    type PickerCardsProps,
+} from './picker-cards';
 export { SaveBar, type SaveBarProps } from './save-bar';
 export { SettingsSplit, type SettingsSplitProps } from './settings-split';
 export {

@@ -71,21 +71,6 @@ class EnqueueScript {
         }
 
         if (
-            $modules->is_active_module( 'fly-cart' )
-            && file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-fly-cart.js' ) )
-        ) {
-            $flycart_file = require Helper::get_plugin_path( 'integrations/assets/build/dokan-fly-cart.asset.php' );
-
-            wp_enqueue_script(
-                'spsg-dokan-fly-cart',
-                Helper::get_integrations_path( 'assets/build/dokan-fly-cart.js' ),
-                $flycart_file['dependencies'],
-                $flycart_file['version'],
-                true
-            );
-        }
-
-        if (
             $modules->is_active_module( 'countdown-timer' )
             && file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-countdown-timer.js' ) )
         ) {

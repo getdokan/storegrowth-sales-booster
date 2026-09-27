@@ -5,7 +5,7 @@
  *
  * @since SPSG_VERSION
  */
-import { Button, ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
+import { Button, cn, ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Upload, type LucideIcon } from 'lucide-react';
@@ -30,6 +30,11 @@ export interface IconPickerProps {
     onCustomChange?: ( value: string ) => void;
     locked?: boolean;
     error?: string;
+    /**
+     * The label is for screen readers only and the pill sits on the left
+     * (a section title already names it).
+     */
+    hideLabel?: boolean;
 }
 
 interface MediaFrame {
@@ -85,6 +90,7 @@ function openMedia( title: string, onPick: ( url: string ) => void ) {
  * @param props.onCustomChange Custom icon handler.
  * @param props.locked         Pro field without pro.
  * @param props.error          Custom icon error.
+ * @param props.hideLabel      Label for screen readers only.
  */
 export function IconPicker( {
     label,
@@ -96,15 +102,25 @@ export function IconPicker( {
     onCustomChange,
     locked,
     error,
+    hideLabel = false,
 }: IconPickerProps ) {
     const labelId = useId();
 
     return (
         <div className="flex w-full flex-col gap-3">
-            <div className="flex w-full flex-wrap items-center justify-between gap-3">
+            <div
+                className={ cn(
+                    'flex w-full flex-wrap items-center gap-3',
+                    ! hideLabel && 'justify-between'
+                ) }
+            >
                 <span
                     id={ labelId }
-                    className={ `flex items-center gap-2 ${ FIELD_LABEL }` }
+                    className={ cn(
+                        'flex items-center gap-2',
+                        FIELD_LABEL,
+                        hideLabel && ! locked && 'sr-only'
+                    ) }
                 >
                     { label }
                     { locked && <ProBadge /> }

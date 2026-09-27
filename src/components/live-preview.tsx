@@ -45,6 +45,8 @@ export interface LivePreviewProps {
     overlay?: Slot;
     /** Under the frame, e.g. a note. */
     footer?: Slot;
+    /** Page height (px) behind a tall overlay, e.g. a cart panel. */
+    minHeight?: number;
 }
 
 const DEVICES: Array< {
@@ -166,6 +168,7 @@ function MockProduct( { widget }: { widget: ReactNode } ) {
  * @param props.bannerPosition Where the banner goes.
  * @param props.overlay        Floats over the frame.
  * @param props.footer         Under the frame.
+ * @param props.minHeight      Page height behind a tall overlay.
  */
 export function LivePreview( {
     widget,
@@ -173,6 +176,7 @@ export function LivePreview( {
     bannerPosition = 'top',
     overlay,
     footer,
+    minHeight,
 }: LivePreviewProps ) {
     const [ device, setDevice ] = useState< PreviewDevice >( 'desktop' );
     const [ theme, setTheme ] = useState< PreviewTheme >( 'light' );
@@ -259,6 +263,11 @@ export function LivePreview( {
                             device === 'mobile' &&
                                 'max-h-[560px] min-h-[560px] overflow-y-auto'
                         ) }
+                        style={
+                            minHeight && device !== 'mobile'
+                                ? { minHeight }
+                                : undefined
+                        }
                     >
                         { bannerPosition === 'top' && bannerNode }
                         <MockProduct

@@ -84,6 +84,11 @@ const moduleEntries = {
         'admin',
         './modules/quick-view/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'fly-cart',
+        'admin',
+        './modules/fly-cart/src/admin/index.tsx'
+    ),
 };
 
 /**
