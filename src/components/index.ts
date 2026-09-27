@@ -27,6 +27,13 @@ export {
 } from './deactivated-module-dialog';
 export { FeatureLayout, type FeatureLayoutProps } from './feature-layout';
 export { FeatureMenu, type FeatureMenuProps } from './feature-menu';
+export {
+    DefaultField,
+    type DefaultFieldProps,
+    extensionKeys,
+    FieldRenderer,
+    type FieldRendererProps,
+} from './field-renderer';
 export * from './fields';
 export {
     LivePreview,

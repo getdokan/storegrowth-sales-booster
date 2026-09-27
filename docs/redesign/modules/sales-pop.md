@@ -69,7 +69,7 @@ Dead keys (`enabe`, `sound*`, `address`, `virtual_country`, `virtual_time`, `tex
 - Ajax `popup_products` and `create_popup` become adapters (unprefixed names kept).
 - The `spsg_admin_ajax_nonce` flow is kept for the adapters.
 - Pro's `SalesPopPro` visibility filter and the lite storefront keep reading the same keys.
-- Retired JS hooks → `storegrowth.settings.schema.sales-pop`, `storegrowth.preview.sales-pop`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab` `settings` / `design`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.sales-pop`.
 
 ## 8. Components
 - Builds: `ProductSearch` (first user), `TypographyRow`, page picker, preview toast.

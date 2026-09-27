@@ -14,7 +14,9 @@ import {
     CheckboxField,
     CheckboxGroup,
     ColorField,
+    extensionKeys,
     FeatureLayout,
+    FieldRenderer,
     LivePreview,
     NumberField,
     SaveBar,
@@ -90,16 +92,28 @@ export default function StockBarPage() {
         }
     };
 
-    // Nothing to save or reset on a tab whose fields all need pro.
-    const saveBar = ( keys: Array< keyof StockBarValues > ) =>
-        keys.every( isLocked ) ? null : (
-            <SaveBar
-                saving={ settings.saving }
-                disabled={ ! settings.isDirty( keys ) }
-                onReset={ () => settings.reset( keys ) }
-                onSave={ () => save( keys ) }
-            />
+    // The tab's Save bar, after the fields extensions add to the tab;
+    // nothing to save or reset on a tab whose fields all need pro.
+    const saveBar = ( tab: keyof typeof TAB_KEYS ) => {
+        const keys = [
+            ...TAB_KEYS[ tab ],
+            ...extensionKeys( settings.schema, tab ),
+        ] as Array< keyof StockBarValues >;
+
+        return (
+            <>
+                <FieldRenderer tab={ tab } settings={ settings } />
+                { ! keys.every( isLocked ) && (
+                    <SaveBar
+                        saving={ settings.saving }
+                        disabled={ ! settings.isDirty( keys ) }
+                        onReset={ () => settings.reset( keys ) }
+                        onSave={ () => save( keys ) }
+                    />
+                ) }
+            </>
         );
+    };
 
     // A preset sets both bar colours, in lite too (the Bar Color field itself
     // needs pro).
@@ -158,7 +172,7 @@ export default function StockBarPage() {
                 ) }
                 { ...bind( 'stock_status_text' ) }
             />
-            { saveBar( TAB_KEYS.content ) }
+            { saveBar( 'content' ) }
         </>
     );
 
@@ -245,7 +259,7 @@ export default function StockBarPage() {
                 }
                 { ...bind( 'status_quantity_required' ) }
             />
-            { saveBar( TAB_KEYS.configure ) }
+            { saveBar( 'configure' ) }
         </>
     );
 
@@ -392,7 +406,7 @@ export default function StockBarPage() {
                     locked={ isLocked( 'stockbar_template' ) }
                 />
             </Accordion>
-            { saveBar( TAB_KEYS.design ) }
+            { saveBar( 'design' ) }
         </>
     );
 

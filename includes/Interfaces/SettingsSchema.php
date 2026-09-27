@@ -36,6 +36,29 @@ defined( 'ABSPATH' ) || exit;
  *
  * Keys and their spellings are the ones already stored; never rename them.
  *
+ * Fields an extension (pro) adds through the `spsg_settings_schema` filter
+ * also say where and how the settings page draws them (plugin-ui
+ * `SettingsElement` attributes; the page lays out its own fields by hand):
+ *
+ *     'spsg_pro_bar_animation' => [
+ *         'type'     => 'select',
+ *         'default'  => 'slide',
+ *         'options'  => [ 'none', 'slide', 'fade' ],
+ *         'pro'      => true,
+ *         'tab'      => 'design',                  // page tab it shows on
+ *         'label'    => __( 'Animation', '…' ),
+ *         'help'     => __( 'How the bar enters.', '…' ),
+ *         'labels'   => [ 'none' => __( 'None', '…' ) ], // option labels
+ *         'variant'  => 'my_animation_picker',     // optional custom control
+ *         'priority' => 10,                        // order within the tab
+ *     ]
+ *
+ * Also `placeholder`, `prefix`, `suffix`. Without a `variant` the control
+ * follows the type (text, url, date → text; textarea; number; toggle →
+ * switch; color → color_picker; select; list → multicheck; `box` needs a
+ * custom variant). A custom variant renders
+ * through the JS filter `storegrowth_settings_{variant}_field`.
+ *
  * @since SPSG_VERSION
  */
 interface SettingsSchema {

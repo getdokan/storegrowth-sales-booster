@@ -70,12 +70,12 @@ Pro's PHP runtime (the storefront features) stays unchanged.
 | Handshake | none | `storegrowth_pro_admin_ui_version` → `2` |
 | Old admin bundle | `build/index.js` | Frozen as `build/legacy/index.js`, loaded **only on old lite** (§6) |
 | Build | wp-scripts, antd | dokan-lite pattern, TS, externals to lite's `window.storegrowth.*` (§7); no antd in new code |
-| Pro-only new features (future) | — | PHP schema filter `storegrowth_settings_schema_{module}` + optional TS entries using `storegrowth.*` extension points |
+| Pro-only new features (future) | — | PHP schema filter `spsg_settings_schema` (fields with `tab`, `label`, `variant`); a custom control through `storegrowth_settings_{variant}_field` |
 
 ## 4. Field ownership (avoid double definitions)
 
 - **Lite owns** every field that exists in pro 2.2.0. The full key list per module is in `modules/*.md` §4, rows with tier `pro`.
-- **Pro owns** only fields added **after** 2.2.0. It adds them through `add_filter( 'storegrowth_settings_schema_{module}', … )` with `pro: true` and `owner: 'pro'`, and their sanitizers ship with them.
+- **Pro owns** only fields added **after** 2.2.0. It adds them through `add_filter( 'spsg_settings_schema', …, 10, 2 )` (checking `$module_id`) with `pro: true`, a built-in field type and a `tab` (plus `label`, `help`, `labels`, `variant`, `priority`); lite draws them on that tab and saves them with it — no JS unless a custom control is needed (`storegrowth_settings_{variant}_field`). Redefining a lite field or using an unknown type is refused (reported under WP_DEBUG). The storefront reads a never-saved pro key with its own default (`storefront_settings()` fills only lite's fields).
 - The lite registry **rejects a duplicate field id**: the first definition wins, and the conflict is logged via `wc_get_logger()` in debug mode. Pro must never re-declare a lite-owned field.
 - Values of pro-owned fields are stored in the **same module option** as today (pro reads them through `Helper::find_option_settings`). The only exception is a feature that needs its own storage, which then gets its own REST controller in pro.
 - **Previews:** lite's preview widgets render every 2.2.0 pro feature (shop countdown, variation stock bar, coupon chip, bar countdown, centered cart, …). New pro-only visuals register through `storegrowth.preview.{module}`.

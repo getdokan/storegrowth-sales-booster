@@ -70,7 +70,7 @@ Ajax and REST rules:
   - R4: sanitizers accept the same value domain and never blank a value.
   - R5: saves deep-merge.
   - R6: dequeue the inert old pro admin bundle on the new SPA page.
-- **New pro versions** extend through the additive PHP filter `storegrowth_settings_schema_{module}` (for extra fields or options only pro knows about) and additive JS extension points (§4). They don't need the old JS filters.
+- **New pro versions** extend through the additive PHP filter `spsg_settings_schema` ( `$fields, $module_id` ) (for extra fields or options only pro knows about) and additive JS extension points (§4); how is ADR-007. They don't need the old JS filters.
 
 ### 4. JS hooks — the one deliberate exception
 The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belong to the antd UI. Their contract is "receive `(value, formData, onFieldChange)` and return an antd element", and it can't be honoured once antd and `window.SGSettings` are gone.
@@ -79,8 +79,7 @@ The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belong to the antd UI. T
 - Nothing breaks at runtime: an `addFilter` on a hook nobody fires is a no-op. The fields pro used to inject are now rendered by lite from the schema (§3).
 - **New, additive JS extension points** (`@since SPSG_VERSION`, namespace `storegrowth.*`):
   - `storegrowth.admin.routes`
-  - `storegrowth.settings.fieldTypes` (register custom field variants)
-  - `storegrowth.settings.schema.{module}` (client-side schema tweak)
+  - `storegrowth_settings_{variant}_field` ( defaultField, element ): the control of a settings field an extension adds (ADR-007). The underscore name is plugin-ui's field-hook format, a deliberate exception to the `storegrowth.*` naming.
   - `storegrowth.preview.{module}` (preview widget extension)
   - `storegrowth.bogo.editor.tabs`
   - `storegrowth.orderBump.editor.tabs`

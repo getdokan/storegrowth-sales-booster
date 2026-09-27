@@ -22,6 +22,7 @@ Core system ADRs, `docs/adr/` (apply to all code):
 | ADR-004 | **Backward compatibility:** never rename/remove a PHP hook, public PHP API, option name/key/value shape, admin slug, ajax action or REST route; pro 2.2.0 must keep working when only lite updates; **existing user settings are never lost** |
 | ADR-005 | One storefront standard: settings → CSS variables, text tokens, display rules, font loader, template loader, shared base CSS/JS |
 | ADR-006 | REST first; the admin calls an existing ajax action only through the `ajax()` helper |
+| ADR-007 | One settings engine; gated modules turn on at first save; extensions add fields in PHP (`spsg_settings_schema`) and custom controls via `storegrowth_settings_{variant}_field` |
 
 Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first full rewrite). A new core decision takes the next `ADR-###`, a redesign-only one the next `RDR-###`; numbers are never reused.
 
@@ -97,6 +98,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 ### Admin app (redesigned)
 - `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.
 - Shared bundles: `src/components` (`@storegrowth/components`: feature layout, settings split, tabs, accordion, save bar, live preview, template picker, field controls in `fields/`), `src/hooks` (`@storegrowth/hooks`: router, `ModulesProvider`/`useModules`, `useModuleSettings`), `src/utilities` (`@storegrowth/utilities`: REST clients in `api.ts`, `ajax()` helper, admin data). UI is built on plugin-ui (`@wedevs/plugin-ui`); icons are lucide-react.
+- Extending a settings page (pro, ADR-007): append the field in PHP with `spsg_settings_schema` and give it a `tab` (plus `label`, `help`, `labels`, `variant`, `priority`); every module page draws the tab's extension fields above its Save bar (`FieldRenderer`, `extensionKeys()` in `@storegrowth/components`) and saves them with the tab. A custom control is a variant: JS filter `storegrowth_settings_{variant}_field` ( defaultField, element ), saving through `defaultField.props.onChange( key, value )`. Module fields can't be redefined there.
 - A module's admin page lives in `modules/<id>/src/admin/` and registers its route from its own bundle (see `modules/stock-bar/src/admin/index.tsx`). New storefront code that needs a build (TypeScript, blocks) goes in `modules/<id>/src/storefront/` and is built into `assets/js/`; existing hand-written storefront JS/CSS stays in `modules/<id>/assets/`.
 - No global data store: local React state and context.
 - Mounted on the `spsg-settings` / `spsg-modules` admin pages (`includes/Admin/AdminMenu.php`, `includes/Assets.php`).
@@ -104,7 +106,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 ### Settings engine
 - Each module declares its settings in a `SettingsSchema` (option name + existing keys with type, default, pro flag, limits).
 - `Settings\SettingsService` reads and saves them; REST `GET/POST sales-booster/v1/settings/{module}` (`REST\ModuleSettingsController`) and the legacy ajax save handlers both go through it.
-- Saves **merge** into the stored option, write only changed keys, ignore pro keys without pro, and save nothing when a value is invalid. Stored values keep the old admin's shape (toggle → bool, everything else → string); the API returns typed values. Details: `docs/redesign/migration-spec.md` §8, ADR-004.
+- Saves **merge** into the stored option, write only changed keys, ignore pro keys without pro, and save nothing when a value is invalid. Stored values keep the old admin's shape (toggle → bool, everything else → string); the API returns typed values. Details: `docs/redesign/migration-spec.md` §8, ADR-004, ADR-007 (gated first save, extension fields).
 
 ### Storefront (ADR-005)
 - `includes/Storefront/`: `StorefrontStyle` (settings → `--spsg-<module>-*` CSS variables), `StorefrontText` (`{token}` / `[token]`), `DisplayRules` (bars and popups), `StorefrontFonts` (bundled fonts first, one Google request for the rest).

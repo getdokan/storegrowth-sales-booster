@@ -88,7 +88,7 @@ Not in the design; keep the columns and decide in §9: `offered_categories`, `al
   - adds the product-ownership check;
   - enforces `vendors_can_create_buy_x_get_x` server-side;
   - bundle `build/integrations/bogo-dokan-dashboard.js` uses Dokan's layout scope, not `spsg-tailwind`.
-- Retired JS hooks → `storegrowth.bogo.editor.tabs`, `storegrowth.settings.schema.bogo`, `storegrowth.preview.bogo`.
+- Retired JS hooks → `storegrowth.bogo.editor.tabs`, extension fields (`spsg_settings_schema` with `tab`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.bogo`.
 
 ## 8. Components
 - Builds: DataViews list pattern (shared with Order Bump), `BadgePicker`, BOGO box preview, `EditorLayout` (back button + tabs + preview).

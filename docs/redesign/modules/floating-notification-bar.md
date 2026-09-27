@@ -57,7 +57,7 @@
 - Ajax pair becomes adapters (now sanitized).
 - `spsg_fnb_data` unchanged, including the discount-bar stacking data.
 - Pro's `FloatingBarPro` reads the same keys.
-- Retired JS hooks → `storegrowth.settings.schema.floating-notification-bar`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab` `content` / `configure` / `design`; `storegrowth_settings_{variant}_field`).
 
 ## 8. Components
 - Reuses: the bar fragment, bar preview, `ModeNumber`, `IconPicker`, `TemplatePicker`.

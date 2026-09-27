@@ -49,7 +49,7 @@
 - Ajax pair becomes adapters (now sanitized).
 - The product meta key is unchanged.
 - Pro's inline-styles filter reads the same keys.
-- Retired JS hooks → `storegrowth.settings.schema.direct-checkout`, `storegrowth.preview.direct-checkout`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.direct-checkout`.
 
 ## 8. Components
 - Builds: radio list with per-option tooltip (upstream U2 or local) and the shop-grid preview.

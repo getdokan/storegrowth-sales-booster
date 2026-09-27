@@ -43,7 +43,9 @@ export interface SettingField {
         | 'color'
         | 'select'
         | 'box'
-        | 'list';
+        | 'list'
+        | 'url'
+        | 'date';
     default: SettingValue;
     /** Saved only while pro is active. */
     pro: boolean;
@@ -56,6 +58,24 @@ export interface SettingField {
     item?: 'int' | 'text';
     /** `list`: most items allowed now (the lite cap without pro). */
     max_items?: number;
+    /** `number`: `''` is a valid "not set" value. */
+    allow_empty?: boolean;
+
+    // Fields an extension adds (`spsg_settings_schema`): where and how the
+    // settings page draws them.
+    /** Page tab it shows on, e.g. `configure`. */
+    tab?: string;
+    label?: string;
+    help?: string;
+    /** Custom control (`storegrowth_settings_{variant}_field`). */
+    variant?: string;
+    /** Option value → label. */
+    labels?: Record< string, string >;
+    placeholder?: string;
+    prefix?: string;
+    suffix?: string;
+    /** Order within the tab (lower first). */
+    priority?: number;
 }
 
 /** A product as the pickers show it. */

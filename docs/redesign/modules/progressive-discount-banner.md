@@ -66,7 +66,7 @@
 - Ajax pair becomes adapters (now sanitized).
 - `spsg_fsb_data` localization unchanged.
 - Pro's `FreeShippingBarPro` reads the same keys.
-- Retired JS hooks → `storegrowth.settings.schema.progressive-discount-banner`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab` `content` / `configure` / `design`; `storegrowth_settings_{variant}_field`).
 
 ## 8. Components
 - Builds: `ModeNumber`, `IconPicker` (+ upload), the shared "bar" schema fragment and bar preview widget (reused by Floating Bar), and a rich help popover for the WooCommerce free-shipping instructions.

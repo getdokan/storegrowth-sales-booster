@@ -48,7 +48,7 @@ None. The design's "popup" label maps to the stored `center`.
 - Admin ajax pair becomes adapters.
 - The storefront ajax and all PHP hooks are unchanged.
 - Direct Checkout's "Fly Cart Checkout" depends on this module being active; keep the cross-module check.
-- Retired JS hooks → `storegrowth.settings.schema.fly-cart`, `storegrowth.preview.fly-cart`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.fly-cart`.
 
 ## 8. Components
 - Builds: `PickerCards` and the cart panel preview.

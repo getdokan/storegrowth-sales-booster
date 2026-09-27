@@ -63,7 +63,7 @@
 ## 7. Compatibility
 - All PHP hooks unchanged; the ajax pair becomes adapters; product-meta keys unchanged.
 - The Dokan vendor form keeps working (PHP).
-- Retired JS hooks → `storegrowth.settings.schema.countdown-timer`, `storegrowth.preview.countdown-timer`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab` `configure` / `design`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.countdown-timer`.
 - Kept: every class of the widget markup (pro's shop template copies it), the `custom.js` selectors, the `spsg_countdown_timer_styles` filter (same default keys and `$settings` argument).
 - **Known gap until the integrations step:** the Dokan "Vendors" switches (`vendor_can_create_*`) had their admin tab in the removed legacy bundle (JS filter `spsg_countdown_timer_tab_panels`). Stored values keep working on the storefront and the vendor form, but they can't be changed from the admin until the Dokan integration gets its REST page.
 

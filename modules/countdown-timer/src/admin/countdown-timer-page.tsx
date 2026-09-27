@@ -14,7 +14,9 @@ import {
     BoxModelField,
     CardHead,
     ColorField,
+    extensionKeys,
     FeatureLayout,
+    FieldRenderer,
     LivePreview,
     NumberField,
     SaveBar,
@@ -99,14 +101,25 @@ export default function CountdownTimerPage() {
         }
     };
 
-    const saveBar = ( keys: CountdownKey[] ) => (
-        <SaveBar
-            saving={ settings.saving }
-            disabled={ ! settings.isDirty( keys ) }
-            onReset={ () => settings.reset( keys ) }
-            onSave={ () => save( keys ) }
-        />
-    );
+    // The tab's Save bar, after the fields extensions add to the tab.
+    const saveBar = ( tab: keyof typeof TAB_KEYS ) => {
+        const keys = [
+            ...TAB_KEYS[ tab ],
+            ...extensionKeys( settings.schema, tab ),
+        ] as CountdownKey[];
+
+        return (
+            <>
+                <FieldRenderer tab={ tab } settings={ settings } />
+                <SaveBar
+                    saving={ settings.saving }
+                    disabled={ ! settings.isDirty( keys ) }
+                    onReset={ () => settings.reset( keys ) }
+                    onSave={ () => save( keys ) }
+                />
+            </>
+        );
+    };
 
     // A preset fills the colour fields it can (in lite, not the counter's).
     const presetFields = ( id: string ): Partial< CountdownTimerValues > =>
@@ -170,7 +183,7 @@ export default function CountdownTimerPage() {
                 }
                 locked={ isLocked( 'product_page_countdown_enable' ) }
             />
-            { saveBar( TAB_KEYS.configure ) }
+            { saveBar( 'configure' ) }
         </>
     );
 
@@ -452,7 +465,7 @@ export default function CountdownTimerPage() {
                     locked={ isLocked( 'selected_theme' ) }
                 />
             </Accordion>
-            { saveBar( TAB_KEYS.design ) }
+            { saveBar( 'design' ) }
         </>
     );
 

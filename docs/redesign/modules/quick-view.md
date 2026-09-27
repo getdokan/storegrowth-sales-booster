@@ -54,7 +54,7 @@ Prefer **additive values over rewriting stored ones**. Pro reads these keys.
 - Admin ajax pair becomes adapters.
 - Storefront `spsgqcv_quickview` is unchanged.
 - All `spsgqcv_*` hooks are unchanged.
-- Retired JS hooks → `storegrowth.settings.schema.quick-view`, `storegrowth.preview.quick-view`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.quick-view`.
 
 ## 8. Components
 - Builds: max-length counter on text fields (or upstream U7) and the modal preview widget.

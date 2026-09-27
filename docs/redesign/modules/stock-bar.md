@@ -61,7 +61,7 @@ Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` sta
 - Ajax pair becomes adapters.
 - `spsg_stock_bar_stock_below` unchanged.
 - Pro's PHP (`spsg_stock_bar_warning_contents` path) reads the same keys.
-- Retired JS hooks → `storegrowth.settings.schema.stock-bar`, `storegrowth.preview.stock-bar`.
+- Retired JS hooks → extension fields (`spsg_settings_schema` with `tab`; `storegrowth_settings_{variant}_field`), `storegrowth.preview.stock-bar`.
 
 ## 8. Components
 - Reuses: `FeatureLayout`, `Accordion`, `SaveBar`, `LivePreview`.
@@ -78,7 +78,7 @@ Unused keys `shop_page_countdown_enable` and `product_page_countdown_enable` sta
 - Stock Bar Height default stays 10 (design shows 6), like min quantity.
 - The preview's dark toggle recolours the mock page only; the widget keeps the saved colours, as the shop would.
 - The preview's sample stock follows Minimum Quantity Required, so the status line shows.
-- Extension: JS filter `storegrowth.preview.stock-bar` ( widget, values ) for pro's preview parts. A fields filter is deferred to the pro migration (step 13).
+- Extension: JS filter `storegrowth.preview.stock-bar` ( widget, values ) for pro's preview parts; fields pro adds carry a `tab` (`content`, `configure`, `design`) in `spsg_settings_schema`.
 - With pro 2.2.0, the shop-page stock bar keeps its own 14px status text (pro's template hard-codes it); the variation stock bar gets the design variables through the `.spsg-stock-progress-bar-section` selector.
 - Preview renders the storefront markup with the real `spsg-stockbar-style.css` (inside `.spsg-storefront`, outside the admin reset), not the mockup's `.sb-*` classes.
 

@@ -54,6 +54,15 @@ class SettingsService {
 	const BOX_SIDES = [ 'top', 'right', 'bottom', 'left' ];
 
 	/**
+	 * Extension fields already reported (`module.key` → true).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var array<string, bool>
+	 */
+	private $reported = [];
+
+	/**
 	 * Every registered schema, keyed by module id.
 	 *
 	 * @since SPSG_VERSION
@@ -107,23 +116,61 @@ class SettingsService {
 			return [];
 		}
 
+		$own = $schema->get_fields();
+
 		/**
-		 * Filters a module's settings fields. Pro (or an extension) can add
-		 * fields here; each must follow the SettingsSchema field format and
-		 * use a key stored in the module's option.
+		 * Filters a module's settings fields. Pro (or an extension) adds fields
+		 * here as plain arrays in the SettingsSchema field format, stored in
+		 * the module's option. A field with a `tab` is drawn on that tab of
+		 * the module's settings page (plugin-ui field renderer; a custom
+		 * `variant` renders through the JS filter
+		 * `storegrowth_settings_{variant}_field`).
+		 *
+		 * The module's own fields can't be redefined here, and a field of an
+		 * unknown type is dropped (both reported under WP_DEBUG).
 		 *
 		 * @since SPSG_VERSION
 		 *
 		 * @param array  $fields    Field definitions keyed by option key.
 		 * @param string $module_id Module id.
 		 */
-		$fields = (array) apply_filters( 'spsg_settings_schema', $schema->get_fields(), $module_id );
+		$fields = (array) apply_filters( 'spsg_settings_schema', $own, $module_id );
 
-		return array_filter(
-			$fields,
-			static function ( $field ) {
-				return is_array( $field ) && in_array( $field['type'] ?? '', self::FIELD_TYPES, true );
+		foreach ( $fields as $key => $field ) {
+			if ( isset( $own[ $key ] ) && $field !== $own[ $key ] ) {
+				$this->report( $module_id, $key, 'redefines a field of the module; the module\'s definition is kept' );
+			} elseif ( ! is_array( $field ) || ! in_array( $field['type'] ?? '', self::FIELD_TYPES, true ) ) {
+				$this->report( $module_id, $key, 'has no known type and is ignored' );
+				unset( $fields[ $key ] );
 			}
+		}
+
+		// The module's own definitions win.
+		return array_merge( $fields, $own );
+	}
+
+	/**
+	 * Report a field an extension added wrongly (once per field, WP_DEBUG).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module_id Module id.
+	 * @param string $key       Field key.
+	 * @param string $problem   What is wrong.
+	 *
+	 * @return void
+	 */
+	private function report( string $module_id, string $key, string $problem ): void {
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG || isset( $this->reported[ "{$module_id}.{$key}" ] ) ) {
+			return;
+		}
+
+		$this->reported[ "{$module_id}.{$key}" ] = true;
+
+		_doing_it_wrong(
+			'spsg_settings_schema',
+			esc_html( sprintf( 'Settings field "%1$s" of module "%2$s" %3$s.', $key, $module_id, $problem ) ),
+			'SPSG_VERSION'
 		);
 	}
 
@@ -143,7 +190,7 @@ class SettingsService {
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
-				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty' ] ) )
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );

@@ -14,7 +14,9 @@ import {
     Accordion,
     CardHead,
     ColorField,
+    extensionKeys,
     FeatureLayout,
+    FieldRenderer,
     LivePreview,
     MultiSelectField,
     NumberField,
@@ -182,14 +184,25 @@ export default function SalesPopPage() {
         }
     };
 
-    const saveBar = ( keys: SalesPopKey[] ) => (
-        <SaveBar
-            saving={ settings.saving }
-            disabled={ ! settings.isDirty( keys ) }
-            onReset={ () => settings.reset( keys ) }
-            onSave={ () => save( keys ) }
-        />
-    );
+    // The tab's Save bar, after the fields extensions add to the tab.
+    const saveBar = ( tab: keyof typeof TAB_KEYS ) => {
+        const keys = [
+            ...TAB_KEYS[ tab ],
+            ...extensionKeys( settings.schema, tab ),
+        ] as SalesPopKey[];
+
+        return (
+            <>
+                <FieldRenderer tab={ tab } settings={ settings } />
+                <SaveBar
+                    saving={ settings.saving }
+                    disabled={ ! settings.isDirty( keys ) }
+                    onReset={ () => settings.reset( keys ) }
+                    onSave={ () => save( keys ) }
+                />
+            </>
+        );
+    };
 
     // Recent Orders and Best Sellers fill the products when picked (as the
     // old admin did for recent orders); Select Products starts empty.
@@ -556,7 +569,7 @@ export default function SalesPopPage() {
                     __( 'sec', 'storegrowth-sales-booster' )
                 ) }
             </Accordion>
-            { saveBar( TAB_KEYS.settings ) }
+            { saveBar( 'settings' ) }
         </>
     );
 
@@ -749,7 +762,7 @@ export default function SalesPopPage() {
                     />
                 ) ) }
             </OptionCard>
-            { saveBar( TAB_KEYS.design ) }
+            { saveBar( 'design' ) }
         </>
     );
 

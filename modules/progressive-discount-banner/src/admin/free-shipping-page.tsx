@@ -19,7 +19,9 @@ import {
     barShowsOn,
     CardHead,
     ColorField,
+    extensionKeys,
     FeatureLayout,
+    FieldRenderer,
     LivePreview,
     NumberField,
     OptionCard,
@@ -144,14 +146,25 @@ export default function FreeShippingPage() {
         }
     };
 
-    const saveBar = ( keys: FreeShippingKey[] ) => (
-        <SaveBar
-            saving={ settings.saving }
-            disabled={ ! settings.isDirty( keys ) }
-            onReset={ () => settings.reset( keys ) }
-            onSave={ () => save( keys ) }
-        />
-    );
+    // The tab's Save bar, after the fields extensions add to the tab.
+    const saveBar = ( tab: keyof typeof TAB_KEYS ) => {
+        const keys = [
+            ...TAB_KEYS[ tab ],
+            ...extensionKeys( settings.schema, tab ),
+        ] as FreeShippingKey[];
+
+        return (
+            <>
+                <FieldRenderer tab={ tab } settings={ settings } />
+                <SaveBar
+                    saving={ settings.saving }
+                    disabled={ ! settings.isDirty( keys ) }
+                    onReset={ () => settings.reset( keys ) }
+                    onSave={ () => save( keys ) }
+                />
+            </>
+        );
+    };
 
     const color = ( key: FreeShippingKey, label: string ) => (
         <ColorField
@@ -246,7 +259,7 @@ export default function FreeShippingPage() {
                     { ...bind( 'btn_target' ) }
                 />
             </OptionCard>
-            { saveBar( TAB_KEYS.content ) }
+            { saveBar( 'content' ) }
         </>
     );
 
@@ -337,7 +350,7 @@ export default function FreeShippingPage() {
                 <BarTriggerFields { ...barProps } />
                 <TargetingFields { ...barProps } />
             </Accordion>
-            { saveBar( TAB_KEYS.configure ) }
+            { saveBar( 'configure' ) }
         </>
     );
 
@@ -423,7 +436,7 @@ export default function FreeShippingPage() {
                     locked={ isLocked( 'bar_template' ) }
                 />
             </Accordion>
-            { saveBar( TAB_KEYS.design ) }
+            { saveBar( 'design' ) }
         </>
     );
 
