@@ -134,7 +134,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 - **HPOS (High-Performance Order Storage):** both plugins declare `custom_order_tables` compatibility on `before_woocommerce_init`. This is only honest while the plugin reads orders through `wc_get_orders()` and stores order / order-item data through the WooCommerce CRUD API (`$order->update_meta_data()` / `$order->save()`), **never** `update_post_meta()` on an order ID. Any new code that writes order data must use the CRUD API or the HPOS declaration must be revisited.
 
 ### Review agents
-`.claude/agents/`: `sg-architect` (architecture, backward compatibility, simplicity), `sg-qa` (behaviour on a live site, with and without pro), `sg-designer` (page vs its design reference and the design system). Run them on a finished step before committing, and when planning a module.
+`.claude/agents/`: `sg-architect` (architecture, backward compatibility, simplicity), `sg-qa` (behaviour on a live site, with and without pro), `sg-designer` (page vs its design reference and the design system). Run them on a finished step before committing, and when planning a module. QA takes before/after screenshots of what it tests (`tests/e2e/bin/qa-shots.mjs`, into `.claude/scratch/qa/<step>/` with a side-by-side `compare.html`); after fixing its findings, ask it (or run the script) for the `after` shots.
 
 ### Version placeholder — REQUIRED when writing code
 When adding any new symbol, **always** tag it with the literal placeholder `SPSG_VERSION` in its `@since` (and `@deprecated`) docblock tag — never hardcode a version number. This applies to new functions, classes, methods, properties, parameters, hooks (`do_action`/`apply_filters`), and REST routes. Example:

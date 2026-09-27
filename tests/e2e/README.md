@@ -24,6 +24,7 @@ tests/e2e/
 ├── docker-compose.yml       # the sg-test-automation stack (WP + DB + cli)
 ├── bin/setup-docker.sh      # one-shot: boot Docker, install prereqs, write .env
 ├── bin/provision-site.php   # SHARED site setup (modules, products, options) — Docker + CI
+├── bin/qa-shots.mjs         # review screenshots, before/after + compare.html (dev site, run from the plugin folder)
 ├── package.json             # self-contained — does not touch the plugin's Lerna deps
 ├── tsconfig.json
 ├── .wp-env.json             # alternative disposable WP env
