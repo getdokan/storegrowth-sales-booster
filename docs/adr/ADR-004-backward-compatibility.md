@@ -39,7 +39,7 @@ Lite fires 100 PHP hooks and 83 JS hooks in total. Third-party code may use any 
 ### 2. Public PHP API, data and transport freeze
 These keep their names and signatures and may only be extended:
 - the classes, methods, functions and constants in `../redesign/compat-contract.md` §2;
-- container IDs, module IDs, admin page slugs `spsg-settings` / `spsg-modules`;
+- container IDs, module IDs, admin page slugs `spsg-settings` / `spsg-modules` (since ADR-008 kept as redirects to `storegrowth`; their screen IDs are the one exception to this ADR);
 - option names, keys and value shapes, including misspelled keys;
 - custom table columns.
 

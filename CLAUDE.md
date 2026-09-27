@@ -23,6 +23,7 @@ Core system ADRs, `docs/adr/` (apply to all code):
 | ADR-005 | One storefront standard: settings → CSS variables, text tokens, display rules, font loader, template loader, shared base CSS/JS |
 | ADR-006 | REST first; the admin calls an existing ajax action only through the `ajax()` helper |
 | ADR-007 | One settings engine; gated modules turn on at first save; extensions add fields in PHP (`spsg_settings_schema`) and custom controls via `storegrowth_settings_{variant}_field` |
+| ADR-008 | One admin page `admin.php?page=storegrowth#/<route>` (`AdminMenu::PAGE` / `SCREEN_ID`); `spsg-settings` / `spsg-modules` redirect to it |
 
 Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first full rewrite). A new core decision takes the next `ADR-###`, a redesign-only one the next `RDR-###`; numbers are never reused.
 
@@ -101,7 +102,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 - Extending a settings page (pro, ADR-007): append the field in PHP with `spsg_settings_schema` and give it a `tab` (plus `label`, `help`, `labels`, `variant`, `priority`); every module page draws the tab's extension fields above its Save bar (`FieldRenderer`, `extensionKeys()` in `@storegrowth/components`) and saves them with the tab. A custom control is a variant: JS filter `storegrowth_settings_{variant}_field` ( defaultField, element ), saving through `defaultField.props.onChange( key, value )`. Module fields can't be redefined there.
 - A module's admin page lives in `modules/<id>/src/admin/` and registers its route from its own bundle (see `modules/stock-bar/src/admin/index.tsx`). New storefront code that needs a build (TypeScript, blocks) goes in `modules/<id>/src/storefront/` and is built into `assets/js/`; existing hand-written storefront JS/CSS stays in `modules/<id>/assets/`.
 - No global data store: local React state and context.
-- Mounted on the `spsg-settings` / `spsg-modules` admin pages (`includes/Admin/AdminMenu.php`, `includes/Assets.php`).
+- Mounted on the `storegrowth` admin page, screen ID `AdminMenu::SCREEN_ID` (ADR-008; `includes/Admin/AdminMenu.php`, `includes/Assets.php`). The old `spsg-settings` / `spsg-modules` slugs redirect there.
 
 ### Settings engine
 - Each module declares its settings in a `SettingsSchema` (option name + existing keys with type, default, pro flag, limits).

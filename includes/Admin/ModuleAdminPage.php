@@ -79,7 +79,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	}
 
 	/**
-	 * Enqueue on the two app pages (the route is reachable from either).
+	 * Enqueue on the app page.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -91,7 +91,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 		$id         = $this->module_id();
 		$asset_file = Helper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
 
-		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
+		if ( AdminMenu::SCREEN_ID !== $hook || ! file_exists( $asset_file ) ) {
 			return;
 		}
 

@@ -20,9 +20,8 @@ export async function gotoAdminPage(page: Page, slug: string, hash = ''): Promis
   await page.goto(`/wp-admin/admin.php?page=${slug}${hash}`);
 }
 
-// The bare `?page=spsg-settings` URL bounces to Modules; the app only stays put
-// when deep-linked to a hash route, so always navigate via the hash route.
+// Navigate via the hash route, so the test doesn't depend on the default route.
 export async function gotoSettings(page: Page): Promise<void> {
-  await gotoAdminPage(page, 'spsg-settings', '#/dashboard/overview');
+  await gotoAdminPage(page, 'storegrowth', '#/dashboard/overview');
   await expect(page.locator('#sbooster-settings-page')).toBeVisible();
 }

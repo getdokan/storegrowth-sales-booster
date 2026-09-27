@@ -28,7 +28,7 @@ test.describe('Admin · settings persistence (Countdown Timer)', { tag: '@ui' },
 
   test('get_settings rejects a bad nonce', async ({ page }) => {
     await spsgAdminAjax(page, 'update_module_status', { module_id: id, status: 'true' });
-    await page.goto('/wp-admin/admin.php?page=spsg-modules');
+    await page.goto('/wp-admin/admin.php?page=storegrowth#/modules');
     const res = await page.request.post('/wp-admin/admin-ajax.php', {
       form: { action: 'spsg_countdown_timer_get_settings', _ajax_nonce: 'bogus' },
     });

@@ -2,7 +2,7 @@
  * Keep the WordPress "StoreGrowth" submenu highlight in step with the route.
  *
  * WordPress highlights submenu items by page slug, so every
- * `spsg-settings#/…` route would show "Settings" as current. This marks the
+ * `storegrowth#/…` route would show "Dashboard" as current. This marks the
  * item for the current route instead.
  *
  * @since SPSG_VERSION
@@ -17,23 +17,23 @@ import { useLocation } from '@storegrowth/hooks';
  */
 function submenuTarget( pathname: string ): string {
     if ( pathname.startsWith( '/dashboard' ) ) {
-        return 'page=spsg-settings#/dashboard';
+        return 'page=storegrowth';
     }
 
     if ( pathname.startsWith( '/ini-setup' ) ) {
-        return 'page=spsg-modules#/ini-setup';
+        return 'page=storegrowth#/ini-setup';
     }
 
     if ( pathname.startsWith( '/modules' ) ) {
-        return 'page=spsg-modules';
+        return 'page=storegrowth#/modules';
     }
 
     if ( pathname.startsWith( '/settings' ) ) {
-        return 'page=spsg-settings';
+        return 'page=storegrowth#/settings';
     }
 
     // Every other route is a feature (module) page.
-    return 'page=spsg-settings#/features';
+    return 'page=storegrowth#/features';
 }
 
 /**

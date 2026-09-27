@@ -22,10 +22,40 @@ class AdminMenu {
 	use Singleton;
 
 	/**
+	 * Slug of the admin page the StoreGrowth app runs on
+	 * (`admin.php?page=storegrowth#/<route>`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const PAGE = 'storegrowth';
+
+	/**
+	 * Screen id (`admin_enqueue_scripts` hook suffix) of the app page.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const SCREEN_ID = 'storegrowth_page_storegrowth';
+
+	/**
+	 * Old app page slugs (ADR-008). Still registered, as hidden pages that
+	 * redirect to `PAGE`, so saved links and older add-ons keep working.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	const LEGACY_PAGES = array( 'spsg-settings', 'spsg-modules' );
+
+	/**
 	 * Constructor of Admin_Menu class.
 	 */
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'redirect_legacy_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'highlight_admin_submenu' ) );
 
 		// Capture admin notices so the plugin header renders first on our pages.
@@ -43,7 +73,36 @@ class AdminMenu {
 	private function is_storegrowth_page(): bool {
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 
-		return $screen && in_array( $screen->id, array( 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ), true );
+		return $screen && self::SCREEN_ID === $screen->id;
+	}
+
+	/**
+	 * Send the old page slugs to the app page.
+	 *
+	 * Runs on `admin_init` (the admin has no `template_redirect`), before any
+	 * output. The browser keeps the URL's `#/route` across the redirect; a bare
+	 * Modules link carries `view=modules` so it still opens the modules list.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function redirect_legacy_pages(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+
+		if ( ! in_array( $page, self::LEGACY_PAGES, true ) ) {
+			return;
+		}
+
+		$args = array( 'page' => self::PAGE );
+
+		if ( 'spsg-modules' === $page ) {
+			$args['view'] = 'modules';
+		}
+
+		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
+		exit;
 	}
 
 	/**
@@ -95,7 +154,7 @@ class AdminMenu {
 		global $current_screen;
 
 		if ( 'storegrowth_page_spsg-dashboard' === $current_screen->id ) {
-			$submenu_file = 'admin.php?page=spsg-settings#/dashboard';
+			$submenu_file = 'admin.php?page=' . self::PAGE;
 		}
 
 		return $submenu_file;
@@ -116,13 +175,14 @@ class AdminMenu {
 			58
 		);
 
+		// The app page itself; the other items are routes on it.
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
 			__( 'Dashboard - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings#/dashboard',
-			array( $this, 'dashboard_callback' )
+			self::PAGE,
+			array( $this, 'app_callback' )
 		);
 
 		add_submenu_page(
@@ -130,8 +190,8 @@ class AdminMenu {
 			__( 'Features - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Features', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings#/features',
-			array( $this, 'settings_callback' )
+			self::PAGE . '#/features',
+			array( $this, 'app_callback' )
 		);
 
 		add_submenu_page(
@@ -139,8 +199,8 @@ class AdminMenu {
 			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-modules',
-			array( $this, 'modules_callback' )
+			self::PAGE . '#/modules',
+			array( $this, 'app_callback' )
 		);
 
 		add_submenu_page(
@@ -148,9 +208,14 @@ class AdminMenu {
 			__( 'Settings - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings',
-			array( $this, 'settings_callback' )
+			self::PAGE . '#/settings',
+			array( $this, 'app_callback' )
 		);
+
+		// Old slugs: hidden (no parent), redirected on `admin_init`.
+		foreach ( self::LEGACY_PAGES as $legacy_page ) {
+			add_submenu_page( '', 'StoreGrowth', 'StoreGrowth', 'manage_options', $legacy_page, array( $this, 'app_callback' ) );
+		}
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
@@ -166,8 +231,8 @@ class AdminMenu {
 			__( 'Initial Setup - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Initial Setup', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-modules#/ini-setup',
-			array( $this, 'initial_setup_page_callback' )
+			self::PAGE . '#/ini-setup',
+			array( $this, 'app_callback' )
 		);
 
 		if ( ! sp_store_growth()->has_pro() && ! defined( 'STOREGROWTH_PRO_FILE' ) ) {
@@ -200,6 +265,21 @@ class AdminMenu {
 	}
 
 	/**
+	 * The app page: the dashboard, or the modules list when an old Modules
+	 * link was redirected here (`view=modules`). A `#/route` in the URL wins.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function app_callback(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page routing.
+		$view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : '';
+
+		$this->render_app( 'modules' === $view ? '/modules' : '/dashboard' );
+	}
+
+	/**
 	 * Mount points of a StoreGrowth page: header → notices → app.
 	 *
 	 * The header mounts in its own root so it paints without waiting for the
@@ -226,7 +306,7 @@ class AdminMenu {
 	 * Display Dashboard page content.
 	 */
 	public function dashboard_callback() {
-		$redirect_url = admin_url( 'admin.php?page=spsg-settings#/dashboard' );
+		$redirect_url = admin_url( 'admin.php?page=' . self::PAGE . '#/dashboard' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
@@ -235,7 +315,7 @@ class AdminMenu {
 	 * Display Initail Setup page content.
 	 */
 	public function initial_setup_page_callback() {
-		$redirect_url = admin_url( 'admin.php?page=spsg-modules#/ini-setup' );
+		$redirect_url = admin_url( 'admin.php?page=' . self::PAGE . '#/ini-setup' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}

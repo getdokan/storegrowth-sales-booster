@@ -9,13 +9,12 @@ test.describe('Admin · Settings screen', { tag: '@ui' }, () => {
     await expect(page).toHaveTitle(/StoreGrowth/i);
   });
 
-  test('bare ?page=spsg-settings still mounts the settings app', async ({ page }) => {
-    // HashRouter has no index route: bare slug resolves to a default hash route
-    // (or bounces to Modules with zero modules active) — see ISSUES.md #1.
-    await gotoAdminPage(page, 'spsg-settings');
-    await page.waitForLoadState('networkidle');
-    await expect(page.locator('#sbooster-settings-page')).toBeVisible();
-    await expect(page).toHaveURL(/page=spsg-settings#\//);
+  test('old ?page=spsg-settings redirects to the app page, keeping the route', async ({ page }) => {
+    await gotoAdminPage(page, 'spsg-settings', '#/modules');
+    await expect(page).toHaveURL(/page=storegrowth#\/modules$/);
+
+    await gotoAdminPage(page, 'spsg-modules');
+    await expect(page).toHaveURL(/page=storegrowth&view=modules#\/modules$/);
   });
 
   test('renders settings content (not an empty shell)', async ({ page }) => {

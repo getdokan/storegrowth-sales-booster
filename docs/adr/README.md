@@ -13,3 +13,4 @@ Decisions that only concern the redesign/refactor itself are redesign decision r
 | [ADR-005](ADR-005-storefront-consistency.md) | One storefront standard for all modules: CSS variables, style vocabulary, fonts, text tokens, display rules, templates, preview parity |
 | [ADR-006](ADR-006-admin-ajax-client.md) | REST first; the admin app calls existing ajax actions only through the `ajax()` helper |
 | [ADR-007](ADR-007-settings-engine-and-extension-fields.md) | One settings engine; gated modules turn on at first save; extensions add fields in PHP (`spsg_settings_schema`) and custom controls through `storegrowth_settings_{variant}_field` |
+| [ADR-008](ADR-008-single-admin-page.md) | One admin page `admin.php?page=storegrowth#/<route>`; old slugs redirect; exception to ADR-004 for the old screen IDs (ships with a pro update) |

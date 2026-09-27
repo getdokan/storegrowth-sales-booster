@@ -5,7 +5,7 @@ import { Page, expect } from '@playwright/test';
 const ROOT = '#sbooster-settings-page';
 
 export async function gotoModuleSettings(page: Page, route: string): Promise<void> {
-  await page.goto(`/wp-admin/admin.php?page=spsg-settings#/${route}`);
+  await page.goto(`/wp-admin/admin.php?page=storegrowth#/${route}`);
   await expect(page.locator(ROOT)).toBeVisible();
   await page.waitForTimeout(800); // let the form hydrate with saved values
 }

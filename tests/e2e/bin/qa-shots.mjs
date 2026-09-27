@@ -3,8 +3,8 @@
  * QA screenshots for review before/after comparisons.
  *
  *     node tests/e2e/bin/qa-shots.mjs --label step-5 --phase before \
- *         'fs-content|/wp-admin/admin.php?page=spsg-settings#/progressive-discount-banner' \
- *         'fs-configure|/wp-admin/admin.php?page=spsg-settings#/progressive-discount-banner|click:Configure' \
+ *         'fs-content|/wp-admin/admin.php?page=storegrowth#/progressive-discount-banner' \
+ *         'fs-configure|/wp-admin/admin.php?page=storegrowth#/progressive-discount-banner|click:Configure' \
  *         'shop|/shop/|guest'
  *
  * Run from the plugin folder (WP-CLI must work there). Each shot is

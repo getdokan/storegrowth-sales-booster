@@ -1,7 +1,8 @@
 import { Page, expect } from '@playwright/test';
 
-export const MODULES_PAGE = 'spsg-modules';
-export const SETTINGS_PAGE = 'spsg-settings';
+// One app page since ADR-008; the old slugs redirect to it.
+export const MODULES_PAGE = 'storegrowth#/modules';
+export const SETTINGS_PAGE = 'storegrowth';
 
 /** Open the Modules screen and wait for the React app to mount. */
 export async function gotoModules(page: Page): Promise<void> {

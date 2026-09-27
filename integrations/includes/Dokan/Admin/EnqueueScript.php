@@ -2,6 +2,7 @@
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Admin;
 
+use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\ModuleManager;
@@ -45,7 +46,7 @@ class EnqueueScript {
     public function admin_enqueue_scripts( $hook = '' ) {
         // These bundles only extend the StoreGrowth settings SPA, so bail on
         // every other admin screen instead of shipping React plugin-wide.
-        if ( 'storegrowth_page_spsg-settings' !== $hook ) {
+        if ( AdminMenu::SCREEN_ID !== $hook ) {
             return;
         }
 

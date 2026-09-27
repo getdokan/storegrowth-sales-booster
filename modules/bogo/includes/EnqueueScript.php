@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
@@ -80,7 +81,7 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( 'storegrowth_page_spsg-settings' === $hook && file_exists( PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' ) ) ) {
+		if ( AdminMenu::SCREEN_ID === $hook && file_exists( PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' ) ) ) {
 			$settings_file                   = require PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' );
 			$settings_file['dependencies'][] = 'jquery';
 

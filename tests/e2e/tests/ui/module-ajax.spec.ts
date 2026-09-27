@@ -36,7 +36,7 @@ test.describe('Admin · module ajax', { tag: '@ui' }, () => {
   });
 
   test('rejects ajax without a valid nonce', async ({ page }) => {
-    await page.goto('/wp-admin/admin.php?page=spsg-modules');
+    await page.goto('/wp-admin/admin.php?page=storegrowth#/modules');
     const res = await page.request.post('/wp-admin/admin-ajax.php', {
       form: {
         action: 'spsg_admin_ajax',

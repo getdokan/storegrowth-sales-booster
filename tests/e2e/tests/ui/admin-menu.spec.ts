@@ -10,12 +10,12 @@ test.describe('Admin · StoreGrowth menu', { tag: '@ui' }, () => {
   });
 
   test('Modules and Settings submenus navigate to their SPAs', async ({ page }) => {
-    await page.goto('/wp-admin/admin.php?page=spsg-modules');
+    await page.goto('/wp-admin/admin.php?page=storegrowth#/modules');
     await expect(page.locator('#sbooster-modules-page')).toBeVisible();
-    await expect(page).toHaveTitle(/Modules.*StoreGrowth/i);
+    await expect(page).toHaveTitle(/StoreGrowth/i);
 
     // Settings via its hash route — the supported entry point.
-    await page.goto('/wp-admin/admin.php?page=spsg-settings#/dashboard/overview');
+    await page.goto('/wp-admin/admin.php?page=storegrowth#/dashboard/overview');
     await expect(page.locator('#sbooster-settings-page')).toBeVisible();
   });
 });

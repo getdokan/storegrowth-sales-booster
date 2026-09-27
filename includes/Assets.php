@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth;
 
+use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -20,20 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Assets {
 
 	use Singleton;
-
-	/**
-	 * Modules page slug.
-	 *
-	 * @var string
-	 */
-	private $modules_page_hook = 'storegrowth_page_spsg-modules';
-
-	/**
-	 * Module settings page slug.
-	 *
-	 * @var string
-	 */
-	private $settings_page_hook = 'storegrowth_page_spsg-settings';
 
 	/**
 	 * Shared admin bundles built into `build/`, keyed by script handle.
@@ -226,7 +213,7 @@ class Assets {
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_scripts( $hook ) {
-		if ( $this->modules_page_hook !== $hook && $this->settings_page_hook !== $hook ) {
+		if ( AdminMenu::SCREEN_ID !== $hook ) {
 			return;
 		}
 
@@ -239,7 +226,7 @@ class Assets {
 			'spsgAdminHeader',
 			array(
 				'logo_url'      => Helper::get_plugin_url( 'assets/images/storegrowth-logo.svg' ),
-				'dashboard_url' => admin_url( 'admin.php?page=spsg-settings#/dashboard' ),
+				'dashboard_url' => admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/dashboard' ),
 				'assets_url'    => Helper::get_plugin_url( 'assets/' ),
 				/**
 				 * Filters the versions, pro flag and URLs used by the StoreGrowth admin.
@@ -328,7 +315,7 @@ class Assets {
 	 * @param string $hook page slug.
 	 */
 	public function admin_enqueue_styles( $hook ) {
-		if ( $this->modules_page_hook !== $hook && $this->settings_page_hook !== $hook ) {
+		if ( AdminMenu::SCREEN_ID !== $hook ) {
 			return;
 		}
 
