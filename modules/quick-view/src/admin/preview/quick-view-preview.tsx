@@ -269,7 +269,13 @@ export function QuickViewModal( {
                 ) }
                 <div className="flex flex-col gap-2 px-[18px] pb-3 pt-4">
                     { values.show_title && (
-                        <h3 className="m-0 text-base font-bold text-[#111]">
+                        <h3
+                            className={ cn(
+                                'm-0 text-base font-bold text-[#111]',
+                                // Clear of the close button.
+                                values.enable_close_button && 'pr-6'
+                            ) }
+                        >
                             { __(
                                 'Your Product Name',
                                 'storegrowth-sales-booster'
