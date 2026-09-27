@@ -44,7 +44,7 @@ export interface LivePreviewProps {
     /** Floats over the frame, e.g. a popup. */
     overlay?: Slot;
     /** Under the frame, e.g. a note. */
-    footer?: ReactNode;
+    footer?: Slot;
 }
 
 const DEVICES: Array< {
@@ -270,7 +270,7 @@ export function LivePreview( {
                 </div>
                 { footer && (
                     <div className="flex w-full max-w-[610px] justify-start">
-                        { footer }
+                        { render( footer, state ) }
                     </div>
                 ) }
             </div>

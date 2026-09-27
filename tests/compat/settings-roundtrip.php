@@ -167,7 +167,12 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 					$changes[ $key ] = [ $n, (string) $n ];
 					break;
 				case 'select':
-					$last            = (string) end( $field['options'] );
+					// The last option that isn't the default (a seeded unknown value shows as the default).
+					$others = array_diff( array_map( 'strval', $field['options'] ), [ (string) $field['default'] ] );
+					if ( ! $others ) {
+						break; // One option only: nothing to change to.
+					}
+					$last            = (string) end( $others );
 					$changes[ $key ] = [ $last, $last ];
 					break;
 				case 'box':

@@ -18,7 +18,6 @@ import {
     Accordion,
     BarDeviceField,
     type BarFieldsProps,
-    BarIconPicker,
     BarPlacementFields,
     BarTriggerFields,
     BarTypographyFields,
@@ -28,6 +27,7 @@ import {
     extensionKeys,
     FeatureLayout,
     FieldRenderer,
+    IconPicker,
     LivePreview,
     NumberField,
     SaveBar,
@@ -292,7 +292,7 @@ export default function FreeShippingPage() {
                 }
                 { ...bind( 'goal_completion_text' ) }
             />
-            <BarIconPicker
+            <IconPicker
                 label={ __( 'Banner Icon', 'storegrowth-sales-booster' ) }
                 icons={ ICON_CHOICES }
                 value={ values.progressive_banner_icon_name }

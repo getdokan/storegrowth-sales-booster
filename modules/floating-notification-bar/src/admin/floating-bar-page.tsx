@@ -11,7 +11,6 @@ import {
     Accordion,
     BarDeviceField,
     type BarFieldsProps,
-    BarIconPicker,
     BarPlacementFields,
     BarTriggerFields,
     BarTypographyFields,
@@ -22,6 +21,7 @@ import {
     extensionKeys,
     FeatureLayout,
     FieldRenderer,
+    IconPicker,
     isMobilePreview,
     LivePreview,
     SaveBar,
@@ -199,7 +199,7 @@ export default function FloatingBarPage() {
                 onChange={ ( next ) => setValue( 'default_banner_text', next ) }
                 { ...bind( 'default_banner_text' ) }
             />
-            <BarIconPicker
+            <IconPicker
                 label={ __( 'Banner Icon', 'storegrowth-sales-booster' ) }
                 icons={ ICON_CHOICES }
                 value={ values.default_banner_icon_name }

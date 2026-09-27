@@ -13,8 +13,6 @@ export {
     BAR_FONTS,
     BarDeviceField,
     type BarFieldsProps,
-    BarIconPicker,
-    type BarIconPickerProps,
     type BarKey,
     BarPlacementFields,
     BarTriggerFields,

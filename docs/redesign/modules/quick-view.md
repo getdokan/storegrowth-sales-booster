@@ -25,7 +25,7 @@
 | Enable In Mobile | `enable_in_mobile` | lite | `switch` |
 | Enable Zoom Box | `enable_zoom_box` | lite | `switch` |
 | Modal Effects | `modal_animation_effect` | lite | `select` (values change, §5) |
-| Add To Cart Redirection | `cart_url_redirection` | pro | `select` (values change, §5) |
+| Add To Cart Redirection | `cart_url_redirection` | lite/pro | `select` (values change, §5) |
 | Auto open Fly Cart (not in design) | `auto_open_fly_cart` | pro | keep, `switch` shown when Fly Cart is active |
 | Button label (max 15) | `button_label` | lite | `text` + counter |
 | Button Position | `button_position` | lite/pro | `select` (values change, §5) |
@@ -38,14 +38,14 @@
 | Button / Text / Modal colours | `button_color`, `button_text_color`, `modal_background_color` | lite | `color_picker` |
 | Navigation Background | `navigation_background` | pro | `color_picker` |
 
-## 5. Data changes (migration via `MigrationManager`)
-| Key | Today | Design | Proposal |
-|---|---|---|---|
-| `modal_animation_effect` | 4 magnific-popup effects (`mfp-3d-unfold`, …) | Fade / Slide / Zoom / None | Keep today's stored values; map the design labels to existing effects and add `none`. No migration if product accepts the labels |
-| `cart_url_redirection` | `legacy-cart` / `shop-page` / `add-to-cart-ajax` | Shop / Cart / Checkout / Stay | Add `checkout` as a new value; map Cart→`legacy-cart`, Shop→`shop-page`, Stay→`add-to-cart-ajax`. No migration |
-| `button_position` | `after` / `before` / `center_on_the_image` | center / top-right / bottom | Needs the storefront positions to exist. **Product decision**; if adopted, add new values and migrate old ones |
+## 5. Data changes (decided: additive values, no migration)
+| Key | Stored today | Page shows (design labels → stored value) |
+|---|---|---|
+| `modal_animation_effect` | `mfp-3d-unfold` (default), `mfp-zoom-out`, `mfp-move-from-top`, `mfp-fade` | Fade → `mfp-fade`, Slide → `mfp-move-from-top`, Zoom → `mfp-zoom-out`, None → **`mfp-none` (new)**. `mfp-none` works because the animation rules only exist per effect class. **3D Unfold (flip) is retired** (product decision): not offered, default is now Fade, and a stored `mfp-3d-unfold` reads as Fade on the storefront (`QuickViewSettings::modal_effect()`); the stored value isn't rewritten |
+| `cart_url_redirection` | `legacy-cart-redirection` (default), `shop-page-redirection`; pro `add-to-cart-ajax` | Shop Page / Cart Page / **Checkout Redirect (`checkout-redirection`, new, lite)** / Stay On Page (`add-to-cart-ajax`, pro). Checkout is resolved server-side in `CommonHooks::add_to_cart_redirect()` |
+| `button_position` | `after_add_to_cart` (default), `before_add_to_cart`; pro `center_on_the_image` | After / Before Add to Cart, Center On The Image (pro), **Top Right Of The Image (`top_right_of_the_image`, new, pro)**. Pro 2.2.0 doesn't know the new value, so lite's inline CSS draws it when pro is active |
 
-Prefer **additive values over rewriting stored ones**. Pro reads these keys.
+Pro-only values are offered only with pro; a stored pro value still shows without pro. The schema accepts every value; the storefront falls back as before. Saves merge (the old ajax replaced the whole option), so unknown keys are kept.
 
 ## 6. REST
 `GET/POST /settings/quick-view`.
@@ -61,12 +61,18 @@ Prefer **additive values over rewriting stored ones**. Pro reads these keys.
 - Reuses: `IconPicker`.
 
 ## 9. Open questions / design issues
-- Option value changes (§5).
-- Button Position only matters in icon mode.
-- Dead keys stay unread: `navigation_text_color`, `enable_product_navigation`, `show_quick_icon`.
+- ~~Option value changes (§5)~~ decided: additive values.
+- Dead keys stay unread and out of the schema: `navigation_text_color`, `enable_product_navigation`, `show_quick_icon`. `show_rating` is read by `CommonHooks` (default on) but was never in the admin; left out.
+- **Preview:** the design's modal mock, not the storefront markup (an ADR-005 S10 exception): the real modal is the theme's single-product layout in a 920px magnific-popup, which neither fits the frame nor looks like any one store. A shop card below shows the button where Button Position puts it.
+- Button label: `n / 15` counter and input limit; no server limit, so a longer stored label still saves.
+- Button icons: the preview draws the lucide icons (zoom-in, eye, scan-eye, search); pro 2.2.0's storefront draws its own icons for `quick-view-icon-1..4`.
+- "Navigation Background" colours the modal's prev/next arrows (pro), as on the storefront; the design's mock applied it to View Product Details.
+- Auto Open Fly Cart (not in the design) shows with Stay On Page while Fly Cart is active.
+- Tab ids (extension fields): `general`, `design`.
 
 ## 10. Tasks and definition of done
-- [ ] Schema + adapters. Save merges instead of replacing, so unknown keys are kept.
-- [ ] Value mapping and any migration.
-- [ ] TS page + modal preview.
-- [ ] Characterisation test + E2E matrix; delete the old bundle.
+- [x] Schema + adapters. Save merges instead of replacing, so unknown keys are kept.
+- [x] Value mapping (additive, no migration).
+- [x] TS page + modal preview.
+- [x] Characterisation test (settings round-trip); old bundle deleted.
+- [ ] E2E matrix.

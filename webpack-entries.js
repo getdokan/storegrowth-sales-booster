@@ -79,6 +79,11 @@ const moduleEntries = {
         'admin',
         './modules/floating-notification-bar/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'quick-view',
+        'admin',
+        './modules/quick-view/src/admin/index.tsx'
+    ),
 };
 
 /**

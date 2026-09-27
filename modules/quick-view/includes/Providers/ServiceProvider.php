@@ -3,7 +3,9 @@
 namespace StorePulse\StoreGrowth\Modules\QuickView\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\QuickView\AdminPage;
 use StorePulse\StoreGrowth\Modules\QuickView\QuickViewModule;
+use StorePulse\StoreGrowth\Modules\QuickView\Settings\QuickViewSettings;
 
 /**
  * ServiceProvider for the module.
@@ -12,7 +14,7 @@ use StorePulse\StoreGrowth\Modules\QuickView\QuickViewModule;
  *
  * @since 2.0.0
  *
- * @package StorePulse\StoreGrowth\Modules\CountdownTimer\Providers
+ * @package StorePulse\StoreGrowth\Modules\QuickView\Providers
  */
 class ServiceProvider extends BaseServiceProvider {
 
@@ -25,6 +27,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    QuickViewModule::class,
+	    QuickViewSettings::class,
+	    AdminPage::class,
     ];
 
     /**
@@ -47,5 +51,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( QuickViewModule::get_id(), QuickViewModule::class, true );
+        // Always registered: the settings page and route work while the module is off.
+        $this->add_with_implements_tags( QuickViewSettings::class, QuickViewSettings::class, true );
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
     }
 }

@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\QuickView;
 
+use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
@@ -105,7 +106,30 @@ class CommonHooks implements HookRegistry {
 		$hook            = 'woocommerce_after_shop_loop_item';
 		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
 
+		// Before: in front of the loop's Add to cart link, wherever the theme
+		// prints it (some themes, e.g. Blocksy, move it off this action).
+		if ( 'before_add_to_cart' === $button_position ) {
+			add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'prepend_quick_view_button' ], 10, 1 );
+			return;
+		}
+
 		add_action( $hook, array( $this, 'show_quick_view_button_shop' ), $priority );
+	}
+
+	/**
+	 * Put the Quick View button in front of the loop's Add to cart link.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $html Add to cart link.
+	 *
+	 * @return string
+	 */
+	public function prepend_quick_view_button( $html ) {
+		ob_start();
+		$this->display_buy_now_button();
+
+		return ob_get_clean() . $html;
 	}
 
 		/**
@@ -138,7 +162,15 @@ class CommonHooks implements HookRegistry {
 	public function add_to_cart_redirect( $url ) {
 		if ( apply_filters( 'spsgqcv_redirect', true ) ) {
 			if ( ! empty( $_REQUEST['spsgqcv-redirect'] ) ) {
-				return apply_filters( 'spsgqcv_redirect_url', add_query_arg( 'added_to_cart', '1', sanitize_url( $_REQUEST['spsgqcv-redirect'] ) ) );
+				$settings = Helper::get_settings( 'spsg_quick_view_settings' );
+				$target   = sanitize_url( wp_unslash( $_REQUEST['spsgqcv-redirect'] ) );
+
+				// Checkout Redirect: added from the quick view, go to checkout.
+				if ( 'checkout-redirection' === Helper::find_option_settings( $settings, 'cart_url_redirection', '' ) ) {
+					$target = wc_get_checkout_url();
+				}
+
+				return apply_filters( 'spsgqcv_redirect_url', add_query_arg( 'added_to_cart', '1', $target ) );
 			}
 		}
 		return $url;

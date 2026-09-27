@@ -1,21 +1,14 @@
 /**
  * Fields the two storefront bars share (Free Shipping Rules, Floating Bar;
  * PHP `DisplaySettings::bar_fields()` / `targeting_fields()`): placement,
- * devices, trigger, page targeting, size and font, and the icon picker.
- * Each page arranges them in its own cards.
+ * devices, trigger, page targeting, size and font. Each page arranges them
+ * in its own cards; the icon picker is `IconPicker` in `fields/`.
  *
  * @since SPSG_VERSION
  */
-import {
-    Button,
-    LabeledRadio,
-    RadioGroup,
-    ToggleGroup,
-    ToggleGroupItem,
-} from '@wedevs/plugin-ui';
+import { LabeledRadio, RadioGroup } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Upload, type LucideIcon } from 'lucide-react';
 import type { SettingValue } from '@storegrowth/utilities';
 
 import {
@@ -24,7 +17,6 @@ import {
     NumberField,
     ProBadge,
     SelectField,
-    TextField,
 } from './fields';
 import { FIELD_LABEL } from './fields/field-label';
 
@@ -465,161 +457,5 @@ export function BarTypographyFields( props: BarFieldsProps ) {
                 { ...bind( props, 'font_size' ) }
             />
         </>
-    );
-}
-
-export interface BarIconPickerProps {
-    label: string;
-    /** The icons, in display order: stored slug, name, lucide icon. */
-    icons: Array< { value: string; label: string; Icon: LucideIcon } >;
-    /** Stored slug; `''` for none. */
-    value: string;
-    onChange: ( value: string ) => void;
-    /** Custom icon address (pro); the bar shows it while no icon is chosen. */
-    custom: string;
-    onCustomChange: ( value: string ) => void;
-    locked?: boolean;
-    error?: string;
-}
-
-interface MediaFrame {
-    on: ( event: string, callback: () => void ) => void;
-    open: () => void;
-    state: () => {
-        get: ( name: string ) => {
-            first: () => { toJSON: () => { url: string } };
-        };
-    };
-}
-
-/**
- * Pick a custom icon from the media library.
- *
- * @param onPick Called with the chosen file's address.
- */
-function openMedia( onPick: ( url: string ) => void ) {
-    const media = (
-        window as unknown as {
-            wp?: {
-                media?: ( options: Record< string, unknown > ) => MediaFrame;
-            };
-        }
-     ).wp?.media;
-
-    if ( ! media ) {
-        return;
-    }
-
-    const frame = media( {
-        title: __( 'Banner Icon', 'storegrowth-sales-booster' ),
-        library: { type: 'image' },
-        multiple: false,
-    } );
-    frame.on( 'select', () =>
-        onPick( frame.state().get( 'selection' ).first().toJSON().url )
-    );
-    frame.open();
-}
-
-/**
- * Banner icon (design `.seg`): label on the left; the three icons in a
- * segmented pill (pressing the chosen one again clears it) and Upload on
- * the right. The uploaded icon's address shows once there is one.
- *
- * @since SPSG_VERSION
- *
- * @param props                Props.
- * @param props.label          Label.
- * @param props.icons          Slug → icon.
- * @param props.value          Chosen slug.
- * @param props.onChange       Slug handler.
- * @param props.custom         Custom icon address.
- * @param props.onCustomChange Custom icon handler.
- * @param props.locked         Pro field without pro.
- * @param props.error          Custom icon error.
- */
-export function BarIconPicker( {
-    label,
-    icons,
-    value,
-    onChange,
-    custom,
-    onCustomChange,
-    locked,
-    error,
-}: BarIconPickerProps ) {
-    const labelId = useId();
-
-    return (
-        <div className="flex w-full flex-col gap-3">
-            <div className="flex w-full flex-wrap items-center justify-between gap-3">
-                <span
-                    id={ labelId }
-                    className={ `flex items-center gap-2 ${ FIELD_LABEL }` }
-                >
-                    { label }
-                    { locked && <ProBadge /> }
-                </span>
-                <span className="flex shrink-0 items-center gap-2">
-                    <ToggleGroup
-                        aria-labelledby={ labelId }
-                        value={ value ? [ value ] : [] }
-                        onValueChange={ ( next ) =>
-                            onChange( next[ 0 ] ?? '' )
-                        }
-                        disabled={ locked }
-                        spacing={ 2 }
-                        className="rounded-lg bg-sg-chip p-1"
-                    >
-                        { icons.map( ( icon ) => (
-                            <ToggleGroupItem
-                                key={ icon.value }
-                                value={ icon.value }
-                                aria-label={ icon.label }
-                                className="size-9 p-2 text-sg-tertiary hover:bg-white/60 aria-pressed:bg-white aria-pressed:text-sg-brand aria-pressed:shadow-[0_1px_1px_rgba(0,0,0,.05),0_2px_1px_rgba(0,0,0,.05)]"
-                            >
-                                <icon.Icon
-                                    className="size-5"
-                                    strokeWidth={ 1.5 }
-                                    aria-hidden
-                                />
-                            </ToggleGroupItem>
-                        ) ) }
-                    </ToggleGroup>
-                    <Button
-                        variant="outline"
-                        disabled={ locked }
-                        // An upload clears the icon, so the bar shows the upload.
-                        onClick={ () =>
-                            openMedia( ( url ) => {
-                                onCustomChange( url );
-                                onChange( '' );
-                            } )
-                        }
-                        className="h-11 gap-2 border-sg-brand text-sg-brand"
-                    >
-                        <Upload className="size-4" aria-hidden />
-                        { __( 'Upload', 'storegrowth-sales-booster' ) }
-                    </Button>
-                </span>
-            </div>
-            { ( custom || error ) && (
-                <TextField
-                    label={ __(
-                        'Custom Icon URL',
-                        'storegrowth-sales-booster'
-                    ) }
-                    value={ custom }
-                    onChange={ onCustomChange }
-                    placeholder="https://"
-                    help={ __(
-                        'Shown while none of the icons above is selected. Empty it to remove the upload.',
-                        'storegrowth-sales-booster'
-                    ) }
-                    locked={ locked }
-                    error={ error }
-                />
-            ) }
-        </div>
     );
 }

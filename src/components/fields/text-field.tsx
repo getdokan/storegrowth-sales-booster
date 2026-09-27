@@ -20,6 +20,11 @@ export interface TextFieldProps extends BaseFieldProps {
     placeholder?: string;
     /** `date` edits a `Y-m-d` value with the browser's date picker. */
     type?: 'text' | 'url' | 'date';
+    /**
+     * Longest text that can be typed, shown as a `n / max` counter. Only the
+     * input limits it: a longer stored value still shows and saves.
+     */
+    maxLength?: number;
 }
 
 /**
@@ -35,6 +40,7 @@ export interface TextFieldProps extends BaseFieldProps {
  * @param props.id          Input id.
  * @param props.placeholder Placeholder.
  * @param props.type        Input type.
+ * @param props.maxLength   Longest text, with a counter.
  */
 export function TextField( {
     label,
@@ -46,20 +52,29 @@ export function TextField( {
     id,
     placeholder,
     type = 'text',
+    maxLength,
 }: TextFieldProps ) {
     const fallbackId = useId();
     const inputId = id ?? fallbackId;
 
     return (
         <div className="flex w-full flex-col items-start gap-2">
-            <FieldLabel htmlFor={ inputId } locked={ locked }>
-                { label }
-            </FieldLabel>
+            <div className="flex w-full items-center justify-between gap-2">
+                <FieldLabel htmlFor={ inputId } locked={ locked }>
+                    { label }
+                </FieldLabel>
+                { maxLength !== undefined && (
+                    <span className="text-xs text-sg-help" aria-hidden>
+                        { value.length } / { maxLength }
+                    </span>
+                ) }
+            </div>
             <Input
                 id={ inputId }
                 type={ type }
                 className={ FIELD_CONTROL }
                 value={ value }
+                maxLength={ maxLength }
                 placeholder={ placeholder }
                 disabled={ locked }
                 aria-invalid={ !! error }

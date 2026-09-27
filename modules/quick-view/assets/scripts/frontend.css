@@ -795,49 +795,6 @@ body.rtl .mfp-spsgqcv .mfp-close {
 }
 
 /*
-====== 3d unfold ======
-*/
-.mfp-3d-unfold {
-  /* start state */
-  /* animate in */
-  /* animate out */
-}
-
-.mfp-3d-unfold .mfp-content {
-  perspective: 2000px;
-}
-
-.mfp-3d-unfold .mfp-with-anim {
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-  transform-style: preserve-3d;
-  transform: rotateY(-60deg);
-}
-
-.mfp-3d-unfold.mfp-bg {
-  opacity: 0;
-  transition: all 0.5s;
-}
-
-.mfp-3d-unfold.mfp-ready .mfp-with-anim {
-  opacity: 1;
-  transform: rotateY(0deg);
-}
-
-.mfp-3d-unfold.mfp-ready.mfp-bg {
-  opacity: 0.8;
-}
-
-.mfp-3d-unfold.mfp-removing .mfp-with-anim {
-  transform: rotateY(60deg);
-  opacity: 0;
-}
-
-.mfp-3d-unfold.mfp-removing.mfp-bg {
-  opacity: 0;
-}
-
-/*
 ====== Zoom-out effect ======
 */
 .mfp-zoom-out {
