@@ -5,9 +5,15 @@
  *
  * @since SPSG_VERSION
  */
-import { toast } from '@wedevs/plugin-ui';
-import { useState } from '@wordpress/element';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    toast,
+} from '@wedevs/plugin-ui';
+import { createInterpolateElement, useId, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { Info } from 'lucide-react';
 import {
     Accordion,
     BarDeviceField,
@@ -24,7 +30,6 @@ import {
     FieldRenderer,
     LivePreview,
     NumberField,
-    OptionCard,
     SaveBar,
     SelectField,
     SettingsSplit,
@@ -34,11 +39,12 @@ import {
     TemplatePicker,
     TextField,
     TextareaField,
+    ToggleSwitch,
 } from '@storegrowth/components';
 import { useModuleSettings } from '@storegrowth/hooks';
 import { errorMessage, getHeaderData } from '@storegrowth/utilities';
 
-import { BAR_ICONS, FreeShippingBar } from './preview/free-shipping-bar';
+import { FreeShippingBar, ICON_CHOICES } from './preview/free-shipping-bar';
 import {
     type FreeShippingKey,
     type FreeShippingValues,
@@ -91,15 +97,86 @@ const DISCOUNT_TYPES = [
     },
 ];
 
-/** The one template: the default colours. */
+/** The one template: the design's colours (the schema defaults keep #073b4c). */
 const TEMPLATE = {
     background_color: '#0875FF',
     text_color: '#ffffff',
     icon_color: '#ffffff',
     close_icon_color: '#ffffff',
     btn_color: '#ffffff',
-    btn_text_color: '#073b4c',
+    btn_text_color: '#12303c',
 };
+
+/**
+ * Discount Type label with the WooCommerce free-shipping help (design
+ * `.tip-bubble--panel`).
+ */
+function DiscountTypeLabel() {
+    const link = 'font-semibold text-sg-brand hover:underline';
+    const shipping = 'admin.php?page=wc-settings&tab=shipping';
+
+    return (
+        <span className="flex items-center gap-2">
+            { __( 'Discount Type', 'storegrowth-sales-booster' ) }
+            <Popover>
+                <PopoverTrigger
+                    openOnHover
+                    aria-label={ __(
+                        'How to set up free shipping in WooCommerce',
+                        'storegrowth-sales-booster'
+                    ) }
+                    className="inline-flex cursor-help items-center border-0 bg-transparent p-0 text-[#71717A] hover:text-sg-brand"
+                >
+                    <Info className="size-4" strokeWidth={ 1.5 } aria-hidden />
+                </PopoverTrigger>
+                <PopoverContent
+                    align="start"
+                    className="flex w-80 max-w-[78vw] flex-col gap-2 rounded-[6px] border border-sg-stroke bg-white px-3.5 py-3 text-xs font-normal leading-normal text-[#575757] shadow-[0_8px_24px_rgba(0,0,0,.10)]"
+                >
+                    <p>
+                        { createInterpolateElement(
+                            __(
+                                'To set the free shipping method, go to <shipping>Shipping</shipping> in WooCommerce settings. Then add a <zone>Shipping Zone</zone>. In the zone, add the <b>Free Shipping</b> shipping method and set the minimum amount it needs.',
+                                'storegrowth-sales-booster'
+                            ),
+                            {
+                                // The text between the tags fills the links.
+                                shipping: (
+                                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                                    <a href={ shipping } className={ link } />
+                                ),
+                                zone: (
+                                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                                    <a href={ shipping } className={ link } />
+                                ),
+                                b: <b className="font-semibold text-sg-text" />,
+                            }
+                        ) }
+                    </p>
+                    <p>
+                        { createInterpolateElement(
+                            __(
+                                'For more, see the <docs>WooCommerce documentation</docs>.',
+                                'storegrowth-sales-booster'
+                            ),
+                            {
+                                docs: (
+                                    // eslint-disable-next-line jsx-a11y/anchor-has-content
+                                    <a
+                                        href="https://woocommerce.com/document/free-shipping/"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={ link }
+                                    />
+                                ),
+                            }
+                        ) }
+                    </p>
+                </PopoverContent>
+            </Popover>
+        </span>
+    );
+}
 
 export default function FreeShippingPage() {
     const settings = useModuleSettings< FreeShippingValues >(
@@ -108,6 +185,7 @@ export default function FreeShippingPage() {
     const { values, setValue, setValues, isLocked, errors } = settings;
     const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
     const [ goalReached, setGoalReached ] = useState( false );
+    const goalId = useId();
 
     /**
      * Props shared by every field bound to a setting.
@@ -192,7 +270,7 @@ export default function FreeShippingPage() {
             <TextareaField
                 label={ __( 'Banner Text', 'storegrowth-sales-booster' ) }
                 value={ values.progressive_banner_text }
-                rows={ 3 }
+                rows={ 2 }
                 onChange={ ( next ) =>
                     setValue( 'progressive_banner_text', next )
                 }
@@ -208,7 +286,7 @@ export default function FreeShippingPage() {
                     'storegrowth-sales-booster'
                 ) }
                 value={ values.goal_completion_text }
-                rows={ 3 }
+                rows={ 2 }
                 onChange={ ( next ) =>
                     setValue( 'goal_completion_text', next )
                 }
@@ -216,7 +294,7 @@ export default function FreeShippingPage() {
             />
             <BarIconPicker
                 label={ __( 'Banner Icon', 'storegrowth-sales-booster' ) }
-                icons={ BAR_ICONS }
+                icons={ ICON_CHOICES }
                 value={ values.progressive_banner_icon_name }
                 onChange={ ( next ) =>
                     setValue( 'progressive_banner_icon_name', next )
@@ -228,37 +306,36 @@ export default function FreeShippingPage() {
                 locked={ isLocked( 'progressive_banner_icon_name' ) }
                 error={ errors.progressive_banner_custom_icon }
             />
-            <OptionCard
-                title={ __(
+            <SwitchField
+                label={ __(
                     'Display CTA Button',
-                    'storegrowth-sales-booster'
-                ) }
-                help={ __(
-                    'A button on the bar, e.g. to the cart',
                     'storegrowth-sales-booster'
                 ) }
                 checked={ values.btn_style }
                 onChange={ ( checked ) => setValue( 'btn_style', checked ) }
-                locked={ isLocked( 'btn_style' ) }
-            >
-                <TextField
-                    label={ __( 'CTA Name', 'storegrowth-sales-booster' ) }
-                    value={ values.btn_text }
-                    onChange={ ( next ) => setValue( 'btn_text', next ) }
-                    { ...bind( 'btn_text' ) }
-                />
-                <TextField
-                    label={ __(
-                        'CTA Target URI',
-                        'storegrowth-sales-booster'
-                    ) }
-                    type="url"
-                    value={ values.btn_target }
-                    onChange={ ( next ) => setValue( 'btn_target', next ) }
-                    placeholder="https://"
-                    { ...bind( 'btn_target' ) }
-                />
-            </OptionCard>
+                { ...bind( 'btn_style' ) }
+            />
+            { values.btn_style && (
+                <>
+                    <TextField
+                        label={ __( 'CTA Name', 'storegrowth-sales-booster' ) }
+                        value={ values.btn_text }
+                        onChange={ ( next ) => setValue( 'btn_text', next ) }
+                        { ...bind( 'btn_text' ) }
+                    />
+                    <TextField
+                        label={ __(
+                            'CTA Target URI',
+                            'storegrowth-sales-booster'
+                        ) }
+                        type="url"
+                        value={ values.btn_target }
+                        onChange={ ( next ) => setValue( 'btn_target', next ) }
+                        placeholder="https://"
+                        { ...bind( 'btn_target' ) }
+                    />
+                </>
+            ) }
             { saveBar( 'content' ) }
         </>
     );
@@ -267,7 +344,7 @@ export default function FreeShippingPage() {
         <>
             <BarPlacementFields { ...barProps } />
             <SelectField
-                label={ __( 'Discount Type', 'storegrowth-sales-booster' ) }
+                label={ <DiscountTypeLabel /> }
                 value={ discountType }
                 options={ DISCOUNT_TYPES }
                 onChange={ ( next ) =>
@@ -278,27 +355,6 @@ export default function FreeShippingPage() {
                               discount_amount_mode:
                                   next as FreeShippingValues[ 'discount_amount_mode' ],
                           } )
-                }
-                help={
-                    discountType === 'free-shipping' && (
-                        <>
-                            { __(
-                                'Free shipping comes from WooCommerce: in WooCommerce → Settings → Shipping, add a Free Shipping method to a shipping zone and set it to need a minimum order amount.',
-                                'storegrowth-sales-booster'
-                            ) }{ ' ' }
-                            <a
-                                href="https://woocommerce.com/document/free-shipping/"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-sg-brand underline"
-                            >
-                                { __(
-                                    'WooCommerce documentation',
-                                    'storegrowth-sales-booster'
-                                ) }
-                            </a>
-                        </>
-                    )
                 }
                 { ...bind( 'discount_type' ) }
             />
@@ -405,6 +461,7 @@ export default function FreeShippingPage() {
                 ) }
             >
                 <TemplatePicker
+                    bare
                     templates={ [
                         {
                             id: 'shipping_bar_one',
@@ -484,14 +541,19 @@ export default function FreeShippingPage() {
                             bannerPosition={ values.bar_position }
                             footer={
                                 <div className="flex w-full max-w-[360px] flex-col gap-3">
-                                    <SwitchField
-                                        label={ __(
-                                            'Preview with the goal reached',
-                                            'storegrowth-sales-booster'
-                                        ) }
-                                        checked={ goalReached }
-                                        onChange={ setGoalReached }
-                                    />
+                                    <span className="flex items-center justify-center gap-2 text-sm text-sg-text">
+                                        <ToggleSwitch
+                                            id={ goalId }
+                                            checked={ goalReached }
+                                            onCheckedChange={ setGoalReached }
+                                        />
+                                        <label htmlFor={ goalId }>
+                                            { __(
+                                                'Preview with the goal reached',
+                                                'storegrowth-sales-booster'
+                                            ) }
+                                        </label>
+                                    </span>
                                     { ! settings.published && (
                                         <p className="text-center text-xs text-sg-help">
                                             { __(

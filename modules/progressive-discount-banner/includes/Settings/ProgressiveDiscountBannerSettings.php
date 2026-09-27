@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings;
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 use StorePulse\StoreGrowth\Settings\DisplaySettings;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -70,10 +71,12 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_fields(): array {
+		// The bar prints these with wp_kses_post, and the old admin stored markup.
 		$text  = static function ( string $value ): array {
 			return [
 				'type'    => 'text',
 				'default' => $value,
+				'html'    => true,
 			];
 		};
 		$color = static function ( string $value ): array {
@@ -173,20 +176,6 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema {
 	 * @return array
 	 */
 	public function storefront_settings( $stored ): array {
-		$stored = is_array( $stored ) ? $stored : [];
-
-		if ( ! $this->is_saved( $stored ) ) {
-			return $stored;
-		}
-
-		foreach ( $this->get_fields() as $key => $field ) {
-			$empty_allowed = '' === ( $stored[ $key ] ?? null ) && ! empty( $field['allow_empty'] );
-
-			if ( ! array_key_exists( $key, $stored ) || ( 'number' === $field['type'] && ! is_numeric( $stored[ $key ] ) && ! $empty_allowed ) ) {
-				$stored[ $key ] = $field['default'];
-			}
-		}
-
-		return $stored;
+		return storegrowth_get_container()->get( SettingsService::class )->with_defaults( $this->get_module_id(), $stored );
 	}
 }

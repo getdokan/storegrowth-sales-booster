@@ -45,9 +45,9 @@ body:not(.show_floating_notification_bar) {
     color: #fff;
 }
 
-/* Pro's own (filled) icons. */
+/* Pro's own (filled) icons, in the icon colour (inline `color` on the icon box). */
 .spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-icon svg:not(.spsg-bar-icon) {
-    fill: #fff;
+    fill: currentColor;
     width: 25px;
     height: 25px;
 }
@@ -67,36 +67,40 @@ body.admin-bar .spsg-floating-notification-bar-wrapper {
     /* Adjust the transition duration and timing function as needed */
 }
 
+/* Coupon and countdown take the bar's text colour. */
 .spsg-coupon-container .spsg-coupon-code {
-    color: #FFF;
+    color: inherit;
     font-size: 20px;
     font-weight: 700;
 }
 
 .spsg-coupon-container {
     padding: 7px;
-    border: 1px dashed white;
+    border: 1px dashed currentColor;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .spsg-fn-bar-countdown {
     display: flex;
-    font-size: 18px;
-    font-weight: 800;
-    gap: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    gap: 8px;
 }
 
 .spsg-fn-bar-countdown .spsg-fn-bar-countdown-value {
-    gap: 8px;
+    gap: 1px;
     display: flex;
+    align-items: center;
     line-height: 1;
     flex-direction: column;
 }
 
 .spsg-countdown-content {
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    opacity: .9;
 }
 
 @media screen and (max-width: 768px) {

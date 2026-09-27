@@ -142,6 +142,18 @@
         }
       );
 
+      // Keyboard: Enter / Space on the close controls act as a click.
+      $(document).on(
+        "keydown",
+        ".spsg-floating-notification-bar-remove",
+        function (event) {
+          if ("Enter" === event.key || " " === event.key) {
+            event.preventDefault();
+            $(this).trigger("click");
+          }
+        }
+      );
+
       // Handle WooCommerce AJAX add to cart
       $( document.body ).on( 'added_to_cart', function() {
         const offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
@@ -196,34 +208,39 @@
       });
     });
 
-    // Button hidden functionality
+    // Button hidden functionality: the "Show" switch (`button_enable`: off
+    // localizes as ''; missing on an option saved before it existed = on)
+    // and the device choice. Only this bar's button; the Free Shipping
+    // bar's CTA uses the same class.
     $(document).ready(function () {
       const isMobile = isMobileDevice();
       const shouldHideMobile =
         button_view.includes("button-mobile-enable") && isMobile;
       const shouldHideDesktop =
         button_view.includes("button-desktop-enable") && !isMobile;
+      const $button = $(".spsg-floating-notification-bar-wrapper .fn-bar-action-button");
 
-      if (!shouldHideMobile && !shouldHideDesktop) {
-        $(".fn-bar-action-button").remove();
+      if ("" === spsg_fnb_data.button_enable) {
+        $button.remove();
+      } else if (!shouldHideMobile && !shouldHideDesktop) {
+        $button.remove();
         paddingRemoverBody();
       }
     });
 
     //Countdown timer
     $(document).ready(function () {
-      const startDateString = countdown_start_date + " 00:00:00"; // Replace with your start date string
-      const endDateString = countdown_end_date + " 23:59:59"; // Replace with your end date string
-
-      const startDate = new Date(startDateString);
-      const endDate = new Date(endDateString);
+      // ISO form (local time): Safari can't parse "Y-m-d H:i:s".
+      const startDate = new Date(countdown_start_date + "T00:00:00");
+      const endDate = new Date(countdown_end_date + "T23:59:59");
 
       const now = new Date();
+      let countdownInterval;
 
       if (now >= startDate && now <= endDate) {
         updateCountdown(endDate);
 
-        const countdownInterval = setInterval(function () {
+        countdownInterval = setInterval(function () {
           updateCountdown(endDate);
         }, 1000);
       } else if (now < startDate) {

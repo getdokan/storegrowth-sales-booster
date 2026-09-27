@@ -39,9 +39,14 @@ $redirect_url  = PluginHelper::find_option_settings( $settings, 'redirect_url', 
 				echo wp_kses_post( apply_filters( 'sales_boster_floating_notification_bar_text', $banner_text ) );
 				?>
 			</span>
-			<?php require plugin_dir_path( __FILE__ ) . 'action-button.php'; ?>
+			<?php
+			// The "Show" switch; the storefront JS also removes pro's button.
+			if ( PluginHelper::find_option_settings( $settings, 'button_enable', true ) ) {
+				require plugin_dir_path( __FILE__ ) . 'action-button.php';
+			}
+			?>
 		</div>
-		<div class="spsg-floating-notification-bar-remove">
+		<div class="spsg-floating-notification-bar-remove" role="button" tabindex="0" aria-label="<?php esc_attr_e( 'Close', 'storegrowth-sales-booster' ); ?>">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 		</div>
 	</div>

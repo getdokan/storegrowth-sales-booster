@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\SalesPop\Settings;
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
 use StorePulse\StoreGrowth\Modules\SalesPop\SalesPopModule;
 use StorePulse\StoreGrowth\Settings\DisplaySettings;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -249,14 +250,7 @@ class SalesPopSettings implements SettingsSchema {
 	 * @return array
 	 */
 	public function storefront_settings( $stored ): array {
-		$stored   = is_array( $stored ) ? $stored : [];
-		$settings = $stored;
-
-		foreach ( $this->get_fields() as $key => $field ) {
-			if ( ! array_key_exists( $key, $settings ) || ( 'number' === $field['type'] && ! is_numeric( $settings[ $key ] ) ) ) {
-				$settings[ $key ] = $field['default'];
-			}
-		}
+		$settings = storegrowth_get_container()->get( SettingsService::class )->with_defaults( $this->get_module_id(), $stored );
 
 		if ( ! sp_store_growth()->has_pro() ) {
 			$radii = self::TEMPLATE_RADII[ absint( $settings['template'] ) ] ?? self::TEMPLATE_RADII[4];

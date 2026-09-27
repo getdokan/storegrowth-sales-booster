@@ -47,7 +47,7 @@ $button_text_color = PluginHelper::find_option_settings( $settings, 'btn_text_co
 				</a>
 			<?php endif; ?>
 		</div>
-		<div class='spsg-pd-banner-bar-remove'>
+		<div class='spsg-pd-banner-bar-remove' role="button" tabindex="0" aria-label="<?php esc_attr_e( 'Close', 'storegrowth-sales-booster' ); ?>">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 		</div>
 	</div>

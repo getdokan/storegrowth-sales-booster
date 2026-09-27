@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Settings;
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\FloatingNotificationBarModule;
 use StorePulse\StoreGrowth\Settings\DisplaySettings;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -73,9 +74,11 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema {
 
 		$fields = [
 			// Content.
+			// Printed with wp_kses_post; the old admin stored markup.
 			'default_banner_text'        => [
 				'type'    => 'text',
 				'default' => __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' ),
+				'html'    => true,
 			],
 			'default_banner_icon_name'   => $pro(
 				[
@@ -107,6 +110,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema {
 			'ac_button_text'             => [
 				'type'    => 'text',
 				'default' => __( 'Shop Now', 'storegrowth-sales-booster' ),
+				'html'    => true,
 			],
 			'redirect_url'               => [
 				'type'    => 'url',
@@ -181,18 +185,6 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema {
 	 * @return array
 	 */
 	public function storefront_settings( $stored ): array {
-		$stored = is_array( $stored ) ? $stored : [];
-
-		if ( ! $this->is_saved( $stored ) ) {
-			return $stored;
-		}
-
-		foreach ( $this->get_fields() as $key => $field ) {
-			if ( ! array_key_exists( $key, $stored ) || ( 'number' === $field['type'] && ! is_numeric( $stored[ $key ] ) ) ) {
-				$stored[ $key ] = $field['default'];
-			}
-		}
-
-		return $stored;
+		return storegrowth_get_container()->get( SettingsService::class )->with_defaults( $this->get_module_id(), $stored );
 	}
 }

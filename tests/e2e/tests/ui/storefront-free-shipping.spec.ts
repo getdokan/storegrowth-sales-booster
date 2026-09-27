@@ -28,8 +28,9 @@ const ICON = `${WRAP} .spsg-pd-banner-bar-icon svg`;
 const REMOVE = `${WRAP} .spsg-pd-banner-bar-remove svg path`;
 const GET = 'spsg_pd_banner_get_settings';
 
-// Save REPLACES the whole option, so this base must be complete: device view set
-// (wrapper survives JS) and a high minimum (empty cart < minimum → progressive text).
+// Saves MERGE into the option (only the keys sent change), so this base resets
+// every key the tests touch: device view set (wrapper survives JS) and a high
+// minimum (empty cart < minimum → progressive text).
 const DEFAULTS = {
   bar_type: 'normal',
   bar_position: 'top',

@@ -118,6 +118,14 @@
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
         $( '.spsg-floating-notification-bar-wrapper' ).css({ top: `${ offset }px` });
       });
+
+      // Keyboard: Enter / Space on the close control act as a click.
+      $(document).on("keydown", ".spsg-pd-banner-bar-remove", function (event) {
+        if ("Enter" === event.key || " " === event.key) {
+          event.preventDefault();
+          $(this).trigger("click");
+        }
+      });
     });
   } else {
     console.error("banner_device_view is undefined or empty.");

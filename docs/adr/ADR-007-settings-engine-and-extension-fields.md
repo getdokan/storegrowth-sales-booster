@@ -23,7 +23,7 @@ We answer the first question with plugin-ui's settings contract: fields are flat
 - The page's `useModuleSettings()` owns values, dirty state and saving. Each tab saves its own keys (`TAB_KEYS`).
 
 ### 2. Gated modules: the first save turns them on
-A schema whose storefront stays off until first saved implements `GatedSettingsSchema::is_saved( $stored )`. The API returns `published: false` until then. The page keeps Save enabled and says the output shows once saved. That first save writes every key the tab sends, even defaults. Later saves write only changes.
+A schema whose storefront stays off until first saved implements `GatedSettingsSchema::is_saved( $stored )`. The API returns `published: false` until then. The page keeps Save enabled and says the output shows once saved. That first save writes the full option, like the old admin's whole-form save: every key the tab sends (even unchanged) and the default of every other key. Pro 2.2.0 reads the raw option, so a key left out would read as empty. Later saves write only changes.
 
 ### 3. Extension fields
 **PHP — append a field.** An extension adds fields with the filter `spsg_settings_schema` ( `$fields, $module_id` ). A field uses a built-in type, is stored in the module's option, and carries where and how the page draws it:
@@ -66,7 +66,7 @@ addFilter(
 - A field of an unknown type is dropped.
 - Both are reported with `_doing_it_wrong()` under WP_DEBUG.
 - `pro: true` fields are locked (Pro badge) and not saved without pro.
-- The storefront gets defaults for the module's own fields only (`storefront_settings()`), so an extension reads a never-saved key with its own default.
+- The storefront reads options through `SettingsService::with_defaults()` (each module's `storefront_settings()`), which fills every key never saved from its default, extension fields included. Code that reads the raw option (as pro 2.2.0 does) must supply its own defaults.
 - Tab ids are part of the API: Stock Bar, Free Shipping Rules and Floating Bar use `content` / `configure` / `design`; Countdown Timer uses `configure` / `design`; Sales Notification uses `settings` / `design`.
 
 ### 4. Lite renders the controls itself

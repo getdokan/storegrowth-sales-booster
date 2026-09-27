@@ -211,13 +211,50 @@ class SettingsService {
 	 * @since SPSG_VERSION
 	 *
 	 * @param string $module_id Module id.
+	 * @param mixed  $stored    Stored option (default: read it).
 	 *
 	 * @return bool
 	 */
-	public function is_published( string $module_id ): bool {
+	public function is_published( string $module_id, $stored = null ): bool {
 		$schema = $this->get_schema( $module_id );
 
-		return ! $schema instanceof GatedSettingsSchema || $schema->is_saved( get_option( $schema->get_option_name(), [] ) );
+		if ( ! $schema instanceof GatedSettingsSchema ) {
+			return true;
+		}
+
+		return $schema->is_saved( null === $stored ? get_option( $schema->get_option_name(), [] ) : $stored );
+	}
+
+	/**
+	 * A stored option with every key never saved (or a number that isn't
+	 * one) filled from the defaults, for the storefront: saves write only
+	 * changed keys. Values stay in the stored shape. A gated module that was
+	 * never saved is returned as it is, so its output stays off.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module_id Module id.
+	 * @param mixed  $stored    Stored option.
+	 *
+	 * @return array
+	 */
+	public function with_defaults( string $module_id, $stored ): array {
+		$stored = is_array( $stored ) ? $stored : [];
+
+		if ( ! $this->is_published( $module_id, $stored ) ) {
+			return $stored;
+		}
+
+		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
+			$value = $stored[ $key ] ?? null;
+			$empty = '' === $value && ! empty( $field['allow_empty'] );
+
+			if ( ! array_key_exists( $key, $stored ) || ( 'number' === $field['type'] && ! is_numeric( $value ) && ! $empty ) ) {
+				$stored[ $key ] = $field['default'] ?? '';
+			}
+		}
+
+		return $stored;
 	}
 
 	/**
@@ -292,12 +329,20 @@ class SettingsService {
 		$sanitized = [];
 		$errors    = [];
 
-		// The first save of a gated module writes every key sent, so saving
-		// it unchanged still turns its storefront output on.
+		// The first save of a gated module writes every key: the ones sent
+		// even when unchanged (so saving turns its storefront output on) and
+		// the defaults of the rest, as the old admin's whole-form save did —
+		// pro 2.2.0 reads the raw option.
 		$first_save = $schema instanceof GatedSettingsSchema && ! $schema->is_saved( $stored );
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			if ( ! array_key_exists( $key, $input ) || ( ! empty( $field['pro'] ) && ! $has_pro ) ) {
+				$default = $this->sanitize( $field, $field['default'] ?? '' );
+
+				if ( $first_save && ! array_key_exists( $key, $stored ) && ! is_wp_error( $default ) ) {
+					$sanitized[ $key ] = $default;
+				}
+
 				continue;
 			}
 
@@ -624,9 +669,18 @@ class SettingsService {
 				return $value;
 
 			case 'textarea':
+				if ( ! empty( $field['html'] ) ) {
+					return is_scalar( $value ) ? wp_kses_post( (string) $value ) : '';
+				}
+
 				return is_scalar( $value ) ? sanitize_textarea_field( (string) $value ) : '';
 
 			default:
+				// `html`: the storefront prints it with wp_kses_post, so keep that markup.
+				if ( ! empty( $field['html'] ) ) {
+					return is_scalar( $value ) ? wp_kses_post( trim( (string) $value ) ) : '';
+				}
+
 				return is_scalar( $value ) ? sanitize_text_field( (string) $value ) : '';
 		}
 	}

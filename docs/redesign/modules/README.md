@@ -32,8 +32,8 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 2 | **Done (E2E pending).** `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
 | 3 | **Done (E2E pending).** `countdown-timer` — first `BoxModelField` | 2 | 4 |
 | 4 | **Done (E2E pending).** `sales-pop` — first `list` setting, `MultiSelectField` (product search), `TextStyleRow` | 2 | 3 |
-| 5 | `progressive-discount-banner` — first bar fragment, `ModeNumber`, `IconPicker` | 2 | 7, 8 |
-| 6 | `floating-notification-bar` — reuses the bar fragment; first `DateRange` | 5 | 7, 8 |
+| 5 | **Done (E2E pending).** `progressive-discount-banner` — first bar fragment (`bar-fields.tsx`), icon picker; gated first save; extension fields (ADR-007). ADR-005 storefront adoption deferred to step 13 (spec §9) | 2 | 7, 8 |
+| 6 | **Done (E2E pending).** `floating-notification-bar` — reuses the bar fragment; native date inputs instead of `DateRange`. ADR-005 storefront adoption deferred to step 13 (spec §9) | 5 | 7, 8 |
 | 7 | `quick-view` | 2 | 5, 6, 8 |
 | 8 | `fly-cart` — first `PickerCards` | 2 | 5, 6, 7 |
 | 9 | `direct-checkout` | 3 (`BoxModelInput`), 8 (Fly Cart redirect) | — |

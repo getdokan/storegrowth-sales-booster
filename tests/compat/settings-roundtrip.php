@@ -9,7 +9,8 @@
  *
  * For every registered settings schema it seeds the option in the shape the
  * old admin stored (plus keys and values the schema doesn't know), then:
- *   1. GET, then POST every value back unchanged → option byte-identical;
+ *   1. GET, then POST every value back unchanged → option byte-identical
+ *      (gated modules: a never-saved option's first save stores every key);
  *   2. change one field per type → only that key changes, in legacy shape;
  *   3. pro inactive → pro keys are not written;
  *   4. invalid values → 400, option unchanged;
@@ -20,6 +21,7 @@
  * @package StorePulse\StoreGrowth
  */
 
+use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Settings\SettingsService;
 
 defined( 'ABSPATH' ) || exit;
@@ -134,6 +136,20 @@ foreach ( $service->get_schemas() as $module_id => $schema ) {
 		[ , $data ] = $call( 'GET', $module_id );
 		$call( 'POST', $module_id, (array) $data['values'] );
 		$check( get_option( $option ) === $sparse, 'round trip on a sparse option writes nothing' );
+
+		// 1c. Gated module never saved: the first save writes every key.
+		if ( $schema instanceof GatedSettingsSchema ) {
+			delete_option( $option );
+			[ , $data ] = $call( 'GET', $module_id );
+			$check( false === $data['published'], 'never saved → published false' );
+			$first = array_slice( (array) $data['values'], 0, 1, true );
+			$call( 'POST', $module_id, $first );
+			$stored = (array) get_option( $option, [] );
+			$check(
+				! array_diff_key( $fields, $stored ) && $service->is_published( $module_id ),
+				'first save stores every key (' . count( $stored ) . ') and publishes'
+			);
+		}
 
 		// 2. One change per type is written in legacy shape; nothing else moves.
 		$changes = [];

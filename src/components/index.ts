@@ -4,7 +4,11 @@
  *
  * @since SPSG_VERSION
  */
-export { Accordion, type AccordionProps } from './accordion';
+export {
+    Accordion,
+    type AccordionProps,
+    type AccordionToggle,
+} from './accordion';
 export {
     BAR_FONTS,
     BarDeviceField,
@@ -17,6 +21,9 @@ export {
     BarTypographyFields,
     type BarValues,
     barShowsOn,
+    DeviceField,
+    type DeviceFieldProps,
+    isMobilePreview,
     TargetingFields,
 } from './bar-fields';
 export { CardHead, type CardHeadProps } from './card-head';

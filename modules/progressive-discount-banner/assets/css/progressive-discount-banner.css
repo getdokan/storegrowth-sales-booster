@@ -41,9 +41,9 @@ body:not(.show_discount_banner){
     color: #fff;
 }
 
-/* Pro's own (filled) icons. */
+/* Pro's own (filled) icons, in the icon colour (inline `color` on the icon box). */
 .spsg-pd-banner-bar-wrapper .spsg-pd-banner-bar-icon svg:not(.spsg-bar-icon) {
-    fill: #fff;
+    fill: currentColor;
     width: 25px;
     height: 25px;
 }

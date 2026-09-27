@@ -53,7 +53,7 @@
 - **Discount amount (decided):** added — `discount_amount_value` shows for Percentage / Fixed (the old admin stored `''` until typed: `allow_empty`).
 - Saves go through the settings service: sanitized (the old ajax stored the payload unsanitized) and merged. New setting types `url` (`btn_target`, custom icons) and `date`.
 - **Never saved = off, as today:** an option holding only the first-boot texts (or nothing) is left as it is, so no bar shows and no discount applies. Once saved, unsaved keys take the schema defaults (the old admin's), for every reader through `Helper::get_settings()` (lite, pro, localized data, discount code).
-- **First save turns the bar on:** the schema is a `GatedSettingsSchema` (`is_saved()`); the settings API returns `published: false` until then, the page enables Save with nothing changed and says the bar shows once saved, and that first save writes every key the tab sends (later saves write only changes).
+- **First save turns the bar on:** the schema is a `GatedSettingsSchema` (`is_saved()`); the settings API returns `published: false` until then, the page enables Save with nothing changed and says the bar shows once saved, and that first save writes the full option: the tab's values and every other key's default, as the old whole-form save did (pro 2.2.0's template reads the raw option). Later saves write only changes. `Helper::get_banner_text()` also fills defaults, since pro passes it the raw option.
 - **First-boot seeding is no longer destructive:** it never deletes the option; it adds it when missing, or fills only missing text keys.
 - **Page targeting (decided):** Show Everywhere / Show on Specific Pages + the page conditions pro 2.2.0 evaluates; Everyone / Logged-in / Guests. The design's "Shop / Product pages only" are not stored values.
 - **Scroll trigger (decided):** keeps today's meaning — the scroll delay in seconds after scrolling past the bar's height — not the design's % depth.
@@ -77,6 +77,13 @@
 - Template has one preset and isn't wired in the mockup.
 - The preview has no "goal reached" state; add a toggle.
 - The sidebar label still says "Discount Banner". Rename the label only; the module ID stays.
+
+**Resolved at build:** a discount amount field for Percentage / Fixed; Save on every tab; the one template writes the design's colours; a goal-reached preview switch.
+
+**Deferred / decided (step 5):**
+- **ADR-005 storefront standard deferred:** the bar keeps its inline CSS (not `StorefrontStyle` variables) and its own storefront script (device, trigger, dismiss) rather than `window.spsgStorefront`. Its markup is shared with pro 2.2.0's template, so the move waits for the pro migration (step 13). Adopted now: shared `assets/css/storefront-bar.css`, lucide icons, `StorefrontFonts` for Inter / Open Sans.
+- Long banner text wraps on the storefront (the design truncates to one line); wrapping keeps the whole message readable.
+- The preview grows with wrapped text (as the storefront does at 768px and below); on wider screens the storefront keeps the fixed Banner Height.
 
 ## 10. Tasks and definition of done
 - [ ] Shared bar schema fragment, used by this module and Floating Bar.

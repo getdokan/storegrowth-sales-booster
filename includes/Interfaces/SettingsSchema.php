@@ -33,6 +33,8 @@ defined( 'ABSPATH' ) || exit;
  * stored it as a string, e.g. `,`), `max_items` and `lite_max_items` (the cap
  * while pro is inactive). `number` takes `allow_empty` (the old admin stored
  * `''` for "not set"). `url` is a web address or `''`; `date` is `Y-m-d` or `''`.
+ * `text` and `textarea` take `html` (keep the markup `wp_kses_post` allows,
+ * for text the storefront prints with it) instead of stripping all tags.
  *
  * Keys and their spellings are the ones already stored; never rename them.
  *

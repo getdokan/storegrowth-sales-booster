@@ -17,14 +17,13 @@ import {
     BarTypographyFields,
     barShowsOn,
     CardHead,
-    CheckboxField,
     ColorField,
+    DeviceField,
     extensionKeys,
     FeatureLayout,
     FieldRenderer,
-    FieldLabel,
+    isMobilePreview,
     LivePreview,
-    OptionCard,
     SaveBar,
     SelectField,
     SettingsSplit,
@@ -38,7 +37,7 @@ import {
 import { useModuleSettings } from '@storegrowth/hooks';
 import { errorMessage, getHeaderData } from '@storegrowth/utilities';
 
-import { BAR_ICONS, FloatingBar } from './preview/floating-bar';
+import { FloatingBar, ICON_CHOICES } from './preview/floating-bar';
 import { type FloatingBarKey, type FloatingBarValues, TAB_KEYS } from './types';
 
 /** The store's coupons, localized as before (`AdminPage::data()`). */
@@ -188,30 +187,6 @@ export default function FloatingBarPage() {
         />
     );
 
-    const buttonViews = values.button_view ?? [];
-    const buttonView = ( view: string, label: string ) => (
-        <div>
-            <CheckboxField
-                label={ label }
-                checked={ buttonViews.includes( view ) }
-                onChange={ ( on ) =>
-                    setValue(
-                        'button_view',
-                        on
-                            ? [
-                                  ...buttonViews.filter(
-                                      ( item ) => item !== view
-                                  ),
-                                  view,
-                              ]
-                            : buttonViews.filter( ( item ) => item !== view )
-                    )
-                }
-                locked={ isLocked( 'button_view' ) }
-            />
-        </div>
-    );
-
     const content = (
         <>
             <TextareaField
@@ -220,13 +195,13 @@ export default function FloatingBarPage() {
                     'storegrowth-sales-booster'
                 ) }
                 value={ values.default_banner_text }
-                rows={ 3 }
+                rows={ 2 }
                 onChange={ ( next ) => setValue( 'default_banner_text', next ) }
                 { ...bind( 'default_banner_text' ) }
             />
             <BarIconPicker
                 label={ __( 'Banner Icon', 'storegrowth-sales-booster' ) }
-                icons={ BAR_ICONS }
+                icons={ ICON_CHOICES }
                 value={ values.default_banner_icon_name }
                 onChange={ ( next ) =>
                     setValue( 'default_banner_icon_name', next )
@@ -245,15 +220,14 @@ export default function FloatingBarPage() {
     const configure = (
         <>
             <BarPlacementFields { ...barProps } />
-            <OptionCard
+            <Accordion
                 title={ __( 'Button', 'storegrowth-sales-booster' ) }
-                help={ __(
-                    'A button beside the text',
-                    'storegrowth-sales-booster'
-                ) }
-                checked={ values.button_enable }
-                onChange={ ( checked ) => setValue( 'button_enable', checked ) }
-                locked={ isLocked( 'button_enable' ) }
+                toggle={ {
+                    checked: values.button_enable,
+                    onChange: ( checked ) =>
+                        setValue( 'button_enable', checked ),
+                    locked: isLocked( 'button_enable' ),
+                } }
             >
                 <SelectField
                     label={ __( 'Button Action', 'storegrowth-sales-booster' ) }
@@ -282,21 +256,14 @@ export default function FloatingBarPage() {
                     }
                     { ...bind( 'button_action' ) }
                 />
-                <div className="flex w-full flex-col items-start gap-3">
-                    <FieldLabel locked={ isLocked( 'button_view' ) }>
-                        { __( 'Show Button', 'storegrowth-sales-booster' ) }
-                    </FieldLabel>
-                    <div className="flex w-full gap-6">
-                        { buttonView(
-                            'button-desktop-enable',
-                            __( 'Desktop', 'storegrowth-sales-booster' )
-                        ) }
-                        { buttonView(
-                            'button-mobile-enable',
-                            __( 'Mobile', 'storegrowth-sales-booster' )
-                        ) }
-                    </div>
-                </div>
+                <DeviceField
+                    label={ __( 'Show Button', 'storegrowth-sales-booster' ) }
+                    value={ values.button_view ?? [] }
+                    desktop="button-desktop-enable"
+                    mobile="button-mobile-enable"
+                    onChange={ ( next ) => setValue( 'button_view', next ) }
+                    locked={ isLocked( 'button_view' ) }
+                />
                 <TextField
                     label={ __( 'Button Text', 'storegrowth-sales-booster' ) }
                     value={ values.ac_button_text }
@@ -331,18 +298,15 @@ export default function FloatingBarPage() {
                         />
                     </>
                 ) }
-            </OptionCard>
-            <OptionCard
+            </Accordion>
+            <Accordion
                 title={ __( 'Countdown', 'storegrowth-sales-booster' ) }
-                help={ __(
-                    'Time left until the end date',
-                    'storegrowth-sales-booster'
-                ) }
-                checked={ values.countdown_show_enable }
-                onChange={ ( checked ) =>
-                    setValue( 'countdown_show_enable', checked )
-                }
-                locked={ isLocked( 'countdown_show_enable' ) }
+                toggle={ {
+                    checked: values.countdown_show_enable,
+                    onChange: ( checked ) =>
+                        setValue( 'countdown_show_enable', checked ),
+                    locked: isLocked( 'countdown_show_enable' ),
+                } }
             >
                 <div className="flex w-full flex-wrap items-start gap-3 *:min-w-[180px] *:flex-1">
                     <TextField
@@ -367,25 +331,7 @@ export default function FloatingBarPage() {
                         { ...bind( 'countdown_end_date' ) }
                     />
                 </div>
-            </OptionCard>
-            <OptionCard
-                title={ __( 'Coupon', 'storegrowth-sales-booster' ) }
-                help={ __(
-                    'A coupon code shoppers can copy',
-                    'storegrowth-sales-booster'
-                ) }
-                checked={ values.show_cupon }
-                onChange={ ( checked ) => setValue( 'show_cupon', checked ) }
-                locked={ isLocked( 'show_cupon' ) }
-            >
-                <SelectField
-                    label={ __( 'Coupon Code', 'storegrowth-sales-booster' ) }
-                    value={ values.cupon_code }
-                    options={ COUPONS }
-                    onChange={ ( next ) => setValue( 'cupon_code', next ) }
-                    { ...bind( 'cupon_code' ) }
-                />
-            </OptionCard>
+            </Accordion>
             <Accordion
                 title={ __( 'Trigger', 'storegrowth-sales-booster' ) }
                 help={ __(
@@ -407,6 +353,35 @@ export default function FloatingBarPage() {
                     label={ __( 'Show Bar', 'storegrowth-sales-booster' ) }
                 />
                 <TargetingFields { ...barProps } />
+            </Accordion>
+            <Accordion
+                title={ __( 'Advanced', 'storegrowth-sales-booster' ) }
+                help={ __(
+                    'A coupon code shoppers can copy',
+                    'storegrowth-sales-booster'
+                ) }
+                defaultOpen={ false }
+            >
+                <SwitchField
+                    label={ __( 'Show Coupon', 'storegrowth-sales-booster' ) }
+                    checked={ values.show_cupon }
+                    onChange={ ( checked ) =>
+                        setValue( 'show_cupon', checked )
+                    }
+                    { ...bind( 'show_cupon' ) }
+                />
+                { values.show_cupon && (
+                    <SelectField
+                        label={ __(
+                            'Coupon Code',
+                            'storegrowth-sales-booster'
+                        ) }
+                        value={ values.cupon_code }
+                        options={ COUPONS }
+                        onChange={ ( next ) => setValue( 'cupon_code', next ) }
+                        { ...bind( 'cupon_code' ) }
+                    />
+                ) }
             </Accordion>
             { saveBar( 'configure' ) }
         </>
@@ -463,20 +438,40 @@ export default function FloatingBarPage() {
                 ) }
             >
                 <TemplatePicker
+                    bare
                     templates={ TEMPLATES.map( ( template ) => ( {
                         id: template.id,
                         label: template.label,
+                        // A miniature of the bar (design `.bar-tpl`): icon
+                        // square and text line in the preset's colours.
                         preview: (
-                            <FloatingBar
-                                values={ {
-                                    ...values,
-                                    ...template.colors,
-                                    banner_height: 44,
-                                    font_size: 13,
+                            <span
+                                className="flex h-[34px] w-full items-center gap-1.5 px-2.5"
+                                style={ {
+                                    background:
+                                        template.colors.background_color,
                                 } }
-                                isPro={ false }
-                                showButton
-                            />
+                            >
+                                <span
+                                    className="size-2.5 shrink-0 rounded-[2px] opacity-90"
+                                    style={ {
+                                        background: template.colors.icon_color,
+                                    } }
+                                />
+                                <span
+                                    className="h-1.5 flex-auto rounded-[3px] opacity-55"
+                                    style={ {
+                                        background: template.colors.text_color,
+                                    } }
+                                />
+                                <span
+                                    className="h-3 w-8 shrink-0 rounded-[3px]"
+                                    style={ {
+                                        background:
+                                            template.colors.button_color,
+                                    } }
+                                />
+                            </span>
                         ),
                     } ) ) }
                     value={ values.notify_template }
@@ -528,8 +523,10 @@ export default function FloatingBarPage() {
                                     <FloatingBar
                                         values={ values }
                                         isPro={ isPro }
-                                        showButton={ buttonViews.includes(
-                                            device === 'mobile'
+                                        showButton={ (
+                                            values.button_view ?? []
+                                        ).includes(
+                                            isMobilePreview( device )
                                                 ? 'button-mobile-enable'
                                                 : 'button-desktop-enable'
                                         ) }

@@ -7,8 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\StockBar;
 
-use StorePulse\StoreGrowth\Helper;
-use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Admin\ModuleAdminPage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,50 +16,32 @@ defined( 'ABSPATH' ) || exit;
  * stylesheet its preview renders with (ADR-005 S10). Fonts load on demand
  * from the preview.
  *
- * Registered from the always-loaded ServiceProvider, so the page is there
- * right after the module is switched on in the app, without a reload.
- *
  * @since SPSG_VERSION
  */
-class AdminPage implements HookRegistry {
+class AdminPage extends ModuleAdminPage {
 
 	/**
-	 * Register the hooks.
+	 * Module id.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+	protected function module_id(): string {
+		return StockBarModule::get_id();
 	}
 
 	/**
-	 * Enqueue on the two app pages (the route is reachable from either).
+	 * The bar's stylesheets.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $hook Admin page hook.
-	 *
-	 * @return void
+	 * @return array<string, string>
 	 */
-	public function enqueue( $hook ): void {
-		$id         = StockBarModule::get_id();
-		$asset_file = Helper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
-
-		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		$asset = require $asset_file;
-
-		wp_enqueue_script( "spsg-{$id}-admin", Helper::get_modules_url( "{$id}/assets/js/admin.js" ), $asset['dependencies'], $asset['version'], true );
-
-		wp_enqueue_style(
-			'spsg-stock-cd-custom-style',
-			Helper::get_modules_url( "{$id}/assets/scripts/spsg-stockbar-style.css" ),
-			[ 'spsg-storefront-base' ],
-			filemtime( Helper::get_modules_path( "{$id}/assets/scripts/spsg-stockbar-style.css" ) )
-		);
+	protected function stylesheets(): array {
+		return [
+			'spsg-storefront-base'       => 'assets/css/storefront-base.css',
+			'spsg-stock-cd-custom-style' => 'modules/stock-bar/assets/scripts/spsg-stockbar-style.css',
+		];
 	}
 }

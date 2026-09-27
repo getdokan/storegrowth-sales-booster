@@ -11,6 +11,7 @@
  * @since SPSG_VERSION
  */
 import { useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import { BAR_FONTS } from '@storegrowth/components';
 import {
     BadgePercent,
@@ -28,6 +29,25 @@ export const BAR_ICONS: Record< string, LucideIcon > = {
     'notify-bar-icon-2': BadgePercent,
     'notify-bar-icon-3': HandCoins,
 };
+
+/** The icons as the picker offers them. */
+export const ICON_CHOICES = [
+    {
+        value: 'notify-bar-icon-1',
+        label: __( 'Gift', 'storegrowth-sales-booster' ),
+        Icon: Gift,
+    },
+    {
+        value: 'notify-bar-icon-2',
+        label: __( 'Discount badge', 'storegrowth-sales-booster' ),
+        Icon: BadgePercent,
+    },
+    {
+        value: 'notify-bar-icon-3',
+        label: __( 'Coins in hand', 'storegrowth-sales-booster' ),
+        Icon: HandCoins,
+    },
+];
 
 const UNITS = [ 'DAY', 'HRS', 'MIN', 'SEC' ];
 

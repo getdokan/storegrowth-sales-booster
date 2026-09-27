@@ -7,8 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
+use StorePulse\StoreGrowth\Admin\ModuleAdminPage;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
-use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
 
 defined( 'ABSPATH' ) || exit;
@@ -18,12 +18,9 @@ defined( 'ABSPATH' ) || exit;
  * storefront stylesheet its preview renders with (ADR-005 S10), and keeps
  * the storefront cache fresh when the settings change.
  *
- * Registered from the always-loaded ServiceProvider, so the page is there
- * right after the module is switched on in the app, without a reload.
- *
  * @since SPSG_VERSION
  */
-class AdminPage implements HookRegistry {
+class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Register the hooks.
@@ -33,7 +30,7 @@ class AdminPage implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+		parent::register_hooks();
 
 		// The settings save while the module is off too, and EnqueueScript (which
 		// flushes the storefront cache on save) runs only while it's on.
@@ -53,44 +50,45 @@ class AdminPage implements HookRegistry {
 	}
 
 	/**
-	 * Enqueue on the two app pages (the route is reachable from either).
+	 * Module id.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $hook Admin page hook.
-	 *
-	 * @return void
+	 * @return string
 	 */
-	public function enqueue( $hook ): void {
-		$id         = SalesPopModule::get_id();
-		$asset_file = PluginHelper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
+	protected function module_id(): string {
+		return SalesPopModule::get_id();
+	}
 
-		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
-			return;
-		}
+	/**
+	 * The popup's stylesheet.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, string>
+	 */
+	protected function stylesheets(): array {
+		return [
+			'popup-custom-css' => 'modules/sales-pop/assets/css/popup-custom.css',
+		];
+	}
 
-		$asset = require $asset_file;
-
-		wp_enqueue_script( "spsg-{$id}-admin", PluginHelper::get_modules_url( "{$id}/assets/js/admin.js" ), $asset['dependencies'], $asset['version'], true );
-
-		// The old admin's `ajax_url` / `ajd_nonce` (callers of the `create_popup`
-		// adapter use them), plus what the preview draws with.
-		wp_localize_script(
-			"spsg-{$id}-admin",
-			'sales_pop_data',
-			[
+	/**
+	 * The old admin's `ajax_url` / `ajd_nonce` (callers of the `create_popup`
+	 * adapter use them), plus what the preview draws with.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, array>
+	 */
+	protected function data(): array {
+		return [
+			'sales_pop_data' => [
 				'ajax_url'       => admin_url( 'admin-ajax.php' ),
 				'ajd_nonce'      => wp_create_nonce( 'spsg_admin_ajax_nonce' ),
-				'fallback_image' => PluginHelper::get_modules_url( "{$id}/assets/images/sale_product.png" ),
+				'fallback_image' => PluginHelper::get_modules_url( SalesPopModule::get_id() . '/assets/images/sale_product.png' ),
 				'template_radii' => SalesPopSettings::TEMPLATE_RADII,
-			]
-		);
-
-		wp_enqueue_style(
-			'popup-custom-css',
-			PluginHelper::get_modules_url( "{$id}/assets/css/popup-custom.css" ),
-			[],
-			filemtime( PluginHelper::get_modules_path( "{$id}/assets/css/popup-custom.css" ) )
-		);
+			],
+		];
 	}
 }

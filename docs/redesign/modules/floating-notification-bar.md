@@ -42,7 +42,7 @@
 | Coupon (not in design) | `show_cupon`, `cupon_code` | pro | **Required by R1:** "Advanced (Pro)" section, coupon search (`/coupons`) |
 
 ## 5. Data changes
-- **Button (decided):** new key `button_enable` (toggle, default on) for the design's "Show" switch; lite's JS enforces it (pro 2.2.0's template prints the button anyway). **No `ba-scroll`**: actions stay Close / Open Link.
+- **Button (decided):** new key `button_enable` (toggle, default on) for the design's "Show" switch; lite's storefront JS removes the button when it is off (pro 2.2.0's template prints the button anyway); an option saved before the key existed keeps its button. The device check now removes only this bar's button (it also removed the Free Shipping bar's CTA). Countdown dates are parsed in ISO form, which Safari needs. **No `ba-scroll`**: actions stay Close / Open Link.
 - Making `ac_button_text` lite is a tier change, not a data change.
 - Saves go through the settings service: sanitized (the old ajax stored the payload unsanitized) and merged. `redirect_url` / custom icon are `url`, countdown dates `date` (`Y-m-d`).
 - **Never saved = off, as today:** an empty option is left as it is; once saved, unsaved keys take the schema defaults (the old admin's JS defaults: `button_action` `ba-close`, `button_text_color` #000000, delays 1 s) for every reader through `Helper::get_settings()`.
@@ -69,6 +69,14 @@
 - Button Link's default is "Shop Now" and the field shows for every action.
 - The coupon, icon and new-tab fields are missing from the design. Keep or drop?
 - Scroll To Section: approve, and define its target field.
+
+**Resolved at build:** Save on every tab; Button Text shown once, in the Button card; Button Link (and Open in a New Tab) only for Open Link; icon and new-tab kept, the coupon under an "Advanced" section; no Scroll To Section.
+
+**Deferred / decided (step 6):**
+- **ADR-005 storefront standard deferred**, as Free Shipping Rules §9: inline CSS and the bar's own script stay until the pro migration (step 13), because pro 2.2.0's template shares the markup.
+- Countdown dates use the browser's date inputs (`TextField type="date"`) rather than a `DateRange` component; the pages are the only user so far.
+- Default Banner Text has no 80-character limit: stored texts may be longer, and a new limit would block saving them (ADR-004 R4).
+- Long text wraps and the preview grows, as Free Shipping Rules §9.
 
 ## 10. Tasks and definition of done
 - [ ] Schema (reusing the bar fragment) + sanitization + adapters.

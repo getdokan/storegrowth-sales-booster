@@ -67,7 +67,7 @@ class Helper {
 	 */
 	public static function get_banner_text( $settings ) {
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
-		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_text', $banner_text );
+		return PluginHelper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_icon( $settings ) {
-		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_icon_name' );
+		return PluginHelper::find_option_settings( $settings, 'default_banner_icon_name' );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_custom_banner_icon( $settings ) {
-		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'default_banner_custom_icon' );
+		return PluginHelper::find_option_settings( $settings, 'default_banner_custom_icon' );
 	}
 
 	/**

@@ -13,18 +13,20 @@ import {
     ToggleGroup,
     ToggleGroupItem,
 } from '@wedevs/plugin-ui';
+import { useId } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import type { LucideIcon } from 'lucide-react';
+import { Upload, type LucideIcon } from 'lucide-react';
 import type { SettingValue } from '@storegrowth/utilities';
 
 import {
     CheckboxField,
-    FieldLabel,
     MultiSelectField,
     NumberField,
+    ProBadge,
     SelectField,
     TextField,
 } from './fields';
+import { FIELD_LABEL } from './fields/field-label';
 
 /** Keys of the shared bar and targeting fields, as the settings API returns them. */
 export interface BarValues extends Record< string, SettingValue > {
@@ -104,9 +106,20 @@ const PAGE_CONDITIONS = [
 ];
 
 /**
+ * Whether a preview width gets the storefront's mobile rules (the storefront
+ * scripts treat up to 768px as mobile; the tablet frame is narrower).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param device Preview width.
+ */
+export function isMobilePreview( device: string ): boolean {
+    return device !== 'desktop';
+}
+
+/**
  * Whether the bar shows at a preview width, as the storefront script
- * decides it (phones up to 768px: `banner-show-mobile`, wider:
- * `banner-show-desktop`).
+ * decides it (`banner-show-mobile` / `banner-show-desktop`).
  *
  * @since SPSG_VERSION
  *
@@ -115,7 +128,7 @@ const PAGE_CONDITIONS = [
  */
 export function barShowsOn( devices: string[], device: string ): boolean {
     return ( devices ?? [] ).includes(
-        device === 'mobile' ? 'banner-show-mobile' : 'banner-show-desktop'
+        isMobilePreview( device ) ? 'banner-show-mobile' : 'banner-show-desktop'
     );
 }
 
@@ -182,42 +195,90 @@ export function BarPlacementFields( props: BarFieldsProps ) {
  */
 export function BarDeviceField( props: BarFieldsProps & { label: string } ) {
     const { values, setValue, label } = props;
-    const devices = values.banner_device_view ?? [];
-    const { locked } = bind( props, 'banner_device_view' );
+
+    return (
+        <DeviceField
+            label={ label }
+            value={ values.banner_device_view ?? [] }
+            desktop="banner-show-desktop"
+            mobile="banner-show-mobile"
+            onChange={ ( next ) => setValue( 'banner_device_view', next ) }
+            locked={ bind( props, 'banner_device_view' ).locked }
+        />
+    );
+}
+
+export interface DeviceFieldProps {
+    label: string;
+    /** Stored list of the chosen device values. */
+    value: string[];
+    /** Stored value for desktop, e.g. `banner-show-desktop`. */
+    desktop: string;
+    /** Stored value for mobile. */
+    mobile: string;
+    onChange: ( value: string[] ) => void;
+    locked?: boolean;
+}
+
+/**
+ * Desktop / Mobile checkboxes on one row with their label (design
+ * `.field-row`).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param props          Props.
+ * @param props.label    Label.
+ * @param props.value    Chosen values.
+ * @param props.desktop  Desktop value.
+ * @param props.mobile   Mobile value.
+ * @param props.onChange Change handler.
+ * @param props.locked   Pro field without pro.
+ */
+export function DeviceField( {
+    label,
+    value,
+    desktop,
+    mobile,
+    onChange,
+    locked,
+}: DeviceFieldProps ) {
+    const labelId = useId();
 
     const toggle = ( device: string, on: boolean ) =>
-        setValue(
-            'banner_device_view',
+        onChange(
             on
-                ? [ ...devices.filter( ( item ) => item !== device ), device ]
-                : devices.filter( ( item ) => item !== device )
+                ? [ ...value.filter( ( item ) => item !== device ), device ]
+                : value.filter( ( item ) => item !== device )
         );
 
     return (
-        <div className="flex w-full flex-col items-start gap-3">
-            <FieldLabel locked={ locked }>{ label }</FieldLabel>
-            <div className="flex w-full gap-6">
-                <div>
-                    <CheckboxField
-                        label={ __( 'Desktop', 'storegrowth-sales-booster' ) }
-                        checked={ devices.includes( 'banner-show-desktop' ) }
-                        onChange={ ( on ) =>
-                            toggle( 'banner-show-desktop', on )
-                        }
-                        locked={ locked }
-                    />
-                </div>
-                <div>
-                    <CheckboxField
-                        label={ __( 'Mobile', 'storegrowth-sales-booster' ) }
-                        checked={ devices.includes( 'banner-show-mobile' ) }
-                        onChange={ ( on ) =>
-                            toggle( 'banner-show-mobile', on )
-                        }
-                        locked={ locked }
-                    />
-                </div>
-            </div>
+        <div
+            role="group"
+            aria-labelledby={ labelId }
+            className="flex w-full items-center justify-between gap-4"
+        >
+            <span
+                id={ labelId }
+                className={ `flex items-center gap-2 ${ FIELD_LABEL }` }
+            >
+                { label }
+                { locked && <ProBadge /> }
+            </span>
+            <span className="flex shrink-0 items-center gap-4">
+                { [
+                    [ desktop, __( 'Desktop', 'storegrowth-sales-booster' ) ],
+                    [ mobile, __( 'Mobile', 'storegrowth-sales-booster' ) ],
+                ].map( ( [ device, name ] ) => (
+                    <span key={ device }>
+                        <CheckboxField
+                            label={ name }
+                            checked={ value.includes( device ) }
+                            onChange={ ( on ) => toggle( device, on ) }
+                            locked={ locked }
+                        />
+                    </span>
+                ) ) }
+            </span>
         </div>
     );
 }
@@ -235,20 +296,26 @@ export function BarTriggerFields( props: BarFieldsProps ) {
     const scroll = values.banner_trigger === 'after-scroll';
     const delayKey = scroll ? 'scroll_banner_delay' : 'banner_delay';
     const { locked } = bind( props, 'banner_trigger' );
+    const labelId = useId();
 
     return (
         <>
             <div className="flex w-full flex-col items-start gap-3">
-                <FieldLabel locked={ locked }>
+                <span
+                    id={ labelId }
+                    className={ `flex items-center gap-2 ${ FIELD_LABEL }` }
+                >
                     { __( 'Trigger', 'storegrowth-sales-booster' ) }
-                </FieldLabel>
+                    { locked && <ProBadge /> }
+                </span>
                 <RadioGroup
+                    aria-labelledby={ labelId }
                     value={ values.banner_trigger }
                     onValueChange={ ( next ) =>
                         setValue( 'banner_trigger', next as string )
                     }
                     disabled={ locked }
-                    className="grid grid-cols-2 gap-3 max-[420px]:grid-cols-1"
+                    className="flex flex-col gap-3"
                 >
                     <LabeledRadio
                         value="after-few-seconds"
@@ -301,7 +368,7 @@ export function TargetingFields( props: BarFieldsProps ) {
     return (
         <>
             <SelectField
-                label={ __( 'Show On', 'storegrowth-sales-booster' ) }
+                label={ __( 'Show', 'storegrowth-sales-booster' ) }
                 value={ values.banner_show_option }
                 options={ [
                     {
@@ -344,13 +411,13 @@ export function TargetingFields( props: BarFieldsProps ) {
                     {
                         value: 'logged_in',
                         label: __(
-                            'Logged-in Users',
+                            'Logged-in customers',
                             'storegrowth-sales-booster'
                         ),
                     },
                     {
                         value: 'not_logged_in',
-                        label: __( 'Guests', 'storegrowth-sales-booster' ),
+                        label: __( 'Guests only', 'storegrowth-sales-booster' ),
                     },
                 ] }
                 onChange={ ( next ) => setValue( 'user_type', next ) }
@@ -403,8 +470,8 @@ export function BarTypographyFields( props: BarFieldsProps ) {
 
 export interface BarIconPickerProps {
     label: string;
-    /** Stored icon slug → lucide icon. */
-    icons: Record< string, LucideIcon >;
+    /** The icons, in display order: stored slug, name, lucide icon. */
+    icons: Array< { value: string; label: string; Icon: LucideIcon } >;
     /** Stored slug; `''` for none. */
     value: string;
     onChange: ( value: string ) => void;
@@ -455,8 +522,9 @@ function openMedia( onPick: ( url: string ) => void ) {
 }
 
 /**
- * Banner icon: the three stored icons (pressing the chosen one again
- * clears it) and an uploaded custom icon.
+ * Banner icon (design `.seg`): label on the left; the three icons in a
+ * segmented pill (pressing the chosen one again clears it) and Upload on
+ * the right. The uploaded icon's address shows once there is one.
  *
  * @since SPSG_VERSION
  *
@@ -480,55 +548,78 @@ export function BarIconPicker( {
     locked,
     error,
 }: BarIconPickerProps ) {
+    const labelId = useId();
+
     return (
-        <div className="flex w-full flex-col items-start gap-3">
-            <FieldLabel locked={ locked }>{ label }</FieldLabel>
-            <div className="flex flex-wrap items-center gap-2">
-                <ToggleGroup
-                    aria-label={ label }
-                    value={ value ? [ value ] : [] }
-                    onValueChange={ ( next ) => onChange( next[ 0 ] ?? '' ) }
-                    disabled={ locked }
-                    spacing={ 2 }
+        <div className="flex w-full flex-col gap-3">
+            <div className="flex w-full flex-wrap items-center justify-between gap-3">
+                <span
+                    id={ labelId }
+                    className={ `flex items-center gap-2 ${ FIELD_LABEL }` }
                 >
-                    { Object.entries( icons ).map( ( [ slug, Icon ] ) => (
-                        <ToggleGroupItem
-                            key={ slug }
-                            value={ slug }
-                            aria-label={ slug }
-                            className="size-10 rounded-[5px] border border-sg-stroke bg-white p-2 text-sg-text hover:bg-sg-chip aria-pressed:border-sg-brand aria-pressed:bg-sg-brand aria-pressed:text-white"
-                        >
-                            <Icon className="size-5" aria-hidden />
-                        </ToggleGroupItem>
-                    ) ) }
-                </ToggleGroup>
-                <Button
-                    variant="outline"
-                    disabled={ locked }
-                    // An upload clears the icon, so the bar shows the upload.
-                    onClick={ () =>
-                        openMedia( ( url ) => {
-                            onCustomChange( url );
-                            onChange( '' );
-                        } )
-                    }
-                    className="h-10"
-                >
-                    { __( 'Upload', 'storegrowth-sales-booster' ) }
-                </Button>
+                    { label }
+                    { locked && <ProBadge /> }
+                </span>
+                <span className="flex shrink-0 items-center gap-2">
+                    <ToggleGroup
+                        aria-labelledby={ labelId }
+                        value={ value ? [ value ] : [] }
+                        onValueChange={ ( next ) =>
+                            onChange( next[ 0 ] ?? '' )
+                        }
+                        disabled={ locked }
+                        spacing={ 2 }
+                        className="rounded-lg bg-sg-chip p-1"
+                    >
+                        { icons.map( ( icon ) => (
+                            <ToggleGroupItem
+                                key={ icon.value }
+                                value={ icon.value }
+                                aria-label={ icon.label }
+                                className="size-9 p-2 text-sg-tertiary hover:bg-white/60 aria-pressed:bg-white aria-pressed:text-sg-brand aria-pressed:shadow-[0_1px_1px_rgba(0,0,0,.05),0_2px_1px_rgba(0,0,0,.05)]"
+                            >
+                                <icon.Icon
+                                    className="size-5"
+                                    strokeWidth={ 1.5 }
+                                    aria-hidden
+                                />
+                            </ToggleGroupItem>
+                        ) ) }
+                    </ToggleGroup>
+                    <Button
+                        variant="outline"
+                        disabled={ locked }
+                        // An upload clears the icon, so the bar shows the upload.
+                        onClick={ () =>
+                            openMedia( ( url ) => {
+                                onCustomChange( url );
+                                onChange( '' );
+                            } )
+                        }
+                        className="h-11 gap-2 border-sg-brand text-sg-brand"
+                    >
+                        <Upload className="size-4" aria-hidden />
+                        { __( 'Upload', 'storegrowth-sales-booster' ) }
+                    </Button>
+                </span>
             </div>
-            <TextField
-                label={ __( 'Custom Icon URL', 'storegrowth-sales-booster' ) }
-                value={ custom }
-                onChange={ onCustomChange }
-                placeholder="https://"
-                help={ __(
-                    'Shown while none of the icons above is selected.',
-                    'storegrowth-sales-booster'
-                ) }
-                locked={ locked }
-                error={ error }
-            />
+            { ( custom || error ) && (
+                <TextField
+                    label={ __(
+                        'Custom Icon URL',
+                        'storegrowth-sales-booster'
+                    ) }
+                    value={ custom }
+                    onChange={ onCustomChange }
+                    placeholder="https://"
+                    help={ __(
+                        'Shown while none of the icons above is selected. Empty it to remove the upload.',
+                        'storegrowth-sales-booster'
+                    ) }
+                    locked={ locked }
+                    error={ error }
+                />
+            ) }
         </div>
     );
 }

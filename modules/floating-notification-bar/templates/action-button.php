@@ -11,8 +11,8 @@ if ( 'ba-url-redirect' === $button_action ) {
 	echo wp_kses_post( $button_text );
 	echo '</a>';
 } elseif ( 'ba-close' === $button_action ) {
-	// Display a button with no functionality (close button).
-	echo '<a type="button" class="' . esc_attr( $button_class ) . '">';
+	// A button that closes the bar (storefront JS handles click and keys).
+	echo '<a role="button" tabindex="0" class="' . esc_attr( $button_class ) . '">';
 	echo wp_kses_post( $button_text );
 	echo '</a>';
 } else {

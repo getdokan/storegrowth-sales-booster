@@ -87,7 +87,7 @@ class EnqueueScript implements HookRegistry {
 		$settings          = Helper::get_settings();
 		$bar_position      = PluginHelper::find_option_settings( $settings, 'bar_position', 'top' );
 		$bar_type          = PluginHelper::find_option_settings( $settings, 'bar_type', 'normal' );
-		$bg_color          = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#008DFF' ), '#008DFF' );
+		$bg_color          = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#0875FF' ), '#0875FF' );
 		$text_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
 		$icon_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#ffffff' ), '#ffffff' );
 		$close_icon_color  = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'close_icon_color', '#ffffff' ), '#ffffff' );

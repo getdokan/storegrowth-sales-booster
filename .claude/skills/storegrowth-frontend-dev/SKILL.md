@@ -73,7 +73,7 @@ addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
 ] );
 ```
 
-5. Add the webpack entry and enqueue `modules/<id>/assets/js/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview, from an `AdminPage` class registered in the always-loaded `ServiceProvider` (so the page works right after the module is switched on). Reference: `modules/stock-bar/includes/AdminPage.php`.
+5. Add the webpack entry and enqueue `modules/<id>/assets/js/admin.js` (with its `admin.asset.php`) on `storegrowth_page_spsg-settings` / `-modules`, plus the module's storefront stylesheet for the preview, from an `AdminPage` class extending `Admin\ModuleAdminPage` (`module_id()`, `stylesheets()`, `data()`), registered in the always-loaded `ServiceProvider` (so the page works right after the module is switched on). Reference: `modules/stock-bar/includes/AdminPage.php`.
 
 Reference implementation: `modules/stock-bar/src/admin/`.
 

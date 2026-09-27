@@ -7,8 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
-use StorePulse\StoreGrowth\Helper as PluginHelper;
-use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Admin\ModuleAdminPage;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,57 +17,48 @@ defined( 'ABSPATH' ) || exit;
  * template colours and fonts from `Helper` (`window.spsgCountdownTimer`).
  * Fonts load on demand from the preview.
  *
- * Registered from the always-loaded ServiceProvider, so the page is there
- * right after the module is switched on in the app, without a reload.
- *
  * @since SPSG_VERSION
  */
-class AdminPage implements HookRegistry {
+class AdminPage extends ModuleAdminPage {
 
 	/**
-	 * Register the hooks.
+	 * Module id.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue' ] );
+	protected function module_id(): string {
+		return CountdownTimerModule::get_id();
 	}
 
 	/**
-	 * Enqueue on the two app pages (the route is reachable from either).
+	 * The timer's stylesheet.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $hook Admin page hook.
-	 *
-	 * @return void
+	 * @return array<string, string>
 	 */
-	public function enqueue( $hook ): void {
-		$id         = CountdownTimerModule::get_id();
-		$asset_file = PluginHelper::get_modules_path( "{$id}/assets/js/admin.asset.php" );
-
-		if ( ! in_array( $hook, [ 'storegrowth_page_spsg-settings', 'storegrowth_page_spsg-modules' ], true ) || ! file_exists( $asset_file ) ) {
-			return;
-		}
-
-		$asset = require $asset_file;
-
-		wp_enqueue_script( "spsg-{$id}-admin", PluginHelper::get_modules_url( "{$id}/assets/js/admin.js" ), $asset['dependencies'], $asset['version'], true );
-
-		// The template colours and font names the storefront uses, for the presets and preview.
-		$data = [
-			'templates' => array_map( [ Helper::class, 'template_colors' ], array_combine( array_keys( Helper::TEMPLATES ), array_keys( Helper::TEMPLATES ) ) ),
-			'fonts'     => Helper::FONT_FAMILIES,
+	protected function stylesheets(): array {
+		return [
+			'spsg-cd-timer-custom-style' => 'modules/countdown-timer/assets/scripts/wpbs-style.css',
 		];
-		wp_add_inline_script( "spsg-{$id}-admin", 'window.spsgCountdownTimer = ' . wp_json_encode( $data ) . ';', 'before' );
+	}
 
-		wp_enqueue_style(
-			'spsg-cd-timer-custom-style',
-			PluginHelper::get_modules_url( "{$id}/assets/scripts/wpbs-style.css" ),
-			[],
-			filemtime( PluginHelper::get_modules_path( "{$id}/assets/scripts/wpbs-style.css" ) )
-		);
+	/**
+	 * The template colours and font names the storefront uses, for the
+	 * presets and preview.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, array>
+	 */
+	protected function data(): array {
+		return [
+			'spsgCountdownTimer' => [
+				'templates' => array_map( [ Helper::class, 'template_colors' ], array_combine( array_keys( Helper::TEMPLATES ), array_keys( Helper::TEMPLATES ) ) ),
+				'fonts'     => Helper::FONT_FAMILIES,
+			],
+		];
 	}
 }

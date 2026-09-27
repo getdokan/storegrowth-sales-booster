@@ -9,6 +9,7 @@
  *
  * @since SPSG_VERSION
  */
+import { __ } from '@wordpress/i18n';
 import { BAR_FONTS } from '@storegrowth/components';
 import { Bus, Caravan, Truck, X, type LucideIcon } from 'lucide-react';
 
@@ -20,6 +21,25 @@ export const BAR_ICONS: Record< string, LucideIcon > = {
     'shipping-bar-icon-2': Caravan,
     'shipping-bar-icon-3': Bus,
 };
+
+/** The icons as the picker offers them (design order). */
+export const ICON_CHOICES = [
+    {
+        value: 'shipping-bar-icon-2',
+        label: __( 'Caravan', 'storegrowth-sales-booster' ),
+        Icon: Caravan,
+    },
+    {
+        value: 'shipping-bar-icon-1',
+        label: __( 'Truck', 'storegrowth-sales-booster' ),
+        Icon: Truck,
+    },
+    {
+        value: 'shipping-bar-icon-3',
+        label: __( 'Bus', 'storegrowth-sales-booster' ),
+        Icon: Bus,
+    },
+];
 
 export interface FreeShippingBarProps {
     values: FreeShippingValues;

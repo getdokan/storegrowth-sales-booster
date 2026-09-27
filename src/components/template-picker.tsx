@@ -28,6 +28,11 @@ export interface TemplatePickerProps {
      * draw their own frame (design `.tpl-grid`).
      */
     columns?: 1 | 2;
+    /**
+     * A column of previews with no card around them, only the selection
+     * ring (design `.bar-tpl`: the bar presets).
+     */
+    bare?: boolean;
 }
 
 /**
@@ -39,6 +44,7 @@ export interface TemplatePickerProps {
  * @param props.onSelect  Select handler.
  * @param props.locked    Not editable.
  * @param props.columns   Column or grid.
+ * @param props.bare      No card around each preview.
  */
 export function TemplatePicker( {
     templates,
@@ -46,6 +52,7 @@ export function TemplatePicker( {
     onSelect,
     locked = false,
     columns = 1,
+    bare = false,
 }: TemplatePickerProps ) {
     const grid = columns === 2;
 
@@ -69,9 +76,11 @@ export function TemplatePicker( {
                     aria-label={ template.label }
                     className={ cn(
                         'h-auto w-full flex-col items-stretch gap-1.5 whitespace-normal rounded-lg border-2 border-solid bg-white text-left font-normal hover:bg-white disabled:opacity-60 aria-pressed:border-sg-brand aria-pressed:bg-white aria-pressed:shadow-[0_0_0_3px_rgba(8,117,255,.18)]',
-                        grid
-                            ? 'min-w-0 rounded-[9.31px] border-transparent bg-transparent p-1 hover:bg-transparent aria-pressed:bg-transparent'
-                            : 'border-sg-stroke px-3 py-2.5'
+                        grid &&
+                            'min-w-0 rounded-[9.31px] border-transparent bg-transparent p-1 hover:bg-transparent aria-pressed:bg-transparent',
+                        bare &&
+                            'overflow-hidden rounded-[6px] border-transparent bg-transparent p-0 hover:bg-transparent aria-pressed:bg-transparent',
+                        ! grid && ! bare && 'border-sg-stroke px-3 py-2.5'
                     ) }
                 >
                     { template.preview }
