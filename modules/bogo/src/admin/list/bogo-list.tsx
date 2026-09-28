@@ -23,7 +23,14 @@ import { SlotFillProvider } from '@wordpress/components';
 import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __, sprintf } from '@wordpress/i18n';
-import { Gift, Pencil, Plus, Settings, Trash2 } from 'lucide-react';
+import {
+    Gift,
+    MessageSquareText,
+    Pencil,
+    Plus,
+    Settings,
+    Trash2,
+} from 'lucide-react';
 import { CardHead, FeatureLayout, ProBadge } from '@storegrowth/components';
 import {
     Navigate,
@@ -364,6 +371,16 @@ export default function BogoList() {
         <span className="flex flex-wrap items-center gap-3">
             <Button
                 variant="outline"
+                onClick={ () => {
+                    navigate( '/bogo/messages' );
+                } }
+                className="gap-2"
+            >
+                <MessageSquareText className="size-4" aria-hidden />
+                { __( 'Category Messages', 'storegrowth-sales-booster' ) }
+            </Button>
+            <Button
+                variant="outline"
                 onClick={ () => navigate( '/settings?module=bogo' ) }
                 className="gap-2"
             >
@@ -439,8 +456,13 @@ export default function BogoList() {
         </SlotFillProvider>
     );
 
-    // 2.2.0's `#/bogo?tab_name=…` opened the global settings.
-    if ( new URLSearchParams( location.search ).has( 'tab_name' ) ) {
+    // 2.2.0's `#/bogo?tab_name=…` opened its tabs: the messages, or the
+    // global settings.
+    const tabName = new URLSearchParams( location.search ).get( 'tab_name' );
+    if ( tabName === 'messages' ) {
+        return <Navigate to="/bogo/messages" replace />;
+    }
+    if ( tabName !== null ) {
         return <Navigate to="/settings?module=bogo" replace />;
     }
 

@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\BoGo\Settings;
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\SettingsPage;
 use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
+use StorePulse\StoreGrowth\Modules\BoGo\CategoryMessages;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -65,7 +66,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	 *
 	 * @var string[]
 	 */
-	const FOREIGN_KEYS = [ 'bogo_category_messages', 'bogo_category_page_message' ];
+	const FOREIGN_KEYS = [ CategoryMessages::KEY, 'bogo_category_page_message' ];
 
 	/**
 	 * Saved once the option holds anything but the category messages.

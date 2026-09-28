@@ -262,3 +262,136 @@ export async function fetchPreviewProducts(
         };
     } );
 }
+
+/**
+ * A category page message (`sales-booster/v1/bogo/category-messages`).
+ *
+ * @since SPSG_VERSION
+ */
+export interface CategoryMessage {
+    /** Category (term) id. */
+    id: number;
+    /** Category name; null when the category was deleted. */
+    name: string | null;
+    message: string;
+    /** Shown on the category page. */
+    status: boolean;
+}
+
+/**
+ * The category messages route.
+ *
+ * @since SPSG_VERSION
+ */
+const messagesBase = () => {
+    return `/${ getAdminData().restNamespace }/bogo/category-messages`;
+};
+
+/**
+ * Every category message.
+ *
+ * @since SPSG_VERSION
+ */
+export function fetchCategoryMessages() {
+    return apiFetch< CategoryMessage[] >( { path: messagesBase() } );
+}
+
+/**
+ * Add a category's message (`id` null) or change one (pro).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param id            Category id of the message to change, or null.
+ * @param data          Values.
+ * @param data.category Category id (a change moves the message).
+ * @param data.message  Message.
+ */
+export function saveCategoryMessage(
+    id: number | null,
+    data: { category: number; message: string }
+) {
+    return apiFetch< CategoryMessage >( {
+        path: id ? `${ messagesBase() }/${ id }` : messagesBase(),
+        method: id ? 'PUT' : 'POST',
+        data,
+    } );
+}
+
+/**
+ * Show or hide a category's message (pro).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param id     Category id.
+ * @param active Shown.
+ */
+export function setCategoryMessageStatus( id: number, active: boolean ) {
+    return apiFetch< CategoryMessage >( {
+        path: `${ messagesBase() }/${ id }`,
+        method: 'PATCH',
+        data: { status: active },
+    } );
+}
+
+/**
+ * Delete a category's message (pro).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param id Category id.
+ */
+export function deleteCategoryMessage( id: number ) {
+    return apiFetch( {
+        path: `${ messagesBase() }/${ id }`,
+        method: 'DELETE',
+    } );
+}
+
+/**
+ * Every product category (WordPress `wp/v2/product_cat`), a child labelled
+ * with its parents ("Parent › Child"), sorted by label.
+ *
+ * @since SPSG_VERSION
+ */
+export async function fetchProductCategories(): Promise<
+    Array< { value: string; label: string } >
+> {
+    const terms: Array< { id: number; name: string; parent: number } > = [];
+
+    for ( let page = 1, pages = 1; page <= pages; page++ ) {
+        const response = await apiFetch< Response, false >( {
+            path: addQueryArgs( '/wp/v2/product_cat', {
+                per_page: 100,
+                page,
+                _fields: 'id,name,parent',
+            } ),
+            parse: false,
+        } );
+
+        pages = Number( response.headers.get( 'X-WP-TotalPages' ) ?? 1 );
+        terms.push( ...( await response.json() ) );
+    }
+
+    const byId = new Map( terms.map( ( term ) => [ term.id, term ] ) );
+    const label = ( id: number, depth = 0 ): string => {
+        const term = byId.get( id );
+        if ( ! term ) {
+            return '';
+        }
+        const name = decodeEntities( term.name );
+        // Depth guards against a parent loop.
+        return term.parent && depth < 10
+            ? [ label( term.parent, depth + 1 ), name ]
+                  .filter( Boolean )
+                  .join( ' › ' )
+            : name;
+    };
+
+    return terms
+        .map( ( term ) => {
+            return { value: String( term.id ), label: label( term.id ) };
+        } )
+        .sort( ( a, b ) => {
+            return a.label.localeCompare( b.label );
+        } );
+}

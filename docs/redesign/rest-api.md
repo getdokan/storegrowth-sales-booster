@@ -91,14 +91,17 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 
 | # | Method + route | Status | Replaces ajax (kept as adapters) |
 |---|---|---|---|
-| 32 | `GET /bogo/category-messages` | NEW | `bogo_category_msg_list` |
-| 33 | `POST /bogo/category-messages` | NEW | `bogo_category_msg_create` |
-| 34 | `PATCH /bogo/category-messages/{id}/status` | NEW | `bogo_category_msg_status_handler` (pro) |
-| 35 | `DELETE /bogo/category-messages/{id}` | NEW | `bogo_category_msg_delete` (pro) |
+| 32 | `GET /bogo/category-messages` | NEW | `bogo_category_msg_list`. **Done (10e):** `[ { id, name, message, status } ]`: `id` is the category's term id (the message's key), `name` null when the category was deleted, `status` bool (`categoryStatus === 'true'`, what pro's storefront reads). One row per category (the ajax create could store a category twice; the first is listed). Works without pro |
+| 33 | `POST /bogo/category-messages` `{ category, message, status? }` | NEW | `bogo_category_msg_create`. **Done (10e):** 201 with the item; stores `{ id: int, message, categoryStatus: 'true'\|'false' }` as the ajax does. 400 `bogo_invalid_category` (not a `product_cat`), `bogo_category_message_exists`, `bogo_category_messages_limit` (`spsg_bogo_max_category_messages`, default 100, as the ajax), `rest_invalid_param` (empty message; `sanitize_text_field`, the ajax's `wc_clean()` domain) |
+| 33a | `PUT/PATCH /bogo/category-messages/{id}` `{ category?, message?, status? }` | NEW | **Done (10e):** changes only the keys sent, on the category's first (listed) row only, keeping its other keys and the id as stored (a 2.2.0 duplicate row stays as it was, so switching on doesn't print the message twice); `category` moves the message (400 `bogo_invalid_category` for ≤0 / unknown, `bogo_category_message_exists` when taken); 404 `bogo_category_message_not_found` |
+| 34 | `PATCH /bogo/category-messages/{id}` `{ status: bool }` | NEW | `bogo_category_msg_status_handler` (pro). **Done (10e):** #33a with `status` only (no separate status route) |
+| 35 | `DELETE /bogo/category-messages/{id}` | NEW | `bogo_category_msg_delete` (pro). **Done (10e):** `{ deleted: true, id }`; removes every row of the category, as pro's handler |
 
 **Required:** under `pro-compat-review.md` R2, pro 2.2.0 users must keep a way to manage their existing category messages, so lite builds this pro-gated screen even though the design drops it. The ajax actions stay registered too.
 
 ## 5. Product-level settings (optional, only if product edit screens move to React)
+**Done (10e):** `REST\CategoryMessagesController` over `BoGo\CategoryMessages` (writes only `bogo_category_messages`, keeps the option's other keys and non-array rows as stored, autoload default: the storefront reads it; an option or `bogo_category_messages` that isn't an array → every write 409 `bogo_invalid_option`, left alone, and the list is empty). Each write rewrites the option, so the admin sends one at a time (bulk delete in sequence, switches and row actions wait while one is pending). `manage_options` only (not `spsg_bogo_check_permission`: vendors don't manage store-wide messages); every write also needs pro (403 `salesbooster_pro_required`), as the old screen (upgrade overlay) and pro's own handlers did; reading doesn't. Registered only while BOGO is on. The ajax actions are unchanged (lite's `bogo_category_msg_create` still has no pro check, ADR-004).
+
 Today these are PHP forms on the WooCommerce product edit screen and the Dokan product form. They work and aren't in the designs.
 
 | # | Method + route | Data |
@@ -131,7 +134,7 @@ A later option is the WooCommerce Store API (`/wc/store/v1` extensions), in a se
 | Lookups | — | 1 (#13) | 4 (#14–17) |
 | BOGO | 3 (#19, 22, 23) + vendor (#25) | 3 (#18, 20, 21) | 1 (#24) |
 | Order Bump | 3 (#27, 28, 31) | 1 (#26) | 2 (#29, 30) |
-| Pro-only | — | — | 4 (#32–35), conditional |
+| Pro-only | — | — | 4 routes (#32–35, 33a; #34 is #33a), done in 10e |
 | Product-level | — | — | 3 optional (#36–38) |
 
 Minimum to remove antd and go fully REST: #1, #2, #3, #6, #7, #9, #10, #13, #14, #17, #18, #20, #24, #26, #29, #30. Add #15 and #16 if page targeting and coupons stay, and #32–35 if category messages stay.

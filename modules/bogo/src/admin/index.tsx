@@ -4,7 +4,8 @@
  * settings page from the schema (PHP `BogoSettings`) at
  * `#/settings?module=bogo`; this adds its badge picker (image badges and
  * the custom upload, two keys), and the module's own pages: the offer list
- * (`#/bogo`) and the offer editor (`#/bogo/create-bogo`, `#/bogo/<id>`).
+ * (`#/bogo`), the offer editor (`#/bogo/create-bogo`, `#/bogo/<id>`) and
+ * the category messages (`#/bogo/messages`).
  *
  * @since SPSG_VERSION
  */
@@ -17,6 +18,7 @@ import type { SettingValue } from '@storegrowth/utilities';
 import { BOGO_BADGES } from './badges';
 import BogoEditor from './editor/bogo-editor';
 import BogoList from './list/bogo-list';
+import CategoryMessages from './messages/category-messages';
 
 interface BogoSettingsValues extends Record< string, SettingValue > {
     default_badge_icon_name: string;
@@ -61,8 +63,7 @@ const bogoSettingsPage: SettingsPageParts< BogoSettingsValues > = {
 };
 
 /**
- * `/bogo/:id` opens the editor for a numeric id only. Anything else (2.2.0's
- * `/bogo/create-message`, until the category messages have a page) opens
+ * `/bogo/:id` opens the editor for a numeric id only. Anything else opens
  * the list.
  *
  * @since SPSG_VERSION
@@ -94,6 +95,18 @@ addFilter(
             id: 'bogo-create',
             path: '/bogo/create-bogo',
             element: <BogoEditor id={ null } />,
+        },
+        // Before `/bogo/:id`.
+        {
+            id: 'bogo-messages',
+            path: '/bogo/messages',
+            element: <CategoryMessages />,
+        },
+        // 2.2.0's message form (`create-message[/<action>]/<category id>`).
+        {
+            id: 'bogo-create-message',
+            path: '/bogo/create-message/*',
+            element: <Navigate to="/bogo/messages" replace />,
         },
         { id: 'bogo-edit', path: '/bogo/:id', element: <EditRoute /> },
     ]

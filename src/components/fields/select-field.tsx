@@ -29,20 +29,23 @@ export interface SelectFieldProps extends BaseFieldProps {
     value: string;
     onChange: ( value: string ) => void;
     options: SelectOption[];
+    /** Shown while nothing is chosen (value `''`). */
+    placeholder?: string;
 }
 
 /**
  * @since SPSG_VERSION
  *
- * @param props          Props.
- * @param props.label    Label.
- * @param props.value    Selected value.
- * @param props.onChange Change handler.
- * @param props.options  Options.
- * @param props.locked   Pro field without pro.
- * @param props.error    Error message.
- * @param props.help     Help line.
- * @param props.id       Select id.
+ * @param props             Props.
+ * @param props.label       Label.
+ * @param props.value       Selected value.
+ * @param props.onChange    Change handler.
+ * @param props.options     Options.
+ * @param props.locked      Pro field without pro.
+ * @param props.error       Error message.
+ * @param props.help        Help line.
+ * @param props.id          Select id.
+ * @param props.placeholder Shown while nothing is chosen (value `''`).
  */
 export function SelectField( {
     label,
@@ -53,6 +56,7 @@ export function SelectField( {
     error,
     help,
     id,
+    placeholder,
 }: SelectFieldProps ) {
     const fallbackId = useId();
     const selectId = id ?? fallbackId;
@@ -65,7 +69,8 @@ export function SelectField( {
             <Select
                 // `items` lets the trigger show the label, not the value.
                 items={ options }
-                value={ value }
+                // With a placeholder, `''` means nothing chosen.
+                value={ placeholder && value === '' ? null : value }
                 disabled={ locked }
                 onValueChange={ ( next ) => next !== null && onChange( next ) }
             >
@@ -77,7 +82,7 @@ export function SelectField( {
                         'border ps-4 pe-4 data-[size=default]:h-10 [&>svg]:size-5 [&>svg]:text-sg-text'
                     ) }
                 >
-                    <SelectValue />
+                    <SelectValue placeholder={ placeholder } />
                 </SelectTrigger>
                 <SelectContent>
                     { options.map( ( option ) => (

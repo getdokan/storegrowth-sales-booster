@@ -8,6 +8,7 @@ use StorePulse\StoreGrowth\Modules\BoGo\BogoDataWrapper;
 use StorePulse\StoreGrowth\Modules\BoGo\OrderBogo;
 use StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\BoGo\REST\BogoController;
+use StorePulse\StoreGrowth\Modules\BoGo\REST\CategoryMessagesController;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -32,6 +33,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         Ajax::class,
         EnqueueScript::class,
         BogoController::class,
+        CategoryMessagesController::class,
         BogoDataWrapper::class,
     ];
 
