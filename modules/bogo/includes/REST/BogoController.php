@@ -519,6 +519,7 @@ class BogoController extends WP_REST_Controller {
      * - A percentage discount is more than 0 and at most 100.
      * - The end date isn't before the start date.
      * - The offer has a target product or category.
+     * - Buy X Get Y has an offer product.
      *
      * @since SPSG_VERSION
      *
@@ -555,6 +556,16 @@ class BogoController extends WP_REST_Controller {
             return new WP_Error(
                 'bogo_missing_target',
                 __( 'Select at least one target product.', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        // An update checks it when it sends the product or switches to Buy X Get Y.
+        $offer_product_sent = $sends( [ 'get_different_product_field' ] ) || 'different' === ( $sent['bogo_deal_type'] ?? '' );
+        if ( $offer_product_sent && 'different' === ( $data['bogo_deal_type'] ?? 'different' ) && empty( $data['get_different_product_field'] ) ) {
+            return new WP_Error(
+                'bogo_missing_offer_product',
+                __( 'Select the offer product.', 'storegrowth-sales-booster' ),
                 [ 'status' => 400 ]
             );
         }

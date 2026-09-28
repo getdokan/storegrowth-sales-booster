@@ -631,15 +631,19 @@ class BogoRestTest extends StoreGrowthTestCase {
 	 */
 	public function test_offer_rules() {
 		$cases = [
-			'bogo_invalid_discount' => [
+			'bogo_invalid_discount'      => [
 				'offer_type'      => 'discount',
 				'discount_amount' => 150,
 			],
-			'bogo_invalid_dates'    => [
+			'bogo_invalid_dates'         => [
 				'offer_start' => '2030-02-01',
 				'offer_end'   => '2030-01-01',
 			],
-			'bogo_missing_target'   => [ 'offered_products' => [] ],
+			'bogo_missing_target'        => [ 'offered_products' => [] ],
+			'bogo_missing_offer_product' => [
+				'bogo_deal_type'              => 'different',
+				'get_different_product_field' => 0,
+			],
 		];
 
 		foreach ( $cases as $code => $values ) {

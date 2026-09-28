@@ -179,6 +179,7 @@ const ERROR_FIELDS: Record< string, string > = {
     bogo_same_product: 'get_different_product_field',
     bogo_offer_exists: 'offered_products',
     bogo_missing_target: 'offered_products',
+    bogo_missing_offer_product: 'get_different_product_field',
     bogo_invalid_discount: 'discount_amount',
     bogo_invalid_dates: 'offer_end',
 };
