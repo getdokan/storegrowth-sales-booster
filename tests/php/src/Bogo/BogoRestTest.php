@@ -398,6 +398,110 @@ class BogoRestTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * Bulk delete removes the given offers and reports ids it couldn't.
+	 *
+	 * @return void
+	 */
+	public function test_batch_delete() {
+		$a = $this->create_global_offer( [ 'name_of_order_bogo' => 'A' ] );
+		$b = $this->create_global_offer( [ 'name_of_order_bogo' => 'B' ] );
+		$c = $this->create_global_offer( [ 'name_of_order_bogo' => 'C' ] );
+
+		$result = $this->request( 'POST', self::BASE . '/batch', [ 'delete' => [ $a, $b, 99999 ] ] )->get_data();
+
+		$this->assertSame( [ $a, $b ], $result['deleted'] );
+		$this->assertSame( [ 99999 ], $result['failed'] );
+		$this->assertNull( BogoDataManager::get_bogo_offer( $a ) );
+		$this->assertNotNull( BogoDataManager::get_bogo_offer( $c ) );
+	}
+
+	/**
+	 * Bulk delete skips an offer the item permission refuses (the Dokan
+	 * vendor check uses this path).
+	 *
+	 * @return void
+	 */
+	public function test_batch_delete_respects_item_permission() {
+		$mine   = $this->create_global_offer( [ 'name_of_order_bogo' => 'Mine' ] );
+		$theirs = $this->create_global_offer( [ 'name_of_order_bogo' => 'Theirs' ] );
+
+		add_filter(
+			'spsg_bogo_single_item_permission',
+			static function ( $allowed, $item ) use ( $theirs ) {
+				return (int) $item['id'] === $theirs ? new \WP_Error( 'not_yours', 'No', [ 'status' => 403 ] ) : $allowed;
+			},
+			10,
+			2
+		);
+
+		$result = $this->request( 'POST', self::BASE . '/batch', [ 'delete' => [ $mine, $theirs ] ] )->get_data();
+
+		$this->assertSame( [ $mine ], $result['deleted'] );
+		$this->assertSame( [ $theirs ], $result['failed'] );
+		$this->assertNotNull( BogoDataManager::get_bogo_offer( $theirs ) );
+	}
+
+	/**
+	 * List rows carry what the list cells show: thumbnails, both prices and,
+	 * for product offers, the product to edit.
+	 *
+	 * @return void
+	 */
+	public function test_list_rows_carry_cell_data() {
+		$target = $this->create_product( 20.0 );
+		BogoDataManager::save_product_bogo_settings(
+			$target->get_id(),
+			0,
+			$this->bogo_settings(
+				[
+					'offered_products'            => [ $target->get_id() ],
+					'get_different_product_field' => $this->create_product( 30.0 )->get_id(),
+				]
+			)
+		);
+
+		$row = $this->request( 'GET', self::BASE )->get_data()[0];
+		$this->assertSame( $target->get_id(), $row['product_id'] );
+		$this->assertNotEmpty( $row['edit_url'] );
+		$this->assertSame( '30', $row['get_different_product_info']['regular_price'] );
+		$this->assertNotEmpty( $row['get_different_product_info']['image'] );
+		$this->assertStringContainsString( '30', $row['offer_prices']['regular'] );
+		$this->assertStringContainsString( '0', $row['offer_prices']['offer'], 'free' );
+	}
+
+	/**
+	 * Buy X Get X prices the target product; category offers list their
+	 * categories by name.
+	 *
+	 * @return void
+	 */
+	public function test_list_rows_for_same_product_and_category_offers() {
+		$this->pro = true;
+		$target    = $this->create_product( 40.0 );
+		$category  = self::factory()->term->create(
+			[
+				'taxonomy' => 'product_cat',
+				'name'     => 'Shoes & Bags',
+			]
+		);
+		$this->create_global_offer(
+			[
+				'name_of_order_bogo' => 'Same',
+				'bogo_deal_type'     => 'same',
+				'offered_products'   => [ $target->get_id() ],
+				'offered_categories' => [ $category ],
+				'offer_type'         => 'discount',
+				'discount_amount'    => 50,
+			]
+		);
+
+		$row = $this->request( 'GET', self::BASE )->get_data()[0];
+		$this->assertStringContainsString( '40', $row['offer_prices']['regular'] );
+		$this->assertStringContainsString( '20', $row['offer_prices']['offer'], '50% off the target' );
+		$this->assertSame( [ 'Shoes & Bags' ], $row['target_categories'] );
+	}
+
+	/**
 	 * The `name` alias still renames an offer on update.
 	 *
 	 * @return void
@@ -420,6 +524,30 @@ class BogoRestTest extends StoreGrowthTestCase {
 		$this->create_global_offer( [ 'name_of_order_bogo' => '50 off' ] );
 
 		$this->assertCount( 1, $this->request( 'GET', self::BASE, [], [ 'search' => '50%' ] )->get_data() );
+	}
+
+	/**
+	 * `search` keeps `<…` (a name can hold it).
+	 *
+	 * @return void
+	 */
+	public function test_search_keeps_angle_brackets() {
+		$this->create_global_offer( [ 'name_of_order_bogo' => 'Deal <b>now</b>' ] );
+
+		$this->assertCount( 1, $this->request( 'GET', self::BASE, [], [ 'search' => '<b>' ] )->get_data() );
+	}
+
+	/**
+	 * A guest gets 401, a customer 403.
+	 *
+	 * @return void
+	 */
+	public function test_permission_status_codes() {
+		wp_set_current_user( 0 );
+		$this->assertSame( 401, $this->request( 'GET', self::BASE )->get_status() );
+
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'customer' ] ) );
+		$this->assertSame( 403, $this->request( 'GET', self::BASE )->get_status() );
 	}
 
 	/**

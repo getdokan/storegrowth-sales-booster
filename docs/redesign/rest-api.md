@@ -72,8 +72,8 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 | 21 | `PUT/PATCH /bogo/offers/{id}` | CHANGE | **Done (10a):** a merge over the stored offer (unknown `design_settings` keys kept); per-offer badge keys stored in `design_settings`; pro-only values without pro keep the stored value. To do: `bogo_type`, exclusions (pro, 10d) |
 | 22 | `DELETE /bogo/offers/{id}` | EXISTS | |
 | 23 | `POST /bogo/offers/{id}/status` `{ status }` | EXISTS | List status switch |
-| 24 | `POST /bogo/offers/batch` `{ delete: [ids] }` | NEW | Bulk delete from the list |
-| 25 | `GET /bogo/offers/vendor` … | EXISTS | Dokan vendor controller (`dokandar` scope). Add a check that the product IDs belong to the vendor |
+| 24 | `POST /bogo/offers/batch` `{ delete: [ids] }` | NEW | **Done (10c):** each id through the single-delete checks; returns `{ deleted, failed }`. List rows also carry `product_id` and, in `get_offered_product_info` / `get_different_product_info`, `image` and `regular_price` |
+| 25 | `GET /bogo/offers/vendor` … | EXISTS | Dokan vendor controller (`dokandar` scope). Add a check that the product IDs belong to the vendor. It inherits the routes, so `POST /bogo/offers/vendor/batch` exists too, each id through the vendor's item check |
 
 ### 3.2 Order Bump — `sales-booster/v1/order-bumps` (new) + `spsg/v1/order-bumps` (kept permanently)
 

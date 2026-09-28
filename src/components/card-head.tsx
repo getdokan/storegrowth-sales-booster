@@ -26,7 +26,8 @@ export function CardHead( { title, actions, className }: CardHeadProps ) {
     return (
         <div
             className={ cn(
-                'flex w-full items-center justify-between gap-4 rounded-[8px] border border-sg-cardline bg-white p-6',
+                // Wraps: on a phone the actions go under the title.
+                'flex w-full flex-wrap items-center justify-between gap-4 rounded-[8px] border border-sg-cardline bg-white p-6',
                 className
             ) }
         >
@@ -34,7 +35,7 @@ export function CardHead( { title, actions, className }: CardHeadProps ) {
                 { title }
             </h1>
             { actions && (
-                <div className="flex shrink-0 items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2.5">
                     { actions }
                 </div>
             ) }

@@ -16,6 +16,11 @@ export interface ModuleCatalogEntry {
     group: DashboardGroup | null;
     /** Dashboard description (design copy). Empty when not shown on the dashboard. */
     summary: string;
+    /**
+     * The module's page when it isn't its settings page, e.g. an offer list
+     * (its bundle registers the route).
+     */
+    route?: string;
 }
 
 /** Feature menu order, as in the design. */
@@ -91,6 +96,7 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
         group: 'order-value',
         summary:
             'Buy one, get one. Pair a product with a free or discounted second item.',
+        route: '/bogo',
     },
     'upsell-order-bump': {
         label: 'Upsell Order Bump',
@@ -133,15 +139,19 @@ export function sortModules( modules: SpsgModule[] ): SpsgModule[] {
 }
 
 /**
- * Admin route of a module's page: `#/settings?module=<id>` (its settings
- * page, or the empty module frame until it has one).
+ * Admin route of a module's page: its own (`route`, e.g. an offer list), or
+ * `#/settings?module=<id>` (its settings page, or the empty module frame
+ * until it has one).
  *
  * @since SPSG_VERSION
  *
  * @param moduleId Module id.
  */
 export function moduleRoute( moduleId: string ): string {
-    return `/settings?module=${ encodeURIComponent( moduleId ) }`;
+    return (
+        MODULE_CATALOG[ moduleId ]?.route ??
+        `/settings?module=${ encodeURIComponent( moduleId ) }`
+    );
 }
 
 /**

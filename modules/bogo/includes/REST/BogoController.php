@@ -11,6 +11,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoValidator;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 defined( 'ABSPATH' ) || exit();
 
@@ -48,6 +49,26 @@ class BogoController extends WP_REST_Controller {
                     'callback'            => [ $this, 'create_item' ],
                     'permission_callback' => [ $this, 'check_permission' ],
                     'args'                => $this->get_endpoint_args_for_create_item(),
+                ],
+            ]
+        );
+
+        // Bulk actions from the list: `{ delete: [ ids ] }`.
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/batch',
+            [
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'callback'            => [ $this, 'batch_items' ],
+                    'permission_callback' => [ $this, 'check_permission' ],
+                    'args'                => [
+                        'delete' => [
+                            'type'     => 'array',
+                            'items'    => [ 'type' => 'integer' ],
+                            'required' => true,
+                        ],
+                    ],
                 ],
             ]
         );
@@ -147,7 +168,9 @@ class BogoController extends WP_REST_Controller {
         if ( in_array( $request->get_param( 'status' ), [ 'active', 'inactive' ], true ) ) {
             $filters['status'] = $request->get_param( 'status' );
         }
-        $search = trim( sanitize_text_field( (string) $request->get_param( 'search' ) ) );
+        // Not `sanitize_text_field()`: it strips `<…`, which a name can hold.
+        // The query escapes it (`esc_like()` in a prepared LIKE).
+        $search = trim( wp_check_invalid_utf8( (string) $request->get_param( 'search' ) ) );
         if ( '' !== $search ) {
             $filters['search'] = $search;
         }
@@ -480,6 +503,40 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
+     * Bulk actions: delete the given offers, each through the same checks as
+     * a single delete (a subclass's item permission included).
+     *
+     * @since SPSG_VERSION
+     *
+     * @param WP_REST_Request $request The REST request.
+     *
+     * @return WP_REST_Response
+     */
+    public function batch_items( $request ) {
+        $deleted = [];
+        $failed  = [];
+
+        foreach ( array_unique( array_map( 'absint', (array) $request->get_param( 'delete' ) ) ) as $id ) {
+            $offer = $id ? BogoDataManager::get_bogo_offer( $id ) : null;
+
+            if ( ! $offer || is_wp_error( $this->check_single_item_permission( $offer, $request ) ) || ! BogoDataManager::delete_bogo_offer( $id ) ) {
+                $failed[] = $id;
+                continue;
+            }
+
+            $deleted[] = $id;
+        }
+
+        return new WP_REST_Response(
+            [
+                'deleted' => $deleted,
+                'failed'  => $failed,
+            ],
+            200
+        );
+    }
+
+    /**
      * Update BOGO offer status.
      *
      * @since 2.0.0
@@ -755,7 +812,8 @@ class BogoController extends WP_REST_Controller {
         return new WP_Error(
             'salesbooster_permission_failure',
             __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
-            [ 'status' => 403 ]
+            // 401 for a guest, 403 for a user without the capability.
+            [ 'status' => rest_authorization_required_code() ]
         );
     }
 
@@ -1102,29 +1160,53 @@ class BogoController extends WP_REST_Controller {
         $data                   = array_merge( $data, BogoDataManager::get_design_settings( $item['design_settings'] ?? null ) );
         $data['offer_schedule'] = ! empty( $item['offer_schedule'] ) ? $item['offer_schedule'] : [ 'daily' ];
 
+        // A product offer ("Specific") is edited on its product's BOGO tab.
+        $data['product_id'] = absint( $item['product_id'] ?? 0 );
+        if ( $data['product_id'] ) {
+            $data['edit_url'] = get_edit_post_link( $data['product_id'], 'raw' );
+        }
+
+        // What the list shows: category targets by name, and the offer's
+        // prices as the cart works them out, in the store's price format.
+        $data['target_categories'] = [];
+        foreach ( (array) ( $item['offered_categories'] ?? [] ) as $term_id ) {
+            $term = get_term( (int) $term_id, 'product_cat' );
+            if ( $term && ! is_wp_error( $term ) ) {
+                $data['target_categories'][] = html_entity_decode( $term->name, ENT_QUOTES, 'UTF-8' );
+            }
+        }
+
+        // Buy X Get X gives the target product itself.
+        $offer_product = wc_get_product(
+            'same' === ( $item['bogo_deal_type'] ?? '' )
+                ? (int) ( $item['offered_products'][0] ?? 0 )
+                : (int) ( $item['offer_product_id'] ?? 0 )
+        );
+        if ( $offer_product ) {
+            // Plain text: wc_price()'s markup and entities decoded.
+            $as_text = static function ( $amount ) {
+                return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
+            };
+
+            $data['offer_prices'] = [
+                'regular' => $as_text( (float) ( $offer_product->get_regular_price() ?: $offer_product->get_price() ) ),
+                'offer'   => $as_text( Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $offer_product->get_price(), $item['discount_amount'] ?? 0 ) ),
+            ];
+        }
+
 		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
 
 		if ( isset( $data['get_different_product_field'] ) ) {
 			$product = wc_get_product( $data['get_different_product_field'] );
 			if ( $product ) {
-				$data['get_different_product_info'] = [
-					'id' => $product->get_id(),
-					'name' => $product->get_title(),
-					'price' => $product->get_price(),
-					'currency' => $currency
-				];
+				$data['get_different_product_info'] = $this->product_info( $product, $currency );
 			}
 		}
 
 		if ( isset( $data['offered_products'] ) ) {
 			$product = wc_get_product( $data['offered_products'][0] ?? 0 );
 			if ( $product ) {
-				$data['get_offered_product_info'] = [
-					'id' => $product->get_id(),
-					'name' => $product->get_title(),
-					'price' => $product->get_price(),
-					'currency' => $currency
-				];
+				$data['get_offered_product_info'] = $this->product_info( $product, $currency );
 			}
 		}
 
@@ -1134,6 +1216,30 @@ class BogoController extends WP_REST_Controller {
         $response = rest_ensure_response( $data );
 
         return apply_filters( 'storegrowth_rest_prepare_bogo_offer', $response, $item, $request );
+    }
+
+    /**
+     * A product as an offer's list cells show it (the keys the old admin read,
+     * plus the thumbnail and the regular price).
+     *
+     * @since SPSG_VERSION
+     *
+     * @param \WC_Product $product  Product.
+     * @param string      $currency Currency symbol.
+     *
+     * @return array
+     */
+    protected function product_info( $product, $currency ) {
+        $image_id = $product->get_image_id();
+
+        return [
+            'id'            => $product->get_id(),
+            'name'          => $product->get_title(),
+            'price'         => $product->get_price(),
+            'regular_price' => $product->get_regular_price(),
+            'currency'      => $currency,
+            'image'         => $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' ),
+        ];
     }
 
     /**
