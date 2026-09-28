@@ -107,13 +107,27 @@ function ProductCell( {
  * category targets and Edit for product offers (their BOGO tab is in
  * wp-admin).
  *
- * @param props        Props.
- * @param props.vendor The Dokan vendor dashboard.
+ * @param props             Props.
+ * @param props.vendor      The Dokan vendor dashboard.
+ * @param props.onCanCreate Called with whether another offer can be created.
  */
-function OfferList( { vendor }: { vendor: boolean } ) {
+function OfferList( {
+    vendor,
+    onCanCreate,
+}: {
+    vendor: boolean;
+    onCanCreate?: ( canCreate: boolean ) => void;
+} ) {
     const navigate = useNavigate();
     const [ view, setView ] = useState< DataViewState >( DEFAULT_VIEW );
     const [ page, setPage ] = useState< OfferPage | null >( null );
+
+    // The host's own "create" button (Dokan's header) follows the limit.
+    useEffect( () => {
+        if ( page ) {
+            onCanCreate?.( page.canCreate );
+        }
+    }, [ page, onCanCreate ] );
     const [ loading, setLoading ] = useState( true );
     // Status switches waiting for the server.
     const [ pending, setPending ] = useState< number[] >( [] );
@@ -417,10 +431,13 @@ function OfferList( { vendor }: { vendor: boolean } ) {
                     'storegrowth-sales-booster'
                 ) }
             </p>
-            <span className="flex items-center gap-2">
-                { ! canCreate && <ProBadge /> }
-                { addNew }
-            </span>
+            { /* Dokan's header has "Create New Offer" on the vendor dashboard. */ }
+            { ! vendor && (
+                <span className="flex items-center gap-2">
+                    { ! canCreate && <ProBadge /> }
+                    { addNew }
+                </span>
+            ) }
         </div>
     );
 
@@ -472,8 +489,25 @@ function OfferList( { vendor }: { vendor: boolean } ) {
     // is the table alone.
     if ( vendor ) {
         return (
-            <div className="w-full overflow-hidden rounded-lg border border-sg-cardline bg-white *:border-none!">
-                { table }
+            <div className="flex w-full flex-col gap-4">
+                { ! canCreate && (
+                    <p
+                        role="status"
+                        className="m-0 flex items-center gap-2 rounded-lg border border-sg-cardline bg-white px-4 py-3 text-sm text-sg-text"
+                    >
+                        <Gift
+                            className="size-4 shrink-0 text-sg-help"
+                            aria-hidden
+                        />
+                        { __(
+                            'This store has reached its BOGO offer limit.',
+                            'storegrowth-sales-booster'
+                        ) }
+                    </p>
+                ) }
+                <div className="w-full overflow-hidden rounded-lg border border-sg-cardline bg-white *:border-none!">
+                    { table }
+                </div>
             </div>
         );
     }
@@ -572,10 +606,22 @@ function AdminBogoList() {
 /**
  * @since SPSG_VERSION
  *
- * @param props        Props.
- * @param props.vendor The Dokan vendor dashboard: the vendor's offers, no
- *                     module frame (Dokan draws the page).
+ * @param props             Props.
+ * @param props.vendor      The Dokan vendor dashboard: the vendor's offers, no
+ *                          module frame (Dokan draws the page).
+ * @param props.onCanCreate Vendor mode: called with whether another offer can
+ *                          be created (for Dokan's header button).
  */
-export default function BogoList( { vendor = false }: { vendor?: boolean } ) {
-    return vendor ? <OfferList vendor /> : <AdminBogoList />;
+export default function BogoList( {
+    vendor = false,
+    onCanCreate,
+}: {
+    vendor?: boolean;
+    onCanCreate?: ( canCreate: boolean ) => void;
+} ) {
+    return vendor ? (
+        <OfferList vendor onCanCreate={ onCanCreate } />
+    ) : (
+        <AdminBogoList />
+    );
 }

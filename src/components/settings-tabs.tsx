@@ -54,7 +54,8 @@ export function SettingsTabs( {
         >
             <TabsList
                 aria-label={ label }
-                className="h-auto gap-2 rounded-lg bg-sg-chip p-1"
+                // Scrolls sideways when the tabs don't fit (a narrow screen).
+                className="h-auto max-w-full gap-2 overflow-x-auto rounded-lg bg-sg-chip p-1"
             >
                 { tabs.map( ( tab ) => (
                     <TabsTrigger

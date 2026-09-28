@@ -27,5 +27,11 @@ Dokan vendors manage their BOGO offers on Dokan's React vendor dashboard (`/dash
 - The vendor dashboard downloads plugin-ui and the shared bundles (cached, shared by every StoreGrowth screen on it).
 - Code that runs in vendor mode can't call admin-only context (`useModules()`, `FeatureLayout`, the ajax nonce) or read other `spsgAdmin` keys.
 - Dokan's and StoreGrowth's Tailwind both apply inside the page; a clash is fixed in StoreGrowth's stylesheet.
-- `spsg-tailwind` carries plugin-ui's WordPress components / DataViews CSS unscoped (the `wp-components` classes Dokan also loads). Checked on Dokan's own pages (home, Products, Orders, Withdraw; computed styles with vs without it): the only difference is the `border-color` of 0-width borders on Dokan's DataViews buttons, nothing visible.
+- `spsg-tailwind` has page-wide rules outside `.spsg-layout`, which now reach the whole vendor dashboard (one stylesheet kept, no separate one):
+  - `@layer theme` `:root` custom properties (`--font-sans`, `--color-*`, …); harmless while Dokan's own CSS doesn't read them. **Trigger to revisit:** Dokan's stylesheet reading or giving a value to one of them (e.g. `--font-sans`), when the later sheet decides Dokan's font.
+  - `:root` `--wp-admin-theme-color*` and `--wpds-*` (WordPress components tokens, as `wp-components` sets them).
+  - `[role=region] { position: relative }` and the other WordPress components / DataViews rules (the `wp-components` classes Dokan also loads). Checked on Dokan's own pages (home, Products, Orders, Withdraw; computed styles with vs without the sheet): the only difference is the `border-color` of 0-width borders on Dokan's DataViews buttons, nothing visible.
+  - The wp-admin-only rules (`body:has(#spsg-admin-app)`, …) don't match there.
+- The accent follows Dokan: the vendor pages' plugin-ui theme uses `var(--dokan-button-background-color, #0875FF)` for `primary`, `ring` and `accentForeground`, and `.dokan-layout .spsg-layout` sets `--color-sg-brand` / `--color-sg-brand-hover` from Dokan's button colours. The admin stays blue.
+- The dashboard bundle and styles load only on Dokan's React dashboard (`/dashboard/new/`) for a `dokandar` user.
 - The host draws the heading: on the vendor dashboard the list has no card title and the editor passes `hideTitle` to `ModuleSettingsPage` (Dokan's page title and Back button stand in).
