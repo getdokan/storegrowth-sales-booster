@@ -137,7 +137,22 @@ class BogoController extends WP_REST_Controller {
      * @return array Query filters for BogoDataManager.
      */
     protected function get_query_filters( $request ) {
-        return apply_filters( 'spsg_bogo_rest_query_filters', [], $request );
+        // `type`, `status` and `search` from the request (they used to be
+        // ignored), then the filter as before.
+        $filters = [];
+
+        if ( in_array( $request->get_param( 'type' ), [ 'global', 'product' ], true ) ) {
+            $filters['type'] = $request->get_param( 'type' );
+        }
+        if ( in_array( $request->get_param( 'status' ), [ 'active', 'inactive' ], true ) ) {
+            $filters['status'] = $request->get_param( 'status' );
+        }
+        $search = trim( sanitize_text_field( (string) $request->get_param( 'search' ) ) );
+        if ( '' !== $search ) {
+            $filters['search'] = $search;
+        }
+
+        return apply_filters( 'spsg_bogo_rest_query_filters', $filters, $request );
     }
 
     /**
@@ -170,12 +185,9 @@ class BogoController extends WP_REST_Controller {
      * @return int Total count of offers.
      */
     protected function get_total_items_count( $query_filters, $request ) {
-        if ( ! empty( $query_filters ) ) {
-            return BogoDataManager::get_bogo_offers_count( $query_filters );
-        } else {
-            // For global offers, add the type filter
-            return BogoDataManager::get_bogo_offers_count( ['type' => 'global'] );
-        }
+        // The same filters as the list (it counted global offers only while
+        // listing both types).
+        return BogoDataManager::get_bogo_offers_count( $query_filters );
     }
 
     /**
@@ -269,16 +281,13 @@ class BogoController extends WP_REST_Controller {
      * @return bool|WP_Error True if allowed, WP_Error otherwise.
      */
     protected function check_creation_limitations( $data, $request ) {
-        // Check for free version limitations
-        if ( ! sp_store_growth()->has_pro() ) {
-            $existing_offers = BogoDataManager::get_global_bogo_offers();
-            if ( count( $existing_offers ) >= 2 ) {
-                return new WP_Error(
-                    'salesbooster_limit_exceeded',
-                    __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
-                    [ 'status' => 403 ]
-                );
-            }
+        // Lite's limit (one rule: BogoDataManager::can_create_global_offer()).
+        if ( ! BogoDataManager::can_create_global_offer() ) {
+            return new WP_Error(
+                'salesbooster_limit_exceeded',
+                __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
+                [ 'status' => 403 ]
+            );
         }
 
         return true;
@@ -293,7 +302,13 @@ class BogoController extends WP_REST_Controller {
      * @throws Exception if any error
      */
     public function create_item( $request ) {
-        $data = $request->get_params();
+        $data = $this->ignore_pro_values( $request->get_params(), [] );
+
+        // Check creation limitations first: at the limit, any body gets 403.
+        $limitation_check = $this->check_creation_limitations( $data, $request );
+        if ( is_wp_error( $limitation_check ) ) {
+            return $limitation_check;
+        }
 
         // Validate and normalize data
         $validation = $this->validate_and_normalize_data( $data );
@@ -301,12 +316,6 @@ class BogoController extends WP_REST_Controller {
             return $validation;
         }
         $data = $validation;
-
-        // Check creation limitations
-        $limitation_check = $this->check_creation_limitations( $data, $request );
-        if ( is_wp_error( $limitation_check ) ) {
-            return $limitation_check;
-        }
 
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
@@ -351,14 +360,6 @@ class BogoController extends WP_REST_Controller {
      */
     public function update_item( $request ) {
         $id = $request->get_param( 'id' );
-        $data = $request->get_params();
-
-        // Validate and normalize data
-        $validation = $this->validate_and_normalize_data( $data );
-        if ( is_wp_error( $validation ) ) {
-            return $validation;
-        }
-        $data = $validation;
 
         $existing_offer = BogoDataManager::get_bogo_offer( $id );
         if ( ! $existing_offer ) {
@@ -371,6 +372,20 @@ class BogoController extends WP_REST_Controller {
             return $permission_check;
         }
 
+        // A merge: the stored offer, then only what the request sends (the
+        // route's defaults and anything left out used to reset the offer,
+        // design included).
+        $stored = BogoDataManager::to_request_data( $existing_offer );
+        $data   = array_merge( $stored, $this->sent_params( $request ) );
+        $data   = $this->ignore_pro_values( $data, $stored );
+
+        // Validate and normalize data
+        $validation = $this->validate_and_normalize_data( $data );
+        if ( is_wp_error( $validation ) ) {
+            return $validation;
+        }
+        $data = $validation;
+
         $result = BogoDataManager::update_global_offer( $id, $data );
 
         $updated_data = BogoDataManager::get_bogo_offer( $id );
@@ -378,6 +393,60 @@ class BogoController extends WP_REST_Controller {
         $response->set_status( 200 );
 
         return $response;
+    }
+
+    /**
+     * The values the request sends (body or JSON), without the route's
+     * defaults and the URL's `id`.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param WP_REST_Request $request The REST request.
+     *
+     * @return array
+     */
+    protected function sent_params( $request ) {
+        $sent = array_merge( (array) $request->get_body_params(), (array) $request->get_json_params() );
+        unset( $sent['id'] );
+
+        // `name` is an alias of `name_of_order_bogo`: the merged stored name
+        // would otherwise win over it.
+        if ( isset( $sent['name'] ) && ! isset( $sent['name_of_order_bogo'] ) ) {
+            $sent['name_of_order_bogo'] = $sent['name'];
+        }
+
+        return $sent;
+    }
+
+    /**
+     * Without pro, pro-only values are ignored, not rejected (ADR-004 §3):
+     * the stored value stays, or the default on a new offer.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param array $data   Offer data.
+     * @param array $stored The stored offer in request shape (empty when new).
+     *
+     * @return array
+     */
+    protected function ignore_pro_values( $data, $stored ) {
+        if ( sp_store_growth()->has_pro() ) {
+            return $data;
+        }
+
+        $lite = [
+            'minimum_quantity_required' => $stored['minimum_quantity_required'] ?? 1,
+            'offer_schedule'            => $stored['offer_schedule'] ?? [ 'daily' ],
+        ];
+
+        // Buy X Get X is pro: an update keeps the stored deal type. A new
+        // offer keeps what it's sent, as before (lite's storefront skips
+        // `same` offers), rather than turning into a Buy X Get Y offer.
+        if ( $stored && 'same' === ( $data['bogo_deal_type'] ?? '' ) ) {
+            $lite['bogo_deal_type'] = $stored['bogo_deal_type'];
+        }
+
+        return array_merge( $data, $lite );
     }
 
     /**
@@ -550,6 +619,18 @@ class BogoController extends WP_REST_Controller {
         // Ensure offer_type is preserved
         if ( isset( $data['offer_type'] ) ) {
             $data['offer_type'] = sanitize_text_field( $data['offer_type'] );
+        }
+
+        // Per-offer badge keys (stored in `design_settings`): the update route
+        // declares no args, so sanitize them here for both routes.
+        if ( isset( $data['enable_custom_badge_image'] ) ) {
+            $data['enable_custom_badge_image'] = rest_sanitize_boolean( $data['enable_custom_badge_image'] );
+        }
+        if ( isset( $data['default_badge_icon_name'] ) ) {
+            $data['default_badge_icon_name'] = sanitize_text_field( $data['default_badge_icon_name'] );
+        }
+        if ( isset( $data['default_custom_badge_icon'] ) ) {
+            $data['default_custom_badge_icon'] = esc_url_raw( $data['default_custom_badge_icon'] );
         }
 
         // Normalize offered_products (convert string to array if needed)
@@ -1015,6 +1096,12 @@ class BogoController extends WP_REST_Controller {
             $data['get_alternate_products'] = $item['alternate_products'];
         }
 
+        // The design (and per-offer badge) and the schedule, so an editor
+        // can show and send them back (they were missing, and saving wiped
+        // them).
+        $data                   = array_merge( $data, BogoDataManager::get_design_settings( $item['design_settings'] ?? null ) );
+        $data['offer_schedule'] = ! empty( $item['offer_schedule'] ) ? $item['offer_schedule'] : [ 'daily' ];
+
 		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
 
 		if ( isset( $data['get_different_product_field'] ) ) {
@@ -1059,16 +1146,16 @@ class BogoController extends WP_REST_Controller {
      * @return WP_REST_Response
      */
     public function format_collection_response( $response, $request, $total_items ) {
-        if ( $total_items === 0 ) {
-            return $response;
-        }
-
         $per_page = (int) ( ! empty( $request['per_page'] ) ? $request['per_page'] : 20 );
         $page = (int) ( ! empty( $request['page'] ) ? $request['page'] : 1 );
 
+        // Always sent, 0 included (a list needs them to show "no offers").
         $response->header( 'X-WP-Total', (int) $total_items );
-        $max_pages = ceil( $total_items / $per_page );
-        $response->header( 'X-WP-TotalPages', (int) $max_pages );
+        $max_pages = (int) ceil( $total_items / max( 1, $per_page ) );
+        $response->header( 'X-WP-TotalPages', $max_pages );
+        // Whether a create would pass this route's limit (lite's global limit;
+        // a subclass's own, e.g. per vendor).
+        $response->header( 'X-SPSG-Can-Create', is_wp_error( $this->check_creation_limitations( [], $request ) ) ? '0' : '1' );
         $base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
 
         if ( $page > 1 ) {

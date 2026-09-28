@@ -94,18 +94,26 @@ Not in the design; keep the columns and decide in §9: `offered_categories`, `al
 - Builds: DataViews list pattern (shared with Order Bump), `BadgePicker`, BOGO box preview, `EditorLayout` (back button + tabs + preview).
 - Reuses: `ProductSearch`, `DateRange`.
 
-## 9. Open questions / design issues
-- Removals from the design are **UI-only for lite fields**. Under `pro-compat-review.md`, R1 keeps every pro 2.2.0 field in an "Advanced (Pro)" section (min quantity, badge upload, Buy X Get X). R2 keeps the category messages screen (pro-gated, REST `/bogo/category-messages`). Confirm which lite-only fields (alternates, shop/category page messages, shop-page badge) are really dropped.
-- Fixed-price offer type: new?
-- The list "Type" column has no editor field. How does a user create a Global offer?
-- Buy X Get X must hide Offer Product.
-- Delete has no confirm in the mockup; DataViews adds one. Accept.
+## 9. Decisions (2026-09-28)
+Planning reviews (architect, designer) found: the old editor already hides alternates, BOGO type (categories), the schedule and the shop-page message, and the Messages tab is commented out; the admin editor always creates `type=global`, "Specific" rows come only from the WooCommerce product tab.
 
-## 10. Tasks and definition of done
-- [ ] Fix bugs 1–7 (REST contract first, with its own tests).
-- [ ] Per-offer settings migration (if approved).
-- [ ] DataViews list + editor + preview.
-- [ ] Global settings moved into the schema (`/settings/bogo`).
-- [ ] Dokan vendor screens on the new components + ownership check.
-- [ ] E2E matrix: create, edit (design preserved), status, bulk delete, lite cap, pro fields, vendor flow.
-- [ ] Delete `modules/bogo/assets/src` and `integrations/assets` BOGO bundles.
+- **Fixed-price offer type: deferred.** Every pricing path (lite, and pro 2.2.0's cart) prices anything but `discount` as free, so a new value would give products away under pro 2.2.0. The editor offers Free and Percentage; Fixed ships later with a pro release that prices it.
+- **Global settings: a settings page** (`/settings?module=bogo`, schema `BogoSettings`, `GatedSettingsSchema` because the storefront reads the option raw), linked from the list header. `bogo_category_messages` stays out of the schema (kept by merge saves). No per-offer overrides now.
+- **1.x migration (bug 6): fixed, guarded.** Correct names (`sgsb_bogo`, `sgsb_product_bogo_settings`), mapped keys, a per-row try; runs once behind a flag option (autoload false), only when the table has no global offers.
+- **Offer Product: single product**, as stored (`offer_product_id`); `alternate_products` stays stored, hidden.
+- **Removed from the UI only** (columns and REST keys kept, ADR-004): alternates, shop/category page messages. Pro 2.2.0 fields with no place in the design go in an "Advanced (Pro)" section (R1): min quantity, schedule, exclusions, badge upload. Category messages keep a pro-gated screen (R2).
+- **Specific rows:** status and delete work in the list; Edit links to the product's BOGO tab (the editor rewrites a row as global).
+- Buy X Get X hides Offer Product (`show_when`); `same` is a pro option.
+- Delete confirm: the DataViews one.
+- Border "None" maps to the stored `no_border`.
+- **Lite cap:** one rule, global offers of any status (rest-api #19), used by REST and the product tab; the list gets "can create" from the server.
+
+## 10. Sub-steps (each reviewed and committed)
+- [x] **10a** (notes: the storefront badge loop can now pick an older valid global offer when the newest matching one is out of its dates, a visible fix; the Dokan vendor route keeps its own filters and ignores `search`/`type`/`status` until 10f; a create missing the route's required args gets 400 before the limit) REST contract fixes: bug 1 (GET returns `design_settings` + `offer_schedule`; PUT merges over the stored offer), bug 2 (`search` / `type` / `status` reach the query), bug 3 (`X-WP-Total` counts every row, headers always sent), bug 4 (formatted list carries `status` and dates; badge keys persisted in `design_settings`), bug 5 (one lite-cap helper; product-tab pluck fix), pro-only values ignored without pro (R3). PHPUnit tests per bug.
+- [ ] **10b** Global settings page (`BogoSettings`), Dokan vendor flags as extension fields, ajax save through `SettingsService`.
+- [ ] **10c** Routing (catalog `route`, `/bogo`, `/bogo/create-bogo`, `/bogo/:id`, `/bogo/messages`) and the DataViews list (shared with Order Bump), `POST /bogo/offers/batch`.
+- [ ] **10d** Editor and preview (`BogoOfferFields` schema + page, `useBogoOffer`), Advanced (Pro), `BadgePicker`; ADR-010 (PHP page filters replace `storegrowth.bogo.editor.tabs`).
+- [ ] **10e** Category messages (R2): REST + pro-gated screen.
+- [ ] **10f** Dokan: ownership check and `vendors_can_create_buy_x_get_x` enforced server-side (bug 7); vendor dashboard on the shared list/editor.
+- [ ] **10g** 1.x migration fix (bug 6).
+- [ ] **10h** Cleanup: delete `modules/bogo/assets/src` and the Dokan BOGO bundles; E2E matrix (no pro / pro 2.2.0).

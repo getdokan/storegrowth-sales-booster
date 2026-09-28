@@ -28,15 +28,24 @@ class Helper {
 	 * @return bool
 	 */
 	public static function is_load_product_bogo_offer( $product_id ) {
-		$offers                              = self::get_global_offered_product_list();
-		$product                             = wc_get_product( $product_id );
-		$offer_applied_ids                   = wp_list_pluck( $offers, 'offered_products' );
-		$is_variable_product                 = $product->is_type( 'variable' );
-		$offer_available_for_current_product = in_array( $product_id, $offer_applied_ids );
+		$product             = wc_get_product( $product_id );
+		$is_variable_product = $product->is_type( 'variable' );
+
+		// A product already in an offer keeps its tab at the limit: one of
+		// its own, or a global one of any status (the limit counts those).
+		$offer_available_for_current_product = ! empty( BogoDataManager::get_bogo_offers( [ 'type' => 'product', 'product_id' => $product_id ], [ 'limit' => 1 ] ) );
+		$global_offers                       = BogoDataManager::get_bogo_offers( [ 'type' => 'global' ], [ 'limit' => 1000 ] );
+
+		foreach ( $global_offers as $offer ) {
+			if ( is_array( $offer['offered_products'] ?? null ) && in_array( (int) $product_id, array_map( 'intval', $offer['offered_products'] ), true ) ) {
+				$offer_available_for_current_product = true;
+				break;
+			}
+		}
 		// BOGO settings will be available for simple product &
 		return apply_filters(
 			'spsg_load_product_bogo_offer',
-			! ( $is_variable_product || ( count( $offers ) >= 2 && ! $offer_available_for_current_product ) )
+			! ( $is_variable_product || ( ! BogoDataManager::can_create_global_offer() && ! $offer_available_for_current_product ) )
 		);
 	}
 

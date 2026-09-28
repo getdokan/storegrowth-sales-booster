@@ -1,0 +1,450 @@
+<?php
+/**
+ * Contract tests for the BOGO REST routes (step 10a: bugs 1–5 and R3).
+ *
+ * @package SBFW
+ */
+
+namespace StorePulse\StoreGrowth\Test\Bogo;
+
+use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper;
+use StorePulse\StoreGrowth\Modules\BoGo\REST\BogoController;
+use StorePulse\StoreGrowth\Test\StoreGrowthTestCase;
+use WP_REST_Request;
+use WP_REST_Server;
+
+/**
+ * `sales-booster/v1/bogo/offers`, driven through the REST server as an
+ * administrator. The module isn't activated in the suite, so the routes are
+ * registered here.
+ *
+ * @group bogo
+ * @group rest
+ */
+class BogoRestTest extends StoreGrowthTestCase {
+
+	/**
+	 * Route base.
+	 *
+	 * @var string
+	 */
+	const BASE = '/sales-booster/v1/bogo/offers';
+
+	/**
+	 * Pro state for the test (the `storegrowth_pro_is_active` filter).
+	 *
+	 * @var bool
+	 */
+	private $pro = false;
+
+	/**
+	 * REST server with the BOGO routes, and an administrator.
+	 *
+	 * @return void
+	 */
+	public function setUp(): void {
+		parent::setUp();
+
+		global $wp_rest_server;
+		$wp_rest_server = new WP_REST_Server(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		add_action(
+			'rest_api_init',
+			static function () {
+				( new BogoController() )->register_routes();
+			}
+		);
+		/**
+		 * Fires when preparing to serve a REST API request (WordPress core).
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param WP_REST_Server $wp_rest_server Server object.
+		 */
+		do_action( 'rest_api_init', $wp_rest_server );
+
+		$this->pro = false;
+		add_filter(
+			'storegrowth_pro_is_active',
+			function () {
+				return $this->pro;
+			},
+			999
+		);
+
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+	}
+
+	/**
+	 * Drop the server.
+	 *
+	 * @return void
+	 */
+	public function tearDown(): void {
+		global $wp_rest_server;
+		$wp_rest_server = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+		parent::tearDown();
+	}
+
+	/**
+	 * Dispatch a request.
+	 *
+	 * @param string $method HTTP method.
+	 * @param string $route  Route.
+	 * @param array  $body   JSON body.
+	 * @param array  $query  Query parameters.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	private function request( string $method, string $route, array $body = [], array $query = [] ) {
+		$request = new WP_REST_Request( $method, $route );
+		$request->set_query_params( $query );
+
+		if ( $body ) {
+			$request->set_header( 'Content-Type', 'application/json' );
+			$request->set_body( wp_json_encode( $body ) );
+		}
+
+		return rest_get_server()->dispatch( $request );
+	}
+
+	/**
+	 * A full create payload, as the admin editor sends it.
+	 *
+	 * @param array $overrides Keys to replace.
+	 *
+	 * @return array
+	 */
+	private function payload( array $overrides = [] ): array {
+		return array_merge(
+			[
+				'name_of_order_bogo'             => 'Offer',
+				'offered_products'               => [ $this->create_product()->get_id() ],
+				'get_different_product_field'    => $this->create_product()->get_id(),
+				'offer_type'                     => 'free',
+				'box_border_style'               => 'solid',
+				'box_border_color'               => '#e0e0e0',
+				'box_top_margin'                 => 10,
+				'box_bottom_margin'              => 10,
+				'discount_background_color'      => '#E1FFF4',
+				'discount_text_color'            => '#02AC6E',
+				'discount_font_size'             => '14',
+				'product_description_text_color' => '#333333',
+				'product_description_font_size'  => '12',
+			],
+			$overrides
+		);
+	}
+
+	/**
+	 * Bug 1: GET returns the design and the schedule, and a PUT that sends
+	 * only the name keeps them.
+	 *
+	 * @return void
+	 */
+	public function test_update_keeps_what_the_request_leaves_out() {
+		$this->pro = true;
+		$created   = $this->request(
+			'POST',
+			self::BASE,
+			$this->payload(
+				[
+					'box_border_color'          => '#123456',
+					'discount_text_color'       => '#abcdef',
+					'minimum_quantity_required' => 3,
+					'offer_schedule'            => [ 'monday' ],
+				]
+			)
+		);
+		$this->assertSame( 201, $created->get_status() );
+		$id = $created->get_data()['id'];
+
+		$got = $this->request( 'GET', self::BASE . '/' . $id )->get_data();
+		$this->assertSame( '#123456', $got['box_border_color'], 'GET returns the design' );
+		$this->assertSame( [ 'monday' ], $got['offer_schedule'], 'GET returns the schedule' );
+
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'name_of_order_bogo' => 'Renamed' ] )->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $id );
+		$this->assertSame( 'Renamed', $offer['name'] );
+		$design = BogoDataManager::get_design_settings( $offer['design_settings'] );
+		$this->assertSame( '#123456', $design['box_border_color'], 'the design survives' );
+		$this->assertSame( '#abcdef', $design['discount_text_color'] );
+		$this->assertSame( [ 'monday' ], $offer['offer_schedule'], 'the schedule survives' );
+		$this->assertSame( 3, (int) $offer['minimum_quantity_required'], 'min quantity survives' );
+	}
+
+	/**
+	 * Bug 2: `search`, `type` and `status` reach the query.
+	 *
+	 * @return void
+	 */
+	public function test_list_filters_by_search_type_and_status() {
+		$this->pro = true;
+		$this->create_global_offer( [ 'name_of_order_bogo' => 'Summer sale' ] );
+		$this->create_global_offer(
+			[
+				'name_of_order_bogo' => 'Winter deal',
+				'status'             => 'inactive',
+			]
+		);
+
+		$this->assertCount( 1, $this->request( 'GET', self::BASE, [], [ 'search' => 'Summer' ] )->get_data() );
+		$this->assertCount( 1, $this->request( 'GET', self::BASE, [], [ 'status' => 'inactive' ] )->get_data() );
+		$this->assertCount( 2, $this->request( 'GET', self::BASE, [], [ 'type' => 'global' ] )->get_data() );
+		$this->assertCount( 0, $this->request( 'GET', self::BASE, [], [ 'search' => 'nothing like it' ] )->get_data() );
+	}
+
+	/**
+	 * Bug 3: `X-WP-Total` counts every listed row, and is sent when zero.
+	 *
+	 * @return void
+	 */
+	public function test_total_counts_every_row_and_is_always_sent() {
+		$empty = $this->request( 'GET', self::BASE );
+		$this->assertSame( 0, $empty->get_headers()['X-WP-Total'] ?? null, 'sent for an empty table' );
+
+		$this->create_global_offer( [ 'name_of_order_bogo' => 'A' ] );
+		$this->create_global_offer( [ 'name_of_order_bogo' => 'B' ] );
+		BogoDataManager::save_product_bogo_settings( $this->create_product()->get_id(), 0, $this->bogo_settings() );
+
+		$list = $this->request( 'GET', self::BASE );
+		$this->assertCount( 3, $list->get_data() );
+		$this->assertSame( 3, $list->get_headers()['X-WP-Total'], 'product offers counted too' );
+	}
+
+	/**
+	 * Bug 4: the global offer list carries status and dates, and a badge
+	 * sent with an offer is stored.
+	 *
+	 * @return void
+	 */
+	public function test_global_list_carries_status_and_badge_keys_persist() {
+		$this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Badge',
+				'offer_end'                 => '2030-01-01 00:00:00',
+				'enable_custom_badge_image' => true,
+				'default_badge_icon_name'   => 'bogo-icons-3',
+			]
+		);
+
+		$item = Helper::get_global_offered_product_list()[0];
+		$this->assertSame( 'active', $item['status'] );
+		$this->assertSame( '2030-01-01', $item['offer_end'], 'a DATE column' );
+		$this->assertTrue( (bool) $item['enable_custom_badge_image'] );
+		$this->assertSame( 'bogo-icons-3', $item['default_badge_icon_name'] );
+	}
+
+	/**
+	 * Bug 5: one lite limit, global offers of any status; the list says
+	 * whether another can be created.
+	 *
+	 * @return void
+	 */
+	public function test_lite_limit_counts_inactive_offers() {
+		$this->create_global_offer( [ 'status' => 'inactive' ] );
+		$this->create_global_offer( [ 'status' => 'inactive' ] );
+
+		$this->assertSame( 403, $this->request( 'POST', self::BASE, $this->payload() )->get_status() );
+		$this->assertSame( '0', $this->request( 'GET', self::BASE )->get_headers()['X-SPSG-Can-Create'] );
+
+		$this->pro = true;
+		$this->assertSame( 201, $this->request( 'POST', self::BASE, $this->payload() )->get_status() );
+		$this->assertSame( '1', $this->request( 'GET', self::BASE )->get_headers()['X-SPSG-Can-Create'] );
+	}
+
+	/**
+	 * Bug 5: the product tab finds a product inside an offer once the limit
+	 * is reached (the plucked list of lists never matched).
+	 *
+	 * @return void
+	 */
+	public function test_product_tab_stays_open_for_a_product_in_an_offer() {
+		$in  = $this->create_product();
+		$out = $this->create_product();
+		$this->create_global_offer( [ 'offered_products' => [ $in->get_id() ] ] );
+		$this->create_global_offer( [ 'offered_products' => [ $this->create_product()->get_id() ] ] );
+
+		$this->assertTrue( Helper::is_load_product_bogo_offer( $in->get_id() ), 'a product in an offer keeps its tab' );
+		$this->assertFalse( Helper::is_load_product_bogo_offer( $out->get_id() ), 'others are locked at the limit' );
+	}
+
+	/**
+	 * R3: without pro, a new offer gets the defaults for min quantity and
+	 * schedule; a Buy X Get X deal type is kept as sent (lite's storefront
+	 * skips it) rather than turned into another deal.
+	 *
+	 * @return void
+	 */
+	public function test_pro_values_are_ignored_on_create_without_pro() {
+		$created = $this->request(
+			'POST',
+			self::BASE,
+			$this->payload(
+				[
+					'bogo_deal_type'            => 'same',
+					'minimum_quantity_required' => 5,
+					'offer_schedule'            => [ 'monday' ],
+				]
+			)
+		);
+		$this->assertSame( 201, $created->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $created->get_data()['id'] );
+		$this->assertSame( 'same', $offer['bogo_deal_type'] );
+		$this->assertSame( 1, (int) $offer['minimum_quantity_required'] );
+		$this->assertSame( [ 'daily' ], $offer['offer_schedule'] );
+	}
+
+	/**
+	 * R3: without pro, an update keeps the stored pro values.
+	 *
+	 * @return void
+	 */
+	public function test_pro_values_are_kept_on_update_without_pro() {
+		$id = $this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Kept',
+				'minimum_quantity_required' => 4,
+				'offer_schedule'            => [ 'friday' ],
+			]
+		);
+
+		$response = $this->request(
+			'PUT',
+			self::BASE . '/' . $id,
+			[
+				'bogo_deal_type'            => 'same',
+				'minimum_quantity_required' => 9,
+				'offer_schedule'            => [ 'monday' ],
+			]
+		);
+		$this->assertSame( 200, $response->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $id );
+		$this->assertSame( 'different', $offer['bogo_deal_type'] );
+		$this->assertSame( 4, (int) $offer['minimum_quantity_required'] );
+		$this->assertSame( [ 'friday' ], $offer['offer_schedule'] );
+	}
+
+	/**
+	 * Keys in `design_settings` this version doesn't know survive an update.
+	 *
+	 * @return void
+	 */
+	public function test_unknown_design_keys_survive_an_update() {
+		global $wpdb;
+
+		$id = $this->create_global_offer( [ 'name_of_order_bogo' => 'Legacy' ] );
+		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->prefix . 'spsg_bogo_settings',
+			[
+				'design_settings' => wp_json_encode(
+					[
+						'box_border_color' => '#111111',
+						'legacy_unknown'   => 'keep',
+					]
+				),
+			],
+			[ 'id' => $id ]
+		);
+
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'name_of_order_bogo' => 'Renamed' ] )->get_status() );
+
+		$design = json_decode( BogoDataManager::get_bogo_offer( $id )['design_settings'], true );
+		$this->assertSame( 'keep', $design['legacy_unknown'] );
+		$this->assertSame( '#111111', $design['box_border_color'] );
+	}
+
+	/**
+	 * At the limit, an otherwise incomplete create gets 403, not the
+	 * validation error (the route's required args still come first).
+	 *
+	 * @return void
+	 */
+	public function test_limit_comes_before_validation() {
+		$this->create_global_offer();
+		$this->create_global_offer();
+
+		$response = $this->request(
+			'POST',
+			self::BASE,
+			[
+				'name_of_order_bogo' => 'Incomplete',
+				'offer_type'         => 'free',
+			]
+		);
+		$this->assertSame( 403, $response->get_status() );
+	}
+
+	/**
+	 * The product tab stays open for a product in an inactive global offer.
+	 *
+	 * @return void
+	 */
+	public function test_product_tab_stays_open_for_a_product_in_an_inactive_offer() {
+		$in = $this->create_product();
+		$this->create_global_offer(
+			[
+				'offered_products' => [ $in->get_id() ],
+				'status'           => 'inactive',
+			]
+		);
+		$this->create_global_offer( [ 'offered_products' => [ $this->create_product()->get_id() ] ] );
+
+		$this->assertTrue( Helper::is_load_product_bogo_offer( $in->get_id() ) );
+	}
+
+	/**
+	 * The `name` alias still renames an offer on update.
+	 *
+	 * @return void
+	 */
+	public function test_name_alias_renames_on_update() {
+		$id = $this->create_global_offer( [ 'name_of_order_bogo' => 'Old' ] );
+
+		$this->request( 'PUT', self::BASE . '/' . $id, [ 'name' => 'New' ] );
+
+		$this->assertSame( 'New', BogoDataManager::get_bogo_offer( $id )['name'] );
+	}
+
+	/**
+	 * `search` matches `%` and `_` literally.
+	 *
+	 * @return void
+	 */
+	public function test_search_escapes_wildcards() {
+		$this->create_global_offer( [ 'name_of_order_bogo' => '50% off' ] );
+		$this->create_global_offer( [ 'name_of_order_bogo' => '50 off' ] );
+
+		$this->assertCount( 1, $this->request( 'GET', self::BASE, [], [ 'search' => '50%' ] )->get_data() );
+	}
+
+	/**
+	 * Badge keys sent with an update are sanitized, and the offer carries
+	 * them at the top level (where the badge code reads them).
+	 *
+	 * @return void
+	 */
+	public function test_badge_keys_are_sanitized_and_readable() {
+		$id = $this->create_global_offer( [ 'name_of_order_bogo' => 'Badge' ] );
+
+		$response = $this->request(
+			'PUT',
+			self::BASE . '/' . $id,
+			[
+				'enable_custom_badge_image' => 'yes',
+				'default_badge_icon_name'   => '<b>bogo-icons-2</b>',
+				'default_custom_badge_icon' => 'javascript:alert(1)',
+			]
+		);
+		$this->assertSame( 200, $response->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $id );
+		$this->assertTrue( $offer['enable_custom_badge_image'] );
+		$this->assertSame( 'bogo-icons-2', $offer['default_badge_icon_name'] );
+		$this->assertSame( '', $offer['default_custom_badge_icon'] );
+	}
+}

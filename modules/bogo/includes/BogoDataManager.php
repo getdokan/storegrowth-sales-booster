@@ -35,6 +35,71 @@ class BogoDataManager {
 	const TABLE_NAME = 'spsg_bogo_settings';
 
 	/**
+	 * Global offers lite allows (any status); pro has no limit.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var int
+	 */
+	const LITE_OFFER_LIMIT = 2;
+
+	/**
+	 * Per-offer badge keys, stored inside `design_settings`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	const BADGE_KEYS = [ 'enable_custom_badge_image', 'default_badge_icon_name', 'default_custom_badge_icon' ];
+
+	/**
+	 * Whether another global offer can be created: always with pro, and in
+	 * lite while fewer than `LITE_OFFER_LIMIT` exist (any status). The one
+	 * rule for REST, the product tab and the admin list.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	public static function can_create_global_offer(): bool {
+		return sp_store_growth()->has_pro()
+			|| self::get_bogo_offers_count( [ 'type' => 'global' ] ) < self::LITE_OFFER_LIMIT;
+	}
+
+	/**
+	 * A stored offer in the shape the REST routes take, so an update can
+	 * start from it and change only what the request sends.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $offer Offer as `get_bogo_offer()` returns it.
+	 *
+	 * @return array
+	 */
+	public static function to_request_data( array $offer ): array {
+		return array_merge(
+			[
+				'name_of_order_bogo'          => $offer['name'] ?? '',
+				'offered_products'            => $offer['offered_products'] ?? [],
+				'offered_categories'          => $offer['offered_categories'] ?? [],
+				'get_different_product_field' => $offer['offer_product_id'] ?? null,
+				'get_alternate_products'      => $offer['alternate_products'] ?? [],
+				'bogo_deal_type'              => $offer['bogo_deal_type'] ?? 'different',
+				'offer_type'                  => $offer['offer_type'] ?? 'free',
+				'discount_amount'             => $offer['discount_amount'] ?? 0,
+				'minimum_quantity_required'   => $offer['minimum_quantity_required'] ?? 1,
+				'offer_start'                 => $offer['offer_start'] ?? null,
+				'offer_end'                   => $offer['offer_end'] ?? null,
+				'offer_schedule'              => $offer['offer_schedule'] ?? [ 'daily' ],
+				'product_page_message'        => $offer['product_page_message'] ?? '',
+				'shop_page_message'           => $offer['shop_page_message'] ?? '',
+				'bogo_badge_image'            => $offer['bogo_badge_image'] ?? '',
+			],
+			self::get_design_settings( $offer['design_settings'] ?? null )
+		);
+	}
+
+	/**
 	 * Get the full table name with prefix.
 	 *
 	 * @return string
@@ -52,6 +117,8 @@ class BogoDataManager {
 	 * @return array Array containing 'clause' and 'values' for the WHERE clause.
 	 */
 	private static function build_where_clause( array $conditions = [], array $options = [] ) {
+		global $wpdb;
+
 		$where_parts = array();
 		$where_values = array();
 
@@ -61,6 +128,14 @@ class BogoDataManager {
 		if ( ! empty( $conditions ) ) {
 			foreach ( $conditions as $field => $value ) {
 				if ( $value !== null && $value !== '' ) {
+					// `search`: offers whose name contains the text.
+					if ( 'search' === $field ) {
+						$where_parts[]  = '%i LIKE %s';
+						$where_values[] = 'name';
+						$where_values[] = '%' . $wpdb->esc_like( (string) $value ) . '%';
+						continue;
+					}
+
 					// Handle special cases for JSON fields
 					if ( in_array( $field, ['offered_products', 'offered_categories'] ) && is_numeric( $value ) ) {
 						$where_parts[] = "%i LIKE %s";
@@ -264,17 +339,21 @@ class BogoDataManager {
 			'offer_end'               => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'          => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
 			'status'                  => apply_filters( 'spsg_bogo_status',  $data['status'] ?? 'active', $type, $product_id, $variation_id ),
-			// Design settings as JSON
-			'design_settings'         => wp_json_encode( array(
-				'box_border_style'        => $data['box_border_style'] ?? 'solid',
-				'box_border_color'        => $data['box_border_color'] ?? '#e0e0e0',
-				'box_top_margin'          => $data['box_top_margin'] ?? 10,
-				'box_bottom_margin'       => $data['box_bottom_margin'] ?? 10,
-				'discount_background_color'      => $data['discount_background_color'] ?? '#E1FFF4',
-				'discount_text_color'            => $data['discount_text_color'] ?? '#02AC6E',
-				'discount_font_size'      => $data['discount_font_size'] ?? 14,
-				'product_description_text_color' => $data['product_description_text_color'] ?? '#333333',
-				'product_description_font_size' => $data['product_description_font_size'] ?? 12,
+			// Design settings as JSON; the per-offer badge keys, which the
+			// badge code reads, are kept only when sent (no column of their own).
+			'design_settings'         => wp_json_encode( array_merge(
+				[
+					'box_border_style'        => $data['box_border_style'] ?? 'solid',
+					'box_border_color'        => $data['box_border_color'] ?? '#e0e0e0',
+					'box_top_margin'          => $data['box_top_margin'] ?? 10,
+					'box_bottom_margin'       => $data['box_bottom_margin'] ?? 10,
+					'discount_background_color'      => $data['discount_background_color'] ?? '#E1FFF4',
+					'discount_text_color'            => $data['discount_text_color'] ?? '#02AC6E',
+					'discount_font_size'      => $data['discount_font_size'] ?? 14,
+					'product_description_text_color' => $data['product_description_text_color'] ?? '#333333',
+					'product_description_font_size' => $data['product_description_font_size'] ?? 12,
+				],
+				array_intersect_key( $data, array_flip( self::BADGE_KEYS ) )
 			) ),
 		);
 
@@ -374,6 +453,12 @@ class BogoDataManager {
 				'shop_page_message' => $offer['shop_page_message'],
 				'product_page_message' => $offer['product_page_message'],
 				'offered_categories' => $offer['offered_categories'] ?? array(),
+				// What the badge loop and the validators check (they read
+				// these keys; the list used to leave them out).
+				'status'           => $offer['status'] ?? 'active',
+				'offer_start'      => $offer['offer_start'] ?? null,
+				'offer_end'        => $offer['offer_end'] ?? null,
+				'offer_schedule'   => $offer['offer_schedule'] ?? [ 'daily' ],
 			);
 			
 			// Extract design settings from JSON
@@ -429,6 +514,14 @@ class BogoDataManager {
 		// Map the data using the unified method (excluding type and status)
 		$update_data = self::map_bogo_data( $data, 'global' );
 		unset( $update_data['type'], $update_data['status'] );
+
+		// Keys stored in `design_settings` that this version doesn't know
+		// (a later version or an extension) survive the update.
+		$stored = self::get_bogo_offer( $id );
+		$old    = is_string( $stored['design_settings'] ?? null ) ? json_decode( $stored['design_settings'], true ) : null;
+		if ( is_array( $old ) ) {
+			$update_data['design_settings'] = wp_json_encode( array_merge( $old, (array) json_decode( $update_data['design_settings'], true ) ) );
+		}
 		
 		// Add user tracking with filter
 		$update_data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $id, $data );
@@ -545,6 +638,13 @@ class BogoDataManager {
 			$settings['offered_products'] = $settings['offered_products'];
 			$settings['offered_categories'] = $settings['offered_categories'];
 			$settings['name_of_order_bogo'] = $settings['name'];
+		}
+
+		// Per-offer badge keys, stored in `design_settings`, at the top level
+		// where the badge code reads them (only when an offer has them).
+		$stored_design = is_string( $settings['design_settings'] ?? null ) ? json_decode( $settings['design_settings'], true ) : null;
+		if ( is_array( $stored_design ) ) {
+			$settings = array_merge( $settings, array_intersect_key( $stored_design, array_flip( self::BADGE_KEYS ) ) );
 		}
 
 		return $settings;

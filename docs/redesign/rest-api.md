@@ -66,10 +66,10 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 
 | # | Method + route | Status | Notes |
 |---|---|---|---|
-| 18 | `GET /bogo/offers?page&per_page&search&status&type&orderby&order` | CHANGE | `search` is ignored today; `X-WP-Total` counts only global offers. Add `type` (global/product), and thumbnails + prices for the list cells |
-| 19 | `POST /bogo/offers` | EXISTS | Lite cap (2 global offers → 403 `salesbooster_limit_exceeded`) stays |
-| 20 | `GET /bogo/offers/{id}` | CHANGE | Must return `design_settings`, `offer_schedule` and badge fields. Today they're missing, so saving wipes the design |
-| 21 | `PUT/PATCH /bogo/offers/{id}` | CHANGE | Persist the fields dropped today (badge, `bogo_type`, alternates, exclusions), if they survive the design |
+| 18 | `GET /bogo/offers?page&per_page&search&status&type&orderby&order` | CHANGE | **Done (10a):** `search` (name), `type`, `status` reach the query; `X-WP-Total` / `X-WP-TotalPages` count every listed row and are always sent; `X-SPSG-Can-Create: 1|0` says whether a create would pass the route's limit. To do: thumbnails + prices for the list cells |
+| 19 | `POST /bogo/offers` | EXISTS | Lite cap: 2 global offers of any status → 403 `salesbooster_limit_exceeded` (checked before body validation; one rule, `BogoDataManager::can_create_global_offer()`). Pro-only values without pro: defaults for min quantity and schedule |
+| 20 | `GET /bogo/offers/{id}` | CHANGE | **Done (10a):** returns the design keys (flattened, badge keys included) and `offer_schedule` |
+| 21 | `PUT/PATCH /bogo/offers/{id}` | CHANGE | **Done (10a):** a merge over the stored offer (unknown `design_settings` keys kept); per-offer badge keys stored in `design_settings`; pro-only values without pro keep the stored value. To do: `bogo_type`, exclusions (pro, 10d) |
 | 22 | `DELETE /bogo/offers/{id}` | EXISTS | |
 | 23 | `POST /bogo/offers/{id}/status` `{ status }` | EXISTS | List status switch |
 | 24 | `POST /bogo/offers/batch` `{ delete: [ids] }` | NEW | Bulk delete from the list |
