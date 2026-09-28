@@ -19,20 +19,55 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 	}
 
 	public function get_script_handles(): array {
-		$blocks = require PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/blocks.asset.php' );
-		wp_register_script(
+		return $this->register_script() ? [ $this->script_key ] : [];
+	}
+
+	public function get_editor_script_handles(): array {
+		return $this->register_script() ? [ $this->script_key ] : [];
+	}
+
+	/**
+	 * Register the block script built by webpack (`assets/js/blocks.js`).
+	 *
+	 * Returns false when the build is missing, so the cart and checkout
+	 * blocks render without the bump instead of failing on a handle that
+	 * doesn't exist.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool Whether the script is registered.
+	 */
+	protected function register_script(): bool {
+		if ( wp_script_is( $this->script_key, 'registered' ) ) {
+			return true;
+		}
+
+		$asset_file = $this->get_asset_file();
+
+		if ( ! file_exists( $asset_file ) ) {
+			return false;
+		}
+
+		$blocks = require $asset_file;
+
+		return wp_register_script(
 			$this->script_key,
-			PluginHelper::get_modules_url( 'upsell-order-bump/assets/build/blocks.js' ),
+			PluginHelper::get_modules_url( 'upsell-order-bump/assets/js/blocks.js' ),
 			array_merge( [ 'wc-blocks-registry' ], $blocks['dependencies'] ),
 			$blocks['version'],
 			true
 		);
-
-		return [ $this->script_key ];
 	}
 
-	public function get_editor_script_handles(): array {
-		return [ $this->script_key ];
+	/**
+	 * Path of the block script's generated `.asset.php`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string
+	 */
+	protected function get_asset_file(): string {
+		return PluginHelper::get_modules_path( 'upsell-order-bump/assets/js/blocks.asset.php' );
 	}
 
 	public function get_script_data(): array {

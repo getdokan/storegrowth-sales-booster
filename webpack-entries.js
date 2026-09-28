@@ -95,6 +95,12 @@ const moduleEntries = {
         './modules/direct-checkout/src/admin/index.tsx'
     ),
     ...moduleEntry( 'bogo', 'admin', './modules/bogo/src/admin/index.tsx' ),
+    // Order Bump in the WooCommerce cart / checkout blocks (storefront).
+    ...moduleEntry(
+        'upsell-order-bump',
+        'blocks',
+        './modules/upsell-order-bump/src/storefront/blocks/index.tsx'
+    ),
 };
 
 /**

@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Blocks\BlockRegistry;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
@@ -34,6 +35,8 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         OrderBumpAjax::class,
         OrderBumpController::class,
 	    CartValidator::class,
+		// Cart / checkout block integration: only while the module is active.
+		BlockRegistry::class,
     ];
 
     /**

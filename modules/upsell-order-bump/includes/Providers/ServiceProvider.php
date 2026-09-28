@@ -3,7 +3,6 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Blocks\BlockRegistry;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
 
 /**
@@ -26,7 +25,6 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
         UpsellOrderBumpModule::class,
-	    BlockRegistry::class,
     ];
 
     /**
@@ -48,6 +46,5 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( UpsellOrderBumpModule::get_id(), UpsellOrderBumpModule::class, true );
-		$this->add_with_implements_tags( BlockRegistry::class, BlockRegistry::class, true );
     }
 }
