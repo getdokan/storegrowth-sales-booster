@@ -12,11 +12,13 @@
  * @since SPSG_VERSION
  */
 import { applyFilters } from '@wordpress/hooks';
+import { __ } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
 import {
     CardHead,
     FeatureLayout,
     ModuleSettingsPage,
+    ModuleSettingsSkeleton,
     type SettingsPageParts,
 } from '@storegrowth/components';
 import {
@@ -31,12 +33,36 @@ import { moduleLabel } from '@storegrowth/utilities';
 /** Page opened by `#/settings` without a module. */
 const GENERAL = 'general';
 
+/**
+ * What a module adds to its settings page: `preview` and `controls`.
+ *
+ * @param id Page id.
+ */
+function pageParts( id: string ): SettingsPageParts {
+    /**
+     * Filters what a module adds to its settings page: `preview` and
+     * `controls`, render functions of the page's settings.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param {SettingsPageParts} parts    Preview and controls (none by default).
+     * @param {string}            moduleId Page id (module id, or `general`).
+     */
+    return applyFilters(
+        'storegrowth.settings.page',
+        {},
+        id
+    ) as SettingsPageParts;
+}
+
 export default function SettingsPage() {
     const [ searchParams ] = useSearchParams();
     const id = searchParams.get( 'module' ) || GENERAL;
     const { pages, loading } = useSettingsPages();
     const module = useModules().getModule( id );
-    const title = module ? moduleLabel( module ) : '';
+    const title = module
+        ? moduleLabel( module )
+        : __( 'Settings', 'storegrowth-sales-booster' );
     const hasPage = GENERAL === id || Boolean( pages[ id ] );
 
     // Neither a page nor a module (an old or mistyped link): global settings.
@@ -44,13 +70,21 @@ export default function SettingsPage() {
         return <Navigate to="/settings" replace />;
     }
 
-    // A module without a page yet shows its empty frame (rail + title).
-    const page = hasPage ? (
-        // Keyed: another page starts with fresh settings state.
-        <PageContent key={ id } id={ id } title={ title } />
-    ) : (
-        <CardHead title={ title } />
-    );
+    // Keyed: another page starts with fresh settings state.
+    let page = <PageContent key={ id } id={ id } title={ title } />;
+
+    if ( ! hasPage && loading ) {
+        // The pages are loading: the page's shape.
+        page = (
+            <ModuleSettingsSkeleton
+                title={ title }
+                hasPreview={ Boolean( pageParts( id ).preview ) }
+            />
+        );
+    } else if ( ! hasPage ) {
+        // A module without a page yet shows its empty frame (rail + title).
+        page = <CardHead title={ title } />;
+    }
 
     return module ? (
         <FeatureLayout moduleId={ id }>{ page }</FeatureLayout>
@@ -71,21 +105,7 @@ export default function SettingsPage() {
 function PageContent( { id, title }: { id: string; title: string } ) {
     const settings = useModuleSettings( id );
     const loaded = ! settings.loading && ! settings.loadError;
-
-    /**
-     * Filters what a module adds to its settings page: `preview` and
-     * `controls`, render functions of the page's settings.
-     *
-     * @since SPSG_VERSION
-     *
-     * @param {SettingsPageParts} parts    Preview and controls (none by default).
-     * @param {string}            moduleId Page id (module id, or `general`).
-     */
-    const parts = applyFilters(
-        'storegrowth.settings.page',
-        {},
-        id
-    ) as SettingsPageParts;
+    const parts = pageParts( id );
 
     // Parts render once the settings are there (they read the values).
     return (
@@ -95,6 +115,9 @@ function PageContent( { id, title }: { id: string; title: string } ) {
             preview={
                 loaded ? ( parts.preview?.( settings ) as ReactNode ) : null
             }
+            hasPreview={ Boolean( parts.preview ) }
+            // The global settings are one card without tabs.
+            hasTabs={ GENERAL !== id }
             controls={ loaded ? parts.controls?.( settings ) : undefined }
         />
     );

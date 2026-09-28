@@ -53,6 +53,7 @@ export { ModuleIcon, type ModuleIconProps } from './module-icon';
 export {
     ModuleSettingsPage,
     type ModuleSettingsPageProps,
+    ModuleSettingsSkeleton,
     type SettingsPageParts,
 } from './module-settings';
 export { OptionCard, type OptionCardProps } from './option-card';

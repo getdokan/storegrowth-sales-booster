@@ -12,7 +12,7 @@
  *
  * @since SPSG_VERSION
  */
-import { toast } from '@wedevs/plugin-ui';
+import { Skeleton, toast } from '@wedevs/plugin-ui';
 import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
@@ -43,8 +43,98 @@ export interface ModuleSettingsPageProps< V extends Values > {
     settings: ModuleSettings< V >;
     /** Preview column, usually `LivePreview`. */
     preview?: ReactNode;
+    /** The page will have a preview: the loading skeleton draws its column. */
+    hasPreview?: boolean;
+    /** The page has tabs: the loading skeleton draws the tab bar. */
+    hasTabs?: boolean;
     /** Controls the page draws itself instead of a field's, by key. */
     controls?: Partial< Record< keyof V, ReactNode > >;
+}
+
+interface SkeletonShape {
+    /** Draw the preview column. */
+    hasPreview?: boolean;
+    /** Draw the tab bar. */
+    hasTabs?: boolean;
+}
+
+/**
+ * A skeleton block, in the divider grey (visible on white while it pulses).
+ *
+ * @param props           Props.
+ * @param props.className Size and shape.
+ */
+function Block( { className }: { className: string } ) {
+    return <Skeleton className={ `bg-sg-line ${ className }` } />;
+}
+
+/**
+ * A whole settings page while the pages load: title card and skeleton.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param props            Props.
+ * @param props.title      Page title.
+ * @param props.hasPreview Draw the preview column.
+ * @param props.hasTabs    Draw the tab bar.
+ */
+export function ModuleSettingsSkeleton( {
+    title,
+    hasPreview = false,
+    hasTabs = true,
+}: SkeletonShape & { title: string } ) {
+    return (
+        <div className="flex w-full flex-col">
+            <CardHead title={ title } className="rounded-b-none" />
+            <LoadingSkeleton hasPreview={ hasPreview } hasTabs={ hasTabs } />
+        </div>
+    );
+}
+
+/**
+ * The shape of a settings page while it loads: tab bar, field rows, Save
+ * bar, and the preview column when the page has one.
+ *
+ * @param props            Props.
+ * @param props.hasPreview Draw the preview column.
+ * @param props.hasTabs    Draw the tab bar.
+ */
+function LoadingSkeleton( { hasPreview, hasTabs }: SkeletonShape ) {
+    const preview = hasPreview ? (
+        <div className="flex w-full flex-auto flex-col">
+            <div className="flex w-full items-center justify-between gap-4 border border-l-0 border-t-0 border-sg-cardline bg-white px-6 py-3 @max-[932px]:border-l">
+                <Block className="h-5 w-16" />
+                <Block className="h-9 w-32" />
+            </div>
+            <div className="flex w-full flex-auto items-center justify-center rounded-br-lg border border-l-0 border-t-0 border-sg-cardline bg-sg-preview p-10 @max-[932px]:rounded-b-lg @max-[932px]:border-l">
+                <Skeleton className="h-[320px] w-full max-w-[420px] rounded-md bg-white" />
+            </div>
+        </div>
+    ) : undefined;
+
+    return (
+        <SettingsSplit preview={ preview }>
+            <div
+                aria-busy="true"
+                aria-label={ __( 'Loading…', 'storegrowth-sales-booster' ) }
+                className="flex w-full flex-col items-start gap-6"
+            >
+                { hasTabs && <Block className="h-10 w-56 rounded-lg" /> }
+                { [ 0, 1, 2, 3 ].map( ( row ) => {
+                    return (
+                        <div key={ row } className="flex w-full flex-col gap-2">
+                            <Block className="h-4 w-36" />
+                            <Block className="h-10 w-full" />
+                        </div>
+                    );
+                } ) }
+                <div className="flex w-full justify-end gap-3">
+                    <Block className="h-10 w-20" />
+                    <Block className="h-10 w-20" />
+                </div>
+            </div>
+        </SettingsSplit>
+    );
 }
 
 /**
@@ -88,16 +178,20 @@ function runs< T >( keys: string[], by: ( key: string ) => T ) {
 /**
  * @since SPSG_VERSION
  *
- * @param props          Props.
- * @param props.title    Title while loading.
- * @param props.settings Module settings.
- * @param props.preview  Preview column.
- * @param props.controls Page-drawn controls by key.
+ * @param props            Props.
+ * @param props.title      Title while loading.
+ * @param props.settings   Module settings.
+ * @param props.preview    Preview column.
+ * @param props.hasPreview The page will have a preview (loading skeleton).
+ * @param props.hasTabs    The page has tabs (loading skeleton).
+ * @param props.controls   Page-drawn controls by key.
  */
 export function ModuleSettingsPage< V extends Values >( {
     title,
     settings,
     preview,
+    hasPreview = false,
+    hasTabs = true,
     controls = {},
 }: ModuleSettingsPageProps< V > ) {
     const schema = settings.schema as Record< string, SettingField >;
@@ -353,20 +447,22 @@ export function ModuleSettingsPage< V extends Values >( {
         };
     } );
 
+    // One card: the title on top, one border line below it.
     return (
-        <>
-            <CardHead title={ pageTitle } />
-            { ( settings.loading || settings.loadError ) && (
+        <div className="flex w-full flex-col">
+            <CardHead title={ pageTitle } className="rounded-b-none" />
+            { settings.loading && (
+                <LoadingSkeleton
+                    hasPreview={ hasPreview }
+                    hasTabs={ hasTabs }
+                />
+            ) }
+            { ! settings.loading && settings.loadError && (
                 <div
-                    role={ settings.loadError ? 'alert' : undefined }
-                    className={ `w-full rounded-lg border border-sg-cardline bg-white p-6 text-sm ${
-                        settings.loadError
-                            ? 'text-destructive'
-                            : 'text-sg-muted'
-                    }` }
+                    role="alert"
+                    className="w-full rounded-b-lg border border-t-0 border-sg-cardline bg-white p-6 text-sm text-destructive"
                 >
-                    { settings.loadError ||
-                        __( 'Loading…', 'storegrowth-sales-booster' ) }
+                    { settings.loadError }
                 </div>
             ) }
             { ! settings.loading && ! settings.loadError && (
@@ -393,6 +489,6 @@ export function ModuleSettingsPage< V extends Values >( {
                     ) }
                 </SettingsSplit>
             ) }
-        </>
+        </div>
     );
 }

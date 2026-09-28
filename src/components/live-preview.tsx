@@ -186,7 +186,7 @@ export function LivePreview( {
 
     return (
         <>
-            <div className="flex w-full items-center justify-between gap-4 rounded-tr-lg border border-l-0 border-sg-cardline bg-white px-6 py-3 @max-[932px]:rounded-none @max-[932px]:border-l @max-[932px]:border-t-0">
+            <div className="flex w-full items-center justify-between gap-4 border border-l-0 border-t-0 border-sg-cardline bg-white px-6 py-3 @max-[932px]:border-l">
                 <div className="min-w-0 flex-1">
                     <h2 className="text-[14px] font-semibold leading-[1.3] text-sg-heading">
                         { __( 'Preview', 'storegrowth-sales-booster' ) }

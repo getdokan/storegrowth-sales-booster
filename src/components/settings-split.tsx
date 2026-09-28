@@ -4,7 +4,9 @@
  * columns (512 + 420px): a container query, so it holds with the WordPress
  * menu and the feature rail beside it.
  *
- * `LivePreview` inside uses the same container for its stacked borders.
+ * `LivePreview` inside uses the same container for its stacked borders. The
+ * frame sits under the page's title card (`ModuleSettingsPage`), so it has no
+ * top border or top corners of its own.
  *
  * @since SPSG_VERSION
  */
@@ -31,11 +33,12 @@ export function SettingsSplit( { children, preview }: SettingsSplitProps ) {
             <div className="flex w-full flex-wrap items-stretch">
                 <div
                     className={ cn(
-                        'flex flex-col items-start gap-6 self-stretch border border-sg-cardline bg-white p-6 max-[782px]:p-4',
+                        // Sits under the title card: its border is the top line.
+                        'flex flex-col items-start gap-6 self-stretch border border-t-0 border-sg-cardline bg-white p-6 max-[782px]:p-4',
                         // No preview: the settings card takes the width.
                         preview
-                            ? 'w-[512px] shrink-0 grow-0 basis-[512px] rounded-l-lg @max-[932px]:w-full @max-[932px]:flex-auto @max-[932px]:basis-full @max-[932px]:rounded-t-lg @max-[932px]:rounded-bl-none'
-                            : 'w-full rounded-lg'
+                            ? 'w-[512px] shrink-0 grow-0 basis-[512px] rounded-bl-lg @max-[932px]:w-full @max-[932px]:flex-auto @max-[932px]:basis-full @max-[932px]:rounded-none'
+                            : 'w-full rounded-b-lg'
                     ) }
                 >
                     { children }
