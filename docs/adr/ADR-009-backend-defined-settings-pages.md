@@ -4,6 +4,7 @@
 - Date: 2026-09-27
 - Extends: ADR-007 (settings engine, extension fields); builds on ADR-008 (one admin page)
 - Reference: getdokan/dokan#3141 (flat schema, one GET for every page, plugin-ui `Settings`)
+- How-to and key reference: [`../settings-pages.md`](../settings-pages.md)
 
 ## Context
 
