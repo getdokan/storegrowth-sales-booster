@@ -1,5 +1,7 @@
 /**
- * BOGO offers REST client (`sales-booster/v1/bogo/offers`).
+ * BOGO REST client: the offers route (`sales-booster/v1/bogo/offers`, read
+ * through the shared records client), the preview's products and the
+ * category messages.
  *
  * @since SPSG_VERSION
  */
@@ -7,9 +9,9 @@ import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addQueryArgs } from '@wordpress/url';
 import {
+    type Currency,
     getAdminData,
-    type SettingField,
-    type SettingsPageDefinition,
+    type RecordEditorData,
 } from '@storegrowth/utilities';
 
 /** A product in a list cell. */
@@ -42,14 +44,6 @@ export interface BogoOffer {
     get_different_product_info?: OfferProduct;
 }
 
-export interface OfferPage {
-    items: BogoOffer[];
-    totalItems: number;
-    totalPages: number;
-    /** Lite's limit allows another offer (`X-SPSG-Can-Create`). */
-    canCreate: boolean;
-}
-
 /**
  * The offers route: the admin's, or the Dokan vendor's (`/bogo/offers/vendor`,
  * the vendor's own offers).
@@ -58,95 +52,17 @@ export interface OfferPage {
  *
  * @param vendor The Dokan vendor dashboard.
  */
-const base = ( vendor = false ) => {
+export const offersRoute = ( vendor = false ) => {
     return `/${ getAdminData().restNamespace }/bogo/offers${
         vendor ? '/vendor' : ''
     }`;
 };
 
 /**
- * A page of offers.
- *
- * @since SPSG_VERSION
- *
- * @param query          Query.
- * @param query.page     Page, from 1.
- * @param query.per_page Rows per page.
- * @param query.search   Name contains.
- * @param vendor         The Dokan vendor's offers.
+ * What the offer editor is drawn from (`GET /bogo/offers/editor`, PHP
+ * `BogoOfferFields`).
  */
-export async function fetchOffers(
-    query: {
-        page: number;
-        per_page: number;
-        search?: string;
-    },
-    vendor = false
-): Promise< OfferPage > {
-    const response = await apiFetch< Response, false >( {
-        path: addQueryArgs( base( vendor ), query ),
-        parse: false,
-    } );
-
-    return {
-        items: ( await response.json() ) as BogoOffer[],
-        totalItems: Number( response.headers.get( 'X-WP-Total' ) ?? 0 ),
-        totalPages: Number( response.headers.get( 'X-WP-TotalPages' ) ?? 0 ),
-        canCreate: response.headers.get( 'X-SPSG-Can-Create' ) !== '0',
-    };
-}
-
-/**
- * Turn an offer on or off.
- *
- * @since SPSG_VERSION
- *
- * @param id     Offer id.
- * @param active On.
- * @param vendor The Dokan vendor's offer.
- */
-export function setOfferStatus( id: number, active: boolean, vendor = false ) {
-    return apiFetch( {
-        path: `${ base( vendor ) }/${ id }/status`,
-        method: 'POST',
-        data: { status: active ? 'yes' : 'no' },
-    } );
-}
-
-/**
- * Delete offers.
- *
- * @since SPSG_VERSION
- *
- * @param ids    Offer ids.
- * @param vendor The Dokan vendor's offers.
- *
- * @return The ids deleted and those that couldn't be.
- */
-export function deleteOffers( ids: number[], vendor = false ) {
-    return apiFetch< { deleted: number[]; failed: number[] } >( {
-        path: `${ base( vendor ) }/batch`,
-        method: 'POST',
-        data: { delete: ids },
-    } );
-}
-
-/** The store's price format (WooCommerce settings). */
-export interface Currency {
-    symbol: string;
-    /** `left`, `right`, `left_space` or `right_space`. */
-    position: string;
-    decimals: number;
-    decimal_separator: string;
-    thousand_separator: string;
-}
-
-/** What the offer editor is drawn from (`GET /bogo/offers/editor`). */
-export interface OfferEditor {
-    page: SettingsPageDefinition;
-    schema: Record< string, SettingField >;
-    /** Lite's limit allows a new offer. */
-    can_create: boolean;
+export interface OfferEditor extends RecordEditorData {
     currency: Currency;
     /** The global "Show Regular Price" setting, for the preview. */
     show_regular_price: boolean;
@@ -155,84 +71,6 @@ export interface OfferEditor {
      * (`vendors_can_create_buy_x_get_x`).
      */
     buy_x_get_x?: boolean;
-}
-
-/**
- * A price in the store's format, as `wc_price()` writes it (plain text).
- *
- * @since SPSG_VERSION
- *
- * @param amount   Amount.
- * @param currency Price format.
- */
-export function formatPrice( amount: number, currency: Currency ): string {
-    const [ whole, fraction ] = Math.abs( amount )
-        .toFixed( currency.decimals )
-        .split( '.' );
-    const number =
-        whole.replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousand_separator ) +
-        ( fraction ? currency.decimal_separator + fraction : '' );
-    const formats: Record< string, string > = {
-        left: `${ currency.symbol }${ number }`,
-        right: `${ number }${ currency.symbol }`,
-        left_space: [ currency.symbol, number ].join( ' ' ),
-        right_space: [ number, currency.symbol ].join( ' ' ),
-    };
-
-    return (
-        ( amount < 0 ? '-' : '' ) +
-        ( formats[ currency.position ] ?? formats.left )
-    );
-}
-
-/**
- * The offer editor's page and fields (PHP `BogoOfferFields`).
- *
- * @since SPSG_VERSION
- *
- * @param vendor The Dokan vendor's route.
- */
-export function fetchEditor( vendor = false ) {
-    return apiFetch< OfferEditor >( { path: `${ base( vendor ) }/editor` } );
-}
-
-/** An offer as the REST routes read and take it (raw values). */
-export type OfferData = Record< string, unknown >;
-
-/**
- * One offer.
- *
- * @since SPSG_VERSION
- *
- * @param id     Offer id.
- * @param vendor The Dokan vendor's offer.
- */
-export function fetchOffer( id: number, vendor = false ) {
-    return apiFetch< OfferData >( { path: `${ base( vendor ) }/${ id }` } );
-}
-
-/**
- * Create an offer (`id` null) or change one: an update sends only what
- * changed, merged over the stored offer.
- *
- * @since SPSG_VERSION
- *
- * @param id     Offer id, or null for a new offer.
- * @param data   Values.
- * @param vendor The Dokan vendor's offer.
- *
- * @return The offer as stored.
- */
-export function saveOffer(
-    id: number | null,
-    data: OfferData,
-    vendor = false
-) {
-    return apiFetch< OfferData >( {
-        path: id ? `${ base( vendor ) }/${ id }` : base( vendor ),
-        method: id ? 'PUT' : 'POST',
-        data,
-    } );
 }
 
 /** A product as the offer preview shows it. */

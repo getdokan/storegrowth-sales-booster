@@ -62,6 +62,12 @@ export {
     PickerCards,
     type PickerCardsProps,
 } from './picker-cards';
+export {
+    type ListRecord,
+    RecordList,
+    type RecordListMessages,
+    type RecordListProps,
+} from './record-list';
 export { SaveBar, type SaveBarProps } from './save-bar';
 export { SettingsSplit, type SettingsSplitProps } from './settings-split';
 export {

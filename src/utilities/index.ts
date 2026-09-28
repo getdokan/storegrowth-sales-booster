@@ -8,3 +8,4 @@ export * from './admin-data';
 export * from './ajax';
 export * from './api';
 export * from './modules-catalog';
+export * from './records';

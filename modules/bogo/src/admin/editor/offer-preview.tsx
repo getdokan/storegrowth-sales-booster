@@ -18,14 +18,9 @@ import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { CircleCheck } from 'lucide-react';
 import type { CSSProperties } from 'react';
-import { assetUrl } from '@storegrowth/utilities';
+import { assetUrl, type Currency, formatPrice } from '@storegrowth/utilities';
 
-import {
-    type Currency,
-    fetchPreviewProducts,
-    formatPrice,
-    type PreviewProduct,
-} from '../api';
+import { fetchPreviewProducts, type PreviewProduct } from '../api';
 import type { OfferValues } from './use-bogo-offer';
 
 /** The design's sample product, until one is chosen. */

@@ -160,6 +160,18 @@ export interface ProductOption {
     name: string;
     /** Thumbnail URL, or empty. */
     image?: string;
+    /** WooCommerce type: `simple`, `variable`, `variation`, … */
+    type?: string;
+}
+
+/**
+ * Options of the product pickers' requests.
+ *
+ * @since SPSG_VERSION
+ */
+export interface ProductQueryOptions {
+    /** Variations too (`include_variations`), e.g. an offer product. */
+    variations?: boolean;
 }
 
 /** Response of `GET|POST /settings/{module}`. */
@@ -321,6 +333,7 @@ const toOption = ( product: WcProduct ): ProductOption => ( {
     id: product.id,
     name: decodeEntities( product.name ),
     image: product.images?.[ 0 ]?.src ?? '',
+    type: product.type,
 } );
 
 /**
@@ -329,12 +342,15 @@ const toOption = ( product: WcProduct ): ProductOption => ( {
  *
  * @since SPSG_VERSION
  *
- * @param search Search text.
- * @param limit  Most results.
+ * @param search             Search text.
+ * @param limit              Most results.
+ * @param options            Options.
+ * @param options.variations Variations too.
  */
 export async function searchProducts(
     search: string,
-    limit = 20
+    limit = 20,
+    { variations = false }: ProductQueryOptions = {}
 ): Promise< ProductOption[] > {
     const products = await apiFetch< WcProduct[] >( {
         path: addQueryArgs( path( '/products' ), {
@@ -342,6 +358,7 @@ export async function searchProducts(
             per_page: limit,
             status: 'publish',
             _fields: 'id,name,type,images',
+            include_variations: variations || undefined,
         } ),
     } );
 
@@ -355,10 +372,13 @@ export async function searchProducts(
  *
  * @since SPSG_VERSION
  *
- * @param ids Product ids.
+ * @param ids                Product ids.
+ * @param options            Options.
+ * @param options.variations Variations too (a saved variation id).
  */
 export async function fetchProductsByIds(
-    ids: number[]
+    ids: number[],
+    { variations = false }: ProductQueryOptions = {}
 ): Promise< ProductOption[] > {
     if ( ! ids.length ) {
         return [];
@@ -369,6 +389,7 @@ export async function fetchProductsByIds(
             include: ids.join( ',' ),
             per_page: ids.length,
             _fields: 'id,name,type,images',
+            include_variations: variations || undefined,
         } ),
     } );
 

@@ -12,4 +12,11 @@ export type { ModuleSettings } from './use-module-settings';
 export { useSettingsPages } from './use-settings';
 export type { SettingsPages } from './use-settings';
 export { usePreviewFont } from './use-preview-font';
+export { useRecordEditor } from './use-record-editor';
+export type {
+    RecordEditor,
+    RecordEditorOptions,
+    RecordRule,
+    RecordValues,
+} from './use-record-editor';
 export * from './router';
