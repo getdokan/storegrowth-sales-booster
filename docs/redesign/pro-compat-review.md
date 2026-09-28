@@ -39,7 +39,7 @@
 
 | # | Rule |
 |---|---|
-| **R1** | Lite's schema includes **every field pro 2.2.0 exposes**, whether or not the redesign draws it. A field missing from the design goes into an "Advanced (Pro)" section of that module, visible only when `has_pro()` is true. A pro field may leave the schema only after the minimum supported pro version no longer uses the key. |
+| **R1** | Lite's schema includes **every field pro 2.2.0 exposes**, whether or not the redesign draws it. A field missing from the design goes into an "Advanced" section of that module (plain title; each field shows its own Pro badge and is locked when `has_pro()` is false). A pro field may leave the schema only after the minimum supported pro version no longer uses the key. |
 | **R2** | Lite builds the **BOGO category messages** screen (pro-gated) on REST `/bogo/category-messages`. The existing ajax actions stay. Pro 2.2.0's status/delete ajax handlers keep working, and the REST routes call the same data layer. |
 | **R3** | Every pro flag and cap is decided **server-side** from `sp_store_growth()->has_pro()`: the schema `pro`/`locked` flags, `GET /modules` `is_pro`, and 403 on create over the cap (BOGO already does this; add it for Order Bump). The client never hardcodes a cap. |
 | **R4** | Sanitizers accept the **same value domain** as today. Tightening a value's rules is allowed only for security (e.g. CSS injection). When a value is rejected, the stored value is kept (never blanked) and a field error is returned. Characterisation tests use real option dumps that include pro keys. |

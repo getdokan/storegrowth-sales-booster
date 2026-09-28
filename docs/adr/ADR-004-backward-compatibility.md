@@ -64,7 +64,7 @@ Ajax and REST rules:
   - BOGO category messages
   - BOGO product-tab schedule and variations (PHP-rendered on the product edit screen; not affected)
 - **Rules R1–R6 from `../redesign/pro-compat-review.md` are part of this decision:**
-  - R1: every pro 2.2.0 field is in lite's schema, even if the design drops it (an "Advanced (Pro)" section).
+  - R1: every pro 2.2.0 field is in lite's schema, even if the design drops it (an "Advanced" section; each field shows its own Pro badge when locked).
   - R2: lite builds the BOGO category messages screen.
   - R3: caps and flags are decided server-side from `has_pro()`.
   - R4: sanitizers accept the same value domain and never blank a value.

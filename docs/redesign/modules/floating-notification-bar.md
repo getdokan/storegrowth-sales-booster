@@ -39,7 +39,7 @@
 | Colors ×6 | `background_color`, `text_color`, `icon_color`, `button_color`, `button_text_color`, `close_icon_color` | lite | `color_picker` |
 | Template | `notify_template` | lite | `TemplatePicker` (writes 6 colours) |
 | Icon (not in design) | `default_banner_icon_name`, `default_banner_custom_icon` | pro | keep, `IconPicker` |
-| Coupon (not in design) | `show_cupon`, `cupon_code` | pro | **Required by R1:** "Advanced (Pro)" section, coupon search (`/coupons`) |
+| Coupon (not in design) | `show_cupon`, `cupon_code` | pro | **Required by R1:** "Advanced" section, coupon search (`/coupons`) |
 
 ## 5. Data changes
 - **Button (decided):** new key `button_enable` (toggle, default on) for the design's "Show" switch; lite's storefront JS removes the button when it is off (pro 2.2.0's template prints the button anyway); an option saved before the key existed keeps its button. The device check now removes only this bar's button (it also removed the Free Shipping bar's CTA). Countdown dates are parsed in ISO form, which Safari needs. **No `ba-scroll`**: actions stay Close / Open Link.

@@ -58,7 +58,7 @@ Steps 1c–11 are blocked only by the product decisions in each spec's §9; get 
 - **The mockup is the source of truth.** The HTML/CSS at https://storegrowth-design.vercel.app (`assets/ui.css`, `assets/theme.js`) defines the values. Match them with Tailwind `@theme` tokens and plugin-ui theming. If a plugin-ui component can't reach the mockup through props/className/theme, wrap or restyle it locally; don't accept the component's default look.
 - **Allowed deviations** (the only ones; each must be listed in that module's §9 and signed off by design before merge):
   1. **Mockup bugs listed in the spec:** missing Save buttons, duplicate fields, wrong help text, checkboxes that should be a radio, the Order Bump preview frame. Fixed in the design's own visual style.
-  2. **Compatibility-required UI** (ADR-004, R1/R2): the pro-only "Advanced (Pro)" section and the BOGO category-messages screen, styled with the same components as the rest of the page.
+  2. **Compatibility-required UI** (ADR-004, R1/R2): the "Advanced" section of pro fields (plain title, a Pro badge per field) and the BOGO category-messages screen, styled with the same components as the rest of the page.
   3. **Pro lock states:** the mockups don't show them. Use the design's own crown/amber style (`sg-amber-pro`).
   4. **plugin-ui behaviours we accept** (report §3): DataViews bulk bar and pagination, delete confirm dialog.
 - **Visual QA per module before merge:**

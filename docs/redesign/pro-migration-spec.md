@@ -145,7 +145,7 @@ In every row, "delete" refers to the new `src/`; the 2.2.0 code survives only as
 | SalesPop | 11 | Lite schema (visibility, message, timing, image/popup style, typography) | None (`spsg_sales_pop_visbility_controller`, `_image_position`) | Targeting, message tokens, timing |
 | DirectCheckout | 8 | Lite schema (label, pro layouts, quick-cart redirect, shop page, font/padding/border) | None (`spsg_direct_checkout_button_inline_styles`) | Buy-now layouts, Fly Cart redirect |
 | StockBar | 7 | Lite schema (shop/variation display, colours, height, format, texts, warning) | None (templates `shop-stock-bar`, `variation-stock-bar`, `stock-count-below`) | Shop and variation bars |
-| FloatingNotificationBar | 7 | Lite schema incl. "Advanced (Pro)": coupon, custom icon, new tab (R1) | None (`bar-pro.php`, `countdown.php`, `coupon-code.php`) | Countdown, coupon chip, targeting |
+| FloatingNotificationBar | 7 | Lite schema incl. "Advanced": coupon, custom icon, new tab (R1) | None (`bar-pro.php`, `countdown.php`, `coupon-code.php`) | Countdown, coupon chip, targeting |
 | QuickView | 6 | Lite schema (navigation colour, position, redirect, close/details buttons, icon, auto-open Fly Cart) | None (`frontend-pro.js` needs `wfc-script`) | Icon mode, details button, redirect |
 | FreeShippingBar | 5 | Lite schema (position, icon + custom, display rules, height, font size) | None (`bar-pro.php`) | Position, trigger, targeting |
 | QuickCart (Fly Cart) | 4 | Lite schema (center layout, pro positions, stock, badge, free-shipping msg, coupon, redirect) | None (`qc-coupon.js`, `qc-centered-cart.js`, `coupon.php`) | Centered layout, coupon apply |
