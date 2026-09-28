@@ -7,7 +7,9 @@
 
 namespace StorePulse\StoreGrowth\Modules\DirectCheckout;
 
+use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,15 +47,23 @@ class Ajax implements HookRegistry {
 			wp_send_json_error();
 		}
 
-		// Decode the JSON data.
-		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
+		// The old admin's payload: JSON `{ direct_checkout_data: { … } }`.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded, then sanitized per field by the settings service.
+		$data = json_decode( wp_unslash( $_POST['data'] ), true );
 
-		if ( isset( $data['direct_checkout_data'] ) ) {
-			$direct_checkout_data = $data['direct_checkout_data'];
-
-			update_option( 'spsg_direct_checkout_settings', $direct_checkout_data );
-			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' ) ) );
+		if ( ! is_array( $data ) || ! isset( $data['direct_checkout_data'] ) || ! is_array( $data['direct_checkout_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
+
+		// Sanitized per field and merged into the stored option (it used to
+		// replace the option unsanitized).
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( DirectCheckoutModule::get_id(), $data['direct_checkout_data'] );
+
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
+
+		wp_send_json_success( Helper::get_settings( 'spsg_direct_checkout_settings' ) );
 	}
 
 
@@ -67,7 +77,7 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings', array() );
+		$form_data = Helper::get_settings( 'spsg_direct_checkout_settings', [] );
 
 		wp_send_json_success( $form_data );
 	}

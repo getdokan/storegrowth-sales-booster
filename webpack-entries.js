@@ -89,6 +89,11 @@ const moduleEntries = {
         'admin',
         './modules/fly-cart/src/admin/index.tsx'
     ),
+    ...moduleEntry(
+        'direct-checkout',
+        'admin',
+        './modules/direct-checkout/src/admin/index.tsx'
+    ),
 };
 
 /**

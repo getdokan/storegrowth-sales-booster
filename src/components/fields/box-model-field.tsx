@@ -25,6 +25,8 @@ export interface BoxModelFieldProps extends Omit< BaseFieldProps, 'label' > {
     onChange: ( value: BoxValue ) => void;
     /** Accessible name when the label repeats on the page, e.g. "Counter margin". */
     name?: string;
+    /** Vertical and horizontal only: the setting stores two values. */
+    pairOnly?: boolean;
 }
 
 type Side = keyof BoxValue;
@@ -91,6 +93,7 @@ function SideInput( { value, onChange, ...props }: SideInputProps ) {
  * @param props.error    Error message.
  * @param props.help     Help line.
  * @param props.name     Accessible name (default: the label).
+ * @param props.pairOnly Vertical and horizontal only (no per-side toggle).
  */
 export function BoxModelField( {
     label,
@@ -100,11 +103,13 @@ export function BoxModelField( {
     error,
     help,
     name = label,
+    pairOnly = false,
 }: BoxModelFieldProps ) {
     // Per-side mode when the sides differ; otherwise the pair.
-    const [ perSide, setPerSide ] = useState(
+    const [ perSideState, setPerSide ] = useState(
         value.top !== value.bottom || value.left !== value.right
     );
+    const perSide = ! pairOnly && perSideState;
 
     const set = ( sides: Side[], input: number ) => {
         const next = { ...value };
@@ -143,22 +148,24 @@ export function BoxModelField( {
                             />
                         ) ) }
                     </div>
-                    <Toggle
-                        pressed={ perSide }
-                        onPressedChange={ setPerSide }
-                        disabled={ locked }
-                        aria-label={ sprintf(
-                            /* translators: %s: field name, e.g. "Margin" or "Counter margin". */
-                            __(
-                                'Set %s per side',
-                                'storegrowth-sales-booster'
-                            ),
-                            name.toLowerCase()
-                        ) }
-                        className="h-10 w-8 min-w-8 px-0 text-sg-help hover:bg-sg-chip hover:text-sg-text aria-pressed:bg-transparent aria-pressed:text-sg-brand"
-                    >
-                        <Dice2 className="size-5" strokeWidth={ 1.5 } />
-                    </Toggle>
+                    { ! pairOnly && (
+                        <Toggle
+                            pressed={ perSide }
+                            onPressedChange={ setPerSide }
+                            disabled={ locked }
+                            aria-label={ sprintf(
+                                /* translators: %s: field name, e.g. "Margin" or "Counter margin". */
+                                __(
+                                    'Set %s per side',
+                                    'storegrowth-sales-booster'
+                                ),
+                                name.toLowerCase()
+                            ) }
+                            className="h-10 w-8 min-w-8 px-0 text-sg-help hover:bg-sg-chip hover:text-sg-text aria-pressed:bg-transparent aria-pressed:text-sg-brand"
+                        >
+                            <Dice2 className="size-5" strokeWidth={ 1.5 } />
+                        </Toggle>
+                    ) }
                 </div>
             </div>
             <FieldNotes help={ help } error={ error } />

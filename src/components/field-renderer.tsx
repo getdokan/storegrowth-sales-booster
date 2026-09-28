@@ -131,6 +131,7 @@ function toElement< V extends Values >(
                   return {
                       value,
                       label: field.labels?.[ value ] ?? value,
+                      description: field.option_help?.[ value ],
                   };
               } )
             : undefined,
@@ -209,6 +210,7 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
     const options = ( element.options ?? [] ).map( ( option ) => ( {
         value: String( option.value ),
         label: option.label ?? String( option.value ),
+        help: option.description,
     } ) );
 
     switch ( element.variant ) {

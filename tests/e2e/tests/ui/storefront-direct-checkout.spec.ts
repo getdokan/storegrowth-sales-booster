@@ -23,12 +23,19 @@ async function computed(page: any, selector: string, prop: string): Promise<stri
     .evaluate((el: Element, p: string) => getComputedStyle(el).getPropertyValue(p).trim(), prop);
 }
 
+// Saves merge into the stored option (ADR-004), so the base config sets
+// every key these tests change back to its default.
 function baseConfig(overrides: Record<string, unknown> = {}) {
   return {
     buy_now_button_setting: 'cart-with-buy-now',
+    buy_now_button_label: 'Buy Now',
     product_page_checkout_enable: true,
     shop_page_checkout_enable: true,
     button_style: true,
+    button_color: '#008dff',
+    text_color: '#ffffff',
+    font_size: 16,
+    button_border_radius: 5,
     ...overrides,
   };
 }
@@ -41,7 +48,7 @@ test.describe('Storefront · Direct Checkout', { tag: '@ui' }, () => {
   });
 
   test.afterEach(async ({ page }) => {
-    await saveDirectCheckout(page, {});
+    await saveDirectCheckout(page, baseConfig());
     await setModuleActive(page, MODULES.directCheckout.id, true);
   });
 

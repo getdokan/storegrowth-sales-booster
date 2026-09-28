@@ -78,7 +78,8 @@ class CommonHooks implements HookRegistry {
 			$product_id                    = get_the_ID();
 					$direct_checkout_button_layout = get_post_meta( $product_id, '_spsg_direct_checkout_button_layout', true );
 		$settings                      = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
-		$buy_now_button_setting        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-to-buy-now' );
+			// Same default as the schema and the other button hooks (was `cart-to-buy-now` here only).
+		$buy_now_button_setting        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'buy_now_button_setting', 'cart-with-buy-now' );
 			if (
 				( 'cart-to-buy-now' === $direct_checkout_button_layout && 'specific-buy-now' === $buy_now_button_setting )
 				|| 'cart-to-buy-now' === $buy_now_button_setting

@@ -237,7 +237,8 @@ Nothing changes: read the option with `get_option()`, or `SettingsService::with_
 | `show_when` | Shown while every key has that value, or one of a list: `[ 'mode' => [ 'a', 'b' ] ]` |
 | `hidden` | Saved with its tab, never drawn (written by a preset or another key's control) |
 | `width` | `half`: consecutive half fields share a row |
-| `pro_options` | Options offered only with pro (or while stored) |
+| `pro_options` | Options offered only with pro (or while stored); a save without pro ignores them |
+| `option_help` | Option value → info tip beside it (`radio`) |
 | `pro_ui` | Control locked without pro, value still saved (e.g. set by a lite preset) |
 | `rows`, `max_length` | Textarea lines, text input limit |
 | `name` | Accessible name when the label repeats (`box`, `alignment`) |
@@ -296,7 +297,7 @@ add_filter( 'spsg_settings_schema', function ( $fields, $module_id ) {
 }, 10, 2 );
 ```
 
-The field is drawn in its section (or after the tab's fields), stored in the module's option and saved with its tab. Per-module filters: `spsg_stock_bar_settings_schema`, `spsg_countdown_timer_settings_schema`, `spsg_floating_notification_bar_settings_schema`, `spsg_progressive_discount_banner_settings_schema`, `spsg_fly_cart_settings_schema`, `spsg_quick_view_settings_schema`, `spsg_sales_pop_settings_schema`, `spsg_general_settings_schema`.
+The field is drawn in its section (or after the tab's fields), stored in the module's option and saved with its tab. Per-module filters: `spsg_stock_bar_settings_schema`, `spsg_countdown_timer_settings_schema`, `spsg_floating_notification_bar_settings_schema`, `spsg_progressive_discount_banner_settings_schema`, `spsg_fly_cart_settings_schema`, `spsg_quick_view_settings_schema`, `spsg_sales_pop_settings_schema`, `spsg_direct_checkout_settings_schema`, `spsg_general_settings_schema`.
 
 **Add a tab or section**:
 
@@ -339,7 +340,7 @@ addFilter(
 );
 ```
 
-**Change a module's preview or controls**: filter `storegrowth.settings.page` after the module (a later priority) and wrap its `preview` / `controls`. Some modules also fire a preview filter of their own (`storegrowth.preview.stock-bar`, `storegrowth.preview.countdown-timer`, `storegrowth.preview.fly-cart`, `storegrowth.preview.sales-pop`).
+**Change a module's preview or controls**: filter `storegrowth.settings.page` after the module (a later priority) and wrap its `preview` / `controls`. Some modules also fire a preview filter of their own (`storegrowth.preview.stock-bar`, `storegrowth.preview.countdown-timer`, `storegrowth.preview.fly-cart`, `storegrowth.preview.sales-pop`, `storegrowth.preview.direct-checkout`).
 
 ## REST
 

@@ -3,7 +3,9 @@
 namespace StorePulse\StoreGrowth\Modules\DirectCheckout\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\DirectCheckout\AdminPage;
 use StorePulse\StoreGrowth\Modules\DirectCheckout\DirectCheckoutModule;
+use StorePulse\StoreGrowth\Modules\DirectCheckout\Settings\DirectCheckoutSettings;
 
 /**
  * ServiceProvider for the module.
@@ -25,6 +27,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    DirectCheckoutModule::class,
+	    DirectCheckoutSettings::class,
+	    AdminPage::class,
     ];
 
     /**
@@ -47,5 +51,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( DirectCheckoutModule::get_id(), DirectCheckoutModule::class, true );
+        // Always loaded: the settings page works while the module is off.
+        $this->add_with_implements_tags( DirectCheckoutSettings::class, DirectCheckoutSettings::class, true );
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
     }
 }

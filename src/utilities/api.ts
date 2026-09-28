@@ -88,6 +88,8 @@ export interface SettingField {
     width?: 'half';
     /** Options offered only with pro (or while stored). */
     pro_options?: string[];
+    /** Option value → info tip beside it (`radio`). */
+    option_help?: Record< string, string >;
     /** `textarea`: visible lines. */
     rows?: number;
     /** `text`: longest text that can be typed. */

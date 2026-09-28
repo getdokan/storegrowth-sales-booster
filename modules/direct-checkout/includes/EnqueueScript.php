@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Modules\DirectCheckout;
 
-use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
@@ -32,7 +31,6 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function register_hooks(): void {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -60,7 +58,9 @@ class EnqueueScript implements HookRegistry {
 
 		$dir_checkout_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
 		$checkout_redirect     = \StorePulse\StoreGrowth\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
-		$is_checkout_redirect  = ( 'quick-cart-checkout' === $checkout_redirect );
+		// Fly Cart Checkout leaves the click to the Fly Cart panel, so it
+		// needs that module; without it the button goes to the checkout page.
+		$is_checkout_redirect = 'quick-cart-checkout' === $checkout_redirect && PluginHelper::is_module_active( 'fly-cart' );
 		wp_localize_script(
 			'spsg-dc-script',
 			'spsgDcFrontend',
@@ -68,37 +68,6 @@ class EnqueueScript implements HookRegistry {
 				'isQuickCartCheckout' => $is_checkout_redirect,
 				'isPro'               => sp_store_growth()->has_pro(),
 				'ajax_url'            => admin_url( 'admin-ajax.php' ),
-			)
-		);
-	}
-
-	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( AdminMenu::SCREEN_ID !== $hook || ! file_exists( PluginHelper::get_modules_path( 'direct-checkout/assets/build/settings.asset.php' ) ) ) {
-			return;
-		}
-
-		$settings_file = require PluginHelper::get_modules_path( 'direct-checkout/assets/build/settings.asset.php' );
-
-		wp_enqueue_script(
-			'spsg-direct-checkout-settings',
-			PluginHelper::get_modules_url( 'direct-checkout/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
-		);
-		$modules        = storegrowth_get_container()->get( \StorePulse\StoreGrowth\ModuleManager::class );
-		$is_quick_cart_activated = ! $modules->is_active_module('fly-cart');
-		wp_localize_script(
-			'spsg-direct-checkout-settings',
-			'spsgAdminQuickCartValidate',
-			array(
-				'isQuickCartActivated' => $is_quick_cart_activated,
 			)
 		);
 	}
@@ -117,7 +86,8 @@ class EnqueueScript implements HookRegistry {
         }
 		$button_color         = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
 		$text_color           = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
-		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) );
+		// A stored 0 or non-number would hide the label: fall back to the default.
+		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) ) ?: 16; // phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', '5' ) );
 
 		$theme                 = wp_get_theme();

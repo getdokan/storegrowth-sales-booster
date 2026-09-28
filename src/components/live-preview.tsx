@@ -36,7 +36,9 @@ export interface PreviewState {
 type Slot = ReactNode | ( ( state: PreviewState ) => ReactNode );
 
 export interface LivePreviewProps {
-    /** Rendered in the product's widget slot, above the add-to-cart row. */
+    /** The page drawn: a single product (default) or a shop grid. */
+    layout?: 'product' | 'shop';
+    /** Rendered in the product's widget slot, above the add-to-cart row (in every card of the shop grid). */
     widget?: Slot;
     /** Full-width strip above (or below) the product, e.g. a bar. */
     banner?: Slot;
@@ -160,9 +162,48 @@ function MockProduct( { widget }: { widget: ReactNode } ) {
 }
 
 /**
+ * Mock shop page (design `.shop-grid`): product cards, each with the widget
+ * under its name and price. Three across, two on tablet, one on phones.
+ *
+ * @param props        Props.
+ * @param props.widget Widget node, drawn in every card.
+ */
+function MockShop( { widget }: { widget: ReactNode } ) {
+    return (
+        <div className="grid w-full grid-cols-3 gap-4 bg-white p-8 group-data-[device=mobile]/frame:grid-cols-1 group-data-[device=mobile]/frame:p-5 group-data-[device=tablet]/frame:grid-cols-2 group-data-[theme=dark]/frame:bg-[#16181B]">
+            { [ 0, 1, 2 ].map( ( index ) => (
+                <div
+                    key={ index }
+                    className="flex flex-col items-center gap-2 text-center group-data-[device=tablet]/frame:[&:nth-child(3)]:hidden"
+                >
+                    <div className="aspect-square w-full overflow-hidden rounded bg-[#EDEDED] group-data-[theme=dark]/frame:bg-[#24272B]">
+                        <img
+                            src={ assetUrl( 'images/preview/product.jpeg' ) }
+                            alt=""
+                            className="block h-full w-full object-cover"
+                        />
+                    </div>
+                    <p className="m-0 text-[13px] font-medium text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]">
+                        { __(
+                            'Your Product Name',
+                            'storegrowth-sales-booster'
+                        ) }
+                    </p>
+                    <p className="-mt-1 mb-0 text-[12px] text-[#8C9196] group-data-[theme=dark]/frame:text-[#9CA3AF]">
+                        $49
+                    </p>
+                    { widget }
+                </div>
+            ) ) }
+        </div>
+    );
+}
+
+/**
  * @since SPSG_VERSION
  *
  * @param props                Props.
+ * @param props.layout         Single product or shop page.
  * @param props.widget         Widget in the product's slot.
  * @param props.banner         Strip above or below the product.
  * @param props.bannerPosition Where the banner goes.
@@ -171,6 +212,7 @@ function MockProduct( { widget }: { widget: ReactNode } ) {
  * @param props.minHeight      Page height behind a tall overlay.
  */
 export function LivePreview( {
+    layout = 'product',
     widget,
     banner,
     bannerPosition = 'top',
@@ -270,9 +312,19 @@ export function LivePreview( {
                         }
                     >
                         { bannerPosition === 'top' && bannerNode }
-                        <MockProduct
-                            widget={ widget ? render( widget, state ) : null }
-                        />
+                        { layout === 'shop' ? (
+                            <MockShop
+                                widget={
+                                    widget ? render( widget, state ) : null
+                                }
+                            />
+                        ) : (
+                            <MockProduct
+                                widget={
+                                    widget ? render( widget, state ) : null
+                                }
+                            />
+                        ) }
                         { bannerPosition === 'bottom' && bannerNode }
                     </div>
                     { overlay && render( overlay, state ) }

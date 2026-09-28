@@ -320,7 +320,7 @@ class SettingsService {
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
-				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority', 'section', 'pro_ui', 'show_when', 'hidden', 'width', 'pro_options', 'rows', 'max_length', 'name' ] ) )
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority', 'section', 'pro_ui', 'show_when', 'hidden', 'width', 'pro_options', 'option_help', 'rows', 'max_length', 'name' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );
