@@ -53,7 +53,9 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 		return wp_register_script(
 			$this->script_key,
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/js/blocks.js' ),
-			array_merge( [ 'wc-blocks-registry' ], $blocks['dependencies'] ),
+			// The bundle reads `window.wc.blocksCheckout` / `wcSettings` directly,
+			// so the build can't list them: load them first.
+			array_merge( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings' ], $blocks['dependencies'] ),
 			$blocks['version'],
 			true
 		);

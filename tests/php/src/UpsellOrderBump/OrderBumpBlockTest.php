@@ -126,7 +126,8 @@ class OrderBumpBlockTest extends StoreGrowthTestCase {
 
 	/**
 	 * With the build present, the handle, its URL under `assets/js/` and
-	 * the `wc-blocks-registry` dependency are registered as before.
+	 * the WooCommerce Blocks dependencies (registry, checkout, settings) are
+	 * registered.
 	 *
 	 * @return void
 	 */
@@ -145,7 +146,7 @@ class OrderBumpBlockTest extends StoreGrowthTestCase {
 
 		$script = wp_scripts()->registered[ self::HANDLE ];
 
-		$this->assertSame( [ 'wc-blocks-registry', 'wp-element' ], $script->deps );
+		$this->assertSame( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings', 'wp-element' ], $script->deps );
 		$this->assertSame( 'abc', $script->ver );
 		$this->assertStringEndsWith( 'upsell-order-bump/assets/js/blocks.js', $script->src );
 	}
