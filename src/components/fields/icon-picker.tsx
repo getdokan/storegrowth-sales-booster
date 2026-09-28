@@ -9,14 +9,20 @@ import { Button, cn, ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Upload, type LucideIcon } from 'lucide-react';
+import type { ComponentType } from 'react';
 
 import { FIELD_LABEL, ProBadge } from './field-label';
 import { TextField } from './text-field';
 
+/** An icon's component: a lucide icon, or any that takes these props (e.g. an image). */
+export type PickerIcon =
+    | LucideIcon
+    | ComponentType< { className?: string; 'aria-hidden'?: boolean } >;
+
 export interface IconPickerProps {
     label: string;
-    /** The icons, in display order: stored value, name, lucide icon. */
-    icons: Array< { value: string; label: string; Icon: LucideIcon } >;
+    /** The icons, in display order: stored value, name, component. */
+    icons: Array< { value: string; label: string; Icon: PickerIcon } >;
     /** Stored value; `''` for none. */
     value: string;
     onChange: ( value: string ) => void;
@@ -35,6 +41,8 @@ export interface IconPickerProps {
      * (a section title already names it).
      */
     hideLabel?: boolean;
+    /** `lg`: 32px icons, e.g. image badges (default 20px). */
+    iconSize?: 'md' | 'lg';
 }
 
 interface MediaFrame {
@@ -91,6 +99,7 @@ function openMedia( title: string, onPick: ( url: string ) => void ) {
  * @param props.locked         Pro field without pro.
  * @param props.error          Custom icon error.
  * @param props.hideLabel      Label for screen readers only.
+ * @param props.iconSize       `lg` for image icons (32px).
  */
 export function IconPicker( {
     label,
@@ -103,6 +112,7 @@ export function IconPicker( {
     locked,
     error,
     hideLabel = false,
+    iconSize = 'md',
 }: IconPickerProps ) {
     const labelId = useId();
 
@@ -137,20 +147,36 @@ export function IconPicker( {
                         spacing={ 2 }
                         className="rounded-lg bg-sg-chip p-1"
                     >
-                        { icons.map( ( icon ) => (
-                            <ToggleGroupItem
-                                key={ icon.value }
-                                value={ icon.value }
-                                aria-label={ icon.label }
-                                className="size-9 p-2 text-sg-tertiary hover:bg-white/60 aria-pressed:bg-white aria-pressed:text-sg-brand aria-pressed:shadow-[0_1px_1px_rgba(0,0,0,.05),0_2px_1px_rgba(0,0,0,.05)]"
-                            >
-                                <icon.Icon
-                                    className="size-5"
-                                    strokeWidth={ 1.5 }
-                                    aria-hidden
-                                />
-                            </ToggleGroupItem>
-                        ) ) }
+                        { icons.map( ( icon ) => {
+                            // One prop shape for lucide icons and images.
+                            const Icon = icon.Icon as ComponentType< {
+                                className?: string;
+                                strokeWidth?: number;
+                                'aria-hidden'?: boolean;
+                            } >;
+
+                            return (
+                                <ToggleGroupItem
+                                    key={ icon.value }
+                                    value={ icon.value }
+                                    aria-label={ icon.label }
+                                    className={ cn(
+                                        'p-2 text-sg-tertiary hover:bg-white/60 aria-pressed:bg-white aria-pressed:text-sg-brand aria-pressed:shadow-[0_1px_1px_rgba(0,0,0,.05),0_2px_1px_rgba(0,0,0,.05)]',
+                                        iconSize === 'lg' ? 'size-12' : 'size-9'
+                                    ) }
+                                >
+                                    <Icon
+                                        className={
+                                            iconSize === 'lg'
+                                                ? 'size-8'
+                                                : 'size-5'
+                                        }
+                                        strokeWidth={ 1.5 }
+                                        aria-hidden
+                                    />
+                                </ToggleGroupItem>
+                            );
+                        } ) }
                     </ToggleGroup>
                     { onCustomChange && (
                         <Button

@@ -94,6 +94,7 @@ const moduleEntries = {
         'admin',
         './modules/direct-checkout/src/admin/index.tsx'
     ),
+    ...moduleEntry( 'bogo', 'admin', './modules/bogo/src/admin/index.tsx' ),
 };
 
 /**

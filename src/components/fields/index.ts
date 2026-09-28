@@ -23,7 +23,11 @@ export {
     FieldNotes,
     ProBadge,
 } from './field-label';
-export { type IconPickerProps, IconPicker } from './icon-picker';
+export {
+    type IconPickerProps,
+    IconPicker,
+    type PickerIcon,
+} from './icon-picker';
 export { type InfoTipProps, InfoTip } from './info-tip';
 export {
     type MultiSelectFieldProps,

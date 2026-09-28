@@ -3,7 +3,9 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\BoGo\AdminPage;
 use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
+use StorePulse\StoreGrowth\Modules\BoGo\Settings\BogoSettings;
 
 /**
  * ServiceProvider for the module.
@@ -25,6 +27,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
 	    BoGoModule::class,
+	    BogoSettings::class,
+	    AdminPage::class,
     ];
 
     /**
@@ -46,5 +50,8 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( BoGoModule::get_id(), BoGoModule::class, true );
+        // Always loaded: the settings page works while the module is off.
+        $this->add_with_implements_tags( BogoSettings::class, BogoSettings::class, true );
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
     }
 }
