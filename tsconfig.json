@@ -25,5 +25,5 @@
 		"skipLibCheck": true
 	},
 	"include": [ "src/**/*", "modules/*/src/**/*", "integrations/src/**/*", "types/**/*" ],
-	"exclude": [ "node_modules", "build", "vendor", "lib", "tests", "assets", "modules/*/assets", "integrations/assets" ]
+	"exclude": [ "node_modules", "build", "vendor", "lib", "tests", "assets", "modules/*/assets" ]
 }

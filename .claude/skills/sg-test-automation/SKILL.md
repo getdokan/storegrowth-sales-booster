@@ -5,7 +5,7 @@ description: Write, run, and extend the StoreGrowth (Sales Booster) Playwright E
 
 # StoreGrowth Test Automation
 
-The end-to-end + API test suite for the StoreGrowth Sales Booster WooCommerce plugin. Built with **Playwright + TypeScript**, living entirely in `tests/e2e/` (self-contained — it does **not** touch the plugin's Lerna/wp-scripts deps). For what the plugin *does* (modules, REST routes, ajax, storefront selectors) see `reference/surface-map.md` — the testable-surface map you assert against. For backend/frontend dev conventions see the sibling skills `storegrowth-backend-dev` / `storegrowth-frontend-dev`.
+The end-to-end + API test suite for the StoreGrowth Sales Booster WooCommerce plugin. Built with **Playwright + TypeScript**, living entirely in `tests/e2e/` (self-contained — it does **not** touch the plugin's wp-scripts deps). For what the plugin *does* (modules, REST routes, ajax, storefront selectors) see `reference/surface-map.md` — the testable-surface map you assert against. For backend/frontend dev conventions see the sibling skills `storegrowth-backend-dev` / `storegrowth-frontend-dev`.
 
 ## Design contract — keep it this way
 

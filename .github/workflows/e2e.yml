@@ -148,8 +148,9 @@ jobs:
           npm run build
 
       # ---- Package what the shards can't regenerate from a plain checkout ----
-      # Exactly the gitignored build output: vendor/, mozart's lib/packages/, and
-      # every package's webpack build/ dir. `ls -d` drops any path a build didn't
+      # Exactly the gitignored build output: vendor/, mozart's lib/packages/, the
+      # webpack build/ dir and the module bundles it writes next to each
+      # module's storefront scripts (modules/*/assets/js). `ls -d` drops any path a build didn't
       # produce so a missing one is skipped instead of failing the tar. Pro goes
       # in its own tarball, minus node_modules/.git (neither is needed at
       # runtime, and both dwarf the build output).
@@ -158,7 +159,7 @@ jobs:
           mkdir -p "${RUNNER_TEMP}/build-artifacts"
           # shellcheck disable=SC2046  # word splitting is the point: one arg per path
           tar -czf "${RUNNER_TEMP}/build-artifacts/lite-build.tgz" \
-            $(ls -d vendor lib/packages assets/build integrations/assets/build modules/*/assets/build 2>/dev/null)
+            $(ls -d vendor lib/packages build modules/*/assets/js/admin.js modules/*/assets/js/blocks.js modules/*/assets/js/*.asset.php 2>/dev/null)
           if [ -d storegrowth-sales-booster-pro ]; then
             tar --exclude='./node_modules' --exclude='./.git' \
               -czf "${RUNNER_TEMP}/build-artifacts/pro-build.tgz" \

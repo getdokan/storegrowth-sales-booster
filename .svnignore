@@ -10,7 +10,6 @@ bin
 /modules/**/src
 /integrations/**/src
 /integrations/**/node_modules
-assets/src
 assets/css/style.css.map
 tests
 nbproject

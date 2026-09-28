@@ -80,7 +80,7 @@ None. Module state stays in `spsg_active_module_ids`.
   - the "Request a feature" description is copied from the Documentation row.
 
 ## 9. Tasks and definition of done
-- [ ] Remove Lerna, add build files, and pass `build`, `type-check` and `lint:js`.
+- [x] Remove Lerna, add build files, and pass `build`, `type-check` and `lint:js`.
 - [ ] Tailwind scoped build; portal check for Dialog, Select and Popover.
 - [ ] Shared bundles registered in `includes/Assets.php`, with a missing-asset guard.
 - [ ] Shell, Dashboard, Modules and Settings pages.

@@ -25,7 +25,7 @@ tests/e2e/
 ├── bin/setup-docker.sh      # one-shot: boot Docker, install prereqs, write .env
 ├── bin/provision-site.php   # SHARED site setup (modules, products, options) — Docker + CI
 ├── bin/qa-shots.mjs         # review screenshots, before/after + compare.html (dev site, run from the plugin folder)
-├── package.json             # self-contained — does not touch the plugin's Lerna deps
+├── package.json             # self-contained — does not touch the plugin's build deps
 ├── tsconfig.json
 ├── .wp-env.json             # alternative disposable WP env
 ├── .env.example             # copy to .env for manual runs

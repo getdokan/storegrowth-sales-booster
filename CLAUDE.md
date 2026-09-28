@@ -123,7 +123,7 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 - `includes/Tracker.php` — Appsero telemetry.
 - `integrations/` — third-party integrations (Dokan multivendor), mirroring the module/provider structure under `StorePulse\StoreGrowth\Integrations\`.
 - `helpers/functions.php` — global procedural helpers. `includes/Helper.php` — static helpers.
-- Legacy, being removed module by module: the antd admin in `assets/src/` and `modules/*/assets/src/`.
+- `assets/` and `modules/<id>/assets/` hold only hand-written storefront CSS/JS, fonts and images (plus the generated module bundles); the legacy antd admin (`assets/src/`, `modules/*/assets/src/`, `integrations/assets/`) and `window.SGSettings` are gone.
 
 ### Conventions
 - Option/meta/prefix naming uses `spsg_` (and constants `STOREGROWTH_*`); module IDs are lowercase slugs (`bogo`, `fly-cart`, …). In PHP, take a module's id from its class (`StockBarModule::get_id()`), never a repeated string. New feature hooks use `spsg_`; lifecycle hooks `storegrowth_`.

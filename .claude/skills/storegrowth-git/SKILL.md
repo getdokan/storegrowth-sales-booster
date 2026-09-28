@@ -46,7 +46,7 @@ When cutting a release, bump these by hand to the new version — `version-repla
 ```bash
 composer install            # dev: runs mozart (prefixes deps into lib/) + dumps autoload
 npm install
-npm run build               # build all JS (lerna + wp-scripts)
+npm run build               # build all JS (one wp-scripts webpack build)
 npm run makepot             # regenerate languages/storegrowth-sales-booster.pot
 npm run version             # replace SPSG_VERSION -> package.json version
 npm run archiver            # zip a distributable build (node bin/archiver.js)
