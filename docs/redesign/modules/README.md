@@ -37,8 +37,8 @@ Work runs in this sequence. A step starts only when the steps it depends on are 
 | 7 | **Done (E2E pending).** `quick-view` — modal mock preview (ADR-005 S10 exception), generic `IconPicker`, text counter; additive values (`mfp-none`, `checkout-redirection`, `top_right_of_the_image`), 3D Unfold retired | 2 | 5, 6, 8 |
 | 8 | **Done (E2E pending).** `fly-cart` — first `PickerCards`; lucide cart icons (storefront too), fragments filter fix, Dokan switches as extension fields, `LivePreview` `minHeight`; pro's centre-position CSS prints again | 2 | 5, 6, 7 |
 | 9 | **Done (E2E pending).** `direct-checkout` — first page built on ADR-009 (schema + `get_page()`; JS only for the shop-grid preview and three controls); ajax save now sanitized and merged; `option_help` radio tips, `BoxModelField` `pairOnly`, `LivePreview` `layout="shop"`; Fly Cart Checkout falls back to checkout while Fly Cart is inactive | 3 (`BoxModelInput`), 8 (Fly Cart redirect) | — |
-| 10 | `bogo`: REST bug fixes first, then list, editor, category messages (R2), Dokan vendor screens | 4 (`ProductSearch`), 6 (`DateRange`) | — |
-| 11 | `upsell-order-bump`: REST namespace, cap, list, editor, checkout block | 10 (list/editor pattern) | — |
+| 10 | **Done (E2E pending).** `bogo`: REST bug fixes first, then list, editor, category messages (R2), Dokan vendor screens | 4 (`ProductSearch`), 6 (`DateRange`) | — |
+| 11 | **Done (E2E pending).** `upsell-order-bump`: REST namespace, cap, list, editor, checkout block | 10 (list/editor pattern) | — |
 | 12 | Cleanup: delete antd, `SGSettings`, `assets/src`, `modules/*/assets/src`, `integrations/assets`, Lerna leftovers | 11 | — |
 | 13 | `../pro-migration-spec.md` (pro P1–P7) | 12, plus one stable lite patch release | — |
 | 14 | Docs, changelog, release | 13 | — |
