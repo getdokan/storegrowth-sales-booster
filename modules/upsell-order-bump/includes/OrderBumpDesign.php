@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Helper;
+use WC_Product;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -180,6 +181,26 @@ class OrderBumpDesign {
 		}
 
 		return $sanitized;
+	}
+
+	/**
+	 * The offer product's copies the checkout box reads from
+	 * `design_settings`: its title, image and regular price.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product $product Offer product.
+	 *
+	 * @return array
+	 */
+	public static function offer_product_copies( WC_Product $product ) {
+		$image_url = $product->get_image_id() ? wp_get_attachment_url( $product->get_image_id() ) : '';
+
+		return [
+			'offer_product_title'         => $product->get_name(),
+			'offer_image_url'             => $image_url ? $image_url : '',
+			'offer_product_regular_price' => $product->get_regular_price(),
+		];
 	}
 
 	/**

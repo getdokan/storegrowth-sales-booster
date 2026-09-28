@@ -656,11 +656,7 @@ class OrderBumpController extends WP_REST_Controller {
 
 		$product = $data['offer_product_id'] ? wc_get_product( $data['offer_product_id'] ) : null;
 		if ( $product ) {
-			$image_url = $product->get_image_id() ? wp_get_attachment_url( $product->get_image_id() ) : '';
-
-			$design['offer_product_title']         = $product->get_name();
-			$design['offer_image_url']             = $image_url ? $image_url : '';
-			$design['offer_product_regular_price'] = $product->get_regular_price();
+			$design = array_merge( $design, OrderBumpDesign::offer_product_copies( $product ) );
 		}
 
 		$data['design_settings'] = OrderBumpDesign::sanitize( $design );
