@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Settings;
 
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
+use StorePulse\StoreGrowth\Interfaces\SettingsPage;
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
 use WP_Error;
 
@@ -71,15 +72,31 @@ class SettingsService {
 	 */
 	public function get_schemas(): array {
 		$container = storegrowth_get_container();
+		$schemas   = [];
 
-		if ( ! $container->has( SettingsSchema::class ) ) {
-			return [];
+		if ( $container->has( SettingsSchema::class ) ) {
+			foreach ( (array) $container->get( SettingsSchema::class ) as $schema ) {
+				if ( $schema instanceof SettingsSchema ) {
+					$schemas[ $schema->get_module_id() ] = $schema;
+				}
+			}
 		}
 
-		$schemas = [];
+		/**
+		 * Filters the registered settings schemas. Pro or another plugin adds
+		 * a schema of its own here (a `SettingsSchema`, and `SettingsPage` for
+		 * a generated page at `#/settings?module=<id>`): it is read, saved and
+		 * drawn by the same engine. The schemas registered by StoreGrowth
+		 * can't be replaced or removed.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param SettingsSchema[] $schemas Schemas keyed by id.
+		 */
+		$added = (array) apply_filters( 'spsg_settings_schemas', $schemas );
 
-		foreach ( (array) $container->get( SettingsSchema::class ) as $schema ) {
-			if ( $schema instanceof SettingsSchema ) {
+		foreach ( $added as $schema ) {
+			if ( $schema instanceof SettingsSchema && ! isset( $schemas[ $schema->get_module_id() ] ) ) {
 				$schemas[ $schema->get_module_id() ] = $schema;
 			}
 		}
@@ -175,6 +192,77 @@ class SettingsService {
 	}
 
 	/**
+	 * The settings page a schema defines (`SettingsPage`: title, tabs,
+	 * sections), or an empty array when it has none.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module_id Module (or page) id.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function get_page( string $module_id ): array {
+		$schema = $this->get_schema( $module_id );
+
+		if ( ! $schema instanceof SettingsPage ) {
+			return [];
+		}
+
+		/**
+		 * Filters a settings page: its title, tabs and sections. Pro or
+		 * another plugin adds a tab or section here, then puts its fields on
+		 * it through `spsg_settings_schema` (`tab` / `section`).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array  $page      Page (`SettingsPage::get_page()`).
+		 * @param string $module_id Module (or page) id.
+		 */
+		return (array) apply_filters( 'spsg_settings_page', $schema->get_page(), $module_id );
+	}
+
+	/**
+	 * Every settings page, keyed by id, with its schema and values: what the
+	 * admin app draws its settings pages from, in one request.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	public function get_pages(): array {
+		$pages = [];
+
+		foreach ( $this->get_schemas() as $id => $schema ) {
+			if ( $schema instanceof SettingsPage ) {
+				$pages[ $id ] = $this->get_page_data( $id );
+			}
+		}
+
+		return $pages;
+	}
+
+	/**
+	 * `{ page, schema, values, published }` for one module (or page).
+	 * `published` is false while a gated module's settings were never saved
+	 * (its storefront output is off until then); `page` is empty for a
+	 * schema without a page.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $module_id Module (or page) id.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function get_page_data( string $module_id ): array {
+		return [
+			'page'      => (object) $this->get_page( $module_id ),
+			'schema'    => (object) $this->get_public_schema( $module_id ),
+			'values'    => (object) $this->get_values( $module_id ),
+			'published' => $this->is_published( $module_id ),
+		];
+	}
+
+	/**
 	 * Schema as the admin app consumes it: type, default, tier and limits per
 	 * key.
 	 *
@@ -190,7 +278,7 @@ class SettingsService {
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
-				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority' ] ) )
+				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority', 'section', 'pro_ui', 'show_when', 'hidden', 'width', 'pro_options', 'rows', 'max_length', 'name' ] ) )
 			);
 
 			$public[ $key ]['default'] = $this->to_api( $field, $field['default'] ?? null );
@@ -314,7 +402,7 @@ class SettingsService {
 			return new WP_Error( 'spsg_settings_module_not_found', __( 'This module has no settings.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
 		}
 
-		$raw = get_option( $schema->get_option_name(), [] );
+		$raw = $this->is_standalone( $schema ) ? $this->get_stored( $schema ) : get_option( $schema->get_option_name(), [] );
 
 		if ( ! is_array( $raw ) && '' !== $raw && false !== $raw ) {
 			return new WP_Error(
@@ -381,9 +469,17 @@ class SettingsService {
 		$old_values = $stored;
 		$new_values = array_merge( $old_values, $sanitized );
 
-		// Autoload left to WordPress ('auto'): the storefront reads module
-		// settings on front-end requests.
-		update_option( $schema->get_option_name(), $new_values );
+		if ( $this->is_standalone( $schema ) ) {
+			// One option per key, read by the admin (and the uninstaller),
+			// never on an ordinary page load: not autoloaded.
+			foreach ( $sanitized as $key => $value ) {
+				update_option( $key, $value, false );
+			}
+		} else {
+			// Autoload left to WordPress ('auto'): the storefront reads module
+			// settings on front-end requests.
+			update_option( $schema->get_option_name(), $new_values );
+		}
 
 		/**
 		 * Fires after a module's settings are saved through the settings
@@ -410,9 +506,37 @@ class SettingsService {
 	 * @return array
 	 */
 	private function get_stored( SettingsSchema $schema ): array {
+		if ( $this->is_standalone( $schema ) ) {
+			$stored = [];
+
+			// Only the options that exist, so a key never saved reads as its default.
+			foreach ( array_keys( $this->get_fields( $schema->get_module_id() ) ) as $key ) {
+				$value = get_option( $key, null );
+
+				if ( null !== $value ) {
+					$stored[ $key ] = $value;
+				}
+			}
+
+			return $stored;
+		}
+
 		$stored = get_option( $schema->get_option_name(), [] );
 
 		return is_array( $stored ) ? $stored : [];
+	}
+
+	/**
+	 * Whether each key of the schema is its own option (no option name).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param SettingsSchema $schema Schema.
+	 *
+	 * @return bool
+	 */
+	private function is_standalone( SettingsSchema $schema ): bool {
+		return '' === $schema->get_option_name();
 	}
 
 	/**

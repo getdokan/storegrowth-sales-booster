@@ -20,7 +20,7 @@ We answer the first question with plugin-ui's settings contract: fields are flat
 ### 1. One engine
 - A module declares its fields in a `SettingsSchema` (option name; key → `type`, `default`, `pro`, limits, `options`). Types: `text`, `textarea`, `number` (`allow_empty`), `toggle`, `color`, `select`, `box`, `list`, `url`, `date`. New types are added in `SettingsService` (`FIELD_TYPES`, `sanitize()`, and `to_api()` / `is_unchanged()` for structured values) and in `api.ts`.
 - `SettingsService` is the only reader and writer (REST and the legacy ajax adapters). Its save rules are ADR-004 §2.
-- The page's `useModuleSettings()` owns values, dirty state and saving. Each tab saves its own keys (`TAB_KEYS`).
+- The page's `useModuleSettings()` owns values, dirty state and saving. Each tab saves its own keys: every field with that `tab` (ADR-009; before, a hand-kept `TAB_KEYS` list).
 
 ### 2. Gated modules: the first save turns them on
 A schema whose storefront stays off until first saved implements `GatedSettingsSchema::is_saved( $stored )`. The API returns `published: false` until then. The page keeps Save enabled and says the output shows once saved. That first save writes the full option, like the old admin's whole-form save: every key the tab sends (even unchanged) and the default of every other key. Pro 2.2.0 reads the raw option, so a key left out would read as empty. Later saves write only changes.
@@ -45,7 +45,7 @@ A schema whose storefront stays off until first saved implements `GatedSettingsS
 
 Also `placeholder`, `prefix`, `suffix`. The public schema returns these keys.
 
-**Lite draws it.** Each module page renders `<FieldRenderer tab settings />` (`@storegrowth/components`) above every tab's Save bar and adds `extensionKeys( schema, tab )` to the tab's saved keys, so extension fields are saved, reset and dirty-checked with the tab. Without a `variant` the control follows the type: text, url, date → text; textarea; number; toggle → switch; color → colour picker; select; list → multi-select. `box` has no default control.
+**Lite draws it.** Settings pages are generated from the schema (ADR-009), so an extension field is drawn like the module's own: in field order on its `tab`, inside its `section` when it names one (else after the module's fields, above the Save bar), and saved, reset and dirty-checked with the tab. It can use every page key the module's fields use (`show_when`, `width`, …). A hand-written page draws extension fields with `<FieldRenderer tab settings />` and `extensionKeys( schema, tab )`. Without a `variant` the control follows the type: text, url, date → text; textarea; number; toggle → switch; color → colour picker; select; list → multi-select. `box` has no default control.
 
 **JS — a custom control is a variant.** Each field is a plugin-ui `SettingsElement` (id, label, description, value, default, options `{ value, label }`, disabled, badge, validationError, min/max/increment, prefix/postfix) passed through:
 

@@ -133,6 +133,18 @@ export function sortModules( modules: SpsgModule[] ): SpsgModule[] {
 }
 
 /**
+ * Admin route of a module's page: `#/settings?module=<id>` (its settings
+ * page, or the empty module frame until it has one).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param moduleId Module id.
+ */
+export function moduleRoute( moduleId: string ): string {
+    return `/settings?module=${ encodeURIComponent( moduleId ) }`;
+}
+
+/**
  * Display label for a module: design wording, falling back to the PHP name.
  *
  * @since SPSG_VERSION

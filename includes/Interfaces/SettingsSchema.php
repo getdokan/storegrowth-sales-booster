@@ -76,7 +76,9 @@ interface SettingsSchema {
 	public function get_module_id(): string;
 
 	/**
-	 * Option that stores the settings, e.g. `spsg_stock_bar_settings`.
+	 * Option that stores the settings, e.g. `spsg_stock_bar_settings`. Empty
+	 * when each key is its own option (standalone, not autoloaded), e.g. the
+	 * global `spsg_remove_data_on_uninstall`.
 	 *
 	 * @since SPSG_VERSION
 	 *

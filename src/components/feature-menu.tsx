@@ -8,7 +8,7 @@
 import { cn, toast } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { errorMessage, moduleLabel } from '@storegrowth/utilities';
+import { errorMessage, moduleLabel, moduleRoute } from '@storegrowth/utilities';
 import { Link, useModules, useNavigate } from '@storegrowth/hooks';
 
 import { DeactivatedModuleDialog } from './deactivated-module-dialog';
@@ -40,7 +40,7 @@ export function FeatureMenu( { activeId }: FeatureMenuProps ) {
         try {
             await setModuleStatus( confirmModule.id, true );
             setConfirmId( null );
-            navigate( `/${ confirmModule.id }` );
+            navigate( moduleRoute( confirmModule.id ) );
         } catch ( error ) {
             toast.error(
                 errorMessage(
@@ -66,7 +66,7 @@ export function FeatureMenu( { activeId }: FeatureMenuProps ) {
                     return (
                         <Link
                             key={ module.id }
-                            to={ `/${ module.id }` }
+                            to={ moduleRoute( module.id ) }
                             aria-current={ isCurrent ? 'page' : undefined }
                             onClick={ ( event ) => {
                                 // A deactivated module asks to be activated first.

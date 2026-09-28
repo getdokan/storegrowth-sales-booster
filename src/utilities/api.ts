@@ -76,6 +76,76 @@ export interface SettingField {
     suffix?: string;
     /** Order within the tab (lower first). */
     priority?: number;
+    /** Section (accordion) of the tab, on a page drawn from the schema. */
+    section?: string;
+    /** Control locked without pro; the value is still saved (presets). */
+    pro_ui?: boolean;
+    /** Shown only while these keys have these values. */
+    show_when?: ShowWhen;
+    /** Saved with its tab, not drawn (written by a preset or another control). */
+    hidden?: boolean;
+    /** `half`: sits beside the next half-width field. */
+    width?: 'half';
+    /** Options offered only with pro (or while stored). */
+    pro_options?: string[];
+    /** `textarea`: visible lines. */
+    rows?: number;
+    /** `text`: longest text that can be typed. */
+    max_length?: number;
+    /** Accessible name when the label repeats on the page (`box`, `alignment`). */
+    name?: string;
+}
+
+/**
+ * Condition on other settings: key → the value it must have, or a list of
+ * allowed values. Every key must match.
+ *
+ * @since SPSG_VERSION
+ */
+export type ShowWhen = Record< string, SettingValue | SettingValue[] >;
+
+/**
+ * A section (accordion) of a settings page, keyed by id in drawing order.
+ *
+ * @since SPSG_VERSION
+ */
+export type SettingsSections = Record<
+    string,
+    {
+        title: string;
+        help?: string;
+        /** Shown only while these keys have these values. */
+        show_when?: ShowWhen;
+        /** Switch field drawn in the header; body shows while on. */
+        toggle?: string;
+        /** Text beside the header switch (default "Show"). */
+        toggle_label?: string;
+        /** With `toggle`: a switch card (`OptionCard`), not an accordion. */
+        card?: boolean;
+        /** Accordion starts closed. */
+        collapsed?: boolean;
+    }
+>;
+
+/**
+ * A settings page as the backend defines it (PHP `SettingsPage`): title and
+ * tabs with their sections, keyed by id in drawing order. A page without
+ * `tabs` draws its fields that have no `tab` (and the page's own `sections`)
+ * under the title. Empty (`{}`) for a schema without a page.
+ *
+ * @since SPSG_VERSION
+ */
+export interface SettingsPageDefinition {
+    title?: string;
+    tabs?: Record<
+        string,
+        {
+            label: string;
+            sections?: SettingsSections;
+        }
+    >;
+    /** Sections of a page without tabs. */
+    sections?: SettingsSections;
 }
 
 /** A product as the pickers show it. */
@@ -88,11 +158,16 @@ export interface ProductOption {
 
 /** Response of `GET|POST /settings/{module}`. */
 export interface ModuleSettingsResponse< V = Record< string, SettingValue > > {
+    /** The page the backend defines for it; empty when it has none. */
+    page: SettingsPageDefinition;
     schema: Partial< Record< keyof V, SettingField > >;
     values: V;
     /** False while a gated module's settings were never saved. */
     published: boolean;
 }
+
+/** Response of `GET /admin/settings`: every settings page, keyed by id. */
+export type SettingsPagesResponse = Record< string, ModuleSettingsResponse >;
 
 /**
  * Prefix a route with the plugin's REST namespace.
@@ -152,16 +227,49 @@ export function updateModulesStatus(
     } );
 }
 
+let settingsPages: Promise< SettingsPagesResponse > | null = null;
+
 /**
- * A module's settings schema and values.
+ * Every settings page with its schema and values, in one request
+ * (`GET /admin/settings`). Fetched once per page load and shared; a save
+ * updates the shared copy.
+ *
+ * @since SPSG_VERSION
+ */
+export function fetchSettingsPages(): Promise< SettingsPagesResponse > {
+    if ( ! settingsPages ) {
+        settingsPages = apiFetch< SettingsPagesResponse >( {
+            path: path( '/admin/settings' ),
+        } ).catch( ( error ) => {
+            // Let the next caller try again.
+            settingsPages = null;
+            throw error;
+        } );
+    }
+
+    return settingsPages;
+}
+
+/**
+ * A module's settings schema and values: from the shared settings pages
+ * when it has one, else its own request.
  *
  * @since SPSG_VERSION
  *
  * @param moduleId Module id, e.g. `stock-bar`.
  */
-export function fetchModuleSettings< V = Record< string, SettingValue > >(
+export async function fetchModuleSettings< V = Record< string, SettingValue > >(
     moduleId: string
 ): Promise< ModuleSettingsResponse< V > > {
+    const pages = await fetchSettingsPages().catch( () => {
+        return null;
+    } );
+    const page = pages?.[ moduleId ];
+
+    if ( page ) {
+        return page as unknown as ModuleSettingsResponse< V >;
+    }
+
     return apiFetch< ModuleSettingsResponse< V > >( {
         path: path( `/settings/${ encodeURIComponent( moduleId ) }` ),
     } );
@@ -176,15 +284,24 @@ export function fetchModuleSettings< V = Record< string, SettingValue > >(
  * @param moduleId Module id.
  * @param values   Values to save, keyed by setting key.
  */
-export function saveModuleSettings< V = Record< string, SettingValue > >(
+export async function saveModuleSettings< V = Record< string, SettingValue > >(
     moduleId: string,
     values: Partial< V >
 ): Promise< ModuleSettingsResponse< V > > {
-    return apiFetch< ModuleSettingsResponse< V > >( {
+    const response = await apiFetch< ModuleSettingsResponse< V > >( {
         path: path( `/settings/${ encodeURIComponent( moduleId ) }` ),
         method: 'POST',
         data: { values },
     } );
+
+    // Keep the shared pages current, so the page opens saved values again.
+    settingsPages?.then( ( pages ) => {
+        if ( pages[ moduleId ] ) {
+            pages[ moduleId ] = response as unknown as ModuleSettingsResponse;
+        }
+    } );
+
+    return response;
 }
 
 interface WcProduct {

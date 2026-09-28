@@ -14,8 +14,20 @@ import { useLocation } from '@storegrowth/hooks';
  * Submenu href suffix for a route.
  *
  * @param pathname Current route.
+ * @param search   Its query string.
  */
-function submenuTarget( pathname: string ): string {
+function submenuTarget( pathname: string, search: string ): string {
+    const module = new URLSearchParams( search ).get( 'module' );
+
+    // A module's settings page is a feature page.
+    if (
+        pathname.startsWith( '/settings' ) &&
+        module &&
+        'general' !== module
+    ) {
+        return 'page=storegrowth#/features';
+    }
+
     if ( pathname.startsWith( '/dashboard' ) ) {
         return 'page=storegrowth';
     }
@@ -40,13 +52,13 @@ function submenuTarget( pathname: string ): string {
  * @since SPSG_VERSION
  */
 export default function useAdminSubmenu(): void {
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
 
     useEffect( () => {
         const items = document.querySelectorAll< HTMLAnchorElement >(
             '#toplevel_page_sales-booster-for-woocommerce .wp-submenu a'
         );
-        const target = submenuTarget( pathname );
+        const target = submenuTarget( pathname, search );
 
         items.forEach( ( link ) => {
             const isCurrent = link.getAttribute( 'href' )?.endsWith( target );
@@ -60,5 +72,5 @@ export default function useAdminSubmenu(): void {
                 link.removeAttribute( 'aria-current' );
             }
         } );
-    }, [ pathname ] );
+    }, [ pathname, search ] );
 }

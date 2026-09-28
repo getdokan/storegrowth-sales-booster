@@ -9,7 +9,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import { ArrowUpRight } from 'lucide-react';
 import { CardHead, ToggleSwitch } from '@storegrowth/components';
 import { Link, useModules } from '@storegrowth/hooks';
-import { assetUrl, errorMessage, moduleLabel } from '@storegrowth/utilities';
+import {
+    assetUrl,
+    errorMessage,
+    moduleLabel,
+    moduleRoute,
+} from '@storegrowth/utilities';
 
 export default function ModulesPage() {
     const { modules, pending, setModuleStatus, setAllModulesStatus } =
@@ -91,7 +96,7 @@ export default function ModulesPage() {
                             className="flex w-full flex-col items-start gap-6 rounded-[8px] bg-white p-6"
                         >
                             <Link
-                                to={ `/${ module.id }` }
+                                to={ moduleRoute( module.id ) }
                                 className="flex w-full flex-col items-start gap-6 text-inherit no-underline focus:shadow-none"
                             >
                                 <div className="aspect-[4/3] w-full overflow-hidden rounded-[8px] bg-[#EDEDED]">

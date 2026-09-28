@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings;
 
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
+use StorePulse\StoreGrowth\Interfaces\SettingsPage;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 use StorePulse\StoreGrowth\Settings\DisplaySettings;
 use StorePulse\StoreGrowth\Settings\SettingsService;
@@ -29,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since SPSG_VERSION
  */
-class ProgressiveDiscountBannerSettings implements GatedSettingsSchema {
+class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, SettingsPage {
 
 	/**
 	 * Keys the first-boot seeding writes; an option holding only these was
@@ -72,82 +73,228 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema {
 	 */
 	public function get_fields(): array {
 		// The bar prints these with wp_kses_post, and the old admin stored markup.
-		$text  = static function ( string $value ): array {
-			return [
-				'type'    => 'text',
-				'default' => $value,
-				'html'    => true,
-			];
+		$text      = static function ( string $value, array $page ): array {
+			return array_merge(
+				[
+					'type'    => 'text',
+					'default' => $value,
+					'html'    => true,
+				],
+				$page
+			);
 		};
-		$color = static function ( string $value ): array {
+		$color     = static function ( string $value, string $label ): array {
 			return [
 				'type'    => 'color',
 				'default' => $value,
+				'tab'     => 'design',
+				'section' => 'colors',
+				'label'   => $label,
 			];
 		};
+		$bar       = DisplaySettings::bar_fields( 7 );
+		$targeting = DisplaySettings::targeting_fields();
 
-		$fields = [
+		// In page order: the settings page draws the fields from here.
+		return array_merge(
 			// Content.
-			'progressive_banner_text'        => $text( __( 'Add more [amount] to get free shipping.', 'storegrowth-sales-booster' ) ),
-			'goal_completion_text'           => $text( __( 'You have successfully acquired free shipping.', 'storegrowth-sales-booster' ) ),
-			'progressive_banner_icon_name'   => [
-				'type'    => 'select',
-				'default' => 'shipping-bar-icon-1',
-				'options' => [ '', 'shipping-bar-icon-1', 'shipping-bar-icon-2', 'shipping-bar-icon-3' ],
-				'pro'     => true,
+			[
+				'progressive_banner_text'        => $text(
+					__( 'Add more [amount] to get free shipping.', 'storegrowth-sales-booster' ),
+					[
+						'tab'     => 'content',
+						'variant' => 'textarea',
+						'rows'    => 2,
+						'label'   => __( 'Banner Text', 'storegrowth-sales-booster' ),
+						'help'    => __( '[amount] is replaced with what is left to spend.', 'storegrowth-sales-booster' ),
+					]
+				),
+				'goal_completion_text'           => $text(
+					__( 'You have successfully acquired free shipping.', 'storegrowth-sales-booster' ),
+					[
+						'tab'     => 'content',
+						'variant' => 'textarea',
+						'rows'    => 2,
+						'label'   => __( 'Goal Completion Text', 'storegrowth-sales-booster' ),
+					]
+				),
+				// Drawn by the page (icon picker, with the custom icon upload).
+				'progressive_banner_icon_name'   => [
+					'type'    => 'select',
+					'default' => 'shipping-bar-icon-1',
+					'options' => [ '', 'shipping-bar-icon-1', 'shipping-bar-icon-2', 'shipping-bar-icon-3' ],
+					'pro'     => true,
+					'tab'     => 'content',
+					'label'   => __( 'Banner Icon', 'storegrowth-sales-booster' ),
+				],
+				'progressive_banner_custom_icon' => [
+					'type'    => 'url',
+					'default' => '',
+					'pro'     => true,
+					'tab'     => 'content',
+					'hidden'  => true,
+				],
+				'btn_style'                      => [
+					'type'    => 'toggle',
+					'default' => true,
+					'tab'     => 'content',
+					'label'   => __( 'Display CTA Button', 'storegrowth-sales-booster' ),
+				],
+				'btn_text'                       => $text(
+					__( 'Cart', 'storegrowth-sales-booster' ),
+					[
+						'tab'       => 'content',
+						'label'     => __( 'CTA Name', 'storegrowth-sales-booster' ),
+						'show_when' => [ 'btn_style' => true ],
+					]
+				),
+				'btn_target'                     => [
+					'type'        => 'url',
+					'default'     => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '',
+					'tab'         => 'content',
+					'label'       => __( 'CTA Target URI', 'storegrowth-sales-booster' ),
+					'placeholder' => 'https://',
+					'show_when'   => [ 'btn_style' => true ],
+				],
 			],
-			'progressive_banner_custom_icon' => [
-				'type'    => 'url',
-				'default' => '',
-				'pro'     => true,
-			],
-			'btn_style'                      => [
-				'type'    => 'toggle',
-				'default' => true,
-			],
-			'btn_text'                       => $text( __( 'Cart', 'storegrowth-sales-booster' ) ),
-			'btn_target'                     => [
-				'type'    => 'url',
-				'default' => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '',
-			],
-
 			// Configure.
-			'discount_type'                  => [
-				'type'    => 'select',
-				'default' => 'free-shipping',
-				'options' => [ 'free-shipping', 'discount-amount' ],
+			DisplaySettings::place(
+				[
+					'bar_position' => $bar['bar_position'],
+					'bar_type'     => $bar['bar_type'],
+				],
+				'configure'
+			),
+			[
+				// Drawn by the page: one Discount Type select over this key
+				// and `discount_amount_mode`.
+				'discount_type'         => [
+					'type'    => 'select',
+					'default' => 'free-shipping',
+					'options' => [ 'free-shipping', 'discount-amount' ],
+					'tab'     => 'configure',
+					'label'   => __( 'Discount Type', 'storegrowth-sales-booster' ),
+				],
+				'discount_amount_mode'  => [
+					'type'    => 'select',
+					'default' => 'fixed-amount',
+					'options' => [ 'fixed-amount', 'percentage' ],
+					'tab'     => 'configure',
+					'hidden'  => true,
+				],
+				// The old admin stored '' until an amount was typed. Drawn by
+				// the page (currency or % by `discount_amount_mode`).
+				'discount_amount_value' => [
+					'type'        => 'number',
+					'default'     => '',
+					'min'         => 0,
+					'step'        => 0.01,
+					'allow_empty' => true,
+					'tab'         => 'configure',
+					'label'       => __( 'Discount Amount', 'storegrowth-sales-booster' ),
+					'show_when'   => [ 'discount_type' => 'discount-amount' ],
+				],
+				'cart_minimum_amount'   => [
+					'type'    => 'number',
+					'default' => 10,
+					'min'     => 0,
+					'step'    => 0.01,
+					'tab'     => 'configure',
+					'label'   => __( 'Cart Minimum Amount', 'storegrowth-sales-booster' ),
+					'prefix'  => function_exists( 'get_woocommerce_currency_symbol' ) ? html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES ) : '',
+				],
 			],
-			'discount_amount_mode'           => [
-				'type'    => 'select',
-				'default' => 'fixed-amount',
-				'options' => [ 'fixed-amount', 'percentage' ],
-			],
-			// The old admin stored '' until an amount was typed.
-			'discount_amount_value'          => [
-				'type'        => 'number',
-				'default'     => '',
-				'min'         => 0,
-				'step'        => 0.01,
-				'allow_empty' => true,
-			],
-			'cart_minimum_amount'            => [
-				'type'    => 'number',
-				'default' => 10,
-				'min'     => 0,
-				'step'    => 0.01,
-			],
-
+			DisplaySettings::place(
+				array_merge(
+					[
+						'banner_device_view'  => array_merge( $bar['banner_device_view'], [ 'label' => __( 'Show Banner', 'storegrowth-sales-booster' ) ] ),
+						'banner_trigger'      => $bar['banner_trigger'],
+						'banner_delay'        => $bar['banner_delay'],
+						'scroll_banner_delay' => $bar['scroll_banner_delay'],
+					],
+					$targeting
+				),
+				'configure',
+				'display'
+			),
 			// Design.
-			'btn_color'                      => $color( '#ffffff' ),
-			'btn_text_color'                 => $color( '#073b4c' ),
-			'bar_template'                   => [
-				'type'    => 'select',
-				'default' => 'shipping_bar_one',
-				'options' => [ 'shipping_bar_one' ],
+			DisplaySettings::place(
+				[
+					'banner_height' => $bar['banner_height'],
+					'font_family'   => $bar['font_family'],
+					'font_size'     => $bar['font_size'],
+				],
+				'design',
+				'banner'
+			),
+			DisplaySettings::place(
+				[
+					'background_color' => $bar['background_color'],
+					'text_color'       => $bar['text_color'],
+					'icon_color'       => $bar['icon_color'],
+					'close_icon_color' => array_merge( $bar['close_icon_color'], [ 'label' => __( 'Close Button Color', 'storegrowth-sales-booster' ) ] ),
+				],
+				'design',
+				'colors'
+			),
+			[
+				'btn_color'      => $color( '#ffffff', __( 'CTA Background', 'storegrowth-sales-booster' ) ),
+				'btn_text_color' => $color( '#073b4c', __( 'CTA Text Color', 'storegrowth-sales-booster' ) ),
+				// Drawn by the page (template picker: a preset sets the colours).
+				'bar_template'   => [
+					'type'    => 'select',
+					'default' => 'shipping_bar_one',
+					'options' => [ 'shipping_bar_one' ],
+					'tab'     => 'design',
+					'section' => 'template',
+					'label'   => __( 'Template', 'storegrowth-sales-booster' ),
+				],
+			]
+		);
+	}
+
+	/**
+	 * The settings page: title, tabs and sections.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function get_page(): array {
+		return [
+			'title' => __( 'Free Shipping Rules', 'storegrowth-sales-booster' ),
+			'tabs'  => [
+				'content'   => [
+					'label' => __( 'Content', 'storegrowth-sales-booster' ),
+				],
+				'configure' => [
+					'label'    => __( 'Configure', 'storegrowth-sales-booster' ),
+					'sections' => [
+						'display' => [
+							'title' => __( 'Display Rules', 'storegrowth-sales-booster' ),
+							'help'  => __( 'Who sees the banner, and when', 'storegrowth-sales-booster' ),
+						],
+					],
+				],
+				'design'    => [
+					'label'    => __( 'Design', 'storegrowth-sales-booster' ),
+					'sections' => [
+						'banner'   => [
+							'title' => __( 'Banner', 'storegrowth-sales-booster' ),
+							'help'  => __( 'Size and typography of the banner', 'storegrowth-sales-booster' ),
+						],
+						'colors'   => [
+							'title' => __( 'Colors', 'storegrowth-sales-booster' ),
+							'help'  => __( 'Every colour on the banner', 'storegrowth-sales-booster' ),
+						],
+						'template' => [
+							'title' => __( 'Template', 'storegrowth-sales-booster' ),
+							'help'  => __( 'Presets that fill the colour fields above', 'storegrowth-sales-booster' ),
+						],
+					],
+				],
 			],
 		];
-
-		return array_merge( $fields, DisplaySettings::bar_fields( 7 ), DisplaySettings::targeting_fields() );
 	}
 
 	/**

@@ -33,36 +33,3 @@ export interface StockBarValues
     status_text_color: string;
     stockbar_template: 'stock_bar_one' | 'stock_bar_two' | 'stock_bar_three';
 }
-
-/** Keys each tab saves and resets. */
-export const TAB_KEYS: Record<
-    'content' | 'configure' | 'design',
-    Array< keyof StockBarValues >
-> = {
-    content: [
-        'total_sell_count_text',
-        'available_item_count_text',
-        'stock_status_text',
-    ],
-    configure: [
-        'shop_page_stock_bar_enable',
-        'product_page_stock_bar_enable',
-        'variation_page_stock_bar_enable',
-        'stock_display_format',
-        'show_stock_status',
-        'status_quantity_required',
-    ],
-    design: [
-        'stockbar_bg_color',
-        'stockbar_fg_color',
-        'stockbar_height',
-        'stockbar_card_bg_color',
-        'stockbar_border_color',
-        'font_family',
-        'count_text_size',
-        'count_text_color',
-        'status_text_size',
-        'status_text_color',
-        'stockbar_template',
-    ],
-};

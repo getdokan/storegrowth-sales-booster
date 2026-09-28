@@ -19,12 +19,16 @@ defined( 'ABSPATH' ) || exit;
 /**
  * GET/POST sales-booster/v1/settings/{module}
  *
- * Both return `{ schema, values }`: the module's fields (type, default, pro,
- * limits) and its current values. POST takes `{ values }`, validates them
- * against the schema and merges them into the module's existing option
- * (see SettingsService).
+ * Both return `{ page, schema, values, published }`: the module's page (when
+ * its schema defines one), fields (type, default, pro, limits) and current
+ * values. POST takes `{ values }`, validates them against the schema and
+ * merges them into the module's existing option (see SettingsService).
  *
- * Global plugin settings stay on `/settings` (SettingsController).
+ * GET sales-booster/v1/admin/settings returns every settings page at once,
+ * `{ <id>: { page, schema, values, published } }`, which the admin app
+ * builds its settings pages from.
+ *
+ * The old global settings route `/settings` stays (SettingsController).
  *
  * @since SPSG_VERSION
  */
@@ -56,6 +60,18 @@ class ModuleSettingsController extends WP_REST_Controller {
 	 * @return void
 	 */
 	public function register_routes(): void {
+		register_rest_route(
+			$this->namespace,
+			'/admin/' . $this->rest_base,
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_items' ],
+					'permission_callback' => [ $this, 'permissions_check' ],
+				],
+			]
+		);
+
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<module>[a-z0-9-]+)',
@@ -143,9 +159,20 @@ class ModuleSettingsController extends WP_REST_Controller {
 	}
 
 	/**
-	 * `{ schema, values, published }` for a module. `published` is false
-	 * while a gated module's settings were never saved (its storefront output
-	 * is off until then).
+	 * Return every settings page with its schema and values.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_items( $request ) {
+		return rest_ensure_response( (object) $this->service()->get_pages() );
+	}
+
+	/**
+	 * `{ page, schema, values, published }` for a module.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -154,11 +181,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	 * @return array
 	 */
 	private function response_data( string $module_id ): array {
-		return [
-			'schema'    => (object) $this->service()->get_public_schema( $module_id ),
-			'values'    => (object) $this->service()->get_values( $module_id ),
-			'published' => $this->service()->is_published( $module_id ),
-		];
+		return $this->service()->get_page_data( $module_id );
 	}
 
 	/**

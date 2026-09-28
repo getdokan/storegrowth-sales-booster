@@ -27,17 +27,26 @@ import type { SettingsElement } from '@wedevs/plugin-ui';
 import { applyFilters } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import type { ModuleSettings } from '@storegrowth/hooks';
-import type {
-    ListValue,
-    SettingField,
-    SettingValue,
+import {
+    type BoxValue,
+    getHeaderData,
+    type ListValue,
+    type SettingField,
+    type SettingValue,
 } from '@storegrowth/utilities';
 
+import { DeviceField } from './bar-fields';
 import {
+    type Alignment,
+    AlignmentField,
+    BoxModelField,
+    CheckboxField,
     ColorField,
     MultiSelectField,
     NumberField,
+    RadioField,
     SelectField,
+    SwitchCard,
     SwitchField,
     TextField,
     TextareaField,
@@ -56,7 +65,6 @@ const VARIANTS: Record< SettingField[ 'type' ], string > = {
     color: 'color_picker',
     select: 'select',
     list: 'multicheck',
-    // No built-in control: the extension registers a variant.
     box: 'box',
 };
 
@@ -72,13 +80,16 @@ export function extensionKeys< K extends string >(
     schema: Partial< Record< K, SettingField > >,
     tab: string
 ): K[] {
-    return ( Object.keys( schema ) as K[] )
-        .filter( ( key ) => schema[ key ]?.tab === tab )
-        .sort(
-            ( a, b ) =>
-                ( schema[ a ]?.priority ?? 10 ) -
-                ( schema[ b ]?.priority ?? 10 )
+    // `''`: the fields without a tab (a page without tabs).
+    const keys = ( Object.keys( schema ) as K[] ).filter( ( key ) => {
+        return ( schema[ key ]?.tab ?? '' ) === tab;
+    } );
+
+    return keys.sort( ( a, b ) => {
+        return (
+            ( schema[ a ]?.priority ?? 10 ) - ( schema[ b ]?.priority ?? 10 )
         );
+    } );
 }
 
 /**
@@ -93,7 +104,19 @@ function toElement< V extends Values >(
     field: SettingField,
     settings: ModuleSettings< V >
 ): SettingsElement {
-    const locked = settings.isLocked( key );
+    const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
+    const locked =
+        settings.isLocked( key ) || ( Boolean( field.pro_ui ) && ! isPro );
+    const current = settings.values[ key ];
+
+    // `pro_options`: offered with pro, or while it's the stored choice.
+    const offered = ( field.options ?? [] ).filter( ( value ) => {
+        return (
+            isPro ||
+            ! field.pro_options?.includes( value ) ||
+            String( value ) === String( current )
+        );
+    } );
 
     return {
         id: key,
@@ -101,12 +124,19 @@ function toElement< V extends Values >(
         variant: field.variant ?? VARIANTS[ field.type ],
         label: field.label ?? key,
         description: field.help,
-        value: settings.values[ key ] as SettingsElement[ 'value' ],
+        value: current as SettingsElement[ 'value' ],
         default: field.default as SettingsElement[ 'default' ],
-        options: field.options?.map( ( value ) => ( {
-            value,
-            label: field.labels?.[ value ] ?? value,
-        } ) ),
+        options: field.options
+            ? offered.map( ( value ) => {
+                  return {
+                      value,
+                      label: field.labels?.[ value ] ?? value,
+                  };
+              } )
+            : undefined,
+        rows: field.rows,
+        maxLength: field.max_length,
+        name: field.name,
         placeholder: field.placeholder,
         prefix: field.prefix,
         postfix: field.suffix,
@@ -191,6 +221,7 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
                     type={ element.variant }
                     value={ String( value ?? '' ) }
                     placeholder={ element.placeholder as string | undefined }
+                    maxLength={ element.maxLength as number | undefined }
                     onChange={ change }
                 />
             );
@@ -201,6 +232,7 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
                     { ...common }
                     value={ String( value ?? '' ) }
                     placeholder={ element.placeholder as string | undefined }
+                    rows={ element.rows as number | undefined }
                     onChange={ change }
                 />
             );
@@ -225,6 +257,71 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
                 <SwitchField
                     { ...common }
                     checked={ Boolean( value ) }
+                    onChange={ change }
+                />
+            );
+
+        case 'checkbox':
+            return (
+                <CheckboxField
+                    label={ element.label }
+                    locked={ element.disabled }
+                    checked={ Boolean( value ) }
+                    onChange={ change }
+                />
+            );
+
+        case 'switch_card':
+            return (
+                <SwitchCard
+                    title={ element.label }
+                    help={ element.description }
+                    locked={ element.disabled }
+                    checked={ Boolean( value ) }
+                    onChange={ change }
+                />
+            );
+
+        case 'box':
+            return (
+                <BoxModelField
+                    { ...common }
+                    label={ String( element.label ?? '' ) }
+                    name={ element.name as string | undefined }
+                    value={ value as BoxValue }
+                    onChange={ change }
+                />
+            );
+
+        case 'alignment':
+            return (
+                <AlignmentField
+                    { ...common }
+                    name={ element.name as string | undefined }
+                    value={ value as Alignment }
+                    onChange={ change }
+                />
+            );
+
+        // Desktop / Mobile checkboxes; options are [ desktop, mobile ].
+        case 'device':
+            return (
+                <DeviceField
+                    label={ String( element.label ?? '' ) }
+                    locked={ element.disabled }
+                    value={ ( value as string[] ) ?? [] }
+                    desktop={ options[ 0 ]?.value ?? '' }
+                    mobile={ options[ 1 ]?.value ?? '' }
+                    onChange={ change }
+                />
+            );
+
+        case 'radio':
+            return (
+                <RadioField
+                    { ...common }
+                    value={ String( value ?? '' ) }
+                    options={ options }
                     onChange={ change }
                 />
             );
@@ -274,6 +371,63 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
     }
 }
 
+export interface SchemaFieldProps< V extends Values > {
+    /** Setting key. */
+    fieldKey: keyof V & string;
+    /** The page's `useModuleSettings()`. */
+    settings: ModuleSettings< V >;
+}
+
+/**
+ * One field drawn from its schema, through the variant's field hook.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param props          Props.
+ * @param props.fieldKey Setting key.
+ * @param props.settings Module settings.
+ */
+export function SchemaField< V extends Values >( {
+    fieldKey,
+    settings,
+}: SchemaFieldProps< V > ) {
+    const change = ( key: string, value: unknown ) => {
+        const field = settings.schema[ key ];
+        const next = field && coerce( field, value );
+
+        // Only a real change goes to the page.
+        if (
+            next !== undefined &&
+            JSON.stringify( next ) !== JSON.stringify( settings.values[ key ] )
+        ) {
+            settings.setValue( key, next as V[ keyof V ] );
+        }
+    };
+
+    const element = toElement(
+        fieldKey,
+        settings.schema[ fieldKey ] as SettingField,
+        settings
+    );
+
+    const control = applyFilters(
+        /**
+         * Filters the control of a schema field, by variant (plugin-ui's
+         * settings field hook).
+         *
+         * @since SPSG_VERSION
+         *
+         * @param {JSX.Element}     defaultField The built-in control; its `onChange( key, value )` prop saves.
+         * @param {SettingsElement} element      The field.
+         */
+        `storegrowth_settings_${ element.variant }_field`,
+        <DefaultField element={ element } onChange={ change } />,
+        element
+    ) as JSX.Element;
+
+    return <div className="w-full">{ control }</div>;
+}
+
 export interface FieldRendererProps< V extends Values > {
     /** Tab id, e.g. `configure`. */
     tab: string;
@@ -297,46 +451,15 @@ export function FieldRenderer< V extends Values >( {
         tab
     );
 
-    const change = ( key: string, value: unknown ) => {
-        const field = settings.schema[ key ];
-        const next = field && coerce( field, value );
-
-        // Only a real change goes to the page.
-        if (
-            next !== undefined &&
-            JSON.stringify( next ) !== JSON.stringify( settings.values[ key ] )
-        ) {
-            settings.setValue( key, next as V[ keyof V ] );
-        }
-    };
-
     return (
         <>
             { keys.map( ( key ) => {
-                const element = toElement(
-                    key,
-                    settings.schema[ key ] as SettingField,
-                    settings
-                );
-                const control = applyFilters(
-                    /**
-                     * Filters the control of an extension field, by variant
-                     * (plugin-ui's settings field hook).
-                     *
-                     * @since SPSG_VERSION
-                     *
-                     * @param {JSX.Element}     defaultField The built-in control; its `onChange( key, value )` prop saves.
-                     * @param {SettingsElement} element      The field.
-                     */
-                    `storegrowth_settings_${ element.variant }_field`,
-                    <DefaultField element={ element } onChange={ change } />,
-                    element
-                ) as JSX.Element;
-
                 return (
-                    <div key={ key } className="w-full">
-                        { control }
-                    </div>
+                    <SchemaField
+                        key={ key }
+                        fieldKey={ key }
+                        settings={ settings }
+                    />
                 );
             } ) }
         </>

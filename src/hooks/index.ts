@@ -9,5 +9,7 @@ export { ModulesProvider, useModules } from './modules-context';
 export type { ModulesContextValue } from './modules-context';
 export { useModuleSettings } from './use-module-settings';
 export type { ModuleSettings } from './use-module-settings';
+export { useSettingsPages } from './use-settings';
+export type { SettingsPages } from './use-settings';
 export { usePreviewFont } from './use-preview-font';
 export * from './router';

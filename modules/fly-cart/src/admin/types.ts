@@ -36,32 +36,3 @@ export interface FlyCartValues extends Record< string, SettingValue > {
     widget_bg_color: string;
     product_card_bg_color: string;
 }
-
-export type FlyCartKey = keyof FlyCartValues & string;
-
-/** The Cart Contents checkboxes, in the design's order. */
-export const CONTENT_KEYS = [
-    'show_product_image',
-    'show_remove_icon',
-    'show_quantity_picker',
-    'show_product_price',
-    'show_stock_status',
-    'fly_cart_badge_icon',
-    'show_free_shipping_message',
-    'show_coupon',
-    'enable_add_to_cart_redirect',
-] as const;
-
-/** Keys each tab saves and resets (tab ids are the extension API). */
-export const TAB_KEYS: Record< 'general' | 'design', FlyCartKey[] > = {
-    general: [ 'layout', ...CONTENT_KEYS ],
-    design: [
-        'icon_position',
-        'icon_name',
-        'buttons_bg_color',
-        'shopping_button_bg_color',
-        'icon_color',
-        'widget_bg_color',
-        'product_card_bg_color',
-    ],
-};

@@ -60,38 +60,3 @@ export const DIGIT_KEYS: CountdownKey[] = [
     'minute_text_color',
     'second_text_color',
 ];
-
-/** Keys each tab saves and resets. */
-export const TAB_KEYS: Record< 'configure' | 'design', CountdownKey[] > = {
-    configure: [
-        'countdown_heading',
-        'shop_page_countdown_enable',
-        'product_page_countdown_enable',
-    ],
-    design: [
-        'font_family',
-        'heading_font_weight',
-        'heading_letter_spacing',
-        'heading_line_height',
-        'heading_text_color',
-        'widget_background_color',
-        'border_color',
-        'widget_radius',
-        'widget_alignment',
-        'widget_margin',
-        'widget_padding',
-        ...DIGIT_KEYS,
-        'counter_label_color',
-        'counter_separator_color',
-        'counter_background_color',
-        'counter_border_color',
-        'counter_radius',
-        'counter_alignment',
-        'counter_margin',
-        'counter_padding',
-        'counter_font_family',
-        'counter_font_weight',
-        'counter_letter_spacing',
-        'selected_theme',
-    ],
-};

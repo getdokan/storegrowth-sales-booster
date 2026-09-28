@@ -88,9 +88,46 @@ $legacy = static function ( array $field ) {
 $service = storegrowth_get_container()->get( SettingsService::class );
 
 foreach ( $service->get_schemas() as $module_id => $schema ) {
-	$option   = $schema->get_option_name();
+	$option = $schema->get_option_name();
+	$fields = $service->get_fields( $module_id );
+
+	// Standalone schema: each key is its own option (not autoloaded).
+	if ( '' === $option ) {
+		echo "\n{$module_id} (standalone options)\n";
+		$snapshots = [];
+		foreach ( array_keys( $fields ) as $key ) {
+			$snapshots[ $key ] = get_option( $key, null );
+		}
+
+		try {
+			foreach ( $fields as $key => $field ) {
+				delete_option( $key );
+				[ , $data ] = $call( 'GET', $module_id );
+				$call( 'POST', $module_id, (array) $data['values'] );
+				$check( null === get_option( $key, null ), "`{$key}` never saved: round trip writes nothing" );
+
+				if ( 'toggle' === $field['type'] ) {
+					[ $status ] = $call( 'POST', $module_id, [ $key => ! $field['default'] ] );
+					$check(
+						200 === $status && ( ! $field['default'] ) === get_option( $key ) && ! array_key_exists( $key, wp_load_alloptions() ),
+						"change `{$key}` → stored as " . var_export( ! $field['default'], true ) . ', not autoloaded'
+					);
+				}
+			}
+		} finally {
+			foreach ( $snapshots as $key => $snapshot ) {
+				if ( null === $snapshot ) {
+					delete_option( $key );
+				} else {
+					update_option( $key, $snapshot, false );
+				}
+				$check( get_option( $key, null ) === $snapshot, "`{$key}` restored" );
+			}
+		}
+		continue;
+	}
+
 	$snapshot = get_option( $option, null );
-	$fields   = $service->get_fields( $module_id );
 
 	echo "\n{$module_id} ({$option})\n";
 

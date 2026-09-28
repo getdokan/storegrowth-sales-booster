@@ -30,6 +30,7 @@ export {
     MultiSelectField,
 } from './multi-select-field';
 export { type NumberFieldProps, NumberField } from './number-field';
+export { type RadioFieldProps, RadioField } from './radio-field';
 export {
     type SelectFieldProps,
     type SelectOption,

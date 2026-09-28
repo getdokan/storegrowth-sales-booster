@@ -20,20 +20,36 @@ export interface SettingsTabsProps {
     label: string;
     /** Initially selected tab id (default: the first). */
     defaultTab?: string;
+    /** Selected tab id, when the page controls it (e.g. from the URL). */
+    value?: string;
+    /** Tab selected by the user, with `value`. */
+    onValueChange?: ( id: string ) => void;
 }
 
 /**
  * @since SPSG_VERSION
  *
- * @param props            Props.
- * @param props.tabs       Tabs with their panels.
- * @param props.label      Accessible name of the tab list.
- * @param props.defaultTab Initially selected tab id.
+ * @param props               Props.
+ * @param props.tabs          Tabs with their panels.
+ * @param props.label         Accessible name of the tab list.
+ * @param props.defaultTab    Initially selected tab id.
+ * @param props.value         Selected tab id (controlled).
+ * @param props.onValueChange Tab selected by the user.
  */
-export function SettingsTabs( { tabs, label, defaultTab }: SettingsTabsProps ) {
+export function SettingsTabs( {
+    tabs,
+    label,
+    defaultTab,
+    value,
+    onValueChange,
+}: SettingsTabsProps ) {
     return (
         <Tabs
             defaultValue={ defaultTab ?? tabs[ 0 ]?.id }
+            value={ value }
+            onValueChange={ ( next: unknown ) => {
+                onValueChange?.( String( next ) );
+            } }
             className="w-full gap-6"
         >
             <TabsList

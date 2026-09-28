@@ -12,7 +12,7 @@ ADR-004 froze both slugs and their screen IDs (`storegrowth_page_spsg-settings` 
 
 ## Decision
 
-1. **The app runs on one page: `admin.php?page=storegrowth`**, screen ID `storegrowth_page_storegrowth`. Routes stay in the hash: `#/dashboard`, `#/modules`, `#/settings`, `#/<module-id>`, `#/ini-setup`. In PHP, use `AdminMenu::PAGE` and `AdminMenu::SCREEN_ID`, never the strings.
+1. **The app runs on one page: `admin.php?page=storegrowth`**, screen ID `storegrowth_page_storegrowth`. Routes stay in the hash: `#/dashboard`, `#/modules`, `#/settings` (a module's page is `#/settings?module=<id>`, ADR-009), `#/ini-setup`. In PHP, use `AdminMenu::PAGE` and `AdminMenu::SCREEN_ID`, never the strings.
 2. **The submenu items are routes on that page:** Dashboard (`storegrowth`), Features (`#/features`), Modules (`#/modules`), Settings (`#/settings`), Initial Setup (`#/ini-setup`).
 3. **Old slugs keep working.** `spsg-settings` and `spsg-modules` stay registered as hidden pages (no parent). `AdminMenu::redirect_legacy_pages()` sends them to `storegrowth` on `admin_init`: the admin has no `template_redirect`, and `admin_init` runs after the menu access check and before output.
    - The browser keeps the URL's `#/route` across the redirect, so `spsg-settings#/stock-bar` opens `storegrowth#/stock-bar`.
@@ -32,4 +32,4 @@ ADR-004 froze both slugs and their screen IDs (`storegrowth_page_spsg-settings` 
 
 - Links, docs and tests use `admin.php?page=storegrowth#/<route>`.
 - Built legacy bundles (BOGO, Upsell Order Bump, Direct Checkout, pro) that still link to the old slugs keep working through the redirect until they're rebuilt.
-- A module settings page can now be addressed by one stable URL, which the schema-driven pages build on (`#/<module-id>`, tab in the query string).
+- Every page has one stable URL on one screen; the schema-driven settings pages build on it (`#/settings?module=<id>&tab=<tab>`, ADR-009).

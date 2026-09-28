@@ -21,9 +21,9 @@
 import { applyFilters } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
 import { Navigate, useModules } from '@storegrowth/hooks';
+import { moduleRoute } from '@storegrowth/utilities';
 
 import DashboardPage from './pages/dashboard';
-import FeaturePage from './pages/feature';
 import ModulesPage from './pages/modules';
 import OnboardingPage from './pages/onboarding';
 import SettingsPage from './pages/settings';
@@ -44,15 +44,21 @@ export interface AdminRoute {
  */
 function FeaturesRedirect() {
     const { modules } = useModules();
-    const first = modules.find( ( module ) => module.status ) ?? modules[ 0 ];
+    const first =
+        modules.find( ( module ) => {
+            return module.status;
+        } ) ?? modules[ 0 ];
 
-    return <Navigate to={ first ? `/${ first.id }` : '/modules' } replace />;
+    return (
+        <Navigate to={ first ? moduleRoute( first.id ) : '/modules' } replace />
+    );
 }
 
 /**
- * Pages every install has. `/:moduleId` is the feature frame (rail + title)
- * for any module; a module's own registered page (exact path) wins over it.
- * Anything else falls through to the dashboard.
+ * Pages every install has. Every module's page is `/settings?module=<id>`
+ * (its settings page, or the empty module frame until it has one). A module
+ * may add routes of its own (e.g. `/bogo/:id`). Anything else falls through
+ * to the dashboard.
  *
  * @since SPSG_VERSION
  */
@@ -64,7 +70,6 @@ const coreRoutes: AdminRoute[] = [
     { id: 'settings', path: '/settings', element: <SettingsPage /> },
     // Legacy path, kept: activation and the "Initial Setup" submenu link here.
     { id: 'onboarding', path: '/ini-setup', element: <OnboardingPage /> },
-    { id: 'feature', path: '/:moduleId', element: <FeaturePage /> },
     {
         id: 'not-found',
         path: '*',

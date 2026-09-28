@@ -27,6 +27,7 @@ import {
     fetchDashboardOverview,
     getHeaderData,
     moduleLabel,
+    moduleRoute,
     type DashboardOverview,
 } from '@storegrowth/utilities';
 
@@ -195,7 +196,7 @@ export default function DashboardPage() {
                                         { rows.map( ( module ) => (
                                             <Link
                                                 key={ module.id }
-                                                to={ `/${ module.id }` }
+                                                to={ moduleRoute( module.id ) }
                                                 className="flex w-full flex-wrap items-center gap-4 rounded-[8px] text-inherit no-underline transition-colors hover:bg-sg-row-hover focus:shadow-none sm:flex-nowrap"
                                             >
                                                 <span className="flex shrink-0 items-center justify-center rounded-full bg-[rgba(8,117,255,.1)] p-1">

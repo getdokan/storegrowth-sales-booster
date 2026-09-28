@@ -75,7 +75,7 @@ addFilter( 'storegrowth.admin.routes', 'storegrowth/<id>', ( routes ) => [
 
 5. Add the webpack entry and enqueue `modules/<id>/assets/js/admin.js` (with its `admin.asset.php`) on the app screen (`AdminMenu::SCREEN_ID`, ADR-008), plus the module's storefront stylesheet for the preview, from an `AdminPage` class extending `Admin\ModuleAdminPage` (`module_id()`, `stylesheets()`, `data()`), registered in the always-loaded `ServiceProvider` (so the page works right after the module is switched on). Reference: `modules/stock-bar/includes/AdminPage.php`.
 
-Reference implementation: `modules/stock-bar/src/admin/`.
+Every module's page is `#/settings?module=<id>` (`moduleRoute()` from `@storegrowth/utilities`); there is no `#/<module-id>` route. BOGO, Upsell Order Bump and Direct Checkout show the empty module frame until redesigned. **Settings pages are generated from the PHP schema (ADR-009):** implement `SettingsPage::get_page()` and put `tab`/`section`/`label`/`help`/`variant`/… on the fields; the page opens at `#/settings?module=<id>&tab=<tab>`. The module's JS only registers `storegrowth.settings.page` → `{ preview, controls }` (render functions of the settings, block-body arrows). Reference: `modules/stock-bar/includes/Settings/StockBarSettings.php` + `modules/stock-bar/src/admin/`.
 
 ## Fields and shared components
 

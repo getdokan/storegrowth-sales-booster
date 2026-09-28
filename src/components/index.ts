@@ -38,6 +38,8 @@ export {
     extensionKeys,
     FieldRenderer,
     type FieldRendererProps,
+    SchemaField,
+    type SchemaFieldProps,
 } from './field-renderer';
 export * from './fields';
 export {
@@ -48,6 +50,11 @@ export {
     type PreviewTheme,
 } from './live-preview';
 export { ModuleIcon, type ModuleIconProps } from './module-icon';
+export {
+    ModuleSettingsPage,
+    type ModuleSettingsPageProps,
+    type SettingsPageParts,
+} from './module-settings';
 export { OptionCard, type OptionCardProps } from './option-card';
 export {
     type PickerCardOption,

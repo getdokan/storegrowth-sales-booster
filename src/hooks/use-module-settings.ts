@@ -1,6 +1,9 @@
 /**
- * Load, edit and save one module's settings (`sales-booster/v1/settings/{id}`).
- * Local React state: each settings page owns its copy, no global store.
+ * Load, edit and save one module's settings. Loaded from the shared settings
+ * pages (`sales-booster/v1/admin/settings`, one request for every page), or
+ * `sales-booster/v1/settings/{id}` for a module without a page; saved to
+ * `sales-booster/v1/settings/{id}`. Local React state: each settings page
+ * owns its copy of the values, no global store.
  *
  * @since SPSG_VERSION
  */
@@ -12,6 +15,7 @@ import {
     getHeaderData,
     saveModuleSettings,
     type SettingField,
+    type SettingsPageDefinition,
     type SettingValue,
 } from '@storegrowth/utilities';
 
@@ -23,6 +27,8 @@ export interface ModuleSettings< V extends Values = Values > {
     /** Load error, if the settings could not be read. */
     loadError: string | null;
     schema: Partial< Record< keyof V, SettingField > >;
+    /** The page the backend defines (title, tabs, sections), else empty. */
+    page: SettingsPageDefinition;
     /** Current (edited) values. */
     values: V;
     /**
@@ -67,6 +73,7 @@ export function useModuleSettings< V extends Values = Values >(
     const [ schema, setSchema ] = useState<
         Partial< Record< keyof V, SettingField > >
     >( {} );
+    const [ page, setPage ] = useState< SettingsPageDefinition >( {} );
     const [ saved, setSaved ] = useState< V >( {} as V );
     const [ values, setValuesState ] = useState< V >( {} as V );
     const [ errors, setErrors ] = useState<
@@ -87,6 +94,7 @@ export function useModuleSettings< V extends Values = Values >(
                     return;
                 }
                 setSchema( response.schema );
+                setPage( response.page ?? {} );
                 setSaved( response.values );
                 setValuesState( response.values );
                 setPublished( response.published );
@@ -221,6 +229,7 @@ export function useModuleSettings< V extends Values = Values >(
             loading,
             loadError,
             schema,
+            page,
             values,
             setValue,
             setValues,
@@ -236,6 +245,7 @@ export function useModuleSettings< V extends Values = Values >(
             loading,
             loadError,
             schema,
+            page,
             values,
             setValue,
             setValues,
