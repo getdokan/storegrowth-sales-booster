@@ -2,6 +2,9 @@
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
+use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Integrations\Dokan\Settings\BogoVendorSettings;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 defined( 'ABSPATH' ) || exit;
@@ -47,10 +50,15 @@ class Ajax {
         $data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : []; // phpcs: ignore.
 
         if ( isset( $data['spsg_bogo_dokan_vendors_settings_data'] ) ) {
-            $vendors_settings_data = $data['spsg_bogo_dokan_vendors_settings_data'];
+            // Through the settings engine (it replaced the option unsanitized):
+            // validates the schema's keys and merges, so other stored keys stay.
+            $saved = storegrowth_get_container()->get( SettingsService::class )->save( BogoVendorSettings::ID, (array) $data['spsg_bogo_dokan_vendors_settings_data'] );
 
-            update_option( 'spsg_bogo_dokan_vendors_settings', $vendors_settings_data );
-            wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_dokan_vendors_settings' ) ) );
+            if ( is_wp_error( $saved ) ) {
+                wp_send_json_error( $saved->get_error_message(), 400 );
+            }
+
+            wp_send_json_success( Helper::get_settings( BogoVendorRules::OPTION ) );
         }
     }
 
@@ -68,7 +76,7 @@ class Ajax {
             wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
         }
 
-        $form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
+        $form_data = Helper::get_settings( BogoVendorRules::OPTION, [] );
 
         wp_send_json_success( $form_data );
     }

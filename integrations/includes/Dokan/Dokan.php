@@ -5,6 +5,7 @@ namespace StorePulse\StoreGrowth\Integrations\Dokan;
 use StorePulse\StoreGrowth\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
 use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\Dashboard;
 use StorePulse\StoreGrowth\Integrations\Dokan\Frontend\Frontend;
+use StorePulse\StoreGrowth\Integrations\Dokan\Settings\BogoVendorSettings;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 /**
@@ -37,5 +38,25 @@ class Dokan implements HookRegistry {
         Frontend::instance();
         FlyCartFields::instance();
         Api::instance();
+
+        ( new BogoVendorRules() )->register_hooks();
+        add_filter( 'spsg_settings_schemas', [ $this, 'add_settings_schemas' ] );
+        add_filter( 'spsg_settings_page', [ BogoVendorSettings::class, 'add_link' ], 10, 2 );
+    }
+
+    /**
+     * The BOGO vendor settings page (`#/settings?module=bogo-vendors`).
+     *
+     * @since SPSG_VERSION
+     *
+     * @param array $schemas Settings schemas.
+     *
+     * @return array
+     */
+    public function add_settings_schemas( $schemas ) {
+        $schemas   = (array) $schemas;
+        $schemas[] = new BogoVendorSettings();
+
+        return $schemas;
     }
 }

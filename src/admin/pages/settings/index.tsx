@@ -11,6 +11,7 @@
  *
  * @since SPSG_VERSION
  */
+import { Button } from '@wedevs/plugin-ui';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
@@ -25,6 +26,7 @@ import {
     Navigate,
     useModules,
     useModuleSettings,
+    useNavigate,
     useSearchParams,
     useSettingsPages,
 } from '@storegrowth/hooks';
@@ -64,6 +66,8 @@ export default function SettingsPage() {
         ? moduleLabel( module )
         : __( 'Settings', 'storegrowth-sales-booster' );
     const hasPage = GENERAL === id || Boolean( pages[ id ] );
+    // A module's page, or a page that sits in a module's frame (`module`).
+    const frameId = module ? id : pages[ id ]?.page?.module;
 
     // Neither a page nor a module (an old or mistyped link): global settings.
     if ( ! loading && ! hasPage && ! module ) {
@@ -86,8 +90,8 @@ export default function SettingsPage() {
         page = <CardHead title={ title } />;
     }
 
-    return module ? (
-        <FeatureLayout moduleId={ id }>{ page }</FeatureLayout>
+    return frameId ? (
+        <FeatureLayout moduleId={ frameId }>{ page }</FeatureLayout>
     ) : (
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
             <div className="flex w-full max-w-[1280px] flex-col items-start gap-6">
@@ -104,8 +108,10 @@ export default function SettingsPage() {
  */
 function PageContent( { id, title }: { id: string; title: string } ) {
     const settings = useModuleSettings( id );
+    const navigate = useNavigate();
     const loaded = ! settings.loading && ! settings.loadError;
     const parts = pageParts( id );
+    const links = settings.page.links ?? [];
 
     // Parts render once the settings are there (they read the values).
     return (
@@ -119,6 +125,25 @@ function PageContent( { id, title }: { id: string; title: string } ) {
             // The global settings are one card without tabs.
             hasTabs={ GENERAL !== id }
             controls={ loaded ? parts.controls?.( settings ) : undefined }
+            actions={
+                links.length > 0 && (
+                    <span className="flex flex-wrap items-center gap-3">
+                        { links.map( ( link ) => {
+                            return (
+                                <Button
+                                    key={ link.route }
+                                    variant="outline"
+                                    onClick={ () => {
+                                        navigate( link.route );
+                                    } }
+                                >
+                                    { link.label }
+                                </Button>
+                            );
+                        } ) }
+                    </span>
+                )
+            }
         />
     );
 }

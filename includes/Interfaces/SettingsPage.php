@@ -72,6 +72,11 @@ defined( 'ABSPATH' ) || exit;
  * its fields that have no `tab` in one card under the title, with one Save
  * bar; it may have `sections` of its own.
  *
+ * Also `links` (buttons beside the title to another page of the app:
+ * `[ [ 'label' => …, 'route' => '/settings?module=…' ] ]`, e.g. an extension's
+ * page added through `spsg_settings_page`) and `module` (a page that isn't a
+ * module's sits in that module's frame, its feature rail).
+ *
  * Extending (pro, other plugins), all PHP:
  * - `spsg_settings_schema` ( $fields, $id ): add fields to a page (with `tab`
  *   / `section`); a module's own fields can't be redefined. Per module:

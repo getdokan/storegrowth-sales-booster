@@ -388,6 +388,11 @@ class BogoController extends WP_REST_Controller {
             return $rules;
         }
 
+        $rules = $this->check_extension_rules( $data, [], $request );
+        if ( is_wp_error( $rules ) ) {
+            return $rules;
+        }
+
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
 
@@ -463,6 +468,11 @@ class BogoController extends WP_REST_Controller {
         // Only the rules about what the request changes: an offer stored
         // before them (e.g. a 150% discount) can still be renamed.
         $rules = $this->check_offer_rules( $data, $sent );
+        if ( is_wp_error( $rules ) ) {
+            return $rules;
+        }
+
+        $rules = $this->check_extension_rules( $data, $stored, $request );
         if ( is_wp_error( $rules ) ) {
             return $rules;
         }
@@ -547,6 +557,36 @@ class BogoController extends WP_REST_Controller {
         }
 
         return true;
+    }
+
+    /**
+     * Rules an extension adds to a create or an update, after the editor's
+     * (e.g. the Dokan integration's: a vendor's offer uses only their own
+     * products).
+     *
+     * @since SPSG_VERSION
+     *
+     * @param array           $data    Normalized offer data, as it will be saved.
+     * @param array           $stored  The stored offer in request shape (empty when new).
+     * @param WP_REST_Request $request The REST request.
+     *
+     * @return true|WP_Error
+     */
+    protected function check_extension_rules( $data, $stored, $request ) {
+        /**
+         * Filters whether a BOGO offer may be saved through REST: return a
+         * WP_Error (with a `status`) to reject the create or update.
+         *
+         * @since SPSG_VERSION
+         *
+         * @param true|WP_Error   $result  True, or the error of an earlier callback.
+         * @param array           $data    Normalized offer data, as it will be saved.
+         * @param array           $stored  The stored offer in request shape (empty when new).
+         * @param WP_REST_Request $request The REST request.
+         */
+        $result = apply_filters( 'spsg_bogo_offer_rules', true, $data, $stored, $request );
+
+        return is_wp_error( $result ) ? $result : true;
     }
 
     /**

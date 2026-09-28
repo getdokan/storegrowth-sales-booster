@@ -30,7 +30,7 @@ Engine: `includes/Settings/SettingsService.php`; each module declares `Interface
 
 `{module}` = `countdown-timer`, `stock-bar`, `sales-pop`, `progressive-discount-banner`, `floating-notification-bar`, `quick-view`, `fly-cart`, `direct-checkout`, `bogo`.
 
-`/settings/bogo` covers the global BOGO options (`spsg_bogo_general_settings`) and, when Dokan is active, the vendor options.
+`/settings/bogo` covers the global BOGO options (`spsg_bogo_general_settings`). **Done (10f):** the Dokan vendor options (`spsg_bogo_dokan_vendors_settings`, their own option) are their own page, `/settings/bogo-vendors`, registered through `spsg_settings_schemas` only while Dokan is active.
 
 ### 1.1 Settings route → option → ajax pairs it replaces
 
@@ -44,7 +44,8 @@ Engine: `includes/Settings/SettingsService.php`; each module declares `Interface
 | `quick-view` | `spsg_quick_view_settings` | `spsg_quick_view_get_settings`, `spsg_quick_view_save_settings` |
 | `fly-cart` | `spsg_fly_cart_settings` | `spsg_fly_cart_get_settings`, `spsg_fly_cart_save_settings` |
 | `direct-checkout` | `spsg_direct_checkout_settings` | `spsg_direct_checkout_get_settings`, `spsg_direct_checkout_save_settings` |
-| `bogo` | `spsg_bogo_general_settings` (+ `spsg_bogo_dokan_vendors_settings`) | `spsg_bogo_general_get_settings`, `spsg_bogo_general_save_settings`, `spsg_bogo_vendors_get_settings`, `spsg_bogo_vendors_save_settings` |
+| `bogo` | `spsg_bogo_general_settings` | `spsg_bogo_general_get_settings`, `spsg_bogo_general_save_settings` |
+| `bogo-vendors` (Dokan) | `spsg_bogo_dokan_vendors_settings` | `spsg_bogo_vendors_get_settings`, `spsg_bogo_vendors_save_settings` |
 
 Sanitization gap closed by #7: Free Shipping, Floating Bar, Direct Checkout, BOGO general and Dokan vendor settings are saved with no sanitization today.
 
@@ -74,7 +75,7 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 | 22a | `GET /bogo/offers/editor` | NEW | **Done (10d, ADR-010):** the offer editor: `{ page, schema, can_create, currency: { symbol, position, decimals, decimal_separator, thousand_separator } }` from `BogoOfferFields` (filters `spsg_bogo_offer_fields`, `spsg_bogo_offer_page`). Without pro, create/update also ignore `product_page_message` (a new offer gets "Free Gift"), `default_badge_icon_name`, `default_custom_badge_icon` (R3). Create/update (#19, #21) return 400 `bogo_invalid_discount`, `bogo_invalid_dates`, `bogo_missing_target` (an update only for the keys it sends) and `bogo_offer_exists` as 400 |
 | 23 | `POST /bogo/offers/{id}/status` `{ status }` | EXISTS | List status switch |
 | 24 | `POST /bogo/offers/batch` `{ delete: [ids] }` | NEW | **Done (10c):** each id through the single-delete checks; returns `{ deleted, failed }`. List rows also carry `product_id` and, in `get_offered_product_info` / `get_different_product_info`, `image` and `regular_price` |
-| 25 | `GET /bogo/offers/vendor` … | EXISTS | Dokan vendor controller (`dokandar` scope). Add a check that the product IDs belong to the vendor. It inherits the routes, so `POST /bogo/offers/vendor/batch` exists too, each id through the vendor's item check |
+| 25 | `GET /bogo/offers/vendor` … | EXISTS | Dokan vendor controller (`dokandar` scope). It inherits the routes, so `POST /bogo/offers/vendor/batch` exists too, each id through the vendor's item check. **Done (10f):** `search` / `type` / `status` reach its list (always limited to the vendor's offers). On both `/bogo/offers` and `/bogo/offers/vendor`, a vendor's (not `manage_options`) create/update is rejected with 403 `spsg_bogo_vendor_product` when a target, the offer product (`get_different_product_field`) or an alternate isn't the vendor's (Dokan's vendor of the product), 403 `spsg_bogo_vendor_categories` for category targets, and 403 `spsg_bogo_vendor_buy_x_get_x` for a new (or switched-to) Buy X Get X offer while `vendors_can_create_buy_x_get_x` is off (missing = off); turning an offer on (`status: yes`) checks its products again, turning it off and deleting need only ownership. Filter `spsg_bogo_offer_rules` ( true, $data, $stored, $request ) |
 
 ### 3.2 Order Bump — `sales-booster/v1/order-bumps` (new) + `spsg/v1/order-bumps` (kept permanently)
 
@@ -99,9 +100,9 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 
 **Required:** under `pro-compat-review.md` R2, pro 2.2.0 users must keep a way to manage their existing category messages, so lite builds this pro-gated screen even though the design drops it. The ajax actions stay registered too.
 
-## 5. Product-level settings (optional, only if product edit screens move to React)
 **Done (10e):** `REST\CategoryMessagesController` over `BoGo\CategoryMessages` (writes only `bogo_category_messages`, keeps the option's other keys and non-array rows as stored, autoload default: the storefront reads it; an option or `bogo_category_messages` that isn't an array → every write 409 `bogo_invalid_option`, left alone, and the list is empty). Each write rewrites the option, so the admin sends one at a time (bulk delete in sequence, switches and row actions wait while one is pending). `manage_options` only (not `spsg_bogo_check_permission`: vendors don't manage store-wide messages); every write also needs pro (403 `salesbooster_pro_required`), as the old screen (upgrade overlay) and pro's own handlers did; reading doesn't. Registered only while BOGO is on. The ajax actions are unchanged (lite's `bogo_category_msg_create` still has no pro check, ADR-004).
 
+## 5. Product-level settings (optional, only if product edit screens move to React)
 Today these are PHP forms on the WooCommerce product edit screen and the Dokan product form. They work and aren't in the designs.
 
 | # | Method + route | Data |

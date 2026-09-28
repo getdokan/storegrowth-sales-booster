@@ -148,6 +148,10 @@ export interface SettingsPageDefinition {
     >;
     /** Sections of a page without tabs. */
     sections?: SettingsSections;
+    /** Links beside the title to other pages of the app, e.g. an extension's page. */
+    links?: Array< { label: string; route: string } >;
+    /** A page that isn't a module's: the module whose frame (rail) it sits in. */
+    module?: string;
 }
 
 /** A product as the pickers show it. */

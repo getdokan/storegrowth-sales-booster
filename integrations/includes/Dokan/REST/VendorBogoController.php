@@ -56,10 +56,12 @@ class VendorBogoController extends BogoController {
      * @return array Query filters for BogoDataManager.
      */
     protected function get_query_filters( $request ) {
-        // Filter offers by the current vendor's ID
-        $vendor_id = dokan_get_current_user_id();
-        
-        return ['created_by' => $vendor_id];
+        // The list's `search` / `type` / `status` (they used to be ignored
+        // here), always limited to the current vendor's offers.
+        return array_merge(
+            parent::get_query_filters( $request ),
+            [ 'created_by' => dokan_get_current_user_id() ]
+        );
     }
 
     /**
@@ -101,8 +103,10 @@ class VendorBogoController extends BogoController {
                 [ 'status' => 403 ]
             );
         }
-        
-        return true;
+
+        // Then the filter, as the admin route (`BogoVendorRules` rechecks
+        // an offer's products when it's turned on).
+        return parent::check_single_item_permission( $item, $request );
     }
 
     /**

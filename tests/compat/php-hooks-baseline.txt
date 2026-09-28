@@ -22,6 +22,7 @@ spsg_bogo_offer_fields
 spsg_bogo_offer_page
 spsg_bogo_offer_product_id_for_cart
 spsg_bogo_offer_products_for_item
+spsg_bogo_offer_rules
 spsg_bogo_product_args
 spsg_bogo_query_args
 spsg_bogo_rest_query_filters

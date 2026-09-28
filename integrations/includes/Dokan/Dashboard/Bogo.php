@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Integrations\Dokan\BogoVendorRules;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 /**
@@ -58,12 +59,14 @@ class Bogo {
      * @return array
      */
     public function add_nav_menu( $menus ): array {
-		// dokan_is_seller_dashboard is checked before this class init
-		$settings = Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
-
-		if ( isset( $settings['vendors_can_create_buy_x_get_x'] ) && ! $settings['vendors_can_create_buy_x_get_x'] ) {
+		// dokan_is_seller_dashboard is checked before this class init.
+		// The menu shows whatever `vendors_can_create_buy_x_get_x` is (it
+		// hid the menu when off; it only gates Buy X Get X offers), but only
+		// with the dashboard bundle, or its route would be blank.
+		if ( ! file_exists( Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' ) ) ) {
 			return $menus;
 		}
+
         $menus['bogo'] = [
             'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
             'icon'       => '<i class="fa-solid fa-box"></i>',
@@ -178,8 +181,7 @@ class Bogo {
             $assets['version'],
             true
         );
-		$settings = Helper::get_settings( 'spsg_bogo_dokan_vendors_settings', [] );
-		$is_enable = isset( $settings['vendors_can_create_buy_x_get_x'] ) && $settings['vendors_can_create_buy_x_get_x'];
+		$is_enable = BogoVendorRules::can_create_buy_x_get_x();
         wp_localize_script(
             'spsg-bogo-dokan-vendor-dashboard',
             'spsgAdmin',

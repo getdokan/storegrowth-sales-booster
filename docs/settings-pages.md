@@ -267,6 +267,16 @@ Anything else: the module draws it (`controls`), or an extension handles its var
 
 A section's fields are grouped in its accordion wherever the section first appears; fields without a section stay in field order.
 
+### Page keys
+
+| Key | Meaning |
+|---|---|
+| `title` | Card title |
+| `tabs` | Tab id → `{ label, sections }`, in order |
+| `sections` | Sections of a page without tabs |
+| `links` | Buttons beside the title to another page: `[ [ 'label' => …, 'route' => '/settings?module=…' ] ]` (e.g. an extension's page, added through `spsg_settings_page`) |
+| `module` | A page that isn't a module's: the module whose frame (feature rail) it sits in |
+
 ### Shared fields
 
 `Settings\DisplaySettings::bar_fields()` and `targeting_fields()` carry their labels and conditions. Place them on a tab and section with `DisplaySettings::place( $fields, $tab, $section )`, and override a label with `array_merge` where a page's copy differs.
