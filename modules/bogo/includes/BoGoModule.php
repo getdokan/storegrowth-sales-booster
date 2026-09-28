@@ -116,26 +116,4 @@ class BoGoModule extends BaseModule {
 
 		return parent::activate();
 	}
-
-	/**
-	 * Boot the module. A site already on 2.x with BOGO active never activates
-	 * it again, so the one-time 1.x migration also runs from the admin, for an
-	 * administrator only (Dokan credits offers saved by anyone without
-	 * `manage_options` to that user).
-	 *
-	 * @since SPSG_VERSION
-	 * @return void
-	 */
-	public function boot(): void {
-		parent::boot();
-
-		add_action(
-			'admin_init',
-			static function () {
-				if ( current_user_can( 'manage_options' ) ) {
-					BogoMigration::maybe_migrate();
-				}
-			}
-		);
-	}
 }
