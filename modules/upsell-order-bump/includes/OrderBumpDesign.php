@@ -84,6 +84,24 @@ class OrderBumpDesign {
 	];
 
 	/**
+	 * Largest margin, in px.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var int
+	 */
+	const MAX_MARGIN = 200;
+
+	/**
+	 * Largest font size, in px.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var int
+	 */
+	const MAX_FONT_SIZE = 100;
+
+	/**
 	 * The box's border styles.
 	 *
 	 * @since SPSG_VERSION
@@ -145,9 +163,9 @@ class OrderBumpDesign {
 			if ( in_array( $key, self::COLOR_KEYS, true ) ) {
 				$sanitized[ $key ] = Helper::sanitize_css_color( $value, $defaults[ $key ] );
 			} elseif ( in_array( $key, self::MARGIN_KEYS, true ) ) {
-				$sanitized[ $key ] = is_numeric( $value ) ? absint( $value ) : $defaults[ $key ];
+				$sanitized[ $key ] = is_numeric( $value ) ? self::clamp( $value, self::MAX_MARGIN ) : $defaults[ $key ];
 			} elseif ( in_array( $key, self::FONT_SIZE_KEYS, true ) ) {
-				$sanitized[ $key ] = is_numeric( $value ) ? (string) absint( $value ) : $defaults[ $key ];
+				$sanitized[ $key ] = is_numeric( $value ) ? (string) self::clamp( $value, self::MAX_FONT_SIZE ) : $defaults[ $key ];
 			} elseif ( 'box_border_style' === $key ) {
 				$sanitized[ $key ] = Helper::sanitize_css_keyword( $value, self::BORDER_STYLES, $defaults[ $key ] );
 			} elseif ( 'offer_image_url' === $key ) {
@@ -162,6 +180,21 @@ class OrderBumpDesign {
 		}
 
 		return $sanitized;
+	}
+
+	/**
+	 * A size in whole px from 0 to `$max` (a negative size is 0, not its
+	 * absolute value).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $value Numeric value.
+	 * @param int   $max   Largest size.
+	 *
+	 * @return int
+	 */
+	private static function clamp( $value, $max ) {
+		return min( $max, max( 0, (int) round( (float) $value ) ) );
 	}
 
 	/**

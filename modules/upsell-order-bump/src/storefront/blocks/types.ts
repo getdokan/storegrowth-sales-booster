@@ -25,13 +25,14 @@ export interface BumpDesign {
 
 /** One matching bump for the current cart. */
 export interface BumpOffer {
+    /** The bump's id (unique checkbox ids). */
+    id?: number;
     design_settings?: BumpDesign;
-    offer_type?: string;
-    offer_amount?: string | number;
+    /** The product id sent back: a variation's parent, else the product. */
     offer_product_id?: number;
     variation_id?: number;
     checked?: string;
-    regular_price?: string | number;
+    /** The bump price as displayed (sent back, ignored by the server). */
     offer_price?: string | number;
     /** The offer strip's text, e.g. "10% off only for you!" (plain text). */
     offer_label?: string;
@@ -39,8 +40,6 @@ export interface BumpOffer {
     regular_price_html?: string;
     /** `wc_price()` markup of the bump price. */
     offer_price_html?: string;
-    category_names?: string[];
-    currency_symbol?: string;
     is_purchasable?: boolean;
 }
 

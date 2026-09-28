@@ -201,7 +201,7 @@ class OrderBumpData {
 
 			$code = mb_ord( $char, 'UTF-8' );
 			if ( $code > 0xFFFF ) {
-				$code     -= 0x10000;
+				$code    -= 0x10000;
 				$encoded .= '&#' . ( 0xD800 + ( $code >> 10 ) ) . ';&#' . ( 0xDC00 + ( $code & 0x3FF ) ) . ';';
 				continue;
 			}

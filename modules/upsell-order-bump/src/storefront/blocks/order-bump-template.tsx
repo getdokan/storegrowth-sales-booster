@@ -22,7 +22,6 @@ interface OrderBumpTemplateProps {
 const OrderBumpTemplate = ( { design, offerData }: OrderBumpTemplateProps ) => {
     const styles = design || {};
     const offer = offerData || {};
-    const categoryNames = offer.category_names || [];
     const isPurchasable = offer.is_purchasable ?? true;
 
     const [ isChecked, setIsChecked ] = useState( offer.checked === 'checked' );
@@ -121,16 +120,6 @@ const OrderBumpTemplate = ( { design, offerData }: OrderBumpTemplateProps ) => {
                             >
                                 { styles.offer_product_title ?? '' }
                             </h3>
-
-                            { categoryNames.length > 0 && (
-                                <p
-                                    style={ {
-                                        color: styles.product_description_text_color,
-                                    } }
-                                >
-                                    { categoryNames.join( ', ' ) }
-                                </p>
-                            ) }
                         </div>
                     </div>
 
@@ -159,7 +148,7 @@ const OrderBumpTemplate = ( { design, offerData }: OrderBumpTemplateProps ) => {
                         { isPurchasable ? (
                             <CheckboxControl
                                 checked={ isChecked }
-                                id={ `order_bump_${ offer.offer_product_id }` }
+                                id={ `order_bump_${ offer.id }` }
                                 onChange={ handleChange }
                                 label={ __(
                                     'Select',

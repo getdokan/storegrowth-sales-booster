@@ -34,9 +34,9 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         OrderBump::class,
         OrderBumpAjax::class,
         OrderBumpController::class,
-	    CartValidator::class,
-		// Cart / checkout block integration: only while the module is active.
-		BlockRegistry::class,
+        CartValidator::class,
+        // Cart / checkout block integration: only while the module is active.
+        BlockRegistry::class,
     ];
 
     /**

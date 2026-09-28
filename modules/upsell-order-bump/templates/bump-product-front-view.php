@@ -5,14 +5,8 @@
  * @package Bump design for front.
  */
 
-// A variation is sent as its parent plus its own id.
-$product_offer_id = $offer_product_id;
-$variation_id     = 0;
-if ($_product && $_product->is_type('variation')) {
-    $product_offer_id = $_product->get_parent_id();
-    $variation_id = $offer_product_id;
-}
-
+// `$product_offer_id` / `$variation_id`: a variation is sent as its parent
+// plus its own id (OrderBump::get_checkout_offers()).
 ?>
 
 <div class='template-overview-area'>
@@ -96,11 +90,11 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 					type     = "checkbox"
 					class    = 'custom-checkbox'
 					value    = "<?php echo esc_attr($product_offer_id); ?>"
-					id       = "test_<?php echo esc_attr($product_offer_id); ?>"
+					id       = "test_<?php echo esc_attr( $bump['id'] ); ?>"
 					onchange = "extraProducts(<?php echo esc_attr($product_offer_id); ?>,<?php echo esc_attr($variation_id); ?>,'<?php echo esc_attr($checked); ?>', '<?php echo esc_attr($offer_price); ?>')"
 					<?php echo esc_attr($checked); ?>
 				/>
-				<label for='test_<?php echo esc_attr($product_offer_id); ?>'>
+				<label for='test_<?php echo esc_attr( $bump['id'] ); ?>'>
 					<?php esc_html_e('Select', 'storegrowth-sales-booster');?>
 				</label>
 			<?php else : ?>

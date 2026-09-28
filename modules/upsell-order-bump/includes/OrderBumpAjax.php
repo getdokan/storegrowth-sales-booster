@@ -50,12 +50,7 @@ class OrderBumpAjax implements HookRegistry {
 		$offer_id = $offer_variation_id ? $offer_variation_id : (int) $offer_product_id;
 
 		if ( $checked ) {
-			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-				$cart_item_id = ! empty( $cart_item['variation_id'] ) ? (int) $cart_item['variation_id'] : (int) $cart_item['product_id'];
-				if ( $cart_item_id === $offer_id ) {
-					WC()->cart->remove_cart_item( $cart_item_key );
-				}
-			}
+			$this->remove_offer_from_cart( $offer_id );
 
 			wp_send_json_success( $offer_variation_id );
 		}
@@ -69,29 +64,72 @@ class OrderBumpAjax implements HookRegistry {
 			wp_send_json_error( array( 'message' => __( 'This offer is not available.', 'storegrowth-sales-booster' ) ), 403 );
 		}
 
-		// `custom_price` is the Order Bump price key applied by
-		// OrderBump::woocommerce_custom_price_to_cart_item().
-		$cart_item_data = array(
-			'custom_price'             => $offer['price'],
-			'_spsg_order_bump_product' => true,
-		);
-
-		// Attribution stamp — additive campaign identity keys for revenue reporting.
-		$cart_item_data = array_merge( $cart_item_data, $offer['stamp'] );
-
-		// The parent and the variation from the product, not the request.
-		$product = $offer['product'];
-		if ( $product->is_type( 'variation' ) ) {
-			$woocommerce->cart->add_to_cart( $product->get_parent_id(), 1, $product->get_id(), array(), $cart_item_data );
-		} else {
-			$woocommerce->cart->add_to_cart( $product->get_id(), 1, 0, array(), $cart_item_data );
+		// E.g. a variation with an "Any …" attribute, which can't be added without a choice.
+		if ( ! $this->add_offer_to_cart( $offer ) ) {
+			wp_send_json_error( [ 'message' => __( 'This offer could not be added to the cart.', 'storegrowth-sales-booster' ) ], 400 );
 		}
+
 		$woocommerce->cart->calculate_totals();
 		$woocommerce->cart->set_session();
 		$woocommerce->cart->maybe_set_cart_cookies();
 
 		wp_send_json_success( $offer_variation_id );
 		die();
+	}
+
+	/**
+	 * Add an offer (`find_offer()`) to the cart as a bump line: at the bump's
+	 * price, marked, with its attribution stamp; a variation under its
+	 * parent, both taken from the product rather than the request.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $offer An offer from `find_offer()`.
+	 *
+	 * @return string|false The cart item key, or false when WooCommerce refused it.
+	 */
+	public function add_offer_to_cart( array $offer ) {
+		// `custom_price` is the Order Bump price key applied by
+		// OrderBump::woocommerce_custom_price_to_cart_item().
+		$cart_item_data = array_merge(
+			[
+				'custom_price'             => $offer['price'],
+				'_spsg_order_bump_product' => true,
+			],
+			// Attribution stamp — additive campaign identity keys for revenue reporting.
+			$offer['stamp']
+		);
+
+		$product = $offer['product'];
+		if ( $product->is_type( 'variation' ) ) {
+			return WC()->cart->add_to_cart( $product->get_parent_id(), 1, $product->get_id(), [], $cart_item_data );
+		}
+
+		return WC()->cart->add_to_cart( $product->get_id(), 1, 0, [], $cart_item_data );
+	}
+
+	/**
+	 * Remove an offer's bump lines from the cart (unticking the box); the
+	 * shopper's own lines of the same product stay.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $offer_id The offered product: a variation's own id, else the product's.
+	 *
+	 * @return int How many lines were removed.
+	 */
+	public function remove_offer_from_cart( int $offer_id ) {
+		$removed = 0;
+
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			$cart_item_id = ! empty( $cart_item['variation_id'] ) ? (int) $cart_item['variation_id'] : (int) $cart_item['product_id'];
+
+			if ( $cart_item_id === $offer_id && OrderBump::is_bump_cart_item( $cart_item ) && WC()->cart->remove_cart_item( $cart_item_key ) ) {
+				++$removed;
+			}
+		}
+
+		return $removed;
 	}
 
 	/**

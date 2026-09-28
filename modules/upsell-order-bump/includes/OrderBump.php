@@ -69,11 +69,13 @@ class OrderBump implements HookRegistry {
 			$offer_label      = $offer['offer_label'];
 			$checked          = $offer['checked'];
 			$_product         = $offer['product'];
-			$regular_price    = $offer['regular_price'];
-			$offer_price      = $offer['offer_price'];
+			$product_offer_id = $offer['cart_product_id'];
+			$variation_id     = $offer['variation_id'];
+			$regular_price    = $offer['regular_price_display'];
+			$offer_price      = $offer['offer_price_display'];
 			$is_purchasable   = $offer['is_purchasable'];
 
-			// Convert bump data to object for template compatibility
+			// Convert bump data to object for template compatibility.
 			$bump_info            = (object) array_merge( $bump, $offer['design'] );
 			$bump_info->bump_type = $bump['target_type'];
 
@@ -89,8 +91,12 @@ class OrderBump implements HookRegistry {
 	 * bought, and the design sanitized as a save does (so a row stored
 	 * before that can't print CSS or markup).
 	 *
-	 * An offer product already in the cart at another price (added from the
-	 * shop) is left out, as before.
+	 * Prices are given as entered (`offer_price`, what the cart line is set
+	 * to) and as displayed (`*_display`: with or without tax, as the store
+	 * shows cart prices), so what the box shows is what the cart charges.
+	 *
+	 * Left out: an offer product that can't be bought (no price, not
+	 * published) and one already in the cart as the shopper's own line.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -105,40 +111,84 @@ class OrderBump implements HookRegistry {
 			$offer_product_id = (int) $bump['offer_product_id'];
 			$product          = wc_get_product( $offer_product_id );
 
-			// A deleted offer product: skip it rather than fatal.
-			if ( ! $product ) {
+			// A deleted or unsellable offer product: skip it.
+			if ( ! $product || ! $product->is_purchasable() ) {
 				continue;
 			}
 
-			$offer_price = self::calculate_offer_price( $bump['offer_type'], self::get_current_price( $product ), $bump['offer_amount'] );
-
+			$checked = '';
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				if ( absint( $cart_item['data']->get_id() ) !== $offer_product_id ) {
 					continue;
 				}
-				// Added from the shop at its own price: don't offer it.
-				if ( floatval( $cart_item['data']->get_price() ) !== floatval( $offer_price ) ) {
+				// Added from the shop: don't offer it.
+				if ( ! self::is_bump_cart_item( $cart_item ) ) {
 					continue 2;
 				}
-				break;
+				$checked = 'checked';
 			}
 
-			$design = OrderBumpDesign::sanitize( array_merge( OrderBumpDesign::get_defaults(), $bump['design_settings'] ) );
+			$offer_price   = self::calculate_offer_price( $bump['offer_type'], self::get_current_price( $product ), $bump['offer_amount'] );
+			$regular_price = self::get_regular_price( $product );
+			$offer_display = self::get_display_price( $product, $offer_price );
+			$design        = OrderBumpDesign::sanitize( array_merge( OrderBumpDesign::get_defaults(), $bump['design_settings'] ) );
+			$is_variation  = $product->is_type( 'variation' );
 
 			$offers[] = [
-				'bump'           => $bump,
-				'product'        => $product,
-				'design'         => $design,
-				'regular_price'  => self::get_regular_price( $product ),
-				'offer_price'    => $offer_price,
-				'offer_label'    => self::get_offer_label( $bump['offer_type'], $bump['offer_amount'], $design ),
-				'checked'        => in_array( $offer_product_id, $cart_product_ids, true ) ? 'checked' : '',
+				'bump'                  => $bump,
+				'product'               => $product,
+				// The ids the storefront sends back: a variation as its parent plus its own id.
+				'cart_product_id'       => $is_variation ? $product->get_parent_id() : $product->get_id(),
+				'variation_id'          => $is_variation ? $product->get_id() : 0,
+				'design'                => $design,
+				'regular_price'         => $regular_price,
+				'offer_price'           => $offer_price,
+				'regular_price_display' => self::get_display_price( $product, $regular_price ),
+				'offer_price_display'   => $offer_display,
+				// A fixed price reads as displayed.
+				'offer_label'           => self::get_offer_label( $bump['offer_type'], 'price' === $bump['offer_type'] ? $offer_display : $bump['offer_amount'], $design ),
+				'checked'               => $checked,
 				// In stock or on backorder.
-				'is_purchasable' => $product->is_in_stock() || $product->backorders_allowed(),
+				'is_purchasable'        => $product->is_in_stock() || $product->backorders_allowed(),
 			];
 		}
 
 		return $offers;
+	}
+
+	/**
+	 * Whether a cart line is an order bump's (added through the checkout
+	 * box, at the bump's price), not the shopper's own.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $cart_item Cart item.
+	 *
+	 * @return bool
+	 */
+	public static function is_bump_cart_item( $cart_item ) {
+		return ! empty( $cart_item['_spsg_order_bump_product'] ) || isset( $cart_item['custom_price'] );
+	}
+
+	/**
+	 * A price of the product as the cart shows it: with or without tax, as
+	 * the store's "Display prices during cart and checkout" says.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product $product Product.
+	 * @param float      $price   Price as entered.
+	 *
+	 * @return float
+	 */
+	public static function get_display_price( $product, $price ) {
+		return (float) wc_get_price_to_display(
+			$product,
+			[
+				'price'           => $price,
+				'display_context' => 'cart',
+			]
+		);
 	}
 
 	/**

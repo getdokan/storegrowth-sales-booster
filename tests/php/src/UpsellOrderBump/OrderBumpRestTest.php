@@ -592,4 +592,108 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 		$this->assertSame( 403, $this->request( 'POST', self::BASE . '/batch', [ 'delete' => [ $id ] ] )->get_status() );
 		$this->assertSame( 403, $this->request( 'POST', self::BASE . '/' . $id . '/status', [ 'status' => 'no' ] )->get_status() );
 	}
+
+	/**
+	 * Review #2: a variation with an "Any …" attribute can't be an offer; one
+	 * with every attribute set can.
+	 *
+	 * @return void
+	 */
+	public function test_any_attribute_variation_is_refused() {
+		$this->pro = true;
+
+		$attribute = new \WC_Product_Attribute();
+		$attribute->set_name( 'size' );
+		$attribute->set_options( [ 'small', 'large' ] );
+		$attribute->set_variation( true );
+		$parent = new \WC_Product_Variable();
+		$parent->set_attributes( [ $attribute ] );
+		$parent->save();
+
+		$variations = [];
+		foreach ( [ 'large', '' ] as $size ) {
+			$variation = new \WC_Product_Variation();
+			$variation->set_parent_id( $parent->get_id() );
+			$variation->set_attributes( [ 'size' => $size ] );
+			$variation->set_regular_price( '10' );
+			$variation->save();
+			$variations[ $size ] = $variation->get_id();
+		}
+
+		$this->assertSame( 201, $this->request( 'POST', self::BASE, $this->payload( [ 'offer_product_id' => $variations['large'] ] ) )->get_status() );
+
+		$any = $this->request( 'POST', self::BASE, $this->payload( [ 'offer_product_id' => $variations[''] ] ) );
+		$this->assertSame( 400, $any->get_status() );
+		$this->assertSame( 'order_bump_invalid_offer_product', $any->get_data()['code'] );
+	}
+
+	/**
+	 * QA F7: margins and font sizes are clamped to 0–200 / 0–100 (a negative
+	 * margin was flipped to positive); a price above what the column holds is
+	 * refused, not clamped; the discount message states the rule.
+	 *
+	 * @return void
+	 */
+	public function test_design_sizes_and_amount_bounds() {
+		$this->pro = true;
+
+		$created = $this->request(
+			'POST',
+			self::BASE,
+			$this->payload(
+				[
+					'design_settings' => [
+						'box_top_margin'                => -20,
+						'box_bottom_margin'             => 500,
+						'discount_font_size'            => '300',
+						'product_description_font_size' => '-4',
+					],
+				]
+			)
+		);
+		$design  = $created->get_data()['design_settings'];
+		$this->assertSame( 0, $design['box_top_margin'] );
+		$this->assertSame( 200, $design['box_bottom_margin'] );
+		$this->assertSame( '100', $design['discount_font_size'] );
+		$this->assertSame( '0', $design['product_description_font_size'] );
+
+		$price = $this->request(
+			'POST',
+			self::BASE,
+			$this->payload(
+				[
+					'offer_type'   => 'price',
+					'offer_amount' => 1000000000,
+				]
+			)
+		);
+		$this->assertSame( 400, $price->get_status() );
+		$this->assertSame( 'order_bump_invalid_price', $price->get_data()['code'] );
+
+		$discount = $this->request( 'POST', self::BASE, $this->payload( [ 'offer_amount' => 0 ] ) )->get_data();
+		$this->assertStringContainsString( 'more than 0 and at most 100', $discount['message'] );
+	}
+
+	/**
+	 * `created_by` / `updated_by` come from the server, not the request.
+	 *
+	 * @return void
+	 */
+	public function test_request_cannot_set_the_authors() {
+		$id = $this->insert_bump();
+
+		$this->request(
+			'PUT',
+			self::BASE . '/' . $id,
+			[
+				'name'       => 'Renamed',
+				'created_by' => 999,
+				'updated_by' => 999,
+			]
+		);
+
+		$bump = ( new OrderBumpData() )->get_by_id( $id );
+		$this->assertSame( get_current_user_id(), (int) $bump['updated_by'] );
+		$this->assertNotSame( 999, (int) $bump['created_by'] );
+	}
 }

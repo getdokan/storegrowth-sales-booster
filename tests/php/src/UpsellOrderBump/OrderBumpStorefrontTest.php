@@ -53,12 +53,13 @@ class OrderBumpStorefrontTest extends StoreGrowthTestCase {
 	/**
 	 * A variable product with one variation.
 	 *
-	 * @param float $price        The variation's regular price.
-	 * @param int[] $category_ids The parent's categories.
+	 * @param float  $price        The variation's regular price.
+	 * @param int[]  $category_ids The parent's categories.
+	 * @param string $size         The variation's size; '' for "Any size".
 	 *
 	 * @return WC_Product_Variation
 	 */
-	private function create_variation( float $price, array $category_ids = [] ): WC_Product_Variation {
+	private function create_variation( float $price, array $category_ids = [], string $size = 'large' ): WC_Product_Variation {
 		$attribute = new WC_Product_Attribute();
 		$attribute->set_name( 'size' );
 		$attribute->set_options( [ 'small', 'large' ] );
@@ -74,7 +75,7 @@ class OrderBumpStorefrontTest extends StoreGrowthTestCase {
 
 		$variation = new WC_Product_Variation();
 		$variation->set_parent_id( $parent->get_id() );
-		$variation->set_attributes( [ 'size' => 'large' ] );
+		$variation->set_attributes( [ 'size' => $size ] );
 		$variation->set_regular_price( (string) $price );
 		$variation->set_status( 'publish' );
 		$variation->save();
@@ -300,5 +301,178 @@ class OrderBumpStorefrontTest extends StoreGrowthTestCase {
 		$this->assertSame( wc_price( 40 ), $data[0]['regular_price_html'] );
 		$this->assertSame( '25% off only for you!', $data[0]['offer_label'] );
 		$this->assertStringContainsString( 'bump-preview.svg', $data[0]['design_settings']['fallback_image_url'] );
+		$this->assertSame(
+			[ 'id', 'design_settings', 'offer_label', 'offer_product_id', 'variation_id', 'checked', 'offer_price', 'regular_price_html', 'offer_price_html', 'is_purchasable' ],
+			array_keys( $data[0] ),
+			'only what the block reads'
+		);
+	}
+
+	/**
+	 * Review #1: with taxes on (prices entered without tax, the cart shown
+	 * with tax) the box shows prices with tax, and the cart charges exactly
+	 * the bump price it shows.
+	 *
+	 * @return void
+	 */
+	public function test_prices_are_shown_with_tax_and_match_the_cart_charge() {
+		update_option( 'woocommerce_calc_taxes', 'yes' );
+		update_option( 'woocommerce_prices_include_tax', 'no' );
+		update_option( 'woocommerce_tax_display_cart', 'incl' );
+		update_option( 'woocommerce_tax_based_on', 'base' );
+		\WC_Tax::_insert_tax_rate(
+			[
+				'tax_rate_country'  => '',
+				'tax_rate'          => '10.0000',
+				'tax_rate_name'     => 'VAT',
+				'tax_rate_priority' => 1,
+				'tax_rate_order'    => 1,
+				'tax_rate_class'    => '',
+			]
+		);
+		add_action( 'woocommerce_before_calculate_totals', [ new OrderBump(), 'woocommerce_custom_price_to_cart_item' ] );
+
+		$target = $this->create_product();
+		$offer  = $this->create_product( 50 );
+		$this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $offer->get_id(),
+				'offer_type'       => 'discount',
+				'offer_amount'     => 20,
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$shown = OrderBump::get_checkout_offers()[0];
+		$this->assertSame( 55.0, $shown['regular_price_display'], 'struck price with tax' );
+		$this->assertSame( 44.0, $shown['offer_price_display'], 'bump price with tax' );
+
+		$ajax = new OrderBumpAjax();
+		$key  = $ajax->add_offer_to_cart( $ajax->find_offer( $offer->get_id() ) );
+		WC()->cart->calculate_totals();
+		$line = WC()->cart->get_cart_item( $key );
+
+		$this->assertEqualsWithDelta( $shown['offer_price_display'], $line['line_total'] + $line['line_tax'], 0.001, 'the cart charges what is shown' );
+		$this->assertStringContainsString( wc_price( 44 ), ( new OrderBumpCheckoutIntegration() )->get_script_data()[0]['offer_price_html'] );
+	}
+
+	/**
+	 * Review #2: a variation with an "Any …" attribute can't be added without
+	 * a choice: the add reports it (the ajax answers 400) instead of a
+	 * success that added nothing.
+	 *
+	 * @return void
+	 */
+	public function test_any_attribute_variation_is_not_added() {
+		$target    = $this->create_product();
+		$variation = $this->create_variation( 40, [], '' );
+		$this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $variation->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$ajax  = new OrderBumpAjax();
+		$offer = $ajax->find_offer( $variation->get_id() );
+		$this->assertNotNull( $offer );
+		$this->assertFalse( $ajax->add_offer_to_cart( $offer ) );
+		$this->assertCount( 1, WC()->cart->get_cart() );
+		wc_clear_notices();
+	}
+
+	/**
+	 * QA F4: unticking removes the bump line only, never the shopper's own
+	 * line of the same product.
+	 *
+	 * @return void
+	 */
+	public function test_untick_keeps_the_shoppers_own_line() {
+		$target = $this->create_product();
+		$offer  = $this->create_product( 30 );
+		$this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $offer->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$ajax     = new OrderBumpAjax();
+		$bump_key = $ajax->add_offer_to_cart( $ajax->find_offer( $offer->get_id() ) );
+		$own_key  = WC()->cart->add_to_cart( $offer->get_id() );
+		$this->assertNotSame( $bump_key, $own_key );
+
+		$this->assertSame( 1, $ajax->remove_offer_from_cart( $offer->get_id() ) );
+		$this->assertSame( [], WC()->cart->get_cart_item( $bump_key ), 'the bump line is gone' );
+		$this->assertNotEmpty( WC()->cart->get_cart_item( $own_key ), 'the own line stays' );
+	}
+
+	/**
+	 * QA F5: an offer product that can't be bought (no price) is left out of
+	 * the classic box, as out of the block.
+	 *
+	 * @return void
+	 */
+	public function test_unpurchasable_offer_is_hidden() {
+		$target = $this->create_product();
+		$offer  = new \WC_Product_Simple();
+		$offer->set_name( 'No price' );
+		$offer->set_status( 'publish' );
+		$offer->save();
+		$this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $offer->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$this->assertSame( [], OrderBump::get_checkout_offers() );
+
+		ob_start();
+		( new OrderBump() )->bump_product_frontend_view();
+		$this->assertSame( '', trim( ob_get_clean() ) );
+	}
+
+	/**
+	 * QA F6: two bumps offering variations of the same product get their own
+	 * checkbox ids.
+	 *
+	 * @return void
+	 */
+	public function test_checkbox_ids_are_unique_per_bump() {
+		$target = $this->create_product();
+		$first  = $this->create_variation( 40 );
+		$second = new WC_Product_Variation();
+		$second->set_parent_id( $first->get_parent_id() );
+		$second->set_attributes( [ 'size' => 'small' ] );
+		$second->set_regular_price( '30' );
+		$second->set_status( 'publish' );
+		$second->save();
+
+		$one = $this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $first->get_id(),
+			]
+		);
+		$two = $this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $second->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		ob_start();
+		( new OrderBump() )->bump_product_frontend_view();
+		$html = ob_get_clean();
+
+		$this->assertStringContainsString( 'id       = "test_' . $one . '"', $html );
+		$this->assertStringContainsString( 'id       = "test_' . $two . '"', $html );
+		$this->assertSame( [ $one, $two ], array_column( ( new OrderBumpCheckoutIntegration() )->get_script_data(), 'id' ) );
 	}
 }

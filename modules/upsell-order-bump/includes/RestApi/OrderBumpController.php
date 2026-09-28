@@ -31,6 +31,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderBumpController extends WP_REST_Controller {
 
 	/**
+	 * Largest fixed price: what the `offer_amount` column (decimal(10,2)) holds.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var float
+	 */
+	const MAX_PRICE = 99999999.99;
+
+	/**
 	 * The namespaces the routes are registered under.
 	 *
 	 * @since SPSG_VERSION
@@ -553,7 +562,9 @@ class OrderBumpController extends WP_REST_Controller {
 	 */
 	protected function sent_params( $request ) {
 		$sent = array_merge( (array) $request->get_body_params(), (array) $request->get_json_params() );
-		unset( $sent['id'] );
+
+		// Set by the server (the `spsg_order_bump_*_by` filters), never by a request.
+		unset( $sent['id'], $sent['created_by'], $sent['updated_by'] );
 
 		return $sent;
 	}
@@ -690,10 +701,10 @@ class OrderBumpController extends WP_REST_Controller {
 		}
 
 		$product = $data['offer_product_id'] ? wc_get_product( $data['offer_product_id'] ) : null;
-		if ( $sends( [ 'offer_product_id' ] ) && ( ! $product || $product->is_type( [ 'variable', 'grouped', 'external' ] ) ) ) {
+		if ( $sends( [ 'offer_product_id' ] ) && ! $this->is_valid_offer_product( $product ) ) {
 			return new WP_Error(
 				'order_bump_invalid_offer_product',
-				__( 'Select the offer product (a simple product or a variation).', 'storegrowth-sales-booster' ),
+				__( 'Select the offer product: a simple product, or a variation with every attribute set.', 'storegrowth-sales-booster' ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -702,20 +713,40 @@ class OrderBumpController extends WP_REST_Controller {
 		if ( $sends( [ 'offer_type', 'offer_amount' ] ) && 'discount' === $data['offer_type'] && ( $amount <= 0 || $amount > 100 ) ) {
 			return new WP_Error(
 				'order_bump_invalid_discount',
-				__( 'Enter a discount from 1 to 100%.', 'storegrowth-sales-booster' ),
+				__( 'Enter a discount of more than 0 and at most 100%.', 'storegrowth-sales-booster' ),
 				[ 'status' => 400 ]
 			);
 		}
 
-		if ( $sends( [ 'offer_type', 'offer_amount' ] ) && 'price' === $data['offer_type'] && $amount < 0 ) {
+		if ( $sends( [ 'offer_type', 'offer_amount' ] ) && 'price' === $data['offer_type'] && ( $amount < 0 || $amount > self::MAX_PRICE ) ) {
 			return new WP_Error(
 				'order_bump_invalid_price',
-				__( 'Enter a price of 0 or more.', 'storegrowth-sales-booster' ),
+				/* translators: %s: the largest price. */
+				sprintf( __( 'Enter a price from 0 to %s.', 'storegrowth-sales-booster' ), wc_format_localized_price( self::MAX_PRICE ) ),
 				[ 'status' => 400 ]
 			);
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether a product can be a bump's offer: one cart line added without a
+	 * shopper's choice, so not a variable, grouped or external product, nor a
+	 * variation with an "Any …" attribute.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product|null|false $product Offer product.
+	 *
+	 * @return bool
+	 */
+	protected function is_valid_offer_product( $product ) {
+		if ( ! $product || $product->is_type( [ 'variable', 'grouped', 'external' ] ) ) {
+			return false;
+		}
+
+		return ! $product->is_type( 'variation' ) || ! in_array( '', array_map( 'strval', $product->get_variation_attributes() ), true );
 	}
 
 	/**
@@ -734,7 +765,8 @@ class OrderBumpController extends WP_REST_Controller {
 	 */
 	public function prepare_item_for_response( $item, $request ) {
 		$design = OrderBumpDesign::sanitize( (array) $item['design_settings'] );
-		$title  = '' !== (string) $item['offer_discount_title'] ? $item['offer_discount_title'] : ( $design['offer_discount_title'] ?? '' );
+		// The design's copy first, as a save and the storefront read it.
+		$title = $design['offer_discount_title'] ?? $item['offer_discount_title'];
 
 		$data = [
 			'id'                   => (int) $item['id'],

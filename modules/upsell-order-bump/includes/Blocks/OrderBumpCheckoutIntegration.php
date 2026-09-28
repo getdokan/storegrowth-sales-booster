@@ -86,35 +86,20 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 		$fallback_image_url = PluginHelper::get_modules_url( 'upsell-order-bump/assets/images/bump-preview.svg' );
 		$data               = [];
 
+		// Only what the block reads (`order-bump-template.tsx`).
 		foreach ( OrderBump::get_checkout_offers() as $offer ) {
-			$product = $offer['product'];
-
-			if ( ! $product->is_purchasable() ) {
-				continue;
-			}
-
-			// A variation is sent as its parent plus its own id.
-			$is_variation = $product->is_type( 'variation' );
-
-			$data[] = array_merge(
-				$offer['bump'],
-				$offer['design'],
-				[
-					'design_settings'    => array_merge( $offer['design'], [ 'fallback_image_url' => $fallback_image_url ] ),
-					'bump_type'          => $offer['bump']['target_type'],
-					'offer_product_id'   => $is_variation ? $product->get_parent_id() : $product->get_id(),
-					'variation_id'       => $is_variation ? $product->get_id() : 0,
-					'checked'            => $offer['checked'],
-					'offer_label'        => $offer['offer_label'],
-					'regular_price'      => $offer['regular_price'],
-					'offer_price'        => $offer['offer_price'],
-					'regular_price_html' => wc_price( $offer['regular_price'] ),
-					'offer_price_html'   => wc_price( $offer['offer_price'] ),
-					'currency_symbol'    => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
-					'category_names'     => [],
-					'is_purchasable'     => $offer['is_purchasable'],
-				]
-			);
+			$data[] = [
+				'id'                 => (int) $offer['bump']['id'],
+				'design_settings'    => array_merge( $offer['design'], [ 'fallback_image_url' => $fallback_image_url ] ),
+				'offer_label'        => $offer['offer_label'],
+				'offer_product_id'   => $offer['cart_product_id'],
+				'variation_id'       => $offer['variation_id'],
+				'checked'            => $offer['checked'],
+				'offer_price'        => $offer['offer_price_display'],
+				'regular_price_html' => wc_price( $offer['regular_price_display'] ),
+				'offer_price_html'   => wc_price( $offer['offer_price_display'] ),
+				'is_purchasable'     => $offer['is_purchasable'],
+			];
 		}
 
 		return $data;
