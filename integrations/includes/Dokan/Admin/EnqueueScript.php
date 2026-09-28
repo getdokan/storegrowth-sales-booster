@@ -28,17 +28,6 @@ class EnqueueScript {
 	 * @since 1.12.0
 	 */
 	public function __construct() {
-		$this->init_hooks();
-	}
-
-	/**
-	 * Initialize Hooks.
-	 *
-	 * @since 1.12.0
-	 *
-	 * @return void
-	 */
-	private function init_hooks() {
 	}
 
 	/**

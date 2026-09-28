@@ -2,7 +2,6 @@
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
-use StorePulse\StoreGrowth\Integrations\Dokan\Admin\EnqueueScript as AdminEnqueueScript;
 use StorePulse\StoreGrowth\Integrations\Dokan\Dashboard\Dashboard;
 use StorePulse\StoreGrowth\Integrations\Dokan\Frontend\Frontend;
 use StorePulse\StoreGrowth\Integrations\Dokan\Settings\BogoVendorSettings;
@@ -26,10 +25,6 @@ class Dokan implements HookRegistry {
      * @return void
      */
     public function init_classes() {
-        if ( is_admin() ) {
-            AdminEnqueueScript::instance();
-        }
-
         if ( function_exists( 'dokan_is_seller_dashboard' ) ) {
             Dashboard::instance();
         }
@@ -37,6 +32,7 @@ class Dokan implements HookRegistry {
         Ajax::instance();
         Frontend::instance();
         FlyCartFields::instance();
+        CountdownTimerFields::instance();
         Api::instance();
 
         ( new BogoVendorRules() )->register_hooks();

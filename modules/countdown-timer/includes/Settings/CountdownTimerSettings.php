@@ -25,8 +25,8 @@ defined( 'ABSPATH' ) || exit;
  * - `selected_theme` keeps the two old layouts valid next to the six new
  *   presets.
  * - Counter styling is pro, heading and container are lite.
- * - The Dokan keys (`vendor_can_create_*`) stay out: they store `'on'/'off'`
- *   and belong to the integrations step.
+ * - The Dokan keys (`vendor_can_create_*`, stored as bools) are added by the
+ *   integration as extension fields (`Integrations\Dokan\CountdownTimerFields`).
  *
  * @since SPSG_VERSION
  */
