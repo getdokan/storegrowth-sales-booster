@@ -25,6 +25,7 @@ Core system ADRs, `docs/adr/` (apply to all code):
 | ADR-007 | One settings engine; gated modules turn on at first save; extensions add fields in PHP (`spsg_settings_schema`) and custom controls via `storegrowth_settings_{variant}_field` |
 | ADR-008 | One admin page `admin.php?page=storegrowth#/<route>` (`AdminMenu::PAGE` / `SCREEN_ID`); `spsg-settings` / `spsg-modules` redirect to it |
 | ADR-009 | Settings pages are defined in PHP (`SettingsPage::get_page()` + field presentation keys), all fetched in one request (`GET sales-booster/v1/admin/settings`) and generated at `#/settings?module=<id>&tab=<tab>`; a module adds only its preview / multi-key controls via the JS filter `storegrowth.settings.page` |
+| ADR-010 | Record editors (a table row: BOGO offer, order bump) are defined in PHP like settings pages (fields + `get_page()`), served by the record's REST routes (`GET …/editor`), drawn by `ModuleSettingsPage` from a hook in the `ModuleSettings` shape; extended by PHP filters (`spsg_bogo_offer_fields`, `spsg_bogo_offer_page`), not JS slots |
 
 Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first full rewrite). A new core decision takes the next `ADR-###`, a redesign-only one the next `RDR-###`; numbers are never reused.
 

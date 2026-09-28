@@ -12,6 +12,7 @@ use WP_REST_Server;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoValidator;
 use StorePulse\StoreGrowth\Modules\BoGo\Helper;
+use StorePulse\StoreGrowth\Modules\BoGo\Settings\BogoOfferFields;
 
 defined( 'ABSPATH' ) || exit();
 
@@ -69,6 +70,19 @@ class BogoController extends WP_REST_Controller {
                             'required' => true,
                         ],
                     ],
+                ],
+            ]
+        );
+
+        // What the offer editor is drawn from (ADR-010).
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/editor',
+            [
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [ $this, 'get_editor' ],
+                    'permission_callback' => [ $this, 'check_permission' ],
                 ],
             ]
         );
@@ -242,6 +256,35 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
+     * The offer editor (ADR-010): its page and fields (`BogoOfferFields`),
+     * whether a new offer would pass this route's limit, and the store's
+     * price format for the preview.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param WP_REST_Request $request Rest Request.
+     *
+     * @return WP_REST_Response
+     */
+    public function get_editor( $request ) {
+        return rest_ensure_response(
+            array_merge(
+                ( new BogoOfferFields() )->get_editor(),
+                [
+                    'can_create' => ! is_wp_error( $this->check_creation_limitations( [], $request ) ),
+                    'currency'   => [
+                        'symbol'             => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
+                        'position'           => get_option( 'woocommerce_currency_pos', 'left' ),
+                        'decimals'           => wc_get_price_decimals(),
+                        'decimal_separator'  => wc_get_price_decimal_separator(),
+                        'thousand_separator' => wc_get_price_thousand_separator(),
+                    ],
+                ]
+            )
+        );
+    }
+
+    /**
      * Check permission for accessing a single BOGO offer.
      * This method can be overridden by child classes to implement custom permission logic.
      *
@@ -340,6 +383,11 @@ class BogoController extends WP_REST_Controller {
         }
         $data = $validation;
 
+        $rules = $this->check_offer_rules( $data );
+        if ( is_wp_error( $rules ) ) {
+            return $rules;
+        }
+
         // Prepare data for creation (can be customized by child classes)
         $data = $this->prepare_data_for_creation( $data, $request );
 
@@ -353,7 +401,9 @@ class BogoController extends WP_REST_Controller {
 		if ( ! empty( $existing ) ) {
 			return new WP_Error(
 				'bogo_offer_exists',
-				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster')
+				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster'),
+				// A 400 (a WP_Error without a status answers 500).
+				[ 'status' => 400 ]
 			);
 		}
 
@@ -399,7 +449,8 @@ class BogoController extends WP_REST_Controller {
         // route's defaults and anything left out used to reset the offer,
         // design included).
         $stored = BogoDataManager::to_request_data( $existing_offer );
-        $data   = array_merge( $stored, $this->sent_params( $request ) );
+        $sent   = $this->sent_params( $request );
+        $data   = array_merge( $stored, $sent );
         $data   = $this->ignore_pro_values( $data, $stored );
 
         // Validate and normalize data
@@ -408,6 +459,13 @@ class BogoController extends WP_REST_Controller {
             return $validation;
         }
         $data = $validation;
+
+        // Only the rules about what the request changes: an offer stored
+        // before them (e.g. a 150% discount) can still be renamed.
+        $rules = $this->check_offer_rules( $data, $sent );
+        if ( is_wp_error( $rules ) ) {
+            return $rules;
+        }
 
         $result = BogoDataManager::update_global_offer( $id, $data );
 
@@ -442,6 +500,56 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
+     * The offer editor's rules (10d): a create checks them all, an update
+     * those about the keys it sends.
+     *
+     * - A percentage discount is more than 0 and at most 100.
+     * - The end date isn't before the start date.
+     * - The offer has a target product or category.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param array $data Normalized offer data.
+     * @param array $sent What an update sends; null for a create.
+     *
+     * @return true|WP_Error
+     */
+    protected function check_offer_rules( $data, $sent = null ) {
+        $sends = static function ( array $keys ) use ( $sent ) {
+            return null === $sent || (bool) array_intersect_key( $sent, array_flip( $keys ) );
+        };
+
+        $amount = (float) ( $data['discount_amount'] ?? 0 );
+        if ( $sends( [ 'offer_type', 'discount_amount' ] ) && 'discount' === ( $data['offer_type'] ?? '' ) && ( $amount <= 0 || $amount > 100 ) ) {
+            return new WP_Error(
+                'bogo_invalid_discount',
+                __( 'Enter a discount from 1 to 100%.', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        $start = ! empty( $data['offer_start'] ) ? strtotime( $data['offer_start'] ) : false;
+        $end   = ! empty( $data['offer_end'] ) ? strtotime( $data['offer_end'] ) : false;
+        if ( $sends( [ 'offer_start', 'offer_end' ] ) && $start && $end && $end < $start ) {
+            return new WP_Error(
+                'bogo_invalid_dates',
+                __( 'The end date is before the start date.', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        if ( $sends( [ 'offered_products', 'offered_categories' ] ) && empty( $data['offered_products'] ) && empty( $data['offered_categories'] ) ) {
+            return new WP_Error(
+                'bogo_missing_target',
+                __( 'Select at least one target product.', 'storegrowth-sales-booster' ),
+                [ 'status' => 400 ]
+            );
+        }
+
+        return true;
+    }
+
+    /**
      * Without pro, pro-only values are ignored, not rejected (ADR-004 §3):
      * the stored value stays, or the default on a new offer.
      *
@@ -457,9 +565,16 @@ class BogoController extends WP_REST_Controller {
             return $data;
         }
 
+        // The editor's pro fields (`BogoOfferFields`): the product page
+        // message (editing it was pro in the old editor too) and the offer's
+        // own badge artwork; lite's offer badge is the first icon.
         $lite = [
             'minimum_quantity_required' => $stored['minimum_quantity_required'] ?? 1,
             'offer_schedule'            => $stored['offer_schedule'] ?? [ 'daily' ],
+            // A new offer gets the old editor's default message.
+            'product_page_message'      => $stored['product_page_message'] ?? __( 'Free Gift', 'storegrowth-sales-booster' ),
+            'default_badge_icon_name'   => $stored['default_badge_icon_name'] ?? 'bogo-icons-1',
+            'default_custom_badge_icon' => $stored['default_custom_badge_icon'] ?? '',
         ];
 
         // Buy X Get X is pro: an update keeps the stored deal type. A new

@@ -557,7 +557,9 @@ class BogoRestTest extends StoreGrowthTestCase {
 	 * @return void
 	 */
 	public function test_badge_keys_are_sanitized_and_readable() {
-		$id = $this->create_global_offer( [ 'name_of_order_bogo' => 'Badge' ] );
+		// The offer's badge artwork is pro (10d); the switch is lite.
+		$this->pro = true;
+		$id        = $this->create_global_offer( [ 'name_of_order_bogo' => 'Badge' ] );
 
 		$response = $this->request(
 			'PUT',
@@ -574,5 +576,175 @@ class BogoRestTest extends StoreGrowthTestCase {
 		$this->assertTrue( $offer['enable_custom_badge_image'] );
 		$this->assertSame( 'bogo-icons-2', $offer['default_badge_icon_name'] );
 		$this->assertSame( '', $offer['default_custom_badge_icon'] );
+	}
+
+	/**
+	 * 10d, R3: the editor's pro fields (product page message, the offer's
+	 * badge artwork) are ignored without pro: a new offer gets the defaults,
+	 * an update keeps what's stored. The badge switch stays lite.
+	 *
+	 * @return void
+	 */
+	public function test_editor_pro_fields_are_ignored_without_pro() {
+		$pro_values = [
+			'product_page_message'      => 'Two for one',
+			'enable_custom_badge_image' => true,
+			'default_badge_icon_name'   => 'bogo-icons-3',
+			'default_custom_badge_icon' => 'https://example.com/badge.png',
+		];
+
+		$created = $this->request( 'POST', self::BASE, $this->payload( $pro_values ) );
+		$this->assertSame( 201, $created->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $created->get_data()['id'] );
+		$this->assertSame( 'Free Gift', $offer['product_page_message'], 'the old editor\'s default' );
+		$this->assertTrue( $offer['enable_custom_badge_image'] );
+		$this->assertSame( 'bogo-icons-1', $offer['default_badge_icon_name'] );
+		$this->assertSame( '', $offer['default_custom_badge_icon'] );
+
+		$this->pro = true;
+		$id        = $this->create_global_offer( array_merge( [ 'name_of_order_bogo' => 'Pro' ], $pro_values ) );
+		$this->pro = false;
+
+		$response = $this->request(
+			'PUT',
+			self::BASE . '/' . $id,
+			[
+				'product_page_message'    => 'Changed',
+				'default_badge_icon_name' => 'bogo-icons-4',
+			]
+		);
+		$this->assertSame( 200, $response->get_status() );
+
+		$offer = BogoDataManager::get_bogo_offer( $id );
+		$this->assertSame( 'Two for one', $offer['product_page_message'] );
+		$this->assertSame( 'bogo-icons-3', $offer['default_badge_icon_name'] );
+		$this->assertSame( 'https://example.com/badge.png', $offer['default_custom_badge_icon'] );
+	}
+
+	/**
+	 * 10d: a create checks the editor's rules (discount 1–100, end not
+	 * before start, a target); an update only those about what it sends,
+	 * so an offer stored before the rules can still be renamed.
+	 *
+	 * @return void
+	 */
+	public function test_offer_rules() {
+		$cases = [
+			'bogo_invalid_discount' => [
+				'offer_type'      => 'discount',
+				'discount_amount' => 150,
+			],
+			'bogo_invalid_dates'    => [
+				'offer_start' => '2030-02-01',
+				'offer_end'   => '2030-01-01',
+			],
+			'bogo_missing_target'   => [ 'offered_products' => [] ],
+		];
+
+		foreach ( $cases as $code => $values ) {
+			$response = $this->request( 'POST', self::BASE, $this->payload( $values ) );
+			$this->assertSame( 400, $response->get_status(), $code );
+			$this->assertSame( $code, $response->get_data()['code'] );
+		}
+
+		$discount = $this->request( 'POST', self::BASE, $this->payload( [ 'offer_type' => 'discount' ] ) );
+		$this->assertSame( 'bogo_invalid_discount', $discount->get_data()['code'], 'a discount without an amount' );
+
+		// Stored before the rules: 150% off.
+		$id = $this->create_global_offer(
+			[
+				'offer_type'      => 'discount',
+				'discount_amount' => 150,
+			]
+		);
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'name_of_order_bogo' => 'Renamed' ] )->get_status() );
+		$this->assertSame( 'bogo_invalid_discount', $this->request( 'PUT', self::BASE . '/' . $id, [ 'discount_amount' => 120 ] )->get_data()['code'] );
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'discount_amount' => 40 ] )->get_status() );
+		$this->assertSame( 'bogo_missing_target', $this->request( 'PUT', self::BASE . '/' . $id, [ 'offered_products' => [] ] )->get_data()['code'] );
+	}
+
+	/**
+	 * 10d: the offer price is never negative, and a discount out of 0–100
+	 * doesn't mark the price up.
+	 *
+	 * @return void
+	 */
+	public function test_offer_price_is_clamped() {
+		$this->assertSame( 0.0, (float) Helper::calculate_offer_price( 'discount', 100, 150 ) );
+		$this->assertSame( 100.0, (float) Helper::calculate_offer_price( 'discount', 100, -20 ) );
+		$this->assertSame( 60.0, (float) Helper::calculate_offer_price( 'discount', 100, 40 ) );
+		$this->assertSame( 0.0, (float) Helper::calculate_offer_price( 'free', 100, 0 ) );
+	}
+
+	/**
+	 * 10d: the editor route returns the page and fields (`BogoOfferFields`)
+	 * with typed defaults, whether a new offer passes the limit, and the
+	 * price format.
+	 *
+	 * @return void
+	 */
+	public function test_editor_route() {
+		$response = $this->request( 'GET', self::BASE . '/editor' );
+		$this->assertSame( 200, $response->get_status() );
+
+		$data   = $response->get_data();
+		$page   = (array) $data['page'];
+		$schema = (array) $data['schema'];
+
+		$this->assertSame( [ 'basic', 'content', 'design' ], array_keys( $page['tabs'] ) );
+		$this->assertSame( [ 'setup', 'pricing', 'schedule', 'advanced' ], array_keys( $page['tabs']['basic']['sections'] ) );
+		$this->assertSame( 'different', $schema['bogo_deal_type']['default'] );
+		$this->assertSame( [ 'same' ], $schema['bogo_deal_type']['pro_options'] );
+		$this->assertSame( [ 'bogo_deal_type' => 'different' ], $schema['get_different_product_field']['show_when'] );
+		$this->assertSame( 1, $schema['box_top_margin']['default'], 'numbers typed' );
+		$this->assertSame( [ 'daily' ], $schema['offer_schedule']['default'] );
+		$this->assertTrue( $schema['minimum_quantity_required']['pro'] );
+		$this->assertFalse( $schema['enable_custom_badge_image']['pro'] );
+		$this->assertContains( 'no_border', $schema['box_border_style']['options'] );
+		$this->assertTrue( $data['can_create'] );
+		$this->assertSame( [ 'symbol', 'position', 'decimals', 'decimal_separator', 'thousand_separator' ], array_keys( $data['currency'] ) );
+
+		$this->create_global_offer();
+		$this->create_global_offer();
+		$this->assertFalse( $this->request( 'GET', self::BASE . '/editor' )->get_data()['can_create'] );
+	}
+
+	/**
+	 * 10d, ADR-010: extensions add fields and tabs in PHP; the offer's own
+	 * fields can't be redefined and a field of an unknown type is dropped.
+	 *
+	 * @return void
+	 */
+	public function test_editor_is_extended_in_php() {
+		$extend = static function ( $fields ) {
+			$fields['my_note']            = [
+				'type'  => 'text',
+				'tab'   => 'extra',
+				'label' => 'Note',
+			];
+			$fields['my_broken']          = [ 'type' => 'nope' ];
+			$fields['name_of_order_bogo'] = [ 'type' => 'textarea' ];
+
+			return $fields;
+		};
+		$tab    = static function ( $page ) {
+			$page['tabs']['extra'] = [ 'label' => 'Extra' ];
+
+			return $page;
+		};
+		add_filter( 'spsg_bogo_offer_fields', $extend );
+		add_filter( 'spsg_bogo_offer_page', $tab );
+
+		$data   = $this->request( 'GET', self::BASE . '/editor' )->get_data();
+		$schema = (array) $data['schema'];
+
+		$this->assertSame( 'extra', $schema['my_note']['tab'] );
+		$this->assertArrayNotHasKey( 'my_broken', $schema );
+		$this->assertSame( 'text', $schema['name_of_order_bogo']['type'] );
+		$this->assertArrayHasKey( 'extra', ( (array) $data['page'] )['tabs'] );
+
+		remove_filter( 'spsg_bogo_offer_fields', $extend );
+		remove_filter( 'spsg_bogo_offer_page', $tab );
 	}
 }

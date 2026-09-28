@@ -189,7 +189,10 @@ export function IconPicker( {
                                     onChange( '' );
                                 } )
                             }
-                            className="h-11 gap-2 border-sg-brand text-sg-brand"
+                            className={ cn(
+                                'h-11 gap-2 border-sg-brand text-sg-brand',
+                                locked && 'opacity-50'
+                            ) }
                         >
                             <Upload className="size-4" aria-hidden />
                             { __( 'Upload', 'storegrowth-sales-booster' ) }

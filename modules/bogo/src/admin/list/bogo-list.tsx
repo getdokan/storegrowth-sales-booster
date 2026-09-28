@@ -500,7 +500,7 @@ export default function BogoList() {
                     className="rounded-b-none"
                     actions={ headerActions }
                 />
-                <div className="w-full overflow-hidden rounded-b-lg border border-t-0 border-sg-cardline bg-white">
+                <div className="w-full overflow-hidden rounded-b-lg border border-t-0 border-sg-cardline bg-white *:rounded-t-none! *:border-none!">
                     { table }
                 </div>
             </div>

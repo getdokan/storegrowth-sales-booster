@@ -6,6 +6,7 @@
  * @since SPSG_VERSION
  */
 import {
+    cn,
     Combobox,
     ComboboxChip,
     ComboboxChips,
@@ -157,10 +158,14 @@ export function MultiSelectField( {
             >
                 <ComboboxChips
                     ref={ anchor }
-                    className="min-h-10 w-full rounded-[5px] border-sg-stroke bg-white shadow-none focus-within:border-sg-brand focus-within:ring-sg-brand/25"
+                    // 40px with one row of chips, as the design's inputs.
+                    className={ cn(
+                        'min-h-10 w-full rounded-[5px] border-sg-stroke bg-white py-1 shadow-none focus-within:border-sg-brand focus-within:ring-sg-brand/25',
+                        locked && 'cursor-not-allowed bg-sg-chip'
+                    ) }
                 >
                     { selected.map( ( option ) => (
-                        <ComboboxChip key={ option.value }>
+                        <ComboboxChip key={ option.value } className="h-7">
                             { option.label }
                         </ComboboxChip>
                     ) ) }
@@ -168,8 +173,9 @@ export function MultiSelectField( {
                         id={ inputId }
                         aria-invalid={ !! error }
                         placeholder={ selected.length ? '' : placeholder }
-                        // wp-admin styles bare text inputs (border, padding).
-                        className="m-0 h-7 border-0 bg-transparent p-0 text-sm text-sg-text shadow-none placeholder:text-sg-field focus:shadow-none"
+                        // wp-admin styles bare text inputs (border, padding,
+                        // a 40px min-height).
+                        className="m-0 h-7 min-h-0 border-0 bg-transparent p-0 text-sm text-sg-text shadow-none placeholder:text-sg-field focus:shadow-none"
                     />
                 </ComboboxChips>
                 <ComboboxContent anchor={ anchor }>

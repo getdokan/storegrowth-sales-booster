@@ -2,24 +2,20 @@
  * BOGO admin bundle (`modules/bogo/assets/js/admin.js`), loaded on the
  * StoreGrowth admin page before the app mounts. The app draws the BOGO
  * settings page from the schema (PHP `BogoSettings`) at
- * `#/settings?module=bogo`; this adds the badge picker (image badges and
- * the custom upload, two keys).
+ * `#/settings?module=bogo`; this adds its badge picker (image badges and
+ * the custom upload, two keys), and the module's own pages: the offer list
+ * (`#/bogo`) and the offer editor (`#/bogo/create-bogo`, `#/bogo/<id>`).
  *
  * @since SPSG_VERSION
  */
 import { addFilter } from '@wordpress/hooks';
-import { __ } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
-import {
-    CardHead,
-    FeatureLayout,
-    IconPicker,
-    type SettingsPageParts,
-} from '@storegrowth/components';
-import { Link } from '@storegrowth/hooks';
+import { IconPicker, type SettingsPageParts } from '@storegrowth/components';
+import { Navigate, useParams } from '@storegrowth/hooks';
 import type { SettingValue } from '@storegrowth/utilities';
 
 import { BOGO_BADGES } from './badges';
+import BogoEditor from './editor/bogo-editor';
 import BogoList from './list/bogo-list';
 
 interface BogoSettingsValues extends Record< string, SettingValue > {
@@ -65,25 +61,20 @@ const bogoSettingsPage: SettingsPageParts< BogoSettingsValues > = {
 };
 
 /**
- * The offer editor's place until it's built (step 10d).
+ * `/bogo/:id` opens the editor for a numeric id only. Anything else (2.2.0's
+ * `/bogo/create-message`, until the category messages have a page) opens
+ * the list.
  *
  * @since SPSG_VERSION
  */
-function EditorComing() {
-    return (
-        <FeatureLayout moduleId="bogo">
-            <CardHead title={ __( 'BOGO', 'storegrowth-sales-booster' ) } />
-            <div className="w-full rounded-lg border border-sg-cardline bg-white p-6 text-sm text-sg-muted">
-                { __(
-                    'The offer editor is on its way.',
-                    'storegrowth-sales-booster'
-                ) }{ ' ' }
-                <Link to="/bogo" className="text-sg-brand underline">
-                    { __( 'Back to BOGO offers', 'storegrowth-sales-booster' ) }
-                </Link>
-            </div>
-        </FeatureLayout>
-    );
+function EditRoute() {
+    const { id = '' } = useParams();
+
+    if ( ! /^\d+$/.test( id ) ) {
+        return <Navigate to="/bogo" replace />;
+    }
+
+    return <BogoEditor id={ Number( id ) } />;
 }
 
 interface AdminRoute {
@@ -102,9 +93,9 @@ addFilter(
         {
             id: 'bogo-create',
             path: '/bogo/create-bogo',
-            element: <EditorComing />,
+            element: <BogoEditor id={ null } />,
         },
-        { id: 'bogo-edit', path: '/bogo/:id', element: <EditorComing /> },
+        { id: 'bogo-edit', path: '/bogo/:id', element: <EditRoute /> },
     ]
 );
 

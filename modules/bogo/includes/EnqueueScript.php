@@ -124,8 +124,18 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Add CSS scripts to admin.
+	 *
+	 * @since SPSG_VERSION Takes the screen name (`$hook`).
+	 *
+	 * @param string $hook Screen name.
 	 */
-	public function admin_enqueue_styles() {
+	public function admin_enqueue_styles( $hook = '' ) {
+		// The old antd admin's styles: nothing on the redesigned admin page
+		// uses them.
+		if ( AdminMenu::SCREEN_ID === $hook ) {
+			return;
+		}
+
 		$ftime          = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-custom-admin.css' ) );
 		$ftime_template = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-template.css' ) );
 

@@ -134,12 +134,16 @@ class Helper {
 		$regular_price   = (float) $regular_price;
 		$discount_amount = (float) $discount_amount;
 
+		// A discount outside 0–100 (stored before the editor checked it)
+		// neither marks the price up nor makes it negative.
+		$discount_amount = min( 100, max( 0, $discount_amount ) );
+
 		if ( 'discount' === $offer_type ) {
 			$offer_price = ( $regular_price - ( $regular_price * $discount_amount / 100 ) );
 		} else {
 			$offer_price = 0;
 		}
-		return $offer_price;
+		return max( 0, $offer_price );
 	}
 
     /**

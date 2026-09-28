@@ -18,6 +18,8 @@ spsg_bogo_fly_cart_badge_enabled
 spsg_bogo_get_apply_able_product_id
 spsg_bogo_mapped_data
 spsg_bogo_max_category_messages
+spsg_bogo_offer_fields
+spsg_bogo_offer_page
 spsg_bogo_offer_product_id_for_cart
 spsg_bogo_offer_products_for_item
 spsg_bogo_product_args

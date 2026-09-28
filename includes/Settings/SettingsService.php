@@ -315,9 +315,23 @@ class SettingsService {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_public_schema( string $module_id ): array {
+		return $this->to_public_schema( $this->get_fields( $module_id ) );
+	}
+
+	/**
+	 * Fields as the admin app consumes them (`get_public_schema()`), for any
+	 * field list: a module's settings, or a record editor's fields (ADR-010).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array<string, array<string, mixed>> $fields Field definitions keyed by key.
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	public function to_public_schema( array $fields ): array {
 		$public = [];
 
-		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
+		foreach ( $fields as $key => $field ) {
 			$public[ $key ] = array_merge(
 				[ 'pro' => false ],
 				array_intersect_key( $field, array_flip( [ 'type', 'default', 'pro', 'min', 'max', 'step', 'options', 'item', 'allow_empty', 'tab', 'label', 'help', 'variant', 'labels', 'placeholder', 'prefix', 'suffix', 'priority', 'section', 'pro_ui', 'show_when', 'hidden', 'width', 'pro_options', 'option_help', 'rows', 'max_length', 'name' ] ) )

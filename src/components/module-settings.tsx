@@ -8,12 +8,14 @@
  * picker that sets several keys).
  *
  * The admin app draws it at `#/settings?module=<id>`, inside the page frame;
- * the selected tab is in the URL (`&tab=design`).
+ * the selected tab is in the URL (`&tab=design`). A record editor (a BOGO
+ * offer, ADR-010) draws the same page from its own hook: any object in the
+ * `ModuleSettings` shape.
  *
  * @since SPSG_VERSION
  */
 import { Skeleton, toast } from '@wedevs/plugin-ui';
-import { Fragment } from '@wordpress/element';
+import { Fragment, useEffect, useRef } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
 import { type ModuleSettings, useSearchParams } from '@storegrowth/hooks';
@@ -49,6 +51,10 @@ export interface ModuleSettingsPageProps< V extends Values > {
     hasTabs?: boolean;
     /** Controls the page draws itself instead of a field's, by key. */
     controls?: Partial< Record< keyof V, ReactNode > >;
+    /** Beside the title, e.g. a record editor's way back to its list. */
+    actions?: ReactNode;
+    /** Toast after a save (default "Settings saved."). */
+    savedMessage?: string;
 }
 
 interface SkeletonShape {
@@ -178,13 +184,15 @@ function runs< T >( keys: string[], by: ( key: string ) => T ) {
 /**
  * @since SPSG_VERSION
  *
- * @param props            Props.
- * @param props.title      Title while loading.
- * @param props.settings   Module settings.
- * @param props.preview    Preview column.
- * @param props.hasPreview The page will have a preview (loading skeleton).
- * @param props.hasTabs    The page has tabs (loading skeleton).
- * @param props.controls   Page-drawn controls by key.
+ * @param props              Props.
+ * @param props.title        Title while loading.
+ * @param props.settings     Module settings.
+ * @param props.preview      Preview column.
+ * @param props.hasPreview   The page will have a preview (loading skeleton).
+ * @param props.hasTabs      The page has tabs (loading skeleton).
+ * @param props.controls     Page-drawn controls by key.
+ * @param props.actions      Beside the title.
+ * @param props.savedMessage Toast after a save.
  */
 export function ModuleSettingsPage< V extends Values >( {
     title,
@@ -193,6 +201,8 @@ export function ModuleSettingsPage< V extends Values >( {
     hasPreview = false,
     hasTabs = true,
     controls = {},
+    actions,
+    savedMessage,
 }: ModuleSettingsPageProps< V > ) {
     const schema = settings.schema as Record< string, SettingField >;
     const pageTitle = settings.page.title ?? title ?? '';
@@ -217,11 +227,39 @@ export function ModuleSettingsPage< V extends Values >( {
         );
     };
 
+    // A failed save marks a field on another tab (a record editor saves
+    // every tab at once): open that tab, once per failed save (not on
+    // every later edit).
+    const jumpToError = useRef( false );
+    useEffect( () => {
+        if ( ! jumpToError.current ) {
+            return;
+        }
+
+        const errorKey = Object.keys( settings.errors ).find( ( key ) => {
+            return Boolean( settings.errors[ key ] );
+        } );
+        if ( ! errorKey ) {
+            return;
+        }
+
+        jumpToError.current = false;
+        const tab = schema[ errorKey ]?.tab ?? '';
+        if ( tabIds.includes( tab ) && tab !== activeTab ) {
+            selectTab( tab );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ settings.errors ] );
+
     const save = async ( keys: string[] ) => {
+        // Set before saving: React renders the errors before `catch` runs.
+        jumpToError.current = true;
         try {
             await settings.save( keys );
+            jumpToError.current = false;
             toast.success(
-                __( 'Settings saved.', 'storegrowth-sales-booster' )
+                savedMessage ??
+                    __( 'Settings saved.', 'storegrowth-sales-booster' )
             );
         } catch ( error ) {
             toast.error(
@@ -450,7 +488,11 @@ export function ModuleSettingsPage< V extends Values >( {
     // One card: the title on top, one border line below it.
     return (
         <div className="flex w-full flex-col">
-            <CardHead title={ pageTitle } className="rounded-b-none" />
+            <CardHead
+                title={ pageTitle }
+                actions={ actions }
+                className="rounded-b-none"
+            />
             { settings.loading && (
                 <LoadingSkeleton
                     hasPreview={ hasPreview }
