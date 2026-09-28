@@ -32,8 +32,7 @@ class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * The checkout box's own stylesheet, for the editor's checkout preview
-	 * (ADR-005 S10), under the storefront's handle. The block editor's
-	 * `order-bump-template.css` stays out: it restyles the same classes.
+	 * (ADR-005 S10), under the storefront's handle.
 	 *
 	 * @since SPSG_VERSION
 	 *
