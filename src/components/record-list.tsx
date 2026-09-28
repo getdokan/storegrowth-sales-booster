@@ -235,7 +235,12 @@ export function RecordList< T extends ListRecord >( {
             },
             render: ( { item } ) => {
                 return (
-                    <span className="font-semibold text-sg-heading">
+                    // Two lines at most, so a long name can't push the
+                    // other columns out of the card.
+                    <span
+                        className="line-clamp-2 max-w-[260px] whitespace-normal font-semibold leading-snug text-sg-heading"
+                        title={ decodeEntities( item.name ) }
+                    >
                         { decodeEntities( item.name ) }
                     </span>
                 );
@@ -249,14 +254,19 @@ export function RecordList< T extends ListRecord >( {
             enableSorting: false,
             render: ( { item } ) => {
                 return (
-                    <Switch
-                        checked={ item.status === 'active' }
-                        disabled={ pending.includes( item.id ) }
-                        onCheckedChange={ ( checked ) => {
-                            toggle( item, checked );
-                        } }
-                        aria-label={ statusLabel( item ) }
-                    />
+                    // Above the list layout's row button (narrow screens),
+                    // which would take its clicks; the table layout keeps it
+                    // under the sticky Actions column.
+                    <span className="inline-flex [.dataviews-view-list_&]:relative [.dataviews-view-list_&]:z-[1]">
+                        <Switch
+                            checked={ item.status === 'active' }
+                            disabled={ pending.includes( item.id ) }
+                            onCheckedChange={ ( checked ) => {
+                                toggle( item, checked );
+                            } }
+                            aria-label={ statusLabel( item ) }
+                        />
+                    </span>
                 );
             },
         },

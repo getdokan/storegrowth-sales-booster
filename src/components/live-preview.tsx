@@ -1,9 +1,9 @@
 /**
  * Live preview column (design `buildPreview()`): "Preview" head with a device
  * switch and a light/dark toggle, then a grey canvas holding a browser frame
- * with a mock product page. The module's widget renders in the product's
- * widget slot; `banner` renders above (or below) the product, `overlay` on
- * top of the frame.
+ * with a mock product page (or shop, or checkout). The module's widget
+ * renders in the page's widget slot; `banner` renders above (or below) the
+ * product, `overlay` on top of the frame.
  *
  * The frame carries `group/frame` with `data-device` / `data-theme`, so a
  * widget styles its dark or mobile look with
@@ -36,9 +36,12 @@ export interface PreviewState {
 type Slot = ReactNode | ( ( state: PreviewState ) => ReactNode );
 
 export interface LivePreviewProps {
-    /** The page drawn: a single product (default) or a shop grid. */
-    layout?: 'product' | 'shop';
-    /** Rendered in the product's widget slot, above the add-to-cart row (in every card of the shop grid). */
+    /** The page drawn: a single product (default), a shop grid or the checkout. */
+    layout?: 'product' | 'shop' | 'checkout';
+    /**
+     * Rendered in the product's widget slot, above the add-to-cart row (in
+     * every card of the shop grid; under the checkout's order total).
+     */
     widget?: Slot;
     /** Full-width strip above (or below) the product, e.g. a bar. */
     banner?: Slot;
@@ -205,10 +208,133 @@ function MockShop( { widget }: { widget: ReactNode } ) {
 }
 
 /**
+ * Mock checkout page: the customer form on the left, the order summary on
+ * the right (one line, subtotal, total), with the widget under the total
+ * and the Place order button last, where a checkout box such as an order
+ * bump sits. The columns stack in a narrow frame (a container query, not the
+ * device: the preview column itself is narrow), the summary under the form,
+ * as WooCommerce's checkout does.
+ *
+ * @param props        Props.
+ * @param props.widget Widget node, drawn in the order summary.
+ */
+function MockCheckout( { widget }: { widget: ReactNode } ) {
+    const heading =
+        'm-0 text-[13px] font-semibold leading-[1.3] text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]';
+    const input =
+        'h-9 w-full rounded-[4px] border border-[#DCDCDE] bg-white group-data-[theme=dark]/frame:border-[#3A3E44] group-data-[theme=dark]/frame:bg-[#1E2124]';
+    const row =
+        'flex w-full items-center justify-between gap-3 text-[12px] leading-[1.4] text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]';
+
+    // Side by side only where the frame is as wide as a real checkout's two
+    // columns need (the preview column is often narrower): the summary is
+    // then about as wide as it is in a store.
+    return (
+        <div className="@container w-full bg-white group-data-[theme=dark]/frame:bg-[#16181B]">
+            <div className="flex w-full flex-col items-stretch gap-6 px-4 py-6 @min-[640px]:flex-row @min-[640px]:items-start @min-[640px]:px-6 @min-[640px]:py-10">
+                <div className="flex min-w-0 flex-1 flex-col gap-5">
+                    <div className="flex w-full flex-col gap-2.5">
+                        <p className={ heading }>
+                            { __(
+                                'Contact information',
+                                'storegrowth-sales-booster'
+                            ) }
+                        </p>
+                        <span className={ input } />
+                    </div>
+                    <div className="flex w-full flex-col gap-2.5">
+                        <p className={ heading }>
+                            { __(
+                                'Shipping address',
+                                'storegrowth-sales-booster'
+                            ) }
+                        </p>
+                        <div className="flex w-full gap-2.5">
+                            <span className={ input } />
+                            <span className={ input } />
+                        </div>
+                        <span className={ input } />
+                        <span className={ input } />
+                    </div>
+                </div>
+
+                <div className="flex w-full min-w-0 shrink-0 flex-col gap-3 rounded-[4px] border border-[#E0E0E0] p-4 @min-[640px]:w-[48%] group-data-[theme=dark]/frame:border-[#3A3E44]">
+                    <p className={ heading }>
+                        { __( 'Order summary', 'storegrowth-sales-booster' ) }
+                    </p>
+                    <div className={ row }>
+                        <span className="flex min-w-0 items-center gap-2.5">
+                            <img
+                                src={ assetUrl(
+                                    'images/preview/product.jpeg'
+                                ) }
+                                alt=""
+                                className="size-10 shrink-0 rounded-[4px] object-cover"
+                            />
+                            <span className="min-w-0">
+                                { __(
+                                    'Your Product Name',
+                                    'storegrowth-sales-booster'
+                                ) }
+                            </span>
+                        </span>
+                        <span className="shrink-0">$49</span>
+                    </div>
+                    <span className="h-px w-full bg-[#E0E0E0] group-data-[theme=dark]/frame:bg-[#3A3E44]" />
+                    <div className={ row }>
+                        <span>
+                            { __( 'Subtotal', 'storegrowth-sales-booster' ) }
+                        </span>
+                        <span>$49</span>
+                    </div>
+                    <div className={ cn( row, 'text-[14px] font-semibold' ) }>
+                        <span>
+                            { __( 'Total', 'storegrowth-sales-booster' ) }
+                        </span>
+                        <span>$49</span>
+                    </div>
+                    { widget }
+                    <div className="flex w-full items-center justify-center rounded-[4px] bg-[#1A1D20] py-2.5 group-data-[theme=dark]/frame:bg-[#E7E9EC]">
+                        <span className="text-[12px] font-semibold leading-[1.3] text-white group-data-[theme=dark]/frame:text-[#16181B]">
+                            { __( 'Place order', 'storegrowth-sales-booster' ) }
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+/**
+ * The page the preview draws.
+ *
+ * @param props        Props.
+ * @param props.layout Page layout.
+ * @param props.widget Widget node.
+ */
+function MockPage( {
+    layout,
+    widget,
+}: {
+    layout: NonNullable< LivePreviewProps[ 'layout' ] >;
+    widget: ReactNode;
+} ) {
+    if ( layout === 'shop' ) {
+        return <MockShop widget={ widget } />;
+    }
+
+    if ( layout === 'checkout' ) {
+        return <MockCheckout widget={ widget } />;
+    }
+
+    return <MockProduct widget={ widget } />;
+}
+
+/**
  * @since SPSG_VERSION
  *
  * @param props                Props.
- * @param props.layout         Single product or shop page.
+ * @param props.layout         Single product, shop or checkout page.
  * @param props.widget         Widget in the product's slot.
  * @param props.banner         Strip above or below the product.
  * @param props.bannerPosition Where the banner goes.
@@ -319,19 +445,10 @@ export function LivePreview( {
                         }
                     >
                         { bannerPosition === 'top' && bannerNode }
-                        { layout === 'shop' ? (
-                            <MockShop
-                                widget={
-                                    widget ? render( widget, state ) : null
-                                }
-                            />
-                        ) : (
-                            <MockProduct
-                                widget={
-                                    widget ? render( widget, state ) : null
-                                }
-                            />
-                        ) }
+                        <MockPage
+                            layout={ layout }
+                            widget={ widget ? render( widget, state ) : null }
+                        />
                         { bannerPosition === 'bottom' && bannerNode }
                     </div>
                     { overlay && render( overlay, state ) }

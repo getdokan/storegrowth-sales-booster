@@ -25,6 +25,7 @@ import {
     CardHead,
     FeatureLayout,
     ProBadge,
+    ProductCell,
     RecordList,
 } from '@storegrowth/components';
 import {
@@ -35,43 +36,7 @@ import {
 } from '@storegrowth/hooks';
 import { errorMessage } from '@storegrowth/utilities';
 
-import { type BogoOffer, type OfferProduct, offersRoute } from '../api';
-
-/**
- * Thumbnail and name of a product.
- *
- * @param props         Props.
- * @param props.product Product.
- * @param props.after   Under the name (prices).
- */
-function ProductCell( {
-    product,
-    after,
-}: {
-    product?: OfferProduct;
-    after?: React.ReactNode;
-} ) {
-    if ( ! product ) {
-        return <span className="text-sg-help">—</span>;
-    }
-
-    return (
-        // Capped so a long product name can't push the table sideways.
-        <span className="flex min-w-0 max-w-[200px] items-center gap-3">
-            <img
-                src={ product.image }
-                alt=""
-                className="size-[42px] shrink-0 rounded-full object-cover"
-            />
-            <span className="flex min-w-0 flex-col">
-                <span className="truncate text-sm font-semibold text-sg-heading">
-                    { decodeEntities( product.name ) }
-                </span>
-                { after }
-            </span>
-        </span>
-    );
-}
+import { type BogoOffer, offersRoute } from '../api';
 
 /** The list's texts. */
 const MESSAGES = {

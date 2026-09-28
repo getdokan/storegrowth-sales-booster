@@ -32,7 +32,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		// The old antd admin (`admin_enqueue_scripts()`) no longer loads: the
+		// admin app draws the bumps (`AdminPage`).
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
@@ -89,8 +90,17 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Add CSS scripts to admin.
+	 *
+	 * @param string $hook Admin page hook.
 	 */
-	public function admin_enqueue_styles() {
+	public function admin_enqueue_styles( $hook = '' ) {
+		// The admin app draws the bumps: the old admin's styles would restyle
+		// the editor's checkout preview (`order-bump-template.css` gives
+		// `.offer-main-wrap` a 600px height).
+		if ( AdminMenu::SCREEN_ID === $hook ) {
+			return;
+		}
+
 		$ftime          = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
 		$ftime_template = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
 

@@ -187,11 +187,12 @@ export function formatPrice( amount: number, currency: Currency ): string {
     const number =
         whole.replace( /\B(?=(\d{3})+(?!\d))/g, currency.thousand_separator ) +
         ( fraction ? currency.decimal_separator + fraction : '' );
+    // A no-break space, as `wc_price()` (the price never wraps).
     const formats: Record< string, string > = {
         left: `${ currency.symbol }${ number }`,
         right: `${ number }${ currency.symbol }`,
-        left_space: [ currency.symbol, number ].join( ' ' ),
-        right_space: [ number, currency.symbol ].join( ' ' ),
+        left_space: [ currency.symbol, number ].join( ' ' ),
+        right_space: [ number, currency.symbol ].join( ' ' ),
     };
 
     return (

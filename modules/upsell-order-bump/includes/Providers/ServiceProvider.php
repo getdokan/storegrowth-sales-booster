@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BaseServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\AdminPage;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
 
 /**
@@ -25,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     protected $services = [
         UpsellOrderBumpModule::class,
+        AdminPage::class,
     ];
 
     /**
@@ -46,5 +48,7 @@ class ServiceProvider extends BaseServiceProvider {
      */
     public function register(): void {
         $this->add_with_implements_tags( UpsellOrderBumpModule::get_id(), UpsellOrderBumpModule::class, true );
+        // Always loaded: the list page asks to turn the module on while it's off.
+        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
     }
 }

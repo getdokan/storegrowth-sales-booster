@@ -149,6 +149,46 @@ class ProductControllerTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * 11e: with variations, a variation says whether it has an "Any …"
+	 * attribute (the order bump offer picker leaves those out); without,
+	 * nothing is added.
+	 *
+	 * @return void
+	 */
+	public function test_variation_says_when_an_attribute_is_any() {
+		$set = $this->create_variation();
+
+		$any = new WC_Product_Variation();
+		$any->set_parent_id( $set->get_parent_id() );
+		$any->set_attributes( [ 'size' => '' ] );
+		$any->set_regular_price( '20' );
+		$any->set_status( 'publish' );
+		$any->save();
+
+		$request = new WP_REST_Request( 'GET', '/sales-booster/v1/products' );
+		$request->set_query_params(
+			[
+				'include'            => implode( ',', [ $set->get_parent_id(), $set->get_id(), $any->get_id() ] ),
+				'include_variations' => true,
+			]
+		);
+		$flags = [];
+		foreach ( rest_get_server()->dispatch( $request )->get_data() as $product ) {
+			if ( array_key_exists( 'any_attribute', $product ) ) {
+				$flags[ $product['id'] ] = $product['any_attribute'];
+			}
+		}
+
+		$this->assertFalse( $flags[ $set->get_id() ] );
+		$this->assertTrue( $flags[ $any->get_id() ] );
+		$this->assertArrayNotHasKey( $set->get_parent_id(), $flags, 'only variations carry it' );
+
+		$request = new WP_REST_Request( 'GET', '/sales-booster/v1/products' );
+		$request->set_query_params( [ 'include' => (string) $set->get_parent_id() ] );
+		$this->assertArrayNotHasKey( 'any_attribute', rest_get_server()->dispatch( $request )->get_data()[0] );
+	}
+
+	/**
 	 * `spsg_product_query_args` still scopes a request with variations (e.g.
 	 * a Dokan vendor's own products).
 	 *

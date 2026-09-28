@@ -66,6 +66,13 @@ export interface RecordEditorOptions< E extends RecordEditorData > {
      * values are read with the editor's own.
      */
     schema?: ( editor: E, values: RecordValues ) => Schema;
+    /**
+     * The record as the editor's keys read it, when the routes nest some of
+     * them (e.g. an order bump's `design_settings`).
+     */
+    fromRecord?: ( record: RecordData ) => RecordData;
+    /** What to send for the changed values, in the routes' shape. */
+    toRecord?: ( values: RecordValues ) => RecordData;
 }
 
 /**
@@ -140,6 +147,9 @@ function toValues( schema: Schema, record: RecordData = {} ): RecordValues {
 
 const NO_RULES: RecordRule[] = [];
 const NO_ERROR_FIELDS: Record< string, string > = {};
+const AS_IS = < T >( data: T ): T => {
+    return data;
+};
 
 /**
  * @since SPSG_VERSION
@@ -157,6 +167,8 @@ export function useRecordEditor< E extends RecordEditorData >(
         errorFields = NO_ERROR_FIELDS,
         loadErrorMessage,
         schema: toSchema,
+        fromRecord = AS_IS,
+        toRecord = AS_IS,
     } = options;
     const [ loading, setLoading ] = useState( true );
     const [ loadError, setLoadError ] = useState< string | null >( null );
@@ -184,7 +196,10 @@ export function useRecordEditor< E extends RecordEditorData >(
                     return;
                 }
 
-                const loaded = toValues( loadedEditor.schema, loadedRecord );
+                const loaded = toValues(
+                    loadedEditor.schema,
+                    loadedRecord ? fromRecord( loadedRecord ) : undefined
+                );
 
                 setSchema(
                     toSchema
@@ -220,7 +235,7 @@ export function useRecordEditor< E extends RecordEditorData >(
         return () => {
             cancelled = true;
         };
-    }, [ id, route, toSchema, loadErrorMessage ] );
+    }, [ id, route, toSchema, loadErrorMessage, fromRecord ] );
 
     const isLocked = useCallback(
         ( key: string ) => {
@@ -309,10 +324,12 @@ export function useRecordEditor< E extends RecordEditorData >(
                 const response = await saveRecord(
                     route,
                     id,
-                    Object.fromEntries(
-                        changed.map( ( key ) => {
-                            return [ key, values[ key ] ];
-                        } )
+                    toRecord(
+                        Object.fromEntries(
+                            changed.map( ( key ) => {
+                                return [ key, values[ key ] ];
+                            } )
+                        )
                     )
                 );
 
@@ -323,7 +340,7 @@ export function useRecordEditor< E extends RecordEditorData >(
 
                 // The route returns the record as stored (sanitized): it is
                 // what's saved now. Unsaved edits in other keys stay.
-                const stored = toValues( schema, response );
+                const stored = toValues( schema, fromRecord( response ) );
                 setSaved( stored );
                 setValuesState( ( current ) => {
                     return {
@@ -357,6 +374,8 @@ export function useRecordEditor< E extends RecordEditorData >(
             route,
             rules,
             errorFields,
+            fromRecord,
+            toRecord,
         ]
     );
 

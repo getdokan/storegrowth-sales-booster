@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Test\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi\OrderBumpController;
 use StorePulse\StoreGrowth\Test\StoreGrowthTestCase;
 use WP_REST_Request;
@@ -695,5 +696,147 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 		$bump = ( new OrderBumpData() )->get_by_id( $id );
 		$this->assertSame( get_current_user_id(), (int) $bump['updated_by'] );
 		$this->assertNotSame( 999, (int) $bump['created_by'] );
+	}
+
+	/**
+	 * 11e: the editor route returns the page and fields (`OrderBumpFields`)
+	 * with typed defaults (the 2.x admin's, `OrderBumpDesign`) and what the
+	 * preview needs.
+	 *
+	 * @return void
+	 */
+	public function test_editor_route() {
+		foreach ( [ self::BASE, self::LEGACY_BASE ] as $base ) {
+			$response = $this->request( 'GET', $base . '/editor' );
+			$this->assertSame( 200, $response->get_status() );
+		}
+
+		$data   = $response->get_data();
+		$page   = (array) $data['page'];
+		$schema = (array) $data['schema'];
+
+		$this->assertSame( 'Upsell Order Bump', $page['title'] );
+		$this->assertSame( [ 'basic', 'design' ], array_keys( $page['tabs'] ) );
+		$this->assertSame( [ 'setup', 'offer' ], array_keys( $page['tabs']['basic']['sections'] ) );
+		$this->assertSame( [ 'box', 'discount', 'product', 'content' ], array_keys( $page['tabs']['design']['sections'] ) );
+
+		$this->assertSame( [ 'discount', 'price', 'free' ], $schema['offer_type']['options'] );
+		$this->assertSame( [ 'offer_type' => [ 'discount', 'price' ] ], $schema['offer_amount']['show_when'] );
+		$this->assertSame( [ 'target_type' => 'products' ], $schema['target_products']['show_when'] );
+		$this->assertSame( [ 'target_type' => 'categories' ], $schema['target_categories']['show_when'] );
+		$this->assertSame( [ 'offer_type' => 'discount' ], $schema['offer_discount_title']['show_when'] );
+		$this->assertSame( [ 'offer_type' => 'price' ], $schema['offer_fixed_price_title']['show_when'] );
+		$this->assertSame( OrderBumpDesign::BORDER_STYLES, $schema['box_border_style']['options'] );
+		$this->assertSame( 13, $schema['discount_font_size']['default'], 'numbers typed' );
+		$this->assertSame( OrderBumpDesign::MAX_MARGIN, $schema['box_top_margin']['max'] );
+		$this->assertSame( '#32DBBE', $schema['box_border_color']['default'] );
+		$this->assertSame( '% off only for you!', $schema['offer_discount_title']['default'] );
+
+		$this->assertTrue( $data['can_create'] );
+		$this->assertSame( [ 'symbol', 'position', 'decimals', 'decimal_separator', 'thousand_separator' ], array_keys( $data['currency'] ) );
+		$this->assertFalse( $data['tax_adjusted'] );
+		$this->assertStringEndsWith( 'upsell-order-bump/assets/images/bump-preview.svg', $data['fallback_image_url'] );
+	}
+
+	/**
+	 * 11e: the cart adjusts prices for tax only while taxes are on and cart
+	 * prices are shown otherwise than they're entered.
+	 *
+	 * @return void
+	 */
+	public function test_editor_says_when_the_cart_adjusts_for_tax() {
+		update_option( 'woocommerce_calc_taxes', 'yes' );
+		update_option( 'woocommerce_prices_include_tax', 'no' );
+		update_option( 'woocommerce_tax_display_cart', 'incl' );
+		$this->assertTrue( $this->request( 'GET', self::BASE . '/editor' )->get_data()['tax_adjusted'] );
+
+		update_option( 'woocommerce_tax_display_cart', 'excl' );
+		$this->assertFalse( $this->request( 'GET', self::BASE . '/editor' )->get_data()['tax_adjusted'] );
+
+		update_option( 'woocommerce_calc_taxes', 'no' );
+		update_option( 'woocommerce_tax_display_cart', 'incl' );
+		$this->assertFalse( $this->request( 'GET', self::BASE . '/editor' )->get_data()['tax_adjusted'] );
+	}
+
+	/**
+	 * 11e: every editor key is a column or a `design_settings` key of a
+	 * bump as the routes return it, so the editor (which sends a non-column
+	 * key inside `design_settings`) reads back what it saved.
+	 *
+	 * @return void
+	 */
+	public function test_editor_keys_are_the_bump_keys() {
+		$schema  = (array) $this->request( 'GET', self::BASE . '/editor' )->get_data()['schema'];
+		$created = $this->request( 'POST', self::BASE, $this->payload() )->get_data();
+		$columns = array_diff( array_keys( $created ), [ 'design_settings' ] );
+
+		foreach ( array_keys( $schema ) as $key ) {
+			$this->assertTrue(
+				in_array( $key, $columns, true ) || array_key_exists( $key, $created['design_settings'] ),
+				"{$key} is stored"
+			);
+		}
+
+		// As the editor saves a change: design keys nested, others kept.
+		$updated = $this->request(
+			'PUT',
+			self::BASE . '/' . $created['id'],
+			[
+				'offer_type'      => 'price',
+				'offer_amount'    => 5,
+				'design_settings' => [
+					'offer_fixed_price_title' => '$ only',
+					'discount_font_size'      => 16,
+				],
+			]
+		)->get_data();
+
+		$this->assertSame( 'price', $updated['offer_type'] );
+		$this->assertSame( '$ only', $updated['design_settings']['offer_fixed_price_title'] );
+		$this->assertSame( '16', $updated['design_settings']['discount_font_size'] );
+		$this->assertSame( '#32DBBE', $updated['design_settings']['box_border_color'] );
+		$this->assertSame( '% off only for you!', $updated['offer_discount_title'] );
+	}
+
+	/**
+	 * 11e, ADR-010: extensions add fields and tabs in PHP; the bump's own
+	 * fields can't be redefined and a field of an unknown type is dropped.
+	 * An extension's field is stored in `design_settings`.
+	 *
+	 * @return void
+	 */
+	public function test_editor_is_extended_in_php() {
+		$extend = static function ( $fields ) {
+			$fields['my_note']   = [
+				'type'  => 'text',
+				'tab'   => 'extra',
+				'label' => 'Note',
+			];
+			$fields['my_broken'] = [ 'type' => 'nope' ];
+			$fields['name']      = [ 'type' => 'textarea' ];
+
+			return $fields;
+		};
+		$tab    = static function ( $page ) {
+			$page['tabs']['extra'] = [ 'label' => 'Extra' ];
+
+			return $page;
+		};
+		add_filter( 'spsg_order_bump_fields', $extend );
+		add_filter( 'spsg_order_bump_page', $tab );
+
+		$data   = $this->request( 'GET', self::BASE . '/editor' )->get_data();
+		$schema = (array) $data['schema'];
+
+		$this->assertSame( 'extra', $schema['my_note']['tab'] );
+		$this->assertArrayNotHasKey( 'my_broken', $schema );
+		$this->assertSame( 'text', $schema['name']['type'] );
+		$this->assertArrayHasKey( 'extra', ( (array) $data['page'] )['tabs'] );
+
+		remove_filter( 'spsg_order_bump_fields', $extend );
+		remove_filter( 'spsg_order_bump_page', $tab );
+
+		$created = $this->request( 'POST', self::BASE, $this->payload( [ 'design_settings' => [ 'my_note' => '<b>Hi</b>' ] ] ) )->get_data();
+		$this->assertSame( 'Hi', $created['design_settings']['my_note'] );
 	}
 }

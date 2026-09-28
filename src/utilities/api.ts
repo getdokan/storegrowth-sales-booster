@@ -397,6 +397,55 @@ export async function fetchProductsByIds(
 }
 
 /**
+ * Every product category (WordPress `wp/v2/product_cat`), a child labelled
+ * with its parents ("Parent › Child"), sorted by label.
+ *
+ * @since SPSG_VERSION
+ */
+export async function fetchProductCategories(): Promise<
+    Array< { value: string; label: string } >
+> {
+    const terms: Array< { id: number; name: string; parent: number } > = [];
+
+    for ( let page = 1, pages = 1; page <= pages; page++ ) {
+        const response = await apiFetch< Response, false >( {
+            path: addQueryArgs( '/wp/v2/product_cat', {
+                per_page: 100,
+                page,
+                _fields: 'id,name,parent',
+            } ),
+            parse: false,
+        } );
+
+        pages = Number( response.headers.get( 'X-WP-TotalPages' ) ?? 1 );
+        terms.push( ...( await response.json() ) );
+    }
+
+    const byId = new Map( terms.map( ( term ) => [ term.id, term ] ) );
+    const label = ( id: number, depth = 0 ): string => {
+        const term = byId.get( id );
+        if ( ! term ) {
+            return '';
+        }
+        const name = decodeEntities( term.name );
+        // Depth guards against a parent loop.
+        return term.parent && depth < 10
+            ? [ label( term.parent, depth + 1 ), name ]
+                  .filter( Boolean )
+                  .join( ' › ' )
+            : name;
+    };
+
+    return terms
+        .map( ( term ) => {
+            return { value: String( term.id ), label: label( term.id ) };
+        } )
+        .sort( ( a, b ) => {
+            return a.label.localeCompare( b.label );
+        } );
+}
+
+/**
  * Dashboard tiles.
  *
  * @since SPSG_VERSION

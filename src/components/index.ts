@@ -62,6 +62,7 @@ export {
     PickerCards,
     type PickerCardsProps,
 } from './picker-cards';
+export { ProductCell, type ProductCellProps } from './product-cell';
 export {
     type ListRecord,
     RecordList,

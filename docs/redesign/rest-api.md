@@ -55,8 +55,8 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 
 | # | Method + route | Status | Purpose | Notes |
 |---|---|---|---|---|
-| 13 | `GET /products?search&include&per_page&type&status` | CHANGE | Product search (Sales Notification products, BOGO target/offer, Order Bump target/offer); returns `id, name, price_html, regular_price, sale_price, image, type, parent_id` | Today `sales-booster/v1/products` extends WC's full product controller (create, update, delete, batch). Make it **read-only**: register GET only |
-| 14 | `GET /product-categories?search&include` | NEW | Category search for Order Bump "Categories" | Or proxy `wc/v3/products/categories` |
+| 13 | `GET /products?search&include&per_page&type&status` | CHANGE | Product search (Sales Notification products, BOGO target/offer, Order Bump target/offer); returns `id, name, price_html, regular_price, sale_price, image, type, parent_id` | Today `sales-booster/v1/products` extends WC's full product controller (create, update, delete, batch). Make it **read-only**: register GET only. **11c/11e:** opt-in `include_variations` (variations too, before `spsg_product_query_args`); with it, a variation also returns `any_attribute` (bool: an "Any …" attribute, which WooCommerce leaves out of `attributes`), so the Order Bump offer picker drops those as the routes refuse them |
+| 14 | `GET /product-categories?search&include` | NEW | Category search for Order Bump "Categories" | Or proxy `wc/v3/products/categories`. **11e:** not added; the Order Bump editor reads core `wp/v2/product_cat` (`fetchProductCategories()`, moved from BOGO to `@storegrowth/utilities`) |
 | 15 | `GET /pages?search` | NEW (or reuse `wp/v2/pages`) | "Specific pages" targeting (Sales Notification, Free Shipping, Floating Bar) | Reuse core if `edit_pages` is fine for the audience |
 | 16 | `GET /coupons?search` | NEW | Floating Bar coupon picker (pro) | Replaces the raw `$wpdb` query; only if the coupon field survives the redesign |
 | 17 | `GET /sales-pop/preview-products?source&limit` | NEW | Resolves "Recent Orders" / "Best Sellers" / "Selected" into products for the preview and the Selected list | Replaces the `sales_pop_data.product_list` built on every page load (100 orders + 200 products) |
@@ -87,7 +87,7 @@ Do **not** use wp-kit `BaseSettingsRESTController` as-is. It writes `{prefix}_{p
 | 29 | `PATCH /order-bumps/{id}/status` `{ status }` | NEW | List status switch; the column exists but there's no toggle. **Done (11b):** `POST` (or `PUT`/`PATCH`) `/order-bumps/{id}/status` `{ status: active\|inactive\|yes\|no }` → `{ id, status }`; not limited by the cap |
 | 30 | `POST /order-bumps/batch` `{ delete: [ids] }` | NEW | Bulk delete. **Done (11b):** → `{ deleted: [ids], failed: [ids] }`, each id through a single delete's checks (fires `spsg_order_bump_deleted`) |
 | 31 | `GET /order-bumps/matching` | EXISTS | Unused; keep |
-| 31a | `GET /order-bumps/editor` | NEW | **11b stub:** `{ can_create, currency: { symbol, position, decimals, decimal_separator, thousand_separator } }`; the page and fields come with the editor (11e) |
+| 31a | `GET /order-bumps/editor` | NEW | **11b stub:** `{ can_create, currency: { symbol, position, decimals, decimal_separator, thousand_separator } }`; the page and fields come with the editor (11e). **Done (11e):** plus `page` and `schema` (`OrderBumpFields`, ADR-010; filters `spsg_order_bump_fields` / `spsg_order_bump_page`), `tax_adjusted` (taxes on and cart prices shown with tax while entered without, or the other way: the preview, which shows prices as entered, says so) and `fallback_image_url` (the box's image for a product without one). The editor's keys are flat: the columns, and the `design_settings` keys, which it sends inside `design_settings` (merged key by key); an extension's field is stored there too |
 
 ## 4. Pro-only surfaces (lite registers them; they work only when pro is active)
 

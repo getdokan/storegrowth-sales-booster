@@ -102,6 +102,7 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
         label: 'Upsell Order Bump',
         group: 'order-value',
         summary: 'Offer a relevant add-on at the moment of checkout.',
+        route: '/upsell-order-bump',
     },
     'quick-view': {
         label: 'Quick View',

@@ -60,8 +60,10 @@ spsg_modules
 spsg_order_bump_created
 spsg_order_bump_created_by
 spsg_order_bump_deleted
+spsg_order_bump_fields
 spsg_order_bump_insert_data
 spsg_order_bump_needs_front_assets
+spsg_order_bump_page
 spsg_order_bump_update_data
 spsg_order_bump_updated
 spsg_order_bump_updated_by

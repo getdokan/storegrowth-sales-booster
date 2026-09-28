@@ -39,13 +39,16 @@ import {
     TextareaField,
 } from '@storegrowth/components';
 import { Navigate, useModules, useNavigate } from '@storegrowth/hooks';
-import { errorMessage, getHeaderData } from '@storegrowth/utilities';
+import {
+    errorMessage,
+    fetchProductCategories,
+    getHeaderData,
+} from '@storegrowth/utilities';
 
 import {
     type CategoryMessage,
     deleteCategoryMessage,
     fetchCategoryMessages,
-    fetchProductCategories,
     saveCategoryMessage,
     setCategoryMessageStatus,
 } from '../api';

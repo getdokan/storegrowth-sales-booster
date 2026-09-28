@@ -7,9 +7,11 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi;
 
+use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Settings\OrderBumpFields;
 use WC_Product;
 use WP_REST_Controller;
 use WP_REST_Server;
@@ -270,9 +272,12 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
-	 * What the editor needs besides a bump: whether a new bump would pass
-	 * lite's limit, and the store's price format for the preview. Its page
-	 * and fields come with the editor.
+	 * The bump editor (ADR-010): its page and fields (`OrderBumpFields`),
+	 * whether a new bump would pass lite's limit, and for the checkout
+	 * preview the store's price format, whether the cart shows prices with a
+	 * tax adjustment the preview doesn't make (taxes on, and cart prices
+	 * shown with tax while entered without, or the other way round) and the
+	 * image the checkout box shows for a product without one.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -282,16 +287,21 @@ class OrderBumpController extends WP_REST_Controller {
 	 */
 	public function get_editor( $request ) {
 		return rest_ensure_response(
-			[
-				'can_create' => $this->order_bump_data->can_create(),
-				'currency'   => [
-					'symbol'             => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
-					'position'           => get_option( 'woocommerce_currency_pos', 'left' ),
-					'decimals'           => wc_get_price_decimals(),
-					'decimal_separator'  => wc_get_price_decimal_separator(),
-					'thousand_separator' => wc_get_price_thousand_separator(),
-				],
-			]
+			array_merge(
+				( new OrderBumpFields() )->get_editor(),
+				[
+					'can_create'         => $this->order_bump_data->can_create(),
+					'currency'           => [
+						'symbol'             => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
+						'position'           => get_option( 'woocommerce_currency_pos', 'left' ),
+						'decimals'           => wc_get_price_decimals(),
+						'decimal_separator'  => wc_get_price_decimal_separator(),
+						'thousand_separator' => wc_get_price_thousand_separator(),
+					],
+					'tax_adjusted'       => wc_tax_enabled() && wc_prices_include_tax() !== ( 'incl' === get_option( 'woocommerce_tax_display_cart' ) ),
+					'fallback_image_url' => Helper::get_modules_url( 'upsell-order-bump/assets/images/bump-preview.svg' ),
+				]
+			)
 		);
 	}
 
