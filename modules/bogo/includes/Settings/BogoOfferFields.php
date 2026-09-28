@@ -169,7 +169,7 @@ class BogoOfferFields implements SettingsPage {
 				'help'    => __( 'Quantity of the target product that earns one offer product.', 'storegrowth-sales-booster' ),
 			],
 
-			// Basic Information: Advanced (Pro), pro 2.2.0's field the design has no place for.
+			// Basic Information: Advanced, pro 2.2.0's field the design has no place for.
 			'offer_schedule'                 => [
 				'type'    => 'list',
 				'default' => [ 'daily' ],
@@ -325,8 +325,9 @@ class BogoOfferFields implements SettingsPage {
 							'help'  => __( 'When the offer runs and the rules it follows', 'storegrowth-sales-booster' ),
 						],
 						'advanced' => [
-							'title'     => __( 'Advanced (Pro)', 'storegrowth-sales-booster' ),
-							'help'      => __( 'More rules for the offer', 'storegrowth-sales-booster' ),
+							// Its fields carry their own Pro badge when locked.
+							'title'     => __( 'Advanced', 'storegrowth-sales-booster' ),
+							'help'      => __( 'Days of the week the offer runs', 'storegrowth-sales-booster' ),
 							'collapsed' => true,
 						],
 					],
