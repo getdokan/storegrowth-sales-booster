@@ -112,6 +112,15 @@ class OrderBumpDesign {
 	const BORDER_STYLES = [ 'solid', 'dashed', 'dotted', 'no_border' ];
 
 	/**
+	 * Days a bump can run on (`bump_schedule`); `daily` is every day.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	const SCHEDULE = [ 'daily', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' ];
+
+	/**
 	 * The 2.x admin's defaults for a new bump.
 	 *
 	 * @since SPSG_VERSION
@@ -140,6 +149,8 @@ class OrderBumpDesign {
 			'product_description'                => 'Add product description please',
 			'selection_title'                    => 'Add selection title please',
 			'offer_description'                  => 'Add offer description please',
+			// A bump stored without it runs every day too (`runs_on()`).
+			'bump_schedule'                      => [ 'daily' ],
 		];
 	}
 
@@ -173,6 +184,8 @@ class OrderBumpDesign {
 				$sanitized[ $key ] = is_scalar( $value ) ? esc_url_raw( (string) $value ) : '';
 			} elseif ( 'offer_product_regular_price' === $key ) {
 				$sanitized[ $key ] = is_numeric( $value ) ? wc_format_decimal( $value ) : '';
+			} elseif ( 'bump_schedule' === $key ) {
+				$sanitized[ $key ] = self::sanitize_schedule( $value );
 			} elseif ( in_array( $key, self::TEXT_KEYS, true ) ) {
 				$sanitized[ $key ] = self::sanitize_text( $value );
 			} elseif ( is_scalar( $value ) || is_array( $value ) ) {
@@ -181,6 +194,59 @@ class OrderBumpDesign {
 		}
 
 		return $sanitized;
+	}
+
+	/**
+	 * A schedule as a list of `SCHEDULE` days: unknown values dropped, and
+	 * `[ 'daily' ]` when it's empty or has `daily` (every day).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $value Days: a list, or a comma-separated string.
+	 *
+	 * @return string[]
+	 */
+	public static function sanitize_schedule( $value ) {
+		if ( is_string( $value ) ) {
+			$value = explode( ',', $value );
+		}
+
+		$days = array_values( array_intersect( self::SCHEDULE, array_map( 'sanitize_key', array_filter( (array) $value, 'is_scalar' ) ) ) );
+
+		return ! $days || in_array( 'daily', $days, true ) ? [ 'daily' ] : $days;
+	}
+
+	/**
+	 * Whether a bump runs on a day: always without a schedule (bumps saved
+	 * before it existed) or with `daily`, else on the listed days.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array       $design The bump's `design_settings`.
+	 * @param string|null $day    A day (`monday`, …); null for today in the site's timezone.
+	 *
+	 * @return bool
+	 */
+	public static function runs_on( array $design, $day = null ) {
+		if ( ! isset( $design['bump_schedule'] ) ) {
+			return true;
+		}
+
+		$schedule = self::sanitize_schedule( $design['bump_schedule'] );
+
+		return in_array( 'daily', $schedule, true ) || in_array( $day ?? self::today(), $schedule, true );
+	}
+
+	/**
+	 * Today's day in the site's timezone (`monday`, …).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string
+	 */
+	public static function today() {
+		// `N` (1 = Monday), not `l`: `wp_date()` translates day names.
+		return self::SCHEDULE[ (int) wp_date( 'N' ) ];
 	}
 
 	/**

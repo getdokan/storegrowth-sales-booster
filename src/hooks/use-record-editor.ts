@@ -57,8 +57,14 @@ export interface RecordEditorOptions< E extends RecordEditorData > {
     onCreated: ( id: number ) => void;
     /** Rules checked before saving. */
     rules?: RecordRule[];
-    /** A route's error code → the field it's about. */
-    errorFields?: Record< string, string >;
+    /**
+     * A route's error code → the field it's about (or a function of the
+     * values that picks it).
+     */
+    errorFields?: Record<
+        string,
+        string | ( ( values: RecordValues ) => string )
+    >;
     /** Message when the record or editor can't be loaded. */
     loadErrorMessage: string;
     /**
@@ -146,7 +152,9 @@ function toValues( schema: Schema, record: RecordData = {} ): RecordValues {
 }
 
 const NO_RULES: RecordRule[] = [];
-const NO_ERROR_FIELDS: Record< string, string > = {};
+const NO_ERROR_FIELDS: NonNullable<
+    RecordEditorOptions< RecordEditorData >[ 'errorFields' ]
+> = {};
 const AS_IS = < T >( data: T ): T => {
     return data;
 };
@@ -339,25 +347,36 @@ export function useRecordEditor< E extends RecordEditorData >(
                 }
 
                 // The route returns the record as stored (sanitized): it is
-                // what's saved now. Unsaved edits in other keys stay.
+                // what's saved now. The saved keys take it, and so does a key
+                // the user hadn't edited that the save changed (e.g. a free
+                // offer's amount set to 0); other unsaved edits stay.
                 const stored = toValues( schema, fromRecord( response ) );
                 setSaved( stored );
                 setValuesState( ( current ) => {
-                    return {
-                        ...current,
-                        ...Object.fromEntries(
-                            changed.map( ( key ) => {
-                                return [ key, stored[ key ] ];
-                            } )
-                        ),
-                    };
+                    const next = { ...current };
+
+                    Object.keys( stored ).forEach( ( key ) => {
+                        const unedited =
+                            JSON.stringify( current[ key ] ) ===
+                            JSON.stringify( saved[ key ] );
+
+                        if ( changed.includes( key ) || unedited ) {
+                            next[ key ] = stored[ key ];
+                        }
+                    } );
+
+                    return next;
                 } );
             } catch ( error ) {
                 const code = ( error as { code?: string } )?.code ?? '';
 
-                if ( errorFields[ code ] ) {
+                const field = errorFields[ code ];
+                const key =
+                    typeof field === 'function' ? field( values ) : field;
+
+                if ( key ) {
                     setErrors( {
-                        [ errorFields[ code ] ]: errorMessage( error, '' ),
+                        [ key ]: errorMessage( error, '' ),
                     } );
                 }
                 throw error;
@@ -370,6 +389,7 @@ export function useRecordEditor< E extends RecordEditorData >(
             values,
             id,
             schema,
+            saved,
             onCreated,
             route,
             rules,

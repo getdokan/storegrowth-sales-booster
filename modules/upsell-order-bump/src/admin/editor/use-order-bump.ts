@@ -60,7 +60,13 @@ const COLUMNS = [
 function fromRecord( record: RecordData ): RecordData {
     return {
         ...( ( record.design_settings as RecordData | undefined ) ?? {} ),
-        ...record,
+        ...Object.fromEntries(
+            COLUMNS.filter( ( key ) => {
+                return key in record;
+            } ).map( ( key ) => {
+                return [ key, record[ key ] ];
+            } )
+        ),
     };
 }
 
@@ -169,10 +175,20 @@ const RULES: RecordRule[] = [
     },
 ];
 
-/** A route's error code → the field it's about. */
-const ERROR_FIELDS: Record< string, string > = {
+/**
+ * A route's error code → the field it's about; a missing target is the
+ * picker of the bump's type.
+ */
+const ERROR_FIELDS: Record<
+    string,
+    string | ( ( values: RecordValues ) => string )
+> = {
     order_bump_missing_name: 'name',
-    order_bump_missing_target: 'target_products',
+    order_bump_missing_target: ( values ) => {
+        return values.target_type === 'categories'
+            ? 'target_categories'
+            : 'target_products';
+    },
     order_bump_invalid_offer_product: 'offer_product_id',
     order_bump_invalid_discount: 'offer_amount',
     order_bump_invalid_price: 'offer_amount',

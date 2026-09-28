@@ -160,8 +160,9 @@ class LegacyMigration {
 	}
 
 	/**
-	 * Copy the published 1.x bumps, oldest first. 1.x listed and showed only
-	 * published ones (`get_posts()`'s default status).
+	 * Copy the published 1.x bumps, oldest first, each with its 1.x creation
+	 * date. 1.x listed and showed only published ones (`get_posts()`'s
+	 * default status).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -178,7 +179,7 @@ class LegacyMigration {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-shot migration.
 		$posts = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT ID, post_title, post_excerpt, post_author FROM %i WHERE post_type = %s AND post_status = %s ORDER BY ID ASC',
+				'SELECT ID, post_title, post_excerpt, post_author, post_date FROM %i WHERE post_type = %s AND post_status = %s ORDER BY ID ASC',
 				$wpdb->posts,
 				self::LEGACY_POST_TYPE,
 				'publish'
@@ -201,10 +202,15 @@ class LegacyMigration {
 					continue;
 				}
 
-				if ( ! $data->create( $bump ) ) {
+				$id = $data->create( $bump );
+				if ( ! $id ) {
 					$errors[] = $skipped . ( $wpdb->last_error ? $wpdb->last_error : 'insert failed' );
 					continue;
 				}
+
+				// The 1.x creation date, so the list (newest first) keeps 1.x's order.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-shot migration.
+				$wpdb->update( $wpdb->prefix . Migration::TABLE_NAME, [ 'created_at' => $post->post_date ], [ 'id' => (int) $id ], [ '%s' ], [ '%d' ] );
 
 				++$migrated;
 			} catch ( Throwable $e ) {

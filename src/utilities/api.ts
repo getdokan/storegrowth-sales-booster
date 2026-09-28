@@ -164,16 +164,6 @@ export interface ProductOption {
     type?: string;
 }
 
-/**
- * Options of the product pickers' requests.
- *
- * @since SPSG_VERSION
- */
-export interface ProductQueryOptions {
-    /** Variations too (`include_variations`), e.g. an offer product. */
-    variations?: boolean;
-}
-
 /** Response of `GET|POST /settings/{module}`. */
 export interface ModuleSettingsResponse< V = Record< string, SettingValue > > {
     /** The page the backend defines for it; empty when it has none. */
@@ -342,15 +332,12 @@ const toOption = ( product: WcProduct ): ProductOption => ( {
  *
  * @since SPSG_VERSION
  *
- * @param search             Search text.
- * @param limit              Most results.
- * @param options            Options.
- * @param options.variations Variations too.
+ * @param search Search text.
+ * @param limit  Most results.
  */
 export async function searchProducts(
     search: string,
-    limit = 20,
-    { variations = false }: ProductQueryOptions = {}
+    limit = 20
 ): Promise< ProductOption[] > {
     const products = await apiFetch< WcProduct[] >( {
         path: addQueryArgs( path( '/products' ), {
@@ -358,7 +345,6 @@ export async function searchProducts(
             per_page: limit,
             status: 'publish',
             _fields: 'id,name,type,images',
-            include_variations: variations || undefined,
         } ),
     } );
 
@@ -372,13 +358,10 @@ export async function searchProducts(
  *
  * @since SPSG_VERSION
  *
- * @param ids                Product ids.
- * @param options            Options.
- * @param options.variations Variations too (a saved variation id).
+ * @param ids Product ids.
  */
 export async function fetchProductsByIds(
-    ids: number[],
-    { variations = false }: ProductQueryOptions = {}
+    ids: number[]
 ): Promise< ProductOption[] > {
     if ( ! ids.length ) {
         return [];
@@ -389,7 +372,6 @@ export async function fetchProductsByIds(
             include: ids.join( ',' ),
             per_page: ids.length,
             _fields: 'id,name,type,images',
-            include_variations: variations || undefined,
         } ),
     } );
 
@@ -421,7 +403,11 @@ export async function fetchProductCategories(): Promise<
         terms.push( ...( await response.json() ) );
     }
 
-    const byId = new Map( terms.map( ( term ) => [ term.id, term ] ) );
+    const byId = new Map(
+        terms.map( ( term ) => {
+            return [ term.id, term ];
+        } )
+    );
     const label = ( id: number, depth = 0 ): string => {
         const term = byId.get( id );
         if ( ! term ) {

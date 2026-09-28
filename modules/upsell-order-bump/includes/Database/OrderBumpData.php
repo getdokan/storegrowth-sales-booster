@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database;
 
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -418,7 +419,8 @@ class OrderBumpData {
 	}
 
 	/**
-	 * Get order bumps that match cart products.
+	 * Get order bumps that match cart products: active, running today
+	 * (`bump_schedule`, since SPSG_VERSION) and targeting the cart.
 	 *
 	 * @since 1.0.0
 	 * @param array $cart_product_ids Array of product IDs in cart.
@@ -445,6 +447,12 @@ class OrderBumpData {
 
 		foreach ( $results as $bump ) {
 			$bump = $this->process_bump_data( $bump );
+
+			// Not one of its Offer Days (site timezone). Every checkout path
+			// (classic box, block, ajax add and its stamp) matches here.
+			if ( ! OrderBumpDesign::runs_on( $bump['design_settings'] ) ) {
+				continue;
+			}
 
 			if ( $bump['target_type'] === 'products' ) {
 				// Check if any target products are in cart

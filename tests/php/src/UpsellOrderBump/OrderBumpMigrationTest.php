@@ -183,7 +183,9 @@ class OrderBumpMigrationTest extends StoreGrowthTestCase {
 		$this->assertSame( '', $design['offer_image_url'] );
 		$this->assertSame( '40', $design['offer_product_regular_price'] );
 		$this->assertSame( '#8fa68bff', $design['offer_description_background_color'], 'a key 1.x lacks gets the default' );
-		foreach ( [ 'bump_schedule', 'smart_offer', 'name_of_order_bump', 'target_products', 'offer_product', 'offer_product_id', 'bump_type' ] as $key ) {
+		// 1.x never checked its schedule: the bump keeps running every day.
+		$this->assertSame( [ 'daily' ], $design['bump_schedule'], '1.x schedule not migrated' );
+		foreach ( [ 'smart_offer', 'name_of_order_bump', 'target_products', 'offer_product', 'offer_product_id', 'bump_type' ] as $key ) {
 			$this->assertArrayNotHasKey( $key, $design, "{$key} stays in the 1.x data only" );
 		}
 
@@ -322,6 +324,40 @@ class OrderBumpMigrationTest extends StoreGrowthTestCase {
 		LegacyMigration::migrate();
 
 		$this->assertCount( 0, $this->rows() );
+	}
+
+	/**
+	 * A migrated bump keeps its 1.x creation date, so the list (newest first)
+	 * keeps 1.x's order.
+	 *
+	 * @return void
+	 */
+	public function test_created_at_is_the_1x_post_date() {
+		$product = $this->create_product();
+		$dates   = [ '2023-03-04 05:06:07', '2021-01-02 03:04:05' ];
+
+		foreach ( $dates as $index => $date ) {
+			$post_id = $this->add_legacy_bump(
+				$this->legacy_bump(
+					[
+						'name_of_order_bump' => "Bump {$index}",
+						'offer_product'      => $product->get_id(),
+					]
+				)
+			);
+			wp_update_post(
+				[
+					'ID'            => $post_id,
+					'post_date'     => $date,
+					'post_date_gmt' => get_gmt_from_date( $date ),
+				]
+			);
+		}
+
+		LegacyMigration::migrate();
+
+		$this->assertSame( $dates, wp_list_pluck( $this->rows(), 'created_at' ) );
+		$this->assertSame( [ 'Bump 0', 'Bump 1' ], wp_list_pluck( ( new OrderBumpData() )->get_all( [ 'status' => '' ] ), 'name' ), 'newest first' );
 	}
 
 	/**

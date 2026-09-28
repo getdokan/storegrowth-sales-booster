@@ -717,7 +717,7 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 
 		$this->assertSame( 'Upsell Order Bump', $page['title'] );
 		$this->assertSame( [ 'basic', 'design' ], array_keys( $page['tabs'] ) );
-		$this->assertSame( [ 'setup', 'offer' ], array_keys( $page['tabs']['basic']['sections'] ) );
+		$this->assertSame( [ 'setup', 'offer', 'advanced' ], array_keys( $page['tabs']['basic']['sections'] ) );
 		$this->assertSame( [ 'box', 'discount', 'product', 'content' ], array_keys( $page['tabs']['design']['sections'] ) );
 
 		$this->assertSame( [ 'discount', 'price', 'free' ], $schema['offer_type']['options'] );

@@ -136,15 +136,37 @@ class OrderBumpFields implements SettingsPage {
 				],
 			],
 			// Drawn by the page: "Discount" (%) or "Price" (the currency), as the type says.
+			// 20% as the design: a new percentage offer is valid as it opens.
 			'offer_amount'                   => [
 				'type'      => 'number',
-				'default'   => 0,
+				'default'   => 20,
 				'min'       => 0,
 				'step'      => 0.01,
 				'tab'       => 'basic',
 				'section'   => 'offer',
 				'label'     => __( 'Discount', 'storegrowth-sales-booster' ),
 				'show_when' => [ 'offer_type' => [ 'discount', 'price' ] ],
+			],
+
+			// Basic Information: Advanced. Stored in `design_settings`; a bump without it runs every day.
+			'bump_schedule'                  => [
+				'type'    => 'list',
+				'default' => [ 'daily' ],
+				'options' => OrderBumpDesign::SCHEDULE,
+				'tab'     => 'basic',
+				'section' => 'advanced',
+				'label'   => __( 'Offer Days', 'storegrowth-sales-booster' ),
+				'help'    => __( 'Days of the week the offer runs.', 'storegrowth-sales-booster' ),
+				'labels'  => [
+					'daily'     => __( 'Every day', 'storegrowth-sales-booster' ),
+					'monday'    => __( 'Monday', 'storegrowth-sales-booster' ),
+					'tuesday'   => __( 'Tuesday', 'storegrowth-sales-booster' ),
+					'wednesday' => __( 'Wednesday', 'storegrowth-sales-booster' ),
+					'thursday'  => __( 'Thursday', 'storegrowth-sales-booster' ),
+					'friday'    => __( 'Friday', 'storegrowth-sales-booster' ),
+					'saturday'  => __( 'Saturday', 'storegrowth-sales-booster' ),
+					'sunday'    => __( 'Sunday', 'storegrowth-sales-booster' ),
+				],
 			],
 
 			// Design: Bump Offer Box. "None" is the stored `no_border`.
@@ -246,13 +268,18 @@ class OrderBumpFields implements SettingsPage {
 				'basic'  => [
 					'label'    => __( 'Basic Information', 'storegrowth-sales-booster' ),
 					'sections' => [
-						'setup' => [
+						'setup'    => [
 							'title' => __( 'Bump Setup', 'storegrowth-sales-booster' ),
 							'help'  => __( 'What the bump is and which carts it appears in', 'storegrowth-sales-booster' ),
 						],
-						'offer' => [
+						'offer'    => [
 							'title' => __( 'Offer Section', 'storegrowth-sales-booster' ),
 							'help'  => __( 'The product the bump offers and what it costs', 'storegrowth-sales-booster' ),
+						],
+						'advanced' => [
+							'title'     => __( 'Advanced', 'storegrowth-sales-booster' ),
+							'help'      => __( 'Days of the week the offer runs', 'storegrowth-sales-booster' ),
+							'collapsed' => true,
 						],
 					],
 				],

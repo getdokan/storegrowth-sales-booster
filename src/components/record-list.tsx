@@ -256,7 +256,9 @@ export function RecordList< T extends ListRecord >( {
                 return (
                     // Above the list layout's row button (narrow screens),
                     // which would take its clicks; the table layout keeps it
-                    // under the sticky Actions column.
+                    // under the sticky Actions column. Relies on DataViews'
+                    // list layout class `dataviews-view-list` (recheck it
+                    // when `@wordpress/dataviews` is updated).
                     <span className="inline-flex [.dataviews-view-list_&]:relative [.dataviews-view-list_&]:z-[1]">
                         <Switch
                             checked={ item.status === 'active' }

@@ -24,3 +24,4 @@ Settings pages already have a better contract (ADR-009): fields and page in PHP,
 - A new record editor (Upsell Order Bump) is PHP fields + page, an `/editor` route, a small load/save hook and its preview.
 - Pro 2.2.0's JS for the old editor (badge upload slot, "hide premium options") no longer applies; its stored values and PHP hooks keep working. The next pro adds fields in PHP.
 - Tab and section ids of an editor are extension API: record changes in the module spec.
+- Where to store an extension's field depends on the record: BOGO extensions store and return their own keys (`spsg_bogo_mapped_data`, `storegrowth_rest_prepare_bogo_offer`); the Order Bump editor sends any non-column key inside `design_settings`, so an extension field (`spsg_order_bump_fields`) is stored there automatically, sanitized as text.
