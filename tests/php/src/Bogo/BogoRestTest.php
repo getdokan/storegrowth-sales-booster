@@ -624,7 +624,8 @@ class BogoRestTest extends StoreGrowthTestCase {
 
 	/**
 	 * 10d: a create checks the editor's rules (discount 1–100, end not
-	 * before start, a target); an update only those about what it sends,
+	 * before start, a target, an offer product for Buy X Get Y); an update
+	 * only those about what it sends,
 	 * so an offer stored before the rules can still be renamed.
 	 *
 	 * @return void
@@ -666,6 +667,16 @@ class BogoRestTest extends StoreGrowthTestCase {
 		$this->assertSame( 'bogo_invalid_discount', $this->request( 'PUT', self::BASE . '/' . $id, [ 'discount_amount' => 120 ] )->get_data()['code'] );
 		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'discount_amount' => 40 ] )->get_status() );
 		$this->assertSame( 'bogo_missing_target', $this->request( 'PUT', self::BASE . '/' . $id, [ 'offered_products' => [] ] )->get_data()['code'] );
+
+		// Buy X Get Y stored without an offer product.
+		$id = $this->create_global_offer(
+			[
+				'bogo_deal_type'              => 'different',
+				'get_different_product_field' => 0,
+			]
+		);
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $id, [ 'name_of_order_bogo' => 'Renamed' ] )->get_status() );
+		$this->assertSame( 'bogo_missing_offer_product', $this->request( 'PUT', self::BASE . '/' . $id, [ 'get_different_product_field' => 0 ] )->get_data()['code'] );
 	}
 
 	/**

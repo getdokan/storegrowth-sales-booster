@@ -44,6 +44,8 @@ class Bogo {
     private function init_hooks() {
         add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
+		// Kept for compatibility: `spsg_bogo_product_args` hasn't fired since
+		// 2.0.2; vendor product search is scoped by `spsg_product_query_args`.
 		add_filter( 'spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
 		add_filter( 'spsg_bogo_rest_query_filters', [ $this, 'add_bogo_rest_query_args' ] );
 		add_filter( 'spsg_bogo_created_by', [ $this, 'add_bogo_created_by' ] );

@@ -70,8 +70,9 @@ class EnqueueScript implements HookRegistry {
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
 
-        wp_enqueue_media();
 		if ( ( $hook == 'post-new.php' || $hook == 'post.php' ) && 'product' === $post->post_type ) {
+			// The product tab's badge upload.
+			wp_enqueue_media();
 			wp_enqueue_style( 'spsg-bogo-admin-style' );
 
 			wp_enqueue_script( 'select2' );

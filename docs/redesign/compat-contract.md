@@ -18,6 +18,8 @@ The baselines were extracted by static search for string-literal hook names, so 
 ### 1.2 PHP hooks pro 2.2.0 listens to
 `free_shipping_bar_content_pro`, `spsg_after_bogo_offer_settings`, `spsg_after_bogo_offer_type_field`, `spsg_after_bogo_settings_panel`, `spsg_bogo_fly_cart_badge_enabled`, `spsg_bogo_get_apply_able_product_id`, `spsg_bogo_offer_products_for_item`, `spsg_bogo_select_product_list`, `spsg_floating_bar_content_pro`, `spsg_fly_cart_show_free_shipping_enabled`, `spsg_fly_cart_show_stock_status_enabled`, `spsg_free_product_quantity_for_cart_update`, `spsg_get_bogo_settings_for_cart`, `spsg_is_bogo_applicable_product`, `spsg_qcv_inline_styles`, `spsg_quick_view_details_button`, `spsg_quick_view_icon_button`, `spsg_sales_pop_image_position`, `spsg_sales_pop_visbility_controller`, `spsg_stock_bar_stock_below`, `storegrowth_module_after_boot`, `storegrowth_pro_is_active`, `storegrowth_sb_quick_cart_coupon`.
 
+`spsg_bogo_select_product_list` stays in the code (`BoGo\EnqueueScript::prodcut_list()`) but hasn't fired since 2.0.2 (#509 removed the only call; the admin searches `/products` instead), so pro's variation list listener doesn't run. Kept, not rewired (BOGO 10h).
+
 Pro also listens to hooks named after lite module init, `storegrowth_{countdown_timer,floating_bar,free_shipping_bar,quick_cart,quick_view,sales_pop}_module_init`. These must keep firing.
 
 Pro fires hooks that lite code listens to or documents: `sales_boster_floating_notification_bar_text`, `sales_boster_pd_banner_text`, `spsg_stock_bar_stock_below`.
