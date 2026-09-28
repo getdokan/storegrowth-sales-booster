@@ -83,7 +83,10 @@ class OrderBumpData {
 			}
 		}
 
-		$order_clause = sprintf( ' ORDER BY %s %s', $args['order_by'], $args['order'] );
+		// Identifiers can't be prepared: only known columns and directions.
+		$order_by     = in_array( $args['order_by'], [ 'id', 'name', 'status', 'created_at', 'updated_at' ], true ) ? $args['order_by'] : 'created_at';
+		$order        = 'ASC' === strtoupper( (string) $args['order'] ) ? 'ASC' : 'DESC';
+		$order_clause = sprintf( ' ORDER BY %s %s', $order_by, $order );
 
 		$sql = "SELECT * FROM {$this->table_name} WHERE 1=1{$where_clause}{$order_clause}{$limit_clause}";
 

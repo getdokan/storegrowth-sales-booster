@@ -908,6 +908,7 @@ class OrderBumpController extends WP_REST_Controller {
 				'default'           => 1,
 				'minimum'           => 1,
 				'sanitize_callback' => 'absint',
+				'validate_callback' => 'rest_validate_request_arg',
 			],
 			'per_page' => [
 				'description'       => __( 'Maximum number of items to be returned in result set.', 'storegrowth-sales-booster' ),
@@ -916,6 +917,7 @@ class OrderBumpController extends WP_REST_Controller {
 				'minimum'           => 1,
 				'maximum'           => 100,
 				'sanitize_callback' => 'absint',
+				'validate_callback' => 'rest_validate_request_arg',
 			],
 			'search'   => [
 				'description' => __( 'Limit results to order bumps whose name contains the text.', 'storegrowth-sales-booster' ),
@@ -926,6 +928,7 @@ class OrderBumpController extends WP_REST_Controller {
 				'type'              => 'string',
 				'enum'              => [ 'active', 'inactive' ],
 				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => 'rest_validate_request_arg',
 			],
 			'orderby'  => [
 				'description'       => __( 'Sort collection by object attribute.', 'storegrowth-sales-booster' ),
@@ -933,6 +936,7 @@ class OrderBumpController extends WP_REST_Controller {
 				'default'           => 'created_at',
 				'enum'              => [ 'id', 'name', 'created_at', 'updated_at' ],
 				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => 'rest_validate_request_arg',
 			],
 			'order'    => [
 				'description'       => __( 'Order sort attribute ascending or descending.', 'storegrowth-sales-booster' ),
@@ -940,6 +944,7 @@ class OrderBumpController extends WP_REST_Controller {
 				'default'           => 'DESC',
 				'enum'              => [ 'ASC', 'DESC' ],
 				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => 'rest_validate_request_arg',
 			],
 		];
 	}

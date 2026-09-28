@@ -170,6 +170,32 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * `orderby` / `order` never reach the SQL unchecked: the route rejects
+	 * values outside its enum, and the data layer allows only known columns.
+	 *
+	 * @return void
+	 */
+	public function test_list_sort_is_allow_listed() {
+		$this->insert_bump();
+
+		$injection = '(CASE WHEN 1=1 THEN name ELSE id END)';
+		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'orderby' => $injection ] )->get_status() );
+		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'order' => 'ASC, id' ] )->get_status() );
+		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'per_page' => 1000 ] )->get_status() );
+		$this->assertSame( 200, $this->request( 'GET', self::BASE, [], [ 'orderby' => 'name', 'order' => 'ASC' ] )->get_status() );
+
+		global $wpdb;
+		$wpdb->last_query = '';
+		( new OrderBumpData() )->get_all(
+			[
+				'order_by' => $injection,
+				'order'    => 'ASC; DROP',
+			]
+		);
+		$this->assertStringContainsString( 'ORDER BY created_at DESC', $wpdb->last_query );
+	}
+
+	/**
 	 * Bug 2: the list pages with totals always sent, filters by status and
 	 * by name (plain and as the 2.x admin encoded it), and says whether a
 	 * create would pass.
