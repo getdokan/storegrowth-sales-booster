@@ -20,7 +20,7 @@
  */
 import { applyFilters } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
-import { Navigate, useModules } from '@storegrowth/hooks';
+import { Navigate, useModules, useParams } from '@storegrowth/hooks';
 import { moduleRoute } from '@storegrowth/utilities';
 
 import DashboardPage from './pages/dashboard';
@@ -55,10 +55,31 @@ function FeaturesRedirect() {
 }
 
 /**
+ * `/<module-id>`, the module pages' address until ADR-009 (links in 2.2.0,
+ * bookmarks, docs; `spsg-settings#/stock-bar` redirects keep the hash), opens
+ * that module's page. Anything else opens the dashboard.
+ *
+ * @since SPSG_VERSION
+ */
+function LegacyModuleRedirect() {
+    const { moduleId = '' } = useParams();
+    const { getModule } = useModules();
+
+    return (
+        <Navigate
+            to={
+                getModule( moduleId ) ? moduleRoute( moduleId ) : '/dashboard'
+            }
+            replace
+        />
+    );
+}
+
+/**
  * Pages every install has. Every module's page is `/settings?module=<id>`
- * (its settings page, or the empty module frame until it has one). A module
- * may add routes of its own (e.g. `/bogo/:id`). Anything else falls through
- * to the dashboard.
+ * (its settings page, or the empty module frame until it has one); the old
+ * `/<module-id>` redirects there. A module may add routes of its own (e.g.
+ * `/bogo/:id`). Anything else falls through to the dashboard.
  *
  * @since SPSG_VERSION
  */
@@ -70,6 +91,11 @@ const coreRoutes: AdminRoute[] = [
     { id: 'settings', path: '/settings', element: <SettingsPage /> },
     // Legacy path, kept: activation and the "Initial Setup" submenu link here.
     { id: 'onboarding', path: '/ini-setup', element: <OnboardingPage /> },
+    {
+        id: 'legacy-module',
+        path: '/:moduleId',
+        element: <LegacyModuleRedirect />,
+    },
     {
         id: 'not-found',
         path: '*',

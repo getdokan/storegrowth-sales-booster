@@ -64,6 +64,17 @@ class SettingsService {
 	private $reported = [];
 
 	/**
+	 * Schemas and fields for this request (`get_schemas()`, `get_fields()`
+	 * run on storefront requests too, and their labels are translated).
+	 * Filled once `init` has run, so extensions registered earlier are in.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var array{schemas?: array<string, SettingsSchema>, fields?: array<string, array>}
+	 */
+	private $cache = [];
+
+	/**
 	 * Every registered schema, keyed by module id.
 	 *
 	 * @since SPSG_VERSION
@@ -71,6 +82,10 @@ class SettingsService {
 	 * @return array<string, SettingsSchema>
 	 */
 	public function get_schemas(): array {
+		if ( isset( $this->cache['schemas'] ) ) {
+			return $this->cache['schemas'];
+		}
+
 		$container = storegrowth_get_container();
 		$schemas   = [];
 
@@ -101,6 +116,10 @@ class SettingsService {
 			}
 		}
 
+		if ( did_action( 'init' ) ) {
+			$this->cache['schemas'] = $schemas;
+		}
+
 		return $schemas;
 	}
 
@@ -127,6 +146,10 @@ class SettingsService {
 	 * @return array<string, array<string, mixed>>
 	 */
 	public function get_fields( string $module_id ): array {
+		if ( isset( $this->cache['fields'][ $module_id ] ) ) {
+			return $this->cache['fields'][ $module_id ];
+		}
+
 		$schema = $this->get_schema( $module_id );
 
 		if ( ! $schema ) {
@@ -176,7 +199,13 @@ class SettingsService {
 		}
 
 		// The module's own definitions win.
-		return array_merge( $fields, $own );
+		$fields = array_merge( $fields, $own );
+
+		if ( did_action( 'init' ) ) {
+			$this->cache['fields'][ $module_id ] = $fields;
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -451,6 +480,12 @@ class SettingsService {
 			$current = array_key_exists( $key, $stored ) ? $stored[ $key ] : ( $field['default'] ?? null );
 
 			if ( ! $first_save && $this->is_unchanged( $field, $input[ $key ], $current ) ) {
+				continue;
+			}
+
+			// A pro-only choice (`pro_options`) without pro is ignored, like a
+			// pro key; a stored one stays (it was unchanged above).
+			if ( ! $has_pro && in_array( $input[ $key ], (array) ( $field['pro_options'] ?? [] ), true ) ) {
 				continue;
 			}
 

@@ -48,7 +48,7 @@ class AdminMenu {
 	 *
 	 * @var string[]
 	 */
-	const LEGACY_PAGES = array( 'spsg-settings', 'spsg-modules' );
+	const LEGACY_PAGES = [ 'spsg-settings', 'spsg-modules' ];
 
 	/**
 	 * Constructor of Admin_Menu class.
