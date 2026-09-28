@@ -39,6 +39,24 @@ const SHARED_EXTERNALS = {
 };
 
 /**
+ * Dokan's shared scripts, for integration bundles on the Dokan vendor
+ * dashboard (as dokan-lite's own mapping: `@dokan/components` is
+ * `window.dokan.components`, handle `dokan-react-components`).
+ *
+ * @since SPSG_VERSION
+ *
+ * @type {Object.<string, {external: string[], handle: string}>}
+ */
+const DOKAN_EXTERNALS = {
+    '@dokan/components': {
+        external: [ 'dokan', 'components' ],
+        handle: 'dokan-react-components',
+    },
+};
+
+const EXTERNALS = { ...SHARED_EXTERNALS, ...DOKAN_EXTERNALS };
+
+/**
  * Global for a request, or undefined to fall back to the WordPress defaults.
  *
  * Only the bare specifier is mapped; the shim in src/externals/ imports
@@ -52,8 +70,8 @@ const SHARED_EXTERNALS = {
  * @return {string[]|undefined} External global path.
  */
 const requestToExternal = ( request ) => {
-    if ( SHARED_EXTERNALS[ request ] ) {
-        return SHARED_EXTERNALS[ request ].external;
+    if ( EXTERNALS[ request ] ) {
+        return EXTERNALS[ request ].external;
     }
 
     return undefined;
@@ -69,8 +87,8 @@ const requestToExternal = ( request ) => {
  * @return {string|undefined} Script handle.
  */
 const requestToHandle = ( request ) => {
-    if ( SHARED_EXTERNALS[ request ] ) {
-        return SHARED_EXTERNALS[ request ].handle;
+    if ( EXTERNALS[ request ] ) {
+        return EXTERNALS[ request ].handle;
     }
 
     return undefined;
@@ -78,6 +96,7 @@ const requestToHandle = ( request ) => {
 
 module.exports = {
     SHARED_EXTERNALS,
+    DOKAN_EXTERNALS,
     requestToExternal,
     requestToHandle,
 };

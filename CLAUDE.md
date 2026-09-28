@@ -18,7 +18,7 @@ Core system ADRs, `docs/adr/` (apply to all code):
 |---|---|
 | ADR-001 | One webpack build following dokan-lite; no monorepo; shared bundles as `window.storegrowth.*` globals |
 | ADR-002 | Source in root `src/` and `modules/<id>/src/`; every file/dir inside a `src/` is kebab-case |
-| ADR-003 | Tailwind v4, one stylesheet scoped to `.spsg-layout`; never on the storefront |
+| ADR-003 | Tailwind v4, one stylesheet scoped to `.spsg-layout`; never on the storefront (except the Dokan vendor dashboard, ADR-011) |
 | ADR-004 | **Backward compatibility:** never rename/remove a PHP hook, public PHP API, option name/key/value shape, admin slug, ajax action or REST route; pro 2.2.0 must keep working when only lite updates; **existing user settings are never lost** |
 | ADR-005 | One storefront standard: settings → CSS variables, text tokens, display rules, font loader, template loader, shared base CSS/JS |
 | ADR-006 | REST first; the admin calls an existing ajax action only through the `ajax()` helper |
@@ -26,6 +26,7 @@ Core system ADRs, `docs/adr/` (apply to all code):
 | ADR-008 | One admin page `admin.php?page=storegrowth#/<route>` (`AdminMenu::PAGE` / `SCREEN_ID`); `spsg-settings` / `spsg-modules` redirect to it |
 | ADR-009 | Settings pages are defined in PHP (`SettingsPage::get_page()` + field presentation keys), all fetched in one request (`GET sales-booster/v1/admin/settings`) and generated at `#/settings?module=<id>&tab=<tab>`; a module adds only its preview / multi-key controls via the JS filter `storegrowth.settings.page` |
 | ADR-010 | Record editors (a table row: BOGO offer, order bump) are defined in PHP like settings pages (fields + `get_page()`), served by the record's REST routes (`GET …/editor`), drawn by `ModuleSettingsPage` from a hook in the `ModuleSettings` shape; extended by PHP filters (`spsg_bogo_offer_fields`, `spsg_bogo_offer_page`), not JS slots |
+| ADR-011 | Dokan vendor dashboard: an integration bundle (`integrations/src/<integration>/<bundle>`, e.g. `integrations/src/dokan/bogo`) draws the module's own pages in vendor mode (`vendor` prop), with the shared bundles and `spsg-tailwind` (`.spsg-layout`, after Dokan's) registered there by `Assets::register_shared_bundles()`; Dokan's router bridged through the shared `Router`; localized `spsgAdmin` / `spsgAdminHeader` subset, never the admin nonce |
 
 Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first full rewrite). A new core decision takes the next `ADR-###`, a redesign-only one the next `RDR-###`; numbers are never reused.
 

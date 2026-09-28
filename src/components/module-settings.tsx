@@ -55,6 +55,11 @@ export interface ModuleSettingsPageProps< V extends Values > {
     actions?: ReactNode;
     /** Toast after a save (default "Settings saved."). */
     savedMessage?: string;
+    /**
+     * No title card: the host page has the heading (the Dokan vendor
+     * dashboard, ADR-011). The card then starts with the tabs.
+     */
+    hideTitle?: boolean;
 }
 
 interface SkeletonShape {
@@ -193,6 +198,7 @@ function runs< T >( keys: string[], by: ( key: string ) => T ) {
  * @param props.controls     Page-drawn controls by key.
  * @param props.actions      Beside the title.
  * @param props.savedMessage Toast after a save.
+ * @param props.hideTitle    No title card (the host page has the heading).
  */
 export function ModuleSettingsPage< V extends Values >( {
     title,
@@ -203,6 +209,7 @@ export function ModuleSettingsPage< V extends Values >( {
     controls = {},
     actions,
     savedMessage,
+    hideTitle = false,
 }: ModuleSettingsPageProps< V > ) {
     const schema = settings.schema as Record< string, SettingField >;
     const pageTitle = settings.page.title ?? title ?? '';
@@ -485,14 +492,24 @@ export function ModuleSettingsPage< V extends Values >( {
         };
     } );
 
-    // One card: the title on top, one border line below it.
+    // One card: the title on top, one border line below it. Without the
+    // title the card's own top line and corners stand in for it (the parts
+    // below have no top border).
     return (
-        <div className="flex w-full flex-col">
-            <CardHead
-                title={ pageTitle }
-                actions={ actions }
-                className="rounded-b-none"
-            />
+        <div
+            className={
+                hideTitle
+                    ? 'flex w-full flex-col overflow-hidden rounded-t-lg border-t border-sg-cardline'
+                    : 'flex w-full flex-col'
+            }
+        >
+            { ! hideTitle && (
+                <CardHead
+                    title={ pageTitle }
+                    actions={ actions }
+                    className="rounded-b-none"
+                />
+            ) }
             { settings.loading && (
                 <LoadingSkeleton
                     hasPreview={ hasPreview }

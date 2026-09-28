@@ -62,7 +62,7 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
    The full `sg-*` list comes from the design repo's `assets/theme.js`.
 3. **The app root element carries `spsg-layout`.** plugin-ui's `ThemeProvider` adds `.pui-root` inside it. Brand tokens are set through `createTheme` (primary `#0875FF`, radius `8px`, Inter), as in report §6.
 4. **Delete** `assets/src/preflight-reset.css` and every per-module admin SCSS file once its module migrates.
-5. **Storefront styles are out of scope.** The storefront CSS under `modules/<name>/assets/css` stays plain CSS. Tailwind must not load on the storefront.
+5. **Storefront styles are out of scope.** The storefront CSS under `modules/<name>/assets/css` stays plain CSS. Tailwind must not load on the storefront. Exception (ADR-011): the Dokan vendor dashboard, a front-end page that draws StoreGrowth's admin UI, loads this stylesheet, still scoped to `.spsg-layout`.
 6. **Preview widgets** (`modules/<name>/src/admin/preview`) render inside the admin, so they use Tailwind. They must mirror the storefront's CSS values (same tokens for colour, radius, spacing) rather than import storefront CSS.
 
 ## Consequences
@@ -71,7 +71,7 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
 - One CSS file is cached across every StoreGrowth admin page.
 - Design tokens exist once, in `@theme`, and are used by both classes and plugin-ui theme tokens.
 - Anything rendered outside `.spsg-layout` or `.pui-root` (e.g. WP admin notices) gets no Tailwind utilities, which is intended.
-- The Dokan vendor dashboard already loads `dokan-tailwind`. Integration bundles there should use Dokan's layout class, not load `spsg-tailwind`. This needs checking in phase 4 of the migration spec.
+- ~~The Dokan vendor dashboard already loads `dokan-tailwind`. Integration bundles there should use Dokan's layout class, not load `spsg-tailwind`.~~ Superseded by ADR-011: Dokan's stylesheet has no `sg-*` tokens, so integration bundles there load `spsg-tailwind` (after Dokan's) under `.spsg-layout`.
 
 ## Alternatives considered
 

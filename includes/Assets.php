@@ -143,12 +143,34 @@ class Assets {
 	 * @return void
 	 */
 	public function register_admin_app(): void {
-		foreach ( $this->shared_bundles as $handle => $bundle ) {
-			$this->register_bundle_script( $handle, $bundle );
-		}
+		$this->register_shared_bundles();
 
 		$this->register_bundle_script( 'spsg-admin', 'admin' );
 		$this->register_bundle_script( 'spsg-admin-header', 'header' );
+
+		// Old handle names now resolve to the new app (ADR-004: handles are kept).
+		foreach ( array( 'spsg-settings-script', 'spsg-modules-script', 'spsg-notices-script' ) as $legacy_handle ) {
+			wp_register_script( $legacy_handle, false, array( 'spsg-admin' ), STOREGROWTH_VERSION, true );
+		}
+	}
+
+	/**
+	 * Register the shared bundles (plugin-ui, components, hooks, utilities),
+	 * the scoped Tailwind stylesheet and the Inter font.
+	 *
+	 * The admin app registers them on its screen; an integration page outside
+	 * wp-admin that draws StoreGrowth's UI (the Dokan vendor dashboard,
+	 * ADR-011) calls this itself, only on that page. Registering only: the
+	 * page's own bundle depends on them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function register_shared_bundles(): void {
+		foreach ( $this->shared_bundles as $handle => $bundle ) {
+			$this->register_bundle_script( $handle, $bundle );
+		}
 
 		if ( file_exists( Helper::get_plugin_path( 'build/tailwind.css' ) ) ) {
 			wp_register_style(
@@ -165,11 +187,6 @@ class Assets {
 			array(),
 			null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Google Fonts versions itself.
 		);
-
-		// Old handle names now resolve to the new app (ADR-004: handles are kept).
-		foreach ( array( 'spsg-settings-script', 'spsg-modules-script', 'spsg-notices-script' ) as $legacy_handle ) {
-			wp_register_script( $legacy_handle, false, array( 'spsg-admin' ), STOREGROWTH_VERSION, true );
-		}
 	}
 
 	/**

@@ -49,6 +49,11 @@ export interface LivePreviewProps {
     footer?: Slot;
     /** Page height (px) behind a tall overlay, e.g. a cart panel. */
     minHeight?: number;
+    /**
+     * The "Preview" heading's element (default `h2`), e.g. `h4` under a host
+     * page's own heading (the Dokan vendor dashboard's `h3`).
+     */
+    headingTag?: 'h2' | 'h3' | 'h4';
 }
 
 const DEVICES: Array< {
@@ -210,6 +215,7 @@ function MockShop( { widget }: { widget: ReactNode } ) {
  * @param props.overlay        Floats over the frame.
  * @param props.footer         Under the frame.
  * @param props.minHeight      Page height behind a tall overlay.
+ * @param props.headingTag     The "Preview" heading's element.
  */
 export function LivePreview( {
     layout = 'product',
@@ -219,6 +225,7 @@ export function LivePreview( {
     overlay,
     footer,
     minHeight,
+    headingTag: Heading = 'h2',
 }: LivePreviewProps ) {
     const [ device, setDevice ] = useState< PreviewDevice >( 'desktop' );
     const [ theme, setTheme ] = useState< PreviewTheme >( 'light' );
@@ -230,9 +237,9 @@ export function LivePreview( {
         <>
             <div className="flex w-full items-center justify-between gap-4 border border-l-0 border-t-0 border-sg-cardline bg-white px-6 py-3 @max-[932px]:border-l">
                 <div className="min-w-0 flex-1">
-                    <h2 className="text-[14px] font-semibold leading-[1.3] text-sg-heading">
+                    <Heading className="m-0 text-[14px] font-semibold leading-[1.3] text-sg-heading">
                         { __( 'Preview', 'storegrowth-sales-booster' ) }
-                    </h2>
+                    </Heading>
                 </div>
                 <ToggleGroup
                     aria-label={ __(

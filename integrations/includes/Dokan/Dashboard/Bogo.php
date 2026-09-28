@@ -2,8 +2,8 @@
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
+use StorePulse\StoreGrowth\Assets;
 use StorePulse\StoreGrowth\Helper;
-use StorePulse\StoreGrowth\Integrations\Dokan\BogoVendorRules;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 /**
@@ -14,6 +14,16 @@ use StorePulse\StoreGrowth\Traits\Singleton;
 class Bogo {
 
     use Singleton;
+
+	/**
+	 * The dashboard bundle (`integrations/dokan/bogo` in webpack-entries.js),
+	 * relative to the plugin folder, without extension.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const BUNDLE = 'build/integrations/dokan/bogo';
 
     /**
      * Constructor of Bogo Class.
@@ -63,7 +73,7 @@ class Bogo {
 		// The menu shows whatever `vendors_can_create_buy_x_get_x` is (it
 		// hid the menu when off; it only gates Buy X Get X offers), but only
 		// with the dashboard bundle, or its route would be blank.
-		if ( ! file_exists( Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' ) ) ) {
+		if ( ! file_exists( Helper::get_plugin_path( self::BUNDLE . '.asset.php' ) ) ) {
 			return $menus;
 		}
 
@@ -155,74 +165,81 @@ class Bogo {
      *
      */
     public function vendor_dashboard_enqueue_scripts() {
-        if ( ! dokan_is_seller_dashboard() ) {
-            return;
-        }
+		global $wp;
 
-        $script_assets = Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-dashboard.asset.php' );
+		// Only Dokan's React dashboard (`/dashboard/new/`, as Dokan's own
+		// `NewDashboard` checks), and only for a vendor: not the legacy
+		// dashboard pages or other visitors.
+		if ( ! dokan_is_seller_dashboard() || ! isset( $wp->query_vars['new'] ) || ! current_user_can( 'dokandar' ) ) {
+			return;
+		}
 
-        if ( ! file_exists( $script_assets ) ) {
-            return;
-        }
+		$asset_file = Helper::get_plugin_path( self::BUNDLE . '.asset.php' );
 
-        $assets = include $script_assets;
+		if ( ! file_exists( $asset_file ) ) {
+			return;
+		}
 
-        wp_enqueue_style(
-            'spsg-bogo-dokan-vendor-dashboard',
-	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.css' ),
-            [],
-            $assets['version'],
-        );
+		$asset = require $asset_file;
 
-        wp_enqueue_script(
-            'spsg-bogo-dokan-vendor-dashboard',
-	        Helper::get_integrations_path( 'assets/build/bogo-dokan-dashboard.js' ),
-            array_merge( $assets['dependencies'], [ 'dokan-react-components' ] ),
-            $assets['version'],
-            true
-        );
-		$is_enable = BogoVendorRules::can_create_buy_x_get_x();
-        wp_localize_script(
-            'spsg-bogo-dokan-vendor-dashboard',
-            'spsgAdmin',
-            [
-                // The admin write nonce (`spsg_ajax_nonce`) is intentionally NOT
-                // localized on this frontend vendor screen. Emitting it would
-                // hand any dashboard viewer a token the privileged settings
-                // handlers accept. Vendor operations use the REST / frontend
-                // nonces in `bogo_save_url` below.
-                'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'isPro'    => sp_store_growth()->has_pro(),
-				'buyXGetXEnableForVendor' => $is_enable,
-            ]
-        );
-		// The vendor dashboard is a frontend screen, so it carries the
-		// unprivileged frontend nonce — never the admin one.
-		$action    = 'spsg_frontend_ajax_nonce';
-        $ajd_nonce = wp_create_nonce( $action );
+		// The bundle draws the admin's list and editor (ADR-011): the shared
+		// bundles and the Tailwind stylesheet, registered for wp-admin only.
+		Assets::instance()->register_shared_bundles();
 
-        $script = new \StorePulse\StoreGrowth\Modules\BoGo\EnqueueScript();
-
-		$args = [
-            'product_list_for_view' => $script->prodcut_list_for_view(),
-            'category_list'         => $script->category_list(),
-            'order_bogo_list'       => $script->order_bogo_list(),
-		];
-
-		wp_add_inline_script(
+		wp_enqueue_script(
 			'spsg-bogo-dokan-vendor-dashboard',
-			'const bogo_products_and_categories = ' . wp_json_encode( $args ) . ';',
+			Helper::get_plugin_url( self::BUNDLE . '.js' ),
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+		wp_set_script_translations( 'spsg-bogo-dokan-vendor-dashboard', 'storegrowth-sales-booster', Helper::get_plugin_path( 'languages' ) );
+
+		// Only what the shared code reads, under the admin's global names;
+		// never the admin data (modules) or the admin ajax nonce
+		// (`spsg_ajax_nonce`, which the privileged settings handlers accept).
+		// The REST nonce and root come from `wp-api-fetch` itself.
+		foreach ( self::get_script_data() as $name => $data ) {
+			wp_localize_script( 'spsg-bogo-dokan-vendor-dashboard', $name, $data );
+		}
+
+		// Tailwind after Dokan's own (both apply inside `.dokan-layout`; the
+		// later one wins), scoped to `.spsg-layout` (ADR-003, ADR-011).
+		$styles = array_merge(
+			array_values( array_filter( [ 'dokan-tailwind', 'dokan-react-components' ], [ wp_styles(), 'query' ] ) ),
+			[ 'spsg-font-inter', 'spsg-tailwind' ]
 		);
 
-        wp_localize_script(
-            'spsg-bogo-dokan-vendor-dashboard',
-            'bogo_save_url',
-            [
-                'ajax_url'     => admin_url( 'admin-ajax.php' ),
-                'ajd_nonce'    => $ajd_nonce,
-                'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
-                'image_folder' => Helper::get_modules_url( 'BoGo/assets/images' ),
-            ]
-        );
-    }
+		// An alias handle (no file of its own): `wp_enqueue_style()` doesn't
+		// register a handle without a source, so register it first.
+		wp_register_style( 'spsg-bogo-dokan-vendor-dashboard', false, $styles, $asset['version'] );
+		wp_enqueue_style( 'spsg-bogo-dokan-vendor-dashboard' );
+	}
+
+	/**
+	 * Data localized for the dashboard bundle: the subset of the admin's
+	 * `spsgAdmin` / `spsgAdminHeader` that the list, the editor and the shared
+	 * bundles read on the vendor dashboard (REST namespace, pro flag, asset
+	 * URL; no upgrade URL: vendor mode shows no Upgrade button).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<string, array> Keyed by global name.
+	 */
+	public static function get_script_data(): array {
+		$is_pro = sp_store_growth()->has_pro();
+
+		return [
+			'spsgAdmin'       => [
+				'restNamespace' => 'sales-booster/v1',
+				'isPro'         => $is_pro,
+			],
+			'spsgAdminHeader' => [
+				'assets_url'  => Helper::get_plugin_url( 'assets/' ),
+				'header_info' => [
+					'is_pro_exists' => $is_pro,
+				],
+			],
+		];
+	}
 }

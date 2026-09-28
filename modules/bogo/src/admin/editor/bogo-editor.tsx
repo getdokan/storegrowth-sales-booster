@@ -3,7 +3,8 @@
  * `#/bogo/<id>`: the generated settings page (`ModuleSettingsPage`) drawn
  * from the editor's schema (PHP `BogoOfferFields`, ADR-010) and the offer's
  * values (`useBogoOffer`), with the product search, the badge picker and the
- * live preview drawn here.
+ * live preview drawn here. The Dokan vendor dashboard draws the same editor
+ * (`vendor`, 10f2).
  *
  * @since SPSG_VERSION
  */
@@ -11,6 +12,7 @@ import { Button } from '@wedevs/plugin-ui';
 import { useCallback, useEffect } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
+import { Gift } from 'lucide-react';
 import type { ReactNode } from 'react';
 import {
     CardHead,
@@ -131,10 +133,11 @@ function controls( offer: BogoOffer ) {
 /**
  * The editor for one offer (or a new one).
  *
- * @param props    Props.
- * @param props.id Offer id, or null for a new offer.
+ * @param props        Props.
+ * @param props.id     Offer id, or null for a new offer.
+ * @param props.vendor The Dokan vendor dashboard.
  */
-function OfferEditor( { id }: { id: number | null } ) {
+function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
     const navigate = useNavigate();
     const [ searchParams ] = useSearchParams();
 
@@ -149,10 +152,11 @@ function OfferEditor( { id }: { id: number | null } ) {
         },
         [ navigate, searchParams ]
     );
-    const offer = useBogoOffer( id, onCreated );
+    const offer = useBogoOffer( id, onCreated, vendor );
 
     const title = __( 'BOGO', 'storegrowth-sales-booster' );
-    const toList = (
+    // Dokan's page header has its own Back button.
+    const toList = vendor ? undefined : (
         <Button
             variant="outline"
             onClick={ () => {
@@ -164,18 +168,37 @@ function OfferEditor( { id }: { id: number | null } ) {
     );
 
     // A product offer ("Specific") is edited on its product's BOGO tab
-    // (this editor would rewrite it as a global offer).
+    // (this editor would rewrite it as a global offer); that tab is in
+    // wp-admin, so the vendor dashboard goes back to the list.
+    const leave = vendor ? offer.productOffer : Boolean( offer.productEditUrl );
     useEffect( () => {
-        if ( offer.productEditUrl ) {
+        if ( vendor && offer.productOffer ) {
+            navigate( '/bogo', { replace: true } );
+        } else if ( ! vendor && offer.productEditUrl ) {
             window.location.href = `${ offer.productEditUrl }#bogo_product_data`;
         }
-    }, [ offer.productEditUrl ] );
+    }, [ vendor, offer.productOffer, offer.productEditUrl, navigate ] );
 
-    if ( offer.productEditUrl ) {
+    if ( leave ) {
         return null;
     }
 
     // At lite's limit a new offer can't be saved (the route says 403 too).
+    // A vendor can't upgrade the store: no Pro badge or Upgrade button.
+    if ( vendor && ! id && ! offer.loading && ! offer.canCreate ) {
+        return (
+            <div className="flex w-full flex-col items-center gap-3 rounded-lg border border-sg-cardline bg-white p-10 text-center">
+                <Gift className="size-10 text-sg-help" aria-hidden />
+                <p className="m-0 max-w-md text-sm text-sg-text">
+                    { __(
+                        'This store has reached its BOGO offer limit.',
+                        'storegrowth-sales-booster'
+                    ) }
+                </p>
+            </div>
+        );
+    }
+
     if ( ! id && ! offer.loading && ! offer.canCreate ) {
         return (
             <div className="flex w-full flex-col">
@@ -211,6 +234,8 @@ function OfferEditor( { id }: { id: number | null } ) {
     const loaded = ! offer.loading && ! offer.loadError;
     const preview = loaded ? (
         <LivePreview
+            // Under Dokan's page heading (an `h3`) on the vendor dashboard.
+            headingTag={ vendor ? 'h4' : 'h2' }
             widget={
                 /**
                  * Filters the BOGO offer preview, e.g. for pro to add its
@@ -229,6 +254,7 @@ function OfferEditor( { id }: { id: number | null } ) {
                         uploadLocked={ offer.isLocked(
                             'default_custom_badge_icon'
                         ) }
+                        showRegularPrice={ offer.showRegularPrice }
                     />,
                     offer.values
                 ) as ReactNode
@@ -244,6 +270,8 @@ function OfferEditor( { id }: { id: number | null } ) {
             hasPreview
             controls={ loaded ? controls( offer ) : undefined }
             actions={ toList }
+            // Dokan's page header is the heading on the vendor dashboard.
+            hideTitle={ vendor }
             savedMessage={
                 id
                     ? __( 'Offer saved.', 'storegrowth-sales-booster' )
@@ -254,12 +282,12 @@ function OfferEditor( { id }: { id: number | null } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * The admin's editor, in the module frame.
  *
  * @param props    Props.
  * @param props.id Offer id, or null for a new offer.
  */
-export default function BogoEditor( { id }: { id: number | null } ) {
+function AdminBogoEditor( { id }: { id: number | null } ) {
     const bogo = useModules().getModule( 'bogo' );
 
     // Its REST routes load only while the module is on: the list asks to
@@ -271,7 +299,31 @@ export default function BogoEditor( { id }: { id: number | null } ) {
     return (
         <FeatureLayout moduleId="bogo">
             { /* Keyed: another offer starts with fresh state. */ }
-            <OfferEditor key={ id ?? 'new' } id={ id } />
+            <OfferEditor key={ id ?? 'new' } id={ id } vendor={ false } />
         </FeatureLayout>
     );
+}
+
+/**
+ * @since SPSG_VERSION
+ *
+ * @param props        Props.
+ * @param props.id     Offer id, or null for a new offer.
+ * @param props.vendor The Dokan vendor dashboard: the vendor's offer
+ *                     (`/bogo/offers/vendor`), no module frame (Dokan draws
+ *                     the page).
+ */
+export default function BogoEditor( {
+    id,
+    vendor = false,
+}: {
+    id: number | null;
+    vendor?: boolean;
+} ) {
+    if ( vendor ) {
+        // Keyed: another offer starts with fresh state.
+        return <OfferEditor key={ id ?? 'new' } id={ id } vendor />;
+    }
+
+    return <AdminBogoEditor id={ id } />;
 }

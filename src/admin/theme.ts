@@ -6,7 +6,13 @@
  */
 import { createTheme } from '@wedevs/plugin-ui';
 
-export const storegrowthTheme = createTheme( {
+/**
+ * The tokens, for a page that changes a few (the Dokan vendor dashboard
+ * follows Dokan's button colour, ADR-011).
+ *
+ * @since SPSG_VERSION
+ */
+export const storegrowthTokens = {
     primary: '#0875FF',
     primaryForeground: '#FFFFFF',
     ring: '#0875FF',
@@ -23,4 +29,6 @@ export const storegrowthTheme = createTheme( {
     accentForeground: '#0875FF',
     fontSans: '"Inter", ui-sans-serif, system-ui, sans-serif',
     radius: '8px',
-} );
+};
+
+export const storegrowthTheme = createTheme( storegrowthTokens );

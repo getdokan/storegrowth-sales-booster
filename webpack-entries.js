@@ -98,10 +98,13 @@ const moduleEntries = {
 };
 
 /**
- * Integration bundles, e.g.
- * 'integrations/bogo-dokan-dashboard': './integrations/src/bogo-dokan-dashboard/index.tsx',
+ * Integration bundles, written to `build/integrations/<integration>/<bundle>.js`
+ * from `integrations/src/<integration>/<bundle>/`.
  */
-const integrationEntries = {};
+const integrationEntries = {
+    // BOGO on the Dokan vendor dashboard (ADR-011).
+    'integrations/dokan/bogo': './integrations/src/dokan/bogo/index.tsx',
+};
 
 module.exports = {
     ...coreEntries,

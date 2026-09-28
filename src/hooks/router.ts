@@ -6,6 +6,10 @@
  * router context. So bundles import router APIs from `@storegrowth/hooks`,
  * never from `react-router-dom` directly (enforced by ESLint).
  *
+ * `Router` (the low-level router: a given location and navigator) lets a
+ * page drawn by another app's router use these hooks, e.g. the BOGO pages
+ * on the Dokan vendor dashboard, bridged to Dokan's router (ADR-011).
+ *
  * @since SPSG_VERSION
  */
 export {
@@ -15,6 +19,7 @@ export {
     Navigate,
     Outlet,
     Route,
+    Router,
     Routes,
     useLocation,
     useMatch,
@@ -23,4 +28,10 @@ export {
     useSearchParams,
 } from 'react-router-dom';
 
-export type { NavigateFunction, Params } from 'react-router-dom';
+export type {
+    Location,
+    NavigateFunction,
+    Navigator,
+    Params,
+    To,
+} from 'react-router-dom';

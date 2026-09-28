@@ -2,6 +2,7 @@
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan\REST;
 
+use StorePulse\StoreGrowth\Integrations\Dokan\BogoVendorRules;
 use StorePulse\StoreGrowth\Modules\BoGo\REST\BogoController;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use WP_Error;
@@ -82,6 +83,29 @@ class VendorBogoController extends BogoController {
     }
 
 
+
+	/**
+	 * The offer editor, plus whether the vendor may choose Buy X Get X
+	 * (`vendors_can_create_buy_x_get_x`; the rules reject a new one while
+	 * it's off, an offer that already is one stays editable).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request Rest Request.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_editor( $request ) {
+		$response = parent::get_editor( $request );
+		$response->set_data(
+			array_merge(
+				$response->get_data(),
+				[ 'buy_x_get_x' => BogoVendorRules::can_create_buy_x_get_x() ]
+			)
+		);
+
+		return $response;
+	}
 
     /**
      * Override permission check for single item access.

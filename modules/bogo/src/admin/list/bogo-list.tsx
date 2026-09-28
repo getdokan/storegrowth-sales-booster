@@ -7,6 +7,8 @@
  * product's BOGO tab) open that tab. While the module is off the page asks
  * to turn it on (its REST routes aren't loaded).
  *
+ * The Dokan vendor dashboard draws the same list (`vendor`, 10f2).
+ *
  * @since SPSG_VERSION
  */
 import {
@@ -96,17 +98,20 @@ function ProductCell( {
     );
 }
 
-export default function BogoList() {
+/**
+ * The offers card: title, header buttons and the table.
+ *
+ * On the Dokan vendor dashboard (`vendor`) it lists the vendor's own offers
+ * (`/bogo/offers/vendor`), without the admin-only parts: the Settings and
+ * Category Messages buttons (Dokan's header has "Create New Offer"), the
+ * category targets and Edit for product offers (their BOGO tab is in
+ * wp-admin).
+ *
+ * @param props        Props.
+ * @param props.vendor The Dokan vendor dashboard.
+ */
+function OfferList( { vendor }: { vendor: boolean } ) {
     const navigate = useNavigate();
-    const location = useLocation();
-    const {
-        getModule,
-        setModuleStatus,
-        pending: pendingModules,
-    } = useModules();
-    const bogo = getModule( 'bogo' );
-    // Its REST routes load only while the module is on.
-    const isOn = Boolean( bogo?.status );
     const [ view, setView ] = useState< DataViewState >( DEFAULT_VIEW );
     const [ page, setPage ] = useState< OfferPage | null >( null );
     const [ loading, setLoading ] = useState( true );
@@ -118,18 +123,17 @@ export default function BogoList() {
     const latest = useRef( 0 );
 
     const load = useCallback( async () => {
-        if ( ! isOn ) {
-            return;
-        }
-
         const request = ++latest.current;
         setLoading( true );
         try {
-            const next = await fetchOffers( {
-                page: view.page ?? 1,
-                per_page: view.perPage ?? 10,
-                search: view.search || undefined,
-            } );
+            const next = await fetchOffers(
+                {
+                    page: view.page ?? 1,
+                    per_page: view.perPage ?? 10,
+                    search: view.search || undefined,
+                },
+                vendor
+            );
 
             if ( request !== latest.current ) {
                 return;
@@ -157,7 +161,7 @@ export default function BogoList() {
                 setLoading( false );
             }
         }
-    }, [ isOn, view ] );
+    }, [ vendor, view ] );
 
     useEffect( () => {
         load();
@@ -175,7 +179,7 @@ export default function BogoList() {
     const toggle = async ( offer: BogoOffer, active: boolean ) => {
         setPending( ( ids ) => [ ...ids, offer.id ] );
         try {
-            await setOfferStatus( offer.id, active );
+            await setOfferStatus( offer.id, active, vendor );
             setPage( ( current ) =>
                 current
                     ? {
@@ -225,7 +229,9 @@ export default function BogoList() {
             enableHiding: false,
             enableSorting: false,
             render: ( { item } ) =>
-                // A category offer targets categories, not a product.
+                // A category offer targets categories, not a product
+                // (an admin's; vendors can't target categories).
+                ! vendor &&
                 ! item.get_offered_product_info &&
                 item.target_categories.length ? (
                     <span className="flex max-w-[200px] flex-wrap gap-1">
@@ -308,6 +314,11 @@ export default function BogoList() {
             id: 'edit',
             label: __( 'Edit', 'storegrowth-sales-booster' ),
             icon: <Pencil size={ 16 } />,
+            // A product offer is edited on its product's BOGO tab, in
+            // wp-admin: not from the vendor dashboard.
+            isEligible: ( item ) => {
+                return ! vendor || item.type !== 'product';
+            },
             callback: ( [ item ] ) => edit( item ),
         },
         {
@@ -324,7 +335,8 @@ export default function BogoList() {
             callback: async ( items ) => {
                 try {
                     const result = await deleteOffers(
-                        items.map( ( item ) => item.id )
+                        items.map( ( item ) => item.id ),
+                        vendor
                     );
                     if ( result.failed.length ) {
                         toast.error(
@@ -456,6 +468,43 @@ export default function BogoList() {
         </SlotFillProvider>
     );
 
+    // Dokan's page header is the heading on the vendor dashboard: the card
+    // is the table alone.
+    if ( vendor ) {
+        return (
+            <div className="w-full overflow-hidden rounded-lg border border-sg-cardline bg-white *:border-none!">
+                { table }
+            </div>
+        );
+    }
+
+    // One card, as the settings pages: the title on top, the table below.
+    return (
+        <div className="flex w-full flex-col">
+            <CardHead
+                title={ __( 'BOGO Offers', 'storegrowth-sales-booster' ) }
+                className="rounded-b-none"
+                actions={ headerActions }
+            />
+            <div className="w-full overflow-hidden rounded-b-lg border border-t-0 border-sg-cardline bg-white *:rounded-t-none! *:border-none!">
+                { table }
+            </div>
+        </div>
+    );
+}
+
+/**
+ * The admin's list page, in the module frame. While the module is off it
+ * asks to turn it on (its REST routes aren't loaded).
+ */
+function AdminBogoList() {
+    const location = useLocation();
+    const {
+        getModule,
+        setModuleStatus,
+        pending: pendingModules,
+    } = useModules();
+
     // 2.2.0's `#/bogo?tab_name=…` opened its tabs: the messages, or the
     // global settings.
     const tabName = new URLSearchParams( location.search ).get( 'tab_name' );
@@ -467,7 +516,7 @@ export default function BogoList() {
     }
 
     // Module off: its offers can't be listed until it's on.
-    if ( ! isOn ) {
+    if ( ! getModule( 'bogo' )?.status ) {
         return (
             <FeatureLayout moduleId="bogo">
                 <div className="flex w-full flex-col">
@@ -513,19 +562,20 @@ export default function BogoList() {
         );
     }
 
-    // One card, as the settings pages: the title on top, the table below.
     return (
         <FeatureLayout moduleId="bogo">
-            <div className="flex w-full flex-col">
-                <CardHead
-                    title={ __( 'BOGO Offers', 'storegrowth-sales-booster' ) }
-                    className="rounded-b-none"
-                    actions={ headerActions }
-                />
-                <div className="w-full overflow-hidden rounded-b-lg border border-t-0 border-sg-cardline bg-white *:rounded-t-none! *:border-none!">
-                    { table }
-                </div>
-            </div>
+            <OfferList vendor={ false } />
         </FeatureLayout>
     );
+}
+
+/**
+ * @since SPSG_VERSION
+ *
+ * @param props        Props.
+ * @param props.vendor The Dokan vendor dashboard: the vendor's offers, no
+ *                     module frame (Dokan draws the page).
+ */
+export default function BogoList( { vendor = false }: { vendor?: boolean } ) {
+    return vendor ? <OfferList vendor /> : <AdminBogoList />;
 }

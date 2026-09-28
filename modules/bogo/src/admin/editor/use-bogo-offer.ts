@@ -36,6 +36,10 @@ export interface BogoOffer extends ModuleSettings< OfferValues > {
     currency: Currency;
     /** A product offer ("Specific"): its product's edit screen. */
     productEditUrl: string;
+    /** The offer is a product offer ("Specific"). */
+    productOffer: boolean;
+    /** The global "Show Regular Price" setting, for the preview. */
+    showRegularPrice: boolean;
 }
 
 type Schema = Record< string, SettingField >;
@@ -193,10 +197,12 @@ const NO_CURRENCY: Currency = {
  *
  * @param id        Offer id, or null for a new offer.
  * @param onCreated Called with the new offer's id after it's created.
+ * @param vendor    The Dokan vendor's offer (`/bogo/offers/vendor`).
  */
 export function useBogoOffer(
     id: number | null,
-    onCreated: ( id: number ) => void
+    onCreated: ( id: number ) => void,
+    vendor = false
 ): BogoOffer {
     const [ loading, setLoading ] = useState( true );
     const [ loadError, setLoadError ] = useState< string | null >( null );
@@ -209,6 +215,8 @@ export function useBogoOffer(
     const [ canCreate, setCanCreate ] = useState( true );
     const [ currency, setCurrency ] = useState< Currency >( NO_CURRENCY );
     const [ productEditUrl, setProductEditUrl ] = useState( '' );
+    const [ productOffer, setProductOffer ] = useState( false );
+    const [ showRegularPrice, setShowRegularPrice ] = useState( false );
 
     const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
 
@@ -216,22 +224,48 @@ export function useBogoOffer(
         let cancelled = false;
 
         setLoading( true );
-        Promise.all( [ fetchEditor(), id ? fetchOffer( id ) : undefined ] )
+        Promise.all( [
+            fetchEditor( vendor ),
+            id ? fetchOffer( id, vendor ) : undefined,
+        ] )
             .then( ( [ editor, offer ] ) => {
                 if ( cancelled ) {
                     return;
                 }
 
                 const loaded = toValues( editor.schema, offer );
-                setSchema( editor.schema );
+                const deal = editor.schema.bogo_deal_type;
+
+                // A Dokan vendor chooses Buy X Get X only while the admin
+                // allows it; an offer that already is one keeps it.
+                const hideSame =
+                    editor.buy_x_get_x === false &&
+                    deal?.options &&
+                    loaded.bogo_deal_type !== 'same';
+
+                setSchema(
+                    hideSame
+                        ? {
+                              ...editor.schema,
+                              bogo_deal_type: {
+                                  ...deal,
+                                  options: deal.options?.filter( ( option ) => {
+                                      return option !== 'same';
+                                  } ),
+                              },
+                          }
+                        : editor.schema
+                );
                 setPage( editor.page );
                 setCanCreate( editor.can_create );
                 setCurrency( editor.currency );
+                setShowRegularPrice( Boolean( editor.show_regular_price ) );
                 setProductEditUrl(
                     offer?.type === 'product'
                         ? String( offer.edit_url ?? '' )
                         : ''
                 );
+                setProductOffer( offer?.type === 'product' );
                 setSaved( loaded );
                 setValuesState( loaded );
                 setLoadError( null );
@@ -261,7 +295,7 @@ export function useBogoOffer(
         return () => {
             cancelled = true;
         };
-    }, [ id ] );
+    }, [ id, vendor ] );
 
     const isLocked = useCallback(
         ( key: string ) => {
@@ -353,7 +387,8 @@ export function useBogoOffer(
                         changed.map( ( key ) => {
                             return [ key, values[ key ] ];
                         } )
-                    )
+                    ),
+                    vendor
                 );
 
                 if ( ! id ) {
@@ -388,7 +423,7 @@ export function useBogoOffer(
                 setSaving( false );
             }
         },
-        [ changedKeys, values, id, schema, onCreated ]
+        [ changedKeys, values, id, schema, onCreated, vendor ]
     );
 
     // Reset: a new offer's fields go back to the defaults, an existing
@@ -430,6 +465,8 @@ export function useBogoOffer(
             canCreate,
             currency,
             productEditUrl,
+            productOffer,
+            showRegularPrice,
         };
     }, [
         loading,
@@ -448,5 +485,7 @@ export function useBogoOffer(
         canCreate,
         currency,
         productEditUrl,
+        productOffer,
+        showRegularPrice,
     ] );
 }

@@ -4,7 +4,7 @@
  * Extends @wordpress/scripts, as dokan-lite does. Core bundles go to `build/`,
  * module bundles to `modules/<id>/assets/js/` (entry names relative to
  * `build/`, see webpack-entries.js), integration bundles to
- * `build/integrations/<bundle>/`.
+ * `build/integrations/<integration>/<bundle>.js`.
  *
  * @since SPSG_VERSION
  */

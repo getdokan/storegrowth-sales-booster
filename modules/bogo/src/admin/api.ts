@@ -50,7 +50,19 @@ export interface OfferPage {
     canCreate: boolean;
 }
 
-const base = () => `/${ getAdminData().restNamespace }/bogo/offers`;
+/**
+ * The offers route: the admin's, or the Dokan vendor's (`/bogo/offers/vendor`,
+ * the vendor's own offers).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param vendor The Dokan vendor dashboard.
+ */
+const base = ( vendor = false ) => {
+    return `/${ getAdminData().restNamespace }/bogo/offers${
+        vendor ? '/vendor' : ''
+    }`;
+};
 
 /**
  * A page of offers.
@@ -61,14 +73,18 @@ const base = () => `/${ getAdminData().restNamespace }/bogo/offers`;
  * @param query.page     Page, from 1.
  * @param query.per_page Rows per page.
  * @param query.search   Name contains.
+ * @param vendor         The Dokan vendor's offers.
  */
-export async function fetchOffers( query: {
-    page: number;
-    per_page: number;
-    search?: string;
-} ): Promise< OfferPage > {
+export async function fetchOffers(
+    query: {
+        page: number;
+        per_page: number;
+        search?: string;
+    },
+    vendor = false
+): Promise< OfferPage > {
     const response = await apiFetch< Response, false >( {
-        path: addQueryArgs( base(), query ),
+        path: addQueryArgs( base( vendor ), query ),
         parse: false,
     } );
 
@@ -87,10 +103,11 @@ export async function fetchOffers( query: {
  *
  * @param id     Offer id.
  * @param active On.
+ * @param vendor The Dokan vendor's offer.
  */
-export function setOfferStatus( id: number, active: boolean ) {
+export function setOfferStatus( id: number, active: boolean, vendor = false ) {
     return apiFetch( {
-        path: `${ base() }/${ id }/status`,
+        path: `${ base( vendor ) }/${ id }/status`,
         method: 'POST',
         data: { status: active ? 'yes' : 'no' },
     } );
@@ -101,13 +118,14 @@ export function setOfferStatus( id: number, active: boolean ) {
  *
  * @since SPSG_VERSION
  *
- * @param ids Offer ids.
+ * @param ids    Offer ids.
+ * @param vendor The Dokan vendor's offers.
  *
  * @return The ids deleted and those that couldn't be.
  */
-export function deleteOffers( ids: number[] ) {
+export function deleteOffers( ids: number[], vendor = false ) {
     return apiFetch< { deleted: number[]; failed: number[] } >( {
-        path: `${ base() }/batch`,
+        path: `${ base( vendor ) }/batch`,
         method: 'POST',
         data: { delete: ids },
     } );
@@ -130,6 +148,13 @@ export interface OfferEditor {
     /** Lite's limit allows a new offer. */
     can_create: boolean;
     currency: Currency;
+    /** The global "Show Regular Price" setting, for the preview. */
+    show_regular_price: boolean;
+    /**
+     * Dokan vendor route only: the vendor may choose Buy X Get X
+     * (`vendors_can_create_buy_x_get_x`).
+     */
+    buy_x_get_x?: boolean;
 }
 
 /**
@@ -164,9 +189,11 @@ export function formatPrice( amount: number, currency: Currency ): string {
  * The offer editor's page and fields (PHP `BogoOfferFields`).
  *
  * @since SPSG_VERSION
+ *
+ * @param vendor The Dokan vendor's route.
  */
-export function fetchEditor() {
-    return apiFetch< OfferEditor >( { path: `${ base() }/editor` } );
+export function fetchEditor( vendor = false ) {
+    return apiFetch< OfferEditor >( { path: `${ base( vendor ) }/editor` } );
 }
 
 /** An offer as the REST routes read and take it (raw values). */
@@ -177,10 +204,11 @@ export type OfferData = Record< string, unknown >;
  *
  * @since SPSG_VERSION
  *
- * @param id Offer id.
+ * @param id     Offer id.
+ * @param vendor The Dokan vendor's offer.
  */
-export function fetchOffer( id: number ) {
-    return apiFetch< OfferData >( { path: `${ base() }/${ id }` } );
+export function fetchOffer( id: number, vendor = false ) {
+    return apiFetch< OfferData >( { path: `${ base( vendor ) }/${ id }` } );
 }
 
 /**
@@ -189,14 +217,19 @@ export function fetchOffer( id: number ) {
  *
  * @since SPSG_VERSION
  *
- * @param id   Offer id, or null for a new offer.
- * @param data Values.
+ * @param id     Offer id, or null for a new offer.
+ * @param data   Values.
+ * @param vendor The Dokan vendor's offer.
  *
  * @return The offer as stored.
  */
-export function saveOffer( id: number | null, data: OfferData ) {
+export function saveOffer(
+    id: number | null,
+    data: OfferData,
+    vendor = false
+) {
     return apiFetch< OfferData >( {
-        path: id ? `${ base() }/${ id }` : base(),
+        path: id ? `${ base( vendor ) }/${ id }` : base( vendor ),
         method: id ? 'PUT' : 'POST',
         data,
     } );

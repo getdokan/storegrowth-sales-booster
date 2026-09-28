@@ -127,9 +127,24 @@
     color: var(--color-sg-text);
 }
 
+/* On the Dokan vendor dashboard the brand colour is Dokan's button colour
+   (ADR-011); the plugin-ui tokens follow it through the vendor theme. */
+.dokan-layout .spsg-layout {
+    --color-sg-brand: var(--dokan-button-background-color, #0875ff);
+    --color-sg-brand-hover: var(--dokan-button-hover-background-color, #0663db);
+}
+
+/* Labels and headings take the app's font, not a theme's element rule (a
+   front-end theme on the Dokan vendor dashboard sets them). */
+.spsg-layout :is(label, h1, h2, h3, h4, h5, h6) {
+    font-family: inherit;
+}
+
 /* Keyboard focus ring for everything interactive (design rule); controls
-   with their own focus style (fields) override it. */
-.spsg-layout :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+   with their own focus style (fields, important utilities) override it.
+   `:is()`, not `:where()`, so a theme's or Dokan's element focus rule
+   doesn't win. */
+.spsg-layout :is(a, button, input, select, textarea, [tabindex]):focus-visible {
     outline: 2px solid var(--color-sg-brand);
     outline-offset: 2px;
 }

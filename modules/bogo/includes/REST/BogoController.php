@@ -257,8 +257,9 @@ class BogoController extends WP_REST_Controller {
 
     /**
      * The offer editor (ADR-010): its page and fields (`BogoOfferFields`),
-     * whether a new offer would pass this route's limit, and the store's
-     * price format for the preview.
+     * whether a new offer would pass this route's limit, and for the preview
+     * the store's price format and the global "Show Regular Price" (so the
+     * vendor dashboard needn't read the admin's settings).
      *
      * @since SPSG_VERSION
      *
@@ -279,6 +280,8 @@ class BogoController extends WP_REST_Controller {
                         'decimal_separator'  => wc_get_price_decimal_separator(),
                         'thousand_separator' => wc_get_price_thousand_separator(),
                     ],
+                    // The global "Show Regular Price", as the storefront reads it.
+                    'show_regular_price' => (bool) Helper::get_bogo_settings_option( 'regular_price_show', false ),
                 ]
             )
         );

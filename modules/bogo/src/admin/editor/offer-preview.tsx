@@ -18,7 +18,6 @@ import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { CircleCheck } from 'lucide-react';
 import type { CSSProperties } from 'react';
-import { useSettingsPages } from '@storegrowth/hooks';
 import { assetUrl } from '@storegrowth/utilities';
 
 import {
@@ -82,20 +81,24 @@ export interface OfferPreviewProps {
     currency: Currency;
     /** The badge upload needs pro: without it the icon shows. */
     uploadLocked: boolean;
+    /** The global "Show Regular Price" setting. */
+    showRegularPrice: boolean;
 }
 
 /**
  * @since SPSG_VERSION
  *
- * @param props              Props.
- * @param props.values       The editor's (unsaved) values.
- * @param props.currency     Price format.
- * @param props.uploadLocked The badge upload needs pro.
+ * @param props                  Props.
+ * @param props.values           The editor's (unsaved) values.
+ * @param props.currency         Price format.
+ * @param props.uploadLocked     The badge upload needs pro.
+ * @param props.showRegularPrice The global "Show Regular Price" setting.
  */
 export function OfferPreview( {
     values,
     currency,
     uploadLocked,
+    showRegularPrice,
 }: OfferPreviewProps ) {
     const targetId = ( values.offered_products as number[] )?.[ 0 ] ?? 0;
     const target = usePreviewProduct( targetId );
@@ -109,8 +112,6 @@ export function OfferPreview( {
         ( values.bogo_deal_type === 'same' ? target : offered ) ?? SAMPLE;
     // The template lists the target product's categories.
     const categories = ( target ?? SAMPLE ).categories;
-    // "Show Regular Price" is a global BOGO setting.
-    const global = useSettingsPages().pages.bogo?.values ?? {};
 
     // The cart's price: free, or the percentage off the current price.
     const percent =
@@ -213,7 +214,7 @@ export function OfferPreview( {
                     ) }
                 </span>
                 <span className="ml-auto flex shrink-0 flex-col items-end gap-0.5 text-[13px] text-[#25252D]">
-                    { Boolean( global.regular_price_show ) && (
+                    { showRegularPrice && (
                         <s className="text-[#6B7280]">
                             { money( product.regular ) }
                         </s>
