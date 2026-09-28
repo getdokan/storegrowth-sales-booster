@@ -103,14 +103,39 @@ class BoGoModule extends BaseModule {
 		return new BootstrapServiceProvider();
 	}
 
-	public function activate(): bool
-	{
-		// Run BOGO migration if needed
-		$migration_status = \StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::get_migration_status();
-		if ( $migration_status['migration_needed'] ) {
-			\StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::migrate_to_single_table();
-		}
+	/**
+	 * Activate the module: create the BOGO table and bring over 1.x offers
+	 * (once), then activate.
+	 *
+	 * @since 2.0.0
+	 * @return bool True if activation was successful, false otherwise.
+	 */
+	public function activate(): bool {
+		BogoDataManager::create_table();
+		BogoMigration::maybe_migrate();
 
 		return parent::activate();
+	}
+
+	/**
+	 * Boot the module. A site already on 2.x with BOGO active never activates
+	 * it again, so the one-time 1.x migration also runs from the admin, for an
+	 * administrator only (Dokan credits offers saved by anyone without
+	 * `manage_options` to that user).
+	 *
+	 * @since SPSG_VERSION
+	 * @return void
+	 */
+	public function boot(): void {
+		parent::boot();
+
+		add_action(
+			'admin_init',
+			static function () {
+				if ( current_user_can( 'manage_options' ) ) {
+					BogoMigration::maybe_migrate();
+				}
+			}
+		);
 	}
 }
