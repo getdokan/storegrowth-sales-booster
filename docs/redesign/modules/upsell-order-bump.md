@@ -71,18 +71,25 @@
 - Reuses: the DataViews list pattern, `EditorLayout`, `ProductSearch`, `CategorySearch`.
 - Builds: the checkout-frame preview (a new `LivePreview` layout).
 
-## 9. Open questions / design issues
-- Schedule model (§5).
-- "Free" offer type.
-- Preview frame must be checkout.
-- The heading reads "Order Bumps List".
-- Should the server-side cap apply to existing sites that already have more than 2 bumps without pro? Proposal: block creating new ones only; never touch existing ones.
+## 9. Decisions (2026-09-28)
+Planning reviews (architect `.claude/scratch/step-11-plan-architect.md`, designer `step-11-plan-designer.md`) confirmed bugs 1–5 and found more: the checkout block no longer builds (a053e9c9 removed its `package.json`; a clean build fatals wherever a cart/checkout/mini-cart block renders — release blocker, 11a), `design_settings` saved unsanitized and printed raw at checkout, `offer_amount` unbounded (negative prices), an update replaces the whole `design_settings` (lost design, like BOGO bug 1), 1.x bumps (`sgsb_order_bump` posts) never migrated, the fixed-price label prints "2.00.00", prices ignore the store's currency format.
 
-## 10. Tasks and definition of done
-- [ ] REST: new namespace, old kept, search/status/batch, server-side cap.
-- [ ] Schedule migration + storefront check (if approved).
-- [ ] List + editor + checkout preview.
-- [ ] Block bundle moved into the main build; block renders in Checkout Blocks.
-- [ ] Fix `BlockRegistry` running while the module is inactive.
-- [ ] E2E matrix: create, edit, status, bulk delete, cap with and without pro, classic + block checkout.
-- [ ] Delete `modules/upsell-order-bump/assets/src`, `package.json` and `build/`.
+- **Schedule:** Offer Days as in BOGO (`daily` + weekdays), stored in `design_settings` (missing = always, no column), in the editor's plain "Advanced" section; the storefront honours it in `get_matching_bumps()`.
+- **Free:** a new `offer_type` value `free`; the server forces the amount to 0; the strip reads "Free", never "0.00$ Just Only". Pro 2.2.0 has no order-bump pricing, so no BOGO-style trap; older lite prices it at the stored 0.
+- **Preview:** a checkout frame (new `LivePreview` layout) drawing the storefront's own bump markup with `order-bump-front.css` (ADR-005), so the preview is what shoppers see; the mockup's restyled box and product-page frame are not used.
+- **1.x migration:** like BOGO 10g — once, on module activation, under a lock and a flag (autoload false), per-row, never changing the 1.x data.
+- **Cap:** lite's 2-bump limit counts every row of any status, blocks creating only (403 `salesbooster_limit_exceeded`), never touches existing bumps; the storefront keeps showing every active bump.
+- **REST:** one controller under `sales-booster/v1/order-bumps` and `spsg/v1/order-bumps` (kept); status as `POST /{id}/status` like BOGO.
+- **Dokan:** out of scope (no vendor order-bump UI exists).
+- **Design deviations:** heading "Upsell Order Bump" (not "Order Bumps List"); title and table one card as BOGO; "Add New" in header and empty state; "For Fixed Price" text kept (shown for Fixed Price); the amount field labelled and hidden for Free; the server keeps writing the product title/image copies and the discount title the storefront reads; 2.2.0's hash routes redirect.
+
+## 10. Sub-steps (each reviewed and committed)
+- [ ] **11a** Checkout block build fix (release blocker): source to `src/storefront/blocks/`, webpack entry, git-ignore, no fatal when the asset is missing, `BlockRegistry` only while the module is active (bug 5).
+- [ ] **11b** REST contract: both namespaces, `search` and totals, `/editor`, `/status`, `/batch`, merged design saves, per-key sanitizing, amount bounds, `free`, the cap, save rules, bug 4 (variation offers), the "2.00.00" label. PHPUnit per bug.
+  - Notes: contract in `rest-api.md` #26–31a. Bug 4: one cart reader (`OrderBump::get_cart_targets()`: variation ids and parents' categories) and one matcher (`OrderBumpAjax::find_offer()`) for the price and the stamp, matching the offer by the variation's own id; the add derives the parent from the variation. The classic box and the block share `OrderBump::get_checkout_offers()`: struck price = regular (`get_regular_price()`), bump price from the active price (`get_price()`, as BOGO; it used the sale price even before a scheduled sale), both bounded (`calculate_offer_price()`); prices through `wc_price()`; the strip via `get_offer_label()` ("2.00$ Just Only", "10% off…", "Free"; the fixed/discount titles carry the currency symbol, so the number has none). The block prints the label and title as text (no `RawHTML`), the `wc_price()` markup PHP sends, and gets `design_settings.fallback_image_url`. `design_settings` sanitized per key on save and render (`OrderBumpDesign`). Other visible changes: the discount strip trims zeros ("2% off", was "2.00% off"); unticking removes only the offered product's (or variation's) lines, not every line of its parent; an empty image falls back to the preview SVG; a sale that hasn't started no longer lowers the charged bump price. Template prices are `echo wc_price()` (phpcs-ignored: `wp_kses_post()` strips its `<bdi>`). Tests: `tests/php/src/UpsellOrderBump/OrderBumpRestTest.php`, `OrderBumpStorefrontTest.php`. Open: `/editor` page + fields (11e); category names under the checkout title are still never shown (`offer_product` isn't stored); the 2.x "$ Just Only" default hard-codes `$`.
+- [ ] **11c** Shared extraction from BOGO (record editor hook, list shell, REST helpers, currency), BOGO unchanged (10h smoke matrix); product search with variations.
+- [ ] **11d** Routing and list (`AdminPage`, admin entry, catalog route, 2.2.0 redirects).
+- [ ] **11e** Editor and checkout preview (`OrderBumpFields`, ADR-010; Free).
+- [ ] **11f** Schedule (Offer Days, storefront check).
+- [ ] **11g** 1.x migration.
+- [ ] **11h** Cleanup (`assets/src`, old admin enqueue and CSS; `order-bump-template.css` only in the block editor) and E2E matrix (no pro / pro 2.2.0: create, edit, status, bulk delete, cap, classic + block checkout, variation and free offers, module off with block checkout).

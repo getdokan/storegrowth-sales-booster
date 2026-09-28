@@ -11,6 +11,7 @@ use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\BumpOfferValidator;
+use WC_Product;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,99 +61,208 @@ class OrderBump implements HookRegistry {
 	 * Bump offer product for frontend.
 	 */
 	public function bump_product_frontend_view() {
-		global $woocommerce;
-		$all_cart_products     = $woocommerce->cart->get_cart();
-		$all_cart_product_ids  = array();
-		$all_cart_category_ids = array();
-
-		foreach ( $all_cart_products as $value ) {
-			// Get categories from the current cart item (variation or simple product)
-			$cat_ids = $value['data']->get_category_ids();
-			foreach ( $cat_ids as $cat_id ) {
-				$all_cart_category_ids[] = (int) $cat_id;
-			}
-			
-			// For variable products, also get categories from the parent product
-			if ( isset($value['variation_id']) && $value['variation_id'] > 0 ) {
-				$parent_product = wc_get_product( $value['product_id'] );
-				if ( $parent_product ) {
-					$parent_cat_ids = $parent_product->get_category_ids();
-					foreach ( $parent_cat_ids as $cat_id ) {
-						$all_cart_category_ids[] = (int) $cat_id;
-					}
-				}
-			}
-			
-			// For variable products, include both parent product ID and variation ID
-			// Convert to integers to ensure consistent data types
-			$all_cart_product_ids[] = (int) $value['product_id'];
-			if ( isset($value['variation_id']) && $value['variation_id'] > 0 ) {
-				$all_cart_product_ids[] = (int) $value['variation_id'];
-			}
-		}
-		
-		// Remove duplicate category IDs
-		$all_cart_category_ids = array_unique( $all_cart_category_ids );
-
-		// Get matching bumps using the new data access class
-		$matching_bumps = $this->order_bump_data->get_matching_bumps( $all_cart_product_ids, $all_cart_category_ids );
-
-		foreach ( $matching_bumps as $bump ) {
+		foreach ( self::get_checkout_offers() as $offer ) {
+			$bump             = $offer['bump'];
 			$offer_product_id = $bump['offer_product_id'];
 			$offer_type       = $bump['offer_type'];
 			$offer_amount     = $bump['offer_amount'];
-
-			$checked = '';
-			if ( in_array( (int) $offer_product_id, $all_cart_product_ids, true ) ) {
-				$checked = 'checked';
-			}
-
-			$_product      = wc_get_product( $offer_product_id );
-
-			// FIX: If the offer product doesn't exist (deleted or invalid ID), skip it to avoid a fatal error.
-			if ( ! $_product ) {
-				continue;
-			}
-
-			$regular_price = $_product->get_regular_price();
-			// Use sale price if available, otherwise use regular price for discount calculation
-			$current_price = $_product->get_sale_price() ? $_product->get_sale_price() : $regular_price;
-			if ( 'discount' === $offer_type ) {
-				$offer_price = ( $current_price - ( $current_price * $offer_amount / 100 ) );
-			} else {
-				$offer_price = $offer_amount;
-			}
-
-			$cart                            = WC()->cart;
-			$product_already_added_from_shop = false;
-			foreach ( $cart->get_cart() as $cart_item_key => $cart_item ) {
-				$product    = $cart_item['data'];
-				$product_id = $product->get_id();
-				if ( absint( $product_id ) !== absint( $offer_product_id ) ) {
-					continue;
-				}
-				$price = $product->get_price();
-				if ( floatval( $price ) !== floatval( $offer_price ) ) {
-					$product_already_added_from_shop = true;
-				}
-				break;
-			}
-			if ( $product_already_added_from_shop ) {
-				// don't show the offer if the 'offer product' is already added in the cart from the shop page with regular price.
-				continue;
-			}
+			$offer_label      = $offer['offer_label'];
+			$checked          = $offer['checked'];
+			$_product         = $offer['product'];
+			$regular_price    = $offer['regular_price'];
+			$offer_price      = $offer['offer_price'];
+			$is_purchasable   = $offer['is_purchasable'];
 
 			// Convert bump data to object for template compatibility
-			$bump_info = (object) array_merge( $bump, $bump['design_settings'] );
+			$bump_info            = (object) array_merge( $bump, $offer['design'] );
 			$bump_info->bump_type = $bump['target_type'];
-
-			// Check if product is available for purchase (in stock or allows backorders)
-			$is_purchasable = $_product->is_in_stock() || $_product->backorders_allowed();
 
 			include __DIR__ . '/../templates/bump-product-front-view.php';
 		}
 	}
 
+	/**
+	 * The bumps the checkout shows for the current cart, with what the
+	 * classic box and the checkout block both print: the offer product, the
+	 * struck regular price and the bump price (the one the cart charges),
+	 * the offer strip's text, whether it's in the cart, whether it can be
+	 * bought, and the design sanitized as a save does (so a row stored
+	 * before that can't print CSS or markup).
+	 *
+	 * An offer product already in the cart at another price (added from the
+	 * shop) is left out, as before.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array[]
+	 */
+	public static function get_checkout_offers() {
+		list( $cart_product_ids, $cart_category_ids ) = self::get_cart_targets();
+
+		$offers = [];
+
+		foreach ( ( new OrderBumpData() )->get_matching_bumps( $cart_product_ids, $cart_category_ids ) as $bump ) {
+			$offer_product_id = (int) $bump['offer_product_id'];
+			$product          = wc_get_product( $offer_product_id );
+
+			// A deleted offer product: skip it rather than fatal.
+			if ( ! $product ) {
+				continue;
+			}
+
+			$offer_price = self::calculate_offer_price( $bump['offer_type'], self::get_current_price( $product ), $bump['offer_amount'] );
+
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				if ( absint( $cart_item['data']->get_id() ) !== $offer_product_id ) {
+					continue;
+				}
+				// Added from the shop at its own price: don't offer it.
+				if ( floatval( $cart_item['data']->get_price() ) !== floatval( $offer_price ) ) {
+					continue 2;
+				}
+				break;
+			}
+
+			$design = OrderBumpDesign::sanitize( array_merge( OrderBumpDesign::get_defaults(), $bump['design_settings'] ) );
+
+			$offers[] = [
+				'bump'           => $bump,
+				'product'        => $product,
+				'design'         => $design,
+				'regular_price'  => self::get_regular_price( $product ),
+				'offer_price'    => $offer_price,
+				'offer_label'    => self::get_offer_label( $bump['offer_type'], $bump['offer_amount'], $design ),
+				'checked'        => in_array( $offer_product_id, $cart_product_ids, true ) ? 'checked' : '',
+				// In stock or on backorder.
+				'is_purchasable' => $product->is_in_stock() || $product->backorders_allowed(),
+			];
+		}
+
+		return $offers;
+	}
+
+	/**
+	 * The offer strip's text: "Free", the percentage with the discount title
+	 * ("10% off only for you!"), or the price with the fixed price title
+	 * ("2.00$ Just Only"; it used to read "2.00.00"). Numbers in the store's
+	 * format; the titles carry any currency symbol, so none is added.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $offer_type   `discount`, `price` or `free`.
+	 * @param float  $offer_amount The bump's amount.
+	 * @param array  $design       The bump's design settings.
+	 *
+	 * @return string Plain text.
+	 */
+	public static function get_offer_label( $offer_type, $offer_amount, $design ) {
+		if ( 'free' === $offer_type ) {
+			return __( 'Free', 'storegrowth-sales-booster' );
+		}
+
+		if ( 'discount' === $offer_type ) {
+			return wc_format_localized_decimal( wc_format_decimal( $offer_amount, false, true ) ) . ( $design['offer_discount_title'] ?? '' );
+		}
+
+		return number_format( (float) $offer_amount, wc_get_price_decimals(), wc_get_price_decimal_separator(), wc_get_price_thousand_separator() ) . ( $design['offer_fixed_price_title'] ?? '' );
+	}
+
+
+	/**
+	 * What the cart holds, as bumps target it: the product ids (a variation's
+	 * parent and its own id) and the category ids (a variation's and its
+	 * parent's). One list for the checkout box, the add-to-cart price check
+	 * and the attribution stamp, so they agree on which bumps apply.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array{0: int[], 1: int[]} Product ids, category ids.
+	 */
+	public static function get_cart_targets() {
+		$product_ids  = [];
+		$category_ids = [];
+
+		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+			return [ $product_ids, $category_ids ];
+		}
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product_ids[] = (int) $cart_item['product_id'];
+
+			if ( $cart_item['data'] instanceof WC_Product ) {
+				$category_ids = array_merge( $category_ids, array_map( 'intval', $cart_item['data']->get_category_ids() ) );
+			}
+
+			if ( ! empty( $cart_item['variation_id'] ) ) {
+				$product_ids[] = (int) $cart_item['variation_id'];
+
+				$parent = wc_get_product( $cart_item['product_id'] );
+				if ( $parent ) {
+					$category_ids = array_merge( $category_ids, array_map( 'intval', $parent->get_category_ids() ) );
+				}
+			}
+		}
+
+		return [ array_values( array_unique( $product_ids ) ), array_values( array_unique( $category_ids ) ) ];
+	}
+
+	/**
+	 * The price a bump's discount applies to: the product's active price (the
+	 * sale price while a sale runs), as BOGO's offer price. It used the sale
+	 * price even while a scheduled sale hadn't started.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product $product Offer product (the variation for a variation offer).
+	 *
+	 * @return float
+	 */
+	public static function get_current_price( $product ) {
+		return (float) $product->get_price();
+	}
+
+	/**
+	 * The price the checkout strikes through: the regular price, else the
+	 * active one.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product $product Offer product.
+	 *
+	 * @return float
+	 */
+	public static function get_regular_price( $product ) {
+		return (float) ( '' !== (string) $product->get_regular_price() ? $product->get_regular_price() : $product->get_price() );
+	}
+
+	/**
+	 * A bump's price for its offer product: a percentage off (0–100), a
+	 * fixed price (at least 0) or free.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $offer_type    `discount`, `price` or `free`.
+	 * @param float  $current_price The product's price (`get_current_price()`).
+	 * @param float  $offer_amount  The bump's amount.
+	 *
+	 * @return float
+	 */
+	public static function calculate_offer_price( $offer_type, $current_price, $offer_amount ) {
+		$current_price = (float) $current_price;
+		$offer_amount  = (float) $offer_amount;
+
+		if ( 'free' === $offer_type ) {
+			return 0.0;
+		}
+
+		if ( 'discount' === $offer_type ) {
+			$percent = min( 100.0, max( 0.0, $offer_amount ) );
+
+			return max( 0.0, $current_price - ( $current_price * $percent / 100 ) );
+		}
+
+		return max( 0.0, $offer_amount );
+	}
 
 	/**
 	 * Product custom price.

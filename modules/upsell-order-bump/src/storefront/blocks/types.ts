@@ -33,6 +33,12 @@ export interface BumpOffer {
     checked?: string;
     regular_price?: string | number;
     offer_price?: string | number;
+    /** The offer strip's text, e.g. "10% off only for you!" (plain text). */
+    offer_label?: string;
+    /** `wc_price()` markup of the struck regular price. */
+    regular_price_html?: string;
+    /** `wc_price()` markup of the bump price. */
+    offer_price_html?: string;
     category_names?: string[];
     currency_symbol?: string;
     is_purchasable?: boolean;

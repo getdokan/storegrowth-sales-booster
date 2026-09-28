@@ -20,6 +20,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderBumpData {
 
 	/**
+	 * How many order bumps lite keeps (any status); pro lifts it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var int
+	 */
+	const LITE_BUMP_LIMIT = 2;
+
+	/**
 	 * Table name for order bumps.
 	 *
 	 * @var string
@@ -61,13 +70,7 @@ class OrderBumpData {
 			return array();
 		}
 
-		$where_clause = '';
-		$where_values = array();
-
-		if ( ! empty( $args['status'] ) ) {
-			$where_clause .= ' AND status = %s';
-			$where_values[] = $args['status'];
-		}
+		list( $where_clause, $where_values ) = $this->where_clause( $args );
 
 		$limit_clause = '';
 		if ( $args['limit'] > 0 ) {
@@ -98,6 +101,112 @@ class OrderBumpData {
 
 		// Process results to decode JSON fields
 		return array_map( array( $this, 'process_bump_data' ), $results );
+	}
+
+	/**
+	 * How many order bumps `get_all()` would list without paging.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $args `status` and `search`, as `get_all()` takes them (no default status).
+	 *
+	 * @return int
+	 */
+	public function get_count( $args = [] ) {
+		global $wpdb;
+
+		if ( ! $this->table_exists() ) {
+			return 0;
+		}
+
+		list( $where_clause, $where_values ) = $this->where_clause( $args );
+
+		$sql = "SELECT COUNT(*) FROM {$this->table_name} WHERE 1=1{$where_clause}";
+
+		if ( ! empty( $where_values ) ) {
+			$sql = $wpdb->prepare( $sql, $where_values ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		}
+
+		return (int) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	}
+
+	/**
+	 * Whether a new order bump may be created: lite keeps at most
+	 * `LITE_BUMP_LIMIT` bumps, of any status; pro lifts it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	public function can_create() {
+		return sp_store_growth()->has_pro() || $this->get_count() < self::LITE_BUMP_LIMIT;
+	}
+
+	/**
+	 * The WHERE conditions (after `WHERE 1=1`) for the `status` and `search`
+	 * arguments, and their values.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $args Query arguments.
+	 *
+	 * @return array{0: string, 1: array}
+	 */
+	private function where_clause( $args ) {
+		global $wpdb;
+
+		$where_clause = '';
+		$where_values = [];
+
+		if ( ! empty( $args['status'] ) ) {
+			$where_clause  .= ' AND status = %s';
+			$where_values[] = $args['status'];
+		}
+
+		// The 2.x admin stored names with every character but letters and
+		// digits as an entity (`Summer&#32;sale`), the new one as plain text:
+		// match both.
+		$search = isset( $args['search'] ) ? trim( (string) $args['search'] ) : '';
+		if ( '' !== $search ) {
+			$where_clause  .= ' AND ( name LIKE %s OR name LIKE %s )';
+			$where_values[] = '%' . $wpdb->esc_like( $search ) . '%';
+			$where_values[] = '%' . $wpdb->esc_like( self::legacy_entity_encode( $search ) ) . '%';
+		}
+
+		return [ $where_clause, $where_values ];
+	}
+
+	/**
+	 * A text as the 2.x admin stored it: every character but ASCII letters
+	 * and digits as a numeric entity of its UTF-16 code unit(s)
+	 * (`convertToHTMLEntities()`, which used `charCodeAt()`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $text Plain text.
+	 *
+	 * @return string
+	 */
+	public static function legacy_entity_encode( $text ) {
+		$encoded = '';
+
+		foreach ( mb_str_split( (string) $text, 1, 'UTF-8' ) as $char ) {
+			if ( ctype_alnum( $char ) ) {
+				$encoded .= $char;
+				continue;
+			}
+
+			$code = mb_ord( $char, 'UTF-8' );
+			if ( $code > 0xFFFF ) {
+				$code     -= 0x10000;
+				$encoded .= '&#' . ( 0xD800 + ( $code >> 10 ) ) . ';&#' . ( 0xDC00 + ( $code & 0x3FF ) ) . ';';
+				continue;
+			}
+
+			$encoded .= '&#' . $code . ';';
+		}
+
+		return $encoded;
 	}
 
 	/**

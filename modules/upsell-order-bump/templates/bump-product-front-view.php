@@ -5,13 +5,12 @@
  * @package Bump design for front.
  */
 
+// A variation is sent as its parent plus its own id.
+$product_offer_id = $offer_product_id;
+$variation_id     = 0;
 if ($_product && $_product->is_type('variation')) {
     $product_offer_id = $_product->get_parent_id();
     $variation_id = $offer_product_id;
-}
-if ($_product && $_product->is_type('simple')) {
-    $product_offer_id = $offer_product_id;
-    $variation_id = 0;
 }
 
 ?>
@@ -36,15 +35,16 @@ echo 'font-size:' . esc_attr($bump_info->discount_font_size) . 'px;'
 					/>
 				</svg>
 			<?php
-echo 'discount' === $offer_type ? '&nbsp;' . esc_attr($offer_amount . $bump_info->offer_discount_title) : esc_attr($offer_amount) . '.00' . esc_attr($bump_info->offer_fixed_price_title);
-$fallback_image_url = esc_url(plugin_dir_url(__FILE__) . '../assets/images/bump-preview.svg');
-$image_url = 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;
+// OrderBump::get_offer_label(): "Free", "10% off only for you!", "2.00$ Just Only".
+echo '&nbsp;' . esc_html( $offer_label );
+$fallback_image_url = plugin_dir_url(__FILE__) . '../assets/images/bump-preview.svg';
+$image_url = ! empty( $bump_info->offer_image_url ) && 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;
 ?>
 			</div>
 			<div class="product-image-and-title">
 				<div class="offer-product-image-title">
 				<div class="offer-product-image">
-					<img src="<?php echo esc_attr($image_url); ?>" width='70' alt="" />
+					<img src="<?php echo esc_url($image_url); ?>" width='70' alt="" />
 				</div>
 				<div class="offer-product-title"
 				style = "
@@ -55,7 +55,7 @@ echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 				"
 				>
 					<h3 style="color:<?php echo esc_attr($bump_info->product_description_text_color); ?>">
-					<?php echo esc_attr($bump_info->offer_product_title); ?>
+					<?php echo esc_html( $bump_info->offer_product_title ?? '' ); ?>
 					</h3>
 
 					<?php
@@ -85,9 +85,10 @@ echo 'color:' . esc_attr($bump_info->product_description_text_color) . ';';
 echo 'font-size:' . esc_attr($bump_info->product_description_font_size) . 'px;';
 ?>
 				">
-			<span style="text-decoration:line-through"><?php echo esc_html(get_woocommerce_currency_symbol()) . esc_attr(number_format((float) $regular_price, 2)); ?></span>
+			<?php // wc_price() escapes its output (wp_kses_post() would strip its <bdi>). ?>
+			<span style="text-decoration:line-through"><?php echo wc_price( (float) $regular_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 			&nbsp;
-			<span style=""><?php echo esc_html(get_woocommerce_currency_symbol()) . esc_attr(number_format((float) $offer_price, 2)); ?></span>
+			<span style=""><?php echo wc_price( (float) $offer_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 			</div>
 			<div class="product-checkbox-and-excitement-message" >
 			<?php if ( $is_purchasable ) : ?>
