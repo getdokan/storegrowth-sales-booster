@@ -152,6 +152,19 @@ class SettingsService {
 		 * @param string $module_id Module id.
 		 */
 		$fields = (array) apply_filters( 'spsg_settings_schema', $own, $module_id );
+		$slug   = str_replace( '-', '_', $module_id );
+
+		/**
+		 * Filters one module's settings fields, after `spsg_settings_schema`:
+		 * `spsg_{module}_settings_schema` with the module id in snake case,
+		 * e.g. `spsg_stock_bar_settings_schema`, `spsg_general_settings_schema`.
+		 * Same rules: add fields, never redefine the module's own.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array $fields Field definitions keyed by option key.
+		 */
+		$fields = (array) apply_filters( "spsg_{$slug}_settings_schema", $fields );
 
 		foreach ( $fields as $key => $field ) {
 			if ( isset( $own[ $key ] ) && $field !== $own[ $key ] ) {

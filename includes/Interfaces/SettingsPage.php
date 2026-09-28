@@ -74,7 +74,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * Extending (pro, other plugins), all PHP:
  * - `spsg_settings_schema` ( $fields, $id ): add fields to a page (with `tab`
- *   / `section`); a module's own fields can't be redefined.
+ *   / `section`); a module's own fields can't be redefined. Per module:
+ *   `spsg_{module}_settings_schema` ( $fields ), module id in snake case
+ *   (`spsg_stock_bar_settings_schema`, `spsg_general_settings_schema`).
  * - `spsg_settings_page` ( $page, $id ): add or change tabs and sections.
  * - `spsg_settings_schemas` ( $schemas ): register a schema (and page) of
  *   your own; StoreGrowth's schemas can't be replaced.

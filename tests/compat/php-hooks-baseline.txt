@@ -83,6 +83,7 @@ spsg_stock_bar_warning_contents
 spsg_template_path
 spsg_uninstall_scheduled_hooks
 spsg_woocommerce_before_cart_collaterals
+spsg_{$slug}_settings_schema
 spsgqcv_after_summary
 spsgqcv_after_thumbnails
 spsgqcv_before_summary

@@ -20,7 +20,7 @@ Every redesigned module page was a hand-written React component of 400–860 lin
    A module without these needs no admin JS at all.
 5. **Our renderer, not plugin-ui `Settings`.** The design puts a live preview beside the settings, which plugin-ui's sidebar layout has no place for. The page and field shapes follow plugin-ui `SettingsElement` attributes, so switching later stays possible.
 6. **Everything is filterable in PHP.** Pro and other plugins extend a page without JS:
-   - `spsg_settings_schema` ( $fields, $id ): add fields (with `tab` / `section`); a module's own fields can't be redefined (ADR-007);
+   - `spsg_settings_schema` ( $fields, $id ): add fields (with `tab` / `section`); a module's own fields can't be redefined (ADR-007). Each module also fires its own `spsg_{module}_settings_schema` ( $fields ), module id in snake case (`spsg_stock_bar_settings_schema`), after the generic one;
    - `spsg_settings_page` ( $page, $id ): add or change tabs and sections;
    - `spsg_settings_schemas` ( $schemas ): register a schema, and page, of their own, read, saved and drawn by the same engine. StoreGrowth's schemas can't be replaced or removed.
    A custom control is a `variant` drawn through the JS filter `storegrowth_settings_{variant}_field`.
