@@ -1,4 +1,3 @@
-import './Modules/BoGo/index.js';
 import './Modules/QuickCart/index.js';
 import './Modules/QuickView/index.js';
 import './Modules/SalesPop/index.js';

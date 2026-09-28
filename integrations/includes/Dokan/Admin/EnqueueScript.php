@@ -52,25 +52,6 @@ class EnqueueScript {
 
         $modules = new ModuleManager();
 
-        // `spsg-bogo-dokan-admin` registers a `spsg_bogo_tab_panels` filter that
-        // only the BOGO module's settings bundle consumes. Enqueuing it while the
-        // module is inactive leaves its dependency unregistered and WP drops the
-        // script with a "Missing Dependencies" notice.
-        if (
-            $modules->is_active_module( 'bogo' )
-            && file_exists( Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-admin.js' ) )
-        ) {
-            $admin_file = require Helper::get_plugin_path( 'integrations/assets/build/bogo-dokan-admin.asset.php' );
-
-            wp_enqueue_script(
-                'spsg-bogo-dokan-admin',
-                Helper::get_integrations_path( 'assets/build/bogo-dokan-admin.js' ),
-                array_merge( $admin_file['dependencies'], [ 'spsg-bogo-settings' ] ),
-                $admin_file['version'],
-                true
-            );
-        }
-
         if (
             $modules->is_active_module( 'countdown-timer' )
             && file_exists( Helper::get_plugin_path( 'integrations/assets/build/dokan-countdown-timer.js' ) )

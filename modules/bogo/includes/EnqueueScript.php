@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
-use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
@@ -33,7 +32,6 @@ class EnqueueScript implements HookRegistry {
 	public function register_hooks(): void {
 		add_action( 'init', array( $this, 'register_enqueue_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
 	}
@@ -79,79 +77,6 @@ class EnqueueScript implements HookRegistry {
 			wp_enqueue_script( 'select2' );
 			wp_enqueue_script( 'spsg-bogo-admin-script' );
 		}
-
-		// The legacy settings bundle is no longer built once the module moves to the new admin UI.
-		if ( AdminMenu::SCREEN_ID === $hook && file_exists( PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' ) ) ) {
-			$settings_file                   = require PluginHelper::get_modules_path( 'bogo/assets/build/settings.asset.php' );
-			$settings_file['dependencies'][] = 'jquery';
-
-			wp_enqueue_script(
-				'spsg-bogo-settings',
-				PluginHelper::get_modules_url( 'bogo/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				true
-			);
-
-			// Admin-only nonce for privileged option-writing ajax (create/list
-			// category messages). Kept distinct from the frontend cart nonce so a
-			// scraped storefront nonce can't authorize admin actions.
-			$action    = 'spsg_admin_ajax_nonce';
-			$ajd_nonce = wp_create_nonce( $action );
-
-			wp_localize_script(
-				'spsg-bogo-settings',
-				'bogo_products_and_categories',
-				array(
-					'product_list_for_view' => $this->prodcut_list_for_view(),
-					'category_list'         => $this->category_list(),
-					'order_bogo_list'       => $this->order_bogo_list(),
-				)
-			);
-
-			wp_localize_script(
-				'spsg-bogo-settings',
-				'bogo_save_url',
-				array(
-					'ajax_url'     => admin_url( 'admin-ajax.php' ),
-					'ajd_nonce'    => $ajd_nonce,
-					'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
-					'image_folder' => PluginHelper::get_modules_url( 'BoGo/assets/images' ),
-				)
-			);
-		}
-	}
-
-	/**
-	 * Add CSS scripts to admin.
-	 *
-	 * @since SPSG_VERSION Takes the screen name (`$hook`).
-	 *
-	 * @param string $hook Screen name.
-	 */
-	public function admin_enqueue_styles( $hook = '' ) {
-		// The old antd admin's styles: nothing on the redesigned admin page
-		// uses them.
-		if ( AdminMenu::SCREEN_ID === $hook ) {
-			return;
-		}
-
-		$ftime          = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-custom-admin.css' ) );
-		$ftime_template = filemtime( PluginHelper::get_modules_path( 'bogo/assets/css/order-bogo-template.css' ) );
-
-		wp_enqueue_style(
-			'spsg-bogo-custom-admin-css',
-			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-custom-admin.css' ),
-			null,
-			$ftime
-		);
-
-		wp_enqueue_style(
-			'spsg-bogo-template-css',
-			PluginHelper::get_modules_url( 'bogo/assets/css/order-bogo-template.css' ),
-			null,
-			$ftime_template
-		);
 	}
 
 	/**
@@ -276,6 +201,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Product list for view.
+	 *
+	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function prodcut_list_for_view() {
 		$args                  = array(
@@ -297,6 +224,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Category list.
+	 *
+	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function category_list() {
 		$orderby    = 'name';
@@ -329,6 +258,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Order bogo list.
+	 *
+	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function order_bogo_list() {
 		$args_bogo = array(
