@@ -23,7 +23,7 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { assetUrl } from '@storegrowth/utilities';
+import { assetUrl, type Currency, formatPrice } from '@storegrowth/utilities';
 
 export type PreviewDevice = 'desktop' | 'tablet' | 'mobile';
 export type PreviewTheme = 'light' | 'dark';
@@ -57,6 +57,14 @@ export interface LivePreviewProps {
      * page's own heading (the Dokan vendor dashboard's `h3`).
      */
     headingTag?: 'h2' | 'h3' | 'h4';
+    /** The store's price format, for the mock page's prices (default `$49`). */
+    currency?: Currency;
+}
+
+/** The mock page's widget and its product's price, as the store shows it. */
+interface MockProps {
+    widget: ReactNode;
+    price: string;
 }
 
 const DEVICES: Array< {
@@ -96,8 +104,9 @@ function render( slot: Slot, state: PreviewState ): ReactNode {
  *
  * @param props        Props.
  * @param props.widget Widget node.
+ * @param props.price  Product price.
  */
-function MockProduct( { widget }: { widget: ReactNode } ) {
+function MockProduct( { widget, price }: MockProps ) {
     const copy =
         'w-full text-[14px] font-semibold leading-[1.3] text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]';
     const bar =
@@ -140,7 +149,7 @@ function MockProduct( { widget }: { widget: ReactNode } ) {
                             { __( 'reviews', 'storegrowth-sales-booster' ) }
                         </span>
                     </div>
-                    <p className={ copy }>$49</p>
+                    <p className={ copy }>{ price }</p>
                     <div className="flex w-full flex-col items-start gap-4">
                         <span className={ bar } />
                         <span className={ bar } />
@@ -175,8 +184,9 @@ function MockProduct( { widget }: { widget: ReactNode } ) {
  *
  * @param props        Props.
  * @param props.widget Widget node, drawn in every card.
+ * @param props.price  Product price.
  */
-function MockShop( { widget }: { widget: ReactNode } ) {
+function MockShop( { widget, price }: MockProps ) {
     return (
         <div className="grid w-full grid-cols-3 gap-4 bg-white p-8 group-data-[device=mobile]/frame:grid-cols-1 group-data-[device=mobile]/frame:p-5 group-data-[device=tablet]/frame:grid-cols-2 group-data-[theme=dark]/frame:bg-[#16181B]">
             { [ 0, 1, 2 ].map( ( index ) => (
@@ -198,7 +208,7 @@ function MockShop( { widget }: { widget: ReactNode } ) {
                         ) }
                     </p>
                     <p className="-mt-1 mb-0 text-[12px] text-[#8C9196] group-data-[theme=dark]/frame:text-[#9CA3AF]">
-                        $49
+                        { price }
                     </p>
                     { widget }
                 </div>
@@ -211,14 +221,17 @@ function MockShop( { widget }: { widget: ReactNode } ) {
  * Mock checkout page: the customer form on the left, the order summary on
  * the right (one line, subtotal, total), with the widget under the total
  * and the Place order button last, where a checkout box such as an order
- * bump sits. The columns stack in a narrow frame (a container query, not the
- * device: the preview column itself is narrow), the summary under the form,
- * as WooCommerce's checkout does.
+ * bump sits. The summary is as wide as a block checkout's (420px), so a box
+ * in it lays out as in a store. The columns stack where the frame can't hold
+ * both (a container query, not the device: the preview column itself is
+ * narrow), the summary under the form edge to edge, as WooCommerce's
+ * checkout does on a phone.
  *
  * @param props        Props.
  * @param props.widget Widget node, drawn in the order summary.
+ * @param props.price  Product price.
  */
-function MockCheckout( { widget }: { widget: ReactNode } ) {
+function MockCheckout( { widget, price }: MockProps ) {
     const heading =
         'm-0 text-[13px] font-semibold leading-[1.3] text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]';
     const input =
@@ -226,12 +239,9 @@ function MockCheckout( { widget }: { widget: ReactNode } ) {
     const row =
         'flex w-full items-center justify-between gap-3 text-[12px] leading-[1.4] text-[#1A1D20] group-data-[theme=dark]/frame:text-[#E7E9EC]';
 
-    // Side by side only where the frame is as wide as a real checkout's two
-    // columns need (the preview column is often narrower): the summary is
-    // then about as wide as it is in a store.
     return (
         <div className="@container w-full bg-white group-data-[theme=dark]/frame:bg-[#16181B]">
-            <div className="flex w-full flex-col items-stretch gap-6 px-4 py-6 @min-[640px]:flex-row @min-[640px]:items-start @min-[640px]:px-6 @min-[640px]:py-10">
+            <div className="flex w-full flex-col items-stretch gap-6 px-3 py-6 @min-[760px]:flex-row @min-[760px]:items-start @min-[760px]:px-6 @min-[760px]:py-10">
                 <div className="flex min-w-0 flex-1 flex-col gap-5">
                     <div className="flex w-full flex-col gap-2.5">
                         <p className={ heading }>
@@ -258,7 +268,7 @@ function MockCheckout( { widget }: { widget: ReactNode } ) {
                     </div>
                 </div>
 
-                <div className="flex w-full min-w-0 shrink-0 flex-col gap-3 rounded-[4px] border border-[#E0E0E0] p-4 @min-[640px]:w-[48%] group-data-[theme=dark]/frame:border-[#3A3E44]">
+                <div className="flex w-full min-w-0 shrink-0 flex-col gap-3 border-t border-[#E0E0E0] pt-4 @min-[760px]:w-[420px] @min-[760px]:rounded-[4px] @min-[760px]:border @min-[760px]:p-4 group-data-[theme=dark]/frame:border-[#3A3E44]">
                     <p className={ heading }>
                         { __( 'Order summary', 'storegrowth-sales-booster' ) }
                     </p>
@@ -278,20 +288,20 @@ function MockCheckout( { widget }: { widget: ReactNode } ) {
                                 ) }
                             </span>
                         </span>
-                        <span className="shrink-0">$49</span>
+                        <span className="shrink-0">{ price }</span>
                     </div>
                     <span className="h-px w-full bg-[#E0E0E0] group-data-[theme=dark]/frame:bg-[#3A3E44]" />
                     <div className={ row }>
                         <span>
                             { __( 'Subtotal', 'storegrowth-sales-booster' ) }
                         </span>
-                        <span>$49</span>
+                        <span>{ price }</span>
                     </div>
                     <div className={ cn( row, 'text-[14px] font-semibold' ) }>
                         <span>
                             { __( 'Total', 'storegrowth-sales-booster' ) }
                         </span>
-                        <span>$49</span>
+                        <span>{ price }</span>
                     </div>
                     { widget }
                     <div className="flex w-full items-center justify-center rounded-[4px] bg-[#1A1D20] py-2.5 group-data-[theme=dark]/frame:bg-[#E7E9EC]">
@@ -311,23 +321,23 @@ function MockCheckout( { widget }: { widget: ReactNode } ) {
  * @param props        Props.
  * @param props.layout Page layout.
  * @param props.widget Widget node.
+ * @param props.price  Product price.
  */
 function MockPage( {
     layout,
-    widget,
-}: {
+    ...props
+}: MockProps & {
     layout: NonNullable< LivePreviewProps[ 'layout' ] >;
-    widget: ReactNode;
 } ) {
     if ( layout === 'shop' ) {
-        return <MockShop widget={ widget } />;
+        return <MockShop { ...props } />;
     }
 
     if ( layout === 'checkout' ) {
-        return <MockCheckout widget={ widget } />;
+        return <MockCheckout { ...props } />;
     }
 
-    return <MockProduct widget={ widget } />;
+    return <MockProduct { ...props } />;
 }
 
 /**
@@ -342,6 +352,7 @@ function MockPage( {
  * @param props.footer         Under the frame.
  * @param props.minHeight      Page height behind a tall overlay.
  * @param props.headingTag     The "Preview" heading's element.
+ * @param props.currency       The store's price format.
  */
 export function LivePreview( {
     layout = 'product',
@@ -352,10 +363,12 @@ export function LivePreview( {
     footer,
     minHeight,
     headingTag: Heading = 'h2',
+    currency,
 }: LivePreviewProps ) {
     const [ device, setDevice ] = useState< PreviewDevice >( 'desktop' );
     const [ theme, setTheme ] = useState< PreviewTheme >( 'light' );
     const state = { device, theme };
+    const price = currency ? formatPrice( 49, currency ) : '$49';
 
     const bannerNode = banner ? render( banner, state ) : null;
 
@@ -448,6 +461,7 @@ export function LivePreview( {
                         <MockPage
                             layout={ layout }
                             widget={ widget ? render( widget, state ) : null }
+                            price={ price }
                         />
                         { bannerPosition === 'bottom' && bannerNode }
                     </div>

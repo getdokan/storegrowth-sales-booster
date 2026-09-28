@@ -264,6 +264,7 @@ function BumpEditor( { id }: { id: number | null } ) {
     const preview = loaded ? (
         <LivePreview
             layout="checkout"
+            currency={ bump.currency }
             widget={ <BumpPreview bump={ bump } /> }
             footer={
                 bump.taxAdjusted ? (

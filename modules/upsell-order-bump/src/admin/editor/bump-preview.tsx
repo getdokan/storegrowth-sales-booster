@@ -10,8 +10,9 @@
  * of Stock" in place of the (unticked) Select checkbox.
  *
  * As the classic box, the top and bottom margins sit on its rules; the
- * checkout block leaves them out. The title takes the product font size, as
- * the block sets it (the classic box leaves it to the theme).
+ * checkout block leaves them out. As the block, the title takes the product
+ * font size and the two prices stack. The row gap and title line height a
+ * store's theme supplies are set here.
  *
  * @since SPSG_VERSION
  */
@@ -228,7 +229,12 @@ export function BumpPreview( { bump }: BumpPreviewProps ) {
                     </svg>
                     { ' ' + offerLabel( values, price, currency ) }
                 </div>
-                <div className="product-image-and-title">
+                { /* The gap and title line height a store's theme gives
+                   the box (the admin's don't). */ }
+                <div
+                    className="product-image-and-title"
+                    style={ { gap: '5px' } }
+                >
                     <div className="offer-product-image-title">
                         <div className="offer-product-image">
                             <img src={ image } width="70" alt="" />
@@ -237,15 +243,18 @@ export function BumpPreview( { bump }: BumpPreviewProps ) {
                             className="offer-product-title"
                             style={ productText }
                         >
-                            <h3 style={ productText }>{ product.name }</h3>
+                            <h3 style={ { ...productText, lineHeight: 1.5 } }>
+                                { product.name }
+                            </h3>
                         </div>
                     </div>
+                    { /* One price a line, as the checkout block prints each
+                       in its own block (`RawHTML`'s `div`). */ }
                     <div className="offer-price" style={ productText }>
-                        <span style={ { textDecoration: 'line-through' } }>
+                        <div style={ { textDecoration: 'line-through' } }>
                             { money( product.regular ) }
-                        </span>
-                        { ' ' }
-                        <span>{ money( price ) }</span>
+                        </div>
+                        <div>{ money( price ) }</div>
                     </div>
                     <div className="product-checkbox-and-excitement-message">
                         { /* The storefront's own checkbox, unticked as a

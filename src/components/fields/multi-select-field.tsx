@@ -93,14 +93,26 @@ export function MultiSelectField( {
             return next;
         } );
 
-    // Names of saved values (once).
+    // Names of saved values (once); until they come, a chip reads
+    // "Loading…", not the raw id.
+    const [ resolving, setResolving ] = useState( () => {
+        return (
+            Boolean( resolve ) &&
+            value.some( ( item ) => {
+                return ! known.has( item );
+            } )
+        );
+    } );
     useEffect( () => {
         const missing = value.filter( ( item ) => ! known.has( item ) );
 
         if ( resolve && missing.length ) {
             resolve( missing )
                 .then( remember )
-                .catch( () => undefined );
+                .catch( () => undefined )
+                .finally( () => {
+                    setResolving( false );
+                } );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [] );
@@ -126,7 +138,11 @@ export function MultiSelectField( {
 
     const selected = value.map( ( item ) => ( {
         value: item,
-        label: known.get( item ) ?? String( item ),
+        label:
+            known.get( item ) ??
+            ( resolving
+                ? __( 'Loading…', 'storegrowth-sales-booster' )
+                : String( item ) ),
     } ) );
     const full = max !== undefined && value.length >= max;
 

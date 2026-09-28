@@ -236,6 +236,7 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
         <LivePreview
             // Under Dokan's page heading (an `h3`) on the vendor dashboard.
             headingTag={ vendor ? 'h4' : 'h2' }
+            currency={ offer.currency }
             widget={
                 /**
                  * Filters the BOGO offer preview, e.g. for pro to add its
