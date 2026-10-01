@@ -45,6 +45,7 @@ npm run makepot        # regenerate languages/storegrowth-sales-booster.pot
 npm run version        # replace SPSG_VERSION placeholders (bin/version-replace.sh)
 npm run archiver       # zip a distributable build into dist/ (bin/archiver.mjs; dist/ is git-ignored)
 npm run release        # composer no-dev + type-check + build + version + makepot + archiver
+npm run release:dev    # same zip without `version` (SPSG_VERSION placeholders stay) — a test build
 ```
 
 While a dev server (`npm run start`) is running, don't run `npm run build`; reload the site instead.

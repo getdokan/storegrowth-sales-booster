@@ -50,7 +50,8 @@ npm run build               # build all JS (one wp-scripts webpack build)
 npm run makepot             # regenerate languages/storegrowth-sales-booster.pot
 npm run version             # replace SPSG_VERSION -> package.json version
 npm run archiver            # zip a distributable build into dist/ (node bin/archiver.mjs; git-ignored)
-npm run release             # composer no-dev + build + version + makepot + archiver
+npm run release             # composer no-dev + type-check + build + version + makepot + archiver
+npm run release:dev         # same without `version` (placeholders stay) — a test zip
 ```
 
 `release` order matters: `version` runs after `build` so both source and built JS get the real number, before `makepot`/`archiver`.
