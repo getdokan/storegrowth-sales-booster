@@ -764,6 +764,12 @@ class OrderBogo implements HookRegistry {
 		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
 
 		if ( $product_bogo_settings ) {
+			// An offer type the cart doesn't apply isn't advertised either
+			// (the product offer still takes precedence, as in the cart).
+			if ( ! BogoValidator::has_known_offer_type( $product_bogo_settings ) ) {
+				return;
+			}
+
 			// Resolve the actual gift product. For a "Buy X Get Y" offer this is a
 			// different product; passing the current product id would render the wrong
 			// same-product template and hide the gift product on the product page.

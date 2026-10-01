@@ -15,10 +15,10 @@ them; #3–#5 had no remaining reference and are kept as reserved numbers.
 | 3–5 | — | Reserved (lost with the original file) |
 | 6 | Sales Notification: array `virtual_locations` fatals the storefront enqueue | Probably fixed — keep the regression spec |
 | 7 | Order Bump: needs the classic checkout | Resolved — the checkout block works; both checkouts covered (see #9) |
-| 8 | Direct Checkout / BOGO general: an array `data` fatals the legacy ajax save | Open — `test.fail` in `settings-malformed-payload.spec.ts` |
-| 9 | Order Bump: Checkout block off the store's checkout page can't be ticked | Open — `test.fail` in `storefront-order-bump.spec.ts` |
-| 10 | BOGO / Order Bump list: "Turn on" shows the empty state over existing records | Open — `test.fail` in `bogo-admin.spec.ts`, `order-bump-admin.spec.ts` |
-| 11 | BOGO REST: `bogo_deal_type` / `offer_type` accept any value | Open — `test.fail` in `bogo-rules.api.spec.ts` |
+| 8 | Direct Checkout / BOGO general: an array `data` fatals the legacy ajax save | Resolved — a 400, as the other invalid payloads |
+| 9 | Order Bump: Checkout block off the store's checkout page can't be ticked | Resolved — the block's data localises `bump_save_url` |
+| 10 | BOGO / Order Bump list: "Turn on" shows the empty state over existing records | Resolved — the list waits for the server's answer |
+| 11 | BOGO REST: `bogo_deal_type` / `offer_type` accept any value | Resolved — validated on create and update; unknown stored types aren't applied |
 
 ## #1 — Settings SPA had no index route
 
@@ -90,9 +90,10 @@ POST /wp-admin/admin-ajax.php
 action=spsg_direct_checkout_save_settings&_ajax_nonce=<nonce>&data[some_key]=value
 ```
 
-**Fix:** check `is_string( $_POST['data'] )` before decoding (or decode only a
-string). `settings-malformed-payload.spec.ts` marks the two cases `test.fail`;
-remove that once fixed.
+**Resolved.** Both handlers decode `data` only when it's a string; anything
+else falls into the existing `is_array()` check, which answers 400 "Invalid
+settings payload." (the success response is unchanged). The two
+`settings-malformed-payload.spec.ts` array cases are normal tests now.
 
 ## #9 — Order Bump: a Checkout block off the store's checkout page can't be ticked
 
@@ -108,10 +109,14 @@ Repro: classic `/checkout/` as the checkout page, a page with the Checkout
 block at `/e2e-block-checkout/`, a bump on product A; add A, open the block
 page, tick the bump.
 
-**Fix:** localise the data with the block's script (the integration's
-`get_script_data()`), or enqueue when the page has the `woocommerce/checkout`
-block. `storefront-order-bump.spec.ts` "[BUG] a Checkout block off the store
-checkout page" is `test.fail`.
+**Resolved.** `OrderBumpCheckoutIntegration::get_script_data()` (built wherever
+the Checkout block renders) localises `bump_save_url` (ajax URL + the
+`spsg_frontend_ajax_nonce` nonce) on the block's own script
+(`storegrowth-upsell-order-bump`) when there are bumps to draw. The classic
+path (`EnqueueScript::front_scripts()`, `spsg_order_bump_needs_front_assets`)
+is unchanged. PHPUnit `OrderBumpStorefrontTest::test_block_data_localizes_the_ajax_url_and_nonce`;
+"a Checkout block off the store checkout page" in `storefront-order-bump.spec.ts`
+is a normal test now.
 
 ## #10 — "Turn on" in the BOGO / Order Bump list shows the empty state over existing records
 
@@ -125,9 +130,12 @@ until a reload.
 Repro: a bump exists; turn the module off; open `#/upsell-order-bump`; click
 "Turn on Upsell Order Bump" (or BOGO's "Turn on BOGO").
 
-**Fix:** render the list only once the module isn't pending
-(`pending.includes( id )`), or reload the list after the status save.
-`[BUG]` tests in `bogo-admin.spec.ts` and `order-bump-admin.spec.ts` are `test.fail`.
+**Resolved.** Both lists (`AdminBogoList`, `OrderBumpList`) keep the "turned
+off" panel, its button disabled, while the module's status request is pending
+(`pending.includes( id )`), and mount the list only after the server has turned
+the module on. The optimistic status in `modules-context.tsx` is unchanged, so
+other toggles respond as before. The "Turn on" tests in `bogo-admin.spec.ts`
+and `order-bump-admin.spec.ts` are normal tests now.
 
 ## #11 — BOGO: `bogo_deal_type` and `offer_type` accept any value
 
@@ -139,7 +147,25 @@ at all: `"percentage"` is stored and the cart prices the gift FREE (only
 `discount` is discounted), so a typo gives the product away. Admin-only (the
 editor sends valid values); third-party REST clients are exposed.
 
-**Fix:** `'validate_callback' => 'rest_validate_request_arg'` (and an enum for
-`offer_type`: `free`, `discount`). `bogo-rules.api.spec.ts` "[BUG] an unknown deal
-type" is `test.fail`; `pricing-characterisation.spec.ts` records the
-`offer_type` behaviour.
+**Resolved.**
+
+- REST (`BogoController`): the allow-lists are `BogoValidator::DEAL_TYPES`
+  (`same`, `different`) and `OFFER_TYPES` (`free`, `discount`), the only values
+  lite's editor and product tab, pro 2.2.0 (`spsg_bogo_deal_types` adds `same`)
+  and the 1.x migration store. The create route validates `bogo_deal_type`
+  (`rest_validate_request_arg`) and `offer_type` (`validate_offer_type()`; an
+  empty one still answers `missing_offer_type`). The update route declares no
+  args, so `check_offer_rules()` checks the values an update *sends*: an offer
+  stored with another value can still be renamed (the update-only-what's-sent
+  rule). Errors are `rest_invalid_param` (400).
+- Storefront: the cart discounts `discount` and gives anything else free, so
+  `BogoValidator::is_bogo_applicable()` (and the product page's product-offer
+  path) now skip an offer whose type is neither (`has_known_offer_type()`; an
+  empty or missing type is the column default, `free`). Skipping it is the
+  safest choice: no gift is given away by mistake, and nothing is charged
+  that the shopper didn't see. Pro 2.2.0's own Buy X Get X path still reads
+  the type itself, but no new unknown value can be stored through REST.
+- PHPUnit: `BogoRestTest::test_deal_and_offer_types_are_validated`,
+  `BogoEligibilityTest::test_unknown_offer_type_is_not_applicable`. E2E:
+  `bogo-rules.api.spec.ts` (create and update cases), and
+  `pricing-characterisation.spec.ts` now records the refusal.

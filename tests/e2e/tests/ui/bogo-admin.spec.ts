@@ -162,11 +162,9 @@ test.describe('Admin · BOGO', { tag: '@ui' }, () => {
       expect((await (await api.get(`/wp-json/sales-booster/v1/modules/${BOGO}`)).json()).status).toBe(true);
     });
 
-    test('[BUG] "Turn on" lists the existing offers without a reload', async ({ page, api }) => {
-      // As Order Bump's (order-bump-admin.spec.ts): the module is marked on
-      // before the server answers, so the list's `GET …/bogo/offers` 404s and
-      // the empty state shows over existing offers until a reload.
-      test.fail(true, 'the list fetches before the module is on (optimistic status)');
+    test('"Turn on" lists the existing offers without a reload', async ({ page, api }) => {
+      // ISSUES #10, as Order Bump's (order-bump-admin.spec.ts): the list waits
+      // for the server to turn the module on before `GET …/bogo/offers`.
       await offerAB(api, { name_of_order_bogo: 'E2E Hidden Offer' });
       await setModuleStatus(api, BOGO, false);
       await gotoRecordList(page, '/bogo', LIST);

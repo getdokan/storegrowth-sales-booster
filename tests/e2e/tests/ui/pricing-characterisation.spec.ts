@@ -164,20 +164,27 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       );
     });
 
-    test('an unrecognised offer_type is accepted and gives the gift away free', async ({
+    test('an unrecognised offer_type is rejected, so no gift is given away', async ({
       page,
     }) => {
       const ids = await productIds(page);
 
-      // `offer_type` carries no enum: the REST controller only requires a
-      // non-empty string and runs sanitize_text_field over it. A value outside
-      // { free, discount } is therefore stored happily, and `OrderBogo` falls
-      // through its `=== 'discount'` check to the free default — so a merchant
-      // who saves an unexpected value gives the product away at full loss with
-      // no error anywhere.
-      //
-      // Recorded as current behaviour. Adding an enum would change this.
-      await createBogoOffer(page, {
+      // `offer_type` is `free` | `discount` (ISSUES #11). It used to be
+      // stored as sent, and `OrderBogo` fell through its `=== 'discount'`
+      // check to the free default — a typo gave the product away. The route
+      // now rejects it; an offer stored with such a value before isn't applied
+      // (`BogoValidator::has_known_offer_type()`, PHPUnit).
+      const res = await apiFetch(page, 'post', BOGO_BASE, {
+        name_of_order_bogo: 'E2E Pricing Offer',
+        box_border_style: 'solid',
+        box_border_color: '#000000',
+        box_top_margin: '10',
+        box_bottom_margin: '10',
+        discount_background_color: '#ff0000',
+        discount_text_color: '#ffffff',
+        discount_font_size: '14',
+        product_description_text_color: '#333333',
+        product_description_font_size: '12',
         offer_type: 'percentage', // not a value the cart understands
         discount_amount: 50,
         offered_products: [ids.trigger],
@@ -185,13 +192,13 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
         bogo_deal_type: 'different',
         minimum_quantity_required: 1,
       });
+      expect(res.status()).toBe(400);
+      expect((await res.json()).code).toBe('rest_invalid_param');
 
       await addToCartApi(page, ids.trigger, 1);
       const totals = await getCartTotals(page);
-      const gift = lineFor(totals, PRODUCTS.b.name);
 
-      expect(gift, 'the gift is still added').toBeTruthy();
-      expect(gift!.lineTotal, 'and it is free, not 50% off').toBe(0);
+      expect(lineFor(totals, PRODUCTS.b.name), 'no gift is added').toBeFalsy();
     });
 
     test('the gift quantity follows the trigger quantity on a single add', async ({ page }) => {

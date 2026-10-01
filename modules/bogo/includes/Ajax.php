@@ -204,8 +204,10 @@ class Ajax implements HookRegistry {
 		}
 
 		// The old admin's payload: JSON `{ bogo_general_settings_data: { … } }`.
+		// Anything but a string (e.g. `data[k]=v`) is an invalid payload, not
+		// a json_decode() TypeError.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded, then sanitized per field by the settings service.
-		$data = json_decode( wp_unslash( $_POST['data'] ), true );
+		$data = is_string( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : null;
 
 		if ( ! is_array( $data ) || ! isset( $data['bogo_general_settings_data'] ) || ! is_array( $data['bogo_general_settings_data'] ) ) {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );

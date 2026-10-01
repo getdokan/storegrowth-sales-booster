@@ -241,8 +241,13 @@ export default function OrderBumpList() {
         pending: pendingModules,
     } = useModules();
 
-    // Module off: its bumps can't be listed until it's on.
-    if ( ! getModule( MODULE_ID )?.status ) {
+    // Module off: its bumps can't be listed until it's on. Turning it on
+    // marks it on before the server answers, so the list also waits for
+    // that answer (its REST routes load with the module).
+    if (
+        ! getModule( MODULE_ID )?.status ||
+        pendingModules.includes( MODULE_ID )
+    ) {
         return (
             <FeatureLayout moduleId={ MODULE_ID }>
                 <div className="flex w-full flex-col">

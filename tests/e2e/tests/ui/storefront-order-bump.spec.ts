@@ -252,13 +252,12 @@ test.describe('Storefront · Upsell Order Bump', { tag: '@ui' }, () => {
     expect(lineFor(await getCartTotals(page), PRODUCTS.b.name), 'nothing was added').toBeFalsy();
   });
 
-  test('[BUG] a Checkout block off the store checkout page: ticking adds the bump', async ({ api, page }) => {
-    // `blocks.js` posts with `window.bump_save_url`, which EnqueueScript
-    // localises only where `is_checkout()` is true. A Checkout block on any
-    // other page (here /e2e-block-checkout/ while Checkout is the classic page)
-    // draws the bump, but ticking it throws "Cannot read properties of
-    // undefined (reading 'ajax_url_for_front')" and nothing is added.
-    test.fail(true, 'bump_save_url is not localised where the Checkout block is off the checkout page');
+  test('a Checkout block off the store checkout page: ticking adds the bump', async ({ api, page }) => {
+    // ISSUES #9: `blocks.js` posts with `window.bump_save_url`. The classic
+    // script localises it only where `is_checkout()` is true; the block's
+    // data (`OrderBumpCheckoutIntegration::get_script_data()`) now prints it
+    // on the block script, so a Checkout block on any other page (here
+    // /e2e-block-checkout/ while Checkout is the classic page) works too.
     await createOrderBump(api, { target_products: [PRODUCTS.a.id], offer_product_id: PRODUCTS.b.id });
     await addToCart(page, PRODUCTS.a.id);
     await gotoCheckout(page, STORE_PAGES.blockCheckout);

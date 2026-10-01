@@ -309,6 +309,43 @@ class OrderBumpStorefrontTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * E2E #9: the block's data carries what a tick posts with
+	 * (`bump_save_url` on the block script), so a Checkout block works on a
+	 * page `is_checkout()` doesn't match; without bumps nothing is printed.
+	 *
+	 * @return void
+	 */
+	public function test_block_data_localizes_the_ajax_url_and_nonce() {
+		$handle = 'storegrowth-upsell-order-bump';
+		wp_deregister_script( $handle );
+		wp_register_script( $handle, 'https://example.com/blocks.js', [], '1', true );
+
+		( new OrderBumpCheckoutIntegration() )->get_script_data();
+		$this->assertFalse( wp_scripts()->get_data( $handle, 'data' ), 'an empty cart has no bumps to tick' );
+
+		$target = $this->create_product();
+		$this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $this->create_product( 20 )->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$this->assertFalse( is_checkout() );
+		$this->assertCount( 1, ( new OrderBumpCheckoutIntegration() )->get_script_data() );
+
+		$data = (string) wp_scripts()->get_data( $handle, 'data' );
+		$this->assertMatchesRegularExpression( '/var bump_save_url = (\{.*\});/', $data );
+		preg_match( '/var bump_save_url = (\{.*\});/', $data, $matches );
+		$localized = json_decode( $matches[1], true );
+		$this->assertSame( admin_url( 'admin-ajax.php' ), $localized['ajax_url_for_front'] );
+		$this->assertSame( 1, wp_verify_nonce( $localized['ajd_nonce'], 'spsg_frontend_ajax_nonce' ) );
+
+		wp_deregister_script( $handle );
+	}
+
+	/**
 	 * Review #1: with taxes on (prices entered without tax, the cart shown
 	 * with tax) the box shows prices with tax, and the cart charges exactly
 	 * the bump price it shows.

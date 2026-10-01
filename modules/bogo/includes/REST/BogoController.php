@@ -533,6 +533,41 @@ class BogoController extends WP_REST_Controller {
             return null === $sent || (bool) array_intersect_key( $sent, array_flip( $keys ) );
         };
 
+        // The deal and offer types the storefront knows. The update route
+        // declares no args, so it's checked here too: the value an update
+        // sends (an offer stored with another value can still be renamed).
+        $enums = [
+            'bogo_deal_type' => BogoValidator::DEAL_TYPES,
+            'offer_type'     => BogoValidator::OFFER_TYPES,
+        ];
+        foreach ( $enums as $key => $allowed ) {
+            if ( ! $sends( [ $key ] ) ) {
+                continue;
+            }
+
+            $value = null === $sent ? ( $data[ $key ] ?? '' ) : $sent[ $key ];
+            $valid = rest_validate_value_from_schema(
+                $value,
+                [
+                    'type' => 'string',
+                    'enum' => $allowed,
+                ],
+                $key
+            );
+
+            if ( is_wp_error( $valid ) ) {
+                return new WP_Error(
+                    'rest_invalid_param',
+                    /* translators: %s: Parameter name. */
+                    sprintf( __( 'Invalid parameter(s): %s', 'storegrowth-sales-booster' ), $key ),
+                    [
+                        'status' => 400,
+                        'params' => [ $key => $valid->get_error_message() ],
+                    ]
+                );
+            }
+        }
+
         $amount = (float) ( $data['discount_amount'] ?? 0 );
         if ( $sends( [ 'offer_type', 'discount_amount' ] ) && 'discount' === ( $data['offer_type'] ?? '' ) && ( $amount <= 0 || $amount > 100 ) ) {
             return new WP_Error(
@@ -928,6 +963,33 @@ class BogoController extends WP_REST_Controller {
     }
 
     /**
+     * Validates the create route's `offer_type`: `free` or `discount`. Empty
+     * passes, for validate_and_normalize_data()'s `missing_offer_type`.
+     *
+     * @since SPSG_VERSION
+     *
+     * @param mixed           $value   The value to validate.
+     * @param WP_REST_Request $request The request object.
+     * @param string          $param   The parameter name.
+     *
+     * @return true|WP_Error
+     */
+    public function validate_offer_type( $value, $request, $param ) {
+        if ( '' === $value ) {
+            return true;
+        }
+
+        return rest_validate_value_from_schema(
+            $value,
+            [
+                'type' => 'string',
+                'enum' => BogoValidator::OFFER_TYPES,
+            ],
+            $param
+        );
+    }
+
+    /**
      * Custom validation for offered_products field.
      *
      * @since 2.0.0
@@ -1021,14 +1083,17 @@ class BogoController extends WP_REST_Controller {
             'bogo_deal_type' => [
                 'type'              => 'string',
                 'default'           => 'different',
-                'enum'              => [ 'same', 'different' ],
+                'enum'              => BogoValidator::DEAL_TYPES,
                 'description'       => __( 'Type of BOGO deal.', 'storegrowth-sales-booster' ),
+                'validate_callback' => 'rest_validate_request_arg',
                 'sanitize_callback' => 'sanitize_text_field',
             ],
             'offer_type' => [
                 'type'              => 'string',
                 'required'          => true,
                 'description'       => __( 'Offer types: free, discount.', 'storegrowth-sales-booster' ),
+                // free or discount; an empty one answers missing_offer_type.
+                'validate_callback' => [ $this, 'validate_offer_type' ],
                 'sanitize_callback' => 'sanitize_text_field',
             ],
             'discount_amount' => [

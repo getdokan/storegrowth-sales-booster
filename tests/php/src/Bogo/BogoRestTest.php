@@ -680,6 +680,57 @@ class BogoRestTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * E2E #11: `bogo_deal_type` is `same` or `different` and `offer_type`
+	 * `free` or `discount`, on a create and on an update that sends them
+	 * (an unknown offer type was stored, and the cart gave the gift free).
+	 * An offer stored with another value can still be renamed.
+	 *
+	 * @return void
+	 */
+	public function test_deal_and_offer_types_are_validated() {
+		$this->pro = true;
+
+		foreach ( [ [ 'bogo_deal_type' => 'other' ], [ 'offer_type' => 'percentage' ], [ 'offer_type' => [ 'free' ] ] ] as $values ) {
+			$response = $this->request( 'POST', self::BASE, $this->payload( $values ) );
+			$this->assertSame( 400, $response->get_status(), wp_json_encode( $values ) );
+			$this->assertSame( 'rest_invalid_param', $response->get_data()['code'], wp_json_encode( $values ) );
+		}
+		$this->assertSame( [], BogoDataManager::get_bogo_offers( [] ), 'nothing is stored' );
+
+		// Empty keeps its own message.
+		$this->assertSame( 'missing_offer_type', $this->request( 'POST', self::BASE, $this->payload( [ 'offer_type' => '' ] ) )->get_data()['code'] );
+
+		$same = $this->request( 'POST', self::BASE, $this->payload( [ 'bogo_deal_type' => 'same' ] ) );
+		$this->assertSame( 201, $same->get_status() );
+		$this->assertSame( 'same', $same->get_data()['bogo_deal_type'] );
+
+		$id = $this->request(
+			'POST',
+			self::BASE,
+			$this->payload(
+				[
+					'offer_type'      => 'discount',
+					'discount_amount' => 50,
+				]
+			)
+		)->get_data()['id'];
+
+		$this->assertSame( 'rest_invalid_param', $this->request( 'PUT', self::BASE . '/' . $id, [ 'offer_type' => 'percentage' ] )->get_data()['code'] );
+		$this->assertSame( 'rest_invalid_param', $this->request( 'PUT', self::BASE . '/' . $id, [ 'bogo_deal_type' => 'other' ] )->get_data()['code'] );
+		$offer = BogoDataManager::get_bogo_offer( $id );
+		$this->assertSame( 'discount', $offer['offer_type'], 'a rejected update changes nothing' );
+		$this->assertSame( 'different', $offer['bogo_deal_type'] );
+
+		// Stored with an unknown type (before the check): a rename passes,
+		// and sending a known type fixes it.
+		$legacy = $this->create_global_offer( [ 'offer_type' => 'percentage' ] );
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $legacy, [ 'name_of_order_bogo' => 'Renamed' ] )->get_status() );
+		$this->assertSame( 'percentage', BogoDataManager::get_bogo_offer( $legacy )['offer_type'] );
+		$this->assertSame( 200, $this->request( 'PUT', self::BASE . '/' . $legacy, [ 'offer_type' => 'free' ] )->get_status() );
+		$this->assertSame( 'free', BogoDataManager::get_bogo_offer( $legacy )['offer_type'] );
+	}
+
+	/**
 	 * 10d: the offer price is never negative, and a discount out of 0–100
 	 * doesn't mark the price up.
 	 *

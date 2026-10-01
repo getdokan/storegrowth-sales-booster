@@ -60,8 +60,6 @@ test.describe('Admin · settings survive a malformed payload', { tag: '@ui' }, (
     field: string;
     key: string;
     value?: unknown;
-    /** Known bug: an array `field` is a PHP fatal (ISSUES.md #8). */
-    arrayFatal?: boolean;
   };
   const jsonHandlers: JsonHandler[] = [
     {
@@ -85,7 +83,6 @@ test.describe('Admin · settings survive a malformed payload', { tag: '@ui' }, (
       field: 'data',
       key: 'buy_now_button_setting',
       value: 'default-add-to-cart',
-      arrayFatal: true,
     },
     {
       label: 'BOGO general',
@@ -94,7 +91,6 @@ test.describe('Admin · settings survive a malformed payload', { tag: '@ui' }, (
       field: 'data',
       key: 'offer_remove_from_cart',
       value: true,
-      arrayFatal: true,
     },
   ];
 
@@ -116,11 +112,8 @@ test.describe('Admin · settings survive a malformed payload', { tag: '@ui' }, (
     });
 
     test(`${h.label} refuses ${h.field} sent as an array (no PHP fatal)`, async ({ page, api }) => {
-      // ISSUES.md #8: json_decode() on the array throws a TypeError → HTTP 500.
-      test.fail(
-        h.arrayFatal === true,
-        `ISSUES.md #8: ${h.save} fatals on an array ${h.field}; remove this line once fixed`,
-      );
+      // ISSUES.md #8 (resolved): Direct Checkout's and BOGO's handlers threw a
+      // json_decode() TypeError (HTTP 500) on an array; now a 400.
       await setModuleStatus(api, h.moduleId, true);
       const value = h.value ?? `survives-${h.moduleId}`;
       await resetModuleSettings(api, h.moduleId, { [h.key]: value });

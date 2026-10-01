@@ -160,6 +160,37 @@ if ( class_exists( 'WC_Product_Simple' ) ) {
 		$product->set_status( 'publish' );
 		$product->save();
 	}
+
+	/* The specs use the ids in data/products.ts (PRODUCTS.*.id) and its
+	 * UNCATEGORIZED_CATEGORY_ID directly: fail here, loudly, when the site
+	 * gave them others (e.g. posts created before the seed), rather than let
+	 * specs fail later on the wrong products. Keep the two lists in sync. */
+	$expected_ids = [
+		'e2e-test-product-a' => 11,
+		'e2e-test-product-b' => 12,
+		'e2e-sale-product-c' => 13,
+	];
+	$wrong_ids    = [];
+	foreach ( $expected_ids as $slug => $expected_id ) {
+		$post      = get_page_by_path( $slug, OBJECT, 'product' );
+		$actual_id = $post ? (int) $post->ID : 0;
+		if ( $actual_id !== $expected_id ) {
+			$wrong_ids[] = sprintf( '%s is #%d, data/products.ts expects #%d', $slug, $actual_id, $expected_id );
+		}
+	}
+	$category_id = (int) get_option( 'default_product_cat', 0 );
+	if ( 15 !== $category_id ) {
+		$wrong_ids[] = sprintf( 'the default product category is #%d, data/products.ts expects #15', $category_id );
+	}
+	if ( $wrong_ids ) {
+		$message = "Seeded ids don't match tests/e2e/data/products.ts:\n  " . implode( "\n  ", $wrong_ids )
+			. "\nProvision a fresh site (docker compose -p <project> down -v, then bin/setup-docker.sh) or update data/products.ts.";
+		if ( class_exists( 'WP_CLI' ) ) {
+			WP_CLI::error( $message );
+		}
+		fwrite( STDERR, $message . "\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		exit( 1 );
+	}
 }
 
 /* -- Seed the `e2e10` coupon (10% off) the Fly Cart coupon test applies. ------ */

@@ -63,15 +63,30 @@ test.describe('API · BOGO rules', () => {
       });
     }
 
-    test('[BUG] an unknown deal type → rest_invalid_param', async ({ api }) => {
-      // The route declares `enum: [same, different]` for `bogo_deal_type` but
-      // gives it a sanitize_callback and no validate_callback, so WordPress
-      // never checks the enum: 'other' is stored (201) and the storefront reads
-      // it as Buy X Get Y. Expected to fail until the route validates it.
-      test.fail(true, 'bogo_deal_type enum is not enforced (BogoController args)');
-      const res = await create(api, await validBody(api, { bogo_deal_type: 'other' }));
-      expect(res.status, JSON.stringify(res.json)).toBe(400);
-      expect(res.code).toBe('rest_invalid_param');
+    // ISSUES #11: `bogo_deal_type` is `same` | `different`, `offer_type`
+    // `free` | `discount` (an unknown offer type was stored, and the cart gave
+    // the gift free).
+    for (const [what, overrides] of [
+      ['an unknown deal type', { bogo_deal_type: 'other' }],
+      ['an unknown offer type', { offer_type: 'percentage' }],
+    ] as [string, Record<string, unknown>][]) {
+      test(`${what} → rest_invalid_param`, async ({ api }) => {
+        const res = await create(api, await validBody(api, overrides));
+        expect(res.status, JSON.stringify(res.json)).toBe(400);
+        expect(res.code).toBe('rest_invalid_param');
+      });
+    }
+
+    test('an update that sends an unknown type → rest_invalid_param; the offer is unchanged', async ({ api }) => {
+      const offer = await createBogoOffer(api, { offered_products: [PRODUCTS.a.id], get_different_product_field: PRODUCTS.b.id });
+      for (const data of [{ offer_type: 'percentage' }, { bogo_deal_type: 'other' }]) {
+        const res = await api.put(`${BASE}/${offer.id}`, { data });
+        expect(res.status()).toBe(400);
+        expect((await res.json()).code).toBe('rest_invalid_param');
+      }
+      const stored = await (await api.get(`${BASE}/${offer.id}`)).json();
+      expect(stored.offer_type).toBe(offer.offer_type);
+      expect(stored.bogo_deal_type).toBe(offer.bogo_deal_type);
     });
 
     test('a missing name key is WordPress\'s required-param error', async ({ api }) => {

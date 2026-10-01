@@ -20,3 +20,4 @@ lib/packages/
 
 # wp-env
 .wp-env.override.json
+.playwright-mcp

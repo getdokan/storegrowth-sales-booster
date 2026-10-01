@@ -1,5 +1,7 @@
 // Seeded by bin/provision-site.php. `id` is what a fresh stack gets (WordPress
-// core install + WooCommerce pages, then these three in order); prefer the slug
+// core install + WooCommerce pages, then these three in order); provisioning
+// fails when the site gives them (or the category below) other ids, so keep
+// its `$expected_ids` in sync with these. Prefer the slug
 // with `productIdBySlug(api, slug)` (helpers/rest.ts) where an id might differ
 // (e.g. a site that wasn't built by bin/setup-docker.sh).
 export const PRODUCTS = {

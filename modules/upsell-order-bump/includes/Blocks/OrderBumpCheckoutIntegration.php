@@ -104,6 +104,36 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 			];
 		}
 
+		if ( $data ) {
+			$this->localize_ajax_data();
+		}
+
 		return $data;
+	}
+
+	/**
+	 * What the block posts a tick with (`window.bump_save_url`: the ajax URL
+	 * and the frontend nonce), on the block's own script. The classic
+	 * checkout script (`EnqueueScript::front_scripts()`) prints it only where
+	 * `is_checkout()` is true; a Checkout block can be on any page, and its
+	 * data is built wherever it renders.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	protected function localize_ajax_data(): void {
+		if ( ! wp_script_is( $this->script_key, 'registered' ) ) {
+			return;
+		}
+
+		wp_localize_script(
+			$this->script_key,
+			'bump_save_url',
+			[
+				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
+				'ajd_nonce'          => wp_create_nonce( 'spsg_frontend_ajax_nonce' ),
+			]
+		);
 	}
 }

@@ -137,18 +137,15 @@ test.describe('Admin · Upsell Order Bump', { tag: '@ui' }, () => {
       await turnOn.click();
       expect((await saved).ok()).toBeTruthy();
       expect((await (await api.get(`/wp-json/sales-booster/v1/modules/${OB}`)).json()).status).toBe(true);
-      // After a reload the list is there (see the [BUG] test for without one).
+      // After a reload the list is there too.
       await page.reload();
       await expect(recordRow(page, bump.name)).toBeVisible();
     });
 
-    test('[BUG] "Turn on" lists the existing bumps without a reload', async ({ page, api }) => {
-      // `setModuleStatus()` (modules-context.tsx) marks the module on before the
-      // server answers, so the list mounts and asks `GET …/order-bumps` while
-      // the module (and its routes) are still off: 404, the toast "The order
-      // bumps could not be loaded." and the empty state over existing bumps.
-      // BOGO's list has the same race.
-      test.fail(true, 'the list fetches before the module is on (optimistic status)');
+    test('"Turn on" lists the existing bumps without a reload', async ({ page, api }) => {
+      // ISSUES #10: `setModuleStatus()` marks the module on before the server
+      // answers; the list waits for that answer (the module's `pending`)
+      // before it asks `GET …/order-bumps`, whose route loads with the module.
       const bump = await bumpAB(api);
       await setModuleStatus(api, OB, false);
       await gotoRecordList(page, '/upsell-order-bump', LIST);

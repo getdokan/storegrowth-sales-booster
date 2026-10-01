@@ -314,8 +314,10 @@ function AdminBogoList() {
         return <Navigate to="/settings?module=bogo" replace />;
     }
 
-    // Module off: its offers can't be listed until it's on.
-    if ( ! getModule( 'bogo' )?.status ) {
+    // Module off: its offers can't be listed until it's on. Turning it on
+    // marks it on before the server answers, so the list also waits for
+    // that answer (its REST routes load with the module).
+    if ( ! getModule( 'bogo' )?.status || pendingModules.includes( 'bogo' ) ) {
         return (
             <FeatureLayout moduleId="bogo">
                 <div className="flex w-full flex-col">
