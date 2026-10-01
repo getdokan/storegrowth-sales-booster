@@ -13,9 +13,10 @@ The end-to-end + API test suite for the StoreGrowth Sales Booster WooCommerce pl
 - **Two Playwright projects, one config** (`playwright.config.ts`): `ui` (browser/E2E) and `api` (browserless REST). A `setup` project logs in once and persists the session so no UI test pays the login cost.
 - **Layout** (all under `tests/e2e/`):
   - `fixtures/test.ts` — the custom `test`/`expect` and the `api` fixture. **Every spec imports `{ test, expect }` from here, never from `@playwright/test` directly.**
-  - `helpers/` — `env.ts` (the *only* place that reads `process.env`), `wp-admin.ts` (`login`, `gotoAdminPage`), `modules.ts` (`gotoModules`, `setModuleState`, page slugs).
-  - `data/` — stable ids/names (`data/modules.ts`).
-  - `tests/auth.setup.ts` — authenticates once → writes `.auth/admin.json`.
+  - `helpers/` — `env.ts` (the *only* place that reads `process.env`), `wp-admin.ts` (`login`, `gotoAdminPage`), `modules.ts` (the app page: `gotoDashboard`, `gotoModules`, `gotoAppRoute`, `moduleToggle`, `setModuleState`), `settings-ui.ts` (generated settings pages: `gotoSettings`, `openTab`, `settingsField`, `setField`, `saveSettings`, `resetSettings`), `rest.ts` (REST state: `setModuleStatus`, `getModuleSettings`, `saveModuleSettings`, `resetModuleSettings`, `hasPro`, `productIdBySlug`), `records.ts` (BOGO offers / order bumps over REST with valid payloads), `record-ui.ts` (record lists and editors: rows, row actions, delete dialog, `pickProduct`, `saveRecord`), `wp-cli.ts` (raw option reads/writes in the stack), `storefront.ts`, `cart.ts`, `wc.ts`, `tax.ts`.
+  - `data/` — stable ids/names (`data/modules.ts`, `data/products.ts`: seeded products 11/12/13, checked by provisioning).
+  - `tests/auth.setup.ts` — authenticates once → writes `.auth/admin-<port>.json` (logs in again when the cached session is stale).
+  - `ISSUES.md` — plugin behaviours and bugs found by the suite; specs cite them as `ISSUES #n`.
   - `tests/ui/*.spec.ts` — browser tests (reuse admin session).
   - `tests/api/*.api.spec.ts` — REST tests (App Password / HTTP Basic).
 
@@ -24,9 +25,9 @@ The end-to-end + API test suite for the StoreGrowth Sales Booster WooCommerce pl
 From `tests/e2e/` (Node 20+):
 
 ```bash
+bash bin/setup-docker.sh          # Docker stack on :8888, writes .env (never overwrites one)
 npm install
 npm run install:browsers          # playwright install --with-deps chromium
-cp .env.example .env              # then fill credentials + App Password
 
 npm test                          # everything (setup → ui → api)
 npm run test:ui                   # UI/E2E only
@@ -39,37 +40,50 @@ npm run report                    # open last HTML report
 
 Single test while iterating: `npx playwright test tests/ui/modules.spec.ts -g "can be activated"`.
 
-## Test environment (wp-env)
+## Test environment (Docker stack)
 
-`.wp-env.json` (in `tests/e2e/`) provisions a disposable WP + WooCommerce + this plugin. Run it **from `tests/e2e/`**:
+`docker-compose.yml` + `bin/setup-docker.sh` provision WordPress + WooCommerce + Storefront + this plugin (bind-mounted working tree) via the shared `bin/provision-site.php` (also used by CI's wp-env). The plugin's built assets come from the working tree: run `npm run start` (or a build) in the plugin root first; a stale `build/` / `modules/*/assets/js/admin.js` means stale UI in the tests.
 
-```bash
-npx wp-env start
-# App Password for the api project:
-npx wp-env run cli wp user application-password create admin "local-e2e" --porcelain
-```
-
-Put the result into `.env` (`WP_APP_PASSWORD` — the spaces are part of the value). `BASE_URL` defaults to `http://localhost:8888` (the wp-env port). All config flows through `helpers/env.ts`; add new config there, never read `process.env` in a spec.
+- **Lite by default:** pro is not active, so `has_pro()` is honestly false. Pro stack: set `PRO_DIR=… LICENSE_KEY=…` for setup (adds `docker-compose.pro.yml`). Pro-only cases `test.skip( ! await hasPro( api ) )`.
+- **Parallel stacks** (one run per stack — module state is one shared option, `workers: 1`):
+  ```bash
+  E2E_PORT=8890 E2E_PROJECT=sg-e2e-b2 bash bin/setup-docker.sh   # writes .env.sg-e2e-b2
+  E2E_ENV_FILE=.env.sg-e2e-b2 HEADLESS=1 npx playwright test <files>
+  docker compose -p sg-e2e-b2 down -v
+  ```
+- **Debug log:** `bin/logs/<container>.log`.
+- All config flows through `helpers/env.ts`; add new config there, never read `process.env` in a spec. `.wp-env.json` stays as an alternative (CI uses it).
 
 ## Writing a UI test
 
 ```ts
 import { test, expect } from '../../fixtures/test';      // never @playwright/test
-import { gotoAdminPage } from '../../helpers/wp-admin';
+import { resetModuleSettings } from '../../helpers/rest';
+import { gotoSettings, setField, saveSettings } from '../../helpers/settings-ui';
 
-test.describe('Admin · <area>', () => {
-  test('does the thing', async ({ page }) => {
-    await gotoAdminPage(page, 'spsg-settings');           // ?page= slug
-    await expect(page.locator('#sbooster-settings-page')).toBeVisible();
+test.describe('Stock Bar · settings', () => {
+  test.beforeEach(async ({ api }) => {
+    await resetModuleSettings(api, 'stock-bar');           // state via REST, never via the UI
+  });
+
+  test('saves a colour', async ({ page }) => {
+    await gotoSettings(page, 'stock-bar', 'design');       // #/settings?module=stock-bar&tab=design
+    // … setField / setColor …, then:
+    await saveSettings(page, 'stock-bar');                 // waits for POST sales-booster/v1/settings/stock-bar
   });
 });
 ```
 
 Rules:
-- **Reuse the session** — UI tests run under the `ui` project with `storageState: .auth/admin.json`; never call `login()` inside a test.
-- **Role/text locators, auto-waiting** — prefer `getByRole`, `getByText`, `getByLabel` over CSS/XPath. The admin UI is **Ant Design React**: toggles are `role="switch"` with `aria-checked`; the settings/modules apps are HashRouter SPAs that mount into `#sbooster-settings-page` / `#sbooster-modules-page` — assert that container is visible before interacting.
-- **Idempotent + leave-as-found** — mutating state (toggling a module, saving settings) must restore the original state at the end. See `setModuleState()` (idempotent, no-op when already in target state) and the modules spec (enable → assert → disable). Persistence is via admin-ajax; wait for the UI to settle (`expect(toggle).toHaveAttribute('aria-checked', …)`), not a fixed timeout.
-- **Reach for `helpers/`** before inlining navigation/state logic. New cross-spec navigation or state helpers go in `helpers/`; new ids/names go in `data/`.
+- **The admin is one React app** (`admin.php?page=storegrowth#/<route>`, plugin-ui): `#/dashboard`, `#/modules`, `#/settings?module=<id>&tab=<tab>` (pages generated from each module's PHP schema), `#/bogo`, `#/bogo/<id>`, `#/bogo/messages`, `#/upsell-order-bump`, `#/upsell-order-bump/<id>`. The old `spsg-settings` / `spsg-modules` slugs only redirect there.
+- **Reuse the session** — UI tests run under the `ui` project with the setup's storage state; never call `login()` inside a test.
+- **Role/text locators, auto-waiting** — prefer `getByRole`, `getByText`, `getByLabel`. Module switches are `getByRole('switch', { name: 'Enable <Name>' })`; settings fields are found by label (switch cards by label + help, `fieldName()`); pro fields carry " Pro" in their accessible name and are disabled on lite.
+- **Settings pages:** Save saves the open tab only (save before switching tabs); Reset fills defaults and persists only on Save; pro-only tabs have no Save bar on lite; gated modules (`bogo`, `floating-notification-bar`, `progressive-discount-banner`) stay unpublished until their first save (`resetModuleSettings` counts).
+- **Settings engine behaviour to assert, not fight:** unknown keys are dropped, saves merge into the stored option, one invalid value rejects the whole save (400), a pro-only option sent without pro is ignored (default kept).
+- **State through REST** (`helpers/rest.ts`, `helpers/records.ts`): reset in `beforeEach`, clean up records you create. BOGO Buy X Get Y needs `offered_products` + a different `get_different_product_field`; an order bump needs `offer_product_id` + `target_type` and targets. Lite caps both at 2 (403 `salesbooster_limit_exceeded`).
+- **Storefront styles are CSS variables** in enqueued stylesheets — assert computed styles, not inline `style`.
+- **Idempotent + leave-as-found** — restore what you change (`setModuleState()` is a no-op when already in the target state). Wait on the request or the UI state, never a fixed timeout.
+- **Reach for `helpers/`** before inlining navigation/state logic. New cross-spec helpers go in `helpers/`; new ids/names go in `data/`.
 
 ## Writing an API test
 
@@ -86,34 +100,37 @@ test.describe('API · <area>', () => {
 ```
 
 Rules:
-- The **`api` fixture** (in `fixtures/test.ts`) is an authenticated `APIRequestContext` — HTTP Basic from a WP **Application Password**, scoped per-test so state never leaks. Use it for fast, browserless checks.
-- To test **anonymous / unauthorized** behavior, build a fresh context with no `Authorization` header (`playwright.request.newContext({ baseURL: env.baseURL })`) and assert `401`/`403` — see `tests/api/auth.api.spec.ts`.
-- Plugin REST namespaces: **`sales-booster/v1`** (product picker, BOGO offers) and **`spsg/v1`** (upsell order-bumps). Every plugin route requires `manage_options` — assert both the happy path *and* that an anonymous caller is rejected. Full route list in `reference/surface-map.md`.
+- The **`api` fixture** (in `fixtures/test.ts`) is an authenticated `APIRequestContext` — HTTP Basic (the stack's WP-API Basic-Auth plugin, or an Application Password), scoped per-test, no cookies, so it works in the `ui` project too. Use it for fast, browserless checks and for test setup.
+- To test **anonymous / unauthorized** behavior, build a fresh context with no `Authorization` header (`playwright.request.newContext({ baseURL: env.baseURL })`) and assert `401`/`403` — see `tests/api/auth.api.spec.ts`. WordPress validates args before permissions, so an anonymous call with an invalid body gets 400.
+- Plugin REST namespace: **`sales-booster/v1`** — modules, settings (`settings/{module}`, `admin/settings`), products, BOGO offers (+ `/editor`, `/batch`, `/{id}/status`, `/vendor`), category messages, order bumps (also kept under the old `spsg/v1`). Admin routes require `manage_options` — assert the happy path *and* that an anonymous caller is rejected. Contract: `docs/redesign/rest-api.md`.
 - Spec files end in `.api.spec.ts` and live in `tests/api/` (the `api` project's `testDir`).
 
 ## Asserting plugin functionality
 
-`reference/surface-map.md` is the authoritative map: admin page slugs + React mount ids, every REST route + namespace + capability, every `wp_ajax_*` action + nonce, every `spsg_*` option key, all 10 modules with their storefront injection hooks and DOM markers, and the module enable/disable mechanism (`spsg_active_module_ids`, `update_module_status` ajax, `spsg_module_activated/deactivated`).
+`reference/surface-map.md` maps the storefront (module injection hooks and DOM markers), ajax actions and options. Parts of it describe the legacy admin (`#sbooster-*` mounts, admin-ajax saves) — for the admin, trust the redesign docs (`docs/redesign/`, `docs/settings-pages.md`) and the live app over the map.
 
-Coverage priorities, in order:
-1. **Admin surface** — settings & modules SPAs mount; module catalog renders; a module can be toggled and the state persists (highest signal, already partly covered).
-2. **API surface** — REST health (namespaces present), authed access resolves to an admin, plugin endpoints list/CRUD, anonymous calls rejected.
-3. **Storefront behavior** — activate a module, visit the storefront page that exercises it (shop / single product / cart / checkout — see the map), assert its DOM marker appears; deactivate, assert it's gone. This is the strongest end-to-end signal and the thinnest current coverage.
+What the suite covers (keep it that way when changing a module):
+1. **Admin shell** — dashboard, modules page and toggles, legacy slug redirects, every settings page mounts (`admin-menu`, `modules`, `settings` specs).
+2. **Settings pages** — `settings-pages.spec.ts`: every tab of every module page saves, persists across reload and REST, resets; pro controls locked on lite. Legacy ajax save handlers stay covered (`settings-persistence`, `settings-malformed-payload`) — ADR-004.
+3. **Records** — BOGO and Order Bump lists, editors, rules and caps (`bogo-admin`, `order-bump-admin`, `*-rules.api`).
+4. **Storefront** — one `storefront-<module>.spec.ts` per module: positive and negative, Order Bump on classic and block checkout, pricing characterisation.
+5. **Migrations** — PHPUnit (`tests/php`) plus `tests/compat/migrations.php` (`wp eval-file`).
+Not covered: the Dokan vendor dashboard (no Dokan on the stack).
 
-**Verify storefront selectors before asserting them.** The frontend CSS-class markers in the surface map were read from templates and are mostly reliable, but some are inferred — confirm against the live storefront before hard-coding.
+**Verify selectors against the live UI before asserting them** — use whatever browser tooling is available (Playwright MCP, `npm run codegen <url>`, or a quick Playwright script), then copy the confirmed role/label into the spec.
 
-**When you need a browser to inspect/verify the UI, use the Playwright MCP plugin first.** Load it before any browser call (its tools are deferred): `ToolSearch` with `select:mcp__plugin_playwright_playwright__browser_navigate,mcp__plugin_playwright_playwright__browser_snapshot,mcp__plugin_playwright_playwright__browser_click,mcp__plugin_playwright_playwright__browser_evaluate` (add `browser_take_screenshot`, `browser_fill_form`, etc. to the same call as needed). Drive the page with these `mcp__plugin_playwright_playwright__*` tools — `browser_navigate` to the URL, `browser_snapshot` to read the accessibility tree / real selectors, `browser_evaluate` to query the DOM — then copy the confirmed selectors into the spec. Only fall back to `npm run codegen <url>` or the `mcp__claude-in-chrome__*` tools if the Playwright MCP plugin is unavailable.
-
-Storefront tests usually need a published product and items in the cart — seed via `wp-env run cli wp wc ...` or the WC REST API in a setup step; document any new seed data in `data/`.
+Storefront tests need published products — provisioning seeds them (`data/products.ts`) and fails loudly if their ids drift; add new seed data in `bin/provision-site.php` (after the products) and `data/`.
 
 ## CI
 
-`.github/workflows/e2e.yml` runs on every **published release** (and on demand): builds the plugin (composer + `npm run build`), boots `wp-env`, generates an App Password, runs the suite, uploads the HTML report, JUnit XML, and failure traces/screenshots as artifacts. CI-only hardening lives in `playwright.config.ts`: `forbidOnly`, `retries: 2`, `workers: 2`, `trace: 'on-first-retry'`, plus the `github` reporter. Keep tests deterministic and parallel-safe — files run `fullyParallel`. Never commit `.only`. A failing test fails the pipeline.
+`.github/workflows/e2e.yml` runs on pull requests, pushes to the main branches, published releases and on demand: one job builds the plugin and shares the output; an `api` shard and three `ui` shards each boot their own `wp-env` site (shared `bin/provision-site.php`) and run a slice; a report job merges the blobs into one HTML report. Pro activates only when the `SG_LICENSE_KEY` secret is set. CI hardening in `playwright.config.ts`: `forbidOnly`, `retries: 1`, `workers: 1` (one site can't run workers in parallel — module state is one option), traces on retry, `github` reporter. Never commit `.only`. A failing test fails the pipeline.
 
 ## Gotchas
 
 - Import `{ test, expect }` from `fixtures/test` — importing from `@playwright/test` silently drops the `api` fixture and shared setup.
 - The plugin **no-ops without WooCommerce**; the test env must have WC active (`.wp-env.json` installs it).
-- Module toggles persist to the single `spsg_active_module_ids` option and affect the whole site — parallel UI tests mutating the *same* module will race. Restore state, and prefer distinct modules per spec when toggling.
-- `headless: false` is the default in `playwright.config.ts`; CI overrides via the `ui` project device. Set `--headed`/headless intentionally when debugging.
+- Module toggles persist to the single `spsg_active_module_ids` option and affect the whole site — never run two Playwright processes against the same stack; use parallel stacks instead. Never `pkill` Playwright globally: other stacks' runs die too.
+- The stack runs the working tree live: editing plugin PHP while a run is in progress can produce transient fatals. Re-run before blaming a test.
+- Headed by default locally; `HEADLESS=1` (and CI) runs headless.
+- Known bugs a spec documents before they're fixed use `test.fail` with an `ISSUES #n` reference; flip to a normal test when the fix lands.
 - App Password values contain spaces — keep them quoted/unmodified in `.env`.
