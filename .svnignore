@@ -5,6 +5,7 @@
 .distignore
 node_modules
 bin
+dist
 .claude
 /modules/**/node_modules
 /modules/**/src

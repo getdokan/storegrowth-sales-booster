@@ -13,6 +13,8 @@ modules/*/assets/js/*.asset.php
 modules/*/assets/js/*.js.map
 lib/packages/
 .vscode/
+# Release zips (bin/archiver.mjs).
+/dist/
 
 
 # PHPUnit

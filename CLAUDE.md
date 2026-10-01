@@ -43,7 +43,7 @@ npm run lint:js        # src, modules/*/src, integrations/src
 npm run check:hooks    # every hook in tests/compat/php-hooks-baseline.txt still fires
 npm run makepot        # regenerate languages/storegrowth-sales-booster.pot
 npm run version        # replace SPSG_VERSION placeholders (bin/version-replace.sh)
-npm run archiver       # zip a distributable build (bin/archiver.mjs)
+npm run archiver       # zip a distributable build into dist/ (bin/archiver.mjs; dist/ is git-ignored)
 npm run release        # composer no-dev + type-check + build + version + makepot + archiver
 ```
 

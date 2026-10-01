@@ -31,6 +31,8 @@ const EXCLUDED = [
   "CLAUDE.md",
   "composer.json",
   "composer.lock",
+  // Where the zips are written; never zip earlier zips.
+  "dist",
   "docs",
   "node_modules",
   "package-lock.json",
@@ -62,6 +64,11 @@ const EXCLUDED = [
 function isExcluded(name) {
   return EXCLUDED.includes(name);
 }
+
+/**
+ * Output directory for the zips: `<plugin root>/dist` (git-ignored).
+ */
+const DIST_DIR = path.resolve("dist");
 
 async function recursiveReadDir(dir) {
   let results = [];
@@ -98,7 +105,8 @@ async function archive() {
   const folderPath = path.resolve(); // Use __dirname to get the directory of the script
   const rootPathName = path.basename(folderPath);
   const outputFilename = `${rootPathName}.zip`;
-  const outputPath = path.resolve("../", outputFilename);
+  await fs.promises.mkdir(DIST_DIR, { recursive: true });
+  const outputPath = path.join(DIST_DIR, outputFilename);
 
   const archive = archiver("zip", {
     zlib: { level: 9 }, // Configure the compression level
@@ -151,11 +159,11 @@ async function renameZipFileWithVersion(originalFileName) {
   }
 
   const newName = `${filenameWithoutExtension}-v${packageVersion}.zip`;
-  const newPath = path.resolve("../", newName);
+  const newPath = path.join(DIST_DIR, newName);
 
   try {
-    await fs.promises.rename(path.resolve("../", currentFilename), newPath);
-    console.log(`Zip file renamed to ` + blue(`${newName}`));
+    await fs.promises.rename(path.join(DIST_DIR, currentFilename), newPath);
+    console.log(`Zip file renamed to ` + blue(`dist/${newName}`));
   } catch (err) {
     console.error("Error renaming the zip file:", err);
   }

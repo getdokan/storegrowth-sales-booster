@@ -9,6 +9,7 @@
 /.vscode
 /bin
 /.claude
+/dist
 /src
 /types
 /docs
