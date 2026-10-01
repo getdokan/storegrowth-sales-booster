@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Floating Notification Bar module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Providers;
 

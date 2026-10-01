@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Upsell Order Bump module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Stock Bar module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\StockBar\Providers;
 

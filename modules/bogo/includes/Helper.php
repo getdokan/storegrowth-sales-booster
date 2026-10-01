@@ -50,7 +50,15 @@ class Helper {
 				break;
 			}
 		}
-		// BOGO settings will be available for simple product &
+		/**
+		 * Filters whether a product's BOGO offer should be loaded.
+		 *
+		 * BOGO settings are available for non-variable products only.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $load Whether to load the offer.
+		 */
 		return apply_filters(
 			'spsg_load_product_bogo_offer',
 			! ( $is_variable_product || ( ! BogoDataManager::can_create_global_offer() && ! $offer_available_for_current_product ) )
@@ -74,7 +82,9 @@ class Helper {
 	 *
 	 * @since 1.0.2
 	 *
-	 * @param int $product_id Product post ID.
+	 * @param int   $product_id   Product post ID.
+	 * @param int   $variation_id Variation ID.
+	 * @param array $query_args   Query options passed to BogoDataManager.
 	 *
 	 * @return array|null
 	 */
@@ -115,7 +125,7 @@ class Helper {
 	 *
 	 * @return mixed
 	 */
-	public static function get_bogo_settings_option( $option, $default = '' ) {
+	public static function get_bogo_settings_option( $option, $default = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound -- Public API parameter name (named arguments).
 		$options = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings', array() );
 
 		if ( isset( $options[ $option ] ) ) {
@@ -165,7 +175,7 @@ class Helper {
 	 */
 	public static function get_product_bogo_settings_for_cart( $product_id ) {
 		$product_settings = self::get_product_bogo_settings( $product_id );
-		if ( isset( $product_settings['status'] ) && $product_settings['status'] === 'active' ) {
+		if ( isset( $product_settings['status'] ) && 'active' === $product_settings['status'] ) {
 			return $product_settings;
 		}
 
@@ -173,16 +183,14 @@ class Helper {
 		foreach ( $offers as $offer ) {
 			$offered_products = $offer['offered_products'] ?? array();
 
-			// Handle both array and string formats for backward compatibility
+			// Handle both array and string formats for backward compatibility.
 			if ( is_array( $offered_products ) ) {
-				if ( in_array( $product_id, $offered_products ) ) {
+				if ( in_array( $product_id, $offered_products ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored IDs may be strings; loose match kept on purpose.
 					return $offer;
 				}
-			} else {
-				// Backward compatibility for string format
-				if ( intval( $offered_products ) === $product_id ) {
-					return $offer;
-				}
+			} elseif ( intval( $offered_products ) === $product_id ) {
+				// Backward compatibility for string format.
+				return $offer;
 			}
 		}
 
@@ -203,7 +211,7 @@ class Helper {
 		$deal_type = isset( $settings['bogo_deal_type'] ) ? esc_html( $settings['bogo_deal_type'] ) : 'different';
 
 		// Return same product as offer for same deal.
-		if ( $deal_type === 'same' ) {
+		if ( 'same' === $deal_type ) {
 			return $product_id;
 		}
 
@@ -214,6 +222,16 @@ class Helper {
 
 		// Return alternate first product as offer for buy y product.
 		$alternate_products = ! empty( $settings['get_alternate_products'] ) ? $settings['get_alternate_products'] : array();
+
+		/**
+		 * Filters the offered product ID added to the cart for a BOGO deal.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $offer_product_id Offered product ID.
+		 * @param array $settings         BOGO settings.
+		 * @param int   $product_id       Product ID.
+		 */
 		return apply_filters(
 			'spsg_bogo_offer_product_id_for_cart',
 			! empty( $alternate_products[0] ) ? intval( $alternate_products[0] ) : 0,
@@ -241,12 +259,30 @@ class Helper {
 		}
 
 		$bogo_settings = self::get_product_bogo_settings_for_cart( $product_id );
+		/**
+		 * Filters the BOGO settings applied to a cart item.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array|null $bogo_settings BOGO settings.
+		 * @param int        $product_id    Product ID.
+		 * @param int        $variation_id  Variation ID.
+		 */
 		$bogo_settings = apply_filters( 'spsg_get_bogo_settings_for_cart', $bogo_settings, $product_id, $variation_id );
 
 		// Fetch full product details.
 		$product_ids     = ! empty( $bogo_settings['get_alternate_products'] ) ? $bogo_settings['get_alternate_products'] : array();
 		$product_objects = ! empty( $product_ids ) ? array_map( 'wc_get_product', $product_ids ) : array();
 
+		/**
+		 * Filters the alternate products offered for a cart item.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param \WC_Product[] $product_objects Offered products.
+		 * @param array|null    $bogo_settings   BOGO settings.
+		 * @param int           $item_id         Item (product or variation) ID.
+		 */
 		return apply_filters( 'spsg_bogo_offer_products_for_item', $product_objects, $bogo_settings, $item_id );
 	}
 
@@ -262,7 +298,15 @@ class Helper {
 	 * @return mixed
 	 */
 	public static function prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id ) {
-		// Prepare settings for BOGO apply.
+		/**
+		 * Filters the BOGO settings applied to a cart item.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array|null $settings    BOGO settings.
+		 * @param int        $product_id   Product ID.
+		 * @param int        $variation_id Variation ID.
+		 */
 		return apply_filters(
 			'spsg_get_bogo_settings_for_cart',
 			self::get_product_bogo_settings_for_cart( $apply_able_product_id ),
@@ -271,6 +315,14 @@ class Helper {
 		);
 	}
 
+	/**
+	 * Read one key of an offer's JSON `design_settings`.
+	 *
+	 * @param object $bogo_info BOGO offer row.
+	 * @param string $property  Design key.
+	 *
+	 * @return mixed Empty string when missing.
+	 */
 	public static function get_design_value( $bogo_info, $property ) {
 		if ( isset( $bogo_info->design_settings ) && is_string( $bogo_info->design_settings ) ) {
 			$design_data = json_decode( $bogo_info->design_settings, true );

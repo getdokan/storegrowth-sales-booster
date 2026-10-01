@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Dokan integration Ajax class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
@@ -47,7 +52,7 @@ class Ajax {
 		}
 
 		// Decode the JSON data.
-		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : []; // phpcs: ignore.
+		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON payload; the settings engine validates every decoded value.
 
 		if ( isset( $data['spsg_bogo_dokan_vendors_settings_data'] ) ) {
 			// Through the settings engine (it replaced the option unsanitized):

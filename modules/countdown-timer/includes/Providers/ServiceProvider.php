@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Countdown Timer module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer\Providers;
 

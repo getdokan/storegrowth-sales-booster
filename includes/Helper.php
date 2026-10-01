@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for Helper class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth;
 
@@ -116,7 +121,7 @@ class Helper {
 	 *
 	 * @return array
 	 */
-	public static function get_settings( string $key, $default = array() ): array {
+	public static function get_settings( string $key, $default = array() ): array { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound -- Public API parameter name (named arguments).
 		return (array) get_option( $key, $default );
 	}
 
@@ -132,7 +137,7 @@ class Helper {
 	 *
 	 * @return mixed
 	 */
-	public static function find_option_settings( $settings, string $key, $default = '' ) {
+	public static function find_option_settings( $settings, string $key, $default = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound -- Public API parameter name (named arguments).
 		if ( is_array( $settings ) && isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
@@ -378,23 +383,22 @@ class Helper {
 	}
 
 	/**
-	 * Check if The Module is Active.
+	 * Build a REST request object from the current HTTP request.
 	 *
 	 * @since 1.28.14
-	 *
-	 * @param string $module_id The module ID to check.
 	 *
 	 * @return \WP_REST_Request The request object.
 	 */
 	public static function get_rest_request(): \WP_REST_Request {
 		// Get the request object.
 		$server  = rest_get_server();
-		$request = new \WP_REST_Request( $_SERVER['REQUEST_METHOD'] );
+		$method  = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : '';
+		$request = new \WP_REST_Request( $method );
 
-		// Set the request parameters.
-		$request->set_query_params( wp_unslash( $_GET ) );
-		$request->set_body_params( wp_unslash( $_POST ) );
-		$request->set_file_params( $_FILES );
+		// Set the request parameters. The caller verifies the nonce / capability.
+		$request->set_query_params( wp_unslash( $_GET ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Copies the raw request; callers verify it.
+		$request->set_body_params( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Copies the raw request; callers verify it.
+		$request->set_file_params( $_FILES ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Copies the raw request; callers verify it.
 		$request->set_headers( $server->get_headers( wp_unslash( $_SERVER ) ) );
 		$request->set_body( $server::get_raw_data() );
 
@@ -413,6 +417,13 @@ class Helper {
 			return true;
 		}
 
+		/**
+		 * Filters the user roles that see promotions.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param string[] $allowed_roles Role slugs.
+		 */
 		$allowed_roles = apply_filters(
 			'spsg_allowed_roles_for_promotions',
 			[
@@ -428,6 +439,13 @@ class Helper {
 			}
 		}
 
+		/**
+		 * Filters whether a logged-in user without an allowed role sees promotions.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $allowed Whether the current user sees promotions.
+		 */
 		return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
 	}
 }

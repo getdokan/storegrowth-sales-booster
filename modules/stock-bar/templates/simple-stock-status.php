@@ -29,12 +29,22 @@ $available_item_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $se
 
 // Vars for threshold warning msg.
 $show_stock_status = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_stock_status', true );
-$stock_contents    = apply_filters(
+/**
+ * Filters the stock bar's low-stock warning (threshold, color, text).
+ *
+ * @since 2.0.0
+ *
+ * @param array $contents Warning contents.
+ * @param array $settings Stock bar settings.
+ * @param int   $stock    Stock quantity.
+ */
+$stock_contents = apply_filters(
 	'spsg_stock_bar_warning_contents',
 	array(
 		'quantity_required' => 10,
 		'status_text_color' => '#073B4C',
-		'stock_status_text' => __( "Hurry! only {$stock} stocks left.", 'storegrowth-sales-booster' ),
+		/* translators: %d: Items left in stock. */
+		'stock_status_text' => sprintf( __( 'Hurry! only %d stocks left.', 'storegrowth-sales-booster' ), $stock ),
 	),
 	$settings,
 	$stock
@@ -70,7 +80,11 @@ $stock_contents    = apply_filters(
 		<div class="jqmeter-container"></div>
 		<?php
 		if ( 'below' === $sd_format ) :
-				/* translators: %s: Left items in stock */
+				/**
+				 * Fires below the stock bar when the display format is "below".
+				 *
+				 * @since 2.0.0
+				 */
 				do_action( 'spsg_stock_bar_stock_below' );
 			endif;
 		?>
@@ -80,7 +94,7 @@ $stock_contents    = apply_filters(
 				class='stock-status-warning-msg'
 				style='color: <?php echo esc_attr( $stock_contents['status_text_color'] ); ?>; margin: 0; font-size: var(--spsg-stock-bar-status-size, 11px);'
 			>
-				<?php esc_html_e( $stock_contents['stock_status_text'], 'storegrowth-sales-booster' ); ?>
+				<?php esc_html_e( $stock_contents['stock_status_text'], 'storegrowth-sales-booster' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- Filtered text (`spsg_stock_bar_warning_contents`); kept through gettext as before. ?>
 			</p>
 		<?php endif; ?>
 	</div>

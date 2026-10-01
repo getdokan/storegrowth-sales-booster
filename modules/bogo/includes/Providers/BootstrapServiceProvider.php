@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the BOGO module BootstrapServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\BoGo\Providers;
 

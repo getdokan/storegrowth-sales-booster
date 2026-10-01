@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Fly Cart module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\FlyCart\Providers;
 

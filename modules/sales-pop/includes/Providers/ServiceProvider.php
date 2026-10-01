@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Sales Pop module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\SalesPop\Providers;
 

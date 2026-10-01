@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Dokan integration class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan;
 
@@ -13,6 +18,12 @@ use StorePulse\StoreGrowth\Interfaces\HookRegistry;
  * @package SBFW
  */
 class Dokan implements HookRegistry {
+
+	/**
+	 * Register the integration's hooks.
+	 *
+	 * @return void
+	 */
 	public function register_hooks(): void {
 		$this->init_classes();
 	}

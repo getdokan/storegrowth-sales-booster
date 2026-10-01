@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Upsell Order Bump module BootstrapServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
@@ -51,7 +56,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 			$this->share_with_implements_tags( $service );
 		}
 
-		// Register data access class
+		// Register data access class.
 		$this->container->add( OrderBumpData::class );
 	}
 

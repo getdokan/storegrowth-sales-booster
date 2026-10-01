@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Direct Checkout module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\DirectCheckout\Providers;
 

@@ -91,13 +91,13 @@ class EnqueueScript implements HookRegistry {
 		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', '5' ) );
 
 		$theme                 = wp_get_theme();
-		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
-		$is_ocean_wp_theme     = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
-		$is_elementor_theme    = ! empty( $theme->name ) ? $theme->name === 'Hello Elementor' : false;
-		$is_twenty_one_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
-		$is_twenty_two_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Two' : false;
-		$is_twenty_three_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Three' : false;
-		$is_twenty_four_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+		$is_avada_theme        = ! empty( $theme->name ) ? 'Avada' === $theme->name : false;
+		$is_ocean_wp_theme     = ! empty( $theme->name ) ? 'OceanWP' === $theme->name : false;
+		$is_elementor_theme    = ! empty( $theme->name ) ? 'Hello Elementor' === $theme->name : false;
+		$is_twenty_one_theme   = ! empty( $theme->name ) ? 'Twenty Twenty-One' === $theme->name : false;
+		$is_twenty_two_theme   = ! empty( $theme->name ) ? 'Twenty Twenty-Two' === $theme->name : false;
+		$is_twenty_three_theme = ! empty( $theme->name ) ? 'Twenty Twenty-Three' === $theme->name : false;
+		$is_twenty_four_theme  = ! empty( $theme->name ) ? 'Twenty Twenty-Four' === $theme->name : false;
 		$button_margin         = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
 		$custom_css            = "
 		.button.product_type_simple.spsg_buy_now_button, 
@@ -176,6 +176,14 @@ class EnqueueScript implements HookRegistry {
 
 		wp_add_inline_style(
 			'spsg-button-style',
+			/**
+			 * Filters the Direct Checkout button's inline CSS.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $custom_css Inline CSS.
+			 * @param array  $settings   Direct Checkout settings.
+			 */
 			apply_filters(
 				'spsg_direct_checkout_button_inline_styles',
 				$custom_css,

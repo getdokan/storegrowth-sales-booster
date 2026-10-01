@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for OrderBumpCheckoutIntegration class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Blocks;
 
@@ -6,22 +11,50 @@ use Automattic\WooCommerce\Blocks\Integrations\IntegrationInterface;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 
+/**
+ * Cart / Checkout block integration for the order bump.
+ */
 class OrderBumpCheckoutIntegration implements IntegrationInterface {
 
+	/**
+	 * Handle of the block script.
+	 *
+	 * @var string
+	 */
 	protected string $script_key = 'storegrowth-upsell-order-bump';
 
+	/**
+	 * The name of the integration.
+	 *
+	 * @return string
+	 */
 	public function get_name(): string {
 		return 'storegrowth-upsell-order-bump';
 	}
 
+	/**
+	 * Initialize the integration (nothing to set up).
+	 *
+	 * @return void
+	 */
 	public function initialize() {
 		// TODO: Implement initialize() method.
 	}
 
+	/**
+	 * Script handles to enqueue on the frontend.
+	 *
+	 * @return string[]
+	 */
 	public function get_script_handles(): array {
 		return $this->register_script() ? [ $this->script_key ] : [];
 	}
 
+	/**
+	 * Script handles to enqueue in the editor.
+	 *
+	 * @return string[]
+	 */
 	public function get_editor_script_handles(): array {
 		return $this->register_script() ? [ $this->script_key ] : [];
 	}

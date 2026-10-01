@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Progressive Discount Banner module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers;
 

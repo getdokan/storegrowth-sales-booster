@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Dokan dashboard Bogo class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
@@ -54,7 +59,15 @@ class Bogo {
 		add_filter( 'spsg_product_query_args', [ $this, 'add_product_query_args' ], 10, 2 );
 	}
 
-	public function add_product_query_args( $args, $request ) {
+	/**
+	 * Limit the product search to the vendor's own products.
+	 *
+	 * @param array            $args    Product query args.
+	 * @param \WP_REST_Request $request Rest request.
+	 *
+	 * @return array
+	 */
+	public function add_product_query_args( $args, $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Filter callback signature (`spsg_product_query_args`, 2 args).
 		if ( ! current_user_can( 'manage_woocommerce' ) && function_exists( 'dokan_get_current_user_id' ) ) {
 			$args['author'] = dokan_get_current_user_id();
 		}
@@ -92,6 +105,13 @@ class Bogo {
 		return $menus;
 	}
 
+	/**
+	 * Limit the BOGO product query to the vendor's products on the vendor dashboard.
+	 *
+	 * @param array $args Product query args.
+	 *
+	 * @return array
+	 */
 	public function add_bogo_product_args( $args ): array {
 		if ( ! dokan_is_seller_dashboard() ) {
 			return $args;
@@ -101,6 +121,14 @@ class Bogo {
 
 		return $args;
 	}
+
+	/**
+	 * Limit the BOGO offer list to the vendor's offers for non-admins.
+	 *
+	 * @param array $args BOGO query filters.
+	 *
+	 * @return array
+	 */
 	public function add_bogo_rest_query_args( $args ): array {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			$args['created_by'] = dokan_get_current_user_id();
@@ -109,6 +137,13 @@ class Bogo {
 		return $args;
 	}
 
+	/**
+	 * Set the vendor as the creator of a BOGO offer for non-admins.
+	 *
+	 * @param int $user_id Creator user ID.
+	 *
+	 * @return int
+	 */
 	public function add_bogo_created_by( $user_id ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return dokan_get_current_user_id();
@@ -116,6 +151,13 @@ class Bogo {
 		return $user_id;
 	}
 
+	/**
+	 * Let vendors (`dokandar`) use the BOGO routes.
+	 *
+	 * @param bool|\WP_Error $has_permission Permission resolved so far.
+	 *
+	 * @return bool|\WP_Error
+	 */
 	public function check_bogo_permission( $has_permission ) {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return current_user_can( 'dokandar' );
@@ -143,13 +185,13 @@ class Bogo {
 	 *
 	 * @return bool|\WP_Error True when permitted, WP_Error otherwise.
 	 */
-	public function check_bogo_single_item_permission( $has_permission, $item, $request ) {
+	public function check_bogo_single_item_permission( $has_permission, $item, $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Filter callback signature (`spsg_bogo_single_item_permission`, 3 args).
 		// Administrators keep whatever the core controller resolved.
 		if ( current_user_can( 'manage_options' ) ) {
 			return $has_permission;
 		}
 
-		if ( ! is_array( $item ) || ! isset( $item['created_by'] ) || (int) $item['created_by'] !== dokan_get_current_user_id() ) {
+		if ( ! is_array( $item ) || ! isset( $item['created_by'] ) || dokan_get_current_user_id() !== (int) $item['created_by'] ) {
 			return new \WP_Error(
 				'salesbooster_permission_failure',
 				__( 'You do not have permission to access this BOGO offer.', 'storegrowth-sales-booster' ),

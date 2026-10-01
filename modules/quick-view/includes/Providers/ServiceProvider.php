@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for the Quick View module ServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\QuickView\Providers;
 

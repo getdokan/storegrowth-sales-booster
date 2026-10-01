@@ -29,7 +29,7 @@
 					/>
 				</svg>
 			<?php
-			// OrderBump::get_offer_label(): "Free", "10% off only for you!", "2.00$ Just Only".
+			// The offer label comes from OrderBump::get_offer_label(), such as a free or discount text.
 			echo '&nbsp;' . esc_html( $offer_label );
 			$fallback_image_url = plugin_dir_url( __FILE__ ) . '../assets/images/bump-preview.svg';
 			$image_url          = ! empty( $bump_info->offer_image_url ) && 'http://false' !== $bump_info->offer_image_url ? $bump_info->offer_image_url : $fallback_image_url;

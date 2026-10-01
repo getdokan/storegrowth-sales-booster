@@ -122,12 +122,20 @@ class BogoDataManager {
 		$where_parts  = array();
 		$where_values = array();
 
+		/**
+		 * Filters the conditions of a BOGO offers query.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array $conditions Column => value conditions.
+		 * @param array $options    Query options.
+		 */
 		$conditions = apply_filters( 'spsg_bogo_query_args', $conditions, $options );
 
-		// Build WHERE clause based on conditions
+		// Build WHERE clause based on conditions.
 		if ( ! empty( $conditions ) ) {
 			foreach ( $conditions as $field => $value ) {
-				if ( $value !== null && $value !== '' ) {
+				if ( null !== $value && '' !== $value ) {
 					// `search`: offers whose name contains the text.
 					if ( 'search' === $field ) {
 						$where_parts[]  = '%i LIKE %s';
@@ -136,13 +144,13 @@ class BogoDataManager {
 						continue;
 					}
 
-					// Handle special cases for JSON fields
-					if ( in_array( $field, [ 'offered_products', 'offered_categories' ] ) && is_numeric( $value ) ) {
+					// Handle special cases for JSON fields.
+					if ( in_array( $field, [ 'offered_products', 'offered_categories' ], true ) && is_numeric( $value ) ) {
 						$where_parts[]  = '%i LIKE %s';
 						$where_values[] = $field;
 						$where_values[] = '%"' . $value . '"%';
 					} else {
-						// Use appropriate placeholder based on value type
+						// Use appropriate placeholder based on value type.
 						$placeholder    = is_numeric( $value ) ? '%d' : '%s';
 						$where_parts[]  = "%i = {$placeholder}";
 						$where_values[] = $field;
@@ -186,17 +194,17 @@ class BogoDataManager {
 			]
 		);
 
-		// Build WHERE clause using shared method
+		// Build WHERE clause using shared method.
 		$where_data   = self::build_where_clause( $conditions, $options );
 		$where_clause = $where_data['clause'];
 		$where_values = $where_data['values'];
 
-		// Set default options
+		// Set default options.
 		$order_by = $options['order_by'] ?? 'created_at DESC';
 		$limit    = isset( $options['limit'] ) ? 'LIMIT ' . intval( $options['limit'] ) : '';
 		$offset   = isset( $options['offset'] ) ? 'OFFSET ' . intval( $options['offset'] ) : '';
 
-		// Parse order_by to separate field and direction
+		// Parse order_by to separate field and direction.
 		$order_parts     = explode( ' ', trim( $order_by ) );
 		$order_field     = $order_parts[0] ?? 'created_at';
 		$order_direction = isset( $order_parts[1] ) ? ' ' . strtoupper( trim( $order_parts[1] ) ) : ' DESC';
@@ -204,10 +212,10 @@ class BogoDataManager {
 		$query = "SELECT * FROM %i {$where_clause} ORDER BY %i{$order_direction} {$limit} {$offset}";
 		$query = trim( $query );
 
-		// Prepare the query with table name, field names, and order by field
-		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values, [ $order_field ] ) );
+		// Prepare the query with table name, field names, and order by field.
+		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values, [ $order_field ] ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Built from placeholders only; the WHERE values, table and order field go through prepare().
 
-		$results = $wpdb->get_results( $prepared_query );
+		$results = $wpdb->get_results( $prepared_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared above.
 
 		// `get_results()` answers `null` on a query error, which `array_map()`
 		// rejects outright on PHP 8.
@@ -221,8 +229,9 @@ class BogoDataManager {
 	/**
 	 * Get BOGO settings for a product.
 	 *
-	 * @param int $product_id   Product ID.
-	 * @param int $variation_id Variation ID (default 0).
+	 * @param int   $product_id   Product ID.
+	 * @param int   $variation_id Variation ID (default 0).
+	 * @param array $query_args   Extra conditions; a falsy `status` drops the active-only filter.
 	 * @return array|null BOGO settings or null if not found.
 	 */
 	public static function get_product_bogo_settings( $product_id, $variation_id = 0, array $query_args = [] ) {
@@ -240,14 +249,14 @@ class BogoDataManager {
 		if ( isset( $query_args['status'] ) && ! $query_args['status'] ) {
 			unset( $filter_args['status'] );
 		}
-		// First check for product-specific settings
+		// First check for product-specific settings.
 		$product_settings = self::get_bogo_offers( $filter_args );
 
 		if ( ! empty( $product_settings ) ) {
 			return $product_settings[0];
 		}
 
-		// Fallback to global settings that include this product
+		// Fallback to global settings that include this product.
 		$global_settings = self::get_bogo_offers(
 			[
 				'type'   => 'global',
@@ -255,7 +264,7 @@ class BogoDataManager {
 			]
 		);
 
-		// Filter global settings to find those that include the current product
+		// Filter global settings to find those that include the current product.
 		foreach ( $global_settings as $setting ) {
 			if ( self::product_in_global_offer( $setting, $product_id ) ) {
 				return $setting;
@@ -273,14 +282,14 @@ class BogoDataManager {
 	 * @return bool Whether the product is included.
 	 */
 	private static function product_in_global_offer( $offer, $product_id ) {
-		// Check offered products
+		// Check offered products.
 		if ( ! empty( $offer['offered_products'] ) && is_array( $offer['offered_products'] ) ) {
-			if ( in_array( $product_id, $offer['offered_products'] ) ) {
+			if ( in_array( $product_id, $offer['offered_products'] ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored IDs may be strings; loose match kept on purpose.
 				return true;
 			}
 		}
 
-		// Check offered categories
+		// Check offered categories.
 		if ( ! empty( $offer['offered_categories'] ) && is_array( $offer['offered_categories'] ) ) {
 			$product_categories = wp_get_post_terms( $product_id, 'product_cat', array( 'fields' => 'ids' ) );
 			if ( ! empty( array_intersect( $offer['offered_categories'], $product_categories ) ) ) {
@@ -298,22 +307,22 @@ class BogoDataManager {
 	 * @return string|null Normalized date value or null.
 	 */
 	private static function normalize_date_field( $date_value ) {
-		if ( $date_value === null || $date_value === '' ) {
+		if ( null === $date_value || '' === $date_value ) {
 			return null;
 		}
 
-		// Convert string values
+		// Convert string values.
 		if ( is_string( $date_value ) ) {
 			$date_value = trim( $date_value );
 
-			// Check for invalid date formats
-			if ( $date_value === '0000-00-00' || $date_value === '0000-00-00 00:00:00' || empty( $date_value ) ) {
+			// Check for invalid date formats.
+			if ( '0000-00-00' === $date_value || '0000-00-00 00:00:00' === $date_value || empty( $date_value ) ) {
 				return null;
 			}
 
-			// Validate the date format
+			// Validate the date format.
 			$timestamp = strtotime( $date_value );
-			if ( $timestamp === false ) {
+			if ( false === $timestamp ) {
 				return null;
 			}
 		}
@@ -345,6 +354,16 @@ class BogoDataManager {
 			'offer_start'               => self::normalize_date_field( $data['offer_start'] ?? null ),
 			'offer_end'                 => self::normalize_date_field( $data['offer_end'] ?? null ),
 			'offer_schedule'            => wp_json_encode( $data['offer_schedule'] ?? array( 'daily' ) ),
+			/**
+			 * Filters the status a BOGO offer is saved with.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $status       Offer status.
+			 * @param string $type         Offer type ('product' or 'global').
+			 * @param int    $product_id   Product ID.
+			 * @param int    $variation_id Variation ID.
+			 */
 			'status'                    => apply_filters( 'spsg_bogo_status', $data['status'] ?? 'active', $type, $product_id, $variation_id ),
 			// Design settings as JSON; the per-offer badge keys, which the
 			// badge code reads, are kept only when sent (no column of their own).
@@ -366,7 +385,7 @@ class BogoDataManager {
 			),
 		);
 
-		// Add type-specific fields
+		// Add type-specific fields.
 		if ( 'product' === $type ) {
 			$mapped_data['name']             = 'Product BOGO - ' . $product_id;
 			$mapped_data['product_id']       = $product_id;
@@ -378,6 +397,16 @@ class BogoDataManager {
 			$mapped_data['offered_categories'] = wp_json_encode( $data['offered_categories'] ?? array() );
 		}
 
+		/**
+		 * Filters a BOGO offer's database row before it is saved.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param array  $mapped_data  Column => value.
+		 * @param string $type         Offer type ('product' or 'global').
+		 * @param int    $product_id   Product ID.
+		 * @param int    $variation_id Variation ID.
+		 */
 		return apply_filters( 'spsg_bogo_mapped_data', $mapped_data, $type, $product_id, $variation_id );
 	}
 
@@ -394,24 +423,53 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		// Map the data using the unified method
+		// Map the data using the unified method.
 		$data = self::map_bogo_data( $settings, 'product', $product_id, $variation_id );
 
 		$existing = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT id FROM {$table} WHERE type = 'product' AND product_id = %d AND variation_id = %d",
+				"SELECT id FROM %i WHERE type = 'product' AND product_id = %d AND variation_id = %d",
+				$table,
 				$product_id,
 				$variation_id
 			)
 		);
 
 		if ( $existing ) {
-			// For updates, only set updated_by, never change created_by
+			/**
+			 * Filters the user recorded as the last editor of a BOGO offer.
+			 *
+			 * Updates set only updated_by, never created_by.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int   $user_id  User ID.
+			 * @param int   $offer_id Offer ID (0 for a new offer).
+			 * @param array $settings BOGO settings.
+			 */
 			$data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $existing, $settings );
 			return $wpdb->update( $table, $data, array( 'id' => $existing ) );
 		} else {
-			// For new records, set both created_by and updated_by
+			/**
+			 * Filters the user recorded as the creator of a new product BOGO offer.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int   $user_id      User ID.
+			 * @param int   $product_id   Product ID.
+			 * @param int   $variation_id Variation ID.
+			 * @param array $settings     BOGO settings.
+			 */
 			$data['created_by'] = apply_filters( 'spsg_bogo_created_by', get_current_user_id(), $product_id, $variation_id, $settings );
+			/**
+			 * Filters the user recorded as the last editor of a new product BOGO offer.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int   $user_id  User ID.
+			 * @param int   $offer_id Offer ID (0 for a new offer).
+			 * @param array $settings BOGO settings.
+			 */
 			$data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), 0, $settings );
 			return $wpdb->insert( $table, $data );
 		}
@@ -449,7 +507,7 @@ class BogoDataManager {
 		$offers = self::get_active_global_bogo_offers();
 		return array_map(
 			function ( $offer ) {
-				// Use the same formatting as get_bogo_offer for consistency
+				// Use the same formatting as get_bogo_offer for consistency.
 				$formatted_offer = array(
 					// Stable identity for revenue attribution — the database row id and
 					// type flow through to the cart injection sites unchanged.
@@ -473,11 +531,11 @@ class BogoDataManager {
 					'offer_schedule'              => $offer['offer_schedule'] ?? [ 'daily' ],
 				);
 
-				// Extract design settings from JSON
+				// Extract design settings from JSON.
 				$design_settings = self::get_design_settings( $offer['design_settings'] ?? null );
 				$formatted_offer = array_merge( $formatted_offer, $design_settings );
 
-				// Add backward compatibility fields
+				// Add backward compatibility fields.
 				$formatted_offer['name_of_order_bogo'] = $offer['name'] ?? '';
 
 				return $formatted_offer;
@@ -491,23 +549,42 @@ class BogoDataManager {
 	 *
 	 * @param array $data BOGO offer data.
 	 * @return bool|int Success status or insert ID.
+	 *
+	 * @throws Exception When the row can't be inserted.
 	 */
 	public static function create_global_offer( $data ) {
 		global $wpdb;
 
 		$table = self::get_table_name();
 
-		// Map the data using the unified method
+		// Map the data using the unified method.
 		$insert_data = self::map_bogo_data( $data, 'global' );
 
-		// Add user tracking with filters
+		/**
+		 * Filters the user recorded as the creator of a new global BOGO offer.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $user_id    User ID.
+		 * @param int   $product_id Always 0 for a global offer.
+		 * @param array $data       BOGO offer data.
+		 */
 		$insert_data['created_by'] = apply_filters( 'spsg_bogo_created_by', $data['created_by'] ?? get_current_user_id(), 0, $data );
+		/**
+		 * Filters the user recorded as the last editor of a new global BOGO offer.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $user_id  User ID.
+		 * @param int   $offer_id Always 0 for a new offer.
+		 * @param array $data     BOGO offer data.
+		 */
 		$insert_data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), 0, $data );
 
 		$result = $wpdb->insert( $table, $insert_data );
 
 		if ( ! $result ) {
-			throw new Exception( 'Failed to insert BOGO offer: ' . $wpdb->last_error, 400 );
+			throw new Exception( 'Failed to insert BOGO offer: ' . $wpdb->last_error, 400 ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception message, not page output; escaping would alter the message callers read.
 		}
 
 		return $wpdb->insert_id;
@@ -525,7 +602,7 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		// Map the data using the unified method (excluding type and status)
+		// Map the data using the unified method (excluding type and status).
 		$update_data = self::map_bogo_data( $data, 'global' );
 		unset( $update_data['type'], $update_data['status'] );
 
@@ -537,7 +614,15 @@ class BogoDataManager {
 			$update_data['design_settings'] = wp_json_encode( array_merge( $old, (array) json_decode( $update_data['design_settings'], true ) ) );
 		}
 
-		// Add user tracking with filter
+		/**
+		 * Filters the user recorded as the last editor of a global BOGO offer.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $user_id  User ID.
+		 * @param int   $offer_id Offer ID.
+		 * @param array $data     BOGO offer data.
+		 */
 		$update_data['updated_by'] = apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $id, $data );
 
 		return $wpdb->update( $table, $update_data, array( 'id' => $id ) );
@@ -571,6 +656,15 @@ class BogoDataManager {
 
 		$update_data = array(
 			'status'     => $status,
+			/**
+			 * Filters the user recorded as the last editor when an offer's status changes.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int   $user_id  User ID.
+			 * @param int   $offer_id Offer ID.
+			 * @param array $data     The new status.
+			 */
 			'updated_by' => apply_filters( 'spsg_bogo_updated_by', get_current_user_id(), $id, array( 'status' => $status ) ),
 		);
 
@@ -593,7 +687,7 @@ class BogoDataManager {
 			return 0;
 		}
 
-		// Build WHERE clause using shared method
+		// Build WHERE clause using shared method.
 		$where_data   = self::build_where_clause( $conditions, [] );
 		$where_clause = $where_data['clause'];
 		$where_values = $where_data['values'];
@@ -601,10 +695,10 @@ class BogoDataManager {
 		$query = "SELECT COUNT(*) FROM %i {$where_clause}";
 		$query = trim( $query );
 
-		// Prepare the query with table name and where values
-		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values ) );
+		// Prepare the query with table name and where values.
+		$prepared_query = $wpdb->prepare( $query, array_merge( [ $table ], $where_values ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Built from placeholders only; the WHERE values and table go through prepare().
 
-		return (int) $wpdb->get_var( $prepared_query );
+		return (int) $wpdb->get_var( $prepared_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Prepared above.
 	}
 
 	/**
@@ -644,11 +738,11 @@ class BogoDataManager {
 		}
 
 		// Add backward compatibility fields.
-		if ( $settings['type'] === 'product' ) {
+		if ( 'product' === $settings['type'] ) {
 			$settings['get_different_product_field'] = $settings['offer_product_id'];
 			$settings['get_alternate_products']      = $settings['alternate_products'];
 		} else {
-			// For global offers, use offered_ prefix consistently
+			// For global offers, use offered_ prefix consistently.
 			$settings['offered_products']   = $settings['offered_products'];
 			$settings['offered_categories'] = $settings['offered_categories'];
 			$settings['name_of_order_bogo'] = $settings['name'];
@@ -724,14 +818,14 @@ class BogoDataManager {
 
 		$table = self::get_table_name();
 
-		// Get product BOGO settings
+		// Get product BOGO settings.
 		$product_settings = self::get_product_bogo_settings( $product_id );
 
 		if ( ! $product_settings ) {
 			return false;
 		}
 
-		// Get global offers that include this product
+		// Get global offers that include this product.
 		$global_offers = self::get_bogo_offers(
 			[
 				'type' => 'global',
@@ -741,17 +835,17 @@ class BogoDataManager {
 		$product_schedule = $product_settings['offer_schedule'] ?? array( 'daily' );
 
 		foreach ( $global_offers as $offer ) {
-			// Check if this global offer includes the product
+			// Check if this global offer includes the product.
 			if ( ! self::product_in_global_offer( $offer, $product_id ) ) {
 				continue;
 			}
 
 			$global_schedule = $offer['offer_schedule'] ?? array( 'daily' );
 
-			// Merge schedules (product schedule takes priority)
+			// Merge schedules (product schedule takes priority).
 			$merged_schedule = array_unique( array_merge( $product_schedule, $global_schedule ) );
 
-			// Update global offer with merged schedule
+			// Update global offer with merged schedule.
 			$wpdb->update(
 				$table,
 				array( 'offer_schedule' => wp_json_encode( $merged_schedule ) ),
@@ -772,7 +866,8 @@ class BogoDataManager {
 		$design_settings = array();
 
 		if ( is_string( $design_settings_json ) ) {
-			$design_settings = json_decode( $design_settings_json, true ) ?: array();
+			$decoded         = json_decode( $design_settings_json, true );
+			$design_settings = $decoded ? $decoded : array();
 		} elseif ( is_array( $design_settings_json ) ) {
 			$design_settings = $design_settings_json;
 		}
@@ -820,13 +915,13 @@ class BogoDataManager {
 			$schedule = array( 'daily' );
 		}
 
-		// Check if daily is in schedule
-		if ( in_array( 'daily', $schedule ) ) {
+		// Check if daily is in schedule.
+		if ( in_array( 'daily', $schedule ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
 			return true;
 		}
 
-		// Check if current day is in schedule
-		$current_day = strtolower( date( 'l' ) );
-		return in_array( $current_day, $schedule );
+		// Check if current day is in schedule. WordPress runs PHP in UTC, so gmdate() equals date() here.
+		$current_day = strtolower( gmdate( 'l' ) );
+		return in_array( $current_day, $schedule ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
 	}
 }
