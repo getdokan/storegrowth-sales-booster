@@ -15,8 +15,13 @@ import { useLocation } from '@storegrowth/hooks';
  *
  * @param pathname Current route.
  * @param search   Its query string.
+ * @param hrefs    Hrefs of the submenu items.
  */
-function submenuTarget( pathname: string, search: string ): string {
+function submenuTarget(
+    pathname: string,
+    search: string,
+    hrefs: string[]
+): string {
     const module = new URLSearchParams( search ).get( 'module' );
 
     // A module's settings page is a feature page.
@@ -44,6 +49,17 @@ function submenuTarget( pathname: string, search: string ): string {
         return 'page=storegrowth#/settings';
     }
 
+    // A route with its own submenu item (e.g. pro's `#/license`).
+    const own = `page=storegrowth#${ pathname }`;
+
+    if (
+        hrefs.some( ( href ) => {
+            return href.endsWith( own );
+        } )
+    ) {
+        return own;
+    }
+
     // Every other route is a feature (module) page.
     return 'page=storegrowth#/features';
 }
@@ -58,7 +74,13 @@ export default function useAdminSubmenu(): void {
         const items = document.querySelectorAll< HTMLAnchorElement >(
             '#toplevel_page_sales-booster-for-woocommerce .wp-submenu a'
         );
-        const target = submenuTarget( pathname, search );
+        const target = submenuTarget(
+            pathname,
+            search,
+            Array.from( items ).map( ( link ) => {
+                return link.getAttribute( 'href' ) ?? '';
+            } )
+        );
 
         items.forEach( ( link ) => {
             const isCurrent = link.getAttribute( 'href' )?.endsWith( target );

@@ -1,7 +1,7 @@
 # Pro migration spec: StoreGrowth Pro on the redesigned lite
 
-- Status: Draft
-- Date: 2026-09-25
+- Status: Draft (decision 2026-10-01: no legacy bundle; pro N requires lite N, see §6)
+- Date: 2026-09-25, updated 2026-10-01
 - Plugin: `storegrowth-sales-booster-pro` 2.2.0 (`StorePulse\StoreGrowthPro\`)
 - Depends on: lite phases 1–4 (`migration-spec.md`), ADR-001…006 (`../adr/`), RDR-001, `pro-compat-review.md` (rules R1–R6)
 - This is lite's phase 5.
@@ -18,9 +18,9 @@
 
 So **the new pro needs almost no admin JS.** Its migration is mostly:
 - a capability handshake with lite;
-- a version check against lite;
-- freezing its old admin bundle for sites still on old lite;
-- build infrastructure for future pro-only UI.
+- a check for lite's new admin, with a notice asking to update lite when it's missing;
+- deleting its old antd admin bundle (no frozen copy, decision 2026-10-01);
+- build infrastructure for pro-only UI (first entry: the license page, `#/license`).
 
 Pro's PHP runtime (the storefront features) stays unchanged.
 
@@ -67,9 +67,10 @@ Pro's PHP runtime (the storefront features) stays unchanged.
 | Admin fields | 64 JS filters + antd | **None**: lite's schema renders them (R1) |
 | Category messages UI | Pro JS | **Lite** screen (R2); pro ajax handlers kept, sharing the data layer with lite's REST |
 | Caps | JS filter lifts them | Lite server-side from `has_pro()` (R3) |
-| Handshake | none | `storegrowth_pro_admin_ui_version` → `2` |
-| Old admin bundle | `build/index.js` | Frozen as `build/legacy/index.js`, loaded **only on old lite** (§6) |
-| Build | wp-scripts, antd | dokan-lite pattern, TS, externals to lite's `window.storegrowth.*` (§7); no antd in new code |
+| Handshake | none | `storegrowth_pro_admin_ui_version` → `2` (registered with or without a valid licence) |
+| Old admin bundle | `build/index.js` | **Deleted** with its `src/` and the `antd` / `dayjs` / `colorette` deps; no legacy copy (decision 2026-10-01). `Assets` stays as a deprecated no-op class |
+| Licence page | Appsero's page (`storegrowth-sales-booster-pro-license`) | Route `#/license` in lite's app (plugin-ui `License`, REST `sales-booster-pro/v1/license`); the "License" submenu links there and the Appsero slug redirects there. On old lite, Appsero's page stays |
+| Build | wp-scripts, antd | dokan-lite pattern, TS, externals to lite's `window.storegrowth.*` (§7); pro's only admin build; no antd |
 | Pro-only new features (future) | — | PHP schema filter `spsg_settings_schema` (fields with `tab`, `label`, `variant`); a custom control through `storegrowth_settings_{variant}_field` |
 
 ## 4. Field ownership (avoid double definitions)
@@ -82,22 +83,11 @@ Pro's PHP runtime (the storefront features) stays unchanged.
 
 ## 5. PHP changes in pro
 
-1. **Handshake** (`Bootstrap.php`, after the licence check):
-   ```php
-   /**
-    * Tell lite which admin UI generation this pro build supports.
-    *
-    * @since SPSG_PRO_VERSION
-    */
-   add_filter( 'storegrowth_pro_admin_ui_version', static fn() => 2 );
-   ```
-2. **Lite version check.**
-   - Add a version constant, `STOREGROWTH_PRO_VERSION` (new, additive).
-   - Read lite's `STOREGROWTH_VERSION`. If it's below the redesign release (`SPSG_REDESIGN_MIN = X.Y.0`), run in **legacy admin mode** (§6).
-   - Show a dismissible notice: "Update StoreGrowth to get the new settings experience".
-3. **`Assets.php`:**
-   - On new lite, enqueue nothing admin-side, unless pro ships TS entries for post-2.2 features (§7), loaded on the new SPA page with dependencies on lite handles.
-   - On old lite, enqueue `build/legacy/index.js` exactly as today (same screen IDs, same `spsgProAdmin`).
+1. **Handshake** (`Bootstrap.php`, before the licence check): `add_filter( 'storegrowth_pro_admin_ui_version', [ $this, 'admin_ui_version' ] )` → `2`.
+2. **Lite check.**
+   - Feature detection, not a version compare: lite's new admin is present when `StorePulse\StoreGrowth\Admin\AdminMenu` has `PAGE` and `SCREEN_ID` (`Admin\LicensePage::is_app_available()`).
+   - Without it (old lite), pro shows a warning notice: "StoreGrowth Pro needs the latest StoreGrowth to show its settings…" with an "Update StoreGrowth" link, and loads no admin UI. Storefront features and saved settings keep working.
+3. **`Assets.php`:** enqueues nothing (kept as a deprecated no-op; `Assets::instance()` and `admin_enqueue_scripts()` are public). The only pro admin bundle is `build/license.js`, enqueued by `Admin\LicensePage` on `AdminMenu::SCREEN_ID`. `spsgProAdmin` is no longer localized (nothing in lite reads it; lite's category-messages screen uses its own REST).
 4. **`Ajax.php`:** unchanged. `bogo_category_msg_status_handler` / `_delete` keep their nonce and capability checks. If lite's REST category-message routes exist, the handlers call the same lite data layer. No behaviour change.
 5. **Frozen:** all pro-fired hooks (§2.3), pro class names, constants and templates.
 6. **New symbols** carry `@since SPSG_PRO_VERSION`, pro's own placeholder. Add a `bin/version-replace` to pro, copying lite's.
@@ -109,10 +99,10 @@ Pro's PHP runtime (the storefront features) stays unchanged.
 | ≤ 2.2 (old) | 2.2.0 | Old antd | `build/index.js` | Today's behaviour |
 | **new** | **2.2.0** | New | Old bundle loads but is inert; lite dequeues it (R6) | ✅ Via R1–R6 (`pro-compat-review.md`) |
 | **new** | **new** | New | None, or new TS entries | ✅ Target |
-| ≤ 2.2 (old) | **new** | Old antd | `build/legacy/index.js` (frozen copy of 2.2.0's bundle) | ✅ Pro fields still injected into the old UI; notice asks to update lite |
-| any | any, licence invalid | Whatever lite version | none | Pro does nothing (licence gate); lite locks pro fields; stored values kept |
+| ≤ 2.2 (old) | **new** | Old antd, **without pro fields** | none | ⚠️ Not supported for editing (decision 2026-10-01): pro N requires lite N. Pro shows "Update StoreGrowth to use Pro's settings" and loads no admin UI; storefront features and saved settings keep working; licence stays on Appsero's own page |
+| any | any, licence invalid | Whatever lite version | none (new lite: `#/license` only) | Pro does nothing (licence gate); lite locks pro fields; stored values kept |
 
-**Support window:** new pro keeps `build/legacy/` for as long as it supports lite older than `SPSG_REDESIGN_MIN`. Proposal: 2 minor pro releases or 6 months, whichever is longer. Dropping it needs a `Requires Plugins` / min-version bump and a separate ADR.
+**No support window:** there is no legacy bundle to keep (decision 2026-10-01). Pro N requires lite N; a `Requires Plugins` minimum version can't be expressed, so the notice above is the enforcement.
 
 ## 7. Build migration (pro repo)
 
@@ -128,16 +118,13 @@ Pro's PHP runtime (the storefront features) stays unchanged.
   - Pro builds `build/pro-admin.css`: **utilities only** (no preflight), scoped to `.spsg-layout`, and dependent on `spsg-tailwind`.
   - Tokens come from `src/theme-tokens.css`, a copy of lite's `@theme` block, with a CI diff check.
   - Prefer plugin-ui and lite components over raw utilities, so this file stays tiny.
-- **Legacy entry:**
-  - The current `src/` moves to `legacy/src/` and builds to `build/legacy/index.js` with the old antd dependencies.
-  - It's frozen: no changes except security fixes.
-  - It's the only place antd remains, and it's deleted when the support window ends.
-- **Scripts:** `start`, `build`, `type-check`, `lint:js`; update `makepot` to include `build`, and `release`.
-- **`.distignore` / archiver:** exclude `src/`, `legacy/src/`, `types/`, config files. Keep `build/` and `build/legacy/`.
+- **No legacy entry** (decision 2026-10-01): the 2.2.0 `src/` is deleted, not frozen; pro has no antd anywhere.
+- **Scripts:** `start`, `build`, `type-check`, `lint:js`, `version` (`bin/version-replace.sh`, `SPSG_PRO_VERSION`); `makepot` includes `build`; `release` runs them all, then `archiver.mjs`.
+- **`.distignore` / archiver:** exclude `src/`, `types/`, `bin/`, config files. Keep `build/`, `vendor/`, `dependencies/`.
 
 ## 8. Per-module pro tasks
 
-In every row, "delete" refers to the new `src/`; the 2.2.0 code survives only as the frozen `legacy/` copy.
+In every row, the 2.2.0 JS is deleted outright (no legacy copy).
 
 | Module | Pro 2.2.0 JS (filters) | Replaced by lite | Pro PHP work | Pro tests |
 |---|---|---|---|---|
@@ -153,34 +140,34 @@ In every row, "delete" refers to the new `src/`; the 2.2.0 code survives only as
 | UpsellOrderBump | 2 (cap lift) | Lite server-side cap via `has_pro()` (R3) | None | More than 2 bumps with pro |
 
 **Net pro code change:**
-- Delete `src/` (64 module filters, moved to `legacy/`).
-- Add the handshake, version check and asset switch (about 50 lines of PHP).
+- Delete `src/` (64 module filters) and the antd deps.
+- Add the handshake, the lite check + notice, and the licence page (REST + `#/license`).
 - Add build infrastructure.
 - No storefront changes.
 
 ## 9. Release order
 
 1. **Lite N** (redesign) ships. It's compatible with pro 2.2.0 through R1–R6 and needs no pro release. This is the "user updates lite only" case.
-2. **Pro N** ships after lite N is stable (proposal: at least 1 lite patch release later). It has the handshake, version check, legacy bundle and new build.
-3. Pro N's changelog says: "Requires StoreGrowth N for the new settings UI; older StoreGrowth still supported via legacy mode."
-4. The support window ends (§6): a separate ADR, then a pro release that drops `build/legacy/` and sets min lite = N.
+2. **Pro N** ships after lite N (proposal: at least 1 lite patch release later). It has the handshake, the lite check + notice, the licence page and the new build; no legacy bundle.
+3. Pro N **requires lite N** (decision 2026-10-01). Its changelog says: "Requires StoreGrowth N. With an older StoreGrowth, Pro's features keep working on the store but their settings can't be changed until StoreGrowth is updated."
+4. No support window or later drop release is needed.
 
 ## 10. Tests (run from both repos)
 
 - **E2E matrix** (§6 rows), with pinned zips of lite 2.2.0, pro 2.2.0 and the current builds.
-- **Pro PHPUnit:** handshake filter returns 2; the version check chooses legacy mode on old lite; `Assets` enqueues the correct bundle per mode.
+- **Pro PHPUnit:** handshake filter returns 2; on old lite the notice shows and no admin bundle loads; licence REST (status shape, masked key, `manage_options`, errors) leaves the Appsero option shape unchanged.
 - **Byte-identical fixture:** pro 2.2.0 option dump → save through lite N's UI with no changes → option unchanged (lite repo, shared fixture).
 - **Storefront regression per module:** the "Pro tests" column in §8.
 - **Bundle checks:**
   - no `antd` in pro's new bundle;
-  - no plugin-ui copy inside the pro bundle (size check: `build/*.js` without `legacy/` under a threshold, e.g. 50 KB).
+  - no plugin-ui copy inside the pro bundle (size check: `build/*.js` under a threshold, e.g. 50 KB; `license.js` is ~5 KB).
 
 ## 11. Tasks
 
-- [ ] P1: Add `STOREGROWTH_PRO_VERSION` and a version-replace script.
-- [ ] P2: Handshake filter + lite version check + notice.
-- [ ] P3: Move `src/` → `legacy/src/`; build `build/legacy/index.js`; `Assets.php` mode switch.
-- [ ] P4: New build infrastructure (webpack trio, tsconfig, types copy, `pro-admin.css` pipeline) with an empty `src/`.
+- [ ] P1: Version-replace script (`bin/version-replace.sh`, `SPSG_PRO_VERSION`) — done (uncommitted); `STOREGROWTH_PRO_VERSION` constant not added (not needed).
+- [ ] P2: Handshake filter + lite check (feature detection) + notice — done (uncommitted).
+- [ ] P3: Delete the old antd `src/` and its enqueue (`Assets.php` → deprecated no-op); **no legacy bundle** (decision 2026-10-01) — done (uncommitted).
+- [ ] P4: New build infrastructure (webpack trio, tsconfig, types copy) with the licence page as first entry — done (uncommitted). No `pro-admin.css` yet: the page uses plugin-ui's `License` and utilities lite's stylesheet already has.
 - [ ] P5: Confirm every 2.2.0 pro field and the category-messages screen are covered by lite (checklist against `modules/*.md`). File lite issues for anything missing. **This blocks pro N.**
 - [ ] P6: Tests (§10), CI matrix.
 - [ ] P7: `.distignore`, archiver, makepot, changelog, docs.
@@ -188,6 +175,6 @@ In every row, "delete" refers to the new `src/`; the 2.2.0 code survives only as
 ## 12. Open questions
 
 1. Distribute `@storegrowth/*` types as an npm package or a copied `.d.ts`?
-2. Support window length for legacy mode (§6).
-3. Does pro N need any pro-only admin UI on day one? If not, P4 can ship as scaffolding only.
+2. ~~Support window length for legacy mode (§6).~~ Resolved 2026-10-01: no legacy mode; pro N requires lite N.
+3. ~~Does pro N need any pro-only admin UI on day one?~~ Yes: the licence page (`#/license`).
 4. Should the licence-invalid state show pro fields as "Licence expired" (distinct from "Upgrade")? That needs lite to receive `licence_status` from pro through an additive filter.
