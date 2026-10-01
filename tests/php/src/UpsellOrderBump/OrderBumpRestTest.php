@@ -183,7 +183,18 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'orderby' => $injection ] )->get_status() );
 		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'order' => 'ASC, id' ] )->get_status() );
 		$this->assertSame( 400, $this->request( 'GET', self::BASE, [], [ 'per_page' => 1000 ] )->get_status() );
-		$this->assertSame( 200, $this->request( 'GET', self::BASE, [], [ 'orderby' => 'name', 'order' => 'ASC' ] )->get_status() );
+		$this->assertSame(
+			200,
+			$this->request(
+				'GET',
+				self::BASE,
+				[],
+				[
+					'orderby' => 'name',
+					'order'   => 'ASC',
+				]
+			)->get_status()
+		);
 
 		global $wpdb;
 		$wpdb->last_query = '';

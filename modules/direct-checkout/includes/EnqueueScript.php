@@ -79,13 +79,13 @@ class EnqueueScript implements HookRegistry {
 		// Get style options. Each value is interpolated into a <style> block, so
 		// colours are constrained to safe CSS colour characters and sizes to
 		// integers — a stored value can never break out of the CSS context.
-		$settings             = PluginHelper::get_settings( 'spsg_direct_checkout_settings' );
-		$button_style         = PluginHelper::find_option_settings( $settings, 'button_style', true );
-        if ( ! $button_style ) {
-            return;
-        }
-		$button_color         = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
-		$text_color           = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
+		$settings     = PluginHelper::get_settings( 'spsg_direct_checkout_settings' );
+		$button_style = PluginHelper::find_option_settings( $settings, 'button_style', true );
+		if ( ! $button_style ) {
+			return;
+		}
+		$button_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
+		$text_color   = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
 		// A stored 0 or non-number would hide the label: fall back to the default.
 		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) ) ?: 16; // phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', '5' ) );
@@ -175,12 +175,12 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		wp_add_inline_style(
-            'spsg-button-style',
-            apply_filters(
-                'spsg_direct_checkout_button_inline_styles',
-                $custom_css,
-                $settings
-            )
-        );
+			'spsg-button-style',
+			apply_filters(
+				'spsg_direct_checkout_button_inline_styles',
+				$custom_css,
+				$settings
+			)
+		);
 	}
 }

@@ -21,44 +21,43 @@ use StorePulse\StoreGrowth\Modules\BoGo\REST\CategoryMessagesController;
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-        OrderBogo::class,
-        Ajax::class,
-        EnqueueScript::class,
-        BogoController::class,
-        CategoryMessagesController::class,
-        BogoDataWrapper::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		OrderBogo::class,
+		Ajax::class,
+		EnqueueScript::class,
+		BogoController::class,
+		CategoryMessagesController::class,
+		BogoDataWrapper::class,
+	];
 
-    /**
-     * Boot the service provider and supporting services.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-        foreach ( $this->services as $service ) {
-            $this->share_with_implements_tags( $service );
-        }
-        $this->getContainer()->add(BogoDataWrapper::class);
-    }
+	/**
+	 * Boot the service provider and supporting services.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		foreach ( $this->services as $service ) {
+			$this->share_with_implements_tags( $service );
+		}
+		$this->getContainer()->add( BogoDataWrapper::class );
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+	}
 }

@@ -19,43 +19,42 @@ use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
  */
 class ServiceProvider extends BaseServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-	    SalesPopModule::class,
-	    SalesPopSettings::class,
-	    AdminPage::class,
-	    SourceProductsController::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		SalesPopModule::class,
+		SalesPopSettings::class,
+		AdminPage::class,
+		SourceProductsController::class,
+	];
 
-    /**
-     * Boot the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
+	/**
+	 * Boot the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+	}
 
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-        $this->add_with_implements_tags( SalesPopModule::get_id(), SalesPopModule::class, true );
-        // Always registered: the settings page and its routes work while the module is off.
-        $this->add_with_implements_tags( SalesPopSettings::class, SalesPopSettings::class, true );
-        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
-        $this->add_with_implements_tags( SourceProductsController::class, SourceProductsController::class, true );
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->add_with_implements_tags( SalesPopModule::get_id(), SalesPopModule::class, true );
+		// Always registered: the settings page and its routes work while the module is off.
+		$this->add_with_implements_tags( SalesPopSettings::class, SalesPopSettings::class, true );
+		$this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
+		$this->add_with_implements_tags( SourceProductsController::class, SourceProductsController::class, true );
+	}
 }

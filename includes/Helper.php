@@ -174,7 +174,7 @@ class Helper {
 	 */
 	public static function sanitize_svg_icon_fields( string $value ): string {
 		$icon_allowed_html = [
-			'svg' => [
+			'svg'  => [
 				'viewbox' => true,
 				'height'  => true,
 				'width'   => true,
@@ -182,7 +182,7 @@ class Helper {
 			'path' => [
 				'd' => true,
 			],
-			'g' => [],
+			'g'    => [],
 		];
 
 		return wp_kses( $value, $icon_allowed_html );
@@ -401,33 +401,33 @@ class Helper {
 		return $request;
 	}
 
-    /**
-     * Check if The Current User Allowed to View Promotions.
-     *
-     * @since 2.0.0
-     *
-     * @return bool
-     */
-    public static function is_current_user_allowed_to_view_promotions(): bool {
-        if ( ! is_user_logged_in() ) {
-            return true;
-        }
+	/**
+	 * Check if The Current User Allowed to View Promotions.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public static function is_current_user_allowed_to_view_promotions(): bool {
+		if ( ! is_user_logged_in() ) {
+			return true;
+		}
 
-        $allowed_roles = apply_filters(
-            'spsg_allowed_roles_for_promotions',
-            [
-                'customer',
-                'wholesale_customer',
-                'subscriber'
-            ]
-        );
+		$allowed_roles = apply_filters(
+			'spsg_allowed_roles_for_promotions',
+			[
+				'customer',
+				'wholesale_customer',
+				'subscriber',
+			]
+		);
 
-        foreach ( $allowed_roles as $role ) {
-            if ( current_user_can( $role ) ) {
-                return true;
-            }
-        }
+		foreach ( $allowed_roles as $role ) {
+			if ( current_user_can( $role ) ) {
+				return true;
+			}
+		}
 
-        return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
-    }
+		return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
+	}
 }

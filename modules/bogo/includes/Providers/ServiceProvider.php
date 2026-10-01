@@ -18,40 +18,40 @@ use StorePulse\StoreGrowth\Modules\BoGo\Settings\BogoSettings;
  */
 class ServiceProvider extends BaseServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-	    BoGoModule::class,
-	    BogoSettings::class,
-	    AdminPage::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		BoGoModule::class,
+		BogoSettings::class,
+		AdminPage::class,
+	];
 
-    /**
-     * Boot the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-    }
+	/**
+	 * Boot the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-        $this->add_with_implements_tags( BoGoModule::get_id(), BoGoModule::class, true );
-        // Always loaded: the settings page works while the module is off.
-        $this->add_with_implements_tags( BogoSettings::class, BogoSettings::class, true );
-        $this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->add_with_implements_tags( BoGoModule::get_id(), BoGoModule::class, true );
+		// Always loaded: the settings page works while the module is off.
+		$this->add_with_implements_tags( BogoSettings::class, BogoSettings::class, true );
+		$this->add_with_implements_tags( AdminPage::class, AdminPage::class, true );
+	}
 }

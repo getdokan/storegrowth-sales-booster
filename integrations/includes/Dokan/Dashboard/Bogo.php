@@ -13,7 +13,7 @@ use StorePulse\StoreGrowth\Traits\Singleton;
  */
 class Bogo {
 
-    use Singleton;
+	use Singleton;
 
 	/**
 	 * The dashboard bundle (`integrations/dokan/bogo` in webpack-entries.js),
@@ -25,25 +25,25 @@ class Bogo {
 	 */
 	const BUNDLE = 'build/integrations/dokan/bogo';
 
-    /**
-     * Constructor of Bogo Class.
-     *
-     * @since 1.12.0
-     */
-    private function __construct() {
-        $this->init_hooks();
-    }
+	/**
+	 * Constructor of Bogo Class.
+	 *
+	 * @since 1.12.0
+	 */
+	private function __construct() {
+		$this->init_hooks();
+	}
 
-    /**
-     * Initialize Hooks.
-     *
-     * @since 1.12.0
-     *
-     * @return void
-     */
-    private function init_hooks() {
-        add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
-        add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
+	/**
+	 * Initialize Hooks.
+	 *
+	 * @since 1.12.0
+	 *
+	 * @return void
+	 */
+	private function init_hooks() {
+		add_filter( 'dokan_get_dashboard_nav', [ $this, 'add_nav_menu' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'vendor_dashboard_enqueue_scripts' ] );
 		// Kept for compatibility: `spsg_bogo_product_args` hasn't fired since
 		// 2.0.2; vendor product search is scoped by `spsg_product_query_args`.
 		add_filter( 'spsg_bogo_product_args', [ $this, 'add_bogo_product_args' ] );
@@ -52,25 +52,25 @@ class Bogo {
 		add_filter( 'spsg_bogo_check_permission', [ $this, 'check_bogo_permission' ] );
 		add_filter( 'spsg_bogo_single_item_permission', [ $this, 'check_bogo_single_item_permission' ], 10, 3 );
 		add_filter( 'spsg_product_query_args', [ $this, 'add_product_query_args' ], 10, 2 );
-    }
+	}
 
-	public function add_product_query_args ( $args, $request ) {
-		if ( ! current_user_can( 'manage_woocommerce' ) && function_exists('dokan_get_current_user_id') ) {
+	public function add_product_query_args( $args, $request ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) && function_exists( 'dokan_get_current_user_id' ) ) {
 			$args['author'] = dokan_get_current_user_id();
 		}
 		return $args;
 	}
 
-    /**
-     * Add BOGO Sub-menu on Dokan Vendor Dashboard.
-     *
-     * @since 1.12.0
-     *
-     * @param array $menus Dashboard menus.
-     *
-     * @return array
-     */
-    public function add_nav_menu( $menus ): array {
+	/**
+	 * Add BOGO Sub-menu on Dokan Vendor Dashboard.
+	 *
+	 * @since 1.12.0
+	 *
+	 * @param array $menus Dashboard menus.
+	 *
+	 * @return array
+	 */
+	public function add_nav_menu( $menus ): array {
 		// dokan_is_seller_dashboard is checked before this class init.
 		// The menu shows whatever `vendors_can_create_buy_x_get_x` is (it
 		// hid the menu when off; it only gates Buy X Get X offers), but only
@@ -79,47 +79,47 @@ class Bogo {
 			return $menus;
 		}
 
-        $menus['bogo'] = [
-            'title'      => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
-            'icon'       => '<i class="fa-solid fa-box"></i>',
-            'icon_name'  => 'PackagePlus',
-            'url'        => dokan_get_navigation_url( '/bogo' ),
-            'pos'        => 10,
-            'permission' => 'dokandar',
-            'react_route' => 'bogo',
-        ];
+		$menus['bogo'] = [
+			'title'       => esc_html__( 'BOGO', 'storegrowth-sales-booster' ),
+			'icon'        => '<i class="fa-solid fa-box"></i>',
+			'icon_name'   => 'PackagePlus',
+			'url'         => dokan_get_navigation_url( '/bogo' ),
+			'pos'         => 10,
+			'permission'  => 'dokandar',
+			'react_route' => 'bogo',
+		];
 
-        return $menus;
-    }
+		return $menus;
+	}
 
 	public function add_bogo_product_args( $args ): array {
 		if ( ! dokan_is_seller_dashboard() ) {
-            return $args;
-        }
+			return $args;
+		}
 
 		$args['author'] = dokan_get_current_user_id();
 
 		return $args;
 	}
 	public function add_bogo_rest_query_args( $args ): array {
-		if ( ! current_user_can('manage_options') ) {
-            $args['created_by'] = dokan_get_current_user_id();
-        }
+		if ( ! current_user_can( 'manage_options' ) ) {
+			$args['created_by'] = dokan_get_current_user_id();
+		}
 
 		return $args;
 	}
 
 	public function add_bogo_created_by( $user_id ) {
-		if ( ! current_user_can('manage_options') ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return dokan_get_current_user_id();
 		}
 		return $user_id;
 	}
 
 	public function check_bogo_permission( $has_permission ) {
-		if ( ! current_user_can('manage_options') ) {
-            return current_user_can( 'dokandar' );
-        }
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return current_user_can( 'dokandar' );
+		}
 		return $has_permission;
 	}
 
@@ -160,13 +160,12 @@ class Bogo {
 		return $has_permission;
 	}
 
-    /**
-     * Enqueue Scripts for Dokan Vendor Dashbaord.
-     *
-     * @since 1.12.0
-     *
-     */
-    public function vendor_dashboard_enqueue_scripts() {
+	/**
+	 * Enqueue Scripts for Dokan Vendor Dashbaord.
+	 *
+	 * @since 1.12.0
+	 */
+	public function vendor_dashboard_enqueue_scripts() {
 		global $wp;
 
 		// Only Dokan's React dashboard (`/dashboard/new/`, as Dokan's own

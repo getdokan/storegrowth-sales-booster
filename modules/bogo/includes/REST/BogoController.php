@@ -23,814 +23,816 @@ defined( 'ABSPATH' ) || exit();
  */
 class BogoController extends WP_REST_Controller {
 
-    /**
-     * Class Constructor.
-     */
-    public function __construct() {
-        $this->namespace = 'sales-booster/v1';
-        $this->rest_base = 'bogo/offers';
-    }
+	/**
+	 * Class Constructor.
+	 */
+	public function __construct() {
+		$this->namespace = 'sales-booster/v1';
+		$this->rest_base = 'bogo/offers';
+	}
 
-    /**
-     * Register REST routes.
-     */
-    public function register_routes(): void {
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base,
-            [
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_items' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => $this->get_collection_params(),
-                ],
-                [
-                    'methods'             => WP_REST_Server::CREATABLE,
-                    'callback'            => [ $this, 'create_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => $this->get_endpoint_args_for_create_item(),
-                ],
-            ]
-        );
+	/**
+	 * Register REST routes.
+	 */
+	public function register_routes(): void {
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base,
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_items' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => $this->get_collection_params(),
+				],
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'create_item' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => $this->get_endpoint_args_for_create_item(),
+				],
+			]
+		);
 
-        // Bulk actions from the list: `{ delete: [ ids ] }`.
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base . '/batch',
-            [
-                [
-                    'methods'             => WP_REST_Server::CREATABLE,
-                    'callback'            => [ $this, 'batch_items' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => [
-                        'delete' => [
-                            'type'     => 'array',
-                            'items'    => [ 'type' => 'integer' ],
-                            'required' => true,
-                        ],
-                    ],
-                ],
-            ]
-        );
+		// Bulk actions from the list: `{ delete: [ ids ] }`.
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/batch',
+			[
+				[
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => [ $this, 'batch_items' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => [
+						'delete' => [
+							'type'     => 'array',
+							'items'    => [ 'type' => 'integer' ],
+							'required' => true,
+						],
+					],
+				],
+			]
+		);
 
-        // What the offer editor is drawn from (ADR-010).
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base . '/editor',
-            [
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_editor' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                ],
-            ]
-        );
+		// What the offer editor is drawn from (ADR-010).
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/editor',
+			[
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_editor' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+				],
+			]
+		);
 
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base . '/(?P<id>\d+)',
-            [
-                'args' => [
-                    'id' => [
-                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
-                        'type'        => 'integer',
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [ $this, 'get_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => [
-                        'id' => [
-                            'type'     => 'integer',
-                            'required' => true,
-                        ],
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::EDITABLE,
-                    'callback'            => [ $this, 'update_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => [
-                        'id' => [
-                            'type'     => 'integer',
-                            'required' => true,
-                        ],
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::DELETABLE,
-                    'callback'            => [ $this, 'delete_item' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => [
-                        'id' => [
-                            'type'     => 'integer',
-                            'required' => true,
-                        ],
-                    ],
-                ],
-            ]
-        );
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)',
+			[
+				'args' => [
+					'id' => [
+						'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
+						'type'        => 'integer',
+					],
+				],
+				[
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => [ $this, 'get_item' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => [
+						'id' => [
+							'type'     => 'integer',
+							'required' => true,
+						],
+					],
+				],
+				[
+					'methods'             => WP_REST_Server::EDITABLE,
+					'callback'            => [ $this, 'update_item' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => [
+						'id' => [
+							'type'     => 'integer',
+							'required' => true,
+						],
+					],
+				],
+				[
+					'methods'             => WP_REST_Server::DELETABLE,
+					'callback'            => [ $this, 'delete_item' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => [
+						'id' => [
+							'type'     => 'integer',
+							'required' => true,
+						],
+					],
+				],
+			]
+		);
 
-        register_rest_route(
-            $this->namespace,
-            '/' . $this->rest_base . '/(?P<id>\d+)/status',
-            [
-                'args' => [
-                    'id' => [
-                        'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
-                        'type'        => 'integer',
-                    ],
-                ],
-                [
-                    'methods'             => WP_REST_Server::EDITABLE,
-                    'callback'            => [ $this, 'update_status' ],
-                    'permission_callback' => [ $this, 'check_permission' ],
-                    'args'                => [
-                        'id' => [
-                            'type'     => 'integer',
-                            'required' => true,
-                        ],
-                        'status' => [
-                            'type'     => 'string',
-                            'required' => true,
-                            'enum'     => [ 'yes', 'no' ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-    }
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)/status',
+			[
+				'args' => [
+					'id' => [
+						'description' => __( 'Bogo offer ID', 'storegrowth-sales-booster' ),
+						'type'        => 'integer',
+					],
+				],
+				[
+					'methods'             => WP_REST_Server::EDITABLE,
+					'callback'            => [ $this, 'update_status' ],
+					'permission_callback' => [ $this, 'check_permission' ],
+					'args'                => [
+						'id'     => [
+							'type'     => 'integer',
+							'required' => true,
+						],
+						'status' => [
+							'type'     => 'string',
+							'required' => true,
+							'enum'     => [ 'yes', 'no' ],
+						],
+					],
+				],
+			]
+		);
+	}
 
-    /**
-     * Get query filters for fetching BOGO offers.
-     * This method can be overridden by child classes to customize query filters.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request Rest Request.
-     * @return array Query filters for BogoDataManager.
-     */
-    protected function get_query_filters( $request ) {
-        // `type`, `status` and `search` from the request (they used to be
-        // ignored), then the filter as before.
-        $filters = [];
+	/**
+	 * Get query filters for fetching BOGO offers.
+	 * This method can be overridden by child classes to customize query filters.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return array Query filters for BogoDataManager.
+	 */
+	protected function get_query_filters( $request ) {
+		// `type`, `status` and `search` from the request (they used to be
+		// ignored), then the filter as before.
+		$filters = [];
 
-        if ( in_array( $request->get_param( 'type' ), [ 'global', 'product' ], true ) ) {
-            $filters['type'] = $request->get_param( 'type' );
-        }
-        if ( in_array( $request->get_param( 'status' ), [ 'active', 'inactive' ], true ) ) {
-            $filters['status'] = $request->get_param( 'status' );
-        }
-        // Not `sanitize_text_field()`: it strips `<…`, which a name can hold.
-        // The query escapes it (`esc_like()` in a prepared LIKE).
-        $search = trim( wp_check_invalid_utf8( (string) $request->get_param( 'search' ) ) );
-        if ( '' !== $search ) {
-            $filters['search'] = $search;
-        }
+		if ( in_array( $request->get_param( 'type' ), [ 'global', 'product' ], true ) ) {
+			$filters['type'] = $request->get_param( 'type' );
+		}
+		if ( in_array( $request->get_param( 'status' ), [ 'active', 'inactive' ], true ) ) {
+			$filters['status'] = $request->get_param( 'status' );
+		}
+		// Not `sanitize_text_field()`: it strips `<…`, which a name can hold.
+		// The query escapes it (`esc_like()` in a prepared LIKE).
+		$search = trim( wp_check_invalid_utf8( (string) $request->get_param( 'search' ) ) );
+		if ( '' !== $search ) {
+			$filters['search'] = $search;
+		}
 
-        return apply_filters( 'spsg_bogo_rest_query_filters', $filters, $request );
-    }
+		return apply_filters( 'spsg_bogo_rest_query_filters', $filters, $request );
+	}
 
-    /**
-     * Get query options for fetching BOGO offers.
-     * This method can be overridden by child classes to customize query options.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request Rest Request.
-     * @return array Query options for BogoDataManager.
-     */
-    protected function get_query_options( $request ) {
-        $params = $request->get_params();
-        $per_page = isset( $params['per_page'] ) ? (int) $params['per_page'] : 20;
-        $page = isset( $params['page'] ) ? (int) $params['page'] : 1;
+	/**
+	 * Get query options for fetching BOGO offers.
+	 * This method can be overridden by child classes to customize query options.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return array Query options for BogoDataManager.
+	 */
+	protected function get_query_options( $request ) {
+		$params   = $request->get_params();
+		$per_page = isset( $params['per_page'] ) ? (int) $params['per_page'] : 20;
+		$page     = isset( $params['page'] ) ? (int) $params['page'] : 1;
 
-        return [
-            'limit' => $per_page,
-            'offset' => ($page - 1) * $per_page,
-            'order_by' => 'created_at DESC'
-        ];
-    }
+		return [
+			'limit'    => $per_page,
+			'offset'   => ( $page - 1 ) * $per_page,
+			'order_by' => 'created_at DESC',
+		];
+	}
 
-    /**
-     * Get total count of BOGO offers for pagination.
-     * This method can be overridden by child classes to customize count logic.
-     *
-     * @since 2.0.0
-     * @param array $query_filters Query filters.
-     * @param WP_REST_Request $request Rest Request.
-     * @return int Total count of offers.
-     */
-    protected function get_total_items_count( $query_filters, $request ) {
-        // The same filters as the list (it counted global offers only while
-        // listing both types).
-        return BogoDataManager::get_bogo_offers_count( $query_filters );
-    }
+	/**
+	 * Get total count of BOGO offers for pagination.
+	 * This method can be overridden by child classes to customize count logic.
+	 *
+	 * @since 2.0.0
+	 * @param array           $query_filters Query filters.
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return int Total count of offers.
+	 */
+	protected function get_total_items_count( $query_filters, $request ) {
+		// The same filters as the list (it counted global offers only while
+		// listing both types).
+		return BogoDataManager::get_bogo_offers_count( $query_filters );
+	}
 
-    /**
-     * Get BOGO offers with pagination.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request Rest Request.
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-     */
-    public function get_items( $request ) {
-        // Get custom query filters and options from child classes
-        $query_filters = $this->get_query_filters( $request );
-        $query_options = $this->get_query_options( $request );
-        
-        // Get total count for pagination
-        $total_items = $this->get_total_items_count( $query_filters, $request );
+	/**
+	 * Get BOGO offers with pagination.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+	 */
+	public function get_items( $request ) {
+		// Get custom query filters and options from child classes
+		$query_filters = $this->get_query_filters( $request );
+		$query_options = $this->get_query_options( $request );
 
-        $offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
+		// Get total count for pagination
+		$total_items = $this->get_total_items_count( $query_filters, $request );
 
-        $data = [];
-        
-        foreach ( $offers as $item ) {
-            $item_data = $this->prepare_item_for_response( $item, $request );
-            $data[] = $this->prepare_response_for_collection( $item_data );
-        }
+		$offers = BogoDataManager::get_bogo_offers( $query_filters, $query_options );
 
-        $response = rest_ensure_response( $data );
-        return $this->format_collection_response( $response, $request, $total_items );
-    }
+		$data = [];
 
-    /**
-     * The offer editor (ADR-010): its page and fields (`BogoOfferFields`),
-     * whether a new offer would pass this route's limit, and for the preview
-     * the store's price format and the global "Show Regular Price" (so the
-     * vendor dashboard needn't read the admin's settings).
-     *
-     * @since SPSG_VERSION
-     *
-     * @param WP_REST_Request $request Rest Request.
-     *
-     * @return WP_REST_Response
-     */
-    public function get_editor( $request ) {
-        return rest_ensure_response(
-            array_merge(
-                ( new BogoOfferFields() )->get_editor(),
-                [
-                    'can_create' => ! is_wp_error( $this->check_creation_limitations( [], $request ) ),
-                    'currency'   => [
-                        'symbol'             => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
-                        'position'           => get_option( 'woocommerce_currency_pos', 'left' ),
-                        'decimals'           => wc_get_price_decimals(),
-                        'decimal_separator'  => wc_get_price_decimal_separator(),
-                        'thousand_separator' => wc_get_price_thousand_separator(),
-                    ],
-                    // The global "Show Regular Price", as the storefront reads it.
-                    'show_regular_price' => (bool) Helper::get_bogo_settings_option( 'regular_price_show', false ),
-                ]
-            )
-        );
-    }
+		foreach ( $offers as $item ) {
+			$item_data = $this->prepare_item_for_response( $item, $request );
+			$data[]    = $this->prepare_response_for_collection( $item_data );
+		}
 
-    /**
-     * Check permission for accessing a single BOGO offer.
-     * This method can be overridden by child classes to implement custom permission logic.
-     *
-     * @since 2.0.0
-     * @param array $item The BOGO offer data.
-     * @param WP_REST_Request $request Rest Request.
-     * @return bool|WP_Error True if permission granted, WP_Error otherwise.
-     */
-    protected function check_single_item_permission( $item, $request ) {
-        return apply_filters( 'spsg_bogo_single_item_permission', true,  $item, $request );
-    }
+		$response = rest_ensure_response( $data );
+		return $this->format_collection_response( $response, $request, $total_items );
+	}
 
-    /**
-     * Get a single BOGO offer.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request Rest Request.
-     * @return WP_Error|WP_HTTP_Response|WP_REST_Response
-     */
-    public function get_item( $request ) {
-        $id = $request->get_param( 'id' );
-        $item = BogoDataManager::get_bogo_offer( $id );
+	/**
+	 * The offer editor (ADR-010): its page and fields (`BogoOfferFields`),
+	 * whether a new offer would pass this route's limit, and for the preview
+	 * the store's price format and the global "Show Regular Price" (so the
+	 * vendor dashboard needn't read the admin's settings).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request Rest Request.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function get_editor( $request ) {
+		return rest_ensure_response(
+			array_merge(
+				( new BogoOfferFields() )->get_editor(),
+				[
+					'can_create'         => ! is_wp_error( $this->check_creation_limitations( [], $request ) ),
+					'currency'           => [
+						'symbol'             => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
+						'position'           => get_option( 'woocommerce_currency_pos', 'left' ),
+						'decimals'           => wc_get_price_decimals(),
+						'decimal_separator'  => wc_get_price_decimal_separator(),
+						'thousand_separator' => wc_get_price_thousand_separator(),
+					],
+					// The global "Show Regular Price", as the storefront reads it.
+					'show_regular_price' => (bool) Helper::get_bogo_settings_option( 'regular_price_show', false ),
+				]
+			)
+		);
+	}
 
-        if ( ! $item ) {
-            return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
-        }
+	/**
+	 * Check permission for accessing a single BOGO offer.
+	 * This method can be overridden by child classes to implement custom permission logic.
+	 *
+	 * @since 2.0.0
+	 * @param array           $item The BOGO offer data.
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return bool|WP_Error True if permission granted, WP_Error otherwise.
+	 */
+	protected function check_single_item_permission( $item, $request ) {
+		return apply_filters( 'spsg_bogo_single_item_permission', true, $item, $request );
+	}
 
-        // Check custom permission logic from child classes
-        $permission_check = $this->check_single_item_permission( $item, $request );
-        if ( is_wp_error( $permission_check ) ) {
-            return $permission_check;
-        }
+	/**
+	 * Get a single BOGO offer.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return WP_Error|WP_HTTP_Response|WP_REST_Response
+	 */
+	public function get_item( $request ) {
+		$id   = $request->get_param( 'id' );
+		$item = BogoDataManager::get_bogo_offer( $id );
 
-        $response = $this->prepare_item_for_response( $item, $request );
-        $response->set_status( 200 );
+		if ( ! $item ) {
+			return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
+		}
 
-        return $response;
-    }
+		// Check custom permission logic from child classes
+		$permission_check = $this->check_single_item_permission( $item, $request );
+		if ( is_wp_error( $permission_check ) ) {
+			return $permission_check;
+		}
 
-    /**
-     * Prepare data before creating a BOGO offer.
-     * This method can be overridden by child classes to customize data before creation.
-     *
-     * @since 2.0.0
-     * @param array $data The validated request data.
-     * @param WP_REST_Request $request Rest Request.
-     * @return array Modified data for creation.
-     */
-    protected function prepare_data_for_creation( $data, $request ) {
-        return $data;
-    }
+		$response = $this->prepare_item_for_response( $item, $request );
+		$response->set_status( 200 );
 
-    /**
-     * Check creation limitations before creating a BOGO offer.
-     * This method can be overridden by child classes to implement custom limitations.
-     *
-     * @since 2.0.0
-     * @param array $data The validated request data.
-     * @param WP_REST_Request $request Rest Request.
-     * @return bool|WP_Error True if allowed, WP_Error otherwise.
-     */
-    protected function check_creation_limitations( $data, $request ) {
-        // Lite's limit (one rule: BogoDataManager::can_create_global_offer()).
-        if ( ! BogoDataManager::can_create_global_offer() ) {
-            return new WP_Error(
-                'salesbooster_limit_exceeded',
-                __( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
-                [ 'status' => 403 ]
-            );
-        }
+		return $response;
+	}
 
-        return true;
-    }
+	/**
+	 * Prepare data before creating a BOGO offer.
+	 * This method can be overridden by child classes to customize data before creation.
+	 *
+	 * @since 2.0.0
+	 * @param array           $data The validated request data.
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return array Modified data for creation.
+	 */
+	protected function prepare_data_for_creation( $data, $request ) {
+		return $data;
+	}
 
-    /**
-     * Create a BOGO offer.
-     *
-     * @since 2.0.0
-     * @param \WP_REST_Request $request The REST request.
-     * @return WP_REST_Response|WP_Error
-     * @throws Exception if any error
-     */
-    public function create_item( $request ) {
-        $data = $this->ignore_pro_values( $request->get_params(), [] );
+	/**
+	 * Check creation limitations before creating a BOGO offer.
+	 * This method can be overridden by child classes to implement custom limitations.
+	 *
+	 * @since 2.0.0
+	 * @param array           $data The validated request data.
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return bool|WP_Error True if allowed, WP_Error otherwise.
+	 */
+	protected function check_creation_limitations( $data, $request ) {
+		// Lite's limit (one rule: BogoDataManager::can_create_global_offer()).
+		if ( ! BogoDataManager::can_create_global_offer() ) {
+			return new WP_Error(
+				'salesbooster_limit_exceeded',
+				__( 'BOGO limit exceeded. Upgrade to PRO for unlimited offers.', 'storegrowth-sales-booster' ),
+				[ 'status' => 403 ]
+			);
+		}
 
-        // Check creation limitations first: at the limit, any body gets 403.
-        $limitation_check = $this->check_creation_limitations( $data, $request );
-        if ( is_wp_error( $limitation_check ) ) {
-            return $limitation_check;
-        }
+		return true;
+	}
 
-        // Validate and normalize data
-        $validation = $this->validate_and_normalize_data( $data );
-        if ( is_wp_error( $validation ) ) {
-            return $validation;
-        }
-        $data = $validation;
+	/**
+	 * Create a BOGO offer.
+	 *
+	 * @since 2.0.0
+	 * @param \WP_REST_Request $request The REST request.
+	 * @return WP_REST_Response|WP_Error
+	 * @throws Exception if any error
+	 */
+	public function create_item( $request ) {
+		$data = $this->ignore_pro_values( $request->get_params(), [] );
 
-        $rules = $this->check_offer_rules( $data );
-        if ( is_wp_error( $rules ) ) {
-            return $rules;
-        }
+		// Check creation limitations first: at the limit, any body gets 403.
+		$limitation_check = $this->check_creation_limitations( $data, $request );
+		if ( is_wp_error( $limitation_check ) ) {
+			return $limitation_check;
+		}
 
-        $rules = $this->check_extension_rules( $data, [], $request );
-        if ( is_wp_error( $rules ) ) {
-            return $rules;
-        }
+		// Validate and normalize data
+		$validation = $this->validate_and_normalize_data( $data );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+		$data = $validation;
 
-        // Prepare data for creation (can be customized by child classes)
-        $data = $this->prepare_data_for_creation( $data, $request );
+		$rules = $this->check_offer_rules( $data );
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
+
+		$rules = $this->check_extension_rules( $data, [], $request );
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
+
+		// Prepare data for creation (can be customized by child classes)
+		$data = $this->prepare_data_for_creation( $data, $request );
 
 		// check the duplicate bogo offer among active global offers only
-		$existing = BogoDataManager::get_bogo_offers([
-			'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
-			'type'             => 'global',
-			'status'           => 'active',
-		]);
+		$existing = BogoDataManager::get_bogo_offers(
+			[
+				'offered_products' => wp_json_encode( $data['offered_products'] ?? array() ),
+				'type'             => 'global',
+				'status'           => 'active',
+			]
+		);
 
 		if ( ! empty( $existing ) ) {
 			return new WP_Error(
 				'bogo_offer_exists',
-				__('This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster'),
+				__( 'This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one.', 'storegrowth-sales-booster' ),
 				// A 400 (a WP_Error without a status answers 500).
 				[ 'status' => 400 ]
 			);
 		}
 
-        $result = BogoDataManager::create_global_offer( $data );
+		$result = BogoDataManager::create_global_offer( $data );
 
-        if ( ! $result ) {
-            return new WP_REST_Response( [ 'error' => __( 'Failed to create BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
-        }
+		if ( ! $result ) {
+			return new WP_REST_Response( [ 'error' => __( 'Failed to create BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
+		}
 
-        $created_data = BogoDataManager::get_bogo_offer( $result );
-        if ( ! $created_data ) {
-            return new WP_REST_Response( [ 'error' => __( 'Failed to retrieve created BOGO offer.', 'storegrowth-sales-booster' ) ], 500 );
-        }
+		$created_data = BogoDataManager::get_bogo_offer( $result );
+		if ( ! $created_data ) {
+			return new WP_REST_Response( [ 'error' => __( 'Failed to retrieve created BOGO offer.', 'storegrowth-sales-booster' ) ], 500 );
+		}
 
-        $response = $this->prepare_item_for_response( $created_data, $request );
-        $response->set_status( 201 );
+		$response = $this->prepare_item_for_response( $created_data, $request );
+		$response->set_status( 201 );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * Update a BOGO offer.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request The REST request.
-     * @return WP_REST_Response|WP_Error
-     */
-    public function update_item( $request ) {
-        $id = $request->get_param( 'id' );
+	/**
+	 * Update a BOGO offer.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request The REST request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function update_item( $request ) {
+		$id = $request->get_param( 'id' );
 
-        $existing_offer = BogoDataManager::get_bogo_offer( $id );
-        if ( ! $existing_offer ) {
-            return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
-        }
+		$existing_offer = BogoDataManager::get_bogo_offer( $id );
+		if ( ! $existing_offer ) {
+			return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
+		}
 
-        // Check custom permission logic from child classes
-        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
-        if ( is_wp_error( $permission_check ) ) {
-            return $permission_check;
-        }
+		// Check custom permission logic from child classes
+		$permission_check = $this->check_single_item_permission( $existing_offer, $request );
+		if ( is_wp_error( $permission_check ) ) {
+			return $permission_check;
+		}
 
-        // A merge: the stored offer, then only what the request sends (the
-        // route's defaults and anything left out used to reset the offer,
-        // design included).
-        $stored = BogoDataManager::to_request_data( $existing_offer );
-        $sent   = $this->sent_params( $request );
-        $data   = array_merge( $stored, $sent );
-        $data   = $this->ignore_pro_values( $data, $stored );
+		// A merge: the stored offer, then only what the request sends (the
+		// route's defaults and anything left out used to reset the offer,
+		// design included).
+		$stored = BogoDataManager::to_request_data( $existing_offer );
+		$sent   = $this->sent_params( $request );
+		$data   = array_merge( $stored, $sent );
+		$data   = $this->ignore_pro_values( $data, $stored );
 
-        // Validate and normalize data
-        $validation = $this->validate_and_normalize_data( $data );
-        if ( is_wp_error( $validation ) ) {
-            return $validation;
-        }
-        $data = $validation;
+		// Validate and normalize data
+		$validation = $this->validate_and_normalize_data( $data );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+		$data = $validation;
 
-        // Only the rules about what the request changes: an offer stored
-        // before them (e.g. a 150% discount) can still be renamed.
-        $rules = $this->check_offer_rules( $data, $sent );
-        if ( is_wp_error( $rules ) ) {
-            return $rules;
-        }
+		// Only the rules about what the request changes: an offer stored
+		// before them (e.g. a 150% discount) can still be renamed.
+		$rules = $this->check_offer_rules( $data, $sent );
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
 
-        $rules = $this->check_extension_rules( $data, $stored, $request );
-        if ( is_wp_error( $rules ) ) {
-            return $rules;
-        }
+		$rules = $this->check_extension_rules( $data, $stored, $request );
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
 
-        $result = BogoDataManager::update_global_offer( $id, $data );
+		$result = BogoDataManager::update_global_offer( $id, $data );
 
-        $updated_data = BogoDataManager::get_bogo_offer( $id );
-        $response = $this->prepare_item_for_response( $updated_data, $request );
-        $response->set_status( 200 );
+		$updated_data = BogoDataManager::get_bogo_offer( $id );
+		$response     = $this->prepare_item_for_response( $updated_data, $request );
+		$response->set_status( 200 );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * The values the request sends (body or JSON), without the route's
-     * defaults and the URL's `id`.
-     *
-     * @since SPSG_VERSION
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return array
-     */
-    protected function sent_params( $request ) {
-        $sent = array_merge( (array) $request->get_body_params(), (array) $request->get_json_params() );
-        unset( $sent['id'] );
+	/**
+	 * The values the request sends (body or JSON), without the route's
+	 * defaults and the URL's `id`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request The REST request.
+	 *
+	 * @return array
+	 */
+	protected function sent_params( $request ) {
+		$sent = array_merge( (array) $request->get_body_params(), (array) $request->get_json_params() );
+		unset( $sent['id'] );
 
-        // `name` is an alias of `name_of_order_bogo`: the merged stored name
-        // would otherwise win over it.
-        if ( isset( $sent['name'] ) && ! isset( $sent['name_of_order_bogo'] ) ) {
-            $sent['name_of_order_bogo'] = $sent['name'];
-        }
+		// `name` is an alias of `name_of_order_bogo`: the merged stored name
+		// would otherwise win over it.
+		if ( isset( $sent['name'] ) && ! isset( $sent['name_of_order_bogo'] ) ) {
+			$sent['name_of_order_bogo'] = $sent['name'];
+		}
 
-        return $sent;
-    }
+		return $sent;
+	}
 
-    /**
-     * The offer editor's rules (10d): a create checks them all, an update
-     * those about the keys it sends.
-     *
-     * - A percentage discount is more than 0 and at most 100.
-     * - The end date isn't before the start date.
-     * - The offer has a target product or category.
-     * - Buy X Get Y has an offer product.
-     *
-     * @since SPSG_VERSION
-     *
-     * @param array $data Normalized offer data.
-     * @param array $sent What an update sends; null for a create.
-     *
-     * @return true|WP_Error
-     */
-    protected function check_offer_rules( $data, $sent = null ) {
-        $sends = static function ( array $keys ) use ( $sent ) {
-            return null === $sent || (bool) array_intersect_key( $sent, array_flip( $keys ) );
-        };
+	/**
+	 * The offer editor's rules (10d): a create checks them all, an update
+	 * those about the keys it sends.
+	 *
+	 * - A percentage discount is more than 0 and at most 100.
+	 * - The end date isn't before the start date.
+	 * - The offer has a target product or category.
+	 * - Buy X Get Y has an offer product.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $data Normalized offer data.
+	 * @param array $sent What an update sends; null for a create.
+	 *
+	 * @return true|WP_Error
+	 */
+	protected function check_offer_rules( $data, $sent = null ) {
+		$sends = static function ( array $keys ) use ( $sent ) {
+			return null === $sent || (bool) array_intersect_key( $sent, array_flip( $keys ) );
+		};
 
-        // The deal and offer types the storefront knows. The update route
-        // declares no args, so it's checked here too: the value an update
-        // sends (an offer stored with another value can still be renamed).
-        $enums = [
-            'bogo_deal_type' => BogoValidator::DEAL_TYPES,
-            'offer_type'     => BogoValidator::OFFER_TYPES,
-        ];
-        foreach ( $enums as $key => $allowed ) {
-            if ( ! $sends( [ $key ] ) ) {
-                continue;
-            }
+		// The deal and offer types the storefront knows. The update route
+		// declares no args, so it's checked here too: the value an update
+		// sends (an offer stored with another value can still be renamed).
+		$enums = [
+			'bogo_deal_type' => BogoValidator::DEAL_TYPES,
+			'offer_type'     => BogoValidator::OFFER_TYPES,
+		];
+		foreach ( $enums as $key => $allowed ) {
+			if ( ! $sends( [ $key ] ) ) {
+				continue;
+			}
 
-            $value = null === $sent ? ( $data[ $key ] ?? '' ) : $sent[ $key ];
-            $valid = rest_validate_value_from_schema(
-                $value,
-                [
-                    'type' => 'string',
-                    'enum' => $allowed,
-                ],
-                $key
-            );
+			$value = null === $sent ? ( $data[ $key ] ?? '' ) : $sent[ $key ];
+			$valid = rest_validate_value_from_schema(
+				$value,
+				[
+					'type' => 'string',
+					'enum' => $allowed,
+				],
+				$key
+			);
 
-            if ( is_wp_error( $valid ) ) {
-                return new WP_Error(
-                    'rest_invalid_param',
-                    /* translators: %s: Parameter name. */
-                    sprintf( __( 'Invalid parameter(s): %s', 'storegrowth-sales-booster' ), $key ),
-                    [
-                        'status' => 400,
-                        'params' => [ $key => $valid->get_error_message() ],
-                    ]
-                );
-            }
-        }
+			if ( is_wp_error( $valid ) ) {
+				return new WP_Error(
+					'rest_invalid_param',
+					/* translators: %s: Parameter name. */
+					sprintf( __( 'Invalid parameter(s): %s', 'storegrowth-sales-booster' ), $key ),
+					[
+						'status' => 400,
+						'params' => [ $key => $valid->get_error_message() ],
+					]
+				);
+			}
+		}
 
-        $amount = (float) ( $data['discount_amount'] ?? 0 );
-        if ( $sends( [ 'offer_type', 'discount_amount' ] ) && 'discount' === ( $data['offer_type'] ?? '' ) && ( $amount <= 0 || $amount > 100 ) ) {
-            return new WP_Error(
-                'bogo_invalid_discount',
-                __( 'Enter a discount from 1 to 100%.', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		$amount = (float) ( $data['discount_amount'] ?? 0 );
+		if ( $sends( [ 'offer_type', 'discount_amount' ] ) && 'discount' === ( $data['offer_type'] ?? '' ) && ( $amount <= 0 || $amount > 100 ) ) {
+			return new WP_Error(
+				'bogo_invalid_discount',
+				__( 'Enter a discount from 1 to 100%.', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        $start = ! empty( $data['offer_start'] ) ? strtotime( $data['offer_start'] ) : false;
-        $end   = ! empty( $data['offer_end'] ) ? strtotime( $data['offer_end'] ) : false;
-        if ( $sends( [ 'offer_start', 'offer_end' ] ) && $start && $end && $end < $start ) {
-            return new WP_Error(
-                'bogo_invalid_dates',
-                __( 'The end date is before the start date.', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		$start = ! empty( $data['offer_start'] ) ? strtotime( $data['offer_start'] ) : false;
+		$end   = ! empty( $data['offer_end'] ) ? strtotime( $data['offer_end'] ) : false;
+		if ( $sends( [ 'offer_start', 'offer_end' ] ) && $start && $end && $end < $start ) {
+			return new WP_Error(
+				'bogo_invalid_dates',
+				__( 'The end date is before the start date.', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        if ( $sends( [ 'offered_products', 'offered_categories' ] ) && empty( $data['offered_products'] ) && empty( $data['offered_categories'] ) ) {
-            return new WP_Error(
-                'bogo_missing_target',
-                __( 'Select at least one target product.', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		if ( $sends( [ 'offered_products', 'offered_categories' ] ) && empty( $data['offered_products'] ) && empty( $data['offered_categories'] ) ) {
+			return new WP_Error(
+				'bogo_missing_target',
+				__( 'Select at least one target product.', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        // An update checks it when it sends the product or switches to Buy X Get Y.
-        $offer_product_sent = $sends( [ 'get_different_product_field' ] ) || 'different' === ( $sent['bogo_deal_type'] ?? '' );
-        if ( $offer_product_sent && 'different' === ( $data['bogo_deal_type'] ?? 'different' ) && empty( $data['get_different_product_field'] ) ) {
-            return new WP_Error(
-                'bogo_missing_offer_product',
-                __( 'Select the offer product.', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		// An update checks it when it sends the product or switches to Buy X Get Y.
+		$offer_product_sent = $sends( [ 'get_different_product_field' ] ) || 'different' === ( $sent['bogo_deal_type'] ?? '' );
+		if ( $offer_product_sent && 'different' === ( $data['bogo_deal_type'] ?? 'different' ) && empty( $data['get_different_product_field'] ) ) {
+			return new WP_Error(
+				'bogo_missing_offer_product',
+				__( 'Select the offer product.', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Rules an extension adds to a create or an update, after the editor's
-     * (e.g. the Dokan integration's: a vendor's offer uses only their own
-     * products).
-     *
-     * @since SPSG_VERSION
-     *
-     * @param array           $data    Normalized offer data, as it will be saved.
-     * @param array           $stored  The stored offer in request shape (empty when new).
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return true|WP_Error
-     */
-    protected function check_extension_rules( $data, $stored, $request ) {
-        /**
-         * Filters whether a BOGO offer may be saved through REST: return a
-         * WP_Error (with a `status`) to reject the create or update.
-         *
-         * @since SPSG_VERSION
-         *
-         * @param true|WP_Error   $result  True, or the error of an earlier callback.
-         * @param array           $data    Normalized offer data, as it will be saved.
-         * @param array           $stored  The stored offer in request shape (empty when new).
-         * @param WP_REST_Request $request The REST request.
-         */
-        $result = apply_filters( 'spsg_bogo_offer_rules', true, $data, $stored, $request );
+	/**
+	 * Rules an extension adds to a create or an update, after the editor's
+	 * (e.g. the Dokan integration's: a vendor's offer uses only their own
+	 * products).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array           $data    Normalized offer data, as it will be saved.
+	 * @param array           $stored  The stored offer in request shape (empty when new).
+	 * @param WP_REST_Request $request The REST request.
+	 *
+	 * @return true|WP_Error
+	 */
+	protected function check_extension_rules( $data, $stored, $request ) {
+		/**
+		 * Filters whether a BOGO offer may be saved through REST: return a
+		 * WP_Error (with a `status`) to reject the create or update.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param true|WP_Error   $result  True, or the error of an earlier callback.
+		 * @param array           $data    Normalized offer data, as it will be saved.
+		 * @param array           $stored  The stored offer in request shape (empty when new).
+		 * @param WP_REST_Request $request The REST request.
+		 */
+		$result = apply_filters( 'spsg_bogo_offer_rules', true, $data, $stored, $request );
 
-        return is_wp_error( $result ) ? $result : true;
-    }
+		return is_wp_error( $result ) ? $result : true;
+	}
 
-    /**
-     * Without pro, pro-only values are ignored, not rejected (ADR-004 §3):
-     * the stored value stays, or the default on a new offer.
-     *
-     * @since SPSG_VERSION
-     *
-     * @param array $data   Offer data.
-     * @param array $stored The stored offer in request shape (empty when new).
-     *
-     * @return array
-     */
-    protected function ignore_pro_values( $data, $stored ) {
-        if ( sp_store_growth()->has_pro() ) {
-            return $data;
-        }
+	/**
+	 * Without pro, pro-only values are ignored, not rejected (ADR-004 §3):
+	 * the stored value stays, or the default on a new offer.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $data   Offer data.
+	 * @param array $stored The stored offer in request shape (empty when new).
+	 *
+	 * @return array
+	 */
+	protected function ignore_pro_values( $data, $stored ) {
+		if ( sp_store_growth()->has_pro() ) {
+			return $data;
+		}
 
-        // The editor's pro fields (`BogoOfferFields`): the product page
-        // message (editing it was pro in the old editor too) and the offer's
-        // own badge artwork; lite's offer badge is the first icon.
-        $lite = [
-            'minimum_quantity_required' => $stored['minimum_quantity_required'] ?? 1,
-            'offer_schedule'            => $stored['offer_schedule'] ?? [ 'daily' ],
-            // A new offer gets the old editor's default message.
-            'product_page_message'      => $stored['product_page_message'] ?? __( 'Free Gift', 'storegrowth-sales-booster' ),
-            'default_badge_icon_name'   => $stored['default_badge_icon_name'] ?? 'bogo-icons-1',
-            'default_custom_badge_icon' => $stored['default_custom_badge_icon'] ?? '',
-        ];
+		// The editor's pro fields (`BogoOfferFields`): the product page
+		// message (editing it was pro in the old editor too) and the offer's
+		// own badge artwork; lite's offer badge is the first icon.
+		$lite = [
+			'minimum_quantity_required' => $stored['minimum_quantity_required'] ?? 1,
+			'offer_schedule'            => $stored['offer_schedule'] ?? [ 'daily' ],
+			// A new offer gets the old editor's default message.
+			'product_page_message'      => $stored['product_page_message'] ?? __( 'Free Gift', 'storegrowth-sales-booster' ),
+			'default_badge_icon_name'   => $stored['default_badge_icon_name'] ?? 'bogo-icons-1',
+			'default_custom_badge_icon' => $stored['default_custom_badge_icon'] ?? '',
+		];
 
-        // Buy X Get X is pro: an update keeps the stored deal type. A new
-        // offer keeps what it's sent, as before (lite's storefront skips
-        // `same` offers), rather than turning into a Buy X Get Y offer.
-        if ( $stored && 'same' === ( $data['bogo_deal_type'] ?? '' ) ) {
-            $lite['bogo_deal_type'] = $stored['bogo_deal_type'];
-        }
+		// Buy X Get X is pro: an update keeps the stored deal type. A new
+		// offer keeps what it's sent, as before (lite's storefront skips
+		// `same` offers), rather than turning into a Buy X Get Y offer.
+		if ( $stored && 'same' === ( $data['bogo_deal_type'] ?? '' ) ) {
+			$lite['bogo_deal_type'] = $stored['bogo_deal_type'];
+		}
 
-        return array_merge( $data, $lite );
-    }
+		return array_merge( $data, $lite );
+	}
 
-    /**
-     * Delete a BOGO offer.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request The REST request.
-     * @return WP_REST_Response|WP_Error
-     */
-    public function delete_item( $request ) {
-        $id = $request->get_param( 'id' );
-        
-        $existing_offer = BogoDataManager::get_bogo_offer( $id );
-        if ( ! $existing_offer ) {
-            return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
-        }
+	/**
+	 * Delete a BOGO offer.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request The REST request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function delete_item( $request ) {
+		$id = $request->get_param( 'id' );
 
-        // Check custom permission logic from child classes
-        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
-        if ( is_wp_error( $permission_check ) ) {
-            return $permission_check;
-        }
+		$existing_offer = BogoDataManager::get_bogo_offer( $id );
+		if ( ! $existing_offer ) {
+			return new WP_REST_Response( [ 'error' => __( 'BOGO offer not found.', 'storegrowth-sales-booster' ) ], 404 );
+		}
 
-        $result = BogoDataManager::delete_bogo_offer( $id );
+		// Check custom permission logic from child classes
+		$permission_check = $this->check_single_item_permission( $existing_offer, $request );
+		if ( is_wp_error( $permission_check ) ) {
+			return $permission_check;
+		}
 
-        if ( ! $result ) {
-            return new WP_REST_Response( [ 'error' => __( 'Failed to delete BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
-        }
+		$result = BogoDataManager::delete_bogo_offer( $id );
 
-        return new WP_REST_Response( [ 'deleted' => true ], 200 );
-    }
+		if ( ! $result ) {
+			return new WP_REST_Response( [ 'error' => __( 'Failed to delete BOGO offer.', 'storegrowth-sales-booster' ) ], 400 );
+		}
 
-    /**
-     * Bulk actions: delete the given offers, each through the same checks as
-     * a single delete (a subclass's item permission included).
-     *
-     * @since SPSG_VERSION
-     *
-     * @param WP_REST_Request $request The REST request.
-     *
-     * @return WP_REST_Response
-     */
-    public function batch_items( $request ) {
-        $deleted = [];
-        $failed  = [];
+		return new WP_REST_Response( [ 'deleted' => true ], 200 );
+	}
 
-        foreach ( array_unique( array_map( 'absint', (array) $request->get_param( 'delete' ) ) ) as $id ) {
-            $offer = $id ? BogoDataManager::get_bogo_offer( $id ) : null;
+	/**
+	 * Bulk actions: delete the given offers, each through the same checks as
+	 * a single delete (a subclass's item permission included).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request The REST request.
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function batch_items( $request ) {
+		$deleted = [];
+		$failed  = [];
 
-            if ( ! $offer || is_wp_error( $this->check_single_item_permission( $offer, $request ) ) || ! BogoDataManager::delete_bogo_offer( $id ) ) {
-                $failed[] = $id;
-                continue;
-            }
+		foreach ( array_unique( array_map( 'absint', (array) $request->get_param( 'delete' ) ) ) as $id ) {
+			$offer = $id ? BogoDataManager::get_bogo_offer( $id ) : null;
 
-            $deleted[] = $id;
-        }
+			if ( ! $offer || is_wp_error( $this->check_single_item_permission( $offer, $request ) ) || ! BogoDataManager::delete_bogo_offer( $id ) ) {
+				$failed[] = $id;
+				continue;
+			}
 
-        return new WP_REST_Response(
-            [
-                'deleted' => $deleted,
-                'failed'  => $failed,
-            ],
-            200
-        );
-    }
+			$deleted[] = $id;
+		}
 
-    /**
-     * Update BOGO offer status.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request The REST request.
-     * @return WP_REST_Response
-     */
-    public function update_status( $request ) {
-        $id = $request->get_param( 'id' );
-        $status = $request->get_param( 'status' );
-        $table_status = ( $status === 'yes' ) ? 'active' : 'inactive';
+		return new WP_REST_Response(
+			[
+				'deleted' => $deleted,
+				'failed'  => $failed,
+			],
+			200
+		);
+	}
 
-        $existing_offer = BogoDataManager::get_bogo_offer( $id );
+	/**
+	 * Update BOGO offer status.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request The REST request.
+	 * @return WP_REST_Response
+	 */
+	public function update_status( $request ) {
+		$id           = $request->get_param( 'id' );
+		$status       = $request->get_param( 'status' );
+		$table_status = ( $status === 'yes' ) ? 'active' : 'inactive';
 
-        if ( ! $existing_offer ) {
-            return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
-        }
+		$existing_offer = BogoDataManager::get_bogo_offer( $id );
 
-        // Check custom permission logic from child classes.
-        $permission_check = $this->check_single_item_permission( $existing_offer, $request );
-        if ( is_wp_error( $permission_check ) ) {
-            return $permission_check;
-        }
+		if ( ! $existing_offer ) {
+			return new WP_REST_Response( [ 'error' => __( 'No BOGO offer found for the given ID.', 'storegrowth-sales-booster' ) ], 404 );
+		}
 
-        $result = BogoDataManager::set_bogo_status( $id, $table_status );
+		// Check custom permission logic from child classes.
+		$permission_check = $this->check_single_item_permission( $existing_offer, $request );
+		if ( is_wp_error( $permission_check ) ) {
+			return $permission_check;
+		}
 
-        if ( ! $result ) {
-            return new WP_REST_Response( [ 'error' => __( 'Failed to update BOGO offer status.', 'storegrowth-sales-booster' ) ], 400 );
-        }
+		$result = BogoDataManager::set_bogo_status( $id, $table_status );
 
-        return new WP_REST_Response( [ 'status' => $status ], 200 );
-    }
+		if ( ! $result ) {
+			return new WP_REST_Response( [ 'error' => __( 'Failed to update BOGO offer status.', 'storegrowth-sales-booster' ) ], 400 );
+		}
 
-    /**
-     * Validate and normalize request data.
-     *
-     * @since 2.0.0
-     * @param array $data The request data.
-     * @return array|WP_Error Normalized data or error if validation fails.
-     */
-    protected function validate_and_normalize_data( $data ) {
-        if ( empty( $data ) || ! is_array( $data ) ) {
-            return new WP_Error(
-                'invalid_data',
-                __( 'No data provided', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		return new WP_REST_Response( [ 'status' => $status ], 200 );
+	}
 
-        // Normalize data
-        $data = $this->normalize_request_data( $data );
+	/**
+	 * Validate and normalize request data.
+	 *
+	 * @since 2.0.0
+	 * @param array $data The request data.
+	 * @return array|WP_Error Normalized data or error if validation fails.
+	 */
+	protected function validate_and_normalize_data( $data ) {
+		if ( empty( $data ) || ! is_array( $data ) ) {
+			return new WP_Error(
+				'invalid_data',
+				__( 'No data provided', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        // Validate required fields
-        if ( ! isset( $data['name_of_order_bogo'] ) || trim( $data['name_of_order_bogo'] ) === '' ) {
-            return new WP_Error(
-                'missing_name_of_order_bogo',
-                __( 'Missing or empty required field: name_of_order_bogo', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		// Normalize data
+		$data = $this->normalize_request_data( $data );
 
-        if ( ! isset( $data['offer_type'] ) || trim( $data['offer_type'] ) === '' ) {
-            return new WP_Error(
-                'missing_offer_type',
-                __( 'Missing or empty required field: offer_type', 'storegrowth-sales-booster' ),
-                [ 'status' => 400 ]
-            );
-        }
+		// Validate required fields
+		if ( ! isset( $data['name_of_order_bogo'] ) || trim( $data['name_of_order_bogo'] ) === '' ) {
+			return new WP_Error(
+				'missing_name_of_order_bogo',
+				__( 'Missing or empty required field: name_of_order_bogo', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
 
-        // Validate design fields are present
-        $design_fields = [
-            'box_border_style',
-            'box_border_color', 
-            'box_top_margin',
-            'box_bottom_margin',
-            'discount_background_color',
-            'discount_text_color',
-            'discount_font_size',
-            'product_description_text_color',
-            'product_description_font_size'
-        ];
-        
-        foreach ( $design_fields as $field ) {
-            if ( ! isset( $data[ $field ] ) || trim( $data[ $field ] ) === '' ) {
-                return new WP_Error(
-                    'missing_design_field',
-                    __( 'Missing or empty required design field: ' . $field, 'storegrowth-sales-booster' ),
-                    [ 'status' => 400 ]
-                );
-            }
-        }
+		if ( ! isset( $data['offer_type'] ) || trim( $data['offer_type'] ) === '' ) {
+			return new WP_Error(
+				'missing_offer_type',
+				__( 'Missing or empty required field: offer_type', 'storegrowth-sales-booster' ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		// Validate design fields are present
+		$design_fields = [
+			'box_border_style',
+			'box_border_color',
+			'box_top_margin',
+			'box_bottom_margin',
+			'discount_background_color',
+			'discount_text_color',
+			'discount_font_size',
+			'product_description_text_color',
+			'product_description_font_size',
+		];
+
+		foreach ( $design_fields as $field ) {
+			if ( ! isset( $data[ $field ] ) || trim( $data[ $field ] ) === '' ) {
+				return new WP_Error(
+					'missing_design_field',
+					__( 'Missing or empty required design field: ' . $field, 'storegrowth-sales-booster' ),
+					[ 'status' => 400 ]
+				);
+			}
+		}
 
 		// Prevent the same product being both target and offer in a Buy X Get Y
 		// ("different") deal — that is the Buy X Get X deal type. Enforced here so
@@ -855,56 +857,56 @@ class BogoController extends WP_REST_Controller {
 			}
 		}
 
-        return $data;
-    }
+		return $data;
+	}
 
-    /**
-     * Normalize request data for backward compatibility.
-     *
-     * @since 2.0.0
-     * @param array $data The request data.
-     * @return array Normalized data.
-     */
-    protected function normalize_request_data( $data ) {
-        // Ensure backward compatibility for 'name' field
-        if ( isset( $data['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
-            $data['name_of_order_bogo'] = $data['name'];
-        }
+	/**
+	 * Normalize request data for backward compatibility.
+	 *
+	 * @since 2.0.0
+	 * @param array $data The request data.
+	 * @return array Normalized data.
+	 */
+	protected function normalize_request_data( $data ) {
+		// Ensure backward compatibility for 'name' field
+		if ( isset( $data['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
+			$data['name_of_order_bogo'] = $data['name'];
+		}
 
-        // Decode HTML entities and sanitize name_of_order_bogo
-        if ( isset( $data['name_of_order_bogo'] ) ) {
-            $data['name_of_order_bogo'] = html_entity_decode( $data['name_of_order_bogo'], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-            $data['name_of_order_bogo'] = sanitize_text_field( $data['name_of_order_bogo'] );
-        }
+		// Decode HTML entities and sanitize name_of_order_bogo
+		if ( isset( $data['name_of_order_bogo'] ) ) {
+			$data['name_of_order_bogo'] = html_entity_decode( $data['name_of_order_bogo'], ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+			$data['name_of_order_bogo'] = sanitize_text_field( $data['name_of_order_bogo'] );
+		}
 
-        // Ensure offer_type is preserved
-        if ( isset( $data['offer_type'] ) ) {
-            $data['offer_type'] = sanitize_text_field( $data['offer_type'] );
-        }
+		// Ensure offer_type is preserved
+		if ( isset( $data['offer_type'] ) ) {
+			$data['offer_type'] = sanitize_text_field( $data['offer_type'] );
+		}
 
-        // Per-offer badge keys (stored in `design_settings`): the update route
-        // declares no args, so sanitize them here for both routes.
-        if ( isset( $data['enable_custom_badge_image'] ) ) {
-            $data['enable_custom_badge_image'] = rest_sanitize_boolean( $data['enable_custom_badge_image'] );
-        }
-        if ( isset( $data['default_badge_icon_name'] ) ) {
-            $data['default_badge_icon_name'] = sanitize_text_field( $data['default_badge_icon_name'] );
-        }
-        if ( isset( $data['default_custom_badge_icon'] ) ) {
-            $data['default_custom_badge_icon'] = esc_url_raw( $data['default_custom_badge_icon'] );
-        }
+		// Per-offer badge keys (stored in `design_settings`): the update route
+		// declares no args, so sanitize them here for both routes.
+		if ( isset( $data['enable_custom_badge_image'] ) ) {
+			$data['enable_custom_badge_image'] = rest_sanitize_boolean( $data['enable_custom_badge_image'] );
+		}
+		if ( isset( $data['default_badge_icon_name'] ) ) {
+			$data['default_badge_icon_name'] = sanitize_text_field( $data['default_badge_icon_name'] );
+		}
+		if ( isset( $data['default_custom_badge_icon'] ) ) {
+			$data['default_custom_badge_icon'] = esc_url_raw( $data['default_custom_badge_icon'] );
+		}
 
-        // Normalize offered_products (convert string to array if needed)
-        if ( isset( $data['offered_products'] ) && is_string( $data['offered_products'] ) ) {
-            $data['offered_products'] = array_map( 'absint', array_filter( explode( ',', $data['offered_products'] ) ) );
-        }
+		// Normalize offered_products (convert string to array if needed)
+		if ( isset( $data['offered_products'] ) && is_string( $data['offered_products'] ) ) {
+			$data['offered_products'] = array_map( 'absint', array_filter( explode( ',', $data['offered_products'] ) ) );
+		}
 
-        // Normalize offered_categories (convert string to array if needed)
-        if ( isset( $data['offered_categories'] ) && is_string( $data['offered_categories'] ) ) {
-            $data['offered_categories'] = array_map( 'absint', array_filter( explode( ',', $data['offered_categories'] ) ) );
-        }
+		// Normalize offered_categories (convert string to array if needed)
+		if ( isset( $data['offered_categories'] ) && is_string( $data['offered_categories'] ) ) {
+			$data['offered_categories'] = array_map( 'absint', array_filter( explode( ',', $data['offered_categories'] ) ) );
+		}
 
-        		// Normalize get_alternate_products (convert string to array if needed)
+				// Normalize get_alternate_products (convert string to array if needed)
 		if ( isset( $data['get_alternate_products'] ) && is_string( $data['get_alternate_products'] ) ) {
 			$data['get_alternate_products'] = array_map( 'absint', array_filter( explode( ',', $data['get_alternate_products'] ) ) );
 		}
@@ -922,16 +924,16 @@ class BogoController extends WP_REST_Controller {
 		// Normalize design fields
 		$design_fields = [
 			'box_border_style',
-			'box_border_color', 
+			'box_border_color',
 			'box_top_margin',
 			'box_bottom_margin',
 			'discount_background_color',
 			'discount_text_color',
 			'discount_font_size',
 			'product_description_text_color',
-			'product_description_font_size'
+			'product_description_font_size',
 		];
-		
+
 		foreach ( $design_fields as $field ) {
 			if ( isset( $data[ $field ] ) ) {
 				$data[ $field ] = sanitize_text_field( $data[ $field ] );
@@ -960,473 +962,473 @@ class BogoController extends WP_REST_Controller {
 		}
 
 		return $data;
-    }
+	}
 
-    /**
-     * Validates the create route's `offer_type`: `free` or `discount`. Empty
-     * passes, for validate_and_normalize_data()'s `missing_offer_type`.
-     *
-     * @since SPSG_VERSION
-     *
-     * @param mixed           $value   The value to validate.
-     * @param WP_REST_Request $request The request object.
-     * @param string          $param   The parameter name.
-     *
-     * @return true|WP_Error
-     */
-    public function validate_offer_type( $value, $request, $param ) {
-        if ( '' === $value ) {
-            return true;
-        }
+	/**
+	 * Validates the create route's `offer_type`: `free` or `discount`. Empty
+	 * passes, for validate_and_normalize_data()'s `missing_offer_type`.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed           $value   The value to validate.
+	 * @param WP_REST_Request $request The request object.
+	 * @param string          $param   The parameter name.
+	 *
+	 * @return true|WP_Error
+	 */
+	public function validate_offer_type( $value, $request, $param ) {
+		if ( '' === $value ) {
+			return true;
+		}
 
-        return rest_validate_value_from_schema(
-            $value,
-            [
-                'type' => 'string',
-                'enum' => BogoValidator::OFFER_TYPES,
-            ],
-            $param
-        );
-    }
+		return rest_validate_value_from_schema(
+			$value,
+			[
+				'type' => 'string',
+				'enum' => BogoValidator::OFFER_TYPES,
+			],
+			$param
+		);
+	}
 
-    /**
-     * Custom validation for offered_products field.
-     *
-     * @since 2.0.0
-     * @param mixed $value The value to validate.
-     * @param WP_REST_Request $request The request object.
-     * @param string $param The parameter name.
-     * @return bool|WP_Error
-     */
-    public function validate_offered_products( $value, $request, $param ) {
-        return true;
-    }
+	/**
+	 * Custom validation for offered_products field.
+	 *
+	 * @since 2.0.0
+	 * @param mixed           $value The value to validate.
+	 * @param WP_REST_Request $request The request object.
+	 * @param string          $param The parameter name.
+	 * @return bool|WP_Error
+	 */
+	public function validate_offered_products( $value, $request, $param ) {
+		return true;
+	}
 
-    /**
-     * Custom validation for offered_categories field.
-     *
-     * @since 2.0.0
-     * @param mixed $value The value to validate.
-     * @param WP_REST_Request $request The request object.
-     * @param string $param The parameter name.
-     * @return bool|WP_Error
-     */
-    public function validate_offered_categories( $value, $request, $param ) {
-        return true;
-    }
+	/**
+	 * Custom validation for offered_categories field.
+	 *
+	 * @since 2.0.0
+	 * @param mixed           $value The value to validate.
+	 * @param WP_REST_Request $request The request object.
+	 * @param string          $param The parameter name.
+	 * @return bool|WP_Error
+	 */
+	public function validate_offered_categories( $value, $request, $param ) {
+		return true;
+	}
 
-    /**
-     * Custom validation for get_alternate_products field.
-     *
-     * @since 2.0.0
-     * @param mixed $value The value to validate.
-     * @param WP_REST_Request $request The request object.
-     * @param string $param The parameter name.
-     * @return bool|WP_Error
-     */
-    public function validate_get_alternate_products( $value, $request, $param ) {
-        return true;
-    }
+	/**
+	 * Custom validation for get_alternate_products field.
+	 *
+	 * @since 2.0.0
+	 * @param mixed           $value The value to validate.
+	 * @param WP_REST_Request $request The request object.
+	 * @param string          $param The parameter name.
+	 * @return bool|WP_Error
+	 */
+	public function validate_get_alternate_products( $value, $request, $param ) {
+		return true;
+	}
 
-    /**
-     * Permission checker.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Request $request Rest Request.
-     * @return bool|WP_Error
-     */
-    public function check_permission( $request ) {
-        if ( apply_filters( 'spsg_bogo_check_permission', current_user_can( 'manage_options' ), $request ) ) {
-            return true;
-        }
+	/**
+	 * Permission checker.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Request $request Rest Request.
+	 * @return bool|WP_Error
+	 */
+	public function check_permission( $request ) {
+		if ( apply_filters( 'spsg_bogo_check_permission', current_user_can( 'manage_options' ), $request ) ) {
+			return true;
+		}
 
-        return new WP_Error(
-            'salesbooster_permission_failure',
-            __( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
-            // 401 for a guest, 403 for a user without the capability.
-            [ 'status' => rest_authorization_required_code() ]
-        );
-    }
+		return new WP_Error(
+			'salesbooster_permission_failure',
+			__( 'Sorry! You are not permitted to do the current action.', 'storegrowth-sales-booster' ),
+			// 401 for a guest, 403 for a user without the capability.
+			[ 'status' => rest_authorization_required_code() ]
+		);
+	}
 
-    /**
-     * Get endpoint arguments for create item.
-     *
-     * @since 2.0.0
-     * @return array
-     */
-    public function get_endpoint_args_for_create_item() {
-        return [
-            'name_of_order_bogo' => [
-                'type'              => 'string',
-                'required'          => true,
-                'description'       => __( 'Name of the BOGO offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'name' => [
-                'type'              => 'string',
-                'description'       => __( 'Name of the BOGO offer (alternative to name_of_order_bogo).', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offered_products' => [
-                'type'        => [ 'array', 'string' ],
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Array of target product IDs or comma-separated string.', 'storegrowth-sales-booster' ),
-                'validate_callback' => [ $this, 'validate_offered_products' ],
-            ],
-            'get_different_product_field' => [
-                'type'              => [ 'integer', 'string' ],
-                'description'       => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
-                'default'           => 0,
-                'sanitize_callback' => 'absint',
-            ],
-            
-            'bogo_deal_type' => [
-                'type'              => 'string',
-                'default'           => 'different',
-                'enum'              => BogoValidator::DEAL_TYPES,
-                'description'       => __( 'Type of BOGO deal.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_type' => [
-                'type'              => 'string',
-                'required'          => true,
-                'description'       => __( 'Offer types: free, discount.', 'storegrowth-sales-booster' ),
-                // free or discount; an empty one answers missing_offer_type.
-                'validate_callback' => [ $this, 'validate_offer_type' ],
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'discount_amount' => [
-                'type'              => 'string',
-                'description'       => __( 'Discount value or percentage.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'bogo_type' => [
-                'type'              => 'string',
-                'default'           => 'products',
-                'enum'              => [ 'products', 'categories' ],
-                'description'       => __( 'Whether the BOGO applies to products or categories.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'minimum_quantity_required' => [
-                'type'              => 'integer',
-                'default'           => 1,
-                'description'       => __( 'Minimum quantity required to trigger the offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'absint',
-            ],
-            'offer_start' => [
-                'type'              => 'string',
-                'format'            => 'date-time',
-                'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_end' => [
-                'type'              => 'string',
-                'format'            => 'date-time',
-                'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'default_badge_icon_name' => [
-                'type'              => 'string',
-                'default'           => 'bogo-icons-1',
-                'description'       => __( 'Default badge icon name.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'enable_custom_badge_image' => [
-                'type'              => 'boolean',
-                'default'           => false,
-                'description'       => __( 'Enable custom badge image.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'default_custom_badge_icon' => [
-                'type'              => 'string',
-                'description'       => __( 'Custom badge image URL or ID.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'esc_url_raw',
-            ],
-            'offered_categories' => [
-                'type'        => [ 'array', 'string' ],
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Target category IDs (array or comma-separated string).', 'storegrowth-sales-booster' ),
-                'validate_callback' => [ $this, 'validate_offered_categories' ],
-            ],
-            'get_alternate_products' => [
-                'type'        => [ 'array', 'string' ],
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Alternate product IDs for GET BOGO type (array or comma-separated string).', 'storegrowth-sales-booster' ),
-                'validate_callback' => [ $this, 'validate_get_alternate_products' ],
-            ],
-            'get_alternate_categories' => [
-                'type'        => 'array',
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Alternate category IDs for GET BOGO type.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'exclude_products' => [
-                'type'        => 'array',
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Product IDs to exclude.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'offer_schedule' => [
-                'type'        => 'array',
-                'items'       => [ 'type' => 'string' ],
-                'description' => __( 'Offer schedule types (e.g., daily).', 'storegrowth-sales-booster' ),
-            ],
-            'smart_offer' => [
-                'type'              => 'boolean',
-                'default'           => false,
-                'description'       => __( 'Enable smart offer logic.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'box_border_style' => [
-                'type'              => 'string',
-                'description'       => __( 'Border style for display box.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'box_border_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Box border color.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'box_top_margin' => [
-                'type'              => 'integer',
-                'description'       => __( 'Top margin for the box.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'box_bottom_margin' => [
-                'type'              => 'integer',
-                'description'       => __( 'Bottom margin for the box.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'discount_background_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Background color for discount text.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'discount_text_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Color of discount text.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'discount_font_size' => [
-                'type'              => 'string',
-                'description'       => __( 'Font size for discount text.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'product_description_text_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Color of product description text.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'product_description_font_size' => [
-                'type'              => 'string',
-                'description'       => __( 'Font size of product description text.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'accept_offer_background_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Background color for accept offer button.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'accept_offer_text_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Text color for accept offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'accept_offer_font_size' => [
-                'type'              => 'string',
-                'description'       => __( 'Font size for accept offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_description_background_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Background color for offer description.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'offer_description_text_color' => [
-                'type'              => 'string',
-                'description'       => __( 'Text color for offer description.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_hex_color',
-            ],
-            'offer_description_font_size' => [
-                'type'              => 'string',
-                'description'       => __( 'Font size for offer description.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_image_url' => [
-                'type'              => 'string',
-                'description'       => __( 'Image URL for the offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'esc_url_raw',
-            ],
-            'offer_product_title' => [
-                'type'              => 'string',
-                'description'       => __( 'Title shown for the offered product.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_product_id' => [
-                'type'              => 'integer',
-                'description'       => __( 'Product ID of the offered product.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'absint',
-            ],
-            'offer_discount_title' => [
-                'type'              => 'string',
-                'description'       => __( 'Discount title shown on frontend.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_fixed_price_title' => [
-                'type'              => 'string',
-                'description'       => __( 'Fixed price title for offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'product_description' => [
-                'type'              => 'string',
-                'description'       => __( 'Product description shown on the offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_textarea_field',
-            ],
-            'selection_title' => [
-                'type'              => 'string',
-                'description'       => __( 'Title for product selection.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_description' => [
-                'type'              => 'string',
-                'description'       => __( 'Detailed offer description.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_textarea_field',
-            ],
-            'offer_product_regular_price' => [
-                'type'              => 'number',
-                'description'       => __( 'Regular price of the offered product.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'product_page_message' => [
-                'type'              => 'string',
-                'description'       => __( 'Message shown on product page.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_textarea_field',
-            ],
-            'shop_page_message' => [
-                'type'              => 'string',
-                'description'       => __( 'Message shown on shop page.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_textarea_field',
-            ],
-            'bogo_badge_image' => [
-                'type'              => 'string',
-                'description'       => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'alternate_products' => [
-                'type'        => 'array',
-                'items'       => [ 'type' => 'integer' ],
-                'description' => __( 'Array of alternate product IDs.', 'storegrowth-sales-booster' ),
-                'validate_callback' => 'rest_validate_request_arg',
-            ],
-            'offer_start_date' => [
-                'type'              => 'string',
-                'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-            'offer_end_date' => [
-                'type'              => 'string',
-                'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
-                'sanitize_callback' => 'sanitize_text_field',
-            ],
-        ];
-    }
+	/**
+	 * Get endpoint arguments for create item.
+	 *
+	 * @since 2.0.0
+	 * @return array
+	 */
+	public function get_endpoint_args_for_create_item() {
+		return [
+			'name_of_order_bogo'                 => [
+				'type'              => 'string',
+				'required'          => true,
+				'description'       => __( 'Name of the BOGO offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'name'                               => [
+				'type'              => 'string',
+				'description'       => __( 'Name of the BOGO offer (alternative to name_of_order_bogo).', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offered_products'                   => [
+				'type'              => [ 'array', 'string' ],
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Array of target product IDs or comma-separated string.', 'storegrowth-sales-booster' ),
+				'validate_callback' => [ $this, 'validate_offered_products' ],
+			],
+			'get_different_product_field'        => [
+				'type'              => [ 'integer', 'string' ],
+				'description'       => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
+				'default'           => 0,
+				'sanitize_callback' => 'absint',
+			],
 
-    /**
-     * Prepare item for the REST API response.
-     *
-     * @since 2.0.0
-     * @param array $item BOGO offer data.
-     * @param WP_REST_Request $request Request object.
-     * @return WP_REST_Response
-     */
-    public function prepare_item_for_response( $item, $request ) {
-        $fields = $this->get_fields_for_response( $request );
-        $data = [];
+			'bogo_deal_type'                     => [
+				'type'              => 'string',
+				'default'           => 'different',
+				'enum'              => BogoValidator::DEAL_TYPES,
+				'description'       => __( 'Type of BOGO deal.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_type'                         => [
+				'type'              => 'string',
+				'required'          => true,
+				'description'       => __( 'Offer types: free, discount.', 'storegrowth-sales-booster' ),
+				// free or discount; an empty one answers missing_offer_type.
+				'validate_callback' => [ $this, 'validate_offer_type' ],
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'discount_amount'                    => [
+				'type'              => 'string',
+				'description'       => __( 'Discount value or percentage.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'bogo_type'                          => [
+				'type'              => 'string',
+				'default'           => 'products',
+				'enum'              => [ 'products', 'categories' ],
+				'description'       => __( 'Whether the BOGO applies to products or categories.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'minimum_quantity_required'          => [
+				'type'              => 'integer',
+				'default'           => 1,
+				'description'       => __( 'Minimum quantity required to trigger the offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'absint',
+			],
+			'offer_start'                        => [
+				'type'              => 'string',
+				'format'            => 'date-time',
+				'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_end'                          => [
+				'type'              => 'string',
+				'format'            => 'date-time',
+				'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'default_badge_icon_name'            => [
+				'type'              => 'string',
+				'default'           => 'bogo-icons-1',
+				'description'       => __( 'Default badge icon name.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'enable_custom_badge_image'          => [
+				'type'              => 'boolean',
+				'default'           => false,
+				'description'       => __( 'Enable custom badge image.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'default_custom_badge_icon'          => [
+				'type'              => 'string',
+				'description'       => __( 'Custom badge image URL or ID.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'esc_url_raw',
+			],
+			'offered_categories'                 => [
+				'type'              => [ 'array', 'string' ],
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Target category IDs (array or comma-separated string).', 'storegrowth-sales-booster' ),
+				'validate_callback' => [ $this, 'validate_offered_categories' ],
+			],
+			'get_alternate_products'             => [
+				'type'              => [ 'array', 'string' ],
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Alternate product IDs for GET BOGO type (array or comma-separated string).', 'storegrowth-sales-booster' ),
+				'validate_callback' => [ $this, 'validate_get_alternate_products' ],
+			],
+			'get_alternate_categories'           => [
+				'type'              => 'array',
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Alternate category IDs for GET BOGO type.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'exclude_products'                   => [
+				'type'              => 'array',
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Product IDs to exclude.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'offer_schedule'                     => [
+				'type'        => 'array',
+				'items'       => [ 'type' => 'string' ],
+				'description' => __( 'Offer schedule types (e.g., daily).', 'storegrowth-sales-booster' ),
+			],
+			'smart_offer'                        => [
+				'type'              => 'boolean',
+				'default'           => false,
+				'description'       => __( 'Enable smart offer logic.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'box_border_style'                   => [
+				'type'              => 'string',
+				'description'       => __( 'Border style for display box.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'box_border_color'                   => [
+				'type'              => 'string',
+				'description'       => __( 'Box border color.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'box_top_margin'                     => [
+				'type'              => 'integer',
+				'description'       => __( 'Top margin for the box.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'box_bottom_margin'                  => [
+				'type'              => 'integer',
+				'description'       => __( 'Bottom margin for the box.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'discount_background_color'          => [
+				'type'              => 'string',
+				'description'       => __( 'Background color for discount text.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'discount_text_color'                => [
+				'type'              => 'string',
+				'description'       => __( 'Color of discount text.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'discount_font_size'                 => [
+				'type'              => 'string',
+				'description'       => __( 'Font size for discount text.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'product_description_text_color'     => [
+				'type'              => 'string',
+				'description'       => __( 'Color of product description text.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'product_description_font_size'      => [
+				'type'              => 'string',
+				'description'       => __( 'Font size of product description text.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'accept_offer_background_color'      => [
+				'type'              => 'string',
+				'description'       => __( 'Background color for accept offer button.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'accept_offer_text_color'            => [
+				'type'              => 'string',
+				'description'       => __( 'Text color for accept offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'accept_offer_font_size'             => [
+				'type'              => 'string',
+				'description'       => __( 'Font size for accept offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_description_background_color' => [
+				'type'              => 'string',
+				'description'       => __( 'Background color for offer description.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'offer_description_text_color'       => [
+				'type'              => 'string',
+				'description'       => __( 'Text color for offer description.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_hex_color',
+			],
+			'offer_description_font_size'        => [
+				'type'              => 'string',
+				'description'       => __( 'Font size for offer description.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_image_url'                    => [
+				'type'              => 'string',
+				'description'       => __( 'Image URL for the offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'esc_url_raw',
+			],
+			'offer_product_title'                => [
+				'type'              => 'string',
+				'description'       => __( 'Title shown for the offered product.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_product_id'                   => [
+				'type'              => 'integer',
+				'description'       => __( 'Product ID of the offered product.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'absint',
+			],
+			'offer_discount_title'               => [
+				'type'              => 'string',
+				'description'       => __( 'Discount title shown on frontend.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_fixed_price_title'            => [
+				'type'              => 'string',
+				'description'       => __( 'Fixed price title for offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'product_description'                => [
+				'type'              => 'string',
+				'description'       => __( 'Product description shown on the offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'selection_title'                    => [
+				'type'              => 'string',
+				'description'       => __( 'Title for product selection.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_description'                  => [
+				'type'              => 'string',
+				'description'       => __( 'Detailed offer description.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'offer_product_regular_price'        => [
+				'type'              => 'number',
+				'description'       => __( 'Regular price of the offered product.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'product_page_message'               => [
+				'type'              => 'string',
+				'description'       => __( 'Message shown on product page.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'shop_page_message'                  => [
+				'type'              => 'string',
+				'description'       => __( 'Message shown on shop page.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_textarea_field',
+			],
+			'bogo_badge_image'                   => [
+				'type'              => 'string',
+				'description'       => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'alternate_products'                 => [
+				'type'              => 'array',
+				'items'             => [ 'type' => 'integer' ],
+				'description'       => __( 'Array of alternate product IDs.', 'storegrowth-sales-booster' ),
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'offer_start_date'                   => [
+				'type'              => 'string',
+				'description'       => __( 'Offer start date.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'offer_end_date'                     => [
+				'type'              => 'string',
+				'description'       => __( 'Offer end date.', 'storegrowth-sales-booster' ),
+				'sanitize_callback' => 'sanitize_text_field',
+			],
+		];
+	}
 
-        $field_map = [
-            'id'                          => 'absint',
-            'name'                        => 'html_entity_decode',
-            'name_of_order_bogo'          => 'html_entity_decode',
-            'offered_products'            => null,
-            'offered_categories'          => null,
-            'get_different_product_field'  => 'absint',
-            'offer_product_id'            => 'absint',
-            'bogo_deal_type'              => null,
-            'offer_type'                  => null,
-            'discount_amount'             => null,
-            'minimum_quantity_required'   => null,
-            'offer_start'                 => null,
-            'offer_end'                   => null,
-            'product_page_message'        => null,
-            'shop_page_message'           => null,
-            'bogo_badge_image'            => null,
-            'alternate_products'          => null,
-            'get_alternate_products'      => null,
-            'type'                        => null,
-            'status'                      => null,
-            'created_at'                  => null,
-            'updated_at'                  => null,
-        ];
+	/**
+	 * Prepare item for the REST API response.
+	 *
+	 * @since 2.0.0
+	 * @param array           $item BOGO offer data.
+	 * @param WP_REST_Request $request Request object.
+	 * @return WP_REST_Response
+	 */
+	public function prepare_item_for_response( $item, $request ) {
+		$fields = $this->get_fields_for_response( $request );
+		$data   = [];
 
-        foreach ( $field_map as $key => $callback ) {
-            if ( in_array( $key, $fields, true ) && isset( $item[ $key ] ) ) {
-                $value = $item[ $key ];
-                $data[ $key ] = is_callable( $callback ) ? call_user_func( $callback, $value ) : $value;
-            }
-        }
+		$field_map = [
+			'id'                          => 'absint',
+			'name'                        => 'html_entity_decode',
+			'name_of_order_bogo'          => 'html_entity_decode',
+			'offered_products'            => null,
+			'offered_categories'          => null,
+			'get_different_product_field' => 'absint',
+			'offer_product_id'            => 'absint',
+			'bogo_deal_type'              => null,
+			'offer_type'                  => null,
+			'discount_amount'             => null,
+			'minimum_quantity_required'   => null,
+			'offer_start'                 => null,
+			'offer_end'                   => null,
+			'product_page_message'        => null,
+			'shop_page_message'           => null,
+			'bogo_badge_image'            => null,
+			'alternate_products'          => null,
+			'get_alternate_products'      => null,
+			'type'                        => null,
+			'status'                      => null,
+			'created_at'                  => null,
+			'updated_at'                  => null,
+		];
 
-        if ( isset( $item['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
-            $data['name_of_order_bogo'] = $item['name'];
-        }
-        
-        if ( isset( $item['offer_product_id'] ) && ! isset( $data['get_different_product_field'] ) ) {
-            $data['get_different_product_field'] = $item['offer_product_id'];
-        }
-        
-        if ( isset( $item['alternate_products'] ) && ! isset( $data['get_alternate_products'] ) ) {
-            $data['get_alternate_products'] = $item['alternate_products'];
-        }
+		foreach ( $field_map as $key => $callback ) {
+			if ( in_array( $key, $fields, true ) && isset( $item[ $key ] ) ) {
+				$value        = $item[ $key ];
+				$data[ $key ] = is_callable( $callback ) ? call_user_func( $callback, $value ) : $value;
+			}
+		}
 
-        // The design (and per-offer badge) and the schedule, so an editor
-        // can show and send them back (they were missing, and saving wiped
-        // them).
-        $data                   = array_merge( $data, BogoDataManager::get_design_settings( $item['design_settings'] ?? null ) );
-        $data['offer_schedule'] = ! empty( $item['offer_schedule'] ) ? $item['offer_schedule'] : [ 'daily' ];
+		if ( isset( $item['name'] ) && ! isset( $data['name_of_order_bogo'] ) ) {
+			$data['name_of_order_bogo'] = $item['name'];
+		}
 
-        // A product offer ("Specific") is edited on its product's BOGO tab.
-        $data['product_id'] = absint( $item['product_id'] ?? 0 );
-        if ( $data['product_id'] ) {
-            $data['edit_url'] = get_edit_post_link( $data['product_id'], 'raw' );
-        }
+		if ( isset( $item['offer_product_id'] ) && ! isset( $data['get_different_product_field'] ) ) {
+			$data['get_different_product_field'] = $item['offer_product_id'];
+		}
 
-        // What the list shows: category targets by name, and the offer's
-        // prices as the cart works them out, in the store's price format.
-        $data['target_categories'] = [];
-        foreach ( (array) ( $item['offered_categories'] ?? [] ) as $term_id ) {
-            $term = get_term( (int) $term_id, 'product_cat' );
-            if ( $term && ! is_wp_error( $term ) ) {
-                $data['target_categories'][] = html_entity_decode( $term->name, ENT_QUOTES, 'UTF-8' );
-            }
-        }
+		if ( isset( $item['alternate_products'] ) && ! isset( $data['get_alternate_products'] ) ) {
+			$data['get_alternate_products'] = $item['alternate_products'];
+		}
 
-        // Buy X Get X gives the target product itself.
-        $offer_product = wc_get_product(
-            'same' === ( $item['bogo_deal_type'] ?? '' )
-                ? (int) ( $item['offered_products'][0] ?? 0 )
-                : (int) ( $item['offer_product_id'] ?? 0 )
-        );
-        if ( $offer_product ) {
-            // Plain text: wc_price()'s markup and entities decoded.
-            $as_text = static function ( $amount ) {
-                return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
-            };
+		// The design (and per-offer badge) and the schedule, so an editor
+		// can show and send them back (they were missing, and saving wiped
+		// them).
+		$data                   = array_merge( $data, BogoDataManager::get_design_settings( $item['design_settings'] ?? null ) );
+		$data['offer_schedule'] = ! empty( $item['offer_schedule'] ) ? $item['offer_schedule'] : [ 'daily' ];
 
-            $data['offer_prices'] = [
-                'regular' => $as_text( (float) ( $offer_product->get_regular_price() ?: $offer_product->get_price() ) ),
-                'offer'   => $as_text( Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $offer_product->get_price(), $item['discount_amount'] ?? 0 ) ),
-            ];
-        }
+		// A product offer ("Specific") is edited on its product's BOGO tab.
+		$data['product_id'] = absint( $item['product_id'] ?? 0 );
+		if ( $data['product_id'] ) {
+			$data['edit_url'] = get_edit_post_link( $data['product_id'], 'raw' );
+		}
+
+		// What the list shows: category targets by name, and the offer's
+		// prices as the cart works them out, in the store's price format.
+		$data['target_categories'] = [];
+		foreach ( (array) ( $item['offered_categories'] ?? [] ) as $term_id ) {
+			$term = get_term( (int) $term_id, 'product_cat' );
+			if ( $term && ! is_wp_error( $term ) ) {
+				$data['target_categories'][] = html_entity_decode( $term->name, ENT_QUOTES, 'UTF-8' );
+			}
+		}
+
+		// Buy X Get X gives the target product itself.
+		$offer_product = wc_get_product(
+			'same' === ( $item['bogo_deal_type'] ?? '' )
+				? (int) ( $item['offered_products'][0] ?? 0 )
+				: (int) ( $item['offer_product_id'] ?? 0 )
+		);
+		if ( $offer_product ) {
+			// Plain text: wc_price()'s markup and entities decoded.
+			$as_text = static function ( $amount ) {
+				return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
+			};
+
+			$data['offer_prices'] = [
+				'regular' => $as_text( (float) ( $offer_product->get_regular_price() ?: $offer_product->get_price() ) ),
+				'offer'   => $as_text( Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $offer_product->get_price(), $item['discount_amount'] ?? 0 ) ),
+			];
+		}
 
 		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );
 
@@ -1444,379 +1446,379 @@ class BogoController extends WP_REST_Controller {
 			}
 		}
 
-        $context = ! empty( $request['context'] ) ? $request['context'] : 'view';
-        $data = $this->filter_response_by_context( $data, $context );
-        $data = $this->add_additional_fields_to_object( $data, $request );
-        $response = rest_ensure_response( $data );
+		$context  = ! empty( $request['context'] ) ? $request['context'] : 'view';
+		$data     = $this->filter_response_by_context( $data, $context );
+		$data     = $this->add_additional_fields_to_object( $data, $request );
+		$response = rest_ensure_response( $data );
 
-        return apply_filters( 'storegrowth_rest_prepare_bogo_offer', $response, $item, $request );
-    }
+		return apply_filters( 'storegrowth_rest_prepare_bogo_offer', $response, $item, $request );
+	}
 
-    /**
-     * A product as an offer's list cells show it (the keys the old admin read,
-     * plus the thumbnail and the regular price).
-     *
-     * @since SPSG_VERSION
-     *
-     * @param \WC_Product $product  Product.
-     * @param string      $currency Currency symbol.
-     *
-     * @return array
-     */
-    protected function product_info( $product, $currency ) {
-        $image_id = $product->get_image_id();
+	/**
+	 * A product as an offer's list cells show it (the keys the old admin read,
+	 * plus the thumbnail and the regular price).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Product $product  Product.
+	 * @param string      $currency Currency symbol.
+	 *
+	 * @return array
+	 */
+	protected function product_info( $product, $currency ) {
+		$image_id = $product->get_image_id();
 
-        return [
-            'id'            => $product->get_id(),
-            'name'          => $product->get_title(),
-            'price'         => $product->get_price(),
-            'regular_price' => $product->get_regular_price(),
-            'currency'      => $currency,
-            'image'         => $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' ),
-        ];
-    }
+		return [
+			'id'            => $product->get_id(),
+			'name'          => $product->get_title(),
+			'price'         => $product->get_price(),
+			'regular_price' => $product->get_regular_price(),
+			'currency'      => $currency,
+			'image'         => $image_id ? wp_get_attachment_image_url( $image_id, 'thumbnail' ) : wc_placeholder_img_src( 'thumbnail' ),
+		];
+	}
 
-    /**
-     * Format item's collection for response.
-     *
-     * @since 2.0.0
-     * @param WP_REST_Response $response
-     * @param WP_REST_Request $request
-     * @param int $total_items
-     * @return WP_REST_Response
-     */
-    public function format_collection_response( $response, $request, $total_items ) {
-        $per_page = (int) ( ! empty( $request['per_page'] ) ? $request['per_page'] : 20 );
-        $page = (int) ( ! empty( $request['page'] ) ? $request['page'] : 1 );
+	/**
+	 * Format item's collection for response.
+	 *
+	 * @since 2.0.0
+	 * @param WP_REST_Response $response
+	 * @param WP_REST_Request  $request
+	 * @param int              $total_items
+	 * @return WP_REST_Response
+	 */
+	public function format_collection_response( $response, $request, $total_items ) {
+		$per_page = (int) ( ! empty( $request['per_page'] ) ? $request['per_page'] : 20 );
+		$page     = (int) ( ! empty( $request['page'] ) ? $request['page'] : 1 );
 
-        // Always sent, 0 included (a list needs them to show "no offers").
-        $response->header( 'X-WP-Total', (int) $total_items );
-        $max_pages = (int) ceil( $total_items / max( 1, $per_page ) );
-        $response->header( 'X-WP-TotalPages', $max_pages );
-        // Whether a create would pass this route's limit (lite's global limit;
-        // a subclass's own, e.g. per vendor).
-        $response->header( 'X-SPSG-Can-Create', is_wp_error( $this->check_creation_limitations( [], $request ) ) ? '0' : '1' );
-        $base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
+		// Always sent, 0 included (a list needs them to show "no offers").
+		$response->header( 'X-WP-Total', (int) $total_items );
+		$max_pages = (int) ceil( $total_items / max( 1, $per_page ) );
+		$response->header( 'X-WP-TotalPages', $max_pages );
+		// Whether a create would pass this route's limit (lite's global limit;
+		// a subclass's own, e.g. per vendor).
+		$response->header( 'X-SPSG-Can-Create', is_wp_error( $this->check_creation_limitations( [], $request ) ) ? '0' : '1' );
+		$base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
 
-        if ( $page > 1 ) {
-            $prev_page = $page - 1;
-            if ( $prev_page > $max_pages ) {
-                $prev_page = $max_pages;
-            }
-            $prev_link = add_query_arg( 'page', $prev_page, $base );
-            $response->link_header( 'prev', $prev_link );
-        }
-        if ( $max_pages > $page ) {
-            $next_page = $page + 1;
-            $next_link = add_query_arg( 'page', $next_page, $base );
-            $response->link_header( 'next', $next_link );
-        }
+		if ( $page > 1 ) {
+			$prev_page = $page - 1;
+			if ( $prev_page > $max_pages ) {
+				$prev_page = $max_pages;
+			}
+			$prev_link = add_query_arg( 'page', $prev_page, $base );
+			$response->link_header( 'prev', $prev_link );
+		}
+		if ( $max_pages > $page ) {
+			$next_page = $page + 1;
+			$next_link = add_query_arg( 'page', $next_page, $base );
+			$response->link_header( 'next', $next_link );
+		}
 
-        return $response;
-    }
+		return $response;
+	}
 
-    /**
-     * Get the item schema.
-     *
-     * @since 2.0.0
-     * @return array
-     */
-    public function get_item_schema() {
-        return [
-            '$schema'    => 'http://json-schema.org/draft-04/schema#',
-            'title'      => 'storegrowth_bogo_offer',
-            'type'       => 'object',
-            'properties' => [
-                'id' => [
-                    'description' => __( 'Unique identifier for the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'integer',
-                    'context'     => [ 'view', 'edit' ],
-                    'readonly'    => true,
-                ],
-                'name_of_order_bogo' => [
-                    'description' => __( 'The internal name of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'name' => [
-                    'description' => __( 'The name of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offered_products' => [
-                    'description' => __( 'Array of target product IDs.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'integer' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-              
-                'bogo_deal_type' => [
-                    'description' => __( 'The deal type for BOGO (e.g., same or different products).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'bogo_type' => [
-                    'description' => __( 'The target type of the BOGO deal, such as products or categories.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'minimum_quantity_required' => [
-                    'description' => __( 'Minimum quantity required to trigger the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_start_date' => [
-                    'description' => __( 'The formatted start date of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_end_date' => [
-                    'description' => __( 'The formatted end date of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_start' => [
-                    'description' => __( 'The start date in YYYY-MM-DD format.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_end' => [
-                    'description' => __( 'The end date in YYYY-MM-DD format.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offered_categories' => [
-                    'description' => __( 'Array of category IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'integer' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_schedule' => [
-                    'description' => __( 'Recurring schedule settings for the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'string' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'smart_offer' => [
-                    'description' => __( 'Whether the offer is a smart (dynamic) offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'enum'        => [ 'true', 'false' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'get_different_product_field' => [
-                    'description' => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'integer',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'get_alternate_products' => [
-                    'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'integer' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'alternate_products' => [
-                    'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'integer' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_type' => [
-                    'description' => __( 'Type of benefit offered (free, fixed price, etc.).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'discount_amount' => [
-                    'description' => __( 'Amount of discount applied in the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'default_badge_icon_name' => [
-                    'description' => __( 'Name of the default badge icon.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'enable_custom_badge_image' => [
-                    'description' => __( 'Whether a custom badge image is enabled (0 or 1).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'enum'        => [ '0', '1' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'default_custom_badge_icon' => [
-                    'description' => __( 'URL or path to the custom badge image.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'box_border_style' => [
-                    'description' => __( 'CSS style for box border (e.g., solid, dashed).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'box_border_color' => [
-                    'description' => __( 'Color code of the border.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'box_top_margin' => [
-                    'description' => __( 'Top margin value of the BOGO box.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'box_bottom_margin' => [
-                    'description' => __( 'Bottom margin value of the BOGO box.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'discount_background_color' => [
-                    'description' => __( 'Background color of the discount box.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'discount_text_color' => [
-                    'description' => __( 'Text color for discount information.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'discount_font_size' => [
-                    'description' => __( 'Font size for discount text.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'product_description_text_color' => [
-                    'description' => __( 'Text color for product descriptions.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'product_description_font_size' => [
-                    'description' => __( 'Font size for product descriptions.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'accept_offer_background_color' => [
-                    'description' => __( 'Background color of the "Accept Offer" button.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'accept_offer_text_color' => [
-                    'description' => __( 'Text color of the "Accept Offer" button.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'accept_offer_font_size' => [
-                    'description' => __( 'Font size for the "Accept Offer" button text.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_description_background_color' => [
-                    'description' => __( 'Background color for the offer description box.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_description_text_color' => [
-                    'description' => __( 'Text color for the offer description.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_description_font_size' => [
-                    'description' => __( 'Font size of the offer description text.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_image_url' => [
-                    'description' => __( 'URL to the promotional image or icon.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'uri',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_product_title' => [
-                    'description' => __( 'Title of the offered product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_product_id' => [
-                    'description' => __( 'Product ID for the offered product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'integer',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_discount_title' => [
-                    'description' => __( 'Title shown for the discount.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_fixed_price_title' => [
-                    'description' => __( 'Title for fixed-price deals.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'product_description' => [
-                    'description' => __( 'Short description for the offer product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'selection_title' => [
-                    'description' => __( 'Title shown during offer product selection.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_description' => [
-                    'description' => __( 'The long description of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'offer_product_regular_price' => [
-                    'description' => __( 'Regular price of the offered product.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'product_page_message' => [
-                    'description' => __( 'Message shown on the product page for the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'shop_page_message' => [
-                    'description' => __( 'Message shown on the shop page for the offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'bogo_badge_image' => [
-                    'description' => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'type' => [
-                    'description' => __( 'Type of BOGO offer (global or product).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'enum'        => [ 'global', 'product' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'status' => [
-                    'description' => __( 'Status of the BOGO offer (active or inactive).', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'enum'        => [ 'active', 'inactive' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'created_at' => [
-                    'description' => __( 'Creation timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date-time',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'updated_at' => [
-                    'description' => __( 'Last update timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
-                    'type'        => 'string',
-                    'format'      => 'date-time',
-                    'context'     => [ 'view', 'edit' ],
-                ],
-                'bogo_schedule' => [
-                    'description' => __( 'Schedule configuration for offers.', 'storegrowth-sales-booster' ),
-                    'type'        => 'array',
-                    'items'       => [ 'type' => 'string' ],
-                    'context'     => [ 'view', 'edit' ],
-                ],
-            ],
-        ];
-    }
+	/**
+	 * Get the item schema.
+	 *
+	 * @since 2.0.0
+	 * @return array
+	 */
+	public function get_item_schema() {
+		return [
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'storegrowth_bogo_offer',
+			'type'       => 'object',
+			'properties' => [
+				'id'                                 => [
+					'description' => __( 'Unique identifier for the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'integer',
+					'context'     => [ 'view', 'edit' ],
+					'readonly'    => true,
+				],
+				'name_of_order_bogo'                 => [
+					'description' => __( 'The internal name of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'name'                               => [
+					'description' => __( 'The name of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offered_products'                   => [
+					'description' => __( 'Array of target product IDs.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'integer' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+
+				'bogo_deal_type'                     => [
+					'description' => __( 'The deal type for BOGO (e.g., same or different products).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'bogo_type'                          => [
+					'description' => __( 'The target type of the BOGO deal, such as products or categories.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'minimum_quantity_required'          => [
+					'description' => __( 'Minimum quantity required to trigger the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_start_date'                   => [
+					'description' => __( 'The formatted start date of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_end_date'                     => [
+					'description' => __( 'The formatted end date of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_start'                        => [
+					'description' => __( 'The start date in YYYY-MM-DD format.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_end'                          => [
+					'description' => __( 'The end date in YYYY-MM-DD format.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offered_categories'                 => [
+					'description' => __( 'Array of category IDs eligible for BOGO.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'integer' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_schedule'                     => [
+					'description' => __( 'Recurring schedule settings for the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'string' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'smart_offer'                        => [
+					'description' => __( 'Whether the offer is a smart (dynamic) offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'enum'        => [ 'true', 'false' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'get_different_product_field'        => [
+					'description' => __( 'ID of the offered product.', 'storegrowth-sales-booster' ),
+					'type'        => 'integer',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'get_alternate_products'             => [
+					'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'integer' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'alternate_products'                 => [
+					'description' => __( 'Array of alternate product IDs for the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'integer' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_type'                         => [
+					'description' => __( 'Type of benefit offered (free, fixed price, etc.).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'discount_amount'                    => [
+					'description' => __( 'Amount of discount applied in the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'default_badge_icon_name'            => [
+					'description' => __( 'Name of the default badge icon.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'enable_custom_badge_image'          => [
+					'description' => __( 'Whether a custom badge image is enabled (0 or 1).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'enum'        => [ '0', '1' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'default_custom_badge_icon'          => [
+					'description' => __( 'URL or path to the custom badge image.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'box_border_style'                   => [
+					'description' => __( 'CSS style for box border (e.g., solid, dashed).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'box_border_color'                   => [
+					'description' => __( 'Color code of the border.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'box_top_margin'                     => [
+					'description' => __( 'Top margin value of the BOGO box.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'box_bottom_margin'                  => [
+					'description' => __( 'Bottom margin value of the BOGO box.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'discount_background_color'          => [
+					'description' => __( 'Background color of the discount box.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'discount_text_color'                => [
+					'description' => __( 'Text color for discount information.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'discount_font_size'                 => [
+					'description' => __( 'Font size for discount text.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'product_description_text_color'     => [
+					'description' => __( 'Text color for product descriptions.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'product_description_font_size'      => [
+					'description' => __( 'Font size for product descriptions.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'accept_offer_background_color'      => [
+					'description' => __( 'Background color of the "Accept Offer" button.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'accept_offer_text_color'            => [
+					'description' => __( 'Text color of the "Accept Offer" button.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'accept_offer_font_size'             => [
+					'description' => __( 'Font size for the "Accept Offer" button text.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_description_background_color' => [
+					'description' => __( 'Background color for the offer description box.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_description_text_color'       => [
+					'description' => __( 'Text color for the offer description.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_description_font_size'        => [
+					'description' => __( 'Font size of the offer description text.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_image_url'                    => [
+					'description' => __( 'URL to the promotional image or icon.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'uri',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_product_title'                => [
+					'description' => __( 'Title of the offered product.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_product_id'                   => [
+					'description' => __( 'Product ID for the offered product.', 'storegrowth-sales-booster' ),
+					'type'        => 'integer',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_discount_title'               => [
+					'description' => __( 'Title shown for the discount.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_fixed_price_title'            => [
+					'description' => __( 'Title for fixed-price deals.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'product_description'                => [
+					'description' => __( 'Short description for the offer product.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'selection_title'                    => [
+					'description' => __( 'Title shown during offer product selection.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_description'                  => [
+					'description' => __( 'The long description of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'offer_product_regular_price'        => [
+					'description' => __( 'Regular price of the offered product.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'product_page_message'               => [
+					'description' => __( 'Message shown on the product page for the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'shop_page_message'                  => [
+					'description' => __( 'Message shown on the shop page for the offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'bogo_badge_image'                   => [
+					'description' => __( 'Badge image for the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'type'                               => [
+					'description' => __( 'Type of BOGO offer (global or product).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'enum'        => [ 'global', 'product' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'status'                             => [
+					'description' => __( 'Status of the BOGO offer (active or inactive).', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'enum'        => [ 'active', 'inactive' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+				'created_at'                         => [
+					'description' => __( 'Creation timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date-time',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'updated_at'                         => [
+					'description' => __( 'Last update timestamp of the BOGO offer.', 'storegrowth-sales-booster' ),
+					'type'        => 'string',
+					'format'      => 'date-time',
+					'context'     => [ 'view', 'edit' ],
+				],
+				'bogo_schedule'                      => [
+					'description' => __( 'Schedule configuration for offers.', 'storegrowth-sales-booster' ),
+					'type'        => 'array',
+					'items'       => [ 'type' => 'string' ],
+					'context'     => [ 'view', 'edit' ],
+				],
+			],
+		];
+	}
 }
