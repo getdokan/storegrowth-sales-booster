@@ -17,14 +17,19 @@ import type { SettingsField } from './rest';
 //   toggle                              → switch;   toggle+checkbox → checkbox
 //   select                              → combobox; select+radio    → radiogroup of radios
 //   color                               → button that opens a dialog with textbox "Hex color"
-//   others (date, list, box, alignment, device, switch_card) → use settingsField()
+//   toggle+switch_card                  → switch named "label help"
+//   others (date, list, box, alignment, device) → use settingsField()
 //   with the role and drive it in the spec.
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** Accessible name of a field: its label, optionally followed by the "Pro" badge. */
-export function fieldName(label: string): RegExp {
-  return new RegExp(`^${escape(label)}(\\s*Pro)?$`);
+/**
+ * Accessible name of a field: its label, optionally followed by the "Pro"
+ * badge, and by its `help` text when given (a `switch_card` toggle names its
+ * switch with the whole card: label + help).
+ */
+export function fieldName(label: string, help?: string): RegExp {
+  return new RegExp(`^${escape(label)}(\\s*Pro)?${help ? `(\\s*${escape(help)})?` : ''}$`);
 }
 
 /** URL route of a module's settings page. */
@@ -68,8 +73,9 @@ export function settingsField(
   page: Page,
   role: 'textbox' | 'spinbutton' | 'switch' | 'checkbox' | 'combobox' | 'button' | 'radiogroup',
   label: string,
+  help?: string,
 ): Locator {
-  return adminApp(page).getByRole(role, { name: fieldName(label) });
+  return adminApp(page).getByRole(role, { name: fieldName(label, help) });
 }
 
 async function enabled(control: Locator, label: string): Promise<Locator> {
@@ -94,8 +100,9 @@ export async function setToggle(
   label: string,
   on: boolean,
   variant: 'switch' | 'checkbox' = 'switch',
+  help?: string,
 ): Promise<void> {
-  const control = await enabled(settingsField(page, variant, label), label);
+  const control = await enabled(settingsField(page, variant, label, help), label);
   await control.setChecked(on);
   await expect(control).toHaveAttribute('aria-checked', String(on));
 }
@@ -146,7 +153,13 @@ export async function setField(page: Page, field: SettingsField, value: unknown,
     case 'number':
       return setNumber(page, label, value as number);
     case 'toggle':
-      return setToggle(page, label, Boolean(value), field.variant === 'checkbox' ? 'checkbox' : 'switch');
+      return setToggle(
+        page,
+        label,
+        Boolean(value),
+        field.variant === 'checkbox' ? 'checkbox' : 'switch',
+        field.variant === 'switch_card' && field.help ? String(field.help) : undefined,
+      );
     case 'color':
       return setColor(page, label, String(value));
     case 'select': {
