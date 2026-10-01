@@ -21,9 +21,11 @@ just reusable fixtures, small helper functions, and clear test organization.
 ```
 tests/e2e/
 ├── playwright.config.ts     # projects (setup → ui, api), reporters, timeouts
-├── docker-compose.yml       # the sg-test-automation stack (WP + DB + cli)
-├── bin/setup-docker.sh      # one-shot: boot Docker, install prereqs, write .env
+├── docker-compose.yml       # the stack (WP + DB + cli); project/port/names from E2E_* env
+├── docker-compose.pro.yml   # opt-in Pro variant (mounts $PRO_DIR)
+├── bin/setup-docker.sh      # one-shot: boot Docker, install prereqs, write .env (if missing)
 ├── bin/provision-site.php   # SHARED site setup (modules, products, options) — Docker + CI
+├── bin/logs/                # WP_DEBUG_LOG per stack: bin/logs/<container>.log (git-ignored)
 ├── bin/qa-shots.mjs         # review screenshots, before/after + compare.html (dev site, run from the plugin folder)
 ├── package.json             # self-contained — does not touch the plugin's build deps
 ├── tsconfig.json
@@ -34,19 +36,22 @@ tests/e2e/
 │   └── test.ts              # custom `test`/`expect` + the `api` fixture
 ├── helpers/
 │   ├── env.ts               # typed, centralized config (only place reading process.env)
-│   ├── wp-admin.ts          # login(), gotoAdminPage(), gotoSettings()
-│   ├── modules.ts           # gotoModules(), setModuleState(), moduleToggle()
-│   ├── ajax.ts              # admin-ajax via the page's spsg_ajax_nonce
+│   ├── wp-admin.ts          # login(), gotoAdminPage()
+│   ├── modules.ts           # app shell: gotoDashboard(), gotoModules(), moduleToggle(), setModuleState()
+│   ├── settings-ui.ts       # generated settings pages: gotoSettings(), setField(), saveSettings(), …
+│   ├── rest.ts              # REST setup: setModuleStatus(), get/save/resetModuleSettings(), hasPro()
+│   ├── records.ts           # BOGO offers + order bumps: create*/delete*/deleteAll*
+│   ├── ajax.ts              # legacy admin-ajax via the page's nonce
 │   └── storefront.ts        # gotoShop(), gotoProduct(), gotoCart()
 ├── data/
 │   ├── modules.ts           # module ids/names, baseline set, verified markers
-│   └── products.ts          # seeded product slugs + store page paths
+│   └── products.ts          # seeded product ids + slugs + store page paths
 └── tests/
-    ├── auth.setup.ts        # authenticates once, persists .auth/admin.json
+    ├── auth.setup.ts        # authenticates once, persists .auth/admin[-<port>].json
     ├── ui/                  # E2E browser tests (reuse admin session)
-    │   ├── settings.spec.ts            # Settings SPA mounts
-    │   ├── admin-menu.spec.ts          # menu + both SPAs
-    │   ├── modules.spec.ts             # catalog renders, toggle persists
+    │   ├── settings.spec.ts            # every settings page mounts, save/reset, legacy redirects
+    │   ├── admin-menu.spec.ts          # menu + app shell (#/dashboard, #/features)
+    │   ├── modules.spec.ts             # #/modules catalog, toggle persists (UI + REST)
     │   ├── module-ajax.spec.ts         # get_all_modules / update_module_status
     │   ├── settings-persistence.spec.ts# per-module settings save→get round-trip
     │   └── storefront-*.spec.ts        # one per module: positive + negative,
@@ -79,7 +84,11 @@ provisions everything the suite needs and writes `.env` for you:
   (`woocommerce_coming_soon=no`), the StoreGrowth initial-setup flag cleared
 - **ALL modules activated** (the baseline; the order-bump table migration runs)
 - the **classic checkout** shortcode (the Order Bump needs it — ISSUES.md #7)
-- three published, stock-managed products for storefront tests
+- three published, stock-managed products for storefront tests (ids 11, 12, 13
+  on a fresh stack — `data/products.ts`), the `e2e10` coupon; **no** BOGO offers
+  or order bumps (specs create their own with `helpers/records.ts`)
+- **lite**: StoreGrowth Pro is not mounted and is deactivated, so `has_pro()` is
+  false (see "Pro variant" below)
 
 The shared, environment-agnostic site setup lives in **`bin/provision-site.php`**
 (a `wp eval-file` script) and is run by BOTH the Docker stack and CI — so the two
@@ -89,7 +98,7 @@ environments are configured identically.
 
 ```bash
 cd tests/e2e
-bash bin/setup-docker.sh      # boot + provision + write .env  (idempotent)
+bash bin/setup-docker.sh      # boot + provision + write .env if missing  (idempotent)
 npm install
 npm run install:browsers
 
@@ -99,10 +108,62 @@ npm run test:ui               # UI only
 HEADLESS=1 npm run test:ui    # UI without opening browser windows
 npm run report                # open the last HTML report
 
-docker compose down -v        # tear down + wipe data
+docker compose -p "${COMPOSE_PROJECT_NAME:-sg-test-automation}" down -v   # tear down + wipe data (the setup prints the exact command)
 ```
 
-The site runs at <http://localhost:8888> (admin `admin` / `password`).
+The site runs at <http://localhost:8888> (admin `admin` / `password`). Built admin
+assets come from the plugin's own `npm run start` / `npm run build` output in the
+working tree (the plugin folder is bind-mounted).
+
+`setup-docker.sh` never overwrites an existing `.env`; delete it to regenerate.
+If your shell exports `COMPOSE_PROJECT_NAME`, that names the default stack (and
+wins over the file's `name:`) — always pass `-p <project>` to `docker compose`.
+
+### Parallel stacks
+
+Each stack gets its own compose project (volumes), containers, port and env
+file, so several batches can run at once from the same checkout:
+
+```bash
+E2E_PORT=8890 E2E_PROJECT=sg-e2e-b2 bash bin/setup-docker.sh   # writes .env.sg-e2e-b2
+E2E_ENV_FILE=.env.sg-e2e-b2 HEADLESS=1 npm run test:ui        # or BASE_URL=http://localhost:8890
+docker compose -p sg-e2e-b2 down -v                           # tear it down
+```
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `E2E_PORT` | `8888` | host port of WordPress |
+| `E2E_PROJECT` | `$COMPOSE_PROJECT_NAME` or `sg-test-automation` | compose project (volume prefix) |
+| `E2E_CONTAINER` | `sg-test-automation`, or `$E2E_PROJECT` when that is set | container names `<name>` / `<name>-db` |
+| `E2E_ENV_FILE` | `.env` | env file `helpers/env.ts` loads |
+
+A run against a non-8888 `BASE_URL` keeps its artefacts apart: session
+`.auth/admin-<port>.json`, `test-results-<port>/`, `playwright-report-<port>/`,
+`results/junit-<port>.xml`. Module state is still one option per site
+(ISSUES.md #2): parallelism comes from more stacks, never more workers.
+
+### Pro variant (opt-in)
+
+The default stack is lite. To test with Pro, pass the Pro folder and a license
+key; the setup mounts it through `docker-compose.pro.yml`, activates it and its
+Appsero license:
+
+```bash
+PRO_DIR=../../../storegrowth-sales-booster-pro LICENSE_KEY=… bash bin/setup-docker.sh
+```
+
+Re-running the setup without them switches the stack back to lite
+(`provision-site.php` deactivates Pro). In specs, `hasPro(api)`
+(`helpers/rest.ts`) tells which variant is running.
+
+### Debug log
+
+`WP_DEBUG_LOG` writes to `bin/logs/<container>.log` on the host (one file per
+stack; WordPress and WP-CLI both write there):
+
+```bash
+tail -f bin/logs/sg-test-automation.log
+```
 
 ### Manual / wp-env alternative
 
@@ -113,9 +174,8 @@ password for the API project). A `.wp-env.json` is also provided.
 
 ## Known plugin behaviours the suite works around
 
-See **[ISSUES.md](./ISSUES.md)** — notably the Settings SPA's missing index
-route (#1) and the non-atomic module-toggle option write (#2), which is why the
-suite runs `workers: 1`.
+See **[ISSUES.md](./ISSUES.md)** — notably the non-atomic module-toggle option
+write (#2), which is why the suite runs `workers: 1`.
 
 ## CI/CD
 
@@ -131,7 +191,7 @@ stays per shard. Any failing test fails the pipeline.
 
 **Sharding.** The suite is split across four parallel jobs — one `api` job plus
 three `ui` shards — each on its own isolated `wp-env` site (a single site can't
-run multiple workers, see [ISSUES.md](#) #2). `fail-fast: false` lets every shard
+run multiple workers, see [ISSUES.md](./ISSUES.md) #2). `fail-fast: false` lets every shard
 finish so the report is complete.
 
 **Fancy report.** Each shard emits a Playwright `blob` report and a JUnit XML.

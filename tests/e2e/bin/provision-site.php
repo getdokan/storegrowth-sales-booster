@@ -5,7 +5,7 @@
  * Run inside the WP-CLI container of whichever environment hosts the site:
  *
  *   # Docker stack (bin/setup-docker.sh):
- *   docker compose run --rm cli wp eval-file \
+ *   docker compose -p <project> run --rm cli wp eval-file \
  *     /var/www/html/wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
  *
  *   # GitHub Actions (wp-env):
@@ -63,13 +63,24 @@ if ( $checkout_id ) {
 	);
 }
 
-/* -- Activate the Pro plugin if it is present (Docker mounts it; CI may not). - */
+/* -- Lite or Pro. -------------------------------------------------------------
+ * Pro runs only when it is mounted AND a LICENSE_KEY is given (the Docker
+ * stack's opt-in Pro variant, or CI with the Pro secrets). Otherwise it is
+ * deactivated, so a lite stack never reports has_pro() through a stale
+ * active_plugins entry (deactivate_plugins() works on the option even when the
+ * plugin folder is no longer mounted). */
 if ( ! function_exists( 'activate_plugin' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 $pro_plugin = 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php';
-if ( file_exists( WP_PLUGIN_DIR . '/' . $pro_plugin ) && ! is_plugin_active( $pro_plugin ) ) {
+$pro_wanted = getenv( 'LICENSE_KEY' ) && file_exists( WP_PLUGIN_DIR . '/' . $pro_plugin );
+if ( $pro_wanted && ! is_plugin_active( $pro_plugin ) ) {
 	activate_plugin( $pro_plugin );
+} elseif ( ! $pro_wanted && is_plugin_active( $pro_plugin ) ) {
+	deactivate_plugins( $pro_plugin, true );
+	if ( class_exists( 'WP_CLI' ) ) {
+		WP_CLI::log( '    StoreGrowth Pro deactivated (lite stack).' );
+	}
 }
 
 /* -- Activate the Pro license from $LICENSE_KEY (Appsero), if available. ------
@@ -160,38 +171,11 @@ if ( class_exists( 'WC_Coupon' ) && function_exists( 'wc_get_coupon_id_by_code' 
 	$coupon->save();
 }
 
-/* -- Seed a global "Buy C get C free" BOGO offer for the Fly Cart badge test. -
- * Lives here (not "out of band") so every environment is self-contained. The
- * BOGO module's table is created during its activation above. */
-$bogo_manager = '\\StorePulse\\StoreGrowth\\Modules\\BoGo\\BogoDataManager';
-$bogo_product = get_page_by_path( 'e2e-sale-product-c', OBJECT, 'product' );
-if ( $bogo_product && class_exists( $bogo_manager ) ) {
-	$existing = $bogo_manager::get_bogo_offers(
-		array(
-			'offered_products' => wp_json_encode( array( (int) $bogo_product->ID ) ),
-			'type'             => 'global',
-			'status'           => 'active',
-		)
-	);
-	if ( empty( $existing ) ) {
-		try {
-			$bogo_manager::create_global_offer(
-				array(
-					'name_of_order_bogo'     => 'E2E Fly Cart BOGO (Buy C get C free)',
-					'offer_type'             => 'free',
-					'bogo_deal_type'         => 'different',
-					'offered_products'       => array( (int) $bogo_product->ID ),
-					'get_alternate_products' => array( (int) $bogo_product->ID ),
-					'status'                 => 'active',
-				)
-			);
-		} catch ( \Exception $e ) {
-			if ( class_exists( 'WP_CLI' ) ) {
-				WP_CLI::warning( 'Could not seed BOGO offer: ' . $e->getMessage() );
-			}
-		}
-	}
-}
+/* -- No BOGO / Order Bump records are seeded. ---------------------------------
+ * Specs own them: create through the REST helpers (helpers/records.ts) and
+ * delete what they made. A seeded offer would eat one of lite's two BOGO
+ * slots, and the old "Buy C get C" seed is rejected by the current validator
+ * (the offer product can't be a target product). */
 
 if ( class_exists( 'WP_CLI' ) ) {
 	WP_CLI::success( 'StoreGrowth E2E site provisioned (all modules active, products seeded, classic checkout).' );

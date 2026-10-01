@@ -2,8 +2,17 @@ import { test as base, expect, APIRequestContext, Page } from '@playwright/test'
 import * as path from 'path';
 import { env } from '../helpers/env';
 
-/** Where the authenticated admin session is persisted by the `setup` project. */
-export const ADMIN_STORAGE_STATE = path.resolve(__dirname, '..', '.auth', 'admin.json');
+/**
+ * Where the authenticated admin session is persisted by the `setup` project.
+ * One file per stack (`admin-8890.json` for :8890), so a parallel stack never
+ * reuses another site's login cookies.
+ */
+export const ADMIN_STORAGE_STATE = path.resolve(
+  __dirname,
+  '..',
+  '.auth',
+  `admin${env.runSuffix}.json`,
+);
 
 type Fixtures = {
   /** Authenticated, browserless REST client (Basic auth). Scoped per-test. */
@@ -23,6 +32,11 @@ export const test = base.extend<Fixtures>({
   api: async ({ playwright }, use) => {
     const context = await playwright.request.newContext({
       baseURL: env.baseURL,
+      // No cookies: in the `ui` project the context would otherwise inherit the
+      // admin session, and WordPress then rejects the request (a logged-in
+      // cookie without a REST nonce wins over Basic auth → 401). With this the
+      // fixture works the same in the `ui` and `api` projects.
+      storageState: { cookies: [], origins: [] },
       extraHTTPHeaders: {
         Authorization: env.basicAuthHeader,
         Accept: 'application/json',

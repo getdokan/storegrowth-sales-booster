@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/test';
 import { setModuleActive } from '../../helpers/ajax';
+import { resetModuleSettings, setModuleStatus } from '../../helpers/rest';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
 import { gotoShop, gotoProduct, computedStyle } from '../../helpers/storefront';
 import { getProductIdBySlug } from '../../helpers/wc';
@@ -22,13 +23,15 @@ async function openModal(targetPage: any, id: number) {
 }
 
 test.describe('Storefront · Quick View', { tag: '@ui' }, () => {
-  test.beforeEach(async ({ page }) => {
-    await setModuleActive(page, MODULES.quickView.id, true);
+  // Setup through REST (helpers/rest.ts): active module, schema-default settings.
+  test.beforeEach(async ({ api }) => {
+    await setModuleStatus(api, MODULES.quickView.id, true);
+    await resetModuleSettings(api, MODULES.quickView.id);
   });
 
-  test.afterEach(async ({ page }) => {
-    await setModuleActive(page, MODULES.quickView.id, true);
-    await resetAndSave(page, ROUTE, 'Design');
+  test.afterEach(async ({ api }) => {
+    await setModuleStatus(api, MODULES.quickView.id, true);
+    await resetModuleSettings(api, MODULES.quickView.id);
   });
 
   test.describe('Render behaviour', () => {

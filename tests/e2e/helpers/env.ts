@@ -1,12 +1,25 @@
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
-// Load tests/e2e/.env when present. In CI the values come from the job env instead.
-dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+// Load tests/e2e/.env (or the file named by E2E_ENV_FILE, e.g. `.env.sg-e2e-b2`
+// written by `E2E_PROJECT=sg-e2e-b2 bin/setup-docker.sh`). Variables already in
+// the process environment win. In CI the values come from the job env instead.
+dotenv.config({ path: path.resolve(__dirname, '..', process.env.E2E_ENV_FILE ?? '.env') });
+
+const baseURL = process.env.BASE_URL ?? 'http://localhost:8888';
 
 export const env = {
   /** Base URL of the WordPress site under test. */
-  baseURL: process.env.BASE_URL ?? 'http://localhost:8888',
+  baseURL,
+
+  /**
+   * Suffix that keeps a parallel stack's artefacts apart: '' for the default
+   * :8888 stack, `-<port>` for any other (session file, test-results, report).
+   */
+  runSuffix: (() => {
+    const port = new URL(baseURL).port || '80';
+    return port === '8888' ? '' : `-${port}`;
+  })(),
 
   /** WP admin credentials used for the UI login + persisted session. */
   adminUser: process.env.WP_ADMIN_USER ?? 'admin',

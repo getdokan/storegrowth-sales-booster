@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/test';
-import { setModuleActive, moduleAjax } from '../../helpers/ajax';
+import { setModuleActive } from '../../helpers/ajax';
+import { resetModuleSettings, setModuleStatus } from '../../helpers/rest';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
 import { gotoProduct } from '../../helpers/storefront';
 import { getProductIdBySlug, updateProduct } from '../../helpers/wc';
@@ -12,28 +13,22 @@ const ROUTE = 'stock-bar';
 const MAIN_BAR = '.entry-summary .spsg-stock-bar';
 const MAIN_SECTION = '.entry-summary .spsg-stock-progress-bar-section';
 
-// Flat form_data can't be cleared empty, so reset to a clean enabled base.
-async function resetStockBar(page: any) {
-  await moduleAjax(page, 'spsg_stock_bar_save_settings', {
-    form_data: { product_page_stock_bar_enable: '1' },
-  });
-}
-
 test.describe('Storefront · Stock Bar', { tag: '@ui' }, () => {
-  test.beforeEach(async ({ page }) => {
-    await setModuleActive(page, MODULES.stockBar.id, true);
-    await resetStockBar(page);
+  // Setup through REST (helpers/rest.ts): schema defaults (product page on).
+  test.beforeEach(async ({ api }) => {
+    await setModuleStatus(api, MODULES.stockBar.id, true);
+    await resetModuleSettings(api, MODULES.stockBar.id);
   });
 
-  test.afterEach(async ({ page }) => {
-    await resetStockBar(page);
+  test.afterEach(async ({ page, api }) => {
+    await resetModuleSettings(api, MODULES.stockBar.id);
     await updateProduct(page, await getProductIdBySlug(page, PRODUCTS.b.slug), {
       manage_stock: true, stock_quantity: 5, stock_status: 'instock',
     });
     await updateProduct(page, await getProductIdBySlug(page, PRODUCTS.c.slug), {
       manage_stock: true, stock_quantity: 100, stock_status: 'instock',
     });
-    await setModuleActive(page, MODULES.stockBar.id, true);
+    await setModuleStatus(api, MODULES.stockBar.id, true);
   });
 
   test.describe('Render behaviour', () => {

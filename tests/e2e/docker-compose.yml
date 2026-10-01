@@ -2,18 +2,31 @@
 #
 # The plugin source is bind-mounted from the repo root (../../) so the container
 # always runs the working tree — no rebuild/copy step. Provision it with
-# `bin/setup-docker.sh` (installs WP core, WooCommerce, activates the plugin,
-# creates an Application Password, and seeds storefront products).
+# `bin/setup-docker.sh` (installs WP core, WooCommerce, activates the plugin and
+# seeds storefront products).
 #
-#   bin/setup-docker.sh           # one-shot: boot + provision + write .env
-#   docker compose up -d          # just boot
-#   docker compose down -v        # tear down and wipe data
-name: sg-test-automation
+#   bash bin/setup-docker.sh                                   # default stack, :8888
+#   E2E_PORT=8890 E2E_PROJECT=sg-e2e-b2 bash bin/setup-docker.sh   # a parallel stack
+#
+# Everything a second stack must not share comes from env vars (set by the
+# setup script; the defaults below are the original single stack):
+#   E2E_PROJECT   compose project name (volumes are prefixed with it)
+#   E2E_PORT      host port of WordPress                 (default 8888)
+#   E2E_CONTAINER container names: <name> and <name>-db  (default sg-test-automation)
+#
+# The stack is LITE by default (StoreGrowth Pro is not mounted). The Pro variant
+# adds docker-compose.pro.yml; setup-docker.sh does that when PRO_DIR and
+# LICENSE_KEY are both set.
+#
+# Always pass the project name (`-p`) to compose by hand, e.g.
+#   docker compose -p sg-test-automation down -v
+# A COMPOSE_PROJECT_NAME in your shell overrides `name:` below.
+name: ${E2E_PROJECT:-sg-test-automation}
 
 services:
   db:
     image: mariadb:11
-    container_name: sg-test-automation-db
+    container_name: ${E2E_CONTAINER:-sg-test-automation}-db
     environment:
       MARIADB_ROOT_PASSWORD: root
       MARIADB_DATABASE: wordpress
@@ -29,12 +42,12 @@ services:
 
   wordpress:
     image: wordpress:php8.2-apache
-    container_name: sg-test-automation
+    container_name: ${E2E_CONTAINER:-sg-test-automation}
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8888:80"
+      - "${E2E_PORT:-8888}:80"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
@@ -43,21 +56,21 @@ services:
       WORDPRESS_DEBUG: 1
       # 'local' lets WP issue/accept Application Passwords over plain HTTP
       # (otherwise REST Basic-auth is rejected on a non-SSL site).
-      WORDPRESS_CONFIG_EXTRA: |
-        define( 'WP_DEBUG_LOG', true );
+      # The debug log is a FILE inside the mounted bin/logs/ directory, one per
+      # stack: bin/logs/<container>.log on the host.
+      WORDPRESS_CONFIG_EXTRA: &config_extra |
+        define( 'WP_DEBUG_LOG', '/var/www/e2e-logs/${E2E_CONTAINER:-sg-test-automation}.log' );
         define( 'WP_DEBUG_DISPLAY', false );
         define( 'WP_ENVIRONMENT_TYPE', 'local' );
     volumes:
       - sg_wp:/var/www/html
       - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
-      # Pro plugin (sibling on the host) — mounted so Pro features are testable.
-      - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
-      # Expose WP_DEBUG_LOG to the host so setup/runtime errors are trackable
-      # from bin/debug.log (WP_DEBUG_LOG=true writes to wp-content/debug.log).
-      - ./bin/debug.log:/var/www/html/wp-content/debug.log
+      # A directory (never a single file: a missing host file is created as a
+      # directory by Docker, which silently breaks the log).
+      - ./bin/logs:/var/www/e2e-logs
 
   # One-off WP-CLI runner (shares the WordPress volume + network). Not started by
-  # `up`; invoked via `docker compose run --rm cli wp ...` from the setup script.
+  # `up`; invoked via `docker compose -p <project> run --rm cli wp ...`.
   cli:
     image: wordpress:cli-php8.2
     profiles: ["cli"]
@@ -70,16 +83,15 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: wordpress
+      # Same debug log, so WP-CLI setup errors land in the stack's file too.
+      WORDPRESS_CONFIG_EXTRA: *config_extra
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - sg_wp:/var/www/html
       - ../../:/var/www/html/wp-content/plugins/storegrowth-sales-booster
-      # Pro plugin (sibling on the host) — mounted so Pro features are testable.
-      - ../../../storegrowth-sales-booster-pro:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
-      # Same debug.log mount so WP-CLI setup errors are captured to the host too.
-      - ./bin/debug.log:/var/www/html/wp-content/debug.log
+      - ./bin/logs:/var/www/e2e-logs
 
 volumes:
   sg_db:
