@@ -147,9 +147,11 @@ In every row, the 2.2.0 JS is deleted outright (no legacy copy).
 
 ## 9. Release order
 
-1. **Lite N** (redesign) ships. It's compatible with pro 2.2.0 through R1–R6 and needs no pro release. This is the "user updates lite only" case.
-2. **Pro N** ships after lite N (proposal: at least 1 lite patch release later). It has the handshake, the lite check + notice, the licence page and the new build; no legacy bundle.
-3. Pro N **requires lite N** (decision 2026-10-01). Its changelog says: "Requires StoreGrowth N. With an older StoreGrowth, Pro's features keep working on the store but their settings can't be changed until StoreGrowth is updated."
+**Decision 2026-10-01: lite and pro are released together as v3.0.0** (replaces the earlier "pro after at least one lite patch release").
+
+1. **Lite 3.0.0** (redesign) and **pro 3.0.0** ship on the same day. Lite 3.0.0 stays compatible with pro 2.2.0 through R1–R6, so a store that updates only lite keeps working.
+2. Pro 3.0.0 has the handshake, the lite check + notice, the licence page and the new build; no legacy bundle.
+3. Pro 3.0.0 **requires lite 3.0.0** (decision 2026-10-01). Its changelog says: "Requires StoreGrowth 3.0.0. With an older StoreGrowth, Pro's features keep working on the store but their settings can't be changed until StoreGrowth is updated."
 4. No support window or later drop release is needed.
 
 ## 10. Tests (run from both repos)
