@@ -41,6 +41,8 @@ tests/e2e/
 │   ├── settings-ui.ts       # generated settings pages: gotoSettings(), setField(), saveSettings(), …
 │   ├── rest.ts              # REST setup: setModuleStatus(), get/save/resetModuleSettings(), hasPro()
 │   ├── records.ts           # BOGO offers + order bumps: create*/delete*/deleteAll*
+│   ├── record-ui.ts         # record list/editor screens: rows, Actions menu, delete dialog, product picker, saveRecord()
+│   ├── wp-cli.ts            # raw option access through E2E_WP_CLI (opt-in)
 │   ├── ajax.ts              # legacy admin-ajax via the page's nonce
 │   └── storefront.ts        # gotoShop(), gotoProduct(), gotoCart()
 ├── data/
@@ -54,6 +56,10 @@ tests/e2e/
     │   ├── modules.spec.ts             # #/modules catalog, toggle persists (UI + REST)
     │   ├── module-ajax.spec.ts         # get_all_modules / update_module_status
     │   ├── settings-persistence.spec.ts# per-module settings save→get round-trip
+    │   ├── settings-pages.spec.ts      # every settings page: each tab saves/persists/resets; pro locked on lite
+    │   ├── bogo-admin.spec.ts          # BOGO list + editor + category messages (lite)
+    │   ├── order-bump-admin.spec.ts    # Order Bump list + editor, 2.2.0 hash routes
+    │   ├── pricing-characterisation.spec.ts # cart money: BOGO, Order Bump, Free Shipping Rules
     │   └── storefront-*.spec.ts        # one per module: positive + negative,
     │                                   #   validated on the storefront (countdown
     │                                   #   timer, direct checkout, floating bar,
@@ -64,7 +70,10 @@ tests/e2e/
         ├── auth.api.spec.ts            # authed admin + anonymous rejection
         ├── products.api.spec.ts        # product picker
         ├── bogo.api.spec.ts            # BOGO offers CRUD + status
-        └── order-bumps.api.spec.ts     # order bumps CRUD + matching
+        ├── bogo-rules.api.spec.ts      # BOGO 400s, lite cap 403, merge, batch, status
+        ├── bogo-category-msg-auth.api.spec.ts # category messages: ajax + REST auth
+        ├── order-bumps.api.spec.ts     # order bumps CRUD + matching
+        └── order-bump-rules.api.spec.ts# both namespaces, 400s, cap, merge, schedule, batch
 ```
 
 > **Why fixtures over POM:** for a small plugin, page objects add indirection
@@ -83,7 +92,9 @@ provisions everything the suite needs and writes `.env` for you:
 - `WP_ENVIRONMENT_TYPE=local`, pretty permalinks, storefront published
   (`woocommerce_coming_soon=no`), the StoreGrowth initial-setup flag cleared
 - **ALL modules activated** (the baseline; the order-bump table migration runs)
-- the **classic checkout** shortcode (the Order Bump needs it — ISSUES.md #7)
+- the **classic checkout** shortcode on `/checkout/`, plus a WooCommerce
+  **Checkout block** page at `/e2e-block-checkout/` (Order Bump runs on both —
+  ISSUES.md #7)
 - three published, stock-managed products for storefront tests (ids 11, 12, 13
   on a fresh stack — `data/products.ts`), the `e2e10` coupon; **no** BOGO offers
   or order bumps (specs create their own with `helpers/records.ts`)

@@ -164,6 +164,11 @@ WP_ADMIN_PASSWORD=$ADMIN_PASS
 
 # REST auth: WP-API Basic-Auth accepts the admin credentials directly.
 WP_API_USER=$ADMIN_USER
+
+# Raw WP-CLI access for the few specs that need it (helpers/wp-cli.ts). The
+# stack's port/container go along: without them compose recreates the db
+# container under the default name.
+E2E_WP_CLI=E2E_PORT=$E2E_PORT E2E_CONTAINER=$E2E_CONTAINER docker compose -p $E2E_PROJECT run --rm -T cli wp
 EOF
 fi
 

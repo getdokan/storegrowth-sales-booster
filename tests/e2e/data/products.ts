@@ -17,6 +17,8 @@ export const STORE_PAGES = {
   shop: '/shop/',
   cart: '/cart/',
   checkout: '/checkout/',
+  /** WooCommerce's Checkout block (bin/provision-site.php); `checkout` stays the classic shortcode. */
+  blockCheckout: '/e2e-block-checkout/',
 } as const;
 
 export const productPath = (slug: string): string => `/product/${slug}/`;

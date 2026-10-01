@@ -32,6 +32,14 @@ export const env = {
   apiPassword:
     process.env.WP_APP_PASSWORD ?? process.env.WP_ADMIN_PASSWORD ?? 'password',
 
+  /**
+   * Optional WP-CLI command prefix for the site under test (helpers/wp-cli.ts),
+   * e.g. `docker compose -p sg-e2e-b2 run --rm -T cli wp` (bin/setup-docker.sh
+   * writes it) or `npx wp-env run tests-cli wp`. Empty: specs that need raw
+   * WordPress access (writing an option no API exposes) skip.
+   */
+  wpCli: process.env.E2E_WP_CLI ?? '',
+
   /** Pre-built `Authorization` header for authenticated REST requests. */
   get basicAuthHeader(): string {
     const token = Buffer.from(`${this.apiUser}:${this.apiPassword}`).toString('base64');

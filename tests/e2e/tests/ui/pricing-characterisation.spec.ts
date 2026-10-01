@@ -1,5 +1,7 @@
 import { test, expect } from '../../fixtures/test';
-import { setModuleActive, moduleAjax } from '../../helpers/ajax';
+import { setModuleActive, moduleAjax, getIsPro } from '../../helpers/ajax';
+import { env } from '../../helpers/env';
+import { resetModuleSettings } from '../../helpers/rest';
 import { emptyCart } from '../../helpers/storefront';
 import { addToCartApi, getCartTotals, lineFor, money } from '../../helpers/cart';
 import { enableTax, disableTax, setTaxMode, TaxMode } from '../../helpers/tax';
@@ -193,6 +195,9 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
     });
 
     test('the gift quantity follows the trigger quantity on a single add', async ({ page }) => {
+      // Needs a minimum of 2 to tell the two rules apart; Min Quantity is pro
+      // (lite stores 1, where both rules give 4).
+      test.skip(!(await getIsPro(page)), 'minimum_quantity_required is pro');
       const ids = await productIds(page);
 
       await createBogoOffer(page, {
@@ -226,6 +231,8 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
     });
 
     test('no gift is granted below the minimum quantity', async ({ page }) => {
+      // Min Quantity is pro: lite stores 1 whatever is sent (bogo.md R3).
+      test.skip(!(await getIsPro(page)), 'minimum_quantity_required is pro');
       const ids = await productIds(page);
 
       await createBogoOffer(page, {
@@ -285,7 +292,7 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       await emptyCart(page);
     });
 
-    test('accepting a bump adds its offer product to the cart', async ({ page }) => {
+    test('accepting a bump adds its offer product at the bump price', async ({ page }) => {
       const ids = await productIds(page);
 
       const created = await apiFetch(page, 'post', BUMP_BASE, {
@@ -302,14 +309,33 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       await addToCartApi(page, ids.trigger, 1);
       const before = await getCartTotals(page);
 
-      // Accepting a bump is, in cart terms, adding the offer product.
-      await addToCartApi(page, ids.other, 1);
+      // Accept the bump as the checkout box does: the storefront ajax, which
+      // prices the line server-side (`custom_price`) from the bump.
+      await page.goto('/checkout/');
+      const nonce = await page.evaluate(() => (window as any).bump_save_url?.ajd_nonce);
+      expect(nonce, 'bump_save_url is localised on the checkout').toBeTruthy();
+      const accepted = await page.request.post('/wp-admin/admin-ajax.php', {
+        form: {
+          action: 'upsell_offer_product_add_to_cart',
+          _ajax_nonce: nonce,
+          'data[offer_product_id]': String(ids.other),
+          'data[offer_variation_id]': '0',
+          'data[checked]': '',
+          'data[bump_price]': '0', // ignored: the server derives the price
+        },
+      });
+      expect(accepted.ok(), `accept the bump (status ${accepted.status()})`).toBeTruthy();
       const after = await getCartTotals(page);
 
       const bumped = lineFor(after, PRODUCTS.c.name);
       expect(bumped, 'the bump product is in the cart').toBeTruthy();
-      expect(after.total, 'the total rises by the bump line').toBeGreaterThan(before.total);
-      expect(after.total).toBe(before.total + bumped!.lineTotal + bumped!.lineTax);
+
+      // 25% off 30.00 = 22.50, entered as the catalogue price is: ex-tax it
+      // gains 10% tax (24.75 charged), inc-tax it already holds it (22.50).
+      const charged = bumped!.lineTotal + bumped!.lineTax;
+      const expected = mode === 'excl' ? 2475 : 2250;
+      expect(Math.abs(charged - expected), `bump line charged ${money(charged)}`).toBeLessThanOrEqual(1);
+      expect(after.total).toBe(before.total + charged);
     });
   });
 }
@@ -348,12 +374,22 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       await page.close();
     });
 
-    test.afterAll(async ({ browser }) => {
+    test.afterAll(async ({ browser, playwright }) => {
       const page = await browser.newPage();
       await disableTax(page);
-      await configureBanner(page, 0);
       await emptyCart(page);
       await page.close();
+
+      // Back to the schema defaults (free shipping from 10.00): leaving the
+      // $10 discount at a 0 threshold took $10 off every later spec's cart.
+      const api = await playwright.request.newContext({
+        baseURL: env.baseURL,
+        // No admin cookies (they'd win over Basic auth without a nonce: 401).
+        storageState: { cookies: [], origins: [] },
+        extraHTTPHeaders: { Authorization: env.basicAuthHeader, Accept: 'application/json' },
+      });
+      await resetModuleSettings(api, MODULES.freeShipping.id);
+      await api.dispose();
     });
 
     test.beforeEach(async ({ page }) => {

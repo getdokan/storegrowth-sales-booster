@@ -171,6 +171,24 @@ if ( class_exists( 'WC_Coupon' ) && function_exists( 'wc_get_coupon_id_by_code' 
 	$coupon->save();
 }
 
+/* -- A BLOCK checkout too, at /e2e-block-checkout/ (Order Bump block; ISSUES #7).
+ * WooCommerce's own default Checkout block content, so the page renders as a
+ * fresh store's block checkout would. Idempotent by slug. Created AFTER the
+ * products, so a fresh stack keeps their ids 11–13 (data/products.ts). */
+if ( class_exists( 'WC_Install' ) && ! get_page_by_path( 'e2e-block-checkout' ) ) {
+	$block_content = new ReflectionMethod( 'WC_Install', 'get_checkout_block_content' );
+	$block_content->setAccessible( true );
+	wp_insert_post(
+		array(
+			'post_type'    => 'page',
+			'post_status'  => 'publish',
+			'post_title'   => 'E2E Block Checkout',
+			'post_name'    => 'e2e-block-checkout',
+			'post_content' => $block_content->invoke( null ),
+		)
+	);
+}
+
 /* -- No BOGO / Order Bump records are seeded. ---------------------------------
  * Specs own them: create through the REST helpers (helpers/records.ts) and
  * delete what they made. A seeded offer would eat one of lite's two BOGO
