@@ -44,7 +44,8 @@ npm run check:hooks    # every hook in tests/compat/php-hooks-baseline.txt still
 npm run makepot        # regenerate languages/storegrowth-sales-booster.pot
 npm run version        # replace SPSG_VERSION placeholders (bin/version-replace.sh)
 npm run archiver       # zip a distributable build into dist/ (bin/archiver.mjs; dist/ is git-ignored)
-npm run release        # composer no-dev + type-check + build + version + makepot + archiver
+npm run clean:assets   # delete build/ and each module's generated bundles (admin.js, blocks.js, *.asset.php, *.js.map)
+npm run release        # composer no-dev + type-check + clean:assets + build + version + makepot + archiver
 npm run release:dev    # same zip without `version` (SPSG_VERSION placeholders stay) — a test build
 ```
 
