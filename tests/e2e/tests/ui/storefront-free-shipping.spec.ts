@@ -144,7 +144,9 @@ test.describe('Storefront · Free Shipping Rules', { tag: '@ui' }, () => {
 
     test('the default banner icon renders', async ({ guestPage }) => {
       await gotoShopAsGuest(guestPage);
-      await expect(guestPage.locator(`${ICON}.spsg-bar-icon`)).toHaveCount(1);
+      // Lite draws `svg.spsg-bar-icon`; with pro active, pro's own bar
+      // template (bar-pro.php) draws its icon as a plain svg.
+      await expect(guestPage.locator(ICON)).toHaveCount(1);
     });
 
     test('Display CTA Button off removes the action button', async ({ api, guestPage }) => {
