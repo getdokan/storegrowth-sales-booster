@@ -328,16 +328,19 @@ const toOption = ( product: WcProduct ): ProductOption => ( {
 
 /**
  * Search published products by name (`GET /products?search`), external
- * products left out.
+ * products left out unless asked for.
  *
  * @since SPSG_VERSION
  *
- * @param search Search text.
- * @param limit  Most results.
+ * @param search          Search text.
+ * @param limit           Most results.
+ * @param includeExternal Keep external / affiliate products (Sales Pop's
+ *                        pro External Link).
  */
 export async function searchProducts(
     search: string,
-    limit = 20
+    limit = 20,
+    includeExternal = false
 ): Promise< ProductOption[] > {
     const products = await apiFetch< WcProduct[] >( {
         path: addQueryArgs( path( '/products' ), {
@@ -349,7 +352,9 @@ export async function searchProducts(
     } );
 
     return products
-        .filter( ( product ) => product.type !== 'external' )
+        .filter( ( product ) => {
+            return includeExternal || product.type !== 'external';
+        } )
         .map( toOption );
 }
 

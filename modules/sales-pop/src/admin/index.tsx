@@ -322,7 +322,13 @@ const salesPopPage: SettingsPageParts< SalesPopValues > = {
                         setValue( 'popup_products', next as number[] );
                     } }
                     onSearch={ ( search ) => {
-                        return searchProducts( search ).then( toOptions );
+                        // Pro's External Link shows external / affiliate
+                        // products too.
+                        return searchProducts(
+                            search,
+                            20,
+                            values.external_link && isPro()
+                        ).then( toOptions );
                     } }
                     resolve={ ( ids ) => {
                         return fetchProductsByIds( ids as number[] ).then(
