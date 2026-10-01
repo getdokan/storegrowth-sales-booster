@@ -355,4 +355,45 @@ class BogoEligibilityTest extends StoreGrowthTestCase {
 
 		$this->assertFalse( BogoValidator::should_display_offer( $settings, 42, array() ) );
 	}
+
+	/**
+	 * E2E #11: an offer type the cart doesn't know isn't applied (the cart
+	 * would have given the gift free). No type, or an empty one, is the
+	 * column's default, `free`.
+	 *
+	 * @return void
+	 */
+	public function test_unknown_offer_type_is_not_applicable() {
+		foreach ( array( 'free', 'discount', '' ) as $offer_type ) {
+			$this->assertTrue(
+				BogoValidator::is_bogo_applicable( 1, $this->bogo_settings( array( 'offer_type' => $offer_type ) ) ),
+				"'{$offer_type}' is applied"
+			);
+		}
+
+		$without = $this->bogo_settings();
+		unset( $without['offer_type'] );
+		$this->assertTrue( BogoValidator::is_bogo_applicable( 1, $without ), 'no offer type is applied' );
+
+		foreach ( array( 'percentage', 'Discount', 'fixed' ) as $offer_type ) {
+			$this->assertFalse(
+				BogoValidator::is_bogo_applicable( 1, $this->bogo_settings( array( 'offer_type' => $offer_type ) ) ),
+				"'{$offer_type}' is not applied"
+			);
+		}
+
+		$this->assertFalse(
+			BogoValidator::should_display_offer(
+				$this->bogo_settings(
+					array(
+						'offer_type'       => 'percentage',
+						'offered_products' => array( 42 ),
+					)
+				),
+				42,
+				array()
+			),
+			'nor displayed'
+		);
+	}
 }

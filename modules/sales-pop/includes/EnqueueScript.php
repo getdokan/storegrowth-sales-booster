@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 
@@ -34,8 +35,7 @@ class EnqueueScript implements HookRegistry {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
-		// Assets for Admin Panel.
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		// The admin page loads from AdminPage, which runs even while the module is off.
 
 		// Invalidate the cached storefront popup payload when the popup config
 		// or any product changes.
@@ -143,7 +143,7 @@ class EnqueueScript implements HookRegistry {
 			return $cached;
 		}
 
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', false );
+		$popup_properties = PluginHelper::get_settings( 'spsg_popup_products', false );
 
 		if ( false === $popup_properties || empty( $popup_properties ) ) {
 			$this->popup_info_memo = null;
@@ -153,8 +153,10 @@ class EnqueueScript implements HookRegistry {
 		$popup_properties = maybe_unserialize( $popup_properties );
 
 		// Neutralize any HTML/script that may already be stored (e.g. from a
-		// payload saved before the create_popup handler was hardened).
+		// payload saved before the create_popup handler was hardened), then
+		// fill the keys never saved (saves write only changed keys).
 		$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
+		$popup_properties = storegrowth_get_container()->get( SalesPopSettings::class )->storefront_settings( $popup_properties );
 
 		$popup_products = $popup_properties['popup_products'] ?? array();
 		$popup_products = array_values( array_filter( array_map( 'absint', (array) $popup_products ) ) );
@@ -238,53 +240,9 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add Admin JS scripts.
-	 *
-	 * @param string $screen name of screen.
-	 */
-	public function admin_enqueue_scripts( $screen ) {
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', true );
-
-		if ( 'storegrowth_page_spsg-settings' === $screen ) {
-			add_action( 'admin_head', array( $this, 'admin_css' ) );
-			$settings_file = require PluginHelper::get_modules_path( 'sales-pop/assets/build/settings.asset.php' );
-
-			wp_enqueue_script(
-				'spsg-sales-pop-settings',
-				PluginHelper::get_modules_url( 'sales-pop/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				false
-			);
-
-			wp_localize_script(
-				'spsg-sales-pop-settings',
-				'sales_pop_data',
-				array(
-					'ajax_url'     => admin_url( 'admin-ajax.php' ),
-					'ajd_nonce'    => wp_create_nonce( 'spsg_admin_ajax_nonce' ),
-					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
-					'product_list' => $this->product_list(),
-				)
-			);
-		}
-	}
-
-	/**
-	 * Add css for admin panel.
-	 */
-	public function admin_css() {
-		?>
-		<style type="text/css">
-			.ant-tabs-tabpane-hidden{
-				display: none;
-			}
-		</style>
-		<?php
-	}
-
-	/**
 	 * Product list for pop up selection.
+	 *
+	 * @deprecated SPSG_VERSION The admin searches products through REST.
 	 */
 	public function product_list() {
 		// Set product list from sources.
@@ -411,6 +369,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve select product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION The admin searches products through REST.
 	 *
 	 * @return int[]|\WP_Post[]
 	 */
@@ -444,6 +403,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve latest product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return int[]|\WP_Post[]
 	 */
@@ -462,6 +422,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve recently viewed product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array|int[]|\WP_Post[]
 	 */
@@ -498,6 +459,7 @@ class EnqueueScript implements HookRegistry {
 	 * Retrieve category product list.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array
 	 */
@@ -550,6 +512,7 @@ class EnqueueScript implements HookRegistry {
 	 * Get category list data.
 	 *
 	 * @since 1.0.0
+	 * @deprecated SPSG_VERSION Not used by the admin any more.
 	 *
 	 * @return array
 	 */

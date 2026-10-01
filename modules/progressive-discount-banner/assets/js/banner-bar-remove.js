@@ -21,18 +21,23 @@
       document.body.classList.remove("show_discount_banner");
     };
 
-    // Remove the padding
+    // Whether the bar is showing (cart fragments replace it with a hidden copy).
+    let isShowing = false;
+
+    // Take the bar out of the top stack (storefront-core.js).
     const paddingRemoverBody = () => {
-      return (document.body.style.paddingTop = "0px");
+      $(".spsg-pd-banner-bar-wrapper").removeClass("spsg-bar-top");
+      window.spsgStorefront.stackTopBars();
     };
 
-    // Add the padding
+    // Add the padding: a top bar joins the top stack.
     const paddingAdderBody = () => {
       document.body.classList.add("body-padding-transition");
       if("top" ===bar_position){
-        return (document.body.style.paddingTop = `${body_top_padding}px`);
+        $(".spsg-pd-banner-bar-wrapper").addClass("spsg-bar-top");
+        window.spsgStorefront.stackTopBars();
       }else{
-        return (document.body.style.paddingBottom = `${body_top_padding}px`);
+        document.body.style.paddingBottom = `${body_top_padding}px`;
       }
     };
 
@@ -40,9 +45,21 @@
       if (!bannerExists()) {
         return;
       }
+      isShowing = true;
       $(".spsg-pd-banner-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
     };
+
+    // Cart fragments swap in a fresh (hidden) bar: keep showing it.
+    $(document.body).on(
+      "wc_fragments_loaded wc_fragments_refreshed added_to_cart removed_from_cart",
+      function () {
+        if (isShowing) {
+          $(".spsg-pd-banner-bar-wrapper").show();
+          paddingAdderBody();
+        }
+      }
+    );
 
     const bannerHide = () => {
       $(".spsg-pd-banner-bar-wrapper").hide();
@@ -110,13 +127,20 @@
       }
 
       $(document).on("click", ".spsg-pd-banner-bar-remove", function () {
-        const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)',
-          offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
+        const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
+        isShowing = false;
         $( '.spsg-pd-banner-bar-wrapper' ).css( 'transform', slideDirection );
         paddingRemoverBody();
         setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
-        $( '.spsg-floating-notification-bar-wrapper' ).css({ top: `${ offset }px` });
+      });
+
+      // Keyboard: Enter / Space on the close control act as a click.
+      $(document).on("keydown", ".spsg-pd-banner-bar-remove", function (event) {
+        if ("Enter" === event.key || " " === event.key) {
+          event.preventDefault();
+          $(this).trigger("click");
+        }
       });
     });
   } else {

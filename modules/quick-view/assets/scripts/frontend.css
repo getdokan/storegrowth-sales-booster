@@ -392,7 +392,7 @@
 
 body.rtl .mfp-spsgqcv .mfp-close {
   right: auto !important;
-  left: 0 !important;
+  left: 10px !important;
 }
 
 /* Responsive */
@@ -464,23 +464,28 @@ body.rtl .mfp-spsgqcv .mfp-close {
   padding: 0;
 }
 
+/* Inset from the popup's rounded corner, as in the admin preview. */
 .mfp-spsgqcv .mfp-close {
+  top: 10px;
+  right: 10px;
   width: 30px;
   height: 30px;
   line-height: 30px;
   text-align: center;
   font-size: 0;
+  opacity: 1;
 }
 
 .mfp-spsgqcv .mfp-close:hover {
   background-color: transparent;
+  opacity: 0.7;
 }
 
 .mfp-spsgqcv .mfp-close:active {
-  top: 0;
+  top: 10px;
 }
 
-.mfp-spsgqcv .mfp-close:focus {
+.mfp-spsgqcv .mfp-close:focus:not(:focus-visible) {
   outline: none;
 }
 
@@ -492,8 +497,8 @@ body.rtl .mfp-spsgqcv .mfp-close {
   content: '\e9ea';
   font-family: "feather";
   display: inline-block;
-  font-size: 24px;
-  color: #222;
+  font-size: 20px;
+  color: #111;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -791,49 +796,6 @@ body.rtl .mfp-spsgqcv .mfp-close {
 }
 
 .mfp-move-from-top.mfp-removing.mfp-bg {
-  opacity: 0;
-}
-
-/*
-====== 3d unfold ======
-*/
-.mfp-3d-unfold {
-  /* start state */
-  /* animate in */
-  /* animate out */
-}
-
-.mfp-3d-unfold .mfp-content {
-  perspective: 2000px;
-}
-
-.mfp-3d-unfold .mfp-with-anim {
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-  transform-style: preserve-3d;
-  transform: rotateY(-60deg);
-}
-
-.mfp-3d-unfold.mfp-bg {
-  opacity: 0;
-  transition: all 0.5s;
-}
-
-.mfp-3d-unfold.mfp-ready .mfp-with-anim {
-  opacity: 1;
-  transform: rotateY(0deg);
-}
-
-.mfp-3d-unfold.mfp-ready.mfp-bg {
-  opacity: 0.8;
-}
-
-.mfp-3d-unfold.mfp-removing .mfp-with-anim {
-  transform: rotateY(60deg);
-  opacity: 0;
-}
-
-.mfp-3d-unfold.mfp-removing.mfp-bg {
   opacity: 0;
 }
 

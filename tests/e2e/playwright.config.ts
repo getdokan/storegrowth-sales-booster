@@ -4,6 +4,10 @@ import { ADMIN_STORAGE_STATE } from './fixtures/test';
 
 const isCI = !!process.env.CI;
 
+// '' on the default :8888 stack; `-<port>` for a parallel stack, so two runs
+// from this folder never wipe each other's results (see helpers/env.ts).
+const suffix = env.runSuffix;
+
 const reporter: ReporterDescription[] = isCI
   ? [
       ['list'],
@@ -13,12 +17,13 @@ const reporter: ReporterDescription[] = isCI
     ]
   : [
       ['list'],
-      ['html', { open: 'never', outputFolder: 'playwright-report' }],
-      ['junit', { outputFile: 'results/junit.xml' }],
+      ['html', { open: 'never', outputFolder: `playwright-report${suffix}` }],
+      ['junit', { outputFile: `results/junit${suffix}.xml` }],
     ];
 
 export default defineConfig({
   testDir: './tests',
+  outputDir: `test-results${suffix}`,
   fullyParallel: false,
   workers: 1,
 

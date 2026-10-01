@@ -7,7 +7,9 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -198,18 +200,38 @@ class Ajax implements HookRegistry {
 		}
 
 		if ( ! isset( $_POST['data'] ) ) {
-			wp_send_json_error();
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		// Decode the JSON data.
-		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
+		// The old admin's payload: JSON `{ bogo_general_settings_data: { … } }`.
+		// Anything but a string (e.g. `data[k]=v`) is an invalid payload, not
+		// a json_decode() TypeError.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded, then sanitized per field by the settings service.
+		$data = is_string( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : null;
 
-		if ( isset( $data['bogo_general_settings_data'] ) ) {
-			$bogo_general_settings_data = $data['bogo_general_settings_data'];
-
-			update_option( 'spsg_bogo_general_settings', $bogo_general_settings_data );
-			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings' ) ) );
+		if ( ! is_array( $data ) || ! isset( $data['bogo_general_settings_data'] ) || ! is_array( $data['bogo_general_settings_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
+
+		$input = $data['bogo_general_settings_data'];
+
+		// Pro 2.2.0's screen sends an empty badge name with an upload ("use
+		// the upload"): keep the stored icon instead, as the new page does;
+		// the storefront shows the upload first.
+		if ( '' === ( $input['default_badge_icon_name'] ?? null ) ) {
+			unset( $input['default_badge_icon_name'] );
+		}
+
+		// Sanitized per field and merged into the stored option (it used to
+		// replace the option unsanitized); keys outside the schema, such as
+		// the category messages, are kept as stored.
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( BoGoModule::get_id(), $input );
+
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
+
+		wp_send_json_success( PluginHelper::get_settings( 'spsg_bogo_general_settings' ) );
 	}
 
 

@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\QuickView;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\QuickView\Settings\QuickViewSettings;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,8 +31,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -42,7 +43,7 @@ class EnqueueScript implements HookRegistry {
 	public function wp_enqueue_scripts() {
 
 		$settings            = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
-		$modal_effect        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
+		$modal_effect        = QuickViewSettings::modal_effect( $settings );
 		$enable_close_button = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_close_button', true );
 		$enable_in_mobile    = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_in_mobile', true );
 		$enable_zoom_box     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_zoom_box', false );
@@ -205,27 +206,6 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
-			return;
-		}
-
-		$settings_file = require PluginHelper::get_modules_path( 'quick-view/assets/build/settings.asset.php' );
-
-		wp_enqueue_script(
-			'spsg-quick-view-settings',
-			PluginHelper::get_modules_url( 'quick-view/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
-		);
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
@@ -254,6 +234,27 @@ class EnqueueScript implements HookRegistry {
 			$custom_css .= ' .spsgqcv-popup.mfp-with-anim .thumbnails{
 				display:none;
 			}';
+		}
+
+		// Top right of the product image (pro). Pro 2.2.0 styles its own
+		// `center_on_the_image`; this value is newer, so lite draws it.
+		if ( sp_store_growth()->has_pro() && 'top_right_of_the_image' === PluginHelper::find_option_settings( $settings, 'button_position', 'after_add_to_cart' ) ) {
+			$custom_css .= '
+			.product:has(> .button.spsgqcv-btn) { position: relative; }
+			.button.spsgqcv-btn {
+				position: absolute;
+				top: 12px;
+				right: 12px;
+				z-index: 1;
+				opacity: 0;
+				transition: opacity 0.3s ease-in-out;
+			}
+			.product:hover .button.spsgqcv-btn,
+			.button.spsgqcv-btn:focus-visible { opacity: 1; }
+			@media (hover: none) {
+				.button.spsgqcv-btn { opacity: 1; }
+			}
+			';
 		}
 		$custom_css = apply_filters( 'spsg_qcv_inline_styles', $custom_css );
 		wp_add_inline_style( 'spsgqcv-frontend', $custom_css );

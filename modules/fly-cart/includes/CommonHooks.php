@@ -83,9 +83,14 @@ class CommonHooks implements HookRegistry {
 	}
 
 	/**
-	 * WooCommerce add-to-cart fragment.
+	 * WooCommerce add-to-cart fragment: adds the cart count to the other
+	 * fragments (it used to return only its own and drop the rest).
+	 *
+	 * @param array $fragments Fragments.
+	 *
+	 * @return array
 	 */
-	public function woocommerce_add_to_cart_fragment() {
+	public function woocommerce_add_to_cart_fragment( $fragments = [] ) {
 			ob_start();
 		?>
 			<span class="wfc-cart-countlocation">

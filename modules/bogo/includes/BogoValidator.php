@@ -19,6 +19,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 class BogoValidator {
 
 	/**
+	 * The deal types: Buy X Get X (`same`, pro) and Buy X Get Y (`different`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	public const DEAL_TYPES = [ 'same', 'different' ];
+
+	/**
+	 * The offer types: the gift is free or discounted by a percentage.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	public const OFFER_TYPES = [ 'free', 'discount' ];
+
+	/**
 	 * Check if BOGO is applicable for a product.
 	 *
 	 * @param int   $product_id Product ID to check.
@@ -33,6 +51,11 @@ class BogoValidator {
 
 		// Check if offer is active (status check)
 		if ( ! self::is_offer_status_active( $bogo_settings ) ) {
+			return false;
+		}
+
+		// An offer type the cart doesn't know isn't applied.
+		if ( ! self::has_known_offer_type( $bogo_settings ) ) {
 			return false;
 		}
 
@@ -57,6 +80,26 @@ class BogoValidator {
 	 */
 	private static function is_bogo_enabled( $bogo_settings ) {
 		return isset( $bogo_settings['status'] ) && 'active' === $bogo_settings['status'];
+	}
+
+	/**
+	 * Whether the offer's type is one the cart prices (`OFFER_TYPES`). The
+	 * cart discounts `discount` and gives anything else free, so an unknown
+	 * value (stored before the REST route checked it, or by a product tab
+	 * save that doesn't) would give the gift away: such an offer isn't
+	 * applied at all. No type, or an empty one, is the column's default,
+	 * `free`, as everywhere else.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $bogo_settings BOGO settings array.
+	 *
+	 * @return bool
+	 */
+	public static function has_known_offer_type( $bogo_settings ) {
+		$offer_type = $bogo_settings['offer_type'] ?? '';
+
+		return '' === $offer_type || in_array( $offer_type, self::OFFER_TYPES, true );
 	}
 
 	/**

@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -46,7 +47,8 @@ class SalesPOP implements HookRegistry {
         return;
     }
 
-		$popup_properties = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_popup_products', true );
+		// Saves write only changed keys: fill the rest from the defaults.
+		$popup_properties = storegrowth_get_container()->get( SalesPopSettings::class )->storefront_settings( PluginHelper::get_settings( 'spsg_popup_products', true ) );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';

@@ -1,0 +1,24 @@
+/**
+ * Countdown Timer fields on the Dokan vendor product form
+ * (templates/dokan-countdown-timer-fields.php).
+ *
+ * @since SPSG_VERSION
+ */
+.dokan-countdown-timer-options .dokan-countdown-timer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dokan-countdown-timer-options .dokan-countdown-timer-wrapper .dokan-form-control {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+}
+
+.dokan-countdown-timer-options .dokan-countdown-timer-wrapper .dokan-countdown-timer-discount {
+    flex: auto;
+}
+
+.dokan-countdown-timer-options .dokan-countdown-timer-wrapper .dokan-countdown-timer-date-wrapper {
+    width: 70%;
+}
