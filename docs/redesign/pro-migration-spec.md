@@ -166,13 +166,15 @@ In every row, the 2.2.0 JS is deleted outright (no legacy copy).
 
 ## 11. Tasks
 
-- [ ] P1: Version-replace script (`bin/version-replace.sh`, `SPSG_PRO_VERSION`) — done (uncommitted); `STOREGROWTH_PRO_VERSION` constant not added (not needed).
-- [ ] P2: Handshake filter + lite check (feature detection) + notice — done (uncommitted).
-- [ ] P3: Delete the old antd `src/` and its enqueue (`Assets.php` → deprecated no-op); **no legacy bundle** (decision 2026-10-01) — done (uncommitted).
-- [ ] P4: New build infrastructure (webpack trio, tsconfig, types copy) with the licence page as first entry — done (uncommitted). No `pro-admin.css` yet: the page uses plugin-ui's `License` and utilities lite's stylesheet already has.
-- [ ] P5: Confirm every 2.2.0 pro field and the category-messages screen are covered by lite (checklist against `modules/*.md`). File lite issues for anything missing. **This blocks pro N.**
-- [ ] P6: Tests (§10), CI matrix.
-- [ ] P7: `.distignore`, archiver, makepot, changelog, docs.
+Pro work is on the pro repo's branch `feature/react-admin-license` (39c7792, e4c32d3), not merged yet.
+
+- [x] P1: Version-replace script (`bin/version-replace.sh`, `SPSG_PRO_VERSION`); `STOREGROWTH_PRO_VERSION` constant not added (not needed).
+- [x] P2: Handshake filter + lite check (feature detection) + notice.
+- [x] P3: Delete the old antd `src/` and its enqueue (`Assets.php` → deprecated no-op); **no legacy bundle** (decision 2026-10-01).
+- [x] P4: New build infrastructure (webpack trio, tsconfig, types copy) with the licence page as first entry. No `pro-admin.css` yet: the page uses plugin-ui's `License` and utilities lite's stylesheet already has.
+- [x] P5: Every 2.2.0 pro field and the category-messages screen are covered by lite (`.claude/scratch/pro-p5-coverage.md`: 63/64 covered or not needed; the Sales Pop external-products gap fixed in lite f814ca7a).
+- [ ] P6: Version-mix tests (§10): lite 3.0.0 + pro 2.2.0, lite 3.0.0 + pro 3.0.0, old lite + pro 3.0.0; needs a licence key on the E2E pro stack.
+- [ ] P7: `.distignore`, archiver (`bin/archiver.mjs`) and makepot done; changelog, version bump and docs at the 3.0.0 release.
 
 ## 12. Open questions
 
