@@ -32,6 +32,7 @@ export {
     type DeactivatedModuleDialogProps,
 } from './deactivated-module-dialog';
 export { FeatureLayout, type FeatureLayoutProps } from './feature-layout';
+export { FILTER_CLASSES } from './filter-classes';
 export { FeatureMenu, type FeatureMenuProps } from './feature-menu';
 export {
     DefaultField,

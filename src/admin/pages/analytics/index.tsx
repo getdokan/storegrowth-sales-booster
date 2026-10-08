@@ -20,7 +20,7 @@ import { useEffect, useState } from '@wordpress/element';
 import { applyFilters } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
-import { Card, ProBadge } from '@storegrowth/components';
+import { Card, FILTER_CLASSES, ProBadge } from '@storegrowth/components';
 import {
     MODULE_CATALOG,
     fetchAnalytics,
@@ -52,6 +52,8 @@ function labels() {
             'storegrowth-sales-booster'
         ),
         range: __( 'Date range', 'storegrowth-sales-booster' ),
+        filters: __( 'Report filters', 'storegrowth-sales-booster' ),
+        loading: __( 'Loading the report…', 'storegrowth-sales-booster' ),
         revenue: __( 'Revenue', 'storegrowth-sales-booster' ),
         revenueHint: __(
             'Gifts, bumps and timer sales',
@@ -559,6 +561,66 @@ function Report( { report, upgradeUrl }: ReportProps ) {
     );
 }
 
+/**
+ * A figure's placeholder: label and value bars.
+ */
+function FigureSkeleton() {
+    return (
+        <div className="flex flex-col gap-2">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-6 w-28" />
+        </div>
+    );
+}
+
+/**
+ * The report's shape while it loads: totals tiles, the chart, the module
+ * cards and a table, with one line for screen readers.
+ *
+ * @param props       Props.
+ * @param props.label What's loading, for screen readers.
+ */
+function ReportSkeleton( { label }: { label: string } ) {
+    return (
+        <div
+            role="status"
+            aria-busy="true"
+            className="flex w-full flex-col gap-6"
+        >
+            <span className="sr-only">{ label }</span>
+            <div className="grid w-full grid-cols-2 gap-3 lg:grid-cols-4">
+                { [ 0, 1, 2, 3 ].map( ( tile ) => (
+                    <Card key={ tile }>
+                        <FigureSkeleton />
+                    </Card>
+                ) ) }
+            </div>
+            <Card className="w-full">
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-[260px] w-full" />
+            </Card>
+            <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+                { [ 0, 1, 2, 3 ].map( ( card ) => (
+                    <Card key={ card }>
+                        <Skeleton className="h-4 w-32" />
+                        <div className="grid grid-cols-2 gap-4">
+                            { [ 0, 1, 2, 3 ].map( ( figure ) => (
+                                <FigureSkeleton key={ figure } />
+                            ) ) }
+                        </div>
+                    </Card>
+                ) ) }
+            </div>
+            <Card className="w-full">
+                <Skeleton className="h-4 w-32" />
+                { [ 0, 1, 2, 3 ].map( ( row ) => (
+                    <Skeleton key={ row } className="h-5 w-full" />
+                ) ) }
+            </Card>
+        </div>
+    );
+}
+
 export default function AnalyticsPage() {
     const l = labels();
     const info = getHeaderData().header_info;
@@ -568,23 +630,27 @@ export default function AnalyticsPage() {
         days: LITE_DAYS,
     } );
     const [ report, setReport ] = useState< AnalyticsReport | null >( null );
+    const [ loading, setLoading ] = useState( true );
     const [ failed, setFailed ] = useState( false );
 
     useEffect( () => {
         // A newer range wins over a slower answer for an older one.
         let current = true;
 
-        setReport( null );
+        // The last report stays on screen, dimmed, until the next arrives.
+        setLoading( true );
         setFailed( false );
         fetchAnalytics( params )
             .then( ( next ) => {
                 if ( current ) {
                     setReport( next );
+                    setLoading( false );
                 }
             } )
             .catch( () => {
                 if ( current ) {
                     setFailed( true );
+                    setLoading( false );
                 }
             } );
 
@@ -638,12 +704,17 @@ export default function AnalyticsPage() {
     if ( failed ) {
         body = <Notice variant="destructive">{ l.failed }</Notice>;
     } else if ( ! report ) {
-        body = <Skeleton className="h-[320px] w-full rounded-[16px]" />;
+        body = <ReportSkeleton label={ l.loading } />;
     } else if ( ! report.status.installed ) {
         body = <Notice variant="warning">{ l.notInstalled }</Notice>;
     } else {
         body = (
-            <>
+            <div
+                aria-busy={ loading }
+                className={ `flex w-full flex-col gap-6 transition-opacity ${
+                    loading ? 'pointer-events-none opacity-60' : ''
+                }` }
+            >
                 { ! report.status.analytics_enabled && (
                     <Notice variant="warning">
                         { l.analyticsOff }{ ' ' }
@@ -656,14 +727,14 @@ export default function AnalyticsPage() {
                     </Notice>
                 ) }
                 <Report report={ report } upgradeUrl={ info.upgrade_url } />
-            </>
+            </div>
         );
     }
 
     return (
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
             <div className="flex w-full max-w-[1280px] flex-col items-start gap-6">
-                <div className="flex w-full flex-wrap items-end justify-between gap-4">
+                <div className="flex w-full flex-col items-start gap-4">
                     <div className="flex flex-col items-start gap-1">
                         <h1 className="sg-display text-[24px] font-bold leading-[1.3] text-sg-text">
                             { l.title }
@@ -672,8 +743,12 @@ export default function AnalyticsPage() {
                             { l.intro }
                         </p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3">
-                        { controls }
+                    { /* The range first, then extensions' controls (Pro). */ }
+                    <div
+                        role="group"
+                        aria-label={ l.filters }
+                        className="flex w-full flex-wrap items-center gap-3"
+                    >
                         <Select
                             items={ rangeItems }
                             value={
@@ -693,7 +768,7 @@ export default function AnalyticsPage() {
                         >
                             <SelectTrigger
                                 aria-label={ l.range }
-                                className="h-10 min-w-[180px] border bg-white ps-4 pe-4"
+                                className={ FILTER_CLASSES.select }
                             >
                                 <SelectValue />
                             </SelectTrigger>
@@ -716,6 +791,7 @@ export default function AnalyticsPage() {
                                 ) ) }
                             </SelectContent>
                         </Select>
+                        { controls }
                     </div>
                 </div>
                 { body }
