@@ -113,7 +113,7 @@ Every module's page is `#/settings?module=<id>` (`moduleRoute()` from `@storegro
 
 ## Before committing
 
-`npm run type-check`, `npm run lint:js`, test the page in the browser against the design reference and the storefront; run the review agents (`.claude/agents/`: `sg-designer`, `sg-qa`, `sg-architect`).
+`npm run type-check`, `npm run lint:js`, test the page in the browser against the design reference and the storefront; run the agents (`.claude/agents/`: `sg-developer`, `sg-qa`).
 
 ## Key files
 
