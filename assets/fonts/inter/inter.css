@@ -1,0 +1,37 @@
+/*
+ * Inter (400, 500, 600, 700), bundled with the plugin. Loaded on the
+ * storefront by StorefrontFonts when a module's font setting is Inter.
+ * Same files and faces as the per-module copies, which go as each module
+ * migrates.
+ */
+@font-face {
+    font-family: "Inter";
+    src: url("Inter-Regular.woff2") format("woff2"), url("Inter-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("Inter-Medium.woff2") format("woff2"), url("Inter-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("Inter-SemiBold.woff2") format("woff2"), url("Inter-SemiBold.woff") format("woff");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("Inter-Bold.woff2") format("woff2"), url("Inter-Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}

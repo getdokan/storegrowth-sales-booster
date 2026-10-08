@@ -1,5 +1,8 @@
 import { test, expect } from '../../fixtures/test';
 import { env } from '../../helpers/env';
+import { hasPro, setModuleStatus } from '../../helpers/rest';
+import { MODULES } from '../../data/modules';
+import { UNCATEGORIZED_CATEGORY_ID } from '../../data/products';
 
 /**
  * Regression for CVE-2026-13110 — unauthenticated settings modification via the
@@ -60,5 +63,51 @@ test.describe('API · bogo category-message authorization', () => {
     expect(body).not.toContain(marker);
 
     await anon.dispose();
+  });
+});
+
+/**
+ * The REST routes over the same rows (10e, rest-api #32–35): administrators
+ * only; reading works without pro, every change needs pro.
+ */
+test.describe('API · bogo category-messages REST authorization', () => {
+  const ROUTE = '/wp-json/sales-booster/v1/bogo/category-messages';
+
+  test.beforeEach(async ({ api }) => {
+    await setModuleStatus(api, MODULES.bogo.id, true);
+  });
+
+  test('a guest is rejected on read and write', async ({ playwright }) => {
+    const anon = await playwright.request.newContext({ baseURL: env.baseURL });
+    expect((await anon.get(ROUTE)).status()).toBe(401);
+    const write = await anon.post(ROUTE, {
+      data: { category: UNCATEGORIZED_CATEGORY_ID, message: 'sg-regression-marker-241' },
+    });
+    expect(write.status()).toBe(401);
+    await anon.dispose();
+  });
+
+  test('an administrator reads the list without pro', async ({ api }) => {
+    const res = await api.get(ROUTE);
+    expect(res.status()).toBe(200);
+    expect(Array.isArray(await res.json())).toBeTruthy();
+  });
+
+  test('without pro every change is refused (403 salesbooster_pro_required)', async ({ api }) => {
+    test.skip(await hasPro(api), 'lite-only gate');
+    const before = await (await api.get(ROUTE)).json();
+
+    const create = await api.post(ROUTE, {
+      data: { category: UNCATEGORIZED_CATEGORY_ID, message: 'E2E lite create' },
+    });
+    expect(create.status()).toBe(403);
+    expect((await create.json()).code).toBe('salesbooster_pro_required');
+
+    const update = await api.patch(`${ROUTE}/${UNCATEGORIZED_CATEGORY_ID}`, { data: { status: false } });
+    expect(update.status()).toBe(403);
+    const remove = await api.delete(`${ROUTE}/${UNCATEGORIZED_CATEGORY_ID}`);
+    expect(remove.status()).toBe(403);
+
+    expect(await (await api.get(ROUTE)).json()).toEqual(before);
   });
 });

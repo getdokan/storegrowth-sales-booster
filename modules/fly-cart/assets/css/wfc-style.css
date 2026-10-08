@@ -46,6 +46,11 @@
     padding: 8px !important;
 }
 
+/* The lucide icons fill their 24px box; keep the glyph at 24px. */
+.wfc-cart-icon .wfc-icon svg.spsg-cart-icon {
+    padding: 11px !important;
+}
+
 .wfc-cart-icon.wfc-icon:before,
 .wfc-cart-icon.wfc-icon:after {
     font-size: 25px;

@@ -31,7 +31,6 @@ class EnqueueScript implements HookRegistry {
 	 */
 	public function register_hooks(): void {
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -59,7 +58,9 @@ class EnqueueScript implements HookRegistry {
 
 		$dir_checkout_settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_direct_checkout_settings' );
 		$checkout_redirect     = \StorePulse\StoreGrowth\Helper::find_option_settings( $dir_checkout_settings, 'checkout_redirect', 'legacy-checkout' );
-		$is_checkout_redirect  = ( 'quick-cart-checkout' === $checkout_redirect );
+		// Fly Cart Checkout leaves the click to the Fly Cart panel, so it
+		// needs that module; without it the button goes to the checkout page.
+		$is_checkout_redirect = 'quick-cart-checkout' === $checkout_redirect && PluginHelper::is_module_active( 'fly-cart' );
 		wp_localize_script(
 			'spsg-dc-script',
 			'spsgDcFrontend',
@@ -72,60 +73,31 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
-			return;
-		}
-
-		$settings_file = require PluginHelper::get_modules_path( 'direct-checkout/assets/build/settings.asset.php' );
-
-		wp_enqueue_script(
-			'spsg-direct-checkout-settings',
-			PluginHelper::get_modules_url( 'direct-checkout/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
-		);
-		$modules        = storegrowth_get_container()->get( \StorePulse\StoreGrowth\ModuleManager::class );
-		$is_quick_cart_activated = ! $modules->is_active_module('fly-cart');
-		wp_localize_script(
-			'spsg-direct-checkout-settings',
-			'spsgAdminQuickCartValidate',
-			array(
-				'isQuickCartActivated' => $is_quick_cart_activated,
-			)
-		);
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function dc_button_inline_styles() {
 		// Get style options. Each value is interpolated into a <style> block, so
 		// colours are constrained to safe CSS colour characters and sizes to
 		// integers — a stored value can never break out of the CSS context.
-		$settings             = PluginHelper::get_settings( 'spsg_direct_checkout_settings' );
-		$button_style         = PluginHelper::find_option_settings( $settings, 'button_style', true );
-        if ( ! $button_style ) {
-            return;
-        }
-		$button_color         = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
-		$text_color           = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
-		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) );
+		$settings     = PluginHelper::get_settings( 'spsg_direct_checkout_settings' );
+		$button_style = PluginHelper::find_option_settings( $settings, 'button_style', true );
+		if ( ! $button_style ) {
+			return;
+		}
+		$button_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#008dff' ), '#008dff' );
+		$text_color   = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
+		// A stored 0 or non-number would hide the label: fall back to the default.
+		$font_size            = absint( PluginHelper::find_option_settings( $settings, 'font_size', '16' ) ) ?: 16; // phpcs:ignore Universal.Operators.DisallowShortTernary.Found
 		$button_border_radius = absint( PluginHelper::find_option_settings( $settings, 'button_border_radius', '5' ) );
 
 		$theme                 = wp_get_theme();
-		$is_avada_theme        = ! empty( $theme->name ) ? $theme->name === 'Avada' : false;
-		$is_ocean_wp_theme     = ! empty( $theme->name ) ? $theme->name === 'OceanWP' : false;
-		$is_elementor_theme    = ! empty( $theme->name ) ? $theme->name === 'Hello Elementor' : false;
-		$is_twenty_one_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-One' : false;
-		$is_twenty_two_theme   = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Two' : false;
-		$is_twenty_three_theme = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Three' : false;
-		$is_twenty_four_theme  = ! empty( $theme->name ) ? $theme->name === 'Twenty Twenty-Four' : false;
+		$is_avada_theme        = ! empty( $theme->name ) ? 'Avada' === $theme->name : false;
+		$is_ocean_wp_theme     = ! empty( $theme->name ) ? 'OceanWP' === $theme->name : false;
+		$is_elementor_theme    = ! empty( $theme->name ) ? 'Hello Elementor' === $theme->name : false;
+		$is_twenty_one_theme   = ! empty( $theme->name ) ? 'Twenty Twenty-One' === $theme->name : false;
+		$is_twenty_two_theme   = ! empty( $theme->name ) ? 'Twenty Twenty-Two' === $theme->name : false;
+		$is_twenty_three_theme = ! empty( $theme->name ) ? 'Twenty Twenty-Three' === $theme->name : false;
+		$is_twenty_four_theme  = ! empty( $theme->name ) ? 'Twenty Twenty-Four' === $theme->name : false;
 		$button_margin         = $is_ocean_wp_theme ? '20px 0 0' : '0 0 10px 10px';
 		$custom_css            = "
 		.button.product_type_simple.spsg_buy_now_button, 
@@ -203,12 +175,20 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		wp_add_inline_style(
-            'spsg-button-style',
-            apply_filters(
-                'spsg_direct_checkout_button_inline_styles',
-                $custom_css,
-                $settings
-            )
-        );
+			'spsg-button-style',
+			/**
+			 * Filters the Direct Checkout button's inline CSS.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $custom_css Inline CSS.
+			 * @param array  $settings   Direct Checkout settings.
+			 */
+			apply_filters(
+				'spsg_direct_checkout_button_inline_styles',
+				$custom_css,
+				$settings
+			)
+		);
 	}
 }

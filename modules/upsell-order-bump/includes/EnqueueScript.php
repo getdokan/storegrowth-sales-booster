@@ -31,81 +31,33 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_styles' ) );
+		// The admin app draws the bumps (`AdminPage`): the old antd admin and
+		// its stylesheets are gone.
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
 	}
 
-
 	/**
-	 * Add JS scripts to admin.
+	 * Loaded the old antd admin bundle.
 	 *
-	 * @param string $hook screen name.
+	 * @deprecated SPSG_VERSION The admin app draws the bumps (`AdminPage`); does nothing.
+	 *
+	 * @param string $hook Screen name.
+	 *
+	 * @return void
 	 */
-	public function admin_enqueue_scripts( $hook ) {
-
-		if ( 'storegrowth_page_spsg-settings' === $hook ) {
-
-			$settings_file                   = require PluginHelper::get_modules_path( 'upsell-order-bump/assets/build/settings.asset.php' );
-			$settings_file['dependencies'][] = 'jquery';
-
-			wp_enqueue_script(
-				'spsg-order-bump-settings',
-				PluginHelper::get_modules_url( 'upsell-order-bump/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				true
-			);
-
-			// Admin-only nonce (settings screen). Distinct from the frontend cart nonce.
-			$action    = 'spsg_admin_ajax_nonce';
-			$ajd_nonce = wp_create_nonce( $action );
-
-			wp_localize_script(
-				'spsg-order-bump-settings',
-				'products_and_categories',
-				array(
-					'product_list'          => $this->prodcut_list(),
-					'product_list_for_view' => $this->prodcut_list_for_view(),
-					'category_list'         => $this->category_list(),
-					'order_bump_list'       => $this->order_bump_list(),
-				)
-			);
-
-			wp_localize_script(
-				'spsg-order-bump-settings',
-				'bump_save_url',
-				array(
-					'ajax_url'     => admin_url( 'admin-ajax.php' ),
-					'ajd_nonce'    => $ajd_nonce,
-					'image_folder' => PluginHelper::get_modules_url( 'upsell-order-bump/assets/images' ),
-				)
-			);
-		}
-	}
+	public function admin_enqueue_scripts( $hook ) {}
 
 	/**
-	 * Add CSS scripts to admin.
+	 * Loaded the old admin's stylesheets.
+	 *
+	 * @deprecated SPSG_VERSION The stylesheets are removed; does nothing.
+	 *
+	 * @param string $hook Admin page hook.
+	 *
+	 * @return void
 	 */
-	public function admin_enqueue_styles() {
-		$ftime          = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ) );
-		$ftime_template = filemtime( PluginHelper::get_modules_path( 'upsell-order-bump/assets/css/order-bump-template.css' ) );
-
-		wp_enqueue_style(
-			'spsg-order-bump-custom-admin-css',
-			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-custom-admin.css' ),
-			null,
-			$ftime
-		);
-
-		wp_enqueue_style(
-			'spsg-order-bump-template-css',
-			PluginHelper::get_modules_url( 'upsell-order-bump/assets/css/order-bump-template.css' ),
-			null,
-			$ftime_template
-		);
-	}
+	public function admin_enqueue_styles( $hook = '' ) {}
 
 	/**
 	 * Whether the order bump frontend assets are needed on the current request.
@@ -180,6 +132,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Product list.
+	 *
+	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function prodcut_list() {
 		$args = array(
@@ -274,6 +228,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Product list for view.
+	 *
+	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function prodcut_list_for_view() {
 		$args     = array(
@@ -343,6 +299,8 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Category list.
+	 *
+	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function category_list() {
 		$orderby    = 'name';
@@ -375,6 +333,10 @@ class EnqueueScript implements HookRegistry {
 
 	/**
 	 * Order bump list.
+	 *
+	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for
+	 *             extensions. Always empty: bumps live in the
+	 *             `spsg_order_bumps` table, not `spsg_order_bump` posts.
 	 */
 	public function order_bump_list() {
 		$args_bump = array(

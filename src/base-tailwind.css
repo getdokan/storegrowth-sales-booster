@@ -1,0 +1,281 @@
+/*
+ * The single Tailwind v4 stylesheet for the StoreGrowth admin (ADR-003).
+ *
+ * Preflight and utilities apply only inside `.spsg-layout`. The class is passed
+ * to plugin-ui's ThemeProvider, which puts it on its root element and on every
+ * portal it renders (dialogs, popovers, selects), so wp-admin outside the app
+ * is never touched.
+ *
+ * Never enqueue this on the storefront.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tw-animate-css";
+@import "../node_modules/@wedevs/plugin-ui/src/components/wordpress/style.css";
+
+/* Classes used by our own code and by plugin-ui's components. */
+@source "./";
+@source "../modules/*/src";
+@source "../integrations/src";
+@source "../node_modules/@wedevs/plugin-ui/dist";
+
+/*
+ * plugin-ui token → Tailwind colour mapping (copied from plugin-ui's
+ * styles.css). The token values themselves are set inline by ThemeProvider.
+ */
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+}
+
+/* StoreGrowth design tokens (storegrowth-design.vercel.app assets/theme.js). */
+@theme {
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    --color-sg-brand: #0875ff;
+    --color-sg-brand-hover: #0663db;
+    --color-sg-brand-soft: #eff6ff;
+    --color-sg-heading: #25262b;
+    --color-sg-text: #25252d;
+    --color-sg-ink: #111827;
+    --color-sg-muted: #6b7280;
+    --color-sg-slate: #65758b;
+    --color-sg-help: #828282;
+    --color-sg-field: #575757;
+    --color-sg-line: #e4e4e7;
+    --color-sg-stroke: #e9e9e9;
+    --color-sg-hairline: #f9fafb;
+    --color-sg-page: #f0f0f1;
+    --color-sg-value: #0875ff;
+    --color-sg-amber: #ffbc00;
+    --color-sg-amber-hover: #edae00;
+    --color-sg-amber-pro: #ffbd18;
+    --color-sg-tertiary: #68687e;
+    --color-sg-chip: #f3f4f6;
+    --color-sg-suffix: #f1f1f4;
+    --color-sg-cardline: #eaeaea;
+    --color-sg-preview: #e6e6e6;
+    --color-sg-row-hover: #f8f9f8;
+    --color-sg-menu-icon: #929395;
+
+    --breakpoint-wpsm: 783px;
+    --breakpoint-wpmd: 961px;
+}
+
+/*
+ * Scoped preflight: inside `.spsg-layout` but not inside `.spsg-wp-notices`
+ * (captured WordPress notices shown in the app keep core styling) or inside a
+ * `@wordpress/components` control (e.g. the colour picker), whose own padding
+ * and margins the reset would wipe, or inside `.spsg-storefront` (a preview
+ * widget rendering the real storefront markup and CSS, ADR-005 S10). Not in a
+ * cascade layer, so wp-admin's unlayered element rules (h1, p, …) don't win.
+ */
+@scope (.spsg-layout) to (.spsg-wp-notices, .spsg-storefront, [class^="components-"], [class*=" components-"]) {
+    /* `:scope` keeps class-level specificity (`:scope p` = `.spsg-layout p`). */
+    :scope {
+        @import "tailwindcss/preflight.css";
+    }
+}
+
+/* Scoped utilities. */
+.spsg-layout {
+    @import "tailwindcss/utilities.css" important;
+
+    /* Preflight's html/body rules don't match inside a container; apply them here. */
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--font-sans);
+    font-variation-settings: "opsz" 18;
+    -webkit-tap-highlight-color: transparent;
+    color: var(--color-sg-text);
+}
+
+/* On the Dokan vendor dashboard the brand colour is Dokan's button colour
+   (ADR-011); the plugin-ui tokens follow it through the vendor theme. */
+.dokan-layout .spsg-layout {
+    --color-sg-brand: var(--dokan-button-background-color, #0875ff);
+    --color-sg-brand-hover: var(--dokan-button-hover-background-color, #0663db);
+}
+
+/* Labels and headings take the app's font, not a theme's element rule (a
+   front-end theme on the Dokan vendor dashboard sets them). */
+.spsg-layout :is(label, h1, h2, h3, h4, h5, h6) {
+    font-family: inherit;
+}
+
+/* Keyboard focus ring for everything interactive (design rule); controls
+   with their own focus style (fields, important utilities) override it.
+   `:is()`, not `:where()`, so a theme's or Dokan's element focus rule
+   doesn't win. */
+.spsg-layout :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-sg-brand);
+    outline-offset: 2px;
+}
+
+/* Pointer on everything clickable, not-allowed when disabled. `:is()` so it
+   outweighs preflight's `button { cursor: default }`; a `cursor-*` utility
+   (important) still wins. */
+.spsg-layout :is(a[href], button, summary, select, label[for], label:has(input, [role="switch"], [role="checkbox"]), [role="button"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="option"], [role="menuitem"]) {
+    cursor: pointer;
+}
+
+.spsg-layout :is(button, select, input, [role="switch"], [role="checkbox"], [role="radio"], [role="tab"], [role="option"]):is(:disabled, [aria-disabled="true"], [data-disabled]),
+.spsg-layout label:has(:disabled, [data-disabled]) {
+    cursor: not-allowed;
+}
+
+/* Large headings use Inter's display optical size, as in the design. */
+.spsg-layout .sg-display {
+    font-variation-settings: "opsz" 28;
+}
+
+/* The app fills WordPress's content area edge to edge, as in the design. */
+body:has(#spsg-admin-app) #wpcontent {
+    padding-inline-start: 0;
+}
+
+body:has(#spsg-admin-app) #wpbody-content {
+    padding-bottom: 0;
+}
+
+body:has(#spsg-admin-app) {
+    background: var(--color-sg-page);
+}
+
+/* No WordPress footer ("Thank you for creating with WordPress" / version). */
+body:has(#spsg-admin-app) #wpfooter {
+    display: none;
+}
+
+/*
+ * Feature pages: the white rail column runs the full page height. The page can
+ * be taller than our layout (a long WordPress admin menu), so the column is
+ * painted on <body>, right of the admin menu (160px, or 36px when folded).
+ */
+@media (min-width: 901px) {
+    /* The id keeps this above the `body:has(#spsg-admin-app)` page background. */
+    body:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 160px;
+        background: linear-gradient(
+            to right,
+            var(--color-sg-page) var(--spsg-wp-menu-width),
+            #fff var(--spsg-wp-menu-width),
+            #fff calc(var(--spsg-wp-menu-width) + 210px),
+            var(--color-sg-page) calc(var(--spsg-wp-menu-width) + 210px)
+        );
+    }
+
+    body.folded:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 36px;
+    }
+}
+
+/* WordPress auto-folds its menu between 783px and 960px. */
+@media (min-width: 901px) and (max-width: 960px) {
+    body.auto-fold:has(#spsg-admin-app .spsg-feature-layout) {
+        --spsg-wp-menu-width: 36px;
+    }
+}
+
+/* Plugin header sticks under the WordPress toolbar (32px, 46px on mobile). */
+#spsg-admin-header {
+    position: sticky;
+    top: var(--wp-admin--admin-bar--height, 32px);
+    z-index: 25;
+}
+
+/*
+ * Captured admin notices stay hidden until the header script moves them under
+ * the header, so they never flash above it.
+ */
+.spsg-notice-list-hide {
+    display: none;
+}
+
+#spsg-admin-notices {
+    margin: 0 16px;
+}
+
+/*
+ * Notices live under the header (#spsg-admin-notices) or, on feature pages, at
+ * the top of the content column (.spsg-wp-notices, see FeatureLayout).
+ * `:not(:empty)` skips placeholder wrappers some plugins print (e.g. Dokan).
+ */
+
+/* Core gives the catcher a -2px margin, which would pull the page under the header. */
+:is(#spsg-admin-notices, .spsg-wp-notices) .wp-header-end {
+    margin: 0;
+}
+
+/* Even spacing between notices instead of core's 5px top / 15px bottom. */
+:is(#spsg-admin-notices, .spsg-wp-notices) .notice {
+    margin: 0;
+}
+
+:is(#spsg-admin-notices, .spsg-wp-notices) .notice:not(:empty) ~ .notice:not(:empty) {
+    margin-top: 12px;
+}
+
+/* With notices: 24px header -> notices -> content, on every page. */
+#spsg-admin-notices:has(.notice:not(:empty)) {
+    padding-top: 24px;
+}
+
+body:has(#spsg-admin-notices .notice:not(:empty)) .spsg-layout .spsg-page {
+    padding-top: 24px !important;
+}
+
+/* The content-column slot (feature pages) takes no room without notices. */
+.spsg-wp-notices:not(:has(.notice:not(:empty))) {
+    display: none;
+}
+
+/* Feature pages: page area padding is 32px; pull the notices up to 24px and
+   keep 24px to the page content (the page area itself has no gap). */
+.spsg-wp-notices:has(.notice:not(:empty)) {
+    margin-top: -8px;
+    margin-bottom: 24px;
+}
+
+@media (min-width: 783px) {
+    #spsg-admin-notices {
+        margin: 0 32px;
+    }
+}

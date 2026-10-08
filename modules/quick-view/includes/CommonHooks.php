@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\QuickView;
 
+use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 
 // If this file is called directly, abort.
@@ -105,7 +106,30 @@ class CommonHooks implements HookRegistry {
 		$hook            = 'woocommerce_after_shop_loop_item';
 		$priority        = ( 'after_add_to_cart' === $button_position ) ? 15 : 10;
 
+		// Before: in front of the loop's Add to cart link, wherever the theme
+		// prints it (some themes, e.g. Blocksy, move it off this action).
+		if ( 'before_add_to_cart' === $button_position ) {
+			add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'prepend_quick_view_button' ], 10, 1 );
+			return;
+		}
+
 		add_action( $hook, array( $this, 'show_quick_view_button_shop' ), $priority );
+	}
+
+	/**
+	 * Put the Quick View button in front of the loop's Add to cart link.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $html Add to cart link.
+	 *
+	 * @return string
+	 */
+	public function prepend_quick_view_button( $html ) {
+		ob_start();
+		$this->display_buy_now_button();
+
+		return ob_get_clean() . $html;
 	}
 
 		/**
@@ -131,14 +155,41 @@ class CommonHooks implements HookRegistry {
 	}
 
 	/**
-	 * Hook for WooCommerce add-to-cart link redirection
+	 * Hook for WooCommerce add-to-cart link redirection.
 	 *
 	 * @since 1.25.7
+	 *
+	 * @param string $url Redirect URL after adding to cart.
+	 *
+	 * @return string
 	 */
 	public function add_to_cart_redirect( $url ) {
+		/**
+		 * Filters whether the quick view redirects after adding to cart.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $redirect Whether to redirect.
+		 */
 		if ( apply_filters( 'spsgqcv_redirect', true ) ) {
-			if ( ! empty( $_REQUEST['spsgqcv-redirect'] ) ) {
-				return apply_filters( 'spsgqcv_redirect_url', add_query_arg( 'added_to_cart', '1', sanitize_url( $_REQUEST['spsgqcv-redirect'] ) ) );
+			// WooCommerce's add-to-cart request carries no nonce; this only picks the redirect target.
+			if ( ! empty( $_REQUEST['spsgqcv-redirect'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only redirect target of a WooCommerce add-to-cart request, which has no nonce.
+				$settings = Helper::get_settings( 'spsg_quick_view_settings' );
+				$target   = sanitize_url( wp_unslash( $_REQUEST['spsgqcv-redirect'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only redirect target of a WooCommerce add-to-cart request, which has no nonce.
+
+				// Checkout Redirect: added from the quick view, go to checkout.
+				if ( 'checkout-redirection' === Helper::find_option_settings( $settings, 'cart_url_redirection', '' ) ) {
+					$target = wc_get_checkout_url();
+				}
+
+				/**
+				 * Filters the quick view add-to-cart redirect URL.
+				 *
+				 * @since 2.0.0
+				 *
+				 * @param string $url Redirect URL.
+				 */
+				return apply_filters( 'spsgqcv_redirect_url', add_query_arg( 'added_to_cart', '1', $target ) );
 			}
 		}
 		return $url;

@@ -111,11 +111,11 @@ storegrowth_get_container()->addServiceProvider( new ServiceProvider() );
 
 - **`storegrowth-sales-booster.php`** — add `require_once STOREGROWTH_MODULE_DIR . '/my-feature/bootstrap.php';` alongside the other module includes.
 - **`composer.json`** autoload PSR-4 — add `"StorePulse\\StoreGrowth\\Modules\\MyFeature\\": "modules/my-feature/includes"`, then run `composer dump-autoload`.
-- **`package.json`** — add `watch:my-feature` and `build:my-feature` scripts (scope = the `name` in the module's `assets/package.json`, e.g. `sales-booster-my-feature`). `lerna.json` already globs `modules/*/assets`.
+- **`webpack-entries.js`** (only with an admin page) — add `moduleEntry( 'my-feature', 'admin', './modules/my-feature/src/admin/index.tsx' )` and restart `npm run start`. There is one webpack build (ADR-001); a module has no `package.json` of its own.
 
 ### 6. Admin UI (optional)
 
-In `modules/my-feature/assets/src/settings.js`, register the module's `@wordpress/data` store and push routes via `addFilter('spsg_routes', 'spsg', ...)`. See `storegrowth-frontend-dev`.
+Define the settings page in PHP (`Interfaces\SettingsPage`, ADR-009); `modules/my-feature/src/admin/` only adds a live preview or multi-key controls through the JS filter `storegrowth.settings.page`, loaded by an `AdminPage` class extending `Admin\ModuleAdminPage` (see `modules/stock-bar/`). See `storegrowth-frontend-dev`.
 
 ## Checklist
 
@@ -123,7 +123,7 @@ In `modules/my-feature/assets/src/settings.js`, register the module's `@wordpres
 - [ ] All five PHP pieces present (Module, both Providers, bootstrap.php, runtime services)
 - [ ] `require_once` added in `storegrowth-sales-booster.php`
 - [ ] PSR-4 autoload entry added + `composer dump-autoload` run
-- [ ] `watch:`/`build:` scripts added to root `package.json`
+- [ ] Admin bundle (if any) added to `webpack-entries.js`
 - [ ] Runtime services implement `HookRegistry` (hooks) / extend `WP_REST_Controller` (routes)
 - [ ] New code uses `@since SPSG_VERSION` and text domain `storegrowth-sales-booster`
 

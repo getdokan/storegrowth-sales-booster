@@ -1,4 +1,9 @@
 <?php
+/**
+ * File for Helper class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth;
 
@@ -77,6 +82,19 @@ class Helper {
 	}
 
 	/**
+	 * Get Plugin File URL.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $path Path relative to the plugin root.
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_url( string $path ): string {
+		return STOREGROWTH_DIR_URL . $path;
+	}
+
+	/**
 	 * Get Plugin File Content.
 	 *
 	 * @since 2.0.0
@@ -103,7 +121,7 @@ class Helper {
 	 *
 	 * @return array
 	 */
-	public static function get_settings( string $key, $default = array() ): array {
+	public static function get_settings( string $key, $default = array() ): array { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound -- Public API parameter name (named arguments).
 		return (array) get_option( $key, $default );
 	}
 
@@ -112,14 +130,15 @@ class Helper {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param array $settings WP option array.
-	 * @param string $key      Key from option array.
-	 * @param mixed  $default  Default value.
+	 * @param array|mixed $settings WP option array. Anything else counts as empty
+	 *                              (pro 2.2.0's "below" template passes null).
+	 * @param string      $key      Key from option array.
+	 * @param mixed       $default  Default value.
 	 *
 	 * @return mixed
 	 */
-	public static function find_option_settings( array $settings, string $key, $default = '' ) {
-		if ( isset( $settings[ $key ] ) ) {
+	public static function find_option_settings( $settings, string $key, $default = '' ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound -- Public API parameter name (named arguments).
+		if ( is_array( $settings ) && isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
 
@@ -160,7 +179,7 @@ class Helper {
 	 */
 	public static function sanitize_svg_icon_fields( string $value ): string {
 		$icon_allowed_html = [
-			'svg' => [
+			'svg'  => [
 				'viewbox' => true,
 				'height'  => true,
 				'width'   => true,
@@ -168,7 +187,7 @@ class Helper {
 			'path' => [
 				'd' => true,
 			],
-			'g' => [],
+			'g'    => [],
 		];
 
 		return wp_kses( $value, $icon_allowed_html );
@@ -194,7 +213,7 @@ class Helper {
 	 * @return string
 	 */
 	public static function sanitize_css_color( $value, string $fallback = '' ): string {
-		$value = trim( (string) $value );
+		$value = is_scalar( $value ) ? trim( (string) $value ) : '';
 
 		// Hex notation: #rgb, #rgba, #rrggbb, #rrggbbaa.
 		if ( preg_match( '/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
@@ -212,6 +231,74 @@ class Helper {
 		}
 
 		return $fallback;
+	}
+
+	/**
+	 * Allow-list a CSS keyword (alignment, border style, position, …) before it
+	 * is printed into a stylesheet.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed    $value    Stored value.
+	 * @param string[] $allowed  Allowed keywords.
+	 * @param string   $fallback Value returned when `$value` is not allowed.
+	 *
+	 * @return string
+	 */
+	public static function sanitize_css_keyword( $value, array $allowed, string $fallback = '' ): string {
+		$value = is_scalar( $value ) ? strtolower( trim( (string) $value ) ) : '';
+
+		return in_array( $value, $allowed, true ) ? $value : $fallback;
+	}
+
+	/**
+	 * Render a storefront template, letting the theme override it.
+	 *
+	 * Looks for `storegrowth/<module>/<file>` in the child and parent theme
+	 * first, then `modules/<module>/templates/<file>` in the plugin.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $template Template path `<module>/<file>`, e.g. `stock-bar/simple-stock-status.php`.
+	 * @param array  $args     Variables made available to the template.
+	 *
+	 * @return void
+	 */
+	public static function get_template( string $template, array $args = [] ): void {
+		$template = ltrim( str_replace( '\\', '/', $template ), '/' );
+
+		if ( false !== strpos( $template, '..' ) || false === strpos( $template, '/' ) ) {
+			return;
+		}
+
+		list( $module, $file ) = explode( '/', $template, 2 );
+
+		$path = locate_template( 'storegrowth/' . $template );
+
+		if ( ! $path ) {
+			$path = self::get_modules_path( $module . '/templates/' . $file );
+		}
+
+		/**
+		 * Filters the file used for a storefront template.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param string $path     Absolute path of the template file.
+		 * @param string $template Template path `<module>/<file>`.
+		 * @param array  $args     Variables passed to the template.
+		 */
+		$path = (string) apply_filters( 'spsg_template_path', $path, $template, $args );
+
+		if ( ! is_readable( $path ) ) {
+			return;
+		}
+
+		( static function ( string $spsg_template_file, array $spsg_template_args ) {
+			// phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- Template variables, as passed by the caller.
+			extract( $spsg_template_args, EXTR_SKIP );
+			include $spsg_template_file;
+		} )( $path, $args );
 	}
 
 	/**
@@ -296,56 +383,69 @@ class Helper {
 	}
 
 	/**
-	 * Check if The Module is Active.
+	 * Build a REST request object from the current HTTP request.
 	 *
 	 * @since 1.28.14
-	 *
-	 * @param string $module_id The module ID to check.
 	 *
 	 * @return \WP_REST_Request The request object.
 	 */
 	public static function get_rest_request(): \WP_REST_Request {
 		// Get the request object.
 		$server  = rest_get_server();
-		$request = new \WP_REST_Request( $_SERVER['REQUEST_METHOD'] );
+		$method  = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : '';
+		$request = new \WP_REST_Request( $method );
 
-		// Set the request parameters.
-		$request->set_query_params( wp_unslash( $_GET ) );
-		$request->set_body_params( wp_unslash( $_POST ) );
-		$request->set_file_params( $_FILES );
+		// Set the request parameters. The caller verifies the nonce / capability.
+		$request->set_query_params( wp_unslash( $_GET ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Copies the raw request; callers verify it.
+		$request->set_body_params( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Copies the raw request; callers verify it.
+		$request->set_file_params( $_FILES ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Copies the raw request; callers verify it.
 		$request->set_headers( $server->get_headers( wp_unslash( $_SERVER ) ) );
 		$request->set_body( $server::get_raw_data() );
 
 		return $request;
 	}
 
-    /**
-     * Check if The Current User Allowed to View Promotions.
-     *
-     * @since 2.0.0
-     *
-     * @return bool
-     */
-    public static function is_current_user_allowed_to_view_promotions(): bool {
-        if ( ! is_user_logged_in() ) {
-            return true;
-        }
+	/**
+	 * Check if The Current User Allowed to View Promotions.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool
+	 */
+	public static function is_current_user_allowed_to_view_promotions(): bool {
+		if ( ! is_user_logged_in() ) {
+			return true;
+		}
 
-        $allowed_roles = apply_filters(
-            'spsg_allowed_roles_for_promotions',
-            [
-                'customer',
-                'wholesale_customer',
-                'subscriber'
-            ]
-        );
+		/**
+		 * Filters the user roles that see promotions.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param string[] $allowed_roles Role slugs.
+		 */
+		$allowed_roles = apply_filters(
+			'spsg_allowed_roles_for_promotions',
+			[
+				'customer',
+				'wholesale_customer',
+				'subscriber',
+			]
+		);
 
-        foreach ( $allowed_roles as $role ) {
-            if ( current_user_can( $role ) ) {
-                return true;
-            }
-        }
+		foreach ( $allowed_roles as $role ) {
+			if ( current_user_can( $role ) ) {
+				return true;
+			}
+		}
 
-        return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
-    }
+		/**
+		 * Filters whether a logged-in user without an allowed role sees promotions.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param bool $allowed Whether the current user sees promotions.
+		 */
+		return apply_filters( 'spsg_current_user_allowed_to_view_promotions', false );
+	}
 }

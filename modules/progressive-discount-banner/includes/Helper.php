@@ -7,6 +7,9 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings\ProgressiveDiscountBannerSettings;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -25,7 +28,11 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_progressive_discount_banner_settings', array() );
+		// Saves write only changed keys: the rest come from the defaults (not
+		// for a store that never saved, so its bar stays off as before).
+		return storegrowth_get_container()->get( ProgressiveDiscountBannerSettings::class )->storefront_settings(
+			PluginHelper::get_settings( 'spsg_progressive_discount_banner_settings', array() )
+		);
 	}
 
 	/**
@@ -38,15 +45,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_text( $settings ) {
-		$minimum_amount = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
+		$settings       = self::with_defaults( $settings );
+		$minimum_amount = PluginHelper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
 		$cart_amount    = wc()->cart->get_subtotal();
 
 		// If customer already added enough to cart.
 		if ( $cart_amount >= $minimum_amount ) {
-			return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'goal_completion_text' );
+			return PluginHelper::find_option_settings( $settings, 'goal_completion_text' );
 		}
 
-		$pbanner_text = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_text' );
+		$pbanner_text = PluginHelper::find_option_settings( $settings, 'progressive_banner_text' );
 
 		return str_replace( '[amount]', wc_price( $minimum_amount - $cart_amount ), $pbanner_text );
 	}
@@ -89,7 +97,23 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_icon( $settings ) {
-		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_icon_name' );
+		return PluginHelper::find_option_settings( self::with_defaults( $settings ), 'progressive_banner_icon_name' );
+	}
+
+	/**
+	 * Settings with the defaults of the keys never saved (and of numbers
+	 * that aren't one). Pro 2.2.0's template passes the raw option to the
+	 * getters above; a missing minimum would read as 0 (goal reached) and a
+	 * missing icon as none.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $settings Settings, raw or already filled.
+	 *
+	 * @return array
+	 */
+	private static function with_defaults( $settings ): array {
+		return storegrowth_get_container()->get( ProgressiveDiscountBannerSettings::class )->storefront_settings( $settings );
 	}
 
 	/**
@@ -102,6 +126,6 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_custom_icon( $settings ) {
-		return \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
+		return PluginHelper::find_option_settings( $settings, 'progressive_banner_custom_icon' );
 	}
 }

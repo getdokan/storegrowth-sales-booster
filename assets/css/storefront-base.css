@@ -1,0 +1,33 @@
+/*
+ * StoreGrowth storefront base (ADR-005 S7, S9). Plain CSS: no Tailwind, no
+ * reliance on browser defaults (the admin preview renders the same classes
+ * inside the admin app, where margins and box-sizing are reset).
+ *
+ * Handle `spsg-storefront-base`; module stylesheets list it as a dependency
+ * when they migrate.
+ */
+
+/*
+ * Stacking scale. The values are the ones each layer uses today, so a module
+ * that switches to `var(--spsg-z-…)` stacks exactly as before. Known oddities
+ * are left for their module's step (see ADR-005 S7).
+ */
+:root {
+    --spsg-z-bar: 99999;              /* Free Shipping bar, Floating bar */
+    --spsg-z-popup: 99999;            /* Sales Notification popup */
+    --spsg-z-fly-cart-button: 999;    /* Fly Cart floating button */
+    --spsg-z-fly-cart-overlay: 100000;
+    --spsg-z-fly-cart-panel: 1000001;
+    --spsg-z-modal: 99999970;         /* Quick View */
+}
+
+/* Respect the visitor's reduced-motion setting for StoreGrowth widgets. */
+@media (prefers-reduced-motion: reduce) {
+    [class^="spsg-"],
+    [class*=" spsg-"] {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

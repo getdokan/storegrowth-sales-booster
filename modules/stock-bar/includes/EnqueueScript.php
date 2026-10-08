@@ -10,6 +10,8 @@ namespace StorePulse\StoreGrowth\Modules\StockBar;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
+use StorePulse\StoreGrowth\Storefront\StorefrontStyle;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,8 +32,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -47,7 +49,7 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-stock-cd-custom-style',
 			PluginHelper::get_modules_url( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ),
-			array(),
+			array( 'spsg-storefront-base' ),
 			filemtime( PluginHelper::get_modules_path( 'stock-bar/assets/scripts/spsg-stockbar-style.css' ) )
 		);
 
@@ -71,27 +73,6 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' !== $hook ) {
-			return;
-		}
-
-		$settings_file = require PluginHelper::get_modules_path( 'stock-bar/assets/build/settings.asset.php' );
-
-		wp_enqueue_script(
-			'spsg-stock-bar-settings',
-			PluginHelper::get_modules_url( 'stock-bar/assets/build/settings.js' ),
-			$settings_file['dependencies'],
-			$settings_file['version'],
-			false
-		);
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
@@ -110,7 +91,7 @@ class EnqueueScript implements HookRegistry {
 
 		$custom_css = "
 			.spsg-stock-progress-bar-section {
-				border: 2px solid {$border_color};
+				border: 1px solid {$border_color};
 			}
 			.spsg-stock-progress {
 				height: {$bar_height}px;
@@ -130,5 +111,50 @@ class EnqueueScript implements HookRegistry {
 		}
 
 		wp_add_inline_style( 'spsg-stock-cd-custom-style', $custom_css );
+
+		$this->design_variables( $settings );
+	}
+
+	/**
+	 * The redesign's new design settings (card background, font, text sizes,
+	 * count colour) as `--spsg-stock-bar-*` variables (ADR-005 S1), read by
+	 * `spsg-stockbar-style.css` with the defaults as fallbacks. Only saved keys
+	 * are printed; unsaved ones render the design defaults from the CSS.
+	 *
+	 * The rule also targets `.spsg-stock-progress-bar-section`, the root of
+	 * pro's variation stock bar (it has no `.spsg-stock-bar` wrapper).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings Stock Bar settings.
+	 *
+	 * @return void
+	 */
+	private function design_variables( array $settings ): void {
+		$tokens = [
+			'card-bg'     => [ 'stockbar_card_bg_color', 'color', '#ffffff' ],
+			'font-family' => [ 'font_family', 'font', 'inherit' ],
+			'count-size'  => [ 'count_text_size', 'px', 11 ],
+			'count-color' => [ 'count_text_color', 'color', '#25252d' ],
+			'status-size' => [ 'status_text_size', 'px', 11 ],
+		];
+
+		foreach ( $tokens as $token => $spec ) {
+			if ( isset( $settings[ $spec[0] ] ) ) {
+				$tokens[ $token ] = [
+					'value'   => $settings[ $spec[0] ],
+					'type'    => $spec[1],
+					'default' => $spec[2],
+				];
+			} else {
+				unset( $tokens[ $token ] );
+			}
+		}
+
+		StorefrontStyle::attach( 'spsg-stock-cd-custom-style', 'stock-bar', $tokens, '.spsg-stock-bar, .spsg-stock-progress-bar-section' );
+
+		if ( is_string( $settings['font_family'] ?? null ) ) {
+			StorefrontFonts::request( $settings['font_family'] );
+		}
 	}
 }

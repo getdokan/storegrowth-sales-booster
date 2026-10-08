@@ -1,185 +1,127 @@
-@import url(../fonts/inter-regular/stylesheet.css);
-@import url(../fonts/inter-medium/stylesheet.css);
-@import url(../fonts/Inter-semibold/stylesheet.css);
-@import url(../fonts/inter-bold/stylesheet.css);
-@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
-
+/*
+ * Countdown Timer widget (product page, and pro's shop loop with the same
+ * classes). Design settings arrive as `--spsg-countdown-timer-*` variables
+ * (ADR-005); each fallback is the setting's default, so a site that never
+ * saved one renders the default. Type and box sizes are in em of the root's
+ * font-size, so the shop loop and the admin preview scale them with one
+ * value; the px settings (radius, spacing, line height) stay as set.
+ * Fonts load through StorefrontFonts, not from here.
+ */
 
 .spsg-countdown-timer {
+	box-sizing: border-box;
 	max-width: 100%;
-	padding: 15px 40px 10px;
-	margin-bottom: 25px;
-	border-radius: 8px;
-}
-
-.products .spsg-countdown-timer {
-    padding: 12px 40px 5px;
+	margin: var(--spsg-countdown-timer-margin, 0 0 25px);
+	padding: var(--spsg-countdown-timer-padding, 10px);
+	border: 1px solid var(--spsg-countdown-timer-border, #1677ff);
+	border-radius: var(--spsg-countdown-timer-radius, 10px);
+	background: var(--spsg-countdown-timer-bg, #fff);
+	font-size: 16px;
+	line-height: 1.2;
 }
 
 .spsg-countdown-timer-wrapper {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: var(--spsg-countdown-timer-align, flex-start);
+	gap: 1.25em;
 }
 
 .spsg-countdown-timer-heading {
-	margin: 0 0 10px 0;
-	text-align: center;
-	font-size: 40px;
-	font-weight: 600;
-	line-height: 1.2;
+	max-width: 100%;
+	margin: 0;
+	color: var(--spsg-countdown-timer-heading-color, #008dff);
+	font-family: var(--spsg-countdown-timer-heading-font, "Roboto", sans-serif);
+	font-size: 1.5em;
+	font-weight: var(--spsg-countdown-timer-heading-weight, 500);
+	letter-spacing: var(--spsg-countdown-timer-heading-tracking, 0);
+	line-height: var(--spsg-countdown-timer-heading-leading, 24px);
+	text-align: var(--spsg-countdown-timer-text-align, left);
 }
-.products-block-post-template .spsg-countdown-timer-heading,
-.products .spsg-countdown-timer-heading  {
-    font-size: 20px;
-}
-
 
 .spsg-countdown-timer-items {
 	display: flex;
-	justify-content: center;
-	margin-bottom: 10px;
-}
-
-.products-block-post-template.spsg-countdown-timer-items,
-.products .spsg-countdown-timer-items {
-    height: 50px;
+	align-self: var(--spsg-countdown-timer-counter-align, flex-start);
+	align-items: center;
+	gap: 0.375em;
+	margin: var(--spsg-countdown-timer-counter-margin, 0);
 }
 
 .spsg-countdown-timer-item {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25em;
+	min-width: 4em;
+	padding: var(--spsg-countdown-timer-counter-padding, 6px);
+	border: 1px solid var(--spsg-countdown-timer-counter-border, #ecedf0);
+	border-radius: var(--spsg-countdown-timer-counter-radius, 6px);
+	background: var(--spsg-countdown-timer-counter-bg, #fff);
+	color: var(--spsg-countdown-timer-label-color, #64748b);
+	font-family: var(--spsg-countdown-timer-counter-font, "Roboto", sans-serif);
+	font-weight: var(--spsg-countdown-timer-counter-weight, 500);
+	letter-spacing: var(--spsg-countdown-timer-counter-tracking, 0);
 	text-align: center;
-	font-size: 12px;
-	letter-spacing: 2px;
 	text-transform: uppercase;
-	/* height: 64px; */
-	width: 64px;
-	border-radius: 8px;
-	padding: 14px 0;
-	font-family: 'Inter';
 }
 
-.products-block-post-template .spsg-countdown-timer-item,
-.products .spsg-countdown-timer-item {
-    width: 44px;
-    height: 44px;
-    font-size: 8px;
-    padding-top: 12px;
-}
-
+/* Digits; without the variable (pro's shop template) they take the box's colour. */
 .spsg-countdown-timer-item strong {
 	display: block;
-	font-size: 24px;
-	line-height: .75;
-	font-weight: 500;
-	margin-bottom: 6px;
+	color: var(--spsg-countdown-timer-digit-color, inherit);
+	font-size: 1.5em;
+	font-weight: inherit;
+	line-height: 1.2;
 }
 
-.products-block-post-template .spsg-countdown-timer-item strong 
-.products .spsg-countdown-timer-item strong {
-    font-size: 14px;
-    margin-bottom: 6px;
+.spsg-countdown-timer-item span {
+	font-size: 0.625em;
+	line-height: 1.2;
 }
 
-.spsg-colon{
-	margin: 0 14px;
-	line-height: 4;
+.spsg-colon {
+	flex: 0 0 auto;
+	color: var(--spsg-countdown-timer-separator-color, #1e293b);
+	font-size: 1.5em;
+	font-weight: 600;
+	line-height: 1;
 }
 
-.products-block-post-template .spsg-colon,
-.products .spsg-colon {
-    margin: 0 3px;
+/* Shop loop and narrow screens: the same widget, smaller. */
+.products .spsg-countdown-timer,
+.products-block-post-template .spsg-countdown-timer {
+	font-size: 11px;
 }
 
-/* custom layout style start*/
-.spsg-countdown-timer.ct-custom{
-	border: 1px solid transparent;
-}
-.spsg-countdown-timer-item.ct-custom{
-	color: #989FAB;
-	border: 1px solid #ECEDF0;
+@media (max-width: 430px) {
+	.spsg-countdown-timer {
+		font-size: 12px;
+	}
 }
 
-.spsg-colon.ct-custom {
-	color: #008DFF;
-}
-
-.spsg-countdown-timer-item.ct-custom strong {
-	color: #1B1B50;
-}
-/* custom layout style end*/
-
-/* layout-1 styles start*/
-.spsg-countdown-timer-item.ct-layout-1{
-    color: #989FAB;
-	border: 1px solid #ECEDF0;
-}
-
-.products-block-post-template .spsg-countdown-timer-item.ct-layout-1 
-.products .spsg-countdown-timer-item.ct-layout-1 {
-    width: 45px;
-    height: 50px;
-}
-
-.spsg-countdown-timer-heading.ct-layout-1{
-	color: #008DFF ;
-}
-
-.spsg-colon.ct-layout-1 {
-	color: #008DFF;
-}
-
-.products-block-post-template .spsg-colon.ct-layout-1,
-.products .spsg-colon.ct-layout-1 {
-    margin: -4px 4px 0;
-}
-
-.spsg-countdown-timer-item.ct-layout-1 strong {
-	color: #1B1B50;
-}
-/* layout-1 styles end*/
-
-/* layout-2 styles start */
+/* The second old layout (`ct-layout-2`): gradient strip behind the boxes. */
 .spsg-countdown-timer.ct-layout-2 {
-	background: linear-gradient(180deg, aliceblue 70%, #FFFF 0%) !important;
+	background: linear-gradient(180deg, aliceblue 70%, #fff 0%) !important;
 }
 
 .spsg-countdown-timer-items.ct-layout-2 {
-border-radius: 6px;
-color: #fff;
-background: var(--gradient, linear-gradient(90deg, #32DBBE 0%, #008DFF 100%));
-box-shadow: 0px 12px 48px 0px rgba(27, 27, 80, 0.10);
-width: fit-content;
-
-}
-
-.spsg-countdown-timer-heading.ct-layout-2.default {
-	background: linear-gradient(90deg, #32DBBE 0%, #008DFF 100%) text;
-	-webkit-text-fill-color: transparent;
+	align-self: center;
+	width: fit-content;
+	border-radius: 6px;
+	color: #fff;
+	background: linear-gradient(90deg, #32dbbe 0%, #008dff 100%);
+	box-shadow: 0 12px 48px 0 rgba(27, 27, 80, 0.1);
 }
 
 .spsg-countdown-timer-heading.ct-layout-2 {
--webkit-background-clip: text;
+	-webkit-background-clip: text;
 }
 
-/* layout2  styles end */
-
-@media (max-width: 430px) {
-    .spsg-countdown-timer-items {
-        align-items: center;
-
-        .spsg-countdown-timer-item {
-            font-size: 6px;
-            padding-top: 7px;
-
-            &.ct-layout-1 {
-                width: 37px;
-                height: 40px;
-            }
-
-            &.ct-layout-2 {
-                width: 38px;
-                height: 38px;
-            }
-        }
-    }
+/* Its gradient heading (a transparent heading colour); kept when pro's box
+   colours drop the `ct-layout-2` class. */
+.spsg-countdown-timer-heading.default {
+	background: linear-gradient(90deg, #32dbbe 0%, #008dff 100%) text;
+	-webkit-text-fill-color: transparent;
 }

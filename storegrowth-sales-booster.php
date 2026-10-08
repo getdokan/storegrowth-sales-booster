@@ -80,7 +80,8 @@ if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
 register_activation_hook(
 	__FILE__,
 	function () {
-		add_option( 'storegrowth_activation_redirect', true );
+		// Admin-only, one-shot flag: never needed on front-end requests.
+		add_option( 'storegrowth_activation_redirect', true, '', false );
 
 		// A fresh install has nothing to migrate, so it starts at the current
 		// database version and never sees the upgrade notice.
