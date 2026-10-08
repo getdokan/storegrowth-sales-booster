@@ -58,7 +58,9 @@ export function FeatureMenu( { activeId }: FeatureMenuProps ) {
         <>
             <nav
                 aria-label={ __( 'Features', 'storegrowth-sales-booster' ) }
-                className="z-20 flex w-full shrink-0 flex-row gap-2 overflow-x-auto border-b border-sg-stroke bg-white px-4 py-3 min-[901px]:sticky min-[901px]:top-[var(--spsg-rail-top)] min-[901px]:h-[calc(100vh-var(--spsg-rail-top))] min-[901px]:w-[210px] min-[901px]:flex-col min-[901px]:gap-0 min-[901px]:self-start min-[901px]:overflow-y-auto min-[901px]:overflow-x-hidden min-[901px]:border-b-0 min-[901px]:px-3 min-[901px]:py-6"
+                // Not sticky: the rail stretches to the page area's height
+                // (the layout's flex row), so both white columns end together.
+                className="z-20 flex w-full shrink-0 flex-row gap-2 overflow-x-auto border-b border-sg-stroke bg-white px-4 py-3 min-[901px]:w-[210px] min-[901px]:flex-col min-[901px]:gap-0 min-[901px]:overflow-x-hidden min-[901px]:border-b-0 min-[901px]:px-3 min-[901px]:py-6"
             >
                 { modules.map( ( module ) => {
                     const isCurrent = module.id === activeId;
