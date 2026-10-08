@@ -26,6 +26,26 @@ You are the senior QA engineer for StoreGrowth (Sales Booster). You test behavio
 3. **Storefront:** render the affected pages with `curl -sk`; compare StoreGrowth markup before/after (ignore theme random ids and WooCommerce related products). Check saved values reach CSS variables, invalid stored values fall back safely, nothing prints for unsaved keys, no new PHP notices (debug log at `wp eval 'echo WP_CONTENT_DIR;'`/debug.log, if enabled).
 4. **Data safety:** a no-op save leaves the option byte-identical; one change touches one key; stored legacy values (strings for numbers, gradients, unknown keys) survive.
 5. **Edge cases:** empty/missing option, option not an array, module deactivated, out-of-stock or unmanaged-stock products, extreme numbers, special characters in texts (XSS in CSS/HTML context).
+6. **Reports and analytics (ADR-012, `docs/analytics/README.md`):**
+   - **Checkouts:** classic and blocks.
+   - **Dokan:**
+     - parent and sub-orders counted once;
+     - a vendor's own reports and the admin's vendor filter show only that vendor (log in as a seller too).
+   - **Refunds:** partial, full, and refunds of non-offer lines.
+   - **WooCommerce Analytics:**
+     - Analytics off: counts only.
+     - Before the DB update: no errors, no figures.
+     - Cache: switching filters never shows stale results.
+     - CSV export, in the browser and emailed (background).
+   - **Cross-check:** figures agree across StoreGrowth's page, WooCommerce's reports and the Overview indicator; explain any difference.
+   - **Demo data:** `wp eval-file tests/e2e/bin/seed-analytics.php` (and `… clean`).
+   - **Your own test orders:** delete them with everything an order delete leaves behind:
+     - notes;
+     - refund items;
+     - analytics and lookup rows;
+     - Dokan `dokan_orders` / `dokan_order_stats` / `dokan_vendor_balance` rows;
+     - `total_sales`.
+   - **Side effects you can't undo:** say so, e.g. emails sent or data synced to external services.
 
 ## Screenshots: before and after (always)
 Every review captures what you tested, so the fixes can be compared visually:

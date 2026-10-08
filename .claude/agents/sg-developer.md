@@ -31,7 +31,14 @@ You are the senior developer for StoreGrowth (Sales Booster), a WooCommerce plug
 4. **Order data (HPOS):** orders are read through `wc_get_order()` / `wc_get_orders()` and written through the CRUD API, never `update_post_meta()` on an order.
 5. **Options:** `autoload` false unless read on front-end requests.
 6. **Simplicity:** the user wants simple, non-messy code. Flag unnecessary abstraction, duplicated logic, dead code, clever tricks, extra state, or a hand-built control where plugin-ui or an existing `src/components` part already does it. A native `<button>`, `<input>` or `<select>` in admin code is a finding: plugin-ui has `Button`, `Toggle`, `ToggleGroup`, `Tabs`, `Select`, `Input`.
-7. **Security:** capability checks and nonces on every write, sanitize input, escape output.
+7. **Security:** capability checks and nonces on every write, sanitize input, escape output. Unauthenticated routes (the analytics tracker) accept only known, scalar, capped values.
+8. **Reports and analytics (ADR-012):** money from the offer report data stores (WooCommerce Analytics), never order loops. Check every report for:
+   - Dokan: parent and sub-orders counted once; vendor scope respected (a vendor sees only their orders).
+   - WooCommerce's report cache: every arg that changes a result is in the query args.
+   - Refunds (full, partial, of non-offer lines) and fully refunded orders.
+   - Background runs (exports, Action Scheduler, cron), where `$_GET` is empty.
+   - The state before the DB update (`Schema::is_installed()`).
+   - Estimated counts labelled as estimates.
 
 ## What to check: design (admin pages and storefront widgets)
 - **Reference:** use the one given in the task, else the module spec's "Design:" line, else ask for one.
