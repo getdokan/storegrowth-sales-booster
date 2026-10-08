@@ -19,7 +19,7 @@ import {
     LayoutTemplate,
     type LucideIcon,
 } from 'lucide-react';
-import { ModuleIcon, StatusPill } from '@storegrowth/components';
+import { Card, ModuleIcon, StatusPill } from '@storegrowth/components';
 import { Link, useModules } from '@storegrowth/hooks';
 import {
     DASHBOARD_GROUPS,
@@ -47,7 +47,7 @@ function StatTile( {
     iconClass,
 }: StatTileProps ) {
     return (
-        <div className="flex min-w-0 flex-[1_1_245px] flex-col items-start rounded-[16px] bg-white p-[25px] shadow-[inset_0_0_0_1px_#F9FAFB]">
+        <Card className="flex-[1_1_245px] items-start p-[25px]">
             <div className="flex w-full flex-col items-start gap-6">
                 <div className="flex w-full items-center justify-between gap-2">
                     <h3 className="text-[16px] font-semibold leading-6 text-sg-ink">
@@ -70,7 +70,7 @@ function StatTile( {
                     { value }
                 </p>
             </div>
-        </div>
+        </Card>
     );
 }
 

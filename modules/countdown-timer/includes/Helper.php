@@ -148,4 +148,23 @@ class Helper {
 
 		return true;
 	}
+
+	/**
+	 * The product's timer discount as the price filter reads it, whether or
+	 * not the timer is live.
+	 *
+	 * Same `intval()` as `CommonHooks::get_product_price()`, which doesn't
+	 * range-check; a value outside 1–100 gives no timer discount here.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $product_id Product or variation id.
+	 *
+	 * @return int Percentage from 1 to 100, or 0 for none.
+	 */
+	public static function discount_percentage( int $product_id ): int {
+		$pct = intval( get_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', true ) );
+
+		return ( $pct > 0 && $pct <= 100 ) ? $pct : 0;
+	}
 }

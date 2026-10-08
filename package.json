@@ -36,7 +36,8 @@
     "@wordpress/i18n": "^6.5.0",
     "@wordpress/url": "^4.32.0",
     "lucide-react": "^0.563.0",
-    "react-router-dom": "^6.30.6"
+    "react-router-dom": "^6.30.6",
+    "recharts": "^2.15.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",

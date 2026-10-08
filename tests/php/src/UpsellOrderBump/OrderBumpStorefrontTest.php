@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Test\UpsellOrderBump;
 
+use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Blocks\OrderBumpCheckoutIntegration;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
@@ -445,6 +446,72 @@ class OrderBumpStorefrontTest extends StoreGrowthTestCase {
 		$this->assertSame( 1, $ajax->remove_offer_from_cart( $offer->get_id() ) );
 		$this->assertSame( [], WC()->cart->get_cart_item( $bump_key ), 'the bump line is gone' );
 		$this->assertNotEmpty( WC()->cart->get_cart_item( $own_key ), 'the own line stays' );
+	}
+
+	/**
+	 * Today's count of a bump metric.
+	 *
+	 * @param string $metric  Metric.
+	 * @param int    $bump_id Bump id.
+	 *
+	 * @return int
+	 */
+	private function count_of( string $metric, int $bump_id ): int {
+		global $wpdb;
+
+		$table = $wpdb->prefix . Schema::DAILY;
+
+		// phpcs:ignore WordPress.DB
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT count FROM {$table} WHERE module = 'upsell-order-bump' AND metric = %s AND object_id = %d", $metric, $bump_id ) );
+	}
+
+	/**
+	 * The classic box counts a view once per session, however often the
+	 * checkout re-renders it.
+	 *
+	 * @return void
+	 */
+	public function test_classic_view_is_counted_once_per_session() {
+		$target  = $this->create_product();
+		$offer   = $this->create_product( 30 );
+		$bump_id = $this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $offer->get_id(),
+			]
+		);
+		WC()->session->set( 'spsg_bump_seen', [] );
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		ob_start();
+		( new OrderBump() )->bump_product_frontend_view();
+		( new OrderBump() )->bump_product_frontend_view();
+		ob_end_clean();
+
+		$this->assertSame( 1, $this->count_of( 'view', $bump_id ) );
+	}
+
+	/**
+	 * Unticking counts a removal against the bump.
+	 *
+	 * @return void
+	 */
+	public function test_untick_is_counted() {
+		$target  = $this->create_product();
+		$offer   = $this->create_product( 30 );
+		$bump_id = $this->create_bump(
+			[
+				'target_products'  => [ $target->get_id() ],
+				'offer_product_id' => $offer->get_id(),
+			]
+		);
+		WC()->cart->add_to_cart( $target->get_id() );
+
+		$ajax = new OrderBumpAjax();
+		$ajax->add_offer_to_cart( $ajax->find_offer( $offer->get_id() ) );
+		$ajax->remove_offer_from_cart( $offer->get_id() );
+
+		$this->assertSame( 1, $this->count_of( 'remove', $bump_id ) );
 	}
 
 	/**

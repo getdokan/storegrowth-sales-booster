@@ -20,6 +20,7 @@ namespace StorePulse\StoreGrowth\Attribution;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use WC_Order;
 use WC_Order_Item;
+use WC_Product;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -70,6 +71,32 @@ class OfferAttribution implements HookRegistry {
 	);
 
 	/**
+	 * Order-item meta key: campaign id of the BOGO gift this line triggered (e.g. "bogo:12").
+	 *
+	 * Its own key, so a line that is both a reward (an order bump) and a
+	 * BOGO trigger keeps its `_spsg_campaign_id`.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TRIGGER_CAMPAIGN_ID = '_spsg_trigger_campaign_id';
+
+	/**
+	 * Order-item meta key: unit price the shopper would have paid without any
+	 * StoreGrowth discount, excluding tax, taken at checkout.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const REFERENCE_PRICE = '_spsg_reference_price';
+
+	/**
+	 * Order-item meta key: countdown timer discount percentage in force at
+	 * checkout (written by the Countdown Timer module).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const COUNTDOWN_PCT = '_spsg_countdown_pct';
+
+	/**
 	 * Register hooks.
 	 *
 	 * @since 2.2.0
@@ -79,12 +106,33 @@ class OfferAttribution implements HookRegistry {
 	public function register_hooks(): void {
 		// Fires for both classic checkout and the blocks Store API checkout
 		// (Store API OrderController calls wc()->checkout->create_order_line_items()).
-		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'copy_stamp_to_order_item' ), 10, 3 );
+		add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'copy_stamp_to_order_item' ), 10, 4 );
 
 		// Aggregate record. Classic checkout fires woocommerce_checkout_create_order;
 		// the blocks Store API builds the order itself and fires its own action instead.
 		add_action( 'woocommerce_checkout_create_order', array( $this, 'record_influencing_offers' ), 10, 1 );
 		add_action( 'woocommerce_store_api_checkout_update_order_from_request', array( $this, 'record_influencing_offers' ), 10, 1 );
+
+		// Subscriptions created before keys were kept off them carry the 2.2.0
+		// keys; renewal and resubscribe orders copy them from the subscription.
+		add_filter( 'wcs_new_order_items', array( $this, 'strip_from_subscription_items' ), 10, 1 );
+	}
+
+	/**
+	 * Whether an order is a WooCommerce Subscriptions subscription.
+	 *
+	 * Keys are never written to subscriptions: every renewal path copies a
+	 * subscription's item meta onto the new order, which would count the
+	 * offer again on each renewal.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $order Order being built.
+	 *
+	 * @return bool
+	 */
+	public static function is_subscription( $order ): bool {
+		return $order instanceof WC_Order && 'shop_subscription' === $order->get_type();
 	}
 
 	/**
@@ -131,16 +179,30 @@ class OfferAttribution implements HookRegistry {
 	/**
 	 * Copy the campaign stamp from a cart item onto its order line item.
 	 *
+	 * Also writes the reference price on reward lines and the trigger key on
+	 * the line that triggered a BOGO gift (since SPSG_VERSION). Nothing is
+	 * written to a subscription.
+	 *
 	 * @since 2.2.0
 	 *
 	 * @param WC_Order_Item $item          Order line item being created.
 	 * @param string        $cart_item_key Cart item key.
 	 * @param array         $values        Cart item data.
+	 * @param WC_Order|null $order         Order being built (since SPSG_VERSION).
 	 *
 	 * @return void
 	 */
-	public function copy_stamp_to_order_item( $item, $cart_item_key, $values ): void {
-		if ( ! $item instanceof WC_Order_Item || empty( $values[ self::CAMPAIGN_ID ] ) ) {
+	public function copy_stamp_to_order_item( $item, $cart_item_key, $values, $order = null ): void {
+		if ( ! $item instanceof WC_Order_Item || self::is_subscription( $order ) ) {
+			return;
+		}
+
+		$trigger_campaign_id = self::find_triggered_campaign( (string) $cart_item_key );
+		if ( '' !== $trigger_campaign_id ) {
+			$item->add_meta_data( self::TRIGGER_CAMPAIGN_ID, $trigger_campaign_id, true );
+		}
+
+		if ( empty( $values[ self::CAMPAIGN_ID ] ) ) {
 			return;
 		}
 
@@ -149,6 +211,104 @@ class OfferAttribution implements HookRegistry {
 				$item->add_meta_data( $key, $values[ $key ], true );
 			}
 		}
+
+		$reference_price = isset( $values['data'] ) ? self::reference_price( $values['data'] ) : '';
+		if ( '' !== $reference_price ) {
+			$item->add_meta_data( self::REFERENCE_PRICE, $reference_price, true );
+		}
+	}
+
+	/**
+	 * Campaign id of the BOGO gift a cart line triggered.
+	 *
+	 * A gift line points at its trigger with `linked_to_product_key` (only
+	 * BOGO sets it; the popup's gift has no `bogo_offer` flag); the first
+	 * gift found wins.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $cart_item_key Cart item key of the possible trigger line.
+	 *
+	 * @return string Campaign id, or '' when the line triggered no gift.
+	 */
+	private static function find_triggered_campaign( string $cart_item_key ): string {
+		if ( '' === $cart_item_key || ! function_exists( 'WC' ) || is_null( WC()->cart ) ) {
+			return '';
+		}
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			if (
+				! empty( $cart_item[ self::CAMPAIGN_ID ] )
+				&& isset( $cart_item['linked_to_product_key'] )
+				&& $cart_item['linked_to_product_key'] === $cart_item_key
+			) {
+				return (string) $cart_item[ self::CAMPAIGN_ID ];
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Unit price, excluding tax, the shopper would pay without the offer.
+	 *
+	 * Read from a fresh product: the cart's own product object already
+	 * carries the offer price (`set_price()`). In the view context other
+	 * price filters (currency, role pricing) stay in; the Countdown Timer
+	 * module asks for the edit context, which skips its own filter, when its
+	 * timer is live on the product.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Product $cart_product Product object from the cart item.
+	 * @param string     $context      `view` or `edit` (price without getter filters).
+	 *
+	 * @return string Decimal price, or '' when the product can't be read.
+	 */
+	public static function reference_price( $cart_product, string $context = 'view' ): string {
+		if ( ! $cart_product instanceof WC_Product ) {
+			return '';
+		}
+
+		$product = wc_get_product( $cart_product->get_id() );
+		if ( ! $product ) {
+			return '';
+		}
+
+		return (string) wc_format_decimal( wc_get_price_excluding_tax( $product, array( 'price' => $product->get_price( $context ) ) ) );
+	}
+
+	/**
+	 * Remove StoreGrowth keys from items copied off a subscription.
+	 *
+	 * Runs for renewal and resubscribe orders. The items are the
+	 * subscription's own, which is saved afterwards, so the subscription is
+	 * cleaned for good.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $items Order items being copied.
+	 *
+	 * @return array
+	 */
+	public function strip_from_subscription_items( $items ) {
+		if ( ! is_array( $items ) ) {
+			return $items;
+		}
+
+		$keys = array_merge( self::STAMP_KEYS, array( self::TRIGGER_CAMPAIGN_ID, self::REFERENCE_PRICE, self::COUNTDOWN_PCT ) );
+
+		foreach ( $items as $item ) {
+			if ( ! $item instanceof WC_Order_Item ) {
+				continue;
+			}
+
+			foreach ( $keys as $key ) {
+				$item->delete_meta_data( $key );
+			}
+		}
+
+		return $items;
 	}
 
 	/**

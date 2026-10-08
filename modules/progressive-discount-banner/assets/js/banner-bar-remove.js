@@ -41,11 +41,19 @@
       }
     };
 
+    // Count a bar event (storefront-tracker.js; views once per session).
+    const track = (metric) => {
+      if (window.spsgStorefront && window.spsgStorefront.track) {
+        window.spsgStorefront.track("progressive-discount-banner", metric, "module", 0);
+      }
+    };
+
     const bannerShow = () => {
       if (!bannerExists()) {
         return;
       }
       isShowing = true;
+      track("view");
       $(".spsg-pd-banner-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
     };
@@ -129,10 +137,15 @@
       $(document).on("click", ".spsg-pd-banner-bar-remove", function () {
         const slideDirection = bar_position !== 'top' ? 'translateY(500%)' : 'translateY(-500%)';
         isShowing = false;
+        track("dismiss");
         $( '.spsg-pd-banner-bar-wrapper' ).css( 'transform', slideDirection );
         paddingRemoverBody();
         setTimeout(removeClassToBodyToHandleBannerVisibility, 500);
         localStorage.setItem("banner_hidden_time", now + 10 * 60 * 1000);
+      });
+
+      $(document).on("click", ".spsg-pd-banner-bar-wrapper .fn-bar-action-button", function () {
+        track("click");
       });
 
       // Keyboard: Enter / Space on the close control act as a click.

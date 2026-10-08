@@ -26,6 +26,9 @@ module.exports = () => {
         // Persistent cache (node_modules/.cache/webpack). One cache per mode so
         // `npm run start` and `npm run build` don't invalidate each other; it is
         // rebuilt only when these config files or package.json change.
+        // tailwind.css is rebuilt when a file it scans changes: those files are
+        // the stylesheet's own dependencies (see the `@source` comment in
+        // src/base-tailwind.css for why its scan stays limited).
         cache: {
             type: 'filesystem',
             name: `storegrowth-${

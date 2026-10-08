@@ -379,6 +379,26 @@ class Helper {
 	 * @return array|null Offer settings, or null when no trigger offers this gift.
 	 */
 	public static function resolve_bogo_settings_for_gift( $gift_product_id ) {
+		$trigger = self::find_gift_trigger( $gift_product_id );
+
+		return $trigger ? $trigger['settings'] : null;
+	}
+
+	/**
+	 * Find the cart line that triggers a gift, and its offer.
+	 *
+	 * Scans the cart's trigger products for the first offer whose reward is
+	 * the requested gift.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $gift_product_id Gift product id added to the cart.
+	 *
+	 * @return array{key: string, settings: array}|null The trigger's cart item key and
+	 *                                                  offer settings, or null when no
+	 *                                                  trigger offers this gift.
+	 */
+	public static function find_gift_trigger( $gift_product_id ) {
 		$gift_product_id = (int) $gift_product_id;
 
 		if ( ! $gift_product_id || is_null( WC()->cart ) ) {
@@ -387,7 +407,7 @@ class Helper {
 
 		$gift_parent_id = (int) wp_get_post_parent_id( $gift_product_id );
 
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			// Only inspect trigger products, never the injected gift lines.
 			if ( ! empty( $cart_item['bogo_offer'] ) ) {
 				continue;
@@ -405,7 +425,10 @@ class Helper {
 
 			$offer_product_id = (int) self::get_offer_product_id( $settings, $trigger_id );
 			if ( $offer_product_id === $gift_product_id || ( $gift_parent_id && $offer_product_id === $gift_parent_id ) ) {
-				return $settings;
+				return [
+					'key'      => $cart_item_key,
+					'settings' => $settings,
+				];
 			}
 		}
 

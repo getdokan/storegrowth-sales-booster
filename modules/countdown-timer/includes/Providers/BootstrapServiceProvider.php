@@ -6,6 +6,7 @@ use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\Ajax;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CommonHooks;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\OrderAttribution;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -29,6 +30,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         EnqueueScript::class,
         CommonHooks::class,
         Ajax::class,
+        OrderAttribution::class,
     ];
 
     /**

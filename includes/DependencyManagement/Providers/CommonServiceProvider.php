@@ -7,6 +7,13 @@
 
 namespace StorePulse\StoreGrowth\DependencyManagement\Providers;
 
+use StorePulse\StoreGrowth\Analytics\AnalyticsController;
+use StorePulse\StoreGrowth\Analytics\Backfill;
+use StorePulse\StoreGrowth\Analytics\OfferLookup;
+use StorePulse\StoreGrowth\Analytics\OffersStatsController;
+use StorePulse\StoreGrowth\Analytics\Schema;
+use StorePulse\StoreGrowth\Analytics\TrackController;
+use StorePulse\StoreGrowth\Analytics\WcAnalytics;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Upgrader;
@@ -43,6 +50,13 @@ class CommonServiceProvider extends BootableServiceProvider {
 		ModuleSettingsController::class,
 		StorefrontFonts::class,
 		OfferAttribution::class,
+		Schema::class,
+		OfferLookup::class,
+		Backfill::class,
+		TrackController::class,
+		AnalyticsController::class,
+		WcAnalytics::class,
+		OffersStatsController::class,
 	];
 
 	/**

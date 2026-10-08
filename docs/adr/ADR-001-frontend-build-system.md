@@ -60,6 +60,8 @@ It is not a separate webpack config per module.
    There is no global data store. Shared state (the module list) is a React context in `@storegrowth/hooks`; because that bundle is shared, module bundles get the same context instance as the shell. Everything else is component state.
 
    Module bundles import these bare specifiers. The dependency mapping turns them into globals, and the generated `.asset.php` lists the handles. WordPress then loads core before modules, and each shared library is downloaded once.
+
+   Packages that plugin-ui already bundles and re-exports are taken from it, not imported bare (which would bundle a second copy): charts use `import { recharts } from '@wedevs/plugin-ui'` (plugin-ui's `dist` inlines recharts, so it can't be split into a bundle of its own). `.eslintrc.js` blocks the bare `recharts` import.
 4. **Output layout.** `output.path = build/` with `clean: true`, which is safe because it's a dedicated folder. Every entry is listed by hand in `webpack-entries.js` (no auto-discovery); a module or integration is added there when it migrates. Entry keys set the file paths:
    - core: `build/admin.js`, `build/tailwind.css`, `build/plugin-ui.js`, …
    - modules: `modules/<name>/assets/js/admin.js` (+ `admin.asset.php`), `modules/upsell-order-bump/assets/js/blocks.js`. A module's compiled files live with the module. The entry key is relative to `build/` (`../modules/<name>/assets/js/<bundle>`, helper `moduleEntry()`), so `clean` never touches module folders. **Only the generated names are git-ignored** (`admin.js`, `*.asset.php`, `*.js.map` under `modules/*/assets/js/`): the hand-written storefront scripts in the same folder stay tracked and must not use those names. A new bundle name gets its own `.gitignore` line.

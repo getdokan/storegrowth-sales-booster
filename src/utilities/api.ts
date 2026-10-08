@@ -19,6 +19,113 @@ export interface DashboardOverview {
     templates: number | null;
 }
 
+/** Money figures of a range, a module or a campaign (`GET /analytics`). */
+export interface AnalyticsFigures {
+    revenue: number;
+    discount: number;
+    orders: number;
+    items: number;
+}
+
+/** Counts by metric (`view`, `accept`, `remove`, …). */
+export type AnalyticsCounts = Record< string, number >;
+
+/** WooCommerce's price format (`wc_price()`'s settings). */
+export interface PriceFormat {
+    symbol: string;
+    /** e.g. `%1$s%2$s`: 1 the symbol, 2 the amount. */
+    format: string;
+    decimals: number;
+    decimal_separator: string;
+    thousand_separator: string;
+}
+
+/** One module in `GET /analytics`. */
+export interface AnalyticsModule extends AnalyticsFigures {
+    counts: AnalyticsCounts;
+    /** Order Bump, BOGO: orders per bump / offer view, in percent; null without views. */
+    take_rate?: number | null;
+    /** BOGO: revenue of the lines that triggered a gift (not in the total). */
+    trigger_revenue?: number;
+    /** Countdown Timer: add-to-carts per timer view, in percent; null without views. */
+    add_to_cart_rate?: number | null;
+    /** Free Shipping Bar: orders that met the threshold (discount or free-shipping mode). */
+    threshold_orders?: number;
+}
+
+/** One Countdown Timer product in `GET /analytics`. */
+export interface AnalyticsProduct extends AnalyticsFigures {
+    id: number;
+    name: string;
+    /** `view`, `add_to_cart`. */
+    counts: AnalyticsCounts;
+    /** Add-to-carts per view, in percent; null without views. */
+    add_to_cart_rate: number | null;
+    /** Seen with a timer but no sale at a timer price, and no timer discount set. */
+    timer_only: boolean;
+}
+
+/** One campaign (BOGO offer, order bump) in `GET /analytics`. */
+export interface AnalyticsCampaign extends AnalyticsFigures {
+    /** e.g. `order_bump:3`. */
+    id: string;
+    module: string;
+    name: string;
+    counts: AnalyticsCounts;
+    /** Orders per view, in percent; null without views. */
+    take_rate: number | null;
+}
+
+/** Response of `GET /analytics`. Only `status` until the database update ran. */
+export interface AnalyticsReport {
+    status: {
+        installed: boolean;
+        analytics_enabled: boolean;
+        pro: boolean;
+        currency: string;
+        price_format: PriceFormat;
+        after: string;
+        before: string;
+        /** Lite asked for more than 30 days and got 30. */
+        range_limited: boolean;
+        /** Pro: the vendor applied (0 for all); null without Dokan. */
+        vendor?: number | null;
+    };
+    totals?: AnalyticsFigures;
+    /** Pro, with `compare`: the previous period of the same length. */
+    comparison?: {
+        after: string;
+        before: string;
+        totals: Partial< AnalyticsFigures >;
+        modules: Record< string, Partial< AnalyticsFigures > >;
+        /** Percent change per figure; null when the previous figure is 0. */
+        change: {
+            totals: Partial< Record< keyof AnalyticsFigures, number | null > >;
+            modules: Record<
+                string,
+                Partial< Record< keyof AnalyticsFigures, number | null > >
+            >;
+        };
+    };
+    /** One per day, oldest first; `modules`: that day's revenue by module id (BOGO's includes its trigger products). */
+    intervals?: Array< {
+        date: string;
+        revenue: number;
+        discount: number;
+        modules: Record< string, number >;
+    } >;
+    modules?: Record< string, AnalyticsModule >;
+    campaigns?: AnalyticsCampaign[];
+    campaigns_total?: number;
+    /** Lite shows the top campaigns only. */
+    campaigns_limited?: boolean;
+    /** Countdown Timer products, by revenue, then views. */
+    products?: AnalyticsProduct[];
+    products_total?: number;
+    /** Lite shows the top products only. */
+    products_limited?: boolean;
+}
+
 /** Setting value in API shape. */
 /** Margin/padding value of a `box` field. */
 export interface BoxValue {
@@ -444,6 +551,45 @@ export async function fetchProductCategories(): Promise<
 export function fetchDashboardOverview(): Promise< DashboardOverview > {
     return apiFetch< DashboardOverview >( {
         path: path( '/dashboard/overview' ),
+    } );
+}
+
+/**
+ * Query params of `GET /analytics`: the last `days` days (dates worked out
+ * in the store's timezone), or `after` / `before`. Pro adds `vendor` and
+ * `compare`.
+ *
+ * @since SPSG_VERSION
+ */
+export interface AnalyticsParams {
+    days?: number;
+    after?: string;
+    before?: string;
+    vendor?: number;
+    compare?: boolean;
+}
+
+/**
+ * Offer analytics for a range.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param params Query params; unset ones aren't sent.
+ */
+export function fetchAnalytics(
+    params: AnalyticsParams
+): Promise< AnalyticsReport > {
+    const query: Record< string, string | number > = {};
+
+    Object.entries( params ).forEach( ( [ key, value ] ) => {
+        if ( undefined === value || '' === value || false === value ) {
+            return;
+        }
+        query[ key ] = true === value ? 1 : value;
+    } );
+
+    return apiFetch< AnalyticsReport >( {
+        path: addQueryArgs( path( '/analytics' ), query ),
     } );
 }
 

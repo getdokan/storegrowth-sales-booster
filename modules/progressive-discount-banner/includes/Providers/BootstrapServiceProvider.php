@@ -6,6 +6,7 @@ use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Ajax;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\CommonHooks;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\OrderAttribution;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
 
 /**
@@ -31,6 +32,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
         CommonHooks::class,
         Ajax::class,
         WoocommerceDiscount::class,
+        OrderAttribution::class,
     ];
 
     /**

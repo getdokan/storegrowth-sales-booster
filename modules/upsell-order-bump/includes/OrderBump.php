@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
@@ -62,7 +63,13 @@ class OrderBump implements HookRegistry {
 	 */
 	public function bump_product_frontend_view() {
 		foreach ( self::get_checkout_offers() as $offer ) {
-			$bump             = $offer['bump'];
+			$bump = $offer['bump'];
+
+			// The box re-renders on every checkout refresh: count a view once per session.
+			if ( Counter::first_in_session( 'spsg_bump_seen', (int) $bump['id'] ) ) {
+				Counter::bump( UpsellOrderBumpModule::get_id(), 'view', Counter::CAMPAIGN, (int) $bump['id'] );
+			}
+
 			$offer_product_id = $bump['offer_product_id'];
 			$offer_type       = $bump['offer_type'];
 			$offer_amount     = $bump['offer_amount'];

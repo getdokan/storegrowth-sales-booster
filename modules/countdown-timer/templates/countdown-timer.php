@@ -12,6 +12,7 @@
  */
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper;
 use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
 use StorePulse\StoreGrowth\Storefront\StorefrontStyle;
@@ -88,6 +89,9 @@ $variables = StorefrontStyle::declarations(
 StorefrontFonts::request( Helper::font_family( $saved['font_family'] ?? 'roboto' ) );
 StorefrontFonts::request( Helper::font_family( $has_pro ? $saved['counter_font_family'] ?? 'roboto' : 'roboto' ) );
 
+// Analytics (ADR-012): counts the timer's views and the product's add-to-carts on this page.
+wp_enqueue_script( 'spsg-storefront-tracker' );
+
 $units = [
 	'days'    => [ $widget_style['day_text_color'], __( 'Days', 'storegrowth-sales-booster' ) ],
 	'hours'   => [ $widget_style['hour_text_color'], __( 'Hours', 'storegrowth-sales-booster' ) ],
@@ -95,7 +99,13 @@ $units = [
 	'seconds' => [ $widget_style['second_text_color'], __( 'Sec', 'storegrowth-sales-booster' ) ],
 ];
 ?>
-<div class="spsg-countdown-timer <?php echo esc_attr( $layout_class ); ?>" style="<?php echo esc_attr( $variables ); ?>">
+<div
+	class="spsg-countdown-timer <?php echo esc_attr( $layout_class ); ?>"
+	style="<?php echo esc_attr( $variables ); ?>"
+	data-spsg-track="<?php echo esc_attr( CountdownTimerModule::get_id() ); ?>"
+	data-spsg-object="product:<?php echo esc_attr( $product->get_id() ); ?>"
+	data-spsg-track-add-to-cart
+>
 	<div class="spsg-countdown-timer-wrapper">
 		<?php if ( $heading_text ) : ?>
 			<p class="spsg-countdown-timer-heading <?php echo esc_attr( trim( $layout_class . ' ' . $heading_class ) ); ?>">

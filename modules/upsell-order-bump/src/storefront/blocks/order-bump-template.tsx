@@ -6,7 +6,7 @@
  *
  * @since SPSG_VERSION
  */
-import { RawHTML, useState } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import type { BumpDesign, BumpOffer } from './types';
 
@@ -25,6 +25,19 @@ const OrderBumpTemplate = ( { design, offerData }: OrderBumpTemplateProps ) => {
     const isPurchasable = offer.is_purchasable ?? true;
 
     const [ isChecked, setIsChecked ] = useState( offer.checked === 'checked' );
+
+    // A view, once per browser session (the tracker dedupes; the page
+    // reloads after every tick), as the classic box counts once per session.
+    useEffect( () => {
+        if ( offer.id ) {
+            window.spsgStorefront?.track?.(
+                'upsell-order-bump',
+                'view',
+                'campaign',
+                offer.id
+            );
+        }
+    }, [ offer.id ] );
 
     const handleChange = () => {
         const newChecked = ! isChecked;

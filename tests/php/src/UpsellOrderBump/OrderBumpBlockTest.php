@@ -146,7 +146,7 @@ class OrderBumpBlockTest extends StoreGrowthTestCase {
 
 		$script = wp_scripts()->registered[ self::HANDLE ];
 
-		$this->assertSame( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings', 'wp-element' ], $script->deps );
+		$this->assertSame( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings', 'spsg-storefront-tracker', 'wp-element' ], $script->deps );
 		$this->assertSame( 'abc', $script->ver );
 		$this->assertStringEndsWith( 'upsell-order-bump/assets/js/blocks.js', $script->src );
 	}

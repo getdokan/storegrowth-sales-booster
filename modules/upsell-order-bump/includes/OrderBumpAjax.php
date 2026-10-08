@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
@@ -69,6 +70,8 @@ class OrderBumpAjax implements HookRegistry {
 			wp_send_json_error( [ 'message' => __( 'This offer could not be added to the cart.', 'storegrowth-sales-booster' ) ], 400 );
 		}
 
+		Counter::bump( UpsellOrderBumpModule::get_id(), 'accept', Counter::CAMPAIGN, (int) $offer['bump']['id'] );
+
 		$woocommerce->cart->calculate_totals();
 		$woocommerce->cart->set_session();
 		$woocommerce->cart->maybe_set_cart_cookies();
@@ -109,8 +112,9 @@ class OrderBumpAjax implements HookRegistry {
 	}
 
 	/**
-	 * Remove an offer's bump lines from the cart (unticking the box); the
-	 * shopper's own lines of the same product stay.
+	 * Remove an offer's bump lines from the cart (unticking the box), and
+	 * count the removal against the bump each line came from; the shopper's
+	 * own lines of the same product stay.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -126,6 +130,12 @@ class OrderBumpAjax implements HookRegistry {
 
 			if ( $cart_item_id === $offer_id && OrderBump::is_bump_cart_item( $cart_item ) && WC()->cart->remove_cart_item( $cart_item_key ) ) {
 				++$removed;
+
+				// The stamp's campaign id is "order_bump:<bump id>".
+				$bump_id = (int) substr( (string) strrchr( (string) ( $cart_item[ OfferAttribution::CAMPAIGN_ID ] ?? '' ), ':' ), 1 );
+				if ( $bump_id ) {
+					Counter::bump( UpsellOrderBumpModule::get_id(), 'remove', Counter::CAMPAIGN, $bump_id );
+				}
 			}
 		}
 

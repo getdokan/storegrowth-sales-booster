@@ -187,6 +187,15 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
+			__( 'Analytics - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Analytics', 'storegrowth-sales-booster' ),
+			'manage_options',
+			self::PAGE . '#/analytics',
+			array( $this, 'app_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
 			__( 'Features - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Features', 'storegrowth-sales-booster' ),
 			'manage_options',

@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Admin\AdminMenu;
+use StorePulse\StoreGrowth\Analytics\TrackController;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -128,6 +129,16 @@ class Assets {
 			filemtime( Helper::get_plugin_path( 'assets/js/storefront-core.js' ) ),
 			true
 		);
+
+		// Analytics: counts views and clicks of module widgets (ADR-012).
+		wp_register_script(
+			'spsg-storefront-tracker',
+			Helper::get_plugin_url( 'assets/js/storefront-tracker.js' ),
+			[ 'spsg-storefront-core' ],
+			filemtime( Helper::get_plugin_path( 'assets/js/storefront-tracker.js' ) ),
+			true
+		);
+		wp_localize_script( 'spsg-storefront-tracker', 'spsgTracker', [ 'url' => rest_url( TrackController::NAMESPACE . '/' . TrackController::ROUTE ) ] );
 	}
 
 	/**
@@ -294,15 +305,6 @@ class Assets {
 					'onboardingCompleted' => (bool) get_option( 'spsg_ini_completion', false ),
 				)
 			)
-		);
-
-		wp_localize_script(
-			'spsg-admin',
-			'spsgNotices',
-			[
-				'noticesUrl' => rest_url( Upgrader::REST_NAMESPACE . '/notices/admin' ),
-				'actionUrl'  => rest_url( Upgrader::REST_NAMESPACE . '/migration/upgrade' ),
-			]
 		);
 	}
 

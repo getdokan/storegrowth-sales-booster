@@ -40,6 +40,12 @@ module.exports = {
                         message:
                             'Import router APIs from @storegrowth/hooks so every bundle shares the shell’s router.',
                     },
+                    {
+                        // plugin-ui bundles recharts; a bare import ships a second copy.
+                        name: 'recharts',
+                        message:
+                            'Use the `recharts` export of @wedevs/plugin-ui, which bundles it.',
+                    },
                 ],
             },
         ],

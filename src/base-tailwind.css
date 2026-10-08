@@ -13,9 +13,18 @@
 @import "tw-animate-css";
 @import "../node_modules/@wedevs/plugin-ui/src/components/wordpress/style.css";
 
-/* Classes used by our own code and by plugin-ui's components. */
+/*
+ * Classes used by our own code and by plugin-ui's components: only these
+ * folders are scanned (`source(none)` on the utilities import below turns off
+ * Tailwind's automatic detection, which scanned the whole plugin folder).
+ * Every scanned file and folder becomes a webpack dependency of this
+ * stylesheet. With the whole plugin folder, webpack failed to snapshot one of
+ * them (a symlink to a file in a git-ignored folder), dropped all of them, and
+ * the watcher and the persistent cache then served a stale tailwind.css after a
+ * class was added in a .tsx file. A glob must end in `/**` to reach the files.
+ */
 @source "./";
-@source "../modules/*/src";
+@source "../modules/*/src/**";
 @source "../integrations/src";
 @source "../node_modules/@wedevs/plugin-ui/dist";
 
@@ -115,7 +124,7 @@
 
 /* Scoped utilities. */
 .spsg-layout {
-    @import "tailwindcss/utilities.css" important;
+    @import "tailwindcss/utilities.css" important source(none);
 
     /* Preflight's html/body rules don't match inside a container; apply them here. */
     line-height: 1.5;

@@ -69,6 +69,15 @@ declare global {
                 getSetting: < T >( name: string ) => T | undefined;
             };
         };
+        /** `spsg-storefront-tracker` (assets/js/storefront-tracker.js), a dependency of the block script. */
+        spsgStorefront?: {
+            track?: (
+                module: string,
+                metric: string,
+                objectType: string,
+                objectId: number
+            ) => void;
+        };
         /** Localized on `spsg-order-bump-front-js` (`EnqueueScript::front_scripts()`). */
         bump_save_url: {
             ajax_url_for_front: string;

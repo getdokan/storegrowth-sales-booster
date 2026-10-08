@@ -29,7 +29,7 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
    @import "../node_modules/@wedevs/plugin-ui/src/components/wordpress/style.css";
 
    @source "../src/";
-   @source "../modules/*/src/";
+   @source "../modules/*/src/**";
    @source "../integrations/src/";
    @source "../node_modules/@wedevs/plugin-ui/dist";
 
@@ -56,10 +56,10 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
    .pui-root,
    .spsg-layout {
      @import "tailwindcss/preflight.css" layer(base);
-     @import "tailwindcss/utilities.css" important;
+     @import "tailwindcss/utilities.css" important source(none);
    }
    ```
-   The full `sg-*` list comes from the design repo's `assets/theme.js`.
+   The full `sg-*` list comes from the design repo's `assets/theme.js`. `source(none)` limits scanning to the `@source` folders: every scanned file and folder becomes a webpack dependency of the stylesheet, and Tailwind's automatic detection of the whole plugin folder made webpack drop them all (a stale `tailwind.css` from the watcher and the cache). A folder glob ends in `/**` so it reaches the files.
 3. **The app root element carries `spsg-layout`.** plugin-ui's `ThemeProvider` adds `.pui-root` inside it. Brand tokens are set through `createTheme` (primary `#0875FF`, radius `8px`, Inter), as in report §6.
 4. **Delete** `assets/src/preflight-reset.css` and every per-module admin SCSS file once its module migrates.
 5. **Storefront styles are out of scope.** The storefront CSS under `modules/<name>/assets/css` stays plain CSS. Tailwind must not load on the storefront. Exception (ADR-011): the Dokan vendor dashboard, a front-end page that draws StoreGrowth's admin UI, loads this stylesheet, still scoped to `.spsg-layout`.

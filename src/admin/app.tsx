@@ -1,6 +1,7 @@
 /**
- * Admin app: notices and the routed page (see ./routes.tsx). The header is its
- * own bundle (src/header), mounted by PHP above this app.
+ * Admin app: the routed page (see ./routes.tsx). The header is its own bundle
+ * (src/header), mounted by PHP above this app; admin notices, the database
+ * update notice included, are core notices moved under it.
  *
  * @since SPSG_VERSION
  */
@@ -8,7 +9,6 @@ import { Toaster } from '@wedevs/plugin-ui';
 import { useLayoutEffect, useMemo, useRef } from '@wordpress/element';
 import { Route, Routes } from '@storegrowth/hooks';
 
-import AdminNotices from './admin-notices';
 import { getRoutes } from './routes';
 import useAdminSubmenu from './use-admin-submenu';
 
@@ -51,7 +51,6 @@ export default function App() {
 
     return (
         <div ref={ rootRef } className="flex w-full flex-col bg-sg-page">
-            <AdminNotices />
             <Routes>
                 { routes.map( ( route ) => (
                     <Route

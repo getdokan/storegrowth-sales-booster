@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
@@ -21,6 +22,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WoocommerceDiscount implements HookRegistry {
 
 	use Singleton;
+
+	/**
+	 * Cart fee id of the bar's discount.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const FEE_ID = 'spsg-pd-banner-discount';
+
+	/**
+	 * WooCommerce session key: the cart reached the threshold this session.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const REACHED_SESSION_KEY = 'spsg_fsb_reached';
 
 	/**
 	 * Register Hooks.
@@ -116,6 +131,11 @@ class WoocommerceDiscount implements HookRegistry {
 			return;
 		}
 
+		// Counted once per session: fees are calculated on every cart change.
+		if ( Counter::first_in_session( self::REACHED_SESSION_KEY, 0 ) ) {
+			Counter::bump( ProgressiveDiscountBannerModule::get_id(), 'reached', Counter::MODULE, 0 );
+		}
+
 		if ( 'discount-amount' === $discount_type ) {
 			$this->set_discount_amount( $settings, $cart_amount );
 		}
@@ -150,7 +170,7 @@ class WoocommerceDiscount implements HookRegistry {
 		// Add discount as fee.
 		$fees_api->add_fee(
 			array(
-				'id'     => 'spsg-pd-banner-discount',
+				'id'     => self::FEE_ID,
 				'name'   => 'Discount',
 				'amount' => - $discount_amount, // Negative value to decrease the total.
 			)

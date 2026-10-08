@@ -23,6 +23,7 @@ import type { ReactNode } from 'react';
 import { Navigate, useModules, useParams } from '@storegrowth/hooks';
 import { moduleRoute } from '@storegrowth/utilities';
 
+import AnalyticsPage from './pages/analytics';
 import DashboardPage from './pages/dashboard';
 import ModulesPage from './pages/modules';
 import OnboardingPage from './pages/onboarding';
@@ -86,6 +87,7 @@ function LegacyModuleRedirect() {
 const coreRoutes: AdminRoute[] = [
     { id: 'home', path: '/', element: <Navigate to="/dashboard" replace /> },
     { id: 'dashboard', path: '/dashboard', element: <DashboardPage /> },
+    { id: 'analytics', path: '/analytics', element: <AnalyticsPage /> },
     { id: 'features', path: '/features', element: <FeaturesRedirect /> },
     { id: 'modules', path: '/modules', element: <ModulesPage /> },
     { id: 'settings', path: '/settings', element: <SettingsPage /> },

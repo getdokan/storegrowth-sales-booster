@@ -24,6 +24,7 @@ export {
     isMobilePreview,
     TargetingFields,
 } from './bar-fields';
+export { Card, type CardProps } from './card';
 export { CardHead, type CardHeadProps } from './card-head';
 export { ColorPicker, type ColorPickerProps } from './color-picker';
 export {

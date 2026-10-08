@@ -52,6 +52,28 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 	}
 
 	/**
+	 * Notice title.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string
+	 */
+	public static function title(): string {
+		return __( 'StoreGrowth database update required', 'storegrowth-sales-booster' );
+	}
+
+	/**
+	 * Notice message.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string
+	 */
+	public static function message(): string {
+		return __( 'StoreGrowth needs to update its database: it sets up offer reports and removes data it no longer uses. It runs once and takes a moment.', 'storegrowth-sales-booster' );
+	}
+
+	/**
 	 * Return the upgrade notice while migrations are pending.
 	 *
 	 * @since 2.1.2
@@ -66,8 +88,8 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 		return [
 			new Notice(
 				NotificationHelper::warning(
-					__( 'StoreGrowth database update required', 'storegrowth-sales-booster' ),
-					__( 'This update removes data StoreGrowth no longer uses, including stored administrator email addresses. It runs once and takes a moment.', 'storegrowth-sales-booster' ),
+					self::title(),
+					self::message(),
 					[
 						'key'            => self::NOTICE_KEY,
 						'scope'          => 'global',

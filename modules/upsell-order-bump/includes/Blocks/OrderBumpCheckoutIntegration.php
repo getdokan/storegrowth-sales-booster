@@ -88,7 +88,8 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 			PluginHelper::get_modules_url( 'upsell-order-bump/assets/js/blocks.js' ),
 			// The bundle reads `window.wc.blocksCheckout` / `wcSettings` directly,
 			// so the build can't list them: load them first.
-			array_merge( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings' ], $blocks['dependencies'] ),
+			// The storefront tracker counts the bump's views (ADR-012).
+			array_merge( [ 'wc-blocks-registry', 'wc-blocks-checkout', 'wc-settings', 'spsg-storefront-tracker' ], $blocks['dependencies'] ),
 			$blocks['version'],
 			true
 		);
