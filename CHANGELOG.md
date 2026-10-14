@@ -1,5 +1,16 @@
 == Changelog ==
 
+### v3.0.0 (October 14, 2026) ###
+
+- **new:** Redesigned admin: one StoreGrowth page (`admin.php?page=storegrowth`) in TypeScript on plugin-ui and Tailwind v4, over REST — dashboard, modules screen, and settings pages generated from each module's PHP schema. The old `spsg-settings` / `spsg-modules` slugs redirect; existing settings, offers and order bumps carry over unchanged.
+- **new:** Module analytics (ADR-012): offer keys on order lines at checkout, the `spsg_offer_lookup` mirror of WooCommerce Analytics, the `spsg_analytics_daily` counts table and storefront tracker, `GET sales-booster/v1/analytics`, and the Analytics page — revenue, discount, orders, take rates, add-to-cart rates, Free Shipping Bar "Helped" figures and a revenue-by-offer chart. See `docs/analytics/how-it-works.md`.
+- **new:** WooCommerce Analytics integration: "StoreGrowth offer" filter and Offer column on the Orders and Products reports (CSV too), "StoreGrowth offer revenue" Overview indicator, Dokan vendor scope.
+- **new:** Dashboard revenue, discount given and revenue-by-offer chart for the last 30 days.
+- **new:** BOGO on the Dokan vendor dashboard (ADR-011), vendor rules and settings page.
+- **enhancement:** 3.0.0 database update (`Migrations\V_3_0_0`) creates the analytics tables and backfills past orders through Action Scheduler.
+- **fix:** BOGO gift swaps keep the link to the real trigger cart line.
+- **fix:** Order Bump list sort allow-listed (`orderby` / `order`); 1.x order bumps and BOGO offers migrate on module activation.
+
 ### v2.1.2 (August 14, 2026) ###
 
 - **security:** Derived BOGO and Upsell Order Bump cart prices server-side from the saved offer configuration; `bogo_price`, `offer_product_cost` and `bump_price` sent by the client are ignored.
