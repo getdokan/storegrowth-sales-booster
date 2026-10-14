@@ -4,19 +4,19 @@
  *
  * @since SPSG_VERSION
  */
-import { cn } from '@wedevs/plugin-ui';
+import { cn, Skeleton } from '@wedevs/plugin-ui';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
     ArrowUpRight,
     Banknote,
+    BadgePercent,
     CircleCheckBig,
     CircleHelp,
     Crown,
     FileSpreadsheet,
     Headset,
     LayoutGrid,
-    LayoutTemplate,
     type LucideIcon,
 } from 'lucide-react';
 import { Card, ModuleIcon, StatusPill } from '@storegrowth/components';
@@ -24,12 +24,20 @@ import { Link, useModules } from '@storegrowth/hooks';
 import {
     DASHBOARD_GROUPS,
     MODULE_CATALOG,
+    fetchAnalytics,
     fetchDashboardOverview,
     getHeaderData,
     moduleLabel,
     moduleRoute,
+    type AnalyticsReport,
     type DashboardOverview,
 } from '@storegrowth/utilities';
+
+import DailyChart from '../analytics/daily-chart';
+import { formatMoney } from '../analytics/format';
+
+/** Days the dashboard's offer figures cover (as its Revenue tile). */
+const DASHBOARD_DAYS = 30;
 
 interface StatTileProps {
     title: string;
@@ -97,14 +105,29 @@ export default function DashboardPage() {
         null
     );
 
+    // The last 30 days' offer report: the discount tile and the chart.
+    const [ report, setReport ] = useState< AnalyticsReport | null >( null );
+    const [ reportLoaded, setReportLoaded ] = useState( false );
+
     useEffect( () => {
         fetchDashboardOverview()
             .then( setOverview )
             .catch( () => setOverview( null ) );
+        fetchAnalytics( { days: DASHBOARD_DAYS } )
+            .then( setReport )
+            .catch( () => setReport( null ) )
+            .finally( () => setReportLoaded( true ) );
     }, [] );
 
     const activeCount = modules.filter( ( module ) => module.status ).length;
     const empty = '—';
+    // Money needs the tables and WooCommerce Analytics (else "—", no chart).
+    const withMoney =
+        !! report?.status.installed && report.status.analytics_enabled;
+    const discount =
+        withMoney && report?.totals
+            ? formatMoney( report.totals.discount, report.status.price_format )
+            : empty;
 
     return (
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
@@ -151,20 +174,62 @@ export default function DashboardPage() {
                     />
                     <StatTile
                         title={ __(
-                            'Predefined Templates',
+                            'Discount given',
                             'storegrowth-sales-booster'
                         ) }
-                        value={
-                            overview?.templates !== null &&
-                            overview?.templates !== undefined
-                                ? padCount( overview.templates )
-                                : empty
-                        }
-                        icon={ LayoutTemplate }
-                        chipClass="bg-[#FDF2F8]"
-                        iconClass="text-[#EC4899]"
+                        value={ discount }
+                        icon={ BadgePercent }
+                        chipClass="bg-[#ECFDF5]"
+                        iconClass="text-[#059669]"
                     />
                 </div>
+
+                { /* The Analytics page's chart, for the last 30 days. */ }
+                { ( ! reportLoaded || withMoney ) && (
+                    <Card className="w-full">
+                        <div className="flex w-full flex-wrap items-center justify-between gap-2">
+                            <div className="flex flex-col gap-1">
+                                <h2 className="text-[16px] font-semibold leading-6 text-sg-ink">
+                                    { __(
+                                        'Revenue per day by offer',
+                                        'storegrowth-sales-booster'
+                                    ) }
+                                </h2>
+                                <p className="text-[12px] leading-4 text-sg-muted">
+                                    { __(
+                                        'Last 30 days',
+                                        'storegrowth-sales-booster'
+                                    ) }
+                                </p>
+                            </div>
+                            <Link
+                                to="/analytics"
+                                className="flex items-center gap-1 text-[14px] font-medium leading-5 text-sg-brand no-underline hover:text-sg-brand-hover focus:shadow-none"
+                            >
+                                { __(
+                                    'View analytics',
+                                    'storegrowth-sales-booster'
+                                ) }
+                                <ArrowUpRight
+                                    className="h-4 w-4"
+                                    strokeWidth={ 2 }
+                                    aria-hidden
+                                />
+                            </Link>
+                        </div>
+                        { report && withMoney ? (
+                            <DailyChart
+                                days={ report.intervals ?? [] }
+                                price={ report.status.price_format }
+                                moduleName={ ( id ) => {
+                                    return MODULE_CATALOG[ id ]?.label ?? id;
+                                } }
+                            />
+                        ) : (
+                            <Skeleton className="h-[260px] w-full" />
+                        ) }
+                    </Card>
+                ) }
 
                 <div className="flex w-full flex-wrap items-start gap-6">
                     <div className="flex min-w-0 flex-[1_1_520px] flex-col gap-6">
