@@ -187,10 +187,10 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Analytics - StoreGrowth', 'storegrowth-sales-booster' ),
-			__( 'Analytics', 'storegrowth-sales-booster' ),
+			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
-			self::PAGE . '#/analytics',
+			self::PAGE . '#/modules',
 			array( $this, 'app_callback' )
 		);
 
@@ -205,10 +205,10 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
-			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
-			__( 'Modules', 'storegrowth-sales-booster' ),
+			__( 'Analytics - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Analytics', 'storegrowth-sales-booster' ),
 			'manage_options',
-			self::PAGE . '#/modules',
+			self::PAGE . '#/analytics',
 			array( $this, 'app_callback' )
 		);
 
@@ -349,7 +349,7 @@ class AdminMenu {
 	public function handle_external_redirects() {
 		$redirect_pages = array(
 			'go-spsg-pro'  => 'https://storegrowth.io/pricing',
-			'go-spsg-docs' => 'https://storegrowth.io/docs/',
+			'go-spsg-docs' => 'https://storepulse.co/plugins/storegrowth/docs/',
 		);
 
 		// Reads the admin menu slug only; no form data is processed, so there is

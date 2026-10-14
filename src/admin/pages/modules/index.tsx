@@ -67,13 +67,12 @@ export default function ModulesPage() {
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
             <div className="flex w-full max-w-[1280px] flex-col items-start">
                 <CardHead
-                    className="rounded-b-none"
                     title={ __( 'Modules', 'storegrowth-sales-booster' ) }
                     actions={
                         <>
                             <span className="text-[14px] leading-[1.4] text-sg-text">
                                 { __(
-                                    'Active All Modules',
+                                    'Activate All Modules',
                                     'storegrowth-sales-booster'
                                 ) }
                             </span>
@@ -89,11 +88,11 @@ export default function ModulesPage() {
                         </>
                     }
                 />
-                <div className="grid w-full grid-cols-1 gap-px rounded-b-[8px] px-px pb-px min-[521px]:grid-cols-2 min-[861px]:grid-cols-3 min-[1181px]:grid-cols-4">
+                <div className="mt-4 grid w-full grid-cols-1 gap-4 min-[521px]:grid-cols-2 min-[861px]:grid-cols-3 min-[1181px]:grid-cols-4">
                     { cards.map( ( module ) => (
                         <div
                             key={ module.id }
-                            className="flex w-full flex-col items-start gap-6 rounded-[8px] bg-white p-6"
+                            className="flex w-full flex-col items-start gap-6 rounded-[8px] border border-sg-cardline bg-white p-6"
                         >
                             <Link
                                 to={ moduleRoute( module.id ) }

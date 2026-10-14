@@ -105,7 +105,7 @@ export function ModulesScreen( { onBack, onNext }: ModulesScreenProps ) {
                             <a
                                 href={
                                     module.doc_link ||
-                                    'https://storegrowth.io/docs/'
+                                    'https://storepulse.co/plugins/storegrowth/docs/'
                                 }
                                 target="_blank"
                                 rel="noreferrer"

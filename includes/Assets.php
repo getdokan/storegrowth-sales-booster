@@ -270,10 +270,10 @@ class Assets {
 						'is_pro_exists'       => sp_store_growth()->has_pro(),
 						'pro_version'         => $this->get_pro_version(),
 						'upgrade_url'         => 'https://storegrowth.io/pricing',
-						'whats_new_url'       => 'https://storegrowth.io/changelog/',
-						'support_url'         => 'https://storegrowth.io/contact-us/',
-						'docs_url'            => 'https://storegrowth.io/docs/',
-						'feature_request_url' => 'https://storegrowth.io/contact-us/',
+						'whats_new_url'       => 'https://storepulse.co/plugins/storegrowth/changelog/',
+						'support_url'         => 'https://storepulse.co/contact/',
+						'docs_url'            => 'https://storepulse.co/plugins/storegrowth/docs/',
+						'feature_request_url' => 'https://feedback.storepulse.co/',
 					)
 				),
 			)
