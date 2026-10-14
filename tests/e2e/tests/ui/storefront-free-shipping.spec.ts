@@ -58,7 +58,16 @@ async function storeCart(page: Page): Promise<{ fees: { name: string; total: str
 }
 
 async function gotoShopAsGuest(guestPage: Page): Promise<void> {
+  // The bar is a cart fragment: after load, wc-cart-fragments fetches fresh
+  // fragments and swaps in a new bar. A style read during the swap hits the
+  // removed element and gets "" (flaky in CI), so wait for the refresh first.
+  // A fresh guest has no cached fragments, so the refresh always runs; if it
+  // doesn't (fragments off), there is no swap to wait for.
+  const refreshed = guestPage
+    .waitForResponse((res) => res.url().includes('wc-ajax=get_refreshed_fragments'), { timeout: 15_000 })
+    .catch(() => null);
   await guestPage.goto(STORE_PAGES.shop);
+  await refreshed;
   await expect(guestPage.locator(WRAP)).toHaveCount(1);
 }
 

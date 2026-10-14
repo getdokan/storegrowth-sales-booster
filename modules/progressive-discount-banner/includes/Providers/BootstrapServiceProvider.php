@@ -1,4 +1,9 @@
 <?php
+/**
+ * Free Shipping Bar runtime services.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers;
 
@@ -20,46 +25,45 @@ use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-        EnqueueScript::class,
-        CommonHooks::class,
-        Ajax::class,
-        WoocommerceDiscount::class,
-        OrderAttribution::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		EnqueueScript::class,
+		CommonHooks::class,
+		Ajax::class,
+		WoocommerceDiscount::class,
+		OrderAttribution::class,
+	];
 
-    /**
-     * Boot the service provider and supporting services.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-	    $this->set_initial_banner_data();
+	/**
+	 * Boot the service provider and supporting services.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		$this->set_initial_banner_data();
 
-        foreach ( $this->services as $service ) {
-            $this->share_with_implements_tags( $service );
-        }
-    }
+		foreach ( $this->services as $service ) {
+			$this->share_with_implements_tags( $service );
+		}
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+	}
 
 	/**
 	 * Setting Initial Banner Data.
