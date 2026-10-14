@@ -73,7 +73,8 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	}
 
 	/**
-	 * The settings page: one card of fields, no tabs.
+	 * The settings page: one card of fields, no tabs, and a button to run the
+	 * setup wizard again (it has no menu item).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -82,6 +83,12 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	public function get_page(): array {
 		return [
 			'title' => __( 'Settings', 'storegrowth-sales-booster' ),
+			'links' => [
+				[
+					'label' => __( 'Initial Setup', 'storegrowth-sales-booster' ),
+					'route' => '/ini-setup',
+				],
+			],
 		];
 	}
 }

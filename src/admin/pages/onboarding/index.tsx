@@ -4,7 +4,8 @@
  *
  * Activation redirects here until `spsg_ini_completion` is set, which
  * "Go to dashboard" and "Skip Guide" do (existing `spsg_inisetup_flag_update`
- * ajax action). Once set, this route sends the visitor to the dashboard.
+ * ajax action). After that it opens from the settings page's "Initial Setup"
+ * button and can be run again.
  *
  * As before, the two consent checkboxes are not sent anywhere.
  *
@@ -13,31 +14,14 @@
 import { toast } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Navigate, useNavigate } from '@storegrowth/hooks';
-import {
-    completeOnboarding,
-    errorMessage,
-    getAdminData,
-} from '@storegrowth/utilities';
+import { useNavigate } from '@storegrowth/hooks';
+import { completeOnboarding, errorMessage } from '@storegrowth/utilities';
 
 import { ModulesScreen } from './modules-screen';
 import { SuccessScreen } from './success-screen';
 import { type Agreements, WelcomeScreen } from './welcome-screen';
 
 export default function OnboardingPage() {
-    // Read once on mount, so finishing isn't interrupted by the redirect.
-    const [ alreadyDone ] = useState( () =>
-        Boolean( getAdminData().onboardingCompleted )
-    );
-
-    if ( alreadyDone ) {
-        return <Navigate to="/dashboard" replace />;
-    }
-
-    return <OnboardingWizard />;
-}
-
-function OnboardingWizard() {
     const navigate = useNavigate();
 
     const [ step, setStep ] = useState( 0 );
@@ -49,8 +33,6 @@ function OnboardingWizard() {
     const finish = async () => {
         try {
             await completeOnboarding();
-            // Coming back to this route without a reload redirects too.
-            getAdminData().onboardingCompleted = true;
             navigate( '/dashboard' );
         } catch ( error ) {
             toast.error(

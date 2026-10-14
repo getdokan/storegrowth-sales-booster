@@ -37,15 +37,15 @@ function submenuTarget(
         return 'page=storegrowth';
     }
 
-    if ( pathname.startsWith( '/ini-setup' ) ) {
-        return 'page=storegrowth#/ini-setup';
-    }
-
     if ( pathname.startsWith( '/modules' ) ) {
         return 'page=storegrowth#/modules';
     }
 
-    if ( pathname.startsWith( '/settings' ) ) {
+    // The setup wizard opens from the settings page.
+    if (
+        pathname.startsWith( '/settings' ) ||
+        pathname.startsWith( '/ini-setup' )
+    ) {
         return 'page=storegrowth#/settings';
     }
 

@@ -235,15 +235,6 @@ class AdminMenu {
 			array( $this, 'handle_external_redirects' )
 		);
 
-		add_submenu_page(
-			'sales-booster-for-woocommerce',
-			__( 'Initial Setup - StoreGrowth', 'storegrowth-sales-booster' ),
-			__( 'Initial Setup', 'storegrowth-sales-booster' ),
-			'manage_options',
-			self::PAGE . '#/ini-setup',
-			array( $this, 'app_callback' )
-		);
-
 		if ( ! sp_store_growth()->has_pro() && ! defined( 'STOREGROWTH_PRO_FILE' ) ) {
 			add_submenu_page(
 				'sales-booster-for-woocommerce',
