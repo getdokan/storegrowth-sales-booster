@@ -288,3 +288,83 @@ body:has(#spsg-admin-notices .notice:not(:empty)) .spsg-layout .spsg-page {
         margin: 0 32px;
     }
 }
+
+/*
+ * plugin-ui's Calendar (date pickers) runs react-day-picker with `animate`:
+ * on a month change it keeps a copy of the old caption and weeks and drops it
+ * on `animationend`. The animations live in react-day-picker's own
+ * stylesheet, which plugin-ui doesn't load, so without these the old month
+ * names stayed on top of the new ones. Copied from react-day-picker 9's
+ * style.css. With reduced motion they run near-instantly instead of not at
+ * all (no animation means no `animationend`, and the copies would stay).
+ */
+.rdp-root {
+    --rdp-animation_duration: 0.3s;
+    --rdp-animation_timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rdp-root {
+        --rdp-animation_duration: 0.01s;
+    }
+}
+
+@keyframes rdp-slide_in_left {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes rdp-slide_in_right {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes rdp-slide_out_left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+@keyframes rdp-slide_out_right {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes rdp-fade_in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rdp-fade_out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.rdp-weeks_before_enter,
+.rdp-root[dir="rtl"] .rdp-weeks_after_enter {
+    animation: rdp-slide_in_left var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
+
+.rdp-weeks_before_exit,
+.rdp-root[dir="rtl"] .rdp-weeks_after_exit {
+    animation: rdp-slide_out_left var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
+
+.rdp-weeks_after_enter,
+.rdp-root[dir="rtl"] .rdp-weeks_before_enter {
+    animation: rdp-slide_in_right var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
+
+.rdp-weeks_after_exit,
+.rdp-root[dir="rtl"] .rdp-weeks_before_exit {
+    animation: rdp-slide_out_right var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
+
+.rdp-caption_after_enter,
+.rdp-caption_before_enter {
+    animation: rdp-fade_in var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
+
+.rdp-caption_after_exit,
+.rdp-caption_before_exit {
+    animation: rdp-fade_out var(--rdp-animation_duration) var(--rdp-animation_timing) forwards;
+}
