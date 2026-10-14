@@ -5,7 +5,8 @@
  * and legend content) around a recharts line chart. BOGO's line counts the
  * products that unlocked a gift, so the lines don't add up to the total.
  * Screen readers get one summary of the chart (the module cards and the
- * campaigns table carry the figures).
+ * campaigns table carry the figures). On the dashboard and Pro's Analytics
+ * page.
  *
  * @since SPSG_VERSION
  */
@@ -17,9 +18,11 @@ import {
     recharts,
 } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
-import type { PriceFormat } from '@storegrowth/utilities';
-
-import { formatDay, formatMoney } from './format';
+import {
+    formatDay,
+    formatMoney,
+    type PriceFormat,
+} from '@storegrowth/utilities';
 
 // plugin-ui's own recharts (one copy on the page, the one its chart frame
 // uses); the bare `recharts` import is blocked in .eslintrc.js.
@@ -63,11 +66,7 @@ const SERIES = [
  * @param props.price      WooCommerce's price format.
  * @param props.moduleName Module name by id.
  */
-export default function DailyChart( {
-    days,
-    price,
-    moduleName,
-}: DailyChartProps ) {
+export function DailyChart( { days, price, moduleName }: DailyChartProps ) {
     const data = days.map( ( day ) => {
         const row: Record< string, string | number > = { date: day.date };
         SERIES.forEach( ( series ) => {

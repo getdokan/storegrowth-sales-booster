@@ -19,22 +19,25 @@ import {
     LayoutGrid,
     type LucideIcon,
 } from 'lucide-react';
-import { Card, ModuleIcon, StatusPill } from '@storegrowth/components';
+import {
+    Card,
+    DailyChart,
+    ModuleIcon,
+    StatusPill,
+} from '@storegrowth/components';
 import { Link, useModules } from '@storegrowth/hooks';
 import {
     DASHBOARD_GROUPS,
     MODULE_CATALOG,
     fetchAnalytics,
     fetchDashboardOverview,
+    formatMoney,
     getHeaderData,
     moduleLabel,
     moduleRoute,
     type AnalyticsReport,
     type DashboardOverview,
 } from '@storegrowth/utilities';
-
-import DailyChart from '../analytics/daily-chart';
-import { formatMoney } from '../analytics/format';
 
 /** Days the dashboard's offer figures cover (as its Revenue tile). */
 const DASHBOARD_DAYS = 30;

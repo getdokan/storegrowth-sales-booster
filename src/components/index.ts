@@ -27,6 +27,7 @@ export {
 export { Card, type CardProps } from './card';
 export { CardHead, type CardHeadProps } from './card-head';
 export { ColorPicker, type ColorPickerProps } from './color-picker';
+export { DailyChart, type DailyChartProps } from './daily-chart';
 export {
     DeactivatedModuleDialog,
     type DeactivatedModuleDialogProps,
@@ -71,6 +72,13 @@ export {
     type RecordListMessages,
     type RecordListProps,
 } from './record-list';
+export { ReportFigure, type ReportFigureProps } from './report-figure';
+export {
+    type ReportColumn,
+    type ReportRow,
+    ReportTable,
+    type ReportTableProps,
+} from './report-table';
 export { SaveBar, type SaveBarProps } from './save-bar';
 export { SettingsSplit, type SettingsSplitProps } from './settings-split';
 export {

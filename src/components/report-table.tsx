@@ -1,12 +1,10 @@
 /**
- * The Analytics page's lists (campaigns, timer products): a table, and the
- * line Lite shows when it lists the top rows only.
+ * A report's list (campaigns, timer products) as a table. On Pro's Analytics
+ * page and Lite's locked preview of it.
  *
  * @since SPSG_VERSION
  */
-import { __ } from '@wordpress/i18n';
 import type { ReactNode } from 'react';
-import { ProBadge } from '@storegrowth/components';
 
 export interface ReportColumn {
     label: string;
@@ -20,13 +18,13 @@ export interface ReportRow {
     cells: ReactNode[];
 }
 
-interface ReportTableProps {
+export interface ReportTableProps {
     columns: ReportColumn[];
     rows: ReportRow[];
 }
 
 /**
- * A report table.
+ * @since SPSG_VERSION
  *
  * @param props         Props.
  * @param props.columns Columns.
@@ -83,35 +81,5 @@ export function ReportTable( { columns, rows }: ReportTableProps ) {
                 </tbody>
             </table>
         </div>
-    );
-}
-
-interface LimitNoteProps {
-    /** e.g. "Showing 3 of 8 campaigns." */
-    message: string;
-    upgradeUrl: string;
-}
-
-/**
- * Lite's "Showing 3 of 8" line with the upgrade link.
- *
- * @param props            Props.
- * @param props.message    What is shown of how many.
- * @param props.upgradeUrl Upgrade link.
- */
-export function LimitNote( { message, upgradeUrl }: LimitNoteProps ) {
-    return (
-        <p className="flex flex-wrap items-center gap-2 text-[13px] leading-5 text-sg-muted">
-            { message }
-            <a
-                href={ upgradeUrl }
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 font-medium text-sg-brand"
-            >
-                { __( 'Upgrade to Pro', 'storegrowth-sales-booster' ) }
-                <ProBadge />
-            </a>
-        </p>
     );
 }
