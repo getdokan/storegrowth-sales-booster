@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout plugin
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Composer runs on the host, and `.wp-env.json` mounts this checkout —
       # vendor/ included — into the container as the plugin. So the host PHP has
@@ -56,7 +56,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -66,7 +66,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 

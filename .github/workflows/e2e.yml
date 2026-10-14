@@ -77,12 +77,12 @@ jobs:
           fi
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # No npm cache here: lock files are gitignored in this repo, so setup-node
       # has nothing to hash. We cache ~/.npm + node_modules ourselves below.
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 
@@ -96,7 +96,7 @@ jobs:
       # ---- Caches. Lock files are gitignored, so key on the manifests. The
       # restore-keys give a warm partial cache even when a manifest changes. ----
       - name: Cache Composer
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/composer
@@ -105,7 +105,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Cache npm + node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.npm
@@ -131,7 +131,7 @@ jobs:
       # .wp-env.override.json.
       - name: Checkout StoreGrowth Pro
         if: ${{ steps.pro.outputs.has-pro == 'true' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: getdokan/storegrowth-sales-booster-pro
           ref: develop
@@ -169,7 +169,7 @@ jobs:
 
       # compression-level 0: the tarballs are already gzipped.
       - name: Upload build output
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: build-output
           path: ${{ runner.temp }}/build-artifacts
@@ -212,17 +212,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 
       # Only the Playwright deps are installed here — the plugin build arrives
       # prebuilt from the `build` job, so no composer or root npm install.
       - name: Cache npm + node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.npm
@@ -231,7 +231,7 @@ jobs:
           restore-keys: ${{ runner.os }}-npm-e2e-
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -240,7 +240,7 @@ jobs:
 
       # ---- Unpack the shared build over this shard's checkout ----
       - name: Download build output
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build-output
           path: ${{ runner.temp }}/build-artifacts
@@ -341,7 +341,7 @@ jobs:
       # are uploaded only on failure to keep storage lean.
       - name: Upload blob report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: blob-report-${{ matrix.name }}
           path: tests/e2e/blob-report
@@ -349,7 +349,7 @@ jobs:
 
       - name: Upload JUnit results
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: junit-results-${{ matrix.name }}
           path: tests/e2e/results/junit.xml
@@ -357,7 +357,7 @@ jobs:
 
       - name: Upload traces & screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: test-results-${{ matrix.name }}
           path: tests/e2e/test-results
@@ -379,22 +379,22 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
 
       - name: Download blob reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: tests/e2e/all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
 
       - name: Download JUnit results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           path: tests/e2e/all-junit
           pattern: junit-results-*
@@ -409,7 +409,7 @@ jobs:
           PLAYWRIGHT_HTML_REPORT: playwright-report
 
       - name: Upload merged HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report
           path: tests/e2e/playwright-report
@@ -418,7 +418,7 @@ jobs:
       # Rich, per-test pass/fail report rendered as a GitHub Check (shows up in
       # the PR's Checks tab and as inline annotations on failing tests).
       - name: Publish test report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         if: ${{ always() }}
         with:
           name: Playwright results
