@@ -1,5 +1,7 @@
 # Module analytics: implementation plan
 
+> How the built feature works and how each figure (revenue, discount, take rate, …) is calculated: [how-it-works.md](how-it-works.md).
+
 Plan for the revenue and engagement reports described in the spec "StoreGrowth Module Analytics: Capture and Storage Spec" (Oct 1, 2026). This plan covers **phase 1: four modules** that can show money they produced:
 
 | Module (marketing name) | Module id (use in code, tables, REST) |
