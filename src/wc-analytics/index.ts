@@ -5,7 +5,7 @@
  * report. Loaded on WooCommerce's admin pages only; WooCommerce's own
  * components draw the filter and table, so no plugin-ui here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';

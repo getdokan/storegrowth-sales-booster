@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the BOGO admin bundle into the admin app, with the media library for
  * the custom badge upload.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -33,7 +33,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The badge upload opens the media library.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */

@@ -2,7 +2,7 @@
  * Text field (design `.field` + `.input`): label above a full-width
  * plugin-ui input.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Input } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -28,7 +28,7 @@ export interface TextFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.label       Label.

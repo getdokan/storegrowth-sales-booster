@@ -2,7 +2,7 @@
  * Colour field (design `.field-row` + `.swatch`): label on the left, round
  * swatch on the right.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useId } from '@wordpress/element';
 
@@ -15,7 +15,7 @@ export interface ColorFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label.

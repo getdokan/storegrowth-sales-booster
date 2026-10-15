@@ -24,7 +24,7 @@ class Bogo {
 	 * The dashboard bundle (`integrations/dokan/bogo` in webpack-entries.js),
 	 * relative to the plugin folder, without extension.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -265,7 +265,7 @@ class Bogo {
 	 * bundles read on the vendor dashboard (REST namespace, pro flag, asset
 	 * URL; no upgrade URL: vendor mode shows no Upgrade button).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array> Keyed by global name.
 	 */

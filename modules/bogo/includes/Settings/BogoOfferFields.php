@@ -27,14 +27,14 @@ defined( 'ABSPATH' ) || exit;
  * extension stores its own keys (`spsg_bogo_mapped_data`) and returns them
  * (`storegrowth_rest_prepare_bogo_offer`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class BogoOfferFields implements SettingsPage {
 
 	/**
 	 * Days an offer can run on (`offer_schedule`); `daily` is every day.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -43,7 +43,7 @@ class BogoOfferFields implements SettingsPage {
 	/**
 	 * The offer's own fields, in page order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -264,7 +264,7 @@ class BogoOfferFields implements SettingsPage {
 	/**
 	 * The offer's fields, after extensions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -281,7 +281,7 @@ class BogoOfferFields implements SettingsPage {
 		 * The offer's own fields can't be redefined, and a field of an unknown
 		 * type is dropped.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array $fields Field definitions keyed by key.
 		 */
@@ -301,7 +301,7 @@ class BogoOfferFields implements SettingsPage {
 	/**
 	 * The editor: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -367,7 +367,7 @@ class BogoOfferFields implements SettingsPage {
 		 * `spsg_bogo_offer_fields`. Replaces the old admin's JS slots
 		 * (`spsg_bogo_tab_panels`, `spsg_after_bogo_offer_settings`, …).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array $page Page: title, tabs, sections.
 		 */
@@ -378,7 +378,7 @@ class BogoOfferFields implements SettingsPage {
 	 * What the editor is drawn from: the page and the fields as the admin app
 	 * reads them (`SettingsService::to_public_schema()`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array{page: object, schema: object}
 	 */

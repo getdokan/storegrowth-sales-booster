@@ -5,7 +5,7 @@
  * A mock like Quick View's (spec §9): the storefront cart is the theme's
  * WooCommerce markup inside the panel, which doesn't fit the frame.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, cn } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
@@ -82,7 +82,7 @@ interface CartLineProps {
 /**
  * One item in the cart (design `.cart-line`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.values Settings.
@@ -197,7 +197,7 @@ export interface FlyCartPreviewProps {
 /**
  * The cart over the frame (design `.cart-stage`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props              Props.
  * @param props.values       Settings.

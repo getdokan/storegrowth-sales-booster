@@ -390,7 +390,7 @@ class Helper {
 	 * Scans the cart's trigger products for the first offer whose reward is
 	 * the requested gift.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $gift_product_id Gift product id added to the cart.
 	 *

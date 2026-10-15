@@ -2,7 +2,7 @@
  * A product in a record list cell (BOGO offers, order bumps): its
  * thumbnail and name, with anything under the name (prices, "+N").
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { decodeEntities } from '@wordpress/html-entities';
 import type { ReactNode } from 'react';
@@ -15,7 +15,7 @@ export interface ProductCellProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props         Props.
  * @param props.product Product.

@@ -3,7 +3,7 @@
  * through the shared records client), the preview's products and the
  * category messages.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -48,7 +48,7 @@ export interface BogoOffer {
  * The offers route: the admin's, or the Dokan vendor's (`/bogo/offers/vendor`,
  * the vendor's own offers).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param vendor The Dokan vendor dashboard.
  */
@@ -96,7 +96,7 @@ interface WcProduct {
 /**
  * Products by id, with what the preview shows (price, categories).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param ids Product ids.
  */
@@ -137,7 +137,7 @@ export async function fetchPreviewProducts(
 /**
  * A category page message (`sales-booster/v1/bogo/category-messages`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface CategoryMessage {
     /** Category (term) id. */
@@ -152,7 +152,7 @@ export interface CategoryMessage {
 /**
  * The category messages route.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 const messagesBase = () => {
     return `/${ getAdminData().restNamespace }/bogo/category-messages`;
@@ -161,7 +161,7 @@ const messagesBase = () => {
 /**
  * Every category message.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function fetchCategoryMessages() {
     return apiFetch< CategoryMessage[] >( { path: messagesBase() } );
@@ -170,7 +170,7 @@ export function fetchCategoryMessages() {
 /**
  * Add a category's message (`id` null) or change one (pro).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id            Category id of the message to change, or null.
  * @param data          Values.
@@ -191,7 +191,7 @@ export function saveCategoryMessage(
 /**
  * Show or hide a category's message (pro).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id     Category id.
  * @param active Shown.
@@ -207,7 +207,7 @@ export function setCategoryMessageStatus( id: number, active: boolean ) {
 /**
  * Delete a category's message (pro).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id Category id.
  */

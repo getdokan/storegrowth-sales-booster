@@ -8,7 +8,7 @@
  * frame sits under the page's title card (`ModuleSettingsPage`), so it has no
  * top border or top corners of its own.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -21,7 +21,7 @@ export interface SettingsSplitProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.children Settings column.

@@ -2,7 +2,7 @@
  * Every settings page the backend defines (`sales-booster/v1/admin/settings`),
  * fetched once and shared.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect, useState } from '@wordpress/element';
 import {
@@ -17,7 +17,7 @@ export interface SettingsPages {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function useSettingsPages(): SettingsPages {
     const [ pages, setPages ] = useState< SettingsPagesResponse >( {} );

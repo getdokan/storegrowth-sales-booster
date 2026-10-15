@@ -8,7 +8,7 @@
  * time: while one is pending the switches and row actions wait, and a bulk
  * delete goes one message after another.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Button,

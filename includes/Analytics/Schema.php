@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * the admin runs the upgrade from the upgrade notice (`Migrations\V_3_0_0`).
  * Until then nothing writes or reads them (`is_installed()`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class Schema implements HookRegistry {
 
@@ -48,7 +48,7 @@ class Schema implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -59,7 +59,7 @@ class Schema implements HookRegistry {
 	/**
 	 * Whether the tables have been created.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -70,7 +70,7 @@ class Schema implements HookRegistry {
 	/**
 	 * Create or upgrade the tables.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -133,7 +133,7 @@ class Schema implements HookRegistry {
 	/**
 	 * Drop the analytics tables with a deleted multisite site.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string[] $tables Prefixed table names to drop.
 	 *

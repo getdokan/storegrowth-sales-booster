@@ -26,14 +26,14 @@ class WoocommerceDiscount implements HookRegistry {
 	/**
 	 * Cart fee id of the bar's discount.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const FEE_ID = 'spsg-pd-banner-discount';
 
 	/**
 	 * WooCommerce session key: the cart reached the threshold this session.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const REACHED_SESSION_KEY = 'spsg_fsb_reached';
 

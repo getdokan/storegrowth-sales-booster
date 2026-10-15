@@ -6,7 +6,7 @@
  * puts its classes on the switch, so the card can't take the design's padding,
  * type sizes or locked (Pro) look.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Field,
@@ -30,7 +30,7 @@ export interface SwitchCardProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.title    Title.

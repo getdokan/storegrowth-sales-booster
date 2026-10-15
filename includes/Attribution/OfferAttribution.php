@@ -76,7 +76,7 @@ class OfferAttribution implements HookRegistry {
 	 * Its own key, so a line that is both a reward (an order bump) and a
 	 * BOGO trigger keeps its `_spsg_campaign_id`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const TRIGGER_CAMPAIGN_ID = '_spsg_trigger_campaign_id';
 
@@ -84,7 +84,7 @@ class OfferAttribution implements HookRegistry {
 	 * Order-item meta key: unit price the shopper would have paid without any
 	 * StoreGrowth discount, excluding tax, taken at checkout.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const REFERENCE_PRICE = '_spsg_reference_price';
 
@@ -92,7 +92,7 @@ class OfferAttribution implements HookRegistry {
 	 * Order-item meta key: countdown timer discount percentage in force at
 	 * checkout (written by the Countdown Timer module).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const COUNTDOWN_PCT = '_spsg_countdown_pct';
 
@@ -125,7 +125,7 @@ class OfferAttribution implements HookRegistry {
 	 * subscription's item meta onto the new order, which would count the
 	 * offer again on each renewal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $order Order being built.
 	 *
@@ -180,7 +180,7 @@ class OfferAttribution implements HookRegistry {
 	 * Copy the campaign stamp from a cart item onto its order line item.
 	 *
 	 * Also writes the reference price on reward lines and the trigger key on
-	 * the line that triggered a BOGO gift (since SPSG_VERSION). Nothing is
+	 * the line that triggered a BOGO gift (since 3.0.0). Nothing is
 	 * written to a subscription.
 	 *
 	 * @since 2.2.0
@@ -188,7 +188,7 @@ class OfferAttribution implements HookRegistry {
 	 * @param WC_Order_Item $item          Order line item being created.
 	 * @param string        $cart_item_key Cart item key.
 	 * @param array         $values        Cart item data.
-	 * @param WC_Order|null $order         Order being built (since SPSG_VERSION).
+	 * @param WC_Order|null $order         Order being built (since 3.0.0).
 	 *
 	 * @return void
 	 */
@@ -225,7 +225,7 @@ class OfferAttribution implements HookRegistry {
 	 * BOGO sets it; the popup's gift has no `bogo_offer` flag); the first
 	 * gift found wins.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $cart_item_key Cart item key of the possible trigger line.
 	 *
@@ -258,7 +258,7 @@ class OfferAttribution implements HookRegistry {
 	 * module asks for the edit context, which skips its own filter, when its
 	 * timer is live on the product.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $cart_product Product object from the cart item.
 	 * @param string     $context      `view` or `edit` (price without getter filters).
@@ -285,7 +285,7 @@ class OfferAttribution implements HookRegistry {
 	 * subscription's own, which is saved afterwards, so the subscription is
 	 * cleaned for good.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $items Order items being copied.
 	 *

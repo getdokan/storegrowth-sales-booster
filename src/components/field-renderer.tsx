@@ -21,7 +21,7 @@
  *         )
  *     );
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { SettingsElement } from '@wedevs/plugin-ui';
 import { applyFilters } from '@wordpress/hooks';
@@ -71,7 +71,7 @@ const VARIANTS: Record< SettingField[ 'type' ], string > = {
 /**
  * Keys of the fields extensions add to a tab, in drawing order.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param schema Module schema.
  * @param tab    Tab id, e.g. `configure`.
@@ -192,7 +192,7 @@ export interface DefaultFieldProps {
 /**
  * The control for a built-in variant (the `defaultField` extensions get).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.element  Settings element.
@@ -383,7 +383,7 @@ export interface SchemaFieldProps< V extends Values > {
 /**
  * One field drawn from its schema, through the variant's field hook.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.fieldKey Setting key.
@@ -417,7 +417,7 @@ export function SchemaField< V extends Values >( {
          * Filters the control of a schema field, by variant (plugin-ui's
          * settings field hook).
          *
-         * @since SPSG_VERSION
+         * @since 3.0.0
          *
          * @param {JSX.Element}     defaultField The built-in control; its `onChange( key, value )` prop saves.
          * @param {SettingsElement} element      The field.
@@ -438,7 +438,7 @@ export interface FieldRendererProps< V extends Values > {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.tab      Tab id.

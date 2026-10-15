@@ -3,7 +3,7 @@
  * route (ADR-004 keeps them). New features use REST (./api.ts). Rules:
  * docs/adr/ADR-006-admin-ajax-client.md.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -25,7 +25,7 @@ export type AjaxParams = Record< string, string | number | boolean >;
  * Resolves with the `data` of a success reply; rejects with an `Error`
  * whose message is the error reply's `data` when that is a string.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param action Ajax action, e.g. `spsg_inisetup_flag_update`.
  * @param params Extra form fields.

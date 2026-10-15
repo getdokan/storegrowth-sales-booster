@@ -2,7 +2,7 @@
  * Fly Cart settings as the settings API returns them
  * (`sales-booster/v1/settings/fly-cart`, PHP `FlyCartSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { SettingValue } from '@storegrowth/utilities';
 

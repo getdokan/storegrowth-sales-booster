@@ -29,14 +29,14 @@ defined( 'ABSPATH' ) || exit;
  * Extend it in PHP (`spsg_order_bump_fields`, `spsg_order_bump_page`); an
  * extension's field is stored in `design_settings` (sanitized as text).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OrderBumpFields implements SettingsPage {
 
 	/**
 	 * The bump's own fields, in page order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -221,7 +221,7 @@ class OrderBumpFields implements SettingsPage {
 	/**
 	 * The bump's fields, after extensions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -237,7 +237,7 @@ class OrderBumpFields implements SettingsPage {
 		 * The bump's own fields can't be redefined, and a field of an unknown
 		 * type is dropped.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array $fields Field definitions keyed by key.
 		 */
@@ -257,7 +257,7 @@ class OrderBumpFields implements SettingsPage {
 	/**
 	 * The editor: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -315,7 +315,7 @@ class OrderBumpFields implements SettingsPage {
 		 * `spsg_order_bump_fields`. Replaces the 2.x admin's JS hooks
 		 * (`spsg_upsell_order_bump_data`, …).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array $page Page: title, tabs, sections.
 		 */
@@ -326,7 +326,7 @@ class OrderBumpFields implements SettingsPage {
 	 * What the editor is drawn from: the page and the fields as the admin app
 	 * reads them (`SettingsService::to_public_schema()`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array{page: object, schema: object}
 	 */

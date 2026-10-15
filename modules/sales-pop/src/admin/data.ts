@@ -2,7 +2,7 @@
  * Sales Notification admin data: what PHP prints (`AdminPage`,
  * `window.sales_pop_data`) and the product-source route.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
@@ -25,7 +25,7 @@ export const FALLBACK_IMAGE = window.sales_pop_data?.fallback_image ?? '';
 /**
  * The radius settings a template draws with.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param template Template id.
  */
@@ -40,7 +40,7 @@ export function templateRadii( template: string ) {
 /**
  * The products a source offers (`GET sales-pop/source-products`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param source `orders` or `best_sellers`.
  * @param limit  Most products.

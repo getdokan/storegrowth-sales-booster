@@ -24,14 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * behind a flag option, and only while the table has no bumps. The 1.x
  * posts are never changed or deleted.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class LegacyMigration {
 
 	/**
 	 * Post type of 1.x order bumps.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -41,7 +41,7 @@ class LegacyMigration {
 	 * Flag option: set once the 1.x migration has run (or was not needed).
 	 * Holds the run's counts and errors. Not autoloaded.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -51,7 +51,7 @@ class LegacyMigration {
 	 * Lock held while the migration copies rows, so concurrent requests can't
 	 * copy the same bumps twice.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -61,7 +61,7 @@ class LegacyMigration {
 	 * Migrate the 1.x bumps if that hasn't happened yet. Cheap once done: one
 	 * option read. Runs on module activation.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -79,7 +79,7 @@ class LegacyMigration {
 	 * and copies nothing when the table already has bumps. Expects the table
 	 * to exist (`Migration::run_migration()`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array Migration results (`success`, `messages`, `errors`).
 	 */
@@ -138,7 +138,7 @@ class LegacyMigration {
 	/**
 	 * Record that the migration ran.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int      $bumps  Bumps migrated.
 	 * @param string[] $errors Skipped posts and why.
@@ -164,7 +164,7 @@ class LegacyMigration {
 	 * date. 1.x listed and showed only published ones (`get_posts()`'s
 	 * default status).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string[] $errors Skipped posts are added here.
 	 *
@@ -230,7 +230,7 @@ class LegacyMigration {
 	 * `bump_schedule` (never checked by the 1.x storefront) and `smart_offer`
 	 * stay in the 1.x data only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $settings 1.x bump settings.
 	 * @param object $post     1.x post (`ID`, `post_title`, `post_author`).
@@ -277,7 +277,7 @@ class LegacyMigration {
 	 * the 2.x defaults. The offer product's copies are the 1.x ones, for an
 	 * offer product that no longer exists.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings 1.x bump settings.
 	 *
@@ -309,7 +309,7 @@ class LegacyMigration {
 	 * title such as `Men's shirt`) left string lengths that no longer match;
 	 * those are recounted.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $excerpt Stored `post_excerpt`.
 	 *
@@ -336,7 +336,7 @@ class LegacyMigration {
 	/**
 	 * Unserialize an array, never objects.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $value Serialized value.
 	 *
@@ -354,7 +354,7 @@ class LegacyMigration {
 	 * `";` followed by the next token (`s:`, `i:`, `a:`, `b:`, `d:`, `N;`) or
 	 * the array's `}`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $value Serialized value.
 	 *
@@ -375,7 +375,7 @@ class LegacyMigration {
 	/**
 	 * A list of positive IDs from a 1.x value: one ID, a comma list or an array.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Stored value.
 	 *

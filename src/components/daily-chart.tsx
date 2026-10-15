@@ -8,7 +8,7 @@
  * campaigns table carry the figures). On the dashboard and Pro's Analytics
  * page.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { ComponentProps } from 'react';
 import {
@@ -59,7 +59,7 @@ const SERIES = [
 ];
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props            Props.
  * @param props.days       Days of the range, oldest first.

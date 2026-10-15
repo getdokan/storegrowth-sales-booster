@@ -3,7 +3,7 @@
  * per line). Keeps the typed text, so a trailing separator isn't removed
  * while typing; the list is what the text holds.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect, useState } from '@wordpress/element';
 import {
@@ -26,7 +26,7 @@ const toList = ( text: string, separator: string ) =>
         .filter( Boolean );
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.value     Items.

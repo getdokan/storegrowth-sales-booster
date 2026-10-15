@@ -19,14 +19,14 @@ defined( 'ABSPATH' ) || exit;
  * autoloaded; the old `sales-booster/v1/settings` route reads and writes the
  * same option.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class GeneralSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Page id: `#/settings?module=general`, `sales-booster/v1/settings/general`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -35,7 +35,7 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Page id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -46,7 +46,7 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * No option name: each key is its own option.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -57,7 +57,7 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Field definitions keyed by option name.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -76,7 +76,7 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	 * The settings page: one card of fields, no tabs, and a button to run the
 	 * setup wizard again (it has no menu item).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

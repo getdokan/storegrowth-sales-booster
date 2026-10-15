@@ -31,14 +31,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *                   by `scoped_args()`: a vendor reads only their orders, an
  *                   admin the vendor they picked (`sellers`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 trait OfferQuery {
 
 	/**
 	 * The StoreGrowth query args and their defaults.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */
@@ -59,7 +59,7 @@ trait OfferQuery {
 	 * Dokan's reports scope by vendor in their own SQL contexts; these data
 	 * stores have their own, so they apply Dokan's rule themselves.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *
@@ -78,7 +78,7 @@ trait OfferQuery {
 	/**
 	 * The error a report returns until the upgrade has created the tables.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return \WP_Error
 	 */
@@ -94,7 +94,7 @@ trait OfferQuery {
 	 * Joins: the lookup table, order stats unless already joined, and
 	 * Dokan's order types when Dokan is active.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param bool $order_stats_joined Whether the query already joins wc_order_stats.
 	 *
@@ -126,7 +126,7 @@ trait OfferQuery {
 	/**
 	 * Where: module, campaign and role, and never a fully refunded order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *

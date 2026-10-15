@@ -2,7 +2,7 @@
  * Full-screen frame for the onboarding wizard, as in the previous release:
  * white page, logo, step indicator and a skip link on top.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { useEffect } from '@wordpress/element';
@@ -23,7 +23,7 @@ export interface OnboardLayoutProps {
 /**
  * Step indicator: done steps get a check, the current one is filled blue.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props         Props.
  * @param props.current Index of the current step.
@@ -90,7 +90,7 @@ function Steps( { current }: { current: number } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.current   Index of the current step.
@@ -154,7 +154,7 @@ export interface AnnounceProps {
 /**
  * Centred illustration, heading and sub-heading used by every step.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.image    Illustration URL.

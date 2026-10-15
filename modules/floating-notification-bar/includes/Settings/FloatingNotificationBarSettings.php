@@ -28,14 +28,14 @@ defined( 'ABSPATH' ) || exit;
  * - A store that never saved (empty option) shows no bar, as today
  *   (`storefront_settings()`); its first save writes every key sent.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -46,7 +46,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPa
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -57,7 +57,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPa
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -258,7 +258,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPa
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -319,7 +319,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPa
 	/**
 	 * Saved from the admin: the option isn't empty.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *
@@ -334,7 +334,7 @@ class FloatingNotificationBarSettings implements GatedSettingsSchema, SettingsPa
 	 * storefront (saves write only changed keys). An option the admin never
 	 * saved (empty) is returned as it is, so the bar stays off, as before.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *

@@ -7,7 +7,7 @@
  * Pro's controls use these too: Tailwind scans StoreGrowth's sources only,
  * so the classes exist because they're written here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const FILTER_CLASSES = {
     /** `SelectTrigger` (beats plugin-ui's `data-[size=default]:h-9`). */

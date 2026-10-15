@@ -3,7 +3,7 @@
  * tinted, deactivated ones dimmed. Picking a deactivated module asks to
  * activate it instead of navigating.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn, toast } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
@@ -20,7 +20,7 @@ export interface FeatureMenuProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.activeId Current module id.

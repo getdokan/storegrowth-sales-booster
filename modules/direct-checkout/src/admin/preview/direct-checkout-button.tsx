@@ -7,7 +7,7 @@
  * border come from pro (`DirectCheckoutPro` inline styles), so they apply
  * here only with pro, as on the storefront.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -29,7 +29,7 @@ export interface DirectCheckoutButtonProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props            Props.
  * @param props.values     Settings.

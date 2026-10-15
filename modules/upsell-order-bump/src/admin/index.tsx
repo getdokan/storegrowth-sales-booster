@@ -4,7 +4,7 @@
  * module's pages: the bump list (`#/upsell-order-bump`) and the bump editor
  * (`#/upsell-order-bump/create-bump`, `#/upsell-order-bump/<id>`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
@@ -17,7 +17,7 @@ import OrderBumpList from './list/order-bump-list';
  * `/upsell-order-bump/:id` opens the editor for a numeric id only. Anything
  * else opens the list.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function EditRoute() {
     const { id = '' } = useParams();
@@ -33,7 +33,7 @@ function EditRoute() {
  * 2.2.0's `/upsell-order-bump/<action>/<id>`: `edit` opens the editor;
  * `delete` (which deleted the bump on opening the link) opens the list.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function LegacyActionRoute() {
     const { action = '', id = '' } = useParams();

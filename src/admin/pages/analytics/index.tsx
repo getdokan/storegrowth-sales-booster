@@ -4,7 +4,7 @@
  * `analytics`) with the full page; the data (ADR-012, `GET /analytics`) is
  * collected either way.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -64,7 +64,7 @@ function moduleName( id: string ): string {
 /**
  * The report's shape with made-up figures, for the blurred preview.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function SamplePreview() {
     const tiles = [

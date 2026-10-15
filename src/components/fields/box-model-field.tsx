@@ -3,7 +3,7 @@
  * left; on the right, two inputs (vertical, horizontal) or, after the link
  * toggle, four (top, right, bottom, left). plugin-ui Input and Toggle.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Input, Toggle, cn } from '@wedevs/plugin-ui';
 import { useEffect, useState } from '@wordpress/element';
@@ -83,7 +83,7 @@ function SideInput( { value, onChange, ...props }: SideInputProps ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label, e.g. "Margin".

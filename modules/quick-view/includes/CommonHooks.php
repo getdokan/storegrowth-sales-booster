@@ -119,7 +119,7 @@ class CommonHooks implements HookRegistry {
 	/**
 	 * Put the Quick View button in front of the loop's Add to cart link.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $html Add to cart link.
 	 *

@@ -25,14 +25,14 @@ defined( 'ABSPATH' ) || exit;
  * Which device the visitor is on is decided in the browser
  * (`spsgStorefront.matchesDevice()`), so full-page caches stay valid.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DisplayRules {
 
 	/**
 	 * Whether a module's bar or popup should render on this request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $settings Module settings (as stored).
 	 * @param string $module   Module id.
@@ -53,7 +53,7 @@ class DisplayRules {
 		 * audience and device checks, so pro or an extension can add page and
 		 * visibility rules at the same point.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param bool   $show     Whether it renders.
 		 * @param array  $settings Module settings.

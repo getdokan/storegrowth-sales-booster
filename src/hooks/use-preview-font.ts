@@ -2,7 +2,7 @@
  * Load a Google font into the admin page once, when a live preview first
  * needs it (never enqueued up front).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect } from '@wordpress/element';
 
@@ -10,7 +10,7 @@ import { useEffect } from '@wordpress/element';
 const LOCAL_FONTS = [ '', 'inherit', 'Inter' ];
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param family CSS font family, e.g. `Open Sans`.
  */

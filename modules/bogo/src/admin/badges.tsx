@@ -3,7 +3,7 @@
  * (`templates/bogo-offer-badge.php`); the admin shows the same artwork from
  * `assets/images/bogo/`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __, sprintf } from '@wordpress/i18n';
 import type { PickerIcon } from '@storegrowth/components';

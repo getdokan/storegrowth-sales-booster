@@ -2,7 +2,7 @@
  * Shared utilities, exposed as `window.storegrowth.utilities`
  * (import from `@storegrowth/utilities`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export * from './admin-data';
 export * from './ajax';

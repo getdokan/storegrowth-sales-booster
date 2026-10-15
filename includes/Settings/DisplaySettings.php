@@ -22,14 +22,14 @@ defined( 'ABSPATH' ) || exit;
  * Keys, values and typos are the ones already stored; tiers are the old
  * admin's.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DisplaySettings {
 
 	/**
 	 * Page conditions pro 2.2.0 evaluates for "Show on Specific Pages".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -40,7 +40,7 @@ class DisplaySettings {
 	 * (`@font-face` in the bars' stylesheets); Inter and Open Sans load
 	 * through StorefrontFonts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, string>
 	 */
@@ -58,7 +58,7 @@ class DisplaySettings {
 	 * CSS family of a stored bar font, asking StorefrontFonts for the ones
 	 * the bars don't bundle.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $slug Stored font.
 	 *
@@ -77,7 +77,7 @@ class DisplaySettings {
 	/**
 	 * Page and audience targeting (pro).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -133,7 +133,7 @@ class DisplaySettings {
 	 * Put shared fields on a tab and section of a module's settings page
 	 * (`SettingsPage`); the fields keep their labels and conditions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $fields  Field definitions keyed by option key.
 	 * @param string $tab     Tab id.
@@ -156,7 +156,7 @@ class DisplaySettings {
 	/**
 	 * The storefront bars' look, devices and trigger.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $delay Seconds before the bar shows (both triggers); the
 	 *                   modules' old defaults differ.

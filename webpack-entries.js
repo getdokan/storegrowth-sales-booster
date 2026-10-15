@@ -7,7 +7,7 @@
  * Output: core bundles in `build/`, module bundles in
  * `modules/<id>/assets/js/`, integration bundles in `build/integrations/`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 
 /**

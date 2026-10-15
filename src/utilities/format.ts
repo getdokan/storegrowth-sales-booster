@@ -1,7 +1,7 @@
 /**
  * Number formats of the offer reports (dashboard, Analytics page).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { PriceFormat } from './api';
 
@@ -14,7 +14,7 @@ function locale(): string | undefined {
  * Money as WooCommerce prints it (`wc_price()`): its symbol, position,
  * separators and decimals, so it matches the dashboard and the store.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param amount Amount.
  * @param price  WooCommerce's price format.
@@ -41,7 +41,7 @@ export function formatMoney( amount: number, price: PriceFormat ): string {
 /**
  * A count.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param value Count.
  */
@@ -52,7 +52,7 @@ export function formatCount( value: number ): string {
 /**
  * A percentage, or a dash without one.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param value Percentage, e.g. 12.5.
  */
@@ -63,7 +63,7 @@ export function formatRate( value: number | null | undefined ): string {
 /**
  * A `Y-m-d` day as a short date, e.g. "Oct 8".
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param day Day.
  */

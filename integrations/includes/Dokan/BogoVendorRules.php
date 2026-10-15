@@ -33,14 +33,14 @@ defined( 'ABSPATH' ) || exit;
  * Administrators (`manage_options`) are not restricted. Needs nothing from
  * Dokan but its vendor helpers, when they exist.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class BogoVendorRules {
 
 	/**
 	 * Option with the admin's vendor settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -49,7 +49,7 @@ class BogoVendorRules {
 	/**
 	 * Register the filters.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -66,7 +66,7 @@ class BogoVendorRules {
 	 * saved unless its products are theirs. Not the Buy X Get X flag: the
 	 * tab's default deal is Buy X Get X.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param bool  $should_save Whether to save it.
 	 * @param int   $post_id     Product.
@@ -85,7 +85,7 @@ class BogoVendorRules {
 	/**
 	 * `spsg_bogo_offer_rules`: a vendor's create or update.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param true|WP_Error $result Result so far.
 	 * @param array         $data   Offer data, as it will be saved.
@@ -118,7 +118,7 @@ class BogoVendorRules {
 	 * `spsg_bogo_single_item_permission`: turning a vendor's offer on checks
 	 * its products.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param bool|WP_Error   $permission Permission so far.
 	 * @param array           $item       The offer (`BogoDataManager::get_bogo_offer()`).
@@ -159,7 +159,7 @@ class BogoVendorRules {
 	 * Whether every product of an offer belongs to the vendor, and it has no
 	 * category targets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $data      Offer data (request shape).
 	 * @param int   $vendor_id Vendor.
@@ -202,7 +202,7 @@ class BogoVendorRules {
 	 * Whether the admin lets vendors create Buy X Get X offers. Off until
 	 * the admin turns it on (the vendor dashboard reads it the same way).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -215,7 +215,7 @@ class BogoVendorRules {
 	/**
 	 * The current vendor (a vendor staff member's vendor).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return int
 	 */
@@ -231,7 +231,7 @@ class BogoVendorRules {
 	 * The vendor a product (or a variation's product) belongs to; 0 when it
 	 * doesn't exist.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $product_id Product or variation.
 	 *
@@ -261,7 +261,7 @@ class BogoVendorRules {
 	/**
 	 * Positive integer ids from a list, a comma-separated string or one id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Ids.
 	 *

@@ -2,7 +2,7 @@
  * Countdown Timer settings as the settings API returns them
  * (`sales-booster/v1/settings/countdown-timer`, PHP `CountdownTimerSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { Alignment } from '@storegrowth/components';
 import type { BoxValue, SettingValue } from '@storegrowth/utilities';

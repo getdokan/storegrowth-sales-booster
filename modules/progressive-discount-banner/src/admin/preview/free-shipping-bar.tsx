@@ -7,7 +7,7 @@
  *
  * `.spsg-storefront` keeps the admin's scoped reset out of this subtree.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import { BAR_FONTS } from '@storegrowth/components';
@@ -50,7 +50,7 @@ export interface FreeShippingBarProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.values Current (unsaved) settings.

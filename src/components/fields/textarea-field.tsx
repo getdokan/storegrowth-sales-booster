@@ -2,7 +2,7 @@
  * Textarea field (design `.field` + `.textarea`): label above a full-width
  * plugin-ui textarea.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Textarea, cn } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -22,7 +22,7 @@ export interface TextareaFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.label       Label.

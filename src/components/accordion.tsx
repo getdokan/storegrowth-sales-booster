@@ -4,7 +4,7 @@
  * switch instead (design: Button / Countdown cards) and the body shows while
  * it's on.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, cn } from '@wedevs/plugin-ui';
 import { useId, useState } from '@wordpress/element';
@@ -37,7 +37,7 @@ export interface AccordionProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.title       Group title.

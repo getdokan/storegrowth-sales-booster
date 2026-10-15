@@ -26,14 +26,14 @@ defined( 'ABSPATH' ) || exit;
  * template). It survives saves (unchanged values are never rewritten) and the
  * storefront keeps rendering it; the colour picker can't re-create it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class StockBarSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -44,7 +44,7 @@ class StockBarSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -55,7 +55,7 @@ class StockBarSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -245,7 +245,7 @@ class StockBarSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

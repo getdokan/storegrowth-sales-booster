@@ -2,7 +2,7 @@
  * What the Sales Notification preview and template thumbnails show: the
  * first name, location and chosen product of the current settings.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -43,7 +43,7 @@ const loadProduct = ( id: number ) => {
 };
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param values Current (unsaved) settings.
  */

@@ -18,7 +18,7 @@
  * Views and marked add-to-carts are counted once per browser session and
  * object (sessionStorage); other metrics every time.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 ( function ( window, document ) {
     'use strict';

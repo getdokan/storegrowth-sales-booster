@@ -3,7 +3,7 @@
  * (`OrderBumpCheckoutIntegration::get_script_data()`) and the WooCommerce
  * Blocks globals the block uses.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { ComponentType, ReactNode } from 'react';
 

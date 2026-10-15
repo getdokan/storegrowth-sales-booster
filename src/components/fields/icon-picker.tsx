@@ -3,7 +3,7 @@
  * pill on the right, plus an optional Upload button for a custom icon from
  * the media library. The uploaded icon's address shows once there is one.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, cn, ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -86,7 +86,7 @@ function openMedia( title: string, onPick: ( url: string ) => void ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props                Props.
  * @param props.label          Label.

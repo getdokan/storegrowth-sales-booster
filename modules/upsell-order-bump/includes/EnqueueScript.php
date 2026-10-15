@@ -40,7 +40,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Loaded the old antd admin bundle.
 	 *
-	 * @deprecated SPSG_VERSION The admin app draws the bumps (`AdminPage`); does nothing.
+	 * @deprecated 3.0.0 The admin app draws the bumps (`AdminPage`); does nothing.
 	 *
 	 * @param string $hook Screen name.
 	 *
@@ -51,7 +51,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Loaded the old admin's stylesheets.
 	 *
-	 * @deprecated SPSG_VERSION The stylesheets are removed; does nothing.
+	 * @deprecated 3.0.0 The stylesheets are removed; does nothing.
 	 *
 	 * @param string $hook Admin page hook.
 	 *
@@ -133,7 +133,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Product list.
 	 *
-	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function prodcut_list() {
 		$args = array(
@@ -229,7 +229,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Product list for view.
 	 *
-	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function prodcut_list_for_view() {
 		$args     = array(
@@ -300,7 +300,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Category list.
 	 *
-	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old Order Bump admin read it; kept for extensions.
 	 */
 	public function category_list() {
 		$orderby    = 'name';
@@ -334,7 +334,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Order bump list.
 	 *
-	 * @deprecated SPSG_VERSION Only the old Order Bump admin read it; kept for
+	 * @deprecated 3.0.0 Only the old Order Bump admin read it; kept for
 	 *             extensions. Always empty: bumps live in the
 	 *             `spsg_order_bumps` table, not `spsg_order_bump` posts.
 	 */

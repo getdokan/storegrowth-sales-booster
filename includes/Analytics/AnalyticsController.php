@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * top campaigns; Pro lifts both (`spsg_analytics_report` filter and the
  * `storegrowth_pro_is_active` check).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 
@@ -70,7 +70,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -81,7 +81,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Register the route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -120,7 +120,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Whether a value is a real `Y-m-d` day.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Value.
 	 *
@@ -135,7 +135,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Shop managers and administrators.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -146,7 +146,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Whether StoreGrowth Pro is active.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -157,7 +157,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * The report.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -281,7 +281,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * The filtered report as a response.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array           $report  Report.
 	 * @param WP_REST_Request $request Request.
@@ -295,7 +295,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 		 * Pro adds what Lite leaves out (longer ranges, every campaign rows,
 		 * period comparison, per-vendor figures).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array           $report  Report.
 		 * @param WP_REST_Request $request Request.
@@ -308,7 +308,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	 * days, never past today (store time). Lite reads no earlier than 30
 	 * days ago.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $after  First day, `Y-m-d`, or ''.
 	 * @param string $before Last day, `Y-m-d`, or ''.
@@ -343,7 +343,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Whether WooCommerce Analytics is on (the money comes from it).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -354,7 +354,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Modules with a report.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string[]
 	 */
@@ -365,7 +365,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Money figures from a stats or rows entry.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param object|array $row Totals or a row.
 	 *
@@ -385,7 +385,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Per module: money, counts, and the Order Bump and BOGO take rates.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args   Data store args.
 	 * @param array $counts Counts from `counts()`.
@@ -430,7 +430,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Revenue per day from stats intervals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $intervals WooCommerce stats intervals.
 	 *
@@ -448,7 +448,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Per campaign: money, name, counts and take rate, by revenue.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args   Data store args.
 	 * @param array $counts Counts from `counts()`.
@@ -502,7 +502,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	 * A product seen or added with no sale at a timer price and no valid
 	 * timer discount now (`intval` outside 1–100) is "timer only".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args   Data store args.
 	 * @param array $counts Counts from `counts()`.
@@ -565,7 +565,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Names of BOGO offers and order bumps, by campaign id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string[] $campaign_ids Campaign ids.
 	 *
@@ -612,7 +612,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Counts in a range, by module and object, plus each module's sum.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $after  First day, `Y-m-d`.
 	 * @param string $before Last day, `Y-m-d`.
@@ -648,7 +648,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	 *
 	 * The discount is a fee, not offer revenue, so it isn't in the totals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $after      First day, `Y-m-d`.
 	 * @param string $before     Last day, `Y-m-d`.
@@ -678,7 +678,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * A share as a percentage, or null without a base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $part Part.
 	 * @param int $base Base.
@@ -692,7 +692,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * Add-to-carts per view, from a metric => count map (Countdown Timer).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array<string, int> $counts Counts by metric.
 	 *
@@ -705,7 +705,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	/**
 	 * The dashboard's revenue figure: StoreGrowth revenue of the last 30 days.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $overview Dashboard figures.
 	 *

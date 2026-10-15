@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  * - `name_text_*` has no field in the design, but the storefront reads it.
  * - Bounds are no stricter than the old admin (templates wrote radius 100).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class SalesPopSettings implements SettingsSchema, SettingsPage {
 
@@ -37,7 +37,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	 * `<prefix>_font_weight` → [ colour key, pro, colour, size, weight ].
 	 * `name_text` has no row in the design; the storefront still reads it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, array{0: string, 1: bool, 2: string, 3: string, 4: string}>
 	 */
@@ -57,7 +57,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	 * with pro, picking a template writes them into the fields. The admin
 	 * gets them from `AdminPage`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<int, int[]>
 	 */
@@ -71,7 +71,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -82,7 +82,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -96,7 +96,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	 * source and products, the name / location lists, the message with its
 	 * token legend, the template picker, the radii and the text rows).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -344,7 +344,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -416,7 +416,7 @@ class SalesPopSettings implements SettingsSchema, SettingsPage {
 	 * default, so the template's arithmetic never fails. Without pro the
 	 * template's radii apply (the radius fields need pro).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *

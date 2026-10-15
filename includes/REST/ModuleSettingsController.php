@@ -30,14 +30,14 @@ defined( 'ABSPATH' ) || exit;
  *
  * The old global settings route `/settings` stays (SettingsController).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class ModuleSettingsController extends WP_REST_Controller {
 
 	/**
 	 * REST namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +46,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * REST base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -55,7 +55,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -106,7 +106,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Only administrators may read or change module settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -117,7 +117,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Return a module's schema and values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -136,7 +136,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Save a module's values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -161,7 +161,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Return every settings page with its schema and values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -174,7 +174,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * `{ page, schema, values, published }` for a module.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 *
@@ -187,7 +187,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * Error for an unknown module (or one without settings).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return WP_Error
 	 */
@@ -202,7 +202,7 @@ class ModuleSettingsController extends WP_REST_Controller {
 	/**
 	 * The settings service.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return SettingsService
 	 */

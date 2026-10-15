@@ -3,13 +3,13 @@
  * modules) and `spsgAdminHeader` (versions, pro flag, URLs), both printed on
  * every StoreGrowth admin page by includes/Assets.php.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 
 /**
  * App data (`spsgAdmin`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function getAdminData(): SpsgAdminData {
     return window.spsgAdmin;
@@ -18,7 +18,7 @@ export function getAdminData(): SpsgAdminData {
 /**
  * Header data (`spsgAdminHeader`): versions, pro flag and URLs.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function getHeaderData(): SpsgAdminHeaderData {
     return window.spsgAdminHeader;
@@ -27,7 +27,7 @@ export function getHeaderData(): SpsgAdminHeaderData {
 /**
  * URL of a file in the plugin's `assets/` directory.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param path Path relative to `assets/`.
  *

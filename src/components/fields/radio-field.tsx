@@ -2,7 +2,7 @@
  * Radio choice field: label, then one plugin-ui radio per option, stacked
  * (design: the bars' Trigger field).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { LabeledRadio, RadioGroup, cn } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -36,7 +36,7 @@ export interface RadioFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.label     Label.

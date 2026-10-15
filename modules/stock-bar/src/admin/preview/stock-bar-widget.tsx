@@ -8,7 +8,7 @@
  *
  * `.spsg-storefront` keeps the admin's scoped reset out of this subtree.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { CSSProperties } from 'react';
 import { usePreviewFont } from '@storegrowth/hooks';
@@ -23,7 +23,7 @@ export interface StockBarWidgetProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.values Current (unsaved) settings.

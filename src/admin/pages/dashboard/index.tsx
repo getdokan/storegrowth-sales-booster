@@ -2,7 +2,7 @@
  * Dashboard (design `index.html`): stat tiles, modules grouped by goal, and the
  * Pro / support / links rail.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn, Skeleton } from '@wedevs/plugin-ui';
 import { useEffect, useState } from '@wordpress/element';

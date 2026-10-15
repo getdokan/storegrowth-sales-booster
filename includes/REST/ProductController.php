@@ -29,7 +29,7 @@ class ProductController extends WC_REST_Products_Controller {
 	 * choice, so it can't be an order bump's offer. WooCommerce leaves such
 	 * an attribute out of `attributes`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param \WC_Data         $product Product.
 	 * @param \WP_REST_Request $request Request.
@@ -65,7 +65,7 @@ class ProductController extends WC_REST_Products_Controller {
 		 * Variations too (`product_variation` posts), e.g. to search or
 		 * resolve an offer product.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 */
 		$params['include_variations'] = [
 			'description'       => __( 'Include product variations.', 'storegrowth-sales-booster' ),

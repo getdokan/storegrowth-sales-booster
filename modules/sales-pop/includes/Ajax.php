@@ -92,7 +92,7 @@ class Ajax implements HookRegistry {
 	/**
 	 * Validate input field data
 	 *
-	 * @deprecated SPSG_VERSION Saves merge through the settings service, which keeps unsent keys.
+	 * @deprecated 3.0.0 Saves merge through the settings service, which keeps unsent keys.
 	 *
 	 * @param array $popup_products product list.
 	 */

@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * have a row in `spsg_offer_lookup` for the module: reward and discounted
  * lines, not BOGO trigger lines (the BOGO card reports those apart).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class WcAnalytics implements HookRegistry {
 
@@ -72,7 +72,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -104,7 +104,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * Modules the filter offers, id => name.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -126,7 +126,7 @@ class WcAnalytics implements HookRegistry {
 	 * WooCommerce's report controllers keep only the params they know, so
 	 * it's read from the request URL, as Dokan's vendor filter does.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -145,7 +145,7 @@ class WcAnalytics implements HookRegistry {
 	 * Add the filter to the query args, so WooCommerce caches filtered and
 	 * unfiltered results apart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args Query args.
 	 *
@@ -163,7 +163,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * Lookup rows for the selected filter, as SQL.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $columns Columns to select.
 	 *
@@ -186,7 +186,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * The filter of an export, from its report args.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $args Report args.
 	 *
@@ -202,7 +202,7 @@ class WcAnalytics implements HookRegistry {
 	 * A report export request (`POST wc-analytics/reports/<type>/export`)
 	 * counts its rows right away: read the filter from its `report_args`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed           $response Response so far.
 	 * @param array           $handler  Route handler.
@@ -221,7 +221,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * A report export batch (Action Scheduler) runs with its args only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int    $page_number Batch.
 	 * @param string $export_id   Export id.
@@ -237,7 +237,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * The Offer column in the Orders report's CSV.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $columns Column id => label.
 	 *
@@ -254,7 +254,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * An order's offers in the CSV, by module name.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $row  Export row.
 	 * @param array $item Report row.
@@ -289,7 +289,7 @@ class WcAnalytics implements HookRegistry {
 	 * A subquery, not a join, so an order with several offer lines still
 	 * counts once.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $clauses Where clauses.
 	 *
@@ -312,7 +312,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * Products reports: keep offer lines (and their refund rows).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $clauses Where clauses.
 	 *
@@ -335,7 +335,7 @@ class WcAnalytics implements HookRegistry {
 	 * The modules each order of an Orders report page had offers from, in
 	 * one query for the page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param object|array $results Report results (`data`: rows with `order_id`).
 	 *
@@ -374,7 +374,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * Keep the order's offers in the Orders report response.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Response $response Response.
 	 * @param array            $report   Report row.
@@ -395,7 +395,7 @@ class WcAnalytics implements HookRegistry {
 	 * List the offer stats endpoint among WooCommerce's reports, so the
 	 * Overview can show its revenue as a performance indicator.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $reports Reports.
 	 *
@@ -419,7 +419,7 @@ class WcAnalytics implements HookRegistry {
 	/**
 	 * The filter and column bundle, on WooCommerce Analytics pages only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */

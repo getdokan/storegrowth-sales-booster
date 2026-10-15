@@ -1,7 +1,7 @@
 /**
  * Settings field controls, styled after the design's `.field` family.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export {
     type Alignment,

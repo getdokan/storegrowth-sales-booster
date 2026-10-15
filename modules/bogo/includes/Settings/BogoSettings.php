@@ -24,14 +24,14 @@ defined( 'ABSPATH' ) || exit;
  *   `bogo_category_page_message` stay out of the schema; saves merge, so
  *   they're kept.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class BogoSettings implements GatedSettingsSchema, SettingsPage {
 
 	/**
 	 * Badge icons the storefront draws (`templates/bogo-offer-badge.php`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -40,7 +40,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -51,7 +51,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -62,7 +62,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * Keys another screen writes into this option (pro's category messages).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -71,7 +71,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * Saved once the option holds anything but the category messages.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *
@@ -84,7 +84,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * Fields, in page order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -128,7 +128,7 @@ class BogoSettings implements GatedSettingsSchema, SettingsPage {
 	/**
 	 * The settings page: one card, two sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

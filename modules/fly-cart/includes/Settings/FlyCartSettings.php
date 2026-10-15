@@ -23,14 +23,14 @@ defined( 'ABSPATH' ) || exit;
  * - The Dokan store name / link switches are added by the Dokan integration
  *   (`spsg_settings_schema`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class FlyCartSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -41,7 +41,7 @@ class FlyCartSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -52,7 +52,7 @@ class FlyCartSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -141,7 +141,7 @@ class FlyCartSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

@@ -16,14 +16,14 @@ defined( 'ABSPATH' ) || exit;
  * stylesheet its preview renders with (ADR-005 S10). Fonts load on demand
  * from the preview.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -34,7 +34,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The bar's stylesheets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */

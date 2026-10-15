@@ -1,7 +1,7 @@
 /**
  * Onboarding step 1: welcome, "Get Started" and the two consent checkboxes.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, Checkbox, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -23,7 +23,7 @@ export interface WelcomeScreenProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props                    Props.
  * @param props.agreements         Checkbox values.

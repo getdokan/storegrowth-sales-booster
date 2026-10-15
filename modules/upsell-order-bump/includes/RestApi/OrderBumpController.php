@@ -35,7 +35,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * Largest fixed price: what the `offer_amount` column (decimal(10,2)) holds.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var float
 	 */
@@ -44,7 +44,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * The namespaces the routes are registered under.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -90,7 +90,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * Register the routes under one namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $route_namespace REST namespace.
 	 *
@@ -279,7 +279,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * shown with tax while entered without, or the other way round) and the
 	 * image the checkout box shows for a product without one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -417,7 +417,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * Turn an order bump on or off (the list's switch). Lite's limit doesn't
 	 * apply: it counts bumps of any status.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -474,7 +474,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * Bulk actions: delete the given bumps, each through the same checks as a
 	 * single delete.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -522,7 +522,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * The bump of the request's `id`, when it exists and the user may change
 	 * it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -549,7 +549,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * capability check. Every administrator may; a subclass (e.g. per vendor)
 	 * narrows it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array           $bump    Stored bump.
 	 * @param WP_REST_Request $request Full details about the request.
@@ -564,7 +564,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * The values the request sends (body or JSON), without the route's
 	 * defaults and the URL's `id`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 *
@@ -582,7 +582,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * The `design_settings` a request sends, or none.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $sent What the request sends.
 	 *
@@ -596,7 +596,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * A stored bump in the shape the routes take, so an update can start from
 	 * it and change only what the request sends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $bump Stored bump.
 	 *
@@ -627,7 +627,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 *   `design_settings`, which the checkout box reads;
 	 * - `design_settings` sanitized key by key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $data Bump data: the stored bump (or defaults) merged with what is sent.
 	 * @param array $sent What the request sends.
@@ -675,7 +675,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * - A percentage discount is more than 0 and at most 100; a fixed price
 	 *   isn't negative.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array      $data Normalized bump data.
 	 * @param array|null $sent What an update sends; null for a create.
@@ -741,7 +741,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * shopper's choice, so not a variable, grouped or external product, nor a
 	 * variation with an "Any …" attribute.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product|null|false $product Offer product.
 	 *
@@ -762,7 +762,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * image), `offer_product_info` and `offer_prices` (the regular and the
 	 * bump price, as plain text in the store's price format).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array           $item    Stored bump.
 	 * @param WP_REST_Request $request Full details about the request.
@@ -818,7 +818,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * A bump's targets by name, for the list: its products, or its
 	 * categories. Deleted ones are left out.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $item Stored bump.
 	 *
@@ -863,7 +863,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * A product as the list and the editor show it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $product Product.
 	 *

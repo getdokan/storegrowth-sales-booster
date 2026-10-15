@@ -9,7 +9,7 @@
  *
  * The Dokan vendor dashboard draws the same list (`vendor`, 10f2).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Badge,
@@ -372,7 +372,7 @@ function AdminBogoList() {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.vendor      The Dokan vendor dashboard: the vendor's offers, no

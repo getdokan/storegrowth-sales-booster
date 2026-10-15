@@ -9,7 +9,7 @@
  * one key or need runtime data: the icon picker, the coupon select and the
  * template picker.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';

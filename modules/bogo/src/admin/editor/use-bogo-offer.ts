@@ -3,7 +3,7 @@
  * record editor (`useRecordEditor`) on the BOGO routes, with the offer's
  * rules, the vendor's deal types and what the preview and the page need.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -144,7 +144,7 @@ function vendorSchema( editor: OfferEditor, values: OfferValues ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id        Offer id, or null for a new offer.
  * @param onCreated Called with the new offer's id after it's created.

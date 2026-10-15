@@ -3,7 +3,7 @@
  * previous period (Pro's comparison) and a short hint. On Pro's Analytics
  * page and Lite's locked preview of it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __, sprintf } from '@wordpress/i18n';
 
@@ -46,7 +46,7 @@ function Change( { change }: { change: number | null } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.label  Label.

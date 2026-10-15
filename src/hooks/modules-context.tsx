@@ -3,7 +3,7 @@
  * and every module page. Lives in the shared `@storegrowth/hooks` bundle, so
  * module bundles get the same context instance as the shell.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     createContext,
@@ -40,7 +40,7 @@ const ModulesContext = createContext< ModulesContextValue | null >( null );
 /**
  * Provides the module list, seeded from the data PHP localizes.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.children App.
@@ -159,7 +159,7 @@ export function ModulesProvider( { children }: { children: ReactNode } ) {
 /**
  * The shared module list.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function useModules(): ModulesContextValue {
     const context = useContext( ModulesContext );

@@ -6,7 +6,7 @@
  * `#/settings?module=countdown-timer`; this adds the live, ticking
  * product-page preview, the template picker and the counter colour fields.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter, applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
@@ -101,7 +101,7 @@ const CountdownTimerPreview = ( {
                  * Filters the Countdown Timer preview widget, e.g. for pro to
                  * add its parts.
                  *
-                 * @since SPSG_VERSION
+                 * @since 3.0.0
                  *
                  * @param {JSX.Element}          widget The preview widget.
                  * @param {CountdownTimerValues} values Current (unsaved) settings.

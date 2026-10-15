@@ -23,7 +23,7 @@ class OrderBumpData {
 	/**
 	 * How many order bumps lite keeps (any status); pro lifts it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var int
 	 */
@@ -110,7 +110,7 @@ class OrderBumpData {
 	/**
 	 * How many order bumps `get_all()` would list without paging.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args `status` and `search`, as `get_all()` takes them (no default status).
 	 *
@@ -138,7 +138,7 @@ class OrderBumpData {
 	 * Whether a new order bump may be created: lite keeps at most
 	 * `LITE_BUMP_LIMIT` bumps, of any status; pro lifts it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -150,7 +150,7 @@ class OrderBumpData {
 	 * The WHERE conditions (after `WHERE 1=1`) for the `status` and `search`
 	 * arguments, and their values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $args Query arguments.
 	 *
@@ -185,7 +185,7 @@ class OrderBumpData {
 	 * and digits as a numeric entity of its UTF-16 code unit(s)
 	 * (`convertToHTMLEntities()`, which used `charCodeAt()`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $text Plain text.
 	 *
@@ -420,7 +420,7 @@ class OrderBumpData {
 
 	/**
 	 * Get order bumps that match cart products: active, running today
-	 * (`bump_schedule`, since SPSG_VERSION) and targeting the cart.
+	 * (`bump_schedule`, since 3.0.0) and targeting the cart.
 	 *
 	 * @since 1.0.0
 	 * @param array $cart_product_ids Array of product IDs in cart.

@@ -105,7 +105,7 @@ class OrderBump implements HookRegistry {
 	 * Left out: an offer product that can't be bought (no price, not
 	 * published) and one already in the cart as the shopper's own line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array[]
 	 */
@@ -167,7 +167,7 @@ class OrderBump implements HookRegistry {
 	 * Whether a cart line is an order bump's (added through the checkout
 	 * box, at the bump's price), not the shopper's own.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $cart_item Cart item.
 	 *
@@ -181,7 +181,7 @@ class OrderBump implements HookRegistry {
 	 * A price of the product as the cart shows it: with or without tax, as
 	 * the store's "Display prices during cart and checkout" says.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $product Product.
 	 * @param float      $price   Price as entered.
@@ -204,7 +204,7 @@ class OrderBump implements HookRegistry {
 	 * ("2.00$ Just Only"; it used to read "2.00.00"). Numbers in the store's
 	 * format; the titles carry any currency symbol, so none is added.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $offer_type   `discount`, `price` or `free`.
 	 * @param float  $offer_amount The bump's amount.
@@ -231,7 +231,7 @@ class OrderBump implements HookRegistry {
 	 * parent's). One list for the checkout box, the add-to-cart price check
 	 * and the attribution stamp, so they agree on which bumps apply.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array{0: int[], 1: int[]} Product ids, category ids.
 	 */
@@ -268,7 +268,7 @@ class OrderBump implements HookRegistry {
 	 * sale price while a sale runs), as BOGO's offer price. It used the sale
 	 * price even while a scheduled sale hadn't started.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $product Offer product (the variation for a variation offer).
 	 *
@@ -282,7 +282,7 @@ class OrderBump implements HookRegistry {
 	 * The price the checkout strikes through: the regular price, else the
 	 * active one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $product Offer product.
 	 *
@@ -296,7 +296,7 @@ class OrderBump implements HookRegistry {
 	 * A bump's price for its offer product: a percentage off (0–100), a
 	 * fixed price (at least 0) or free.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $offer_type    `discount`, `price` or `free`.
 	 * @param float  $current_price The product's price (`get_current_price()`).

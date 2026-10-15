@@ -8,7 +8,7 @@
  * - Checkout Redirect, whose Fly Cart choice needs the Fly Cart module;
  * - Padding, one control for `paddingYaxis` and `paddingXaxis`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter, applyFilters } from '@wordpress/hooks';
 import { __, sprintf } from '@wordpress/i18n';
@@ -86,7 +86,7 @@ function DirectCheckoutPreview( { settings }: { settings: Settings } ) {
      * Filters the Direct Checkout preview widget, e.g. for pro to add its
      * parts.
      *
-     * @since SPSG_VERSION
+     * @since 3.0.0
      *
      * @param {JSX.Element}          widget The button(s) in a shop card.
      * @param {DirectCheckoutValues} values Current (unsaved) settings.

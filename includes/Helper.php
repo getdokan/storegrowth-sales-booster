@@ -84,7 +84,7 @@ class Helper {
 	/**
 	 * Get Plugin File URL.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $path Path relative to the plugin root.
 	 *
@@ -237,7 +237,7 @@ class Helper {
 	 * Allow-list a CSS keyword (alignment, border style, position, …) before it
 	 * is printed into a stylesheet.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed    $value    Stored value.
 	 * @param string[] $allowed  Allowed keywords.
@@ -257,7 +257,7 @@ class Helper {
 	 * Looks for `storegrowth/<module>/<file>` in the child and parent theme
 	 * first, then `modules/<module>/templates/<file>` in the plugin.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $template Template path `<module>/<file>`, e.g. `stock-bar/simple-stock-status.php`.
 	 * @param array  $args     Variables made available to the template.
@@ -282,7 +282,7 @@ class Helper {
 		/**
 		 * Filters the file used for a storefront template.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param string $path     Absolute path of the template file.
 		 * @param string $template Template path `<module>/<file>`.

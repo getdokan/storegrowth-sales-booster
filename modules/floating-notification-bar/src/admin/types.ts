@@ -3,7 +3,7 @@
  * (`sales-booster/v1/settings/floating-notification-bar`, PHP
  * `FloatingNotificationBarSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { BarValues } from '@storegrowth/components';
 

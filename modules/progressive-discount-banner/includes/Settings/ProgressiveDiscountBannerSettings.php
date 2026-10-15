@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  *   applies no discount, as today (`storefront_settings()`); its first save
  *   writes every key sent.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, SettingsPage {
 
@@ -36,7 +36,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	 * Keys the first-boot seeding writes; an option holding only these was
 	 * never saved by the admin.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -45,7 +45,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -56,7 +56,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -67,7 +67,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -256,7 +256,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -300,7 +300,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	/**
 	 * Saved from the admin: the option holds more than the seeded texts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *
@@ -316,7 +316,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	 * saved (empty, or only the seeded texts) is returned as it is, so the
 	 * bar stays off and no discount applies, as before.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *

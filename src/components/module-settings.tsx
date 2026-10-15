@@ -12,7 +12,7 @@
  * offer, ADR-010) draws the same page from its own hook: any object in the
  * `ModuleSettings` shape.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Skeleton, toast } from '@wedevs/plugin-ui';
 import { Fragment, useEffect, useRef } from '@wordpress/element';
@@ -82,7 +82,7 @@ function Block( { className }: { className: string } ) {
 /**
  * A whole settings page while the pages load: title card and skeleton.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props            Props.
  * @param props.title      Page title.
@@ -153,7 +153,7 @@ function LoadingSkeleton( { hasPreview, hasTabs }: SkeletonShape ) {
  * `storegrowth.settings.page` ( parts, moduleId ). Render functions of the
  * page's settings, so they see unsaved values.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface SettingsPageParts< V extends Values = Values > {
     /** Preview column, usually `LivePreview`. */
@@ -187,7 +187,7 @@ function runs< T >( keys: string[], by: ( key: string ) => T ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props              Props.
  * @param props.title        Title while loading.

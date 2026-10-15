@@ -2,7 +2,7 @@
  * Field label (design `.field-label`) with a "Pro" marker for fields that
  * need pro, and the field's error line.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -25,14 +25,14 @@ export interface BaseFieldProps {
 /**
  * Shared field-label classes.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const FIELD_LABEL = 'text-sm font-medium text-sg-text';
 
 /**
  * Shared text-control classes (design `.input` / `.select`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const FIELD_CONTROL =
     'h-10 w-full rounded-[5px] border-sg-stroke bg-white px-4 text-sm leading-[1.4] text-sg-text shadow-none placeholder:text-sg-field focus-visible:border-sg-brand focus-visible:ring-[3px] focus-visible:ring-sg-brand/25 disabled:cursor-not-allowed disabled:bg-sg-chip disabled:opacity-100';
@@ -41,7 +41,7 @@ export const FIELD_CONTROL =
  * "Pro" pill beside a locked field's label (same look as the dashboard's
  * pro pill).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function ProBadge() {
     return (
@@ -53,7 +53,7 @@ export function ProBadge() {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.htmlFor   Control id.
@@ -90,7 +90,7 @@ export function FieldLabel( {
 /**
  * Help and error lines under a control.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props       Props.
  * @param props.help  Help line.

@@ -6,7 +6,7 @@
  * Admin notices show at the top of the page area here, instead of under the
  * header as on the other pages.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useLayoutEffect, useRef } from '@wordpress/element';
 import type { ReactNode } from 'react';
@@ -20,7 +20,7 @@ export interface FeatureLayoutProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.moduleId Current module id.

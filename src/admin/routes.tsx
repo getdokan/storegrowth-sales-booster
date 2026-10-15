@@ -16,7 +16,7 @@
  * Paths use react-router syntax. Import router APIs (useNavigate, useParams,
  * Link, …) from `@storegrowth/hooks`, never from `react-router-dom`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { applyFilters } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
@@ -41,7 +41,7 @@ export interface AdminRoute {
  * `/features` opens the first active module (the first module when none is
  * active), as the WordPress "Features" submenu does in the design.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function FeaturesRedirect() {
     const { modules } = useModules();
@@ -60,7 +60,7 @@ function FeaturesRedirect() {
  * bookmarks, docs; `spsg-settings#/stock-bar` redirects keep the hash), opens
  * that module's page. Anything else opens the dashboard.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function LegacyModuleRedirect() {
     const { moduleId = '' } = useParams();
@@ -82,7 +82,7 @@ function LegacyModuleRedirect() {
  * `/<module-id>` redirects there. A module may add routes of its own (e.g.
  * `/bogo/:id`). Anything else falls through to the dashboard.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 const coreRoutes: AdminRoute[] = [
     { id: 'home', path: '/', element: <Navigate to="/dashboard" replace /> },
@@ -108,13 +108,13 @@ const coreRoutes: AdminRoute[] = [
 /**
  * All routes: core plus whatever module, integration and pro bundles added.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function getRoutes(): AdminRoute[] {
     /**
      * Admin routes. Add, replace (same `id`) or remove entries.
      *
-     * @since SPSG_VERSION
+     * @since 3.0.0
      *
      * @param {AdminRoute[]} routes Core routes.
      */

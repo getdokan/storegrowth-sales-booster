@@ -2,7 +2,7 @@
  * Checkbox option row (design `.opt-row`): plugin-ui checkbox and its label.
  * Group rows in `CheckboxGroup` (design `.opt-grid`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Checkbox } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -20,7 +20,7 @@ export interface CheckboxFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label.
@@ -60,7 +60,7 @@ export function CheckboxField( {
 /**
  * Column of checkbox rows (design `.opt-grid`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.children Rows.

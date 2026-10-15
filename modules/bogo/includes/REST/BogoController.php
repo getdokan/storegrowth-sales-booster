@@ -274,7 +274,7 @@ class BogoController extends WP_REST_Controller {
 	 * the store's price format and the global "Show Regular Price" (so the
 	 * vendor dashboard needn't read the admin's settings).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Rest Request.
 	 *
@@ -517,7 +517,7 @@ class BogoController extends WP_REST_Controller {
 	 * The values the request sends (body or JSON), without the route's
 	 * defaults and the URL's `id`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request The REST request.
 	 *
@@ -545,7 +545,7 @@ class BogoController extends WP_REST_Controller {
 	 * - The offer has a target product or category.
 	 * - Buy X Get Y has an offer product.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $data Normalized offer data.
 	 * @param array $sent What an update sends; null for a create.
@@ -637,7 +637,7 @@ class BogoController extends WP_REST_Controller {
 	 * (e.g. the Dokan integration's: a vendor's offer uses only their own
 	 * products).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array           $data    Normalized offer data, as it will be saved.
 	 * @param array           $stored  The stored offer in request shape (empty when new).
@@ -650,7 +650,7 @@ class BogoController extends WP_REST_Controller {
 		 * Filters whether a BOGO offer may be saved through REST: return a
 		 * WP_Error (with a `status`) to reject the create or update.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param true|WP_Error   $result  True, or the error of an earlier callback.
 		 * @param array           $data    Normalized offer data, as it will be saved.
@@ -666,7 +666,7 @@ class BogoController extends WP_REST_Controller {
 	 * Without pro, pro-only values are ignored, not rejected (ADR-004 §3):
 	 * the stored value stays, or the default on a new offer.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $data   Offer data.
 	 * @param array $stored The stored offer in request shape (empty when new).
@@ -734,7 +734,7 @@ class BogoController extends WP_REST_Controller {
 	 * Bulk actions: delete the given offers, each through the same checks as
 	 * a single delete (a subclass's item permission included).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request The REST request.
 	 *
@@ -991,7 +991,7 @@ class BogoController extends WP_REST_Controller {
 	 * Validates the create route's `offer_type`: `free` or `discount`. Empty
 	 * passes, for validate_and_normalize_data()'s `missing_offer_type`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed           $value   The value to validate.
 	 * @param WP_REST_Request $request The request object.
@@ -1500,7 +1500,7 @@ class BogoController extends WP_REST_Controller {
 	 * A product as an offer's list cells show it (the keys the old admin read,
 	 * plus the thumbnail and the regular price).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param \WC_Product $product  Product.
 	 * @param string      $currency Currency symbol.

@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * excluded statuses, refund rows and the report cache. Like WooCommerce's
  * Products report, dates are the order's `date_created`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DataStore extends ProductsStatsDataStore {
 
@@ -70,7 +70,7 @@ class DataStore extends ProductsStatsDataStore {
 	/**
 	 * Report columns: WooCommerce's, plus the discount.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -83,7 +83,7 @@ class DataStore extends ProductsStatsDataStore {
 	/**
 	 * Stats, or an error until the upgrade has created the lookup table.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *
@@ -103,7 +103,7 @@ class DataStore extends ProductsStatsDataStore {
 	 * `auto-draft`, `trash` and the `woocommerce_analytics_excluded_order_statuses`
 	 * filter. For reports read outside a data store (the bar's fee lines).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string[]
 	 */
@@ -114,7 +114,7 @@ class DataStore extends ProductsStatsDataStore {
 	/**
 	 * Default query args, with the StoreGrowth ones.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */
@@ -125,7 +125,7 @@ class DataStore extends ProductsStatsDataStore {
 	/**
 	 * WooCommerce's clauses, narrowed to StoreGrowth lines.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *

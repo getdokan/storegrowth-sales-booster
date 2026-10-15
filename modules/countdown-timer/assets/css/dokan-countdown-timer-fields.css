@@ -2,7 +2,7 @@
  * Countdown Timer fields on the Dokan vendor product form
  * (templates/dokan-countdown-timer-fields.php).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 .dokan-countdown-timer-options .dokan-countdown-timer-wrapper {
     display: flex;

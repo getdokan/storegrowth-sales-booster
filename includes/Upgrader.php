@@ -134,7 +134,7 @@ class Upgrader implements HookRegistry {
 	 * shown under the header (AdminMenu); elsewhere it shows where WordPress
 	 * shows notices. The button posts to the migration REST route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -210,7 +210,7 @@ class Upgrader implements HookRegistry {
 	 * pending migrations to run.
 	 *
 	 * @since 2.1.2
-	 * @since SPSG_VERSION Returns whether the install was fresh.
+	 * @since 3.0.0 Returns whether the install was fresh.
 	 *
 	 * @return bool True when this is a fresh install (the version was stamped).
 	 */

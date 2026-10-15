@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * fields, ADR-007). They were stored as bools by the old admin; the vendor
  * product form reads them (`templates/dokan-countdown-timer-fields.php`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class CountdownTimerFields {
 
@@ -26,7 +26,7 @@ class CountdownTimerFields {
 	/**
 	 * Constructor.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	private function __construct() {
 		add_filter( 'spsg_settings_schema', [ $this, 'add_fields' ], 10, 2 );
@@ -35,7 +35,7 @@ class CountdownTimerFields {
 	/**
 	 * Append the Dokan fields to the Countdown Timer Configure tab.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $fields    Field definitions keyed by option key.
 	 * @param string $module_id Module id.

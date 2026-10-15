@@ -3,7 +3,7 @@
  * `Helper::FONT_FAMILIES`, printed by `AdminPage`), so the admin and the
  * storefront use one list.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { CountdownTimerValues } from './types';
 
@@ -30,7 +30,7 @@ export const FONT_FAMILIES = DATA.fonts;
 /**
  * CSS family of a stored font slug.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param slug Stored font.
  */
@@ -39,7 +39,7 @@ export const fontFamily = ( slug: string ) => FONT_FAMILIES[ slug ] ?? slug;
 /**
  * The settings a template sets; unknown ids get the first old layout's.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id Template id.
  */
@@ -50,7 +50,7 @@ export function templateColors( id: string ): Partial< CountdownTimerValues > {
 /**
  * Only the counter colours of a template (what the old layouts set).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id Template id.
  */

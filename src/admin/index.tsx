@@ -5,7 +5,7 @@
  * Mounted on DOM ready, after every module and pro bundle has run, so the
  * routes they add through `storegrowth.admin.routes` are registered first.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { ThemeProvider } from '@wedevs/plugin-ui';
 import domReady from '@wordpress/dom-ready';

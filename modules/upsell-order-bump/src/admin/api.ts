@@ -2,7 +2,7 @@
  * Order Bump REST client: the bumps route (`sales-booster/v1/order-bumps`,
  * read through the shared records client) and the offer products.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -41,7 +41,7 @@ export interface OrderBump {
 /**
  * The bumps route.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const bumpsRoute = () => {
     return `/${ getAdminData().restNamespace }/order-bumps`;
@@ -133,7 +133,7 @@ async function fetchOfferProducts(
 /**
  * Products by id (a saved offer or targets).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param ids Product ids.
  */
@@ -153,7 +153,7 @@ export function fetchOfferProductsByIds( ids: number[] ) {
  * with every attribute set (as the routes check), not a variable product
  * (the shopper would have to pick the variation) or an external one.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param search Search text.
  */

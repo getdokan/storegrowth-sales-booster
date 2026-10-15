@@ -3,7 +3,7 @@
  * the right, and the fields the switch governs underneath a rule while it's
  * on.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useId } from '@wordpress/element';
 import type { ReactNode } from 'react';
@@ -23,7 +23,7 @@ export interface OptionCardProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.title    Title.

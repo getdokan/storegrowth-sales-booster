@@ -106,7 +106,7 @@ class Helper {
 	 * getters above; a missing minimum would read as 0 (goal reached) and a
 	 * missing icon as none.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $settings Settings, raw or already filled.
 	 *

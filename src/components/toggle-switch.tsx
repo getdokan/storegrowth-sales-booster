@@ -1,7 +1,7 @@
 /**
  * plugin-ui Switch in the design's 30×18 brand-blue style.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Switch, cn } from '@wedevs/plugin-ui';
 import type { ComponentProps } from 'react';
@@ -11,7 +11,7 @@ export type ToggleSwitchProps = ComponentProps< typeof Switch >;
 /**
  * Design-styled switch.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Switch props.
  * @param props.className Extra classes.

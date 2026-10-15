@@ -12,7 +12,7 @@
  * is laid out for the product summary column and wraps in the preview's
  * narrower widget slot.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
@@ -81,7 +81,7 @@ export interface OfferPreviewProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props                  Props.
  * @param props.values           The editor's (unsaved) values.

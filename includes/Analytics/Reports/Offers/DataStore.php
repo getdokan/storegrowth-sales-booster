@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * - `spsg_group` `campaign` (default; the trigger campaign for the
  *                `trigger` role) or `product`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DataStore extends ReportsDataStore implements DataStoreInterface {
 
@@ -83,7 +83,7 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 	/**
 	 * Rows, or an error until the upgrade has created the lookup table.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *
@@ -100,7 +100,7 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 	/**
 	 * Default query args.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */
@@ -119,7 +119,7 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 	/**
 	 * The rows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
 	 *

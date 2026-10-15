@@ -9,7 +9,7 @@
  *
  * As before, the two consent checkboxes are not sent anywhere.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { toast } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';

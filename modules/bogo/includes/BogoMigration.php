@@ -29,7 +29,7 @@ class BogoMigration {
 	/**
 	 * Post type of 1.x global offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -38,7 +38,7 @@ class BogoMigration {
 	/**
 	 * Product / variation meta key of 1.x product offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -48,7 +48,7 @@ class BogoMigration {
 	 * Flag option: set once the 1.x migration has run (or was not needed).
 	 * Holds the run's counts and errors. Not autoloaded.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -57,7 +57,7 @@ class BogoMigration {
 	/**
 	 * Design keys a 1.x offer shares with the table's `design_settings`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -77,7 +77,7 @@ class BogoMigration {
 	 * Lock held while the migration copies rows, so concurrent admin requests
 	 * (admin-ajax, heartbeat) can't copy the same offers twice.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -86,7 +86,7 @@ class BogoMigration {
 	/**
 	 * Border styles the storefront draws (`no_border` is "None").
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -96,7 +96,7 @@ class BogoMigration {
 	 * Migrate the 1.x offers if that hasn't happened yet. Cheap once done:
 	 * one option read. Runs on admin requests.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -178,7 +178,7 @@ class BogoMigration {
 	/**
 	 * Create the BOGO settings table when it doesn't exist.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -193,7 +193,7 @@ class BogoMigration {
 	/**
 	 * Record that the migration ran.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int      $globals  Global offers migrated.
 	 * @param int      $products Product offers migrated.
@@ -373,7 +373,7 @@ class BogoMigration {
 	 * `get_alternate_categories`, `bogo_type`, `exclude_products` and the old
 	 * design keys have no column and stay in the 1.x data only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings 1.x offer settings.
 	 *
@@ -410,7 +410,7 @@ class BogoMigration {
 	 * storefront expects them; an invalid or empty one is left out so the
 	 * default applies.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings 1.x offer settings.
 	 *
@@ -451,7 +451,7 @@ class BogoMigration {
 	/**
 	 * A 1.x offer post's settings: serialized, or JSON (1.x read both).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $excerpt Stored `post_excerpt`.
 	 *
@@ -472,7 +472,7 @@ class BogoMigration {
 	 * offer product or alternates chosen. A variation or a variable product
 	 * needs the offer product or alternates.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings    1.x settings.
 	 * @param bool  $needs_offer Whether only an offer product or alternates count.
@@ -491,7 +491,7 @@ class BogoMigration {
 	/**
 	 * A list of positive IDs from a 1.x value: one ID, a comma list or an array.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Stored value.
 	 *
@@ -508,7 +508,7 @@ class BogoMigration {
 	/**
 	 * A 1.x date as `Y-m-d`, or null when empty or unreadable.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Stored date.
 	 *
@@ -527,7 +527,7 @@ class BogoMigration {
 	/**
 	 * Decode 1.x's entity-encoded text into plain text.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Stored text.
 	 *
@@ -543,12 +543,12 @@ class BogoMigration {
 	 * It dropped the whole table, 2.x offers included. The migration never
 	 * touches the 1.x data, so there is nothing to roll back to.
 	 *
-	 * @deprecated SPSG_VERSION The 1.x BOGO data is kept; this does nothing.
+	 * @deprecated 3.0.0 The 1.x BOGO data is kept; this does nothing.
 	 *
 	 * @return array Rollback results.
 	 */
 	public static function rollback_migration() {
-		_deprecated_function( __METHOD__, 'SPSG_VERSION' );
+		_deprecated_function( __METHOD__, '3.0.0' );
 
 		return [
 			'success'  => false,
@@ -597,7 +597,7 @@ class BogoMigration {
 	/**
 	 * Number of 1.x global offer posts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return int
 	 */
@@ -613,7 +613,7 @@ class BogoMigration {
 	/**
 	 * Number of 1.x product / variation meta rows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return int
 	 */
@@ -629,12 +629,12 @@ class BogoMigration {
 	/**
 	 * Clean up old data after migration.
 	 *
-	 * @deprecated SPSG_VERSION The 1.x BOGO data is never deleted; this does nothing.
+	 * @deprecated 3.0.0 The 1.x BOGO data is never deleted; this does nothing.
 	 *
 	 * @return array Cleanup results.
 	 */
 	public static function cleanup_old_data() {
-		_deprecated_function( __METHOD__, 'SPSG_VERSION' );
+		_deprecated_function( __METHOD__, '3.0.0' );
 
 		return [
 			'success'  => false,

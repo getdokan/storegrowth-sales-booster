@@ -7,7 +7,7 @@
  * `design_settings` (merged key by key on update), so a key that isn't a
  * column is read from and sent in it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -200,7 +200,7 @@ const LOAD_ERROR = __(
 );
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id        Bump id, or null for a new bump.
  * @param onCreated Called with the new bump's id after it's created.

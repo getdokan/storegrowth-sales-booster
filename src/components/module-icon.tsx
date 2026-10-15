@@ -2,7 +2,7 @@
  * Lucide icon for a module. The design uses one set in the feature menu and a
  * slightly different set on the dashboard, so both are mapped here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     BellRing,
@@ -57,7 +57,7 @@ export interface ModuleIconProps {
 /**
  * Icon for a module; unknown modules get a generic grid icon.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.id          Module id.

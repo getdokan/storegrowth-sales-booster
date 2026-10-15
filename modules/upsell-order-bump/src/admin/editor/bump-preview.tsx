@@ -14,7 +14,7 @@
  * font size and the two prices stack. The row gap and title line height a
  * store's theme supplies are set here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect, useId, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -149,7 +149,7 @@ export interface BumpPreviewProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props      Props.
  * @param props.bump The editor's bump (unsaved values).

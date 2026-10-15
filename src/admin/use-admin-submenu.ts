@@ -5,7 +5,7 @@
  * `storegrowth#/…` route would show "Dashboard" as current. This marks the
  * item for the current route instead.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useEffect } from '@wordpress/element';
 import { useLocation } from '@storegrowth/hooks';
@@ -65,7 +65,7 @@ function submenuTarget(
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export default function useAdminSubmenu(): void {
     const { pathname, search } = useLocation();

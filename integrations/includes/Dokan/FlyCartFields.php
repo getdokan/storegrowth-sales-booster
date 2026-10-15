@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * Adds the vendor store name / link switches to the Fly Cart settings
  * (extension fields, ADR-007). The storefront reads them in `Frontend`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class FlyCartFields {
 
@@ -25,7 +25,7 @@ class FlyCartFields {
 	/**
 	 * Constructor.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	private function __construct() {
 		add_filter( 'spsg_settings_schema', [ $this, 'add_fields' ], 10, 2 );
@@ -34,7 +34,7 @@ class FlyCartFields {
 	/**
 	 * Append the Dokan fields to the Fly Cart General tab.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $fields    Field definitions keyed by option key.
 	 * @param string $module_id Module id.

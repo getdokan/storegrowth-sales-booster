@@ -3,7 +3,7 @@
  * a rule, then the selected panel. plugin-ui's Tabs handle the keyboard and
  * the tab/panel ARIA.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -27,7 +27,7 @@ export interface SettingsTabsProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props               Props.
  * @param props.tabs          Tabs with their panels.

@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * Values are inserted as given: escape the result for its context, as today
  * (a `wc_price()` value is HTML and must pass through).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class StorefrontText {
 
@@ -28,7 +28,7 @@ class StorefrontText {
 	 * Replace `{token}` and `[token]` with their values. Unknown tokens are
 	 * left as they are.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $text Text with tokens.
 	 * @param array  $vars Token name (without brackets) → value.

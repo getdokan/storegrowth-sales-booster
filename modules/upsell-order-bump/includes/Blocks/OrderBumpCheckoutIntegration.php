@@ -66,7 +66,7 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 	 * blocks render without the bump instead of failing on a handle that
 	 * doesn't exist.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool Whether the script is registered.
 	 */
@@ -98,7 +98,7 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 	/**
 	 * Path of the block script's generated `.asset.php`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -152,7 +152,7 @@ class OrderBumpCheckoutIntegration implements IntegrationInterface {
 	 * `is_checkout()` is true; a Checkout block can be on any page, and its
 	 * data is built wherever it renders.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */

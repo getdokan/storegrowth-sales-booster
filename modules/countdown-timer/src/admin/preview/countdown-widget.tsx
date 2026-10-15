@@ -7,7 +7,7 @@
  *
  * `.spsg-storefront` keeps the admin's scoped reset out of this subtree.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Fragment, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -52,7 +52,7 @@ export interface CountdownWidgetProps {
  * The live preview: the widget counting down from the sample time. The clock
  * lives here, so only the preview re-renders each second.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props Widget props (without digits).
  */
@@ -74,7 +74,7 @@ export function CountdownPreview(
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.values   Settings as the storefront applies them.

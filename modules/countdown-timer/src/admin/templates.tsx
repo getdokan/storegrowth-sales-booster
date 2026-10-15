@@ -4,7 +4,7 @@
  * `selected_theme`; the two old layouts stay valid ids. The colours come from
  * PHP (`data.ts`); only the names and sample headings live here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import type { TemplateOption } from '@storegrowth/components';
@@ -57,7 +57,7 @@ export const PRESETS: CountdownPreset[] = [
 /**
  * The fields a preset writes.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id Template id.
  */
@@ -87,7 +87,7 @@ const THUMBNAIL: Partial< CountdownTimerValues > = {
 /**
  * Picker options: each preset drawn as the widget itself, at thumbnail size.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param values Current settings (the thumbnails take everything else from the preset).
  */

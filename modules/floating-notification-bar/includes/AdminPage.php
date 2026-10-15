@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Floating Bar page into the admin app, with the bar's storefront
  * stylesheets for its preview and the store's coupons for the coupon field.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -33,7 +33,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The bar's stylesheets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -47,7 +47,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The custom icon upload (pro).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -58,7 +58,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The store's coupons (`spsg_fnb_coupon_data`, as the old admin had it).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array>
 	 */

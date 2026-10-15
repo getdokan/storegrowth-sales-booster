@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds to `spsg_analytics_daily`, one row per store day, module, metric and
  * campaign or product.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class Counter {
 
@@ -34,14 +34,14 @@ class Counter {
 	 * Object type: the module itself (id 0), for widgets with no campaign
 	 * (Free Shipping Bar).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const MODULE = 'module';
 
 	/**
 	 * Add to a count for today (store time).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module      Module id.
 	 * @param string $metric      Metric, e.g. `view`, `accept`, `remove`.
@@ -83,7 +83,7 @@ class Counter {
 	 * Marks it counted, so a view is counted once per session and object
 	 * however often the page re-renders.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $key       Session list key, e.g. `spsg_bump_seen`.
 	 * @param int    $object_id Object id.

@@ -3,7 +3,7 @@
  * (`sales-booster/v1/settings/progressive-discount-banner`, PHP
  * `ProgressiveDiscountBannerSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { BarValues } from '@storegrowth/components';
 

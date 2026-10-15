@@ -20,14 +20,14 @@ defined( 'ABSPATH' ) || exit;
  * Register the subclass from the module's always-loaded ServiceProvider, so
  * the page is there right after the module is switched on in the app.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 abstract class ModuleAdminPage implements HookRegistry {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -37,7 +37,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	 * Storefront stylesheets the preview needs: handle → path from the
 	 * plugin root, e.g. `modules/stock-bar/assets/scripts/spsg-stockbar-style.css`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -48,7 +48,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	/**
 	 * Data for the page: JS global name → value (localized on the bundle).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array>
 	 */
@@ -59,7 +59,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	/**
 	 * Whether the page picks files from the media library (`wp.media`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -70,7 +70,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	/**
 	 * Register the hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -81,7 +81,7 @@ abstract class ModuleAdminPage implements HookRegistry {
 	/**
 	 * Enqueue on the app page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $hook Admin page hook.
 	 *

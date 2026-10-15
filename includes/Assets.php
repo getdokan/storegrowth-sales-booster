@@ -29,7 +29,7 @@ class Assets {
 	 * Other bundles import them by bare specifier and receive the handle as a
 	 * dependency through their `.asset.php` (webpack-dependency-mapping.js).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, string>
 	 */
@@ -102,7 +102,7 @@ class Assets {
 	 * when that module migrates, so they load only where a module renders. The
 	 * admin preview loads them too, for preview parity (S10).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -149,7 +149,7 @@ class Assets {
 	 * refuses to enqueue anything that depends on it, which is visible and
 	 * diagnosable, instead of a fatal `require` error.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -174,7 +174,7 @@ class Assets {
 	 * ADR-011) calls this itself, only on that page. Registering only: the
 	 * page's own bundle depends on them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -203,7 +203,7 @@ class Assets {
 	/**
 	 * Register one webpack bundle from its generated `.asset.php`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $handle Script handle.
 	 * @param string $bundle Bundle path inside `build/`, without extension.
@@ -259,7 +259,7 @@ class Assets {
 				/**
 				 * Filters the versions, pro flag and URLs used by the StoreGrowth admin.
 				 *
-				 * @since SPSG_VERSION
+				 * @since 3.0.0
 				 *
 				 * @param array $header_info Header data.
 				 */
@@ -287,7 +287,7 @@ class Assets {
 			/**
 			 * Filters the data localized for the StoreGrowth admin app.
 			 *
-			 * @since SPSG_VERSION
+			 * @since 3.0.0
 			 *
 			 * @param array $data Localized data.
 			 */
@@ -314,7 +314,7 @@ class Assets {
 	 * Pro has no version constant, so the version is read from its plugin
 	 * header.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */

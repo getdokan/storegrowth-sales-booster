@@ -4,7 +4,7 @@
  * dashboard copy. Keyed by module id. Icons live in `@storegrowth/components`
  * (`ModuleIcon`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 
 export type DashboardGroup = 'order-value' | 'checkout-path' | 'urgency';
@@ -126,7 +126,7 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
  * Sort modules into the design's feature-menu order; unknown modules
  * (e.g. added through the `spsg_modules` filter) go last in their given order.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param modules Modules from the API.
  */
@@ -144,7 +144,7 @@ export function sortModules( modules: SpsgModule[] ): SpsgModule[] {
  * `#/settings?module=<id>` (its settings page, or the empty module frame
  * until it has one).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param moduleId Module id.
  */
@@ -158,7 +158,7 @@ export function moduleRoute( moduleId: string ): string {
 /**
  * Display label for a module: design wording, falling back to the PHP name.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param module Module.
  */

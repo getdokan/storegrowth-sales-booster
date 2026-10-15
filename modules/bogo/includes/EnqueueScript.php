@@ -203,7 +203,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Product list for view.
 	 *
-	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function prodcut_list_for_view() {
 		$args                  = array(
@@ -226,7 +226,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Category list.
 	 *
-	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function category_list() {
 		$orderby    = 'name';
@@ -260,7 +260,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Order bogo list.
 	 *
-	 * @deprecated SPSG_VERSION Only the old BOGO admin read it; kept for extensions.
+	 * @deprecated 3.0.0 Only the old BOGO admin read it; kept for extensions.
 	 */
 	public function order_bogo_list() {
 		$args_bogo = array(

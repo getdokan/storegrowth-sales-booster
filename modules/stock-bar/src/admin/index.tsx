@@ -6,7 +6,7 @@
  * `#/settings?module=stock-bar`; this adds the live product-page preview and
  * the template picker.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter, applyFilters } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
@@ -29,7 +29,7 @@ const stockBarPage: SettingsPageParts< StockBarValues > = {
                      * Filters the Stock Bar preview widget, e.g. for pro to
                      * add its parts.
                      *
-                     * @since SPSG_VERSION
+                     * @since 3.0.0
                      *
                      * @param {JSX.Element}    widget The preview widget.
                      * @param {StockBarValues} values Current (unsaved) settings.

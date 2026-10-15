@@ -3,7 +3,7 @@
  * Violet). The stored ids stay the existing `stock_bar_one/two/three`; a
  * preset writes the track ("Foreground") and fill ("Bar") colours.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import type { TemplateOption } from '@storegrowth/components';
@@ -45,7 +45,7 @@ export const PRESETS: StockBarPreset[] = [
  * Picker options: each preset drawn as a miniature stock bar (design
  * `.sb-tpl-*`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function templateOptions(): TemplateOption[] {
     return PRESETS.map( ( preset ) => ( {

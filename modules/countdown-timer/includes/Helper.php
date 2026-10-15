@@ -20,7 +20,7 @@ class Helper {
 	/**
 	 * Stored font slug → CSS family.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, string>
 	 */
@@ -44,7 +44,7 @@ class Helper {
 	 * template's counter colours also apply in lite, where their fields need
 	 * pro; with pro, saved values win.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, array<int, string|null>>
 	 */
@@ -62,7 +62,7 @@ class Helper {
 	/**
 	 * Counter colour settings (pro fields) a template sets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -80,7 +80,7 @@ class Helper {
 	/**
 	 * CSS family of a stored font slug; other values pass through.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $slug Stored font.
 	 *
@@ -96,7 +96,7 @@ class Helper {
 	 * The settings a template sets, setting key → colour. Unknown ids (e.g.
 	 * the old `ct-custom`) get the first layout's.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $theme Template id.
 	 *
@@ -156,7 +156,7 @@ class Helper {
 	 * Same `intval()` as `CommonHooks::get_product_price()`, which doesn't
 	 * range-check; a value outside 1–100 gives no timer discount here.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $product_id Product or variation id.
 	 *

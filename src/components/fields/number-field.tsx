@@ -3,7 +3,7 @@
  * such as `px`), on plugin-ui's Input / InputGroup. Emits a `number`, the
  * settings API type.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Input,
@@ -47,7 +47,7 @@ export type NumberFieldProps = NumberFieldBaseProps &
     );
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props            Props.
  * @param props.label      Label.

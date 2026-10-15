@@ -33,14 +33,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * (which follow Dokan's sub-order types), there is no Dokan join and nothing
  * is counted twice.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class FreeShippingBar {
 
 	/**
 	 * Figures for a range.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $after  First day, `Y-m-d`.
 	 * @param string $before Last day, `Y-m-d`.
@@ -93,7 +93,7 @@ class FreeShippingBar {
 	/**
 	 * Conditions on `wc_order_stats` (alias `stats`), prepared.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $after  First day, `Y-m-d`.
 	 * @param string $before Last day, `Y-m-d`.

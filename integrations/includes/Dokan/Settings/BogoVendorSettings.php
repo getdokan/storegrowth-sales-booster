@@ -24,14 +24,14 @@ defined( 'ABSPATH' ) || exit;
  * The option's other keys (`vendors_can_schedule_offers`, …, never used) stay
  * out of the schema; saves merge, so they're kept.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class BogoVendorSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Page id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -40,7 +40,7 @@ class BogoVendorSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Page id: the `module` in `#/settings?module=…` and the REST route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -51,7 +51,7 @@ class BogoVendorSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -62,7 +62,7 @@ class BogoVendorSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Fields.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -82,7 +82,7 @@ class BogoVendorSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * `spsg_settings_page`: a "Vendors" link on the BOGO settings page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array  $page      Page.
 	 * @param string $module_id Page id.
@@ -108,7 +108,7 @@ class BogoVendorSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: one card, one section.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

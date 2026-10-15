@@ -3,7 +3,7 @@
  * an optional title. Used for the dashboard's stat tiles and the Analytics
  * page's tiles and cards.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -17,7 +17,7 @@ export interface CardProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.title     Title.

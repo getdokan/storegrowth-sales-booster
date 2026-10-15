@@ -3,7 +3,7 @@
  * size and weight side by side, and a Pro pill at the end when locked (so
  * the columns stay aligned). `TextStyleHeader` labels the columns once.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Input,
@@ -35,7 +35,7 @@ const LABEL = `${ FIELD_LABEL } w-[104px] shrink-0 whitespace-nowrap`;
 /**
  * Column titles over the rows.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function TextStyleHeader() {
     return (
@@ -57,7 +57,7 @@ export function TextStyleHeader() {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Row label, e.g. "Product Name".

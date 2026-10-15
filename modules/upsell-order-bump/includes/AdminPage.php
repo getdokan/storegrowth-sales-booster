@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Order Bump admin bundle (the bump list and editor) into the
  * admin app.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -34,7 +34,7 @@ class AdminPage extends ModuleAdminPage {
 	 * The checkout box's own stylesheet, for the editor's checkout preview
 	 * (ADR-005 S10), under the storefront's handle.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */

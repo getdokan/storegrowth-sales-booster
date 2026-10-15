@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The class name carries the version: WPKit stamps it as the database
  * version once every method has run.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class V_3_0_0 extends BaseMigration {
 
 	/**
 	 * Create the analytics tables.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -41,7 +41,7 @@ class V_3_0_0 extends BaseMigration {
 	 *
 	 * Queued in the background (Action Scheduler); the upgrade doesn't wait.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */

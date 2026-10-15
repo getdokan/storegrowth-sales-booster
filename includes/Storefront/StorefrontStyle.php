@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
  * before. Every value is sanitized for the CSS context; an invalid value
  * falls back to the token's default, never to empty.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class StorefrontStyle {
 
@@ -41,7 +41,7 @@ class StorefrontStyle {
 	 * - `keyword`: one of the token's `allowed` values;
 	 * - `box`: `{ top, right, bottom, left }` integers, printed as four `px` lengths.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module   Module id; names the variables and, by default, the rule targets `.spsg-<module>`.
 	 * @param array  $tokens   Token name → `{ value, type, default?, allowed? }`.
@@ -60,7 +60,7 @@ class StorefrontStyle {
 	 * A module's variables as declarations, for a `style` attribute when the
 	 * values differ per rendered widget (e.g. they pass through a filter).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module Module id.
 	 * @param array  $tokens Tokens, as for `render()`.
@@ -91,7 +91,7 @@ class StorefrontStyle {
 	/**
 	 * Add a module's variables after one of its stylesheets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $handle   Registered stylesheet handle.
 	 * @param string $module   Module id.
@@ -111,7 +111,7 @@ class StorefrontStyle {
 	/**
 	 * One token's sanitized CSS value.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $token `{ value, type, default?, allowed? }`.
 	 *
@@ -163,7 +163,7 @@ class StorefrontStyle {
 	 * integers, as the settings `box` type stores them. Anything else falls
 	 * back to the default.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value    Stored sides.
 	 * @param mixed $fallback Default sides.
@@ -196,7 +196,7 @@ class StorefrontStyle {
 	 * A font family for CSS: `inherit` stays a keyword, a family name is
 	 * quoted. Only letters, digits, spaces and hyphens are allowed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed  $value    Stored family.
 	 * @param string $fallback Fallback family.

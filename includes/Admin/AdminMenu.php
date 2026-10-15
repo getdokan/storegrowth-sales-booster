@@ -25,7 +25,7 @@ class AdminMenu {
 	 * Slug of the admin page the StoreGrowth app runs on
 	 * (`admin.php?page=storegrowth#/<route>`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -34,7 +34,7 @@ class AdminMenu {
 	/**
 	 * Screen id (`admin_enqueue_scripts` hook suffix) of the app page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -44,7 +44,7 @@ class AdminMenu {
 	 * Old app page slugs (ADR-008). Still registered, as hidden pages that
 	 * redirect to `PAGE`, so saved links and older add-ons keep working.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -66,7 +66,7 @@ class AdminMenu {
 	/**
 	 * Whether the current admin screen is a StoreGrowth app page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -83,7 +83,7 @@ class AdminMenu {
 	 * output. The browser keeps the URL's `#/route` across the redirect; a bare
 	 * Modules link carries `view=modules` so it still opens the modules list.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -113,7 +113,7 @@ class AdminMenu {
 	 * any notice prints collects them all in a hidden container, which the
 	 * header script moves under the header.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -129,7 +129,7 @@ class AdminMenu {
 	/**
 	 * Close the wrapper opened in inject_before_notices().
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -268,7 +268,7 @@ class AdminMenu {
 	 * The app page: the dashboard, or the modules list when an old Modules
 	 * link was redirected here (`view=modules`). A `#/route` in the URL wins.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -287,7 +287,7 @@ class AdminMenu {
 	 * Tailwind preflight would strip core notice styling. Captured notices are
 	 * moved into it by the header script.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $default_route Route to open when the URL has no hash.
 	 *

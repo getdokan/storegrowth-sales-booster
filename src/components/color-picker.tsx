@@ -10,7 +10,7 @@
  * `@wordpress/components` is WordPress's `wp.components` global at runtime
  * (dependency extraction), so this adds nothing to the bundle.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn, Popover, PopoverContent, PopoverTrigger } from '@wedevs/plugin-ui';
 import { ColorPicker as WpColorPicker } from '@wordpress/components';
@@ -32,7 +32,7 @@ export interface ColorPickerProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props              Props.
  * @param props.value        Hex colour.

@@ -28,7 +28,7 @@ class EnqueueScript implements HookRegistry {
 	/**
 	 * Alignment setting → flex alignment.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, string>
 	 */
@@ -105,7 +105,7 @@ class EnqueueScript implements HookRegistry {
 	 * The counter colours are not here: they pass through the
 	 * `spsg_countdown_timer_styles` filter, so the template prints them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings Countdown Timer settings.
 	 *

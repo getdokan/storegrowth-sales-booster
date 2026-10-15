@@ -24,14 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * in `CommonHooks`, so a line is marked only when the timer price was
  * really charged.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OrderAttribution implements HookRegistry {
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -47,7 +47,7 @@ class OrderAttribution implements HookRegistry {
 	 * reference price is replaced with the price before the timer, so the
 	 * whole discount goes to the reward. Any other line gets the percentage.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Order_Item  $item          Order line item being created.
 	 * @param string         $cart_item_key Cart item key.
@@ -94,7 +94,7 @@ class OrderAttribution implements HookRegistry {
 	/**
 	 * The timer percentage the price filter applies to a product now.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $product_id Product or variation id.
 	 *

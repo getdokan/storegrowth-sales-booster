@@ -31,14 +31,14 @@ defined( 'ABSPATH' ) || exit;
  * Pro fields are saved only while pro is active; otherwise they're ignored and
  * their stored values stay.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class SettingsService {
 
 	/**
 	 * Field types the service knows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -48,7 +48,7 @@ class SettingsService {
 	 * Sides of a `box` value (margin/padding), stored and returned as
 	 * `{ top, right, bottom, left }` integers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -57,7 +57,7 @@ class SettingsService {
 	/**
 	 * Extension fields already reported (`module.key` → true).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, bool>
 	 */
@@ -68,7 +68,7 @@ class SettingsService {
 	 * run on storefront requests too, and their labels are translated).
 	 * Filled once `init` has run, so extensions registered earlier are in.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array{schemas?: array<string, SettingsSchema>, fields?: array<string, array>}
 	 */
@@ -77,7 +77,7 @@ class SettingsService {
 	/**
 	 * Every registered schema, keyed by module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, SettingsSchema>
 	 */
@@ -104,7 +104,7 @@ class SettingsService {
 		 * drawn by the same engine. The schemas registered by StoreGrowth
 		 * can't be replaced or removed.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param SettingsSchema[] $schemas Schemas keyed by id.
 		 */
@@ -126,7 +126,7 @@ class SettingsService {
 	/**
 	 * The schema for one module.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 *
@@ -139,7 +139,7 @@ class SettingsService {
 	/**
 	 * Field definitions for a module, after extensions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 *
@@ -169,7 +169,7 @@ class SettingsService {
 		 * The module's own fields can't be redefined here, and a field of an
 		 * unknown type is dropped (both reported under WP_DEBUG).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array  $fields    Field definitions keyed by option key.
 		 * @param string $module_id Module id.
@@ -183,7 +183,7 @@ class SettingsService {
 		 * e.g. `spsg_stock_bar_settings_schema`, `spsg_general_settings_schema`.
 		 * Same rules: add fields, never redefine the module's own.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array $fields Field definitions keyed by option key.
 		 */
@@ -211,7 +211,7 @@ class SettingsService {
 	/**
 	 * Report a field an extension added wrongly (once per field, WP_DEBUG).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 * @param string $key       Field key.
@@ -229,7 +229,7 @@ class SettingsService {
 		_doing_it_wrong(
 			'spsg_settings_schema',
 			esc_html( sprintf( 'Settings field "%1$s" of module "%2$s" %3$s.', $key, $module_id, $problem ) ),
-			'SPSG_VERSION'
+			'3.0.0'
 		);
 	}
 
@@ -237,7 +237,7 @@ class SettingsService {
 	 * The settings page a schema defines (`SettingsPage`: title, tabs,
 	 * sections), or an empty array when it has none.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module (or page) id.
 	 *
@@ -255,7 +255,7 @@ class SettingsService {
 		 * another plugin adds a tab or section here, then puts its fields on
 		 * it through `spsg_settings_schema` (`tab` / `section`).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array  $page      Page (`SettingsPage::get_page()`).
 		 * @param string $module_id Module (or page) id.
@@ -267,7 +267,7 @@ class SettingsService {
 	 * Every settings page, keyed by id, with its schema and values: what the
 	 * admin app draws its settings pages from, in one request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -289,7 +289,7 @@ class SettingsService {
 	 * (its storefront output is off until then); `page` is empty for a
 	 * schema without a page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module (or page) id.
 	 *
@@ -308,7 +308,7 @@ class SettingsService {
 	 * Schema as the admin app consumes it: type, default, tier and limits per
 	 * key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 *
@@ -322,7 +322,7 @@ class SettingsService {
 	 * Fields as the admin app consumes them (`get_public_schema()`), for any
 	 * field list: a module's settings, or a record editor's fields (ADR-010).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array<string, array<string, mixed>> $fields Field definitions keyed by key.
 	 *
@@ -352,7 +352,7 @@ class SettingsService {
 	 * Whether a module's storefront output uses its settings: false only
 	 * while a gated module (`GatedSettingsSchema`) was never saved.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 * @param mixed  $stored    Stored option (default: read it).
@@ -375,7 +375,7 @@ class SettingsService {
 	 * changed keys. Values stay in the stored shape. A gated module that was
 	 * never saved is returned as it is, so its output stays off.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 * @param mixed  $stored    Stored option.
@@ -405,7 +405,7 @@ class SettingsService {
 	 * Current values for every schema key, stored value or default, in API
 	 * shape.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 *
@@ -444,7 +444,7 @@ class SettingsService {
 	 * - nothing is saved when any value is invalid, or when the stored option
 	 *   isn't an array (it would be overwritten).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module_id Module id.
 	 * @param array  $input     Values keyed by option key, in API shape.
@@ -547,7 +547,7 @@ class SettingsService {
 		 * Fires after a module's settings are saved through the settings
 		 * service (REST or a legacy ajax adapter).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param string $module_id  Module id.
 		 * @param array  $new_values Stored option after the save.
@@ -561,7 +561,7 @@ class SettingsService {
 	/**
 	 * The stored option as an array.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param SettingsSchema $schema Module schema.
 	 *
@@ -591,7 +591,7 @@ class SettingsService {
 	/**
 	 * Whether each key of the schema is its own option (no option name).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param SettingsSchema $schema Schema.
 	 *
@@ -604,7 +604,7 @@ class SettingsService {
 	/**
 	 * Convert a stored (or default) value to its API shape.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field Field definition.
 	 * @param mixed $value Stored value.
@@ -650,7 +650,7 @@ class SettingsService {
 	 * on the field's `separator`; items are trimmed, empty ones dropped;
 	 * `item: int` keeps positive integers, `options` keeps listed values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field Field definition.
 	 * @param mixed $value List value.
@@ -687,7 +687,7 @@ class SettingsService {
 	/**
 	 * Most items a `list` takes: `lite_max_items` without pro, else `max_items`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field Field definition.
 	 *
@@ -703,7 +703,7 @@ class SettingsService {
 	 * A `{ top, right, bottom, left }` array of integers, or null when a side
 	 * is missing or not a number.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Box value.
 	 *
@@ -732,7 +732,7 @@ class SettingsService {
 	/**
 	 * Validate one incoming value and convert it to its stored shape.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field Field definition.
 	 * @param mixed $value Incoming value (API shape).
@@ -876,7 +876,7 @@ class SettingsService {
 	 * one, i.e. the admin didn't change it. Compared without falling back to
 	 * defaults, so an invalid value is never taken for "unchanged".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field  Field definition.
 	 * @param mixed $input  Incoming value (API shape).
@@ -913,7 +913,7 @@ class SettingsService {
 	/**
 	 * Whether a string is a real `Y-m-d` date.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $value Date.
 	 *
@@ -926,7 +926,7 @@ class SettingsService {
 	/**
 	 * Whether a number field holds integers (no step, or a whole-number step).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $field Field definition.
 	 *

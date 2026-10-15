@@ -8,7 +8,7 @@
  * and the controls that set more than one key: the icon picker, the Discount
  * Type select, the discount amount (currency or %) and the template picker.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Popover, PopoverContent, PopoverTrigger } from '@wedevs/plugin-ui';
 import { addFilter } from '@wordpress/hooks';

@@ -7,7 +7,7 @@
  * the frame, a shop card with the Quick View button below it), the icon
  * picker and the Fly Cart switch, which shows only while Fly Cart is active.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useState } from '@wordpress/element';
 import { addFilter } from '@wordpress/hooks';

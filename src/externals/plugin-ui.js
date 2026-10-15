@@ -8,6 +8,6 @@
  * specifier is externalised, so using it here would make the bundle re-export
  * itself. Same approach as dokan-lite's src/externals/plugin-ui.js.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export * from '../../node_modules/@wedevs/plugin-ui/dist/index.js';

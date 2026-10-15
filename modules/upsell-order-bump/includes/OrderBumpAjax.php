@@ -85,7 +85,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * price, marked, with its attribution stamp; a variation under its
 	 * parent, both taken from the product rather than the request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $offer An offer from `find_offer()`.
 	 *
@@ -116,7 +116,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * count the removal against the bump each line came from; the shopper's
 	 * own lines of the same product stay.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $offer_id The offered product: a variation's own id, else the product's.
 	 *
@@ -151,7 +151,7 @@ class OrderBumpAjax implements HookRegistry {
 	 * ids differently, and compared a variation offer with its parent's id,
 	 * so a variation offer was refused with a 403).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $offer_id The offered product: a variation's own id, else the product's.
 	 *

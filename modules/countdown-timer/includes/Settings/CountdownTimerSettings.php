@@ -28,14 +28,14 @@ defined( 'ABSPATH' ) || exit;
  * - The Dokan keys (`vendor_can_create_*`, stored as bools) are added by the
  *   integration as extension fields (`Integrations\Dokan\CountdownTimerFields`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Font slugs (stored value) the countdown accepts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -44,7 +44,7 @@ class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Font weights.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -53,7 +53,7 @@ class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -64,7 +64,7 @@ class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -75,7 +75,7 @@ class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -388,7 +388,7 @@ class CountdownTimerSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

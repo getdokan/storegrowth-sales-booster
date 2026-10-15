@@ -9,7 +9,7 @@
  * module adds its live preview and page-drawn controls through the
  * `storegrowth.settings.page` JS filter.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { applyFilters } from '@wordpress/hooks';
@@ -45,7 +45,7 @@ function pageParts( id: string ): SettingsPageParts {
      * Filters what a module adds to its settings page: `preview` and
      * `controls`, render functions of the page's settings.
      *
-     * @since SPSG_VERSION
+     * @since 3.0.0
      *
      * @param {SettingsPageParts} parts    Preview and controls (none by default).
      * @param {string}            moduleId Page id (module id, or `general`).

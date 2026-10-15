@@ -22,14 +22,14 @@ defined( 'ABSPATH' ) || exit;
  * writes them into `popup_products` on save, as the old admin did for recent
  * orders; the storefront only ever shows `popup_products`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class SourceProductsController extends WP_REST_Controller {
 
 	/**
 	 * REST namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -38,7 +38,7 @@ class SourceProductsController extends WP_REST_Controller {
 	/**
 	 * Route base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -47,7 +47,7 @@ class SourceProductsController extends WP_REST_Controller {
 	/**
 	 * Register the route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -81,7 +81,7 @@ class SourceProductsController extends WP_REST_Controller {
 	/**
 	 * Settings managers only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -96,7 +96,7 @@ class SourceProductsController extends WP_REST_Controller {
 	 * External products are left out, as the product picker does, and so
 	 * are products hidden from the catalog (e.g. subscription packs).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *

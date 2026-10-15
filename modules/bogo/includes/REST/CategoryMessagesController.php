@@ -26,14 +26,14 @@ defined( 'ABSPATH' ) || exit;
  * had pro still sees its messages; every change needs pro, as the old
  * screen and pro's status/delete handlers did.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class CategoryMessagesController extends WP_REST_Controller {
 
 	/**
 	 * Route namespace and base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	public function __construct() {
 		$this->namespace = 'sales-booster/v1';
@@ -43,7 +43,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -96,7 +96,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Administrators read the messages.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -118,7 +118,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Changes need an administrator and pro (it shows the messages).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -145,7 +145,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Every message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -170,7 +170,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Add a category's message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -197,7 +197,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	 * Change a category's message (only the keys sent; `{ status }` alone
 	 * is the list's switch).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -224,7 +224,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * Delete a category's message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -248,7 +248,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * A stored row as the API returns it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array           $item    Row as stored.
 	 * @param WP_REST_Request $request Request.
@@ -273,7 +273,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * A message's schema.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */
@@ -326,7 +326,7 @@ class CategoryMessagesController extends WP_REST_Controller {
 	/**
 	 * A message has text.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Value.
 	 *

@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Direct Checkout admin bundle (the settings page's preview and
  * its multi-key controls) into the admin app.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */

@@ -27,49 +27,49 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registered only while the module is active, like the fee itself. Nothing
  * is written to a subscription.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OrderAttribution implements HookRegistry {
 
 	/**
 	 * `_spsg_campaign_type` value on the bar's discount fee line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const CAMPAIGN_TYPE = 'progressive_discount';
 
 	/**
 	 * Fee-item key: threshold in force.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const THRESHOLD = '_spsg_fsb_threshold';
 
 	/**
 	 * Fee-item key: `fixed-amount` or `percentage`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const MODE = '_spsg_fsb_mode';
 
 	/**
 	 * Fee-item key: the configured amount or percentage.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const VALUE = '_spsg_fsb_value';
 
 	/**
 	 * Fee-item key: cart subtotal that qualified.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const SUBTOTAL = '_spsg_fsb_subtotal';
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -88,7 +88,7 @@ class OrderAttribution implements HookRegistry {
 	 * The tag lives and dies with the fee line: both checkouts recreate a
 	 * draft order's fee lines when the cart's fees change.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Order_Item_Fee $item    Fee line being created.
 	 * @param string            $fee_key Fee id in the cart.
@@ -120,7 +120,7 @@ class OrderAttribution implements HookRegistry {
 	 * keeps fee lines whose amount didn't change (a fixed discount) while
 	 * the cart did.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Order $order Order being built.
 	 *
@@ -151,7 +151,7 @@ class OrderAttribution implements HookRegistry {
 	/**
 	 * Threshold in force.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings Module settings.
 	 *
@@ -164,7 +164,7 @@ class OrderAttribution implements HookRegistry {
 	/**
 	 * Cart subtotal, the figure the bar compares with its threshold.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */

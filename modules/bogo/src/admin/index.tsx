@@ -7,7 +7,7 @@
  * (`#/bogo`), the offer editor (`#/bogo/create-bogo`, `#/bogo/<id>`) and
  * the category messages (`#/bogo/messages`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { addFilter } from '@wordpress/hooks';
 import type { ReactNode } from 'react';
@@ -66,7 +66,7 @@ const bogoSettingsPage: SettingsPageParts< BogoSettingsValues > = {
  * `/bogo/:id` opens the editor for a numeric id only. Anything else opens
  * the list.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 function EditRoute() {
     const { id = '' } = useParams();

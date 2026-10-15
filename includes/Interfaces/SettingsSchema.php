@@ -61,7 +61,7 @@ defined( 'ABSPATH' ) || exit;
  * custom variant). A custom variant renders
  * through the JS filter `storegrowth_settings_{variant}_field`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 interface SettingsSchema {
 
@@ -69,7 +69,7 @@ interface SettingsSchema {
 	 * Module id, e.g. `stock-bar`. Also the `{module}` in
 	 * `sales-booster/v1/settings/{module}`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -80,7 +80,7 @@ interface SettingsSchema {
 	 * when each key is its own option (standalone, not autoloaded), e.g. the
 	 * global `spsg_remove_data_on_uninstall`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -89,7 +89,7 @@ interface SettingsSchema {
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */

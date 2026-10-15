@@ -3,7 +3,7 @@
  * static list (`options`) or searches as the user types (`onSearch`, e.g.
  * products), with an optional cap (`max`, e.g. the lite limit).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     cn,
@@ -44,7 +44,7 @@ export interface MultiSelectFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.label       Label.

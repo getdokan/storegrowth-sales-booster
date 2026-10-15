@@ -9,7 +9,7 @@
  * widget styles its dark or mobile look with
  * `group-data-[theme=dark]/frame:…` / `group-data-[device=mobile]/frame:…`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Toggle, ToggleGroup, ToggleGroupItem, cn } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
@@ -341,7 +341,7 @@ function MockPage( {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props                Props.
  * @param props.layout         Single product, shop or checkout page.

@@ -1,7 +1,7 @@
 /**
  * Globals the PHP side localizes for the admin app (includes/Assets.php).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 
 /** One module as returned by `GET sales-booster/v1/modules` and localized in `spsgAdmin.modules`. */

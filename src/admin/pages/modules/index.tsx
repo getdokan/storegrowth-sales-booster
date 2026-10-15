@@ -2,7 +2,7 @@
  * Modules page (design `modules.html`, Figma node 107:4660): master switch and
  * a grid of module cards with thumbnail, description, Docs link and switch.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { toast } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';

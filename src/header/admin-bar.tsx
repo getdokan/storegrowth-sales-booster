@@ -3,7 +3,7 @@
  * What's New, Support and (without pro) Upgrade. Data comes from PHP
  * (`spsgAdminHeader`, filterable there).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { TopBar } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';

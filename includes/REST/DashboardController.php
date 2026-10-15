@@ -21,14 +21,14 @@ defined( 'ABSPATH' ) || exit;
  * Revenue and template counts are `null` until their definitions are agreed
  * (docs/redesign/modules/00-core-shell.md §8); the UI shows a dash for null.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DashboardController extends WP_REST_Controller {
 
 	/**
 	 * REST namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -37,7 +37,7 @@ class DashboardController extends WP_REST_Controller {
 	/**
 	 * REST base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +46,7 @@ class DashboardController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -67,7 +67,7 @@ class DashboardController extends WP_REST_Controller {
 	/**
 	 * Only administrators see the dashboard.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -78,7 +78,7 @@ class DashboardController extends WP_REST_Controller {
 	/**
 	 * Dashboard figures.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -100,7 +100,7 @@ class DashboardController extends WP_REST_Controller {
 		 * `revenue` is null or `[ 'amount' => float, 'formatted' => string ]`;
 		 * `templates` is null or an integer.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param array           $overview Dashboard figures.
 		 * @param WP_REST_Request $request  Request object.

@@ -27,21 +27,21 @@ defined( 'ABSPATH' ) || exit;
  * - Unread keys stay out of the schema and in the option:
  *   `enable_product_navigation`, `show_quick_icon`, `navigation_text_color`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class QuickViewSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * The modal effects on offer (magnific-popup classes), the default first.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 */
 	const EFFECTS = [ 'mfp-fade', 'mfp-move-from-top', 'mfp-zoom-out', 'mfp-none' ];
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -52,7 +52,7 @@ class QuickViewSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -64,7 +64,7 @@ class QuickViewSettings implements SettingsSchema, SettingsPage {
 	 * The modal effect the storefront uses. The retired 3D Unfold (flip),
 	 * the old default, shows as Fade; its stored value is left as it is.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $settings Stored settings.
 	 *
@@ -79,7 +79,7 @@ class QuickViewSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Field definitions keyed by option key.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -267,7 +267,7 @@ class QuickViewSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

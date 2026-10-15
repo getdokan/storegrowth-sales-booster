@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * `unit_discount × product_qty`: refund rows have a negative quantity, so
  * refunds net out in a plain SUM (docs/analytics/README.md §2.2).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OfferLookup implements HookRegistry {
 
@@ -48,7 +48,7 @@ class OfferLookup implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -60,7 +60,7 @@ class OfferLookup implements HookRegistry {
 	/**
 	 * Mirror one WooCommerce lookup row.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $order_item_id Order item id of the row (a refund line for line refunds).
 	 * @param int $order_id      Order id of the row (the refund for refund rows).
@@ -95,7 +95,7 @@ class OfferLookup implements HookRegistry {
 	/**
 	 * Remove an order's rows when WooCommerce removes its lookup rows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $product_id Unused (WooCommerce passes 0).
 	 * @param int $order_id   Order or refund id.
@@ -120,7 +120,7 @@ class OfferLookup implements HookRegistry {
 	 * point at it with `_refunded_item_id`, full-refund rows (WC 10.2+) reuse
 	 * its item id under the refund's order id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $order_item_id Order item id of the row.
 	 * @param int $order_id      Order id of the row.
@@ -172,7 +172,7 @@ class OfferLookup implements HookRegistry {
 	 * before coupons (its subtotal, excluding tax), so a coupon's saving
 	 * isn't counted as the offer's.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $line `qty`, `subtotal` and the line's StoreGrowth keys.
 	 *
@@ -225,7 +225,7 @@ class OfferLookup implements HookRegistry {
 	/**
 	 * Module id of a campaign id (`bogo:12`, `order_bump:3`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $campaign_id Campaign id.
 	 *

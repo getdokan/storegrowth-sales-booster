@@ -2,7 +2,7 @@
  * Switch field (design `.field-row` + `.switch`): label on the left, switch
  * and its "Enable"/"Disable" state on the right.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useId } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -16,7 +16,7 @@ export interface SwitchFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label.

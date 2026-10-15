@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * product lookup rows of the orders whose lines carry StoreGrowth keys (and
  * their refunds), which fires the hook `OfferLookup` mirrors.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class Backfill implements HookRegistry {
 
@@ -48,7 +48,7 @@ class Backfill implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -59,7 +59,7 @@ class Backfill implements HookRegistry {
 	/**
 	 * Queue the first batch.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -74,7 +74,7 @@ class Backfill implements HookRegistry {
 	/**
 	 * Re-sync one batch of orders, then queue the next.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $after_order_id Last order id of the previous batch.
 	 *
@@ -118,7 +118,7 @@ class Backfill implements HookRegistry {
 	 *
 	 * The order-item tables are the same under HPOS and posts storage.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $after_order_id Only orders after this id.
 	 * @param int $limit          Most ids to return.

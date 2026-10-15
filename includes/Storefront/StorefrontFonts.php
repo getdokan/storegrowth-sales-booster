@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * request for all the rest. Fonts requested before `wp_head` load in the
  * head; fonts requested later (from templates) load in the footer.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class StorefrontFonts implements HookRegistry {
 
@@ -29,7 +29,7 @@ class StorefrontFonts implements HookRegistry {
 	 * Families offered for new font settings. Stored values outside this list
 	 * (e.g. older Countdown fonts) stay valid and still load.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -38,7 +38,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Weights loaded for every family.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var int[]
 	 */
@@ -47,7 +47,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Families requested and not yet enqueued.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, true>
 	 */
@@ -56,7 +56,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Families already enqueued.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var array<string, true>
 	 */
@@ -65,7 +65,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Register the hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -80,7 +80,7 @@ class StorefrontFonts implements HookRegistry {
 	 * ignored; names with anything other than letters, digits, spaces and
 	 * hyphens are rejected.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $family Font family, e.g. `Poppins`.
 	 *
@@ -101,7 +101,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Enqueue the fonts requested so far.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -130,7 +130,7 @@ class StorefrontFonts implements HookRegistry {
 		 * Filters whether fonts that the plugin doesn't bundle load from
 		 * Google Fonts on the storefront.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.0.0
 		 *
 		 * @param bool     $load     Load them (default true, as today).
 		 * @param string[] $families Families about to be requested.
@@ -152,7 +152,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Google Fonts CSS2 URL for families, with the standard weights.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string[] $families Font families.
 	 *
@@ -172,7 +172,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Families the plugin bundles → their stylesheet URL.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -186,7 +186,7 @@ class StorefrontFonts implements HookRegistry {
 	/**
 	 * Forget requested and loaded fonts (tests).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */

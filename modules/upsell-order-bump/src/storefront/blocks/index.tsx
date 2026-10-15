@@ -5,7 +5,7 @@
  * integration name `storegrowth-upsell-order-bump`; the block name comes from
  * `block.json` and must not change (ADR-004).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import metadata from './block.json';
 import OrderBumpTemplate from './order-bump-template';

@@ -2,7 +2,7 @@
  * Info tip (design `.tip`): an info icon that shows a short explanation on
  * hover or keyboard focus. plugin-ui Tooltip.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Tooltip, TooltipContent, TooltipTrigger } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
@@ -16,7 +16,7 @@ export interface InfoTipProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props       Props.
  * @param props.text  Explanation.

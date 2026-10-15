@@ -1,7 +1,7 @@
 /**
  * Onboarding step 3: congratulations, help links and "Go to dashboard".
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -45,7 +45,7 @@ export interface SuccessScreenProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.onBack   Back to the modules step.

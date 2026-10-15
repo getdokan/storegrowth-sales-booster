@@ -2,7 +2,7 @@
  * A report's list (campaigns, timer products) as a table. On Pro's Analytics
  * page and Lite's locked preview of it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { ReactNode } from 'react';
 
@@ -24,7 +24,7 @@ export interface ReportTableProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props         Props.
  * @param props.columns Columns.

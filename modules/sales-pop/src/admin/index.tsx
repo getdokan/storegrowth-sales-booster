@@ -9,7 +9,7 @@
  * and location lists, the message with its token legend, the template
  * picker, the radii (the template's in lite) and the Text Style rows.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { toast } from '@wedevs/plugin-ui';
 import { addFilter, applyFilters } from '@wordpress/hooks';
@@ -122,7 +122,7 @@ const SalesPopPreview = ( { settings }: { settings: Settings } ) => {
          * Filters the Sales Notification preview, e.g. for pro to add its
          * parts.
          *
-         * @since SPSG_VERSION
+         * @since 3.0.0
          *
          * @param {JSX.Element}    popup  The preview popup.
          * @param {SalesPopValues} values Current (unsaved) settings.

@@ -124,7 +124,7 @@ class EnqueueScript implements HookRegistry {
 	 * The rule also targets `.spsg-stock-progress-bar-section`, the root of
 	 * pro's variation stock bar (it has no `.spsg-stock-bar` wrapper).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings Stock Bar settings.
 	 *

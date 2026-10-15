@@ -2,7 +2,7 @@
  * Onboarding step 2: module cards (banner, icon, name, description, docs link
  * and switch). Switches save right away, as in the previous release.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, toast } from '@wedevs/plugin-ui';
 import { __, sprintf } from '@wordpress/i18n';
@@ -23,7 +23,7 @@ export interface ModulesScreenProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.onBack Back to welcome.

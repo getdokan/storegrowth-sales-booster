@@ -3,7 +3,7 @@
  * (plugin-ui ToggleGroup), each drawn by the module as a miniature of what it produces. Selecting one
  * calls `onSelect`; the module writes the preset's values into its fields.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { ToggleGroup, ToggleGroupItem, cn } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -36,7 +36,7 @@ export interface TemplatePickerProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.templates Presets.

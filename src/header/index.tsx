@@ -6,7 +6,7 @@
  * core's DOMContentLoaded notice pass, so the notice catcher is already in its
  * final place when core moves stray notices after it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { ThemeProvider } from '@wedevs/plugin-ui';
 import { createRoot } from '@wordpress/element';

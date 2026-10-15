@@ -9,7 +9,7 @@
  * fits the frame nor looks like any one store. It follows the design's mock
  * instead (spec §9).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -65,7 +65,7 @@ export interface QuickViewButtonProps {
 /**
  * The Quick View button as the shop loop shows it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props         Props.
  * @param props.values  Settings.
@@ -115,7 +115,7 @@ export function QuickViewButton( {
 /**
  * A shop-loop card with the button where Button Position puts it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props            Props.
  * @param props.values     Settings.
@@ -194,7 +194,7 @@ export interface QuickViewModalProps {
 /**
  * The modal over the frame (design `.qv-stage`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props         Props.
  * @param props.values  Settings.

@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * writes every key sent on that first save, even the ones equal to their
  * defaults, so saving the page unchanged turns the output on.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 interface GatedSettingsSchema extends SettingsSchema {
 
 	/**
 	 * Whether the stored option was ever saved from the admin.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $stored Stored option.
 	 *

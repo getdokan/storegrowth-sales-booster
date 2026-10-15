@@ -4,7 +4,7 @@
  * The design only draws the active state; the inactive state reuses the same
  * shape in neutral colours (listed design deviation: pro/inactive states).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import { CircleCheck, CircleMinus } from 'lucide-react';
@@ -14,7 +14,7 @@ export interface StatusPillProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.active Whether the module is active.

@@ -9,13 +9,13 @@
  *
  * Follows dokan-lite's webpack-dependency-mapping.js.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 
 /**
  * Shared bundles keyed by import specifier.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @type {Object.<string, {external: string[], handle: string}>}
  */
@@ -43,7 +43,7 @@ const SHARED_EXTERNALS = {
  * dashboard (as dokan-lite's own mapping: `@dokan/components` is
  * `window.dokan.components`, handle `dokan-react-components`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @type {Object.<string, {external: string[], handle: string}>}
  */
@@ -63,7 +63,7 @@ const EXTERNALS = { ...SHARED_EXTERNALS, ...DOKAN_EXTERNALS };
  * plugin-ui by a relative path so it bundles the package instead of
  * re-exporting itself.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param {string} request Import request.
  *
@@ -80,7 +80,7 @@ const requestToExternal = ( request ) => {
 /**
  * Script handle for a request, or undefined to fall back to the defaults.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param {string} request Import request.
  *

@@ -54,7 +54,7 @@ class Dokan implements HookRegistry {
 	/**
 	 * The BOGO vendor settings page (`#/settings?module=bogo-vendors`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $schemas Settings schemas.
 	 *

@@ -11,7 +11,7 @@
  * location and navigate through Dokan (ADR-011). Styles: the shared
  * Tailwind stylesheet, scoped to `.spsg-layout` (ADR-003, ADR-011).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { createTheme, ThemeProvider, Toaster } from '@wedevs/plugin-ui';
 import { Fill } from '@wordpress/components';

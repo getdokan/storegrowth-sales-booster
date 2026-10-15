@@ -24,14 +24,14 @@ defined( 'ABSPATH' ) || exit;
  * removes every row of the category. Writes keep the option's other keys
  * and rows as stored, and leave an option of the wrong shape alone.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class CategoryMessages {
 
 	/**
 	 * Key of the messages in the option.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -40,7 +40,7 @@ class CategoryMessages {
 	/**
 	 * Messages, one per category (its first row).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array[] Rows as stored.
 	 */
@@ -67,7 +67,7 @@ class CategoryMessages {
 	/**
 	 * A category's message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $id Category (term) id.
 	 *
@@ -86,7 +86,7 @@ class CategoryMessages {
 	/**
 	 * Whether a message shows on the storefront (pro reads `'true'`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $row Row as stored.
 	 *
@@ -99,7 +99,7 @@ class CategoryMessages {
 	/**
 	 * Add a category's message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int    $id      Category (term) id.
 	 * @param string $message Message.
@@ -157,7 +157,7 @@ class CategoryMessages {
 	 * Change a category's message (its first row): its category, text or
 	 * status, only the keys given.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int   $id      Category (term) id.
 	 * @param array $changes `category` (int), `message` (string), `status` (bool).
@@ -202,7 +202,7 @@ class CategoryMessages {
 	/**
 	 * Delete a category's message (every row of the category).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $id Category (term) id.
 	 *
@@ -234,7 +234,7 @@ class CategoryMessages {
 	/**
 	 * Name of the option (the BOGO settings).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -245,7 +245,7 @@ class CategoryMessages {
 	/**
 	 * Stored rows, as stored (non-array rows included).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array|WP_Error Rows, or an error when the option or the
 	 *                        messages aren't arrays.
@@ -268,7 +268,7 @@ class CategoryMessages {
 	/**
 	 * Index of a category's first row.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $rows Rows.
 	 * @param int   $id   Category (term) id.
@@ -289,7 +289,7 @@ class CategoryMessages {
 	 * Store the rows, keeping the option's other keys (`rows()` checked the
 	 * option is an array).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $rows Rows.
 	 *
@@ -307,7 +307,7 @@ class CategoryMessages {
 	/**
 	 * A category can take a new message: it exists and has none.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $id Category (term) id.
 	 *
@@ -338,7 +338,7 @@ class CategoryMessages {
 	/**
 	 * No message for the category.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return WP_Error
 	 */

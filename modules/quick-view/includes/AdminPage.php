@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Quick View settings page into the admin app. The preview is a
  * mock of the modal (spec §9), so it needs no storefront stylesheet.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */

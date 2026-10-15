@@ -2,7 +2,7 @@
  * Stock Bar settings as the settings API returns them
  * (`sales-booster/v1/settings/stock-bar`, PHP `StockBarSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface StockBarValues
     extends Record< string, string | number | boolean > {

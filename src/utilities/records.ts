@@ -6,7 +6,7 @@
  * `X-WP-TotalPages` and `X-SPSG-Can-Create`, `/editor`, `/{id}`,
  * `/{id}/status` and `/batch`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
@@ -36,7 +36,7 @@ export interface RecordEditorData {
 /**
  * A page of records.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route          Records route.
  * @param query          Query.
@@ -68,7 +68,7 @@ export async function fetchRecords< T >(
 /**
  * Turn a record on or off.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route  Records route.
  * @param id     Record id.
@@ -85,7 +85,7 @@ export function setRecordStatus( route: string, id: number, active: boolean ) {
 /**
  * Delete records.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route Records route.
  * @param ids   Record ids.
@@ -103,7 +103,7 @@ export function deleteRecords( route: string, ids: number[] ) {
 /**
  * The record editor's page, fields and what else the route sends.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route Records route.
  */
@@ -116,7 +116,7 @@ export function fetchRecordEditor< E extends RecordEditorData >(
 /**
  * One record.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route Records route.
  * @param id    Record id.
@@ -129,7 +129,7 @@ export function fetchRecord( route: string, id: number ) {
  * Create a record (`id` null) or change one: an update sends only what
  * changed, merged over the stored record.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param route Records route.
  * @param id    Record id, or null for a new record.
@@ -162,7 +162,7 @@ export interface Currency {
 /**
  * A price format until the store's loads.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const NO_CURRENCY: Currency = {
     symbol: '',
@@ -175,7 +175,7 @@ export const NO_CURRENCY: Currency = {
 /**
  * A price in the store's format, as `wc_price()` writes it (plain text).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param amount   Amount.
  * @param currency Price format.

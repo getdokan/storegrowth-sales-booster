@@ -37,7 +37,7 @@ class BogoDataManager {
 	/**
 	 * Global offers lite allows (any status); pro has no limit.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var int
 	 */
@@ -46,7 +46,7 @@ class BogoDataManager {
 	/**
 	 * Per-offer badge keys, stored inside `design_settings`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -57,7 +57,7 @@ class BogoDataManager {
 	 * lite while fewer than `LITE_OFFER_LIMIT` exist (any status). The one
 	 * rule for REST, the product tab and the admin list.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -70,7 +70,7 @@ class BogoDataManager {
 	 * A stored offer in the shape the REST routes take, so an update can
 	 * start from it and change only what the request sends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $offer Offer as `get_bogo_offer()` returns it.
 	 *

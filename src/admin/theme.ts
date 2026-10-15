@@ -2,7 +2,7 @@
  * plugin-ui theme tokens for the StoreGrowth admin (design: storegrowth-design
  * `assets/theme.js`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { createTheme } from '@wedevs/plugin-ui';
 
@@ -10,7 +10,7 @@ import { createTheme } from '@wedevs/plugin-ui';
  * The tokens, for a page that changes a few (the Dokan vendor dashboard
  * follows Dokan's button colour, ADR-011).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const storegrowthTokens = {
     primary: '#0875FF',

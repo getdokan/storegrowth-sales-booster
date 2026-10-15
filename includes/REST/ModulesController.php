@@ -29,14 +29,14 @@ defined( 'ABSPATH' ) || exit;
  * `spsg_active_module_ids` option and the `spsg_module_activated` /
  * `spsg_module_deactivated` hooks behave exactly as with the admin-ajax path.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class ModulesController extends WP_REST_Controller {
 
 	/**
 	 * REST namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -45,7 +45,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * REST base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string
 	 */
@@ -54,7 +54,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -132,7 +132,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * Only administrators may list or toggle modules.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -143,7 +143,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * All modules.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -156,7 +156,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * One module.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -175,7 +175,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * Activate or deactivate one module.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -197,7 +197,7 @@ class ModulesController extends WP_REST_Controller {
 	 * Activate or deactivate several modules. Unknown ids fail the whole
 	 * request before anything changes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 *
@@ -228,7 +228,7 @@ class ModulesController extends WP_REST_Controller {
 	 * Change a module's status only when it differs, so activate() doesn't
 	 * append a duplicate id to the active list or boot the module twice.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param ModuleSkeleton $module Module.
 	 * @param bool           $status True to activate.
@@ -250,7 +250,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * Module by id, or a 404 error.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $id Module id.
 	 *
@@ -275,7 +275,7 @@ class ModulesController extends WP_REST_Controller {
 	 * Module as the admin UI consumes it; same shape as
 	 * ModuleManager::list_all_modules().
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param ModuleSkeleton $module Module.
 	 *
@@ -294,7 +294,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * The shared module manager.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return ModuleManager
 	 */
@@ -305,7 +305,7 @@ class ModulesController extends WP_REST_Controller {
 	/**
 	 * Item schema.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */

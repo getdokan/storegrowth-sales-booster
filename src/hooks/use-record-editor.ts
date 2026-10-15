@@ -7,7 +7,7 @@
  * record is created with every value, then opened (`onCreated`); an existing
  * one sends only what changed (the route merges it over the stored record).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import {
@@ -34,7 +34,7 @@ type Errors = Partial< Record< string, string > >;
  * A rule the routes don't check, tested before saving: the keys it reads
  * (the first is the field it marks) and its message.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface RecordRule {
     keys: string[];
@@ -46,7 +46,7 @@ export interface RecordRule {
  * Pass module-level constants and functions (not inline ones): they are the
  * load's dependencies.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface RecordEditorOptions< E extends RecordEditorData > {
     /** Records route, e.g. `/sales-booster/v1/bogo/offers`. */
@@ -85,7 +85,7 @@ export interface RecordEditorOptions< E extends RecordEditorData > {
  * The editor's record, with the editor route's response and the record as
  * loaded (null until loaded, or for a new record).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface RecordEditor< E extends RecordEditorData >
     extends ModuleSettings< RecordValues > {
@@ -160,7 +160,7 @@ const AS_IS = < T >( data: T ): T => {
 };
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param options Options.
  */

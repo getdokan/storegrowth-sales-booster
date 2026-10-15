@@ -54,7 +54,7 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 	/**
 	 * Notice title.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -65,7 +65,7 @@ class UpgradeNoticeProvider implements NoticeProviderInterface {
 	/**
 	 * Notice message.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */

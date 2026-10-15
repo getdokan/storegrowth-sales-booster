@@ -2,7 +2,7 @@
  * Shared StoreGrowth components, exposed as `window.storegrowth.components`
  * (import from `@storegrowth/components`). Built on plugin-ui.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export {
     Accordion,

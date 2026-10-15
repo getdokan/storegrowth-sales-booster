@@ -6,7 +6,7 @@
  * live preview drawn here. The Dokan vendor dashboard draws the same editor
  * (`vendor`, 10f2).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { useCallback, useEffect } from '@wordpress/element';
@@ -242,7 +242,7 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
                  * Filters the BOGO offer preview, e.g. for pro to add its
                  * parts.
                  *
-                 * @since SPSG_VERSION
+                 * @since 3.0.0
                  *
                  * @param {JSX.Element} widget The preview widget.
                  * @param {Object}      values Current (unsaved) offer values.
@@ -306,7 +306,7 @@ function AdminBogoEditor( { id }: { id: number | null } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props        Props.
  * @param props.id     Offer id, or null for a new offer.

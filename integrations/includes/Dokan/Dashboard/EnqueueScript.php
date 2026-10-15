@@ -42,7 +42,7 @@ class EnqueueScript {
 	 * Dokan product form.
 	 *
 	 * @since 1.12.0
-	 * @since SPSG_VERSION A plain stylesheet in the Countdown Timer module (was
+	 * @since 3.0.0 A plain stylesheet in the Countdown Timer module (was
 	 *                     a legacy bundle), loaded on the vendor dashboard only.
 	 *
 	 * @return void

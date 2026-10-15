@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Free Shipping Rules page into the admin app, with the bar's
  * storefront stylesheets for its preview.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -33,7 +33,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The bar's stylesheets.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -47,7 +47,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The custom icon upload (pro).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
@@ -59,7 +59,7 @@ class AdminPage extends ModuleAdminPage {
 	 * What the preview reads: the store's price format, to show `[amount]`
 	 * as `wc_price()` does, and the cart address.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array>
 	 */

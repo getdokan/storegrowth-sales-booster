@@ -34,7 +34,7 @@ class EnqueueScript {
 	 * Enqueue Scripts for Dokan Admin.
 	 *
 	 * @since 1.12.0
-	 * @deprecated SPSG_VERSION The legacy Dokan admin bundles are removed; nothing is enqueued.
+	 * @deprecated 3.0.0 The legacy Dokan admin bundles are removed; nothing is enqueued.
 	 *
 	 * @param string $hook Current admin screen hook suffix.
 	 *

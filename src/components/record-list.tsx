@@ -9,7 +9,7 @@
  * settings pages); without one the card is the table alone, for a host that
  * draws the heading (the Dokan vendor dashboard).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     DataViews,
@@ -87,7 +87,7 @@ export interface RecordListProps< T extends ListRecord > {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props               Props.
  * @param props.route         Records route.

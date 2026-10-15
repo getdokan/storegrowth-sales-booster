@@ -10,7 +10,7 @@
  * page drawn by another app's router use these hooks, e.g. the BOGO pages
  * on the Dokan vendor dashboard, bridged to Dokan's router (ADR-011).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export {
     HashRouter,

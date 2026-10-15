@@ -24,14 +24,14 @@ defined( 'ABSPATH' ) || exit;
  * - Fonts: the five pro 2.2.0 draws (the bars have two more).
  * - `generated_link` is dead: unread, kept in the option.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class DirectCheckoutSettings implements SettingsSchema, SettingsPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -42,7 +42,7 @@ class DirectCheckoutSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Option holding the settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -53,7 +53,7 @@ class DirectCheckoutSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * Fields, in page order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -223,7 +223,7 @@ class DirectCheckoutSettings implements SettingsSchema, SettingsPage {
 	/**
 	 * The settings page: title, tabs and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, mixed>
 	 */

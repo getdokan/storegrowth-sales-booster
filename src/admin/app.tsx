@@ -3,7 +3,7 @@
  * (src/header), mounted by PHP above this app; admin notices, the database
  * update notice included, are core notices moved under it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Toaster } from '@wedevs/plugin-ui';
 import { useLayoutEffect, useMemo, useRef } from '@wordpress/element';

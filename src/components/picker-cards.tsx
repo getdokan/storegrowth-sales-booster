@@ -3,7 +3,7 @@
  * miniature (`art`) over its label, as a plugin-ui ToggleGroup. A pro choice
  * without pro stays visible, disabled with the Pro badge.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { ToggleGroup, ToggleGroupItem, cn } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -31,7 +31,7 @@ export interface PickerCardsProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Group name.

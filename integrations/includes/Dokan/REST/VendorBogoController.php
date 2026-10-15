@@ -94,7 +94,7 @@ class VendorBogoController extends BogoController {
 	 * (`vendors_can_create_buy_x_get_x`; the rules reject a new one while
 	 * it's off, an offer that already is one stays editable).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Rest Request.
 	 *

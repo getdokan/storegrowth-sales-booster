@@ -2,7 +2,7 @@
  * Page title card (design `.card-head`): bordered white card with the page
  * title on the left and optional actions on the right.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import type { ReactNode } from 'react';
@@ -15,7 +15,7 @@ export interface CardHeadProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.title     Page title.

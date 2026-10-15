@@ -3,7 +3,7 @@
  * (import from `@storegrowth/hooks`). No global data store: shared state is
  * React context, everything else is local.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export { ModulesProvider, useModules } from './modules-context';
 export type { ModulesContextValue } from './modules-context';

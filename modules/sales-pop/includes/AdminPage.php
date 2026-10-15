@@ -18,14 +18,14 @@ defined( 'ABSPATH' ) || exit;
  * storefront stylesheet its preview renders with (ADR-005 S10), and keeps
  * the storefront cache fresh when the settings change.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Register the hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -41,7 +41,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * Drop the cached storefront popup data.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -52,7 +52,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -63,7 +63,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * The popup's stylesheet.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, string>
 	 */
@@ -77,7 +77,7 @@ class AdminPage extends ModuleAdminPage {
 	 * The old admin's `ajax_url` / `ajd_nonce` (callers of the `create_popup`
 	 * adapter use them), plus what the preview draws with.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array>
 	 */

@@ -2,7 +2,7 @@
  * Alignment field (design `.tabs` with `.tab--icon` radios): label on the
  * left, left / center / right icon toggle (plugin-ui ToggleGroup) on the right.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { ToggleGroup, ToggleGroupItem } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -16,7 +16,7 @@ export type Alignment = 'left' | 'center' | 'right';
  * An alignment as a flex alignment (`align-items` / `align-self`), as the
  * storefront prints it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export const ALIGNMENT_FLEX: Record< Alignment, string > = {
     left: 'flex-start',
@@ -50,7 +50,7 @@ const OPTIONS = [
 ];
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label.

@@ -6,7 +6,7 @@
  * `build/`, see webpack-entries.js), integration bundles to
  * `build/integrations/<integration>/<bundle>.js`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 const path = require( 'path' );
 const TerserPlugin = require( 'terser-webpack-plugin' );

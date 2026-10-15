@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * stored them and the checkout box reads them. Used on save (REST) and on
  * render, so a row stored before sanitizing is still printed safely.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OrderBumpDesign {
 
 	/**
 	 * Colour keys.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -45,7 +45,7 @@ class OrderBumpDesign {
 	/**
 	 * Margin keys, in px (stored as integers).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -57,7 +57,7 @@ class OrderBumpDesign {
 	/**
 	 * Font size keys, in px (stored as numeric strings).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -71,7 +71,7 @@ class OrderBumpDesign {
 	/**
 	 * Plain text keys (the checkout block prints some of them as HTML).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -87,7 +87,7 @@ class OrderBumpDesign {
 	/**
 	 * Largest margin, in px.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var int
 	 */
@@ -96,7 +96,7 @@ class OrderBumpDesign {
 	/**
 	 * Largest font size, in px.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var int
 	 */
@@ -105,7 +105,7 @@ class OrderBumpDesign {
 	/**
 	 * The box's border styles.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -114,7 +114,7 @@ class OrderBumpDesign {
 	/**
 	 * Days a bump can run on (`bump_schedule`); `daily` is every day.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -123,7 +123,7 @@ class OrderBumpDesign {
 	/**
 	 * The 2.x admin's defaults for a new bump.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */
@@ -159,7 +159,7 @@ class OrderBumpDesign {
 	 * isn't valid falls back to the default; keys this class doesn't know are
 	 * kept as sanitized text.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $design Design settings.
 	 *
@@ -200,7 +200,7 @@ class OrderBumpDesign {
 	 * A schedule as a list of `SCHEDULE` days: unknown values dropped, and
 	 * `[ 'daily' ]` when it's empty or has `daily` (every day).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Days: a list, or a comma-separated string.
 	 *
@@ -220,7 +220,7 @@ class OrderBumpDesign {
 	 * Whether a bump runs on a day: always without a schedule (bumps saved
 	 * before it existed) or with `daily`, else on the listed days.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array       $design The bump's `design_settings`.
 	 * @param string|null $day    A day (`monday`, …); null for today in the site's timezone.
@@ -240,7 +240,7 @@ class OrderBumpDesign {
 	/**
 	 * Today's day in the site's timezone (`monday`, …).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return string
 	 */
@@ -253,7 +253,7 @@ class OrderBumpDesign {
 	 * The offer product's copies the checkout box reads from
 	 * `design_settings`: its title, image and regular price.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WC_Product $product Offer product.
 	 *
@@ -273,7 +273,7 @@ class OrderBumpDesign {
 	 * A size in whole px from 0 to `$max` (a negative size is 0, not its
 	 * absolute value).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Numeric value.
 	 * @param int   $max   Largest size.
@@ -288,7 +288,7 @@ class OrderBumpDesign {
 	 * A value of a key this class doesn't know: strings as plain text,
 	 * booleans and numbers as they are.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Value.
 	 *
@@ -302,7 +302,7 @@ class OrderBumpDesign {
 	 * A text as plain text: the 2.x admin's entities (`&#37;&#32;off`)
 	 * decoded, then tags and line breaks stripped.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $value Text.
 	 *

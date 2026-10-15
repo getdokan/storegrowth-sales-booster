@@ -2,7 +2,7 @@
  * Quick View settings as the settings API returns them
  * (`sales-booster/v1/settings/quick-view`, PHP `QuickViewSettings`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import type { SettingValue } from '@storegrowth/utilities';
 

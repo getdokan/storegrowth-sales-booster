@@ -89,7 +89,7 @@ defined( 'ABSPATH' ) || exit;
  * A module adds what only JS can draw (its live preview, a control that sets
  * several keys) through the JS filter `storegrowth.settings.page`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 interface SettingsPage {
 
@@ -97,7 +97,7 @@ interface SettingsPage {
 	 * The page: title, and tabs (with their sections) or, without tabs, its
 	 * own sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array{title: string, tabs?: array<string, array{label: string, sections?: array<string, array<string, mixed>>}>, sections?: array<string, array<string, mixed>>}
 	 */

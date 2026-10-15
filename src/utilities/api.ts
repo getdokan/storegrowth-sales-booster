@@ -2,7 +2,7 @@
  * Typed REST clients for the admin app. All admin data goes through REST
  * (`sales-booster/v1`); `@wordpress/api-fetch` adds the `wp_rest` nonce.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
@@ -209,14 +209,14 @@ export interface SettingField {
  * Condition on other settings: key → the value it must have, or a list of
  * allowed values. Every key must match.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export type ShowWhen = Record< string, SettingValue | SettingValue[] >;
 
 /**
  * A section (accordion) of a settings page, keyed by id in drawing order.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export type SettingsSections = Record<
     string,
@@ -242,7 +242,7 @@ export type SettingsSections = Record<
  * `tabs` draws its fields that have no `tab` (and the page's own `sections`)
  * under the title. Empty (`{}`) for a schema without a page.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface SettingsPageDefinition {
     title?: string;
@@ -298,7 +298,7 @@ function path( route: string ): string {
 /**
  * All modules with their status.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function fetchModules(): Promise< SpsgModule[] > {
     return apiFetch< SpsgModule[] >( { path: path( '/modules' ) } );
@@ -307,7 +307,7 @@ export function fetchModules(): Promise< SpsgModule[] > {
 /**
  * Activate or deactivate one module.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param id     Module id.
  * @param status True to activate.
@@ -326,7 +326,7 @@ export function updateModuleStatus(
 /**
  * Activate or deactivate several modules at once.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param ids    Module ids.
  * @param status True to activate.
@@ -349,7 +349,7 @@ let settingsPages: Promise< SettingsPagesResponse > | null = null;
  * (`GET /admin/settings`). Fetched once per page load and shared; a save
  * updates the shared copy.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function fetchSettingsPages(): Promise< SettingsPagesResponse > {
     if ( ! settingsPages ) {
@@ -369,7 +369,7 @@ export function fetchSettingsPages(): Promise< SettingsPagesResponse > {
  * A module's settings schema and values: from the shared settings pages
  * when it has one, else its own request.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param moduleId Module id, e.g. `stock-bar`.
  */
@@ -394,7 +394,7 @@ export async function fetchModuleSettings< V = Record< string, SettingValue > >(
  * Save some or all of a module's settings. Rejects with `params` (field →
  * message) when a value is invalid; nothing is saved then.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param moduleId Module id.
  * @param values   Values to save, keyed by setting key.
@@ -437,7 +437,7 @@ const toOption = ( product: WcProduct ): ProductOption => ( {
  * Search published products by name (`GET /products?search`), external
  * products left out unless asked for.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param search          Search text.
  * @param limit           Most results.
@@ -468,7 +468,7 @@ export async function searchProducts(
 /**
  * Products by id, e.g. to show the names of saved ids.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param ids Product ids.
  */
@@ -494,7 +494,7 @@ export async function fetchProductsByIds(
  * Every product category (WordPress `wp/v2/product_cat`), a child labelled
  * with its parents ("Parent › Child"), sorted by label.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export async function fetchProductCategories(): Promise<
     Array< { value: string; label: string } >
@@ -546,7 +546,7 @@ export async function fetchProductCategories(): Promise<
 /**
  * Dashboard tiles.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export function fetchDashboardOverview(): Promise< DashboardOverview > {
     return apiFetch< DashboardOverview >( {
@@ -559,7 +559,7 @@ export function fetchDashboardOverview(): Promise< DashboardOverview > {
  * in the store's timezone), or `after` / `before`. Pro adds `vendor` and
  * `compare`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export interface AnalyticsParams {
     days?: number;
@@ -572,7 +572,7 @@ export interface AnalyticsParams {
 /**
  * Offer analytics for a range.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param params Query params; unset ones aren't sent.
  */
@@ -597,7 +597,7 @@ export function fetchAnalytics(
  * Mark the onboarding wizard finished, through the existing
  * `spsg_inisetup_flag_update` ajax action (sets `spsg_ini_completion`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export async function completeOnboarding(): Promise< void > {
     await ajax( 'spsg_inisetup_flag_update', { spsg_ini_completion: true } );
@@ -606,7 +606,7 @@ export async function completeOnboarding(): Promise< void > {
 /**
  * Human-readable message from an apiFetch error.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param error    Thrown value.
  * @param fallback Message when none can be read.

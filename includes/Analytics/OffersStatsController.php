@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * hide it there). With Dokan, the data store reads only the vendor the user
  * may see: a vendor their own orders, an admin the vendor picked.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class OffersStatsController extends WP_REST_Controller {
 
@@ -55,7 +55,7 @@ class OffersStatsController extends WP_REST_Controller {
 	/**
 	 * Register the route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -89,7 +89,7 @@ class OffersStatsController extends WP_REST_Controller {
 	/**
 	 * Who can read WooCommerce's reports.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -106,7 +106,7 @@ class OffersStatsController extends WP_REST_Controller {
 	/**
 	 * Offer totals for the range.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -139,7 +139,7 @@ class OffersStatsController extends WP_REST_Controller {
 	/**
 	 * Schema: the totals WooCommerce reads, `net_revenue` as an indicator.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array
 	 */

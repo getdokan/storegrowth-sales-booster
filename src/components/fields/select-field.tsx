@@ -1,7 +1,7 @@
 /**
  * Select field (design `.field` + `.select`): label above plugin-ui's Select.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Select,
@@ -34,7 +34,7 @@ export interface SelectFieldProps extends BaseFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.label       Label.

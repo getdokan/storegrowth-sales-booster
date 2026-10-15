@@ -2,7 +2,7 @@
  * "Module is currently deactivated" confirmation (design `.sg-modal`, Figma
  * node 164:7811), shown when a disabled module is picked in the feature menu.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     AlertDialog,
@@ -27,7 +27,7 @@ export interface DeactivatedModuleDialogProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props             Props.
  * @param props.moduleLabel Module to activate, or null when closed.

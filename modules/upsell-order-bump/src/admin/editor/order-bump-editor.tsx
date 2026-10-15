@@ -6,7 +6,7 @@
  * (`useOrderBump`), with the product and category pickers, the amount field
  * and the checkout preview drawn here.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { useCallback, useEffect, useState } from '@wordpress/element';
@@ -297,7 +297,7 @@ function BumpEditor( { id }: { id: number | null } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props    Props.
  * @param props.id Bump id, or null for a new bump.

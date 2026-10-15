@@ -4,7 +4,7 @@
  * devices, trigger, page targeting, size and font. Each page arranges them
  * in its own cards; the icon picker is `IconPicker` in `fields/`.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { LabeledRadio, RadioGroup } from '@wedevs/plugin-ui';
 import { useId } from '@wordpress/element';
@@ -101,7 +101,7 @@ const PAGE_CONDITIONS = [
  * Whether a preview width gets the storefront's mobile rules (the storefront
  * scripts treat up to 768px as mobile; the tablet frame is narrower).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param device Preview width.
  */
@@ -113,7 +113,7 @@ export function isMobilePreview( device: string ): boolean {
  * Whether the bar shows at a preview width, as the storefront script
  * decides it (`banner-show-mobile` / `banner-show-desktop`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param devices `banner_device_view`.
  * @param device  Preview width.
@@ -132,7 +132,7 @@ const bind = ( props: BarFieldsProps, key: BarKey ) => ( {
 /**
  * Bar Position and Bar Type.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props Values and handlers.
  */
@@ -180,7 +180,7 @@ export function BarPlacementFields( props: BarFieldsProps ) {
 /**
  * Show on desktop / mobile (`banner_device_view`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props       Values and handlers.
  * @param props.label Field label.
@@ -216,7 +216,7 @@ export interface DeviceFieldProps {
  * Desktop / Mobile checkboxes on one row with their label (design
  * `.field-row`).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props          Props.
  * @param props.label    Label.
@@ -279,7 +279,7 @@ export function DeviceField( {
  * Trigger: after a delay, or after scrolling past the bar then a delay
  * (both in seconds).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props Values and handlers.
  */
@@ -350,7 +350,7 @@ export function BarTriggerFields( props: BarFieldsProps ) {
 /**
  * Page and audience targeting (pro 2.2.0 evaluates them).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props Values and handlers.
  */
@@ -422,7 +422,7 @@ export function TargetingFields( props: BarFieldsProps ) {
 /**
  * Banner Height, Font Family and Font Size.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props Values and handlers.
  */

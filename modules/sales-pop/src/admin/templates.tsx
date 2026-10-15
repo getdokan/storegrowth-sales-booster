@@ -3,7 +3,7 @@
  * as the storefront popup itself, at thumbnail size, with its own radii.
  * Stored as `template` 1–4.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { __ } from '@wordpress/i18n';
 import type { TemplateOption } from '@storegrowth/components';
@@ -52,7 +52,7 @@ const THUMBNAIL: Partial< SalesPopValues > = {
 /**
  * Picker options.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param values Current settings (colours and message come from them).
  * @param sample What the preview shows.

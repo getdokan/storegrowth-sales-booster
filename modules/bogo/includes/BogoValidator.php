@@ -21,7 +21,7 @@ class BogoValidator {
 	/**
 	 * The deal types: Buy X Get X (`same`, pro) and Buy X Get Y (`different`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -30,7 +30,7 @@ class BogoValidator {
 	/**
 	 * The offer types: the gift is free or discounted by a percentage.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @var string[]
 	 */
@@ -90,7 +90,7 @@ class BogoValidator {
 	 * applied at all. No type, or an empty one, is the column's default,
 	 * `free`, as everywhere else.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $bogo_settings BOGO settings array.
 	 *

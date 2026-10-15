@@ -2,7 +2,7 @@
  * Reset + Save buttons at the end of a settings tab (design: right-aligned,
  * outlined Reset, blue Save), on plugin-ui's Button.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { Button, cn } from '@wedevs/plugin-ui';
 import { __ } from '@wordpress/i18n';
@@ -21,7 +21,7 @@ export interface SaveBarProps {
 const BUTTON = 'h-10 rounded-md px-6 leading-5 disabled:opacity-60';
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param props           Props.
  * @param props.onSave    Save handler.

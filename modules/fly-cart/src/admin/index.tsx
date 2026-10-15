@@ -7,7 +7,7 @@
  * its floating button, and the controls with art (layout, icon position,
  * icon).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { cn } from '@wedevs/plugin-ui';
 import { useState } from '@wordpress/element';
@@ -77,7 +77,7 @@ function FlyCartLivePreview( { values }: { values: FlyCartValues } ) {
                  * Filters the Fly Cart preview, e.g. for pro or an
                  * integration to add its parts.
                  *
-                 * @since SPSG_VERSION
+                 * @since 3.0.0
                  *
                  * @param {JSX.Element}   preview The preview.
                  * @param {FlyCartValues} values  Current (unsaved) settings.

@@ -5,7 +5,7 @@
  * `sales-booster/v1/settings/{id}`. Local React state: each settings page
  * owns its copy of the values, no global store.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -61,7 +61,7 @@ export interface ModuleSettings< V extends Values = Values > {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param moduleId Module id, e.g. `stock-bar`.
  */

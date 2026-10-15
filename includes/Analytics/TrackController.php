@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * caps a batch, and rate-limits per IP where a persistent object cache makes
  * that cheap. Counts it takes are estimates.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 class TrackController extends WP_REST_Controller {
 
@@ -63,7 +63,7 @@ class TrackController extends WP_REST_Controller {
 	/**
 	 * Register the route.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -91,7 +91,7 @@ class TrackController extends WP_REST_Controller {
 	/**
 	 * Metrics the storefront may count, by module, with the object they count.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return array<string, array<string, string>> Module id => [ metric => object type ].
 	 */
@@ -114,7 +114,7 @@ class TrackController extends WP_REST_Controller {
 	/**
 	 * Add the counts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -153,7 +153,7 @@ class TrackController extends WP_REST_Controller {
 	/**
 	 * An event the tracker may send, or null.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param mixed $event Raw event.
 	 *
@@ -193,7 +193,7 @@ class TrackController extends WP_REST_Controller {
 	/**
 	 * Whether the counted object exists.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $module      Module id.
 	 * @param string $object_type `campaign` or `product`.
@@ -232,7 +232,7 @@ class TrackController extends WP_REST_Controller {
 	 * each check would be an options-table write, and behind a CDN every
 	 * visitor can share an IP.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $count Counts in this request.
 	 *

@@ -7,7 +7,7 @@
  * aren't loaded). There is no Settings button: the bumps have no global
  * settings.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import {
     Badge,
@@ -232,7 +232,7 @@ function BumpList() {
  * The list page, in the module frame. While the module is off it asks to
  * turn it on (its REST routes aren't loaded).
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 export default function OrderBumpList() {
     const {

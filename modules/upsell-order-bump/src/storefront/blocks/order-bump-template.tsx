@@ -4,7 +4,7 @@
  * Adds or removes the offer through the storefront ajax action
  * `upsell_offer_product_add_to_cart` (ADR-004), then reloads the page.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 import { RawHTML, useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
