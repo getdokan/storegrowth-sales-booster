@@ -4,6 +4,8 @@
  *
  * @package SBFW
  */
+
+use StorePulse\StoreGrowth\Admin\AdminMenu;
 ?>
 
 <!-- Start BOGO Tab Content -->
@@ -66,7 +68,7 @@
 			$g_offer_lbl = ( ( $covering_global_offer['offer_type'] ?? 'free' ) === 'discount' && $g_discount > 0 )
 				? sprintf( /* translators: %s: discount percent. */ __( '%s%% off', 'storegrowth-sales-booster' ), $g_discount )
 				: __( 'Free', 'storegrowth-sales-booster' );
-			$g_edit_url  = admin_url( 'admin.php?page=spsg-settings#/bogo/' . (int) ( $covering_global_offer['id'] ?? 0 ) );
+			$g_edit_url  = admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/bogo/' . (int) ( $covering_global_offer['id'] ?? 0 ) );
 			?>
 			<div class="spsg-bogo-global-notice" style="padding:12px 14px;margin:0 0 14px;background:#eef6ff;border:1px solid #c5d9f1;border-radius:4px;">
 				<strong><?php esc_html_e( 'This product is part of a global BOGO offer', 'storegrowth-sales-booster' ); ?></strong>

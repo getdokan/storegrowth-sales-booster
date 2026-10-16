@@ -39,9 +39,9 @@ class AdminHooks {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'dashboard' => '<a href="' . admin_url( 'admin.php?page=spsg-settings#/dashboard/overview' ) . '">' . esc_html__( 'Dashboard', 'storegrowth-sales-booster' ) . '</a>',
-			'modules'   => '<a href="' . admin_url( 'admin.php?page=spsg-modules' ) . '">' . esc_html__( 'Modules', 'storegrowth-sales-booster' ) . '</a>',
-			'settings'  => '<a href="' . admin_url( 'admin.php?page=spsg-settings' ) . '">' . esc_html__( 'Settings', 'storegrowth-sales-booster' ) . '</a>',
+			'dashboard' => '<a href="' . admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/dashboard' ) . '">' . esc_html__( 'Dashboard', 'storegrowth-sales-booster' ) . '</a>',
+			'modules'   => '<a href="' . admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/modules' ) . '">' . esc_html__( 'Modules', 'storegrowth-sales-booster' ) . '</a>',
+			'settings'  => '<a href="' . admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/settings' ) . '">' . esc_html__( 'Settings', 'storegrowth-sales-booster' ) . '</a>',
 		);
 
 		return array_merge( $action_links, $links );
@@ -58,7 +58,7 @@ class AdminHooks {
 
 		if ( get_option( 'storegrowth_activation_redirect', false ) ) {
 			delete_option( 'storegrowth_activation_redirect' );
-			if ( wp_safe_redirect( admin_url( 'admin.php?page=spsg-modules#/ini-setup' ) ) ) {
+			if ( wp_safe_redirect( admin_url( 'admin.php?page=' . AdminMenu::PAGE . '#/ini-setup' ) ) ) {
 				exit();
 			}
 		}

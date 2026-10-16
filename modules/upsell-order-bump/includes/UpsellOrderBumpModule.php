@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 use StorePulse\StoreGrowth\BaseModule;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers\BootstrapServiceProvider;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\LegacyMigration;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
 
 // If this file is called directly, abort.
@@ -104,9 +105,16 @@ class UpsellOrderBumpModule extends BaseModule {
 		return new BootstrapServiceProvider();
 	}
 
-	public function activate(): bool
-	{
-        Migration::run_migration();
+	/**
+	 * Activate the module: create the order bumps table and bring over the
+	 * 1.x bumps (once), then activate.
+	 *
+	 * @since 2.0.0
+	 * @return bool True if activation was successful, false otherwise.
+	 */
+	public function activate(): bool {
+		Migration::run_migration();
+		LegacyMigration::maybe_migrate();
 
 		return parent::activate();
 	}

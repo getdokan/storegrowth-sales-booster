@@ -1,0 +1,95 @@
+/**
+ * Shared StoreGrowth components, exposed as `window.storegrowth.components`
+ * (import from `@storegrowth/components`). Built on plugin-ui.
+ *
+ * @since 3.0.0
+ */
+export {
+    Accordion,
+    type AccordionProps,
+    type AccordionToggle,
+} from './accordion';
+export {
+    BAR_FONTS,
+    BarDeviceField,
+    type BarFieldsProps,
+    type BarKey,
+    BarPlacementFields,
+    BarTriggerFields,
+    BarTypographyFields,
+    type BarValues,
+    barShowsOn,
+    DeviceField,
+    type DeviceFieldProps,
+    isMobilePreview,
+    TargetingFields,
+} from './bar-fields';
+export { Card, type CardProps } from './card';
+export { CardHead, type CardHeadProps } from './card-head';
+export { ColorPicker, type ColorPickerProps } from './color-picker';
+export { DailyChart, type DailyChartProps } from './daily-chart';
+export {
+    DeactivatedModuleDialog,
+    type DeactivatedModuleDialogProps,
+} from './deactivated-module-dialog';
+export { FeatureLayout, type FeatureLayoutProps } from './feature-layout';
+export { FILTER_CLASSES } from './filter-classes';
+export { FeatureMenu, type FeatureMenuProps } from './feature-menu';
+export {
+    DefaultField,
+    type DefaultFieldProps,
+    extensionKeys,
+    FieldRenderer,
+    type FieldRendererProps,
+    SchemaField,
+    type SchemaFieldProps,
+} from './field-renderer';
+export * from './fields';
+export {
+    LivePreview,
+    type LivePreviewProps,
+    type PreviewDevice,
+    type PreviewState,
+    type PreviewTheme,
+} from './live-preview';
+export { ModuleIcon, type ModuleIconProps } from './module-icon';
+export {
+    ModuleSettingsPage,
+    type ModuleSettingsPageProps,
+    ModuleSettingsSkeleton,
+    type SettingsPageParts,
+} from './module-settings';
+export { OptionCard, type OptionCardProps } from './option-card';
+export {
+    type PickerCardOption,
+    PickerCards,
+    type PickerCardsProps,
+} from './picker-cards';
+export { ProductCell, type ProductCellProps } from './product-cell';
+export {
+    type ListRecord,
+    RecordList,
+    type RecordListMessages,
+    type RecordListProps,
+} from './record-list';
+export { ReportFigure, type ReportFigureProps } from './report-figure';
+export {
+    type ReportColumn,
+    type ReportRow,
+    ReportTable,
+    type ReportTableProps,
+} from './report-table';
+export { SaveBar, type SaveBarProps } from './save-bar';
+export { SettingsSplit, type SettingsSplitProps } from './settings-split';
+export {
+    SettingsTabs,
+    type SettingsTab,
+    type SettingsTabsProps,
+} from './settings-tabs';
+export { StatusPill, type StatusPillProps } from './status-pill';
+export {
+    TemplatePicker,
+    type TemplateOption,
+    type TemplatePickerProps,
+} from './template-picker';
+export { ToggleSwitch, type ToggleSwitchProps } from './toggle-switch';

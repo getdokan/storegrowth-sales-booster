@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Migrations\V_2_1_2;
+use StorePulse\StoreGrowth\Migrations\V_3_0_0;
 use StorePulse\StoreGrowth\Notices\UpgradeNoticeProvider;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeManager;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeRESTController;
@@ -102,6 +103,7 @@ class Upgrader implements HookRegistry {
 		$this->registry->register_many(
 			[
 				'2.1.2' => V_2_1_2::class,
+				'3.0.0' => V_3_0_0::class,
 			]
 		);
 
@@ -122,6 +124,58 @@ class Upgrader implements HookRegistry {
 		( new MigrationHooks( $this->manager, self::PREFIX ) )->register();
 
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+		add_action( 'admin_notices', [ $this, 'render_upgrade_notice' ] );
+	}
+
+	/**
+	 * Print the database update notice as a core admin notice.
+	 *
+	 * On StoreGrowth pages it is captured with the other admin notices and
+	 * shown under the header (AdminMenu); elsewhere it shows where WordPress
+	 * shows notices. The button posts to the migration REST route.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return void
+	 */
+	public function render_upgrade_notice(): void {
+		if ( ! current_user_can( 'update_plugins' ) || ! $this->manager->is_upgrade_required() ) {
+			return;
+		}
+
+		wp_enqueue_script( 'wp-api-fetch' );
+		?>
+		<div class="notice notice-warning" id="spsg-upgrade-notice">
+			<p><strong><?php echo esc_html( UpgradeNoticeProvider::title() ); ?></strong></p>
+			<p><?php echo esc_html( UpgradeNoticeProvider::message() ); ?></p>
+			<p>
+				<button type="button" class="button button-primary" data-loading-text="<?php esc_attr_e( 'Updating…', 'storegrowth-sales-booster' ); ?>">
+					<?php esc_html_e( 'Run the update', 'storegrowth-sales-booster' ); ?>
+				</button>
+			</p>
+		</div>
+		<?php
+		wp_add_inline_script(
+			'wp-api-fetch',
+			sprintf(
+				'document.addEventListener( "click", function ( event ) {
+					var button = event.target.closest( "#spsg-upgrade-notice button" );
+					if ( ! button || button.disabled ) { return; }
+					button.disabled = true;
+					button.textContent = button.dataset.loadingText;
+					wp.apiFetch( { path: %s, method: "POST" } ).then( function () {
+						window.location.reload();
+					}, function ( error ) {
+						button.disabled = false;
+						button.textContent = %s;
+						window.alert( ( error && error.message ) || %s );
+					} );
+				} );',
+				wp_json_encode( '/' . self::REST_NAMESPACE . '/migration/upgrade' ),
+				wp_json_encode( __( 'Run the update', 'storegrowth-sales-booster' ) ),
+				wp_json_encode( __( 'The update failed. Please try again.', 'storegrowth-sales-booster' ) )
+			)
+		);
 	}
 
 	/**
@@ -156,20 +210,23 @@ class Upgrader implements HookRegistry {
 	 * pending migrations to run.
 	 *
 	 * @since 2.1.2
+	 * @since 3.0.0 Returns whether the install was fresh.
 	 *
-	 * @return void
+	 * @return bool True when this is a fresh install (the version was stamped).
 	 */
-	public static function maybe_stamp_fresh_install(): void {
+	public static function maybe_stamp_fresh_install(): bool {
 		if ( false !== get_option( self::DB_VERSION_KEY, false ) ) {
-			return;
+			return false;
 		}
 
 		foreach ( self::LEGACY_INSTALL_OPTIONS as $option ) {
 			if ( null !== get_option( $option, null ) ) {
-				return;
+				return false;
 			}
 		}
 
 		update_option( self::DB_VERSION_KEY, STOREGROWTH_VERSION, false );
+
+		return true;
 	}
 }

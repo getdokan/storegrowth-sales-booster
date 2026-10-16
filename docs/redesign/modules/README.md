@@ -1,0 +1,98 @@
+# Module-wise migration specs
+
+One spec per migration unit. They all follow the rules in `../migration-spec.md`, ADR-001…006 (`../../adr/`) and RDR-001, so each file lists only what's specific to that unit.
+
+| Spec | Design | Phase | Size | Type |
+|---|---|---|---|---|
+| [00-core-shell.md](00-core-shell.md) | [index](https://storegrowth-design.vercel.app/index.html) · [modules](https://storegrowth-design.vercel.app/modules.html) | 1 | L | Shell, dashboard, modules page, shared components |
+| [stock-bar.md](stock-bar.md) | [stock-bar](https://storegrowth-design.vercel.app/stock-bar.html) | 2 (pilot) | S | Settings |
+| [countdown-timer.md](countdown-timer.md) | [countdown-timer](https://storegrowth-design.vercel.app/countdown-timer.html) | 3 | M | Settings + product meta |
+| [sales-pop.md](sales-pop.md) | [sales-notification](https://storegrowth-design.vercel.app/sales-notification.html) | 3 | L | Settings |
+| [progressive-discount-banner.md](progressive-discount-banner.md) | [free-shipping-rules](https://storegrowth-design.vercel.app/free-shipping-rules.html) | 3 | M | Settings |
+| [floating-notification-bar.md](floating-notification-bar.md) | [floating-bar](https://storegrowth-design.vercel.app/floating-bar.html) | 3 | M | Settings |
+| [quick-view.md](quick-view.md) | [quick-view](https://storegrowth-design.vercel.app/quick-view.html) | 3 | M | Settings |
+| [fly-cart.md](fly-cart.md) | [fly-cart](https://storegrowth-design.vercel.app/fly-cart.html) | 3 | M | Settings |
+| [direct-checkout.md](direct-checkout.md) | [direct-checkout](https://storegrowth-design.vercel.app/direct-checkout.html) | 3 | M | Settings + product meta |
+| [bogo.md](bogo.md) | [list](https://storegrowth-design.vercel.app/bogo.html) · [edit](https://storegrowth-design.vercel.app/bogo-edit.html) | 4 | XL | CRUD + global settings + Dokan |
+| [upsell-order-bump.md](upsell-order-bump.md) | [list](https://storegrowth-design.vercel.app/order-bump.html) · [edit](https://storegrowth-design.vercel.app/order-bump-edit.html) | 4 | L | CRUD + checkout block |
+
+Size key: S ≈ 3–5 dev-days, M ≈ 1–1.5 weeks, L ≈ 2 weeks, XL ≈ 3 weeks. These are rough estimates and include E2E tests.
+
+## Execution order
+
+Work runs in this sequence. A step starts only when the steps it depends on are merged.
+
+| Step | Spec / work | Depends on | Can run in parallel with |
+|---|---|---|---|
+| 0 | plugin-ui upstream: export `ColorPicker`, `RadioImageCard`, `CombineInput`, …; alpha off (U1, U4) | — | 1a |
+| 1a | `00-core-shell`: build system (remove Lerna, webpack trio, TS, Tailwind v4), shared bundles, CI checks (hook baseline, API test) | — | 0 |
+| 1b | `00-core-shell`: shell UI (TopBar, feature rail, deactivated modal), Dashboard, Modules page, `/modules` + `/dashboard` REST | 0, 1a | 1c |
+| 1d | **Done.** Storefront foundation (ADR-005): `StorefrontStyle` (CSS variables), `StorefrontFonts`, `StorefrontText`, `DisplayRules`, `Helper::get_template`, `spsg-storefront-base.css` / `-core.js` | 1a | 1b, 1c |
+| 1c | **Done.** Settings engine: PHP settings registry/service (merge, same value domain, pro gating), `GET/POST /settings/{module}`, TS settings store; `LivePreview` frame, `Accordion`, `SaveBar`. Field components move to step 2 | 1a | 1b |
+| 2 | **Done.** `stock-bar` (pilot) — first `TemplatePicker`; first module on the ADR-005 storefront standard | 1b, 1c, 1d | — |
+| 3 | **Done.** `countdown-timer` — first `BoxModelField` | 2 | 4 |
+| 4 | **Done.** `sales-pop` — first `list` setting, `MultiSelectField` (product search), `TextStyleRow` | 2 | 3 |
+| 5 | **Done.** `progressive-discount-banner` — first bar fragment (`bar-fields.tsx`), icon picker; gated first save; extension fields (ADR-007). ADR-005 storefront adoption deferred to step 13 (spec §9) | 2 | 7, 8 |
+| 6 | **Done.** `floating-notification-bar` — reuses the bar fragment; native date inputs instead of `DateRange`. ADR-005 storefront adoption deferred to step 13 (spec §9) | 5 | 7, 8 |
+| 7 | **Done.** `quick-view` — modal mock preview (ADR-005 S10 exception), generic `IconPicker`, text counter; additive values (`mfp-none`, `checkout-redirection`, `top_right_of_the_image`), 3D Unfold retired | 2 | 5, 6, 8 |
+| 8 | **Done.** `fly-cart` — first `PickerCards`; lucide cart icons (storefront too), fragments filter fix, Dokan switches as extension fields, `LivePreview` `minHeight`; pro's centre-position CSS prints again | 2 | 5, 6, 7 |
+| 9 | **Done.** `direct-checkout` — first page built on ADR-009 (schema + `get_page()`; JS only for the shop-grid preview and three controls); ajax save now sanitized and merged; `option_help` radio tips, `BoxModelField` `pairOnly`, `LivePreview` `layout="shop"`; Fly Cart Checkout falls back to checkout while Fly Cart is inactive | 3 (`BoxModelInput`), 8 (Fly Cart redirect) | — |
+| 10 | **Done.** `bogo`: REST bug fixes first, then list, editor, category messages (R2), Dokan vendor screens | 4 (`ProductSearch`), 6 (`DateRange`) | — |
+| 11 | **Done.** `upsell-order-bump`: REST namespace, cap, list, editor, checkout block | 10 (list/editor pattern) | — |
+| 12 | **Done.** Cleanup: delete antd, `SGSettings`, `assets/src`, `modules/*/assets/src`, `integrations/assets`, Lerna leftovers. **Notes (not yet reviewed):** deleted `assets/src/` (105 files: the antd shell, `window.SGSettings`, the `spsg` stores, pro previews; not a webpack entry, no PHP enqueued `assets/build` any more), `assets/package-lock.json` (Lerna), `integrations/assets/src/` (the Countdown Timer "Vendors" tab, dead since step 3: it read `window.SGSettings` inside `spsg_countdown_timer_tab_panels`, which nothing fires; and the vendor product form SCSS). No `modules/*/assets/src`, module `package.json` or `lerna.json` was left, and antd was already out of `package.json`. Also removed the untracked local leftovers `assets/build/`, `assets/node_modules/`, `integrations/assets/` and `modules/*/assets/node_modules/`, and their `.gitignore` rules. None is referenced by lite, pro 2.2.0, dokan-lite or dokan-pro (`SGSettings` only in pro's filter callbacks, compat-contract). PHP: `Integrations\Dokan\Admin\EnqueueScript::admin_enqueue_scripts()` is a deprecated no-op (class and `instance()` kept; handle `spsg-dokan-countdown-timer` gone); `Dashboard\EnqueueScript` loads the vendor form's countdown styles from plain `modules/countdown-timer/assets/css/dokan-countdown-timer-fields.css`, same handle `spsg-dokan-dashboard-products`, now only on the vendor dashboard (it loaded site-wide, and only on machines with the old build). Kept: the `spsg-settings-script` / `-modules-script` / `-notices-script` aliases, `spsgAdmin`, every PHP hook, ajax action, REST route, option, slug; `tests/compat/js-hooks-baseline.txt` (ADR-004 record). Config: `makepot` no longer includes `assets/src`; `tsconfig` / `.distignore` / `.svnignore` entries dropped; the e2e workflow now packs `build/` and the module bundles instead of the dead `assets/build` paths. No dependency or entry change: no `npm install`, no watcher restart. Open: the Countdown Timer vendor switches (`vendor_can_create_*`) still have no admin UI (countdown-timer.md §7); unused legacy images in `assets/images` (e.g. `modules/*.png`, `feature-*.svg`) left for a follow-up. Checks and smoke: `.claude/scratch/qa/step-12-dev/`. | 11 | — |
+| E2E | **Done (2026-10-01).** `tests/e2e` rewritten for the redesigned admin (~380 tests on lite: every settings page, storefront module, BOGO / Order Bump admin, rules, classic + block checkout, migrations); 4 plugin bugs found and fixed (ISSUES #8–#11). Not covered: the Dokan vendor dashboard | 12 | — |
+| 13 | **In progress.** `../pro-migration-spec.md` (pro P1–P7): P1–P5 done (pro branch `feature/react-admin-license`: React licence page over REST, antd removed, pro 3.0.0 requires lite 3.0.0); P6 version-mix tests and P7 release packaging left | 12 (lite and pro now release together as 3.0.0) | — |
+| 14 | Docs, changelog, release (lite + pro 3.0.0 together) | 13 | — |
+
+Why this order:
+- **Stock Bar first:** smallest page and closest to the schema. It proves the whole pattern.
+- Each later module introduces **one or two new shared components**, so they're built once and reused.
+- **BOGO and Order Bump last:** CRUD work, and it reuses everything before it.
+- **Pro last:** lite ships compatible with pro 2.2.0 before pro changes anything.
+
+Steps 1c–11 are blocked only by the product decisions in each spec's §9; get them answered before that module starts.
+
+## Design fidelity rule
+
+**Build every screen exactly as the linked mockup.** That covers layout, spacing, sizes, typography, colours, radius, icons, copy, tab order, field order, control types, preview behaviour and empty states.
+
+- **The mockup is the source of truth.** The HTML/CSS at https://storegrowth-design.vercel.app (`assets/ui.css`, `assets/theme.js`) defines the values. Match them with Tailwind `@theme` tokens and plugin-ui theming. If a plugin-ui component can't reach the mockup through props/className/theme, wrap or restyle it locally; don't accept the component's default look.
+- **Allowed deviations** (the only ones; each must be listed in that module's §9 and signed off by design before merge):
+  1. **Mockup bugs listed in the spec:** missing Save buttons, duplicate fields, wrong help text, checkboxes that should be a radio, the Order Bump preview frame. Fixed in the design's own visual style.
+  2. **Compatibility-required UI** (ADR-004, R1/R2): the "Advanced" section of pro fields (plain title, a Pro badge per field) and the BOGO category-messages screen, styled with the same components as the rest of the page.
+  3. **Pro lock states:** the mockups don't show them. Use the design's own crown/amber style (`sg-amber-pro`).
+  4. **plugin-ui behaviours we accept** (report §3): DataViews bulk bar and pagination, delete confirm dialog.
+- **Visual QA per module before merge:**
+  - side-by-side screenshots of the mockup and the built page at 1440px, 1100px and 782px widths (Playwright), stored in the PR;
+  - differences in spacing, colour or copy block the merge unless they're in the deviation list;
+  - a reviewer from design approves the PR.
+
+## Template every spec follows
+1. **Summary:** phase, dependencies, size.
+2. **Current state:** storage, transport, hooks (PHP kept, JS retired).
+3. **Target design:** screen, tabs, preview.
+4. **Field map:** design field → option key → type/default → tier → component.
+5. **Data changes:** migrations. Option keys are never renamed.
+6. **REST:** routes (see `../rest-api.md`).
+7. **Compatibility:** PHP hooks, ajax adapters, retired JS hooks and their replacements.
+8. **Components:** shared ones reused, new ones built.
+9. **Open questions / design issues.**
+10. **Tasks and definition of done.**
+
+## Definition of done shared by every module
+- Storefront follows ADR-005 (S1–S10):
+  - token map;
+  - static CSS reads CSS variables with today's values as fallback;
+  - shared font, text-token, display-rule and template loaders;
+  - preview loads the real storefront CSS.
+
+  Storefront snapshots are identical for a never-saved site and after a no-op save.
+- Screen matches the linked mockup (design fidelity rule); visual QA screenshots attached; design sign-off on any listed deviation.
+- Admin page built from `modules/<name>/src/` in TypeScript; no antd import left in the module.
+- `GET/POST /settings/<id>` (or the CRUD routes) is the only transport the UI uses.
+- The ajax get/save actions are still registered, as adapters over the same service.
+- Stored option is byte-identical for unchanged fields (characterisation test: old save → new read, new save → old shape).
+- Pro fields are editable with pro active, locked without pro, and ignored by save when pro is inactive.
+- E2E passes for no pro, pro 2.2.0 and new pro: save, reset, reload, storefront renders the saved values.
+- The PHP hook baseline check passes.
+- `modules/<name>/assets/src`, `modules/<name>/assets/package.json` and `modules/<name>/assets/build` are deleted. Storefront `assets/js` and `assets/css` stay untouched.

@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
@@ -553,6 +554,10 @@ class OrderBogo implements HookRegistry {
 		if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
 			WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
 		}
+
+		if ( $free_product_key && ! empty( $settings['id'] ) ) {
+			Counter::bump( BoGoModule::get_id(), 'add_to_cart', Counter::CAMPAIGN, (int) $settings['id'] );
+		}
 	}
 
 	/**
@@ -764,6 +769,12 @@ class OrderBogo implements HookRegistry {
 		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
 
 		if ( $product_bogo_settings ) {
+			// An offer type the cart doesn't apply isn't advertised either
+			// (the product offer still takes precedence, as in the cart).
+			if ( ! BogoValidator::has_known_offer_type( $product_bogo_settings ) ) {
+				return;
+			}
+
 			// Resolve the actual gift product. For a "Buy X Get Y" offer this is a
 			// different product; passing the current product id would render the wrong
 			// same-product template and hide the gift product on the product page.
@@ -845,6 +856,9 @@ class OrderBogo implements HookRegistry {
 			'offered_products' => $bogo_settings['offered_products'][0] ?? $current_product_id,
 		));
 		
+		// Counts the offer's views (the box carries `data-spsg-track`); prints in the footer.
+		wp_enqueue_script( 'spsg-storefront-tracker' );
+
 		// Include the appropriate template
 		if ( $current_product_id === $offer_product_id ) {
 			// The same-product ("Buy X Get X") template guards on $product, which is

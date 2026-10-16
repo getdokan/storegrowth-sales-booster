@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\QuickView;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,17 +45,18 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		// array_map() over a non-array returns null on PHP 7.4 (and throws on
-		// PHP 8), so an unvalidated payload would overwrite the stored settings
-		// with nothing. Reject it instead.
+		// Reject a non-array payload.
 		if ( ! isset( $_POST['form_data'] ) || ! is_array( $_POST['form_data'] ) ) {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
-		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
+		// Sanitized per field and merged into the stored option by the settings service.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( QuickViewModule::get_id(), wp_unslash( $_POST['form_data'] ) );
 
-		update_option( 'spsg_quick_view_settings', $form_data );
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
 
 		wp_send_json_success();
 	}
@@ -69,7 +71,7 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		$form_data = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings', array() );
+		$form_data = Helper::get_settings( 'spsg_quick_view_settings', array() );
 
 		wp_send_json_success( $form_data );
 	}
@@ -86,12 +88,12 @@ class Ajax implements HookRegistry {
 		check_ajax_referer( 'spsgqcv-security', 'nonce' );
 
 		global $post, $product;
-		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
+		$settings = Helper::get_settings( 'spsg_quick_view_settings' );
 
 		$product_id                  = isset( $_REQUEST['product_id'] ) ? absint( sanitize_key( $_REQUEST['product_id'] ) ) : '';
 		$product                     = wc_get_product( $product_id );
 		$content_image               = 'all';
-		$content_view_details_button = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_view_details_button', false );
+		$content_view_details_button = Helper::find_option_settings( $settings, 'show_view_details_button', false );
 		$content_image_lightbox      = 'no';
 
 		if ( $product ) {

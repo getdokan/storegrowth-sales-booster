@@ -5,12 +5,12 @@
 .distignore
 node_modules
 bin
+dist
 .claude
 /modules/**/node_modules
 /modules/**/src
 /integrations/**/src
 /integrations/**/node_modules
-assets/src
 assets/css/style.css.map
 tests
 nbproject

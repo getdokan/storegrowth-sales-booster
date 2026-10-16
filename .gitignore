@@ -2,13 +2,19 @@ node_modules
 .DS_Store
 vendor
 .idea
-lerna-debug.log
 package-lock.json
-assets/build/
-modules/*/assets/build/
-integrations/assets/build/
+/build/
+# Module bundles built by webpack (webpack-entries.js). Hand-written
+# storefront scripts in assets/js stay tracked; don't give them these names
+# (admin.js, blocks.js).
+modules/*/assets/js/admin.js
+modules/*/assets/js/blocks.js
+modules/*/assets/js/*.asset.php
+modules/*/assets/js/*.js.map
 lib/packages/
 .vscode/
+# Release zips (bin/archiver.mjs).
+/dist/
 
 
 # PHPUnit
@@ -16,3 +22,4 @@ lib/packages/
 
 # wp-env
 .wp-env.override.json
+.playwright-mcp
