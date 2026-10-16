@@ -202,4 +202,4 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 
 <?php do_action( 'woocommerce_after_cart' ); ?>
 
-<?php include __DIR__ . '/cart-checkout-buttons.php'; ?>
+<?php require __DIR__ . '/cart-checkout-buttons.php'; ?>
