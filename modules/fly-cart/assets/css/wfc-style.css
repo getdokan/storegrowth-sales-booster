@@ -618,7 +618,10 @@
 .spsg-cart-widget-buttons {
     gap: 16px;
     display: flex;
-    /* padding-top: 20px; */
+    /* Pinned to the bottom of the scrolling cart. */
+    position: sticky;
+    bottom: 0;
+    padding: 0 6px 12px 12px;
 }
 
 .spsg-cart-widget-buttons a {

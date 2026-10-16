@@ -123,9 +123,11 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function spsg_before_cart_collaterals() {
 		remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
-		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 
-		add_action( 'woocommerce_proceed_to_checkout', array( $this, 'button_proceed_to_checkout' ) );
+		// The fly cart has its own buttons, pinned below the totals (cart-contents.php).
+		// Express / wallet buttons other plugins add here mount on page load only,
+		// so in this ajax-rendered markup they never load.
+		remove_all_actions( 'woocommerce_proceed_to_checkout' );
 	}
 
 	/**

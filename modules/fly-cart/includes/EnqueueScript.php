@@ -107,7 +107,8 @@ class EnqueueScript implements HookRegistry {
 				background-color: {$wfc_color};
 				color: {$wfc_btn_bgcolor};
 			}
-			.wfc-widget-sidebar {
+			.wfc-widget-sidebar,
+			.spsg-cart-widget-buttons {
 				background-color: {$widget_bg_color};
 			}
 			.spsg-cart-widget-buttons a {
