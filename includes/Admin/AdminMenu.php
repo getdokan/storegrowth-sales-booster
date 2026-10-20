@@ -7,6 +7,10 @@
 
 namespace StorePulse\StoreGrowth\Admin;
 
+use Closure;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionMethod;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -58,6 +62,9 @@ class AdminMenu {
 		add_action( 'admin_init', array( $this, 'redirect_legacy_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'highlight_admin_submenu' ) );
 
+		// Other plugins' notices stay off our pages; `in_admin_header` fires before any notice hook.
+		add_action( 'in_admin_header', [ $this, 'remove_third_party_notices' ] );
+
 		// Capture admin notices so the plugin header renders first on our pages.
 		add_action( 'admin_notices', array( $this, 'inject_before_notices' ), -9999 );
 		add_action( 'admin_notices', array( $this, 'inject_after_notices' ), PHP_INT_MAX );
@@ -103,6 +110,96 @@ class AdminMenu {
 
 		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
 		exit;
+	}
+
+	/**
+	 * Remove other plugins' and themes' notice callbacks on the app page.
+	 *
+	 * Keeps WordPress core notices (update, recovery mode) and StoreGrowth's own
+	 * (lite and pro), judged by the file each callback is defined in.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function remove_third_party_notices(): void {
+		global $wp_filter;
+
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		$notice_hooks = [ 'admin_notices', 'all_admin_notices', 'user_admin_notices', 'network_admin_notices' ];
+
+		foreach ( $notice_hooks as $hook ) {
+			if ( empty( $wp_filter[ $hook ] ) ) {
+				continue;
+			}
+
+			foreach ( $wp_filter[ $hook ]->callbacks as $priority => $callbacks ) {
+				foreach ( $callbacks as $callback ) {
+					if ( $this->is_third_party_callback( $callback['function'] ) ) {
+						remove_action( $hook, $callback['function'], $priority );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Whether a hook callback is defined in another plugin or a theme.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param callable $callback Hook callback.
+	 *
+	 * @return bool False for core, StoreGrowth, and callbacks that can't be resolved.
+	 */
+	private function is_third_party_callback( $callback ): bool {
+		try {
+			if ( is_string( $callback ) && false !== strpos( $callback, '::' ) ) {
+				$callback = explode( '::', $callback, 2 );
+			}
+
+			if ( is_array( $callback ) ) {
+				$reflection = new ReflectionMethod( $callback[0], $callback[1] );
+			} elseif ( is_object( $callback ) && ! $callback instanceof Closure ) {
+				$reflection = new ReflectionMethod( $callback, '__invoke' );
+			} else {
+				$reflection = new ReflectionFunction( $callback );
+			}
+		} catch ( ReflectionException $e ) {
+			return false;
+		}
+
+		$file = $reflection->getFileName();
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$file = wp_normalize_path( $file );
+
+		$own_dirs = [ STOREGROWTH_DIR_PATH ];
+		if ( defined( 'STOREGROWTH_PRO_DIR_PATH' ) ) {
+			$own_dirs[] = STOREGROWTH_PRO_DIR_PATH;
+		}
+
+		foreach ( $own_dirs as $dir ) {
+			if ( 0 === strpos( $file, wp_normalize_path( $dir ) ) ) {
+				return false;
+			}
+		}
+
+		$third_party_dirs = [ WP_PLUGIN_DIR, WPMU_PLUGIN_DIR, get_theme_root() ];
+
+		foreach ( $third_party_dirs as $dir ) {
+			if ( 0 === strpos( $file, trailingslashit( wp_normalize_path( $dir ) ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
