@@ -17,7 +17,7 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// The Order Bump admin (docs/redesign/modules/upsell-order-bump.md 11d–11f):
+// The Order Bump admin:
 // the list at `#/upsell-order-bump` (RecordList), the editor at
 // `…/create-bump` and `…/<id>` (Basic Information + Design, Percentage /
 // Fixed / Free, Offer Days, the checkout-frame preview) and 2.2.0's hash

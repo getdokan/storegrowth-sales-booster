@@ -15,7 +15,7 @@ The other six (Direct Checkout, Quick View, Fly Cart, Sales Notification, Floati
 
 **Approach in one line:** money comes from **WooCommerce Analytics** (its lookup tables, joined to our order-line keys), counts come from **one small table of our own**, and StoreGrowth figures also appear **inside WooCommerce's own Analytics reports**.
 
-The design is recorded as [ADR-012](../adr/ADR-012-module-analytics.md); §8 is the decision list it was written from.
+The design is recorded as [ADR-012](../adr/0012-module-analytics.md); §8 is the decision list it was written from.
 
 ---
 

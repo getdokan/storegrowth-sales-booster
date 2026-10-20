@@ -16,7 +16,7 @@ import { PRODUCTS, STORE_PAGES } from '../../data/products';
 // Sales Notification (`sales-pop`, option `spsg_popup_products`). The popup
 // markup is hidden until its timer fires, so the stable signals are the
 // enqueued `popup-custom.js` and the (hidden) template's computed styles.
-// Storefront styles are still inline (sales-pop.md §5: ADR-005 deferred).
+// Storefront styles are still inline.
 const POPUP_JS = 'script[src*="popup-custom.js"]';
 const POPUP = 'section.custom-social-proof';
 const id = MODULES.salesPop.id;

@@ -14,7 +14,7 @@ use StorePulse\StoreGrowth\Modules\QuickView\QuickViewModule;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_quick_view_settings` (docs/redesign/modules/quick-view.md §4).
+ * Fields of `spsg_quick_view_settings`.
  *
  * - Defaults are the old admin's (except the effect, now Fade); the storefront
  *   and pro 2.2.0 read every key with the same fallback, so a partly saved

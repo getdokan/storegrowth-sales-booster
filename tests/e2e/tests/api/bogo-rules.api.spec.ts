@@ -5,8 +5,8 @@ import { expectOk, hasPro, schemaDefaults, setModuleStatus, type SettingsField }
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// The BOGO routes' rules (docs/redesign/modules/bogo.md 10a, 10c, 10d;
-// rest-api.md #18–24): the editor's validation as 400s, lite's cap of two
+// The BOGO routes' rules (`sales-booster/v1/bogo/offers`): the editor's
+// validation as 400s, lite's cap of two
 // global offers (403), the merge on PUT, batch delete, the status route and
 // both offer types. Every test starts and ends with an empty offer table.
 const BASE = '/wp-json/sales-booster/v1/bogo/offers';

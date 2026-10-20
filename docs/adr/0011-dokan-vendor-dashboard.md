@@ -3,13 +3,13 @@
 - Status: Accepted
 - Date: 2026-09-28
 - Amends: ADR-003 (rule 5 and its Dokan consequence); follows ADR-001 (shared bundles), ADR-004
-- First use: BOGO on the vendor dashboard (`docs/redesign/modules/bogo.md` §10, 10f2)
+- Used by: BOGO on the vendor dashboard (`integrations/src/dokan/bogo/`)
 
 ## Context
 
-Dokan vendors manage their BOGO offers on Dokan's React vendor dashboard (`/dashboard/new/#/bogo`), a front-end page. The old screen was its own antd bundle with its own copy of the old editor. The new list and editor (`BogoList`, `BogoEditor`) are built on the shared bundles (`@storegrowth/*`, plugin-ui), the `sg-*` Tailwind tokens and react-router hooks, all set up for wp-admin only:
+Dokan vendors manage their BOGO offers on Dokan's React vendor dashboard (`/dashboard/new/#/bogo`), a front-end page. The old screen was its own antd bundle with its own copy of the old editor. The list and editor (`BogoList`, `BogoEditor`) are built on the shared bundles (`@storegrowth/*`, plugin-ui), the `sg-*` Tailwind tokens and react-router hooks, all set up for wp-admin only:
 
-- ADR-003 says Tailwind never loads on the storefront, and that Dokan integration bundles should use Dokan's Tailwind. Dokan's stylesheet has no `sg-*` tokens, so the shared components can't be drawn with it.
+- ADR-003 said Tailwind never loads on the storefront, and that Dokan integration bundles should use Dokan's Tailwind. Dokan's stylesheet has no `sg-*` tokens, so the shared components can't be drawn with it.
 - Dokan's router (its own react-router copy, `createHashRouter`) draws the route's element. The shared hooks (`useNavigate`, `useSearchParams`, …) read StoreGrowth's router context, which isn't there.
 - The shared code reads `spsgAdmin` / `spsgAdminHeader`, which carry the admin ajax nonce and the module list.
 

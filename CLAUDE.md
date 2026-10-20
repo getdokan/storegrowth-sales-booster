@@ -8,15 +8,15 @@ StoreGrowth (Sales Booster) — a WooCommerce plugin (the free/"lite" build, com
 
 PHP namespace root is `StorePulse\StoreGrowth\` (not "Dokan"). Entry point: `storegrowth-sales-booster.php`.
 
-The admin is being redesigned module by module (TypeScript, REST, plugin-ui). Plan and progress: `docs/redesign/` (start at `README.md`; execution order in `docs/redesign/modules/README.md`).
+The admin is a TypeScript app on REST and plugin-ui (`src/`, `modules/<id>/src/`); the decision records below are the rules it follows.
 
 ## Decision records — read before changing the system
 
-Core system ADRs, `docs/adr/` (apply to all code):
+ADRs, `docs/adr/` (apply to all code):
 
 | ADR | Rule |
 |---|---|
-| ADR-001 | One webpack build following dokan-lite; no monorepo; shared bundles as `window.storegrowth.*` globals |
+| ADR-001 | One webpack build following dokan-lite; TypeScript first (`npm run type-check`); no monorepo; shared bundles as `window.storegrowth.*` globals |
 | ADR-002 | Source in root `src/` and `modules/<id>/src/`; every file/dir inside a `src/` is kebab-case |
 | ADR-003 | Tailwind v4, one stylesheet scoped to `.spsg-layout`; never on the storefront (except the Dokan vendor dashboard, ADR-011) |
 | ADR-004 | **Backward compatibility:** never rename/remove a PHP hook, public PHP API, option name/key/value shape, admin slug, ajax action or REST route; pro 2.2.0 must keep working when only lite updates; **existing user settings are never lost** |
@@ -25,11 +25,11 @@ Core system ADRs, `docs/adr/` (apply to all code):
 | ADR-007 | One settings engine; gated modules turn on at first save; extensions add fields in PHP (`spsg_settings_schema`) and custom controls via `storegrowth_settings_{variant}_field` |
 | ADR-008 | One admin page `admin.php?page=storegrowth#/<route>` (`AdminMenu::PAGE` / `SCREEN_ID`); `spsg-settings` / `spsg-modules` redirect to it |
 | ADR-009 | Settings pages are defined in PHP (`SettingsPage::get_page()` + field presentation keys), all fetched in one request (`GET sales-booster/v1/admin/settings`) and generated at `#/settings?module=<id>&tab=<tab>`; a module adds only its preview / multi-key controls via the JS filter `storegrowth.settings.page` |
-| ADR-010 | Record editors (a table row: BOGO offer, order bump) are defined in PHP like settings pages (fields + `get_page()`), served by the record's REST routes (`GET …/editor`), drawn by `ModuleSettingsPage` from a hook in the `ModuleSettings` shape; extended by PHP filters (`spsg_bogo_offer_fields`, `spsg_bogo_offer_page`), not JS slots |
+| ADR-010 | Record editors (a table row: BOGO offer, order bump) are defined in PHP like settings pages (fields + `get_page()`), served by the record's REST routes (`GET …/editor`), drawn by `ModuleSettingsPage` from a hook in the `ModuleSettings` shape; extended by PHP filters (`spsg_bogo_offer_fields` / `spsg_bogo_offer_page`, `spsg_order_bump_fields` / `spsg_order_bump_page`), not JS slots |
 | ADR-011 | Dokan vendor dashboard: an integration bundle (`integrations/src/<integration>/<bundle>`, e.g. `integrations/src/dokan/bogo`) draws the module's own pages in vendor mode (`vendor` prop), with the shared bundles and `spsg-tailwind` (`.spsg-layout`, after Dokan's) registered there by `Assets::register_shared_bundles()`; Dokan's router bridged through the shared `Router`; localized `spsgAdmin` / `spsgAdminHeader` subset, never the admin nonce |
 | ADR-012 | Module analytics: StoreGrowth keys written at checkout through the CRUD API (never on subscriptions) are mirrored into `spsg_offer_lookup` from WooCommerce Analytics' import (`woocommerce_analytics_update_product`); reports are data stores extending WooCommerce's (`Analytics\Reports\…`, dokan-lite style), money from `wc_order_product_lookup`, discount = `unit_discount × product_qty`; the bar discount stays a fee, tagged on its fee line; views/clicks go to one counts table `spsg_analytics_daily` via one storefront tracker. Plan: `docs/analytics/README.md` |
 
-Redesign-only records live in `docs/redesign/adr/` (`RDR-001`: TypeScript-first full rewrite). A new core decision takes the next `ADR-###`, a redesign-only one the next `RDR-###`; numbers are never reused.
+A new decision takes the next `ADR-###`, in a file named `docs/adr/NNNN-short-title.md` (e.g. `0013-…`); numbers are never reused.
 
 ## Build / dev commands
 
@@ -102,18 +102,18 @@ Module enable/disable state lives in the single `spsg_active_module_ids` option.
 
 To add a module: create the directory, add its `require_once .../bootstrap.php` line in `storegrowth-sales-booster.php`, add a PSR-4 entry in `composer.json`, and (for an admin page) add `moduleEntry( '<id>', 'admin', './modules/<id>/src/admin/index.tsx' )` to `webpack-entries.js` and load it from an always-loaded `AdminPage` class extending `Admin\ModuleAdminPage` (module id, preview stylesheets, page data; see `modules/stock-bar/includes/AdminPage.php`).
 
-### Admin app (redesigned)
-- `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.
+### Admin app
+- `src/admin/` — the app shell: react-router `HashRouter`, route table in `routes.tsx` extended through the JS filter `storegrowth.admin.routes`; pages `dashboard`, `modules`, `settings`, `analytics`, `onboarding` (`#/ini-setup`), and a generic feature page for modules without their own. `src/header/` — the top bar bundle.
 - Shared bundles: `src/components` (`@storegrowth/components`: feature layout, settings split, tabs, accordion, save bar, live preview, template picker, field controls in `fields/`), `src/hooks` (`@storegrowth/hooks`: router, `ModulesProvider`/`useModules`, `useModuleSettings`), `src/utilities` (`@storegrowth/utilities`: REST clients in `api.ts`, `ajax()` helper, admin data). UI is built on plugin-ui (`@wedevs/plugin-ui`); icons are lucide-react.
 - Extending a settings page (pro, other plugins; ADR-007, ADR-009), all PHP: `spsg_settings_schema` ( $fields, $id ), or per module `spsg_{module}_settings_schema` ( $fields ) (snake case, e.g. `spsg_stock_bar_settings_schema`), adds fields with a `tab` / `section` (plus `label`, `help`, any page key), drawn and saved with that tab; `spsg_settings_page` ( $page, $id ) adds or changes tabs and sections; `spsg_settings_schemas` ( $schemas ) registers a schema and page of your own. Module fields and StoreGrowth's schemas can't be redefined. A custom control is a variant: JS filter `storegrowth_settings_{variant}_field` ( defaultField, element ), saving through `defaultField.props.onChange( key, value )`.
-- A module's settings page is generated from its PHP schema (ADR-009; how-to and key reference: `docs/settings-pages.md`): implement `Interfaces\SettingsPage` (`get_page()`: title, tabs, sections) and give each field `tab`/`section`/`label`/`help`/…; it opens at `#/settings?module=<id>&tab=<tab>` (`src/admin/pages/settings/`, `ModuleSettingsPage`). The module's `modules/<id>/src/admin/` only adds its live preview and multi-key controls through the JS filter `storegrowth.settings.page` (see `modules/stock-bar/src/admin/`). Every module's page is `#/settings?module=<id>` (`moduleRoute()`); there is no `#/<module-id>` route, and a module without a page yet (BOGO, Upsell Order Bump, Direct Checkout) shows the empty module frame. New storefront code that needs a build (TypeScript, blocks) goes in `modules/<id>/src/storefront/` and is built into `assets/js/`; existing hand-written storefront JS/CSS stays in `modules/<id>/assets/`.
+- A module's settings page is generated from its PHP schema (ADR-009; how-to and key reference: `docs/settings-pages.md`): implement `Interfaces\SettingsPage` (`get_page()`: title, tabs, sections) and give each field `tab`/`section`/`label`/`help`/…; it opens at `#/settings?module=<id>&tab=<tab>` (`src/admin/pages/settings/`, `ModuleSettingsPage`). The module's `modules/<id>/src/admin/` only adds its live preview and multi-key controls through the JS filter `storegrowth.settings.page` (see `modules/stock-bar/src/admin/`). A module's page is `moduleRoute()`: `#/settings?module=<id>`, except modules with records (BOGO `#/bogo`, Upsell Order Bump `#/upsell-order-bump`; the catalog `route` in `src/utilities/modules-catalog.ts`), which add their list/editor routes through `storegrowth.admin.routes` (editors per ADR-010). New storefront code that needs a build (TypeScript, blocks) goes in `modules/<id>/src/storefront/` and is built into `assets/js/`; existing hand-written storefront JS/CSS stays in `modules/<id>/assets/`.
 - No global data store: local React state and context.
 - Mounted on the `storegrowth` admin page, screen ID `AdminMenu::SCREEN_ID` (ADR-008; `includes/Admin/AdminMenu.php`, `includes/Assets.php`). The old `spsg-settings` / `spsg-modules` slugs redirect there.
 
 ### Settings engine
 - Each module declares its settings in a `SettingsSchema` (option name + existing keys with type, default, pro flag, limits).
 - `Settings\SettingsService` reads and saves them; REST `GET/POST sales-booster/v1/settings/{module}` (`REST\ModuleSettingsController`) and the legacy ajax save handlers both go through it.
-- Saves **merge** into the stored option, write only changed keys, ignore pro keys without pro, and save nothing when a value is invalid. Stored values keep the old admin's shape (toggle → bool, everything else → string); the API returns typed values. Details: `docs/redesign/migration-spec.md` §8, ADR-004, ADR-007 (gated first save, extension fields).
+- Saves **merge** into the stored option, write only changed keys, ignore pro keys without pro, and save nothing when a value is invalid. Stored values keep the old admin's shape (toggle → bool, everything else → string); the API returns typed values. Details: ADR-004 §2, ADR-007 (gated first save, extension fields).
 
 ### Storefront (ADR-005)
 - `includes/Storefront/`: `StorefrontStyle` (settings → `--spsg-<module>-*` CSS variables), `StorefrontText` (`{token}` / `[token]`), `DisplayRules` (bars and popups), `StorefrontFonts` (bundled fonts first, one Google request for the rest).

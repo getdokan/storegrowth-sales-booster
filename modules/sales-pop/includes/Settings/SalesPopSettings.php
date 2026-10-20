@@ -16,7 +16,7 @@ use StorePulse\StoreGrowth\Settings\SettingsService;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_popup_products` (docs/redesign/modules/sales-pop.md §4).
+ * Fields of `spsg_popup_products`.
  *
  * - Defaults are the old admin's (`helper.js`), so stores keep their look;
  *   the storefront fills unsaved keys from them (`storefront_settings()`).

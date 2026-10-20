@@ -2,13 +2,13 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: RDR-001 (TypeScript rewrite, REST-first; `../redesign/adr/`), ADR-004 (ajax actions stay registered), `../redesign/rest-api.md`
+- Related: ADR-001 (TypeScript admin), ADR-004 (ajax actions stay registered)
 
 ## Context
 
-The admin app talks to the server over REST (`sales-booster/v1`, `src/utilities/api.ts`). ADR-004 keeps every existing `wp_ajax_spsg_*` action registered, and some of them already do exactly what a screen needs, with no REST route. The rebuilt onboarding wizard is the first case: completion goes through the existing `spsg_inisetup_flag_update` action instead of a new route, to keep the API surface unchanged.
+The admin app talks to the server over REST (`sales-booster/v1`, `src/utilities/api.ts`). ADR-004 keeps every existing `wp_ajax_spsg_*` action registered, and some of them already do exactly what a screen needs, with no REST route. The onboarding wizard is one: completion goes through the existing `spsg_inisetup_flag_update` action instead of a new route, to keep the API surface unchanged.
 
-The old UI called admin-ajax in several different ways: a jQuery helper (`assets/src/ajax.js`), raw `fetch()` with hand-built `URLSearchParams`, and hard-coded `/wp-admin/admin-ajax.php` URLs. Each call site handled the nonce, boolean encoding and errors differently. WordPress also answers a failed nonce or capability check with a bare `-1` / `0`, which none of them turned into a readable error.
+The old antd admin called admin-ajax in several different ways: a jQuery helper, raw `fetch()` with hand-built `URLSearchParams`, and hard-coded `/wp-admin/admin-ajax.php` URLs. Each call site handled the nonce, boolean encoding and errors differently. WordPress also answers a failed nonce or capability check with a bare `-1` / `0`, which none of them turned into a readable error.
 
 ## Decision
 
@@ -45,7 +45,17 @@ Put a typed wrapper next to the REST clients in `src/utilities/api.ts` (e.g. `co
 - The action name, fields and stored data follow ADR-004: never renamed or removed.
 
 ### Out of scope
-Storefront ajax (`wp_ajax_nopriv_*`, nonces `spsg_frontend_ajax*`) stays as it is; see `../redesign/rest-api.md` §6 and ADR-005.
+Storefront ajax stays admin-ajax, not REST. These are guest cart actions; moving them behind the `wp_rest` cookie nonce would break guests:
+
+| Ajax action | Nonce |
+|---|---|
+| `spsg_fly_cart_frontend` | `spsg_frontend_ajax` |
+| `spsgqcv_quickview` | `spsgqcv-security` |
+| `offer_product_add_to_cart` | `spsg_frontend_ajax_nonce` |
+| `update_offer_product` | `spsg_frontend_ajax_nonce` |
+| `upsell_offer_product_add_to_cart` | `spsg_frontend_ajax_nonce` |
+
+A move to the WooCommerce Store API (`/wc/store/v1` extensions) would be a separate ADR. The analytics tracker is the exception: a public, increment-only REST route (ADR-012).
 
 ## Consequences
 

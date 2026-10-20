@@ -15,8 +15,8 @@ use StorePulse\StoreGrowth\Modules\BoGo\CategoryMessages;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields and page of `spsg_bogo_general_settings` (docs/redesign/modules/bogo.md
- * §9, 10b): the settings every offer shares.
+ * Fields and page of `spsg_bogo_general_settings`: the settings every offer
+ * shares.
  *
  * - Gated: the storefront reads the option raw (`Helper::get_bogo_settings_option()`),
  *   so the first save writes every key, the badge icon included.

@@ -16,8 +16,7 @@ use StorePulse\StoreGrowth\Settings\SettingsService;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_floating_notification_bar_settings`
- * (docs/redesign/modules/floating-notification-bar.md §4).
+ * Fields of `spsg_floating_notification_bar_settings`.
  *
  * - Defaults are the old admin's, so stores keep their bar.
  * - Keys, values and typos stay as stored (`show_cupon`, `cupon_code`,

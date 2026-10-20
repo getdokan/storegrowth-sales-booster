@@ -43,7 +43,7 @@ Two more facts shaped the design:
    - **Analytics tables** (the counts table and `spsg_offer_lookup`) are created through `Upgrader`: an update creates them when the admin runs the database upgrade from the notice (`Migrations\V_3_0_0`); a fresh install creates them on activation. Until they exist, writers no-op and reports return `spsg_analytics_not_installed` (amended 2026-10-08).
 9. **Dokan:** while Dokan is active, the report joins `dokan_order_stats` with Dokan's own `OrderType::get_vendor_order_types()`, the types Dokan's Products report counts. That means sub-orders and single-vendor orders and their refunds, never a parent order and its copy both. The vendor comes from there. The bar's fee is read from the order holding it.
 10. **Lite/Pro limits** (date range, per-offer rows, CSV, per-vendor) are enforced in the REST controller.
-11. **Later phase:** StoreGrowth figures also appear inside WooCommerce Analytics (an "offer" filter and column) through WooCommerce's report filters. No separate Analytics menu page (ADR-008).
+11. **Inside WooCommerce Analytics:** StoreGrowth figures also appear in WooCommerce's own reports (an "offer" filter and column, an Overview indicator) through WooCommerce's report filters (`Analytics\WcAnalytics`, bundle `src/wc-analytics/`). No separate Analytics menu page (ADR-008).
 
 ## Consequences
 

@@ -1,7 +1,7 @@
 /**
  * Colour swatch (design `.swatch`: 32px circle) that opens WordPress's colour
  * picker in a plugin-ui popover. Transparency is off: values are 6-digit hex,
- * the shape StoreGrowth stores (migration-spec §8).
+ * the shape StoreGrowth stores (ADR-004 §2).
  *
  * Stand-in until plugin-ui exports its own `ColorPicker` from the package root
  * (it is bundled but not exported in the pinned version). Then switch the

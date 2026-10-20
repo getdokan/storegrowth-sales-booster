@@ -13,7 +13,7 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// Quick View (docs/redesign/modules/quick-view.md). Setup through REST; the
+// Quick View. Setup through REST; the
 // button / modal styles are an inline <style> (read computed styles).
 // The modal HTML comes from a cacheable GET (`admin-ajax.php?product_id=`):
 // tests that change the modal's content open it in a FRESH context

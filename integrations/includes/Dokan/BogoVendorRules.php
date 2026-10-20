@@ -14,8 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Server-side rules for offers a vendor saves through the BOGO REST routes
- * (`bogo/offers` and `bogo/offers/vendor`), docs/redesign/modules/bogo.md §2
- * bug 7:
+ * (`bogo/offers` and `bogo/offers/vendor`):
  *
  * - every product of the offer (targets, offer product, alternates) is the
  *   vendor's own;

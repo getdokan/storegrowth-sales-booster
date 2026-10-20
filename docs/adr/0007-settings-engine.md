@@ -2,15 +2,15 @@
 
 - Status: Accepted
 - Date: 2026-09-27
-- Related: ADR-004 (settings are never lost; pro compatibility; JS hooks), ADR-006 (REST first), `../redesign/migration-spec.md` §8, `../redesign/pro-migration-spec.md` §3–4
+- Related: ADR-004 (settings are never lost, stored value shapes; pro compatibility; JS hooks), ADR-006 (REST first), ADR-009 (pages generated from the schema)
 
 ## Context
 
-Every redesigned module page reads and saves its settings through one engine: a schema per module (`SettingsSchema`), `Settings\SettingsService`, REST `sales-booster/v1/settings/{module}` and the `useModuleSettings()` hook. ADR-004 §2 fixes how saves protect stored data.
+Every module page reads and saves its settings through one engine: a schema per module (`SettingsSchema`), `Settings\SettingsService`, REST `sales-booster/v1/settings/{module}` and the `useModuleSettings()` hook. ADR-004 §2 fixes how saves protect stored data.
 
-Two questions were open:
+Two questions had to be answered:
 
-1. **How pro (or a third party) adds a field to a module page.** The old antd UI had 83 JS slots (retired, ADR-004 §4). The pages are now laid out by hand to their designs, so there is no generic form to append to.
+1. **How pro (or a third party) adds a field to a module page.** The old antd UI had 83 JS slots (retired, ADR-004 §4), and there was no generic form to append to.
 2. **What "never saved" means.** The two storefront bars stay off until the admin first saves (the old behaviour). With saves that write only changed keys, a page left at its defaults could never be saved, so the bar could never be turned on.
 
 We answer the first question with plugin-ui's settings contract: fields are flat PHP arrays in plugin-ui's `SettingsElement` shape, appended through one filter, and a custom control is a variant with its own JS hook.
@@ -20,7 +20,7 @@ We answer the first question with plugin-ui's settings contract: fields are flat
 ### 1. One engine
 - A module declares its fields in a `SettingsSchema` (option name; key → `type`, `default`, `pro`, limits, `options`). Types: `text`, `textarea`, `number` (`allow_empty`), `toggle`, `color`, `select`, `box`, `list`, `url`, `date`. New types are added in `SettingsService` (`FIELD_TYPES`, `sanitize()`, and `to_api()` / `is_unchanged()` for structured values) and in `api.ts`.
 - `SettingsService` is the only reader and writer (REST and the legacy ajax adapters). Its save rules are ADR-004 §2.
-- The page's `useModuleSettings()` owns values, dirty state and saving. Each tab saves its own keys: every field with that `tab` (ADR-009; before, a hand-kept `TAB_KEYS` list).
+- The page's `useModuleSettings()` owns values, dirty state and saving. Each tab saves its own keys: every field with that `tab` (ADR-009).
 
 ### 2. Gated modules: the first save turns them on
 A schema whose storefront stays off until first saved implements `GatedSettingsSchema::is_saved( $stored )`. The API returns `published: false` until then. The page keeps Save enabled and says the output shows once saved. That first save writes the full option, like the old admin's whole-form save: every key the tab sends (even unchanged) and the default of every other key. Pro 2.2.0 reads the raw option, so a key left out would read as empty. Later saves write only changes.
@@ -80,6 +80,6 @@ The extension contract (PHP arrays, element shape, hook name, `onChange`) is the
 ## Consequences
 
 - Pro adds a field with a PHP array and no JS; only a custom control needs a JS filter, written against plugin-ui's field contract.
-- Adding a tab to a page, or renaming one, changes the extension API: record it in the module spec.
+- Tab and section ids are extension API: renaming or removing one breaks extensions that place fields there (ADR-004), and a new one is noted in the changelog.
 - A new field type is a `SettingsService` change plus a default control in `DefaultField`.
 - Checks: `wp eval-file tests/compat/settings-roundtrip.php`; an extension field on every tab of a changed page renders above Save and saves only its key.

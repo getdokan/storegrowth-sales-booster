@@ -1,7 +1,7 @@
 /**
  * admin-ajax client for the legacy `wp_ajax_spsg_*` actions that have no REST
  * route (ADR-004 keeps them). New features use REST (./api.ts). Rules:
- * docs/adr/ADR-006-admin-ajax-client.md.
+ * docs/adr/0006-rest-first-and-ajax.md.
  *
  * @since 3.0.0
  */

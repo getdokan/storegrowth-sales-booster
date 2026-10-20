@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * One service for every module's settings, shared by the REST controller and
  * the legacy ajax handlers (which become adapters over it).
  *
- * Value shapes (docs/redesign/migration-spec.md §8):
+ * Value shapes (ADR-004 §2):
  * - **Stored** exactly as the old admin stored them, so the storefront, pro
  *   and third parties read the same values: `toggle` as bool, every other
  *   type as string (numbers included, e.g. `'10'`), colours as hex; `box` and

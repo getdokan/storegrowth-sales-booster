@@ -14,7 +14,7 @@ use StorePulse\StoreGrowth\Modules\FlyCart\FlyCartModule;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_fly_cart_settings` (docs/redesign/modules/fly-cart.md §4).
+ * Fields of `spsg_fly_cart_settings`.
  *
  * - Defaults are the old admin's; the storefront and pro 2.2.0 read every key
  *   with the same fallback, so a partly saved option behaves as before.

@@ -1,6 +1,6 @@
 # Module analytics: how it works
 
-How StoreGrowth measures what its offers sold and gave away: what is recorded, where it is stored, and how every figure on the Analytics page is calculated. The decisions behind it are in [ADR-012](../adr/ADR-012-module-analytics.md); the build plan is in [README.md](README.md).
+How StoreGrowth measures what its offers sold and gave away: what is recorded, where it is stored, and how every figure on the Analytics page is calculated. The decisions behind it are in [ADR-012](../adr/0012-module-analytics.md); the build plan is in [README.md](README.md).
 
 **Two kinds of numbers:**
 

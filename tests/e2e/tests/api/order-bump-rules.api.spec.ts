@@ -5,7 +5,7 @@ import { expectOk, hasPro } from '../../helpers/rest';
 import { createOrderBump, deleteAllOrderBumps, OrderBump } from '../../helpers/records';
 import { PRODUCTS } from '../../data/products';
 
-// The order-bump REST contract (docs/redesign/rest-api.md #26–31a): one
+// The order-bump REST contract: one
 // controller under `sales-booster/v1` and the kept 2.2.0 `spsg/v1`, the save
 // rules (400 per code), lite's 2-bump cap (403), design_settings merged and
 // sanitized key by key, the Offer Days schedule checked in the site's

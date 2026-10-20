@@ -15,8 +15,7 @@ use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_countdown_timer_settings`
- * (docs/redesign/modules/countdown-timer.md §4).
+ * Fields of `spsg_countdown_timer_settings`.
  *
  * - Existing keys keep today's defaults, so saved sites keep their colours.
  * - Keys new in the redesign default to the design.

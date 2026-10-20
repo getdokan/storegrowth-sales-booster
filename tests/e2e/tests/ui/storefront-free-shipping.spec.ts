@@ -20,11 +20,10 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS, STORE_PAGES } from '../../data/products';
 
-// Free Shipping Rules (`progressive-discount-banner`,
-// docs/redesign/modules/progressive-discount-banner.md). A guest/customer-only
+// Free Shipping Rules (`progressive-discount-banner`). A guest/customer-only
 // promotion: storefront checks use the logged-out `guestPage`. The schema is
-// gated (the first save turns the bar on, §5); the beforeEach reset is that
-// save. The bar keeps its inline CSS (ADR-005 deferred), so read computed
+// gated (the first save turns the bar on, ADR-007); the beforeEach reset is that
+// save. The bar keeps its inline CSS, so read computed
 // styles. The bar ships hidden and fades in after `banner_delay` (a pro key,
 // 7s by default): attribute / text / computed-style checks don't wait for it.
 const id = MODULES.freeShipping.id;

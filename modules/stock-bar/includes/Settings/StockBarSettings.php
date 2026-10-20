@@ -14,7 +14,7 @@ use StorePulse\StoreGrowth\Modules\StockBar\StockBarModule;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_stock_bar_settings` (docs/redesign/modules/stock-bar.md §4).
+ * Fields of `spsg_stock_bar_settings`.
  *
  * Defaults of the existing keys are the storefront's fallbacks, so unsaved
  * colours and texts stay as they were. The keys new in the redesign (card

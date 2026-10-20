@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || exit;
 /**
  * GET sales-booster/v1/dashboard/overview
  *
- * Revenue and template counts are `null` until their definitions are agreed
- * (docs/redesign/modules/00-core-shell.md §8); the UI shows a dash for null.
+ * Revenue and template counts are `null` until their definitions are agreed;
+ * the UI shows a dash for null.
  *
  * @since 3.0.0
  */

@@ -14,7 +14,7 @@ import { gotoShop, gotoProduct, addToCart, emptyCart, computedStyle } from '../.
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// Fly Cart (docs/redesign/modules/fly-cart.md). Setup through REST; colours
+// Fly Cart. Setup through REST; colours
 // are asserted as computed styles. Pro keys (layout `center`, centre icon
 // positions, stock status, BOGO badge, free-shipping message, coupon, "Cart
 // panel auto-opens") are ignored by a lite save, so their tests need pro.

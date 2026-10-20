@@ -16,7 +16,7 @@ import { getProductIdBySlug, setProductMeta } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS, STORE_PAGES } from '../../data/products';
 
-// Direct Checkout (docs/redesign/modules/direct-checkout.md). Setup through
+// Direct Checkout. Setup through
 // REST; the button styles are still an inline <style> (read computed styles).
 // The button label, the shop-page button and the "Add to cart as Buy Now" /
 // "specific products" layouts are pro: a lite save ignores them.

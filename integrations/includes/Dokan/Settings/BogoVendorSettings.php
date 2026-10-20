@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Fields and page of `spsg_bogo_dokan_vendors_settings`: what Dokan vendors
- * may do with BOGO (docs/redesign/modules/bogo.md, 10f). Its own option, so
+ * may do with BOGO. Its own option, so
  * its own page, `#/settings?module=bogo-vendors` in BOGO's frame, registered
  * through `spsg_settings_schemas` while Dokan is active and linked from the
  * BOGO settings page (`add_link()`).

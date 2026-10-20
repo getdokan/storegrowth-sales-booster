@@ -14,7 +14,7 @@ import { getProductIdBySlug, updateProduct } from '../../helpers/wc';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// Stock Bar (docs/redesign/modules/stock-bar.md). Setup through REST; the
+// Stock Bar. Setup through REST; the
 // design keys reach the storefront as inline CSS or `--spsg-stock-bar-*`
 // variables, so assertions read computed styles. The count texts, bar height,
 // bar colour and status colour are pro keys: a lite save ignores them.

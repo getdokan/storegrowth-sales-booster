@@ -2,16 +2,16 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-001, `../redesign/report.md` §6 (U10)
+- Related: ADR-001, ADR-011
 
 ## Context
 
-Today's styling:
+The admin used to be styled with:
 - antd CSS-in-JS
 - per-module SCSS (`assets/src/admin.scss`)
-- `assets/src/preflight-reset.css`, which exists only to undo plugin-ui's global Tailwind preflight leaking from `dist/styles.css` into wp-admin
+- `assets/src/preflight-reset.css`, which existed only to undo plugin-ui's global Tailwind preflight leaking from `dist/styles.css` into wp-admin
 
-The mockups are Tailwind (design tokens `sg-*` in the design repo's `assets/theme.js`).
+The designs are Tailwind (design tokens `sg-*` in the design repo's `assets/theme.js`).
 
 dokan-lite uses Tailwind v4 through `@tailwindcss/postcss`, with a single entry `src/base-tailwind.css`. It never imports plugin-ui's `dist/styles.css`. Instead it:
 - `@source`s plugin-ui's `dist` so the class names are generated in its own build;
@@ -21,7 +21,7 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
 
 ## Decision
 
-1. **Tailwind v4** (`tailwindcss`, `@tailwindcss/postcss`, `@tailwindcss/forms`) via `postcss.config.js`. No SCSS, LESS or CSS-in-JS in new admin code.
+1. **Tailwind v4** (`tailwindcss`, `@tailwindcss/postcss`, `@tailwindcss/forms`) via `postcss.config.js`. No SCSS, LESS or CSS-in-JS in admin code.
 2. **One stylesheet entry, `src/base-tailwind.css`** → `build/tailwind.css`, WP style handle `spsg-tailwind`. Every admin script handle depends on it. Module bundles emit no Tailwind of their own.
    ```css
    @layer theme, base, components, utilities;
@@ -60,18 +60,18 @@ This keeps wp-admin untouched. It also covers portals (dialogs, popovers, select
    }
    ```
    The full `sg-*` list comes from the design repo's `assets/theme.js`. `source(none)` limits scanning to the `@source` folders: every scanned file and folder becomes a webpack dependency of the stylesheet, and Tailwind's automatic detection of the whole plugin folder made webpack drop them all (a stale `tailwind.css` from the watcher and the cache). A folder glob ends in `/**` so it reaches the files.
-3. **The app root element carries `spsg-layout`.** plugin-ui's `ThemeProvider` adds `.pui-root` inside it. Brand tokens are set through `createTheme` (primary `#0875FF`, radius `8px`, Inter), as in report §6.
-4. **Delete** `assets/src/preflight-reset.css` and every per-module admin SCSS file once its module migrates.
+3. **The app root element carries `spsg-layout`.** plugin-ui's `ThemeProvider` adds `.pui-root` inside it. Brand tokens are set through `createTheme` (`src/admin/theme.ts`: primary `#0875FF`, radius `8px`, Inter).
+4. **No other admin stylesheet:** no per-module admin SCSS and no preflight reset; a module's admin styles are Tailwind classes in its own `src/`.
 5. **Storefront styles are out of scope.** The storefront CSS under `modules/<name>/assets/css` stays plain CSS. Tailwind must not load on the storefront. Exception (ADR-011): the Dokan vendor dashboard, a front-end page that draws StoreGrowth's admin UI, loads this stylesheet, still scoped to `.spsg-layout`.
 6. **Preview widgets** (`modules/<name>/src/admin/preview`) render inside the admin, so they use Tailwind. They must mirror the storefront's CSS values (same tokens for colour, radius, spacing) rather than import storefront CSS.
 
 ## Consequences
 
-- Fixes the global preflight leak (plugin-ui U10) without an upstream change.
+- plugin-ui's global preflight never leaks into wp-admin, without an upstream change.
 - One CSS file is cached across every StoreGrowth admin page.
 - Design tokens exist once, in `@theme`, and are used by both classes and plugin-ui theme tokens.
 - Anything rendered outside `.spsg-layout` or `.pui-root` (e.g. WP admin notices) gets no Tailwind utilities, which is intended.
-- ~~The Dokan vendor dashboard already loads `dokan-tailwind`. Integration bundles there should use Dokan's layout class, not load `spsg-tailwind`.~~ Superseded by ADR-011: Dokan's stylesheet has no `sg-*` tokens, so integration bundles there load `spsg-tailwind` (after Dokan's) under `.spsg-layout`.
+- On the Dokan vendor dashboard, integration bundles load `spsg-tailwind` (after Dokan's) under `.spsg-layout`, because Dokan's stylesheet has no `sg-*` tokens (ADR-011).
 
 ## Alternatives considered
 

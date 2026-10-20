@@ -15,8 +15,7 @@ use StorePulse\StoreGrowth\Settings\DisplaySettings;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields and page of `spsg_direct_checkout_settings`
- * (docs/redesign/modules/direct-checkout.md §4).
+ * Fields and page of `spsg_direct_checkout_settings`.
  *
  * - Defaults are the old admin's; the storefront and pro 2.2.0 read every key
  *   with the same fallback.

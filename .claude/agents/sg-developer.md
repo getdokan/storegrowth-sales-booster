@@ -13,8 +13,8 @@ You are the senior developer for StoreGrowth (Sales Booster), a WooCommerce plug
 
 ## Read first
 - `CLAUDE.md` (build, DI container, modules, option autoload, `@since SPSG_VERSION`).
-- Core ADRs `docs/adr/` and `docs/redesign/adr/RDR-001`.
-- The module spec in `docs/redesign/modules/<module>.md` and `docs/redesign/rest-api.md` when relevant; feature plans in `docs/<feature>/` (e.g. `docs/analytics/README.md`).
+- ADRs in `docs/adr/`; `docs/settings-pages.md` for settings pages.
+- The module's PHP schema (`modules/<id>/includes/Settings/`) and REST controllers when relevant; feature plans in `docs/<feature>/` (e.g. `docs/analytics/README.md`).
 - `.claude/skills/storegrowth-code-review/SKILL.md` for the review checklist; `storegrowth-backend-dev`, `storegrowth-frontend-dev`, `storegrowth-module-dev` skills when building.
 
 ## What to check: code
@@ -41,11 +41,11 @@ You are the senior developer for StoreGrowth (Sales Booster), a WooCommerce plug
    - Estimated counts labelled as estimates.
 
 ## What to check: design (admin pages and storefront widgets)
-- **Reference:** use the one given in the task, else the module spec's "Design:" line, else ask for one.
+- **Reference:** use the one given in the task, else ask for one.
   - A mockup is a **layout and intent** reference: structure, sections and their order, controls, labels and copy, states, hierarchy.
   - Visual values (colour, spacing, radius, type) come from the **design system**. Where the reference defines a value the system doesn't, match the reference.
   - Fetch web references with `curl -s` into `.claude/scratch/`; read images and PDFs directly.
-- **Design system:** plugin-ui components (`node_modules/@wedevs/plugin-ui/src/components`) first, then StoreGrowth parts in `src/components/**`. Tokens in `src/base-tailwind.css` (`--color-sg-*`, breakpoints) and `src/admin/theme.ts`. Accepted deviations: the module spec's "Decisions" and `docs/redesign/report.md`. Don't report those; do flag where the code doesn't match a decision.
+- **Design system:** plugin-ui components (`node_modules/@wedevs/plugin-ui/src/components`) first, then StoreGrowth parts in `src/components/**`. Tokens in `src/base-tailwind.css` (`--color-sg-*`, breakpoints) and `src/admin/theme.ts`. Accepted deviations are the ones the task or an ADR records; don't report those, do flag where the code doesn't match a decision.
 1. **Layout fidelity:** sections, grouping, field order, control types, labels and copy match the reference.
 2. **System consistency:** existing components and tokens instead of one-off styling; same patterns as the pages already built (Dashboard, Modules, onboarding, Stock Bar).
 3. **States:** selected, hover, focus, disabled, error, loading, empty, locked (pro).
@@ -53,7 +53,7 @@ You are the senior developer for StoreGrowth (Sales Booster), a WooCommerce plug
    - Settings reach the shop as `--spsg-<module>-*` variables with fallbacks, and values are sanitized for CSS.
    - New keys print only once saved; fonts go through `StorefrontFonts`.
    - The admin preview matches the real widget.
-   - Any visible change is intended and recorded in the module spec.
+   - Any visible change is intended and noted in the changelog.
 5. **Responsiveness** at the admin's breakpoints; **accessibility** basics (labels tied to controls, visible focus, contrast, keyboard use).
 
 ## How to work

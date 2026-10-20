@@ -102,12 +102,12 @@ test.describe('API · <area>', () => {
 Rules:
 - The **`api` fixture** (in `fixtures/test.ts`) is an authenticated `APIRequestContext` — HTTP Basic (the stack's WP-API Basic-Auth plugin, or an Application Password), scoped per-test, no cookies, so it works in the `ui` project too. Use it for fast, browserless checks and for test setup.
 - To test **anonymous / unauthorized** behavior, build a fresh context with no `Authorization` header (`playwright.request.newContext({ baseURL: env.baseURL })`) and assert `401`/`403` — see `tests/api/auth.api.spec.ts`. WordPress validates args before permissions, so an anonymous call with an invalid body gets 400.
-- Plugin REST namespace: **`sales-booster/v1`** — modules, settings (`settings/{module}`, `admin/settings`), products, BOGO offers (+ `/editor`, `/batch`, `/{id}/status`, `/vendor`), category messages, order bumps (also kept under the old `spsg/v1`). Admin routes require `manage_options` — assert the happy path *and* that an anonymous caller is rejected. Contract: `docs/redesign/rest-api.md`.
+- Plugin REST namespace: **`sales-booster/v1`** — modules, settings (`settings/{module}`, `admin/settings`), products, BOGO offers (+ `/editor`, `/batch`, `/{id}/status`, `/vendor`), category messages, order bumps (also kept under the old `spsg/v1`). Admin routes require `manage_options` — assert the happy path *and* that an anonymous caller is rejected. Contract: the controllers in `includes/REST/`, `modules/bogo/includes/REST/` and `modules/upsell-order-bump/includes/RestApi/` (routes are frozen, ADR-004).
 - Spec files end in `.api.spec.ts` and live in `tests/api/` (the `api` project's `testDir`).
 
 ## Asserting plugin functionality
 
-`reference/surface-map.md` maps the storefront (module injection hooks and DOM markers), ajax actions and options. Parts of it describe the legacy admin (`#sbooster-*` mounts, admin-ajax saves) — for the admin, trust the redesign docs (`docs/redesign/`, `docs/settings-pages.md`) and the live app over the map.
+`reference/surface-map.md` maps the storefront (module injection hooks and DOM markers), ajax actions and options. Parts of it describe the legacy admin (`#sbooster-*` mounts, admin-ajax saves) — for the admin, trust the ADRs (`docs/adr/`), `docs/settings-pages.md` and the live app over the map.
 
 What the suite covers (keep it that way when changing a module):
 1. **Admin shell** — dashboard, modules page and toggles, legacy slug redirects, every settings page mounts (`admin-menu`, `modules`, `settings` specs).

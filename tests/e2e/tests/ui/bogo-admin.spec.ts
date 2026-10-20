@@ -17,7 +17,7 @@ import {
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-// The BOGO admin (docs/redesign/modules/bogo.md 10c–10e): the offer list at
+// The BOGO admin: the offer list at
 // `#/bogo` (RecordList: search, status switch, Edit/Delete, bulk delete, empty
 // state, lite's cap), the editor at `#/bogo/create-bogo` and `#/bogo/<id>`
 // (three tabs, client checks, preview) and the category messages screen,

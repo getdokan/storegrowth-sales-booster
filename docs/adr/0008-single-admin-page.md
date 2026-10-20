@@ -2,11 +2,11 @@
 
 - Status: Accepted
 - Date: 2026-09-27
-- Amends: ADR-004 §2 (admin page slugs) and its Context (admin screen IDs), `../redesign/compat-contract.md` §3
+- Amends: ADR-004 §2 (admin page slugs) and its Context (admin screen IDs)
 
 ## Context
 
-The redesigned admin is one React app with one route table. It was mounted on two WordPress pages, `spsg-settings` and `spsg-modules`, which differed only in the route they opened without a hash. Every route worked on both, so links used either slug at random (`spsg-modules#/ini-setup`, `spsg-settings#/modules`).
+The admin is one React app with one route table. It was first mounted on two WordPress pages, `spsg-settings` and `spsg-modules`, which differed only in the route they opened without a hash. Every route worked on both, so links used either slug at random (`spsg-modules#/ini-setup`, `spsg-settings#/modules`).
 
 ADR-004 froze both slugs and their screen IDs (`storegrowth_page_spsg-settings` / `-modules`), because pro up to 2.2.0 enqueues its admin bundle only on those screens.
 
@@ -18,13 +18,13 @@ ADR-004 froze both slugs and their screen IDs (`storegrowth_page_spsg-settings` 
    - The browser keeps the URL's `#/route` across the redirect, so `spsg-settings#/stock-bar` opens `storegrowth#/stock-bar`, which the app sends to the module's page, `#/settings?module=stock-bar` (ADR-009).
    - A bare `spsg-modules` link redirects with `view=modules`, so it still opens the modules list.
 4. **Exception to ADR-004: the old screen IDs are gone.** The old pages never render, so `storegrowth_page_spsg-settings` / `-modules` never fire `admin_enqueue_scripts`.
-   - Pro 2.2.0 doesn't load its admin bundle with this lite. Its storefront and PHP features are unaffected, and nothing that works today depends on it: every JS filter it answers belongs to the old antd admin (ADR-004 §4). The redesigned pages never fire them, and the BOGO, Upsell Order Bump and Direct Checkout legacy bundles register `spsg_routes`, which the new app never read, so those pages already showed the empty module frame before this change. Stored values stay and keep driving the storefront.
-   - The next pro release enqueues on `storegrowth_page_storegrowth` as well as the old IDs, so it works with lite before and after this change. Lite and that pro ship together.
+   - Pro 2.2.0 doesn't load its admin bundle with this lite. Its storefront and PHP features are unaffected, and nothing depends on that bundle: every JS filter it answers belonged to the old antd admin (ADR-004 §4), which the current pages never fire. Stored values stay and keep driving the storefront.
+   - Pro 3.0.0 enqueues on `storegrowth_page_storegrowth` as well as the old IDs; lite and pro 3.0.0 ship together.
    - Add-ons that enqueue on the old screen IDs must add the new one.
 5. **Everything else in ADR-004 stands.** The old slugs are kept (as redirects), the top-level menu slug `sales-booster-for-woocommerce` is unchanged, and `AdminMenu`'s public callbacks stay.
 
 ## Consequences
 
 - Links, docs and tests use `admin.php?page=storegrowth#/<route>`.
-- Built legacy bundles (BOGO, Upsell Order Bump, Direct Checkout, pro) that still link to the old slugs keep working through the redirect until they're rebuilt.
+- Old links and bookmarks to the old slugs keep working through the redirect.
 - Every page has one stable URL on one screen; the schema-driven settings pages build on it (`#/settings?module=<id>&tab=<tab>`, ADR-009).

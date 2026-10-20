@@ -1,6 +1,6 @@
 # Settings pages
 
-How a module gets a settings page, and how pro or another plugin extends one. The decisions behind it: [ADR-007](adr/ADR-007-settings-engine-and-extension-fields.md) (settings engine), [ADR-009](adr/ADR-009-backend-defined-settings-pages.md) (pages defined in the backend), [ADR-004](adr/ADR-004-backward-compatibility.md) (stored settings are never lost).
+How a module gets a settings page, and how pro or another plugin extends one. The decisions behind it: [ADR-007](adr/0007-settings-engine.md) (settings engine), [ADR-009](adr/0009-settings-pages-in-php.md) (pages defined in the backend), [ADR-004](adr/0004-backward-compatibility.md) (stored settings are never lost).
 
 ## How it works
 

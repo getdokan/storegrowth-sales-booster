@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * Keys are the REST routes' (ADR-004): the stored columns, the design keys of
  * `design_settings` and the per-offer badge keys. Defaults are the old editor's
- * for a new offer (docs/redesign/modules/bogo.md §4, §9).
+ * for a new offer.
  *
  * Extend it in PHP (`spsg_bogo_offer_fields`, `spsg_bogo_offer_page`); an
  * extension stores its own keys (`spsg_bogo_mapped_data`) and returns them

@@ -16,8 +16,7 @@ use StorePulse\StoreGrowth\Settings\SettingsService;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Fields of `spsg_progressive_discount_banner_settings`
- * (docs/redesign/modules/progressive-discount-banner.md §4).
+ * Fields of `spsg_progressive_discount_banner_settings`.
  *
  * - Defaults are the old admin's, so stores keep their bar.
  * - Keys and values stay as stored: `discount_amount_mode` is
