@@ -155,7 +155,16 @@ export function MultiSelectField( {
                 items={ onSearch ? results : options ?? [] }
                 multiple
                 value={ selected }
-                onValueChange={ ( next: MultiSelectOption[] ) => {
+                onValueChange={ (
+                    next: MultiSelectOption[],
+                    details?: { reason?: string }
+                ) => {
+                    // Escape on a closed list clears the whole value in Base
+                    // UI; here it only closes the list.
+                    if ( 'escape-key' === details?.reason ) {
+                        return;
+                    }
+
                     if ( max === undefined || next.length <= max ) {
                         onChange( next.map( ( option ) => option.value ) );
                     }
