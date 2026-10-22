@@ -717,6 +717,7 @@
 /* Checkout page start */
 iframe.spsg-fast-cart-checkout-frame {
     width: 100%;
+    box-sizing: border-box;
     max-width: initial;
     border: 0 none;
     padding: 0px 20px;
@@ -793,9 +794,6 @@ iframe.spsg-fast-cart-checkout-frame {
         max-width: 100% !important;
     }
 
-    .wfc-widget-sidebar.spsg-quick-cart-center-layout .spsg-widget-shopping-cart-content-wrapper {
-        width: 560px !important;
-    }
 
 
     .spsg-fly-cart-table td.product-subtotal {
@@ -1042,6 +1040,12 @@ iframe.spsg-fast-cart-checkout-frame {
 /* 2. Remove the 'slide' offset when in center mode */
 .wfc-widget-sidebar.spsg-quick-cart-center-layout.wfc-slide {
     display: none !important; /* Hide when closed instead of sliding right */
+}
+
+/* 2b. The content fills the popup (pro's inline CSS sets it 650px wide). */
+.wfc-widget-sidebar.spsg-quick-cart-center-layout .spsg-widget-shopping-cart-content-wrapper {
+    width: 100% !important;
+    box-sizing: border-box;
 }
 
 /* 3. Hide the sidebar "close" tab since it's now a modal */
