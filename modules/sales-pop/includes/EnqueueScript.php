@@ -356,6 +356,7 @@ class EnqueueScript implements HookRegistry {
 				'post_type'      => 'product',
 				'post_status'    => 'publish',
 				'post__in'       => $ordered_product_ids, // Limit posts to ordered product IDs.
+				'orderby'        => 'post__in', // Most recently ordered first, not newest product first.
 			);
 
 			$ordered_products = get_posts( $args );
