@@ -76,32 +76,32 @@ $doc_link = storegrowth_get_container()->get(CountdownTimerModule::get_id())->ge
                     </div>
                     <span class="description"><?php esc_html_e( 'The sale will start at 00:00:00 of "Start" date and end at 23:59:59 of "End" date.', 'storegrowth-sales-booster' ); ?></span>
                 </div>
-            <?php else : ?>
-                <?php // The store schedules countdowns: show the vendor the dates it set, or that none are set yet. ?>
-                <div class="dokan-form-group dokan-countdown-timer-date-wrapper">
-                    <label class="form-label"><?php esc_html_e( 'Discount dates', 'storegrowth-sales-booster' ); ?></label>
-                    <p class="description">
-                        <?php
-                        if ( $dates_to ) {
-                            echo esc_html(
-                                sprintf(
-                                    /* translators: 1: start date, or "now", 2: end date (Y-m-d). */
-                                    __( 'Set by the store: %1$s to %2$s.', 'storegrowth-sales-booster' ),
-                                    $dates_from ? $dates_from : __( 'now', 'storegrowth-sales-booster' ),
-                                    $dates_to
-                                )
-                            );
-                        } else {
-                            esc_html_e( 'The store sets the dates. The countdown and discount show once it has set an end date.', 'storegrowth-sales-booster' );
-                        }
-                        ?>
-                    </p>
-                </div>
-            <?php endif; ?>
+			<?php else : ?>
+				<?php // The store schedules countdowns: show the vendor the dates it set, or that none are set yet. ?>
+				<div class="dokan-form-group dokan-countdown-timer-date-wrapper">
+					<label class="form-label"><?php esc_html_e( 'Discount dates', 'storegrowth-sales-booster' ); ?></label>
+					<p class="description">
+						<?php
+						if ( $dates_to ) {
+							echo esc_html(
+								sprintf(
+									/* translators: 1: start date, or "now", 2: end date (Y-m-d). */
+									__( 'Set by the store: %1$s to %2$s.', 'storegrowth-sales-booster' ),
+									$dates_from ? $dates_from : __( 'now', 'storegrowth-sales-booster' ),
+									$dates_to
+								)
+							);
+						} else {
+							esc_html_e( 'The store sets the dates. The countdown and discount show once it has set an end date.', 'storegrowth-sales-booster' );
+						}
+						?>
+					</p>
+				</div>
+			<?php endif; ?>
         </div>
 
 
-            <?php if ( $show_date_fields ) : ?>
+			<?php if ( $show_date_fields ) : ?>
             <div class="dokan-form-group">
                 <span class="description " >
                     <?php
@@ -118,7 +118,7 @@ $doc_link = storegrowth_get_container()->get(CountdownTimerModule::get_id())->ge
                     ?>
                 </span>
             </div>
-            <?php endif; ?>
+			<?php endif; ?>
         <?php endif; ?>
     </div>
 </div>

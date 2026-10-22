@@ -327,6 +327,15 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
+		/**
+		 * Filters how many offer products a cart line's quantity earns on a cart update.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $free_product_quantity Offer quantity: whole multiples of the minimum quantity.
+		 * @param array $bogo_settings         The BOGO offer.
+		 * @param array $cart_item             The target cart item.
+		 */
 		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $bogo_settings, $quantity ), $bogo_settings, $cart_item );
 		
 		// Validate the calculated quantity
