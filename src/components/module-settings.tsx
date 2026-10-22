@@ -258,11 +258,13 @@ export function ModuleSettingsPage< V extends Values >( {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ settings.errors ] );
 
-    const save = async ( keys: string[] ) => {
+    // Saves every tab's unsaved changes, not only the open tab's: one Save
+    // stores the whole page, as the old admin's form did.
+    const save = async () => {
         // Set before saving: React renders the errors before `catch` runs.
         jumpToError.current = true;
         try {
-            await settings.save( keys );
+            await settings.save();
             jumpToError.current = false;
             toast.success(
                 savedMessage ??
@@ -478,12 +480,12 @@ export function ModuleSettingsPage< V extends Values >( {
                     { ! keys.every( settings.isLocked ) && (
                         <SaveBar
                             saving={ settings.saving }
-                            disabled={ ! settings.isDirty( keys ) }
+                            disabled={ ! settings.isDirty() }
                             onReset={ () => {
                                 settings.reset( keys );
                             } }
                             onSave={ () => {
-                                save( keys );
+                                save();
                             } }
                         />
                     ) }
