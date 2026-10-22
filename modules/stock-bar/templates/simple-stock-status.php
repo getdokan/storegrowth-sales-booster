@@ -17,7 +17,8 @@ if ( is_product() && ! $enable_stock_bar_in_product_page ) {
 }
 
 $total_sales = intval( $product->get_total_sales() );
-$stock       = intval( $product->get_stock_quantity() );
+// Below zero on backorder: none left to show.
+$stock       = max( 0, intval( $product->get_stock_quantity() ) );
 $total_stock = $stock + $total_sales;
 
 $bar_height          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'stockbar_height', '10' );
@@ -89,7 +90,7 @@ $stock_contents = apply_filters(
 			endif;
 		?>
 
-		<?php if ( $show_stock_status && ( $stock <= $stock_contents['quantity_required'] ) ) : ?>
+		<?php if ( $show_stock_status && $stock > 0 && ( $stock <= $stock_contents['quantity_required'] ) ) : ?>
 			<p
 				class='stock-status-warning-msg'
 				style='color: <?php echo esc_attr( $stock_contents['status_text_color'] ); ?>; margin: 0; font-size: var(--spsg-stock-bar-status-size, 11px);'
