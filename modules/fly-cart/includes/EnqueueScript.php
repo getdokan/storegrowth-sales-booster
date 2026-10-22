@@ -43,7 +43,7 @@ class EnqueueScript implements HookRegistry {
 	public function wp_enqueue_scripts() {
 		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$layout   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'layout', 'side' );
-		if ( is_checkout() || is_cart() ) {
+		if ( Helper::is_hidden_page() ) {
 			return;
 		}
 

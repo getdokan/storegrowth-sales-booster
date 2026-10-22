@@ -106,8 +106,8 @@ class CommonHooks implements HookRegistry {
 	 * Frontend footer action hook.
 	 */
 	public function wp_footer() {
-		// Don't show the widget in cart or checkout page.
-		if ( is_checkout() || is_cart() ) {
+		// Don't show the widget on the cart, checkout or vendor dashboard.
+		if ( Helper::is_hidden_page() ) {
 			return;
 		}
 

@@ -18,6 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Helper {
 
 	/**
+	 * Whether the fly cart stays off the current page: the cart, the
+	 * checkout, and the Dokan vendor dashboard (a work area, where the
+	 * floating icon covers the dashboard's own buttons).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	public static function is_hidden_page(): bool {
+		return is_checkout() || is_cart() || ( function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() );
+	}
+
+	/**
 	 * Get query string for HTTP AJAX referer.
 	 *
 	 * @since 1.0.2
