@@ -315,7 +315,9 @@ class OrderBump implements HookRegistry {
 		if ( 'discount' === $offer_type ) {
 			$percent = min( 100.0, max( 0.0, $offer_amount ) );
 
-			return max( 0.0, $current_price - ( $current_price * $percent / 100 ) );
+			// In whole cents (the store's decimals): a half cent left over
+			// shows one cent apart in the block checkout's unit price and line.
+			return max( 0.0, round( $current_price - ( $current_price * $percent / 100 ), wc_get_price_decimals() ) );
 		}
 
 		return max( 0.0, $offer_amount );
