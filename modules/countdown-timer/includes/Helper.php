@@ -7,6 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
+use StorePulse\StoreGrowth\Helper as PluginHelper;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -166,5 +168,23 @@ class Helper {
 		$pct = intval( get_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', true ) );
 
 		return ( $pct > 0 && $pct <= 100 ) ? $pct : 0;
+	}
+
+	/**
+	 * Whether a Countdown Timer vendor setting (Dokan) is on: stored as a
+	 * bool by the settings engine, as `on` / `off` by older versions; on
+	 * when never saved.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $key `vendor_can_create_countdown_discount` or `vendor_can_create_schedule_timer`.
+	 *
+	 * @return bool
+	 */
+	public static function vendor_can( string $key ): bool {
+		$settings = PluginHelper::get_settings( 'spsg_countdown_timer_settings', [] );
+		$value    = $settings[ $key ] ?? true;
+
+		return ! in_array( $value, [ false, 'off', '', 0, '0' ], true );
 	}
 }
