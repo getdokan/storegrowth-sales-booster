@@ -88,10 +88,11 @@
 			<?php if ( $is_purchasable ) : ?>
 				<input
 					type     = "checkbox"
-					class    = 'custom-checkbox'
+					class    = 'custom-checkbox spsg-order-bump-checkbox'
 					value    = "<?php echo esc_attr( $product_offer_id ); ?>"
 					id       = "test_<?php echo esc_attr( $bump['id'] ); ?>"
-					onchange = "extraProducts(<?php echo esc_attr( $product_offer_id ); ?>,<?php echo esc_attr( $variation_id ); ?>,'<?php echo esc_attr( $checked ); ?>', '<?php echo esc_attr( $offer_price ); ?>')"
+					data-product-id   = "<?php echo esc_attr( $product_offer_id ); ?>"
+					data-variation-id = "<?php echo esc_attr( $variation_id ); ?>"
 					<?php echo esc_attr( $checked ); ?>
 				/>
 				<label for='test_<?php echo esc_attr( $bump['id'] ); ?>'>

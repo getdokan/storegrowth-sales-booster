@@ -60,6 +60,12 @@ class OrderBumpAjax implements HookRegistry {
 			wp_send_json_error( array( 'message' => __( 'Invalid product.', 'storegrowth-sales-booster' ) ), 400 );
 		}
 
+		// Already in the cart (a repeated tick, e.g. quick clicks before the
+		// page reloads): one bump line, not one per request.
+		if ( $this->is_offer_in_cart( $offer_id ) ) {
+			wp_send_json_success( $offer_variation_id );
+		}
+
 		$offer = $this->find_offer( $offer_id );
 		if ( null === $offer ) {
 			wp_send_json_error( array( 'message' => __( 'This offer is not available.', 'storegrowth-sales-booster' ) ), 403 );
@@ -109,6 +115,27 @@ class OrderBumpAjax implements HookRegistry {
 		}
 
 		return WC()->cart->add_to_cart( $product->get_id(), 1, 0, [], $cart_item_data );
+	}
+
+	/**
+	 * Whether the cart already holds a bump line of this offer.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $offer_id The offered product: a variation's own id, else the product's.
+	 *
+	 * @return bool
+	 */
+	public function is_offer_in_cart( int $offer_id ): bool {
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$cart_item_id = ! empty( $cart_item['variation_id'] ) ? (int) $cart_item['variation_id'] : (int) $cart_item['product_id'];
+
+			if ( $cart_item_id === $offer_id && OrderBump::is_bump_cart_item( $cart_item ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
