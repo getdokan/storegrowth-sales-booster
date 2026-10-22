@@ -282,10 +282,7 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$required_quantity = ! empty( $bogo_settings['minimum_quantity_required'] ) ? intval( $bogo_settings['minimum_quantity_required'] ) : 1;
-		$required_quantity = max( 1, $required_quantity ); // Ensure minimum of 1
-		
-		$free_product_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		$free_product_quantity = Helper::get_offer_quantity( $bogo_settings, $parent_quantity );
 		
 		// Update the offer product quantity
 		if ( $free_product_quantity > 0 ) {
@@ -330,7 +327,7 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', $quantity, $bogo_settings, $cart_item );
+		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $bogo_settings, $quantity ), $bogo_settings, $cart_item );
 		
 		// Validate the calculated quantity
 		if ( ! is_numeric( $free_product_quantity ) || $free_product_quantity < 0 ) {
@@ -435,7 +432,11 @@ class OrderBogo implements HookRegistry {
 		) {
 			// Clean up any duplicate BOGO offers before applying new one
 			$this->clean_duplicate_bogo_offers( $cart_item_key, $apply_able_product_id );
-			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, $quantity );
+
+			// Gifts for the line's whole quantity (an add to an existing line
+			// passes only the added amount), one per minimum quantity.
+			$line_quantity = WC()->cart->cart_contents[ $cart_item_key ]['quantity'] ?? $quantity;
+			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, Helper::get_offer_quantity( $bogo_settings, $line_quantity ) );
 		}
 	}
 
@@ -502,6 +503,11 @@ class OrderBogo implements HookRegistry {
 		if ( $existing_offer_key ) {
 			// Update existing offer quantity instead of adding duplicate
 			$this->update_existing_bogo_offer_quantity( $existing_offer_key, $quantity, $settings );
+			return;
+		}
+
+		// Below the minimum quantity: no gift yet.
+		if ( $quantity < 1 ) {
 			return;
 		}
 
@@ -681,12 +687,8 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 		
-		$parent_quantity = intval( $parent_item['quantity'] );
-		$required_quantity = ! empty( $settings['minimum_quantity_required'] ) ? intval( $settings['minimum_quantity_required'] ) : 1;
-		$required_quantity = max( 1, $required_quantity );
-		
 		// Calculate the correct offer quantity based on parent quantity
-		$calculated_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		$calculated_quantity = Helper::get_offer_quantity( $settings, intval( $parent_item['quantity'] ) );
 		
 		if ( $calculated_quantity > 0 ) {
 			WC()->cart->cart_contents[ $offer_cart_key ]['quantity'] = $calculated_quantity;

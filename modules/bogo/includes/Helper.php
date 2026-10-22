@@ -136,6 +136,24 @@ class Helper {
 	}
 
 	/**
+	 * How many offer products a target cart line earns: one for every
+	 * "Select Min Quantity" of the target (2 or 3 of a minimum of 2 earn
+	 * one, 4 earn two, 1 earns none).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings        BOGO offer settings.
+	 * @param int   $target_quantity The target line's whole quantity.
+	 *
+	 * @return int
+	 */
+	public static function get_offer_quantity( $settings, $target_quantity ) {
+		$minimum = max( 1, intval( $settings['minimum_quantity_required'] ?? 1 ) );
+
+		return (int) floor( max( 0, intval( $target_quantity ) ) / $minimum );
+	}
+
+	/**
 	 * Calculate the offer price based on the offer type.
 	 *
 	 * @since 1.0.2
