@@ -229,8 +229,8 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 
 				return [
 					'date'     => substr( (string) $interval['date_start'], 0, 10 ),
-					'revenue'  => (float) $subtotals->net_revenue,
-					'discount' => (float) $subtotals->discount,
+					'revenue'  => round( (float) $subtotals->net_revenue, 2 ),
+					'discount' => round( (float) $subtotals->discount, 2 ),
 				];
 			},
 			(array) $stats->intervals
@@ -248,17 +248,20 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 
 		$report['modules'][ $countdown ]['add_to_cart_rate'] = self::add_to_cart_rate( $counts[ $countdown ]['all'] ?? [] );
 
-		// Each day's revenue per module, for the chart's lines.
+		// Each day's revenue per module, for the chart's lines, and BOGO's
+		// trigger products apart (BOGO's line includes them; the total doesn't).
+		$bogo = BoGoModule::get_id();
 		foreach ( $report['intervals'] as $index => $interval ) {
-			$report['intervals'][ $index ]['modules'] = (object) array_map(
+			$report['intervals'][ $index ]['modules']         = (object) array_map(
 				function ( $module ) use ( $interval ) {
 					return $module['daily'][ $interval['date'] ] ?? 0.0;
 				},
 				$report['modules']
 			);
+			$report['intervals'][ $index ]['trigger_revenue'] = $report['modules'][ $bogo ]['daily_trigger'][ $interval['date'] ] ?? 0.0;
 		}
 		foreach ( array_keys( $report['modules'] ) as $module ) {
-			unset( $report['modules'][ $module ]['daily'] );
+			unset( $report['modules'][ $module ]['daily'], $report['modules'][ $module ]['daily_trigger'] );
 		}
 
 		// The bar's discount is a fee: on its own card, not in the totals or the chart.
@@ -415,7 +418,8 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 		$modules[ $bogo ]['trigger_revenue'] = is_wp_error( $triggers ) ? 0.0 : round( (float) $triggers->totals->net_revenue, 2 );
 
 		// The chart's BOGO line: gifts plus the products that unlocked them.
-		foreach ( self::daily_revenue( is_wp_error( $triggers ) ? [] : (array) $triggers->intervals ) as $day => $revenue ) {
+		$modules[ $bogo ]['daily_trigger'] = self::daily_revenue( is_wp_error( $triggers ) ? [] : (array) $triggers->intervals );
+		foreach ( $modules[ $bogo ]['daily_trigger'] as $day => $revenue ) {
 			$modules[ $bogo ]['daily'][ $day ] = round( ( $modules[ $bogo ]['daily'][ $day ] ?? 0 ) + $revenue, 2 );
 		}
 

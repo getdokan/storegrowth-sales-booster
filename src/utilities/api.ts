@@ -113,6 +113,8 @@ export interface AnalyticsReport {
         revenue: number;
         discount: number;
         modules: Record< string, number >;
+        /** That day's BOGO trigger product revenue (in BOGO's `modules` figure, not in `revenue`). */
+        trigger_revenue?: number;
     } >;
     modules?: Record< string, AnalyticsModule >;
     campaigns?: AnalyticsCampaign[];
