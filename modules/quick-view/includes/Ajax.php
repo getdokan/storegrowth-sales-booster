@@ -190,7 +190,7 @@ class Ajax implements HookRegistry {
 								}
 							}
 						} else {
-							echo '<div class="thumbnail">' . esc_attr( wc_placeholder_img( $image_size ) ) . '</div>';
+							echo '<div class="thumbnail">' . wp_kses_post( wc_placeholder_img( $image_size ) ) . '</div>';
 						}
 
 						echo '</div>';
