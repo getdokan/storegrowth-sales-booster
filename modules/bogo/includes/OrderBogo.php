@@ -831,8 +831,10 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 		
-		$regular_price = $_product->get_price();
-		$offer_price   = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
+		// The offer comes off the price the shopper would pay (a sale price
+		// included); the box strikes through the regular price.
+		$offer_price   = Helper::calculate_offer_price( $offer_type, $_product->get_price(), $discount_amount );
+		$regular_price = '' !== (string) $_product->get_regular_price() ? $_product->get_regular_price() : $_product->get_price();
 		
 		// Prepare template variables
 		$offered_product = $current_product_id; // The product that triggers the offer
