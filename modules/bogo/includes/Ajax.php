@@ -482,11 +482,7 @@ class Ajax implements HookRegistry {
 
 			// Price derived from the offer, matching OrderBogo::apply_bogo_product()
 			// and OrderBogo.php:531 exactly (filtered product price).
-			if ( isset( $settings['offer_type'] ) && 'discount' === $settings['offer_type'] ) {
-				return (float) max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
-			}
-
-			return 0.0; // Free offer.
+			return (float) Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price_product->get_price(), $settings['discount_amount'] ?? 0 );
 		}
 
 		return null;

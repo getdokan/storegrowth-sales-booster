@@ -527,10 +527,7 @@ class OrderBogo implements HookRegistry {
 		}
 
 		// Determine the cost of the offer product (if necessary)
-		$offer_product_cost = 0; // Assume free by default
-		if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
-			$offer_product_cost = max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
-		}
+		$offer_product_cost = Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price_product->get_price(), $settings['discount_amount'] ?? 0 );
 
 		// Cart item data, plus additive campaign attribution keys for revenue reporting.
 		$cart_item_data = array(

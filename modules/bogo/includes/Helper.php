@@ -161,7 +161,10 @@ class Helper {
 		} else {
 			$offer_price = 0;
 		}
-		return max( 0, $offer_price );
+
+		// In whole cents (the store's decimals): a half cent left over shows
+		// one cent apart in the block cart's unit price and line total.
+		return max( 0, round( $offer_price, wc_get_price_decimals() ) );
 	}
 
 	/**
@@ -355,12 +358,8 @@ class Helper {
 		$reward_type = ( isset( $settings['offer_type'] ) && 'discount' === $settings['offer_type'] ) ? 'discount' : 'free';
 		$base_price  = (float) $price_product->get_price();
 
-		// Per-unit discount contributed: the whole price when free, else the percentage off.
-		$discount_value = $base_price;
-		if ( 'discount' === $reward_type ) {
-			$discount_percent = isset( $settings['discount_amount'] ) ? (float) $settings['discount_amount'] : 0;
-			$discount_value   = $base_price * ( $discount_percent / 100 );
-		}
+		// Per-unit discount contributed: the price less what the gift costs.
+		$discount_value = $base_price - self::calculate_offer_price( $reward_type, $base_price, $settings['discount_amount'] ?? 0 );
 
 		return OfferAttribution::stamp( 'bogo', $offer_id, $reward_type, $discount_value );
 	}
