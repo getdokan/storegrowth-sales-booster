@@ -4,7 +4,7 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 2.2.0
+Stable tag: 3.0.0
 Requires PHP: 7.4
 WC requires at least: 8.0
 License: GPLv2 or later
@@ -331,6 +331,17 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v3.0.0 (October 14, 2026) =
+
+* New: A redesigned admin — one StoreGrowth page with a dashboard, a modules screen and a settings page for every module, built on a new design system. Existing settings, offers and order bumps carry over unchanged.
+* New: Analytics — see what your offers earned and gave away: revenue, discount given and orders per module and per campaign, Order Bump and BOGO take rates, Countdown Timer add-to-cart rates, and orders the Free Shipping Bar helped, with a daily chart. Figures come from WooCommerce Analytics and respect its order statuses, refunds and Dokan vendor orders.
+* New: StoreGrowth inside WooCommerce Analytics — a "StoreGrowth offer" filter and an Offer column on the Orders and Products reports, and a "StoreGrowth offer revenue" tile on the Overview.
+* New: The dashboard shows offer revenue, discount given and the revenue-by-offer chart for the last 30 days.
+* New: BOGO offers on the Dokan vendor dashboard, with vendor rules and a vendor settings page.
+* Enhancement: A database update (run from the admin notice) creates the analytics tables and fills them from past orders in the background.
+* Fix: Gift swaps in the BOGO popup stay linked to the product that unlocked the gift.
+* Fix: The Order Bump list sort is allow-listed, and 1.x order bumps and BOGO offers are migrated on module activation.
 
 = v2.2.0 (August 18, 2026) =
 

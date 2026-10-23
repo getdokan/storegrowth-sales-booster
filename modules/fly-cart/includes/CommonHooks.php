@@ -83,9 +83,14 @@ class CommonHooks implements HookRegistry {
 	}
 
 	/**
-	 * WooCommerce add-to-cart fragment.
+	 * WooCommerce add-to-cart fragment: adds the cart count to the other
+	 * fragments (it used to return only its own and drop the rest).
+	 *
+	 * @param array $fragments Fragments.
+	 *
+	 * @return array
 	 */
-	public function woocommerce_add_to_cart_fragment() {
+	public function woocommerce_add_to_cart_fragment( $fragments = [] ) {
 			ob_start();
 		?>
 			<span class="wfc-cart-countlocation">
@@ -101,8 +106,8 @@ class CommonHooks implements HookRegistry {
 	 * Frontend footer action hook.
 	 */
 	public function wp_footer() {
-		// Don't show the widget in cart or checkout page.
-		if ( is_checkout() || is_cart() ) {
+		// Don't show the widget on the cart, checkout or vendor dashboard.
+		if ( Helper::is_hidden_page() ) {
 			return;
 		}
 
@@ -118,9 +123,11 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function spsg_before_cart_collaterals() {
 		remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
-		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 
-		add_action( 'woocommerce_proceed_to_checkout', array( $this, 'button_proceed_to_checkout' ) );
+		// The fly cart has its own buttons, pinned below the totals (cart-contents.php).
+		// Express / wallet buttons other plugins add here mount on page load only,
+		// so in this ajax-rendered markup they never load.
+		remove_all_actions( 'woocommerce_proceed_to_checkout' );
 	}
 
 	/**

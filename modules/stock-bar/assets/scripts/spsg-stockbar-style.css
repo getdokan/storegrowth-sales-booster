@@ -1,7 +1,10 @@
-@import url(../fonts/inter-regular/stylesheet.css);
-@import url(../fonts/inter-medium/stylesheet.css);
-@import url(../fonts/Inter-semibold/stylesheet.css);
-@import url(../fonts/inter-bold/stylesheet.css);
+/*
+ * Stock Bar storefront styles, the redesign's card look (design
+ * `stock-bar.html`). Design settings arrive as `--spsg-stock-bar-*`
+ * variables (printed once saved); the fallbacks are the defaults. Colours of
+ * the bar, track and border come from the existing inline CSS. Fonts load
+ * through StorefrontFonts when one is chosen.
+ */
 
 .spsg-stock-stockbar-status {
 	width: 100%;
@@ -14,6 +17,12 @@
 
 .jqmeter-container .outer-therm {
 	margin: 0;
+	overflow: hidden;
+	border-radius: 9999px;
+}
+
+.jqmeter-container .inner-therm {
+	border-radius: 9999px;
 }
 
 .spsg-stock-progress {
@@ -28,30 +37,26 @@
 }
 
 .spsg-stock-progress-bar-section {
-    gap: 16px;
-    display: grid;
-    background: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: var(--spsg-stock-bar-card-bg, #fff);
+	font-family: var(--spsg-stock-bar-font-family, inherit);
 	border-radius: 6px;
 	margin-bottom: 20px;
-    padding: 15px 15px 15px;
+	padding: 12px 14px;
 }
 
 .spsg-stock-progress-title {
-    display: flex;
-    line-height: 1;
+	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
+	gap: 4px 12px;
+	line-height: 1.3;
+	font-size: var(--spsg-stock-bar-count-size, 11px);
+	color: var(--spsg-stock-bar-count-color, #25252d);
 }
 
-.spsg-stock-progress-available-title{
-	float: right;
-}
-.spsg-stock-progress-sold-title,
-.spsg-stock-progress-available-title {
-    font-size: 14px;
-	color: #073b4c;
-}
 .spsg-stock-progress-count {
-	color: #000;
-	font-weight: 600;
+	font-weight: 700;
 }
-

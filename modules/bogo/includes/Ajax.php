@@ -7,7 +7,10 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
+use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,9 +56,10 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( 'Choose able product data can\'t be empty.' );
 		}
 
-		$item_key            = isset( $data['cart_item_key'] ) ? intval( $data['cart_item_key'] ) : 0;
+		// Cart item keys are md5 strings: never cast them to int.
+		$item_key            = isset( $data['cart_item_key'] ) ? sanitize_key( $data['cart_item_key'] ) : '';
 		$main_product_id     = isset( $data['main_product_id'] ) ? intval( $data['main_product_id'] ) : 0;
-		$product_link_key    = isset( $data['product_link_key'] ) ? esc_html( $data['product_link_key'] ) : '';
+		$product_link_key    = isset( $data['product_link_key'] ) ? sanitize_key( $data['product_link_key'] ) : '';
 		$selected_product_id = isset( $data['selected_product_id'] ) ? intval( $data['selected_product_id'] ) : 0;
 
 		if ( ! $selected_product_id || ! $main_product_id ) {
@@ -70,14 +74,35 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'This gift is not available for your cart.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		// Logic to remove the existing offer product and add the new one.
+		// Find the gift being replaced; it knows its trigger line better than the request does.
 		$offer_product_quantity = 1;
+		$old_gift_key           = '';
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			if ( isset( $cart_item['bogo_offer'] ) && $cart_item['bogo_product_for'] == $main_product_id ) {
 				$offer_product_quantity = $cart_item['quantity'];
-				WC()->cart->remove_cart_item( $cart_item_key );
+				$old_gift_key           = $cart_item_key;
+				if ( ! empty( $cart_item['linked_to_product_key'] ) ) {
+					$product_link_key = $cart_item['linked_to_product_key'];
+				}
 				break;
 			}
+		}
+
+		// The trigger line the new gift belongs to: only a key that is really in the cart.
+		$trigger_key = '';
+		foreach ( [ $product_link_key, $item_key ] as $key ) {
+			if ( '' !== $key && isset( WC()->cart->cart_contents[ $key ] ) ) {
+				$trigger_key = $key;
+				break;
+			}
+		}
+
+		if ( '' === $trigger_key ) {
+			wp_send_json_error( __( 'This gift is not available for your cart.', 'storegrowth-sales-booster' ), 403 );
+		}
+
+		if ( $old_gift_key ) {
+			WC()->cart->remove_cart_item( $old_gift_key );
 		}
 
 		// Handle variable product gifts - resolve variation.
@@ -158,11 +183,11 @@ class Ajax implements HookRegistry {
 		// Cart item data, plus additive campaign attribution keys for revenue reporting.
 		$cart_item_data = array(
 			'bogo_offer'            => true,
-			'parent_key'            => $item_key,
+			'parent_key'            => $trigger_key,
 			'bogo_product_for'      => $main_product_id,
 			'bogo_offer_price'      => $offer_product_cost,
 			'changed_product_id'    => $selected_product_id,
-			'linked_to_product_key' => $product_link_key,
+			'linked_to_product_key' => $trigger_key,
 		);
 
 		$stamp_settings = Helper::get_product_bogo_settings_for_cart( $main_product_id );
@@ -180,9 +205,13 @@ class Ajax implements HookRegistry {
 			$cart_item_data
 		);
 
-        if ( $free_product_key && isset( WC()->cart->cart_contents[ $item_key ] ) ) {
-            WC()->cart->cart_contents[ $item_key ]['child_key'] = $free_product_key;
-        }
+		if ( $free_product_key && isset( WC()->cart->cart_contents[ $trigger_key ] ) ) {
+			WC()->cart->cart_contents[ $trigger_key ]['child_key'] = $free_product_key;
+		}
+
+		if ( $free_product_key && ! empty( $stamp_settings['id'] ) ) {
+			Counter::bump( BoGoModule::get_id(), 'swap', Counter::CAMPAIGN, (int) $stamp_settings['id'] );
+		}
 
 		wp_send_json_success( 'Product updated successfully.' );
 	}
@@ -198,18 +227,38 @@ class Ajax implements HookRegistry {
 		}
 
 		if ( ! isset( $_POST['data'] ) ) {
-			wp_send_json_error();
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		// Decode the JSON data.
-		$data = isset( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : array(); // phpcs: ignore.
+		// The old admin's payload: JSON `{ bogo_general_settings_data: { … } }`.
+		// Anything but a string (e.g. `data[k]=v`) is an invalid payload, not
+		// a json_decode() TypeError.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Decoded, then sanitized per field by the settings service.
+		$data = is_string( $_POST['data'] ) ? json_decode( wp_unslash( $_POST['data'] ), true ) : null;
 
-		if ( isset( $data['bogo_general_settings_data'] ) ) {
-			$bogo_general_settings_data = $data['bogo_general_settings_data'];
-
-			update_option( 'spsg_bogo_general_settings', $bogo_general_settings_data );
-			wp_send_json_success( maybe_unserialize( \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_bogo_general_settings' ) ) );
+		if ( ! is_array( $data ) || ! isset( $data['bogo_general_settings_data'] ) || ! is_array( $data['bogo_general_settings_data'] ) ) {
+			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
+
+		$input = $data['bogo_general_settings_data'];
+
+		// Pro 2.2.0's screen sends an empty badge name with an upload ("use
+		// the upload"): keep the stored icon instead, as the new page does;
+		// the storefront shows the upload first.
+		if ( '' === ( $input['default_badge_icon_name'] ?? null ) ) {
+			unset( $input['default_badge_icon_name'] );
+		}
+
+		// Sanitized per field and merged into the stored option (it used to
+		// replace the option unsanitized); keys outside the schema, such as
+		// the category messages, are kept as stored.
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( BoGoModule::get_id(), $input );
+
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
+
+		wp_send_json_success( PluginHelper::get_settings( 'spsg_bogo_general_settings' ) );
 	}
 
 
@@ -354,15 +403,22 @@ class Ajax implements HookRegistry {
 		// full-priced whenever that module was inactive.
 		$cart_item_data = array( 'bogo_offer_price' => $offer_price );
 
-		// Attribution stamp — resolve the offer that produced this gift from
-		// the cart's trigger products, then add the campaign identity keys.
-		$stamp_settings = Helper::resolve_bogo_settings_for_gift( $offer_product_id );
-		$price_product  = wc_get_product( $offer_product_id );
-		if ( ! empty( $stamp_settings ) && $price_product ) {
-			$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $stamp_settings, $price_product ) );
+		// Resolve the trigger line and offer that produced this gift from the
+		// cart, link the gift to that line, and add the campaign identity keys.
+		$trigger       = Helper::find_gift_trigger( $offer_product_id );
+		$price_product = wc_get_product( $offer_product_id );
+		if ( $trigger ) {
+			$cart_item_data['linked_to_product_key'] = $trigger['key'];
+
+			if ( $price_product ) {
+				$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $trigger['settings'], $price_product ) );
+			}
 		}
 
-		$woocommerce->cart->add_to_cart( $offer_product_id, 1, 0, array(), $cart_item_data );
+		$gift_key = $woocommerce->cart->add_to_cart( $offer_product_id, 1, 0, array(), $cart_item_data );
+		if ( $gift_key && ! empty( $trigger['settings']['id'] ) ) {
+			Counter::bump( BoGoModule::get_id(), 'add_to_cart', Counter::CAMPAIGN, (int) $trigger['settings']['id'] );
+		}
 		$woocommerce->cart->calculate_totals();
 		$woocommerce->cart->set_session();
 		$woocommerce->cart->maybe_set_cart_cookies();
@@ -426,11 +482,7 @@ class Ajax implements HookRegistry {
 
 			// Price derived from the offer, matching OrderBogo::apply_bogo_product()
 			// and OrderBogo.php:531 exactly (filtered product price).
-			if ( isset( $settings['offer_type'] ) && 'discount' === $settings['offer_type'] ) {
-				return (float) max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
-			}
-
-			return 0.0; // Free offer.
+			return (float) Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price_product->get_price(), $settings['discount_amount'] ?? 0 );
 		}
 
 		return null;

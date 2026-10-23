@@ -12,7 +12,6 @@
     let countdown_start_date = spsg_fnb_data.countdown_start_date;
     let countdown_end_date = spsg_fnb_data.countdown_end_date;
     let coupon_code = spsg_fnb_data?.cupon_code?.toUpperCase();
-    let body_top_padding = parseInt(banner_height) + 10;
     const fn_banner_hidden_time = localStorage.getItem("fn_banner_hidden_time");
 
     const now = Date.now();
@@ -26,20 +25,19 @@
       document.body.classList.remove("show_floating_notification_bar");
     };
 
-    // Remove the padding
+    // Take the bar out of the top stack (storefront-core.js).
     const paddingRemoverBody = () => {
-      return (document.body.style.paddingTop = "0px");
+      $(".spsg-floating-notification-bar-wrapper").removeClass("spsg-bar-top");
+      window.spsgStorefront.stackTopBars();
     };
 
-    // Add the padding
+    // Add the padding: a top bar joins the top stack, which places it
+    // under a showing Free Shipping bar.
     const paddingAdderBody = () => {
       document.body.classList.add("body-padding-transition");
       if('top'===bar_position){
-        if(isMobileDevice){
-          let offsetHeight = $('.spsg-floating-notification-bar-wrapper').height();
-          return (document.body.style.paddingTop = `${offsetHeight+10}px`);
-        }
-        return (document.body.style.paddingTop = `${body_top_padding}px`);
+        $(".spsg-floating-notification-bar-wrapper").addClass("spsg-bar-top");
+        window.spsgStorefront.stackTopBars();
       }
     };
 
@@ -49,23 +47,7 @@
       }
       $(".spsg-floating-notification-bar-wrapper").fadeIn(1000);
       paddingAdderBody();
-      updateBannerPosition();
     };
-
-    const updateBannerPosition = () => {
-      let enableShippingBanner = spsg_fnb_data?.enable_shipping_banner,
-        shippingBannerPosition = spsg_fnb_data?.shipping_banner_position,
-        pdBannerHiddenTime = localStorage.getItem( 'banner_hidden_time' ),
-        isPDBannerVisible = ! pdBannerHiddenTime || parseInt( pdBannerHiddenTime ) < now;
-
-      if ( enableShippingBanner && isPDBannerVisible && 'top' === shippingBannerPosition ) {
-        let shippingBannerHeight = spsg_fnb_data?.shipping_banner_height,
-          offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
-        $( '.spsg-floating-notification-bar-wrapper' ).css({
-          top: `${ parseInt( shippingBannerHeight ) + offset }px`,
-        });
-      }
-    }
 
     const bannerHide = () => {
       $(".spsg-floating-notification-bar-wrapper").hide();
@@ -142,11 +124,17 @@
         }
       );
 
-      // Handle WooCommerce AJAX add to cart
-      $( document.body ).on( 'added_to_cart', function() {
-        const offset = document.body.classList.contains( 'admin-bar' ) ? 32 : 0;
-        $( '.spsg-floating-notification-bar-wrapper' ).css( { top: `${offset}px` } );
-      });
+      // Keyboard: Enter / Space on the close controls act as a click.
+      $(document).on(
+        "keydown",
+        ".spsg-floating-notification-bar-remove",
+        function (event) {
+          if ("Enter" === event.key || " " === event.key) {
+            event.preventDefault();
+            $(this).trigger("click");
+          }
+        }
+      );
     });
 
     // Cupon Code Functionality
@@ -196,34 +184,40 @@
       });
     });
 
-    // Button hidden functionality
+    // Button hidden functionality: the "Show" switch (`button_enable`: off
+    // localizes as ''; missing on an option saved before it existed = on)
+    // and the device choice. Only this bar's button; the Free Shipping
+    // bar's CTA uses the same class.
     $(document).ready(function () {
       const isMobile = isMobileDevice();
       const shouldHideMobile =
         button_view.includes("button-mobile-enable") && isMobile;
       const shouldHideDesktop =
         button_view.includes("button-desktop-enable") && !isMobile;
+      const $button = $(".spsg-floating-notification-bar-wrapper .fn-bar-action-button");
 
-      if (!shouldHideMobile && !shouldHideDesktop) {
-        $(".fn-bar-action-button").remove();
-        paddingRemoverBody();
+      if ("" === spsg_fnb_data.button_enable) {
+        $button.remove();
+      } else if (!shouldHideMobile && !shouldHideDesktop) {
+        $button.remove();
       }
+      // A narrow bar may lose a row without its button.
+      window.spsgStorefront.stackTopBars();
     });
 
     //Countdown timer
     $(document).ready(function () {
-      const startDateString = countdown_start_date + " 00:00:00"; // Replace with your start date string
-      const endDateString = countdown_end_date + " 23:59:59"; // Replace with your end date string
-
-      const startDate = new Date(startDateString);
-      const endDate = new Date(endDateString);
+      // ISO form (local time): Safari can't parse "Y-m-d H:i:s".
+      const startDate = new Date(countdown_start_date + "T00:00:00");
+      const endDate = new Date(countdown_end_date + "T23:59:59");
 
       const now = new Date();
+      let countdownInterval;
 
       if (now >= startDate && now <= endDate) {
         updateCountdown(endDate);
 
-        const countdownInterval = setInterval(function () {
+        countdownInterval = setInterval(function () {
           updateCountdown(endDate);
         }, 1000);
       } else if (now < startDate) {

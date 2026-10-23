@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
 use StorePulse\StoreGrowth\ModuleManager;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper as CountdownTimerHelper;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules;
 
@@ -132,12 +133,18 @@ class Dashboard {
             return;
         }
 
-        // Define the meta keys we want to save
-        $meta_keys = [
-            '_spsg_countdown_timer_discount_amount',
-            '_spsg_countdown_timer_discount_start',
-            '_spsg_countdown_timer_discount_end',
-        ];
+		// Define the meta keys we want to save: only the fields the vendor's
+		// form has. Without them (the admin turned them off) the values are
+		// the admin's, so a vendor save leaves them.
+		if ( ! CountdownTimerHelper::vendor_can( 'vendor_can_create_countdown_discount' ) ) {
+			return;
+		}
+
+		$meta_keys = [ '_spsg_countdown_timer_discount_amount' ];
+		if ( CountdownTimerHelper::vendor_can( 'vendor_can_create_schedule_timer' ) ) {
+			$meta_keys[] = '_spsg_countdown_timer_discount_start';
+			$meta_keys[] = '_spsg_countdown_timer_discount_end';
+		}
 
         // Apply filter to allow customization of meta keys
         $meta_keys = apply_filters( 'spsg_countdown_timer_meta_keys', $meta_keys, $post_id );

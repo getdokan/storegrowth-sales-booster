@@ -119,7 +119,7 @@ class Ajax {
 		}
 
 		$flag_data = isset( $_POST['spsg_ini_completion'] );
-		update_option( 'spsg_ini_completion', $flag_data );
+		update_option( 'spsg_ini_completion', $flag_data, false );
 		wp_send_json_success( array( 'message' => 'Success message' ) );
 		wp_die();
 	}

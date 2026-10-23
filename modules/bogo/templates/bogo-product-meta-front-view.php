@@ -6,6 +6,7 @@
  */
 
 // Check if the variables are set before using them.
+use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
 use StorePulse\StoreGrowth\Modules\BoGo\Helper;
 
 if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
@@ -34,7 +35,12 @@ if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_ur
 	?>
 
 	<div class='bogo-template-overview-area'>
-		<div class="offer-main-wrap" style="
+		<div class="offer-main-wrap"
+			<?php if ( ! empty( $bogo_info->id ) ) : // Offer views for analytics (storefront tracker). ?>
+			data-spsg-track="<?php echo esc_attr( BoGoModule::get_id() ); ?>"
+			data-spsg-object="<?php echo esc_attr( 'campaign:' . absint( $bogo_info->id ) ); ?>"
+			<?php endif; ?>
+			style="
 			border: 2px <?php echo esc_attr( Helper::get_design_value( $bogo_info, 'box_border_style' ) ); ?> <?php echo esc_attr( Helper::get_design_value( $bogo_info, 'box_border_color' ) ); ?>;
 			margin-top: <?php echo esc_attr( Helper::get_design_value( $bogo_info, 'box_top_margin' ) ); ?>px;
 			margin-bottom: <?php echo esc_attr( Helper::get_design_value( $bogo_info, 'box_bottom_margin' ) ); ?>px;

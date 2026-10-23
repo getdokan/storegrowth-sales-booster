@@ -46,6 +46,11 @@
     padding: 8px !important;
 }
 
+/* The lucide icons fill their 24px box; keep the glyph at 24px. */
+.wfc-cart-icon .wfc-icon svg.spsg-cart-icon {
+    padding: 11px !important;
+}
+
 .wfc-cart-icon.wfc-icon:before,
 .wfc-cart-icon.wfc-icon:after {
     font-size: 25px;
@@ -613,7 +618,10 @@
 .spsg-cart-widget-buttons {
     gap: 16px;
     display: flex;
-    /* padding-top: 20px; */
+    /* Pinned to the bottom of the scrolling cart. */
+    position: sticky;
+    bottom: 0;
+    padding: 0 6px 12px 12px;
 }
 
 .spsg-cart-widget-buttons a {
@@ -709,6 +717,7 @@
 /* Checkout page start */
 iframe.spsg-fast-cart-checkout-frame {
     width: 100%;
+    box-sizing: border-box;
     max-width: initial;
     border: 0 none;
     padding: 0px 20px;
@@ -785,9 +794,6 @@ iframe.spsg-fast-cart-checkout-frame {
         max-width: 100% !important;
     }
 
-    .wfc-widget-sidebar.spsg-quick-cart-center-layout .spsg-widget-shopping-cart-content-wrapper {
-        width: 560px !important;
-    }
 
 
     .spsg-fly-cart-table td.product-subtotal {
@@ -1034,6 +1040,12 @@ iframe.spsg-fast-cart-checkout-frame {
 /* 2. Remove the 'slide' offset when in center mode */
 .wfc-widget-sidebar.spsg-quick-cart-center-layout.wfc-slide {
     display: none !important; /* Hide when closed instead of sliding right */
+}
+
+/* 2b. The content fills the popup (pro's inline CSS sets it 650px wide). */
+.wfc-widget-sidebar.spsg-quick-cart-center-layout .spsg-widget-shopping-cart-content-wrapper {
+    width: 100% !important;
+    box-sizing: border-box;
 }
 
 /* 3. Hide the sidebar "close" tab since it's now a modal */

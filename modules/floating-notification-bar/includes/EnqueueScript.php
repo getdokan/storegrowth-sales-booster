@@ -11,6 +11,7 @@ use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Helper as PD_Helper;
+use StorePulse\StoreGrowth\Settings\DisplaySettings;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,8 +32,8 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
+		// The admin page loads from AdminPage, which runs even while the module is off.
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -49,27 +50,27 @@ class EnqueueScript implements HookRegistry {
 		wp_enqueue_style(
 			'spsg-floating-notification-bar-style',
 			PluginHelper::get_modules_url( 'floating-notification-bar/assets/css/floating-notification-bar.css' ),
-			array(),
+			array( 'spsg-storefront-bar' ),
 			filemtime( $style_file )
 		);
 
 		wp_enqueue_script(
 			'spsg-floating-notification-bar-remove',
 			PluginHelper::get_modules_url( 'floating-notification-bar/assets/js/banner-bar-remove.js' ),
-			array( 'jquery' ),
+			array( 'jquery', 'spsg-storefront-core' ),
 			filemtime( PluginHelper::get_modules_path( 'floating-notification-bar/assets/js/banner-bar-remove.js' ) ),
 			true
 		);
 
-                $localized_fnb_data     = Helper::get_settings();
-                $enable_shipping_banner = PluginHelper::is_module_active( 'progressive-discount-banner' );
+		$localized_fnb_data     = Helper::get_settings();
+		$enable_shipping_banner = PluginHelper::is_module_active( 'progressive-discount-banner' );
 
-                $localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
-                if ( $enable_shipping_banner ) {
-                    $shipping_banner_settings                       = PD_Helper::get_settings();
-                    $localized_fnb_data['shipping_banner_height']   = $shipping_banner_settings['banner_height'] ?? 60;
-                    $localized_fnb_data['shipping_banner_position'] = $shipping_banner_settings['bar_position'] ?? 'top';
-                }
+		$localized_fnb_data['enable_shipping_banner'] = $enable_shipping_banner;
+		if ( $enable_shipping_banner ) {
+			$shipping_banner_settings                       = PD_Helper::get_settings();
+			$localized_fnb_data['shipping_banner_height']   = $shipping_banner_settings['banner_height'] ?? 60;
+			$localized_fnb_data['shipping_banner_position'] = $shipping_banner_settings['bar_position'] ?? 'top';
+		}
 
 		// Use wp_localize_script to pass the data to your script.
 		wp_localize_script( 'spsg-floating-notification-bar-remove', 'spsg_fnb_data', $localized_fnb_data );
@@ -77,84 +78,16 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' === $hook ) {
-			$settings_file = require PluginHelper::get_modules_path( 'floating-notification-bar/assets/build/settings.asset.php' );
-
-			wp_enqueue_media();
-			wp_enqueue_script(
-				'spsg-floating-notification-bar-settings',
-				PluginHelper::get_modules_url( 'floating-notification-bar/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				false
-			);
-
-            $localized_fnb_data = Helper::available_coupon_codes();
-
-			// Use wp_localize_script to pass the data to your script.
-			wp_localize_script( 'spsg-floating-notification-bar-settings', 'spsg_fnb_coupon_data', $localized_fnb_data );
-		}
-	}
-
-    /**
-     * Retrieves the label corresponding to a given value from an array of objects.
-     *
-     * This function iterates through the array of objects and matches the provided
-     * value to the 'value' property of each object. If a match is found, it returns
-     * the corresponding 'label' property; otherwise, it returns an empty string.
-     *
-     * @param mixed[] $value An array of objects where each object has 'value' and 'label' properties.
-     * @param mixed   $object_array       The value to search for within the array of objects.
-     *
-     * @return string The label corresponding to the provided value, or an empty string if not found.
-     */
-	private function get_label_by_value( $value, $object_array ) {
-		foreach ( $object_array as $object ) {
-			if ( $object['value'] === $value ) {
-				return $object['label'];
-			}
-		}
-		return '';
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function inline_styles() {
-		$font_family_arr = array(
-			array(
-				'value' => 'poppins',
-				'label' => 'Poppins',
-			),
-			array(
-				'value' => 'roboto',
-				'label' => 'Roboto',
-			),
-			array(
-				'value' => 'lato',
-				'label' => 'Lato',
-			),
-			array(
-				'value' => 'montserrat',
-				'label' => 'Montserrat',
-			),
-			array(
-				'value' => 'ibm_plex_sans',
-				'label' => 'IBM Plex Sans',
-			),
-		);
 		// Get style options. Each value is interpolated into a <style> block,
 		// so colours are constrained to safe CSS colour characters and sizes to
 		// integers — a stored value can never break out of the CSS context.
 		$settings          = Helper::get_settings();
 		$bar_position      = PluginHelper::find_option_settings( $settings, 'bar_position', 'top' );
 		$bar_type          = PluginHelper::find_option_settings( $settings, 'bar_type', 'normal' );
-		$bg_color          = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#008DFF' ), '#008DFF' );
+		$bg_color          = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'background_color', '#0875FF' ), '#0875FF' );
 		$text_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'text_color', '#ffffff' ), '#ffffff' );
 		$icon_color        = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'icon_color', '#ffffff' ), '#ffffff' );
 		$close_icon_color  = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'close_icon_color', '#ffffff' ), '#ffffff' );
@@ -163,7 +96,7 @@ class EnqueueScript implements HookRegistry {
 		$button_color      = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_color', '#ffffff' ), '#ffffff' );
 		$button_text_color = PluginHelper::sanitize_css_color( PluginHelper::find_option_settings( $settings, 'button_text_color', '#ffffff' ), '#ffffff' );
 		$font_family       = PluginHelper::find_option_settings( $settings, 'font_family', 'poppins' );
-		$selected_font     = $this->get_label_by_value( $font_family, $font_family_arr );
+		$selected_font     = DisplaySettings::bar_font( $font_family );
 
 		if ( 'bottom' === $bar_position ) {
 			$css = '
@@ -192,8 +125,14 @@ class EnqueueScript implements HookRegistry {
 				color: {$text_color};
 				height: {$banner_height}px;
 			}
+			.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-icon {
+				color: {$icon_color};
+			}
 			.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-icon svg {
 				fill: {$icon_color};
+			}
+			.spsg-floating-notification-bar > .spsg-floating-notification-bar-remove {
+				color: {$close_icon_color};
 			}
 			.spsg-floating-notification-bar-wrapper .spsg-floating-notification-bar-remove svg {
 				fill: {$close_icon_color};
@@ -202,9 +141,9 @@ class EnqueueScript implements HookRegistry {
 				font-size: {$font_size}px;
 				font-family: {$selected_font};
 			}
-			.fn-bar-action-button {
+			.spsg-floating-notification-bar-wrapper .fn-bar-action-button {
 				background-color: {$button_color};
-    		color: {$button_text_color};
+				color: {$button_text_color};
 			}
 		";
 		if ( 'sticky' === $bar_type ) {

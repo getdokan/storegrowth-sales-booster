@@ -1,238 +1,158 @@
 import { test, expect } from '../../fixtures/test';
-import { setModuleActive } from '../../helpers/ajax';
 import { setModuleState, moduleToggle } from '../../helpers/modules';
 import { gotoProduct, computedStyle } from '../../helpers/storefront';
-import { getProductIdBySlug, apiFetch } from '../../helpers/wc';
-import {
-  gotoModuleSettings,
-  openTab,
-  saveForm,
-  setSwitch,
-  switchControl,
-  setNumber,
-} from '../../helpers/settings-ui';
+import { createBogoOffer, deleteAllBogoOffers } from '../../helpers/records';
+import { hasPro, resetModuleSettings, saveModuleSettings, setModuleStatus } from '../../helpers/rest';
+import { gotoSettings, saveSettings, setToggle } from '../../helpers/settings-ui';
 import { MODULES } from '../../data/modules';
 import { PRODUCTS } from '../../data/products';
 
-const ROUTE = 'bogo';
+// BOGO on the product page: the offer box (`bogo-product-front-view.php`) and
+// the badge, from offers and global settings set up over REST. The admin list
+// and editor are covered by bogo-admin.spec.ts; cart pricing by
+// pricing-characterisation.spec.ts.
 const OFFER = '.offer-main-wrap';
-const REST = '/wp-json/sales-booster/v1/bogo/offers';
+const BOGO = MODULES.bogo.id;
 
-function offerPayload(offeredId: number, giftId: number, extra: Record<string, any> = {}) {
-  return {
-    name_of_order_bogo: 'E2E BOGO Gift',
-    offer_type: 'free',
-    offered_products: [offeredId],
-    get_alternate_products: [giftId],
-    box_border_style: 'solid',
+/** An active Buy X Get Y offer: buy product A, get product B. */
+function offerOnA(api: Parameters<typeof createBogoOffer>[0], extra: Record<string, unknown> = {}) {
+  return createBogoOffer(api, {
+    offered_products: [PRODUCTS.a.id],
+    get_different_product_field: PRODUCTS.b.id,
     box_border_color: '#0000ff',
-    box_top_margin: '10',
-    box_bottom_margin: '10',
     discount_background_color: '#ff0000',
-    discount_text_color: '#ffffff',
-    discount_font_size: '14',
-    product_description_text_color: '#333333',
-    product_description_font_size: '12',
     ...extra,
-  };
-}
-
-async function deleteAllOffers(page: any) {
-  const res = await apiFetch(page, 'get', REST);
-  let offers: any[] = [];
-  try {
-    offers = await res.json();
-  } catch {
-    return;
-  }
-  if (!Array.isArray(offers)) return; // route gone when module inactive
-  for (const o of offers) {
-    await apiFetch(page, 'delete', `${REST}/${o.id}`).catch(() => {});
-  }
+  });
 }
 
 test.describe('Storefront · BOGO', { tag: '@ui' }, () => {
-  test.beforeEach(async ({ page }) => {
-    await setModuleActive(page, MODULES.bogo.id, true);
-    await deleteAllOffers(page);
+  test.beforeEach(async ({ api }) => {
+    await setModuleStatus(api, BOGO, true);
+    await deleteAllBogoOffers(api);
+    await resetModuleSettings(api, BOGO);
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async ({ api }) => {
     // Reactivate first so the offers REST route exists, then clean up.
-    await setModuleActive(page, MODULES.bogo.id, true);
-    await deleteAllOffers(page);
+    await setModuleStatus(api, BOGO, true);
+    await deleteAllBogoOffers(api);
+    await resetModuleSettings(api, BOGO);
   });
 
   test.describe('Render behaviour', () => {
-    test('shows the gift offer on a product that has a BOGO offer', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      const res = await apiFetch(page, 'post', REST, offerPayload(a, b));
-      expect(res.status()).toBe(201);
-
+    test('shows the offer product on a product that has a BOGO offer', async ({ page, api }) => {
+      await offerOnA(api);
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(OFFER)).toBeVisible();
       await expect(page.locator(`${OFFER} .offer-product-title`)).toContainText(PRODUCTS.b.name);
     });
 
-    test('no offer block on a product without a BOGO offer', async ({ page }) => {
+    test('no offer block on a product without a BOGO offer', async ({ page, api }) => {
+      await offerOnA(api);
       await gotoProduct(page, PRODUCTS.c.slug);
       await expect(page.locator(OFFER)).toHaveCount(0);
     });
 
-    test('no offer block when the module is inactive', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      await apiFetch(page, 'post', REST, offerPayload(a, b));
-      await setModuleActive(page, MODULES.bogo.id, false);
+    test('no offer block when the module is inactive', async ({ page, api }) => {
+      await offerOnA(api);
+      await setModuleStatus(api, BOGO, false);
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(OFFER)).toHaveCount(0);
+    });
 
+    test('no offer block when the offer is switched off', async ({ page, api }) => {
+      const offer = await offerOnA(api);
+      const res = await api.put(`/wp-json/sales-booster/v1/bogo/offers/${offer.id}/status`, { data: { status: 'no' } });
+      expect(res.ok()).toBeTruthy();
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(OFFER)).toHaveCount(0);
+    });
+
+    test('no offer block when the offer has ended', async ({ page, api }) => {
+      await offerOnA(api, { offer_start: '2020-01-01', offer_end: '2020-01-31' });
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(OFFER)).toHaveCount(0);
     });
   });
 
   test.describe('Offer fields', () => {
-    test('the custom product-page message shows in the offer header', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      await apiFetch(page, 'post', REST, offerPayload(a, b, { product_page_message: 'Buy one get one free deal' }));
-
-      await gotoProduct(page, PRODUCTS.a.slug);
-      await expect(page.locator(`${OFFER} .dynamic-offer-text`)).toContainText('Buy one get one free deal');
-    });
-
-    test('the offer carries the configured offer-type data attribute', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      await apiFetch(page, 'post', REST, offerPayload(a, b));
-
+    test('a free offer: "Free Gift" header, data-offer-type free, $0.00', async ({ page, api }) => {
+      await offerOnA(api);
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator(OFFER)).toHaveAttribute('data-offer-type', 'free');
+      await expect(page.locator(`${OFFER} .dynamic-offer-text`)).toContainText('Free Gift');
+      await expect(page.locator(`${OFFER} .offer-price`)).toContainText('$0.00');
     });
 
-    test('offer design colours apply to the offer block', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      await apiFetch(page, 'post', REST, offerPayload(a, b));
+    test('a percentage offer: "50% Off" header and the discounted price', async ({ page, api }) => {
+      await offerOnA(api, { offer_type: 'discount', discount_amount: 50 });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(OFFER)).toHaveAttribute('data-offer-type', 'discount');
+      await expect(page.locator(`${OFFER} .dynamic-offer-text`)).toContainText('50% Off');
+      await expect(page.locator(`${OFFER} .offer-price`)).toContainText('$24.50');
+    });
 
+    test('the custom product-page message shows in the offer header (pro)', async ({ page, api }) => {
+      // Editing the message is pro (R3): lite stores "Free Gift" whatever is sent.
+      const pro = await hasPro(api);
+      await offerOnA(api, { product_page_message: 'Buy one get one free deal' });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(`${OFFER} .dynamic-offer-text`)).toContainText(
+        pro ? 'Buy one get one free deal' : 'Free Gift',
+      );
+    });
+
+    test('offer design colours apply to the offer block', async ({ page, api }) => {
+      await offerOnA(api);
       await gotoProduct(page, PRODUCTS.a.slug);
       expect(await computedStyle(page, `${OFFER} .dynamic-offer-text`, 'background-color')).toBe('rgb(255, 0, 0)');
       expect(await computedStyle(page, OFFER, 'border-top-color')).toBe('rgb(0, 0, 255)');
     });
+
+    test('border "None" draws no border', async ({ page, api }) => {
+      await offerOnA(api, { box_border_style: 'no_border' });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      expect(await computedStyle(page, OFFER, 'border-top-style')).toBe('none');
+    });
   });
 
   test.describe('General settings', () => {
-    test('"Show Regular Price" toggle persists via the form', async ({ page }) => {
-      await gotoModuleSettings(page, ROUTE);
-      await setSwitch(page, 'Show Regular Price', true);
-      await saveForm(page);
+    const regularPrice = `${OFFER} .offer-price span >> nth=0`;
 
-      await gotoModuleSettings(page, ROUTE);
-      await expect(switchControl(page, 'Show Regular Price')).toHaveAttribute('aria-checked', 'true');
+    test('"Show Regular Price" shows the struck-through regular price', async ({ page, api }) => {
+      await offerOnA(api);
 
-      await setSwitch(page, 'Show Regular Price', false);
-      await saveForm(page);
+      await saveModuleSettings(api, BOGO, { regular_price_show: false });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(regularPrice)).toBeHidden();
+
+      await saveModuleSettings(api, BOGO, { regular_price_show: true });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator(regularPrice)).toBeVisible();
+      await expect(page.locator(regularPrice)).toContainText('$49.00');
     });
 
-    test('"Product Page Badge Icon" toggles the offer badge on the product page', async ({ page }) => {
-      const a = await getProductIdBySlug(page, PRODUCTS.a.slug);
-      const b = await getProductIdBySlug(page, PRODUCTS.b.slug);
-      await apiFetch(page, 'post', REST, offerPayload(a, b));
+    test('"Show Regular Price" saved through the settings page reaches the storefront', async ({ page, api }) => {
+      await offerOnA(api);
+      await gotoSettings(page, BOGO);
+      await setToggle(page, 'Show Regular Price', true);
+      const saved = await saveSettings(page, BOGO);
+      expect(saved.values.regular_price_show).toBe(true);
 
-      await gotoModuleSettings(page, ROUTE);
-      await setSwitch(page, 'Product Page Badge Icon', true);
-      await saveForm(page);
       await gotoProduct(page, PRODUCTS.a.slug);
-      await expect(page.locator('.bogo-badge-image').first()).toBeVisible();
+      await expect(page.locator(regularPrice)).toBeVisible();
+    });
 
-      await gotoModuleSettings(page, ROUTE);
-      await setSwitch(page, 'Product Page Badge Icon', false);
-      await saveForm(page);
+    test('"Product Page Badge Icon" toggles the offer badge on the product page', async ({ page, api }) => {
+      await offerOnA(api);
+
+      await saveModuleSettings(api, BOGO, { global_product_page_bage_icon: true });
+      await gotoProduct(page, PRODUCTS.a.slug);
+      await expect(page.locator('.bogo-badge-image').first()).toBeAttached();
+
+      await saveModuleSettings(api, BOGO, { global_product_page_bage_icon: false });
       await gotoProduct(page, PRODUCTS.a.slug);
       await expect(page.locator('.bogo-badge-image')).toHaveCount(0);
-    });
-  });
-
-  test.describe('Create New form', { tag: '@admin' }, () => {
-    const FIELDS = {
-      'Basic Information': [
-        'Name of BOGO',
-        'Select Target Product(s)',
-        'BOGO Deal Type',
-        'Offer Product',
-        'Offer Price/Discount',
-        'Offer Start Date',
-        'Offer End Date',
-        'Select Min Quantity',
-      ],
-      Design: ['Offer Icon', 'Overview Border', 'Border Color', 'Top Margin', 'Bottom Margin', 'Background Color', 'Text Color', 'Font Size'],
-      Content: ['Product Page Message'],
-    };
-
-    test('the Create New form exposes every field across its three tabs', async ({ page }) => {
-      await gotoModuleSettings(page, ROUTE);
-      await page.locator('#sbooster-settings-page').getByRole('button', { name: 'Create New' }).click();
-      await expect(page).toHaveURL(/create-bogo/);
-
-      const root = page.locator('#sbooster-settings-page');
-      for (const [tab, labels] of Object.entries(FIELDS)) {
-        await openTab(page, tab);
-        for (const label of labels) {
-          await expect(root.locator('.card-heading', { hasText: label }).first()).toBeVisible();
-        }
-      }
-    });
-
-    async function pickSearch(page: any, heading: string, text: string) {
-      await page
-        .locator('#sbooster-settings-page')
-        .locator('.card-heading', { hasText: heading })
-        .locator('xpath=following::*[contains(concat(" ", normalize-space(@class), " "), " ant-select ")][1]')
-        .click();
-      const dd = page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').first();
-      await dd.waitFor({ state: 'visible' });
-      await page.keyboard.type(text);
-      await page.waitForTimeout(400);
-      await dd.getByText(text, { exact: true }).last().click();
-      await page.waitForTimeout(300);
-    }
-
-    test('creates a BOGO through the form and renders it on the storefront', async ({ page }) => {
-      await gotoModuleSettings(page, ROUTE);
-      await page.locator('#sbooster-settings-page').getByRole('button', { name: 'Create New' }).click();
-      await expect(page).toHaveURL(/create-bogo/);
-
-      await page.getByPlaceholder('Enter BOGO Name').fill('E2E UI BOGO');
-      await pickSearch(page, 'Select Target Product(s)', PRODUCTS.a.name);
-      await pickSearch(page, 'Offer Product', PRODUCTS.b.name);
-      // Offer type is a non-search "combine" select; on a fresh form ArrowDown→Enter
-      // lands on "Discount%", which enables the adjacent amount input.
-      await page.locator('#sbooster-settings-page .ant-select.combine-select').click();
-      await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').first().waitFor({ state: 'visible' });
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('Enter');
-      await page.waitForTimeout(300);
-      await page.locator('#sbooster-settings-page .combine-field .ant-input-number-input').fill('25');
-      await setNumber(page, 'Select Min Quantity', 2);
-
-      // Form footer re-renders continuously, so a normal click can't stabilise;
-      // trigger the visible Save button's React handler directly.
-      await page.evaluate(() => {
-        const root = document.querySelector('#sbooster-settings-page');
-        const btn = [...(root?.querySelectorAll('button') ?? [])].find(
-          (b) => /^Save$/.test(b.textContent?.trim() ?? '') && (b as HTMLElement).offsetParent !== null,
-        ) as HTMLButtonElement | undefined;
-        btn?.click();
-      });
-      await expect(page.locator('.ant-notification-notice-message')).toContainText('Order Bogo Creation', {
-        timeout: 10000,
-      });
-
-      await expect(page.locator('#sbooster-settings-page .ant-table')).toContainText('E2E UI BOGO');
-
-      await gotoProduct(page, PRODUCTS.a.slug);
-      await expect(page.locator(OFFER)).toBeVisible();
-      await expect(page.locator(`${OFFER} .offer-product-title`)).toContainText(PRODUCTS.b.name);
     });
   });
 
@@ -243,4 +163,7 @@ test.describe('Storefront · BOGO', { tag: '@ui' }, () => {
       await expect(moduleToggle(page, MODULES.bogo.name)).toHaveAttribute('aria-checked', 'true');
     });
   });
+
+  // The Dokan vendor dashboard (integrations/src/dokan/bogo) needs Dokan,
+  // which the stack doesn't install: not covered here (gap).
 });

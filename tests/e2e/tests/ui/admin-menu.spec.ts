@@ -1,21 +1,55 @@
 import { test, expect } from '../../fixtures/test';
+import { adminApp, gotoDashboard, gotoModules } from '../../helpers/modules';
 
+// The WordPress menu and the app shell (ADR-008): one page,
+// `admin.php?page=storegrowth#/<route>`, with header, notices and app roots.
 test.describe('Admin · StoreGrowth menu', { tag: '@ui' }, () => {
-  test('top-level StoreGrowth menu is present', async ({ page }) => {
+  test('top-level StoreGrowth menu lists the app routes', async ({ page }) => {
     await page.goto('/wp-admin/');
-    await expect(page.locator('#wpadminbar')).toBeVisible();
+    const menu = page.locator('#adminmenu');
+    await expect(menu.getByRole('link', { name: 'StoreGrowth', exact: true }).first()).toBeVisible();
 
-    const menu = page.locator('#adminmenu').getByRole('link', { name: 'StoreGrowth', exact: true });
-    await expect(menu.first()).toBeVisible();
+    // Submenu links point into the one app page.
+    const expected: Record<string, string> = {
+      Dashboard: 'admin.php?page=storegrowth',
+      Features: 'admin.php?page=storegrowth#/features',
+      Modules: 'admin.php?page=storegrowth#/modules',
+      Settings: 'admin.php?page=storegrowth#/settings',
+    };
+    for (const [name, href] of Object.entries(expected)) {
+      await expect(
+        menu.locator(`a[href="${href}"]`).filter({ hasText: name }),
+        `submenu "${name}"`,
+      ).toHaveCount(1);
+    }
   });
 
-  test('Modules and Settings submenus navigate to their SPAs', async ({ page }) => {
-    await page.goto('/wp-admin/admin.php?page=spsg-modules');
-    await expect(page.locator('#sbooster-modules-page')).toBeVisible();
-    await expect(page).toHaveTitle(/Modules.*StoreGrowth/i);
+  test('the app page mounts header, notices and the app', async ({ page }) => {
+    await gotoDashboard(page);
+    await expect(page).toHaveTitle(/StoreGrowth/i);
+    await expect(page.locator('#spsg-admin-header')).not.toBeEmpty();
+    await expect(page.locator('#spsg-admin-notices')).toBeAttached();
+    await expect(adminApp(page)).not.toBeEmpty();
+  });
 
-    // Settings via its hash route — the supported entry point.
-    await page.goto('/wp-admin/admin.php?page=spsg-settings#/dashboard/overview');
-    await expect(page.locator('#sbooster-settings-page')).toBeVisible();
+  test('no hash opens the dashboard', async ({ page }) => {
+    await page.goto('/wp-admin/admin.php?page=storegrowth');
+    await expect(
+      adminApp(page).getByRole('heading', { level: 1, name: 'Dashboard', exact: true }),
+    ).toBeVisible();
+  });
+
+  test('Modules submenu opens the module catalog', async ({ page }) => {
+    // On StoreGrowth's own page its submenu is expanded (clickable).
+    await gotoDashboard(page);
+    await page.locator('#adminmenu a[href="admin.php?page=storegrowth#/modules"]').click();
+    await expect(page).toHaveURL(/page=storegrowth#\/modules$/);
+    await gotoModules(page); // asserts the catalog drew
+  });
+
+  test('Features opens the first active module page', async ({ page }) => {
+    await page.goto('/wp-admin/admin.php?page=storegrowth#/features');
+    await expect(page).toHaveURL(/#\/(settings\?module=[a-z-]+|bogo|upsell-order-bump)/);
+    await expect(adminApp(page).getByRole('heading', { level: 1 })).toBeVisible();
   });
 });

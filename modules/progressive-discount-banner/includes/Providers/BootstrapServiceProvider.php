@@ -1,4 +1,9 @@
 <?php
+/**
+ * Free Shipping Bar runtime services.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Providers;
 
@@ -6,6 +11,7 @@ use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Ajax;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\CommonHooks;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\OrderAttribution;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
 
 /**
@@ -19,45 +25,45 @@ use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-        EnqueueScript::class,
-        CommonHooks::class,
-        Ajax::class,
-        WoocommerceDiscount::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		EnqueueScript::class,
+		CommonHooks::class,
+		Ajax::class,
+		WoocommerceDiscount::class,
+		OrderAttribution::class,
+	];
 
-    /**
-     * Boot the service provider and supporting services.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-	    $this->set_initial_banner_data();
+	/**
+	 * Boot the service provider and supporting services.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		$this->set_initial_banner_data();
 
-        foreach ( $this->services as $service ) {
-            $this->share_with_implements_tags( $service );
-        }
-    }
+		foreach ( $this->services as $service ) {
+			$this->share_with_implements_tags( $service );
+		}
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+	}
 
 	/**
 	 * Setting Initial Banner Data.
@@ -74,10 +80,19 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 			'progressive_banner_text' => 'Add more [amount] to get free shipping.',
 			'goal_completion_text'    => 'You have successfully acquired free shipping.',
 		);
-		delete_option( 'spsg_progressive_discount_banner_settings' );
-		$result = update_option( 'spsg_progressive_discount_banner_settings', $default_data );
-		if ( $result ) {
-			update_option( 'spsg_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
+
+		// Seed only a missing option: a store whose flag was lost (cleanup
+		// plugin, migration) keeps its settings. The texts go only into keys
+		// not set yet.
+		$settings = get_option( 'spsg_progressive_discount_banner_settings' );
+
+		if ( false === $settings ) {
+			add_option( 'spsg_progressive_discount_banner_settings', $default_data );
+		} elseif ( is_array( $settings ) && array_diff_key( $default_data, $settings ) ) {
+			update_option( 'spsg_progressive_discount_banner_settings', array_merge( $default_data, $settings ) );
 		}
+
+		// Read on every request while the module is on, so autoloaded.
+		update_option( 'spsg_discount_banner_flags', array( 'done_setting_initial_banner_data' => true ) );
 	}
 }

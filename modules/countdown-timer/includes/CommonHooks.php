@@ -125,6 +125,13 @@ class CommonHooks implements HookRegistry {
 	 * @param \WC_Product $product WooCommerce product object.
 	 */
 	public function get_product_price( $price, $product ) {
+		// A price set at runtime (`set_price()`: an order bump or BOGO cart
+		// line) was worked out from the discounted price; don't discount it
+		// again.
+		if ( array_key_exists( 'price', $product->get_changes() ) ) {
+			return $price;
+		}
+
 		// Check countdown discount is set.
 		if ( Helper::is_product_discountable( $product->get_id() ) ) {
 			$current_price = floatval( $price );

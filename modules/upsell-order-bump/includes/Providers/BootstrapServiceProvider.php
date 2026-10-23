@@ -1,8 +1,14 @@
 <?php
+/**
+ * File for the Upsell Order Bump module BootstrapServiceProvider class.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Blocks\BlockRegistry;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
@@ -21,46 +27,46 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\CartValidator;
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-        EnqueueScript::class,
-        OrderBump::class,
-        OrderBumpAjax::class,
-        OrderBumpController::class,
-	    CartValidator::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		EnqueueScript::class,
+		OrderBump::class,
+		OrderBumpAjax::class,
+		OrderBumpController::class,
+		CartValidator::class,
+		// Cart / checkout block integration: only while the module is active.
+		BlockRegistry::class,
+	];
 
-    /**
-     * Boot the service provider and supporting services.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-        foreach ( $this->services as $service ) {
-            $this->share_with_implements_tags( $service );
-        }
+	/**
+	 * Boot the service provider and supporting services.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		foreach ( $this->services as $service ) {
+			$this->share_with_implements_tags( $service );
+		}
 
-        // Register data access class
-        $this->container->add( OrderBumpData::class );
-        
-    }
+		// Register data access class.
+		$this->container->add( OrderBumpData::class );
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+	}
 }

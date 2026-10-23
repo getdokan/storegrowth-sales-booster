@@ -9,13 +9,21 @@
 /.vscode
 /bin
 /.claude
+/dist
+/src
+/types
+/docs
+/tsconfig.json
+/postcss.config.js
+/webpack-entries.js
+/webpack-dependency-mapping.js
+/.eslintrc.js
+/.prettierrc.js
 
 .distignore
 .gitignore
 package.json
 package-lock.json
-lerna.json
-lerna-debug.log
 composer.json
 composer.lock
 .DS_Store
