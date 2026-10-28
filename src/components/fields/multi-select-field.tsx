@@ -17,7 +17,7 @@ import {
     ComboboxList,
     useComboboxAnchor,
 } from '@wedevs/plugin-ui';
-import { useEffect, useId, useState } from '@wordpress/element';
+import { useEffect, useId, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import { type BaseFieldProps, FieldLabel, FieldNotes } from './field-label';
@@ -93,8 +93,10 @@ export function MultiSelectField( {
             return next;
         } );
 
-    // Names of saved values (once); until they come, a chip reads
-    // "Loading…", not the raw id.
+    // Names of values without one: saved values, and values set from
+    // outside (e.g. Sales Pop's Recent Orders fill), each asked once. Until
+    // they come, a chip reads "Loading…", not the raw id.
+    const asked = useRef( new Set< string | number >() );
     const [ resolving, setResolving ] = useState( () => {
         return (
             Boolean( resolve ) &&
@@ -104,18 +106,26 @@ export function MultiSelectField( {
         );
     } );
     useEffect( () => {
-        const missing = value.filter( ( item ) => ! known.has( item ) );
+        const missing = value.filter( ( item ) => {
+            return ! known.has( item ) && ! asked.current.has( item );
+        } );
 
-        if ( resolve && missing.length ) {
-            resolve( missing )
-                .then( remember )
-                .catch( () => undefined )
-                .finally( () => {
-                    setResolving( false );
-                } );
+        if ( ! resolve || ! missing.length ) {
+            return;
         }
+
+        missing.forEach( ( item ) => {
+            asked.current.add( item );
+        } );
+        setResolving( true );
+        resolve( missing )
+            .then( remember )
+            .catch( () => undefined )
+            .finally( () => {
+                setResolving( false );
+            } );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [] );
+    }, [ value.join( ',' ) ] );
 
     // Search as the user types (debounced).
     useEffect( () => {
