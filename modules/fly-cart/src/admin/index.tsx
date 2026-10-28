@@ -106,17 +106,8 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
     controls: ( settings: ModuleSettings< FlyCartValues > ) => {
         const { values, schema, setValue, isLocked } = settings;
 
-        // The choices the storefront uses. Without pro it opens the side
-        // cart whatever the stored layout (kept for when pro is back); a
-        // stored pro icon position still applies.
-        const shown = {
-            layout: isPro() ? values.layout : 'side',
-            icon_position: values.icon_position,
-        };
-
         /**
-         * A pro choice (`pro_options`) is locked without pro, unless the
-         * storefront uses it (a stored pro icon position).
+         * Whether a choice needs pro (`pro_options`) and pro is off.
          *
          * @param key   Setting key.
          * @param value Choice.
@@ -127,9 +118,21 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
         ) => {
             return (
                 ! isPro() &&
-                Boolean( schema[ key ]?.pro_options?.includes( value ) ) &&
-                value !== shown[ key ]
+                Boolean( schema[ key ]?.pro_options?.includes( value ) )
             );
+        };
+
+        /**
+         * The choice the storefront uses: without pro, a stored pro choice
+         * gives way to the default (the stored one is kept for when pro is
+         * back).
+         *
+         * @param key Setting key.
+         */
+        const shown = ( key: 'layout' | 'icon_position' ) => {
+            return proLocked( key, values[ key ] )
+                ? String( schema[ key ]?.default ?? values[ key ] )
+                : values[ key ];
         };
 
         const option = (
@@ -205,7 +208,7 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
                 <PickerCards
                     label={ schema.layout?.label ?? '' }
                     options={ layouts }
-                    value={ shown.layout }
+                    value={ shown( 'layout' ) }
                     onChange={ ( next ) => {
                         setValue( 'layout', next as FlyCartValues[ 'layout' ] );
                     } }
@@ -217,7 +220,7 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
                     label={ schema.icon_position?.label ?? '' }
                     options={ positions }
                     columns={ 3 }
-                    value={ values.icon_position }
+                    value={ shown( 'icon_position' ) }
                     onChange={ ( next ) => {
                         setValue(
                             'icon_position',

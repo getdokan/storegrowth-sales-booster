@@ -115,6 +115,12 @@ class CommonHooks implements HookRegistry {
 		$icon_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
 		$icon_name     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
 
+		// The centre positions are pro's (it styles them); without pro the
+		// icon takes the default place, as the settings page shows.
+		if ( ! sp_store_growth()->has_pro() && in_array( $icon_position, [ 'center-right', 'center-left' ], true ) ) {
+			$icon_position = 'bottom-right';
+		}
+
 		include __DIR__ . '/../templates/fly-cart.php';
 	}
 
