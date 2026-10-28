@@ -120,6 +120,25 @@ class Helper {
 	}
 
 	/**
+	 * A discount date as stored: the start at 00:00:00 of its day, the end
+	 * at 23:59:59, so the sale runs through its End date.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $date Date from a product form (`Y-m-d`), or empty.
+	 * @param bool   $end  Whether it is the end date.
+	 *
+	 * @return string The stored date, or empty for no date.
+	 */
+	public static function discount_date( $date, $end = false ) {
+		if ( ! $date ) {
+			return '';
+		}
+
+		return gmdate( $end ? 'Y-m-d 23:59:59' : 'Y-m-d 00:00:00', strtotime( $date ) );
+	}
+
+	/**
 	 * Check if product is discountable.
 	 *
 	 * @since 1.0.2

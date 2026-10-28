@@ -154,6 +154,12 @@ class Dashboard {
             if ( isset( $_POST[ $meta_key ] ) ) {
                 $value = sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) );
 
+				// Dates as the admin save stores them: the sale runs through
+				// 23:59:59 of its End date (a bare date ended at 00:00).
+				if ( '_spsg_countdown_timer_discount_start' === $meta_key || '_spsg_countdown_timer_discount_end' === $meta_key ) {
+					$value = CountdownTimerHelper::discount_date( $value, '_spsg_countdown_timer_discount_end' === $meta_key );
+				}
+
                 // Allow filtering of meta values before saving
                 $value = apply_filters( 'spsg_countdown_timer_meta_value', $value, $meta_key, $post_id );
 

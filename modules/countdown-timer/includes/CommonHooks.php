@@ -92,19 +92,11 @@ class CommonHooks implements HookRegistry {
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['_spsg_countdown_timer_discount_start'] ) ) {
-			$discount_start_date = wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_start'] ) ); //phpcs:ignore
-
-			if ( $discount_start_date ) {
-				$discount_start_date = gmdate( 'Y-m-d 00:00:00', strtotime( $discount_start_date ) );
-			}
+			$discount_start_date = Helper::discount_date( wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_start'] ) ) ); //phpcs:ignore
 		}
 
 		if ( isset( $_POST['_spsg_countdown_timer_discount_end'] ) ) {
-			$discount_end_date = wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_end'] ) ); // phpcs:ignore
-
-			if ( $discount_end_date ) {
-				$discount_end_date = gmdate( 'Y-m-d 23:59:59', strtotime( $discount_end_date ) );
-			}
+			$discount_end_date = Helper::discount_date( wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_end'] ) ), true ); // phpcs:ignore
 		}
 
 		$stock_discount_amount = isset( $_POST['_spsg_countdown_timer_discount_amount'] ) ? wc_clean( wp_unslash( $_POST['_spsg_countdown_timer_discount_amount'] ) ) : null; // phpcs:ignore
