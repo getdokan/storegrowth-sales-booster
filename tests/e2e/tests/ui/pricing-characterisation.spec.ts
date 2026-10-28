@@ -215,17 +215,11 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
         minimum_quantity_required: 2,
       });
 
-      // `OrderBogo` carries two different rules, and which one applies depends on
-      // how the cart arrived at this state:
-      //
-      //   - a single add runs `handle_regular_product_bogo_update()`, which passes
-      //     the trigger quantity straight through (OrderBogo.php:332);
-      //   - editing the quantity in the cart runs
-      //     `handle_bogo_offer_quantity_update()`, which computes
-      //     floor( trigger / minimum ) (OrderBogo.php:287).
-      //
-      // So four triggers added in one go grant four gifts, where adding one and
-      // then raising it to four grants two. Recorded here, not endorsed.
+      // One rule however the cart got there: one gift per minimum quantity of
+      // the trigger line, floor( trigger / minimum )
+      // (`BoGo\Helper::get_offer_quantity()`, storegrowth-sales-booster-pro#291).
+      // A single add of four used to grant four, where adding one and raising
+      // it to four granted two.
       await addToCartApi(page, ids.trigger, 4);
       const totals = await getCartTotals(page);
 
@@ -233,8 +227,8 @@ for (const mode of ['excl', 'incl'] as TaxMode[]) {
       expect(gift, 'a gift is granted once the minimum is met').toBeTruthy();
       expect(
         gift!.quantity,
-        '4 triggers added at once grant 4 gifts, not floor( 4 / 2 )'
-      ).toBe(4);
+        '4 triggers added at once grant floor( 4 / 2 ) gifts'
+      ).toBe(2);
     });
 
     test('no gift is granted below the minimum quantity', async ({ page }) => {
