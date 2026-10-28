@@ -106,9 +106,17 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
     controls: ( settings: ModuleSettings< FlyCartValues > ) => {
         const { values, schema, setValue, isLocked } = settings;
 
+        // The choices the storefront uses. Without pro it opens the side
+        // cart whatever the stored layout (kept for when pro is back); a
+        // stored pro icon position still applies.
+        const shown = {
+            layout: isPro() ? values.layout : 'side',
+            icon_position: values.icon_position,
+        };
+
         /**
-         * A pro choice (`pro_options`) is locked without pro, unless it's
-         * the current value (a stored pro choice still shows as chosen).
+         * A pro choice (`pro_options`) is locked without pro, unless the
+         * storefront uses it (a stored pro icon position).
          *
          * @param key   Setting key.
          * @param value Choice.
@@ -120,7 +128,7 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
             return (
                 ! isPro() &&
                 Boolean( schema[ key ]?.pro_options?.includes( value ) ) &&
-                value !== values[ key ]
+                value !== shown[ key ]
             );
         };
 
@@ -197,7 +205,7 @@ const flyCartPage: SettingsPageParts< FlyCartValues > = {
                 <PickerCards
                     label={ schema.layout?.label ?? '' }
                     options={ layouts }
-                    value={ values.layout }
+                    value={ shown.layout }
                     onChange={ ( next ) => {
                         setValue( 'layout', next as FlyCartValues[ 'layout' ] );
                     } }
