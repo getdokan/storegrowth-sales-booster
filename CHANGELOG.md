@@ -1,6 +1,6 @@
 == Changelog ==
 
-### v3.0.0 (October 14, 2026) ###
+### v3.0.0 (November 4, 2026) ###
 
 - **new:** Redesigned admin: one StoreGrowth page (`admin.php?page=storegrowth`) in TypeScript on plugin-ui and Tailwind v4, over REST — dashboard, modules screen, and settings pages generated from each module's PHP schema. The old `spsg-settings` / `spsg-modules` slugs redirect; existing settings, offers and order bumps carry over unchanged.
 - **new:** Module analytics (ADR-012): offer keys on order lines at checkout, the `spsg_offer_lookup` mirror of WooCommerce Analytics, the `spsg_analytics_daily` counts table and storefront tracker, `GET sales-booster/v1/analytics`, and the Analytics page — revenue, discount, orders, take rates, add-to-cart rates, Free Shipping Bar "Helped" figures and a revenue-by-offer chart. See `docs/analytics/how-it-works.md`.

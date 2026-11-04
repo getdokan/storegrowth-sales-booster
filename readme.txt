@@ -332,7 +332,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= v3.0.0 (October 14, 2026) =
+= v3.0.0 (November 4, 2026) =
 
 * New: A redesigned admin — one StoreGrowth page with a dashboard, a modules screen and a settings page for every module, built on a new design system. Existing settings, offers and order bumps carry over unchanged.
 * New: Analytics — see what your offers earned and gave away: revenue, discount given and orders per module and per campaign, Order Bump and BOGO take rates, Countdown Timer add-to-cart rates, and orders the Free Shipping Bar helped, with a daily chart. Figures come from WooCommerce Analytics and respect its order statuses, refunds and Dokan vendor orders.
