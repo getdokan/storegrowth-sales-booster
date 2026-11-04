@@ -123,7 +123,7 @@ class Helper {
 	 * A discount date as stored: the start at 00:00:00 of its day, the end
 	 * at 23:59:59, so the sale runs through its End date.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $date Date from a product form (`Y-m-d`), or empty.
 	 * @param bool   $end  Whether it is the end date.
@@ -194,7 +194,7 @@ class Helper {
 	 * bool by the settings engine, as `on` / `off` by older versions; on
 	 * when never saved.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param string $key `vendor_can_create_countdown_discount` or `vendor_can_create_schedule_timer`.
 	 *

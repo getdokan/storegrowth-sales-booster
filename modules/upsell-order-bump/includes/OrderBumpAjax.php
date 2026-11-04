@@ -120,7 +120,7 @@ class OrderBumpAjax implements HookRegistry {
 	/**
 	 * Whether the cart already holds a bump line of this offer.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param int $offer_id The offered product: a variation's own id, else the product's.
 	 *

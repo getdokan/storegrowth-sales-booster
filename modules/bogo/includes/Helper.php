@@ -140,7 +140,7 @@ class Helper {
 	 * "Select Min Quantity" of the target (2 or 3 of a minimum of 2 earn
 	 * one, 4 earn two, 1 earns none).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param array $settings        BOGO offer settings.
 	 * @param int   $target_quantity The target line's whole quantity.

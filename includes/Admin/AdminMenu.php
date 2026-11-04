@@ -118,7 +118,7 @@ class AdminMenu {
 	 * Keeps WordPress core notices (update, recovery mode) and StoreGrowth's own
 	 * (lite and pro), judged by the file each callback is defined in.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return void
 	 */
@@ -149,7 +149,7 @@ class AdminMenu {
 	/**
 	 * Whether a hook callback is defined in another plugin or a theme.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @param callable $callback Hook callback.
 	 *

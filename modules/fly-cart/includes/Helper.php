@@ -22,7 +22,7 @@ class Helper {
 	 * checkout, and the Dokan vendor dashboard (a work area, where the
 	 * floating icon covers the dashboard's own buttons).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */

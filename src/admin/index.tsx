@@ -21,7 +21,7 @@ import { storegrowthTheme } from './theme';
  * route and replaces the page with the Dashboard. Move focus to the target
  * instead and leave the hash alone.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  *
  * @param {MouseEvent} event Click anywhere on the page.
  */

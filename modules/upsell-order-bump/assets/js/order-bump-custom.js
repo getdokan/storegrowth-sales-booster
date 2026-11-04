@@ -12,7 +12,7 @@
  * `update_checkout` (one runs right after the page loads), drawing the box
  * as the cart was then. A redrawn box is ticked as the shopper last left it.
  *
- * @since SPSG_VERSION
+ * @since 3.0.0
  */
 ( function ( $ ) {
     // Offer key => { wanted, inCart, busy }.

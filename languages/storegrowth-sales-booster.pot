@@ -8,15 +8,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T05:11:15+00:00\n"
+"POT-Creation-Date: 2026-11-04T03:18:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: storegrowth-sales-booster\n"
 
 #. Plugin Name of the plugin
 #: storegrowth-sales-booster.php
-#: includes/Admin/AdminMenu.php:169
-#: includes/Admin/AdminMenu.php:170
+#: includes/Admin/AdminMenu.php:266
+#: includes/Admin/AdminMenu.php:267
 #: build/header.js:2
 msgid "StoreGrowth"
 msgstr ""
@@ -37,20 +37,20 @@ msgid "https://storegrowth.io"
 msgstr ""
 
 #: includes/Admin/AdminHooks.php:42
-#: includes/Admin/AdminMenu.php:182
+#: includes/Admin/AdminMenu.php:279
 #: build/admin.js:1
 msgid "Dashboard"
 msgstr ""
 
 #: includes/Admin/AdminHooks.php:43
-#: includes/Admin/AdminMenu.php:191
+#: includes/Admin/AdminMenu.php:288
 #: build/admin.js:1
 #: build/admin.js:3
 msgid "Modules"
 msgstr ""
 
 #: includes/Admin/AdminHooks.php:44
-#: includes/Admin/AdminMenu.php:218
+#: includes/Admin/AdminMenu.php:315
 #: includes/Settings/GeneralSettings.php:85
 #: build/admin.js:5
 #: build/integrations/dokan/bogo.js:4
@@ -58,39 +58,39 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:181
+#: includes/Admin/AdminMenu.php:278
 msgid "Dashboard - StoreGrowth"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:190
+#: includes/Admin/AdminMenu.php:287
 msgid "Modules - StoreGrowth"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:199
+#: includes/Admin/AdminMenu.php:296
 msgid "Features - StoreGrowth"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:200
+#: includes/Admin/AdminMenu.php:297
 #: build/components.js:7
 msgid "Features"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:208
+#: includes/Admin/AdminMenu.php:305
 msgid "Analytics - StoreGrowth"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:209
+#: includes/Admin/AdminMenu.php:306
 #: build/admin.js:1
 msgid "Analytics"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:217
+#: includes/Admin/AdminMenu.php:314
 msgid "Settings - StoreGrowth"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:231
-#: includes/Admin/AdminMenu.php:232
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:95
+#: includes/Admin/AdminMenu.php:328
+#: includes/Admin/AdminMenu.php:329
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:109
 #: modules/countdown-timer/templates/wc-product-data-panels.php:61
 #: build/admin.js:1
 #: build/admin.js:3
@@ -98,8 +98,8 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: includes/Admin/AdminMenu.php:241
-#: includes/Admin/AdminMenu.php:242
+#: includes/Admin/AdminMenu.php:338
+#: includes/Admin/AdminMenu.php:339
 #: build/admin.js:1
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
@@ -444,7 +444,7 @@ msgid "Show Bar"
 msgstr ""
 
 #: includes/Settings/DisplaySettings.php:223
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:284
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:283
 #: build/components.js:5
 msgid "Trigger"
 msgstr ""
@@ -477,7 +477,7 @@ msgstr ""
 #: includes/Settings/DisplaySettings.php:256
 #: modules/bogo/includes/Settings/BogoOfferFields.php:256
 #: modules/bogo/includes/Settings/BogoOfferFields.php:260
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:189
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:188
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:194
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:198
 #: build/components.js:5
@@ -485,9 +485,9 @@ msgid "Font Size"
 msgstr ""
 
 #: includes/Settings/DisplaySettings.php:264
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:136
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:350
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:185
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:135
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:349
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:184
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:195
 #: build/components.js:5
 msgid "Font Family"
@@ -495,7 +495,7 @@ msgstr ""
 
 #: includes/Settings/DisplaySettings.php:267
 #: modules/bogo/includes/Settings/BogoOfferFields.php:254
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:289
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:288
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:263
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:180
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:192
@@ -505,7 +505,7 @@ msgstr ""
 #: includes/Settings/DisplaySettings.php:268
 #: modules/bogo/includes/Settings/BogoOfferFields.php:255
 #: modules/bogo/includes/Settings/BogoOfferFields.php:259
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:174
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:173
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:193
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:197
 msgid "Text Color"
@@ -601,15 +601,15 @@ msgstr ""
 msgid "The update failed. Please try again."
 msgstr ""
 
-#: integrations/includes/Dokan/BogoVendorRules.php:109
+#: integrations/includes/Dokan/BogoVendorRules.php:108
 msgid "Buy X Get X offers are not enabled for vendors."
 msgstr ""
 
-#: integrations/includes/Dokan/BogoVendorRules.php:173
+#: integrations/includes/Dokan/BogoVendorRules.php:172
 msgid "Vendors can target products only, not categories."
 msgstr ""
 
-#: integrations/includes/Dokan/BogoVendorRules.php:192
+#: integrations/includes/Dokan/BogoVendorRules.php:191
 msgid "You can only use your own products in an offer."
 msgstr ""
 
@@ -631,7 +631,7 @@ msgstr ""
 
 #: integrations/includes/Dokan/Dashboard/Bogo.php:96
 #: modules/bogo/includes/BoGoModule.php:73
-#: modules/bogo/includes/OrderBogo.php:950
+#: modules/bogo/includes/OrderBogo.php:960
 #: modules/bogo/includes/Settings/BogoOfferFields.php:310
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
@@ -665,7 +665,7 @@ msgstr ""
 
 #. translators: %d: available stock quantity
 #: integrations/includes/Dokan/Frontend/Frontend.php:110
-#: modules/fly-cart/templates/cart-contents.php:156
+#: modules/fly-cart/templates/cart-contents.php:160
 #, php-format
 msgid "Available: %d"
 msgstr ""
@@ -740,7 +740,7 @@ msgid "Invalid product."
 msgstr ""
 
 #: modules/bogo/includes/Ajax.php:398
-#: modules/upsell-order-bump/includes/OrderBumpAjax.php:65
+#: modules/upsell-order-bump/includes/OrderBumpAjax.php:71
 msgid "This offer is not available."
 msgstr ""
 
@@ -840,15 +840,15 @@ msgstr ""
 msgid "This category has no message."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1069
+#: modules/bogo/includes/OrderBogo.php:1079
 msgid "BOGO was not enabled for this product — please select an offer product for a \"Buy X Get Y\" offer."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1133
+#: modules/bogo/includes/OrderBogo.php:1143
 msgid "The quantity of BOGO offer products cannot be changed manually. It is automatically managed based on your purchase."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1167
+#: modules/bogo/includes/OrderBogo.php:1177
 msgid "The BOGO offer products cannot be removed manually. It will be automatically added based on your purchase."
 msgstr ""
 
@@ -1507,34 +1507,34 @@ msgid "Overview Border"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:243
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:199
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:198
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:181
 msgid "Solid"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:244
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:200
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:199
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:182
 msgid "Dashed"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:245
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:201
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:200
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:183
 msgid "Dotted"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:246
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:202
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:201
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:149
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:184
 msgid "None"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:249
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:191
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:297
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:215
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:190
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:296
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:214
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:187
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:187
 msgid "Border Color"
@@ -1580,7 +1580,7 @@ msgid "When the offer runs and the rules it follows"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:329
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:292
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:291
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:280
 msgid "Advanced"
 msgstr ""
@@ -1591,19 +1591,19 @@ msgid "Days of the week the offer runs"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:336
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:270
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:268
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:269
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:267
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:257
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:303
 msgid "Content"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:339
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:403
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:258
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:299
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:402
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:257
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:298
 #: modules/fly-cart/includes/Settings/FlyCartSettings.php:166
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:280
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:279
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:292
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:380
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:269
@@ -1677,7 +1677,7 @@ msgid "BOGO Settings"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoSettings.php:140
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:144
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:143
 #: modules/progressive-discount-banner/templates/bar.php:16
 msgid "Cart"
 msgstr ""
@@ -1830,8 +1830,8 @@ msgstr ""
 
 #: modules/countdown-timer/includes/CommonHooks.php:68
 #: modules/countdown-timer/includes/CountdownTimerModule.php:66
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:397
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:60
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:396
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:52
 msgid "Countdown Timer"
 msgstr ""
 
@@ -1845,137 +1845,137 @@ msgstr ""
 msgid "Stock"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:95
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:94
 msgid "Regular"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:96
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:95
 #: modules/sales-pop/assets/js/admin.js:1
 msgid "Medium"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:97
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:96
 msgid "Semi Bold"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:98
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:97
 #: modules/sales-pop/assets/js/admin.js:1
 msgid "Bold"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:106
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:105
 #: modules/countdown-timer/templates/countdown-timer.php:35
 msgid "Last chance! [discount]% OFF"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:108
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:107
 msgid "Countdown Heading"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:109
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:108
 msgid "Use [discount] for the product's discount."
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:117
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:116
 msgid "Shop Page Display"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:118
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:117
 msgid "The sales countdown will show on the shop page"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:125
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:124
 msgid "Product Page Display"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:126
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:125
 msgid "The sales countdown will show on the product page"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:145
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:360
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:144
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:359
 msgid "Font Weight"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:155
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:371
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:154
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:370
 msgid "Letter Spacing"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:166
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:165
 msgid "Line Height"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:175
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:174
 msgid "Heading Color"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:184
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:183
 #: modules/fly-cart/includes/Settings/FlyCartSettings.php:136
 msgid "Widget Background Color"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:200
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:199
 msgid "Widget Radius"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:210
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:318
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:209
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:317
 msgid "Alignment"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:211
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:210
 msgid "Container alignment"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:220
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:328
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:219
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:327
 msgid "Margin"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:228
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:338
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:227
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:337
 #: modules/direct-checkout/assets/js/admin.js:4
 msgid "Padding"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:240
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:239
 msgid "Digit Text Color"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:272
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:271
 msgid "Label Text Color"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:273
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:272
 msgid "The DAYS / HOURS / MIN / SEC captions."
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:281
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:280
 msgid "Separator Color"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:307
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:306
 msgid "Box Radius"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:319
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:318
 msgid "Counter alignment"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:329
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:328
 msgid "Counter margin"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:339
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:338
 msgid "Counter padding"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:383
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:214
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:310
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:250
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:291
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:382
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:213
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:309
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:249
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:290
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:233
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:383
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:240
@@ -1983,52 +1983,52 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:400
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:273
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:271
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:399
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:272
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:270
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:260
 msgid "Configure"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:406
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:405
 msgid "Heading"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:407
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:406
 msgid "The line above the timer"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:410
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:409
 msgid "Container and Layout"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:411
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:410
 msgid "The box around the countdown"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:415
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:414
 msgid "Counter/Timer (Box)"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:416
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:415
 msgid "The day, hour, minute and second boxes"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:420
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:419
 msgid "Counter Text"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:421
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:420
 msgid "Font of the numbers and their labels"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:425
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:424
 msgid "Select Template"
 msgstr ""
 
-#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:426
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:311
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:292
+#: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:425
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:310
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:291
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:281
 msgid "Presets that fill the colour fields above"
 msgstr ""
@@ -2053,54 +2053,69 @@ msgstr ""
 msgid "Sec"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:61
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:53
 msgid "Configure countdown timer settings for this product"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:71
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:63
 #: modules/countdown-timer/templates/wc-product-data-panels.php:25
 msgid "Product Discount (%)"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:72
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:64
 msgid "Set the discount as percentage"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:73
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:65
 #: modules/countdown-timer/templates/wc-product-data-panels.php:28
 msgid "Set the countdown timer discount as percentage."
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:78
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:70
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:82
 #: modules/countdown-timer/templates/wc-product-data-panels.php:39
 msgid "Discount dates"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:80
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:72
 msgid "Start date... YYYY-MM-DD"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:81
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:73
 msgid "to"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:82
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:74
 msgid "End date... YYYY-MM-DD"
 msgstr ""
 
-#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:85
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:77
 #: modules/countdown-timer/templates/wc-product-data-panels.php:52
 msgid "The sale will start at 00:00:00 of \"Start\" date and end at 23:59:59 of \"End\" date."
 msgstr ""
 
+#. translators: 1: start date, or "now", 2: end date (Y-m-d).
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:89
+#, php-format
+msgid "Set by the store: %1$s to %2$s."
+msgstr ""
+
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:90
+msgid "now"
+msgstr ""
+
 #: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:95
+msgid "The store sets the dates. The countdown and discount show once it has set an end date."
+msgstr ""
+
+#: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:109
 #, php-format
 msgid "All the fields are required to show the countdown. To learn more, please view the <b><a href=\"%s\" target=\"_blank\">%s</a></b>"
 msgstr ""
 
 #: modules/direct-checkout/includes/CommonHooks.php:157
 #: modules/direct-checkout/includes/DirectCheckoutModule.php:73
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:234
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:233
 msgid "Direct Checkout"
 msgstr ""
 
@@ -2108,176 +2123,176 @@ msgstr ""
 msgid "Simplify the purchase process. Enable customers to check out directly, reducing cart abandonment and enhancing convenience"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:89
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:88
 #: modules/direct-checkout/assets/js/admin.js:1
 msgid "Buy Now"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:93
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:92
 msgid "Buy Now Button Label"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:104
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:244
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:103
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:243
 msgid "Button Layout"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:106
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:105
 msgid "\"Add to cart\" as the Buy Now button"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:107
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:106
 msgid "Buy Now button with \"Add to cart\""
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:108
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:107
 msgid "Buy Now button for specific products"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:109
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:108
 msgid "Default Add to cart"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:112
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:111
 msgid "Use the add to cart button as the Buy Now button."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:113
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:112
 msgid "This setting can be directly accessed from the WooCommerce product meta page."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:125
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:248
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:124
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:247
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:163
 msgid "Checkout Redirect"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:127
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:126
 msgid "Checkout Page"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:128
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:127
 msgid "Fly Cart Checkout"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:131
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:130
 msgid "Buy Now button will redirect to the default checkout page."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:132
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:131
 msgid "The Buy Now button will open the Fly Cart sidebar checkout."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:142
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:141
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:97
 msgid "Display on Shop Page"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:150
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:149
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:105
 msgid "Display on Product Page"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:159
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:158
 msgid "Custom Button Style"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:160
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:159
 msgid "Override the button’s default look."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:166
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:197
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:165
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:196
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:260
 msgid "Button Color"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:191
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:190
 msgid "Vertical Padding"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:192
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:191
 msgid "Horizontal Padding"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:205
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:204
 msgid "Border Style"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:209
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:208
 msgid "Border Width"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:219
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:218
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:278
 msgid "Border Radius"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:237
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:236
 msgid "Checkout Setting"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:240
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:239
 msgid "Button Label"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:241
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:240
 msgid "The text shown on the Direct Checkout button."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:245
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:244
 msgid "How Direct Checkout sits next to Add to Cart."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:249
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:248
 msgid "Where Direct Checkout sends the shopper."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:252
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:251
 msgid "Visibility"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:253
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:252
 msgid "Where the Direct Checkout button appears."
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:261
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:306
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:260
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:305
 #: modules/fly-cart/includes/Settings/FlyCartSettings.php:177
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:287
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:286
 msgid "Colors"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:262
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:261
 msgid "The button’s fill and label"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:266
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:265
 msgid "Typography"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:267
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:266
 msgid "The button label’s type"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:271
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:270
 msgid "Spacing"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:272
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:271
 msgid "Room inside the button, around the label"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:276
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:275
 msgid "Border"
 msgstr ""
 
-#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:277
+#: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:276
 msgid "Style, width, colour and corner radius"
 msgstr ""
 
 #: modules/floating-notification-bar/includes/FloatingNotificationBarModule.php:73
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:267
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:266
 msgid "Floating Bar"
 msgstr ""
 
@@ -2291,108 +2306,108 @@ msgid "Discount Banner"
 msgstr ""
 
 #: modules/floating-notification-bar/includes/Helper.php:69
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:85
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:84
 msgid "Shop More Than $100 to get Free Shipping"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:89
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:88
 msgid "Default Banner Text"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:97
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:128
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:96
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:127
 #: modules/floating-notification-bar/assets/js/admin.js:1
 #: modules/progressive-discount-banner/assets/js/admin.js:1
 msgid "Banner Icon"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:117
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:116
 msgid "Button Action"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:119
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:118
 msgid "Banner Close"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:120
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:119
 msgid "Open Link"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:128
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:127
 msgid "Show Button"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:133
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:132
 msgid "Shop Now"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:135
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:134
 msgid "Button Text"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:140
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:139
 msgid "Button Link"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:147
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:146
 msgid "Open in a New Tab"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:160
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:159
 msgid "Start Date"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:168
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:167
 msgid "End Date"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:177
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:176
 msgid "Show Coupon"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:184
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:183
 #: modules/floating-notification-bar/assets/js/admin.js:1
 msgid "Coupon Code"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:202
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:201
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:261
 msgid "Button Text Color"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:276
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:275
 msgid "Button"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:280
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:279
 msgid "Countdown"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:285
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:284
 msgid "When the bar appears"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:288
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:287
 msgid "Page Targeting"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:289
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:288
 msgid "Where the bar shows, and to whom"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:293
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:292
 msgid "A coupon code shoppers can copy"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:302
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:301
 msgid "Bar"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:303
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:302
 msgid "Size and typography of the floating bar"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:307
+#: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:306
 msgid "Every colour on the floating bar"
 msgstr ""
 
@@ -2522,7 +2537,7 @@ msgstr ""
 msgid "Checkout"
 msgstr ""
 
-#: modules/fly-cart/templates/cart-contents.php:144
+#: modules/fly-cart/templates/cart-contents.php:148
 msgid "Remove this item"
 msgstr ""
 
@@ -2532,7 +2547,7 @@ msgid "Shopping Cart"
 msgstr ""
 
 #: modules/progressive-discount-banner/includes/ProgressiveDiscountBannerModule.php:73
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:265
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:264
 msgid "Free Shipping Rules"
 msgstr ""
 
@@ -2540,85 +2555,85 @@ msgstr ""
 msgid "Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more."
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:103
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:102
 msgid "Add more [amount] to get free shipping."
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:108
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:107
 msgid "Banner Text"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:109
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:108
 msgid "[amount] is replaced with what is left to spend."
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:113
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:112
 msgid "You have successfully acquired free shipping."
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:118
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:117
 msgid "Goal Completion Text"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:141
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:140
 msgid "Display CTA Button"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:147
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:146
 msgid "CTA Name"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:155
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:154
 msgid "CTA Target URI"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:176
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:175
 #: modules/progressive-discount-banner/assets/js/admin.js:1
 msgid "Discount Type"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:194
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:193
 #: modules/progressive-discount-banner/assets/js/admin.js:1
 msgid "Discount Amount"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:203
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:202
 msgid "Cart Minimum Amount"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:210
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:209
 msgid "Show Banner"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:235
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:234
 msgid "Close Button Color"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:241
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:240
 msgid "CTA Background"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:242
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:241
 msgid "CTA Text Color"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:274
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:273
 msgid "Display Rules"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:275
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:274
 msgid "Who sees the banner, and when"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:283
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:282
 msgid "Banner"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:284
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:283
 msgid "Size and typography of the banner"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:288
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:287
 msgid "Every colour on the banner"
 msgstr ""
 
@@ -3193,12 +3208,12 @@ msgid "Drive FOMO effectively. Visually indicate low stock or scarcity to encour
 msgstr ""
 
 #. translators: %d: Items left in stock.
-#: modules/stock-bar/templates/simple-stock-status.php:47
+#: modules/stock-bar/templates/simple-stock-status.php:48
 #, php-format
 msgid "Hurry! only %d stocks left."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/OrderBumpAjax.php:70
+#: modules/upsell-order-bump/includes/OrderBumpAjax.php:76
 msgid "This offer could not be added to the cart."
 msgstr ""
 
@@ -3423,13 +3438,13 @@ msgstr ""
 msgid "The copy shown beside the discount"
 msgstr ""
 
-#: modules/upsell-order-bump/templates/bump-product-front-view.php:98
+#: modules/upsell-order-bump/templates/bump-product-front-view.php:99
 #: modules/upsell-order-bump/assets/js/admin.js:1
 #: modules/upsell-order-bump/assets/js/blocks.js:1
 msgid "Select"
 msgstr ""
 
-#: modules/upsell-order-bump/templates/bump-product-front-view.php:102
+#: modules/upsell-order-bump/templates/bump-product-front-view.php:103
 #: modules/upsell-order-bump/assets/js/admin.js:1
 #: modules/upsell-order-bump/assets/js/blocks.js:1
 msgid "Out of Stock"
