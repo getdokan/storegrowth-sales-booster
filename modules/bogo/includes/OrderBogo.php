@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
@@ -281,10 +282,7 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$required_quantity = ! empty( $bogo_settings['minimum_quantity_required'] ) ? intval( $bogo_settings['minimum_quantity_required'] ) : 1;
-		$required_quantity = max( 1, $required_quantity ); // Ensure minimum of 1
-		
-		$free_product_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		$free_product_quantity = Helper::get_offer_quantity( $bogo_settings, $parent_quantity );
 		
 		// Update the offer product quantity
 		if ( $free_product_quantity > 0 ) {
@@ -329,7 +327,16 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
-		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', $quantity, $bogo_settings, $cart_item );
+		/**
+		 * Filters how many offer products a cart line's quantity earns on a cart update.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $free_product_quantity Offer quantity: whole multiples of the minimum quantity.
+		 * @param array $bogo_settings         The BOGO offer.
+		 * @param array $cart_item             The target cart item.
+		 */
+		$free_product_quantity = apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $bogo_settings, $quantity ), $bogo_settings, $cart_item );
 		
 		// Validate the calculated quantity
 		if ( ! is_numeric( $free_product_quantity ) || $free_product_quantity < 0 ) {
@@ -434,7 +441,11 @@ class OrderBogo implements HookRegistry {
 		) {
 			// Clean up any duplicate BOGO offers before applying new one
 			$this->clean_duplicate_bogo_offers( $cart_item_key, $apply_able_product_id );
-			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, $quantity );
+
+			// Gifts for the line's whole quantity (an add to an existing line
+			// passes only the added amount), one per minimum quantity.
+			$line_quantity = WC()->cart->cart_contents[ $cart_item_key ]['quantity'] ?? $quantity;
+			$this->apply_bogo_product( $bogo_settings, $apply_able_product_id, $cart_item_key, Helper::get_offer_quantity( $bogo_settings, $line_quantity ) );
 		}
 	}
 
@@ -504,6 +515,11 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
+		// Below the minimum quantity: no gift yet.
+		if ( $quantity < 1 ) {
+			return;
+		}
+
 		$variation_id         = 0;
 		$variation_attributes = array();
 		$price_product        = $product; // Product used for price calculation.
@@ -526,10 +542,7 @@ class OrderBogo implements HookRegistry {
 		}
 
 		// Determine the cost of the offer product (if necessary)
-		$offer_product_cost = 0; // Assume free by default
-		if ( isset( $settings['offer_type'] ) && $settings['offer_type'] === 'discount' ) {
-			$offer_product_cost = max( $price_product->get_price() - ( $price_product->get_price() * ( $settings['discount_amount'] / 100 ) ), 0 );
-		}
+		$offer_product_cost = Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price_product->get_price(), $settings['discount_amount'] ?? 0 );
 
 		// Cart item data, plus additive campaign attribution keys for revenue reporting.
 		$cart_item_data = array(
@@ -552,6 +565,10 @@ class OrderBogo implements HookRegistry {
 
 		if ( $free_product_key && isset( WC()->cart->cart_contents[ $cart_item_key ] ) ) {
 			WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
+		}
+
+		if ( $free_product_key && ! empty( $settings['id'] ) ) {
+			Counter::bump( BoGoModule::get_id(), 'add_to_cart', Counter::CAMPAIGN, (int) $settings['id'] );
 		}
 	}
 
@@ -679,12 +696,8 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 		
-		$parent_quantity = intval( $parent_item['quantity'] );
-		$required_quantity = ! empty( $settings['minimum_quantity_required'] ) ? intval( $settings['minimum_quantity_required'] ) : 1;
-		$required_quantity = max( 1, $required_quantity );
-		
 		// Calculate the correct offer quantity based on parent quantity
-		$calculated_quantity = floor( $parent_quantity / $required_quantity ) * 1;
+		$calculated_quantity = Helper::get_offer_quantity( $settings, intval( $parent_item['quantity'] ) );
 		
 		if ( $calculated_quantity > 0 ) {
 			WC()->cart->cart_contents[ $offer_cart_key ]['quantity'] = $calculated_quantity;
@@ -764,6 +777,12 @@ class OrderBogo implements HookRegistry {
 		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
 
 		if ( $product_bogo_settings ) {
+			// An offer type the cart doesn't apply isn't advertised either
+			// (the product offer still takes precedence, as in the cart).
+			if ( ! BogoValidator::has_known_offer_type( $product_bogo_settings ) ) {
+				return;
+			}
+
 			// Resolve the actual gift product. For a "Buy X Get Y" offer this is a
 			// different product; passing the current product id would render the wrong
 			// same-product template and hide the gift product on the product page.
@@ -823,8 +842,10 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 		
-		$regular_price = $_product->get_price();
-		$offer_price   = Helper::calculate_offer_price( $offer_type, $regular_price, $discount_amount );
+		// The offer comes off the price the shopper would pay (a sale price
+		// included); the box strikes through the regular price.
+		$offer_price   = Helper::calculate_offer_price( $offer_type, $_product->get_price(), $discount_amount );
+		$regular_price = '' !== (string) $_product->get_regular_price() ? $_product->get_regular_price() : $_product->get_price();
 		
 		// Prepare template variables
 		$offered_product = $current_product_id; // The product that triggers the offer
@@ -845,6 +866,9 @@ class OrderBogo implements HookRegistry {
 			'offered_products' => $bogo_settings['offered_products'][0] ?? $current_product_id,
 		));
 		
+		// Counts the offer's views (the box carries `data-spsg-track`); prints in the footer.
+		wp_enqueue_script( 'spsg-storefront-tracker' );
+
 		// Include the appropriate template
 		if ( $current_product_id === $offer_product_id ) {
 			// The same-product ("Buy X Get X") template guards on $product, which is

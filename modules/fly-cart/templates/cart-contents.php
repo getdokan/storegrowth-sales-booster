@@ -110,8 +110,12 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 								<?php if ( $show_product_price ) : ?>
 							<div class="product-subtotal" >
 									<?php
-									if ( isset( $cart_item['bogo_offer_price'] ) ) {
-										$offer_price = floatval( $cart_item['bogo_offer_price'] );
+									// A BOGO gift or an order bump line: its offer price,
+									// which the cart sets only while it calculates totals.
+									$line_price = $cart_item['bogo_offer_price'] ?? $cart_item['custom_price'] ?? null;
+
+									if ( null !== $line_price ) {
+										$offer_price = floatval( $line_price );
 										$quantity    = intval( $cart_item['quantity'] );
 										$sub_total   = wc_price( $offer_price * $quantity );
 									} else {
@@ -201,3 +205,5 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 </div>
 
 <?php do_action( 'woocommerce_after_cart' ); ?>
+
+<?php require __DIR__ . '/cart-checkout-buttons.php'; ?>

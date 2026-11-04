@@ -1,4 +1,9 @@
 <?php
+/**
+ * Countdown Timer runtime services.
+ *
+ * @package SBFW
+ */
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer\Providers;
 
@@ -6,6 +11,7 @@ use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\Ajax;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CommonHooks;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\EnqueueScript;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\OrderAttribution;
 
 /**
  * BootstrapServiceProvider for the module.
@@ -18,40 +24,40 @@ use StorePulse\StoreGrowth\Modules\CountdownTimer\EnqueueScript;
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
-    /**
-     * List of services provided by this provider.
-     *
-     * @since 2.0.0
-     *
-     * @var array<class-string>
-     */
-    protected $services = [
-        EnqueueScript::class,
-        CommonHooks::class,
-        Ajax::class,
-    ];
+	/**
+	 * List of services provided by this provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @var array<class-string>
+	 */
+	protected $services = [
+		EnqueueScript::class,
+		CommonHooks::class,
+		Ajax::class,
+		OrderAttribution::class,
+	];
 
-    /**
-     * Boot the service provider and supporting services.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function boot(): void {
-        foreach ( $this->services as $service ) {
-            $this->share_with_implements_tags( $service );
-        }
-    }
+	/**
+	 * Boot the service provider and supporting services.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		foreach ( $this->services as $service ) {
+			$this->share_with_implements_tags( $service );
+		}
+	}
 
-    /**
-     * Register the service provider.
-     *
-     * @since 2.0.0
-     *
-     * @return void
-     */
-    public function register(): void {
-
-    }
+	/**
+	 * Register the service provider.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+	}
 }

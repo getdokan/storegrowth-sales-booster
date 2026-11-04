@@ -1,0 +1,119 @@
+/*
+ * StoreGrowth storefront bars: the layout the Free Shipping bar and the
+ * Floating Bar share (design `.fbar`). Handle `spsg-storefront-bar`, a
+ * dependency of both modules' stylesheets.
+ *
+ * Colours, height, font family and font size come from each module's inline
+ * CSS; pro's templates use the same classes. The close button inside the
+ * Floating Bar's action button also carries `…-remove`, so the close icon is
+ * matched as a direct child of the bar.
+ */
+
+.spsg-pd-banner-bar-wrapper,
+.spsg-floating-notification-bar-wrapper {
+    box-sizing: border-box;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    z-index: var(--spsg-z-bar, 99999);
+    text-align: center;
+}
+
+.spsg-pd-banner-bar,
+.spsg-floating-notification-bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0 16px;
+}
+
+.spsg-pd-banner-bar-icon,
+.spsg-floating-notification-bar-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+/* The lucide icons (stroke in the icon colour). */
+.spsg-bar-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    fill: none !important;
+}
+
+.spsg-fn-bar-data-content,
+.spsg-floating-notification-bar-text-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 20px;
+    min-width: 0;
+}
+
+.spsg-pd-banner-text,
+.spsg-floating-notification-bar-text {
+    min-width: 0;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.fn-bar-action-button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.fn-bar-action-button:hover {
+    opacity: 0.95;
+}
+
+.spsg-pd-banner-bar > .spsg-pd-banner-bar-remove,
+.spsg-floating-notification-bar > .spsg-floating-notification-bar-remove {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.spsg-pd-banner-bar > .spsg-pd-banner-bar-remove:hover,
+.spsg-floating-notification-bar > .spsg-floating-notification-bar-remove:hover {
+    opacity: 1;
+}
+
+/* Narrow screens: two rows instead of crushing the bar. */
+@media screen and (max-width: 768px) {
+    .spsg-pd-banner-bar-wrapper,
+    .spsg-floating-notification-bar-wrapper {
+        height: auto !important;
+    }
+
+    .spsg-pd-banner-bar,
+    .spsg-floating-notification-bar {
+        padding: 8px 12px;
+    }
+
+    .spsg-fn-bar-data-content,
+    .spsg-floating-notification-bar-text-container {
+        gap: 8px 12px;
+    }
+}

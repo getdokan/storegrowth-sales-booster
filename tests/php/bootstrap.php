@@ -84,6 +84,8 @@ function spsg_install_storegrowth() {
 		\StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration::run_migration();
 	}
 
+	\StorePulse\StoreGrowth\Analytics\Schema::install();
+
 	echo esc_html( 'Installing StoreGrowth...' . PHP_EOL );
 }
 

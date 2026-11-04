@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -55,14 +56,15 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		$bar_data = $form_data['shipping_bar_data'];
+		// Kept for back-compat (ADR-004): the same settings service as
+		// `POST sales-booster/v1/settings/floating-notification-bar`, which
+		// validates and sanitizes every key (this action used to store the
+		// payload unsanitized) and merges into the stored option.
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( FloatingNotificationBarModule::get_id(), $form_data['shipping_bar_data'] );
 
-		$icon_validator = array(
-			'default_banner_icon_html',
-			'progressive_banner_icon_html',
-		);
-
-		update_option( 'spsg_floating_notification_bar_settings', $bar_data );
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
 
 		wp_send_json_success( maybe_unserialize( get_option( 'spsg_floating_notification_bar_settings' ) ) );
 	}

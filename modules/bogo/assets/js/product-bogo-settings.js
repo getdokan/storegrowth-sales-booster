@@ -77,4 +77,11 @@
     } else {
         console.warn('Select2 is not loaded. BOGO product settings may not work correctly.');
     }
+
+    // Opened from the BOGO offer list (`#bogo_product_data`): show the tab.
+    $( function () {
+        if ( '#bogo_product_data' === window.location.hash ) {
+            $( '.product_data_tabs a[href="#bogo_product_data"]' ).trigger( 'click' );
+        }
+    } );
 })(jQuery);

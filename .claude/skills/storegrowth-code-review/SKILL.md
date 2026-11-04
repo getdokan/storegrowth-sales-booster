@@ -1,61 +1,79 @@
 ---
 name: storegrowth-code-review
-description: Review StoreGrowth (Sales Booster) code changes and pull requests for conventions, security, and architecture compliance. Use when reviewing PRs, auditing code, or checking quality before merge.
+description: Review StoreGrowth (Sales Booster) code changes and pull requests for conventions, security, data safety, and architecture compliance. Use when reviewing PRs, auditing code, or checking quality before merge.
 ---
 
 # StoreGrowth Code Review
 
-Review changes against StoreGrowth conventions. Consult `storegrowth-backend-dev`, `storegrowth-frontend-dev`, and `storegrowth-module-dev` for the detailed standards each item references.
+Review changes against the ADRs (`docs/adr/`) and `CLAUDE.md`. Consult `storegrowth-backend-dev`, `storegrowth-frontend-dev`, and `storegrowth-module-dev` for the detailed standards each item references. Feature plans live in `docs/<feature>/` (analytics: `docs/analytics/README.md`).
 
 ## Critical violations to flag
 
-### Backend PHP — architecture
+### Backward compatibility (ADR-004): highest priority
 
-- **Hooks registered ad-hoc** — new WordPress hooks should live in a class implementing `HookRegistry` (auto-registered), not scattered `add_action` calls in random constructors. See `storegrowth-backend-dev`.
-- **REST controller not auto-wired** — controllers must extend `WP_REST_Controller` and be registered in a provider (tagged so `Bootstrap::register_rest_routes()` finds them). Namespace must be `sales-booster/v1`.
-- **Service not registered via a provider** — new services belong in the appropriate `ServiceProvider` / `BootstrapServiceProvider` using `add_with_implements_tags()` / `share_with_implements_tags()`; avoid `new ClassName()` for things that should be container-managed.
-- **Wrong namespace / path** — must follow `StorePulse\StoreGrowth\…` with matching file path. Watch for `League\Container\…` imports that should be the mozart-prefixed `StorePulse\StoreGrowth\ThirdParty\Packages\League\Container\…`.
-- **Hand-edited `lib/`** — that directory is mozart-generated; changes belong in `composer.json` + regeneration.
+- **Renamed or removed** PHP hook, public class/method/function, option name/key/value shape, admin slug, ajax action, REST route, storefront class or script handle. Pro 2.2.0 must keep working when only lite updates.
+- **New hook not in `tests/compat/php-hooks-baseline.txt`** (sorted); `npm run check:hooks` must pass.
+- **Settings write that bypasses `SettingsService::save()`** (merge-only): existing user settings must never be lost.
 
-### Backend PHP — modules
+### Backend PHP: architecture
 
-- **Module not extending `BaseModule`** / not implementing the `ModuleSkeleton` methods (`get_id`, `get_name`, `get_icon`, `get_banner`, `get_description`, `get_module_category`).
-- **Module not fully wired** — missing `require_once` in `storegrowth-sales-booster.php`, missing PSR-4 autoload entry, or missing `watch:`/`build:` scripts. See `storegrowth-module-dev`.
-- **Runtime services registered in the always-on provider** — module runtime services go in `BootstrapServiceProvider` (booted only when active), not the registration `ServiceProvider`.
+- **Hooks registered ad-hoc**: hooks live in a class implementing `Interfaces\HookRegistry`, registered in a provider.
+- **REST controller not auto-wired**: extends `WP_REST_Controller`, registered with `*_with_implements_tags()` (shared ones in `CommonServiceProvider`). Namespace `sales-booster/v1` (WooCommerce Analytics extensions may use `wc-analytics`).
+- **Module runtime services in the always-on provider**: they belong in `BootstrapServiceProvider` (booted only when the module is active).
+- **Wrong namespace / imports**: `StorePulse\StoreGrowth\…`; `use` imports, no inline FQNs; mozart-prefixed `…\ThirdParty\Packages\League\Container\…`. Never hand-edit `lib/`.
+- **Style**: short array syntax `[]` in new code, `array_merge()` not `+`, snake_case, module ids from `XModule::get_id()` (not repeated strings).
+- **Options**: `autoload` false unless read on front-end requests.
 
-### Backend PHP — naming & i18n
+### Backend PHP: order data (HPOS)
 
-- **camelCase** methods/variables — must be `snake_case`.
-- **Unprefixed hook names** — feature hooks must start with `spsg_` (lifecycle hooks `storegrowth_`). Generic/unprefixed names risk collisions.
-- **Wrong text domain** — must be `storegrowth-sales-booster` for every `__()`, `esc_html__()`, etc.
-- **Concatenated translations** — use `sprintf()` with a `/* translators: */` comment; never concatenate.
+- **`update_post_meta()` / `get_post_meta()` on an order**: orders are read with `wc_get_order(s)()` and written through the CRUD API.
+- **Keys written on subscriptions** (or copied to renewals): order-line analytics keys skip subscriptions.
+- **Test or demo orders left behind**: deleting an order leaves notes, refund items, `wc_order_stats` / lookup rows, Dokan `dokan_orders` / `dokan_order_stats` / `dokan_vendor_balance` rows, and changed `total_sales`. Cleanup code must remove all of them.
 
-### Backend PHP — security
+### Backend PHP: reports and analytics (ADR-012)
 
-- **Missing `permission_callback`** on any REST route (never omit).
-- **Unsanitized `$request` input** — sanitize everything (`absint`, `sanitize_text_field`, `wc_clean`, …).
-- **Unescaped output** — escape with `esc_html`, `esc_attr`, `wp_kses_post`, etc., especially in `templates/`.
-- **Raw SQL** — dynamic values must go through `$wpdb->prepare()`.
-- **Loose comparisons** — use `===`/`!==`; `in_array()` must pass `true` as the third arg.
+- **Money not from WooCommerce Analytics**: offer money comes from the offer report data stores (`Analytics\Reports\…`, extending WooCommerce's), never ad-hoc order loops.
+- **Dokan double counts or leaks**: Dokan copies lines to sub-orders, so the parent order and its sub-orders must not both count. Every report must respect Dokan's vendor rule: a vendor sees only their orders, an admin the vendor they picked. Check every new report route and the WooCommerce Analytics extensions (`OfferQuery::scoped_args()`).
+- **Cache key missing a filter**: any arg that changes a WooCommerce report's result (filter, vendor) must be in the query args before `get_data()`, or filtered and unfiltered results share one cache entry.
+- **Refunds and sub-orders**: refund rows have their own ids (`parent_id` = the order); filters on `order_id` drop them. Fully refunded orders, partial refunds, and refunds of non-offer lines must behave.
+- **Request-only state**: values read from `$_GET` are empty in background runs (Action Scheduler, CSV export batches, cron, internal `rest_do_request`). Pass them through args.
+- **Before the DB update**: everything that reads or writes analytics tables checks `Schema::is_installed()`.
+- **Counts presented as exact**: view/click counts from the storefront tracker are estimates and must be labelled so; rates built from them need a sane base (e.g. orders older than the first counted view).
 
-### Versioning & docs
+### Backend PHP: security
 
-- **Hardcoded `@since` on new code** — new symbols must use the literal `@since SPSG_VERSION` placeholder, NOT a version number (it's replaced at release by `bin/version-replace.sh`). Flag any newly added `@since X.Y.Z`. Do not touch existing real `@since` numbers.
-- **Missing PHPDoc / `@since`** on new public/protected methods, hooks, and filters.
+- **Missing or too-loose `permission_callback`** on any REST route. Reports: `manage_woocommerce` (or WooCommerce's report permission plus vendor scope).
+- **Unauthenticated endpoints** (e.g. the analytics tracker): accept only known values, reject non-scalar fields, cap counts and batch size, never trust ids without checking the object exists.
+- **Unsanitized input** (`absint`, `sanitize_key`, `sanitize_text_field`, `wc_clean`), **unescaped output** (`esc_html`, `esc_attr`, `wp_kses_post`, especially in `templates/`), **raw SQL** without `$wpdb->prepare()` (table names from constants only).
+- **Loose comparisons**: `===` / `!==`; `in_array()` with `true`.
+- **CSV / spreadsheet exports** without formula-injection escaping.
 
-### Frontend (React)
+### Versioning, i18n and docs
 
-- **Class components** — functional only.
-- **Admin page not registered via `spsg_routes`** — module UI must push routes through `addFilter('spsg_routes', 'spsg', …)`; store must be `register()`-ed (`@wordpress/data`). See `storegrowth-frontend-dev`.
-- **Direct state mutation** — go through store actions.
-- **Wrong i18n** — use `@wordpress/i18n` with text domain `storegrowth-sales-booster`; translator comments before `sprintf()`; `_n()` for plurals.
-- **New entry/module not in build** — missing `assets/package.json` or root `package.json` `watch:`/`build:` script.
+- **Hardcoded `@since` on new code**: new symbols and hooks use `@since SPSG_VERSION`. Don't touch existing real numbers.
+- **Wrong text domain**: always the literal `'storegrowth-sales-booster'`; `sprintf()` with `/* translators: */`, never concatenation; `_n()` for plurals.
+- **Plan / ADR not updated** when the change alters a recorded decision (`docs/adr/`, `docs/<feature>/README.md`).
+
+### Frontend (TypeScript, admin)
+
+- **Native `<button>` / `<input>` / `<select>`** in admin code: use plugin-ui (`Button`, `Toggle`, `ToggleGroup`, `Tabs`, `Select`, `Input`, …) or `@storegrowth/components`.
+- **Routing**: routes through the `storegrowth.admin.routes` filter; `react-router` only from `@storegrowth/hooks`. Module settings pages come from the PHP schema (ADR-009), not hand-built pages.
+- **Global stores**: no `@wordpress/data` stores; local state and context.
+- **Shared bundles**: `@wedevs/plugin-ui` and `@storegrowth/*` are externals. Charts take `recharts` from plugin-ui (`import { recharts } from '@wedevs/plugin-ui'`), never a bare `recharts` import (lint blocks it).
+- **Tailwind**: utilities scoped to `.spsg-layout` (ADR-003); tokens `sg-*` over one-off hex values; new source folders need an `@source` line in `src/base-tailwind.css`.
+- **New bundle not wired**: entry in `webpack-entries.js`, enqueued from PHP with its `.asset.php` dependencies, generated names git-ignored.
+- **Extension points**: JS filters named `storegrowth.*`, documented where they're applied.
+- **Files**: kebab-case inside every `src/`, 4-space indentation, block-body arrow functions.
+
+### Storefront (ADR-005)
+
+- Plain CSS/JS, no Tailwind or React; settings as `--spsg-<module>-*` variables with fallbacks; scripts and the tracker enqueued only on pages that use them; existing classes and handles kept.
 
 ## Process checks
 
-- Run `composer phpcs` on changed files — the PR workflow (`.github/workflows/phpcs.yml`) runs PHPCS on changed PHP and must pass.
-- Verify the branch targets `develop` (see `storegrowth-git`).
-- Confirm `readme.txt` / `CHANGELOG.md` updated for user-facing changes.
+- `vendor/bin/phpcs` on changed PHP (compare with the base for pre-existing errors in legacy files), `npm run type-check`, `npm run lint:js` (never `--fix`), `npm run check:hooks`, PHPUnit (`npm run phpunit`).
+- `wp eval-file tests/compat/settings-roundtrip.php` when settings code changed.
+- Branch targets `develop` (see `storegrowth-git`); `readme.txt` / changelog for user-facing changes.
 
 ## Output format
 
@@ -64,15 +82,16 @@ For each finding:
 ```text
 [SEVERITY]: [specific problem]
 Location: [file:line]
-Standard: [which storegrowth-* skill section]
+Standard: [ADR / skill section]
 Fix: [brief correct example]
 ```
 
-Severity: **CRITICAL** (security / data loss / breakage) · **ERROR** (standards violation / missing required pattern) · **WARNING** (suboptimal) · **SUGGESTION** (improvement).
+Severity: **CRITICAL** (security, data leak, data loss, breakage) · **ERROR** (standards violation, wrong figures) · **WARNING** (suboptimal) · **SUGGESTION** (improvement).
 
 ## Reviewer principles
 
-- **Correct** — does it fulfill the requirement?
-- **Secure** — sanitized, escaped, permission-checked, prepared SQL?
-- **Consistent** — fits the module/provider/hook architecture and naming?
-- **Extensible** — appropriate `spsg_` filters/actions for the pro plugin (`storegrowth_pro_is_active`) to hook into?
+- **Correct**: does it fulfil the requirement, with the right numbers in every context (Dokan, refunds, background runs)?
+- **Secure**: sanitized, escaped, permission-checked, prepared SQL, nothing leaked across vendors?
+- **Compatible**: pro 2.2.0 and stored settings unaffected?
+- **Consistent and simple**: fits the provider/hook/ADR architecture, reuses existing parts, no needless abstraction?
+- **Extensible**: `spsg_` filters/actions and `storegrowth.*` JS filters where pro needs to hook in?

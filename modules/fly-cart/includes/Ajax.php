@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\FlyCart;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -45,20 +46,18 @@ class Ajax implements HookRegistry {
 			wp_send_json_error( __( 'You are not allowed to perform this action.', 'storegrowth-sales-booster' ), 403 );
 		}
 
-		// array_map() over a non-array returns null on PHP 7.4 (and throws on
-		// PHP 8), so an unvalidated payload would overwrite the stored settings
-		// with nothing. Reject it instead.
+		// Reject a non-array payload.
 		if ( ! isset( $_POST['form_data'] ) || ! is_array( $_POST['form_data'] ) ) {
 			wp_send_json_error( __( 'Invalid settings payload.', 'storegrowth-sales-booster' ), 400 );
 		}
 
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitizing via ` Helper::class, 'sanitize_form_fields'`.
-		$form_data = array_map( array( Helper::class, 'sanitize_form_fields' ), wp_unslash( $_POST['form_data'] ) );
+		// Sanitized per field and merged into the stored option by the settings service.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$saved = storegrowth_get_container()->get( SettingsService::class )->save( FlyCartModule::get_id(), wp_unslash( $_POST['form_data'] ) );
 
-		$get_form_data = Helper::get_settings( 'spsg_fly_cart_settings', array() );
-		$merged_data   = array_merge( $get_form_data, $form_data );
-
-		update_option( 'spsg_fly_cart_settings', $merged_data );
+		if ( is_wp_error( $saved ) ) {
+			wp_send_json_error( $saved->get_error_message(), 400 );
+		}
 
 		wp_send_json_success();
 	}

@@ -7,6 +7,10 @@
 
 namespace StorePulse\StoreGrowth\Admin;
 
+use Closure;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionMethod;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -22,11 +26,216 @@ class AdminMenu {
 	use Singleton;
 
 	/**
+	 * Slug of the admin page the StoreGrowth app runs on
+	 * (`admin.php?page=storegrowth#/<route>`).
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
+	const PAGE = 'storegrowth';
+
+	/**
+	 * Screen id (`admin_enqueue_scripts` hook suffix) of the app page.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string
+	 */
+	const SCREEN_ID = 'storegrowth_page_storegrowth';
+
+	/**
+	 * Old app page slugs (ADR-008). Still registered, as hidden pages that
+	 * redirect to `PAGE`, so saved links and older add-ons keep working.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @var string[]
+	 */
+	const LEGACY_PAGES = [ 'spsg-settings', 'spsg-modules' ];
+
+	/**
 	 * Constructor of Admin_Menu class.
 	 */
 	private function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
+		add_action( 'admin_init', array( $this, 'redirect_legacy_pages' ) );
 		add_filter( 'submenu_file', array( $this, 'highlight_admin_submenu' ) );
+
+		// Other plugins' notices stay off our pages; `in_admin_header` fires before any notice hook.
+		add_action( 'in_admin_header', [ $this, 'remove_third_party_notices' ] );
+
+		// Capture admin notices so the plugin header renders first on our pages.
+		add_action( 'admin_notices', array( $this, 'inject_before_notices' ), -9999 );
+		add_action( 'admin_notices', array( $this, 'inject_after_notices' ), PHP_INT_MAX );
+	}
+
+	/**
+	 * Whether the current admin screen is a StoreGrowth app page.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return bool
+	 */
+	private function is_storegrowth_page(): bool {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+		return $screen && self::SCREEN_ID === $screen->id;
+	}
+
+	/**
+	 * Send the old page slugs to the app page.
+	 *
+	 * Runs on `admin_init` (the admin has no `template_redirect`), before any
+	 * output. The browser keeps the URL's `#/route` across the redirect; a bare
+	 * Modules link carries `view=modules` so it still opens the modules list.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return void
+	 */
+	public function redirect_legacy_pages(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+
+		if ( ! in_array( $page, self::LEGACY_PAGES, true ) ) {
+			return;
+		}
+
+		$args = array( 'page' => self::PAGE );
+
+		if ( 'spsg-modules' === $page ) {
+			$args['view'] = 'modules';
+		}
+
+		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
+		exit;
+	}
+
+	/**
+	 * Remove other plugins' and themes' notice callbacks on the app page.
+	 *
+	 * Keeps WordPress core notices (update, recovery mode) and StoreGrowth's own
+	 * (lite and pro), judged by the file each callback is defined in.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function remove_third_party_notices(): void {
+		global $wp_filter;
+
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		$notice_hooks = [ 'admin_notices', 'all_admin_notices', 'user_admin_notices', 'network_admin_notices' ];
+
+		foreach ( $notice_hooks as $hook ) {
+			if ( empty( $wp_filter[ $hook ] ) ) {
+				continue;
+			}
+
+			foreach ( $wp_filter[ $hook ]->callbacks as $priority => $callbacks ) {
+				foreach ( $callbacks as $callback ) {
+					if ( $this->is_third_party_callback( $callback['function'] ) ) {
+						remove_action( $hook, $callback['function'], $priority );
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Whether a hook callback is defined in another plugin or a theme.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param callable $callback Hook callback.
+	 *
+	 * @return bool False for core, StoreGrowth, and callbacks that can't be resolved.
+	 */
+	private function is_third_party_callback( $callback ): bool {
+		try {
+			if ( is_string( $callback ) && false !== strpos( $callback, '::' ) ) {
+				$callback = explode( '::', $callback, 2 );
+			}
+
+			if ( is_array( $callback ) ) {
+				$reflection = new ReflectionMethod( $callback[0], $callback[1] );
+			} elseif ( is_object( $callback ) && ! $callback instanceof Closure ) {
+				$reflection = new ReflectionMethod( $callback, '__invoke' );
+			} else {
+				$reflection = new ReflectionFunction( $callback );
+			}
+		} catch ( ReflectionException $e ) {
+			return false;
+		}
+
+		$file = $reflection->getFileName();
+
+		if ( ! $file ) {
+			return false;
+		}
+
+		$file = wp_normalize_path( $file );
+
+		$own_dirs = [ STOREGROWTH_DIR_PATH ];
+		if ( defined( 'STOREGROWTH_PRO_DIR_PATH' ) ) {
+			$own_dirs[] = STOREGROWTH_PRO_DIR_PATH;
+		}
+
+		foreach ( $own_dirs as $dir ) {
+			if ( 0 === strpos( $file, wp_normalize_path( $dir ) ) ) {
+				return false;
+			}
+		}
+
+		$third_party_dirs = [ WP_PLUGIN_DIR, WPMU_PLUGIN_DIR, get_theme_root() ];
+
+		foreach ( $third_party_dirs as $dir ) {
+			if ( 0 === strpos( $file, trailingslashit( wp_normalize_path( $dir ) ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Open a hidden wrapper before admin notices render.
+	 *
+	 * WordPress core moves `.notice` elements to just after the first
+	 * `.wp-header-end`. Opening the wrapper (with that catcher inside) before
+	 * any notice prints collects them all in a hidden container, which the
+	 * header script moves under the header.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return void
+	 */
+	public function inject_before_notices(): void {
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		echo '<div class="spsg-notice-list-hide" id="spsg__notice-list">';
+		echo '<div class="wp-header-end" id="spsg__notice-catcher"></div>';
+	}
+
+	/**
+	 * Close the wrapper opened in inject_before_notices().
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return void
+	 */
+	public function inject_after_notices(): void {
+		if ( ! $this->is_storegrowth_page() ) {
+			return;
+		}
+
+		echo '</div>';
 	}
 
 	/**
@@ -42,7 +251,7 @@ class AdminMenu {
 		global $current_screen;
 
 		if ( 'storegrowth_page_spsg-dashboard' === $current_screen->id ) {
-			$submenu_file = 'admin.php?page=spsg-settings#/dashboard/overview';
+			$submenu_file = 'admin.php?page=' . self::PAGE;
 		}
 
 		return $submenu_file;
@@ -63,13 +272,14 @@ class AdminMenu {
 			58
 		);
 
+		// The app page itself; the other items are routes on it.
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
 			__( 'Dashboard - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Dashboard', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings#/dashboard/overview',
-			array( $this, 'dashboard_callback' )
+			self::PAGE,
+			array( $this, 'app_callback' )
 		);
 
 		add_submenu_page(
@@ -77,8 +287,26 @@ class AdminMenu {
 			__( 'Modules - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Modules', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-modules',
-			array( $this, 'modules_callback' )
+			self::PAGE . '#/modules',
+			array( $this, 'app_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
+			__( 'Features - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Features', 'storegrowth-sales-booster' ),
+			'manage_options',
+			self::PAGE . '#/features',
+			array( $this, 'app_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
+			__( 'Analytics - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Analytics', 'storegrowth-sales-booster' ),
+			'manage_options',
+			self::PAGE . '#/analytics',
+			array( $this, 'app_callback' )
 		);
 
 		add_submenu_page(
@@ -86,9 +314,14 @@ class AdminMenu {
 			__( 'Settings - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',
-			'spsg-settings',
-			array( $this, 'settings_callback' )
+			self::PAGE . '#/settings',
+			array( $this, 'app_callback' )
 		);
+
+		// Old slugs: hidden (no parent), redirected on `admin_init`.
+		foreach ( self::LEGACY_PAGES as $legacy_page ) {
+			add_submenu_page( '', 'StoreGrowth', 'StoreGrowth', 'manage_options', $legacy_page, array( $this, 'app_callback' ) );
+		}
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
@@ -97,15 +330,6 @@ class AdminMenu {
 			'manage_options',
 			'go-spsg-docs',
 			array( $this, 'handle_external_redirects' )
-		);
-
-		add_submenu_page(
-			'sales-booster-for-woocommerce',
-			__( 'Initial Setup - StoreGrowth', 'storegrowth-sales-booster' ),
-			__( 'Initial Setup', 'storegrowth-sales-booster' ),
-			'manage_options',
-			'spsg-modules#/ini-setup',
-			array( $this, 'initial_setup_page_callback' )
 		);
 
 		if ( ! sp_store_growth()->has_pro() && ! defined( 'STOREGROWTH_PRO_FILE' ) ) {
@@ -127,21 +351,59 @@ class AdminMenu {
 	 * Display module page content.
 	 */
 	public function modules_callback() {
-		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-modules-page"></div></div>';
+		$this->render_app( '/modules' );
 	}
 
 	/**
 	 * Display settings page content.
 	 */
 	public function settings_callback() {
-		echo '<div class="wrap"><div id="spsg-admin-notices"></div><div id="sbooster-settings-page"></div></div>';
+		$this->render_app( '/dashboard' );
+	}
+
+	/**
+	 * The app page: the dashboard, or the modules list when an old Modules
+	 * link was redirected here (`view=modules`). A `#/route` in the URL wins.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @return void
+	 */
+	public function app_callback(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only page routing.
+		$view = isset( $_GET['view'] ) ? sanitize_key( wp_unslash( $_GET['view'] ) ) : '';
+
+		$this->render_app( 'modules' === $view ? '/modules' : '/dashboard' );
+	}
+
+	/**
+	 * Mount points of a StoreGrowth page: header → notices → app.
+	 *
+	 * The header mounts in its own root so it paints without waiting for the
+	 * app. The notice slot has no `.spsg-layout` class on purpose: that scope's
+	 * Tailwind preflight would strip core notice styling. Captured notices are
+	 * moved into it by the header script.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $default_route Route to open when the URL has no hash.
+	 *
+	 * @return void
+	 */
+	private function render_app( string $default_route ): void {
+		echo '<div id="spsg-admin-header"></div>';
+		echo '<div id="spsg-admin-notices"></div>';
+		printf(
+			'<div id="spsg-admin-app" data-default-route="%s"></div>',
+			esc_attr( $default_route )
+		);
 	}
 
 	/**
 	 * Display Dashboard page content.
 	 */
 	public function dashboard_callback() {
-		$redirect_url = admin_url( 'admin.php?page=spsg-settings#/dashboard/overview' );
+		$redirect_url = admin_url( 'admin.php?page=' . self::PAGE . '#/dashboard' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
@@ -150,7 +412,7 @@ class AdminMenu {
 	 * Display Initail Setup page content.
 	 */
 	public function initial_setup_page_callback() {
-		$redirect_url = admin_url( 'admin.php?page=spsg-modules#/ini-setup' );
+		$redirect_url = admin_url( 'admin.php?page=' . self::PAGE . '#/ini-setup' );
 		wp_safe_redirect( $redirect_url );
 		exit;
 	}
@@ -175,7 +437,7 @@ class AdminMenu {
 	public function handle_external_redirects() {
 		$redirect_pages = array(
 			'go-spsg-pro'  => 'https://storegrowth.io/pricing',
-			'go-spsg-docs' => 'https://storegrowth.io/docs/',
+			'go-spsg-docs' => 'https://storepulse.co/plugins/storegrowth/docs/',
 		);
 
 		// Reads the admin menu slug only; no form data is processed, so there is

@@ -30,8 +30,9 @@ class EnqueueScript implements HookRegistry {
 	 * @return void
 	 */
 	public function register_hooks(): void {
-		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		// Before pro (10): pro adds its centre-position and popup CSS to
+		// `spsg-ffc-style`, which WordPress drops while it isn't registered.
+		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ), 9 );
 	}
 
 	/**
@@ -42,7 +43,7 @@ class EnqueueScript implements HookRegistry {
 	public function wp_enqueue_scripts() {
 		$settings = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$layout   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'layout', 'side' );
-		if ( is_checkout() || is_cart() ) {
+		if ( Helper::is_hidden_page() ) {
 			return;
 		}
 
@@ -85,31 +86,6 @@ class EnqueueScript implements HookRegistry {
 	}
 
 	/**
-	 * Add JS scripts to admin.
-	 *
-	 * @param string $hook Page slug.
-	 */
-	public function admin_enqueue_scripts( $hook ) {
-		if ( 'storegrowth_page_spsg-settings' === $hook ) {
-			// Add the color picker css file.
-			wp_enqueue_style( 'wp-color-picker' );
-
-			$settings_file = require PluginHelper::get_modules_path( 'fly-cart/assets/build/settings.asset.php' );
-
-			// Extra dependencies.
-			$settings_file['dependencies'][] = 'wp-color-picker';
-
-			wp_enqueue_script(
-				'spsg-fly-cart-settings',
-				PluginHelper::get_modules_url( 'fly-cart/assets/build/settings.js' ),
-				$settings_file['dependencies'],
-				$settings_file['version'],
-				false
-			);
-		}
-	}
-
-	/**
 	 * All inline styles
 	 */
 	private function qc_basic_inline_styles() {
@@ -131,7 +107,8 @@ class EnqueueScript implements HookRegistry {
 				background-color: {$wfc_color};
 				color: {$wfc_btn_bgcolor};
 			}
-			.wfc-widget-sidebar {
+			.wfc-widget-sidebar,
+			.spsg-cart-widget-buttons {
 				background-color: {$widget_bg_color};
 			}
 			.spsg-cart-widget-buttons a {

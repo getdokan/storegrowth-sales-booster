@@ -83,9 +83,14 @@ class CommonHooks implements HookRegistry {
 	}
 
 	/**
-	 * WooCommerce add-to-cart fragment.
+	 * WooCommerce add-to-cart fragment: adds the cart count to the other
+	 * fragments (it used to return only its own and drop the rest).
+	 *
+	 * @param array $fragments Fragments.
+	 *
+	 * @return array
 	 */
-	public function woocommerce_add_to_cart_fragment() {
+	public function woocommerce_add_to_cart_fragment( $fragments = [] ) {
 			ob_start();
 		?>
 			<span class="wfc-cart-countlocation">
@@ -101,14 +106,20 @@ class CommonHooks implements HookRegistry {
 	 * Frontend footer action hook.
 	 */
 	public function wp_footer() {
-		// Don't show the widget in cart or checkout page.
-		if ( is_checkout() || is_cart() ) {
+		// Don't show the widget on the cart, checkout or vendor dashboard.
+		if ( Helper::is_hidden_page() ) {
 			return;
 		}
 
 		$settings      = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
 		$icon_position = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_position', 'bottom-right' );
 		$icon_name     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'icon_name', 'shopping-cart-icon-5' );
+
+		// The centre positions are pro's (it styles them); without pro the
+		// icon takes the default place, as the settings page shows.
+		if ( ! sp_store_growth()->has_pro() && in_array( $icon_position, [ 'center-right', 'center-left' ], true ) ) {
+			$icon_position = 'bottom-right';
+		}
 
 		include __DIR__ . '/../templates/fly-cart.php';
 	}
@@ -118,9 +129,11 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function spsg_before_cart_collaterals() {
 		remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
-		remove_action( 'woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20 );
 
-		add_action( 'woocommerce_proceed_to_checkout', array( $this, 'button_proceed_to_checkout' ) );
+		// The fly cart has its own buttons, pinned below the totals (cart-contents.php).
+		// Express / wallet buttons other plugins add here mount on page load only,
+		// so in this ajax-rendered markup they never load.
+		remove_all_actions( 'woocommerce_proceed_to_checkout' );
 	}
 
 	/**

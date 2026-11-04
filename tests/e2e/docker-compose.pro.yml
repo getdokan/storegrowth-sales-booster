@@ -1,0 +1,15 @@
+# Opt-in Pro variant of the E2E stack: mounts StoreGrowth Pro from $PRO_DIR.
+#
+# bin/setup-docker.sh adds this file (and activates Pro + its license) only when
+# both PRO_DIR and LICENSE_KEY are set:
+#
+#   PRO_DIR=../../../storegrowth-sales-booster-pro LICENSE_KEY=… bash bin/setup-docker.sh
+#
+# PRO_DIR is resolved relative to tests/e2e/ (or give an absolute path).
+services:
+  wordpress:
+    volumes:
+      - ${PRO_DIR:?set PRO_DIR to the Pro plugin folder}:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro
+  cli:
+    volumes:
+      - ${PRO_DIR:?set PRO_DIR to the Pro plugin folder}:/var/www/html/wp-content/plugins/storegrowth-sales-booster-pro

@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Integrations\Dokan\Dashboard;
 
 use StorePulse\StoreGrowth\ModuleManager;
+use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper as CountdownTimerHelper;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules;
 
@@ -132,12 +133,18 @@ class Dashboard {
             return;
         }
 
-        // Define the meta keys we want to save
-        $meta_keys = [
-            '_spsg_countdown_timer_discount_amount',
-            '_spsg_countdown_timer_discount_start',
-            '_spsg_countdown_timer_discount_end',
-        ];
+		// Define the meta keys we want to save: only the fields the vendor's
+		// form has. Without them (the admin turned them off) the values are
+		// the admin's, so a vendor save leaves them.
+		if ( ! CountdownTimerHelper::vendor_can( 'vendor_can_create_countdown_discount' ) ) {
+			return;
+		}
+
+		$meta_keys = [ '_spsg_countdown_timer_discount_amount' ];
+		if ( CountdownTimerHelper::vendor_can( 'vendor_can_create_schedule_timer' ) ) {
+			$meta_keys[] = '_spsg_countdown_timer_discount_start';
+			$meta_keys[] = '_spsg_countdown_timer_discount_end';
+		}
 
         // Apply filter to allow customization of meta keys
         $meta_keys = apply_filters( 'spsg_countdown_timer_meta_keys', $meta_keys, $post_id );
@@ -146,6 +153,12 @@ class Dashboard {
         foreach ( $meta_keys as $meta_key ) {
             if ( isset( $_POST[ $meta_key ] ) ) {
                 $value = sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) );
+
+				// Dates as the admin save stores them: the sale runs through
+				// 23:59:59 of its End date (a bare date ended at 00:00).
+				if ( '_spsg_countdown_timer_discount_start' === $meta_key || '_spsg_countdown_timer_discount_end' === $meta_key ) {
+					$value = CountdownTimerHelper::discount_date( $value, '_spsg_countdown_timer_discount_end' === $meta_key );
+				}
 
                 // Allow filtering of meta values before saving
                 $value = apply_filters( 'spsg_countdown_timer_meta_value', $value, $meta_key, $post_id );

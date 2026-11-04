@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
- * Version:     2.2.0
+ * Version:     3.0.0
  * Author:      Dokan Inc.
  * Author URI:  https://storegrowth.io
  * License:     GPL-2.0+
@@ -35,7 +35,7 @@ require_once __DIR__ . '/vendor/autoload.php';
  * Define plugin __FILE__
  */
 if ( ! defined( 'STOREGROWTH_VERSION' ) ) {
-	define( 'STOREGROWTH_VERSION', '2.2.0' );
+	define( 'STOREGROWTH_VERSION', '3.0.0' );
 }
 
 /**
@@ -80,20 +80,25 @@ if ( ! defined( 'STOREGROWTH_BASENAME' ) ) {
 register_activation_hook(
 	__FILE__,
 	function () {
-		add_option( 'storegrowth_activation_redirect', true );
+		// Admin-only, one-shot flag: never needed on front-end requests.
+		add_option( 'storegrowth_activation_redirect', true, '', false );
 
 		// A fresh install has nothing to migrate, so it starts at the current
-		// database version and never sees the upgrade notice.
-		\StorePulse\StoreGrowth\Upgrader::maybe_stamp_fresh_install();
+		// database version and never sees the upgrade notice; it creates the
+		// tables an update gets from its migration.
+		if ( \StorePulse\StoreGrowth\Upgrader::maybe_stamp_fresh_install() ) {
+			\StorePulse\StoreGrowth\Analytics\Schema::install();
+		}
 	}
 );
 
 /**
  * Declare compatibility with WooCommerce High-Performance Order Storage (HPOS).
  *
- * The plugin writes no order or order-item meta and reads orders only through
- * the WooCommerce CRUD API, so it is HPOS-safe. Any future code that stores
- * order data must use the CRUD API (never update_post_meta) to keep this true.
+ * The plugin reads orders and writes order and order-item meta (offer
+ * attribution, ADR-012) only through the WooCommerce CRUD API, so it is
+ * HPOS-safe. Any future code that stores order data must use the CRUD API
+ * (never update_post_meta) to keep this true.
  *
  * @since 2.1.2
  */

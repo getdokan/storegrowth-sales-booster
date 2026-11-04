@@ -5,7 +5,7 @@
  * Run inside the WP-CLI container of whichever environment hosts the site:
  *
  *   # Docker stack (bin/setup-docker.sh):
- *   docker compose run --rm cli wp eval-file \
+ *   docker compose -p <project> run --rm cli wp eval-file \
  *     /var/www/html/wp-content/plugins/storegrowth-sales-booster/tests/e2e/bin/provision-site.php
  *
  *   # GitHub Actions (wp-env):
@@ -63,13 +63,24 @@ if ( $checkout_id ) {
 	);
 }
 
-/* -- Activate the Pro plugin if it is present (Docker mounts it; CI may not). - */
+/* -- Lite or Pro. -------------------------------------------------------------
+ * Pro runs only when it is mounted AND a LICENSE_KEY is given (the Docker
+ * stack's opt-in Pro variant, or CI with the Pro secrets). Otherwise it is
+ * deactivated, so a lite stack never reports has_pro() through a stale
+ * active_plugins entry (deactivate_plugins() works on the option even when the
+ * plugin folder is no longer mounted). */
 if ( ! function_exists( 'activate_plugin' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 $pro_plugin = 'storegrowth-sales-booster-pro/storegrowth-sales-booster-pro.php';
-if ( file_exists( WP_PLUGIN_DIR . '/' . $pro_plugin ) && ! is_plugin_active( $pro_plugin ) ) {
+$pro_wanted = getenv( 'LICENSE_KEY' ) && file_exists( WP_PLUGIN_DIR . '/' . $pro_plugin );
+if ( $pro_wanted && ! is_plugin_active( $pro_plugin ) ) {
 	activate_plugin( $pro_plugin );
+} elseif ( ! $pro_wanted && is_plugin_active( $pro_plugin ) ) {
+	deactivate_plugins( $pro_plugin, true );
+	if ( class_exists( 'WP_CLI' ) ) {
+		WP_CLI::log( '    StoreGrowth Pro deactivated (lite stack).' );
+	}
 }
 
 /* -- Activate the Pro license from $LICENSE_KEY (Appsero), if available. ------
@@ -149,6 +160,37 @@ if ( class_exists( 'WC_Product_Simple' ) ) {
 		$product->set_status( 'publish' );
 		$product->save();
 	}
+
+	/* The specs use the ids in data/products.ts (PRODUCTS.*.id) and its
+	 * UNCATEGORIZED_CATEGORY_ID directly: fail here, loudly, when the site
+	 * gave them others (e.g. posts created before the seed), rather than let
+	 * specs fail later on the wrong products. Keep the two lists in sync. */
+	$expected_ids = [
+		'e2e-test-product-a' => 11,
+		'e2e-test-product-b' => 12,
+		'e2e-sale-product-c' => 13,
+	];
+	$wrong_ids    = [];
+	foreach ( $expected_ids as $slug => $expected_id ) {
+		$post      = get_page_by_path( $slug, OBJECT, 'product' );
+		$actual_id = $post ? (int) $post->ID : 0;
+		if ( $actual_id !== $expected_id ) {
+			$wrong_ids[] = sprintf( '%s is #%d, data/products.ts expects #%d', $slug, $actual_id, $expected_id );
+		}
+	}
+	$category_id = (int) get_option( 'default_product_cat', 0 );
+	if ( 15 !== $category_id ) {
+		$wrong_ids[] = sprintf( 'the default product category is #%d, data/products.ts expects #15', $category_id );
+	}
+	if ( $wrong_ids ) {
+		$message = "Seeded ids don't match tests/e2e/data/products.ts:\n  " . implode( "\n  ", $wrong_ids )
+			. "\nProvision a fresh site (docker compose -p <project> down -v, then bin/setup-docker.sh) or update data/products.ts.";
+		if ( class_exists( 'WP_CLI' ) ) {
+			WP_CLI::error( $message );
+		}
+		fwrite( STDERR, $message . "\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+		exit( 1 );
+	}
 }
 
 /* -- Seed the `e2e10` coupon (10% off) the Fly Cart coupon test applies. ------ */
@@ -160,38 +202,29 @@ if ( class_exists( 'WC_Coupon' ) && function_exists( 'wc_get_coupon_id_by_code' 
 	$coupon->save();
 }
 
-/* -- Seed a global "Buy C get C free" BOGO offer for the Fly Cart badge test. -
- * Lives here (not "out of band") so every environment is self-contained. The
- * BOGO module's table is created during its activation above. */
-$bogo_manager = '\\StorePulse\\StoreGrowth\\Modules\\BoGo\\BogoDataManager';
-$bogo_product = get_page_by_path( 'e2e-sale-product-c', OBJECT, 'product' );
-if ( $bogo_product && class_exists( $bogo_manager ) ) {
-	$existing = $bogo_manager::get_bogo_offers(
+/* -- A BLOCK checkout too, at /e2e-block-checkout/ (Order Bump block; ISSUES #7).
+ * WooCommerce's own default Checkout block content, so the page renders as a
+ * fresh store's block checkout would. Idempotent by slug. Created AFTER the
+ * products, so a fresh stack keeps their ids 11–13 (data/products.ts). */
+if ( class_exists( 'WC_Install' ) && ! get_page_by_path( 'e2e-block-checkout' ) ) {
+	$block_content = new ReflectionMethod( 'WC_Install', 'get_checkout_block_content' );
+	$block_content->setAccessible( true );
+	wp_insert_post(
 		array(
-			'offered_products' => wp_json_encode( array( (int) $bogo_product->ID ) ),
-			'type'             => 'global',
-			'status'           => 'active',
+			'post_type'    => 'page',
+			'post_status'  => 'publish',
+			'post_title'   => 'E2E Block Checkout',
+			'post_name'    => 'e2e-block-checkout',
+			'post_content' => $block_content->invoke( null ),
 		)
 	);
-	if ( empty( $existing ) ) {
-		try {
-			$bogo_manager::create_global_offer(
-				array(
-					'name_of_order_bogo'     => 'E2E Fly Cart BOGO (Buy C get C free)',
-					'offer_type'             => 'free',
-					'bogo_deal_type'         => 'different',
-					'offered_products'       => array( (int) $bogo_product->ID ),
-					'get_alternate_products' => array( (int) $bogo_product->ID ),
-					'status'                 => 'active',
-				)
-			);
-		} catch ( \Exception $e ) {
-			if ( class_exists( 'WP_CLI' ) ) {
-				WP_CLI::warning( 'Could not seed BOGO offer: ' . $e->getMessage() );
-			}
-		}
-	}
 }
+
+/* -- No BOGO / Order Bump records are seeded. ---------------------------------
+ * Specs own them: create through the REST helpers (helpers/records.ts) and
+ * delete what they made. A seeded offer would eat one of lite's two BOGO
+ * slots, and the old "Buy C get C" seed is rejected by the current validator
+ * (the offer product can't be a target product). */
 
 if ( class_exists( 'WP_CLI' ) ) {
 	WP_CLI::success( 'StoreGrowth E2E site provisioned (all modules active, products seeded, classic checkout).' );

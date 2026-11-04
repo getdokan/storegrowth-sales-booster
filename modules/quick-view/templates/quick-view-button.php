@@ -5,12 +5,14 @@
  * @package SBFW
  */
 
+use StorePulse\StoreGrowth\Modules\QuickView\Settings\QuickViewSettings;
+
 global $product;
 $product_id            = $product->get_ID();
 $product_type          = $product->get_type();
 $settings              = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_quick_view_settings' );
 $button_label          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_label', 'Quick View' );
-$modal_effect          = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'modal_animation_effect', 'mfp-3d-unfold' );
+$modal_effect          = QuickViewSettings::modal_effect( $settings );
 $quick_view_icon_color = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'button_text_color', '#ffffff' );
 $is_icon_active        = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'enable_qucik_view_icon', false );
 // $product_page          = is_product() ? '_product_page' : '';

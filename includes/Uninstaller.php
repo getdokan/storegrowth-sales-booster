@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth;
 
+use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
 
@@ -132,6 +133,9 @@ class Uninstaller {
 		if ( class_exists( Migration::class ) ) {
 			$tables[] = Migration::TABLE_NAME;
 		}
+
+		$tables[] = Schema::OFFER_LOOKUP;
+		$tables[] = Schema::DAILY;
 
 		return $tables;
 	}

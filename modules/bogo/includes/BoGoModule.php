@@ -103,13 +103,16 @@ class BoGoModule extends BaseModule {
 		return new BootstrapServiceProvider();
 	}
 
-	public function activate(): bool
-	{
-		// Run BOGO migration if needed
-		$migration_status = \StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::get_migration_status();
-		if ( $migration_status['migration_needed'] ) {
-			\StorePulse\StoreGrowth\Modules\BoGo\BogoMigration::migrate_to_single_table();
-		}
+	/**
+	 * Activate the module: create the BOGO table and bring over 1.x offers
+	 * (once), then activate.
+	 *
+	 * @since 2.0.0
+	 * @return bool True if activation was successful, false otherwise.
+	 */
+	public function activate(): bool {
+		BogoDataManager::create_table();
+		BogoMigration::maybe_migrate();
 
 		return parent::activate();
 	}
