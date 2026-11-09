@@ -41,6 +41,10 @@ function submenuTarget(
         return 'page=storegrowth#/modules';
     }
 
+    if ( pathname.startsWith( '/campaigns' ) ) {
+        return 'page=storegrowth#/campaigns';
+    }
+
     // The setup wizard opens from the settings page.
     if (
         pathname.startsWith( '/settings' ) ||

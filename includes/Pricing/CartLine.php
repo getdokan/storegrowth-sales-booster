@@ -119,7 +119,7 @@ class CartLine {
 	 *
 	 * @return void
 	 */
-	private static function notice( string $message ): void {
+	public static function notice( string $message ): void {
 		if ( ! wc_has_notice( $message, 'notice' ) ) {
 			wc_add_notice( $message, 'notice', [ self::NOTICE_SOURCE => true ] );
 		}

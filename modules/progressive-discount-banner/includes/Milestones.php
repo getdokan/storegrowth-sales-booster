@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
+use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
@@ -622,9 +623,12 @@ class Milestones {
 
 		$percent = $next && $next['threshold'] > 0 ? (int) min( 100, floor( $subtotal / $next['threshold'] * 100 ) ) : 100;
 
+		// A running campaign's copy, on the module's own milestones.
+		$campaign_copy = CampaignSurfaces::copy( CampaignSurfaces::CART_REWARDS, (array) $settings );
+
 		return [
 			'placement'     => (string) PluginHelper::find_option_settings( $settings, 'bar_placement', 'both' ),
-			'message'       => self::plain_text( $next ? self::fill_copy( (string) PluginHelper::find_option_settings( $settings, 'progressive_banner_text' ), $next, $subtotal ) : (string) PluginHelper::find_option_settings( $settings, 'goal_completion_text' ) ),
+			'message'       => '' !== $campaign_copy ? $campaign_copy : self::plain_text( $next ? self::fill_copy( (string) PluginHelper::find_option_settings( $settings, 'progressive_banner_text' ), $next, $subtotal ) : (string) PluginHelper::find_option_settings( $settings, 'goal_completion_text' ) ),
 			'percent'       => $percent,
 			'percent_width' => $percent . '%',
 			'milestones'    => $milestones,

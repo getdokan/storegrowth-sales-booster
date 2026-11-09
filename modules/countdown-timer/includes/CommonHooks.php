@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
+use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Pricing\DealList;
 use WC_Product;
@@ -57,11 +58,17 @@ class CommonHooks implements HookRegistry {
 		foreach ( $cart->get_cart() as $key => $item ) {
 			$product = wc_get_product( $item['data']->get_id() );
 
-			if ( ! $product || ! Helper::is_product_discountable( $product->get_id() ) ) {
+			if ( ! $product ) {
 				continue;
 			}
 
-			$percent = (int) get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
+			$campaign = CampaignPrice::for_product( $product->get_id() );
+
+			if ( ! $campaign && ! Helper::is_product_discountable( $product->get_id() ) ) {
+				continue;
+			}
+
+			$percent = $campaign ? $campaign['percent'] : (int) get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 			$from    = (float) $product->get_price( 'edit' );
 			$price   = (float) $product->get_price();
 
@@ -73,7 +80,7 @@ class CommonHooks implements HookRegistry {
 				'amount'       => ( $from - $price ) * (int) $item['quantity'],
 				'price'        => $price,
 				'from'         => $from,
-				'promotion_id' => 0,
+				'promotion_id' => $campaign ? $campaign['promotion_id'] : 0,
 			];
 		}
 
@@ -164,6 +171,13 @@ class CommonHooks implements HookRegistry {
 			return $price;
 		}
 
+		// A campaign's price replaces the product's own Countdown while it runs.
+		$campaign = CampaignPrice::for_product( $product->get_id() );
+
+		if ( $campaign ) {
+			return ( floatval( $price ) * ( 100 - $campaign['percent'] ) ) / 100;
+		}
+
 		// Check countdown discount is set.
 		if ( Helper::is_product_discountable( $product->get_id() ) ) {
 			$current_price = floatval( $price );
@@ -183,8 +197,8 @@ class CommonHooks implements HookRegistry {
 	 * @param \WC_Product $product WooCommerce product object.
 	 */
 	public function woocommerce_product_is_on_sale( $is_on_sale, $product ) {
-		// Check countdown discount is set.
-		if ( Helper::is_product_discountable( $product->get_id() ) ) {
+		// Check countdown discount is set, or a campaign price is on it.
+		if ( CampaignPrice::for_product( $product->get_id() ) || Helper::is_product_discountable( $product->get_id() ) ) {
 			return true;
 		}
 

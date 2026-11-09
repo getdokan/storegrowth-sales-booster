@@ -19,6 +19,7 @@ use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper as CountdownHelper;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration as OrderBumpTable;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
+use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -578,14 +579,21 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	protected function campaign_names( array $campaign_ids ): array {
 		global $wpdb;
 
-		$ids = [
+		$ids   = [
 			'bogo'       => [],
 			'order_bump' => [],
 		];
+		$names = [];
 		foreach ( $campaign_ids as $campaign_id ) {
 			list( $type, $id ) = array_pad( explode( ':', (string) $campaign_id, 2 ), 2, '0' );
 			if ( isset( $ids[ $type ] ) && (int) $id ) {
 				$ids[ $type ][] = (int) $id;
+			}
+
+			// A campaign-only offer (`bogo:co12`) has its name on its campaign row.
+			if ( 0 === strpos( (string) $id, 'co' ) ) {
+				$row                   = CampaignRepository::find_offer_row( (int) substr( $id, 2 ) );
+				$names[ $campaign_id ] = (string) ( $row['overrides']['name'] ?? $row['overrides']['name_of_order_bogo'] ?? '' );
 			}
 		}
 
@@ -593,7 +601,6 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 			'bogo'       => $wpdb->prefix . BogoDataManager::TABLE_NAME,
 			'order_bump' => $wpdb->prefix . OrderBumpTable::TABLE_NAME,
 		];
-		$names  = [];
 
 		foreach ( $ids as $type => $type_ids ) {
 			if ( ! $type_ids ) {

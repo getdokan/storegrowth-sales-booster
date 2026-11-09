@@ -9,7 +9,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="spsg-cart-rewards">
+<div class="spsg-cart-rewards" data-spsg-surface="cart_rewards">
 	<p class="spsg-cart-rewards__message"><?php echo esc_html( $progress['message'] ); ?></p>
 	<div class="spsg-cart-rewards__track">
 		<div class="spsg-cart-rewards__fill" style="width: <?php echo esc_attr( (string) $progress['percent'] ); ?>%"></div>

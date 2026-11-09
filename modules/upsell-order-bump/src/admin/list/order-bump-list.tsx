@@ -23,8 +23,10 @@ import {
     CardHead,
     FeatureLayout,
     ProBadge,
+    OfferLimitNotice,
     ProductCell,
     RecordList,
+    TimelineChip,
 } from '@storegrowth/components';
 import { useModules, useNavigate } from '@storegrowth/hooks';
 import { errorMessage } from '@storegrowth/utilities';
@@ -223,6 +225,18 @@ function BumpList() {
             icon={ CreditCard }
             empty={ noBumps }
             statusLabel={ statusLabel }
+            statusNote={ ( item ) => {
+                return (
+                    <>
+                        { item.chip && (
+                            <span className="text-xs text-sg-help">
+                                { item.chip }
+                            </span>
+                        ) }
+                        <TimelineChip timeline={ item.timeline } />
+                    </>
+                );
+            } }
             messages={ MESSAGES }
         />
     );
@@ -296,6 +310,7 @@ export default function OrderBumpList() {
 
     return (
         <FeatureLayout moduleId={ MODULE_ID }>
+            <OfferLimitNotice kind="order_bump" />
             <BumpList />
         </FeatureLayout>
     );

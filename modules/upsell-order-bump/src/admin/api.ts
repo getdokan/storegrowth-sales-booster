@@ -7,6 +7,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addQueryArgs } from '@wordpress/url';
+import type { OfferTimelineData } from '@storegrowth/components';
 import {
     type Currency,
     getAdminData,
@@ -26,6 +27,8 @@ export interface OrderBump {
     id: number;
     name: string;
     status: 'active' | 'inactive';
+    chip?: string;
+    timeline?: OfferTimelineData;
     target_type: 'products' | 'categories';
     /** Deleted targets are left out. */
     targets: BumpTarget[];

@@ -4,6 +4,7 @@
  *
  * @since SPSG_VERSION
  */
+import type { OfferTimelineData } from '@storegrowth/components';
 import { getAdminData, type RecordEditorData } from '@storegrowth/utilities';
 
 /** A coupon as the list shows it (the route returns more). */
@@ -16,6 +17,7 @@ export interface SmartCouponRow {
     discount_type: 'percentage' | 'fixed' | 'tiers' | 'buy_x_get_y';
     /** Why a coupon that's on isn't running now; empty when it is. */
     chip: string;
+    timeline?: OfferTimelineData;
     used_in: string;
     uses: number;
     /** In the store's price format. */

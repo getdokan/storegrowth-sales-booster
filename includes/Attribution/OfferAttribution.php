@@ -97,6 +97,29 @@ class OfferAttribution implements HookRegistry {
 	const COUNTDOWN_PCT = '_spsg_countdown_pct';
 
 	/**
+	 * Order meta key: the campaign (`spsg_campaigns.id`) credited with the
+	 * order. "Promotion" means a real campaign; `_spsg_campaign_id` means an
+	 * offer (ADR-012, ADR-016).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const PROMOTION_ID = '_spsg_promotion_id';
+
+	/**
+	 * Order meta key: how the order was credited (`offer` or `link`).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const PROMOTION_SOURCE = '_spsg_promotion_source';
+
+	/**
+	 * Order meta key: the campaign surface that led to the sale, empty for "Direct".
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const PROMOTION_SURFACE = '_spsg_promotion_surface';
+
+	/**
 	 * Register hooks.
 	 *
 	 * @since 2.2.0
@@ -153,6 +176,26 @@ class OfferAttribution implements HookRegistry {
 	}
 
 	/**
+	 * The cart-item stamp of a campaign-only offer, which has no id of its
+	 * own: `bogo:co12` carries its campaign row (ADR-016).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $type           Campaign type ("bogo" | "order_bump").
+	 * @param int    $row_id         Campaign offer row id.
+	 * @param string $reward_type    Reward type ("free" | "discount" | "fixed").
+	 * @param float  $discount_value Per-unit discount value applied, in store currency.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function campaign_only_stamp( string $type, int $row_id, string $reward_type, float $discount_value ): array {
+		return array_merge(
+			self::stamp( $type, $row_id, $reward_type, $discount_value ),
+			[ self::CAMPAIGN_ID => $type . ':co' . $row_id ]
+		);
+	}
+
+	/**
 	 * Build the cart-item stamp for an offer.
 	 *
 	 * Returned array is merged into the cart item data at an injection site.
@@ -169,7 +212,7 @@ class OfferAttribution implements HookRegistry {
 	 */
 	public static function stamp( string $type, int $id, string $reward_type, float $discount_value ): array {
 		return array(
-			self::CAMPAIGN_ID    => self::campaign_id( $type, $id ),
+			self::CAMPAIGN_ID    => self::campaign_id( $type, $id ), // A campaign-only offer's id is replaced by `campaign_only_stamp()`.
 			self::CAMPAIGN_TYPE  => $type,
 			self::REWARD_TYPE    => $reward_type,
 			self::DISCOUNT_VALUE => (string) wc_format_decimal( $discount_value ),

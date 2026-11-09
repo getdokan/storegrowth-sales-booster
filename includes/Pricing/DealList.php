@@ -189,16 +189,18 @@ class DealList {
 
 		foreach ( $eligible as $key => $line_value ) {
 			$lines[ $key ]['deals'][] = [
-				'line'     => $key,
-				'kind'     => self::COUPON,
-				'name'     => SmartCoupon::name( $coupon ),
-				'shown'    => SmartCoupon::shown_code( $coupon ),
-				'amount'   => self::coupon_amount( $coupon, $line_value, $cart_value, $lines[ $key ]['quantity'] ),
-				'code'     => $coupon->get_code(),
-				'smart'    => $is_smart,
-				'combines' => $is_smart && SmartCoupon::combines( $coupon ),
-				'others'   => $is_smart && SmartCoupon::allows_others( $coupon ),
-				'split'    => $coupon->is_type( 'fixed_cart' ) ? (float) $coupon->get_amount() : null,
+				'line'         => $key,
+				'kind'         => self::COUPON,
+				'name'         => SmartCoupon::name( $coupon ),
+				'shown'        => SmartCoupon::shown_code( $coupon ),
+				'amount'       => self::coupon_amount( $coupon, $line_value, $cart_value, $lines[ $key ]['quantity'] ),
+				'code'         => $coupon->get_code(),
+				'smart'        => $is_smart,
+				'combines'     => $is_smart && SmartCoupon::combines( $coupon ),
+				'others'       => $is_smart && SmartCoupon::allows_others( $coupon ),
+				'split'        => $coupon->is_type( 'fixed_cart' ) ? (float) $coupon->get_amount() : null,
+				// A coupon a campaign is running over credits that campaign.
+				'promotion_id' => $is_smart ? (int) SmartCoupon::effective( $coupon )['promotion_id'] : 0,
 			];
 		}
 

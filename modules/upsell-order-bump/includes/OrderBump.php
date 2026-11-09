@@ -479,15 +479,20 @@ class OrderBump implements HookRegistry {
 	 * @return array<string, string>
 	 */
 	public static function build_stamp( array $bump, float $current_price, float $price ): array {
-		// A campaign-only bump has no offer id to attribute to.
-		if ( empty( $bump['id'] ) ) {
-			return [];
-		}
-
 		$reward_types = [
 			'discount' => 'discount',
 			'free'     => 'free',
 		];
+
+		if ( empty( $bump['id'] ) ) {
+			// Stamp a campaign-only bump by its campaign row; nothing else has no id.
+			return empty( $bump['campaign_offer_id'] ) ? [] : OfferAttribution::campaign_only_stamp(
+				'order_bump',
+				(int) $bump['campaign_offer_id'],
+				$reward_types[ $bump['offer_type'] ] ?? 'fixed',
+				max( $current_price - $price, 0 )
+			);
+		}
 
 		return OfferAttribution::stamp(
 			'order_bump',

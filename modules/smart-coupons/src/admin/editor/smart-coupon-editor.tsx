@@ -25,11 +25,19 @@ import {
     MultiSelectField,
     type MultiSelectOption,
     NumberField,
+    CampaignBanner,
+    type OfferTimelineData,
     PickerCards,
     ProBadge,
     SelectField,
+    VersionHeader,
 } from '@storegrowth/components';
-import { Navigate, useModules, useNavigate } from '@storegrowth/hooks';
+import {
+    Navigate,
+    useCampaignVersion,
+    useModules,
+    useNavigate,
+} from '@storegrowth/hooks';
 import {
     fetchProductCategories,
     fetchProductsByIds,
@@ -604,7 +612,19 @@ function CouponEditor( { id }: { id: number | null } ) {
         },
         [ navigate ]
     );
-    const coupon = useSmartCoupon( id, onCreated );
+    const version = useCampaignVersion( 'smart_coupon' );
+    const coupon = useSmartCoupon(
+        version.row || id,
+        ( created ) => {
+            if ( version.campaignId ) {
+                navigate( `/campaigns/${ version.campaignId }` );
+                return;
+            }
+
+            onCreated( created );
+        },
+        version.route
+    );
     const title = __( 'Smart Coupons', 'storegrowth-sales-booster' );
     const canCreate = coupon.editor?.can_create ?? true;
     const bogoOn = Boolean( getModule( BOGO_ID )?.status );
@@ -656,6 +676,11 @@ function CouponEditor( { id }: { id: number | null } ) {
 
     return (
         <ModuleSettingsPage
+            notice={
+                <CampaignBanner
+                    timeline={ coupon.record?.timeline as OfferTimelineData }
+                />
+            }
             title={ title }
             settings={ coupon }
             hasPreview
@@ -675,7 +700,22 @@ function CouponEditor( { id }: { id: number | null } ) {
                       } )
                     : undefined
             }
-            actions={ toList }
+            actions={
+                <>
+                    <VersionHeader
+                        campaign={
+                            version.name ||
+                            ( coupon.record?.campaign as CouponCampaign | null )
+                                ?.name
+                        }
+                        campaignOnly={
+                            version.only ||
+                            Boolean( coupon.record?.campaign_only )
+                        }
+                    />
+                    { toList }
+                </>
+            }
             savedMessage={
                 id
                     ? __( 'Coupon saved.', 'storegrowth-sales-booster' )

@@ -13,6 +13,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import {
     MultiSelectField,
     NumberField,
+    OfferLimitNotice,
     SelectField,
 } from '@storegrowth/components';
 import {
@@ -329,6 +330,7 @@ export function MilestonesField( {
 
     return (
         <div className="flex w-full flex-col gap-4">
+            <OfferLimitNotice kind="cart_reward" />
             { usesFreeShipping &&
                 zonesWithout.map( ( zone ) => {
                     return (

@@ -11,6 +11,8 @@
 - **new:** StoreGrowth's notices and rewards bar show on the block cart, mini-cart (WooCommerce 11.1+) and checkout, and automatic coupons show their name there.
 - **change:** Cart Rewards thresholds now use the cart subtotal after discounts, with or without tax as the store shows prices (it was the subtotal before tax and discounts).
 - **change:** Rewards are re-checked on every cart change: dropping below a threshold removes the reward, going back above returns it. Below a free-shipping milestone the WooCommerce Free shipping rate is hidden, so stores that offered it unconditionally will see a change. The rewards bar is new on the cart page and Fly Cart.
+- **new:** Campaigns page (Pro): group offers, a campaign price and surfaces under one schedule and one report, with a shareable campaign link. Free stores see a preview with sample data; expired licences keep their campaigns read-only.
+- **new:** Offer screens show when a campaign takes over ("[Campaign] version · until [end]"), and over-limit offers on Free can be chosen from their module pages.
 - **enhancement:** The Fly Cart lists each line's item data, so variation details and deal labels show there as they do in the cart.
 - **enhancement:** Free and Pro check each other's minimum version and show a notice when one is too old.
 - **enhancement:** StoreGrowth now requires WooCommerce 8.8 or newer.

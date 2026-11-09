@@ -46,6 +46,33 @@ class OfferLookup implements HookRegistry {
 	const ROLE_DISCOUNTED = 'discounted';
 
 	/**
+	 * Role of a plain line of an order credited to a campaign: it counts in
+	 * the campaign's report and in no offer report (ADR-016).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const ROLE_PROMOTION = 'promotion';
+
+	/**
+	 * Column formats of a lookup row.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const FORMATS = [
+		'order_item_id'       => '%d',
+		'order_id'            => '%d',
+		'root_item_id'        => '%d',
+		'module'              => '%s',
+		'role'                => '%s',
+		'campaign_id'         => '%s',
+		'trigger_campaign_id' => '%s',
+		'unit_discount'       => '%f',
+		'approximate'         => '%d',
+		'promotion_id'        => '%d',
+		'promotion_surface'   => '%s',
+	];
+
+	/**
 	 * Register hooks.
 	 *
 	 * @since 3.0.0
@@ -89,7 +116,7 @@ class OfferLookup implements HookRegistry {
 			return;
 		}
 
-		$wpdb->replace( $wpdb->prefix . Schema::OFFER_LOOKUP, $row, [ '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%f', '%d' ] ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->replace( $wpdb->prefix . Schema::OFFER_LOOKUP, $row, array_values( array_intersect_key( self::FORMATS, $row ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 	}
 
 	/**
@@ -151,18 +178,67 @@ class OfferLookup implements HookRegistry {
 			]
 		);
 
-		if ( null === $figures ) {
+		$promotion = self::promotion_of( (int) $root->get_order_id() );
+
+		if ( null === $figures && ! $promotion ) {
 			return null;
 		}
 
-		return array_merge(
+		$row = array_merge(
 			[
 				'order_item_id' => $order_item_id,
 				'order_id'      => $order_id,
 				'root_item_id'  => $root->get_id(),
 			],
-			$figures
+			$figures ?? [
+				'module'              => '',
+				'role'                => self::ROLE_PROMOTION,
+				'campaign_id'         => '',
+				'trigger_campaign_id' => '',
+				'unit_discount'       => 0.0,
+				'approximate'         => 0,
+			]
 		);
+
+		return $promotion ? array_merge( $row, $promotion ) : $row;
+	}
+
+	/**
+	 * The campaign an order was credited to, as lookup columns. A Dokan
+	 * sub-order takes its parent's stamp, which is where it is written.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $order_id Id of the order the line belongs to.
+	 *
+	 * @return array{promotion_id: int, promotion_surface: string}|null
+	 */
+	public static function promotion_of( int $order_id ): ?array {
+		if ( ! Schema::has_promotions() ) {
+			return null;
+		}
+
+		$order = wc_get_order( $order_id );
+
+		if ( ! $order ) {
+			return null;
+		}
+
+		$promotion_id = (int) $order->get_meta( OfferAttribution::PROMOTION_ID );
+
+		if ( ! $promotion_id && $order->get_parent_id() ) {
+			$order        = wc_get_order( $order->get_parent_id() );
+			$promotion_id = $order ? (int) $order->get_meta( OfferAttribution::PROMOTION_ID ) : 0;
+		}
+
+		if ( ! $promotion_id ) {
+			return null;
+		}
+
+		return [
+			'promotion_id'      => $promotion_id,
+			'promotion_surface' => (string) $order->get_meta( OfferAttribution::PROMOTION_SURFACE ),
+		];
 	}
 
 	/**

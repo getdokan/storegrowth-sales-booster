@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\SalesPop;
 
+use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\SalesPop\Settings\SalesPopSettings;
@@ -49,6 +50,8 @@ class SalesPOP implements HookRegistry {
 
 		// Saves write only changed keys: fill the rest from the defaults.
 		$popup_properties = storegrowth_get_container()->get( SalesPopSettings::class )->storefront_settings( PluginHelper::get_settings( 'spsg_popup_products', true ) );
+
+		$popup_properties['popup_products'] = CampaignSurfaces::narrow_sales_pop( (array) ( $popup_properties['popup_products'] ?? [] ), (array) $popup_properties );
 
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';

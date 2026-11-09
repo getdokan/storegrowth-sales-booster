@@ -15,7 +15,7 @@ $image_without_link = '<img id="image_of_product" src="#"
 
 ?>
 <?php $template_no = ! empty( $popup_properties['template'] ) ? absint( $popup_properties['template'] ) : 4; ?>
-<section class="custom-social-proof" style="display: none;">
+<section class="custom-social-proof" style="display: none;" data-spsg-surface="sales_pop">
 	<div class="custom-notification" style="<?php echo isset( $main_div_style ) ? esc_attr( $main_div_style ) : null; ?>">
 		<div class="custom-notification-container" style="<?php do_action( 'spsg_sales_pop_image_position', $popup_properties['image_position'] ); ?>" >
 

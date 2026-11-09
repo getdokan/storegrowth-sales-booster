@@ -146,17 +146,19 @@ function vendorSchema( editor: OfferEditor, values: OfferValues ) {
 /**
  * @since 3.0.0
  *
- * @param id        Offer id, or null for a new offer.
- * @param onCreated Called with the new offer's id after it's created.
- * @param vendor    The Dokan vendor's offer (`/bogo/offers/vendor`).
+ * @param id            Offer id, or null for a new offer.
+ * @param onCreated     Called with the new offer's id after it's created.
+ * @param vendor        The Dokan vendor's offer (`/bogo/offers/vendor`).
+ * @param campaignRoute A campaign's records route, when editing its version.
  */
 export function useBogoOffer(
     id: number | null,
     onCreated: ( id: number ) => void,
-    vendor = false
+    vendor = false,
+    campaignRoute: string | null = null
 ): BogoOffer {
     const offer = useRecordEditor< OfferEditor >( {
-        route: offersRoute( vendor ),
+        route: campaignRoute ?? offersRoute( vendor ),
         id,
         onCreated,
         rules: RULES,

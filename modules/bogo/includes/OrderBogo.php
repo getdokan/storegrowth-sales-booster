@@ -120,6 +120,29 @@ class OrderBogo implements HookRegistry {
 		);
 	}
 
+	/**
+	 * The rule a badge reads: the one a running campaign puts on the product,
+	 * or the everyday one, as `effective_offer` says applies now.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $offer      The everyday rule, if any (older readers may return false).
+	 * @param int   $product_id Product id.
+	 *
+	 * @return array Empty when no rule is live.
+	 */
+	private static function effective_badge_offer( $offer, int $product_id ): array {
+		$rule = BogoDataManager::with_campaign_rule( is_array( $offer ) ? $offer : null, $product_id );
+
+		if ( empty( $rule ) ) {
+			return [];
+		}
+
+		$effective = OfferVersions::effective_offer( array_merge( $rule, [ 'offer_kind' => OfferVersions::BOGO ] ) );
+
+		return $effective['live'] ? $effective['values'] : [];
+	}
+
     public function display_bogo_floating_badge_on_product() {
 		global $product;
 
@@ -199,14 +222,20 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 
+		// The badge follows the version that applies now, a campaign's included.
+		$selected_offer = self::effective_badge_offer( ! empty( $selected_offer ) ? $selected_offer : null, (int) $product_id );
+
 		// If no applicable offer found, return early
 		if ( empty( $selected_offer ) ) {
 			return;
 		}
 
+		$shop_page_msg    = ! empty( $selected_offer['shop_page_message'] ) ? esc_html( $selected_offer['shop_page_message'] ) : $shop_page_msg;
+		$product_page_msg = ! empty( $selected_offer['product_page_message'] ) ? esc_html( $selected_offer['product_page_message'] ) : $product_page_msg;
+
 		// Set badge icon and URL
 		$is_pro = sp_store_growth()->has_pro();
-		
+
 		if ( ! empty( $selected_offer['enable_custom_badge_image'] ) ) {
 			$offer_badge     = ! empty( $selected_offer['default_badge_icon_name'] ) ? esc_html( $selected_offer['default_badge_icon_name'] ) : '';
 			$offer_badge_url = $is_pro && ! empty( $selected_offer['default_custom_badge_icon'] ) ? esc_url( $selected_offer['default_custom_badge_icon'] ) : '';
@@ -1662,7 +1691,7 @@ class OrderBogo implements HookRegistry {
 		// Try to load badge settings from the parent product's BOGO offer.
 		$parent_product_id = ! empty( $cart_item['bogo_product_for'] ) ? intval( $cart_item['bogo_product_for'] ) : 0;
 		if ( $parent_product_id ) {
-			$bogo_settings = Helper::get_product_bogo_settings( $parent_product_id );
+			$bogo_settings = self::effective_badge_offer( Helper::get_product_bogo_settings( $parent_product_id ), $parent_product_id );
 			if ( ! empty( $bogo_settings ) ) {
 				if ( ! empty( $bogo_settings['enable_custom_badge_image'] ) ) {
 					$offer_badge     = ! empty( $bogo_settings['default_badge_icon_name'] ) ? esc_html( $bogo_settings['default_badge_icon_name'] ) : '';

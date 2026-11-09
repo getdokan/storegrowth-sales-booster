@@ -20,9 +20,13 @@ import {
     type MultiSelectOption,
     NumberField,
     ProBadge,
+    CampaignBanner,
+    type OfferTimelineData,
+    VersionHeader,
 } from '@storegrowth/components';
 import {
     Navigate,
+    useCampaignVersion,
     useModules,
     useNavigate,
     useSearchParams,
@@ -213,7 +217,19 @@ function BumpEditor( { id }: { id: number | null } ) {
         },
         [ navigate, searchParams ]
     );
-    const bump = useOrderBump( id, onCreated );
+    const version = useCampaignVersion( 'order_bump' );
+    const bump = useOrderBump(
+        version.row || id,
+        ( created ) => {
+            if ( version.campaignId ) {
+                navigate( `/campaigns/${ version.campaignId }` );
+                return;
+            }
+
+            onCreated( created );
+        },
+        version.route
+    );
 
     const title = __( 'Upsell Order Bump', 'storegrowth-sales-booster' );
     const toList = (
@@ -281,12 +297,25 @@ function BumpEditor( { id }: { id: number | null } ) {
 
     return (
         <ModuleSettingsPage
+            notice={
+                <CampaignBanner
+                    timeline={ bump.record?.timeline as OfferTimelineData }
+                />
+            }
             title={ title }
             settings={ bump }
             preview={ preview }
             hasPreview
             controls={ loaded ? controls( bump, categories ) : undefined }
-            actions={ toList }
+            actions={
+                <>
+                    <VersionHeader
+                        campaign={ version.name }
+                        campaignOnly={ version.only }
+                    />
+                    { toList }
+                </>
+            }
             savedMessage={
                 id
                     ? __( 'Order bump saved.', 'storegrowth-sales-booster' )

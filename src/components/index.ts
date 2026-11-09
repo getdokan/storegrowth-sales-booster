@@ -24,6 +24,13 @@ export {
     isMobilePreview,
     TargetingFields,
 } from './bar-fields';
+export {
+    CampaignBanner,
+    TimelineChip,
+    VersionHeader,
+    type OfferTimelineData,
+} from './campaign-chips';
+export { OfferLimitNotice } from './offer-limit-notice';
 export { Card, type CardProps } from './card';
 export { CardHead, type CardHeadProps } from './card-head';
 export { ColorPicker, type ColorPickerProps } from './color-picker';

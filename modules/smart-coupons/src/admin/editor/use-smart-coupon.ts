@@ -34,15 +34,17 @@ const LOAD_ERROR = __(
 /**
  * @since SPSG_VERSION
  *
- * @param id        Coupon id, or null for a new coupon.
- * @param onCreated Called with the new coupon's id after it's created.
+ * @param id            Coupon id, or null for a new coupon.
+ * @param onCreated     Called with the new coupon's id after it's created.
+ * @param campaignRoute A campaign's records route, when editing its version.
  */
 export function useSmartCoupon(
     id: number | null,
-    onCreated: ( id: number ) => void
+    onCreated: ( id: number ) => void,
+    campaignRoute: string | null = null
 ): SmartCouponEditor {
     return useRecordEditor< SmartCouponEditorData >( {
-        route: couponsRoute(),
+        route: campaignRoute ?? couponsRoute(),
         id,
         onCreated,
         errorFields: ERROR_FIELDS,

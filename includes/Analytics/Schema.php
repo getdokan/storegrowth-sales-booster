@@ -33,7 +33,7 @@ class Schema implements HookRegistry {
 	/**
 	 * Current table version.
 	 */
-	const VERSION = '1';
+	const VERSION = '2';
 
 	/**
 	 * Unprefixed name of the offer lookup table.
@@ -68,6 +68,18 @@ class Schema implements HookRegistry {
 	}
 
 	/**
+	 * Whether the lookup table has the campaign columns. A site that ran
+	 * 3.0.0 has the table without them until the 3.1.0 update (ADR-016).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	public static function has_promotions(): bool {
+		return version_compare( (string) get_option( self::VERSION_OPTION, '0' ), '2', '>=' );
+	}
+
+	/**
 	 * Create or upgrade the tables.
 	 *
 	 * @since 3.0.0
@@ -97,11 +109,14 @@ class Schema implements HookRegistry {
 	trigger_campaign_id varchar(64) NOT NULL DEFAULT '',
 	unit_discount double NOT NULL DEFAULT 0,
 	approximate tinyint(1) NOT NULL DEFAULT 0,
+	promotion_id bigint(20) unsigned NOT NULL DEFAULT 0,
+	promotion_surface varchar(40) NOT NULL DEFAULT '',
 	PRIMARY KEY  (order_item_id, order_id),
 	KEY order_id (order_id),
 	KEY module_role (module, role),
 	KEY campaign_id (campaign_id),
-	KEY trigger_campaign_id (trigger_campaign_id)
+	KEY trigger_campaign_id (trigger_campaign_id),
+	KEY promotion_id (promotion_id)
 ) {$collate};"
 		);
 

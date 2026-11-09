@@ -56,6 +56,13 @@ class Decision {
 	private array $reported;
 
 	/**
+	 * Campaigns behind the deals that stayed: promotion id => what they saved.
+	 *
+	 * @var array<int, float>
+	 */
+	private array $promotions;
+
+	/**
 	 * Hold a decision.
 	 *
 	 * @since SPSG_VERSION
@@ -65,13 +72,26 @@ class Decision {
 	 * @param array $rejected   Coupons out of the cart: code => message.
 	 * @param array $lost_lines Lines a coupon lost: code => keys.
 	 * @param array $reported   Codes reported on a line.
+	 * @param array $promotions Campaigns behind the deals that stayed: id => saving.
 	 */
-	public function __construct( array $lines = [], array $coupon_won = [], array $rejected = [], array $lost_lines = [], array $reported = [] ) {
+	public function __construct( array $lines = [], array $coupon_won = [], array $rejected = [], array $lost_lines = [], array $reported = [], array $promotions = [] ) {
 		$this->lines      = $lines;
 		$this->coupon_won = $coupon_won;
 		$this->rejected   = $rejected;
 		$this->lost_lines = $lost_lines;
 		$this->reported   = $reported;
+		$this->promotions = $promotions;
+	}
+
+	/**
+	 * The campaigns behind the deals that stayed, largest saving first.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array<int, float> Promotion id => what its deals saved.
+	 */
+	public function promotions(): array {
+		return $this->promotions;
 	}
 
 	/**

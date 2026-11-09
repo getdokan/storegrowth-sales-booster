@@ -311,6 +311,15 @@ class AdminMenu {
 
 		add_submenu_page(
 			'sales-booster-for-woocommerce',
+			__( 'Campaigns - StoreGrowth', 'storegrowth-sales-booster' ),
+			__( 'Campaigns', 'storegrowth-sales-booster' ),
+			'manage_options',
+			self::PAGE . '#/campaigns',
+			array( $this, 'app_callback' )
+		);
+
+		add_submenu_page(
+			'sales-booster-for-woocommerce',
 			__( 'Settings - StoreGrowth', 'storegrowth-sales-booster' ),
 			__( 'Settings', 'storegrowth-sales-booster' ),
 			'manage_options',

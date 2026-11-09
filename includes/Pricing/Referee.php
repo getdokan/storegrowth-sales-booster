@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Pricing;
 
+use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
@@ -389,7 +390,7 @@ class Referee implements HookRegistry {
 	private static function has_running_campaign(): bool {
 		$now = SiteTime::now();
 
-		return ! empty( CampaignRepository::running_offers( OfferVersions::BOGO, $now ) ) || ! empty( CampaignRepository::running_offers( OfferVersions::ORDER_BUMP, $now ) );
+		return ! empty( CampaignRepository::running_offers( OfferVersions::BOGO, $now ) ) || ! empty( CampaignRepository::running_offers( OfferVersions::ORDER_BUMP, $now ) ) || CampaignPrice::any_running( $now );
 	}
 
 	/**
@@ -456,7 +457,49 @@ class Referee implements HookRegistry {
 			}
 		}
 
-		return new Decision( self::line_views( $lines, $coupons, $kept, $winners ), $coupon_won, $rejected, $lost_lines, array_map( 'strval', $reported ) );
+		return new Decision( self::line_views( $lines, $coupons, $kept, $winners ), $coupon_won, $rejected, $lost_lines, array_map( 'strval', $reported ), self::credited_promotions( $lines, $coupons, $kept, $coupon_won ) );
+	}
+
+	/**
+	 * The campaigns behind the deals that stayed, largest saving first.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]  $lines      Lines.
+	 * @param array    $coupons    Coupons by code.
+	 * @param string[] $kept       Codes that stay.
+	 * @param array    $coupon_won Bought lines whose BOGO deal lost.
+	 *
+	 * @return array<int, float>
+	 */
+	private static function credited_promotions( array $lines, array $coupons, array $kept, array $coupon_won ): array {
+		$credits = [];
+
+		foreach ( $lines as $key => $line ) {
+			foreach ( $line['deals'] as $deal ) {
+				$id = (int) ( $deal['promotion_id'] ?? 0 );
+
+				if ( ! $id ) {
+					continue;
+				}
+
+				$stayed = true;
+
+				if ( DealList::BOGO === $deal['kind'] ) {
+					$stayed = ! isset( $coupon_won[ $key ] );
+				} elseif ( DealList::COUPON === $deal['kind'] ) {
+					$stayed = in_array( $deal['code'], $kept, true ) && isset( $coupons[ $deal['code'] ]['amounts'][ $key ] );
+				}
+
+				if ( $stayed ) {
+					$credits[ $id ] = ( $credits[ $id ] ?? 0.0 ) + (float) $deal['amount'];
+				}
+			}
+		}
+
+		arsort( $credits );
+
+		return $credits;
 	}
 
 	/**

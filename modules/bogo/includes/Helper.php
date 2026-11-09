@@ -382,8 +382,9 @@ class Helper {
 	 */
 	public static function build_offer_stamp( $settings, $price_product ) {
 		$offer_id = isset( $settings['id'] ) ? (int) $settings['id'] : 0;
+		$row_id   = (int) ( $settings['campaign_offer_id'] ?? 0 );
 
-		if ( ! $offer_id || ! $price_product instanceof \WC_Product ) {
+		if ( ( ! $offer_id && ! $row_id ) || ! $price_product instanceof \WC_Product ) {
 			return array();
 		}
 
@@ -392,6 +393,10 @@ class Helper {
 
 		// Per-unit discount contributed: the price less what the gift costs.
 		$discount_value = $base_price - self::calculate_offer_price( $reward_type, $base_price, $settings['discount_amount'] ?? 0 );
+
+		if ( ! $offer_id ) {
+			return OfferAttribution::campaign_only_stamp( 'bogo', $row_id, $reward_type, $discount_value );
+		}
 
 		return OfferAttribution::stamp( 'bogo', $offer_id, $reward_type, $discount_value );
 	}

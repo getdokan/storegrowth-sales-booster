@@ -9,10 +9,14 @@ namespace StorePulse\StoreGrowth\Offers;
 
 use DateTimeImmutable;
 use Exception;
+use StorePulse\StoreGrowth\Campaigns\CampaignProducts;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\SmartCoupons\SmartCouponRepository;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
+use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use StorePulse\StoreGrowth\Support\SiteTime;
+use WC_Coupon;
 use WP_Error;
 
 // If this file is called directly, abort.
@@ -61,7 +65,7 @@ class CampaignRepository implements HookRegistry {
 	 *
 	 * @since SPSG_VERSION
 	 */
-	const VERSION = '1';
+	const VERSION = '2';
 
 	/**
 	 * Option holding the next moment a campaign starts or ends (read on
@@ -116,6 +120,15 @@ class CampaignRepository implements HookRegistry {
 	private static ?array $published_rows = null;
 
 	/**
+	 * The published campaigns, for this request.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var array[]|null
+	 */
+	private static ?array $running = null;
+
+	/**
 	 * Register hooks.
 	 *
 	 * @since SPSG_VERSION
@@ -152,7 +165,7 @@ class CampaignRepository implements HookRegistry {
 	 * @return bool
 	 */
 	public static function is_installed(): bool {
-		return false !== get_option( self::VERSION_OPTION, false );
+		return version_compare( (string) get_option( self::VERSION_OPTION, '0' ), self::VERSION, '>=' );
 	}
 
 	/**
@@ -179,10 +192,14 @@ class CampaignRepository implements HookRegistry {
 	status varchar(20) NOT NULL DEFAULT 'draft',
 	starts_at datetime DEFAULT NULL,
 	ends_at datetime DEFAULT NULL,
+	slug varchar(60) NOT NULL DEFAULT '',
+	settings longtext,
+	paused_at datetime DEFAULT NULL,
 	created_by bigint(20) unsigned NOT NULL DEFAULT 0,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY  (id),
-	KEY status (status)
+	KEY status (status),
+	KEY slug (slug)
 ) {$collate};"
 		);
 
@@ -230,6 +247,9 @@ class CampaignRepository implements HookRegistry {
 	 */
 	public static function flush(): void {
 		self::$published_rows = null;
+		self::$running        = null;
+
+		CampaignProducts::flush();
 	}
 
 	/**
@@ -432,7 +452,127 @@ class CampaignRepository implements HookRegistry {
 		$table    = $wpdb->prefix . self::CAMPAIGNS;
 		$campaign = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		return $campaign ? $campaign : null;
+		return $campaign ? self::decode_settings( $campaign ) : null;
+	}
+
+	/**
+	 * A campaign by its link slug.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $slug Slug from the campaign link.
+	 *
+	 * @return array|null
+	 */
+	public static function find_by_slug( string $slug ): ?array {
+		$slug = sanitize_title( $slug );
+
+		if ( '' === $slug || ! self::is_installed() ) {
+			return null;
+		}
+
+		global $wpdb;
+
+		$table    = $wpdb->prefix . self::CAMPAIGNS;
+		$campaign = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE slug = %s", $slug ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		return $campaign ? self::decode_settings( $campaign ) : null;
+	}
+
+	/**
+	 * Every campaign, newest first.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array[]
+	 */
+	public static function all(): array {
+		if ( ! self::is_installed() ) {
+			return [];
+		}
+
+		global $wpdb;
+
+		$table = $wpdb->prefix . self::CAMPAIGNS;
+		$rows  = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY id DESC", ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		return array_map( [ self::class, 'decode_settings' ], (array) $rows );
+	}
+
+	/**
+	 * The running campaigns at a moment (nothing while the licence is not Pro).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param DateTimeImmutable|null $now Moment to check, the current one by default.
+	 *
+	 * @return array[]
+	 */
+	public static function running( ?DateTimeImmutable $now = null ): array {
+		if ( ! sp_store_growth()->has_pro() || ! self::is_installed() ) {
+			return [];
+		}
+
+		if ( null === self::$running ) {
+			global $wpdb;
+
+			$table         = $wpdb->prefix . self::CAMPAIGNS;
+			$rows          = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE status = %s ORDER BY starts_at DESC, id DESC", self::STATUS_SCHEDULED ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			self::$running = array_map( [ self::class, 'decode_settings' ], (array) $rows );
+		}
+
+		$now = $now ?? SiteTime::now();
+
+		return array_values(
+			array_filter(
+				self::$running,
+				static function ( array $campaign ) use ( $now ): bool {
+					return self::STATUS_RUNNING === self::status_at( $campaign, $now );
+				}
+			)
+		);
+	}
+
+	/**
+	 * A stored campaign with its JSON settings decoded.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $campaign Stored row.
+	 *
+	 * @return array
+	 */
+	private static function decode_settings( array $campaign ): array {
+		$settings             = json_decode( (string) ( $campaign['settings'] ?? '' ), true );
+		$campaign['settings'] = is_array( $settings ) ? $settings : [];
+
+		return $campaign;
+	}
+
+	/**
+	 * A slug for a campaign's link, unique among campaigns.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $name Campaign name.
+	 *
+	 * @return string
+	 */
+	private static function unique_slug( string $name ): string {
+		global $wpdb;
+
+		$base   = substr( sanitize_title( $name ), 0, 50 );
+		$base   = '' !== $base ? $base : 'campaign';
+		$slug   = $base;
+		$suffix = 1;
+		$table  = $wpdb->prefix . self::CAMPAIGNS;
+
+		while ( $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table} WHERE slug = %s", $slug ) ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			++$suffix;
+			$slug = $base . '-' . $suffix;
+		}
+
+		return $slug;
 	}
 
 	/**
@@ -513,10 +653,19 @@ class CampaignRepository implements HookRegistry {
 			return new WP_Error( 'spsg_campaigns_not_installed', __( 'Run the database update first.', 'storegrowth-sales-booster' ), [ 'status' => 503 ] );
 		}
 
-		$row = array_intersect_key( $data, array_flip( [ 'name', 'status', 'starts_at', 'ends_at' ] ) );
+		$row = array_intersect_key( $data, array_flip( [ 'name', 'status', 'starts_at', 'ends_at', 'slug', 'paused_at' ] ) );
 
 		if ( isset( $row['name'] ) ) {
 			$row['name'] = sanitize_text_field( $row['name'] );
+		}
+
+		if ( isset( $row['slug'] ) ) {
+			$row['slug'] = sanitize_title( $row['slug'] );
+		}
+
+		if ( isset( $data['settings'] ) && is_array( $data['settings'] ) ) {
+			$known           = $id ? (array) ( self::get( $id )['settings'] ?? [] ) : [];
+			$row['settings'] = wp_json_encode( array_merge( $known, $data['settings'] ) );
 		}
 
 		if ( isset( $row['status'] ) && ! in_array( $row['status'], [ self::STATUS_DRAFT, self::STATUS_SCHEDULED, self::STATUS_PAUSED ], true ) ) {
@@ -540,8 +689,10 @@ class CampaignRepository implements HookRegistry {
 		$window = array_merge( (array) $stored, $row );
 
 		foreach ( $id ? self::get_offers( $id ) : [] as $offer ) {
-			if ( $offer['offer_id'] && self::find_overlap( $offer['offer_kind'], $offer['offer_id'], $window['starts_at'] ?? null, $window['ends_at'] ?? null, $id ) ) {
-				return self::overlap_error();
+			$other = $offer['offer_id'] ? self::find_overlap( $offer['offer_kind'], $offer['offer_id'], $window['starts_at'] ?? null, $window['ends_at'] ?? null, $id ) : null;
+
+			if ( $other ) {
+				return self::overlap_error( $offer['offer_kind'], $offer['offer_id'], $other );
 			}
 		}
 
@@ -550,6 +701,8 @@ class CampaignRepository implements HookRegistry {
 				$wpdb->update( $wpdb->prefix . self::CAMPAIGNS, $row, [ 'id' => $id ] );
 			}
 		} else {
+			$row = array_merge( [ 'slug' => self::unique_slug( (string) ( $row['name'] ?? '' ) ) ], $row );
+
 			$wpdb->insert( $wpdb->prefix . self::CAMPAIGNS, array_merge( [ 'status' => self::STATUS_DRAFT ], $row, [ 'created_by' => get_current_user_id() ] ) );
 			$id = (int) $wpdb->insert_id;
 		}
@@ -585,10 +738,52 @@ class CampaignRepository implements HookRegistry {
 	 *
 	 * @since SPSG_VERSION
 	 *
+	 * @param string $kind     Offer kind.
+	 * @param int    $offer_id Offer id.
+	 * @param array  $other    The campaign already using the offer.
+	 *
 	 * @return WP_Error
 	 */
-	private static function overlap_error(): WP_Error {
-		return new WP_Error( 'spsg_campaign_overlap', __( 'This offer is already in a campaign at those dates.', 'storegrowth-sales-booster' ), [ 'status' => 409 ] );
+	private static function overlap_error( string $kind, int $offer_id, array $other ): WP_Error {
+		$message = sprintf(
+			/* translators: 1: offer name, 2: campaign name, 3: its dates. */
+			__( '%1$s is already in %2$s (%3$s). Campaign dates can\'t overlap for the same offer.', 'storegrowth-sales-booster' ),
+			self::offer_name( $kind, $offer_id ),
+			$other['name'],
+			trim( $other['starts_at'] . ' - ' . (string) $other['ends_at'], ' -' )
+		);
+
+		return new WP_Error( 'spsg_campaign_overlap', $message, [ 'status' => 409 ] );
+	}
+
+	/**
+	 * An everyday offer's name.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $kind     Offer kind.
+	 * @param int    $offer_id Offer id.
+	 *
+	 * @return string
+	 */
+	public static function offer_name( string $kind, int $offer_id ): string {
+		if ( OfferVersions::BOGO === $kind ) {
+			$offer = BogoDataManager::get_bogo_offer( $offer_id );
+
+			return (string) ( $offer['name_of_order_bogo'] ?? $offer['name'] ?? '' );
+		}
+
+		if ( OfferVersions::ORDER_BUMP === $kind ) {
+			return (string) ( ( new OrderBumpData() )->get_by_id( $offer_id )['name'] ?? '' );
+		}
+
+		if ( OfferVersions::SMART_COUPON === $kind ) {
+			$coupon = new WC_Coupon( $offer_id );
+
+			return $coupon->get_id() ? SmartCoupon::name( $coupon ) : '';
+		}
+
+		return '';
 	}
 
 	/**
@@ -668,8 +863,10 @@ class CampaignRepository implements HookRegistry {
 			return new WP_Error( 'spsg_campaign_not_found', __( 'Campaign not found.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
 		}
 
-		if ( self::find_overlap( $kind, $offer_id, $campaign['starts_at'], $campaign['ends_at'], $promotion_id ) ) {
-			return self::overlap_error();
+		$other = self::find_overlap( $kind, $offer_id, $campaign['starts_at'], $campaign['ends_at'], $promotion_id );
+
+		if ( $other ) {
+			return self::overlap_error( $kind, $offer_id, $other );
 		}
 
 		$table = $wpdb->prefix . self::OFFERS;
@@ -740,6 +937,29 @@ class CampaignRepository implements HookRegistry {
 	}
 
 	/**
+	 * Replace a row's campaign version or campaign-only values.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int   $row_id Offer row id.
+	 * @param array $values Values.
+	 *
+	 * @return true|WP_Error
+	 */
+	public static function update_offer_values( int $row_id, array $values ) {
+		global $wpdb;
+
+		if ( ! self::find_offer_row( $row_id ) ) {
+			return new WP_Error( 'spsg_campaign_offer_not_found', __( 'Offer not found in this campaign.', 'storegrowth-sales-booster' ), [ 'status' => 404 ] );
+		}
+
+		$wpdb->update( $wpdb->prefix . self::OFFERS, [ 'overrides' => wp_json_encode( $values ) ], [ 'id' => $row_id ] );
+		self::changed();
+
+		return true;
+	}
+
+	/**
 	 * Take an offer off its campaign. A campaign-only offer is deleted, or
 	 * with `$keep` becomes an everyday offer that starts off.
 	 *
@@ -765,6 +985,8 @@ class CampaignRepository implements HookRegistry {
 			if ( is_wp_error( $kept ) ) {
 				return $kept;
 			}
+		} elseif ( ! $row['offer_id'] ) {
+			self::delete_campaign_coupon( $row );
 		}
 
 		$wpdb->delete( $wpdb->prefix . self::OFFERS, [ 'id' => $row_id ] );
@@ -788,6 +1010,20 @@ class CampaignRepository implements HookRegistry {
 
 		if ( OfferVersions::ORDER_BUMP === $kind ) {
 			return ( new OrderBumpData() )->create( array_merge( $values, [ 'status' => 'inactive' ] ) ) ? true : $failed;
+		}
+
+		if ( OfferVersions::SMART_COUPON === $kind ) {
+			$coupon = new WC_Coupon( (int) ( $values['coupon_id'] ?? 0 ) );
+
+			if ( ! $coupon->get_id() ) {
+				return $failed;
+			}
+
+			$coupon->delete_meta_data( SmartCoupon::CAMPAIGN_OFFER );
+			$coupon->save();
+			SmartCouponRepository::set_active( $coupon, false );
+
+			return true;
 		}
 
 		if ( OfferVersions::BOGO !== $kind ) {
@@ -841,12 +1077,79 @@ class CampaignRepository implements HookRegistry {
 			return false;
 		}
 
+		foreach ( self::get_offers( $id ) as $row ) {
+			if ( ! $row['offer_id'] ) {
+				self::delete_campaign_coupon( $row );
+			}
+		}
+
 		$wpdb->delete( $wpdb->prefix . self::OFFERS, [ 'promotion_id' => $id ] );
 		$wpdb->delete( $wpdb->prefix . self::CAMPAIGNS, [ 'id' => $id ] );
 
 		self::changed();
 
 		return true;
+	}
+
+	/**
+	 * Delete the coupon behind a campaign-only Smart Coupon row: the row
+	 * alone would leave an orphan `shop_coupon` post.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $row Offer row.
+	 *
+	 * @return void
+	 */
+	private static function delete_campaign_coupon( array $row ): void {
+		if ( OfferVersions::SMART_COUPON !== $row['offer_kind'] ) {
+			return;
+		}
+
+		$coupon = new WC_Coupon( (int) ( $row['overrides']['coupon_id'] ?? 0 ) );
+
+		if ( $coupon->get_id() ) {
+			SmartCouponRepository::delete( $coupon );
+		}
+	}
+
+	/**
+	 * Copy a campaign-only coupon for a cloned campaign: its own code, so the
+	 * two can't be confused.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $row        The copied offer row.
+	 * @param int   $new_row_id The clone's offer row.
+	 *
+	 * @return void
+	 */
+	private static function copy_campaign_coupon( array $row, int $new_row_id ): void {
+		global $wpdb;
+
+		$source = new WC_Coupon( (int) ( $row['overrides']['coupon_id'] ?? 0 ) );
+
+		if ( ! $source->get_id() ) {
+			return;
+		}
+
+		$copy = SmartCouponRepository::save(
+			array_merge(
+				SmartCouponRepository::values( $source ),
+				[ 'code' => $source->get_code() . '-' . $new_row_id ]
+			)
+		);
+
+		if ( is_wp_error( $copy ) ) {
+			return;
+		}
+
+		$copy->update_meta_data( SmartCoupon::CAMPAIGN_OFFER, $new_row_id );
+		$copy->save();
+
+		$overrides = array_merge( $row['overrides'], [ 'coupon_id' => $copy->get_id() ] );
+
+		$wpdb->update( $wpdb->prefix . self::OFFERS, [ 'overrides' => wp_json_encode( $overrides ) ], [ 'id' => $new_row_id ] );
 	}
 
 	/**
@@ -870,7 +1173,8 @@ class CampaignRepository implements HookRegistry {
 		$new_id = self::save(
 			[
 				/* translators: %s: campaign name. */
-				'name' => sprintf( __( '%s (copy)', 'storegrowth-sales-booster' ), $campaign['name'] ),
+				'name'     => sprintf( __( '%s (copy)', 'storegrowth-sales-booster' ), $campaign['name'] ),
+				'settings' => array_diff_key( $campaign['settings'], [ 'baseline' => true ] ),
 			]
 		);
 
@@ -879,7 +1183,11 @@ class CampaignRepository implements HookRegistry {
 		}
 
 		foreach ( self::get_offers( $id ) as $offer ) {
-			self::insert_offer( $new_id, $offer['offer_kind'], $offer['offer_id'], $offer['overrides'] );
+			$row_id = self::insert_offer( $new_id, $offer['offer_kind'], $offer['offer_id'], $offer['overrides'] );
+
+			if ( ! $offer['offer_id'] && OfferVersions::SMART_COUPON === $offer['offer_kind'] ) {
+				self::copy_campaign_coupon( $offer, $row_id );
+			}
 		}
 
 		return $new_id;

@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Migrations;
 
+use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
 
 // If this file is called directly, abort.
@@ -31,5 +32,16 @@ class V_3_1_0 extends BaseMigration {
 	 */
 	public static function create_campaign_tables(): void {
 		CampaignRepository::install();
+	}
+
+	/**
+	 * Add the campaign columns to the offer lookup table.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public static function add_promotion_lookup_columns(): void {
+		Schema::install();
 	}
 }

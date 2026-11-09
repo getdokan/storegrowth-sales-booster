@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
+use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use WC_Order_Item;
 use WC_Product;
@@ -101,6 +102,12 @@ class OrderAttribution implements HookRegistry {
 	 * @return int Percentage from 1 to 100, or 0 when no timer discount applies.
 	 */
 	private static function live_percentage( int $product_id ): int {
+		$campaign = CampaignPrice::for_product( $product_id );
+
+		if ( $campaign ) {
+			return $campaign['percent'];
+		}
+
 		return Helper::is_product_discountable( $product_id ) ? Helper::discount_percentage( $product_id ) : 0;
 	}
 }

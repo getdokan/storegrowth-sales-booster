@@ -22,8 +22,10 @@ import { Pencil, Plus, TicketPercent } from 'lucide-react';
 import {
     CardHead,
     FeatureLayout,
+    OfferLimitNotice,
     ProBadge,
     RecordList,
+    TimelineChip,
 } from '@storegrowth/components';
 import { useModules, useNavigate } from '@storegrowth/hooks';
 import { errorMessage, getHeaderData } from '@storegrowth/utilities';
@@ -280,15 +282,19 @@ function CouponList() {
                 statusAfter="method"
                 statusNote={ ( item ) => {
                     return (
-                        item.chip && (
-                            <span className="text-xs text-sg-help">
-                                { item.chip }
-                            </span>
-                        )
+                        <>
+                            { item.chip && (
+                                <span className="text-xs text-sg-help">
+                                    { item.chip }
+                                </span>
+                            ) }
+                            <TimelineChip timeline={ item.timeline } />
+                        </>
                     );
                 } }
                 messages={ MESSAGES }
             />
+            <OfferLimitNotice kind="smart_coupon" />
             <p className="m-0 text-xs text-sg-help">
                 { __(
                     'Code and link coupons also appear in WooCommerce > Coupons, marked Managed by Smart Coupons.',

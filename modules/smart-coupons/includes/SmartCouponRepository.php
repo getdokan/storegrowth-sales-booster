@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\SmartCoupons;
 use Exception;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\Settings\SmartCouponFields;
+use StorePulse\StoreGrowth\Campaigns\OfferTimeline;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
@@ -335,7 +336,7 @@ class SmartCouponRepository {
 	 *
 	 * @return array[] Rows of `qty` and `percent`.
 	 */
-	private static function parse_tiers( array $tiers ): array {
+	public static function parse_tiers( array $tiers ): array {
 		$rows = [];
 
 		foreach ( $tiers as $tier ) {
@@ -662,7 +663,7 @@ class SmartCouponRepository {
 			static function ( array $tier ): string {
 				return $tier['qty'] . ':' . $tier['percent'];
 			},
-			(array) $coupon->get_meta( SmartCoupon::TIERS )
+			array_filter( (array) $coupon->get_meta( SmartCoupon::TIERS ), 'is_array' )
 		);
 
 		return [
@@ -710,6 +711,7 @@ class SmartCouponRepository {
 				'id'            => $coupon->get_id(),
 				'name'          => SmartCoupon::name( $coupon ),
 				'chip'          => self::chip( $coupon ),
+				'timeline'      => OfferTimeline::for_offer( OfferVersions::SMART_COUPON, $coupon->get_id(), 'publish' === $coupon->get_status( 'edit' ), SmartCoupon::name( $coupon ) ),
 				'used_in'       => self::used_in( $coupon, $campaigns ),
 				'uses'          => (int) $coupon->get_usage_count( 'edit' ),
 				'campaign'      => $campaign,
