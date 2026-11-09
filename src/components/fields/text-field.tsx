@@ -19,7 +19,7 @@ export interface TextFieldProps extends BaseFieldProps {
     onChange: ( value: string ) => void;
     placeholder?: string;
     /** `date` edits a `Y-m-d` value with the browser's date picker. */
-    type?: 'text' | 'url' | 'date';
+    type?: 'text' | 'url' | 'date' | 'datetime-local';
     /**
      * Longest text that can be typed, shown as a `n / max` counter. Only the
      * input limits it: a longer stored value still shows and saves.

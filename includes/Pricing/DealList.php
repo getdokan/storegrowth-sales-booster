@@ -172,6 +172,11 @@ class DealList {
 	 * @return array[]
 	 */
 	private static function add_coupon( array $lines, WC_Coupon $coupon ): array {
+		// It gives no discount of its own: its BOGO rule competes as itself.
+		if ( SmartCoupon::is_buy_x_get_y( $coupon ) ) {
+			return $lines;
+		}
+
 		$eligible = [];
 
 		foreach ( $lines as $key => $line ) {
@@ -188,6 +193,7 @@ class DealList {
 				'line'     => $key,
 				'kind'     => self::COUPON,
 				'name'     => SmartCoupon::name( $coupon ),
+				'shown'    => SmartCoupon::shown_code( $coupon ),
 				'amount'   => self::coupon_amount( $coupon, $line_value, $cart_value, $lines[ $key ]['quantity'] ),
 				'code'     => $coupon->get_code(),
 				'smart'    => $is_smart,
@@ -213,7 +219,7 @@ class DealList {
 	 *
 	 * @return bool
 	 */
-	private static function coupon_applies( WC_Coupon $coupon, WC_Product $product, array $item ): bool {
+	public static function coupon_applies( WC_Coupon $coupon, WC_Product $product, array $item ): bool {
 		if ( $coupon->is_type( 'fixed_cart' ) && SmartCoupon::is_smart( $coupon ) ) {
 			$coupon = clone $coupon;
 			$coupon->set_discount_type( 'percent' );

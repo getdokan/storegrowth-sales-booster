@@ -75,7 +75,9 @@ class CouponGate implements HookRegistry {
 
 	/**
 	 * Keep a coupon off lines it lost, so WooCommerce splits it over the
-	 * rest. Gift lines stay out of a Smart Coupon's reach and shares.
+	 * rest. Gift lines stay out of a Smart Coupon's reach and shares, and a
+	 * Smart fixed amount stays on the products it applies to: WooCommerce
+	 * would spread it over the whole cart.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -99,8 +101,8 @@ class CouponGate implements HookRegistry {
 		return array_values(
 			array_filter(
 				$items,
-				static function ( $item ) use ( $decision, $code, $is_smart ): bool {
-					return ! $decision->lost_line( $code, $item->key ) && ! ( $is_smart && BogoHelper::is_gift_line( $item->object ) );
+				static function ( $item ) use ( $decision, $code, $is_smart, $coupon ): bool {
+					return ! $decision->lost_line( $code, $item->key ) && ! ( $is_smart && ( BogoHelper::is_gift_line( $item->object ) || ! DealList::coupon_applies( $coupon, $item->product, $item->object ) ) );
 				}
 			)
 		);

@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoValidator;
+use StorePulse\StoreGrowth\Modules\SmartCoupons\SmartCouponsModule;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
 use StorePulse\StoreGrowth\Support\SiteTime;
 
@@ -41,6 +42,13 @@ class OfferVersions {
 	 * @since SPSG_VERSION
 	 */
 	const ORDER_BUMP = 'order_bump';
+
+	/**
+	 * Offer kind of a Smart Coupon.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const SMART_COUPON = 'smart_coupon';
 
 	/**
 	 * The offer's own settings apply.
@@ -159,6 +167,12 @@ class OfferVersions {
 			unset( $values['design_settings']['bump_schedule'] );
 		}
 
+		if ( self::SMART_COUPON === $kind ) {
+			$values['date_start']          = '';
+			$values['date_end']            = '';
+			$values['dates_from_campaign'] = true;
+		}
+
 		return $values;
 	}
 
@@ -212,7 +226,7 @@ class OfferVersions {
 	 * @return array{version: string, values: array, promotion_id: int, live: bool, chip: string}
 	 */
 	private static function result( string $version, string $kind, array $values, int $promotion_id, bool $live ): array {
-		$needs_coupons = self::BOGO === $kind && ! empty( $values[ BogoDataManager::ONLY_WITH_COUPON ] ) && ! Helper::is_module_active( 'smart-coupons' );
+		$needs_coupons = self::BOGO === $kind && ! empty( $values[ BogoDataManager::ONLY_WITH_COUPON ] ) && ! Helper::is_module_active( SmartCouponsModule::get_id() );
 
 		return [
 			'version'      => $version,

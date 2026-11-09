@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Pricing;
 
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use WC_Coupon;
 
 // If this file is called directly, abort.
@@ -65,6 +66,107 @@ class SmartCoupon {
 	const AUTOMATIC = 'automatic';
 
 	/**
+	 * Method value of a coupon the shopper types.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const CODE = 'code';
+
+	/**
+	 * Method value of a coupon applied from a link (Pro).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const LINK = 'link';
+
+	/**
+	 * Meta key: the coupon's type, one of the `TYPE_*` values. WooCommerce's
+	 * own discount type can't tell tiers or Buy X get Y from a percentage.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TYPE = '_spsg_coupon_type';
+
+	/**
+	 * Type value: percent off eligible products.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TYPE_PERCENTAGE = 'percentage';
+
+	/**
+	 * Type value: an amount off the cart.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TYPE_FIXED = 'fixed';
+
+	/**
+	 * Type value: Buy more save more, quantity tiers (Pro).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TYPE_TIERS = 'tiers';
+
+	/**
+	 * Type value: Buy X get Y, a deal defined by a BOGO rule.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TYPE_BUY_X_GET_Y = 'buy_x_get_y';
+
+	/**
+	 * Meta key: start of the coupon's dates, `Y-m-d H:i:s` in the site
+	 * timezone. Its end is WooCommerce's own expiry date.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const STARTS_AT = '_spsg_coupon_starts_at';
+
+	/**
+	 * Meta key: the smallest number of items the cart must hold.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const MIN_QUANTITY = '_spsg_coupon_min_quantity';
+
+	/**
+	 * Meta key: who may use the coupon, one of `all`, `first_time`,
+	 * `returning` or `roles` (all but `all` are Pro).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const ELIGIBILITY = '_spsg_coupon_eligibility';
+
+	/**
+	 * Meta key: the role slugs a `roles` coupon is for.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const ROLES = '_spsg_coupon_roles';
+
+	/**
+	 * Meta key: a tiers coupon's rows, `{ qty, percent }` each.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const TIERS = '_spsg_coupon_tiers';
+
+	/**
+	 * Meta key: the BOGO rule of a Buy X get Y coupon.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const BOGO_RULE = '_spsg_coupon_bogo_rule';
+
+	/**
+	 * Meta key: the `spsg_campaign_offers` row of a campaign-only coupon.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const CAMPAIGN_OFFER = '_spsg_coupon_campaign_offer';
+
+	/**
 	 * Whether a coupon is managed by Smart Coupons.
 	 *
 	 * @since SPSG_VERSION
@@ -103,6 +205,78 @@ class SmartCoupon {
 		$title = (string) $coupon->get_meta( self::TITLE );
 
 		return '' !== $title ? $title : strtoupper( $coupon->get_code() );
+	}
+
+	/**
+	 * How a coupon is named when a shopper must recognise what they typed:
+	 * its code, or its title for an automatic coupon, whose code means nothing.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return string
+	 */
+	public static function shown_code( WC_Coupon $coupon ): string {
+		return self::is_automatic( $coupon ) ? self::name( $coupon ) : strtoupper( $coupon->get_code() );
+	}
+
+	/**
+	 * Whether a coupon is a Buy X get Y coupon: it gives no discount of its
+	 * own, its BOGO rule does.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return bool
+	 */
+	public static function is_buy_x_get_y( WC_Coupon $coupon ): bool {
+		return self::is_smart( $coupon ) && self::TYPE_BUY_X_GET_Y === $coupon->get_meta( self::TYPE );
+	}
+
+	/**
+	 * Whether a coupon uses something only Pro can do.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return bool
+	 */
+	public static function needs_pro( WC_Coupon $coupon ): bool {
+		$eligibility = (string) $coupon->get_meta( self::ELIGIBILITY );
+
+		return self::LINK === $coupon->get_meta( self::METHOD )
+			|| self::TYPE_TIERS === $coupon->get_meta( self::TYPE )
+			|| ( '' !== $eligibility && 'all' !== $eligibility );
+	}
+
+	/**
+	 * What applies to a coupon now: its saved values, or those of the
+	 * campaign running over it. `live` says whether it is on at all.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return array{version: string, values: array, promotion_id: int, live: bool, chip: string}
+	 */
+	public static function effective( WC_Coupon $coupon ): array {
+		$expires = $coupon->get_date_expires( 'edit' );
+
+		return OfferVersions::effective_offer(
+			[
+				'offer_kind'        => OfferVersions::SMART_COUPON,
+				'id'                => $coupon->get_id(),
+				'campaign_offer_id' => (int) $coupon->get_meta( self::CAMPAIGN_OFFER ),
+				'status'            => 'publish' === $coupon->get_status( 'edit' ) ? 'active' : 'inactive',
+				'amount'            => (float) $coupon->get_amount( 'edit' ),
+				'tiers'             => (array) $coupon->get_meta( self::TIERS ),
+				'date_start'        => (string) $coupon->get_meta( self::STARTS_AT ),
+				'date_end'          => $expires ? wp_date( 'Y-m-d H:i:s', $expires->getTimestamp() ) : '',
+			]
+		);
 	}
 
 	/**

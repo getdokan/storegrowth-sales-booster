@@ -98,6 +98,11 @@ const moduleEntries = {
     ),
     ...moduleEntry( 'bogo', 'admin', './modules/bogo/src/admin/index.tsx' ),
     ...moduleEntry(
+        'smart-coupons',
+        'admin',
+        './modules/smart-coupons/src/admin/index.tsx'
+    ),
+    ...moduleEntry(
         'upsell-order-bump',
         'admin',
         './modules/upsell-order-bump/src/admin/index.tsx'

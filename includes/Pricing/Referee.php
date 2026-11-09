@@ -305,7 +305,12 @@ class Referee implements HookRegistry {
 			return new Decision();
 		}
 
-		return self::judge( DealList::for_cart( $cart, $coupons ) );
+		// A coupon's campaign amount and tier apply here too, not only in totals.
+		return CouponAmount::while_pricing(
+			static function () use ( $cart, $coupons ): Decision {
+				return self::judge( DealList::for_cart( $cart, $coupons ) );
+			}
+		);
 	}
 
 	/**
@@ -325,7 +330,13 @@ class Referee implements HookRegistry {
 		$coupons = [];
 
 		foreach ( self::coupon_codes( $cart, $candidate ) as $code ) {
-			$coupon           = new WC_Coupon( $code );
+			$coupon = new WC_Coupon( $code );
+
+			// An automatic coupon that stopped qualifying leaves without a notice.
+			if ( SmartCoupon::is_automatic( $coupon ) && ! self::meets_coupon_rules( $cart, $coupon ) ) {
+				continue;
+			}
+
 			$coupons[ $code ] = $coupon;
 
 			if ( $coupon->get_individual_use() && ! SmartCoupon::is_smart( $coupon ) ) {
@@ -455,7 +466,7 @@ class Referee implements HookRegistry {
 	 *
 	 * @param array[] $lines Lines.
 	 *
-	 * @return array<string, array{smart: bool, combines: bool, others: bool, name: string, split: float|null, amounts: array, units: array, lost: array}>
+	 * @return array<string, array{smart: bool, combines: bool, others: bool, name: string, shown: string, split: float|null, amounts: array, units: array, lost: array}>
 	 */
 	private static function group_coupons( array $lines ): array {
 		$coupons = [];
@@ -472,6 +483,7 @@ class Referee implements HookRegistry {
 						'combines' => $deal['combines'],
 						'others'   => $deal['others'],
 						'name'     => $deal['name'],
+						'shown'    => $deal['shown'],
 						'split'    => $deal['split'],
 						'amounts'  => [],
 						'units'    => [],
@@ -530,7 +542,7 @@ class Referee implements HookRegistry {
 			$rejected[ $code ] = sprintf(
 				/* translators: %s: coupon name. */
 				__( 'Only one of these coupons can be used. We kept %s, which saves you more.', 'storegrowth-sales-booster' ),
-				$coupons[ $beaten_by ]['name']
+				$coupons[ $beaten_by ]['shown']
 			);
 
 			foreach ( array_keys( array_intersect_key( $coupons[ $code ]['amounts'], $coupons[ $beaten_by ]['amounts'] ) ) as $key ) {

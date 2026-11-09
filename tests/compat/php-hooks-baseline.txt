@@ -90,6 +90,8 @@ spsg_settings_saved
 spsg_settings_schema
 spsg_settings_schemas
 spsg_should_save_product_bogo
+spsg_smart_coupon_fields
+spsg_smart_coupon_page
 spsg_stock_bar_stock_below
 spsg_stock_bar_warning_contents
 spsg_template_path

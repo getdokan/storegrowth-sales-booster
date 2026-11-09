@@ -157,6 +157,7 @@ require_once STOREGROWTH_MODULE_DIR . '/fly-cart/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/progressive-discount-banner/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/quick-view/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/sales-pop/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/smart-coupons/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 

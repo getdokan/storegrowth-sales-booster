@@ -436,6 +436,44 @@ class CampaignRepository implements HookRegistry {
 	}
 
 	/**
+	 * The published campaigns an offer is attached to and that haven't ended,
+	 * for showing where the offer is used.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $kind     Offer kind.
+	 * @param int    $offer_id Offer id.
+	 *
+	 * @return array[] Rows of `id`, `name`, `status`, `starts_at`, `ends_at`.
+	 */
+	public static function campaigns_of_offer( string $kind, int $offer_id ): array {
+		if ( ! $offer_id || ! self::is_installed() ) {
+			return [];
+		}
+
+		global $wpdb;
+
+		$campaigns = $wpdb->prefix . self::CAMPAIGNS;
+		$offers    = $wpdb->prefix . self::OFFERS;
+
+		$rows = (array) $wpdb->get_results(
+			$wpdb->prepare( "SELECT c.id, c.name, c.status, c.starts_at, c.ends_at FROM {$campaigns} c INNER JOIN {$offers} o ON o.promotion_id = c.id WHERE o.offer_kind = %s AND o.offer_id = %d AND c.status = %s ORDER BY c.starts_at ASC", $kind, $offer_id, self::STATUS_SCHEDULED ), // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			ARRAY_A
+		);
+
+		$now = SiteTime::now();
+
+		return array_values(
+			array_filter(
+				$rows,
+				static function ( array $row ) use ( $now ): bool {
+					return self::STATUS_ENDED !== self::status_at( $row, $now );
+				}
+			)
+		);
+	}
+
+	/**
 	 * A campaign's offer rows.
 	 *
 	 * @since SPSG_VERSION
