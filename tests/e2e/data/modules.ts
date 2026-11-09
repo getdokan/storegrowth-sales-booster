@@ -7,7 +7,7 @@ export const MODULES = {
   directCheckout: { id: 'direct-checkout', name: 'Direct Checkout' },
   floatingBar: { id: 'floating-notification-bar', name: 'Floating Bar' },
   flyCart: { id: 'fly-cart', name: 'Fly Cart' },
-  freeShipping: { id: 'progressive-discount-banner', name: 'Free Shipping Rules' },
+  freeShipping: { id: 'progressive-discount-banner', name: 'Cart Rewards' },
   quickView: { id: 'quick-view', name: 'Quick View' },
   salesPop: { id: 'sales-pop', name: 'Sales Notification' },
   stockBar: { id: 'stock-bar', name: 'Stock Bar' },

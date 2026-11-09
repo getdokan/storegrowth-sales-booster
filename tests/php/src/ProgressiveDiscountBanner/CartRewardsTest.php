@@ -788,14 +788,15 @@ class CartRewardsTest extends StoreGrowthTestCase {
 	}
 
 	/**
-	 * Saving an empty list is refused: it would look like "no milestones".
+	 * An empty list is what Reset and a read-then-save round trip send, so it
+	 * saves and the store falls back to the old keys' milestone.
 	 *
 	 * @return void
 	 */
-	public function test_saving_no_milestones_is_refused(): void {
+	public function test_saving_no_milestones_is_accepted(): void {
 		$this->set_rewards( [ $this->row( 50, Milestones::FREE_SHIPPING ) ] );
 
-		$this->assertWPError(
+		$this->assertNotWPError(
 			storegrowth_get_container()->get( SettingsService::class )->save( ProgressiveDiscountBannerModule::get_id(), [ 'milestones' => [] ] )
 		);
 	}

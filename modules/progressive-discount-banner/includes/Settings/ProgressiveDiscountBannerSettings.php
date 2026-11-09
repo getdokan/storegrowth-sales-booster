@@ -394,18 +394,16 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedS
 	public function before_save( array $changes, array $stored ) {
 		$saved_rows = (array) ( $stored['milestones'] ?? [] );
 
-		if ( array_key_exists( 'milestones', $changes ) ) {
-			if ( empty( $changes['milestones'] ) ) {
-				return new WP_Error( 'spsg_settings_invalid', __( 'Add at least one milestone.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
-			}
-
+		// An empty list is what Reset and a read-then-save round trip send: the
+		// store goes back to milestone 1 from the old keys.
+		if ( ! empty( $changes['milestones'] ) ) {
 			if ( ! sp_store_growth()->has_pro() && count( $changes['milestones'] ) > max( Milestones::FREE_LIMIT, count( $saved_rows ) ) ) {
 				return new WP_Error( 'spsg_settings_invalid', __( 'Upgrade to Pro to add more milestones.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
 			}
 
 			$changes['milestones'] = Milestones::sorted_with_ids( $changes['milestones'] );
 			$changes               = array_merge( $changes, Milestones::legacy_keys( $changes['milestones'][0] ) );
-		} elseif ( $saved_rows && array_intersect_key( $changes, array_flip( Milestones::LEGACY_KEYS ) ) ) {
+		} elseif ( ! array_key_exists( 'milestones', $changes ) && $saved_rows && array_intersect_key( $changes, array_flip( Milestones::LEGACY_KEYS ) ) ) {
 			$changes['milestones'] = Milestones::with_legacy_keys( Milestones::sorted_with_ids( $saved_rows ), array_merge( $stored, $changes ) );
 		}
 
