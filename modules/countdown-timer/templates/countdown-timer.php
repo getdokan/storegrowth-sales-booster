@@ -113,7 +113,7 @@ $units = [
 			</p>
 		<?php endif; ?>
 
-		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( Helper::timer_end( $end_date ) ); ?>">
 			<?php foreach ( $units as $unit => [ $digit, $label ] ) : ?>
 				<?php if ( 'days' !== $unit ) : ?>
 					<span class="spsg-colon <?php echo esc_attr( $layout_class ); ?>">:</span>

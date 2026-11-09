@@ -1,3 +1,31 @@
+/**
+ * Redraw the number inside a wc_price() element in the store's format; the
+ * currency symbol and its position stay as WooCommerce printed them.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param {jQuery} $container Element holding the wc_price() markup.
+ * @param {number} amount     New amount.
+ */
+function setPriceAmount($container, amount) {
+  var format = bogo_save_url.price_format;
+  var parts = amount.toFixed(format.decimals).split(".");
+
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, format.thousand_separator);
+
+  var number = parts.join(format.decimal_separator);
+
+  $container
+    .find("bdi")
+    .contents()
+    .filter(function () {
+      return this.nodeType === 3 && /\d/.test(this.nodeValue);
+    })
+    .each(function () {
+      this.nodeValue = this.nodeValue.replace(/\S.*\S|\S/, number);
+    });
+}
+
 function extraProducts(product_id, check_status, offer_price) {
   var $ = jQuery;
   var passData = {
@@ -178,13 +206,9 @@ function extraProducts(product_id, check_status, offer_price) {
                 // Update price display if variation has a different price
                 var $priceContainer = $container.closest('.offer-main-wrap').find('.offer-price');
                 if ($priceContainer.length && matchingVariation.display_price !== undefined) {
-                    var $offerSpan = $priceContainer.find('span:last');
+                    var $offerSpan = $priceContainer.children('span').last();
 
                     if ($offerSpan.length) {
-                        var currentText = $offerSpan.text();
-                        // Extract currency symbol from existing text
-                        var sym = currentText.replace(/[0-9.,\s]/g, '');
-
                         // Calculate offer price based on offer type
                         var variationPrice = parseFloat(matchingVariation.display_price);
                         var $offerWrap = $container.closest('.offer-main-wrap');
@@ -193,18 +217,17 @@ function extraProducts(product_id, check_status, offer_price) {
                         var formattedPrice;
 
                         if (offerType === 'discount' && discountPercent) {
-                            formattedPrice = Math.max(variationPrice - (variationPrice * (parseFloat(discountPercent) / 100)), 0).toFixed(2);
+                            formattedPrice = Math.max(variationPrice - (variationPrice * (parseFloat(discountPercent) / 100)), 0);
                         } else {
-                            formattedPrice = parseFloat(0).toFixed(2);
+                            formattedPrice = 0;
                         }
 
-                        $offerSpan.text(sym + formattedPrice);
+                        setPriceAmount($offerSpan, formattedPrice);
 
                         // Also update the regular/strikethrough price
-                        var $regularSpan = $priceContainer.find('span:first');
+                        var $regularSpan = $priceContainer.children('span').first();
                         if ($regularSpan.length && $regularSpan.css('text-decoration').indexOf('line-through') !== -1) {
-                            var regSym = $regularSpan.text().replace(/[0-9.,\s]/g, '');
-                            $regularSpan.text(regSym + variationPrice.toFixed(2));
+                            setPriceAmount($regularSpan, variationPrice);
                         }
                     }
                 }

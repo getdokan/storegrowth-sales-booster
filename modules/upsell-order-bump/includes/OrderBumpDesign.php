@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Support\SiteTime;
 use WC_Product;
 
 // If this file is called directly, abort.
@@ -245,8 +246,7 @@ class OrderBumpDesign {
 	 * @return string
 	 */
 	public static function today() {
-		// `N` (1 = Monday), not `l`: `wp_date()` translates day names.
-		return self::SCHEDULE[ (int) wp_date( 'N' ) ];
+		return SiteTime::weekday();
 	}
 
 	/**

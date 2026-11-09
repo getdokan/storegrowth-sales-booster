@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use Exception;
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Support\SiteTime;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -920,8 +921,6 @@ class BogoDataManager {
 			return true;
 		}
 
-		// Check if current day is in schedule. WordPress runs PHP in UTC, so gmdate() equals date() here.
-		$current_day = strtolower( gmdate( 'l' ) );
-		return in_array( $current_day, $schedule ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
+		return in_array( SiteTime::weekday(), $schedule ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
 	}
 }

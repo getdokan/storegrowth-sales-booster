@@ -11,6 +11,7 @@ use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Support\Money;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -777,9 +778,10 @@ class OrderBogo implements HookRegistry {
 		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
 
 		if ( $product_bogo_settings ) {
-			// An offer type the cart doesn't apply isn't advertised either
-			// (the product offer still takes precedence, as in the cart).
-			if ( ! BogoValidator::has_known_offer_type( $product_bogo_settings ) ) {
+			// An offer the cart wouldn't apply right now (outside its dates or
+			// weekdays, or of an unknown type) isn't advertised either; the
+			// product offer still takes precedence, as in the cart.
+			if ( ! BogoValidator::is_bogo_applicable( $current_product_id, $product_bogo_settings ) ) {
 				return;
 			}
 
@@ -925,7 +927,7 @@ class OrderBogo implements HookRegistry {
 		if ( isset( $cart_item['bogo_offer_price'] ) ) {
 			$regular_price = $product->get_regular_price();
 			if ( $show_regular_price ) {
-				$price .= '<br><span class="regular-price"><s>' . wc_price( $regular_price ) . '</s></span>';
+				$price .= '<br><span class="regular-price"><s>' . Money::price_html( $product, (float) $regular_price, 'cart' ) . '</s></span>';
 			}
 		}
 		return $price;

@@ -1,5 +1,13 @@
 == Changelog ==
 
+### Unreleased ###
+
+- **fix:** Deals switch at the date and time set, in the site timezone: Countdown (previously UTC), BOGO weekdays and Pro's same-product BOGO. A Countdown sale running during the update shifts once by the site's UTC offset.
+- **fix:** BOGO prices on product pages and the struck-through cart price follow the store's currency format and tax display.
+- **enhancement:** Free and Pro check each other's minimum version and show a notice when one is too old.
+- **enhancement:** StoreGrowth now requires WooCommerce 8.8 or newer.
+- **note:** Fixed amounts and thresholds are in the store's base currency. Multi-currency is not supported.
+
 ### v3.0.0 (November 4, 2026) ###
 
 - **new:** Redesigned admin: one StoreGrowth page (`admin.php?page=storegrowth`) in TypeScript on plugin-ui and Tailwind v4, over REST — dashboard, modules screen, and settings pages generated from each module's PHP schema. The old `spsg-settings` / `spsg-modules` slugs redirect; existing settings, offers and order bumps carry over unchanged.

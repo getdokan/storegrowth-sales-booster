@@ -8,6 +8,7 @@
 // Check if the variables are set before using them.
 use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
 use StorePulse\StoreGrowth\Modules\BoGo\Helper;
+use StorePulse\StoreGrowth\Support\Money;
 
 if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_url, $regular_price, $offer_price ) ) {
 	// Simple helper function to get design values from JSON
@@ -107,12 +108,12 @@ if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_ur
 				<div class="offer-price">
                     <?php if ( $show_regular_price ) : ?>
                         <span style="text-decoration: line-through;">
-                            <?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $regular_price, 2 ) ); ?>
+                            <?php echo Money::price_html( $product, (float) $regular_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wc_price() escapes; wp_kses_post() would strip its <bdi>. ?>
                         </span>
                     <?php endif; ?>
                     &nbsp;
 					<span>
-						<?php echo esc_html( get_woocommerce_currency_symbol() ) . esc_attr( number_format( (float) $offer_price, 2 ) ); ?>
+						<?php echo Money::price_html( $product, (float) $offer_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wc_price() escapes; wp_kses_post() would strip its <bdi>. ?>
 					</span>
 				</div>
 			</div>

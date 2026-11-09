@@ -35,7 +35,18 @@ class Bootstrap {
 	 *
 	 * @var string
 	 */
-	const MIN_WC_VERSION = '8.0';
+	const MIN_WC_VERSION = '8.8';
+
+	/**
+	 * Oldest Pro that supports this version's features. The release script
+	 * sets it to the released version; until then every version passes,
+	 * because version_compare() ranks a word below any number.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const MIN_PRO_VERSION = 'SPSG_VERSION';
 
 	/**
 	 * Constructor of Bootstrap class.
@@ -45,6 +56,41 @@ class Bootstrap {
 		add_action( 'woocommerce_loaded', [ $this, 'on_wc_loaded' ] );
 		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_is_not_active' ] );
 		add_action( 'admin_notices', [ $this, 'show_notice_if_wc_below_minimum' ] );
+		add_action( 'admin_notices', [ $this, 'show_notice_if_pro_outdated' ] );
+	}
+
+	/**
+	 * Ask to update Pro when it's older than this version supports. Everything
+	 * else keeps working.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function show_notice_if_pro_outdated(): void {
+		if ( ! defined( 'STOREGROWTH_PRO_FILE' ) || ! current_user_can( 'update_plugins' ) ) {
+			return;
+		}
+
+		$data = get_file_data( STOREGROWTH_PRO_FILE, [ 'version' => 'Version' ] );
+
+		if ( version_compare( (string) $data['version'], self::MIN_PRO_VERSION, '>=' ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-warning"><p>%1$s <a href="%2$s">%3$s</a></p></div>',
+			esc_html(
+				sprintf(
+					// translators: 1: required StoreGrowth Pro version, 2: installed StoreGrowth Pro version.
+					__( 'This version of StoreGrowth needs StoreGrowth Pro %1$s or newer for its newest features. You are running %2$s.', 'storegrowth-sales-booster' ),
+					self::MIN_PRO_VERSION,
+					$data['version']
+				)
+			),
+			esc_url( admin_url( 'plugins.php' ) ),
+			esc_html__( 'Update StoreGrowth Pro', 'storegrowth-sales-booster' )
+		);
 	}
 
 	public function show_notice_if_wc_is_not_active(): void {

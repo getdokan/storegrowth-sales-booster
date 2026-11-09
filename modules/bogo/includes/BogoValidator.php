@@ -7,6 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use StorePulse\StoreGrowth\Support\SiteTime;
+
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -120,27 +122,7 @@ class BogoValidator {
 	 * @return bool True if date range is valid, false otherwise.
 	 */
 	private static function is_date_range_valid( $bogo_settings ) {
-		// Use the site's local date (not UTC) so the window flips at the
-		// store's midnight, matching what the merchant set in the date pickers.
-		$current_date = current_time( 'Y-m-d' );
-
-		// Check offer start date
-		$offer_start = $bogo_settings['offer_start'] ?? null;
-		if ( ! empty( $offer_start ) && '0000-00-00' !== $offer_start ) {
-			if ( $current_date < $offer_start ) {
-				return false;
-			}
-		}
-
-		// Check offer end date
-		$offer_end = $bogo_settings['offer_end'] ?? null;
-		if ( ! empty( $offer_end ) && '0000-00-00' !== $offer_end ) {
-			if ( $current_date > $offer_end ) {
-				return false;
-			}
-		}
-
-		return true;
+		return SiteTime::is_within( $bogo_settings['offer_start'] ?? null, $bogo_settings['offer_end'] ?? null );
 	}
 
 	/**
@@ -171,10 +153,9 @@ class BogoValidator {
 			return true; // Daily or no specific schedule means always active
 		}
 
-		$current_day = strtolower( date( 'l' ) ); // Get current day (monday, tuesday, etc.)
 		$schedule_days = array_map( 'strtolower', $schedule );
 
-		return in_array( $current_day, $schedule_days, true );
+		return in_array( SiteTime::weekday(), $schedule_days, true );
 	}
 
 	/**

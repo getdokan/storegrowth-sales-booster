@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Support\SiteTime;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -153,21 +154,27 @@ class Helper {
 		$end_date        = get_post_meta( $product_id, '_spsg_countdown_timer_discount_end', true );
 
 		// If data is not set.
-		if ( ! $discount_amount || ! $end_date ) {
+		if ( ! $discount_amount || ! SiteTime::parse( $end_date, true ) ) {
 			return false;
 		}
 
-		// Check start date is later.
-		if ( strtotime( $start_date ) > time() ) {
-			return false;
-		}
+		return SiteTime::is_within( $start_date, $end_date );
+	}
 
-		// Check end date has passed.
-		if ( strtotime( $end_date ) < time() ) {
-			return false;
-		}
+	/**
+	 * A stored end date as the storefront timer reads it: milliseconds since
+	 * the epoch, so it ends at the same moment as the price for every shopper.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param mixed $end_date Stored end date.
+	 *
+	 * @return int Milliseconds, or 0 without a readable date.
+	 */
+	public static function timer_end( $end_date ): int {
+		$end = SiteTime::parse( $end_date, true );
 
-		return true;
+		return $end ? $end->getTimestamp() * 1000 : 0;
 	}
 
 	/**
