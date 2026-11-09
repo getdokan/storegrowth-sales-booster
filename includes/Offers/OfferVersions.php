@@ -51,6 +51,14 @@ class OfferVersions {
 	const SMART_COUPON = 'smart_coupon';
 
 	/**
+	 * Offer kind of a Cart Rewards milestone (a surface in campaigns, never
+	 * an offer they take over).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const CART_REWARD = 'cart_reward';
+
+	/**
 	 * The offer's own settings apply.
 	 *
 	 * @since SPSG_VERSION

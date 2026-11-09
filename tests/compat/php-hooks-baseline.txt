@@ -93,6 +93,7 @@ spsg_should_save_product_bogo
 spsg_smart_coupon_fields
 spsg_smart_coupon_page
 spsg_stock_bar_stock_below
+spsg_store_api_cart_data
 spsg_stock_bar_warning_contents
 spsg_template_path
 spsg_uninstall_scheduled_hooks

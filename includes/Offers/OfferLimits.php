@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Offers;
 
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Milestones;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use WP_Error;
 
@@ -59,9 +60,13 @@ class OfferLimits {
 		return apply_filters(
 			'spsg_offer_limits',
 			[
-				OfferVersions::ORDER_BUMP => [
+				OfferVersions::ORDER_BUMP  => [
 					'limit'  => OrderBumpData::LITE_BUMP_LIMIT,
 					'offers' => [ new OrderBumpData(), 'get_active_oldest_first' ],
+				],
+				OfferVersions::CART_REWARD => [
+					'limit'  => Milestones::FREE_LIMIT,
+					'offers' => [ Milestones::class, 'active_oldest_first' ],
 				],
 			]
 		);

@@ -7,6 +7,10 @@
 - **fix:** BOGO prices on product pages and the struck-through cart price follow the store's currency format and tax display.
 - **new:** When a Smart Coupon or campaign deal is in the cart, one rules engine decides how deals combine: the larger of a BOGO deal and a coupon wins, and cart lines explain the result with "Larger deal applied", "Deals combined" and their price steps.
 - **new:** Smart Coupons module: automatic, code and (Pro) link coupons with limits, eligibility, combinations and schedules. Every Smart Coupon is a real WooCommerce coupon; code and link coupons appear in WooCommerce > Coupons as "Managed by Smart Coupons" and are edited in StoreGrowth. Free includes one active everyday coupon.
+- **new:** Cart Rewards replaces Free Shipping Rules: milestones with free shipping, a coupon code to use, a free gift or a discount, and a progress bar on the cart page, Fly Cart and block carts (placement setting). Existing rules become milestone 1 and keep working unchanged. Free includes one milestone.
+- **new:** StoreGrowth's notices and rewards bar show on the block cart, mini-cart (WooCommerce 11.1+) and checkout, and automatic coupons show their name there.
+- **change:** Cart Rewards thresholds now use the cart subtotal after discounts, with or without tax as the store shows prices (it was the subtotal before tax and discounts).
+- **change:** Rewards are re-checked on every cart change: dropping below a threshold removes the reward, going back above returns it. Below a free-shipping milestone the WooCommerce Free shipping rate is hidden, so stores that offered it unconditionally will see a change. The rewards bar is new on the cart page and Fly Cart.
 - **enhancement:** The Fly Cart lists each line's item data, so variation details and deal labels show there as they do in the cart.
 - **enhancement:** Free and Pro check each other's minimum version and show a notice when one is too old.
 - **enhancement:** StoreGrowth now requires WooCommerce 8.8 or newer.

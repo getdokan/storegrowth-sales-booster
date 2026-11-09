@@ -83,7 +83,7 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
         summary: '',
     },
     'progressive-discount-banner': {
-        label: 'Free Shipping Rules',
+        label: 'Cart Rewards',
         group: null,
         summary: '',
     },

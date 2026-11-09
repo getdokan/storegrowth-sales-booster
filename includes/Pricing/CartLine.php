@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Pricing;
 
+use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use StorePulse\StoreGrowth\Support\Money;
 use WC_Cart;
 
@@ -31,6 +32,39 @@ class CartLine {
 	 * @var string
 	 */
 	const PRICED_WITH = '_spsg_priced_with';
+
+	/**
+	 * Cart item key: the Cart Rewards milestone a free gift line belongs to.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const REWARD_GIFT = '_spsg_reward_gift';
+
+	/**
+	 * Notice data marking a notice as StoreGrowth's, so the block cart can
+	 * show it (`StoreApi\CartExtension`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const NOTICE_SOURCE = 'spsg_notice';
+
+	/**
+	 * Whether a line is a free gift of any kind: a BOGO gift or a Cart Rewards
+	 * gift. Gift lines stay out of coupons' reach, shares and minimums.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $item Cart item.
+	 *
+	 * @return bool
+	 */
+	public static function is_gift( array $item ): bool {
+		return ! empty( $item[ self::REWARD_GIFT ] ) || BogoHelper::is_gift_line( $item );
+	}
 
 	/**
 	 * Price a cart line for this calculation.
@@ -87,7 +121,7 @@ class CartLine {
 	 */
 	private static function notice( string $message ): void {
 		if ( ! wc_has_notice( $message, 'notice' ) ) {
-			wc_add_notice( $message, 'notice' );
+			wc_add_notice( $message, 'notice', [ self::NOTICE_SOURCE => true ] );
 		}
 	}
 }

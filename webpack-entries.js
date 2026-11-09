@@ -21,6 +21,8 @@ const coreEntries = {
     header: './src/header/index.tsx',
     // StoreGrowth's filter and column in WooCommerce Analytics.
     'wc-analytics': './src/wc-analytics/index.ts',
+    // The block cart, mini-cart and checkout on the storefront (ADR-015).
+    'cart-blocks': './src/storefront/cart-blocks/index.tsx',
     'plugin-ui': {
         import: './src/externals/plugin-ui.js',
         library: { name: [ 'storegrowth', 'pluginUI' ], type: 'window' },

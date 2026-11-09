@@ -12,9 +12,9 @@ use Exception;
 use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
-use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use StorePulse\StoreGrowth\Modules\BoGo\OrderBogo;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
+use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Pricing\CouponAmount;
 use StorePulse\StoreGrowth\Pricing\DealList;
 use StorePulse\StoreGrowth\Pricing\Referee;
@@ -156,7 +156,7 @@ class CouponGuard implements HookRegistry {
 		$quantity = 0;
 
 		foreach ( $cart->get_cart() as $item ) {
-			if ( ! BogoHelper::is_gift_line( $item ) ) {
+			if ( ! CartLine::is_gift( $item ) ) {
 				$quantity += (int) $item['quantity'];
 			}
 		}
@@ -184,7 +184,7 @@ class CouponGuard implements HookRegistry {
 		$reaches = false;
 
 		foreach ( $discounts->get_items() as $item ) {
-			if ( ! BogoHelper::is_gift_line( (array) $item->object ) && DealList::coupon_applies( $coupon, $item->product, (array) $item->object ) ) {
+			if ( ! CartLine::is_gift( (array) $item->object ) && DealList::coupon_applies( $coupon, $item->product, (array) $item->object ) ) {
 				$reaches = true;
 				break;
 			}

@@ -8,7 +8,6 @@
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
-use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use WC_Order;
 use WC_Order_Item_Fee;
@@ -102,12 +101,12 @@ class OrderAttribution implements HookRegistry {
 			return;
 		}
 
-		$settings = Helper::get_settings();
+		$discount = function_exists( 'WC' ) && WC()->cart ? Milestones::discount_reached( WC()->cart ) : null;
 
 		$item->add_meta_data( OfferAttribution::CAMPAIGN_TYPE, self::CAMPAIGN_TYPE, true );
-		$item->add_meta_data( self::THRESHOLD, self::threshold( $settings ), true );
-		$item->add_meta_data( self::MODE, (string) PluginHelper::find_option_settings( $settings, 'discount_amount_mode', '' ), true );
-		$item->add_meta_data( self::VALUE, (string) wc_format_decimal( PluginHelper::find_option_settings( $settings, 'discount_amount_value', 0 ) ), true );
+		$item->add_meta_data( self::THRESHOLD, $discount ? self::format_amount( $discount['threshold'] ) : '', true );
+		$item->add_meta_data( self::MODE, $discount ? $discount['discount_mode'] : '', true );
+		$item->add_meta_data( self::VALUE, $discount ? self::format_amount( $discount['discount_value'] ) : '', true );
 		$item->add_meta_data( self::SUBTOTAL, self::cart_subtotal(), true );
 	}
 
@@ -131,12 +130,11 @@ class OrderAttribution implements HookRegistry {
 			return;
 		}
 
-		$settings  = Helper::get_settings();
-		$threshold = self::threshold( $settings );
-		$subtotal  = self::cart_subtotal();
+		$free_shipping = Milestones::free_shipping_state( WC()->cart );
+		$subtotal      = self::cart_subtotal();
 
-		if ( 'free-shipping' === PluginHelper::find_option_settings( $settings, 'discount_type', '' ) && (float) $subtotal >= (float) $threshold ) {
-			$order->update_meta_data( self::THRESHOLD, $threshold );
+		if ( $free_shipping && $free_shipping['reached'] ) {
+			$order->update_meta_data( self::THRESHOLD, self::format_amount( $free_shipping['threshold'] ) );
 		} else {
 			$order->delete_meta_data( self::THRESHOLD );
 		}
@@ -149,16 +147,16 @@ class OrderAttribution implements HookRegistry {
 	}
 
 	/**
-	 * Threshold in force.
+	 * An amount as a decimal string.
 	 *
-	 * @since 3.0.0
+	 * @since SPSG_VERSION
 	 *
-	 * @param array $settings Module settings.
+	 * @param float $amount Amount.
 	 *
 	 * @return string
 	 */
-	private static function threshold( array $settings ): string {
-		return (string) wc_format_decimal( PluginHelper::find_option_settings( $settings, 'cart_minimum_amount', 0 ) );
+	private static function format_amount( float $amount ): string {
+		return (string) wc_format_decimal( $amount );
 	}
 
 	/**
@@ -169,6 +167,6 @@ class OrderAttribution implements HookRegistry {
 	 * @return string
 	 */
 	private static function cart_subtotal(): string {
-		return function_exists( 'WC' ) && WC()->cart ? (string) wc_format_decimal( WC()->cart->get_subtotal() ) : '';
+		return function_exists( 'WC' ) && WC()->cart ? (string) wc_format_decimal( Milestones::subtotal( WC()->cart ) ) : '';
 	}
 }

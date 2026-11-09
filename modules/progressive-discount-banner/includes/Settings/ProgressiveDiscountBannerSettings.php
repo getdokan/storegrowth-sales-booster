@@ -7,11 +7,14 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings;
 
+use StorePulse\StoreGrowth\Interfaces\DerivedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\SettingsPage;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Milestones;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 use StorePulse\StoreGrowth\Settings\DisplaySettings;
 use StorePulse\StoreGrowth\Settings\SettingsService;
+use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -21,15 +24,24 @@ defined( 'ABSPATH' ) || exit;
  * - Defaults are the old admin's, so stores keep their bar.
  * - Keys and values stay as stored: `discount_amount_mode` is
  *   `fixed-amount` / `percentage`, icon slugs `shipping-bar-icon-1..3`.
- * - The design's "Discount Type" (Free Shipping / Percentage / Fixed) writes
- *   `discount_type` and `discount_amount_mode`.
+ * - `milestones` holds the Cart Rewards milestones. Absent, milestone 1 is
+ *   worked out live from the old keys; saved, the old keys keep holding
+ *   milestone 1, because Pro 3.0's bar features read them.
  * - A store that never saved (only the three seeded texts) shows no bar and
- *   applies no discount, as today (`storefront_settings()`); its first save
+ *   applies no reward, as today (`storefront_settings()`); its first save
  *   writes every key sent.
  *
  * @since 3.0.0
  */
-class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, SettingsPage {
+class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedSettingsSchema, SettingsPage {
+
+	/**
+	 * Option holding the settings as they were before the first change made
+	 * for Cart Rewards.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const BACKUP_OPTION = 'spsg_progressive_discount_banner_backup';
 
 	/**
 	 * Keys the first-boot seeding writes; an option holding only these was
@@ -96,20 +108,43 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 
 		// In page order: the settings page draws the fields from here.
 		return array_merge(
-			// Content.
+			// Milestones.
 			[
-				'progressive_banner_text'        => $text(
-					__( 'Add more [amount] to get free shipping.', 'storegrowth-sales-booster' ),
+				// Drawn by the page: one row per milestone.
+				'milestones'              => [
+					'type'    => 'rows',
+					'default' => [],
+					'row'     => [ Milestones::class, 'normalize_row' ],
+					'tab'     => 'milestones',
+					'label'   => __( 'Milestones', 'storegrowth-sales-booster' ),
+				],
+				'progressive_banner_text' => $text(
+					__( 'Add {remaining} more for {reward}', 'storegrowth-sales-booster' ),
 					[
-						'tab'     => 'content',
+						'tab'     => 'milestones',
 						'variant' => 'textarea',
 						'rows'    => 2,
-						'label'   => __( 'Banner Text', 'storegrowth-sales-booster' ),
-						'help'    => __( '[amount] is replaced with what is left to spend.', 'storegrowth-sales-booster' ),
+						'label'   => __( 'Bar Copy', 'storegrowth-sales-booster' ),
+						'help'    => __( 'Placeholders: {remaining} and {reward}. [amount] still works.', 'storegrowth-sales-booster' ),
 					]
 				),
+				'bar_placement'           => [
+					'type'    => 'select',
+					'default' => 'both',
+					'options' => [ 'fly-cart', 'cart-page', 'both' ],
+					'tab'     => 'milestones',
+					'label'   => __( 'Placement', 'storegrowth-sales-booster' ),
+					'labels'  => [
+						'fly-cart'  => __( 'Fly cart', 'storegrowth-sales-booster' ),
+						'cart-page' => __( 'Cart page', 'storegrowth-sales-booster' ),
+						'both'      => __( 'Both', 'storegrowth-sales-booster' ),
+					],
+				],
+			],
+			// Content.
+			[
 				'goal_completion_text'           => $text(
-					__( 'You have successfully acquired free shipping.', 'storegrowth-sales-booster' ),
+					__( 'All rewards unlocked', 'storegrowth-sales-booster' ),
 					[
 						'tab'     => 'content',
 						'variant' => 'textarea',
@@ -165,14 +200,13 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 				'configure'
 			),
 			[
-				// Drawn by the page: one Discount Type select over this key
-				// and `discount_amount_mode`.
+				// Milestone 1 in the keys Pro 3.0 reads; the page edits `milestones`.
 				'discount_type'         => [
 					'type'    => 'select',
-					'default' => 'free-shipping',
-					'options' => [ 'free-shipping', 'discount-amount' ],
+					'default' => Milestones::FREE_SHIPPING,
+					'options' => [ Milestones::FREE_SHIPPING, Milestones::DISCOUNT ],
 					'tab'     => 'configure',
-					'label'   => __( 'Discount Type', 'storegrowth-sales-booster' ),
+					'hidden'  => true,
 				],
 				'discount_amount_mode'  => [
 					'type'    => 'select',
@@ -181,8 +215,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 					'tab'     => 'configure',
 					'hidden'  => true,
 				],
-				// The old admin stored '' until an amount was typed. Drawn by
-				// the page (currency or % by `discount_amount_mode`).
+				// The old admin stored '' until an amount was typed.
 				'discount_amount_value' => [
 					'type'        => 'number',
 					'default'     => '',
@@ -190,17 +223,15 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 					'step'        => 0.01,
 					'allow_empty' => true,
 					'tab'         => 'configure',
-					'label'       => __( 'Discount Amount', 'storegrowth-sales-booster' ),
-					'show_when'   => [ 'discount_type' => 'discount-amount' ],
+					'hidden'      => true,
 				],
 				'cart_minimum_amount'   => [
 					'type'    => 'number',
-					'default' => 10,
+					'default' => Milestones::DEFAULT_THRESHOLD,
 					'min'     => 0,
 					'step'    => 0.01,
 					'tab'     => 'configure',
-					'label'   => __( 'Cart Minimum Amount', 'storegrowth-sales-booster' ),
-					'prefix'  => function_exists( 'get_woocommerce_currency_symbol' ) ? html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES ) : '',
+					'hidden'  => true,
 				],
 			],
 			DisplaySettings::place(
@@ -261,12 +292,15 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	 */
 	public function get_page(): array {
 		return [
-			'title' => __( 'Free Shipping Rules', 'storegrowth-sales-booster' ),
+			'title' => __( 'Cart Rewards', 'storegrowth-sales-booster' ),
 			'tabs'  => [
-				'content'   => [
+				'milestones' => [
+					'label' => __( 'Milestones', 'storegrowth-sales-booster' ),
+				],
+				'content'    => [
 					'label' => __( 'Content', 'storegrowth-sales-booster' ),
 				],
-				'configure' => [
+				'configure'  => [
 					'label'    => __( 'Configure', 'storegrowth-sales-booster' ),
 					'sections' => [
 						'display' => [
@@ -275,7 +309,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 						],
 					],
 				],
-				'design'    => [
+				'design'     => [
 					'label'    => __( 'Design', 'storegrowth-sales-booster' ),
 					'sections' => [
 						'banner'   => [
@@ -323,5 +357,62 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, Settings
 	 */
 	public function storefront_settings( $stored ): array {
 		return storegrowth_get_container()->get( SettingsService::class )->with_defaults( $this->get_module_id(), $stored );
+	}
+
+	/**
+	 * Milestone 1 from the old keys, for a store with no milestones saved.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $stored Stored option.
+	 *
+	 * @return array
+	 */
+	public function with_derived( array $stored ): array {
+		if ( empty( $stored['milestones'] ) ) {
+			$derived = Milestones::derive( $stored );
+
+			if ( $derived ) {
+				$stored['milestones'] = $derived;
+			}
+		}
+
+		return $stored;
+	}
+
+	/**
+	 * Keep the milestones and the old keys in step, and back up the settings
+	 * before the first change.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $changes Sanitized changes.
+	 * @param array $stored  Stored option before the save.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function before_save( array $changes, array $stored ) {
+		$saved_rows = (array) ( $stored['milestones'] ?? [] );
+
+		if ( array_key_exists( 'milestones', $changes ) ) {
+			if ( empty( $changes['milestones'] ) ) {
+				return new WP_Error( 'spsg_settings_invalid', __( 'Add at least one milestone.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
+			}
+
+			if ( ! sp_store_growth()->has_pro() && count( $changes['milestones'] ) > max( Milestones::FREE_LIMIT, count( $saved_rows ) ) ) {
+				return new WP_Error( 'spsg_settings_invalid', __( 'Upgrade to Pro to add more milestones.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
+			}
+
+			$changes['milestones'] = Milestones::sorted_with_ids( $changes['milestones'] );
+			$changes               = array_merge( $changes, Milestones::legacy_keys( $changes['milestones'][0] ) );
+		} elseif ( $saved_rows && array_intersect_key( $changes, array_flip( Milestones::LEGACY_KEYS ) ) ) {
+			$changes['milestones'] = Milestones::with_legacy_keys( Milestones::sorted_with_ids( $saved_rows ), array_merge( $stored, $changes ) );
+		}
+
+		if ( $this->is_saved( $stored ) ) {
+			add_option( self::BACKUP_OPTION, $stored, '', false );
+		}
+
+		return $changes;
 	}
 }

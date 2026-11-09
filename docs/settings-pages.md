@@ -221,12 +221,13 @@ Nothing changes: read the option with `get_option()`, or `SettingsService::with_
 
 | Key | Meaning |
 |---|---|
-| `type` | `text`, `textarea`, `number`, `toggle`, `color`, `select`, `box`, `list`, `url`, `date` |
+| `type` | `text`, `textarea`, `number`, `toggle`, `color`, `select`, `box`, `list`, `rows`, `url`, `date` |
 | `default` | In API shape (int, bool, string, array) |
 | `pro` | Saved only with pro; locked without |
 | `min`, `max`, `step` | Number and box bounds |
 | `options` | Allowed values of `select` / `list` |
 | `item`, `separator`, `max_items`, `lite_max_items` | `list` details |
+| `row` | `rows`: a callable that takes one row and returns it clean, or null when it isn't valid. Drawn by the page (a custom control) |
 | `allow_empty` | `number`: `''` means "not set" |
 | `html` | `text` / `textarea`: keep `wp_kses_post` markup |
 | `tab` | Tab it's drawn on (and saved with) |

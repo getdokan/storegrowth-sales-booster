@@ -69,6 +69,24 @@
       }
     );
 
+    // Block carts change through the Store API, with no fragments event:
+    // WooCommerce's sync event says the cart changed, so fetch the new bar.
+    let refreshTimer;
+    window.addEventListener("wc-blocks_store_sync_required", function () {
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(function () {
+        $.post(spsg_fsb_data.fragments_url).done(function (response) {
+          const bar = response && response.fragments && response.fragments["div.spsg-pd-banner-bar-wrapper"];
+          if (bar) {
+            $(".spsg-pd-banner-bar-wrapper").replaceWith(bar);
+            if (isShowing) {
+              $(".spsg-pd-banner-bar-wrapper").show();
+            }
+          }
+        });
+      }, 300);
+    });
+
     const bannerHide = () => {
       $(".spsg-pd-banner-bar-wrapper").hide();
       paddingRemoverBody();

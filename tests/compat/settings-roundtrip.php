@@ -78,6 +78,10 @@ $legacy = static function ( array $field ) {
 		return array_map( 'intval', $field['default'] );
 	}
 
+	if ( 'rows' === $field['type'] ) {
+		return $field['default'];
+	}
+
 	if ( 'list' === $field['type'] ) {
 		return isset( $field['separator'] ) ? implode( $field['separator'], $field['default'] ) : $field['default'];
 	}

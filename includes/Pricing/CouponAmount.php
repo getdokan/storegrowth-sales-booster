@@ -8,7 +8,6 @@
 namespace StorePulse\StoreGrowth\Pricing;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
-use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use WC_Coupon;
 
 // If this file is called directly, abort.
@@ -130,7 +129,7 @@ class CouponAmount implements HookRegistry {
 		$quantity = 0;
 
 		foreach ( WC()->cart->get_cart() as $item ) {
-			if ( ! BogoHelper::is_gift_line( $item ) && $coupon->is_valid_for_product( $item['data'], $item ) ) {
+			if ( ! CartLine::is_gift( $item ) && $coupon->is_valid_for_product( $item['data'], $item ) ) {
 				$quantity += (int) $item['quantity'];
 			}
 		}

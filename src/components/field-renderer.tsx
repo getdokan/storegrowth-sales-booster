@@ -65,6 +65,7 @@ const VARIANTS: Record< SettingField[ 'type' ], string > = {
     color: 'color_picker',
     select: 'select',
     list: 'multicheck',
+    rows: 'rows',
     box: 'box',
 };
 

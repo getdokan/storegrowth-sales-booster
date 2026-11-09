@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Pricing;
 
-use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use StorePulse\StoreGrowth\Support\Money;
 use WC_Cart;
 use WC_Coupon;
@@ -144,7 +143,7 @@ class DealList {
 		foreach ( $cart->get_cart() as $key => $item ) {
 			$product = wc_get_product( $item['data']->get_id() );
 
-			if ( ! $product || BogoHelper::is_gift_line( $item ) ) {
+			if ( ! $product || CartLine::is_gift( $item ) ) {
 				continue;
 			}
 

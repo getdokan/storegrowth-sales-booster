@@ -29,6 +29,7 @@ use StorePulse\StoreGrowth\REST\ProductController;
 use StorePulse\StoreGrowth\REST\SettingsController;
 use StorePulse\StoreGrowth\Settings\GeneralSettings;
 use StorePulse\StoreGrowth\Settings\SettingsService;
+use StorePulse\StoreGrowth\StoreApi\CartExtension;
 use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
 
 /**
@@ -67,6 +68,7 @@ class CommonServiceProvider extends BootableServiceProvider {
 		Referee::class,
 		CouponGate::class,
 		CouponAmount::class,
+		CartExtension::class,
 	];
 
 	/**

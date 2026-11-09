@@ -9,7 +9,6 @@ namespace StorePulse\StoreGrowth\Pricing;
 
 use Exception;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
-use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use WC_Cart;
 use WC_Coupon;
 use WC_Discounts;
@@ -102,7 +101,7 @@ class CouponGate implements HookRegistry {
 			array_filter(
 				$items,
 				static function ( $item ) use ( $decision, $code, $is_smart, $coupon ): bool {
-					return ! $decision->lost_line( $code, $item->key ) && ! ( $is_smart && ( BogoHelper::is_gift_line( $item->object ) || ! DealList::coupon_applies( $coupon, $item->product, $item->object ) ) );
+					return ! $decision->lost_line( $code, $item->key ) && ! ( $is_smart && ( CartLine::is_gift( $item->object ) || ! DealList::coupon_applies( $coupon, $item->product, $item->object ) ) );
 				}
 			)
 		);
