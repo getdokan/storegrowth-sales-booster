@@ -10,7 +10,9 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\CartLine;
+use StorePulse\StoreGrowth\Pricing\DealList;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\BumpOfferValidator;
@@ -56,6 +58,7 @@ class OrderBump implements HookRegistry {
 	public function register_hooks(): void {
 		add_action( 'woocommerce_review_order_before_submit', array( $this, 'bump_product_frontend_view' ) );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_custom_price_to_cart_item' ) );
+		add_filter( 'spsg_cart_deals', [ $this, 'report_cart_deals' ], 10, 2 );
 		add_action( 'woocommerce_cart_item_removed', array( $this, 'handle_target_product_removal' ), 10, 2 );
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( $this, 'handle_cart_quantity_update' ), 10, 4 );
 	}
@@ -354,6 +357,50 @@ class OrderBump implements HookRegistry {
 
 			$this->price_bump_line( $cart_object, $key, $value, ( new OrderBumpData() )->get_matching_bumps( $cart_product_ids, $cart_category_ids ) );
 		}
+	}
+
+	/**
+	 * Report this cart's bump deals. A bump applies only to its own line and
+	 * never competes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]  $deals Deals.
+	 * @param \WC_Cart $cart  Cart.
+	 *
+	 * @return array[]
+	 */
+	public function report_cart_deals( $deals, $cart ) {
+		foreach ( $cart->get_cart() as $key => $item ) {
+			if ( ! self::is_bump_cart_item( $item ) ) {
+				continue;
+			}
+
+			list( $cart_product_ids, $cart_category_ids ) = self::get_cart_targets( $key );
+
+			$bump    = self::find_line_bump( $item, ( new OrderBumpData() )->get_matching_bumps( $cart_product_ids, $cart_category_ids ) );
+			$product = wc_get_product( $item['data']->get_id() );
+
+			if ( ! $bump || ! $product ) {
+				continue;
+			}
+
+			$current_price = self::get_current_price( $product );
+			$price         = self::calculate_offer_price( $bump['offer_type'], $current_price, $bump['offer_amount'] ?? 0 );
+			$effective     = OfferVersions::effective_offer( array_merge( $bump, [ 'offer_kind' => OfferVersions::ORDER_BUMP ] ) );
+
+			$deals[] = [
+				'line'         => $key,
+				'kind'         => DealList::BUMP,
+				'name'         => __( 'bump', 'storegrowth-sales-booster' ),
+				'amount'       => ( $current_price - $price ) * (int) $item['quantity'],
+				'price'        => $price,
+				'from'         => $current_price,
+				'promotion_id' => (int) $effective['promotion_id'],
+			];
+		}
+
+		return $deals;
 	}
 
 	/**

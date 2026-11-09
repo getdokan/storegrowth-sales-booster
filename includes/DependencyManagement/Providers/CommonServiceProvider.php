@@ -17,6 +17,8 @@ use StorePulse\StoreGrowth\Analytics\WcAnalytics;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
+use StorePulse\StoreGrowth\Pricing\CouponGate;
+use StorePulse\StoreGrowth\Pricing\Referee;
 use StorePulse\StoreGrowth\Upgrader;
 use StorePulse\StoreGrowth\REST\DashboardController;
 use StorePulse\StoreGrowth\REST\ModuleSettingsController;
@@ -61,6 +63,8 @@ class CommonServiceProvider extends BootableServiceProvider {
 		OffersStatsController::class,
 		CampaignRepository::class,
 		OfferLimitsController::class,
+		Referee::class,
+		CouponGate::class,
 	];
 
 	/**

@@ -5,6 +5,8 @@
 - **fix:** Carts follow the deals that are valid right now. BOGO gifts leave the cart with a notice when their deal ends, is switched off or is no longer earned, and Order Bump prices follow the bump's current settings.
 - **fix:** Deals switch at the date and time set, in the site timezone: Countdown (previously UTC), BOGO weekdays and Pro's same-product BOGO. A Countdown sale running during the update shifts once by the site's UTC offset.
 - **fix:** BOGO prices on product pages and the struck-through cart price follow the store's currency format and tax display.
+- **new:** When a Smart Coupon or campaign deal is in the cart, one rules engine decides how deals combine: the larger of a BOGO deal and a coupon wins, and cart lines explain the result with "Larger deal applied", "Deals combined" and their price steps.
+- **enhancement:** The Fly Cart lists each line's item data, so variation details and deal labels show there as they do in the cart.
 - **enhancement:** Free and Pro check each other's minimum version and show a notice when one is too old.
 - **enhancement:** StoreGrowth now requires WooCommerce 8.8 or newer.
 - **note:** Fixed amounts and thresholds are in the store's base currency. Multi-currency is not supported.

@@ -10,6 +10,9 @@ namespace StorePulse\StoreGrowth\Modules\BoGo;
 use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Pricing\CartLine;
+use StorePulse\StoreGrowth\Pricing\Decision;
+use StorePulse\StoreGrowth\Pricing\DealList;
+use StorePulse\StoreGrowth\Pricing\Referee;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
@@ -38,11 +41,36 @@ class OrderBogo implements HookRegistry {
 	private $removing_gift = false;
 
 	/**
+	 * Cart item key on a bought line: its gift is out while a coupon wins.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const GIFT_HELD = '_spsg_gift_held';
+
+	/**
+	 * Cart item key on a bought line: its gift was already counted.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const GIFT_COUNTED = '_spsg_gift_counted';
+
+	/**
+	 * Whether a held gift is being returned to the cart.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var bool
+	 */
+	private $returning_gift = false;
+
+	/**
 	 * Constructor of Woocommerce_Functionality class.
 	 */
 	public function register_hooks(): void {
 		add_action( 'woocommerce_single_product_summary', array( $this, 'bogo_product_frontend_view' ), 6 );
 		add_action( 'woocommerce_before_calculate_totals', array( $this, 'woocommerce_custom_price_to_cart_item' ) );
+		add_filter( 'spsg_cart_deals', [ $this, 'report_cart_deals' ], 10, 2 );
+		add_action( 'spsg_referee_decided', [ $this, 'apply_referee_decision' ], 10, 2 );
 
 		add_action( 'woocommerce_add_to_cart', array( $this, 'add_offer_product_to_cart' ), 10, 6 );
 		add_action( 'woocommerce_update_cart_action_cart_updated', array( $this, 'handle_cart_update' ) );
@@ -512,6 +540,11 @@ class OrderBogo implements HookRegistry {
 	}
 
 	public function apply_bogo_product( $settings, $product_id, $cart_item_key, $quantity = 1 ) {
+		// A larger coupon won this line: no gift while it does.
+		if ( Referee::coupon_won( (string) $cart_item_key ) ) {
+			return;
+		}
+
 		// Use BogoValidator instead of Helper for consistent offer product ID retrieval
 		$offer_product_id = BogoValidator::get_offer_product_id( $settings, $product_id );
 		$product = wc_get_product( $offer_product_id );
@@ -578,9 +611,217 @@ class OrderBogo implements HookRegistry {
 			WC()->cart->cart_contents[ $cart_item_key ]['child_key'] = $free_product_key;
 		}
 
-		if ( $free_product_key && ! empty( $settings['id'] ) ) {
+		if ( $free_product_key && ! empty( $settings['id'] ) && $this->is_new_gift( (string) $cart_item_key ) ) {
 			Counter::bump( BoGoModule::get_id(), 'add_to_cart', Counter::CAMPAIGN, (int) $settings['id'] );
+
+			WC()->cart->cart_contents[ $cart_item_key ][ self::GIFT_COUNTED ] = true;
 		}
+	}
+
+	/**
+	 * Whether a gift being added counts as a new one: every gift the shopper
+	 * earns, but not one coming back after a coupon held it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $trigger_key Bought line's cart item key.
+	 *
+	 * @return bool
+	 */
+	private function is_new_gift( string $trigger_key ): bool {
+		return ! $this->returning_gift || empty( WC()->cart->cart_contents[ $trigger_key ][ self::GIFT_COUNTED ] );
+	}
+
+	/**
+	 * Report this cart's BOGO deals: one per bought line that has earned a
+	 * gift, whether the gift is in the cart or held back. The amount is the
+	 * gift's whole discount at fresh prices, so what happens to the gift line
+	 * can't change it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]  $deals Deals.
+	 * @param \WC_Cart $cart  Cart.
+	 *
+	 * @return array[]
+	 */
+	public function report_cart_deals( $deals, $cart ) {
+		foreach ( $cart->get_cart() as $key => $item ) {
+			if ( ! Helper::is_gift_line( $item ) ) {
+				$deals = $this->add_line_deal( $deals, $cart, (string) $key, $item );
+			}
+		}
+
+		return $deals;
+	}
+
+	/**
+	 * Add one bought line's BOGO deal, if it has one.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]  $deals Deals.
+	 * @param \WC_Cart $cart  Cart.
+	 * @param string   $key   Bought line's cart item key.
+	 * @param array    $item  Bought line.
+	 *
+	 * @return array[]
+	 */
+	private function add_line_deal( array $deals, $cart, string $key, array $item ): array {
+		$effective = $this->get_trigger_effective( $item );
+		$settings  = $effective['values'] ?? null;
+		$earned    = $settings ? $this->get_earned_gifts( $settings, $item ) : 0;
+
+		if ( $earned < 1 ) {
+			return $deals;
+		}
+
+		$gift_key = $this->find_gift_key( $cart, $key );
+		$apply_id = ! empty( $item['variation_id'] ) ? (int) $item['variation_id'] : (int) $item['product_id'];
+		$gift_id  = $gift_key ? $cart->cart_contents[ $gift_key ]['data']->get_id() : BogoValidator::get_offer_product_id( $settings, $apply_id );
+		$gift     = wc_get_product( $gift_id );
+
+		if ( ! $gift ) {
+			return $deals;
+		}
+
+		$unit_price = (float) $gift->get_price();
+
+		$deals[] = [
+			'line'         => $key,
+			'kind'         => DealList::BOGO,
+			'name'         => $this->get_deal_name( $settings ),
+			'amount'       => ( $unit_price - (float) Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $unit_price, $settings['discount_amount'] ?? 0 ) ) * $earned,
+			'promotion_id' => (int) ( $effective['promotion_id'] ?? 0 ),
+		];
+
+		return $deals;
+	}
+
+	/**
+	 * The name a deal goes by in the cart. Product offers have no name of their own.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings The offer.
+	 *
+	 * @return string
+	 */
+	private function get_deal_name( array $settings ): string {
+		$name = 'global' === ( $settings['type'] ?? '' ) ? (string) ( $settings['name_of_order_bogo'] ?? '' ) : '';
+
+		return '' !== $name ? $name : __( 'BOGO deal', 'storegrowth-sales-booster' );
+	}
+
+	/**
+	 * The gift line of a bought line.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart Cart.
+	 * @param string   $key  Bought line's cart item key.
+	 *
+	 * @return string Empty without one.
+	 */
+	private function find_gift_key( $cart, string $key ): string {
+		foreach ( $cart->cart_contents as $gift_key => $item ) {
+			$linked_key = $item['linked_to_product_key'] ?? '';
+
+			if ( $key === $linked_key ) {
+				return (string) $gift_key;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Apply the referee's decision: a bought line whose coupon won loses its
+	 * gift, and a held gift comes back once no coupon beats it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param Decision $decision Decision.
+	 * @param \WC_Cart $cart     Cart.
+	 *
+	 * @return void
+	 */
+	public function apply_referee_decision( Decision $decision, $cart ): void {
+		foreach ( $cart->cart_contents as $key => $item ) {
+			if ( ! isset( $cart->cart_contents[ $key ] ) || Helper::is_gift_line( $item ) ) {
+				continue;
+			}
+
+			if ( $decision->coupon_won( (string) $key ) ) {
+				$this->hold_gift( $cart, (string) $key );
+			} elseif ( ! empty( $item[ self::GIFT_HELD ] ) ) {
+				unset( $cart->cart_contents[ $key ][ self::GIFT_HELD ] );
+				$this->return_gift( $cart, (string) $key, $item );
+			}
+		}
+	}
+
+	/**
+	 * Take a bought line's gift out of the cart while a coupon wins. No
+	 * notice: the line's label explains it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart Cart.
+	 * @param string   $key  Bought line's cart item key.
+	 *
+	 * @return void
+	 */
+	private function hold_gift( $cart, string $key ): void {
+		$gift_key = $this->find_gift_key( $cart, $key );
+
+		while ( '' !== $gift_key ) {
+			$this->remove_gift( $cart, $gift_key );
+			$gift_key = $this->find_gift_key( $cart, $key );
+		}
+
+		$cart->cart_contents[ $key ][ self::GIFT_HELD ] = true;
+	}
+
+	/**
+	 * Bring a held gift back, priced, when the deal is still earned. WooCommerce
+	 * would total the cart on each add; this runs inside a calculation already.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart Cart.
+	 * @param string   $key  Bought line's cart item key.
+	 * @param array    $item Bought line.
+	 *
+	 * @return void
+	 */
+	private function return_gift( $cart, string $key, array $item ): void {
+		$settings = $this->get_trigger_offer( $item );
+		$earned   = $settings ? $this->get_earned_gifts( $settings, $item ) : 0;
+
+		if ( $earned < 1 ) {
+			return;
+		}
+
+		/**
+		 * Filters the product id a cart line's BOGO offer is looked up by.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int $product_id   Product id.
+		 * @param int $variation_id Variation id.
+		 */
+		$apply_id = (int) apply_filters( 'spsg_bogo_get_apply_able_product_id', (int) $item['product_id'], (int) ( $item['variation_id'] ?? 0 ) );
+
+		remove_action( 'woocommerce_add_to_cart', [ $cart, 'calculate_totals' ], 20 );
+
+		$this->returning_gift = true;
+		$this->apply_bogo_product( $settings, $apply_id, $key, $earned );
+		$this->returning_gift = false;
+
+		add_action( 'woocommerce_add_to_cart', [ $cart, 'calculate_totals' ], 20, 0 );
+
+		$this->woocommerce_custom_price_to_cart_item( $cart );
 	}
 
 	/**
@@ -952,29 +1193,16 @@ class OrderBogo implements HookRegistry {
 		$trigger = $cart->cart_contents[ $trigger_key ] ?? null;
 
 		// Its trigger left the cart: the shopper did that, no notice needed.
-		if ( null === $trigger && ! empty( $item['linked_to_product_key'] ) ) {
+		// A gift of a gift is Pro 3.0's add path running on a returned gift line.
+		if ( ( null === $trigger && ! empty( $item['linked_to_product_key'] ) ) || ( $trigger && Helper::is_gift_line( $trigger ) ) ) {
 			$this->remove_gift( $cart, $key );
 
 			return;
 		}
 
 		$settings = $trigger ? $this->get_trigger_offer( $trigger ) : null;
-		$earned   = 0;
-
-		if ( $settings ) {
-			/**
-			 * Filters how many offer products a cart line's quantity earns.
-			 *
-			 * @since 2.0.0
-			 *
-			 * @param int   $free_product_quantity Offer quantity.
-			 * @param array $settings              The BOGO offer.
-			 * @param array $trigger               The target cart item.
-			 */
-			$earned = (int) apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $settings, (int) $trigger['quantity'] ), $settings, $trigger );
-		}
-
-		$product = wc_get_product( $item['data']->get_id() );
+		$earned   = $settings ? $this->get_earned_gifts( $settings, $trigger ) : 0;
+		$product  = wc_get_product( $item['data']->get_id() );
 
 		if ( $earned < 1 || ! $product ) {
 			$this->remove_gift( $cart, $key, $this->get_gift_ended_message( $item, $settings ) );
@@ -1005,6 +1233,44 @@ class OrderBogo implements HookRegistry {
 	 * @return array|null Null when no offer applies right now.
 	 */
 	private function get_trigger_offer( array $trigger ): ?array {
+		$effective = $this->get_trigger_effective( $trigger );
+
+		return $effective ? $effective['values'] : null;
+	}
+
+	/**
+	 * How many gifts a bought line's quantity earns.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings The BOGO offer.
+	 * @param array $trigger  Bought line.
+	 *
+	 * @return int
+	 */
+	private function get_earned_gifts( array $settings, array $trigger ): int {
+		/**
+		 * Filters how many offer products a cart line's quantity earns.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int   $free_product_quantity Offer quantity.
+		 * @param array $settings              The BOGO offer.
+		 * @param array $trigger               The target cart item.
+		 */
+		return (int) apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $settings, (int) $trigger['quantity'] ), $settings, $trigger );
+	}
+
+	/**
+	 * The live offer behind a trigger line and the version it runs under.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $trigger Trigger's cart item.
+	 *
+	 * @return array|null `effective_offer()`'s answer; null when no offer applies right now.
+	 */
+	private function get_trigger_effective( array $trigger ): ?array {
 		$product_id   = (int) $trigger['product_id'];
 		$variation_id = (int) ( $trigger['variation_id'] ?? 0 );
 
@@ -1030,7 +1296,7 @@ class OrderBogo implements HookRegistry {
 
 		$effective = OfferVersions::effective_offer( array_merge( $settings, [ 'offer_kind' => OfferVersions::BOGO ] ) );
 
-		return $effective['live'] ? $effective['values'] : null;
+		return $effective['live'] ? $effective : null;
 	}
 
 	/**

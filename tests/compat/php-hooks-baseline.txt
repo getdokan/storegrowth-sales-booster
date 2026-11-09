@@ -33,6 +33,7 @@ spsg_bogo_single_item_permission
 spsg_bogo_status
 spsg_bogo_updated_by
 spsg_bogo_validator_prepared_settings
+spsg_cart_deals
 spsg_countdown_timer_fields_defaults
 spsg_countdown_timer_meta_keys
 spsg_countdown_timer_meta_value
@@ -76,6 +77,8 @@ spsg_product_query_args
 spsg_qcv_inline_styles
 spsg_quick_view_details_button
 spsg_quick_view_icon_button
+spsg_referee_decided
+spsg_referee_observe_only
 spsg_sales_pop_billing_orders_limit
 spsg_sales_pop_category_products_limit
 spsg_sales_pop_id_list_fields

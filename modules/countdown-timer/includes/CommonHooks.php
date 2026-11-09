@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Pricing\DealList;
 use WC_Product;
 
 // If this file is called directly, abort.
@@ -38,6 +39,45 @@ class CommonHooks implements HookRegistry {
 		add_filter( 'woocommerce_product_get_price', array( $this, 'get_product_price' ), 10, 2 );
 		add_filter( 'woocommerce_product_variation_get_price', array( $this, 'get_product_price' ), 10, 2 );
 		add_filter( 'woocommerce_product_is_on_sale', array( $this, 'woocommerce_product_is_on_sale' ), 10, 2 );
+		add_filter( 'spsg_cart_deals', [ $this, 'report_cart_deals' ], 10, 2 );
+	}
+
+	/**
+	 * Report Countdown prices as the base of their lines. The discount
+	 * itself stays in `get_product_price()`; a base price never competes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]  $deals Deals.
+	 * @param \WC_Cart $cart  Cart.
+	 *
+	 * @return array[]
+	 */
+	public function report_cart_deals( $deals, $cart ) {
+		foreach ( $cart->get_cart() as $key => $item ) {
+			$product = wc_get_product( $item['data']->get_id() );
+
+			if ( ! $product || ! Helper::is_product_discountable( $product->get_id() ) ) {
+				continue;
+			}
+
+			$percent = (int) get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
+			$from    = (float) $product->get_price( 'edit' );
+			$price   = (float) $product->get_price();
+
+			$deals[] = [
+				'line'         => $key,
+				'kind'         => DealList::BASE,
+				/* translators: %d: discount percent. */
+				'name'         => sprintf( __( 'Countdown %d%%', 'storegrowth-sales-booster' ), $percent ),
+				'amount'       => ( $from - $price ) * (int) $item['quantity'],
+				'price'        => $price,
+				'from'         => $from,
+				'promotion_id' => 0,
+			];
+		}
+
+		return $deals;
 	}
 
 	/**

@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\BoGo;
 use StorePulse\StoreGrowth\Analytics\Counter;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Pricing\Referee;
 use StorePulse\StoreGrowth\Settings\SettingsService;
 
 // If this file is called directly, abort.
@@ -93,7 +94,7 @@ class Ajax implements HookRegistry {
 		// (any client-sent `offer_product_cost` is ignored), so that offer must
 		// allow it. Checked before touching the cart, so a rejected request
 		// leaves the current gift intact.
-		if ( '' === $trigger_key || null === Helper::find_authorized_trigger( $selected_product_id, $trigger_key ) ) {
+		if ( '' === $trigger_key || null === Helper::find_authorized_trigger( $selected_product_id, $trigger_key ) || Referee::coupon_won( $trigger_key ) ) {
 			wp_send_json_error( __( 'This gift is not available for your cart.', 'storegrowth-sales-booster' ), 403 );
 		}
 
@@ -380,7 +381,7 @@ class Ajax implements HookRegistry {
 		}
 
 		$authorized = Helper::find_authorized_trigger( $offer_product_id );
-		if ( null === $authorized ) {
+		if ( null === $authorized || Referee::coupon_won( (string) $authorized['key'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'This offer is not available.', 'storegrowth-sales-booster' ) ), 403 );
 		}
 

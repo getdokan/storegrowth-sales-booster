@@ -81,6 +81,8 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 							} else {
 								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
 							}
+
+							echo wc_get_formatted_cart_item_data( $cart_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WooCommerce's template escapes it.
 							?>
 						</div>
 							<?php if ( $show_quantity_picker ) : ?>
