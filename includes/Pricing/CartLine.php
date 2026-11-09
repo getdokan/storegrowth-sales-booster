@@ -53,6 +53,16 @@ class CartLine {
 	const NOTICE_SOURCE = 'spsg_notice';
 
 	/**
+	 * Notice data marking a notice as a line's own: a campaign's notice takes
+	 * its place when both come from one event (`Campaigns\CartNotices`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const LINE_NOTICE = 'spsg_line_notice';
+
+	/**
 	 * Whether a line is a free gift of any kind: a BOGO gift or a Cart Rewards
 	 * gift. Gift lines stay out of coupons' reach, shares and minimums.
 	 *
@@ -85,7 +95,7 @@ class CartLine {
 		$cart->cart_contents[ $key ][ self::PRICED_WITH ] = $price;
 
 		if ( null !== $last_price && 0 !== Money::compare( (float) $last_price, $price ) ) {
-			self::notice( __( 'Prices updated.', 'storegrowth-sales-booster' ) );
+			self::notice( __( 'Prices updated.', 'storegrowth-sales-booster' ), true );
 		}
 	}
 
@@ -106,7 +116,7 @@ class CartLine {
 		unset( $cart->removed_cart_contents[ $key ] );
 
 		if ( '' !== $message ) {
-			self::notice( $message );
+			self::notice( $message, true );
 		}
 	}
 
@@ -116,12 +126,20 @@ class CartLine {
 	 * @since SPSG_VERSION
 	 *
 	 * @param string $message Notice.
+	 * @param bool   $is_line Whether the notice is a line's own, which a campaign's replaces.
 	 *
 	 * @return void
 	 */
-	public static function notice( string $message ): void {
+	public static function notice( string $message, bool $is_line = false ): void {
 		if ( ! wc_has_notice( $message, 'notice' ) ) {
-			wc_add_notice( $message, 'notice', [ self::NOTICE_SOURCE => true ] );
+			wc_add_notice(
+				$message,
+				'notice',
+				[
+					self::NOTICE_SOURCE => true,
+					self::LINE_NOTICE   => $is_line,
+				]
+			);
 		}
 	}
 }

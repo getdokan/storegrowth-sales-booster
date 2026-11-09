@@ -37,6 +37,24 @@ class CartExtension implements HookRegistry {
 	const IDENTIFIER = 'storegrowth';
 
 	/**
+	 * Notices taken from the queue for the cart a page embeds, not delivered yet.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string[]
+	 */
+	private array $held = [];
+
+	/**
+	 * Whether this request draws a block cart or checkout.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var bool
+	 */
+	private bool $has_notice_area = false;
+
+	/**
 	 * Register hooks.
 	 *
 	 * @since SPSG_VERSION
@@ -53,6 +71,40 @@ class CartExtension implements HookRegistry {
 		add_action( 'woocommerce_blocks_cart_block_registration', [ $this, 'register_integration' ] );
 		add_action( 'woocommerce_blocks_checkout_block_registration', [ $this, 'register_integration' ] );
 		add_action( 'woocommerce_blocks_mini-cart_block_registration', [ $this, 'register_integration' ] );
+		add_action( 'woocommerce_blocks_enqueue_cart_block_scripts_before', [ $this, 'hold_notices_for_page' ] );
+		add_action( 'woocommerce_blocks_enqueue_checkout_block_scripts_before', [ $this, 'hold_notices_for_page' ] );
+		// Before WooCommerce saves the session, at 20.
+		add_action( 'shutdown', [ $this, 'release_held_notices' ], 10 );
+	}
+
+	/**
+	 * A block cart or checkout is about to embed the cart. WooCommerce empties
+	 * the notice queue for that and puts it back afterwards, so what is queued
+	 * has to be taken out first or it never reaches the page.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function hold_notices_for_page(): void {
+		$this->has_notice_area = true;
+		$this->held            = array_merge( $this->held, self::take_notices() );
+	}
+
+	/**
+	 * Back in the queue with any notice this page didn't embed, for the next
+	 * page that shows notices.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public function release_held_notices(): void {
+		foreach ( $this->held as $notice ) {
+			CartLine::notice( $notice );
+		}
+
+		$this->held = [];
 	}
 
 	/**
@@ -116,7 +168,7 @@ class CartExtension implements HookRegistry {
 		}
 
 		$data = [
-			'notices'       => self::is_rest_request() ? self::take_notices() : [],
+			'notices'       => $this->notices_for_response(),
 			'coupon_labels' => self::automatic_coupon_labels( $cart ),
 		];
 
@@ -195,8 +247,34 @@ class CartExtension implements HookRegistry {
 	}
 
 	/**
-	 * Whether this is a real REST request. Pages that embed the cart response
-	 * while rendering (hydration) leave notices to the classic printers.
+	 * The notices for this cart response. A real REST request takes the queue.
+	 * The cart a page embeds while rendering (hydration) takes what the page
+	 * held back plus what this response raised, which WooCommerce would
+	 * otherwise throw away, but only a block cart or checkout can show them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return string[]
+	 */
+	private function notices_for_response(): array {
+		if ( self::is_rest_request() ) {
+			return self::take_notices();
+		}
+
+		$this->held = array_merge( $this->held, self::take_notices() );
+
+		if ( ! $this->has_notice_area ) {
+			return [];
+		}
+
+		$notices    = array_values( array_unique( $this->held ) );
+		$this->held = [];
+
+		return $notices;
+	}
+
+	/**
+	 * Whether this is a real REST request.
 	 *
 	 * @since SPSG_VERSION
 	 *

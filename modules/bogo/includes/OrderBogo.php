@@ -728,7 +728,21 @@ class OrderBogo implements HookRegistry {
 	}
 
 	/**
-	 * The name a deal goes by in the cart. Product offers have no name of their own.
+	 * The merchant's name for an offer. Product offers have only a generated
+	 * one, except a campaign-only rule, which keeps the name it was given.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings The offer.
+	 *
+	 * @return string
+	 */
+	private function get_merchant_offer_name( array $settings ): string {
+		return 'global' === ( $settings['type'] ?? '' ) || ! empty( $settings['campaign_offer_id'] ) ? (string) ( $settings['name_of_order_bogo'] ?? '' ) : '';
+	}
+
+	/**
+	 * The name a deal goes by in the cart.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -737,7 +751,7 @@ class OrderBogo implements HookRegistry {
 	 * @return string
 	 */
 	private function get_deal_name( array $settings ): string {
-		$name = 'global' === ( $settings['type'] ?? '' ) ? (string) ( $settings['name_of_order_bogo'] ?? '' ) : '';
+		$name = $this->get_merchant_offer_name( $settings );
 
 		return '' !== $name ? $name : __( 'BOGO deal', 'storegrowth-sales-booster' );
 	}
@@ -1368,8 +1382,7 @@ class OrderBogo implements HookRegistry {
 			$settings = $offer_id ? BogoDataManager::get_bogo_offer( $offer_id ) : null;
 		}
 
-		// Product offers have only a generated name.
-		$name = 'global' === ( $settings['type'] ?? '' ) ? (string) ( $settings['name_of_order_bogo'] ?? '' ) : '';
+		$name = $this->get_merchant_offer_name( (array) $settings );
 
 		return sprintf(
 			/* translators: %s: deal name. */

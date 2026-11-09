@@ -556,6 +556,10 @@ class BogoController extends WP_REST_Controller {
 			$sent['name_of_order_bogo'] = $sent['name'];
 		}
 
+		if ( 'product' === ( $sent['type'] ?? '' ) && empty( $sent['offered_products'] ) && ! empty( $sent['product_id'] ) ) {
+			$sent['offered_products'] = [ (int) $sent['product_id'] ];
+		}
+
 		$stored = BogoDataManager::to_request_data( $offer );
 		$data   = $this->validate_and_normalize_data( $this->ignore_pro_values( array_merge( $stored, $sent ), $offer ? $stored : [] ) );
 
@@ -571,11 +575,30 @@ class BogoController extends WP_REST_Controller {
 
 		$rules = $this->check_extension_rules( $data, $offer ? $stored : [], new WP_REST_Request() );
 
-		return is_wp_error( $rules ) ? $rules : BogoDataManager::to_offer_values( $data );
+		return is_wp_error( $rules ) ? $rules : BogoDataManager::to_offer_values( $data, $this->campaign_rule_product( $offer, $data ) );
 	}
 
 	/**
-	 * Stored values as this editor reads them.
+	 * The product a campaign-only rule is for, when it targets one product
+	 * alone: such a rule is that product's own rule while the campaign runs,
+	 * and takes over from its everyday product rule.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $offer Stored values; an attached offer's have its id.
+	 * @param array $data  Normalized offer data.
+	 *
+	 * @return int 0 for an attached offer or a rule with wider targets.
+	 */
+	private function campaign_rule_product( array $offer, array $data ): int {
+		$products = (array) ( $data['offered_products'] ?? [] );
+
+		return empty( $offer['id'] ) && 1 === count( $products ) && empty( $data['offered_categories'] ) ? (int) reset( $products ) : 0;
+	}
+
+	/**
+	 * Stored values as this editor reads them. A campaign-only rule always
+	 * opens in this editor, never on a product's BOGO tab.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -584,7 +607,16 @@ class BogoController extends WP_REST_Controller {
 	 * @return array
 	 */
 	public function campaign_record( array $values ): array {
-		return (array) $this->prepare_item_for_response( array_merge( $values, [ 'id' => 0 ] ), new WP_REST_Request() )->get_data();
+		$record = array_merge(
+			$values,
+			[
+				'id'         => 0,
+				'type'       => 'global',
+				'product_id' => 0,
+			]
+		);
+
+		return (array) $this->prepare_item_for_response( $record, new WP_REST_Request() )->get_data();
 	}
 
 	/**

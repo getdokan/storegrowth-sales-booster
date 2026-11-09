@@ -16,6 +16,7 @@ import {
     type DataViewField,
     toast,
 } from '@wedevs/plugin-ui';
+import { useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __, sprintf } from '@wordpress/i18n';
 import { CreditCard, Pencil, Plus } from 'lucide-react';
@@ -254,6 +255,8 @@ export default function OrderBumpList() {
         setModuleStatus,
         pending: pendingModules,
     } = useModules();
+    // Bumped when "Choose offers" changes which bumps are paused.
+    const [ listVersion, setListVersion ] = useState( 0 );
 
     // Module off: its bumps can't be listed until it's on. Turning it on
     // marks it on before the server answers, so the list also waits for
@@ -310,8 +313,15 @@ export default function OrderBumpList() {
 
     return (
         <FeatureLayout moduleId={ MODULE_ID }>
-            <OfferLimitNotice kind="order_bump" />
-            <BumpList />
+            <OfferLimitNotice
+                kind="order_bump"
+                onSaved={ () => {
+                    setListVersion( ( version ) => {
+                        return version + 1;
+                    } );
+                } }
+            />
+            <BumpList key={ listVersion } />
         </FeatureLayout>
     );
 }

@@ -32,6 +32,21 @@ if ( ! file_exists( TEST_WC_DIR . '/woocommerce.php' ) ) {
 
 require_once $_tests_dir . '/includes/functions.php';
 
+if ( ! function_exists( 'dokan_is_user_seller' ) ) {
+	/**
+	 * Dokan's seller check, as it reads: any user with `dokandar`.
+	 *
+	 * @param int  $user_id       User.
+	 * @param bool $exclude_staff Whether vendor staff don't count.
+	 *
+	 * @return bool
+	 */
+	function dokan_is_user_seller( $user_id, $exclude_staff = false ) {
+		// phpcs:ignore WordPress.WP.Capabilities.Unknown -- Dokan's capabilities.
+		return user_can( $user_id, 'dokandar' ) && ! ( $exclude_staff && user_can( $user_id, 'vendor_staff' ) );
+	}
+}
+
 /**
  * Load WooCommerce and StoreGrowth into the test environment.
  *

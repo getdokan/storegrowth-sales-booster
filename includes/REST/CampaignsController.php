@@ -715,12 +715,6 @@ class CampaignsController extends WP_REST_Controller {
 	 * @return array<string, array[]>
 	 */
 	private function attachable_offers(): array {
-		$is_vendor = static function ( array $offer ): bool {
-			$author = (int) ( $offer['created_by'] ?? 0 );
-
-			return $author && function_exists( 'dokan_is_user_seller' ) && dokan_is_user_seller( $author );
-		};
-
 		$named = static function ( array $offer, string $field ): array {
 			return [
 				'id'   => (int) $offer['id'],
@@ -728,19 +722,12 @@ class CampaignsController extends WP_REST_Controller {
 			];
 		};
 
-		$bogo = array_filter(
-			(array) BogoDataManager::get_bogo_offers(),
-			static function ( array $offer ) use ( $is_vendor ): bool {
-				return ! $is_vendor( $offer );
-			}
-		);
+		$is_admin_offer = static function ( array $offer ): bool {
+			return ! OfferVersions::is_vendor_deal( $offer );
+		};
 
-		$bumps = array_filter(
-			(array) ( new OrderBumpData() )->get_all( [ 'status' => '' ] ),
-			static function ( array $bump ) use ( $is_vendor ): bool {
-				return ! $is_vendor( $bump );
-			}
-		);
+		$bogo  = array_filter( (array) BogoDataManager::get_bogo_offers(), $is_admin_offer );
+		$bumps = array_filter( (array) ( new OrderBumpData() )->get_all( [ 'status' => '' ] ), $is_admin_offer );
 
 		return [
 			OfferVersions::SMART_COUPON => $this->attachable_coupons(),
@@ -845,9 +832,7 @@ class CampaignsController extends WP_REST_Controller {
 			$offer = (array) ( new OrderBumpData() )->get_by_id( $offer_id );
 		}
 
-		$author = (int) ( $offer['created_by'] ?? 0 );
-
-		return $author && function_exists( 'dokan_is_user_seller' ) && dokan_is_user_seller( $author );
+		return OfferVersions::is_vendor_deal( $offer );
 	}
 
 	/**

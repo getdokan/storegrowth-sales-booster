@@ -116,7 +116,7 @@ const noticeContext =
 if ( noticeContext ) {
     let shown: string[] | undefined;
 
-    wp.data.subscribe( () => {
+    const showNotices = () => {
         const notices = cartData()?.notices;
 
         if ( ! notices?.length || notices === shown ) {
@@ -129,5 +129,9 @@ if ( noticeContext ) {
                 .dispatch( 'core/notices' )
                 .createInfoNotice( notice, { context: noticeContext } );
         } );
-    }, CART_STORE );
+    };
+
+    wp.data.subscribe( showNotices, CART_STORE );
+    // The cart the page embedded may already be in the store.
+    showNotices();
 }

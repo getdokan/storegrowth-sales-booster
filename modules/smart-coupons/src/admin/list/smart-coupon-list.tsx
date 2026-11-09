@@ -142,6 +142,8 @@ function CouponList() {
     const navigate = useNavigate();
     // The server knows the limit; the list reports what it read.
     const [ canCreate, setCanCreate ] = useState( true );
+    // Bumped when "Choose offers" changes which coupons are paused.
+    const [ listVersion, setListVersion ] = useState( 0 );
 
     const fields: DataViewField< SmartCouponRow >[] = [
         {
@@ -269,6 +271,7 @@ function CouponList() {
                 </Alert>
             ) }
             <RecordList< SmartCouponRow >
+                key={ listVersion }
                 route={ couponsRoute() }
                 namespace="storegrowth-smart-coupons"
                 title={ __( 'Smart Coupons', 'storegrowth-sales-booster' ) }
@@ -294,7 +297,14 @@ function CouponList() {
                 } }
                 messages={ MESSAGES }
             />
-            <OfferLimitNotice kind="smart_coupon" />
+            <OfferLimitNotice
+                kind="smart_coupon"
+                onSaved={ () => {
+                    setListVersion( ( version ) => {
+                        return version + 1;
+                    } );
+                } }
+            />
             <p className="m-0 text-xs text-sg-help">
                 { __(
                     'Code and link coupons also appear in WooCommerce > Coupons, marked Managed by Smart Coupons.',

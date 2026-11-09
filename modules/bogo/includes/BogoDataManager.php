@@ -114,17 +114,31 @@ class BogoDataManager {
 	}
 
 	/**
-	 * A global offer's request data as a stored offer reads, for an offer
-	 * that lives on a campaign's list instead of this table.
+	 * An offer's request data as a stored offer reads, for an offer that lives
+	 * on a campaign's list instead of this table.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param array $data Validated request data.
+	 * @param array $data       Validated request data.
+	 * @param int   $product_id The product a product-level rule is for; 0 for a global rule.
 	 *
 	 * @return array
 	 */
-	public static function to_offer_values( array $data ): array {
-		return self::format_settings( self::map_bogo_data( $data, 'global' ) );
+	public static function to_offer_values( array $data, int $product_id = 0 ): array {
+		if ( ! $product_id ) {
+			return self::format_settings( self::map_bogo_data( $data, 'global' ) );
+		}
+
+		$values = array_merge(
+			self::map_bogo_data( $data, 'product', $product_id ),
+			// Only a product rule in the table has a generated name.
+			[
+				'name'               => $data['name_of_order_bogo'] ?? '',
+				'offered_categories' => wp_json_encode( [] ),
+			]
+		);
+
+		return array_merge( self::format_settings( $values ), [ 'name_of_order_bogo' => $values['name'] ] );
 	}
 
 	/**

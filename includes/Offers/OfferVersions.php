@@ -73,6 +73,23 @@ class OfferVersions {
 	const CAMPAIGN = 'campaign';
 
 	/**
+	 * Whether a Dokan vendor made an offer. Dokan gives every administrator
+	 * the `dokandar` capability too, so an administrator's offer is checked
+	 * for first: it is never a vendor deal.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $offer Stored offer, with `created_by`.
+	 *
+	 * @return bool
+	 */
+	public static function is_vendor_deal( array $offer ): bool {
+		$author = (int) ( $offer['created_by'] ?? 0 );
+
+		return $author && ! user_can( $author, 'manage_options' ) && function_exists( 'dokan_is_user_seller' ) && dokan_is_user_seller( $author );
+	}
+
+	/**
 	 * What applies to an offer at a moment.
 	 *
 	 * @since SPSG_VERSION

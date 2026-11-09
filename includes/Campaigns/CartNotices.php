@@ -30,7 +30,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CartNotices implements HookRegistry {
 
 	/**
-	 * Session key: the campaigns behind the last prices, id => name, and when.
+	 * Session key: the campaigns behind the last prices, id => name, and the
+	 * campaigns running then.
 	 *
 	 * @since SPSG_VERSION
 	 */
@@ -64,9 +65,9 @@ class CartNotices implements HookRegistry {
 
 		$now      = SiteTime::now();
 		$current  = [];
-		$previous = (array) WC()->session->get( self::SESSION_KEY, [] );
+		$previous = WC()->session->get( self::SESSION_KEY );
 		$seen     = (array) ( $previous['promotions'] ?? [] );
-		$last     = (int) ( $previous['at'] ?? 0 );
+		$running  = array_map( 'intval', (array) ( $previous['running'] ?? [] ) );
 
 		foreach ( array_keys( $decision->promotions() ) as $id ) {
 			$campaign       = CampaignRepository::get( (int) $id );
@@ -76,10 +77,12 @@ class CartNotices implements HookRegistry {
 				Counter::bump( 'campaigns', 'qualified', 'promotion', (int) $id );
 			}
 
-			if ( $last && $campaign && ! isset( $seen[ $id ] ) && self::started_since( $campaign, $last ) ) {
+			// A campaign that was already running when this cart was last
+			// priced didn't start: the shopper added its product.
+			if ( $previous && $campaign && ! isset( $seen[ $id ] ) && ! in_array( (int) $id, $running, true ) ) {
 				/* translators: %s: campaign name. */
 				CartLine::notice( sprintf( __( '%s price applied.', 'storegrowth-sales-booster' ), $campaign['name'] ) );
-				self::drop_generic_notice();
+				self::drop_line_notices();
 			}
 		}
 
@@ -88,7 +91,7 @@ class CartNotices implements HookRegistry {
 
 			if ( '' !== $message ) {
 				CartLine::notice( $message );
-				self::drop_generic_notice();
+				self::drop_line_notices();
 			}
 		}
 
@@ -96,25 +99,9 @@ class CartNotices implements HookRegistry {
 			self::SESSION_KEY,
 			[
 				'promotions' => $current,
-				'at'         => $now->getTimestamp(),
+				'running'    => array_column( CampaignRepository::running( $now ), 'id' ),
 			]
 		);
-	}
-
-	/**
-	 * Whether a campaign started after a moment.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @param array $campaign Campaign.
-	 * @param int   $last     Timestamp of the last calculation.
-	 *
-	 * @return bool
-	 */
-	private static function started_since( array $campaign, int $last ): bool {
-		$start = SiteTime::parse( $campaign['starts_at'] ?? null );
-
-		return $start && $start->getTimestamp() > $last;
 	}
 
 	/**
@@ -148,19 +135,19 @@ class CartNotices implements HookRegistry {
 	}
 
 	/**
-	 * Take the plain "Prices updated." out of the queue: the campaign notice
-	 * already says it.
+	 * Take this calculation's line notices ("Prices updated.", "[Deal] ended.
+	 * Your free item was removed.") out of the queue: the campaign's notice
+	 * is the one for this event.
 	 *
 	 * @since SPSG_VERSION
 	 *
 	 * @return void
 	 */
-	private static function drop_generic_notice(): void {
+	private static function drop_line_notices(): void {
 		$notices = (array) WC()->session->get( 'wc_notices', [] );
-		$generic = __( 'Prices updated.', 'storegrowth-sales-booster' );
 
 		foreach ( (array) ( $notices['notice'] ?? [] ) as $index => $notice ) {
-			if ( ( $notice['notice'] ?? '' ) === $generic ) {
+			if ( ! empty( $notice['data'][ CartLine::LINE_NOTICE ] ) ) {
 				unset( $notices['notice'][ $index ] );
 			}
 		}

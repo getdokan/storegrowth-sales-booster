@@ -17,13 +17,18 @@ use StorePulse\StoreGrowth\Campaigns\CampaignService;
 use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Campaigns\CartNotices;
 use StorePulse\StoreGrowth\Campaigns\Readiness;
+use Automattic\WooCommerce\Blocks\Domain\Services\Hydration;
+use Automattic\WooCommerce\Blocks\Package;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CommonHooks;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
+use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Pricing\Decision;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
+use StorePulse\StoreGrowth\StoreApi\CartExtension;
 use StorePulse\StoreGrowth\Support\SiteTime;
 use StorePulse\StoreGrowth\Test\StoreGrowthTestCase;
 use WC_Order;
@@ -499,7 +504,7 @@ class CampaignsTest extends StoreGrowthTestCase {
 				'status'    => CampaignRepository::STATUS_SCHEDULED,
 			]
 		);
-		$this->remember_cart( [ $ended => 'Ended one' ], time() - 7200 );
+		$this->remember_cart( [ $ended => 'Ended one' ] );
 		wc_clear_notices();
 
 		$notices->notify( new Decision(), $cart );
@@ -513,12 +518,12 @@ class CampaignsTest extends StoreGrowthTestCase {
 				'status'    => CampaignRepository::STATUS_PAUSED,
 			]
 		);
-		$this->remember_cart( [ $paused => 'Paused one' ], time() - 3600 );
+		$this->remember_cart( [ $paused => 'Paused one' ] );
 		$notices->notify( new Decision(), $cart );
 		$this->assertContains( 'Paused one deal is no longer available. Prices updated.', wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
 
 		wc_clear_notices();
-		$this->remember_cart( [ 999 => 'Gone one' ], time() - 3600 );
+		$this->remember_cart( [ 999 => 'Gone one' ] );
 		$notices->notify( new Decision(), $cart );
 		$this->assertContains( 'Gone one deal is no longer available. Prices updated.', wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
 
@@ -530,7 +535,7 @@ class CampaignsTest extends StoreGrowthTestCase {
 				'status'    => CampaignRepository::STATUS_SCHEDULED,
 			]
 		);
-		$this->remember_cart( [], time() - 7200 );
+		$this->remember_cart( [] );
 		$notices->notify( new Decision( [], [], [], [], [], [ $started => 5.0 ] ), $cart );
 		$this->assertContains( 'Started one price applied.', wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
 
@@ -982,7 +987,7 @@ class CampaignsTest extends StoreGrowthTestCase {
 
 		remove_all_filters( 'storegrowth_pro_is_active' );
 		wc_clear_notices();
-		$this->remember_cart( [ $running => 'Licensed one' ], time() - 3600 );
+		$this->remember_cart( [ $running => 'Licensed one' ] );
 
 		( new CartNotices() )->notify( new Decision(), $cart );
 
@@ -1026,6 +1031,229 @@ class CampaignsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * Dokan gives administrators `dokandar`: their offers can still join a
+	 * campaign, a real vendor's can't.
+	 *
+	 * @return void
+	 */
+	public function test_admin_offers_join_campaigns_on_dokan_but_vendor_deals_do_not(): void {
+		$admin  = self::factory()->user->create( [ 'role' => 'administrator' ] );
+		$vendor = self::factory()->user->create( [ 'role' => 'subscriber' ] );
+
+		get_user_by( 'id', $admin )->add_cap( 'dokandar' );
+		get_user_by( 'id', $vendor )->add_cap( 'dokandar' );
+		wp_set_current_user( $admin );
+
+		$bump = function ( string $name, int $created_by ): int {
+			return (int) ( new OrderBumpData() )->create(
+				[
+					'name'             => $name,
+					'offer_type'       => 'discount',
+					'offer_amount'     => 25,
+					'offer_product_id' => $this->create_product( 20.0 )->get_id(),
+					'target_products'  => [ $this->create_product( 10.0 )->get_id() ],
+					'created_by'       => $created_by,
+				]
+			);
+		};
+
+		$admin_bump  = $bump( 'Admin bump', $admin );
+		$vendor_bump = $bump( 'Vendor bump', $vendor );
+		$id          = $this->campaign();
+
+		$drawer = rest_get_server()->dispatch( new WP_REST_Request( 'GET', "/sales-booster/v1/campaigns/{$id}/attachable" ) )->get_data();
+		$listed = wp_list_pluck( $drawer[ OfferVersions::ORDER_BUMP ], 'id' );
+
+		$this->assertContains( $admin_bump, $listed );
+		$this->assertNotContains( $vendor_bump, $listed );
+
+		$attach = function ( int $offer_id ) use ( $id ) {
+			$request = new WP_REST_Request( 'POST', "/sales-booster/v1/campaigns/{$id}/offers" );
+			$request->set_body_params(
+				[
+					'kind'     => OfferVersions::ORDER_BUMP,
+					'offer_id' => $offer_id,
+				]
+			);
+
+			return rest_get_server()->dispatch( $request );
+		};
+
+		$this->assertSame( 200, $attach( $admin_bump )->get_status() );
+		$this->assertSame( 'spsg_campaign_vendor_offer', $attach( $vendor_bump )->as_error()->get_error_code() );
+	}
+
+	/**
+	 * A campaign-only rule for one product is that product's own rule while
+	 * the campaign runs, even over an everyday product rule.
+	 *
+	 * @return void
+	 */
+	public function test_campaign_only_product_rule_takes_over_while_the_campaign_runs(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$beanie = $this->create_product( 30 );
+		$tee    = $this->create_product( 20 );
+
+		BogoDataManager::save_product_bogo_settings(
+			$beanie->get_id(),
+			0,
+			[
+				'offer_type'                  => 'discount',
+				'discount_amount'             => 20,
+				'bogo_deal_type'              => 'different',
+				'get_different_product_field' => $tee->get_id(),
+			]
+		);
+
+		$id      = $this->running_campaign();
+		$created = $this->post_record(
+			"{$id}/records/bogo",
+			[
+				'name_of_order_bogo'          => 'Free tee',
+				'offer_type'                  => 'free',
+				'bogo_deal_type'              => 'different',
+				'offered_products'            => [ $beanie->get_id() ],
+				'get_different_product_field' => $tee->get_id(),
+			]
+		);
+
+		$this->assertSame( 200, $created->get_status() );
+		$this->assertSame( 'global', $created->get_data()['type'], 'the editor opens it as its own form' );
+
+		$rule = BogoHelper::get_product_bogo_settings_for_cart( $beanie->get_id() );
+
+		$this->assertSame( 'product', $rule['type'] );
+		$this->assertSame( 'free', $rule['offer_type'] );
+		$this->assertSame( 'Free tee', $rule['name_of_order_bogo'] );
+
+		CampaignRepository::save( [ 'status' => CampaignRepository::STATUS_PAUSED ], $id );
+		CampaignRepository::flush();
+
+		$this->assertSame( 'discount', BogoHelper::get_product_bogo_settings_for_cart( $beanie->get_id() )['offer_type'], 'the everyday rule is back' );
+	}
+
+	/**
+	 * A campaign that wasn't running when the cart was last priced started,
+	 * whatever its start date; the line's own notice gives way to it.
+	 *
+	 * @return void
+	 */
+	public function test_campaign_started_after_last_pricing_gets_one_notice(): void {
+		$cart = WC()->cart;
+		$id   = $this->campaign(
+			[
+				'name'      => 'Started one',
+				'starts_at' => SiteTime::now()->modify( '-1 hour' )->format( 'Y-m-d H:i:s' ),
+				'status'    => CampaignRepository::STATUS_SCHEDULED,
+			]
+		);
+
+		$this->remember_cart( [] );
+		wc_clear_notices();
+		CartLine::notice( 'Prices updated.', true );
+
+		( new CartNotices() )->notify( new Decision( [], [], [], [], [], [ $id => 5.0 ] ), $cart );
+
+		$this->assertSame( [ 'Started one price applied.' ], wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
+		wc_clear_notices();
+	}
+
+	/**
+	 * A shopper adding a product to a campaign already running sees no notice.
+	 *
+	 * @return void
+	 */
+	public function test_campaign_already_running_gets_no_started_notice(): void {
+		$cart = WC()->cart;
+		$id   = $this->running_campaign();
+
+		$this->remember_cart( [], [ $id ] );
+		wc_clear_notices();
+
+		( new CartNotices() )->notify( new Decision( [], [], [], [], [], [ $id => 5.0 ] ), $cart );
+
+		$this->assertEmpty( wc_get_notices( 'notice' ) );
+	}
+
+	/**
+	 * A gift leaving because its campaign ended gets the campaign's notice only.
+	 *
+	 * @return void
+	 */
+	public function test_ended_campaign_replaces_the_gift_notice(): void {
+		$cart = WC()->cart;
+		$id   = $this->campaign(
+			[
+				'name'      => 'Ended one',
+				'starts_at' => SiteTime::now()->modify( '-3 days' )->format( 'Y-m-d H:i:s' ),
+				'ends_at'   => SiteTime::now()->modify( '-1 hour' )->format( 'Y-m-d H:i:s' ),
+				'status'    => CampaignRepository::STATUS_SCHEDULED,
+			]
+		);
+
+		$this->remember_cart( [ $id => 'Ended one' ] );
+		wc_clear_notices();
+		CartLine::notice( 'Free tee ended. Your free item was removed.', true );
+
+		( new CartNotices() )->notify( new Decision(), $cart );
+
+		$this->assertSame( [ 'Ended one ended. Prices updated.' ], wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
+		wc_clear_notices();
+	}
+
+	/**
+	 * The cart a block page embeds carries the notices from before it and
+	 * those raised while it's built, which WooCommerce would discard.
+	 *
+	 * @return void
+	 */
+	public function test_block_cart_embeds_queued_and_raised_notices(): void {
+		$raise = static function ( $result ) {
+			CartLine::notice( 'Raised while embedding' );
+
+			return $result;
+		};
+
+		wc_clear_notices();
+		WC()->cart->add_to_cart( $this->create_product()->get_id() );
+		CartLine::notice( 'Queued before' );
+		add_filter( 'woocommerce_hydration_dispatch_request', $raise );
+
+		storegrowth_get_container()->get( CartExtension::class )->hold_notices_for_page();
+		$body = Package::container()->get( Hydration::class )->get_rest_api_response_data( '/wc/store/v1/cart' )['body'];
+
+		remove_filter( 'woocommerce_hydration_dispatch_request', $raise );
+
+		$data = (array) ( (array) $body['extensions'] )[ CartExtension::IDENTIFIER ];
+
+		$this->assertSame( [ 'Queued before', 'Raised while embedding' ], $data['notices'] );
+		$this->assertEmpty( wc_get_notices( 'notice' ), 'nothing left for a later page to repeat' );
+		WC()->cart->empty_cart();
+	}
+
+	/**
+	 * A cart embedded without a notice area (a mini-cart's page) keeps notices
+	 * for the next page instead of losing them.
+	 *
+	 * @return void
+	 */
+	public function test_notices_raised_while_embedding_a_mini_cart_are_kept(): void {
+		$extension = new CartExtension();
+
+		wc_clear_notices();
+		CartLine::notice( 'Raised on a mini-cart page' );
+
+		$this->assertSame( [], $extension->cart_data()['notices'] );
+		$this->assertEmpty( wc_get_notices( 'notice' ) );
+
+		$extension->release_held_notices();
+
+		$this->assertSame( [ 'Raised on a mini-cart page' ], wp_list_pluck( wc_get_notices( 'notice' ), 'notice' ) );
+		wc_clear_notices();
+	}
+
+	/**
 	 * A campaign-only offer is attributed through its campaign row.
 	 *
 	 * @return void
@@ -1058,16 +1286,16 @@ class CampaignsTest extends StoreGrowthTestCase {
 	 * Set the campaigns the cart was last priced with.
 	 *
 	 * @param array $promotions Campaign id => name.
-	 * @param int   $at         When it was priced.
+	 * @param int[] $running    Campaigns running then.
 	 *
 	 * @return void
 	 */
-	private function remember_cart( array $promotions, int $at ): void {
+	private function remember_cart( array $promotions, array $running = [] ): void {
 		WC()->session->set(
 			CartNotices::SESSION_KEY,
 			[
 				'promotions' => $promotions,
-				'at'         => $at,
+				'running'    => $running,
 			]
 		);
 	}

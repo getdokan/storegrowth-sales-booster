@@ -18,7 +18,7 @@ import {
     toast,
 } from '@wedevs/plugin-ui';
 import { useEffect, useState } from '@wordpress/element';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { errorMessage, getAdminData } from '@storegrowth/utilities';
 
 interface LimitOffer {
@@ -38,15 +38,18 @@ interface OfferLimit {
 export interface OfferLimitNoticeProps {
     /** Offer kind: `order_bump`, `smart_coupon`, `cart_reward`. */
     kind: string;
+    /** Called after a choice is saved, for the page to reload its list. */
+    onSaved?: () => void;
 }
 
 /**
  * @since SPSG_VERSION
  *
- * @param props      Props.
- * @param props.kind Offer kind.
+ * @param props         Props.
+ * @param props.kind    Offer kind.
+ * @param props.onSaved Called after a choice is saved.
  */
-export function OfferLimitNotice( { kind }: OfferLimitNoticeProps ) {
+export function OfferLimitNotice( { kind, onSaved }: OfferLimitNoticeProps ) {
     const route = `/${ getAdminData().restNamespace }/offer-limits`;
     const [ limit, setLimit ] = useState< OfferLimit | null >( null );
     const [ open, setOpen ] = useState( false );
@@ -84,6 +87,7 @@ export function OfferLimitNotice( { kind }: OfferLimitNoticeProps ) {
                 } ) ?? null
             );
             setOpen( false );
+            onSaved?.();
             toast.success( __( 'Saved.', 'storegrowth-sales-booster' ) );
         } catch ( error ) {
             toast.error(
@@ -102,13 +106,9 @@ export function OfferLimitNotice( { kind }: OfferLimitNoticeProps ) {
         <Alert>
             <AlertDescription className="flex flex-wrap items-center justify-between gap-2">
                 <span>
-                    { sprintf(
-                        /* translators: %d: how many stay on. */
-                        __(
-                            'The Free plan keeps %d of these on. The rest are paused.',
-                            'storegrowth-sales-booster'
-                        ),
-                        limit.limit
+                    { __(
+                        'You have more offers than the Free plan allows. Choose which stay on.',
+                        'storegrowth-sales-booster'
                     ) }
                 </span>
                 <Button

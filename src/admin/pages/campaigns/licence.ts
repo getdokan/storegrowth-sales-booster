@@ -42,16 +42,6 @@ export function licenceAction(
         };
     }
 
-    if ( mode === 'expired' ) {
-        return {
-            text: __(
-                'Your StoreGrowth Pro licence has expired, so your campaigns are stopped. Renew it to run them again.',
-                'storegrowth-sales-booster'
-            ),
-            action: __( 'Renew licence', 'storegrowth-sales-booster' ),
-            url: info.renew_url || info.upgrade_url,
-        };
-    }
-
+    // An expired store has Pro's own notice on every StoreGrowth screen.
     return null;
 }
