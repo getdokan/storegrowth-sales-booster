@@ -114,16 +114,50 @@ const noticeContext =
 // Mini-cart-only pages have no notice area, and reading the cart there
 // would fetch it on every page view.
 if ( noticeContext ) {
-    let shown: string[] | undefined;
+    // WooCommerce restores the last cart from localStorage on load, notices
+    // included, so what was shown is remembered until a cart without notices.
+    const SHOWN_KEY = 'spsg_shown_cart_notices';
+
+    const readShown = () => {
+        try {
+            return window.localStorage.getItem( SHOWN_KEY );
+        } catch ( error ) {
+            return null;
+        }
+    };
+
+    const writeShown = ( value: string | null ) => {
+        try {
+            if ( null === value ) {
+                window.localStorage.removeItem( SHOWN_KEY );
+            } else {
+                window.localStorage.setItem( SHOWN_KEY, value );
+            }
+        } catch ( error ) {
+            // Without storage a reload may repeat the notice.
+        }
+    };
 
     const showNotices = () => {
         const notices = cartData()?.notices;
 
-        if ( ! notices?.length || notices === shown ) {
+        if ( ! notices ) {
             return;
         }
 
-        shown = notices;
+        if ( ! notices.length ) {
+            writeShown( null );
+
+            return;
+        }
+
+        const fingerprint = notices.join( '\n' );
+
+        if ( fingerprint === readShown() ) {
+            return;
+        }
+
+        writeShown( fingerprint );
         notices.forEach( ( notice ) => {
             wp.data
                 .dispatch( 'core/notices' )
