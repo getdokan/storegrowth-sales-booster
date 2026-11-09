@@ -18,7 +18,13 @@ import { __ } from '@wordpress/i18n';
 import { useModules, useNavigate } from '@storegrowth/hooks';
 import { errorMessage } from '@storegrowth/utilities';
 
-import { createCampaign, fetchTemplates, type CampaignTemplate } from './api';
+import {
+    applyTemplate,
+    createCampaign,
+    fetchTemplates,
+    type CampaignDetail,
+    type CampaignTemplate,
+} from './api';
 
 /** Modules a template needs, by surface or coupon. */
 const SURFACE_MODULES: Record< string, string > = {
@@ -33,10 +39,20 @@ const SURFACE_MODULES: Record< string, string > = {
 /**
  * @since SPSG_VERSION
  *
- * @param props         Props.
- * @param props.onClose Called to close the dialog.
+ * @param props            Props.
+ * @param props.onClose    Called to close the dialog.
+ * @param props.campaignId A draft to apply the template to; none creates one.
+ * @param props.onApplied  Called with the draft after a template is applied.
  */
-export function NewCampaignDialog( { onClose }: { onClose: () => void } ) {
+export function NewCampaignDialog( {
+    onClose,
+    campaignId,
+    onApplied,
+}: {
+    onClose: () => void;
+    campaignId?: number;
+    onApplied?: ( next: CampaignDetail ) => void;
+} ) {
     const navigate = useNavigate();
     const { getModule, setModuleStatus } = useModules();
     const [ templates, setTemplates ] = useState<
@@ -52,6 +68,12 @@ export function NewCampaignDialog( { onClose }: { onClose: () => void } ) {
     const create = async ( template: string ) => {
         setBusy( true );
         try {
+            if ( campaignId ) {
+                onApplied?.( await applyTemplate( campaignId, template ) );
+                onClose();
+                return;
+            }
+
             const campaign = await createCampaign( template, name );
 
             navigate( `/campaigns/${ campaign.id }` );
@@ -81,23 +103,30 @@ export function NewCampaignDialog( { onClose }: { onClose: () => void } ) {
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        { __( 'New campaign', 'storegrowth-sales-booster' ) }
+                        { campaignId
+                            ? __( 'Use template', 'storegrowth-sales-booster' )
+                            : __(
+                                  'New campaign',
+                                  'storegrowth-sales-booster'
+                              ) }
                     </DialogTitle>
                 </DialogHeader>
-                <Input
-                    aria-label={ __(
-                        'Campaign name',
-                        'storegrowth-sales-booster'
-                    ) }
-                    placeholder={ __(
-                        'Campaign name',
-                        'storegrowth-sales-booster'
-                    ) }
-                    value={ name }
-                    onChange={ ( event ) => {
-                        setName( event.target.value );
-                    } }
-                />
+                { ! campaignId && (
+                    <Input
+                        aria-label={ __(
+                            'Campaign name',
+                            'storegrowth-sales-booster'
+                        ) }
+                        placeholder={ __(
+                            'Campaign name',
+                            'storegrowth-sales-booster'
+                        ) }
+                        value={ name }
+                        onChange={ ( event ) => {
+                            setName( event.target.value );
+                        } }
+                    />
+                ) }
                 <div className="flex flex-col gap-2">
                     { Object.entries( templates ).map( ( [ id, template ] ) => {
                         const needs = [

@@ -114,6 +114,20 @@ class BogoDataManager {
 	}
 
 	/**
+	 * A global offer's request data as a stored offer reads, for an offer
+	 * that lives on a campaign's list instead of this table.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $data Validated request data.
+	 *
+	 * @return array
+	 */
+	public static function to_offer_values( array $data ): array {
+		return self::format_settings( self::map_bogo_data( $data, 'global' ) );
+	}
+
+	/**
 	 * Get the full table name with prefix.
 	 *
 	 * @return string

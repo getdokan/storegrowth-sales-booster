@@ -583,6 +583,62 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
+	 * Validate a campaign's version of a bump, or a campaign-only bump, as an
+	 * update or a create would, and return it in the stored shape.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $bump Stored values; empty for a new campaign-only bump.
+	 * @param array $sent What the editor sent.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function campaign_values( array $bump, array $sent ) {
+		unset( $sent['id'], $sent['created_by'], $sent['updated_by'] );
+
+		$base = $bump ? $this->to_request_data( $bump ) : [
+			'status'            => 'active',
+			'target_type'       => 'products',
+			'target_products'   => [],
+			'target_categories' => [],
+			'offer_type'        => 'discount',
+			'offer_amount'      => 0,
+		];
+		$data = array_merge( $base, $sent );
+
+		$data['design_settings'] = array_merge( $bump ? (array) $bump['design_settings'] : OrderBumpDesign::get_defaults(), $this->sent_design( $sent ) );
+
+		$data  = $this->prepare_bump_for_database( $data, $sent );
+		$rules = $this->check_bump_rules( $data, $bump ? $sent : null );
+
+		return is_wp_error( $rules ) ? $rules : $data;
+	}
+
+	/**
+	 * Stored values as this editor reads them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $values Stored values.
+	 *
+	 * @return array
+	 */
+	public function campaign_record( array $values ): array {
+		$item = array_merge(
+			[
+				'created_by' => 0,
+				'updated_by' => 0,
+				'created_at' => '',
+				'updated_at' => '',
+			],
+			$values,
+			[ 'id' => 0 ]
+		);
+
+		return (array) $this->prepare_item_for_response( $item, new WP_REST_Request() )->get_data();
+	}
+
+	/**
 	 * The `design_settings` a request sends, or none.
 	 *
 	 * @since 3.0.0

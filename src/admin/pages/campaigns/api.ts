@@ -56,6 +56,8 @@ export interface ReadinessLine {
     code: string;
     message: string;
     fix: string;
+    /** What the fix needs. */
+    data: { products?: string[]; rule_row?: number; coupon_row?: number };
 }
 
 /** An offer on a campaign's rail. */
@@ -87,6 +89,10 @@ export interface CampaignSettings {
     products?: number[];
     categories?: number[];
     baseline?: Record< string, number >;
+    /** The merchant's answer to the on-sale warning. */
+    exclude_on_sale?: boolean;
+    /** Warnings the merchant answered, by check code. */
+    decisions?: Record< string, boolean >;
 }
 
 /** The report card's figures. */
@@ -179,6 +185,23 @@ export function createCampaign(
         path: base(),
         method: 'POST',
         data: { template, name },
+    } );
+}
+
+/**
+ * Apply a template to a draft.
+ *
+ * @param id       Campaign id.
+ * @param template Template id.
+ */
+export function applyTemplate(
+    id: number,
+    template: string
+): Promise< CampaignDetail > {
+    return apiFetch( {
+        path: `${ base() }/${ id }/template`,
+        method: 'POST',
+        data: { template },
     } );
 }
 

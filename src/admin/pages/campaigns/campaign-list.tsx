@@ -25,7 +25,7 @@ import {
 import { useEffect, useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { AlertTriangle, Plus } from 'lucide-react';
-import { Card, ReportFigure } from '@storegrowth/components';
+import { Card, ReportFigure, ReportTable } from '@storegrowth/components';
 import { useNavigate } from '@storegrowth/hooks';
 import {
     errorMessage,
@@ -53,6 +53,17 @@ const TABS = [
     { value: 'running', label: STATUS_LABELS.running },
     { value: 'scheduled', label: STATUS_LABELS.scheduled },
     { value: 'ended', label: STATUS_LABELS.ended },
+];
+
+const COLUMNS = [
+    { label: __( 'Campaign', 'storegrowth-sales-booster' ) },
+    { label: __( 'Status', 'storegrowth-sales-booster' ) },
+    { label: __( 'Runs', 'storegrowth-sales-booster' ) },
+    { label: __( 'Offers', 'storegrowth-sales-booster' ) },
+    { label: __( 'Surfaces', 'storegrowth-sales-booster' ) },
+    { label: __( 'Revenue', 'storegrowth-sales-booster' ), end: true },
+    { label: __( 'Orders', 'storegrowth-sales-booster' ), end: true },
+    { label: __( 'AOV lift', 'storegrowth-sales-booster' ), end: true },
 ];
 
 /**
@@ -84,6 +95,96 @@ function signed( value: number ): string {
 }
 
 /**
+ * The first and last week each campaign ran in. The chart's axis is
+ * categorical: a shaded area only draws between dates that are on the axis,
+ * so a window is snapped to the weeks it touches.
+ *
+ * @param weeks The chart's weeks.
+ * @param items Campaigns.
+ */
+function campaignWindows(
+    weeks: CampaignList[ 'summary' ][ 'weekly' ],
+    items: CampaignRow[]
+) {
+    return items.flatMap( ( item ) => {
+        if ( ! item.starts_at || item.status === 'draft' ) {
+            return [];
+        }
+
+        const start = item.starts_at.slice( 0, 10 );
+        const end = item.ends_at ? item.ends_at.slice( 0, 10 ) : '9999-12-31';
+        const touched = weeks.filter( ( week, index ) => {
+            const next =
+                weeks[ index + 1 ]?.date ??
+                new Date( Date.parse( week.date ) + 7 * 86400000 )
+                    .toISOString()
+                    .slice( 0, 10 );
+
+            return week.date <= end && start < next;
+        } );
+
+        return touched.length
+            ? [
+                  {
+                      id: item.id,
+                      first: touched[ 0 ].date,
+                      last: touched[ touched.length - 1 ].date,
+                  },
+              ]
+            : [];
+    } );
+}
+
+/**
+ * A campaign's name with its warning badges, linked to its page.
+ *
+ * @param props        Props.
+ * @param props.item   Campaign.
+ * @param props.linked Whether the name opens the campaign.
+ */
+function CampaignName( {
+    item,
+    linked,
+}: {
+    item: CampaignRow;
+    linked: boolean;
+} ) {
+    const navigate = useNavigate();
+
+    return (
+        <span className="flex flex-wrap items-center gap-2">
+            { linked ? (
+                <Button
+                    variant="link"
+                    className="h-auto p-0 font-medium"
+                    onClick={ () => {
+                        navigate( `/campaigns/${ item.id }` );
+                    } }
+                >
+                    { item.name }
+                </Button>
+            ) : (
+                item.name
+            ) }
+            { item.licence_stopped && (
+                <Badge variant="secondary">
+                    { __(
+                        'Stopped: licence expired',
+                        'storegrowth-sales-booster'
+                    ) }
+                </Badge>
+            ) }
+            { item.module_off && (
+                <Badge variant="secondary" className="gap-1">
+                    <AlertTriangle className="size-3" aria-hidden />
+                    { __( 'Module off', 'storegrowth-sales-booster' ) }
+                </Badge>
+            ) }
+        </span>
+    );
+}
+
+/**
  * Revenue by week, the windows shaded.
  *
  * @param props        Props.
@@ -104,9 +205,6 @@ function WeeklyChart( {
         },
     };
     const weeks = list.summary.weekly;
-    const windows = list.items.filter( ( item ) => {
-        return item.starts_at && item.status !== 'draft';
-    } );
 
     return (
         <ChartContainer config={ config } className="h-[220px] w-full">
@@ -120,17 +218,13 @@ function WeeklyChart( {
                     width={ 72 }
                 />
                 <Tooltip content={ <ChartTooltipContent /> } />
-                { windows.map( ( item ) => {
+                { campaignWindows( weeks, list.items ).map( ( range ) => {
                     return (
                         <ReferenceArea
-                            key={ item.id }
-                            x1={ ( item.starts_at as string ).slice( 0, 10 ) }
-                            x2={
-                                ( item.ends_at ?? '' ).slice( 0, 10 ) ||
-                                undefined
-                            }
+                            key={ range.id }
+                            x1={ range.first }
+                            x2={ range.last }
                             fill="var(--color-sg-brand-soft)"
-                            ifOverflow="extendDomain"
                         />
                     );
                 } ) }
@@ -148,7 +242,6 @@ function WeeklyChart( {
  * @since SPSG_VERSION
  */
 export default function CampaignListPage() {
-    const navigate = useNavigate();
     const mode = campaignMode();
     const preview = mode === 'free';
     const readOnly = mode !== 'pro';
@@ -403,123 +496,50 @@ export default function CampaignListPage() {
                         } }
                     />
                 </div>
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className="text-left text-sg-muted">
-                            <th>
-                                { __(
-                                    'Campaign',
-                                    'storegrowth-sales-booster'
-                                ) }
-                            </th>
-                            <th>
-                                { __( 'Status', 'storegrowth-sales-booster' ) }
-                            </th>
-                            <th>
-                                { __( 'Runs', 'storegrowth-sales-booster' ) }
-                            </th>
-                            <th>
-                                { __( 'Offers', 'storegrowth-sales-booster' ) }
-                            </th>
-                            <th>
-                                { __(
-                                    'Surfaces',
-                                    'storegrowth-sales-booster'
-                                ) }
-                            </th>
-                            <th className="text-right">
-                                { __( 'Revenue', 'storegrowth-sales-booster' ) }
-                            </th>
-                            <th className="text-right">
-                                { __( 'Orders', 'storegrowth-sales-booster' ) }
-                            </th>
-                            <th className="text-right">
-                                { __(
-                                    'AOV lift',
-                                    'storegrowth-sales-booster'
-                                ) }
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { rows.map( ( item ) => {
-                            return (
-                                <tr
-                                    key={ item.id }
-                                    className="cursor-pointer border-t border-sg-stroke"
-                                    onClick={ () => {
-                                        if ( ! preview ) {
-                                            navigate(
-                                                `/campaigns/${ item.id }`
-                                            );
-                                        }
-                                    } }
+                <ReportTable
+                    columns={ COLUMNS }
+                    rows={ rows.map( ( item ) => {
+                        return {
+                            key: String( item.id ),
+                            cells: [
+                                <CampaignName
+                                    key="name"
+                                    item={ item }
+                                    linked={ ! preview }
+                                />,
+                                STATUS_LABELS[ item.status ],
+                                runsLabel( item ),
+                                <>
+                                    { item.offers }{ ' ' }
+                                    <span className="text-xs text-sg-help">
+                                        { item.offer_modules
+                                            .map( ( kind ) => {
+                                                return OFFER_LABELS[ kind ];
+                                            } )
+                                            .join( ', ' ) }
+                                    </span>
+                                </>,
+                                item.surfaces,
+                                item.revenue === null
+                                    ? '--'
+                                    : money( item.revenue ),
+                                item.orders ?? '--',
+                                <span
+                                    key="lift"
+                                    className={
+                                        ( item.aov_lift ?? 0 ) >= 0
+                                            ? 'text-[#065f46]'
+                                            : 'text-[#b91c1c]'
+                                    }
                                 >
-                                    <td className="py-2 font-semibold text-sg-heading">
-                                        <span className="flex flex-wrap items-center gap-2">
-                                            { item.name }
-                                            { item.licence_stopped && (
-                                                <Badge variant="secondary">
-                                                    { __(
-                                                        'Stopped: licence expired',
-                                                        'storegrowth-sales-booster'
-                                                    ) }
-                                                </Badge>
-                                            ) }
-                                            { item.module_off && (
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="gap-1"
-                                                >
-                                                    <AlertTriangle
-                                                        className="size-3"
-                                                        aria-hidden
-                                                    />
-                                                    { __(
-                                                        'Module off',
-                                                        'storegrowth-sales-booster'
-                                                    ) }
-                                                </Badge>
-                                            ) }
-                                        </span>
-                                    </td>
-                                    <td>{ STATUS_LABELS[ item.status ] }</td>
-                                    <td>{ runsLabel( item ) }</td>
-                                    <td>
-                                        { item.offers }{ ' ' }
-                                        <span className="text-xs text-sg-help">
-                                            { item.offer_modules
-                                                .map( ( kind ) => {
-                                                    return OFFER_LABELS[ kind ];
-                                                } )
-                                                .join( ', ' ) }
-                                        </span>
-                                    </td>
-                                    <td>{ item.surfaces }</td>
-                                    <td className="text-right">
-                                        { item.revenue === null
-                                            ? '--'
-                                            : money( item.revenue ) }
-                                    </td>
-                                    <td className="text-right">
-                                        { item.orders ?? '--' }
-                                    </td>
-                                    <td
-                                        className={ `text-right ${
-                                            ( item.aov_lift ?? 0 ) >= 0
-                                                ? 'text-[#065f46]'
-                                                : 'text-[#b91c1c]'
-                                        }` }
-                                    >
-                                        { item.aov_lift === null
-                                            ? '--'
-                                            : signed( item.aov_lift ) }
-                                    </td>
-                                </tr>
-                            );
-                        } ) }
-                    </tbody>
-                </table>
+                                    { item.aov_lift === null
+                                        ? '--'
+                                        : signed( item.aov_lift ) }
+                                </span>,
+                            ],
+                        };
+                    } ) }
+                />
                 { ! rows.length && (
                     <p className="m-0 py-8 text-center text-sm text-sg-muted">
                         { __(

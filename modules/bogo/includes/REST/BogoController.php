@@ -539,6 +539,55 @@ class BogoController extends WP_REST_Controller {
 	}
 
 	/**
+	 * Validate a campaign's version of an offer, or a campaign-only offer,
+	 * as an update or a create would, and return it in the stored shape.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $offer Stored values; empty for a new campaign-only offer.
+	 * @param array $sent  What the editor sent.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function campaign_values( array $offer, array $sent ) {
+		unset( $sent['id'] );
+
+		if ( isset( $sent['name'] ) && ! isset( $sent['name_of_order_bogo'] ) ) {
+			$sent['name_of_order_bogo'] = $sent['name'];
+		}
+
+		$stored = BogoDataManager::to_request_data( $offer );
+		$data   = $this->validate_and_normalize_data( $this->ignore_pro_values( array_merge( $stored, $sent ), $offer ? $stored : [] ) );
+
+		if ( is_wp_error( $data ) ) {
+			return $data;
+		}
+
+		$rules = $this->check_offer_rules( $data, $offer ? $sent : null );
+
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
+
+		$rules = $this->check_extension_rules( $data, $offer ? $stored : [], new WP_REST_Request() );
+
+		return is_wp_error( $rules ) ? $rules : BogoDataManager::to_offer_values( $data );
+	}
+
+	/**
+	 * Stored values as this editor reads them.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $values Stored values.
+	 *
+	 * @return array
+	 */
+	public function campaign_record( array $values ): array {
+		return (array) $this->prepare_item_for_response( array_merge( $values, [ 'id' => 0 ] ), new WP_REST_Request() )->get_data();
+	}
+
+	/**
 	 * The offer editor's rules (10d): a create checks them all, an update
 	 * those about the keys it sends.
 	 *

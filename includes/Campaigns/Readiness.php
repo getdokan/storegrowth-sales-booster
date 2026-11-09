@@ -69,17 +69,56 @@ class Readiness {
 	 * @param string $kind    Kind.
 	 * @param string $code    Code.
 	 * @param string $message Message.
-	 * @param string $fix     Fix button, empty for none.
+	 * @param string $fix     Fix buttons, empty for none.
+	 * @param array  $data    What the fix needs: `products` (names) or the rows it removes.
 	 *
 	 * @return array
 	 */
-	private static function line( string $kind, string $code, string $message, string $fix = '' ): array {
+	private static function line( string $kind, string $code, string $message, string $fix = '', array $data = [] ): array {
 		return [
 			'kind'    => $kind,
 			'code'    => $code,
 			'message' => $message,
 			'fix'     => $fix,
+			'data'    => (object) $data,
 		];
+	}
+
+	/**
+	 * Whether the merchant already answered a warning.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array  $campaign Campaign.
+	 * @param string $code     Check code.
+	 *
+	 * @return bool
+	 */
+	private static function decided( array $campaign, string $code ): bool {
+		return ! empty( $campaign['settings']['decisions'][ $code ] );
+	}
+
+	/**
+	 * Product names, for "See products".
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int[] $ids Product ids.
+	 *
+	 * @return string[]
+	 */
+	private static function product_names( array $ids ): array {
+		$names = [];
+
+		foreach ( array_slice( array_values( $ids ), 0, 50 ) as $id ) {
+			$product = wc_get_product( $id );
+
+			if ( $product ) {
+				$names[] = $product->get_name();
+			}
+		}
+
+		return $names;
 	}
 
 	/**
@@ -151,7 +190,7 @@ class Readiness {
 			}
 		);
 
-		if ( $coupons && array_filter( $offers, [ self::class, 'is_bogo' ] ) ) {
+		if ( $coupons && array_filter( $offers, [ self::class, 'is_bogo' ] ) && ! self::decided( $campaign, 'bogo_coupon_clash' ) ) {
 			$lines = array_merge( $lines, self::bogo_coupon_clash( $offers, $coupons ) );
 		}
 
@@ -193,7 +232,18 @@ class Readiness {
 				$rule = $bogo['offer_id'] ? (array) BogoDataManager::get_bogo_offer( $bogo['offer_id'] ) : $bogo['overrides'];
 
 				if ( array_intersect( array_map( 'intval', (array) ( $rule['offered_products'] ?? [] ) ), array_map( 'intval', $coupon->get_product_ids() ) ) ) {
-					return [ self::line( 'warning', 'bogo_coupon_clash', __( 'A BOGO rule and a Buy X get Y coupon target the same product. The larger one wins.', 'storegrowth-sales-booster' ), 'bogo_coupon' ) ];
+					return [
+						self::line(
+							'warning',
+							'bogo_coupon_clash',
+							__( 'A BOGO rule and a Buy X get Y coupon target the same product. The larger one wins.', 'storegrowth-sales-booster' ),
+							'bogo_coupon',
+							[
+								'rule_row'   => (int) $bogo['id'],
+								'coupon_row' => (int) $coupon_row['id'],
+							]
+						),
+					];
 				}
 			}
 		}
@@ -214,12 +264,15 @@ class Readiness {
 		$scope = CampaignProducts::scope( $campaign );
 		$lines = [];
 
-		if ( ! empty( $campaign['settings']['campaign_price']['percent'] ) ) {
-			$count = 0;
+		if ( ! empty( $campaign['settings']['campaign_price']['percent'] ) && ! self::decided( $campaign, 'own_countdown' ) ) {
+			$own = array_filter(
+				array_map( 'intval', (array) ( $campaign['settings']['campaign_price']['products'] ?? [] ) ),
+				static function ( int $product_id ): bool {
+					return (int) get_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', true ) > 0;
+				}
+			);
 
-			foreach ( array_map( 'intval', (array) ( $campaign['settings']['campaign_price']['products'] ?? [] ) ) as $product_id ) {
-				$count += (int) get_post_meta( $product_id, '_spsg_countdown_timer_discount_amount', true ) > 0 ? 1 : 0;
-			}
+			$count = count( $own );
 
 			if ( $count ) {
 				$lines[] = self::line(
@@ -230,17 +283,24 @@ class Readiness {
 						_n( '%d product already has its own Countdown discount. The campaign price replaces it while the campaign runs.', '%d products already have their own Countdown discount. The campaign price replaces it while the campaign runs.', $count, 'storegrowth-sales-booster' ),
 						$count
 					),
-					'review_products'
+					'review_products',
+					[ 'products' => self::product_names( $own ) ]
 				);
 			}
 		}
 
-		$on_sale = 0;
-
-		foreach ( array_slice( $scope['products'], 0, 200 ) as $product_id ) {
-			$product  = wc_get_product( $product_id );
-			$on_sale += $product && $product->is_on_sale() ? 1 : 0;
+		if ( self::decided( $campaign, 'on_sale' ) ) {
+			return $lines;
 		}
+
+		$on_sale = array_filter(
+			array_slice( $scope['products'], 0, 200 ),
+			static function ( int $product_id ): bool {
+				$product = wc_get_product( $product_id );
+
+				return $product && $product->is_on_sale();
+			}
+		);
 
 		if ( $on_sale ) {
 			$lines[] = self::line(
@@ -248,8 +308,8 @@ class Readiness {
 				'on_sale',
 				sprintf(
 					/* translators: %d: number of products. */
-					_n( '%d product is already on sale in scope.', '%d products are already on sale in scope.', $on_sale, 'storegrowth-sales-booster' ),
-					$on_sale
+					_n( '%d product is already on sale inside the campaign scope. Exclude it, or stack the discount on top.', '%d products are already on sale inside the campaign scope. Exclude them, or stack the discount on top.', count( $on_sale ), 'storegrowth-sales-booster' ),
+					count( $on_sale )
 				),
 				'on_sale'
 			);
@@ -278,7 +338,8 @@ class Readiness {
 				continue;
 			}
 
-			$shared = self::shared_count( $scope, CampaignProducts::scope( $other ) );
+			$other_scope = CampaignProducts::scope( $other );
+			$shared      = self::shared_count( $scope, $other_scope );
 
 			if ( ! $shared ) {
 				continue;
@@ -294,7 +355,8 @@ class Readiness {
 						$other['name'],
 						$shared
 					),
-					'see_products'
+					'see_products',
+					[ 'products' => self::product_names( array_intersect( $scope['products'], $other_scope['products'] ) ) ]
 				);
 			} else {
 				$lines[] = self::line(

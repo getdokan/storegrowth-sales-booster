@@ -159,16 +159,18 @@ class CampaignService {
 	public static function templates(): array {
 		return [
 			'flash-sale'    => [
-				'name'     => __( 'Flash sale', 'storegrowth-sales-booster' ),
-				'percent'  => 20,
-				'coupon'   => false,
-				'surfaces' => [ 'countdown', 'floating_bar', 'badge', 'fly_cart' ],
+				'name'            => __( 'Flash sale', 'storegrowth-sales-booster' ),
+				'percent'         => 20,
+				'coupon'          => false,
+				'exclude_on_sale' => true,
+				'surfaces'        => [ 'countdown', 'floating_bar', 'badge', 'fly_cart' ],
 			],
 			'black-friday'  => [
-				'name'     => __( 'Black Friday', 'storegrowth-sales-booster' ),
-				'percent'  => 0,
-				'coupon'   => true,
-				'surfaces' => [ 'countdown', 'floating_bar', 'badge', 'sales_pop', 'fly_cart', 'cart_rewards' ],
+				'name'            => __( 'Black Friday', 'storegrowth-sales-booster' ),
+				'percent'         => 0,
+				'coupon'          => true,
+				'exclude_on_sale' => true,
+				'surfaces'        => [ 'countdown', 'floating_bar', 'badge', 'sales_pop', 'fly_cart', 'cart_rewards' ],
 			],
 			'clearance'     => [
 				'name'     => __( 'Clearance', 'storegrowth-sales-booster' ),
@@ -216,7 +218,66 @@ class CampaignService {
 
 		$config = $templates[ $template ];
 
+		$id = CampaignRepository::save(
+			[
+				'name'     => '' !== $name ? $name : $config['name'],
+				'settings' => self::template_settings( $config ),
+			]
+		);
+
+		return is_wp_error( $id ) ? $id : self::add_template_coupon( $id, $template, $config );
+	}
+
+	/**
+	 * Apply a template to a draft: its surfaces and price replace the
+	 * draft's; offers already attached stay.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int    $id       Campaign id.
+	 * @param string $template Template id.
+	 *
+	 * @return int|WP_Error
+	 */
+	public static function apply_template( int $id, string $template ) {
+		$templates = self::templates();
+		$campaign  = CampaignRepository::get( $id );
+
+		if ( ! isset( $templates[ $template ] ) ) {
+			return new WP_Error( 'spsg_campaign_template', __( 'Unknown template.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
+		}
+
+		if ( ! $campaign || CampaignRepository::STATUS_DRAFT !== $campaign['status'] ) {
+			return new WP_Error( 'spsg_campaign_not_draft', __( 'Templates apply to drafts.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
+		}
+
+		$saved = CampaignRepository::save( [ 'settings' => self::template_settings( $templates[ $template ] ) ], $id );
+
+		if ( is_wp_error( $saved ) ) {
+			return $saved;
+		}
+
+		foreach ( CampaignRepository::get_offers( $id ) as $row ) {
+			if ( ! $row['offer_id'] && OfferVersions::SMART_COUPON === $row['offer_kind'] ) {
+				return $id;
+			}
+		}
+
+		return self::add_template_coupon( $id, $template, $templates[ $template ] );
+	}
+
+	/**
+	 * What a template sets on a campaign.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $config Template.
+	 *
+	 * @return array
+	 */
+	private static function template_settings( array $config ): array {
 		$surfaces = [];
+
 		foreach ( $config['surfaces'] as $surface ) {
 			$surfaces[ $surface ] = [
 				'enabled' => true,
@@ -224,40 +285,46 @@ class CampaignService {
 			];
 		}
 
-		$settings = [ 'surfaces' => $surfaces ];
+		return [
+			'surfaces'        => $surfaces,
+			'campaign_price'  => [ 'percent' => $config['percent'] ],
+			'exclude_on_sale' => ! empty( $config['exclude_on_sale'] ),
+		];
+	}
 
-		if ( $config['percent'] ) {
-			$settings['campaign_price'] = [ 'percent' => $config['percent'] ];
-		}
-
-		$id = CampaignRepository::save(
-			[
-				'name'     => '' !== $name ? $name : $config['name'],
-				'settings' => $settings,
-			]
-		);
-
-		if ( is_wp_error( $id ) ) {
+	/**
+	 * Create a template's campaign-only coupon, if it has one.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int    $id       Campaign id.
+	 * @param string $template Template id.
+	 * @param array  $config   Template.
+	 *
+	 * @return int|WP_Error Campaign id.
+	 */
+	private static function add_template_coupon( int $id, string $template, array $config ) {
+		if ( ! $config['coupon'] ) {
 			return $id;
 		}
 
-		if ( $config['coupon'] ) {
-			$coupon = SmartCouponRepository::save(
-				[
-					'title'         => $config['name'],
-					'method'        => SmartCoupon::AUTOMATIC,
-					'discount_type' => SmartCoupon::TYPE_PERCENTAGE,
-					'amount'        => 20,
-					'code'          => $template . '-' . $id,
-				]
-			);
+		$coupon = SmartCouponRepository::save(
+			[
+				'title'         => $config['name'],
+				'method'        => SmartCoupon::AUTOMATIC,
+				'discount_type' => SmartCoupon::TYPE_PERCENTAGE,
+				'amount'        => 20,
+				'code'          => $template . '-' . $id,
+			]
+		);
 
-			if ( ! is_wp_error( $coupon ) ) {
-				self::link_campaign_coupon( $coupon->get_id(), $id, $config['name'] );
-			}
+		if ( is_wp_error( $coupon ) ) {
+			return $coupon;
 		}
 
-		return $id;
+		$row_id = self::link_campaign_coupon( $coupon->get_id(), $id, $config['name'] );
+
+		return is_wp_error( $row_id ) ? $row_id : $id;
 	}
 
 	/**

@@ -16,6 +16,7 @@ use StorePulse\StoreGrowth\Analytics\TrackController;
 use StorePulse\StoreGrowth\Analytics\WcAnalytics;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Campaigns\CampaignAttribution;
+use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
 use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Campaigns\CartNotices;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
@@ -71,6 +72,7 @@ class CommonServiceProvider extends BootableServiceProvider {
 		OfferLimitsController::class,
 		CampaignsController::class,
 		CampaignAttribution::class,
+		CampaignPrice::class,
 		CampaignSurfaces::class,
 		CartNotices::class,
 		Referee::class,

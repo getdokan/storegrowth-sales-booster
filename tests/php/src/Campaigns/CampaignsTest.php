@@ -17,7 +17,9 @@ use StorePulse\StoreGrowth\Campaigns\CampaignService;
 use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Campaigns\CartNotices;
 use StorePulse\StoreGrowth\Campaigns\Readiness;
+use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CommonHooks;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\Decision;
@@ -613,11 +615,16 @@ class CampaignsTest extends StoreGrowthTestCase {
 		);
 		$row  = CampaignRepository::attach( $id, OfferVersions::BOGO, $bogo );
 
-		$request = new WP_REST_Request( 'POST', "/sales-booster/v1/campaigns/{$id}/records/bogo/{$row}" );
-		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( wp_json_encode( [ 'discount_amount' => 40 ] ) );
-
-		$this->assertSame( 200, rest_get_server()->dispatch( $request )->get_status() );
+		$this->assertSame(
+			200,
+			$this->post_record(
+				"{$id}/records/bogo/{$row}",
+				[
+					'offer_type'      => 'discount',
+					'discount_amount' => 40,
+				]
+			)->get_status()
+		);
 
 		$effective = OfferVersions::effective_offer(
 			array_merge(
@@ -628,9 +635,331 @@ class CampaignsTest extends StoreGrowthTestCase {
 
 		$this->assertSame( OfferVersions::CAMPAIGN, $effective['version'] );
 		$this->assertSame( 40, (int) $effective['values']['discount_amount'] );
+		$this->assertArrayNotHasKey( 'name', CampaignRepository::find_offer_row( $row )['overrides'], 'only what changed is stored' );
+
+		$read = rest_get_server()->dispatch( new WP_REST_Request( 'GET', "/sales-booster/v1/campaigns/{$id}/records/bogo/{$row}" ) );
+
+		$this->assertSame( 40, (int) $read->get_data()['discount_amount'] );
+		$this->assertSame( $row, $read->get_data()['id'] );
+
+		$invalid = $this->post_record( "{$id}/records/bogo/{$row}", [ 'discount_amount' => 150 ] );
+
+		$this->assertSame( 'bogo_invalid_discount', $invalid->as_error()->get_error_code() );
+		$this->assertSame( 40, (int) CampaignRepository::find_offer_row( $row )['overrides']['discount_amount'], 'a rejected save changes nothing' );
 
 		$wrong = new WP_REST_Request( 'GET', '/sales-booster/v1/campaigns/999999/records/bogo/' . $row );
 		$this->assertSame( 404, rest_get_server()->dispatch( $wrong )->get_status() );
+	}
+
+	/**
+	 * A campaign-only BOGO rule is validated, stored as an offer and applies.
+	 *
+	 * @return void
+	 */
+	public function test_campaign_only_bogo_is_validated_and_applies(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$target = $this->create_product();
+		$gift   = $this->create_product();
+		$id     = $this->running_campaign();
+
+		$missing = $this->post_record( "{$id}/records/bogo", [ 'offer_type' => 'free' ] );
+
+		$this->assertSame( 'missing_name_of_order_bogo', $missing->as_error()->get_error_code() );
+
+		$created = $this->post_record(
+			"{$id}/records/bogo",
+			[
+				'name_of_order_bogo'          => 'Campaign rule',
+				'offer_type'                  => 'free',
+				'bogo_deal_type'              => 'different',
+				'offered_products'            => [ $target->get_id() ],
+				'get_different_product_field' => $gift->get_id(),
+			]
+		);
+
+		$this->assertSame( 200, $created->get_status() );
+
+		$rule = BogoDataManager::with_campaign_rule( null, $target->get_id() );
+
+		$this->assertSame( 'Campaign rule', $rule['name'] );
+		$this->assertSame( $gift->get_id(), (int) $rule['offer_product_id'] );
+		$this->assertSame( 'Campaign rule', $created->get_data()['name_of_order_bogo'] );
+	}
+
+	/**
+	 * An order bump's version and a campaign-only bump go through its rules.
+	 *
+	 * @return void
+	 */
+	public function test_order_bump_versions_are_validated(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$target = $this->create_product();
+		$offer  = $this->create_product( 40 );
+		$base   = [
+			'name'             => 'Gloves bump',
+			'status'           => 'active',
+			'target_type'      => 'products',
+			'target_products'  => [ $target->get_id() ],
+			'offer_product_id' => $offer->get_id(),
+			'offer_type'       => 'discount',
+			'offer_amount'     => 25,
+			'design_settings'  => [],
+		];
+		$bump   = (int) ( new OrderBumpData() )->create( $base );
+		$id     = $this->running_campaign();
+		$row    = CampaignRepository::attach( $id, OfferVersions::ORDER_BUMP, $bump );
+
+		$this->assertSame( 200, $this->post_record( "{$id}/records/order_bump/{$row}", [ 'offer_amount' => 40 ] )->get_status() );
+
+		$stored = CampaignRepository::find_offer_row( $row )['overrides'];
+
+		$this->assertEquals( 40, $stored['offer_amount'] );
+		$this->assertArrayNotHasKey( 'name', $stored, 'only what changed is stored' );
+
+		$invalid = $this->post_record( "{$id}/records/order_bump/{$row}", [ 'offer_amount' => 150 ] );
+
+		$this->assertTrue( $invalid->is_error() );
+		$this->assertEquals( 40, CampaignRepository::find_offer_row( $row )['overrides']['offer_amount'] );
+
+		$created = $this->post_record(
+			"{$id}/records/order_bump",
+			array_diff_key( array_merge( $base, [ 'name' => 'Campaign bump' ] ), [ 'design_settings' => true ] )
+		);
+
+		$this->assertSame( 200, $created->get_status() );
+		$this->assertSame( 'Campaign bump', $created->get_data()['name'] );
+
+		$this->assertTrue( $this->post_record( "{$id}/records/order_bump", [ 'name' => 'No product' ] )->is_error() );
+	}
+
+	/**
+	 * A coupon's version changes its amount only, through the coupon's rules.
+	 *
+	 * @return void
+	 */
+	public function test_smart_coupon_versions_are_validated(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$coupon = $this->create_smart_coupon(
+			'version10',
+			[
+				'method' => 'automatic',
+				'title'  => 'Ten off',
+			]
+		);
+		$id     = $this->running_campaign();
+		$row    = CampaignRepository::attach( $id, OfferVersions::SMART_COUPON, $coupon->get_id() );
+
+		$saved = $this->post_record(
+			"{$id}/records/smart_coupon/{$row}",
+			[
+				'amount' => 40,
+				'title'  => 'Ignored',
+			]
+		);
+
+		$this->assertSame( 200, $saved->get_status() );
+		$this->assertEquals( 40, $saved->get_data()['amount'] );
+		$this->assertSame( [ 'amount' ], array_keys( CampaignRepository::find_offer_row( $row )['overrides'] ) );
+
+		$effective = SmartCoupon::effective( new \WC_Coupon( $coupon->get_id() ) );
+
+		$this->assertSame( OfferVersions::CAMPAIGN, $effective['version'] );
+		$this->assertEquals( 40, $effective['values']['amount'] );
+
+		$invalid = $this->post_record( "{$id}/records/smart_coupon/{$row}", [ 'amount' => 150 ] );
+
+		$this->assertSame( 'smart_coupon_invalid_amount', $invalid->as_error()->get_error_code() );
+
+		$only = $this->post_record(
+			"{$id}/records/smart_coupon",
+			[
+				'title'         => 'Campaign coupon',
+				'method'        => SmartCoupon::AUTOMATIC,
+				'discount_type' => SmartCoupon::TYPE_PERCENTAGE,
+				'amount'        => 15,
+			]
+		);
+
+		$this->assertSame( 200, $only->get_status() );
+		$this->assertTrue( $only->get_data()['campaign_only'] );
+		$this->assertTrue( $this->post_record( "{$id}/records/smart_coupon", [ 'amount' => 15 ] )->is_error() );
+	}
+
+	/**
+	 * Decisions clear their warning; Exclude keeps sale items out of the price.
+	 *
+	 * @return void
+	 */
+	public function test_on_sale_decisions_clear_the_warning_and_exclude(): void {
+		$product = $this->create_product( 50 );
+		$product->set_sale_price( '40' );
+		$product->save();
+
+		$id = $this->running_campaign(
+			[
+				'campaign_price' => [
+					'percent'  => 20,
+					'products' => [ $product->get_id() ],
+				],
+			]
+		);
+
+		$codes = wp_list_pluck( Readiness::check( CampaignRepository::get( $id ) ), 'code' );
+
+		$this->assertContains( 'on_sale', $codes );
+		$this->assertNotNull( CampaignPrice::for_product( $product->get_id() ) );
+
+		CampaignRepository::save(
+			[
+				'settings' => [
+					'exclude_on_sale' => true,
+					'decisions'       => [ 'on_sale' => true ],
+				],
+			],
+			$id
+		);
+
+		$this->assertNotContains( 'on_sale', wp_list_pluck( Readiness::check( CampaignRepository::get( $id ) ), 'code' ) );
+		$this->assertNull( CampaignPrice::for_product( $product->get_id() ) );
+	}
+
+	/**
+	 * Saved settings keep their types and can't change the frozen baseline.
+	 *
+	 * @return void
+	 */
+	public function test_saved_settings_are_typed_and_keep_the_baseline(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$id = $this->campaign( [ 'settings' => [ 'baseline' => [ 'aov' => 12 ] ] ] );
+
+		$this->post_record(
+			(string) $id,
+			[
+				'settings' => [
+					'baseline'   => [ 'aov' => 99 ],
+					'categories' => [ '7', 'x' ],
+					'surfaces'   => [
+						'badge'   => [
+							'enabled' => true,
+							'copy'    => '<b>Sale</b>',
+						],
+						'unknown' => [ 'enabled' => true ],
+					],
+				],
+			]
+		);
+
+		$settings = CampaignRepository::get( $id )['settings'];
+
+		$this->assertSame( 12, $settings['baseline']['aov'] );
+		$this->assertSame( [ 7 ], $settings['categories'] );
+		$this->assertTrue( $settings['surfaces']['badge']['enabled'] );
+		$this->assertSame( 'Sale', $settings['surfaces']['badge']['copy'] );
+		$this->assertArrayNotHasKey( 'unknown', $settings['surfaces'] );
+	}
+
+	/**
+	 * A template on a draft sets its surfaces and adds its coupon once.
+	 *
+	 * @return void
+	 */
+	public function test_template_applies_to_a_draft_once(): void {
+		$id = $this->campaign();
+
+		$this->assertSame( $id, CampaignService::apply_template( $id, 'clearance' ) );
+		$this->assertSame( $id, CampaignService::apply_template( $id, 'clearance' ) );
+
+		$campaign = CampaignRepository::get( $id );
+
+		$this->assertTrue( $campaign['settings']['surfaces']['badge']['enabled'] );
+		$this->assertCount( 1, CampaignRepository::get_offers( $id ) );
+
+		CampaignRepository::save( [ 'status' => CampaignRepository::STATUS_SCHEDULED ], $id );
+
+		$this->assertTrue( is_wp_error( CampaignService::apply_template( $id, 'clearance' ) ) );
+	}
+
+	/**
+	 * The drawer names another campaign; only an overlap disables Attach.
+	 *
+	 * @return void
+	 */
+	public function test_drawer_names_other_campaigns_and_disables_on_overlap_only(): void {
+		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		$coupon = $this->create_smart_coupon(
+			'drawer',
+			[
+				'method' => 'automatic',
+				'title'  => 'Drawer',
+			]
+		);
+		$other  = $this->campaign(
+			[
+				'name'      => 'Other',
+				'starts_at' => '2030-03-01 00:00',
+				'ends_at'   => '2030-03-05 00:00',
+			]
+		);
+		CampaignRepository::attach( $other, OfferVersions::SMART_COUPON, $coupon->get_id() );
+
+		$apart = $this->campaign(
+			[
+				'starts_at' => '2030-06-01 00:00',
+				'ends_at'   => '2030-06-05 00:00',
+			]
+		);
+
+		$overlaps = $this->campaign(
+			[
+				'starts_at' => '2030-03-02 00:00',
+				'ends_at'   => '2030-03-03 00:00',
+			]
+		);
+
+		$listed   = rest_get_server()->dispatch( new WP_REST_Request( 'GET', "/sales-booster/v1/campaigns/{$apart}/attachable" ) )->get_data();
+		$disabled = rest_get_server()->dispatch( new WP_REST_Request( 'GET', "/sales-booster/v1/campaigns/{$overlaps}/attachable" ) )->get_data();
+
+		$this->assertStringStartsWith( 'In Other, ', $listed[ OfferVersions::SMART_COUPON ][0]['in'] );
+		$this->assertFalse( $listed[ OfferVersions::SMART_COUPON ][0]['disabled'] );
+		$this->assertTrue( $disabled[ OfferVersions::SMART_COUPON ][0]['disabled'] );
+	}
+
+	/**
+	 * A campaign that started an hour ago.
+	 *
+	 * @param array $settings Settings.
+	 *
+	 * @return int
+	 */
+	private function running_campaign( array $settings = [] ): int {
+		return $this->campaign(
+			[
+				'starts_at' => SiteTime::now()->modify( '-1 hour' )->format( 'Y-m-d H:i:s' ),
+				'status'    => CampaignRepository::STATUS_SCHEDULED,
+				'settings'  => $settings,
+			]
+		);
+	}
+
+	/**
+	 * POST to a campaign route.
+	 *
+	 * @param string $path Route after `campaigns/`.
+	 * @param array  $body JSON body.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	private function post_record( string $path, array $body ) {
+		$request = new WP_REST_Request( 'POST', "/sales-booster/v1/campaigns/{$path}" );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( $body ) );
+
+		return rest_get_server()->dispatch( $request );
 	}
 
 	/**

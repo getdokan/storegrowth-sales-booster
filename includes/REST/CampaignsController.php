@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\REST;
 
 use StorePulse\StoreGrowth\Campaigns\CampaignAttribution;
 use StorePulse\StoreGrowth\Campaigns\CampaignProducts;
+use StorePulse\StoreGrowth\Campaigns\CampaignRecords;
 use StorePulse\StoreGrowth\Campaigns\CampaignReport;
 use StorePulse\StoreGrowth\Campaigns\CampaignService;
 use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
@@ -188,16 +189,19 @@ class CampaignsController extends WP_REST_Controller {
 			$this->namespace,
 			$base . '/(?P<id>\d+)/offers/(?P<row>\d+)',
 			[
-				[
-					'methods'             => WP_REST_Server::EDITABLE,
-					'callback'            => [ $this, 'update_offer' ],
-					'permission_callback' => $write,
-				],
-				[
-					'methods'             => WP_REST_Server::DELETABLE,
-					'callback'            => [ $this, 'remove_offer' ],
-					'permission_callback' => $write,
-				],
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => [ $this, 'remove_offer' ],
+				'permission_callback' => $write,
+			]
+		);
+
+		register_rest_route(
+			$this->namespace,
+			$base . '/(?P<id>\d+)/template',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'apply_template' ],
+				'permission_callback' => $write,
 			]
 		);
 
@@ -545,13 +549,65 @@ class CampaignsController extends WP_REST_Controller {
 		$data = array_intersect_key( (array) $request->get_json_params(), array_flip( [ 'name', 'starts_at', 'ends_at', 'settings' ] ) );
 
 		if ( isset( $data['settings'] ) ) {
-			// The baseline is frozen at publish; a save can't change it.
-			$data['settings'] = wc_clean( array_diff_key( (array) $data['settings'], [ 'baseline' => true ] ) );
+			$data['settings'] = $this->clean_settings( (array) $data['settings'] );
 		}
 
 		$saved = CampaignRepository::save( $data, $id );
 
 		return is_wp_error( $saved ) ? $saved : $this->detail_response( $id );
+	}
+
+	/**
+	 * The settings a save may change, typed. The frozen baseline isn't one.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $sent Settings sent.
+	 *
+	 * @return array
+	 */
+	private function clean_settings( array $sent ): array {
+		$ids      = static function ( $values ): array {
+			return array_values( array_filter( array_map( 'absint', (array) $values ) ) );
+		};
+		$settings = [];
+
+		foreach ( [ 'products', 'categories' ] as $key ) {
+			if ( isset( $sent[ $key ] ) ) {
+				$settings[ $key ] = $ids( $sent[ $key ] );
+			}
+		}
+
+		if ( isset( $sent['exclude_on_sale'] ) ) {
+			$settings['exclude_on_sale'] = rest_sanitize_boolean( $sent['exclude_on_sale'] );
+		}
+
+		if ( isset( $sent['decisions'] ) ) {
+			$settings['decisions'] = array_map( 'rest_sanitize_boolean', (array) $sent['decisions'] );
+		}
+
+		if ( isset( $sent['campaign_price'] ) ) {
+			$price = (array) $sent['campaign_price'];
+
+			$settings['campaign_price'] = [
+				'percent'    => min( 100, absint( $price['percent'] ?? 0 ) ),
+				'products'   => $ids( $price['products'] ?? [] ),
+				'categories' => $ids( $price['categories'] ?? [] ),
+			];
+		}
+
+		if ( isset( $sent['surfaces'] ) ) {
+			$settings['surfaces'] = [];
+
+			foreach ( array_intersect_key( (array) $sent['surfaces'], CampaignSurfaces::modules() ) as $surface => $config ) {
+				$settings['surfaces'][ $surface ] = [
+					'enabled' => rest_sanitize_boolean( $config['enabled'] ?? false ),
+					'copy'    => sanitize_text_field( (string) ( $config['copy'] ?? '' ) ),
+				];
+			}
+		}
+
+		return $settings;
 	}
 
 	/**
@@ -629,7 +685,8 @@ class CampaignsController extends WP_REST_Controller {
 		foreach ( $this->attachable_offers() as $kind => $offers ) {
 			$groups[ $kind ] = array_map(
 				static function ( array $offer ) use ( $campaign, $kind ): array {
-					$other = CampaignRepository::find_overlap( $kind, (int) $offer['id'], $campaign['starts_at'], $campaign['ends_at'], (int) $campaign['id'] );
+					$overlap = CampaignRepository::find_overlap( $kind, (int) $offer['id'], $campaign['starts_at'], $campaign['ends_at'], (int) $campaign['id'] );
+					$other   = $overlap ?? CampaignRepository::other_campaign_of_offer( $kind, (int) $offer['id'], (int) $campaign['id'] );
 
 					return [
 						'id'       => (int) $offer['id'],
@@ -638,9 +695,9 @@ class CampaignsController extends WP_REST_Controller {
 							/* translators: 1: campaign name, 2: its dates. */
 							__( 'In %1$s, %2$s.', 'storegrowth-sales-booster' ),
 							$other['name'],
-							trim( $other['starts_at'] . ' - ' . (string) $other['ends_at'], ' -' )
+							CampaignRepository::dates_label( $other )
 						) : '',
-						'disabled' => (bool) $other,
+						'disabled' => (bool) $overlap,
 					];
 				},
 				$offers
@@ -729,7 +786,22 @@ class CampaignsController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Attach an offer. With `values` it creates a campaign-only offer instead.
+	 * Apply a template to a draft.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WP_REST_Request $request Request.
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function apply_template( $request ) {
+		$applied = CampaignService::apply_template( (int) $request['id'], (string) $request['template'] );
+
+		return is_wp_error( $applied ) ? $applied : $this->detail_response( (int) $request['id'] );
+	}
+
+	/**
+	 * Attach an offer.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -745,13 +817,11 @@ class CampaignsController extends WP_REST_Controller {
 			return new WP_Error( 'spsg_campaign_invalid_kind', __( 'Unknown offer kind.', 'storegrowth-sales-booster' ), [ 'status' => 400 ] );
 		}
 
-		if ( isset( $request['values'] ) ) {
-			$result = CampaignRepository::add_campaign_only( $id, $kind, wc_clean( (array) $request['values'] ) );
-		} elseif ( $this->is_vendor_offer( $kind, (int) $request['offer_id'] ) ) {
+		if ( $this->is_vendor_offer( $kind, (int) $request['offer_id'] ) ) {
 			return new WP_Error( 'spsg_campaign_vendor_offer', __( 'Deals created by vendors can\'t be added to campaigns.', 'storegrowth-sales-booster' ), [ 'status' => 403 ] );
-		} else {
-			$result = CampaignRepository::attach( $id, $kind, (int) $request['offer_id'], [] );
 		}
+
+		$result = CampaignRepository::attach( $id, $kind, (int) $request['offer_id'], [] );
 
 		return is_wp_error( $result ) ? $result : $this->detail_response( $id );
 	}
@@ -815,15 +885,7 @@ class CampaignsController extends WP_REST_Controller {
 			return $row;
 		}
 
-		$sent   = wc_clean( (array) $request->get_json_params() );
-		$values = array_merge( $row['overrides'], (array) ( $sent['overrides'] ?? $sent ) );
-
-		// The editor's `qty:percent` tiers, as the coupon stores them.
-		if ( OfferVersions::SMART_COUPON === $row['offer_kind'] && isset( $values['tiers'] ) ) {
-			$values['tiers'] = SmartCouponRepository::parse_tiers( (array) $values['tiers'] );
-		}
-
-		$result = CampaignRepository::update_offer_values( (int) $request['row'], $values );
+		$result = CampaignRecords::update( $row, wc_clean( (array) $request->get_json_params() ) );
 
 		return is_wp_error( $result ) ? $result : $this->get_record( $request );
 	}
@@ -893,16 +955,7 @@ class CampaignsController extends WP_REST_Controller {
 			return $row;
 		}
 
-		if ( ! $row['offer_id'] ) {
-			return rest_ensure_response( array_merge( $row['overrides'], [ 'id' => (int) $row['id'] ] ) );
-		}
-
-		$response = rest_do_request( new WP_REST_Request( 'GET', self::record_route( (string) $row['offer_kind'] ) . '/' . $row['offer_id'] ) );
-
-		// The module's route is gone while the module is off: its version still reads.
-		$everyday = $response->is_error() ? [] : (array) $response->get_data();
-
-		return rest_ensure_response( array_merge( $everyday, $row['overrides'], [ 'id' => (int) $row['id'] ] ) );
+		return rest_ensure_response( CampaignRecords::to_record( $row ) );
 	}
 
 	/**
@@ -915,22 +968,8 @@ class CampaignsController extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create_record( $request ) {
-		$id     = (int) $request['id'];
-		$kind   = (string) $request['kind'];
-		$values = wc_clean( (array) $request->get_json_params() );
+		$row_id = CampaignRecords::create( (int) $request['id'], (string) $request['kind'], wc_clean( (array) $request->get_json_params() ) );
 
-		if ( OfferVersions::SMART_COUPON === $kind ) {
-			$coupon = SmartCouponRepository::save( $values );
-
-			if ( is_wp_error( $coupon ) ) {
-				return $coupon;
-			}
-
-			$row_id = CampaignService::link_campaign_coupon( $coupon->get_id(), $id, (string) ( $values['title'] ?? $coupon->get_code() ) );
-		} else {
-			$row_id = CampaignRepository::add_campaign_only( $id, $kind, $values );
-		}
-
-		return is_wp_error( $row_id ) ? $row_id : rest_ensure_response( array_merge( $values, [ 'id' => (int) $row_id ] ) );
+		return is_wp_error( $row_id ) ? $row_id : rest_ensure_response( CampaignRecords::to_record( CampaignRepository::find_offer_row( $row_id ) ) );
 	}
 }

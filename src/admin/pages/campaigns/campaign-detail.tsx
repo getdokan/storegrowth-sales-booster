@@ -16,6 +16,10 @@ import {
     AlertDialogTitle,
     Badge,
     Button,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
     Input,
     Notice,
     Switch,
@@ -30,11 +34,18 @@ import {
     ReportFigure,
     SaveBar,
 } from '@storegrowth/components';
-import { Navigate, useNavigate, useParams } from '@storegrowth/hooks';
+import {
+    Navigate,
+    useModules,
+    useNavigate,
+    useParams,
+} from '@storegrowth/hooks';
 import {
     errorMessage,
+    fetchProductCategories,
     fetchProductsByIds,
     formatMoney,
+    getHeaderData,
     searchProducts,
 } from '@storegrowth/utilities';
 
@@ -47,17 +58,25 @@ import {
     saveCampaign,
     type CampaignDetail,
     type CampaignOffer,
+    type CampaignSettings,
     type OfferKind,
     type ReadinessLine,
 } from './api';
 import { AttachDrawer } from './attach-drawer';
 import { OFFER_LABELS, STATUS_LABELS, SURFACES, surfaceLabel } from './labels';
 import { campaignMode } from './licence';
+import { NewCampaignDialog } from './new-campaign-dialog';
 
 type Draft = Pick<
     CampaignDetail,
     'name' | 'starts_at' | 'ends_at' | 'settings'
 >;
+
+/** A readiness line's button. */
+interface Fix {
+    label: string;
+    run: () => void;
+}
 
 /** Each kind's editor route. */
 const EDITOR_ROUTES: Record< OfferKind, string > = {
@@ -102,39 +121,130 @@ function fromInput( value: string ): string | null {
 }
 
 /**
+ * The categories, for the Products card's picker.
+ */
+function useCategoryOptions() {
+    const [ options, setOptions ] = useState<
+        Array< { value: number; label: string } >
+    >( [] );
+
+    useEffect( () => {
+        fetchProductCategories()
+            .then( ( categories ) => {
+                setOptions(
+                    categories.map( ( category ) => {
+                        return {
+                            value: Number( category.value ),
+                            label: category.label,
+                        };
+                    } )
+                );
+            } )
+            .catch( () => {
+                setOptions( [] );
+            } );
+    }, [] );
+
+    return options;
+}
+
+/**
  * The readiness lines and overlap notes.
  *
  * @param props        Props.
  * @param props.checks Lines.
+ * @param props.fixes  A line's fix buttons.
  */
-function Checks( { checks }: { checks: ReadinessLine[] } ) {
+function Checks( {
+    checks,
+    fixes,
+}: {
+    checks: ReadinessLine[];
+    fixes: ( line: ReadinessLine ) => Fix[];
+} ) {
     if ( ! checks.length ) {
         return null;
     }
 
     return (
-        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        <ul className="m-0 flex list-none flex-col gap-3 p-0">
             { checks.map( ( line ) => {
                 return (
                     <li
                         key={ line.code + line.message }
-                        className="flex items-start gap-2 text-sm text-sg-text"
+                        className="flex flex-col gap-2 text-sm text-sg-text"
                     >
-                        <Badge
-                            variant={
-                                line.kind === 'blocking'
-                                    ? 'destructive'
-                                    : 'secondary'
-                            }
-                        >
-                            { line.kind }
-                        </Badge>
-                        { line.message }
+                        <span className="flex items-start gap-2">
+                            <Badge
+                                variant={
+                                    line.kind === 'blocking'
+                                        ? 'destructive'
+                                        : 'secondary'
+                                }
+                            >
+                                { line.kind }
+                            </Badge>
+                            { line.message }
+                        </span>
+                        { fixes( line ).length > 0 && (
+                            <span className="flex flex-wrap gap-2">
+                                { fixes( line ).map( ( fix ) => {
+                                    return (
+                                        <Button
+                                            key={ fix.label }
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={ fix.run }
+                                        >
+                                            { fix.label }
+                                        </Button>
+                                    );
+                                } ) }
+                            </span>
+                        ) }
                     </li>
                 );
             } ) }
         </ul>
     );
+}
+
+/**
+ * What happens when a draft's campaign ends.
+ *
+ * @param props          Props.
+ * @param props.campaign Campaign.
+ */
+function WhenItEnds( { campaign }: { campaign: CampaignDetail } ) {
+    let text: string = __(
+        'No dates yet. Set the start and end in Runs to schedule this campaign.',
+        'storegrowth-sales-booster'
+    );
+
+    if ( campaign.starts_at && ! campaign.ends_at ) {
+        text = __(
+            'This campaign is always on. It runs until you pause or end it, and the report keeps counting.',
+            'storegrowth-sales-booster'
+        );
+    } else if ( campaign.starts_at && campaign.ends_at ) {
+        text = sprintf(
+            /* translators: %s: end date. */
+            __(
+                'On %s the offers go back to their everyday versions, the surfaces hide and the report freezes. The countdown ends with the campaign.',
+                'storegrowth-sales-booster'
+            ),
+            campaign.ends_at.slice( 0, 16 )
+        );
+
+        if ( campaign.settings.campaign_price?.percent ) {
+            text = `${ text } ${ __(
+                "Products' own Countdown settings return.",
+                'storegrowth-sales-booster'
+            ) }`;
+        }
+    }
+
+    return <p className="m-0 text-sm text-sg-text">{ text }</p>;
 }
 
 /**
@@ -298,18 +408,23 @@ function Report( { campaign }: { campaign: CampaignDetail } ) {
  * @param props.campaign  Campaign.
  * @param props.readOnly  No edits.
  * @param props.onChanged Reload the campaign.
+ * @param props.drawer    Whether the Add offer drawer is open.
+ * @param props.setDrawer Open or close the drawer.
  */
 function OffersCard( {
     campaign,
     readOnly,
     onChanged,
+    drawer,
+    setDrawer,
 }: {
     campaign: CampaignDetail;
     readOnly: boolean;
     onChanged: ( next: CampaignDetail ) => void;
+    drawer: boolean;
+    setDrawer: ( open: boolean ) => void;
 } ) {
     const navigate = useNavigate();
-    const [ drawer, setDrawer ] = useState( false );
     const [ confirmRow, setConfirmRow ] = useState< CampaignOffer | null >(
         null
     );
@@ -525,6 +640,11 @@ export default function CampaignDetailPage() {
     const [ busy, setBusy ] = useState( false );
     const [ error, setError ] = useState( '' );
     const [ deleting, setDeleting ] = useState< string[] | null >( null );
+    const [ drawer, setDrawer ] = useState( false );
+    const [ templates, setTemplates ] = useState( false );
+    const [ listed, setListed ] = useState< string[] | null >( null );
+    const { getModule, setModuleStatus } = useModules();
+    const categories = useCategoryOptions();
 
     const apply = useCallback( ( next: CampaignDetail ) => {
         setCampaign( next );
@@ -564,7 +684,8 @@ export default function CampaignDetailPage() {
         return null;
     }
 
-    const readOnly = campaign.read_only;
+    // An ended campaign's report and settings are frozen.
+    const readOnly = campaign.read_only || campaign.status === 'ended';
     const settings = draft.settings;
     const set = ( next: Partial< Draft > ) => {
         setDraft( { ...draft, ...next } );
@@ -592,6 +713,206 @@ export default function CampaignDetailPage() {
             );
         }
         setBusy( false );
+    };
+
+    /**
+     * Save a fix's answer; unsaved edits on the page stay.
+     *
+     * @param changes Settings the fix changes.
+     */
+    const decide = async ( changes: CampaignSettings ) => {
+        try {
+            setCampaign(
+                await saveCampaign( campaign.id, { settings: changes } )
+            );
+            setSettings( changes );
+        } catch ( problem ) {
+            toast.error(
+                errorMessage(
+                    problem,
+                    __( 'That action failed.', 'storegrowth-sales-booster' )
+                )
+            );
+        }
+    };
+
+    const decided = ( code: string, extra: CampaignSettings = {} ) => {
+        decide( {
+            ...extra,
+            decisions: { ...settings.decisions, [ code ]: true },
+        } );
+    };
+
+    const removeRow = async ( row: number ) => {
+        try {
+            const next = await removeOffer( campaign.id, row, false );
+
+            setCampaign( next );
+        } catch ( problem ) {
+            toast.error(
+                errorMessage(
+                    problem,
+                    __(
+                        'The offer could not be removed.',
+                        'storegrowth-sales-booster'
+                    )
+                )
+            );
+        }
+    };
+
+    const enableModule = async ( module: string ) => {
+        try {
+            await setModuleStatus( module, true );
+            setCampaign( await fetchCampaign( campaign.id ) );
+        } catch ( problem ) {
+            toast.error(
+                errorMessage(
+                    problem,
+                    __( 'That action failed.', 'storegrowth-sales-booster' )
+                )
+            );
+        }
+    };
+
+    /**
+     * The buttons of a readiness line.
+     *
+     * @param line Readiness line.
+     */
+    const fixes = ( line: ReadinessLine ): Fix[] => {
+        if ( readOnly ) {
+            return [];
+        }
+
+        const products = line.data.products ?? [];
+        const list = () => {
+            setListed( products );
+        };
+
+        if ( line.fix === 'dates' ) {
+            return [
+                {
+                    label: __( 'Edit dates', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        document
+                            .getElementById( 'spsg-campaign-start' )
+                            ?.focus();
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix === 'on_sale' ) {
+            return [
+                {
+                    label: __( 'Exclude', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        decided( line.code, { exclude_on_sale: true } );
+                    },
+                },
+                {
+                    label: __( 'Stack', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        decided( line.code, { exclude_on_sale: false } );
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix === 'see_products' ) {
+            return [
+                {
+                    label: __( 'See products', 'storegrowth-sales-booster' ),
+                    run: list,
+                },
+            ];
+        }
+
+        if ( line.fix === 'review_products' ) {
+            return [
+                {
+                    label: __( 'Review products', 'storegrowth-sales-booster' ),
+                    run: list,
+                },
+                {
+                    label: __( 'OK', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        decided( line.code );
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix === 'bogo_coupon' ) {
+            return [
+                {
+                    label: __( 'Remove rule', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        removeRow( Number( line.data.rule_row ) );
+                    },
+                },
+                {
+                    label: __( 'Remove coupon', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        removeRow( Number( line.data.coupon_row ) );
+                    },
+                },
+                {
+                    label: __( 'Keep both', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        decided( line.code );
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix === 'attach_offer' ) {
+            return [
+                {
+                    label: __( 'Attach offer', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        setDrawer( true );
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix === 'renew' ) {
+            const info = getHeaderData().header_info;
+
+            return [
+                {
+                    label: __( 'Renew licence', 'storegrowth-sales-booster' ),
+                    run: () => {
+                        window.open(
+                            info.renew_url || info.upgrade_url,
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+                    },
+                },
+            ];
+        }
+
+        if ( line.fix.startsWith( 'enable_module:' ) ) {
+            const module = line.fix.replace( 'enable_module:', '' );
+
+            return [
+                {
+                    label: sprintf(
+                        /* translators: %s: module name. */
+                        __( 'Enable %s', 'storegrowth-sales-booster' ),
+                        getModule( module )?.name ?? module
+                    ),
+                    run: () => {
+                        enableModule( module );
+                    },
+                },
+            ];
+        }
+
+        return [];
     };
 
     const save = async () => {
@@ -666,12 +987,15 @@ export default function CampaignDetailPage() {
             },
         ],
         ended: [
-            {
-                id: 'clone',
-                label: __( 'Run again', 'storegrowth-sales-booster' ),
-            },
+            { id: 'clone', label: __( 'Clone', 'storegrowth-sales-booster' ) },
         ],
     };
+
+    const { report } = campaign;
+    const aovText =
+        report.aov_change === null
+            ? '--'
+            : `${ report.aov_change > 0 ? '+' : '' }${ report.aov_change }%`;
 
     return (
         <div className="flex flex-col gap-4 p-4">
@@ -699,16 +1023,30 @@ export default function CampaignDetailPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                     { ! readOnly && campaign.status === 'draft' && (
-                        <Button
-                            disabled={ busy || ! campaign.can_publish }
-                            onClick={ () => {
-                                act( 'publish' );
-                            } }
-                        >
-                            { __( 'Publish', 'storegrowth-sales-booster' ) }
-                        </Button>
+                        <>
+                            <Button
+                                variant="outline"
+                                disabled={ busy }
+                                onClick={ () => {
+                                    setTemplates( true );
+                                } }
+                            >
+                                { __(
+                                    'Use template',
+                                    'storegrowth-sales-booster'
+                                ) }
+                            </Button>
+                            <Button
+                                disabled={ busy || ! campaign.can_publish }
+                                onClick={ () => {
+                                    act( 'publish' );
+                                } }
+                            >
+                                { __( 'Publish', 'storegrowth-sales-booster' ) }
+                            </Button>
+                        </>
                     ) }
-                    { ! readOnly &&
+                    { ! campaign.read_only &&
                         ( actions[ campaign.status ] ?? [] ).map(
                             ( action ) => {
                                 return (
@@ -725,7 +1063,7 @@ export default function CampaignDetailPage() {
                                 );
                             }
                         ) }
-                    { ! readOnly && (
+                    { ! campaign.read_only && (
                         <Button variant="outline" onClick={ startDelete }>
                             { __( 'Delete', 'storegrowth-sales-booster' ) }
                         </Button>
@@ -766,6 +1104,37 @@ export default function CampaignDetailPage() {
                     ) }
                 </Notice>
             ) }
+            { campaign.status === 'ended' && (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-sg-stroke bg-white p-4 text-sm text-sg-text">
+                    <span>
+                        { sprintf(
+                            /* translators: 1: campaign name, 2: revenue, 3: orders, 4: AOV change, 5: end date. */
+                            __(
+                                '%1$s earned %2$s from %3$d orders, with AOV %4$s vs the 30 days before. Ended %5$s.',
+                                'storegrowth-sales-booster'
+                            ),
+                            campaign.name,
+                            formatMoney(
+                                report.revenue,
+                                campaign.price_format
+                            ),
+                            report.orders,
+                            aovText,
+                            ( campaign.ends_at ?? '' ).slice( 0, 10 )
+                        ) }
+                    </span>
+                    { ! campaign.read_only && (
+                        <Button
+                            disabled={ busy }
+                            onClick={ () => {
+                                act( 'clone' );
+                            } }
+                        >
+                            { __( 'Run again', 'storegrowth-sales-booster' ) }
+                        </Button>
+                    ) }
+                </div>
+            ) }
             { campaign.status === 'running' && ! readOnly && (
                 <p className="m-0 text-sm text-sg-muted">
                     { __(
@@ -778,14 +1147,27 @@ export default function CampaignDetailPage() {
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_360px]">
                 <div className="flex flex-col gap-4">
                     { campaign.status === 'draft' ? (
-                        <Card
-                            title={ __(
-                                'Readiness',
-                                'storegrowth-sales-booster'
-                            ) }
-                        >
-                            <Checks checks={ campaign.checks } />
-                        </Card>
+                        <>
+                            <Card
+                                title={ __(
+                                    'Readiness',
+                                    'storegrowth-sales-booster'
+                                ) }
+                            >
+                                <Checks
+                                    checks={ campaign.checks }
+                                    fixes={ fixes }
+                                />
+                            </Card>
+                            <Card
+                                title={ __(
+                                    'When it ends',
+                                    'storegrowth-sales-booster'
+                                ) }
+                            >
+                                <WhenItEnds campaign={ campaign } />
+                            </Card>
+                        </>
                     ) : (
                         <Report campaign={ campaign } />
                     ) }
@@ -795,7 +1177,10 @@ export default function CampaignDetailPage() {
                     <Card title={ __( 'Runs', 'storegrowth-sales-booster' ) }>
                         <div className="flex flex-col gap-2">
                             { campaign.status !== 'draft' && (
-                                <Checks checks={ campaign.checks } />
+                                <Checks
+                                    checks={ campaign.checks }
+                                    fixes={ fixes }
+                                />
                             ) }
                             <label
                                 className="text-xs text-sg-muted"
@@ -891,20 +1276,36 @@ export default function CampaignDetailPage() {
                                 </p>
                             </div>
                         ) : (
-                            <MultiSelectField
-                                { ...productSearch }
-                                label={ __(
-                                    'Products',
-                                    'storegrowth-sales-booster'
-                                ) }
-                                value={ settings.products ?? [] }
-                                locked={ readOnly }
-                                onChange={ ( next ) => {
-                                    setSettings( {
-                                        products: next.map( Number ),
-                                    } );
-                                } }
-                            />
+                            <div className="flex flex-col gap-3">
+                                <MultiSelectField
+                                    label={ __(
+                                        'Categories',
+                                        'storegrowth-sales-booster'
+                                    ) }
+                                    options={ categories }
+                                    value={ settings.categories ?? [] }
+                                    locked={ readOnly }
+                                    onChange={ ( next ) => {
+                                        setSettings( {
+                                            categories: next.map( Number ),
+                                        } );
+                                    } }
+                                />
+                                <MultiSelectField
+                                    { ...productSearch }
+                                    label={ __(
+                                        'Products',
+                                        'storegrowth-sales-booster'
+                                    ) }
+                                    value={ settings.products ?? [] }
+                                    locked={ readOnly }
+                                    onChange={ ( next ) => {
+                                        setSettings( {
+                                            products: next.map( Number ),
+                                        } );
+                                    } }
+                                />
+                            </div>
                         ) }
                     </Card>
 
@@ -912,6 +1313,8 @@ export default function CampaignDetailPage() {
                         campaign={ campaign }
                         readOnly={ readOnly }
                         onChanged={ apply }
+                        drawer={ drawer }
+                        setDrawer={ setDrawer }
                     />
 
                     <Card
@@ -1095,11 +1498,47 @@ export default function CampaignDetailPage() {
                         </p>
                     </Card>
 
-                    { ! readOnly && campaign.status !== 'ended' && (
+                    { ! readOnly && (
                         <SaveBar onSave={ save } saving={ busy } />
                     ) }
                 </div>
             </div>
+
+            { templates && (
+                <NewCampaignDialog
+                    campaignId={ campaign.id }
+                    onApplied={ apply }
+                    onClose={ () => {
+                        setTemplates( false );
+                    } }
+                />
+            ) }
+
+            <Dialog
+                open={ listed !== null }
+                onOpenChange={ ( open: boolean ) => {
+                    if ( ! open ) {
+                        setListed( null );
+                    }
+                } }
+            >
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            { __( 'Products', 'storegrowth-sales-booster' ) }
+                        </DialogTitle>
+                    </DialogHeader>
+                    <ul className="m-0 list-none p-0 text-sm text-sg-text">
+                        { ( listed ?? [] ).map( ( name ) => {
+                            return (
+                                <li key={ name } className="py-1">
+                                    { name }
+                                </li>
+                            );
+                        } ) }
+                    </ul>
+                </DialogContent>
+            </Dialog>
 
             <AlertDialog
                 open={ deleting !== null }

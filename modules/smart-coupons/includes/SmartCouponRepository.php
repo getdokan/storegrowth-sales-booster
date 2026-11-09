@@ -224,6 +224,67 @@ class SmartCouponRepository {
 	}
 
 	/**
+	 * Validate a campaign's version of a coupon and return what it changes.
+	 * Only the amount and the tiers can differ: the saved coupon, with its
+	 * code and limits, stays one coupon (ADR-013).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon    Everyday coupon.
+	 * @param array     $overrides The version's current changes.
+	 * @param array     $sent      What the editor sent.
+	 *
+	 * @return array|WP_Error `amount` and `tiers`, the ones that differ.
+	 */
+	public static function campaign_values( WC_Coupon $coupon, array $overrides, array $sent ) {
+		$values = self::sanitize( array_merge( self::values( $coupon ), $overrides, $sent ) );
+		$check  = self::check_rules( $values, $coupon );
+
+		if ( is_wp_error( $check ) ) {
+			return $check;
+		}
+
+		$changes = [];
+
+		if ( abs( $values['amount'] - (float) $coupon->get_amount( 'edit' ) ) > 0.000001 ) {
+			$changes['amount'] = $values['amount'];
+		}
+
+		if ( self::parse_tiers( array_filter( (array) $coupon->get_meta( SmartCoupon::TIERS ), 'is_array' ) ) !== $values['tiers'] ) {
+			$changes['tiers'] = $values['tiers'];
+		}
+
+		return $changes;
+	}
+
+	/**
+	 * A coupon as the editor reads it, with a campaign's changes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon    Coupon.
+	 * @param array     $overrides The version's changes.
+	 *
+	 * @return array
+	 */
+	public static function campaign_record( WC_Coupon $coupon, array $overrides ): array {
+		$record = array_merge( self::to_response( $coupon ), array_intersect_key( $overrides, [ 'amount' => true ] ) );
+
+		unset( $record['timeline'] );
+
+		if ( isset( $overrides['tiers'] ) ) {
+			$record['tiers'] = array_map(
+				static function ( array $tier ): string {
+					return $tier['qty'] . ':' . $tier['percent'];
+				},
+				$overrides['tiers']
+			);
+		}
+
+		return $record;
+	}
+
+	/**
 	 * Turn a coupon on or off.
 	 *
 	 * @since SPSG_VERSION
@@ -336,7 +397,7 @@ class SmartCouponRepository {
 	 *
 	 * @return array[] Rows of `qty` and `percent`.
 	 */
-	public static function parse_tiers( array $tiers ): array {
+	private static function parse_tiers( array $tiers ): array {
 		$rows = [];
 
 		foreach ( $tiers as $tier ) {

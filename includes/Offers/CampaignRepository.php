@@ -750,10 +750,73 @@ class CampaignRepository implements HookRegistry {
 			__( '%1$s is already in %2$s (%3$s). Campaign dates can\'t overlap for the same offer.', 'storegrowth-sales-booster' ),
 			self::offer_name( $kind, $offer_id ),
 			$other['name'],
-			trim( $other['starts_at'] . ' - ' . (string) $other['ends_at'], ' -' )
+			self::dates_label( $other )
 		);
 
 		return new WP_Error( 'spsg_campaign_overlap', $message, [ 'status' => 409 ] );
+	}
+
+	/**
+	 * A campaign's window as screens say it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $campaign `starts_at` and `ends_at`.
+	 *
+	 * @return string Empty for a draft with no dates.
+	 */
+	public static function dates_label( array $campaign ): string {
+		$start = SiteTime::parse( $campaign['starts_at'] ?? null );
+		$end   = SiteTime::parse( $campaign['ends_at'] ?? null, true );
+
+		if ( ! $start ) {
+			return '';
+		}
+
+		$format = get_option( 'date_format' );
+
+		return wp_date( $format, $start->getTimestamp() ) . ' - ' . ( $end ? wp_date( $format, $end->getTimestamp() ) : __( 'always on', 'storegrowth-sales-booster' ) );
+	}
+
+	/**
+	 * Another campaign that hasn't ended and uses an offer, whatever its
+	 * dates, for showing where the offer is.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $kind         Offer kind.
+	 * @param int    $offer_id     Offer id.
+	 * @param int    $promotion_id Campaign to leave out.
+	 *
+	 * @return array|null
+	 */
+	public static function other_campaign_of_offer( string $kind, int $offer_id, int $promotion_id ): ?array {
+		if ( ! self::is_installed() ) {
+			return null;
+		}
+
+		global $wpdb;
+
+		$campaigns = $wpdb->prefix . self::CAMPAIGNS;
+		$offers    = $wpdb->prefix . self::OFFERS;
+		$now       = SiteTime::now();
+		$others    = (array) $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT c.* FROM {$campaigns} c INNER JOIN {$offers} o ON o.promotion_id = c.id WHERE o.offer_kind = %s AND o.offer_id = %d AND c.id != %d ORDER BY c.starts_at ASC", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$kind,
+				$offer_id,
+				$promotion_id
+			),
+			ARRAY_A
+		);
+
+		foreach ( $others as $other ) {
+			if ( self::STATUS_ENDED !== self::status_at( $other, $now ) ) {
+				return $other;
+			}
+		}
+
+		return null;
 	}
 
 	/**
