@@ -1009,6 +1009,11 @@ class OrderBogo implements HookRegistry {
 		$apply_id     = apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, $variation_id );
 		$settings     = Helper::prepare_bogo_settings( $apply_id, $product_id, $variation_id );
 
+		// Buy X Get X is a Pro deal: without a valid licence it gives nothing.
+		if ( 'same' === ( $settings['bogo_deal_type'] ?? '' ) && ! sp_store_growth()->has_pro() ) {
+			return null;
+		}
+
 		return ! empty( $settings ) && BogoValidator::is_offer_live( $settings ) ? $settings : null;
 	}
 
