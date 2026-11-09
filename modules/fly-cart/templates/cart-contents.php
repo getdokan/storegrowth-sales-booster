@@ -23,7 +23,7 @@ if ( ! did_action( 'woocommerce_before_calculate_totals' ) ) {
 }
 
 $settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
-$show_product_image   =\StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
+$show_product_image   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
 $show_remove_icon     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_remove_icon', true );
 $show_quantity_picker = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
 $show_product_price   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_price', true );
