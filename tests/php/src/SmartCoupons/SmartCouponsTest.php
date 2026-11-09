@@ -969,6 +969,7 @@ class SmartCouponsTest extends StoreGrowthTestCase {
 		$refused = SmartCouponRepository::save(
 			[
 				'method'     => SmartCoupon::LINK,
+				'code'       => 'LINK5',
 				'title'      => 'Link',
 				'amount'     => 5,
 				'date_start' => wp_date( 'Y-m-d\TH:i', time() - HOUR_IN_SECONDS ),
@@ -1220,12 +1221,14 @@ class SmartCouponsTest extends StoreGrowthTestCase {
 	 */
 	public function test_a_link_coupon_waits_for_the_cart(): void {
 		$coupon = $this->save_coupon(
-			'',
+			'LINK20',
 			[
 				'method' => SmartCoupon::LINK,
 				'amount' => 20,
 			]
 		);
+
+		$this->assertSame( 'link20', $coupon->get_code(), 'the merchant sets a link coupon\'s code' );
 
 		// `read_link()` sets a cookie, which the test run's output prevents.
 		WC()->session->set( LinkCoupons::SESSION_KEY, $coupon->get_code() );

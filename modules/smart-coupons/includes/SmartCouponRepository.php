@@ -373,11 +373,13 @@ class SmartCouponRepository {
 			return self::rule_error( 'smart_coupon_missing_title', __( 'Give the coupon a title.', 'storegrowth-sales-booster' ) );
 		}
 
-		if ( SmartCoupon::CODE === $values['method'] && '' === $values['code'] ) {
+		$takes_code = SmartCoupon::AUTOMATIC !== $values['method'];
+
+		if ( $takes_code && '' === $values['code'] ) {
 			return self::rule_error( 'smart_coupon_missing_code', __( 'Enter a discount code.', 'storegrowth-sales-booster' ) );
 		}
 
-		if ( SmartCoupon::CODE === $values['method'] && self::is_code_taken( $values['code'], $existing ? $existing->get_id() : 0 ) ) {
+		if ( $takes_code && self::is_code_taken( $values['code'], $existing ? $existing->get_id() : 0 ) ) {
 			return self::rule_error( 'smart_coupon_code_taken', __( 'Another coupon already uses this code.', 'storegrowth-sales-booster' ) );
 		}
 
@@ -547,8 +549,8 @@ class SmartCouponRepository {
 	}
 
 	/**
-	 * The code to save: the one typed, or a generated one that stays with the
-	 * coupon while its method does.
+	 * The code to save: the one the merchant set, or for an automatic coupon
+	 * (which shoppers never type) a generated one that stays with the coupon.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -558,7 +560,7 @@ class SmartCouponRepository {
 	 * @return string
 	 */
 	private static function code_for( array $values, ?WC_Coupon $existing ): string {
-		if ( SmartCoupon::CODE === $values['method'] ) {
+		if ( SmartCoupon::AUTOMATIC !== $values['method'] ) {
 			return $values['code'];
 		}
 

@@ -172,7 +172,7 @@ function CouponList() {
                 return (
                     <span className="flex flex-wrap items-center gap-1.5">
                         { METHOD_LABELS[ item.method ] }
-                        { item.method === 'code' && (
+                        { item.method !== 'automatic' && (
                             <code className="rounded bg-sg-chip px-1 text-xs">
                                 { item.code.toUpperCase() }
                             </code>

@@ -53,8 +53,9 @@ class SmartCouponFields implements SettingsPage {
 				'default'     => '',
 				'section'     => 'method',
 				'label'       => __( 'Discount code', 'storegrowth-sales-booster' ),
+				'help'        => __( 'For a link coupon, changing the code changes its link.', 'storegrowth-sales-booster' ),
 				'placeholder' => __( 'SAVE20', 'storegrowth-sales-booster' ),
-				'show_when'   => [ 'method' => SmartCoupon::CODE ],
+				'show_when'   => [ 'method' => [ SmartCoupon::CODE, SmartCoupon::LINK ] ],
 			],
 			'title'            => [
 				'type'        => 'text',
