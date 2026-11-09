@@ -46,32 +46,33 @@ class BogoValidator {
 	 * @return bool True if BOGO is applicable, false otherwise.
 	 */
 	public static function is_bogo_applicable( $product_id, $bogo_settings ) {
-		// Check if BOGO is enabled
-		if ( ! self::is_bogo_enabled( $bogo_settings ) ) {
-			return false;
-		}
-
-		// Check if offer is active (status check)
-		if ( ! self::is_offer_status_active( $bogo_settings ) ) {
-			return false;
-		}
-
-		// An offer type the cart doesn't know isn't applied.
-		if ( ! self::has_known_offer_type( $bogo_settings ) ) {
-			return false;
-		}
-
-		// Check date range
-		if ( ! self::is_date_range_valid( $bogo_settings ) ) {
-			return false;
-		}
-
-		// Check schedule (Pro feature)
-		if ( ! self::is_schedule_valid( $bogo_settings ) ) {
+		if ( ! self::is_offer_live( $bogo_settings ) ) {
 			return false;
 		}
 
 		return apply_filters( 'spsg_is_bogo_applicable_product', true, $product_id, $bogo_settings );
+	}
+
+	/**
+	 * Whether an offer is switched on and inside its dates and weekdays.
+	 *
+	 * Live cart pricing uses this rather than `is_bogo_applicable()`: the
+	 * filter there decides whether to add a gift, and Pro versions up to 2.2
+	 * count the gift lines in the quantity they check, which rejects a cart
+	 * already holding its gift.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $bogo_settings BOGO settings array.
+	 *
+	 * @return bool
+	 */
+	public static function is_offer_live( $bogo_settings ) {
+		return self::is_bogo_enabled( $bogo_settings )
+			&& self::is_offer_status_active( $bogo_settings )
+			&& self::has_known_offer_type( $bogo_settings )
+			&& self::is_date_range_valid( $bogo_settings )
+			&& self::is_schedule_valid( $bogo_settings );
 	}
 
 	/**

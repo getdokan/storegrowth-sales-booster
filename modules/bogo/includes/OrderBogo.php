@@ -8,6 +8,8 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use StorePulse\StoreGrowth\Analytics\Counter;
+use StorePulse\StoreGrowth\Attribution\OfferAttribution;
+use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
@@ -24,6 +26,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderBogo implements HookRegistry {
 
 	use Singleton;
+
+	/**
+	 * Whether the cart itself is removing a gift.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var bool
+	 */
+	private $removing_gift = false;
 
 	/**
 	 * Constructor of Woocommerce_Functionality class.
@@ -313,7 +324,8 @@ class OrderBogo implements HookRegistry {
 		$apply_able_product_id = ! empty( $variation_id ) ? $variation_id : $product_id;
 		$bogo_settings = Helper::prepare_bogo_settings( $apply_able_product_id, $product_id, $variation_id );
 
-		if ( empty( $bogo_settings ) ) {
+		// An offer that isn't live gives nothing new; the next calculation removes its gift.
+		if ( empty( $bogo_settings ) || ! BogoValidator::is_offer_live( $bogo_settings ) ) {
 			return;
 		}
 
@@ -542,15 +554,12 @@ class OrderBogo implements HookRegistry {
 			}
 		}
 
-		// Determine the cost of the offer product (if necessary)
-		$offer_product_cost = Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price_product->get_price(), $settings['discount_amount'] ?? 0 );
-
-		// Cart item data, plus additive campaign attribution keys for revenue reporting.
+		// Cart item data (the deal, never a price: see
+		// woocommerce_custom_price_to_cart_item()), plus additive campaign attribution keys for revenue reporting.
 		$cart_item_data = array(
 			'parent_key'            => $cart_item_key,
 			'bogo_offer'            => true,
 			'bogo_product_for'      => $product_id,
-			'bogo_offer_price'      => $offer_product_cost,
 			'linked_to_product_key' => $cart_item_key,
 		);
 		$cart_item_data = array_merge( $cart_item_data, Helper::build_offer_stamp( $settings, $price_product ) );
@@ -899,18 +908,158 @@ class OrderBogo implements HookRegistry {
 	}
 
 	/**
-	 * Product custom price.
+	 * Work out every gift line again on each cart calculation: free or
+	 * discounted while its offer is live and earned, removed otherwise.
 	 *
 	 * @param object $cart_object is all product of cart.
 	 */
 	public function woocommerce_custom_price_to_cart_item( $cart_object ) {
-		if ( ! WC()->session->__isset( 'reload_checkout' ) ) {
-			foreach ( $cart_object->cart_contents as $key => $value ) {
-				if ( isset( $value['bogo_offer_price'] ) ) {
-					$value['data']->set_price( $value['bogo_offer_price'] );
-				}
+		if ( WC()->session->__isset( 'reload_checkout' ) ) {
+			return;
+		}
+
+		foreach ( $cart_object->cart_contents as $key => $value ) {
+			// Removing a line recalculates totals, which can remove others.
+			if ( isset( $cart_object->cart_contents[ $key ] ) && Helper::is_gift_line( $value ) ) {
+				$this->price_gift_line( $cart_object, $key, $value );
 			}
 		}
+	}
+
+	/**
+	 * Price one gift line, or remove it when it's no longer earned.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart Cart.
+	 * @param string   $key  Gift's cart item key.
+	 * @param array    $item Gift's cart item.
+	 *
+	 * @return void
+	 */
+	private function price_gift_line( $cart, string $key, array $item ): void {
+		$trigger_key = (string) ( $item['linked_to_product_key'] ?? '' );
+
+		// A gift from before 3.1 that was never linked to its trigger.
+		if ( '' === $trigger_key ) {
+			$authorized  = Helper::find_authorized_trigger( (int) $item['product_id'] );
+			$trigger_key = (string) ( $authorized['key'] ?? '' );
+
+			$cart->cart_contents[ $key ]['linked_to_product_key'] = $trigger_key;
+		}
+
+		$trigger = $cart->cart_contents[ $trigger_key ] ?? null;
+
+		// Its trigger left the cart: the shopper did that, no notice needed.
+		if ( null === $trigger && ! empty( $item['linked_to_product_key'] ) ) {
+			$this->remove_gift( $cart, $key );
+
+			return;
+		}
+
+		$settings = $trigger ? $this->get_trigger_offer( $trigger ) : null;
+		$earned   = 0;
+
+		if ( $settings ) {
+			/**
+			 * Filters how many offer products a cart line's quantity earns.
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int   $free_product_quantity Offer quantity.
+			 * @param array $settings              The BOGO offer.
+			 * @param array $trigger               The target cart item.
+			 */
+			$earned = (int) apply_filters( 'spsg_free_product_quantity_for_cart_update', Helper::get_offer_quantity( $settings, (int) $trigger['quantity'] ), $settings, $trigger );
+		}
+
+		$product = wc_get_product( $item['data']->get_id() );
+
+		if ( $earned < 1 || ! $product ) {
+			$this->remove_gift( $cart, $key, $this->get_gift_ended_message( $item, $settings ) );
+
+			return;
+		}
+
+		if ( (int) $item['quantity'] > $earned ) {
+			$cart->cart_contents[ $key ]['quantity'] = $earned;
+		}
+
+		// A freshly loaded product: the line's own object may already carry
+		// this request's price, and Countdown only applies to an unset price.
+		$cart->cart_contents[ $key ] = array_merge( $cart->cart_contents[ $key ], Helper::build_offer_stamp( $settings, $product ) );
+
+		$price = Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $product->get_price(), $settings['discount_amount'] ?? 0 );
+
+		CartLine::set_price( $cart, $key, (float) $price, $item['bogo_offer_price'] ?? null );
+	}
+
+	/**
+	 * The live offer behind a trigger line.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $trigger Trigger's cart item.
+	 *
+	 * @return array|null Null when no offer applies right now.
+	 */
+	private function get_trigger_offer( array $trigger ): ?array {
+		$product_id   = (int) $trigger['product_id'];
+		$variation_id = (int) ( $trigger['variation_id'] ?? 0 );
+		$apply_id     = apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, $variation_id );
+		$settings     = Helper::prepare_bogo_settings( $apply_id, $product_id, $variation_id );
+
+		return ! empty( $settings ) && BogoValidator::is_offer_live( $settings ) ? $settings : null;
+	}
+
+	/**
+	 * Remove a gift the shopper no longer gets, past the guard that stops
+	 * shoppers removing gifts themselves.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart    Cart.
+	 * @param string   $key     Gift's cart item key.
+	 * @param string   $message Notice for the shopper; empty for none.
+	 *
+	 * @return void
+	 */
+	private function remove_gift( $cart, string $key, string $message = '' ): void {
+		$trigger_key = $cart->cart_contents[ $key ]['linked_to_product_key'] ?? '';
+
+		$this->removing_gift = true;
+		CartLine::remove( $cart, $key, $message );
+		$this->removing_gift = false;
+
+		if ( isset( $cart->cart_contents[ $trigger_key ] ) ) {
+			unset( $cart->cart_contents[ $trigger_key ]['child_key'] );
+		}
+	}
+
+	/**
+	 * The notice for a gift that was removed.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array      $item     Gift's cart item.
+	 * @param array|null $settings The offer, when it's still live.
+	 *
+	 * @return string
+	 */
+	private function get_gift_ended_message( array $item, ?array $settings ): string {
+		if ( ! $settings ) {
+			$offer_id = (int) substr( (string) strrchr( (string) ( $item[ OfferAttribution::CAMPAIGN_ID ] ?? '' ), ':' ), 1 );
+			$settings = $offer_id ? BogoDataManager::get_bogo_offer( $offer_id ) : null;
+		}
+
+		// Product offers have only a generated name.
+		$name = 'global' === ( $settings['type'] ?? '' ) ? (string) ( $settings['name_of_order_bogo'] ?? '' ) : '';
+
+		return sprintf(
+			/* translators: %s: deal name. */
+			__( '%s ended. Your free item was removed.', 'storegrowth-sales-booster' ),
+			'' !== $name ? $name : __( 'Your deal', 'storegrowth-sales-booster' )
+		);
 	}
 
 	/**
@@ -924,7 +1073,7 @@ class OrderBogo implements HookRegistry {
 	public function update_woocommerce_item_price( $price, $cart_item, $cart_item_key ) {
 		$product            = $cart_item['data'];
 		$show_regular_price = Helper::get_bogo_settings_option( 'regular_price_show' );
-		if ( isset( $cart_item['bogo_offer_price'] ) ) {
+		if ( Helper::is_gift_line( $cart_item ) ) {
 			$regular_price = $product->get_regular_price();
 			if ( $show_regular_price ) {
 				$price .= '<br><span class="regular-price"><s>' . Money::price_html( $product, (float) $regular_price, 'cart' ) . '</s></span>';
@@ -1162,6 +1311,11 @@ class OrderBogo implements HookRegistry {
      * @retun void
      */
     public function prevent_bogo_cart_item_remove( $cart_item_key, $cart ) {
+		// The cart itself is removing a gift that's no longer earned.
+		if ( $this->removing_gift ) {
+			return;
+		}
+
 		// Check if a product is eligible for BOGO offers.
 	    $server = HelperUtils::get_rest_request()->get_params();
 	    $key    = $server['requests'][0]['body']['key'] ?? '';
@@ -1267,7 +1421,7 @@ class OrderBogo implements HookRegistry {
 	 * @return string Modified price HTML.
 	 */
 	public function modify_fly_cart_bogo_price_html( $price_html, $cart_item, $_product ) {
-		if ( empty( $cart_item['bogo_offer'] ) || ! isset( $cart_item['bogo_offer_price'] ) ) {
+		if ( empty( $cart_item['bogo_offer'] ) ) {
 			return $price_html;
 		}
 

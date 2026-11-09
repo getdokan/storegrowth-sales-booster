@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
+use WC_Product;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -399,6 +400,74 @@ class Helper {
 		$trigger = self::find_gift_trigger( $gift_product_id );
 
 		return $trigger ? $trigger['settings'] : null;
+	}
+
+	/**
+	 * Whether a cart line is a BOGO gift. Gifts added from the old offer popup
+	 * have no `bogo_offer` flag, and carts from before 3.1 may hold only the
+	 * saved price.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $cart_item Cart item.
+	 *
+	 * @return bool
+	 */
+	public static function is_gift_line( array $cart_item ): bool {
+		return ! empty( $cart_item['bogo_offer'] ) || ! empty( $cart_item['linked_to_product_key'] ) || isset( $cart_item['bogo_offer_price'] );
+	}
+
+	/**
+	 * Find the cart line and active offer that allow a product as a gift: the
+	 * offer's reward or one of its alternates, with the line meeting the
+	 * offer's minimum quantity.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int    $offer_product_id Gift product id (the parent of a variable gift).
+	 * @param string $only_key         Check only this cart line, when given.
+	 *
+	 * @return array{key: string, settings: array}|null Null when nothing in the cart allows it.
+	 */
+	public static function find_authorized_trigger( int $offer_product_id, string $only_key = '' ): ?array {
+		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+			return null;
+		}
+
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			if ( '' !== $only_key && $cart_item_key !== $only_key ) {
+				continue;
+			}
+
+			$trigger_product_id = (int) $cart_item['product_id'];
+
+			$settings = BogoValidator::get_product_bogo_settings( $trigger_product_id );
+			if ( empty( $settings ) ) {
+				continue;
+			}
+
+			$trigger_category_ids = $cart_item['data'] instanceof WC_Product ? $cart_item['data']->get_category_ids() : [];
+			if ( ! BogoValidator::should_display_offer( $settings, $trigger_product_id, $trigger_category_ids ) ) {
+				continue;
+			}
+
+			// The trigger must meet the offer's minimum quantity condition.
+			if ( self::get_offer_quantity( $settings, (int) $cart_item['quantity'] ) < 1 ) {
+				continue;
+			}
+
+			$reward_id  = (int) BogoValidator::get_offer_product_id( $settings, $trigger_product_id );
+			$alternates = $settings['alternate_products'] ?? $settings['get_alternate_products'] ?? [];
+
+			if ( in_array( $offer_product_id, array_map( 'intval', array_merge( [ $reward_id ], (array) $alternates ) ), true ) ) {
+				return [
+					'key'      => $cart_item_key,
+					'settings' => $settings,
+				];
+			}
+		}
+
+		return null;
 	}
 
 	/**

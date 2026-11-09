@@ -17,8 +17,13 @@ if ( WC()->cart->is_empty() ) {
 	return;
 }
 
+// Gift and bump lines get their price while the cart calculates totals.
+if ( ! did_action( 'woocommerce_before_calculate_totals' ) ) {
+	WC()->cart->calculate_totals();
+}
+
 $settings             = \StorePulse\StoreGrowth\Helper::get_settings( 'spsg_fly_cart_settings' );
-$show_product_image   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
+$show_product_image  = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_image', true );
 $show_remove_icon     = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_remove_icon', true );
 $show_quantity_picker = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_quantity_picker', true );
 $show_product_price   = \StorePulse\StoreGrowth\Helper::find_option_settings( $settings, 'show_product_price', true );
@@ -92,7 +97,7 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 											'product_name' => $_product->get_name(),
 										);
 
-										if ( isset( $cart_item['bogo_offer_price'] ) ) {
+										if ( ! empty( $cart_item['bogo_offer'] ) || ! empty( $cart_item['linked_to_product_key'] ) ) {
 												$product_quantity = woocommerce_quantity_input( $input_args, $_product, false );
 										} else {
 												$product_quantity  = '<button type="button" class="spsg-minus-icon">-</button>';
@@ -110,18 +115,7 @@ $show_stock_status    = apply_filters( 'spsg_fly_cart_show_stock_status_enabled'
 								<?php if ( $show_product_price ) : ?>
 							<div class="product-subtotal" >
 									<?php
-									// A BOGO gift or an order bump line: its offer price,
-									// which the cart sets only while it calculates totals.
-									$line_price = $cart_item['bogo_offer_price'] ?? $cart_item['custom_price'] ?? null;
-
-									if ( null !== $line_price ) {
-										$offer_price = floatval( $line_price );
-										$quantity    = intval( $cart_item['quantity'] );
-										$sub_total   = wc_price( $offer_price * $quantity );
-									} else {
-										$sub_total = WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] );
-									}
-
+									$sub_total = WC()->cart->get_product_subtotal( $_product, $cart_item['quantity'] );
 									$sub_total = apply_filters( 'spsg_fly_cart_item_price_html', $sub_total, $cart_item, $_product );
 
 						 	// phpcs:ignore

@@ -8,7 +8,9 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump;
 
 use StorePulse\StoreGrowth\Analytics\Counter;
+use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators\BumpOfferValidator;
@@ -233,9 +235,11 @@ class OrderBump implements HookRegistry {
 	 *
 	 * @since 3.0.0
 	 *
+	 * @param string $exclude_key Cart item key to leave out. @since SPSG_VERSION
+	 *
 	 * @return array{0: int[], 1: int[]} Product ids, category ids.
 	 */
-	public static function get_cart_targets() {
+	public static function get_cart_targets( string $exclude_key = '' ) {
 		$product_ids  = [];
 		$category_ids = [];
 
@@ -243,7 +247,11 @@ class OrderBump implements HookRegistry {
 			return [ $product_ids, $category_ids ];
 		}
 
-		foreach ( WC()->cart->get_cart() as $cart_item ) {
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			if ( $cart_item_key === $exclude_key ) {
+				continue;
+			}
+
 			$product_ids[] = (int) $cart_item['product_id'];
 
 			if ( $cart_item['data'] instanceof WC_Product ) {
@@ -324,18 +332,116 @@ class OrderBump implements HookRegistry {
 	}
 
 	/**
-	 * Product custom price.
+	 * Work out every bump line again on each cart calculation, from the bump's
+	 * current settings. A line whose bump no longer applies is removed.
 	 *
 	 * @param object $cart_object is all product of cart.
 	 */
 	public function woocommerce_custom_price_to_cart_item( $cart_object ) {
-		if ( ! WC()->session->__isset( 'reload_checkout' ) ) {
-			foreach ( $cart_object->cart_contents as $key => $value ) {
-				if ( isset( $value['custom_price'] ) ) {
-					$value['data']->set_price( $value['custom_price'] );
-				}
+		if ( WC()->session->__isset( 'reload_checkout' ) ) {
+			return;
+		}
+
+		foreach ( $cart_object->cart_contents as $key => $value ) {
+			// Removing a line recalculates totals, which can remove others.
+			if ( ! isset( $cart_object->cart_contents[ $key ] ) || ! self::is_bump_cart_item( $value ) ) {
+				continue;
+			}
+
+			// The line's own product doesn't keep its bump going.
+			list( $cart_product_ids, $cart_category_ids ) = self::get_cart_targets( $key );
+
+			$this->price_bump_line( $cart_object, $key, $value, ( new OrderBumpData() )->get_matching_bumps( $cart_product_ids, $cart_category_ids ) );
+		}
+	}
+
+	/**
+	 * Price one bump line, or remove it when its bump no longer applies.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param \WC_Cart $cart  Cart.
+	 * @param string   $key   Cart item key.
+	 * @param array    $item  Cart item.
+	 * @param array[]  $bumps The bumps that apply to the cart now.
+	 *
+	 * @return void
+	 */
+	private function price_bump_line( $cart, string $key, array $item, array $bumps ): void {
+		$bump    = self::find_line_bump( $item, $bumps );
+		$product = wc_get_product( $item['data']->get_id() );
+
+		if ( ! $bump || ! $product ) {
+			CartLine::remove(
+				$cart,
+				$key,
+				sprintf(
+					/* translators: %s: product name. */
+					__( '%s is no longer on offer and was removed from your cart.', 'storegrowth-sales-booster' ),
+					$item['data']->get_name()
+				)
+			);
+
+			return;
+		}
+
+		// A freshly loaded product: the line's own object may already carry
+		// this request's price, and Countdown only applies to an unset price.
+		$current_price = self::get_current_price( $product );
+		$price         = self::calculate_offer_price( $bump['offer_type'], $current_price, $bump['offer_amount'] ?? 0 );
+
+		$cart->cart_contents[ $key ] = array_merge( $cart->cart_contents[ $key ], self::build_stamp( $bump, $current_price, $price ) );
+
+		CartLine::set_price( $cart, $key, $price, $item['custom_price'] ?? null );
+	}
+
+	/**
+	 * The bump behind a cart line: by the id stamped on it, or by its product
+	 * for a line from before 3.0, which has no stamp.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array   $item  Cart item.
+	 * @param array[] $bumps The bumps that apply to the cart now.
+	 *
+	 * @return array|null
+	 */
+	private static function find_line_bump( array $item, array $bumps ): ?array {
+		$bump_id  = (int) substr( (string) strrchr( (string) ( $item[ OfferAttribution::CAMPAIGN_ID ] ?? '' ), ':' ), 1 );
+		$offer_id = ! empty( $item['variation_id'] ) ? (int) $item['variation_id'] : (int) $item['product_id'];
+
+		foreach ( $bumps as $bump ) {
+			if ( (int) $bump['offer_product_id'] === $offer_id && ( ! $bump_id || (int) $bump['id'] === $bump_id ) ) {
+				return $bump;
 			}
 		}
+
+		return null;
+	}
+
+	/**
+	 * A bump line's attribution stamp.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $bump          The bump.
+	 * @param float $current_price The product's price.
+	 * @param float $price         The bump's price.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function build_stamp( array $bump, float $current_price, float $price ): array {
+		$reward_types = [
+			'discount' => 'discount',
+			'free'     => 'free',
+		];
+
+		return OfferAttribution::stamp(
+			'order_bump',
+			(int) $bump['id'],
+			$reward_types[ $bump['offer_type'] ] ?? 'fixed',
+			max( $current_price - $price, 0 )
+		);
 	}
 
 	/**
@@ -450,7 +556,7 @@ class OrderBump implements HookRegistry {
 			$cart_item_id = $cart_variation_id > 0 ? $cart_variation_id : $cart_product_id;
 
 			// Check if this is the bump product with custom pricing and remove it
-			if ( $cart_item_id == $offer_product_id && isset( $cart_item['custom_price'] ) ) {
+			if ( (int) $cart_item_id === (int) $offer_product_id && self::is_bump_cart_item( $cart_item ) ) {
 				$cart->remove_cart_item( $cart_item_key );
 			}
 		}

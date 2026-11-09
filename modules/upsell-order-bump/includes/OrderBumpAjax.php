@@ -98,11 +98,10 @@ class OrderBumpAjax implements HookRegistry {
 	 * @return string|false The cart item key, or false when WooCommerce refused it.
 	 */
 	public function add_offer_to_cart( array $offer ) {
-		// `custom_price` is the Order Bump price key applied by
-		// OrderBump::woocommerce_custom_price_to_cart_item().
+		// The line stores the bump, never a price:
+		// OrderBump::woocommerce_custom_price_to_cart_item() works it out.
 		$cart_item_data = array_merge(
 			[
-				'custom_price'             => $offer['price'],
 				'_spsg_order_bump_product' => true,
 			],
 			// Attribution stamp — additive campaign identity keys for revenue reporting.
@@ -205,21 +204,12 @@ class OrderBumpAjax implements HookRegistry {
 			// Price derived from the bump, as the checkout box shows it.
 			$current_price = OrderBump::get_current_price( $product );
 			$price         = OrderBump::calculate_offer_price( $bump['offer_type'], $current_price, $bump['offer_amount'] ?? 0 );
-			$reward_types  = [
-				'discount' => 'discount',
-				'free'     => 'free',
-			];
 
 			return [
 				'bump'    => $bump,
 				'product' => $product,
 				'price'   => $price,
-				'stamp'   => OfferAttribution::stamp(
-					'order_bump',
-					(int) $bump['id'],
-					$reward_types[ $bump['offer_type'] ] ?? 'fixed',
-					max( $current_price - $price, 0 )
-				),
+				'stamp'   => OrderBump::build_stamp( $bump, $current_price, $price ),
 			];
 		}
 
