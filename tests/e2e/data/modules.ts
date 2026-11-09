@@ -18,6 +18,9 @@ export type ModuleKey = keyof typeof MODULES;
 
 export const BASELINE_ACTIVE: string[] = Object.values(MODULES).map((m) => m.id);
 
+/** Modules the baseline leaves off, so the older suites run without them. */
+export const BASELINE_INACTIVE: string[] = ['smart-coupons'];
+
 /** Storefront DOM markers verified live (module active → marker present on the page). */
 export const STOREFRONT_MARKERS = {
   stockBar: { module: MODULES.stockBar, page: 'product', selector: '.spsg-stock-bar' },
