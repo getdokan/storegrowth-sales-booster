@@ -64,7 +64,7 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	 */
 	public function get_fields(): array {
 		return [
-			Uninstaller::DATA_REMOVAL_OPTION => [
+			Uninstaller::DATA_REMOVAL_OPTION   => [
 				'type'    => 'toggle',
 				'default' => false,
 				'label'   => __( 'Remove data on uninstall', 'storegrowth-sales-booster' ),
