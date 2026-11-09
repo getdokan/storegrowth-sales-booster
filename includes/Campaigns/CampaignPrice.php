@@ -14,6 +14,7 @@ use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use StorePulse\StoreGrowth\Support\SiteTime;
 use WC_Coupon;
+use WC_Product_Variable;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -81,6 +82,12 @@ class CampaignPrice implements HookRegistry {
 	private static function already_on_sale( int $product_id ): bool {
 		$product = wc_get_product( $product_id );
 
+		// A variable product's own answer reads its price ranges, which carry
+		// the campaign's price; its variations' answers don't.
+		if ( $product instanceof WC_Product_Variable ) {
+			return CountdownHelper::is_product_discountable( $product_id ) || array_filter( $product->get_children(), [ self::class, 'already_on_sale' ] );
+		}
+
 		return $product && ( $product->is_on_sale( 'edit' ) || CountdownHelper::is_product_discountable( $product_id ) );
 	}
 
@@ -94,13 +101,32 @@ class CampaignPrice implements HookRegistry {
 	 * @return bool
 	 */
 	public static function any_running( ?DateTimeImmutable $now = null ): bool {
+		return (bool) self::running_prices( $now );
+	}
+
+	/**
+	 * What the running campaigns set on prices, by campaign id. Anything that
+	 * changes a product's campaign price is in here.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param DateTimeImmutable|null $now Moment to check.
+	 *
+	 * @return array<int, array{price: array, exclude_on_sale: bool}>
+	 */
+	public static function running_prices( ?DateTimeImmutable $now = null ): array {
+		$prices = [];
+
 		foreach ( CampaignRepository::running( $now ) as $campaign ) {
 			if ( ! empty( $campaign['settings']['campaign_price']['percent'] ) ) {
-				return true;
+				$prices[ (int) $campaign['id'] ] = [
+					'price'           => $campaign['settings']['campaign_price'],
+					'exclude_on_sale' => ! empty( $campaign['settings']['exclude_on_sale'] ),
+				];
 			}
 		}
 
-		return false;
+		return $prices;
 	}
 
 	/**

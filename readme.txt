@@ -332,6 +332,10 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
+= v3.1.0 (Unreleased) =
+
+* Fix: Variable product price ranges now reflect Countdown prices.
+
 = v3.0.0 (November 4, 2026) =
 
 * New: A redesigned admin — one StoreGrowth page with a dashboard, a modules screen and a settings page for every module, built on a new design system. Existing settings, offers and order bumps carry over unchanged.

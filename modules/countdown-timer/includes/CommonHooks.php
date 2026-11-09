@@ -40,7 +40,75 @@ class CommonHooks implements HookRegistry {
 		add_filter( 'woocommerce_product_get_price', array( $this, 'get_product_price' ), 10, 2 );
 		add_filter( 'woocommerce_product_variation_get_price', array( $this, 'get_product_price' ), 10, 2 );
 		add_filter( 'woocommerce_product_is_on_sale', array( $this, 'woocommerce_product_is_on_sale' ), 10, 2 );
+		add_filter( 'woocommerce_variation_prices_price', [ $this, 'get_variation_range_price' ], 10, 2 );
+		add_filter( 'woocommerce_variation_prices_sale_price', [ $this, 'get_variation_range_sale_price' ], 10, 2 );
+		add_filter( 'woocommerce_get_variation_prices_hash', [ $this, 'add_discounts_to_prices_hash' ], 10, 2 );
 		add_filter( 'spsg_cart_deals', [ $this, 'report_cart_deals' ], 10, 2 );
+	}
+
+	/**
+	 * A variation's price in its product's cached range. WooCommerce reads it
+	 * with `get_price( 'edit' )`, which skips `get_product_price()`, so this
+	 * is the one discount on it.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string      $price     Variation's active price.
+	 * @param \WC_Product $variation Variation.
+	 *
+	 * @return string|float
+	 */
+	public function get_variation_range_price( $price, $variation ) {
+		// A variation without a price stays out of the range.
+		return '' === $price ? $price : $this->get_product_price( $price, $variation );
+	}
+
+	/**
+	 * A variation's sale price in its product's cached range. WooCommerce
+	 * shows a sale only when this is identical to the active price, so a
+	 * discounted variation returns just that.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string      $sale_price Variation's sale price.
+	 * @param \WC_Product $variation  Variation.
+	 *
+	 * @return string|float
+	 */
+	public function get_variation_range_sale_price( $sale_price, $variation ) {
+		$price      = $variation->get_price( 'edit' );
+		$discounted = $this->get_variation_range_price( $price, $variation );
+
+		return $discounted === $price ? $sale_price : $discounted;
+	}
+
+	/**
+	 * Key the cached ranges by what prices them right now. Live state rather
+	 * than the stored dates, so the key moves when a window starts or ends.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array       $hash    Factors of the cache key.
+	 * @param \WC_Product $product Variable product.
+	 *
+	 * @return array
+	 */
+	public function add_discounts_to_prices_hash( $hash, $product ) {
+		$children  = $product->get_visible_children();
+		$countdown = [];
+
+		_prime_post_caches( $children );
+
+		foreach ( $children as $variation_id ) {
+			$countdown[ $variation_id ] = Helper::is_product_discountable( $variation_id ) ? get_post_meta( $variation_id, '_spsg_countdown_timer_discount_amount', true ) : 0;
+		}
+
+		$hash['spsg_discounts'] = [
+			'countdown' => $countdown,
+			'campaigns' => CampaignPrice::running_prices(),
+		];
+
+		return $hash;
 	}
 
 	/**

@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Offers;
 
 use DateTimeImmutable;
 use Exception;
+use StorePulse\StoreGrowth\Campaigns\CampaignBoundary;
 use StorePulse\StoreGrowth\Campaigns\CampaignProducts;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
@@ -1303,11 +1304,13 @@ class CampaignRepository implements HookRegistry {
 
 		if ( ! $next ) {
 			delete_option( self::BOUNDARY_OPTION );
+			CampaignBoundary::schedule( null );
 
 			return null;
 		}
 
 		update_option( self::BOUNDARY_OPTION, $next->getTimestamp() );
+		CampaignBoundary::schedule( $next->getTimestamp() );
 
 		return $next->getTimestamp();
 	}
