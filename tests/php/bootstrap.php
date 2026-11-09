@@ -85,6 +85,7 @@ function spsg_install_storegrowth() {
 	}
 
 	\StorePulse\StoreGrowth\Analytics\Schema::install();
+	\StorePulse\StoreGrowth\Offers\CampaignRepository::install();
 
 	echo esc_html( 'Installing StoreGrowth...' . PHP_EOL );
 }

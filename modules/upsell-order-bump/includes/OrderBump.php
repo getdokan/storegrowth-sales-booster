@@ -68,7 +68,7 @@ class OrderBump implements HookRegistry {
 			$bump = $offer['bump'];
 
 			// The box re-renders on every checkout refresh: count a view once per session.
-			if ( Counter::first_in_session( 'spsg_bump_seen', (int) $bump['id'] ) ) {
+			if ( ! empty( $bump['id'] ) && Counter::first_in_session( 'spsg_bump_seen', (int) $bump['id'] ) ) {
 				Counter::bump( UpsellOrderBumpModule::get_id(), 'view', Counter::CAMPAIGN, (int) $bump['id'] );
 			}
 
@@ -234,8 +234,9 @@ class OrderBump implements HookRegistry {
 	 * and the attribution stamp, so they agree on which bumps apply.
 	 *
 	 * @since 3.0.0
+	 * @since SPSG_VERSION Added `$exclude_key`.
 	 *
-	 * @param string $exclude_key Cart item key to leave out. @since SPSG_VERSION
+	 * @param string $exclude_key Cart item key to leave out.
 	 *
 	 * @return array{0: int[], 1: int[]} Product ids, category ids.
 	 */
@@ -431,6 +432,11 @@ class OrderBump implements HookRegistry {
 	 * @return array<string, string>
 	 */
 	public static function build_stamp( array $bump, float $current_price, float $price ): array {
+		// A campaign-only bump has no offer id to attribute to.
+		if ( empty( $bump['id'] ) ) {
+			return [];
+		}
+
 		$reward_types = [
 			'discount' => 'discount',
 			'free'     => 'free',

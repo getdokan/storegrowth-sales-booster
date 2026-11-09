@@ -13,6 +13,7 @@ use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Traits\Singleton;
 use StorePulse\StoreGrowth\Helper as HelperUtils;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Support\Money;
 
 // If this file is called directly, abort.
@@ -784,7 +785,7 @@ class OrderBogo implements HookRegistry {
 			)
 		);
 
-		$product_bogo_settings = ! empty( $product_offers ) ? $product_offers[0] : null;
+		$product_bogo_settings = BogoDataManager::with_campaign_rule( ! empty( $product_offers ) ? $product_offers[0] : null, (int) $current_product_id );
 
 		if ( $product_bogo_settings ) {
 			// An offer the cart wouldn't apply right now (outside its dates or
@@ -1006,6 +1007,15 @@ class OrderBogo implements HookRegistry {
 	private function get_trigger_offer( array $trigger ): ?array {
 		$product_id   = (int) $trigger['product_id'];
 		$variation_id = (int) ( $trigger['variation_id'] ?? 0 );
+
+		/**
+		 * Filters the product id a cart line's BOGO offer is looked up by.
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int $product_id   Product id.
+		 * @param int $variation_id Variation id.
+		 */
 		$apply_id     = apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, $variation_id );
 		$settings     = Helper::prepare_bogo_settings( $apply_id, $product_id, $variation_id );
 
@@ -1014,7 +1024,13 @@ class OrderBogo implements HookRegistry {
 			return null;
 		}
 
-		return ! empty( $settings ) && BogoValidator::is_offer_live( $settings ) ? $settings : null;
+		if ( empty( $settings ) ) {
+			return null;
+		}
+
+		$effective = OfferVersions::effective_offer( array_merge( $settings, [ 'offer_kind' => OfferVersions::BOGO ] ) );
+
+		return $effective['live'] ? $effective['values'] : null;
 	}
 
 	/**

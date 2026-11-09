@@ -108,7 +108,7 @@ if ( isset( $product, $bogo_info, $offered_product, $offer_product_id, $image_ur
 				<div class="offer-price">
                     <?php if ( $show_regular_price ) : ?>
                         <span style="text-decoration: line-through;">
-                            <?php echo Money::price_html( $product, (float) $regular_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wc_price() escapes; wp_kses_post() would strip its <bdi>. ?>
+							<?php echo Money::price_html( $product, (float) $regular_price ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wc_price() escapes; wp_kses_post() would strip its <bdi>. ?>
                         </span>
                     <?php endif; ?>
                     &nbsp;

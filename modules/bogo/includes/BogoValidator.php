@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use DateTimeImmutable;
 use StorePulse\StoreGrowth\Support\SiteTime;
 
 // If this file is called directly, abort.
@@ -50,6 +51,15 @@ class BogoValidator {
 			return false;
 		}
 
+		/**
+		 * Filters whether a live BOGO offer applies to a product.
+		 *
+		 * @since 1.0.2
+		 *
+		 * @param bool  $applicable    Whether the offer applies.
+		 * @param int   $product_id    Product id.
+		 * @param array $bogo_settings The offer.
+		 */
 		return apply_filters( 'spsg_is_bogo_applicable_product', true, $product_id, $bogo_settings );
 	}
 
@@ -63,16 +73,45 @@ class BogoValidator {
 	 *
 	 * @since SPSG_VERSION
 	 *
+	 * @param array                  $bogo_settings BOGO settings array.
+	 * @param DateTimeImmutable|null $now           Moment to check, the current one by default.
+	 *
+	 * @return bool
+	 */
+	public static function is_offer_live( $bogo_settings, ?DateTimeImmutable $now = null ) {
+		return self::is_bogo_enabled( $bogo_settings )
+			&& self::is_offer_status_active( $bogo_settings )
+			&& self::has_known_offer_type( $bogo_settings )
+			&& self::is_date_range_valid( $bogo_settings, $now )
+			&& self::is_schedule_valid( $bogo_settings, $now )
+			&& self::is_coupon_requirement_met( $bogo_settings );
+	}
+
+	/**
+	 * Whether a rule kept for a coupon may apply. BOGO checks this itself:
+	 * with Smart Coupons off nothing answers the filter, so the rule stays
+	 * held back and never applies automatically.
+	 *
+	 * @since SPSG_VERSION
+	 *
 	 * @param array $bogo_settings BOGO settings array.
 	 *
 	 * @return bool
 	 */
-	public static function is_offer_live( $bogo_settings ) {
-		return self::is_bogo_enabled( $bogo_settings )
-			&& self::is_offer_status_active( $bogo_settings )
-			&& self::has_known_offer_type( $bogo_settings )
-			&& self::is_date_range_valid( $bogo_settings )
-			&& self::is_schedule_valid( $bogo_settings );
+	private static function is_coupon_requirement_met( $bogo_settings ) {
+		if ( empty( $bogo_settings[ BogoDataManager::ONLY_WITH_COUPON ] ) ) {
+			return true;
+		}
+
+		/**
+		 * Filters whether a coupon in the cart unlocks an "only with coupon" rule.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool  $unlocked      Whether the rule may apply.
+		 * @param array $bogo_settings The rule.
+		 */
+		return (bool) apply_filters( 'spsg_bogo_coupon_unlocks_rule', false, $bogo_settings );
 	}
 
 	/**
@@ -119,20 +158,22 @@ class BogoValidator {
 	/**
 	 * Check if current date is within offer date range.
 	 *
-	 * @param array $bogo_settings BOGO settings array.
+	 * @param array                  $bogo_settings BOGO settings array.
+	 * @param DateTimeImmutable|null $now           Moment to check (since SPSG_VERSION).
 	 * @return bool True if date range is valid, false otherwise.
 	 */
-	private static function is_date_range_valid( $bogo_settings ) {
-		return SiteTime::is_within( $bogo_settings['offer_start'] ?? null, $bogo_settings['offer_end'] ?? null );
+	private static function is_date_range_valid( $bogo_settings, ?DateTimeImmutable $now = null ) {
+		return SiteTime::is_within( $bogo_settings['offer_start'] ?? null, $bogo_settings['offer_end'] ?? null, $now );
 	}
 
 	/**
 	 * Check if current time matches offer schedule.
 	 *
-	 * @param array $bogo_settings BOGO settings array.
+	 * @param array                  $bogo_settings BOGO settings array.
+	 * @param DateTimeImmutable|null $now           Moment to check (since SPSG_VERSION).
 	 * @return bool True if schedule is valid, false otherwise.
 	 */
-	private static function is_schedule_valid( $bogo_settings ) {
+	private static function is_schedule_valid( $bogo_settings, ?DateTimeImmutable $now = null ) {
 		$is_pro = sp_store_growth()->has_pro();
 		
 		if ( ! $is_pro ) {
@@ -140,23 +181,24 @@ class BogoValidator {
 		}
 
 		$schedule = $bogo_settings['offer_schedule'] ?? array( 'daily' );
-		return self::is_schedule_active( $schedule );
+		return self::is_schedule_active( $schedule, $now );
 	}
 
 	/**
 	 * Check if the current time matches the offer schedule.
 	 *
-	 * @param array $schedule Schedule array.
+	 * @param array                  $schedule Schedule array.
+	 * @param DateTimeImmutable|null $now      Moment to check, the current one by default (since SPSG_VERSION).
 	 * @return bool True if schedule is active, false otherwise.
 	 */
-	public static function is_schedule_active( $schedule ) {
+	public static function is_schedule_active( $schedule, ?DateTimeImmutable $now = null ) {
 		if ( empty( $schedule ) || in_array( 'daily', $schedule, true ) ) {
 			return true; // Daily or no specific schedule means always active
 		}
 
 		$schedule_days = array_map( 'strtolower', $schedule );
 
-		return in_array( SiteTime::weekday(), $schedule_days, true );
+		return in_array( SiteTime::weekday( $now ), $schedule_days, true );
 	}
 
 	/**
@@ -424,7 +466,7 @@ class BogoValidator {
 	 * @return array|null BOGO settings or null if not found.
 	 */
 	public static function get_product_bogo_settings( $product_id, $variation_id = 0 ) {
-		return BogoDataManager::get_product_bogo_settings( $product_id, $variation_id );
+		return BogoDataManager::with_campaign_rule( BogoDataManager::get_product_bogo_settings( $product_id, $variation_id ), (int) $product_id );
 	}
 
 	/**

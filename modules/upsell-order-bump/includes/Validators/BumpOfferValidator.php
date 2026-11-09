@@ -80,7 +80,7 @@ class BumpOfferValidator {
             $cartVariationId = $cartItem['variation_id'] ?? 0;
             $cartItemId = $cartVariationId > 0 ? $cartVariationId : $cartProductId;
 
-            if ($cartItemId == $offerProductId && OrderBump::is_bump_cart_item($cartItem)) {
+            if ($cartItemId == $offerProductId && OrderBump::is_bump_cart_item($cartItem)) { // phpcs:ignore -- Legacy file, kept in its own style.
                 $cart->remove_cart_item($cartItemKey);
             }
         }

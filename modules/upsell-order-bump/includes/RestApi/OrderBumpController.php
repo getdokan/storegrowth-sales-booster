@@ -12,6 +12,8 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Settings\OrderBumpFields;
+use StorePulse\StoreGrowth\Offers\OfferLimits;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use WC_Product;
 use WP_REST_Controller;
 use WP_REST_Server;
@@ -321,8 +323,8 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Create a single order bump. Lite keeps two bumps (any status): at the
-	 * limit, a create gets 403 `salesbooster_limit_exceeded`.
+	 * Create a single order bump. Lite runs two active bumps: at the limit, a
+	 * create gets 403 `salesbooster_limit_exceeded`.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
@@ -414,8 +416,8 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Turn an order bump on or off (the list's switch). Lite's limit doesn't
-	 * apply: it counts bumps of any status.
+	 * Turn an order bump on or off (the list's switch). Turning on one over
+	 * lite's limit is allowed: the limit pauses the newest live (`OfferLimits`).
 	 *
 	 * @since 3.0.0
 	 *
@@ -791,6 +793,7 @@ class OrderBumpController extends WP_REST_Controller {
 			'created_at'           => $item['created_at'],
 			'updated_at'           => $item['updated_at'],
 			'targets'              => $this->get_targets( $item ),
+			'chip'                 => OfferLimits::is_paused( OfferVersions::ORDER_BUMP, (int) $item['id'] ) ? OfferLimits::chip_text() : '',
 			'offer_product_info'   => null,
 			'offer_prices'         => null,
 		];

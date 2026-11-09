@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Migrations\V_2_1_2;
 use StorePulse\StoreGrowth\Migrations\V_3_0_0;
+use StorePulse\StoreGrowth\Migrations\V_3_1_0;
 use StorePulse\StoreGrowth\Notices\UpgradeNoticeProvider;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeManager;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\NoticeRESTController;
@@ -104,6 +105,7 @@ class Upgrader implements HookRegistry {
 			[
 				'2.1.2' => V_2_1_2::class,
 				'3.0.0' => V_3_0_0::class,
+				'3.1.0' => V_3_1_0::class,
 			]
 		);
 

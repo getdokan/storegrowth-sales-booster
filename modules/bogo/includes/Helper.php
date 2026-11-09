@@ -196,6 +196,19 @@ class Helper {
 	 * @return array|mixed|void
 	 */
 	public static function get_product_bogo_settings_for_cart( $product_id ) {
+		return BogoDataManager::with_campaign_rule( self::get_everyday_bogo_settings_for_cart( $product_id ), (int) $product_id );
+	}
+
+	/**
+	 * The everyday rule the cart uses for a product.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $product_id Product ID.
+	 *
+	 * @return array|null
+	 */
+	private static function get_everyday_bogo_settings_for_cart( $product_id ) {
 		$product_settings = self::get_product_bogo_settings( $product_id );
 		if ( isset( $product_settings['status'] ) && 'active' === $product_settings['status'] ) {
 			return $product_settings;

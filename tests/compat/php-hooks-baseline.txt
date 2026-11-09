@@ -13,6 +13,7 @@ spsg_allowed_roles_for_promotions
 spsg_analytics_report
 spsg_before_save_bogo_settings_data
 spsg_bogo_check_permission
+spsg_bogo_coupon_unlocks_rule
 spsg_bogo_created_by
 spsg_bogo_deal_types
 spsg_bogo_fly_cart_badge_enabled
@@ -58,6 +59,8 @@ spsg_load_product_bogo_offer
 spsg_module_activated
 spsg_module_deactivated
 spsg_modules
+spsg_offer_is_live
+spsg_offer_limits
 spsg_order_bump_created
 spsg_order_bump_created_by
 spsg_order_bump_deleted

@@ -7,8 +7,11 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use DateTimeImmutable;
 use Exception;
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Offers\CampaignRepository;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Support\SiteTime;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -52,6 +55,16 @@ class BogoDataManager {
 	 * @var string[]
 	 */
 	const BADGE_KEYS = [ 'enable_custom_badge_image', 'default_badge_icon_name', 'default_custom_badge_icon' ];
+
+	/**
+	 * Key, stored inside `design_settings`, of a rule that applies only with
+	 * a coupon (one used by a code or link Smart Coupon).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @var string
+	 */
+	const ONLY_WITH_COUPON = 'only_with_coupon';
 
 	/**
 	 * Whether another global offer can be created: always with pro, and in
@@ -276,6 +289,117 @@ class BogoDataManager {
 	}
 
 	/**
+	 * The rule the storefront uses for a product once running campaigns are
+	 * counted. For the storefront only: the values may be a campaign's, and
+	 * must never be saved over the everyday rule.
+	 *
+	 * A product's own rule still beats a store-wide one, and a campaign-only
+	 * rule comes before an attached one.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array|null $everyday   The rule without campaigns.
+	 * @param int        $product_id Product ID.
+	 *
+	 * @return array|null
+	 */
+	public static function with_campaign_rule( ?array $everyday, int $product_id ): ?array {
+		$now   = SiteTime::now();
+		$rules = [];
+
+		foreach ( CampaignRepository::running_offers( OfferVersions::BOGO, $now ) as $row ) {
+			$rule = $row['offer_id'] ? self::get_bogo_offer( $row['offer_id'] ) : $row['values'];
+
+			if ( $rule ) {
+				$rules[] = self::campaign_values( $rule, $now );
+			}
+		}
+
+		if ( ! $rules ) {
+			return $everyday;
+		}
+
+		$product_rules = array_filter(
+			$rules,
+			static function ( array $rule ) use ( $product_id ): bool {
+				return 'product' === ( $rule['type'] ?? '' ) && (int) ( $rule['product_id'] ?? 0 ) === $product_id;
+			}
+		);
+
+		if ( $product_rules ) {
+			return reset( $product_rules );
+		}
+
+		if ( 'product' === ( $everyday['type'] ?? '' ) ) {
+			return $everyday;
+		}
+
+		foreach ( $rules as $rule ) {
+			if ( 'product' !== ( $rule['type'] ?? '' ) && self::product_in_global_offer( $rule, $product_id ) ) {
+				return $rule;
+			}
+		}
+
+		return $everyday;
+	}
+
+	/**
+	 * A rule's values with its campaign's changes, with the key the cart
+	 * reads for a product rule's gift kept in step.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array             $rule Stored rule.
+	 * @param DateTimeImmutable $now  Moment to check.
+	 *
+	 * @return array
+	 */
+	private static function campaign_values( array $rule, DateTimeImmutable $now ): array {
+		$effective = OfferVersions::effective_offer( array_merge( $rule, [ 'offer_kind' => OfferVersions::BOGO ] ), $now );
+		$values    = $effective['values'];
+
+		if ( isset( $values['offer_product_id'] ) ) {
+			$values['get_different_product_field'] = $values['offer_product_id'];
+		}
+
+		if ( isset( $values['alternate_products'] ) ) {
+			$values['get_alternate_products'] = $values['alternate_products'];
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Mark a rule as applying only with a coupon, or clear the mark.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int  $id                Rule id.
+	 * @param bool $only_with_coupon  Whether the rule needs a coupon.
+	 *
+	 * @return bool
+	 */
+	public static function set_only_with_coupon( int $id, bool $only_with_coupon ): bool {
+		global $wpdb;
+
+		$rule = self::get_bogo_offer( $id );
+
+		if ( ! $rule ) {
+			return false;
+		}
+
+		$design = is_string( $rule['design_settings'] ?? null ) ? (array) json_decode( $rule['design_settings'], true ) : [];
+
+		unset( $design[ self::ONLY_WITH_COUPON ] );
+
+		if ( $only_with_coupon ) {
+			$design[ self::ONLY_WITH_COUPON ] = true;
+		}
+
+		return false !== $wpdb->update( self::get_table_name(), [ 'design_settings' => wp_json_encode( $design ) ], [ 'id' => $id ] );
+	}
+
+	/**
 	 * Check if a product is included in a global BOGO offer.
 	 *
 	 * @param array $offer Global BOGO offer data.
@@ -437,6 +561,12 @@ class BogoDataManager {
 		);
 
 		if ( $existing ) {
+			// The product tab knows nothing of the coupon mark: it survives a save.
+			$stored = self::get_bogo_offer( (int) $existing );
+			if ( ! empty( $stored[ self::ONLY_WITH_COUPON ] ) ) {
+				$data['design_settings'] = wp_json_encode( array_merge( (array) json_decode( $data['design_settings'], true ), [ self::ONLY_WITH_COUPON => true ] ) );
+			}
+
 			/**
 			 * Filters the user recorded as the last editor of a BOGO offer.
 			 *
@@ -753,7 +883,7 @@ class BogoDataManager {
 		// where the badge code reads them (only when an offer has them).
 		$stored_design = is_string( $settings['design_settings'] ?? null ) ? json_decode( $settings['design_settings'], true ) : null;
 		if ( is_array( $stored_design ) ) {
-			$settings = array_merge( $settings, array_intersect_key( $stored_design, array_flip( self::BADGE_KEYS ) ) );
+			$settings = array_merge( $settings, array_intersect_key( $stored_design, array_flip( array_merge( self::BADGE_KEYS, [ self::ONLY_WITH_COUPON ] ) ) ) );
 		}
 
 		return $settings;

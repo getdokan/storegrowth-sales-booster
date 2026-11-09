@@ -7,8 +7,12 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database;
 
+use DateTimeImmutable;
 use StorePulse\StoreGrowth\Helper;
-use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
+use StorePulse\StoreGrowth\Offers\CampaignRepository;
+use StorePulse\StoreGrowth\Offers\OfferLimits;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
+use StorePulse\StoreGrowth\Support\SiteTime;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OrderBumpData {
 
 	/**
-	 * How many order bumps lite keeps (any status); pro lifts it.
+	 * How many active order bumps lite runs; pro lifts it.
 	 *
 	 * @since 3.0.0
 	 *
@@ -135,15 +139,16 @@ class OrderBumpData {
 	}
 
 	/**
-	 * Whether a new order bump may be created: lite keeps at most
-	 * `LITE_BUMP_LIMIT` bumps, of any status; pro lifts it.
+	 * Whether a new order bump may be created: lite runs at most
+	 * `LITE_BUMP_LIMIT` active bumps; ones switched off don't count, and pro
+	 * lifts it.
 	 *
 	 * @since 3.0.0
 	 *
 	 * @return bool
 	 */
 	public function can_create() {
-		return sp_store_growth()->has_pro() || $this->get_count() < self::LITE_BUMP_LIMIT;
+		return sp_store_growth()->has_pro() || $this->get_count( [ 'status' => 'active' ] ) < self::LITE_BUMP_LIMIT;
 	}
 
 	/**
@@ -303,7 +308,9 @@ class OrderBumpData {
 
 		if ( $result ) {
 			$insert_id = $wpdb->insert_id;
-			
+
+			OfferLimits::flush();
+
 			// Fire action after successful creation
 			do_action( 'spsg_order_bump_created', $insert_id, $insert_data, $data );
 			
@@ -387,6 +394,8 @@ class OrderBumpData {
 		);
 
 		if ( $result !== false ) {
+			OfferLimits::flush();
+
 			// Fire action after successful update
 			do_action( 'spsg_order_bump_updated', $id, $update_data, $data );
 		}
@@ -411,6 +420,8 @@ class OrderBumpData {
 		);
 
 		if ( $result !== false ) {
+			OfferLimits::flush();
+
 			// Fire action after successful deletion
 			do_action( 'spsg_order_bump_deleted', $id );
 		}
@@ -445,14 +456,20 @@ class OrderBumpData {
 			return $matching_bumps;
 		}
 
-		foreach ( $results as $bump ) {
-			$bump = $this->process_bump_data( $bump );
+		$now = SiteTime::now();
 
-			// Not one of its Offer Days (site timezone). Every checkout path
-			// (classic box, block, ajax add and its stamp) matches here.
-			if ( ! OrderBumpDesign::runs_on( $bump['design_settings'] ) ) {
+		foreach ( $this->with_campaign_bumps( array_map( array( $this, 'process_bump_data' ), $results ), $now ) as $bump ) {
+			// What applies now: the running campaign's version, or the bump's
+			// own status, Offer Days (site timezone) and Free limit. Every
+			// checkout path (classic box, block, ajax add and its stamp, the
+			// cart's price) matches here.
+			$effective = OfferVersions::effective_offer( array_merge( $bump, array( 'offer_kind' => OfferVersions::ORDER_BUMP ) ), $now );
+
+			if ( ! $effective['live'] ) {
 				continue;
 			}
+
+			$bump = $effective['values'];
 
 			if ( $bump['target_type'] === 'products' ) {
 				// Check if any target products are in cart
@@ -468,6 +485,65 @@ class OrderBumpData {
 		}
 
 		return $matching_bumps;
+	}
+
+	/**
+	 * Add to the active bumps the ones only a running campaign brings: an
+	 * attached bump that is off, and campaign-only bumps.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array[]           $bumps Active bumps.
+	 * @param DateTimeImmutable $now   Moment to check.
+	 *
+	 * @return array[]
+	 */
+	private function with_campaign_bumps( array $bumps, DateTimeImmutable $now ): array {
+		$active_ids = array_map( 'intval', wp_list_pluck( $bumps, 'id' ) );
+
+		foreach ( CampaignRepository::running_offers( OfferVersions::ORDER_BUMP, $now ) as $row ) {
+			if ( ! $row['offer_id'] ) {
+				$bumps[] = array_merge(
+					[
+						'name'              => '',
+						'target_type'       => 'products',
+						'target_products'   => [],
+						'target_categories' => [],
+						'offer_product_id'  => 0,
+						'offer_type'        => 'discount',
+						'offer_amount'      => 0,
+						'design_settings'   => [],
+					],
+					$row['values']
+				);
+				continue;
+			}
+
+			$bump = in_array( $row['offer_id'], $active_ids, true ) ? null : $this->get_by_id( $row['offer_id'] );
+
+			if ( $bump ) {
+				$bumps[] = $bump;
+			}
+		}
+
+		return $bumps;
+	}
+
+	/**
+	 * Active bumps with what the Free limit needs, oldest first.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array[]
+	 */
+	public function get_active_oldest_first(): array {
+		return $this->get_all(
+			[
+				'status'   => 'active',
+				'order_by' => 'id',
+				'order'    => 'ASC',
+			]
+		);
 	}
 
 	/**

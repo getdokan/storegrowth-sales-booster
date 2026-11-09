@@ -76,7 +76,9 @@ class OrderBumpAjax implements HookRegistry {
 			wp_send_json_error( [ 'message' => __( 'This offer could not be added to the cart.', 'storegrowth-sales-booster' ) ], 400 );
 		}
 
-		Counter::bump( UpsellOrderBumpModule::get_id(), 'accept', Counter::CAMPAIGN, (int) $offer['bump']['id'] );
+		if ( ! empty( $offer['bump']['id'] ) ) {
+			Counter::bump( UpsellOrderBumpModule::get_id(), 'accept', Counter::CAMPAIGN, (int) $offer['bump']['id'] );
+		}
 
 		$woocommerce->cart->calculate_totals();
 		$woocommerce->cart->set_session();

@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth;
 use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
+use StorePulse\StoreGrowth\Offers\CampaignRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -136,6 +137,8 @@ class Uninstaller {
 
 		$tables[] = Schema::OFFER_LOOKUP;
 		$tables[] = Schema::DAILY;
+		$tables[] = CampaignRepository::CAMPAIGNS;
+		$tables[] = CampaignRepository::OFFERS;
 
 		return $tables;
 	}
