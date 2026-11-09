@@ -715,11 +715,13 @@ class OrderBogo implements HookRegistry {
 		}
 
 		$unit_price = (float) $gift->get_price();
+		$name       = $this->get_merchant_offer_name( $settings );
 
 		$deals[] = [
 			'line'         => $key,
 			'kind'         => DealList::BOGO,
 			'name'         => $this->get_deal_name( $settings ),
+			'shown'        => '' !== $name ? $name : __( 'your deal', 'storegrowth-sales-booster' ),
 			'amount'       => ( $unit_price - (float) Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $unit_price, $settings['discount_amount'] ?? 0 ) ) * $earned,
 			'promotion_id' => (int) ( $effective['promotion_id'] ?? 0 ),
 		];
@@ -865,6 +867,33 @@ class OrderBogo implements HookRegistry {
 		add_action( 'woocommerce_add_to_cart', [ $cart, 'calculate_totals' ], 20, 0 );
 
 		$this->woocommerce_custom_price_to_cart_item( $cart );
+	}
+
+	/**
+	 * Add the gifts a rule's bought lines have earned, for a coupon that just
+	 * unlocked it. Works for every deal type: Pro adds a same-product gift only
+	 * when a product is added or a quantity changes.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $rule_id BOGO rule id.
+	 *
+	 * @return void
+	 */
+	public function add_gifts_for_rule( int $rule_id ): void {
+		$cart = WC()->cart;
+
+		if ( ! $cart ) {
+			return;
+		}
+
+		foreach ( $cart->get_cart() as $key => $item ) {
+			$settings = Helper::is_gift_line( $item ) ? null : $this->get_trigger_offer( $item );
+
+			if ( $settings && (int) ( $settings['id'] ?? 0 ) === $rule_id && '' === $this->find_gift_key( $cart, (string) $key ) ) {
+				$this->return_gift( $cart, (string) $key, $item );
+			}
+		}
 	}
 
 	/**
@@ -1248,7 +1277,10 @@ class OrderBogo implements HookRegistry {
 		$product  = wc_get_product( $item['data']->get_id() );
 
 		if ( $earned < 1 || ! $product ) {
-			$this->remove_gift( $cart, $key, $this->get_gift_ended_message( $item, $settings ) );
+			// A rule waiting for its code didn't end: the shopper has no code in the cart.
+			$is_waiting = $trigger && ! BogoValidator::is_coupon_requirement_met( $this->get_trigger_settings( $trigger ) );
+
+			$this->remove_gift( $cart, $key, $is_waiting ? '' : $this->get_gift_ended_message( $item, $settings ) );
 
 			return;
 		}
@@ -1305,15 +1337,15 @@ class OrderBogo implements HookRegistry {
 	}
 
 	/**
-	 * The live offer behind a trigger line and the version it runs under.
+	 * The offer stored for a trigger line, live or not.
 	 *
 	 * @since SPSG_VERSION
 	 *
 	 * @param array $trigger Trigger's cart item.
 	 *
-	 * @return array|null `effective_offer()`'s answer; null when no offer applies right now.
+	 * @return array|null
 	 */
-	private function get_trigger_effective( array $trigger ): ?array {
+	private function get_trigger_settings( array $trigger ) {
 		$product_id   = (int) $trigger['product_id'];
 		$variation_id = (int) ( $trigger['variation_id'] ?? 0 );
 
@@ -1326,7 +1358,21 @@ class OrderBogo implements HookRegistry {
 		 * @param int $variation_id Variation id.
 		 */
 		$apply_id = apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, $variation_id );
-		$settings = Helper::prepare_bogo_settings( $apply_id, $product_id, $variation_id );
+
+		return Helper::prepare_bogo_settings( $apply_id, $product_id, $variation_id );
+	}
+
+	/**
+	 * The live offer behind a trigger line and the version it runs under.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $trigger Trigger's cart item.
+	 *
+	 * @return array|null `effective_offer()`'s answer; null when no offer applies right now.
+	 */
+	private function get_trigger_effective( array $trigger ): ?array {
+		$settings = $this->get_trigger_settings( $trigger );
 
 		// Buy X Get X is a Pro deal: without a valid licence it gives nothing.
 		if ( 'same' === ( $settings['bogo_deal_type'] ?? '' ) && ! sp_store_growth()->has_pro() ) {

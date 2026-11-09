@@ -98,7 +98,7 @@ class BogoValidator {
 	 *
 	 * @return bool
 	 */
-	private static function is_coupon_requirement_met( $bogo_settings ) {
+	public static function is_coupon_requirement_met( $bogo_settings ) {
 		if ( empty( $bogo_settings[ BogoDataManager::ONLY_WITH_COUPON ] ) ) {
 			return true;
 		}

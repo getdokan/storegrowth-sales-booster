@@ -1116,6 +1116,113 @@ class SmartCouponsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * A same-product Buy X get Y code adds its gift on applying, as Pro only
+	 * adds those on an add or a quantity change, and takes it away on removal.
+	 *
+	 * @return void
+	 */
+	public function test_buy_x_get_y_code_adds_and_removes_a_same_product_gift(): void {
+		$boots = $this->product( 95 );
+
+		$this->save_coupon(
+			'boots-same',
+			[
+				'discount_type' => SmartCoupon::TYPE_BUY_X_GET_Y,
+				'bogo_rule'     => $this->create_global_offer(
+					[
+						'name_of_order_bogo'        => 'Buy 2 boots get 1 free',
+						'bogo_deal_type'            => 'same',
+						'offered_products'          => [ $boots->get_id() ],
+						'minimum_quantity_required' => 2,
+					]
+				),
+			]
+		);
+
+		WC()->cart->add_to_cart( $boots->get_id(), 2 );
+		$this->assertCount( 1, WC()->cart->get_cart() );
+
+		$this->assertTrue( WC()->cart->apply_coupon( 'boots-same' ) );
+		WC()->cart->calculate_totals();
+
+		$this->assertCount( 2, WC()->cart->get_cart(), 'Applying the code adds the gift.' );
+		$this->assertSame( 190.0, (float) WC()->cart->get_total( 'edit' ), 'The gift is free.' );
+
+		wc_clear_notices();
+
+		$this->assertTrue( WC()->cart->remove_coupon( 'boots-same' ) );
+		WC()->cart->calculate_totals();
+
+		$this->assertCount( 1, WC()->cart->get_cart(), 'Removing the code takes the gift away.' );
+		$this->assertEmpty( wc_get_notices( 'notice' ), 'The deal did not end: the shopper removed the code.' );
+	}
+
+	/**
+	 * A code applied below the rule's quantity adds the gift once the line
+	 * reaches it.
+	 *
+	 * @return void
+	 */
+	public function test_buy_x_get_y_code_applied_before_the_quantity_is_reached(): void {
+		$boots = $this->product( 95 );
+		$gift  = $this->product( 40 );
+
+		$this->save_coupon(
+			'boots-later',
+			[
+				'discount_type' => SmartCoupon::TYPE_BUY_X_GET_Y,
+				'bogo_rule'     => $this->create_global_offer(
+					[
+						'name_of_order_bogo'        => 'Boots and a gift',
+						'bogo_deal_type'            => 'different',
+						'offered_products'          => [ $boots->get_id() ],
+						'get_alternate_products'    => [ $gift->get_id() ],
+						'minimum_quantity_required' => 2,
+						'offer_product_id'          => $gift->get_id(),
+					]
+				),
+			]
+		);
+
+		$key = WC()->cart->add_to_cart( $boots->get_id() );
+
+		$this->assertTrue( WC()->cart->apply_coupon( 'boots-later' ) );
+		$this->assertCount( 1, WC()->cart->get_cart(), 'No gift below the quantity.' );
+
+		WC()->cart->set_quantity( $key, 2 );
+		OrderBogo::instance()->handle_cart_update();
+
+		$this->assertCount( 2, WC()->cart->get_cart(), 'The gift arrives at the quantity.' );
+	}
+
+	/**
+	 * A product rule has no name of its own, so the clash message says "your deal".
+	 *
+	 * @return void
+	 */
+	public function test_clash_with_a_product_rule_reads_your_deal(): void {
+		$boots = $this->product( 95 );
+		$gift  = $this->product( 40 );
+
+		BogoDataManager::save_product_bogo_settings(
+			$boots->get_id(),
+			0,
+			[
+				'get_different_product_field' => $gift->get_id(),
+				'offer_type'                  => 'free',
+				'minimum_quantity_required'   => 1,
+			]
+		);
+
+		$this->save_coupon( 'ten10' );
+
+		WC()->cart->add_to_cart( $boots->get_id() );
+
+		$this->assertFalse( WC()->cart->apply_coupon( 'ten10' ) );
+		$this->assertTrue( wc_has_notice( esc_html( "TEN10 wasn't applied because your deal saves you more." ), 'error' ) );
+	}
+
+	/**
 	 * An automatic Buy X get Y leaves its rule on, for the BOGO to run itself.
 	 *
 	 * @return void

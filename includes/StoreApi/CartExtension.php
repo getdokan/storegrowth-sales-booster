@@ -80,13 +80,19 @@ class CartExtension implements HookRegistry {
 	/**
 	 * A block cart or checkout is about to embed the cart. WooCommerce empties
 	 * the notice queue for that and puts it back afterwards, so what is queued
-	 * has to be taken out first or it never reaches the page.
+	 * has to be taken out first or it never reaches the page. Totals run first:
+	 * a calculation between here and the embed (Dokan Pro's vendor discount is
+	 * one) would raise its notices too late for this page.
 	 *
 	 * @since SPSG_VERSION
 	 *
 	 * @return void
 	 */
 	public function hold_notices_for_page(): void {
+		if ( WC()->cart ) {
+			WC()->cart->calculate_totals();
+		}
+
 		$this->has_notice_area = true;
 		$this->held            = array_merge( $this->held, self::take_notices() );
 	}

@@ -74,7 +74,8 @@ class DealList {
 		 * Filters the deals a cart's lines would get. Each deal is an array:
 		 * `line` (cart item key), `kind` (a `DealList` constant), `name` and
 		 * `amount` (the line's whole discount on the price-entry basis).
-		 * `price` is the unit price a base or bump deal sets, `from` the unit
+		 * `shown` is an optional name for a sentence when `name` doesn't read
+		 * well in one. `price` is the unit price a base or bump deal sets, `from` the unit
 		 * price before it, and `promotion_id` the running campaign behind the
 		 * deal, 0 for none.
 		 *

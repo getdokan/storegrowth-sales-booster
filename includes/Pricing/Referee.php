@@ -420,7 +420,7 @@ class Referee implements HookRegistry {
 				if ( $bogo && Money::compare( $amount, (float) $bogo['amount'] ) <= 0 ) {
 					unset( $coupons[ $code ]['amounts'][ $key ] );
 
-					$coupons[ $code ]['lost'][ $key ] = $bogo['name'];
+					$coupons[ $code ]['lost'][ $key ] = $bogo['shown'] ?? $bogo['name'];
 					$winners[ $key ]                  = $bogo['name'];
 				}
 			}

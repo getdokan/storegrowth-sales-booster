@@ -1233,6 +1233,45 @@ class CampaignsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * A notice raised by the page's first calculation reaches that page once:
+	 * another plugin may calculate before WooCommerce empties the queue to
+	 * embed the cart, and hydration skips its own calculation after one.
+	 *
+	 * @return void
+	 */
+	public function test_block_cart_embeds_a_notice_from_the_first_calculation_once(): void {
+		$raised = false;
+		$raise  = static function () use ( &$raised ) {
+			if ( ! $raised ) {
+				$raised = true;
+				CartLine::notice( 'Raised by the calculation' );
+			}
+		};
+
+		wc_clear_notices();
+		WC()->cart->add_to_cart( $this->create_product()->get_id() );
+		add_action( 'woocommerce_before_calculate_totals', $raise );
+
+		$extension = storegrowth_get_container()->get( CartExtension::class );
+
+		$extension->hold_notices_for_page();
+		WC()->cart->calculate_totals();
+
+		$first = Package::container()->get( Hydration::class )->get_rest_api_response_data( '/wc/store/v1/cart' )['body'];
+
+		$extension->hold_notices_for_page();
+
+		$next = Package::container()->get( Hydration::class )->get_rest_api_response_data( '/wc/store/v1/cart' )['body'];
+
+		remove_action( 'woocommerce_before_calculate_totals', $raise );
+
+		$this->assertSame( [ 'Raised by the calculation' ], ( (array) ( (array) $first['extensions'] )[ CartExtension::IDENTIFIER ] )['notices'] );
+		$this->assertSame( [], ( (array) ( (array) $next['extensions'] )[ CartExtension::IDENTIFIER ] )['notices'], 'the next page shows it no more' );
+		$this->assertEmpty( wc_get_notices( 'notice' ), 'nothing left for a later event' );
+		WC()->cart->empty_cart();
+	}
+
+	/**
 	 * A cart embedded without a notice area (a mini-cart's page) keeps notices
 	 * for the next page instead of losing them.
 	 *

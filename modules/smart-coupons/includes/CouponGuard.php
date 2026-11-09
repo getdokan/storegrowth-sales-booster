@@ -407,8 +407,10 @@ class CouponGuard implements HookRegistry {
 	 * @return void
 	 */
 	public function add_unlocked_gifts( $code ): void {
-		if ( SmartCoupon::is_buy_x_get_y( new WC_Coupon( $code ) ) && Helper::is_module_active( BoGoModule::get_id() ) ) {
-			OrderBogo::instance()->handle_cart_update();
+		$coupon = new WC_Coupon( $code );
+
+		if ( SmartCoupon::is_buy_x_get_y( $coupon ) && Helper::is_module_active( BoGoModule::get_id() ) ) {
+			OrderBogo::instance()->add_gifts_for_rule( (int) $coupon->get_meta( SmartCoupon::BOGO_RULE ) );
 		}
 	}
 }
