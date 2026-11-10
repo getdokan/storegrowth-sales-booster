@@ -320,6 +320,22 @@ class SmartCouponsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * A vendor restriction set in Dokan's coupon panel survives a save.
+	 *
+	 * @return void
+	 */
+	public function test_save_keeps_a_dokan_vendor_restriction(): void {
+		$coupon = $this->save_coupon( 'restricted' );
+
+		$coupon->update_meta_data( 'admin_coupons_enabled_for_vendor', 'no' );
+		$coupon->save();
+
+		SmartCouponRepository::save( [ 'title' => 'New title' ], new WC_Coupon( $coupon->get_id() ) );
+
+		$this->assertSame( 'no', ( new WC_Coupon( $coupon->get_id() ) )->get_meta( 'admin_coupons_enabled_for_vendor' ) );
+	}
+
+	/**
 	 * A code appears in WooCommerce > Coupons, labelled, and edits in Smart Coupons.
 	 *
 	 * @return void

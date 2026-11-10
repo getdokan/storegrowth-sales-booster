@@ -333,6 +333,19 @@ class Referee implements HookRegistry {
 		foreach ( self::coupon_codes( $cart, $candidate ) as $code ) {
 			$coupon = new WC_Coupon( $code );
 
+			/**
+			 * Filters whether the referee leaves a coupon out of its decision,
+			 * so it neither competes with deals nor is rejected or limited.
+			 *
+			 * @since SPSG_VERSION
+			 *
+			 * @param bool      $ignored Whether to leave the coupon out.
+			 * @param WC_Coupon $coupon  Coupon.
+			 */
+			if ( apply_filters( 'spsg_referee_ignores_coupon', false, $coupon ) ) {
+				continue;
+			}
+
 			// An automatic coupon that stopped qualifying leaves without a notice.
 			if ( SmartCoupon::is_automatic( $coupon ) && ! self::meets_coupon_rules( $cart, $coupon ) ) {
 				continue;
@@ -787,22 +800,26 @@ class Referee implements HookRegistry {
 	 */
 	private static function sync_automatic_coupons( WC_Cart $cart, Decision $decision ): void {
 		$applied = $cart->get_applied_coupons();
+		$added   = [];
 
 		foreach ( SmartCoupon::automatic_codes() as $code ) {
 			$wins       = $decision->reported( $code ) && '' === $decision->rejection( $code );
 			$is_applied = in_array( $code, $applied, true );
 
 			if ( $wins && ! $is_applied ) {
-				$applied[] = $code;
+				$added[] = $code;
 			}
 
+			// WooCommerce's own removal: what a coupon left on the lines is
+			// cleared on its `woocommerce_removed_coupon`. Dokan pays vendors
+			// from that data.
 			if ( ! $wins && $is_applied ) {
-				$applied = array_values( array_diff( $applied, [ $code ] ) );
+				$cart->remove_coupon( $code );
 			}
 		}
 
-		if ( $applied !== $cart->get_applied_coupons() ) {
-			$cart->set_applied_coupons( $applied );
+		if ( $added ) {
+			$cart->set_applied_coupons( array_merge( $cart->get_applied_coupons(), $added ) );
 		}
 	}
 

@@ -41,6 +41,7 @@ class RefereeTest extends StoreGrowthTestCase {
 		'woocommerce_product_is_on_sale',
 		'spsg_cart_deals',
 		'spsg_referee_decided',
+		'spsg_referee_ignores_coupon',
 		'spsg_referee_observe_only',
 		'storegrowth_pro_is_active',
 		'woocommerce_price_trim_zeros',
@@ -845,10 +846,42 @@ class RefereeTest extends StoreGrowthTestCase {
 		$this->assertSame( 80.0, $this->line_totals()[ $key ] );
 		$this->assertSame( [ 'auto20' ], array_values( WC()->cart->get_applied_coupons() ) );
 
+		$removed = did_action( 'woocommerce_removed_coupon' );
+
 		WC()->cart->remove_cart_item( $key );
 		$this->assertSame( 95.0, $this->line_totals()[ $boots_key ] );
 		$this->assertSame( [], WC()->cart->get_applied_coupons() );
 		$this->assertEmpty( wc_get_notices() );
+		$this->assertSame( $removed + 1, did_action( 'woocommerce_removed_coupon' ), 'Dokan clears a coupon\'s line data on this action.' );
+	}
+
+	/**
+	 * A coupon the referee is told to ignore stacks with a coupon that
+	 * doesn't combine, instead of losing to it on every cart load.
+	 *
+	 * @return void
+	 */
+	public function test_an_ignored_coupon_stacks_with_a_coupon_that_does_not_combine(): void {
+		$jacket = $this->product( 100 );
+
+		$this->create_smart_coupon( 'big20', [ 'amount' => 20 ] );
+		$this->plain_coupon( 'vendor10', 'percent', 10 );
+
+		add_filter(
+			'spsg_referee_ignores_coupon',
+			static function ( $ignored, $coupon ) {
+				return 'vendor10' === $coupon->get_code();
+			},
+			10,
+			2
+		);
+
+		$key = WC()->cart->add_to_cart( $jacket->get_id() );
+
+		$this->assertTrue( WC()->cart->apply_coupon( 'big20' ) );
+		$this->assertTrue( WC()->cart->apply_coupon( 'vendor10' ) );
+		$this->assertSame( 70.0, $this->line_totals()[ $key ] );
+		$this->assertSame( [ 'big20', 'vendor10' ], array_values( WC()->cart->get_applied_coupons() ) );
 	}
 
 	/**

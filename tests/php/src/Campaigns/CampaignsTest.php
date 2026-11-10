@@ -1031,6 +1031,39 @@ class CampaignsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * A campaign price would come out of a vendor's earnings: it skips
+	 * vendors' products and stays on an administrator's.
+	 *
+	 * @return void
+	 */
+	public function test_campaign_price_skips_vendor_products(): void {
+		$admin  = self::factory()->user->create( [ 'role' => 'administrator' ] );
+		$vendor = self::factory()->user->create( [ 'role' => 'subscriber' ] );
+
+		get_user_by( 'id', $admin )->add_cap( 'dokandar' );
+		get_user_by( 'id', $vendor )->add_cap( 'dokandar' );
+
+		$product = $this->create_product( 100 );
+
+		wp_update_post(
+			[
+				'ID'          => $product->get_id(),
+				'post_author' => $admin,
+			]
+		);
+		$this->running_campaign_with_price( $product->get_id(), 20 );
+		$this->assertSame( 20, CampaignPrice::for_product( $product->get_id() )['percent'] );
+
+		wp_update_post(
+			[
+				'ID'          => $product->get_id(),
+				'post_author' => $vendor,
+			]
+		);
+		$this->assertNull( CampaignPrice::for_product( $product->get_id() ) );
+	}
+
+	/**
 	 * Dokan gives administrators `dokandar`: their offers can still join a
 	 * campaign, a real vendor's can't.
 	 *

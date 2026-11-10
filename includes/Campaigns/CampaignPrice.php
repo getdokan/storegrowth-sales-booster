@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper as CountdownHelper;
 use StorePulse\StoreGrowth\Offers\CampaignRepository;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use StorePulse\StoreGrowth\Support\SiteTime;
 use WC_Coupon;
@@ -92,6 +93,23 @@ class CampaignPrice implements HookRegistry {
 	}
 
 	/**
+	 * Whether a Dokan vendor sells a product. A campaign price lowers the line,
+	 * and Dokan pays vendors from line prices, so the store's campaign would
+	 * come out of the vendor's earnings.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $product_id Product or variation id.
+	 *
+	 * @return bool
+	 */
+	private static function is_vendor_product( int $product_id ): bool {
+		$parent_id = wp_get_post_parent_id( $product_id );
+
+		return OfferVersions::is_vendor_deal( [ 'created_by' => get_post_field( 'post_author', $parent_id ? $parent_id : $product_id ) ] );
+	}
+
+	/**
 	 * Whether a running campaign sets a campaign price.
 	 *
 	 * @since SPSG_VERSION
@@ -160,7 +178,7 @@ class CampaignPrice implements HookRegistry {
 				continue;
 			}
 
-			if ( CampaignProducts::contains( $scope, $product_id ) ) {
+			if ( CampaignProducts::contains( $scope, $product_id ) && ! self::is_vendor_product( $product_id ) ) {
 				return [
 					'percent'      => $percent,
 					'promotion_id' => (int) $campaign['id'],

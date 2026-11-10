@@ -605,8 +605,9 @@ class SmartCouponRepository {
 
 		// Written whether Dokan is active or not, so an activation later needs
 		// no re-save: without the first, Dokan refuses an admin coupon on a
-		// vendor's product; without the second, the vendor funds it.
-		$coupon->update_meta_data( 'admin_coupons_enabled_for_vendor', 'yes' );
+		// vendor's product; without the second, the vendor funds it. A choice
+		// made in Dokan's coupon panel stays.
+		$coupon->update_meta_data( 'admin_coupons_enabled_for_vendor', $coupon->get_meta( 'admin_coupons_enabled_for_vendor' ) ? $coupon->get_meta( 'admin_coupons_enabled_for_vendor' ) : 'yes' );
 		$coupon->update_meta_data( 'coupon_commissions_type', $coupon->get_meta( 'coupon_commissions_type' ) ? $coupon->get_meta( 'coupon_commissions_type' ) : 'from_admin' );
 	}
 

@@ -47,6 +47,7 @@ class Dokan implements HookRegistry {
 		Api::instance();
 
 		( new BogoVendorRules() )->register_hooks();
+		( new DealCompatibility() )->register_hooks();
 		add_filter( 'spsg_settings_schemas', [ $this, 'add_settings_schemas' ] );
 		add_filter( 'spsg_settings_page', [ BogoVendorSettings::class, 'add_link' ], 10, 2 );
 	}

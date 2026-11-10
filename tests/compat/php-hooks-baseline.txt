@@ -80,6 +80,7 @@ spsg_qcv_inline_styles
 spsg_quick_view_details_button
 spsg_quick_view_icon_button
 spsg_referee_decided
+spsg_referee_ignores_coupon
 spsg_referee_observe_only
 spsg_sales_pop_billing_orders_limit
 spsg_sales_pop_category_products_limit
