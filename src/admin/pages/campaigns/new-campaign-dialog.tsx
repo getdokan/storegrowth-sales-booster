@@ -100,7 +100,7 @@ export function NewCampaignDialog( {
                 }
             } }
         >
-            <DialogContent>
+            <DialogContent className="flex h-[min(36rem,calc(100vh-8rem))] flex-col">
                 <DialogHeader>
                     <DialogTitle>
                         { campaignId
@@ -127,7 +127,7 @@ export function NewCampaignDialog( {
                         } }
                     />
                 ) }
-                <div className="flex flex-col gap-2">
+                <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
                     { Object.entries( templates ).map( ( [ id, template ] ) => {
                         const needs = [
                             ...template.surfaces.map( ( surface ) => {
