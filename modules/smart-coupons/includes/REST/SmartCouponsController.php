@@ -133,9 +133,10 @@ class SmartCouponsController extends WP_REST_Controller {
 				'permission_callback' => $manage,
 				'args'                => [
 					'status' => [
-						'type'     => 'string',
-						'enum'     => [ 'active', 'inactive' ],
-						'required' => true,
+						'description' => __( 'The new status; `yes` / `no` as the record list sends it.', 'storegrowth-sales-booster' ),
+						'type'        => 'string',
+						'enum'        => [ 'active', 'inactive', 'yes', 'no' ],
+						'required'    => true,
 					],
 				],
 			]
@@ -310,7 +311,7 @@ class SmartCouponsController extends WP_REST_Controller {
 			return $coupon;
 		}
 
-		$active = 'active' === $request->get_param( 'status' );
+		$active = in_array( $request->get_param( 'status' ), [ 'active', 'yes' ], true );
 
 		SmartCouponRepository::set_active( $coupon, $active );
 

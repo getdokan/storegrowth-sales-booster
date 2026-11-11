@@ -1335,6 +1335,16 @@ class SmartCouponsTest extends StoreGrowthTestCase {
 
 		$this->assertSame( 'inactive', $status->get_data()['status'] );
 		$this->assertSame( 'draft', get_post_status( $coupon->get_id() ) );
+
+		// The record list's switch sends `yes` / `no`.
+		$status = $this->rest( 'POST', '/' . $coupon->get_id() . '/status', [ 'status' => 'yes' ] );
+
+		$this->assertSame( 'active', $status->get_data()['status'] );
+		$this->assertSame( 'publish', get_post_status( $coupon->get_id() ) );
+
+		$status = $this->rest( 'POST', '/' . $coupon->get_id() . '/status', [ 'status' => 'no' ] );
+
+		$this->assertSame( 'inactive', $status->get_data()['status'] );
 	}
 
 	/**
