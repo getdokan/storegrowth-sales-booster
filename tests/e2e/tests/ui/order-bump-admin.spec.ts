@@ -117,7 +117,7 @@ test.describe('Admin · Upsell Order Bump', { tag: '@ui' }, () => {
     test("lite's cap: two bumps disable Add New; the create page offers the upgrade", async ({ page, api }) => {
       test.skip(await hasPro(api), 'pro lifts the cap');
       await bumpAB(api);
-      await bumpAB(api, { status: 'inactive' });
+      await bumpAB(api);
       await gotoRecordList(page, '/upsell-order-bump', LIST);
       await expect(adminApp(page).getByRole('button', { name: 'Add New' })).toBeDisabled();
 
