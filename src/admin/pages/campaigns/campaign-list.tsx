@@ -472,8 +472,9 @@ export default function CampaignListPage() {
                                         value={ item.value }
                                         disabled={ preview }
                                     >
-                                        { item.label }{ ' ' }
-                                        { list.counts[ item.value ] ?? 0 }
+                                        { `${ item.label } (${
+                                            list.counts[ item.value ] ?? 0
+                                        })` }
                                     </TabsTrigger>
                                 );
                             } ) }
