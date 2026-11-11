@@ -8,6 +8,8 @@
 namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Migrations\UpgradeManager;
+use StorePulse\StoreGrowth\Migrations\UpgradeRESTController;
 use StorePulse\StoreGrowth\Migrations\V_2_1_2;
 use StorePulse\StoreGrowth\Migrations\V_3_0_0;
 use StorePulse\StoreGrowth\Migrations\V_3_1_0;
@@ -17,7 +19,6 @@ use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\AdminNotification\No
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\Migration\MigrationHooks;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\Migration\MigrationManager;
 use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\Migration\MigrationRegistry;
-use StorePulse\StoreGrowth\ThirdParty\Packages\WeDevs\WPKit\Migration\MigrationRESTController;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -80,10 +81,11 @@ class Upgrader implements HookRegistry {
 	 * Migration manager.
 	 *
 	 * @since 2.1.2
+	 * @since SPSG_VERSION An UpgradeManager, recoverable after a failed run.
 	 *
-	 * @var MigrationManager
+	 * @var UpgradeManager
 	 */
-	protected MigrationManager $manager;
+	protected UpgradeManager $manager;
 
 	/**
 	 * Admin notice manager.
@@ -109,7 +111,7 @@ class Upgrader implements HookRegistry {
 			]
 		);
 
-		$this->manager = new MigrationManager( $this->registry, self::PREFIX );
+		$this->manager = new UpgradeManager( $this->registry, self::PREFIX );
 		$this->notices = new NoticeManager( self::PREFIX );
 
 		$this->notices->register_provider( new UpgradeNoticeProvider( $this->manager ) );
@@ -146,36 +148,54 @@ class Upgrader implements HookRegistry {
 		}
 
 		wp_enqueue_script( 'wp-api-fetch' );
+
+		// A run that failed before this page load shows its error until the update succeeds.
+		$error = $this->manager->last_error();
+		$retry = __( 'Try again', 'storegrowth-sales-booster' );
 		?>
-		<div class="notice notice-warning" id="spsg-upgrade-notice">
+		<div class="notice notice-<?php echo $error ? 'error' : 'warning'; ?>" id="spsg-upgrade-notice">
 			<p><strong><?php echo esc_html( UpgradeNoticeProvider::title() ); ?></strong></p>
 			<p><?php echo esc_html( UpgradeNoticeProvider::message() ); ?></p>
+			<p class="spsg-upgrade-error" role="alert"<?php echo $error ? '' : ' hidden'; ?>>
+				<?php
+				if ( $error ) {
+					/* translators: %s: the error of the failed migration. */
+					echo esc_html( sprintf( __( 'The database update failed: %s', 'storegrowth-sales-booster' ), $error ) );
+				}
+				?>
+			</p>
 			<p>
 				<button type="button" class="button button-primary" data-loading-text="<?php esc_attr_e( 'Updating…', 'storegrowth-sales-booster' ); ?>">
-					<?php esc_html_e( 'Run the update', 'storegrowth-sales-booster' ); ?>
+					<?php echo esc_html( $error ? $retry : __( 'Run the update', 'storegrowth-sales-booster' ) ); ?>
 				</button>
 			</p>
 		</div>
 		<?php
+		// The notice stays until the update succeeds: only success reloads the page.
 		wp_add_inline_script(
 			'wp-api-fetch',
 			sprintf(
 				'document.addEventListener( "click", function ( event ) {
 					var button = event.target.closest( "#spsg-upgrade-notice button" );
 					if ( ! button || button.disabled ) { return; }
+					var notice = button.closest( "#spsg-upgrade-notice" );
+					var message = notice.querySelector( ".spsg-upgrade-error" );
 					button.disabled = true;
 					button.textContent = button.dataset.loadingText;
+					message.hidden = true;
 					wp.apiFetch( { path: %s, method: "POST" } ).then( function () {
 						window.location.reload();
 					}, function ( error ) {
 						button.disabled = false;
 						button.textContent = %s;
-						window.alert( ( error && error.message ) || %s );
+						notice.classList.replace( "notice-warning", "notice-error" );
+						message.textContent = ( error && error.code !== "invalid_json" && error.message ) || %s;
+						message.hidden = false;
 					} );
 				} );',
 				wp_json_encode( '/' . self::REST_NAMESPACE . '/migration/upgrade' ),
-				wp_json_encode( __( 'Run the update', 'storegrowth-sales-booster' ) ),
-				wp_json_encode( __( 'The update failed. Please try again.', 'storegrowth-sales-booster' ) )
+				wp_json_encode( $retry ),
+				wp_json_encode( __( 'The database update failed. Please try again, or contact support if it keeps failing.', 'storegrowth-sales-booster' ) )
 			)
 		);
 	}
@@ -188,7 +208,7 @@ class Upgrader implements HookRegistry {
 	 * @return void
 	 */
 	public function register_rest_routes(): void {
-		( new MigrationRESTController( $this->manager, self::REST_NAMESPACE ) )->register_routes();
+		( new UpgradeRESTController( $this->manager, self::REST_NAMESPACE ) )->register_routes();
 		( new NoticeRESTController( $this->notices, self::REST_NAMESPACE ) )->register_routes();
 	}
 
