@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * follows the store's currency format and tax display, and two amounts are
  * always compared in the same terms. Base currency only.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class Money {
 
 	/**
 	 * A product price with or without tax, as the store displays it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Product $product Product.
 	 * @param float      $price   Price as entered.
@@ -47,7 +47,7 @@ class Money {
 	/**
 	 * A product price as HTML, in the store's tax display and currency format.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Product $product Product.
 	 * @param float      $price   Price as entered.
@@ -62,7 +62,7 @@ class Money {
 	/**
 	 * Compare two amounts at the store's rounding.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param float $first  First amount.
 	 * @param float $second Second amount.

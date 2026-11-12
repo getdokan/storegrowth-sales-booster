@@ -101,21 +101,21 @@ class OfferAttribution implements HookRegistry {
 	 * order. "Promotion" means a real campaign; `_spsg_campaign_id` means an
 	 * offer (ADR-012, ADR-016).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PROMOTION_ID = '_spsg_promotion_id';
 
 	/**
 	 * Order meta key: how the order was credited (`offer` or `link`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PROMOTION_SOURCE = '_spsg_promotion_source';
 
 	/**
 	 * Order meta key: the campaign surface that led to the sale, empty for "Direct".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PROMOTION_SURFACE = '_spsg_promotion_surface';
 
@@ -179,7 +179,7 @@ class OfferAttribution implements HookRegistry {
 	 * The cart-item stamp of a campaign-only offer, which has no id of its
 	 * own: `bogo:co12` carries its campaign row (ADR-016).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $type           Campaign type ("bogo" | "order_bump").
 	 * @param int    $row_id         Campaign offer row id.

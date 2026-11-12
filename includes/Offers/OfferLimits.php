@@ -21,21 +21,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Worked out live: the offers themselves are never changed, so a renewed
  * licence brings every one back.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class OfferLimits {
 
 	/**
 	 * Option holding the offers the merchant chose to keep, by kind.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const CHOICES_OPTION = 'spsg_offer_limit_choices';
 
 	/**
 	 * Paused offer ids by kind, for this request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var array<string, int[]>
 	 */
@@ -44,7 +44,7 @@ class OfferLimits {
 	/**
 	 * The offer kinds with a Free limit.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<string, array{limit: int, offers: callable}>
 	 */
@@ -52,7 +52,7 @@ class OfferLimits {
 		/**
 		 * Filters the offer kinds with a Free limit.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $limits Kind => `limit` and `offers`, a callable returning the
 		 *                      active everyday offers (`id`, `name`), oldest first.
@@ -75,7 +75,7 @@ class OfferLimits {
 	/**
 	 * Forget this request's answers, after an offer or a choice changed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -86,7 +86,7 @@ class OfferLimits {
 	/**
 	 * Whether an offer is paused for being over the Free limit.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind Offer kind.
 	 * @param int    $id   Offer id.
@@ -101,7 +101,7 @@ class OfferLimits {
 	 * The offers over the Free limit, newest first: the merchant's choices
 	 * stay on, then the oldest offers fill what's left of the limit.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind Offer kind.
 	 *
@@ -124,7 +124,7 @@ class OfferLimits {
 	/**
 	 * Work out one kind's paused offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind   Offer kind.
 	 * @param array  $config The kind's `limit` and `offers`.
@@ -155,7 +155,7 @@ class OfferLimits {
 	/**
 	 * The chip of an offer over the Free limit.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -167,7 +167,7 @@ class OfferLimits {
 	 * Each limited kind as the "Choose offers" notice needs it: the limit,
 	 * and the active offers with the paused ones (newest first) on top.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array[]
 	 */
@@ -210,7 +210,7 @@ class OfferLimits {
 	/**
 	 * Save which offers of a kind stay on.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind Offer kind.
 	 * @param int[]  $keep Offer ids to keep on.

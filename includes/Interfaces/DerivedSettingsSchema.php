@@ -16,14 +16,14 @@ defined( 'ABSPATH' ) || exit;
  * live from the old ones until it is first saved, and a save can change what
  * it writes (for keys another version still reads).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 interface DerivedSettingsSchema extends SettingsSchema {
 
 	/**
 	 * The stored option with the keys worked out live.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $stored Stored option.
 	 *
@@ -34,7 +34,7 @@ interface DerivedSettingsSchema extends SettingsSchema {
 	/**
 	 * Adjust what a save is about to write.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $changes Sanitized changes, in stored shape.
 	 * @param array $stored  Stored option before the save.

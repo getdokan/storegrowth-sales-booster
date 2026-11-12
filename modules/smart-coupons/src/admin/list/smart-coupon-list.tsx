@@ -4,7 +4,7 @@
  * given, on the shared record list. While the module is off the page asks to
  * turn it on (its REST routes aren't loaded).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import {
     Alert,
@@ -308,7 +308,7 @@ function CouponList() {
 /**
  * The list page, in the module frame.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 export default function SmartCouponList() {
     const {

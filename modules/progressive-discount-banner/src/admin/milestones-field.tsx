@@ -3,7 +3,7 @@
  * reward's own setting), the zone warnings, and the upgrade card a second
  * milestone shows on the free plan.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { Button, Notice } from '@wedevs/plugin-ui';
 import apiFetch from '@wordpress/api-fetch';
@@ -295,7 +295,7 @@ export interface MilestonesFieldProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props          Props.
  * @param props.value    Milestones.

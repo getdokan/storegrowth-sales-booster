@@ -25,28 +25,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * or the version of the campaign running over it. Worked out live; nothing
  * is written back to the offer.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class OfferVersions {
 
 	/**
 	 * Offer kind of a BOGO rule.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BOGO = 'bogo';
 
 	/**
 	 * Offer kind of an order bump.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ORDER_BUMP = 'order_bump';
 
 	/**
 	 * Offer kind of a Smart Coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const SMART_COUPON = 'smart_coupon';
 
@@ -54,21 +54,21 @@ class OfferVersions {
 	 * Offer kind of a Cart Rewards milestone (a surface in campaigns, never
 	 * an offer they take over).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const CART_REWARD = 'cart_reward';
 
 	/**
 	 * The offer's own settings apply.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const EVERYDAY = 'everyday';
 
 	/**
 	 * A campaign's version applies.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const CAMPAIGN = 'campaign';
 
@@ -77,7 +77,7 @@ class OfferVersions {
 	 * the `dokandar` capability too, so an administrator's offer is checked
 	 * for first: it is never a vendor deal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $offer Stored offer, with `created_by`.
 	 *
@@ -92,7 +92,7 @@ class OfferVersions {
 	/**
 	 * What applies to an offer at a moment.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array                  $offer The offer's stored values, plus `offer_kind`
 	 *                                      (`self::BOGO`, `self::ORDER_BUMP`, …).
@@ -114,7 +114,7 @@ class OfferVersions {
 		 * Filters the campaign version running over an offer at a moment.
 		 * StoreGrowth has no campaigns itself; StoreGrowth Pro supplies them.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array|null        $row      Null when no campaign runs over the offer, or
 		 *                                    `promotion_id` (int) and `overrides` (the values
@@ -145,7 +145,7 @@ class OfferVersions {
 	 * The offer rows of the campaigns running at a moment: attached offers
 	 * (`offer_id`) and campaign-only ones (`offer_id` 0, their `values`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string            $kind Offer kind.
 	 * @param DateTimeImmutable $now  Moment to check.
@@ -157,7 +157,7 @@ class OfferVersions {
 		 * Filters the offer rows of the campaigns running at a moment.
 		 * StoreGrowth has no campaigns itself; StoreGrowth Pro supplies them.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array[]           $rows Rows with `id`, `promotion_id`, `offer_id`, `values`, `overrides`.
 		 * @param string            $kind Offer kind.
@@ -169,7 +169,7 @@ class OfferVersions {
 	/**
 	 * An offer's campaign timeline, for its list chip and editor banner.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind     Offer kind.
 	 * @param int    $offer_id Offer id.
@@ -189,7 +189,7 @@ class OfferVersions {
 		 * Filters an offer's campaign timeline: the list chip ("… version ·
 		 * until …") and the editor banner. Empty without StoreGrowth Pro.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array  $timeline `chip`, `tooltip` and `banner` (`campaign_id`, `text`, `button`, or null).
 		 * @param string $kind     Offer kind.
@@ -206,7 +206,7 @@ class OfferVersions {
 	 * What applies to an offer that exists only inside a campaign: its own
 	 * values while the campaign runs, offline otherwise.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string            $kind  Offer kind.
 	 * @param array             $offer Campaign-only offer.
@@ -219,7 +219,7 @@ class OfferVersions {
 		 * Filters the state of the campaign a campaign-only offer belongs to.
 		 * Without StoreGrowth Pro there is none, and the offer stays offline.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array|null        $state  Null for no campaign, or `promotion_id` (int)
 		 *                                  and `running` (bool).
@@ -237,7 +237,7 @@ class OfferVersions {
 	/**
 	 * Put a campaign's changes on top of the everyday values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $offer     Everyday values.
 	 * @param array $overrides The values the campaign changes; empty for "Use as is".
@@ -258,7 +258,7 @@ class OfferVersions {
 	 * Values of an offer a campaign is running: switched on, with the
 	 * campaign's window in place of the offer's own schedule.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $kind   Offer kind.
 	 * @param array  $values Offer values.
@@ -290,7 +290,7 @@ class OfferVersions {
 	/**
 	 * Whether these values make the offer live at a moment.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string            $kind   Offer kind.
 	 * @param array             $values Offer values.
@@ -313,7 +313,7 @@ class OfferVersions {
 		 * Filters whether an offer's values make it live, for offer kinds
 		 * StoreGrowth doesn't check itself.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool              $live   Whether the offer is live.
 		 * @param string            $kind   Offer kind.
@@ -326,7 +326,7 @@ class OfferVersions {
 	/**
 	 * The answer's shape, with the chip of a rule held back for its coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $version      Version that applies.
 	 * @param string $kind         Offer kind.

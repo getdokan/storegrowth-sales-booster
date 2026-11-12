@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The services that run only while Smart Coupons is on.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class BootstrapServiceProvider extends BootableServiceProvider {
 
 	/**
 	 * Services this provider offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var array<class-string>
 	 */
@@ -38,7 +38,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	/**
 	 * Boot the service provider.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -51,7 +51,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	/**
 	 * Register the service provider.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

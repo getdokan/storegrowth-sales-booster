@@ -49,14 +49,14 @@ class OfferLookup implements HookRegistry {
 	 * Role of a plain line of an order credited to a campaign: it counts in
 	 * the campaign's report and in no offer report (ADR-016).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ROLE_PROMOTION = 'promotion';
 
 	/**
 	 * Column formats of a lookup row.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const FORMATS = [
 		'order_item_id'       => '%d',
@@ -207,7 +207,7 @@ class OfferLookup implements HookRegistry {
 	 * The campaign an order was credited to, as lookup columns. A Dokan
 	 * sub-order takes its parent's stamp, which is where it is written.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $order_id Id of the order the line belongs to.
 	 *

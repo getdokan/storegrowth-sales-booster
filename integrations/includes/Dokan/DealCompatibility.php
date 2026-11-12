@@ -20,14 +20,14 @@ defined( 'ABSPATH' ) || exit;
  * pays vendors from it, and checks minimum spend per vendor. This class only
  * tells Dokan what the referee already decided.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class DealCompatibility {
 
 	/**
 	 * Cart line key Dokan records a coupon's discount under.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -36,7 +36,7 @@ class DealCompatibility {
 	/**
 	 * Coupon meta of a Dokan Pro vendor order discount.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -45,7 +45,7 @@ class DealCompatibility {
 	/**
 	 * Coupon meta of a Dokan Pro vendor quantity discount.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -54,7 +54,7 @@ class DealCompatibility {
 	/**
 	 * Register the hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ class DealCompatibility {
 	 * clears it only when the coupon leaves the cart, so the vendor of such
 	 * a line would be paid as if the discount were still there.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array        $items     Items the coupon applies to.
 	 * @param WC_Coupon    $coupon    Coupon.
@@ -102,7 +102,7 @@ class DealCompatibility {
 	 * `CouponGate::check_minimum_spend()` does without Dokan Pro, which
 	 * overrides that check.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array        $totals    Subtotals by vendor id.
 	 * @param WC_Discounts $discounts Discounts.
@@ -138,7 +138,7 @@ class DealCompatibility {
 	 * copies onto it; its `Helper::is_vendor_discount_coupon()` reads a key
 	 * that isn't saved on the coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool      $ignored Whether the referee leaves the coupon out.
 	 * @param WC_Coupon $coupon  Coupon.

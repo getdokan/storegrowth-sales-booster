@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * editor read (`X-WP-Total`, `X-SPSG-Can-Create`, `/editor`, `/status`,
  * `/batch`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SmartCouponsController extends WP_REST_Controller {
 
@@ -52,7 +52,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -147,7 +147,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Whether the user may manage coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -158,7 +158,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * A page of coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -211,7 +211,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	 * The editor: its page and fields, whether a coupon can be added, and
 	 * the BOGO rules a Buy X get Y coupon can use.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -247,7 +247,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * One coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -263,7 +263,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	 * Create a coupon. Free has no cap on code and link coupons; a second
 	 * active automatic one pauses live (the editor asks to swap first).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -285,7 +285,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Change a coupon: what is sent, over what is stored.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -306,7 +306,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Turn a coupon on or off (the list's switch).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -334,7 +334,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Delete a coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -357,7 +357,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * Delete several coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -388,7 +388,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * The coupon of the request's `id`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -403,7 +403,7 @@ class SmartCouponsController extends WP_REST_Controller {
 	/**
 	 * The values the request sends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *

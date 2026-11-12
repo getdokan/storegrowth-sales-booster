@@ -585,7 +585,7 @@ class OrderBumpController extends WP_REST_Controller {
 	 * Validate a campaign's version of a bump, or a campaign-only bump, as an
 	 * update or a create would, and return it in the stored shape.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $bump Stored values; empty for a new campaign-only bump.
 	 * @param array $sent What the editor sent.
@@ -616,7 +616,7 @@ class OrderBumpController extends WP_REST_Controller {
 	/**
 	 * Stored values as this editor reads them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Stored values.
 	 *

@@ -3,7 +3,7 @@
  * with the one that's on (switched off through the status route) or to
  * upgrade. The editor and the list both ask through this.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import {
     AlertDialog,
@@ -32,7 +32,7 @@ import {
 /**
  * The automatic coupon that's on, read fresh (null with Pro).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 export async function automaticOn(): Promise< CouponRef | null > {
     const editor = await fetchRecordEditor< SmartCouponEditorData >(
@@ -45,7 +45,7 @@ export async function automaticOn(): Promise< CouponRef | null > {
 /**
  * Switch a coupon off.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param id Coupon id.
  */
@@ -62,7 +62,7 @@ interface Pending {
  * The swap prompt: `ask( current )` opens it and resolves true when the
  * user chooses to swap; `dialog` is drawn by the caller.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 export function useAutomaticSwap() {
     const [ pending, setPending ] = useState< Pending | null >( null );

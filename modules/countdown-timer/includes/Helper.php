@@ -165,7 +165,7 @@ class Helper {
 	 * The campaign price running on a product, which replaces the product's
 	 * own timer discount while it runs.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $product_id Product or variation id.
 	 *
@@ -176,7 +176,7 @@ class Helper {
 		 * Filters the campaign price running on a product. StoreGrowth has no
 		 * campaigns itself; StoreGrowth Pro supplies them.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array|null $price      Null for none, or `percent` (1–100) and `promotion_id`.
 		 * @param int        $product_id Product or variation id.
@@ -190,7 +190,7 @@ class Helper {
 	 * Everything the running campaigns set on prices, for the cart hash: a
 	 * change in it changes the shopper's prices.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -198,7 +198,7 @@ class Helper {
 		/**
 		 * Filters what the running campaigns set on product prices.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $prices Campaign prices by campaign id; empty without campaigns.
 		 */
@@ -208,7 +208,7 @@ class Helper {
 	/**
 	 * When the campaign controlling a product's timer ends, if one does.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $product_id Product id.
 	 *
@@ -218,7 +218,7 @@ class Helper {
 		/**
 		 * Filters the end of the campaign a product's countdown shows.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param string|null $end        Null for the product's own timer.
 		 * @param int         $product_id Product id.
@@ -232,7 +232,7 @@ class Helper {
 	 * A stored end date as the storefront timer reads it: milliseconds since
 	 * the epoch, so it ends at the same moment as the price for every shopper.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed $end_date Stored end date.
 	 *

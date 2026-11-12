@@ -2,7 +2,7 @@
  * Load, edit and save one Smart Coupon: the shared record editor on the
  * coupons routes.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { __ } from '@wordpress/i18n';
 import { type RecordEditor, useRecordEditor } from '@storegrowth/hooks';
@@ -32,7 +32,7 @@ const LOAD_ERROR = __(
 );
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param id            Coupon id, or null for a new coupon.
  * @param onCreated     Called with the new coupon's id after it's created.

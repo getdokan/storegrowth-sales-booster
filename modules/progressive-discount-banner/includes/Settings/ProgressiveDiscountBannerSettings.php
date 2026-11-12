@@ -39,7 +39,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedS
 	 * Option holding the settings as they were before the first change made
 	 * for Cart Rewards.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BACKUP_OPTION = 'spsg_progressive_discount_banner_backup';
 
@@ -362,7 +362,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedS
 	/**
 	 * Milestone 1 from the old keys, for a store with no milestones saved.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $stored Stored option.
 	 *
@@ -384,7 +384,7 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedS
 	 * Keep the milestones and the old keys in step, and back up the settings
 	 * before the first change.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $changes Sanitized changes.
 	 * @param array $stored  Stored option before the save.

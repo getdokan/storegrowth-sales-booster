@@ -2,7 +2,7 @@
  * Redraw the number inside a wc_price() element in the store's format; the
  * currency symbol and its position stay as WooCommerce printed them.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param {jQuery} $container Element holding the wc_price() markup.
  * @param {number} amount     New amount.

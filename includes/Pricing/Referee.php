@@ -29,14 +29,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * labels without running totals, and from the deal list alone, so what the
  * decision does to the cart can't change the decision.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class Referee implements HookRegistry {
 
 	/**
 	 * Runs after the modules price their lines.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PRIORITY = 100;
 
@@ -71,7 +71,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -83,7 +83,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Decide for this calculation and tell the modules.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -113,7 +113,7 @@ class Referee implements HookRegistry {
 			/**
 			 * Fires with the referee's decision, for the modules to apply it.
 			 *
-			 * @since SPSG_VERSION
+			 * @since 3.1.0
 			 *
 			 * @param Decision $decision Decision.
 			 * @param WC_Cart  $cart     Cart.
@@ -127,7 +127,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Show a line's label and price steps.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $item_data Item data.
 	 * @param array $cart_item Cart item.
@@ -164,7 +164,7 @@ class Referee implements HookRegistry {
 	/**
 	 * The decision for a cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart        $cart      Cart.
 	 * @param WC_Coupon|null $candidate A coupon being entered, not in the cart yet.
@@ -185,7 +185,7 @@ class Referee implements HookRegistry {
 	 * Whether a coupon beat the BOGO deal on a bought line, for the paths that
 	 * add a gift: no gift is added while one did. Never true in observe-only.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $key Bought line's cart item key.
 	 *
@@ -198,7 +198,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Whether the referee only logs what it would decide.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -208,7 +208,7 @@ class Referee implements HookRegistry {
 		 * it changes no price, gift, coupon or label; decisions are logged
 		 * through `wc_get_logger()`, source `spsg-referee`.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool $observe_only Whether to observe only.
 		 */
@@ -219,7 +219,7 @@ class Referee implements HookRegistry {
 	 * Whether an automatic coupon is being checked, so the coupon gate lets
 	 * the check through: the referee is about to judge that coupon itself.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -230,7 +230,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Forget this request's decisions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -241,7 +241,7 @@ class Referee implements HookRegistry {
 	/**
 	 * What makes one cart state different from another.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart        $cart      Cart.
 	 * @param WC_Coupon|null $candidate Candidate coupon.
@@ -261,7 +261,7 @@ class Referee implements HookRegistry {
 	/**
 	 * The codes in play: the applied ones, then a candidate.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart        $cart      Cart.
 	 * @param WC_Coupon|null $candidate Candidate coupon.
@@ -281,7 +281,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Decide for a cart state.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart        $cart      Cart.
 	 * @param WC_Coupon|null $candidate Candidate coupon.
@@ -319,7 +319,7 @@ class Referee implements HookRegistry {
 	 * with "Individual use" stands alone: WooCommerce's own rules decide, so
 	 * nothing competes with it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart        $cart      Cart.
 	 * @param WC_Coupon|null $candidate Candidate coupon.
@@ -336,7 +336,7 @@ class Referee implements HookRegistry {
 			 * Filters whether the referee leaves a coupon out of its decision,
 			 * so it neither competes with deals nor is rejected or limited.
 			 *
-			 * @since SPSG_VERSION
+			 * @since 3.1.0
 			 *
 			 * @param bool      $ignored Whether to leave the coupon out.
 			 * @param WC_Coupon $coupon  Coupon.
@@ -375,7 +375,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Whether a coupon passes WooCommerce's own checks for a cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart   $cart   Cart.
 	 * @param WC_Coupon $coupon Coupon.
@@ -395,7 +395,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Whether a campaign is running over a deal the cart could hold.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -410,7 +410,7 @@ class Referee implements HookRegistry {
 		 * Filters whether a campaign sets product prices at a moment, so the
 		 * referee decides carts that may hold a campaign price.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool              $running Whether a campaign price is running.
 		 * @param DateTimeImmutable $now     Moment checked.
@@ -421,7 +421,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Apply rules 2 to 8 to the deal list.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $lines Lines from `DealList::for_cart()`.
 	 *
@@ -488,7 +488,7 @@ class Referee implements HookRegistry {
 	/**
 	 * The campaigns behind the deals that stayed, largest saving first.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $lines      Lines.
 	 * @param array    $coupons    Coupons by code.
@@ -530,7 +530,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Collect the coupon deals of every line, by code.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $lines Lines.
 	 *
@@ -572,7 +572,7 @@ class Referee implements HookRegistry {
 	 * each still gives. The larger total stays, the coupon entered first on a
 	 * tie. Two coupons that share no line don't clash.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $coupons  Coupons by code; a loser's lines are moved to `lost`.
 	 * @param array $rejected Rejections by code, added to.
@@ -624,7 +624,7 @@ class Referee implements HookRegistry {
 	/**
 	 * The first kept coupon a coupon can't be used with on a shared line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string   $code    Coupon code.
 	 * @param string[] $kept    Codes that stay.
@@ -648,7 +648,7 @@ class Referee implements HookRegistry {
 	 * StoreGrowth only when it allows other coupons. Two from outside
 	 * follow WooCommerce's own rules.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $first  Coupon.
 	 * @param array $second Coupon.
@@ -671,7 +671,7 @@ class Referee implements HookRegistry {
 	 * What each line shows. A line is labelled when it has two or more deals
 	 * and the cart holds a Smart Coupon or campaign deal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $lines   Lines.
 	 * @param array    $coupons Coupons by code.
@@ -710,7 +710,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Whether a line holds a Smart Coupon or campaign deal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $lines Lines.
 	 *
@@ -732,7 +732,7 @@ class Referee implements HookRegistry {
 	 * A line's unit price, deal by deal. A fixed-cart coupon is shown as
 	 * WooCommerce charges it: split per unit over the lines it stayed on.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $key     Cart item key.
 	 * @param array  $line    Line.
@@ -782,7 +782,7 @@ class Referee implements HookRegistry {
 	/**
 	 * The first deal of a kind on a line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array  $line Line.
 	 * @param string $kind Deal kind.
@@ -803,7 +803,7 @@ class Referee implements HookRegistry {
 	 * Apply or remove automatic coupons without a notice: one applies while
 	 * it reaches a line and hasn't been rejected.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart  $cart     Cart.
 	 * @param Decision $decision Decision.
@@ -838,7 +838,7 @@ class Referee implements HookRegistry {
 	/**
 	 * A line's price steps as the shopper reads them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]     $steps   Steps.
 	 * @param \WC_Product $product Line's product.
@@ -859,7 +859,7 @@ class Referee implements HookRegistry {
 	/**
 	 * Log a decision once per request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param Decision $decision Decision.
 	 *

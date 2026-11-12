@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Prints the bar and adds it to the Store API cart (ADR-015). The top bar is
  * a separate surface and stays in `CommonHooks`.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class RewardsBar implements HookRegistry {
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -42,7 +42,7 @@ class RewardsBar implements HookRegistry {
 	/**
 	 * The bar's data for the current visitor and cart, or null.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array|null
 	 */
@@ -61,7 +61,7 @@ class RewardsBar implements HookRegistry {
 	/**
 	 * Print the bar in the classic cart or the fly cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -80,7 +80,7 @@ class RewardsBar implements HookRegistry {
 	 * Add the bar to the block mini-cart's footer, drawn from the same cart
 	 * data the Store API returns, so WooCommerce keeps it current.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $content Block content.
 	 *
@@ -102,7 +102,7 @@ class RewardsBar implements HookRegistry {
 	/**
 	 * Add the bar's data to the Store API cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array   $data Cart data.
 	 * @param WC_Cart $cart Cart.

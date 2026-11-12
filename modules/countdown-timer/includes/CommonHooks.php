@@ -50,7 +50,7 @@ class CommonHooks implements HookRegistry {
 	 * with `get_price( 'edit' )`, which skips `get_product_price()`, so this
 	 * is the one discount on it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string      $price     Variation's active price.
 	 * @param \WC_Product $variation Variation.
@@ -67,7 +67,7 @@ class CommonHooks implements HookRegistry {
 	 * shows a sale only when this is identical to the active price, so a
 	 * discounted variation returns just that.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string      $sale_price Variation's sale price.
 	 * @param \WC_Product $variation  Variation.
@@ -85,7 +85,7 @@ class CommonHooks implements HookRegistry {
 	 * Key the cached ranges by what prices them right now. Live state rather
 	 * than the stored dates, so the key moves when a window starts or ends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array       $hash    Factors of the cache key.
 	 * @param \WC_Product $product Variable product.
@@ -114,7 +114,7 @@ class CommonHooks implements HookRegistry {
 	 * Report Countdown prices as the base of their lines. The discount
 	 * itself stays in `get_product_price()`; a base price never competes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $deals Deals.
 	 * @param \WC_Cart $cart  Cart.

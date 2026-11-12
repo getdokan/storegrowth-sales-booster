@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * which coupons stand and which lines they reach, through its own filters.
  * Nothing here acts on orders.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CouponGate implements HookRegistry {
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -46,7 +46,7 @@ class CouponGate implements HookRegistry {
 	 * Reject a coupon the referee gave no line. An automatic coupon never
 	 * shows a message: the referee applies and removes those itself.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool         $valid     Whether the coupon is valid.
 	 * @param WC_Coupon    $coupon    Coupon.
@@ -78,7 +78,7 @@ class CouponGate implements HookRegistry {
 	 * Smart fixed amount stays on the products it applies to: WooCommerce
 	 * would spread it over the whole cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array        $items     Items the coupon would apply to.
 	 * @param WC_Coupon    $coupon    Coupon.
@@ -112,7 +112,7 @@ class CouponGate implements HookRegistry {
 	 * discounted gift can't lift a cart over the minimum or drop it under.
 	 * WooCommerce gives no order or cart here; order screens are all admin.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool      $not_met Whether the minimum isn't met.
 	 * @param WC_Coupon $coupon  Coupon.
@@ -131,7 +131,7 @@ class CouponGate implements HookRegistry {
 	 * Give a coupon that WooCommerce removes because it now loses the same
 	 * message a shopper entering it would see.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string    $message Error message.
 	 * @param int       $code    Error code.

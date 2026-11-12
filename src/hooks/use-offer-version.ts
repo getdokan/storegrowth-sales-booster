@@ -4,7 +4,7 @@
  * other versions through the `storegrowth.offer.useVersion` filter: a hook
  * that reads the editor's URL and loads and saves through its own routes.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import type { ReactNode } from 'react';
 import { applyFilters } from '@wordpress/hooks';
@@ -31,7 +31,7 @@ const EVERYDAY: OfferVersion = {
 /**
  * The everyday version: the module's own routes.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 function useEverydayVersion(): OfferVersion {
     return EVERYDAY;
@@ -43,7 +43,7 @@ function useEverydayVersion(): OfferVersion {
  * The filter returns a hook, called on every render, so it must be the same
  * hook each time (register it before the admin app renders).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param kind Offer kind: `bogo`, `order_bump` or `smart_coupon`.
  */

@@ -25,42 +25,42 @@ if ( ! defined( 'ABSPATH' ) ) {
  * cart fragments. Everything is on WooCommerce's price-entry basis
  * (`get_price()`), so a tax setting can't change a comparison.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class DealList {
 
 	/**
 	 * Deal kind: the starting price (Countdown). Never competes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BASE = 'base';
 
 	/**
 	 * Deal kind: a BOGO deal, reported on the bought line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BOGO = 'bogo';
 
 	/**
 	 * Deal kind: an order bump. Never competes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BUMP = 'bump';
 
 	/**
 	 * Deal kind: a WooCommerce coupon, Smart or from outside StoreGrowth.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const COUPON = 'coupon';
 
 	/**
 	 * The non-gift lines of a cart with their deals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart     $cart    Cart.
 	 * @param WC_Coupon[] $coupons Coupons to report, keyed by code.
@@ -79,7 +79,7 @@ class DealList {
 		 * price before it, and `promotion_id` the running campaign behind the
 		 * deal, 0 for none.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array[] $deals Deals.
 		 * @param WC_Cart $cart  Cart.
@@ -113,7 +113,7 @@ class DealList {
 	 * A cart's subtotal without its gift lines, in the store's cart display
 	 * (incl. or excl. tax), as WooCommerce measures a coupon's minimum spend.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -132,7 +132,7 @@ class DealList {
 	/**
 	 * A cart's non-gift lines at their fresh prices.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -164,7 +164,7 @@ class DealList {
 	/**
 	 * Report a coupon on every line it applies to.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]   $lines  Lines.
 	 * @param WC_Coupon $coupon Coupon.
@@ -213,7 +213,7 @@ class DealList {
 	 * to every line, so a Smart fixed amount with "Applies to" restrictions is
 	 * checked with the coupon read as a percentage, which honours them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon  $coupon  Coupon.
 	 * @param WC_Product $product Line's product.
@@ -234,7 +234,7 @@ class DealList {
 	 * A coupon's discount on one line. A fixed-cart coupon is split by line
 	 * price over the lines it applies to.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon     Coupon.
 	 * @param float     $line_value The line's price times its quantity.

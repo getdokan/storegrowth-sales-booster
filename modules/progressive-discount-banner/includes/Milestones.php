@@ -31,49 +31,49 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 3.1 has no `milestones` key: its threshold and reward are milestone 1,
  * worked out live from the old keys (`with_derived()` on the schema).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class Milestones {
 
 	/**
 	 * Free plan: one active everyday milestone.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const FREE_LIMIT = 1;
 
 	/**
 	 * Reward: the store's Free shipping method.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const FREE_SHIPPING = 'free-shipping';
 
 	/**
 	 * Reward: a coupon, shown as a code to use.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const COUPON = 'coupon';
 
 	/**
 	 * Reward: a free gift line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const GIFT = 'gift';
 
 	/**
 	 * Reward: a discount on the cart, the fee 3.0 stores already give.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const DISCOUNT = 'discount-amount';
 
 	/**
 	 * The old keys that carry milestone 1.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string[]
 	 */
@@ -82,14 +82,14 @@ class Milestones {
 	/**
 	 * Cart-minimum default of a store that never set one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const DEFAULT_THRESHOLD = 10;
 
 	/**
 	 * One stored row as it should be, or null when it isn't valid.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row Milestone.
 	 *
@@ -125,7 +125,7 @@ class Milestones {
 	 * Milestone 1 from the old keys of a store from before 3.1. A store whose
 	 * discount type isn't one of the known values gave no reward.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $stored Stored settings.
 	 *
@@ -155,7 +155,7 @@ class Milestones {
 	 * The old keys that hold a milestone (the first one): Pro 3.0 reads them.
 	 * A gift or coupon has no old form, so the old discount keys stay.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row Milestone.
 	 *
@@ -181,7 +181,7 @@ class Milestones {
 	 * Milestones after the old keys were saved on their own (the old admin's
 	 * ajax save): the first milestone follows them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $rows     Stored milestones, first one first.
 	 * @param array   $settings Settings after the save.
@@ -202,7 +202,7 @@ class Milestones {
 	/**
 	 * Sort rows by threshold and give new ones an id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $rows Milestones.
 	 *
@@ -232,7 +232,7 @@ class Milestones {
 	 * A store's active milestones, lowest threshold first, without those over
 	 * the Free limit. Empty for a store that never saved.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array|null $settings Module settings (default: read them).
 	 *
@@ -261,7 +261,7 @@ class Milestones {
 	/**
 	 * Every saved milestone, oldest first, for the Free limit: `id` and `name`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array[]
 	 */
@@ -289,7 +289,7 @@ class Milestones {
 	/**
 	 * Valid rows held by settings.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings Module settings.
 	 *
@@ -302,7 +302,7 @@ class Milestones {
 	/**
 	 * A stored row, or null when it isn't one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed $row Stored row.
 	 *
@@ -318,7 +318,7 @@ class Milestones {
 	 * before `woocommerce_before_calculate_totals`. The module's own fee never
 	 * counts: it isn't a line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -360,7 +360,7 @@ class Milestones {
 	 * The active milestones a cart has reached. A cart holding only its gift
 	 * lines reaches nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -395,7 +395,7 @@ class Milestones {
 	/**
 	 * Whether a subtotal meets a milestone, at the store's rounding.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row      Milestone.
 	 * @param float $subtotal Cart subtotal.
@@ -410,7 +410,7 @@ class Milestones {
 	 * The free shipping state of a cart: the lowest free-shipping threshold
 	 * and whether it is met; null when no milestone gives free shipping.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -432,7 +432,7 @@ class Milestones {
 	/**
 	 * The discount milestone a cart earns: the highest it reached.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -453,7 +453,7 @@ class Milestones {
 	/**
 	 * The first milestone a subtotal hasn't met.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[] $rows     Milestones, lowest threshold first.
 	 * @param float   $subtotal Cart subtotal.
@@ -474,7 +474,7 @@ class Milestones {
 	 * The bar's copy for the next milestone: `[amount]` and `{remaining}` for
 	 * what is left to spend, `{reward}` for what it unlocks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $copy     Copy.
 	 * @param array  $row      Next milestone.
@@ -491,7 +491,7 @@ class Milestones {
 	/**
 	 * What a milestone gives, as the shopper reads it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row Milestone.
 	 *
@@ -526,7 +526,7 @@ class Milestones {
 	 * The coupon of a coupon milestone. An automatic Smart Coupon has a code
 	 * nobody can use, so it is never shown.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row Milestone.
 	 *
@@ -542,7 +542,7 @@ class Milestones {
 	 * The name a coupon goes by. A coupon from outside Smart Coupons goes by
 	 * its description.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -557,7 +557,7 @@ class Milestones {
 	/**
 	 * What a reached coupon milestone tells the shopper.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row Reached coupon milestone.
 	 *
@@ -583,7 +583,7 @@ class Milestones {
 	 * The rewards bar for a cart, the same data for the classic and block
 	 * carts. Null when there is nothing to show.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -640,7 +640,7 @@ class Milestones {
 	 * Every shipping zone and whether it has an enabled Free shipping method,
 	 * "Rest of the world" included when the store ships there.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<int, array{name: string, has_free_shipping: bool}>
 	 */
@@ -683,7 +683,7 @@ class Milestones {
 	/**
 	 * A price as plain text, as the shopper reads it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param float $amount Amount.
 	 *
@@ -696,7 +696,7 @@ class Milestones {
 	/**
 	 * Copy as plain text, for the Store API and block carts.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $html Copy that may hold markup.
 	 *

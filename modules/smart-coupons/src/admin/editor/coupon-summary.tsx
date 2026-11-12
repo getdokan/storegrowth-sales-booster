@@ -2,7 +2,7 @@
  * The editor's right rail: a plain summary of the coupon, and the cart line
  * shoppers see.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { __, sprintf } from '@wordpress/i18n';
 import type { SettingValue } from '@storegrowth/utilities';
@@ -100,7 +100,7 @@ function summaryLines(
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props          Props.
  * @param props.values   Editor values.

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * while a cart is priced: the saved coupon is never written, and admin lists
  * and the REST API keep reading its saved amount.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CouponAmount implements HookRegistry {
 
@@ -35,7 +35,7 @@ class CouponAmount implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -48,7 +48,7 @@ class CouponAmount implements HookRegistry {
 	/**
 	 * Totals are about to be worked out.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -59,7 +59,7 @@ class CouponAmount implements HookRegistry {
 	/**
 	 * Totals are done.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -70,7 +70,7 @@ class CouponAmount implements HookRegistry {
 	/**
 	 * Run something that reads coupon amounts for a cart, outside totals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param callable $read What to run.
 	 *
@@ -89,7 +89,7 @@ class CouponAmount implements HookRegistry {
 	/**
 	 * The amount a Smart Coupon gives right now.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed     $amount Saved amount.
 	 * @param WC_Coupon $coupon Coupon.
@@ -114,7 +114,7 @@ class CouponAmount implements HookRegistry {
 	 * The percent a Buy more save more coupon has reached in the cart; 0
 	 * below its first tier, and without StoreGrowth Pro (which prices tiers).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array     $values The coupon's values now (a campaign's, if one runs).
 	 * @param WC_Coupon $coupon Coupon.
@@ -130,7 +130,7 @@ class CouponAmount implements HookRegistry {
 		 * Filters the percent a Buy more save more coupon has reached in the
 		 * cart. StoreGrowth Pro works it out from the coupon's tiers.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param float     $percent 0 by default.
 		 * @param array     $values  The coupon's values now (`tiers` may come from a campaign).

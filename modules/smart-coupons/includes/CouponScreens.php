@@ -24,14 +24,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * in Smart Coupons; automatic ones are hidden there. In the cart, an automatic
  * coupon reads by its title and can't be removed.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CouponScreens implements HookRegistry {
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -50,7 +50,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * The Smart Coupon behind a post, if it is one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $post_id Post id.
 	 *
@@ -63,7 +63,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Mark a Smart Coupon in WooCommerce > Coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array   $states Post states.
 	 * @param WP_Post $post   Post.
@@ -81,7 +81,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Send a Smart Coupon's Edit link to Smart Coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $link    Edit link.
 	 * @param int    $post_id Post id.
@@ -95,7 +95,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Keep Quick Edit away from a Smart Coupon: it is edited in one place.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array   $actions Row actions.
 	 * @param WP_Post $post    Post.
@@ -113,7 +113,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Open Smart Coupons from a coupon's WooCommerce edit screen.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -129,7 +129,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Hide automatic coupons from WooCommerce > Coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_Query $query Query.
 	 *
@@ -160,7 +160,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Name an automatic coupon by its title in cart totals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string    $label  Label.
 	 * @param WC_Coupon $coupon Coupon.
@@ -174,7 +174,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Leave out `[Remove]` for an automatic coupon: the referee would apply it again.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string    $html            Totals row HTML.
 	 * @param WC_Coupon $coupon          Coupon.
@@ -189,7 +189,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * Say what a Buy X get Y coupon gives, instead of "-$0.00".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string    $html   Discount amount HTML.
 	 * @param WC_Coupon $coupon Coupon.
@@ -203,7 +203,7 @@ class CouponScreens implements HookRegistry {
 	/**
 	 * A coupon's Smart Coupons editor.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $id Coupon id.
 	 *

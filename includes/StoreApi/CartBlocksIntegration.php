@@ -19,21 +19,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the script that shows StoreGrowth's labels, notices and rewards
  * bar in the block cart and checkout.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CartBlocksIntegration implements IntegrationInterface {
 
 	/**
 	 * Script handle.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const HANDLE = 'storegrowth-cart-blocks';
 
 	/**
 	 * Integration name.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -44,7 +44,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 	/**
 	 * Nothing to set up.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -54,7 +54,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 	/**
 	 * Script handles for the storefront.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string[]
 	 */
@@ -65,7 +65,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 	/**
 	 * Script handles for the editor: the script only acts on the storefront.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string[]
 	 */
@@ -76,7 +76,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 	/**
 	 * No data: everything comes with the Store API cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -88,7 +88,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 	 * Register the built script. Returns false when the build is missing, so
 	 * the blocks render without it instead of failing on an unknown handle.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */

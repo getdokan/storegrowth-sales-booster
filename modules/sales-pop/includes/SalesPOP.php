@@ -54,7 +54,7 @@ class SalesPOP implements HookRegistry {
 		 * Filters the products Sales Pop shows, e.g. narrowed to a running
 		 * campaign's products by StoreGrowth Pro.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param int[] $product_ids Products.
 		 * @param array $settings    Sales Pop settings.

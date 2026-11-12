@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * are everyday offers as they stand, so no offer data is copied or rewritten.
  * The campaign tables are StoreGrowth Pro's, installed by Pro.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class V_3_1_0 extends BaseMigration {
 
 	/**
 	 * Add the campaign columns to the offer lookup table.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @throws RuntimeException When the table could not be updated.
 	 *

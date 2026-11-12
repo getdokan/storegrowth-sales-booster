@@ -2,7 +2,7 @@
  * The Free limit notice with its "Choose offers" picker, over the
  * `sales-booster/v1/offer-limits` routes (ADR-013, #304).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import apiFetch from '@wordpress/api-fetch';
 import {
@@ -43,7 +43,7 @@ export interface OfferLimitNoticeProps {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props         Props.
  * @param props.kind    Offer kind.

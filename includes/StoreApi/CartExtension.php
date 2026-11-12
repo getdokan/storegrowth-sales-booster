@@ -25,21 +25,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * data to the block cart, mini-cart and checkout. Line labels and price steps
  * aren't here: the Store API reads `woocommerce_get_item_data` for those.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CartExtension implements HookRegistry {
 
 	/**
 	 * Namespace of the extension data.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const IDENTIFIER = 'storegrowth';
 
 	/**
 	 * Notices taken from the queue for the cart a page embeds, not delivered yet.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string[]
 	 */
@@ -48,7 +48,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Whether this request draws a block cart or checkout.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var bool
 	 */
@@ -57,7 +57,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -84,7 +84,7 @@ class CartExtension implements HookRegistry {
 	 * a calculation between here and the embed (Dokan Pro's vendor discount is
 	 * one) would raise its notices too late for this page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -101,7 +101,7 @@ class CartExtension implements HookRegistry {
 	 * Back in the queue with any notice this page didn't embed, for the next
 	 * page that shows notices.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -116,7 +116,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Add the block script to a block's integrations.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry $registry Integration registry.
 	 *
@@ -129,7 +129,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Register the data on the cart and cart item endpoints.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -162,7 +162,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * The extension data of the Store API cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -182,7 +182,7 @@ class CartExtension implements HookRegistry {
 		 * Filters StoreGrowth's data on the Store API cart, for a module to add
 		 * its own, e.g. Cart Rewards' bar under `rewards`.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array   $data Data under `extensions.storegrowth`.
 		 * @param WC_Cart $cart Cart.
@@ -193,7 +193,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Schema of the extension data.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -224,7 +224,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Per cart line, for the block cart's own line controls.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $cart_item Cart item.
 	 *
@@ -237,7 +237,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Schema of the per-line data.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -258,7 +258,7 @@ class CartExtension implements HookRegistry {
 	 * held back plus what this response raised, which WooCommerce would
 	 * otherwise throw away, but only a block cart or checkout can show them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string[]
 	 */
@@ -282,7 +282,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * Whether this is a real REST request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -294,7 +294,7 @@ class CartExtension implements HookRegistry {
 	 * Take StoreGrowth's notices out of the WooCommerce queue, so a later
 	 * classic page doesn't print them again.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string[]
 	 */
@@ -325,7 +325,7 @@ class CartExtension implements HookRegistry {
 	/**
 	 * The names automatic coupons go by, by code: their codes mean nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *

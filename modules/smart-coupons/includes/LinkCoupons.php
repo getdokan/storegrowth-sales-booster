@@ -20,28 +20,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Opening `?spsg_coupon=<code>` applies a link coupon. The cart may still be
  * empty then, so the coupon waits in the session for the first product.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class LinkCoupons implements HookRegistry {
 
 	/**
 	 * The link's query argument.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const QUERY_ARG = 'spsg_coupon';
 
 	/**
 	 * Session key of a coupon waiting for the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const SESSION_KEY = 'spsg_pending_coupon';
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ class LinkCoupons implements HookRegistry {
 	/**
 	 * A coupon's link.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -66,7 +66,7 @@ class LinkCoupons implements HookRegistry {
 	/**
 	 * Remember a link coupon opened in this request and apply it if it can be.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -93,7 +93,7 @@ class LinkCoupons implements HookRegistry {
 	/**
 	 * Apply the waiting coupon once the cart has something in it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

@@ -237,7 +237,7 @@ class OrderBump implements HookRegistry {
 	 * and the attribution stamp, so they agree on which bumps apply.
 	 *
 	 * @since 3.0.0
-	 * @since SPSG_VERSION Added `$exclude_key`.
+	 * @since 3.1.0 Added `$exclude_key`.
 	 *
 	 * @param string $exclude_key Cart item key to leave out.
 	 *
@@ -363,7 +363,7 @@ class OrderBump implements HookRegistry {
 	 * Report this cart's bump deals. A bump applies only to its own line and
 	 * never competes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $deals Deals.
 	 * @param \WC_Cart $cart  Cart.
@@ -406,7 +406,7 @@ class OrderBump implements HookRegistry {
 	/**
 	 * Price one bump line, or remove it when its bump no longer applies.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart  Cart.
 	 * @param string   $key   Cart item key.
@@ -447,7 +447,7 @@ class OrderBump implements HookRegistry {
 	 * The bump behind a cart line: by the id stamped on it, or by its product
 	 * for a line from before 3.0, which has no stamp.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array   $item  Cart item.
 	 * @param array[] $bumps The bumps that apply to the cart now.
@@ -470,7 +470,7 @@ class OrderBump implements HookRegistry {
 	/**
 	 * A bump line's attribution stamp.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $bump          The bump.
 	 * @param float $current_price The product's price.

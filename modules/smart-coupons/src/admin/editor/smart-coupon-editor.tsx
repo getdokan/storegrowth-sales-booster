@@ -4,7 +4,7 @@
  * `SmartCouponFields`, ADR-010), one card per section, with the method and
  * type cards, the product and category pickers and the right rail drawn here.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { Button } from '@wedevs/plugin-ui';
 import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
@@ -577,7 +577,7 @@ function CouponEditor( { id }: { id: number | null } ) {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props    Props.
  * @param props.id Coupon id, or null for a new coupon.

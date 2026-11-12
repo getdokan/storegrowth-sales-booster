@@ -81,7 +81,7 @@ class Upgrader implements HookRegistry {
 	 * Migration manager.
 	 *
 	 * @since 2.1.2
-	 * @since SPSG_VERSION An UpgradeManager, recoverable after a failed run.
+	 * @since 3.1.0 An UpgradeManager, recoverable after a failed run.
 	 *
 	 * @var UpgradeManager
 	 */

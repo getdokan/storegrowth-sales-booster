@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Sets a gift or bump line's price on each cart calculation and tells the
  * shopper when it changed since the cart was last priced.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CartLine {
 
 	/**
 	 * Cart item key: the price the line was last priced at.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -36,7 +36,7 @@ class CartLine {
 	/**
 	 * Cart item key: the Cart Rewards milestone a free gift line belongs to.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -46,7 +46,7 @@ class CartLine {
 	 * Notice data marking a notice as StoreGrowth's, so the block cart can
 	 * show it (`StoreApi\CartExtension`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -56,7 +56,7 @@ class CartLine {
 	 * Notice data marking a notice as a line's own: a campaign's notice takes
 	 * its place when both come from one event (StoreGrowth Pro's campaign notices).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -66,7 +66,7 @@ class CartLine {
 	 * Whether a line is a free gift of any kind: a BOGO gift or a Cart Rewards
 	 * gift. Gift lines stay out of coupons' reach, shares and minimums.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $item Cart item.
 	 *
@@ -79,7 +79,7 @@ class CartLine {
 	/**
 	 * Price a cart line for this calculation.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart    $cart         Cart.
 	 * @param string     $key          Cart item key.
@@ -103,7 +103,7 @@ class CartLine {
 	 * Remove a line the shopper no longer gets. It can't be brought back with
 	 * WooCommerce's "Undo".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart    Cart.
 	 * @param string  $key     Cart item key.
@@ -123,7 +123,7 @@ class CartLine {
 	/**
 	 * Add a notice once.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $message Notice.
 	 * @param bool   $is_line Whether the notice is a line's own, which a campaign's replaces.

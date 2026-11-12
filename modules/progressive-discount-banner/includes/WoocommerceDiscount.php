@@ -41,7 +41,7 @@ class WoocommerceDiscount implements HookRegistry {
 	 * Shipping package key holding the reward tier, so a change in it
 	 * recalculates the rates.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PACKAGE_KEY = 'spsg_cart_reward_tier';
 
@@ -65,12 +65,12 @@ class WoocommerceDiscount implements HookRegistry {
 	 * Free shipping used to be picked here, once, when an item was added.
 	 * The shipping rates decide on every calculation now.
 	 *
-	 * @deprecated SPSG_VERSION Nothing is picked on add-to-cart any more.
+	 * @deprecated 3.1.0 Nothing is picked on add-to-cart any more.
 	 *
 	 * @return void
 	 */
 	public function woocommerce_added_to_cart() {
-		_deprecated_function( __METHOD__, 'SPSG_VERSION' );
+		_deprecated_function( __METHOD__, '3.1.0' );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class WoocommerceDiscount implements HookRegistry {
 	 * rates again when a package's hash changes, and neither a threshold edit
 	 * nor a reward coming and going changes a line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $packages Shipping packages.
 	 *
@@ -102,7 +102,7 @@ class WoocommerceDiscount implements HookRegistry {
 	 * Hide WooCommerce's Free shipping rate while the cart is below the
 	 * lowest free-shipping milestone.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $rates   Shipping rates.
 	 * @param array $package Shipping package.
@@ -127,7 +127,7 @@ class WoocommerceDiscount implements HookRegistry {
 	 * to cart used to. WooCommerce asks only when the available methods change,
 	 * so a method the shopper picks afterwards stays.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $default_method Default method id.
 	 * @param array  $rates          Available rates.

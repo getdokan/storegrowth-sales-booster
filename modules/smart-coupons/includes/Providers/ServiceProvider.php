@@ -22,14 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Registers the module, and what must work while it's off: a real WooCommerce
  * coupon stays usable unless something keeps rejecting it (`CouponGuard`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class ServiceProvider extends BaseServiceProvider {
 
 	/**
 	 * Services this provider offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var array<class-string>
 	 */
@@ -43,7 +43,7 @@ class ServiceProvider extends BaseServiceProvider {
 	/**
 	 * Boot the service provider.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ class ServiceProvider extends BaseServiceProvider {
 	/**
 	 * Register the service provider.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

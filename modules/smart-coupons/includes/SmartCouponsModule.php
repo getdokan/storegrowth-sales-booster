@@ -20,14 +20,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Smart Coupons: automatic, code and link coupons, all real WooCommerce
  * coupons, that compete with StoreGrowth's other deals (ADR-014).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SmartCouponsModule extends BaseModule {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -38,7 +38,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * Module icon URL.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -49,7 +49,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * Module banner image URL.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -60,7 +60,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * Module name.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -71,7 +71,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * Module description.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -82,7 +82,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * Module category.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -93,7 +93,7 @@ class SmartCouponsModule extends BaseModule {
 	/**
 	 * The module's runtime services.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return BootstrapServiceProvider
 	 */

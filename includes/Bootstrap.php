@@ -42,11 +42,11 @@ class Bootstrap {
 	 * sets it to the released version; until then every version passes,
 	 * because version_compare() ranks a word below any number.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
-	const MIN_PRO_VERSION = 'SPSG_VERSION';
+	const MIN_PRO_VERSION = '3.1.0';
 
 	/**
 	 * Constructor of Bootstrap class.
@@ -63,7 +63,7 @@ class Bootstrap {
 	 * Ask to update Pro when it's older than this version supports. Everything
 	 * else keeps working.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

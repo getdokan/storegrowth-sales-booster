@@ -19,63 +19,63 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Every Smart Coupon, automatic included, is a real `shop_coupon` post. These
  * keys are what the referee reads from it; the Smart Coupons module writes them.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SmartCoupon {
 
 	/**
 	 * Meta key: `yes` on a coupon managed by Smart Coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const MANAGED = '_spsg_smart_coupon';
 
 	/**
 	 * Meta key: how the coupon is applied, `automatic`, `code` or `link`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const METHOD = '_spsg_coupon_method';
 
 	/**
 	 * Meta key: the name shoppers see in cart labels. Empty means the code.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TITLE = '_spsg_coupon_title';
 
 	/**
 	 * Meta key: `yes` for "Can combine with other StoreGrowth deals".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const COMBINES = '_spsg_coupon_combines';
 
 	/**
 	 * Meta key: `yes` for "Allow with other coupons".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ALLOW_OTHERS = '_spsg_coupon_allow_others';
 
 	/**
 	 * Method value of a coupon the referee applies by itself.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const AUTOMATIC = 'automatic';
 
 	/**
 	 * Method value of a coupon the shopper types.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const CODE = 'code';
 
 	/**
 	 * Method value of a coupon applied from a link (Pro).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const LINK = 'link';
 
@@ -83,21 +83,21 @@ class SmartCoupon {
 	 * Meta key: the coupon's type, one of the `TYPE_*` values. WooCommerce's
 	 * own discount type can't tell tiers or Buy X get Y from a percentage.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TYPE = '_spsg_coupon_type';
 
 	/**
 	 * Type value: percent off eligible products.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TYPE_PERCENTAGE = 'percentage';
 
 	/**
 	 * Type value: an amount off the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TYPE_FIXED = 'fixed';
 
@@ -105,14 +105,14 @@ class SmartCoupon {
 	 * Type value: Buy more save more, tiers by quantity or cart subtotal
 	 * (StoreGrowth Pro prices it).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TYPE_TIERS = 'tiers';
 
 	/**
 	 * Type value: Buy X get Y, a deal defined by a BOGO rule.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TYPE_BUY_X_GET_Y = 'buy_x_get_y';
 
@@ -120,21 +120,21 @@ class SmartCoupon {
 	 * Meta key: start of the coupon's dates, `Y-m-d H:i:s` in the site
 	 * timezone. Its end is WooCommerce's own expiry date.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const STARTS_AT = '_spsg_coupon_starts_at';
 
 	/**
 	 * Meta key: the smallest number of items the cart must hold.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const MIN_QUANTITY = '_spsg_coupon_min_quantity';
 
 	/**
 	 * Meta key: who may use the coupon, one of `self::ELIGIBILITIES`.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ELIGIBILITY = '_spsg_coupon_eligibility';
 
@@ -143,21 +143,21 @@ class SmartCoupon {
 	 * returning customers, or specific customers (WooCommerce's allowed
 	 * emails).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ELIGIBILITIES = [ 'all', 'roles', 'first_time', 'returning', 'customers' ];
 
 	/**
 	 * The eligibilities only Pro offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const PRO_ELIGIBILITIES = [ 'first_time', 'returning', 'customers' ];
 
 	/**
 	 * Meta key: the role slugs a `roles` coupon is for.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const ROLES = '_spsg_coupon_roles';
 
@@ -165,28 +165,28 @@ class SmartCoupon {
 	 * Meta key: a tiers coupon's rows, written and read by StoreGrowth Pro.
 	 * StoreGrowth only keeps it (a save never clears it).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const TIERS = '_spsg_coupon_tiers';
 
 	/**
 	 * Meta key: the BOGO rule of a Buy X get Y coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const BOGO_RULE = '_spsg_coupon_bogo_rule';
 
 	/**
 	 * Meta key: the `spsg_campaign_offers` row of a campaign-only coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const CAMPAIGN_OFFER = '_spsg_coupon_campaign_offer';
 
 	/**
 	 * Whether a coupon is managed by Smart Coupons.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -199,7 +199,7 @@ class SmartCoupon {
 	/**
 	 * Whether a coupon is applied by the referee, never typed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -212,7 +212,7 @@ class SmartCoupon {
 	/**
 	 * The name shoppers see for a coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -228,7 +228,7 @@ class SmartCoupon {
 	 * How a coupon is named when a shopper must recognise what they typed:
 	 * its code, or its title for an automatic coupon, whose code means nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -242,7 +242,7 @@ class SmartCoupon {
 	 * Whether a coupon is a Buy X get Y coupon: it gives no discount of its
 	 * own, its BOGO rule does.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -259,7 +259,7 @@ class SmartCoupon {
 	 * is kept, so it never reaches more shoppers than meant) and resumes on
 	 * renewal.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -276,7 +276,7 @@ class SmartCoupon {
 	 * answering for them (an older Pro doesn't, and its coupons stay paused
 	 * rather than run without their rules).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -285,7 +285,7 @@ class SmartCoupon {
 		 * Filters whether StoreGrowth Pro runs the Pro coupon options (tiers,
 		 * first-time / returning / specific customers, more uses per customer).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool $available False without StoreGrowth Pro.
 		 */
@@ -297,7 +297,7 @@ class SmartCoupon {
 	 * The option is kept: dropping it could give the discount to more
 	 * shoppers than meant. It resumes when Pro runs again.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -311,7 +311,7 @@ class SmartCoupon {
 	 * What applies to a coupon now: its saved values, or those of the
 	 * campaign running over it. `live` says whether it is on at all.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -336,7 +336,7 @@ class SmartCoupon {
 	/**
 	 * Whether a coupon can combine with other StoreGrowth deals.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -349,7 +349,7 @@ class SmartCoupon {
 	/**
 	 * Whether a coupon can be used with coupons from outside StoreGrowth.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -362,7 +362,7 @@ class SmartCoupon {
 	/**
 	 * The codes of every published automatic Smart Coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string[]
 	 */

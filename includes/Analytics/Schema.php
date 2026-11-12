@@ -71,7 +71,7 @@ class Schema implements HookRegistry {
 	 * Whether the lookup table has the campaign columns. A site that ran
 	 * 3.0.0 has the table without them until the 3.1.0 update (ADR-016).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */

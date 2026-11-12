@@ -71,7 +71,7 @@ class BogoValidator {
 	 * count the gift lines in the quantity they check, which rejects a cart
 	 * already holding its gift.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array                  $bogo_settings BOGO settings array.
 	 * @param DateTimeImmutable|null $now           Moment to check, the current one by default.
@@ -92,7 +92,7 @@ class BogoValidator {
 	 * with Smart Coupons off nothing answers the filter, so the rule stays
 	 * held back and never applies automatically.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $bogo_settings BOGO settings array.
 	 *
@@ -106,7 +106,7 @@ class BogoValidator {
 		/**
 		 * Filters whether a coupon in the cart unlocks an "only with coupon" rule.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool  $unlocked      Whether the rule may apply.
 		 * @param array $bogo_settings The rule.
@@ -159,7 +159,7 @@ class BogoValidator {
 	 * Check if current date is within offer date range.
 	 *
 	 * @param array                  $bogo_settings BOGO settings array.
-	 * @param DateTimeImmutable|null $now           Moment to check (since SPSG_VERSION).
+	 * @param DateTimeImmutable|null $now           Moment to check (since 3.1.0).
 	 * @return bool True if date range is valid, false otherwise.
 	 */
 	private static function is_date_range_valid( $bogo_settings, ?DateTimeImmutable $now = null ) {
@@ -170,7 +170,7 @@ class BogoValidator {
 	 * Check if current time matches offer schedule.
 	 *
 	 * @param array                  $bogo_settings BOGO settings array.
-	 * @param DateTimeImmutable|null $now           Moment to check (since SPSG_VERSION).
+	 * @param DateTimeImmutable|null $now           Moment to check (since 3.1.0).
 	 * @return bool True if schedule is valid, false otherwise.
 	 */
 	private static function is_schedule_valid( $bogo_settings, ?DateTimeImmutable $now = null ) {
@@ -188,7 +188,7 @@ class BogoValidator {
 	 * Check if the current time matches the offer schedule.
 	 *
 	 * @param array                  $schedule Schedule array.
-	 * @param DateTimeImmutable|null $now      Moment to check, the current one by default (since SPSG_VERSION).
+	 * @param DateTimeImmutable|null $now      Moment to check, the current one by default (since 3.1.0).
 	 * @return bool True if schedule is active, false otherwise.
 	 */
 	public static function is_schedule_active( $schedule, ?DateTimeImmutable $now = null ) {

@@ -36,14 +36,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * limit or a campaign-only coupon offline, and it checks what WooCommerce has
  * no field for (start date, minimum quantity, who may use it).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CouponGuard implements HookRegistry {
 
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -63,7 +63,7 @@ class CouponGuard implements HookRegistry {
 	/**
 	 * Reject a Smart Coupon that can't be used right now.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool         $valid     Whether the coupon is valid.
 	 * @param WC_Coupon    $coupon    Coupon.
@@ -88,7 +88,7 @@ class CouponGuard implements HookRegistry {
 	/**
 	 * Whether a Smart Coupon can be used on these items.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon    $coupon    Coupon.
 	 * @param WC_Discounts $discounts Discounts.
@@ -126,7 +126,7 @@ class CouponGuard implements HookRegistry {
 	 * Whether a shopper is entering an automatic coupon's code: it is neither
 	 * being checked by the referee nor already in the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 * @param WC_Cart   $cart   Cart.
@@ -140,7 +140,7 @@ class CouponGuard implements HookRegistry {
 	/**
 	 * Whether the cart holds the coupon's minimum quantity, gift lines left out.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 * @param WC_Cart   $cart   Cart.
@@ -170,7 +170,7 @@ class CouponGuard implements HookRegistry {
 	 * a coupon restricted away from every line (sale items, say) would be
 	 * accepted and do nothing.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon    $coupon    Coupon.
 	 * @param WC_Discounts $discounts Discounts.
@@ -204,7 +204,7 @@ class CouponGuard implements HookRegistry {
 	 * (first-time, returning, specific customers); without it they fail
 	 * closed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -222,7 +222,7 @@ class CouponGuard implements HookRegistry {
 			 * Filters whether the current customer may use a coupon limited to
 			 * first-time, returning or specific customers.
 			 *
-			 * @since SPSG_VERSION
+			 * @since 3.1.0
 			 *
 			 * @param bool      $may_use     False without StoreGrowth Pro.
 			 * @param WC_Coupon $coupon      Coupon.
@@ -238,7 +238,7 @@ class CouponGuard implements HookRegistry {
 	 * Ignore a coupon's own expiry while a campaign runs it: the campaign's
 	 * dates apply then.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool      $expired Whether the coupon has expired.
 	 * @param WC_Coupon $coupon  Coupon.
@@ -259,7 +259,7 @@ class CouponGuard implements HookRegistry {
 	 * Let a Smart Coupon's "Skip products already on sale" skip sale lines
 	 * instead of refusing the whole cart, as WooCommerce would for a fixed amount.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool      $valid  Whether the coupon is valid.
 	 * @param WC_Coupon $coupon Coupon.
@@ -275,7 +275,7 @@ class CouponGuard implements HookRegistry {
 	 * Smart Coupon that isn't on shows. Coupons from outside StoreGrowth keep
 	 * WooCommerce's message for everything else.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string    $message Error message.
 	 * @param int       $code    Error code.
@@ -297,7 +297,7 @@ class CouponGuard implements HookRegistry {
 	/**
 	 * The message for a coupon that can't be used right now.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -312,7 +312,7 @@ class CouponGuard implements HookRegistry {
 	 * Register the Free plan's limit on active automatic coupons (code and
 	 * link coupons are unlimited).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $limits Limits by kind.
 	 *
@@ -331,7 +331,7 @@ class CouponGuard implements HookRegistry {
 	 * Whether a Smart Coupon's dates make it live. With no dates at all it
 	 * stays off; while a campaign runs it, the campaign's dates apply.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool              $live   Whether the offer is live.
 	 * @param string            $kind   Offer kind.
@@ -354,7 +354,7 @@ class CouponGuard implements HookRegistry {
 	/**
 	 * Unlock a BOGO rule while its Buy X get Y coupon is in the cart and on.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool  $unlocked Whether the rule may apply.
 	 * @param array $rule     The rule.
@@ -383,7 +383,7 @@ class CouponGuard implements HookRegistry {
 	 * Add the gifts of a rule a coupon just unlocked: BOGO only adds gifts
 	 * when a product is added or a quantity changes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code Coupon code.
 	 *

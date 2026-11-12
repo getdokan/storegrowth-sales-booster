@@ -59,7 +59,7 @@ class BogoDataManager {
 	 * Key, stored inside `design_settings`, of a rule that applies only with
 	 * a coupon (one used by a code or link Smart Coupon).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -116,7 +116,7 @@ class BogoDataManager {
 	 * An offer's request data as a stored offer reads, for an offer that lives
 	 * on a campaign's list instead of this table.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $data       Validated request data.
 	 * @param int   $product_id The product a product-level rule is for; 0 for a global rule.
@@ -323,7 +323,7 @@ class BogoDataManager {
 	 * A product's own rule still beats a store-wide one, and a campaign-only
 	 * rule comes before an attached one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array|null $everyday   The rule without campaigns.
 	 * @param int        $product_id Product ID.
@@ -374,7 +374,7 @@ class BogoDataManager {
 	 * A rule's values with its campaign's changes, with the key the cart
 	 * reads for a product rule's gift kept in step.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array             $rule Stored rule.
 	 * @param DateTimeImmutable $now  Moment to check.
@@ -399,7 +399,7 @@ class BogoDataManager {
 	/**
 	 * Mark a rule as applying only with a coupon, or clear the mark.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int  $id                Rule id.
 	 * @param bool $only_with_coupon  Whether the rule needs a coupon.

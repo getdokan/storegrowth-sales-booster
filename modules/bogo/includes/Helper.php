@@ -202,7 +202,7 @@ class Helper {
 	/**
 	 * The everyday rule the cart uses for a product.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $product_id Product ID.
 	 *
@@ -425,7 +425,7 @@ class Helper {
 	 * have no `bogo_offer` flag, and carts from before 3.1 may hold only the
 	 * saved price.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $cart_item Cart item.
 	 *
@@ -440,7 +440,7 @@ class Helper {
 	 * offer's reward or one of its alternates, with the line meeting the
 	 * offer's minimum quantity.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int    $offer_product_id Gift product id (the parent of a variable gift).
 	 * @param string $only_key         Check only this cart line, when given.

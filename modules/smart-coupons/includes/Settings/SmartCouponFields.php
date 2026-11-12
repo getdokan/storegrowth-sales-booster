@@ -22,14 +22,14 @@ defined( 'ABSPATH' ) || exit;
  *
  * Extend it in PHP (`spsg_smart_coupon_fields`, `spsg_smart_coupon_page`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SmartCouponFields implements SettingsPage {
 
 	/**
 	 * The coupon's own fields, in page order.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -255,7 +255,7 @@ class SmartCouponFields implements SettingsPage {
 	/**
 	 * The coupon's fields, after extensions.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
@@ -267,7 +267,7 @@ class SmartCouponFields implements SettingsPage {
 		 * the settings field format with a `section`. The coupon's own fields
 		 * can't be redefined, and a field of an unknown type is dropped.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $fields Field definitions keyed by key.
 		 */
@@ -286,7 +286,7 @@ class SmartCouponFields implements SettingsPage {
 	/**
 	 * The editor: title and sections.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<string, mixed>
 	 */
@@ -313,7 +313,7 @@ class SmartCouponFields implements SettingsPage {
 		 * (ADR-010). Add a section here, then put fields on it through
 		 * `spsg_smart_coupon_fields`.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $page Page: title, sections.
 		 */
@@ -323,7 +323,7 @@ class SmartCouponFields implements SettingsPage {
 	/**
 	 * What the editor is drawn from.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array{page: object, schema: object}
 	 */

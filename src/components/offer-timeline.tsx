@@ -4,7 +4,7 @@
  * timeline; an extension (StoreGrowth Pro's campaigns) fills it through the
  * `spsg_offer_timeline` PHP filter, so both draw nothing without one.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { Alert, AlertDescription, Button } from '@wedevs/plugin-ui';
 import { useNavigate } from '@storegrowth/hooks';
@@ -27,7 +27,7 @@ export interface TimelineChipProps {
 /**
  * An offer's timeline chip, in a record list.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props          Props.
  * @param props.timeline Timeline.
@@ -52,7 +52,7 @@ export interface OfferBannerProps {
 /**
  * An offer's timeline banner, above its editor.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props          Props.
  * @param props.timeline Timeline.

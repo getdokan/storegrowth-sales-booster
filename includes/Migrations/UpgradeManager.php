@@ -25,21 +25,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * shows the run failed or stopped long ago. The migrations finished before
  * the failure have stamped their version, so a retry runs only what is left.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class UpgradeManager extends MigrationManager {
 
 	/**
 	 * Seconds after which a migration still logged as running is taken as dead.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const STALE_AFTER = 10 * MINUTE_IN_SECONDS;
 
 	/**
 	 * Whether an upgrade is running now. A flag a dead run left is not one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -61,7 +61,7 @@ class UpgradeManager extends MigrationManager {
 	 * Run the pending migrations. On failure the flag is cleared, so the
 	 * update can be run again, and the error goes on to the caller.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @throws Throwable The migration's error.
 	 *
@@ -80,7 +80,7 @@ class UpgradeManager extends MigrationManager {
 	/**
 	 * The error of the last failed migration, if the last run failed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -98,7 +98,7 @@ class UpgradeManager extends MigrationManager {
 	 * Whether the flag belongs to a run that ended without clearing it: its
 	 * log has a failed migration, or one logged as running for too long.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */

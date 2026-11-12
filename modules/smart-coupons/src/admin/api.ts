@@ -2,7 +2,7 @@
  * Smart Coupons REST client: the coupons route
  * (`sales-booster/v1/smart-coupons`), read through the shared records client.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import type { OfferTimelineData } from '@storegrowth/components';
 import { getAdminData, type RecordEditorData } from '@storegrowth/utilities';
@@ -57,7 +57,7 @@ export interface SmartCouponEditorData extends RecordEditorData {
 /**
  * The coupons route.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 export const couponsRoute = () => {
     return `/${ getAdminData().restNamespace }/smart-coupons`;

@@ -595,7 +595,7 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 				 * Filters the name of a campaign-only offer in reports. Its name
 				 * lives on its campaign row, which StoreGrowth Pro keeps.
 				 *
-				 * @since SPSG_VERSION
+				 * @since 3.1.0
 				 *
 				 * @param string $name   Offer name; empty by default.
 				 * @param int    $row_id The offer's row on its campaign.

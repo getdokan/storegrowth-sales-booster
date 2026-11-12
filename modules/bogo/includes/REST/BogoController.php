@@ -541,7 +541,7 @@ class BogoController extends WP_REST_Controller {
 	 * Validate a campaign's version of an offer, or a campaign-only offer,
 	 * as an update or a create would, and return it in the stored shape.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $offer Stored values; empty for a new campaign-only offer.
 	 * @param array $sent  What the editor sent.
@@ -582,7 +582,7 @@ class BogoController extends WP_REST_Controller {
 	 * alone: such a rule is that product's own rule while the campaign runs,
 	 * and takes over from its everyday product rule.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $offer Stored values; an attached offer's have its id.
 	 * @param array $data  Normalized offer data.
@@ -599,7 +599,7 @@ class BogoController extends WP_REST_Controller {
 	 * Stored values as this editor reads them. A campaign-only rule always
 	 * opens in this editor, never on a product's BOGO tab.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Stored values.
 	 *

@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Answers "what time is it" and "is this window live" in the site timezone,
  * so every deal switches at the moment the merchant set.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SiteTime {
 
 	/**
 	 * Stored weekday names, by ISO-8601 day number (`wp_date( 'N' )`).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var array<int, string>
 	 */
@@ -43,7 +43,7 @@ class SiteTime {
 	/**
 	 * The current date and time in the site timezone.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return DateTimeImmutable
 	 */
@@ -55,7 +55,7 @@ class SiteTime {
 	 * Today's weekday as schedules store it: lowercase English, whatever the
 	 * site language (`wp_date( 'l' )` would translate it).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param DateTimeImmutable|null $now Moment to read, the current one by default.
 	 *
@@ -71,7 +71,7 @@ class SiteTime {
 	 * A date without a time is the start of that day, or its last second
 	 * with `$end_of_day`, so an end date runs through that day.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed $value      Stored value (`Y-m-d` or `Y-m-d H:i:s`).
 	 * @param bool  $end_of_day Whether a date without a time means the end of the day.
@@ -100,7 +100,7 @@ class SiteTime {
 	 * Whether a moment falls inside a window. Both ends are inclusive; an
 	 * empty or unreadable end leaves that side open.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed                  $start Window start.
 	 * @param mixed                  $end   Window end.

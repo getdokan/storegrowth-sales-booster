@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * (ADR-014). A coupon that is off is a draft, which WooCommerce can't find by
  * its code.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class SmartCouponRepository {
 
@@ -39,14 +39,14 @@ class SmartCouponRepository {
 	 * Active automatic coupons on the Free plan (code and link coupons are
 	 * unlimited).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const FREE_LIMIT = 1;
 
 	/**
 	 * WooCommerce's discount type for each coupon type.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const WC_TYPES = [
 		SmartCoupon::TYPE_PERCENTAGE  => 'percent',
@@ -58,7 +58,7 @@ class SmartCouponRepository {
 	/**
 	 * The Smart Coupon with an id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $id Post id.
 	 *
@@ -77,7 +77,7 @@ class SmartCouponRepository {
 	/**
 	 * A page of Smart Coupons, newest first.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int    $page     Page.
 	 * @param int    $per_page Coupons per page.
@@ -117,7 +117,7 @@ class SmartCouponRepository {
 	 * The everyday automatic coupons that are switched on, oldest first:
 	 * published, not campaign-only, and not past their end.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return WC_Coupon[]
 	 */
@@ -163,7 +163,7 @@ class SmartCouponRepository {
 	 * the Free limit; code and link coupons are unlimited. `OfferLimits`
 	 * calls this: it must not ask whether a coupon is paused.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array[] Rows of `id` and `name`.
 	 */
@@ -192,7 +192,7 @@ class SmartCouponRepository {
 	 * On the Free plan, the automatic coupon already switched on, if any:
 	 * turning on another asks to swap it or upgrade. Null with Pro.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array|null `id` and `name`.
 	 */
@@ -214,7 +214,7 @@ class SmartCouponRepository {
 	/**
 	 * A coupon's start and end as stored, `Y-m-d H:i:s` in the site timezone.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -232,7 +232,7 @@ class SmartCouponRepository {
 	/**
 	 * Save a coupon: what is sent over what is stored (or the defaults).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array          $sent     Values, as the editor's keys.
 	 * @param WC_Coupon|null $existing Coupon to change; null for a new one.
@@ -268,7 +268,7 @@ class SmartCouponRepository {
 	 * Only the amount and the tiers can differ: the saved coupon, with its
 	 * code and limits, stays one coupon (ADR-013).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon    Everyday coupon.
 	 * @param array     $overrides The version's current changes.
@@ -294,7 +294,7 @@ class SmartCouponRepository {
 		 * Filters what a campaign's version of a coupon changes, e.g. its tiers
 		 * (StoreGrowth Pro).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array     $changes Changes so far (`amount`).
 		 * @param array     $values  The version's clean values.
@@ -306,7 +306,7 @@ class SmartCouponRepository {
 	/**
 	 * A coupon as the editor reads it, with a campaign's changes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon    Coupon.
 	 * @param array     $overrides The version's changes.
@@ -322,7 +322,7 @@ class SmartCouponRepository {
 		 * Filters a coupon as the editor reads a campaign's version of it,
 		 * e.g. with the version's tiers (StoreGrowth Pro).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $record    Record with the version's amount.
 		 * @param array $overrides The version's changes.
@@ -333,7 +333,7 @@ class SmartCouponRepository {
 	/**
 	 * Turn a coupon on or off.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 * @param bool      $active Whether it is on.
@@ -350,7 +350,7 @@ class SmartCouponRepository {
 	/**
 	 * Delete a coupon and release its BOGO rule.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -372,7 +372,7 @@ class SmartCouponRepository {
 	/**
 	 * The editor's default values.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array
 	 */
@@ -383,7 +383,7 @@ class SmartCouponRepository {
 	/**
 	 * Clean every value the editor sends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Values.
 	 *
@@ -421,7 +421,7 @@ class SmartCouponRepository {
 		 * Filters a coupon's clean values: StoreGrowth Pro cleans its own
 		 * (tiers, tier basis, customer emails, uses per customer).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $clean  Clean values.
 		 * @param array $values Values as sent (over the stored ones).
@@ -433,7 +433,7 @@ class SmartCouponRepository {
 	 * A sent date (`Y-m-d H:i`, a `T` between them from the browser) as the
 	 * stored `Y-m-d H:i:s` in the site timezone. Empty when it can't be read.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed $value Sent value.
 	 *
@@ -451,7 +451,7 @@ class SmartCouponRepository {
 	 * newly chosen, so an existing Pro coupon can be renamed after the
 	 * licence ends.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array          $values   Clean values.
 	 * @param WC_Coupon|null $existing Coupon being changed.
@@ -511,7 +511,7 @@ class SmartCouponRepository {
 		 * Filters a coupon's rule check before it is saved: StoreGrowth Pro
 		 * checks its own options (tiers, specific customers).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param true|WP_Error  $check    True so far.
 		 * @param array          $values   Clean values.
@@ -533,7 +533,7 @@ class SmartCouponRepository {
 	/**
 	 * Check the amount a coupon's type needs.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Clean values.
 	 *
@@ -556,7 +556,7 @@ class SmartCouponRepository {
 	/**
 	 * A 400 error about a value.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code    Error code, mapped to its field by the editor.
 	 * @param string $message Message.
@@ -571,7 +571,7 @@ class SmartCouponRepository {
 	 * Whether a code is used by another coupon, a draft included: WooCommerce
 	 * only checks published ones, and a draft is published when switched on.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code       Code.
 	 * @param int    $exclude_id Coupon to leave out.
@@ -588,7 +588,7 @@ class SmartCouponRepository {
 	/**
 	 * Whether sent values use something only Pro can do.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Clean values.
 	 *
@@ -604,7 +604,7 @@ class SmartCouponRepository {
 	 * Copy clean values onto a coupon: WooCommerce's fields, then the
 	 * contract's meta. Never Individual use; the referee decides.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon      $coupon   Coupon.
 	 * @param array          $values   Clean values.
@@ -656,7 +656,7 @@ class SmartCouponRepository {
 		 * values: StoreGrowth Pro writes its own (tiers, customer emails, uses
 		 * per customer). Without Pro they stay as they were.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param WC_Coupon      $coupon   Coupon being saved.
 		 * @param array          $values   Clean values.
@@ -676,7 +676,7 @@ class SmartCouponRepository {
 	 * The code to save: the one the merchant set, or for an automatic coupon
 	 * (which shoppers never type) a generated one that stays with the coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array          $values   Clean values.
 	 * @param WC_Coupon|null $existing The coupon before this save.
@@ -700,7 +700,7 @@ class SmartCouponRepository {
 	 * BOGO rule is the deal). A tiers coupon's amount is its first tier,
 	 * which StoreGrowth Pro writes; without Pro the stored one stays.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $values Clean values.
 	 *
@@ -718,7 +718,7 @@ class SmartCouponRepository {
 	 * Keep BOGO's "only with coupon" flag in step: on for a code or link
 	 * coupon's rule, off for a rule no coupon holds any more.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon   Saved coupon.
 	 * @param int       $old_rule Rule it held before this save.
@@ -740,7 +740,7 @@ class SmartCouponRepository {
 	/**
 	 * Clear a rule's flag unless another coupon still holds it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $rule       Rule id.
 	 * @param int $exclude_id Coupon to leave out.
@@ -769,7 +769,7 @@ class SmartCouponRepository {
 	/**
 	 * A coupon as the editor's keys read it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -813,7 +813,7 @@ class SmartCouponRepository {
 		 * Filters a coupon's values as the editor reads them: StoreGrowth Pro
 		 * adds its own (tiers, tier basis, customer emails, uses per customer).
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array     $values Values.
 		 * @param WC_Coupon $coupon Coupon.
@@ -824,7 +824,7 @@ class SmartCouponRepository {
 	/**
 	 * A coupon as the routes return it: its values and what the list shows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -851,7 +851,7 @@ class SmartCouponRepository {
 		 * campaign that sets its dates (`campaign`: `id`, `name`, `starts_at`,
 		 * `ends_at`) and where it is used (`used_in`) from StoreGrowth Pro.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array     $response Coupon response.
 		 * @param WC_Coupon $coupon   Coupon.
@@ -862,7 +862,7 @@ class SmartCouponRepository {
 	/**
 	 * Why a coupon that is switched on isn't running now, if it isn't.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -896,7 +896,7 @@ class SmartCouponRepository {
 	 * Total discount given, by coupon id, from WooCommerce Analytics' coupons
 	 * report (ADR-012), so Dokan's query filters and its order statuses apply.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int[] $ids Coupon ids.
 	 *
@@ -938,7 +938,7 @@ class SmartCouponRepository {
 	 * creation, not payment (Analytics' default), so an unpaid order counts
 	 * here as it does in Discount given.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int[] $ids Coupon ids.
 	 *

@@ -21,14 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * `sales-booster/v1/migration/*` (routes unchanged): a failed upgrade answers
  * with its error as JSON, not a critical error page, so the notice can show it.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class UpgradeRESTController extends MigrationRESTController {
 
 	/**
 	 * Run the upgrade.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *

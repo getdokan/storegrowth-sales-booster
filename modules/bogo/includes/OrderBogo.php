@@ -34,7 +34,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * Whether the cart itself is removing a gift.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var bool
 	 */
@@ -43,21 +43,21 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * Cart item key on a bought line: its gift is out while a coupon wins.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const GIFT_HELD = '_spsg_gift_held';
 
 	/**
 	 * Cart item key on a bought line: its gift was already counted.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const GIFT_COUNTED = '_spsg_gift_counted';
 
 	/**
 	 * Whether a held gift is being returned to the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var bool
 	 */
@@ -124,7 +124,7 @@ class OrderBogo implements HookRegistry {
 	 * The rule a badge reads: the one a running campaign puts on the product,
 	 * or the everyday one, as `effective_offer` says applies now.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param mixed $offer      The everyday rule, if any (older readers may return false).
 	 * @param int   $product_id Product id.
@@ -651,7 +651,7 @@ class OrderBogo implements HookRegistry {
 	 * Whether a gift being added counts as a new one: every gift the shopper
 	 * earns, but not one coming back after a coupon held it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $trigger_key Bought line's cart item key.
 	 *
@@ -667,7 +667,7 @@ class OrderBogo implements HookRegistry {
 	 * gift's whole discount at fresh prices, so what happens to the gift line
 	 * can't change it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $deals Deals.
 	 * @param \WC_Cart $cart  Cart.
@@ -687,7 +687,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * Add one bought line's BOGO deal, if it has one.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]  $deals Deals.
 	 * @param \WC_Cart $cart  Cart.
@@ -733,7 +733,7 @@ class OrderBogo implements HookRegistry {
 	 * The merchant's name for an offer. Product offers have only a generated
 	 * one, except a campaign-only rule, which keeps the name it was given.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings The offer.
 	 *
@@ -746,7 +746,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The name a deal goes by in the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings The offer.
 	 *
@@ -761,7 +761,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The gift line of a bought line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart Cart.
 	 * @param string   $key  Bought line's cart item key.
@@ -784,7 +784,7 @@ class OrderBogo implements HookRegistry {
 	 * Apply the referee's decision: a bought line whose coupon won loses its
 	 * gift, and a held gift comes back once no coupon beats it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param Decision $decision Decision.
 	 * @param \WC_Cart $cart     Cart.
@@ -810,7 +810,7 @@ class OrderBogo implements HookRegistry {
 	 * Take a bought line's gift out of the cart while a coupon wins. No
 	 * notice: the line's label explains it.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart Cart.
 	 * @param string   $key  Bought line's cart item key.
@@ -832,7 +832,7 @@ class OrderBogo implements HookRegistry {
 	 * Bring a held gift back, priced, when the deal is still earned. WooCommerce
 	 * would total the cart on each add; this runs inside a calculation already.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart Cart.
 	 * @param string   $key  Bought line's cart item key.
@@ -874,7 +874,7 @@ class OrderBogo implements HookRegistry {
 	 * unlocked it. Works for every deal type: Pro adds a same-product gift only
 	 * when a product is added or a quantity changes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $rule_id BOGO rule id.
 	 *
@@ -1243,7 +1243,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * Price one gift line, or remove it when it's no longer earned.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart Cart.
 	 * @param string   $key  Gift's cart item key.
@@ -1301,7 +1301,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The live offer behind a trigger line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $trigger Trigger's cart item.
 	 *
@@ -1316,7 +1316,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * How many gifts a bought line's quantity earns.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings The BOGO offer.
 	 * @param array $trigger  Bought line.
@@ -1339,7 +1339,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The offer stored for a trigger line, live or not.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $trigger Trigger's cart item.
 	 *
@@ -1365,7 +1365,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The live offer behind a trigger line and the version it runs under.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $trigger Trigger's cart item.
 	 *
@@ -1392,7 +1392,7 @@ class OrderBogo implements HookRegistry {
 	 * Remove a gift the shopper no longer gets, past the guard that stops
 	 * shoppers removing gifts themselves.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param \WC_Cart $cart    Cart.
 	 * @param string   $key     Gift's cart item key.
@@ -1415,7 +1415,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * The notice for a gift that was removed.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array      $item     Gift's cart item.
 	 * @param array|null $settings The offer, when it's still live.

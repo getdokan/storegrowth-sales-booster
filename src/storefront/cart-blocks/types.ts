@@ -2,7 +2,7 @@
  * StoreGrowth's data on the Store API cart (PHP `StoreApi\CartExtension`) and
  * the WooCommerce Blocks globals the block script uses.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import type { ComponentType, ReactNode } from 'react';
 

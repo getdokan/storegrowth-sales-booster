@@ -4,7 +4,7 @@
  * coupon list (`#/smart-coupons`) and the editor (`#/smart-coupons/new`,
  * `#/smart-coupons/<id>`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import { addFilter } from '@wordpress/hooks';
 import type { ReactNode } from 'react';

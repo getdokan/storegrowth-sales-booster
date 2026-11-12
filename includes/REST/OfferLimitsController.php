@@ -22,14 +22,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Lists the offers under each Free limit and saves which ones stay on.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class OfferLimitsController extends WP_REST_Controller {
 
 	/**
 	 * Route namespace.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -38,7 +38,7 @@ class OfferLimitsController extends WP_REST_Controller {
 	/**
 	 * Route base.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var string
 	 */
@@ -47,7 +47,7 @@ class OfferLimitsController extends WP_REST_Controller {
 	/**
 	 * Register the routes.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -88,7 +88,7 @@ class OfferLimitsController extends WP_REST_Controller {
 	/**
 	 * Each limited kind with its offers and chips.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -101,7 +101,7 @@ class OfferLimitsController extends WP_REST_Controller {
 	/**
 	 * Save which offers of a kind stay on.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *
@@ -116,7 +116,7 @@ class OfferLimitsController extends WP_REST_Controller {
 	/**
 	 * Whether the user may see and choose offers.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WP_REST_Request $request Request.
 	 *

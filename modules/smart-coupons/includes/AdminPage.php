@@ -15,14 +15,14 @@ defined( 'ABSPATH' ) || exit;
  * Loads the Smart Coupons admin bundle (the coupon list and editor) into the
  * admin app.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class AdminPage extends ModuleAdminPage {
 
 	/**
 	 * Module id.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return string
 	 */
@@ -34,7 +34,7 @@ class AdminPage extends ModuleAdminPage {
 	 * What the pages read from PHP: whether WooCommerce's coupons are on,
 	 * since automatic coupons need them.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<string, array>
 	 */

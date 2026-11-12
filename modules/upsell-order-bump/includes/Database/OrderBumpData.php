@@ -490,7 +490,7 @@ class OrderBumpData {
 	 * Add to the active bumps the ones only a running campaign brings: an
 	 * attached bump that is off, and campaign-only bumps.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array[]           $bumps Active bumps.
 	 * @param DateTimeImmutable $now   Moment to check.
@@ -531,7 +531,7 @@ class OrderBumpData {
 	/**
 	 * Active bumps with what the Free limit needs, oldest first.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array[]
 	 */

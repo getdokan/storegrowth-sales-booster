@@ -143,7 +143,7 @@ class Assets {
 		 * campaign link cookie (`promoCookie`, `promoDays`); without it the
 		 * tracker sets no cookie.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param array $settings `url`: the tracking route.
 		 */

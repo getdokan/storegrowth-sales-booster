@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * A gift milestone is a $0 line. Whether a line exists is worked out on each
  * cart calculation: added when its milestone is reached, gone when it isn't.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class RewardGifts implements HookRegistry {
 
@@ -36,7 +36,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -52,7 +52,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Make the cart's gift lines match the milestones it has reached.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -99,7 +99,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * The cart's reward gift lines.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -119,7 +119,7 @@ class RewardGifts implements HookRegistry {
 	 * calculate totals again and fire `woocommerce_add_to_cart`, which BOGO
 	 * and the analytics counters listen to.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 * @param array   $row  Gift milestone.
@@ -160,7 +160,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Label a gift line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $item_data Item data.
 	 * @param array $cart_item Cart item.
@@ -182,7 +182,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Take the remove link off a gift line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $link Remove link.
 	 * @param string $key  Cart item key.
@@ -196,7 +196,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Show a gift line's quantity as a plain 1.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $field     Quantity field.
 	 * @param string $key       Cart item key.
@@ -211,7 +211,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Keep a block cart from changing a gift line's quantity.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool        $editable  Whether the quantity can be edited.
 	 * @param \WC_Product $product   Product.
@@ -226,7 +226,7 @@ class RewardGifts implements HookRegistry {
 	/**
 	 * Whether a cart key is a gift line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $key Cart item key.
 	 *

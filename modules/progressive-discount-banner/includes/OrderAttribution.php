@@ -149,7 +149,7 @@ class OrderAttribution implements HookRegistry {
 	/**
 	 * An amount as a decimal string.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param float $amount Amount.
 	 *

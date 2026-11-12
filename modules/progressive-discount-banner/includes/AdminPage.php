@@ -82,7 +82,7 @@ class AdminPage extends ModuleAdminPage {
 	/**
 	 * Whether a store from before 3.1 had a rule that became milestone 1.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */

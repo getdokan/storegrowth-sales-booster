@@ -5,7 +5,7 @@
  * item data. The block mini-cart's bar is PHP bound to the cart state
  * (`modules/progressive-discount-banner/templates/rewards-bar-mini-cart.php`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 import type { CartBlocksWindow, RewardsProgress } from './types';
 
@@ -18,7 +18,7 @@ function cartData() {
 }
 
 /**
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props         Props.
  * @param props.rewards Bar data.
@@ -66,7 +66,7 @@ function RewardsBar( { rewards }: { rewards: RewardsProgress } ) {
 /**
  * The bar in the order summary of the block cart and checkout.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 function RewardsSlot() {
     const { ExperimentalOrderMeta } = wc.blocksCheckout;

@@ -30,7 +30,7 @@ class V_3_0_0 extends BaseMigration {
 	 * Create the analytics tables.
 	 *
 	 * @since 3.0.0
-	 * @since SPSG_VERSION Throws when the tables aren't there afterwards, so
+	 * @since 3.1.0 Throws when the tables aren't there afterwards, so
 	 *                     the version isn't stamped and the update can be retried.
 	 *
 	 * @throws RuntimeException When the tables could not be created.

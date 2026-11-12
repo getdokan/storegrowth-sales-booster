@@ -573,7 +573,7 @@ class SettingsService {
 	/**
 	 * A stored option with the keys its schema works out live.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param SettingsSchema|null $schema Module schema.
 	 * @param array               $stored Stored option.
@@ -678,7 +678,7 @@ class SettingsService {
 	 * A `rows` value through the field's `row` callback, which takes one row
 	 * and returns it clean, or null when it is not valid.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $field Field definition.
 	 * @param mixed $value Rows.

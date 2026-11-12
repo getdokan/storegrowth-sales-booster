@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The referee's answer for one cart. Reads only; nothing here touches the
  * cart. `to_array()` is the shape the Store API extension exposes.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class Decision {
 
@@ -65,7 +65,7 @@ class Decision {
 	/**
 	 * Hold a decision.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $lines      Per line: label, winner, steps.
 	 * @param array $coupon_won Bought lines whose BOGO lost: key => coupon name.
@@ -86,7 +86,7 @@ class Decision {
 	/**
 	 * The campaigns behind the deals that stayed, largest saving first.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array<int, float> Promotion id => what its deals saved.
 	 */
@@ -97,7 +97,7 @@ class Decision {
 	/**
 	 * What a cart line shows.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $key Cart item key.
 	 *
@@ -110,7 +110,7 @@ class Decision {
 	/**
 	 * Whether a Smart Coupon beat the BOGO deal on a bought line.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $key Bought line's cart item key.
 	 *
@@ -123,7 +123,7 @@ class Decision {
 	/**
 	 * Why a coupon is out of the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code Coupon code.
 	 *
@@ -136,7 +136,7 @@ class Decision {
 	/**
 	 * Whether a coupon lost a line while staying on others.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code Coupon code.
 	 * @param string $key  Cart item key.
@@ -150,7 +150,7 @@ class Decision {
 	/**
 	 * Whether a coupon reached any line of the cart.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $code Coupon code.
 	 *
@@ -163,7 +163,7 @@ class Decision {
 	/**
 	 * Whether there is nothing to apply or show.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */
@@ -174,7 +174,7 @@ class Decision {
 	/**
 	 * The decision as data, for logs and the Store API.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return array{lines: array, coupon_won: array, rejected: array, lost_lines: array}
 	 */
