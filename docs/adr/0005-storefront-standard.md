@@ -39,7 +39,7 @@ Standard **S1–S10** applies to every module's storefront, existing and new.
   ```
 - **Static CSS** (`modules/<m>/assets/css/*.css`) consumes the variables, with **the old hard-coded value as the fallback**: `background: var(--spsg-stock-bar-bar-bg, #e7efff);`. A site with no saved value renders as before.
 - **Existing CSS output is kept alongside:**
-  - Existing inline CSS filters keep firing with the same arguments, and their returned CSS is still appended: `spsg_countdown_timer_styles`, `spsg_qcv_inline_styles`, `spsg_direct_checkout_button_inline_styles`, and the rest in `tests/compat/php-hooks-baseline.txt`. Pro's CSS keeps working.
+  - Existing inline CSS filters keep firing with the same arguments, and their returned CSS is still appended: `spsg_countdown_timer_styles`, `spsg_qcv_inline_styles`, `spsg_direct_checkout_button_inline_styles`, and the rest. Pro's CSS keeps working.
   - Existing selectors and classes are **never removed or renamed**, because themes and pro target them. New classes are added next to them.
 - **No new inline `style=""` attributes** in templates; a replaced one must render identically. The template markup otherwise stays the same.
 
@@ -116,7 +116,6 @@ Existing option keys never change (ADR-004). **New** style settings, and the CSS
 - So the preview and the shop share one set of CSS, and the admin can't drift from the storefront.
 
 ### Checks
-- `wp eval-file tests/compat/storefront-foundation.php` covers the shared helpers.
 - A storefront change must render identically for (a) a never-saved site and (b) a no-op save, and pro 2.2.0's storefront features must still work.
 
 ## Consequences

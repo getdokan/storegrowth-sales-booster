@@ -210,9 +210,7 @@ Nothing changes: read the option with `get_option()`, or `SettingsService::with_
 
 ### 5. Before committing
 
-- `wp eval-file tests/compat/settings-roundtrip.php`: saving never loses or alters stored data (runs every schema).
 - `npm run type-check`, `npm run lint:js`, `vendor/bin/phpcs`.
-- New PHP hooks in `tests/compat/php-hooks-baseline.txt`, `npm run check:hooks`.
 - `@since SPSG_VERSION` on new symbols.
 
 ## Reference

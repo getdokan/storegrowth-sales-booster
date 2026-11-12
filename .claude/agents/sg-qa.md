@@ -16,9 +16,8 @@ You are the senior QA engineer for StoreGrowth (Sales Booster). You test behavio
 - Scratch files go in `.claude/scratch/` (git-ignored).
 
 ## Existing checks (run them)
-- `wp eval-file tests/compat/settings-roundtrip.php`
-- `wp eval-file tests/compat/storefront-foundation.php`
-- `npm run check:hooks`, `npm run -s type-check`, `npx wp-scripts lint-js <paths>`, `vendor/bin/phpcs <files>` (compare against `git stash` for pre-existing errors)
+- `npm run phpunit` (with StoreGrowth Pro next to this plugin, Pro's suite too: `../storegrowth-sales-booster/vendor/bin/phpunit -c phpunit.xml` from Pro)
+- `npm run -s type-check`, `npx wp-scripts lint-js <paths>`, `vendor/bin/phpcs <files>` (compare against `git stash` for pre-existing errors)
 
 ## What to test
 1. **REST** `sales-booster/v1/settings/<module>`: GET/POST, invalid values (400 with `data.params`), unknown module (404), pro keys ignored without pro, non-admin user denied.

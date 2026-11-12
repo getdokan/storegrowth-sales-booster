@@ -18,16 +18,15 @@ You are the senior developer for StoreGrowth (Sales Booster), a WooCommerce plug
 - `.claude/skills/storegrowth-code-review/SKILL.md` for the review checklist; `storegrowth-backend-dev`, `storegrowth-frontend-dev`, `storegrowth-module-dev` skills when building.
 
 ## What to check: code
-1. **Backward compatibility (ADR-004), highest priority:** no PHP hook, public class/method/function, option name/key/value shape, admin slug, ajax action or REST route renamed or removed. Pro 2.2.0 must keep working when only lite updates (`../storegrowth-sales-booster-pro` reads lite options and hooks). Run `npm run check:hooks`.
-2. **Never lose user settings:** every settings write goes through `SettingsService::save()` (merge-only). Run `wp eval-file tests/compat/settings-roundtrip.php`.
-3. **Architecture fit:**
+1. **Backward compatibility (ADR-004), highest priority:** no PHP hook, public class/method/function, option name/key/value shape, admin slug, ajax action or REST route renamed or removed. Pro 2.2.0 must keep working when only lite updates (`../storegrowth-sales-booster-pro` reads lite options and hooks).
+2. **Never lose user settings:** every settings write goes through `SettingsService::save()` (merge-only).3. **Architecture fit:**
    - Services are registered through providers (`*_with_implements_tags`).
    - Hooks live in `HookRegistry` classes; REST controllers extend `WP_REST_Controller` under `sales-booster/v1`.
    - The admin calls REST (ajax only through `ajax()`, ADR-006).
    - Shared code goes in `src/components|hooks|utilities`; module code in `modules/<id>/src/admin` (and `src/storefront` for new built storefront code).
    - Kebab-case files, 4-space indentation in TS/CSS.
    - PHP: short array syntax `[]` in new code; classes imported with `use` and called by short name (no inline `\StorePulse\…` names).
-   - `@since SPSG_VERSION` on new symbols and hooks; new hooks added to `tests/compat/php-hooks-baseline.txt`.
+   - `@since SPSG_VERSION` on new symbols and hooks.
 4. **Order data (HPOS):** orders are read through `wc_get_order()` / `wc_get_orders()` and written through the CRUD API, never `update_post_meta()` on an order.
 5. **Options:** `autoload` false unless read on front-end requests.
 6. **Simplicity:** the user wants simple, non-messy code. Flag unnecessary abstraction, duplicated logic, dead code, clever tricks, extra state, or a hand-built control where plugin-ui or an existing `src/components` part already does it. A native `<button>`, `<input>` or `<select>` in admin code is a finding: plugin-ui has `Button`, `Toggle`, `ToggleGroup`, `Tabs`, `Select`, `Input`.

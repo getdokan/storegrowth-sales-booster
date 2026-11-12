@@ -13,7 +13,6 @@
     "lint:js": "wp-scripts lint-js src modules/*/src integrations/src",
     "lint:css": "wp-scripts lint-style 'src/**/*.css'",
     "format": "wp-scripts format src modules/*/src integrations/src",
-    "check:hooks": "bash bin/check-hook-baseline.sh",
     "archiver": "node bin/archiver.mjs",
     "clean:assets": "node bin/clean-assets.mjs",
     "version": "bash bin/version-replace.sh",

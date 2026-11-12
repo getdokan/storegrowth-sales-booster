@@ -114,7 +114,7 @@ What the suite covers (keep it that way when changing a module):
 2. **Settings pages** — `settings-pages.spec.ts`: every tab of every module page saves, persists across reload and REST, resets; pro controls locked on lite. Legacy ajax save handlers stay covered (`settings-persistence`, `settings-malformed-payload`) — ADR-004.
 3. **Records** — BOGO and Order Bump lists, editors, rules and caps (`bogo-admin`, `order-bump-admin`, `*-rules.api`).
 4. **Storefront** — one `storefront-<module>.spec.ts` per module: positive and negative, Order Bump on classic and block checkout, pricing characterisation.
-5. **Migrations** — PHPUnit (`tests/php`) plus `tests/compat/migrations.php` (`wp eval-file`).
+5. **Migrations** — PHPUnit (`tests/php`).
 Not covered: the Dokan vendor dashboard (no Dokan on the stack).
 
 **Verify selectors against the live UI before asserting them** — use whatever browser tooling is available (Playwright MCP, `npm run codegen <url>`, or a quick Playwright script), then copy the confirmed role/label into the spec.

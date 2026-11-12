@@ -47,7 +47,6 @@ npm run start          # watch + rebuild (restart it after adding an entry to we
 npm run build          # production build
 npm run type-check     # tsc --noEmit
 npm run lint:js        # src, modules/*/src, integrations/src
-npm run check:hooks    # every hook in tests/compat/php-hooks-baseline.txt still fires
 npm run makepot        # regenerate languages/storegrowth-sales-booster.pot
 npm run version        # replace SPSG_VERSION placeholders (bin/version-replace.sh)
 npm run archiver       # zip a distributable build into dist/ (bin/archiver.mjs; dist/ is git-ignored)
@@ -57,13 +56,6 @@ npm run release:dev    # same zip without `version` (SPSG_VERSION placeholders s
 ```
 
 While a dev server (`npm run start`) is running, don't run `npm run build`; reload the site instead.
-
-Checks against a live site (run from the plugin folder; WP-CLI finds the WordPress root):
-
-```bash
-wp eval-file tests/compat/settings-roundtrip.php     # saving settings never loses or alters stored data
-wp eval-file tests/compat/storefront-foundation.php  # storefront helpers (ADR-005)
-```
 
 PHP:
 ```bash
@@ -136,7 +128,6 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 
 ### Conventions
 - Option/meta/prefix naming uses `spsg_` (and constants `STOREGROWTH_*`); module IDs are lowercase slugs (`bogo`, `fly-cart`, …). In PHP, take a module's id from its class (`StockBarModule::get_id()`), never a repeated string. New feature hooks use `spsg_`; lifecycle hooks `storegrowth_`.
-- **New hooks** go in `tests/compat/php-hooks-baseline.txt` (sorted); `npm run check:hooks` fails when one stops firing.
 - **Option autoload:** pass `false` to `add_option()` / `update_option()` for any option that isn't read on most front-end requests (admin-only flags, versions, backups, one-shot state). Leave it out (WordPress's default `auto`) only for options the storefront or every request reads: `spsg_active_module_ids` and the module settings options.
 - TypeScript/CSS: 4-space indentation, kebab-case file names inside `src/`. PHP: WordPress coding standards (tabs), PSR-4 PascalCase class files, **`array_merge()` to combine arrays, not the `+` union operator**, **short array syntax `[]`, never `array()`** in new code (the house style, allowed in `phpcs.xml`; legacy files keep theirs until they're rewritten).
 - PHP classes: **import with `use` at the top of the file, then use the short name** (`use StorePulse\StoreGrowth\Helper;` → `Helper::get_settings()`); never a fully-qualified name inline (`\StorePulse\StoreGrowth\Helper::…`). When two classes share a short name (a module's own `Helper`), alias one (`use StorePulse\StoreGrowth\Helper as PluginHelper;`). Templates can `use` too.
