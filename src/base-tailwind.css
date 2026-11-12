@@ -29,6 +29,15 @@
 @source "../node_modules/@wedevs/plugin-ui/dist";
 
 /*
+ * StoreGrowth Pro's admin draws inside this app and has no stylesheet of its
+ * own: a second, separately built utilities sheet would fight this one (its
+ * `flex-col` loading after our `md:flex-row`). So the classes only Pro uses
+ * are listed here, and this stays the one sorted sheet. Pro and StoreGrowth
+ * ship together; when Pro uses a class StoreGrowth doesn't, add it here.
+ */
+@source inline("2xl:grid-cols-2 2xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] h-[220px] h-[min(36rem,calc(100vh-8rem))] md:grid-cols-4 py-8 text-[#065f46] text-[#b91c1c] w-28 w-44 xl:grid-cols-4 xl:grid-cols-[1fr_360px]");
+
+/*
  * plugin-ui token → Tailwind colour mapping (copied from plugin-ui's
  * styles.css). The token values themselves are set inline by ThemeProvider.
  */
@@ -238,8 +247,15 @@ body:has(#spsg-admin-app) #wpfooter {
     display: none;
 }
 
+/* The pages' side gutter (`px-4 sm:px-8`), so notices line up with them. */
 #spsg-admin-notices {
     margin: 0 16px;
+}
+
+@media (min-width: 640px) {
+    #spsg-admin-notices {
+        margin: 0 32px;
+    }
 }
 
 /*
