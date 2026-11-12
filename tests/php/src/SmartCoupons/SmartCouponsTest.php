@@ -504,138 +504,180 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
-	 * A Free store has one active everyday coupon; the newest pauses.
+	 * Free: code and link coupons are unlimited; one automatic coupon is
+	 * active, a second pauses (the newest) and the editor names the one on.
 	 *
 	 * @return void
 	 */
-	public function test_free_keeps_one_active_everyday_coupon(): void {
+	public function test_free_limits_only_automatic_coupons(): void {
 		$this->pro = false;
 
-		$older = $this->save_coupon( 'older' );
+		foreach ( [ 'one', 'two', 'three' ] as $code ) {
+			$created = $this->rest(
+				'POST',
+				'',
+				[
+					'method'     => SmartCoupon::CODE,
+					'code'       => $code,
+					'title'      => strtoupper( $code ),
+					'amount'     => 5,
+					'date_start' => wp_date( 'Y-m-d\TH:i', time() - HOUR_IN_SECONDS ),
+				]
+			);
+			$this->assertSame( 201, $created->get_status(), wp_json_encode( $created->get_data() ) );
+		}
 
-		$this->assertFalse( SmartCouponRepository::can_create() );
+		$link = $this->save_coupon( 'linked', [ 'method' => SmartCoupon::LINK ] );
+		$this->assertSame( '', $this->rest( 'GET', '/' . $link->get_id() )->get_data()['chip'] );
+		$this->assertSame( '1', $this->rest( 'GET', '' )->get_headers()['X-SPSG-Can-Create'] );
 
-		$blocked = $this->rest(
-			'POST',
-			'',
-			[
-				'method' => SmartCoupon::CODE,
-				'code'   => 'blocked',
-				'title'  => 'Blocked',
-				'amount' => 5,
-			]
-		);
+		$older = $this->save_coupon( '', [ 'method' => SmartCoupon::AUTOMATIC ] );
+		$newer = $this->save_coupon( '', [ 'method' => SmartCoupon::AUTOMATIC ] );
 
-		$this->assertSame( 403, $blocked->get_status() );
-		$this->assertSame( 'salesbooster_limit_exceeded', $blocked->get_data()['code'] );
+		$this->assertSame( $older->get_id(), SmartCouponRepository::automatic_switched_on()['id'] );
+		$this->assertSame( $older->get_id(), $this->rest( 'GET', '/editor' )->get_data()['automatic_on']['id'] );
 
-		// Another coupon reaches the limit by being turned on from a draft.
-		$this->pro = true;
+		$key = WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
 
-		$newer = $this->save_coupon( 'newer', [ 'status' => 'inactive' ] );
-
-		$this->pro = false;
-
-		SmartCouponRepository::set_active( $newer, true );
-
-		WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
-
-		$this->assertTrue( WC()->cart->apply_coupon( 'older' ) );
-		WC()->cart->remove_coupons();
-
-		$this->assertFalse( WC()->cart->apply_coupon( 'newer' ) );
-		$this->assertTrue( wc_has_notice( esc_html( "NEWER isn't a valid coupon right now." ), 'error' ) );
-
+		$this->assertSame( 90.0, $this->line_totals()[ $key ], 'Only the older automatic coupon applies.' );
 		$this->assertSame( 'Paused: over Free limit', $this->rest( 'GET', '/' . $newer->get_id() )->get_data()['chip'] );
 		$this->assertSame( '', $this->rest( 'GET', '/' . $older->get_id() )->get_data()['chip'] );
+
+		// None of the code coupons counts towards the limit.
+		foreach ( SmartCouponRepository::page( 1, 20, '' )['coupons'] as $coupon ) {
+			if ( SmartCoupon::CODE === $coupon->get_meta( SmartCoupon::METHOD ) ) {
+				$this->assertSame( '', $this->rest( 'GET', '/' . $coupon->get_id() )->get_data()['chip'], $coupon->get_code() );
+			}
+		}
+
+		$this->pro = true;
+		OfferLimits::flush();
+		$this->assertNull( SmartCouponRepository::automatic_switched_on() );
 	}
 
 	/**
-	 * Coupons with Pro's options can't be saved, or used, without Pro.
+	 * Link coupons and specific roles are Free. Tiers, first-time,
+	 * returning and specific customers, and more than one use per customer,
+	 * are StoreGrowth Pro's: they can't be newly chosen without it.
 	 *
 	 * @return void
 	 */
 	public function test_pro_options_need_pro(): void {
-		$with_pro = $this->save_coupon( 'firsts', [ 'eligibility' => 'first_time' ] );
+		$this->pro = false;
+		OfferLimits::flush();
+
+		$this->save_coupon( 'linkfree', [ 'method' => SmartCoupon::LINK ] );
+		$this->save_coupon(
+			'rolesfree',
+			[
+				'eligibility' => 'roles',
+				'roles'       => [ 'customer' ],
+			]
+		);
+
+		foreach (
+			[
+				[
+					'eligibility'     => 'customers',
+					'customer_emails' => 'jane@example.com',
+				],
+				[
+					'one_per_customer' => true,
+					'customer_uses'    => 3,
+				],
+				[ 'eligibility' => 'returning' ],
+				[
+					'discount_type' => SmartCoupon::TYPE_TIERS,
+					'tiers'         => [ '2:10' ],
+				],
+			] as $index => $pro_values
+		) {
+			$refused = SmartCouponRepository::save(
+				array_merge(
+					[
+						'method'     => SmartCoupon::CODE,
+						'code'       => 'pro' . $index,
+						'title'      => 'Pro',
+						'amount'     => 5,
+						'date_start' => wp_date( 'Y-m-d\TH:i', time() - HOUR_IN_SECONDS ),
+					],
+					$pro_values
+				)
+			);
+
+			$this->assertInstanceOf( \WP_Error::class, $refused, wp_json_encode( $pro_values ) );
+			$this->assertSame( 'smart_coupon_needs_pro', $refused->get_error_code() );
+		}
+	}
+
+	/**
+	 * Without StoreGrowth Pro (or with a licence but a Pro that doesn't
+	 * answer), a coupon using Pro options pauses; a save keeps every option
+	 * and the amount, so the discount never reaches more shoppers than meant.
+	 *
+	 * @return void
+	 */
+	public function test_pro_options_pause_and_survive_a_save_without_pro(): void {
+		$coupon = $this->save_coupon( 'keepers', [ 'amount' => 15 ] );
+
+		// Pro options as StoreGrowth Pro stores them, written directly.
+		$coupon->update_meta_data( SmartCoupon::TYPE, SmartCoupon::TYPE_TIERS );
+		$coupon->update_meta_data( SmartCoupon::TIERS, [ [ 'qty' => 2, 'percent' => 15 ] ] );
+		$coupon->update_meta_data( SmartCoupon::ELIGIBILITY, 'customers' );
+		$coupon->set_email_restrictions( [ 'jane@example.com' ] );
+		$coupon->set_usage_limit_per_user( 3 );
+		$coupon->save();
+
+		// Licensed, but nothing answers for the Pro options: still paused.
+		$this->assertTrue( SmartCoupon::paused_for_pro( new WC_Coupon( $coupon->get_id() ) ) );
 
 		$this->pro = false;
 		OfferLimits::flush();
 
-		$refused = SmartCouponRepository::save(
-			[
-				'method'     => SmartCoupon::LINK,
-				'code'       => 'LINK5',
-				'title'      => 'Link',
-				'amount'     => 5,
-				'date_start' => wp_date( 'Y-m-d\TH:i', time() - HOUR_IN_SECONDS ),
-			]
-		);
-
-		$this->assertSame( 'smart_coupon_needs_pro', $refused->get_error_code() );
-
 		WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
 
-		$this->assertFalse( WC()->cart->apply_coupon( $with_pro->get_code() ) );
+		$this->assertFalse( WC()->cart->apply_coupon( 'keepers' ) );
+		$this->assertSame( 'Paused: needs Pro', $this->rest( 'GET', '/' . $coupon->get_id() )->get_data()['chip'] );
 
-		$saved = SmartCouponRepository::save( [ 'title' => 'Renamed' ], new WC_Coupon( $with_pro->get_id() ) );
+		$saved = SmartCouponRepository::save( [ 'title' => 'Renamed' ], new WC_Coupon( $coupon->get_id() ) );
 
 		$this->assertInstanceOf( WC_Coupon::class, $saved );
-		$this->assertSame( 'Renamed', $saved->get_meta( SmartCoupon::TITLE ) );
+
+		$read = new WC_Coupon( $coupon->get_id() );
+
+		$this->assertSame( 'Renamed', $read->get_meta( SmartCoupon::TITLE ) );
+		$this->assertSame( SmartCoupon::TYPE_TIERS, $read->get_meta( SmartCoupon::TYPE ) );
+		$this->assertSame( [ [ 'qty' => 2, 'percent' => 15 ] ], $read->get_meta( SmartCoupon::TIERS ) );
+		$this->assertSame( 'customers', $read->get_meta( SmartCoupon::ELIGIBILITY ) );
+		$this->assertSame( [ 'jane@example.com' ], $read->get_email_restrictions() );
+		$this->assertSame( 3, $read->get_usage_limit_per_user() );
+		$this->assertSame( '15', (string) $read->get_amount( 'edit' ) );
+		$this->assertSame( 'Paused: needs Pro', $this->rest( 'GET', '/' . $coupon->get_id() )->get_data()['chip'] );
 	}
 
 	/**
-	 * Buy more save more gives the largest tier reached; below the first, nothing.
+	 * Total uses and one use per customer are WooCommerce's own limits.
 	 *
 	 * @return void
 	 */
-	public function test_tiers_give_the_largest_reached_percent(): void {
-		$this->save_coupon(
-			'tiers',
+	public function test_usage_limits_are_woocommerce_fields(): void {
+		$coupon = $this->save_coupon(
+			'limits',
 			[
-				'discount_type' => SmartCoupon::TYPE_TIERS,
-				'tiers'         => [ '2:10', '4:25' ],
+				'usage_limit'      => 50,
+				'one_per_customer' => true,
 			]
 		);
 
-		$book = $this->product( 100 );
-		$key  = WC()->cart->add_to_cart( $book->get_id() );
+		$read = new WC_Coupon( $coupon->get_id() );
 
-		$this->assertFalse( WC()->cart->apply_coupon( 'tiers' ) );
+		$this->assertSame( 50, $read->get_usage_limit() );
+		$this->assertSame( 1, $read->get_usage_limit_per_user() );
 
-		wc_clear_notices();
-		WC()->cart->set_quantity( $key, 2 );
+		$values = $this->rest( 'GET', '/' . $coupon->get_id() )->get_data();
 
-		$this->assertTrue( WC()->cart->apply_coupon( 'tiers' ) );
-		$this->assertSame( 180.0, $this->line_totals()[ $key ] );
-
-		WC()->cart->set_quantity( $key, 4 );
-
-		$this->assertSame( 300.0, $this->line_totals()[ $key ] );
-	}
-
-	/**
-	 * First-time and returning eligibility follow the customer's paid orders.
-	 *
-	 * @return void
-	 */
-	public function test_first_time_and_returning_eligibility(): void {
-		$this->save_coupon( 'firsts', [ 'eligibility' => 'first_time' ] );
-		$this->save_coupon( 'returns', [ 'eligibility' => 'returning' ] );
-
-		WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
-
-		$this->assertTrue( WC()->cart->apply_coupon( 'firsts' ) );
-		$this->assertFalse( WC()->cart->apply_coupon( 'returns' ) );
-
-		$order = wc_create_order( [ 'customer_id' => get_current_user_id() ] );
-		$order->set_status( 'completed' );
-		$order->save();
-
-		wc_clear_notices();
-		WC()->cart->remove_coupons();
-
-		$this->assertFalse( WC()->cart->apply_coupon( 'firsts' ) );
-		$this->assertTrue( WC()->cart->apply_coupon( 'returns' ) );
+		$this->assertSame( 50, $values['usage_limit'] );
+		$this->assertTrue( $values['one_per_customer'] );
 	}
 
 	/**

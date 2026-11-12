@@ -100,8 +100,9 @@ class CouponGuard implements HookRegistry {
 			return false;
 		}
 
-		// Link, tiers and eligibility only run with Pro: without it, fail closed.
-		if ( SmartCoupon::needs_pro( $coupon ) && ! sp_store_growth()->has_pro() ) {
+		// A coupon using a Pro option pauses without Pro (fail closed): the
+		// option is kept, so it never reaches more shoppers than meant.
+		if ( SmartCoupon::paused_for_pro( $coupon ) ) {
 			return false;
 		}
 
@@ -194,13 +195,14 @@ class CouponGuard implements HookRegistry {
 			return $reaches;
 		}
 
-		return CouponAmount::tier_percent( (array) SmartCoupon::effective( $coupon )['values']['tiers'], $coupon ) > 0;
+		return CouponAmount::tier_percent( SmartCoupon::effective( $coupon )['values'], $coupon ) > 0;
 	}
 
 	/**
-	 * Whether the current customer may use the coupon. Only Pro coupons have
-	 * a rule here; a guest is judged by the billing email they've entered,
-	 * and with none yet counts as a first-time customer.
+	 * Whether the current customer may use the coupon: everyone, or the
+	 * coupon's roles. StoreGrowth Pro judges its own eligibilities
+	 * (first-time, returning, specific customers); without it they fail
+	 * closed.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -215,41 +217,21 @@ class CouponGuard implements HookRegistry {
 			return (bool) array_intersect( (array) wp_get_current_user()->roles, (array) $coupon->get_meta( SmartCoupon::ROLES ) );
 		}
 
-		if ( 'first_time' === $eligibility || 'returning' === $eligibility ) {
-			return ( 'returning' === $eligibility ) === $this->has_paid_order();
+		if ( in_array( $eligibility, SmartCoupon::PRO_ELIGIBILITIES, true ) ) {
+			/**
+			 * Filters whether the current customer may use a coupon limited to
+			 * first-time, returning or specific customers.
+			 *
+			 * @since SPSG_VERSION
+			 *
+			 * @param bool      $may_use     False without StoreGrowth Pro.
+			 * @param WC_Coupon $coupon      Coupon.
+			 * @param string    $eligibility `first_time`, `returning` or `customers`.
+			 */
+			return (bool) apply_filters( 'spsg_smart_coupon_customer_may_use', false, $coupon, $eligibility );
 		}
 
 		return true;
-	}
-
-	/**
-	 * Whether the current customer has a paid order.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @return bool
-	 */
-	private function has_paid_order(): bool {
-		$customer = get_current_user_id();
-
-		if ( ! $customer && WC()->customer ) {
-			$customer = WC()->customer->get_billing_email();
-		}
-
-		if ( ! $customer ) {
-			return false;
-		}
-
-		return ! empty(
-			wc_get_orders(
-				[
-					'customer' => $customer,
-					'status'   => wc_get_is_paid_statuses(),
-					'limit'    => 1,
-					'return'   => 'ids',
-				]
-			)
-		);
 	}
 
 	/**
@@ -327,7 +309,8 @@ class CouponGuard implements HookRegistry {
 	}
 
 	/**
-	 * Register the Free plan's limit on active everyday coupons.
+	 * Register the Free plan's limit on active automatic coupons (code and
+	 * link coupons are unlimited).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -338,7 +321,7 @@ class CouponGuard implements HookRegistry {
 	public function add_free_limit( $limits ) {
 		$limits[ OfferVersions::SMART_COUPON ] = [
 			'limit'  => SmartCouponRepository::FREE_LIMIT,
-			'offers' => [ SmartCouponRepository::class, 'active_everyday' ],
+			'offers' => [ SmartCouponRepository::class, 'active_automatic' ],
 		];
 
 		return $limits;

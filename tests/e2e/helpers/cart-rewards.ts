@@ -178,13 +178,28 @@ export async function deletePage(api: APIRequestContext, id: number): Promise<vo
 
 /* -- Smart Coupons (offer limits) ----------------------------------------- */
 
-/** Create a code Smart Coupon over REST; returns its id. */
-export async function createSmartCoupon(api: APIRequestContext, code: string): Promise<number> {
+/**
+ * Create a Smart Coupon over REST, a code one by default; returns its id.
+ * Free limits automatic coupons only (one active), so limit specs pass
+ * `automatic` (the code is then only its title).
+ */
+export async function createSmartCoupon(
+  api: APIRequestContext,
+  code: string,
+  method: 'code' | 'automatic' = 'code',
+): Promise<number> {
   const res = await api.post(`${NS}/smart-coupons`, {
-    data: { method: 'code', code, title: code.toUpperCase(), discount_type: 'percentage', amount: 10 },
+    data: { method, code, title: code.toUpperCase(), discount_type: 'percentage', amount: 10 },
   });
   await expectOk(res, `create smart coupon ${code}`);
   return (await res.json()).id;
+}
+
+/** A Smart Coupon's WooCommerce code (generated for an automatic coupon). */
+export async function smartCouponCode(api: APIRequestContext, id: number): Promise<string> {
+  const res = await api.get(`${NS}/smart-coupons/${id}`);
+  await expectOk(res, `read smart coupon ${id}`);
+  return (await res.json()).code;
 }
 
 export async function setSmartCouponActive(api: APIRequestContext, id: number, active: boolean): Promise<void> {

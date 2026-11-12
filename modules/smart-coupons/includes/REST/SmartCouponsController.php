@@ -13,6 +13,7 @@ use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\Settings\SmartCouponFields;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\SmartCouponRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
+use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use WC_Coupon;
 use WP_Error;
 use WP_REST_Controller;
@@ -169,21 +170,30 @@ class SmartCouponsController extends WP_REST_Controller {
 		$page     = max( 1, (int) $request->get_param( 'page' ) );
 		$result   = SmartCouponRepository::page( $page, $per_page, sanitize_text_field( (string) $request->get_param( 'search' ) ) );
 
-		$given = SmartCouponRepository::discount_given(
-			array_map(
-				static function ( WC_Coupon $coupon ): int {
-					return $coupon->get_id();
-				},
-				$result['coupons']
-			)
+		$ids = array_map(
+			static function ( WC_Coupon $coupon ): int {
+				return $coupon->get_id();
+			},
+			$result['coupons']
 		);
 
-		$items = array_map(
-			static function ( WC_Coupon $coupon ) use ( $given ): array {
-				// Plain text in the store's price format, as the order bump list.
-				$amount = html_entity_decode( wp_strip_all_tags( wc_price( $given[ $coupon->get_id() ] ?? 0 ) ), ENT_QUOTES, 'UTF-8' );
+		$given   = SmartCouponRepository::discount_given( $ids );
+		$revenue = SmartCouponRepository::revenue( $ids );
 
-				return array_merge( SmartCouponRepository::to_response( $coupon ), [ 'discount_given' => $amount ] );
+		// Money as plain text in the store's price format, as the order bump list.
+		$money = static function ( float $amount ): string {
+			return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
+		};
+
+		$items = array_map(
+			static function ( WC_Coupon $coupon ) use ( $given, $revenue, $money ): array {
+				return array_merge(
+					SmartCouponRepository::to_response( $coupon ),
+					[
+						'discount_given' => $money( $given[ $coupon->get_id() ] ?? 0 ),
+						'revenue'        => $money( $revenue[ $coupon->get_id() ] ?? 0 ),
+					]
+				);
 			},
 			$result['coupons']
 		);
@@ -191,7 +201,8 @@ class SmartCouponsController extends WP_REST_Controller {
 		$response = rest_ensure_response( $items );
 		$response->header( 'X-WP-Total', (string) $result['total'] );
 		$response->header( 'X-WP-TotalPages', (string) (int) ceil( $result['total'] / $per_page ) );
-		$response->header( 'X-SPSG-Can-Create', SmartCouponRepository::can_create() ? '1' : '0' );
+		// Code and link coupons are unlimited; a second automatic one asks to swap.
+		$response->header( 'X-SPSG-Can-Create', '1' );
 
 		return $response;
 	}
@@ -220,10 +231,14 @@ class SmartCouponsController extends WP_REST_Controller {
 			array_merge(
 				( new SmartCouponFields() )->get_editor(),
 				[
-					'can_create'  => SmartCouponRepository::can_create(),
-					'bogo_active' => Helper::is_module_active( BoGoModule::get_id() ),
-					'bogo_rules'  => $rules,
-					'currency'    => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
+					'can_create'   => true,
+					// Whether the Pro options run (licence AND StoreGrowth Pro answering).
+					'pro_options'  => SmartCoupon::pro_options_available(),
+					// Free: the automatic coupon a second one would be swapped with.
+					'automatic_on' => SmartCouponRepository::automatic_switched_on(),
+					'bogo_active'  => Helper::is_module_active( BoGoModule::get_id() ),
+					'bogo_rules'   => $rules,
+					'currency'     => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES, 'UTF-8' ),
 				]
 			)
 		);
@@ -245,7 +260,8 @@ class SmartCouponsController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Create a coupon. On the Free plan's limit, 403.
+	 * Create a coupon. Free has no cap on code and link coupons; a second
+	 * active automatic one pauses live (the editor asks to swap first).
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -254,14 +270,6 @@ class SmartCouponsController extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create_item( $request ) {
-		if ( ! SmartCouponRepository::can_create() ) {
-			return new WP_Error(
-				'salesbooster_limit_exceeded',
-				__( 'Smart Coupons limit exceeded. Upgrade to PRO for more coupons.', 'storegrowth-sales-booster' ),
-				[ 'status' => 403 ]
-			);
-		}
-
 		$coupon = SmartCouponRepository::save( $this->sent_params( $request ) );
 
 		if ( is_wp_error( $coupon ) ) {

@@ -89,14 +89,7 @@ class SmartCouponFields implements SettingsPage {
 				'label'     => __( 'Percent off', 'storegrowth-sales-booster' ),
 				'show_when' => [ 'discount_type' => [ SmartCoupon::TYPE_PERCENTAGE, SmartCoupon::TYPE_FIXED ] ],
 			],
-			'tiers'            => [
-				'type'      => 'list',
-				'default'   => [],
-				'pro'       => true,
-				'section'   => 'value',
-				'label'     => __( 'Quantity tiers', 'storegrowth-sales-booster' ),
-				'show_when' => [ 'discount_type' => SmartCoupon::TYPE_TIERS ],
-			],
+			// Buy more save more's tiers are StoreGrowth Pro's fields.
 			'bogo_rule'        => [
 				'type'      => 'number',
 				'default'   => 0,
@@ -170,18 +163,19 @@ class SmartCouponFields implements SettingsPage {
 				'show_when' => [ 'minimum_type' => 'quantity' ],
 			],
 
-			// Drawn by the page (first-time, returning and roles are Pro).
+			// Drawn by the page (first-time, returning and specific customers are Pro).
 			'eligibility'      => [
 				'type'    => 'select',
 				'default' => 'all',
-				'options' => [ 'all', 'first_time', 'returning', 'roles' ],
+				'options' => SmartCoupon::ELIGIBILITIES,
 				'section' => 'eligibility',
 				'label'   => __( 'Customers', 'storegrowth-sales-booster' ),
 				'labels'  => [
 					'all'        => __( 'All customers', 'storegrowth-sales-booster' ),
+					'roles'      => __( 'Specific roles', 'storegrowth-sales-booster' ),
 					'first_time' => __( 'First-time customers', 'storegrowth-sales-booster' ),
 					'returning'  => __( 'Returning customers', 'storegrowth-sales-booster' ),
-					'roles'      => __( 'Specific roles', 'storegrowth-sales-booster' ),
+					'customers'  => __( 'Specific customers', 'storegrowth-sales-booster' ),
 				],
 			],
 			'roles'            => [
@@ -189,17 +183,26 @@ class SmartCouponFields implements SettingsPage {
 				'default'   => [],
 				'options'   => array_keys( wp_roles()->get_names() ),
 				'labels'    => wp_roles()->get_names(),
-				'pro'       => true,
 				'section'   => 'eligibility',
 				'label'     => __( 'Roles', 'storegrowth-sales-booster' ),
 				'show_when' => [ 'eligibility' => 'roles' ],
 			],
+			// Specific customers' emails are StoreGrowth Pro's field.
+			'usage_limit'      => [
+				'type'    => 'number',
+				'default' => 0,
+				'min'     => 0,
+				'section' => 'eligibility',
+				'label'   => __( 'Total uses', 'storegrowth-sales-booster' ),
+				'help'    => __( 'How many times the coupon can be used in all. 0 for no limit.', 'storegrowth-sales-booster' ),
+			],
+			// One use each; StoreGrowth Pro adds how many (`customer_uses`).
 			'one_per_customer' => [
 				'type'    => 'toggle',
 				'default' => false,
 				'variant' => 'checkbox',
 				'section' => 'eligibility',
-				'label'   => __( 'One use per customer', 'storegrowth-sales-booster' ),
+				'label'   => __( 'Limit uses per customer', 'storegrowth-sales-booster' ),
 			],
 			'skip_sale'        => [
 				'type'    => 'toggle',

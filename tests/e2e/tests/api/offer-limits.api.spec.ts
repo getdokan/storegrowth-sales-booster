@@ -8,16 +8,16 @@ import {
   offerLimits,
   proActive,
   setSmartCouponActive,
+  smartCouponCode,
 } from '../../helpers/cart-rewards';
 import { PRODUCTS } from '../../data/products';
 
 // Free offer limits (ADR-013, #304): `GET sales-booster/v1/offer-limits` lists
 // each limited kind with its active everyday offers; over the limit, Free
 // pauses the newest and `POST offer-limits/{kind}` `{ keep }` picks which stay
-// on. Pro lifts every limit. Smart Coupons (limit 1) make the case: Free
-// refuses a second active coupon at creation, but switching an older one back
-// on is allowed, which is how a store ends up over the limit (as when Pro
-// lapses).
+// on. Pro lifts every limit. Smart Coupons make the case: Free has one active
+// automatic coupon (code and link coupons are unlimited); a second one that is
+// switched on anyway (the admin asks to swap first) pauses, as when Pro lapses.
 
 const NS = '/wp-json/sales-booster/v1';
 const COUPONS = 'smart-coupons';
@@ -52,7 +52,7 @@ test.describe('API · offer limits', () => {
     expect(missing.status()).toBe(400);
   });
 
-  test.describe('two active Smart Coupons', () => {
+  test.describe('two active automatic Smart Coupons', () => {
     let wasActive = false;
     const made: number[] = [];
 
@@ -68,28 +68,47 @@ test.describe('API · offer limits', () => {
       await setModuleStatus(api, COUPONS, wasActive);
     });
 
-    /** An older coupon switched back on after a newer one: two active. */
+    /** Two automatic coupons switched on (the older last): over the limit. */
     async function overLimit(api: Parameters<typeof createSmartCoupon>[0]): Promise<[number, number]> {
-      const older = await createSmartCoupon(api, 'e2e-limit-older');
+      const older = await createSmartCoupon(api, 'e2e-limit-older', 'automatic');
       made.push(older);
       await setSmartCouponActive(api, older, false);
-      const newer = await createSmartCoupon(api, 'e2e-limit-newer');
+      const newer = await createSmartCoupon(api, 'e2e-limit-newer', 'automatic');
       made.push(newer);
       await setSmartCouponActive(api, older, true);
       return [older, newer];
     }
 
-    test('Free refuses a second active coupon at creation', async ({ api }) => {
+    test('Free: code and link coupons are unlimited', async ({ api }) => {
       test.skip(await proActive(api), 'Free-only limit');
-      made.push(await createSmartCoupon(api, 'e2e-limit-first'));
-      const res = await api.post(`${NS}/smart-coupons`, {
-        data: { method: 'code', code: 'e2e-limit-second', title: 'Second', amount: 10 },
-      });
-      expect(res.status()).toBe(403);
-      expect((await res.json()).code).toBe('salesbooster_limit_exceeded');
+
+      for (const [code, method] of [
+        ['e2e-limit-code-1', 'code'],
+        ['e2e-limit-code-2', 'code'],
+        ['e2e-limit-link-1', 'link'],
+      ]) {
+        const res = await api.post(`${NS}/smart-coupons`, {
+          data: { method, code, title: code.toUpperCase(), amount: 10 },
+        });
+        expect(res.status(), code).toBe(201);
+        made.push((await res.json()).id);
+      }
+
+      expect((await offerLimit(api, 'smart_coupon')).over_limit).toBe(false);
+      const list = await api.get(`${NS}/smart-coupons`);
+      expect(list.headers()['x-spsg-can-create']).toBe('1');
     });
 
-    test('Free pauses the newest; the shopper cannot use it', async ({ api, playwright }) => {
+    test('Free names the automatic coupon that is on, for the swap prompt', async ({ api }) => {
+      test.skip(await proActive(api), 'Free-only limit');
+      const first = await createSmartCoupon(api, 'e2e-limit-auto', 'automatic');
+      made.push(first);
+
+      const editor = await (await api.get(`${NS}/smart-coupons/editor`)).json();
+      expect(editor.automatic_on).toEqual({ id: first, name: 'E2E-LIMIT-AUTO' });
+    });
+
+    test('Free pauses the newest automatic coupon; the shopper gets only the older', async ({ api, playwright }) => {
       test.skip(await proActive(api), 'Free-only limit');
       const [older, newer] = await overLimit(api);
 
@@ -100,13 +119,17 @@ test.describe('API · offer limits', () => {
         { id: older, name: 'E2E-LIMIT-OLDER', paused: false, chip: '' },
       ]);
 
-      // A guest's Store API session (cookies kept by the context).
+      // A guest's Store API cart: automatic coupons apply by themselves.
       const guest = await playwright.request.newContext({ baseURL: env.baseURL });
       const nonce = (await guest.get('/wp-json/wc/store/v1/cart')).headers()['nonce'];
-      const store = (path: string, data: object) => guest.post(`/wp-json/wc/store/v1/cart/${path}`, { headers: { Nonce: nonce }, data });
-      expect((await store('add-item', { id: PRODUCTS.b.id, quantity: 1 })).ok()).toBeTruthy();
-      expect((await store('apply-coupon', { code: 'e2e-limit-newer' })).status()).toBe(400);
-      expect((await store('apply-coupon', { code: 'e2e-limit-older' })).ok()).toBeTruthy();
+      const added = await guest.post('/wp-json/wc/store/v1/cart/add-item', {
+        headers: { Nonce: nonce },
+        data: { id: PRODUCTS.b.id, quantity: 1 },
+      });
+      expect(added.ok()).toBeTruthy();
+      const applied = ((await added.json()).coupons as { code: string }[]).map((c) => c.code);
+      expect(applied).toContain(await smartCouponCode(api, older));
+      expect(applied).not.toContain(await smartCouponCode(api, newer));
       await guest.dispose();
     });
 

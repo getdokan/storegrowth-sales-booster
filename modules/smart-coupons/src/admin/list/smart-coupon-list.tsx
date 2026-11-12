@@ -23,14 +23,14 @@ import {
     CardHead,
     FeatureLayout,
     OfferLimitNotice,
-    ProBadge,
     RecordList,
     TimelineChip,
 } from '@storegrowth/components';
 import { useModules, useNavigate } from '@storegrowth/hooks';
-import { errorMessage, getHeaderData } from '@storegrowth/utilities';
+import { errorMessage, setRecordStatus } from '@storegrowth/utilities';
 
 import { couponsRoute, type SmartCouponRow } from '../api';
+import { automaticOn, switchOff, useAutomaticSwap } from '../automatic-swap';
 
 /** The module id. */
 const MODULE_ID = 'smart-coupons';
@@ -88,62 +88,42 @@ function statusLabel( coupon: SmartCouponRow ) {
 }
 
 /**
- * What a licence needs to add more coupons: an upgrade or a renewal.
- */
-function LimitCard() {
-    const { upgrade_url: upgradeUrl, renew_url: renewUrl } =
-        getHeaderData().header_info;
-    const expired = getHeaderData().header_info.license_state === 'expired';
-
-    return (
-        <div className="flex w-full items-center justify-between gap-4 rounded-lg border border-dashed border-sg-stroke bg-white px-4 py-3">
-            <div className="flex flex-col gap-1">
-                <span className="flex items-center gap-2 text-sm font-semibold text-sg-heading">
-                    <ProBadge />
-                    { expired
-                        ? __(
-                              'Renew licence to add more coupons',
-                              'storegrowth-sales-booster'
-                          )
-                        : __(
-                              'Upgrade to add more coupons',
-                              'storegrowth-sales-booster'
-                          ) }
-                </span>
-                <span className="text-xs text-sg-text">
-                    { __(
-                        'Free includes one active Smart Coupon. Pro removes the limit.',
-                        'storegrowth-sales-booster'
-                    ) }
-                </span>
-            </div>
-            <Button
-                variant="outline"
-                onClick={ () => {
-                    window.open(
-                        expired && renewUrl ? renewUrl : upgradeUrl,
-                        '_blank',
-                        'noopener,noreferrer'
-                    );
-                } }
-            >
-                { expired
-                    ? __( 'Renew licence', 'storegrowth-sales-booster' )
-                    : __( 'Upgrade to Pro', 'storegrowth-sales-booster' ) }
-            </Button>
-        </div>
-    );
-}
-
-/**
  * The coupons card: heading, New coupon and the table.
  */
 function CouponList() {
     const navigate = useNavigate();
-    // The server knows the limit; the list reports what it read.
-    const [ canCreate, setCanCreate ] = useState( true );
-    // Bumped when "Choose offers" changes which coupons are paused.
+    // Bumped when "Choose offers" or a swap changes other rows.
     const [ listVersion, setListVersion ] = useState( 0 );
+    const swap = useAutomaticSwap();
+
+    // Free: turning on a second automatic coupon asks to swap it with the
+    // one that's on; a swap switches both itself and reloads the list.
+    const beforeStatusChange = async (
+        item: SmartCouponRow,
+        active: boolean
+    ) => {
+        if ( ! active || item.method !== 'automatic' ) {
+            return true;
+        }
+
+        const current = await automaticOn();
+
+        if ( ! current || current.id === item.id ) {
+            return true;
+        }
+
+        if ( ! ( await swap.ask( current ) ) ) {
+            return false;
+        }
+
+        await switchOff( current.id );
+        await setRecordStatus( couponsRoute(), item.id, true );
+        setListVersion( ( version ) => {
+            return version + 1;
+        } );
+
+        return false;
+    };
 
     const fields: DataViewField< SmartCouponRow >[] = [
         {
@@ -210,6 +190,15 @@ function CouponList() {
             enableSorting: false,
             getValue: ( { item } ) => {
                 return item.discount_given;
+            },
+        },
+        {
+            id: 'revenue',
+            label: __( 'Revenue', 'storegrowth-sales-booster' ),
+            enableHiding: false,
+            enableSorting: false,
+            getValue: ( { item } ) => {
+                return item.revenue;
             },
         },
     ];
@@ -280,8 +269,8 @@ function CouponList() {
                 actions={ actions }
                 icon={ TicketPercent }
                 empty={ noCoupons }
-                onCanCreate={ setCanCreate }
                 statusLabel={ statusLabel }
+                beforeStatusChange={ beforeStatusChange }
                 statusAfter="method"
                 statusNote={ ( item ) => {
                     return (
@@ -311,7 +300,7 @@ function CouponList() {
                     'storegrowth-sales-booster'
                 ) }
             </p>
-            { ! canCreate && <LimitCard /> }
+            { swap.dialog }
         </div>
     );
 }

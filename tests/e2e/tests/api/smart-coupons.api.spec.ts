@@ -16,9 +16,11 @@ import {
 } from '../../helpers/smart-coupons';
 
 // Smart Coupons REST (`sales-booster/v1/smart-coupons`, ADR-014): real
-// `shop_coupon` posts with StoreGrowth's meta, behind `manage_options`. The
-// Free plan keeps one active everyday coupon; Pro lifts that and unlocks the
-// link method, tiers and eligibility rules.
+// `shop_coupon` posts with StoreGrowth's meta, behind `manage_options`. Free
+// has unlimited code and link coupons, one active automatic coupon, specific
+// roles, total uses and one use per customer; Pro lifts the automatic limit
+// and adds tiers, first-time / returning / specific customers and more uses
+// per customer.
 
 test.describe('API · Smart Coupons', () => {
   const made = trackCoupons();
@@ -61,7 +63,17 @@ test.describe('API · Smart Coupons', () => {
     expect(Object.keys(editor.schema)).toEqual(
       expect.arrayContaining(['method', 'code', 'title', 'discount_type', 'amount', 'apply_to', 'combines', 'date_start', 'date_end']),
     );
-    expect(typeof editor.can_create).toBe('boolean');
+    expect(Object.keys(editor.schema)).toEqual(expect.arrayContaining(['usage_limit', 'one_per_customer']));
+    // The Pro options' fields are StoreGrowth Pro's (it adds them when it runs them).
+    const proFields = ['tier_basis', 'tiers', 'customer_emails', 'customer_uses'];
+    const pro = await proActive(api);
+    expect(editor.pro_options).toBe(pro);
+    for (const key of proFields) {
+      expect(Object.keys(editor.schema).includes(key), key).toBe(pro);
+    }
+    expect(editor.schema.eligibility.options).toEqual(['all', 'roles', 'first_time', 'returning', 'customers']);
+    expect(editor.can_create).toBe(true);
+    expect(editor).toHaveProperty('automatic_on');
     expect(editor.bogo_active).toBe(true);
     expect(Array.isArray(editor.bogo_rules)).toBeTruthy();
     expect(editor.currency).toBeTruthy();
@@ -106,11 +118,33 @@ test.describe('API · Smart Coupons', () => {
     expect((await updateCoupon(api, coupon.id, { amount: 12 })).code).toBe(coupon.code);
   });
 
-  test('batch delete removes the ids it can and reports the rest', async ({ api }) => {
+  test('the list shows uses, discount given and revenue', async ({ api }) => {
+    const coupon = await made.create(api);
+    const list = await api.get(SMART_COUPONS, { params: { search: coupon.code } });
+    const [row] = await list.json();
+
+    expect(row).toMatchObject({ id: coupon.id, uses: 0 });
+    expect(typeof row.discount_given).toBe('string');
+    expect(typeof row.revenue).toBe('string');
+  });
+
+  test('total uses, uses per customer and specific customers are WooCommerce’s limits', async ({ api }) => {
     const pro = await proActive(api);
-    // Inactive, so two fit under the Free limit too.
-    const one = await made.create(api, { status: 'inactive' });
-    const two = await made.create(api, { status: pro ? 'active' : 'inactive' });
+    const coupon = await made.create(api, {
+      usage_limit: 25,
+      one_per_customer: true,
+      ...(pro ? { customer_uses: 2, eligibility: 'customers', customer_emails: 'jane@example.com' } : {}),
+    });
+
+    const wc = await (await api.get(`/wp-json/wc/v3/coupons/${coupon.id}`)).json();
+    expect(wc.usage_limit).toBe(25);
+    expect(wc.usage_limit_per_user).toBe(pro ? 2 : 1);
+    expect(wc.email_restrictions).toEqual(pro ? ['jane@example.com'] : []);
+  });
+
+  test('batch delete removes the ids it can and reports the rest', async ({ api }) => {
+    const one = await made.create(api);
+    const two = await made.create(api);
 
     const res = await api.post(`${SMART_COUPONS}/batch`, { data: { delete: [one.id, two.id, 999999999] } });
     expect(res.ok()).toBeTruthy();
@@ -145,31 +179,30 @@ test.describe('API · Smart Coupons', () => {
       test.skip(await proActive(api), 'Free-plan limits: has_pro() is true on this stack');
     });
 
-    test('one active everyday coupon; the next is refused and the list says so', async ({ api }) => {
-      const before = await api.get(SMART_COUPONS);
-      expect(before.headers()['x-spsg-can-create'], 'the stack should start with no active Smart Coupon').toBe('1');
-
+    test('code and link coupons are unlimited; the editor names the automatic one that is on', async ({ api }) => {
       await made.create(api);
-
-      const after = await api.get(SMART_COUPONS);
-      expect(after.headers()['x-spsg-can-create']).toBe('0');
-      expect((await (await api.get(`${SMART_COUPONS}/editor`)).json()).can_create).toBe(false);
-
-      const refused = await postCoupon(api);
-      expect(refused.status()).toBe(403);
-      expect((await refused.json()).code).toBe('salesbooster_limit_exceeded');
-    });
-
-    test('an inactive coupon does not count toward the limit', async ({ api }) => {
-      await made.create(api, { status: 'inactive' });
+      await made.create(api);
+      const link = await made.create(api, { method: 'link' });
+      expect(link.link).toContain(env.baseURL.replace(/\/$/, ''));
       expect((await api.get(SMART_COUPONS)).headers()['x-spsg-can-create']).toBe('1');
+
+      const automatic = await made.create(api, { method: 'automatic', title: 'E2E Auto on' });
+      const editor = await (await api.get(`${SMART_COUPONS}/editor`)).json();
+      expect(editor.automatic_on).toEqual({ id: automatic.id, name: 'E2E Auto on' });
     });
 
-    test('Pro options are refused (link, tiers, eligibility)', async ({ api }) => {
+    test('specific roles are Free', async ({ api }) => {
+      const coupon = await made.create(api, { eligibility: 'roles', roles: ['customer'] });
+      expect(coupon).toMatchObject({ eligibility: 'roles', roles: ['customer'] });
+    });
+
+    test('Pro options are refused (tiers, first-time, returning, specific customers, uses per customer)', async ({ api }) => {
       for (const values of [
-        { method: 'link' },
         { discount_type: 'tiers', tiers: ['2:10'] },
         { eligibility: 'first_time' },
+        { eligibility: 'returning' },
+        { eligibility: 'customers', customer_emails: 'jane@example.com' },
+        { one_per_customer: true, customer_uses: 2 },
       ]) {
         const res = await postCoupon(api, { status: 'inactive', ...values });
         expect(res.status(), JSON.stringify(values)).toBe(403);
@@ -183,14 +216,10 @@ test.describe('API · Smart Coupons', () => {
       test.skip(!(await proActive(api)), 'needs has_pro()');
     });
 
-    test('no limit on active coupons, and a link coupon gets its link', async ({ api }) => {
-      await made.create(api);
-      await made.create(api);
-      expect((await api.get(SMART_COUPONS)).headers()['x-spsg-can-create']).toBe('1');
-
-      const link = await made.create(api, { method: 'link' });
-      expect(link.method).toBe('link');
-      expect(link.link).toContain(env.baseURL.replace(/\/$/, ''));
+    test('no limit on active automatic coupons', async ({ api }) => {
+      await made.create(api, { method: 'automatic', title: 'E2E Auto one' });
+      await made.create(api, { method: 'automatic', title: 'E2E Auto two' });
+      expect((await (await api.get(`${SMART_COUPONS}/editor`)).json()).automatic_on).toBeNull();
     });
   });
 });

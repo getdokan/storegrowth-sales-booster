@@ -108,12 +108,56 @@ test.describe('Admin · Smart Coupons', { tag: '@ui' }, () => {
     expect((await api.get(`${SMART_COUPONS}/${coupon.id}`)).status()).toBe(404);
   });
 
-  test('Free: one active coupon disables New coupon and offers the upgrade', async ({ page, api }) => {
-    test.skip(await proActive(api), 'Free-plan limit: has_pro() is true on this stack');
+  test('the list has a Revenue column', async ({ page, api }) => {
     await made.create(api);
 
     await gotoRecordList(page, LIST, HEADING);
-    await expect(adminApp(page).getByRole('button', { name: 'New coupon' })).toBeDisabled();
-    await expect(adminApp(page).getByText('Free includes one active Smart Coupon. Pro removes the limit.')).toBeVisible();
+    await expect(adminApp(page).getByRole('columnheader', { name: 'Revenue' })).toBeVisible();
+  });
+
+  test('Free: code coupons never block New coupon', async ({ page, api }) => {
+    test.skip(await proActive(api), 'Free-plan limit: has_pro() is true on this stack');
+    await made.create(api);
+    await made.create(api);
+
+    await gotoRecordList(page, LIST, HEADING);
+    await expect(adminApp(page).getByRole('button', { name: 'New coupon' })).toBeEnabled();
+  });
+
+  test('Free: switching on a second automatic coupon asks to swap, and swapping turns the first off', async ({ page, api }) => {
+    test.skip(await proActive(api), 'Free-plan limit: has_pro() is true on this stack');
+    const first = await made.create(api, { method: 'automatic', title: `E2E Auto first ${uniqueCode('a')}` });
+    const second = await made.create(api, { method: 'automatic', title: `E2E Auto second ${uniqueCode('b')}`, status: 'inactive' });
+
+    await gotoRecordList(page, LIST, HEADING);
+    const toggle = recordRow(page, second.title).getByRole('switch', { name: `Coupon status: ${second.title}` });
+    await toggle.click();
+
+    const dialog = page.getByRole('alertdialog');
+    await expect(dialog.getByText('Free includes one active automatic coupon')).toBeVisible();
+    await expect(dialog.getByRole('button', { name: 'Upgrade to Pro' })).toBeVisible();
+
+    // Cancel leaves both as they were.
+    await dialog.getByRole('button', { name: 'Cancel' }).click();
+    expect((await getCoupon(api, second.id)).status).toBe('inactive');
+
+    await toggle.click();
+    await page.getByRole('alertdialog').getByRole('button', { name: `Turn off “${first.title}”` }).click();
+
+    await expect.poll(async () => (await getCoupon(api, second.id)).status).toBe('active');
+    expect((await getCoupon(api, first.id)).status).toBe('inactive');
+  });
+
+  test('Free: Link and Specific roles are open, Specific customers is Pro', async ({ page, api }) => {
+    test.skip(await proActive(api), 'Free-plan limit: has_pro() is true on this stack');
+
+    await gotoAppRoute(page, `${LIST}/new`);
+    const app = adminApp(page);
+    await app.getByRole('group', { name: 'Method' }).getByRole('button', { name: 'Link' }).click();
+    await expect(app.getByRole('textbox', { name: 'Discount code' })).toBeVisible();
+
+    await app.getByRole('combobox', { name: 'Customers' }).click();
+    await expect(page.getByRole('option', { name: 'Specific roles', exact: true })).toBeEnabled();
+    await expect(page.getByRole('option', { name: 'Specific customers (Pro)' })).toHaveAttribute('aria-disabled', 'true');
   });
 });

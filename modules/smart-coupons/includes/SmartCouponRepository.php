@@ -36,7 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SmartCouponRepository {
 
 	/**
-	 * Active everyday coupons on the Free plan.
+	 * Active automatic coupons on the Free plan (code and link coupons are
+	 * unlimited).
 	 *
 	 * @since SPSG_VERSION
 	 */
@@ -113,14 +114,14 @@ class SmartCouponRepository {
 	}
 
 	/**
-	 * The active everyday coupons, oldest first, for the Free limit.
-	 * `OfferLimits` calls this: it must not ask whether a coupon is paused.
+	 * The everyday automatic coupons that are switched on, oldest first:
+	 * published, not campaign-only, and not past their end.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @return array[] Rows of `id` and `name`.
+	 * @return WC_Coupon[]
 	 */
-	public static function active_everyday(): array {
+	private static function switched_on_automatic(): array {
 		$ids = get_posts(
 			[
 				'post_type'   => 'shop_coupon',
@@ -129,18 +130,48 @@ class SmartCouponRepository {
 				'fields'      => 'ids',
 				'orderby'     => 'ID',
 				'order'       => 'ASC',
-				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Coupons have no other index; read once per request.
-				'meta_key'    => SmartCoupon::MANAGED,
-				'meta_value'  => 'yes', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- As above.
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Coupons have no other index; read once per request.
+				'meta_query'  => [
+					[
+						'key'   => SmartCoupon::MANAGED,
+						'value' => 'yes',
+					],
+					[
+						'key'   => SmartCoupon::METHOD,
+						'value' => SmartCoupon::AUTOMATIC,
+					],
+				],
 			]
 		);
 
-		$active = [];
+		$coupons = [];
 
 		foreach ( $ids as $id ) {
 			$coupon = new WC_Coupon( $id );
+			$end    = self::dates( $coupon )['end'];
 
-			if ( $coupon->get_meta( SmartCoupon::CAMPAIGN_OFFER ) || ( SmartCoupon::needs_pro( $coupon ) && ! sp_store_growth()->has_pro() ) ) {
+			if ( ! $coupon->get_meta( SmartCoupon::CAMPAIGN_OFFER ) && ( '' === $end || SiteTime::is_within( '', $end ) ) ) {
+				$coupons[] = $coupon;
+			}
+		}
+
+		return $coupons;
+	}
+
+	/**
+	 * The active automatic coupons (live by their dates), oldest first, for
+	 * the Free limit; code and link coupons are unlimited. `OfferLimits`
+	 * calls this: it must not ask whether a coupon is paused.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return array[] Rows of `id` and `name`.
+	 */
+	public static function active_automatic(): array {
+		$active = [];
+
+		foreach ( self::switched_on_automatic() as $coupon ) {
+			if ( SmartCoupon::paused_for_pro( $coupon ) ) {
 				continue;
 			}
 
@@ -158,15 +189,26 @@ class SmartCouponRepository {
 	}
 
 	/**
-	 * Whether another coupon may be created. The Free limit stops a new one;
-	 * turning one back on isn't stopped, the newest over the limit pauses.
+	 * On the Free plan, the automatic coupon already switched on, if any:
+	 * turning on another asks to swap it or upgrade. Null with Pro.
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @return bool
+	 * @return array|null `id` and `name`.
 	 */
-	public static function can_create(): bool {
-		return sp_store_growth()->has_pro() || count( self::active_everyday() ) < self::FREE_LIMIT;
+	public static function automatic_switched_on(): ?array {
+		if ( sp_store_growth()->has_pro() ) {
+			return null;
+		}
+
+		$coupons = self::switched_on_automatic();
+
+		return $coupons
+			? [
+				'id'   => $coupons[0]->get_id(),
+				'name' => SmartCoupon::name( $coupons[0] ),
+			]
+			: null;
 	}
 
 	/**
@@ -248,11 +290,17 @@ class SmartCouponRepository {
 			$changes['amount'] = $values['amount'];
 		}
 
-		if ( self::parse_tiers( array_filter( (array) $coupon->get_meta( SmartCoupon::TIERS ), 'is_array' ) ) !== $values['tiers'] ) {
-			$changes['tiers'] = $values['tiers'];
-		}
-
-		return $changes;
+		/**
+		 * Filters what a campaign's version of a coupon changes, e.g. its tiers
+		 * (StoreGrowth Pro).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array     $changes Changes so far (`amount`).
+		 * @param array     $values  The version's clean values.
+		 * @param WC_Coupon $coupon  Everyday coupon.
+		 */
+		return (array) apply_filters( 'spsg_smart_coupon_campaign_changes', $changes, $values, $coupon );
 	}
 
 	/**
@@ -270,16 +318,16 @@ class SmartCouponRepository {
 
 		unset( $record['timeline'] );
 
-		if ( isset( $overrides['tiers'] ) ) {
-			$record['tiers'] = array_map(
-				static function ( array $tier ): string {
-					return $tier['qty'] . ':' . $tier['percent'];
-				},
-				$overrides['tiers']
-			);
-		}
-
-		return $record;
+		/**
+		 * Filters a coupon as the editor reads a campaign's version of it,
+		 * e.g. with the version's tiers (StoreGrowth Pro).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array $record    Record with the version's amount.
+		 * @param array $overrides The version's changes.
+		 */
+		return (array) apply_filters( 'spsg_smart_coupon_campaign_record', $record, $overrides );
 	}
 
 	/**
@@ -342,14 +390,13 @@ class SmartCouponRepository {
 	 * @return array
 	 */
 	private static function sanitize( array $values ): array {
-		return [
+		$clean = [
 			'status'           => 'inactive' === ( $values['status'] ?? '' ) ? 'inactive' : 'active',
 			'method'           => in_array( $values['method'] ?? '', [ SmartCoupon::AUTOMATIC, SmartCoupon::CODE, SmartCoupon::LINK ], true ) ? $values['method'] : SmartCoupon::AUTOMATIC,
 			'code'             => sanitize_text_field( (string) ( $values['code'] ?? '' ) ),
 			'title'            => sanitize_text_field( (string) ( $values['title'] ?? '' ) ),
 			'discount_type'    => isset( self::WC_TYPES[ $values['discount_type'] ?? '' ] ) ? $values['discount_type'] : SmartCoupon::TYPE_PERCENTAGE,
 			'amount'           => (float) ( $values['amount'] ?? 0 ),
-			'tiers'            => self::parse_tiers( (array) ( $values['tiers'] ?? [] ) ),
 			'bogo_rule'        => absint( $values['bogo_rule'] ?? 0 ),
 			'apply_to'         => in_array( $values['apply_to'] ?? '', [ 'store', 'products', 'categories' ], true ) ? $values['apply_to'] : 'store',
 			'product_ids'      => array_values( array_filter( array_map( 'absint', (array) ( $values['product_ids'] ?? [] ) ) ) ),
@@ -357,15 +404,29 @@ class SmartCouponRepository {
 			'minimum_type'     => in_array( $values['minimum_type'] ?? '', [ 'none', 'subtotal', 'quantity' ], true ) ? $values['minimum_type'] : 'none',
 			'minimum_amount'   => (float) ( $values['minimum_amount'] ?? 0 ),
 			'minimum_quantity' => absint( $values['minimum_quantity'] ?? 0 ),
-			'eligibility'      => in_array( $values['eligibility'] ?? '', [ 'all', 'first_time', 'returning', 'roles' ], true ) ? $values['eligibility'] : 'all',
+			'eligibility'      => in_array( $values['eligibility'] ?? '', SmartCoupon::ELIGIBILITIES, true ) ? $values['eligibility'] : 'all',
 			'roles'            => array_values( array_map( 'sanitize_key', (array) ( $values['roles'] ?? [] ) ) ),
+			'usage_limit'      => absint( $values['usage_limit'] ?? 0 ),
 			'one_per_customer' => rest_sanitize_boolean( $values['one_per_customer'] ?? false ),
+			// Read for the Pro check only (more than one use is Pro's); Pro saves it.
+			'customer_uses'    => max( 1, absint( $values['customer_uses'] ?? 1 ) ),
 			'skip_sale'        => rest_sanitize_boolean( $values['skip_sale'] ?? false ),
 			'combines'         => rest_sanitize_boolean( $values['combines'] ?? false ),
 			'allow_others'     => rest_sanitize_boolean( $values['allow_others'] ?? false ),
 			'date_start'       => self::parse_date( $values['date_start'] ?? '' ),
 			'date_end'         => self::parse_date( $values['date_end'] ?? '' ),
 		];
+
+		/**
+		 * Filters a coupon's clean values: StoreGrowth Pro cleans its own
+		 * (tiers, tier basis, customer emails, uses per customer).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array $clean  Clean values.
+		 * @param array $values Values as sent (over the stored ones).
+		 */
+		return (array) apply_filters( 'spsg_smart_coupon_sanitize', $clean, $values );
 	}
 
 	/**
@@ -383,37 +444,6 @@ class SmartCouponRepository {
 		$date  = '' !== $value ? SiteTime::parse( $value ) : null;
 
 		return $date ? $date->format( 'Y-m-d H:i:s' ) : '';
-	}
-
-	/**
-	 * Quantity tiers sent as `qty:percent` strings (or rows), sorted, one per
-	 * quantity.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @param array $tiers Sent tiers.
-	 *
-	 * @return array[] Rows of `qty` and `percent`.
-	 */
-	private static function parse_tiers( array $tiers ): array {
-		$rows = [];
-
-		foreach ( $tiers as $tier ) {
-			$parts   = is_array( $tier ) ? [ $tier['qty'] ?? 0, $tier['percent'] ?? 0 ] : array_pad( explode( ':', (string) $tier ), 2, 0 );
-			$qty     = absint( $parts[0] );
-			$percent = min( 100.0, (float) $parts[1] );
-
-			if ( $qty && $percent > 0 ) {
-				$rows[ $qty ] = [
-					'qty'     => $qty,
-					'percent' => $percent,
-				];
-			}
-		}
-
-		ksort( $rows );
-
-		return array_values( $rows );
 	}
 
 	/**
@@ -469,11 +499,31 @@ class SmartCouponRepository {
 			return self::rule_error( 'smart_coupon_invalid_minimum_quantity', __( 'Enter a minimum quantity of at least 1.', 'storegrowth-sales-booster' ) );
 		}
 
+		if ( 'roles' === $values['eligibility'] && empty( $values['roles'] ) ) {
+			return self::rule_error( 'smart_coupon_missing_roles', __( 'Choose at least one role.', 'storegrowth-sales-booster' ) );
+		}
+
 		if ( '' !== $values['date_start'] && '' !== $values['date_end'] && $values['date_end'] <= $values['date_start'] ) {
 			return self::rule_error( 'smart_coupon_invalid_dates', __( 'The end must be after the start.', 'storegrowth-sales-booster' ) );
 		}
 
-		if ( self::values_need_pro( $values ) && ! sp_store_growth()->has_pro() && ! ( $existing && SmartCoupon::needs_pro( $existing ) ) ) {
+		/**
+		 * Filters a coupon's rule check before it is saved: StoreGrowth Pro
+		 * checks its own options (tiers, specific customers).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param true|WP_Error  $check    True so far.
+		 * @param array          $values   Clean values.
+		 * @param WC_Coupon|null $existing Coupon being changed.
+		 */
+		$check = apply_filters( 'spsg_smart_coupon_check', true, $values, $existing );
+
+		if ( is_wp_error( $check ) ) {
+			return $check;
+		}
+
+		if ( self::values_need_pro( $values ) && ! SmartCoupon::pro_options_available() && ! ( $existing && SmartCoupon::needs_pro( $existing ) ) ) {
 			return new WP_Error( 'smart_coupon_needs_pro', __( 'This option needs StoreGrowth Pro.', 'storegrowth-sales-booster' ), [ 'status' => 403 ] );
 		}
 
@@ -498,10 +548,6 @@ class SmartCouponRepository {
 
 		if ( SmartCoupon::TYPE_FIXED === $values['discount_type'] && $amount <= 0 ) {
 			return self::rule_error( 'smart_coupon_invalid_amount', __( 'Enter an amount greater than 0.', 'storegrowth-sales-booster' ) );
-		}
-
-		if ( SmartCoupon::TYPE_TIERS === $values['discount_type'] && empty( $values['tiers'] ) ) {
-			return self::rule_error( 'smart_coupon_missing_tiers', __( 'Add at least one quantity tier.', 'storegrowth-sales-booster' ) );
 		}
 
 		return true;
@@ -549,7 +595,9 @@ class SmartCouponRepository {
 	 * @return bool
 	 */
 	private static function values_need_pro( array $values ): bool {
-		return SmartCoupon::LINK === $values['method'] || SmartCoupon::TYPE_TIERS === $values['discount_type'] || 'all' !== $values['eligibility'];
+		return SmartCoupon::TYPE_TIERS === $values['discount_type']
+			|| in_array( $values['eligibility'], SmartCoupon::PRO_ELIGIBILITIES, true )
+			|| ( $values['one_per_customer'] && $values['customer_uses'] > 1 );
 	}
 
 	/**
@@ -579,7 +627,10 @@ class SmartCouponRepository {
 		$coupon->set_product_categories( 'categories' === $values['apply_to'] ? $values['category_ids'] : [] );
 		$coupon->set_minimum_amount( 'subtotal' === $values['minimum_type'] ? (string) $values['minimum_amount'] : '' );
 		$coupon->set_exclude_sale_items( $values['skip_sale'] );
-		$coupon->set_usage_limit_per_user( $values['one_per_customer'] ? 1 : 0 );
+		$coupon->set_usage_limit( $values['usage_limit'] );
+		// One use per customer; StoreGrowth Pro saves more. A higher limit
+		// already saved stays when Pro isn't there to save it.
+		$coupon->set_usage_limit_per_user( $values['one_per_customer'] ? max( 1, $existing ? (int) $existing->get_usage_limit_per_user( 'edit' ) : 1 ) : 0 );
 		$coupon->set_date_expires( '' !== $values['date_end'] ? SiteTime::parse( $values['date_end'] )->getTimestamp() : null );
 
 		$meta = [
@@ -593,13 +644,25 @@ class SmartCouponRepository {
 			SmartCoupon::MIN_QUANTITY => 'quantity' === $values['minimum_type'] ? $values['minimum_quantity'] : 0,
 			SmartCoupon::ELIGIBILITY  => $values['eligibility'],
 			SmartCoupon::ROLES        => 'roles' === $values['eligibility'] ? $values['roles'] : [],
-			SmartCoupon::TIERS        => SmartCoupon::TYPE_TIERS === $type ? $values['tiers'] : [],
 			SmartCoupon::BOGO_RULE    => SmartCoupon::TYPE_BUY_X_GET_Y === $type ? $values['bogo_rule'] : 0,
 		];
 
 		foreach ( $meta as $key => $value ) {
 			$coupon->update_meta_data( $key, $value );
 		}
+
+		/**
+		 * Fires before a Smart Coupon is saved, after StoreGrowth wrote its
+		 * values: StoreGrowth Pro writes its own (tiers, customer emails, uses
+		 * per customer). Without Pro they stay as they were.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param WC_Coupon      $coupon   Coupon being saved.
+		 * @param array          $values   Clean values.
+		 * @param WC_Coupon|null $existing The coupon before this save.
+		 */
+		do_action( 'spsg_smart_coupon_write', $coupon, $values, $existing );
 
 		// Written whether Dokan is active or not, so an activation later needs
 		// no re-save: without the first, Dokan refuses an admin coupon on a
@@ -633,8 +696,9 @@ class SmartCouponRepository {
 	}
 
 	/**
-	 * What a coupon's saved amount is: a tiers coupon keeps its first percent
-	 * and a Buy X get Y coupon has none (its BOGO rule is the deal).
+	 * What a coupon's saved amount is: a Buy X get Y coupon has none (its
+	 * BOGO rule is the deal). A tiers coupon's amount is its first tier,
+	 * which StoreGrowth Pro writes; without Pro the stored one stays.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -647,7 +711,7 @@ class SmartCouponRepository {
 			return 0.0;
 		}
 
-		return SmartCoupon::TYPE_TIERS === $values['discount_type'] ? (float) $values['tiers'][0]['percent'] : $values['amount'];
+		return $values['amount'];
 	}
 
 	/**
@@ -719,21 +783,14 @@ class SmartCouponRepository {
 		$min_amount   = (float) $coupon->get_minimum_amount( 'edit' );
 		$apply_to     = $product_ids ? 'products' : ( $category_ids ? 'categories' : 'store' );
 		$minimum      = $min_quantity ? 'quantity' : ( $min_amount > 0 ? 'subtotal' : 'none' );
-		$tiers        = array_map(
-			static function ( array $tier ): string {
-				return $tier['qty'] . ':' . $tier['percent'];
-			},
-			array_filter( (array) $coupon->get_meta( SmartCoupon::TIERS ), 'is_array' )
-		);
 
-		return [
+		$values = [
 			'status'           => 'publish' === $coupon->get_status( 'edit' ) ? 'active' : 'inactive',
 			'method'           => (string) $coupon->get_meta( SmartCoupon::METHOD ),
 			'code'             => $coupon->get_code( 'edit' ),
 			'title'            => (string) $coupon->get_meta( SmartCoupon::TITLE ),
 			'discount_type'    => (string) $coupon->get_meta( SmartCoupon::TYPE ),
 			'amount'           => (float) $coupon->get_amount( 'edit' ),
-			'tiers'            => $tiers,
 			'bogo_rule'        => (int) $coupon->get_meta( SmartCoupon::BOGO_RULE ),
 			'apply_to'         => $apply_to,
 			'product_ids'      => array_map( 'intval', $product_ids ),
@@ -743,6 +800,7 @@ class SmartCouponRepository {
 			'minimum_quantity' => $min_quantity,
 			'eligibility'      => $coupon->get_meta( SmartCoupon::ELIGIBILITY ) ? (string) $coupon->get_meta( SmartCoupon::ELIGIBILITY ) : 'all',
 			'roles'            => array_values( (array) $coupon->get_meta( SmartCoupon::ROLES ) ),
+			'usage_limit'      => (int) $coupon->get_usage_limit( 'edit' ),
 			'one_per_customer' => (int) $coupon->get_usage_limit_per_user( 'edit' ) > 0,
 			'skip_sale'        => (bool) $coupon->get_exclude_sale_items( 'edit' ),
 			'combines'         => SmartCoupon::combines( $coupon ),
@@ -750,6 +808,17 @@ class SmartCouponRepository {
 			'date_start'       => '' !== $dates['start'] ? str_replace( ' ', 'T', substr( $dates['start'], 0, 16 ) ) : '',
 			'date_end'         => '' !== $dates['end'] ? str_replace( ' ', 'T', substr( $dates['end'], 0, 16 ) ) : '',
 		];
+
+		/**
+		 * Filters a coupon's values as the editor reads them: StoreGrowth Pro
+		 * adds its own (tiers, tier basis, customer emails, uses per customer).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array     $values Values.
+		 * @param WC_Coupon $coupon Coupon.
+		 */
+		return (array) apply_filters( 'spsg_smart_coupon_values', $values, $coupon );
 	}
 
 	/**
@@ -804,7 +873,7 @@ class SmartCouponRepository {
 			return '';
 		}
 
-		if ( SmartCoupon::needs_pro( $coupon ) && ! sp_store_growth()->has_pro() ) {
+		if ( SmartCoupon::paused_for_pro( $coupon ) ) {
 			return __( 'Paused: needs Pro', 'storegrowth-sales-booster' );
 		}
 
@@ -857,6 +926,44 @@ class SmartCouponRepository {
 			$row = (array) $row;
 
 			$totals[ (int) $row['coupon_id'] ] = (float) $row['amount'];
+		}
+
+		return $totals;
+	}
+
+	/**
+	 * Revenue of the orders that used each coupon (net sales), by coupon id,
+	 * from WooCommerce Analytics' orders report filtered by the coupon, so its
+	 * order statuses, refunds and report cache apply (ADR-012). Dated by
+	 * creation, not payment (Analytics' default), so an unpaid order counts
+	 * here as it does in Discount given.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int[] $ids Coupon ids.
+	 *
+	 * @return array<int, float>
+	 */
+	public static function revenue( array $ids ): array {
+		$totals = [];
+
+		foreach ( $ids as $id ) {
+			try {
+				$report = WC_Data_Store::load( 'report-orders-stats' )->get_data(
+					[
+						'coupon_includes' => [ (int) $id ],
+						'fields'          => [ 'net_revenue' ],
+						'interval'        => 'year',
+						'date_type'       => 'date_created',
+						'after'           => '2000-01-01T00:00:00',
+						'before'          => gmdate( 'Y-m-d\T23:59:59' ),
+					]
+				);
+			} catch ( Exception $e ) {
+				continue;
+			}
+
+			$totals[ (int) $id ] = (float) ( $report->totals->net_revenue ?? 0 );
 		}
 
 		return $totals;

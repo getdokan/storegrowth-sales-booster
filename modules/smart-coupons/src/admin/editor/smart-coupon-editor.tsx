@@ -7,19 +7,11 @@
  * @since SPSG_VERSION
  */
 import { Button } from '@wedevs/plugin-ui';
-import { useCallback, useEffect, useState } from '@wordpress/element';
+import { useCallback, useEffect, useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import {
-    Link2,
-    Percent,
-    Ticket,
-    Trash2,
-    Zap,
-    type LucideIcon,
-} from 'lucide-react';
+import { Link2, Percent, Ticket, Zap, type LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import {
-    CardHead,
     FeatureLayout,
     ModuleSettingsPage,
     MultiSelectField,
@@ -28,7 +20,6 @@ import {
     OfferBanner,
     type OfferTimelineData,
     PickerCards,
-    ProBadge,
     SelectField,
 } from '@storegrowth/components';
 import {
@@ -40,20 +31,17 @@ import {
 import {
     fetchProductCategories,
     fetchProductsByIds,
-    getHeaderData,
     type ProductOption,
     searchProducts,
 } from '@storegrowth/utilities';
 
 import { type CouponCampaign } from '../api';
+import { switchOff, useAutomaticSwap } from '../automatic-swap';
 import { CouponSummary } from './coupon-summary';
 import { type SmartCouponEditor, useSmartCoupon } from './use-smart-coupon';
 
 /** The BOGO module's id. */
 const BOGO_ID = 'bogo';
-
-/** Most quantity tiers a coupon can have. */
-const MAX_TIERS = 6;
 
 /**
  * @param products Products.
@@ -116,142 +104,6 @@ function iconArt( Icon: LucideIcon ): ReactNode {
     return <Icon className="mx-auto size-5 text-sg-text" aria-hidden />;
 }
 
-interface TierRow {
-    qty: number;
-    percent: number;
-}
-
-/**
- * Tiers as the route stores them (`qty:percent` strings) and as the rows
- * below read them.
- *
- * @param tiers Stored tiers.
- */
-function readTiers( tiers: string[] ): TierRow[] {
-    return tiers.map( ( tier ) => {
-        const [ qty, percent ] = tier.split( ':' ).map( Number );
-
-        return { qty, percent };
-    } );
-}
-
-/**
- * @param rows Tier rows.
- */
-function writeTiers( rows: TierRow[] ): string[] {
-    return rows.map( ( row ) => {
-        return `${ row.qty }:${ row.percent }`;
-    } );
-}
-
-/**
- * The rows of a Buy more save more coupon.
- *
- * @param props          Props.
- * @param props.tiers    Stored tiers.
- * @param props.onChange Change handler.
- * @param props.error    Error from the last save.
- */
-function TierRows( {
-    tiers,
-    onChange,
-    error,
-}: {
-    tiers: string[];
-    onChange: ( tiers: string[] ) => void;
-    error?: string;
-} ) {
-    const rows = readTiers( tiers );
-
-    const update = ( index: number, next: TierRow ) => {
-        onChange(
-            writeTiers(
-                rows.map( ( row, rowIndex ) => {
-                    return rowIndex === index ? next : row;
-                } )
-            )
-        );
-    };
-
-    return (
-        <div className="flex w-full flex-col gap-2">
-            { rows.map( ( row, index ) => {
-                return (
-                    <div key={ index } className="flex items-end gap-2">
-                        <NumberField
-                            label={ __(
-                                'Quantity',
-                                'storegrowth-sales-booster'
-                            ) }
-                            value={ row.qty }
-                            min={ 1 }
-                            onChange={ ( qty ) => {
-                                update( index, { ...row, qty } );
-                            } }
-                        />
-                        <NumberField
-                            label={ __(
-                                'Percent off',
-                                'storegrowth-sales-booster'
-                            ) }
-                            value={ row.percent }
-                            min={ 1 }
-                            max={ 100 }
-                            suffix="%"
-                            onChange={ ( percent ) => {
-                                update( index, { ...row, percent } );
-                            } }
-                        />
-                        <Button
-                            variant="ghost"
-                            aria-label={ __(
-                                'Remove tier',
-                                'storegrowth-sales-booster'
-                            ) }
-                            onClick={ () => {
-                                onChange(
-                                    writeTiers(
-                                        rows.filter( ( _row, rowIndex ) => {
-                                            return rowIndex !== index;
-                                        } )
-                                    )
-                                );
-                            } }
-                        >
-                            <Trash2 className="size-4" aria-hidden />
-                        </Button>
-                    </div>
-                );
-            } ) }
-            { rows.length < MAX_TIERS && (
-                <Button
-                    variant="outline"
-                    onClick={ () => {
-                        const last = rows[ rows.length - 1 ];
-
-                        onChange(
-                            writeTiers( [
-                                ...rows,
-                                {
-                                    qty: ( last?.qty ?? 0 ) + 2,
-                                    percent: ( last?.percent ?? 5 ) + 5,
-                                },
-                            ] )
-                        );
-                    } }
-                >
-                    { __( 'Add row', 'storegrowth-sales-booster' ) }
-                </Button>
-            ) }
-            { error && (
-                <p role="alert" className="m-0 text-xs text-destructive">
-                    { error }
-                </p>
-            ) }
-        </div>
-    );
-}
-
 /**
  * The locked Active dates panel of a campaign-only coupon.
  *
@@ -309,7 +161,8 @@ function controls(
     enableBogo: () => void
 ) {
     const { values, schema, setValue, errors, editor, record } = coupon;
-    const isPro = Boolean( getHeaderData().header_info.is_pro_exists );
+    // Pro's coupon options run only with a licence AND StoreGrowth Pro answering.
+    const isPro = Boolean( editor?.pro_options );
     const currency = editor?.currency ?? '';
     const type = String( values.discount_type );
     const isFixed = type === 'fixed';
@@ -347,7 +200,6 @@ function controls(
                         value: 'link',
                         label: __( 'Link', 'storegrowth-sales-booster' ),
                         art: iconArt( Link2 ),
-                        locked: ! isPro,
                     },
                 ] }
             />
@@ -436,15 +288,6 @@ function controls(
                 prefix={ isFixed ? currency : undefined }
                 suffix={ isFixed ? undefined : '%' }
                 error={ errors.amount }
-            />
-        ),
-        tiers: (
-            <TierRows
-                tiers={ ( values.tiers as string[] ) ?? [] }
-                onChange={ ( next ) => {
-                    setValue( 'tiers', next );
-                } }
-                error={ errors.tiers }
             />
         ),
         bogo_rule: (
@@ -536,6 +379,13 @@ function controls(
                         ),
                     },
                     {
+                        value: 'roles',
+                        label: __(
+                            'Specific roles',
+                            'storegrowth-sales-booster'
+                        ),
+                    },
+                    {
                         value: 'first_time',
                         label: isPro
                             ? __(
@@ -562,14 +412,14 @@ function controls(
                         disabled: ! isPro,
                     },
                     {
-                        value: 'roles',
+                        value: 'customers',
                         label: isPro
                             ? __(
-                                  'Specific roles',
+                                  'Specific customers',
                                   'storegrowth-sales-booster'
                               )
                             : __(
-                                  'Specific roles (Pro)',
+                                  'Specific customers (Pro)',
                                   'storegrowth-sales-booster'
                               ),
                         disabled: ! isPro,
@@ -625,8 +475,45 @@ function CouponEditor( { id }: { id: number | null } ) {
         version.route
     );
     const title = __( 'Smart Coupons', 'storegrowth-sales-booster' );
-    const canCreate = coupon.editor?.can_create ?? true;
     const bogoOn = Boolean( getModule( BOGO_ID )?.status );
+    const swap = useAutomaticSwap();
+
+    // Free: saving a coupon that turns into a second automatic one that's on
+    // asks to swap it with the one that's on first (not for a campaign's
+    // version, which doesn't count).
+    const settings = useMemo( () => {
+        const current = coupon.editor?.automatic_on ?? null;
+        const isOn = ! id || coupon.record?.status === 'active';
+        const becomesAutomatic =
+            coupon.values.method === 'automatic' &&
+            ( ! id || coupon.record?.method !== 'automatic' );
+
+        return {
+            ...coupon,
+            save: async ( keys?: string[] ) => {
+                if (
+                    current &&
+                    current.id !== id &&
+                    ! version.route &&
+                    isOn &&
+                    becomesAutomatic
+                ) {
+                    if ( ! ( await swap.ask( current ) ) ) {
+                        throw new Error(
+                            __(
+                                'The coupon was not saved.',
+                                'storegrowth-sales-booster'
+                            )
+                        );
+                    }
+
+                    await switchOff( current.id );
+                }
+
+                return coupon.save( keys );
+            },
+        };
+    }, [ coupon, id, version.route, swap ] );
 
     const toList = (
         <Button
@@ -639,41 +526,9 @@ function CouponEditor( { id }: { id: number | null } ) {
         </Button>
     );
 
-    if ( ! id && ! coupon.loading && ! canCreate ) {
-        return (
-            <div className="flex w-full flex-col">
-                <CardHead
-                    title={ title }
-                    actions={ toList }
-                    className="rounded-b-none"
-                />
-                <div className="flex w-full flex-col items-center gap-3 rounded-b-lg border border-t-0 border-sg-cardline bg-white p-10 text-center">
-                    <ProBadge />
-                    <p className="m-0 max-w-md text-sm text-sg-text">
-                        { __(
-                            'Upgrade to add more coupons.',
-                            'storegrowth-sales-booster'
-                        ) }
-                    </p>
-                    <Button
-                        onClick={ () => {
-                            window.open(
-                                getHeaderData().header_info.upgrade_url,
-                                '_blank',
-                                'noopener,noreferrer'
-                            );
-                        } }
-                    >
-                        { __( 'Upgrade to Pro', 'storegrowth-sales-booster' ) }
-                    </Button>
-                </div>
-            </div>
-        );
-    }
-
     const loaded = ! coupon.loading && ! coupon.loadError;
 
-    return (
+    const page = (
         <ModuleSettingsPage
             notice={
                 <OfferBanner
@@ -681,7 +536,7 @@ function CouponEditor( { id }: { id: number | null } ) {
                 />
             }
             title={ title }
-            settings={ coupon }
+            settings={ settings }
             hasPreview
             hasTabs={ false }
             preview={
@@ -711,6 +566,13 @@ function CouponEditor( { id }: { id: number | null } ) {
                     : __( 'Coupon created.', 'storegrowth-sales-booster' )
             }
         />
+    );
+
+    return (
+        <>
+            { page }
+            { swap.dialog }
+        </>
     );
 }
 

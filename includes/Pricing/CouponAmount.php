@@ -104,46 +104,38 @@ class CouponAmount implements HookRegistry {
 		$values = SmartCoupon::effective( $coupon )['values'];
 
 		if ( SmartCoupon::TYPE_TIERS === $coupon->get_meta( SmartCoupon::TYPE ) ) {
-			return self::tier_percent( (array) ( $values['tiers'] ?? [] ), $coupon );
+			return self::tier_percent( $values, $coupon );
 		}
 
 		return $values['amount'] ?? $amount;
 	}
 
 	/**
-	 * The percent a tiers coupon has reached in the cart: the largest tier
-	 * its eligible items meet, 0 below the first. Needs Pro.
+	 * The percent a Buy more save more coupon has reached in the cart; 0
+	 * below its first tier, and without StoreGrowth Pro (which prices tiers).
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param array     $tiers  Rows of `qty` and `percent`.
+	 * @param array     $values The coupon's values now (a campaign's, if one runs).
 	 * @param WC_Coupon $coupon Coupon.
 	 *
 	 * @return float
 	 */
-	public static function tier_percent( array $tiers, WC_Coupon $coupon ): float {
-		if ( ! sp_store_growth()->has_pro() || ! WC()->cart ) {
+	public static function tier_percent( array $values, WC_Coupon $coupon ): float {
+		if ( ! SmartCoupon::pro_options_available() || ! WC()->cart ) {
 			return 0.0;
 		}
 
-		$quantity = 0;
-
-		foreach ( WC()->cart->get_cart() as $item ) {
-			if ( ! CartLine::is_gift( $item ) && $coupon->is_valid_for_product( $item['data'], $item ) ) {
-				$quantity += (int) $item['quantity'];
-			}
-		}
-
-		$percent = 0.0;
-		$reached = 0;
-
-		foreach ( $tiers as $tier ) {
-			if ( (int) $tier['qty'] <= $quantity && (int) $tier['qty'] > $reached ) {
-				$reached = (int) $tier['qty'];
-				$percent = (float) $tier['percent'];
-			}
-		}
-
-		return $percent;
+		/**
+		 * Filters the percent a Buy more save more coupon has reached in the
+		 * cart. StoreGrowth Pro works it out from the coupon's tiers.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param float     $percent 0 by default.
+		 * @param array     $values  The coupon's values now (`tiers` may come from a campaign).
+		 * @param WC_Coupon $coupon  Coupon.
+		 */
+		return (float) apply_filters( 'spsg_smart_coupon_tier_percent', 0.0, $values, $coupon );
 	}
 }

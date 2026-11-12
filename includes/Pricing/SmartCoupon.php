@@ -102,7 +102,8 @@ class SmartCoupon {
 	const TYPE_FIXED = 'fixed';
 
 	/**
-	 * Type value: Buy more save more, quantity tiers (Pro).
+	 * Type value: Buy more save more, tiers by quantity or cart subtotal
+	 * (StoreGrowth Pro prices it).
 	 *
 	 * @since SPSG_VERSION
 	 */
@@ -131,12 +132,27 @@ class SmartCoupon {
 	const MIN_QUANTITY = '_spsg_coupon_min_quantity';
 
 	/**
-	 * Meta key: who may use the coupon, one of `all`, `first_time`,
-	 * `returning` or `roles` (all but `all` are Pro).
+	 * Meta key: who may use the coupon, one of `self::ELIGIBILITIES`.
 	 *
 	 * @since SPSG_VERSION
 	 */
 	const ELIGIBILITY = '_spsg_coupon_eligibility';
+
+	/**
+	 * Who may use a coupon: all customers, specific roles, first-time or
+	 * returning customers, or specific customers (WooCommerce's allowed
+	 * emails).
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const ELIGIBILITIES = [ 'all', 'roles', 'first_time', 'returning', 'customers' ];
+
+	/**
+	 * The eligibilities only Pro offers.
+	 *
+	 * @since SPSG_VERSION
+	 */
+	const PRO_ELIGIBILITIES = [ 'first_time', 'returning', 'customers' ];
 
 	/**
 	 * Meta key: the role slugs a `roles` coupon is for.
@@ -146,7 +162,8 @@ class SmartCoupon {
 	const ROLES = '_spsg_coupon_roles';
 
 	/**
-	 * Meta key: a tiers coupon's rows, `{ qty, percent }` each.
+	 * Meta key: a tiers coupon's rows, written and read by StoreGrowth Pro.
+	 * StoreGrowth only keeps it (a save never clears it).
 	 *
 	 * @since SPSG_VERSION
 	 */
@@ -236,7 +253,11 @@ class SmartCoupon {
 	}
 
 	/**
-	 * Whether a coupon uses something only Pro can do.
+	 * Whether a coupon uses an option only Pro offers: Buy more save more
+	 * tiers, first-time, returning or specific customers, or more than one
+	 * use per customer. Without a licence such a coupon pauses (the option
+	 * is kept, so it never reaches more shoppers than meant) and resumes on
+	 * renewal.
 	 *
 	 * @since SPSG_VERSION
 	 *
@@ -245,11 +266,45 @@ class SmartCoupon {
 	 * @return bool
 	 */
 	public static function needs_pro( WC_Coupon $coupon ): bool {
-		$eligibility = (string) $coupon->get_meta( self::ELIGIBILITY );
+		return self::TYPE_TIERS === $coupon->get_meta( self::TYPE )
+			|| in_array( (string) $coupon->get_meta( self::ELIGIBILITY ), self::PRO_ELIGIBILITIES, true )
+			|| (int) $coupon->get_usage_limit_per_user( 'edit' ) > 1;
+	}
 
-		return self::LINK === $coupon->get_meta( self::METHOD )
-			|| self::TYPE_TIERS === $coupon->get_meta( self::TYPE )
-			|| ( '' !== $eligibility && 'all' !== $eligibility );
+	/**
+	 * Whether the Pro coupon options run: a valid licence AND StoreGrowth Pro
+	 * answering for them (an older Pro doesn't, and its coupons stay paused
+	 * rather than run without their rules).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	public static function pro_options_available(): bool {
+		/**
+		 * Filters whether StoreGrowth Pro runs the Pro coupon options (tiers,
+		 * first-time / returning / specific customers, more uses per customer).
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool $available False without StoreGrowth Pro.
+		 */
+		return sp_store_growth()->has_pro() && (bool) apply_filters( 'spsg_smart_coupon_pro_options', false );
+	}
+
+	/**
+	 * Whether a coupon is paused for using a Pro option that doesn't run now.
+	 * The option is kept: dropping it could give the discount to more
+	 * shoppers than meant. It resumes when Pro runs again.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return bool
+	 */
+	public static function paused_for_pro( WC_Coupon $coupon ): bool {
+		return self::needs_pro( $coupon ) && ! self::pro_options_available();
 	}
 
 	/**
@@ -272,7 +327,6 @@ class SmartCoupon {
 				'campaign_offer_id' => (int) $coupon->get_meta( self::CAMPAIGN_OFFER ),
 				'status'            => 'publish' === $coupon->get_status( 'edit' ) ? 'active' : 'inactive',
 				'amount'            => (float) $coupon->get_amount( 'edit' ),
-				'tiers'             => (array) $coupon->get_meta( self::TIERS ),
 				'date_start'        => (string) $coupon->get_meta( self::STARTS_AT ),
 				'date_end'          => $expires ? wp_date( 'Y-m-d H:i:s', $expires->getTimestamp() ) : '',
 			]

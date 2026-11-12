@@ -22,6 +22,14 @@ export interface SmartCouponRow {
     uses: number;
     /** In the store's price format. */
     discount_given: string;
+    /** Net sales of the orders that used it, in the store's price format. */
+    revenue: string;
+}
+
+/** A coupon by id and name. */
+export interface CouponRef {
+    id: number;
+    name: string;
 }
 
 /** The campaign that sets a coupon's dates (StoreGrowth Pro). */
@@ -40,6 +48,10 @@ export interface SmartCouponEditorData extends RecordEditorData {
     bogo_rules: Array< { id: number; name: string } >;
     /** The store's currency symbol. */
     currency: string;
+    /** Free: the automatic coupon already on (a second one asks to swap). */
+    automatic_on: CouponRef | null;
+    /** Whether Pro's coupon options run (licence AND StoreGrowth Pro). */
+    pro_options: boolean;
 }
 
 /**

@@ -26,11 +26,12 @@ test.describe('Admin · Free offer limits', { tag: ['@ui', '@admin'] }, () => {
   test.beforeEach(async ({ api }) => {
     wasActive = await isModuleActive(api, COUPONS);
     await setModuleStatus(api, COUPONS, true);
-    // An older coupon switched back on after a newer one: two active.
-    older = await createSmartCoupon(api, 'e2e-ui-limit-older');
+    // An older automatic coupon switched back on after a newer one: two
+    // active (Free counts automatic coupons only).
+    older = await createSmartCoupon(api, 'e2e-ui-limit-older', 'automatic');
     made.push(older);
     await setSmartCouponActive(api, older, false);
-    newer = await createSmartCoupon(api, 'e2e-ui-limit-newer');
+    newer = await createSmartCoupon(api, 'e2e-ui-limit-newer', 'automatic');
     made.push(newer);
     await setSmartCouponActive(api, older, true);
   });
