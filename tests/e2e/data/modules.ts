@@ -7,7 +7,7 @@ export const MODULES = {
   directCheckout: { id: 'direct-checkout', name: 'Direct Checkout' },
   floatingBar: { id: 'floating-notification-bar', name: 'Floating Bar' },
   flyCart: { id: 'fly-cart', name: 'Fly Cart' },
-  freeShipping: { id: 'progressive-discount-banner', name: 'Free Shipping Rules' },
+  freeShipping: { id: 'progressive-discount-banner', name: 'Cart Rewards' },
   quickView: { id: 'quick-view', name: 'Quick View' },
   salesPop: { id: 'sales-pop', name: 'Sales Notification' },
   stockBar: { id: 'stock-bar', name: 'Stock Bar' },
@@ -17,6 +17,9 @@ export const MODULES = {
 export type ModuleKey = keyof typeof MODULES;
 
 export const BASELINE_ACTIVE: string[] = Object.values(MODULES).map((m) => m.id);
+
+/** Modules the baseline leaves off, so the older suites run without them. */
+export const BASELINE_INACTIVE: string[] = ['smart-coupons'];
 
 /** Storefront DOM markers verified live (module active → marker present on the page). */
 export const STOREFRONT_MARKERS = {

@@ -210,9 +210,7 @@ Nothing changes: read the option with `get_option()`, or `SettingsService::with_
 
 ### 5. Before committing
 
-- `wp eval-file tests/compat/settings-roundtrip.php`: saving never loses or alters stored data (runs every schema).
 - `npm run type-check`, `npm run lint:js`, `vendor/bin/phpcs`.
-- New PHP hooks in `tests/compat/php-hooks-baseline.txt`, `npm run check:hooks`.
 - `@since SPSG_VERSION` on new symbols.
 
 ## Reference
@@ -221,12 +219,13 @@ Nothing changes: read the option with `get_option()`, or `SettingsService::with_
 
 | Key | Meaning |
 |---|---|
-| `type` | `text`, `textarea`, `number`, `toggle`, `color`, `select`, `box`, `list`, `url`, `date` |
+| `type` | `text`, `textarea`, `number`, `toggle`, `color`, `select`, `box`, `list`, `rows`, `url`, `date` |
 | `default` | In API shape (int, bool, string, array) |
 | `pro` | Saved only with pro; locked without |
 | `min`, `max`, `step` | Number and box bounds |
 | `options` | Allowed values of `select` / `list` |
 | `item`, `separator`, `max_items`, `lite_max_items` | `list` details |
+| `row` | `rows`: a callable that takes one row and returns it clean, or null when it isn't valid. Drawn by the page (a custom control) |
 | `allow_empty` | `number`: `''` means "not set" |
 | `html` | `text` / `textarea`: keep `wp_kses_post` markup |
 | `tab` | Tab it's drawn on (and saved with) |

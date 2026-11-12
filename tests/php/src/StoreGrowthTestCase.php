@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Test;
 
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
+use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use WP_UnitTestCase;
 
 /**
@@ -91,5 +92,46 @@ abstract class StoreGrowthTestCase extends WP_UnitTestCase {
 	 */
 	protected function create_global_offer( array $settings = array() ): int {
 		return (int) BogoDataManager::create_global_offer( $this->bogo_settings( $settings ) );
+	}
+
+	/**
+	 * Create a real `shop_coupon` post with the Smart Coupons contract's meta
+	 * (ADR-014), as the Smart Coupons module will.
+	 *
+	 * @param string $code Coupon code.
+	 * @param array  $args `type`, `amount`, `method`, `title`, `combines`,
+	 *                     `allow_others`, `product_ids`, `minimum_amount`.
+	 *
+	 * @return \WC_Coupon
+	 */
+	protected function create_smart_coupon( string $code, array $args = array() ): \WC_Coupon {
+		$args = array_merge(
+			array(
+				'type'           => 'percent',
+				'amount'         => 10,
+				'method'         => 'code',
+				'title'          => '',
+				'combines'       => false,
+				'allow_others'   => false,
+				'product_ids'    => array(),
+				'minimum_amount' => 0,
+			),
+			$args
+		);
+
+		$coupon = new \WC_Coupon();
+		$coupon->set_code( $code );
+		$coupon->set_discount_type( $args['type'] );
+		$coupon->set_amount( (string) $args['amount'] );
+		$coupon->set_product_ids( $args['product_ids'] );
+		$coupon->set_minimum_amount( (string) $args['minimum_amount'] );
+		$coupon->update_meta_data( SmartCoupon::MANAGED, 'yes' );
+		$coupon->update_meta_data( SmartCoupon::METHOD, $args['method'] );
+		$coupon->update_meta_data( SmartCoupon::TITLE, $args['title'] );
+		$coupon->update_meta_data( SmartCoupon::COMBINES, $args['combines'] ? 'yes' : 'no' );
+		$coupon->update_meta_data( SmartCoupon::ALLOW_OTHERS, $args['allow_others'] ? 'yes' : 'no' );
+		$coupon->save();
+
+		return $coupon;
 	}
 }

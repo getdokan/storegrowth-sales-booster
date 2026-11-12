@@ -17,6 +17,7 @@ import {
     RectangleHorizontal,
     ShoppingBag,
     ShoppingCart,
+    TicketPercent,
     Timer,
     TrendingUp,
     Truck,
@@ -34,6 +35,7 @@ const MENU_ICONS: Record< string, LucideIcon > = {
     'quick-view': Eye,
     'fly-cart': ShoppingCart,
     'direct-checkout': ShoppingBag,
+    'smart-coupons': TicketPercent,
 };
 
 const DASHBOARD_ICONS: Record< string, LucideIcon > = {

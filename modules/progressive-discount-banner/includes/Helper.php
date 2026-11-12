@@ -45,18 +45,16 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_text( $settings ) {
-		$settings       = self::with_defaults( $settings );
-		$minimum_amount = PluginHelper::find_option_settings( $settings, 'cart_minimum_amount', 0 );
-		$cart_amount    = wc()->cart->get_subtotal();
+		$settings = self::with_defaults( $settings );
+		$subtotal = Milestones::subtotal( wc()->cart );
+		$next     = Milestones::next( Milestones::active( $settings ), $subtotal );
 
 		// If customer already added enough to cart.
-		if ( $cart_amount >= $minimum_amount ) {
+		if ( ! $next ) {
 			return PluginHelper::find_option_settings( $settings, 'goal_completion_text' );
 		}
 
-		$pbanner_text = PluginHelper::find_option_settings( $settings, 'progressive_banner_text' );
-
-		return str_replace( '[amount]', wc_price( $minimum_amount - $cart_amount ), $pbanner_text );
+		return Milestones::fill_copy( (string) PluginHelper::find_option_settings( $settings, 'progressive_banner_text' ), $next, $subtotal );
 	}
 
 	/**

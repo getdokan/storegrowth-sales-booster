@@ -36,6 +36,10 @@ interface SpsgAdminHeaderInfo {
     is_pro_exists: boolean;
     pro_version: string;
     upgrade_url: string;
+    /** Added by Pro 3.1: the licence's state. */
+    license_state?: string;
+    /** Added by Pro 3.1. */
+    renew_url?: string;
     whats_new_url: string;
     support_url: string;
     docs_url: string;
@@ -53,6 +57,10 @@ interface SpsgAdminHeaderData {
 interface Window {
     spsgAdmin: SpsgAdminData;
     spsgAdminHeader: SpsgAdminHeaderData;
+    /** Smart Coupons pages: WooCommerce's coupons are turned on. */
+    spsgSmartCoupons?: {
+        couponsEnabled: boolean | string;
+    };
     /** WPKit notice feed endpoints. */
     spsgNotices?: {
         noticesUrl?: string;

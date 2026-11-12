@@ -61,4 +61,29 @@ class DisplayRules {
 		 */
 		return (bool) apply_filters( 'spsg_display_rules_should_show', $show, $settings, $module );
 	}
+
+	/**
+	 * The copy a running campaign shows on a surface in place of the
+	 * module's own text.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param string $surface  Surface (`floating_bar`, `cart_rewards`, …).
+	 * @param array  $settings The module's settings.
+	 *
+	 * @return string Empty when no campaign controls the surface.
+	 */
+	public static function campaign_copy( string $surface, array $settings = [] ): string {
+		/**
+		 * Filters the copy a running campaign shows on a surface. StoreGrowth
+		 * has no campaigns itself; StoreGrowth Pro supplies them.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param string $copy     Empty for the module's own text.
+		 * @param string $surface  Surface.
+		 * @param array  $settings The module's settings.
+		 */
+		return (string) apply_filters( 'spsg_surface_campaign_copy', '', $surface, $settings );
+	}
 }

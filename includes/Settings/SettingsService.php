@@ -7,6 +7,7 @@
 
 namespace StorePulse\StoreGrowth\Settings;
 
+use StorePulse\StoreGrowth\Interfaces\DerivedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\GatedSettingsSchema;
 use StorePulse\StoreGrowth\Interfaces\SettingsPage;
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
@@ -42,7 +43,7 @@ class SettingsService {
 	 *
 	 * @var string[]
 	 */
-	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box', 'list', 'url', 'date' ];
+	const FIELD_TYPES = [ 'text', 'textarea', 'number', 'toggle', 'color', 'select', 'box', 'list', 'rows', 'url', 'date' ];
 
 	/**
 	 * Sides of a `box` value (margin/padding), stored and returned as
@@ -389,6 +390,8 @@ class SettingsService {
 			return $stored;
 		}
 
+		$stored = $this->with_derived( $this->get_schema( $module_id ), $stored );
+
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			$value = $stored[ $key ] ?? null;
 			$empty = '' === $value && ! empty( $field['allow_empty'] );
@@ -418,7 +421,7 @@ class SettingsService {
 			return [];
 		}
 
-		$stored = $this->get_stored( $schema );
+		$stored = $this->with_derived( $schema, $this->get_stored( $schema ) );
 		$values = [];
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
@@ -469,6 +472,7 @@ class SettingsService {
 		}
 
 		$stored    = is_array( $raw ) ? $raw : [];
+		$live      = $this->with_derived( $schema, $stored );
 		$has_pro   = sp_store_growth()->has_pro();
 		$sanitized = [];
 		$errors    = [];
@@ -481,7 +485,7 @@ class SettingsService {
 
 		foreach ( $this->get_fields( $module_id ) as $key => $field ) {
 			if ( ! array_key_exists( $key, $input ) || ( ! empty( $field['pro'] ) && ! $has_pro ) ) {
-				$default = $this->sanitize( $field, $field['default'] ?? '' );
+				$default = $this->sanitize( $field, $live[ $key ] ?? ( $field['default'] ?? '' ) );
 
 				if ( $first_save && ! array_key_exists( $key, $stored ) && ! is_wp_error( $default ) ) {
 					$sanitized[ $key ] = $default;
@@ -491,7 +495,7 @@ class SettingsService {
 			}
 
 			// Unchanged: the stored value, or the default for a key never saved.
-			$current = array_key_exists( $key, $stored ) ? $stored[ $key ] : ( $field['default'] ?? null );
+			$current = array_key_exists( $key, $live ) ? $live[ $key ] : ( $field['default'] ?? null );
 
 			if ( ! $first_save && $this->is_unchanged( $field, $input[ $key ], $current ) ) {
 				continue;
@@ -528,6 +532,14 @@ class SettingsService {
 			return $this->get_values( $module_id );
 		}
 
+		if ( $schema instanceof DerivedSettingsSchema ) {
+			$sanitized = $schema->before_save( $sanitized, $stored );
+
+			if ( is_wp_error( $sanitized ) ) {
+				return $sanitized;
+			}
+		}
+
 		$old_values = $stored;
 		$new_values = array_merge( $old_values, $sanitized );
 
@@ -556,6 +568,20 @@ class SettingsService {
 		do_action( 'spsg_settings_saved', $module_id, $new_values, $old_values );
 
 		return $this->get_values( $module_id );
+	}
+
+	/**
+	 * A stored option with the keys its schema works out live.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param SettingsSchema|null $schema Module schema.
+	 * @param array               $stored Stored option.
+	 *
+	 * @return array
+	 */
+	private function with_derived( ?SettingsSchema $schema, array $stored ): array {
+		return $schema instanceof DerivedSettingsSchema ? $schema->with_derived( $stored ) : $stored;
 	}
 
 	/**
@@ -640,9 +666,43 @@ class SettingsService {
 			case 'list':
 				return $this->list_items( $field, $value );
 
+			case 'rows':
+				return $this->rows( $field, $value ) ?? [];
+
 			default:
 				return is_scalar( $value ) ? (string) $value : '';
 		}
+	}
+
+	/**
+	 * A `rows` value through the field's `row` callback, which takes one row
+	 * and returns it clean, or null when it is not valid.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $field Field definition.
+	 * @param mixed $value Rows.
+	 *
+	 * @return array[]|null Null when a row isn't valid.
+	 */
+	private function rows( array $field, $value ): ?array {
+		if ( ! is_array( $value ) ) {
+			return null;
+		}
+
+		$rows = [];
+
+		foreach ( array_values( $value ) as $row ) {
+			$row = is_array( $row ) ? call_user_func( $field['row'], $row ) : null;
+
+			if ( null === $row ) {
+				return null;
+			}
+
+			$rows[] = $row;
+		}
+
+		return $rows;
 	}
 
 	/**
@@ -834,6 +894,11 @@ class SettingsService {
 				// Stored as an array (the old admin wrote arrays too); `item: int` as integers.
 				return $items;
 
+			case 'rows':
+				$rows = $this->rows( $field, $value );
+
+				return null === $rows ? new WP_Error( 'invalid', __( 'Some items are not valid.', 'storegrowth-sales-booster' ) ) : $rows;
+
 			case 'url':
 				$value = is_scalar( $value ) ? trim( (string) $value ) : '';
 				$url   = '' === $value ? '' : esc_url_raw( $value );
@@ -904,6 +969,9 @@ class SettingsService {
 
 			case 'list':
 				return ( is_array( $input ) || isset( $field['separator'] ) ) && $this->list_items( $field, $input ) === $current;
+
+			case 'rows':
+				return $this->rows( $field, $input ) === $current;
 
 			default:
 				return is_scalar( $input ) && (string) $input === $current;

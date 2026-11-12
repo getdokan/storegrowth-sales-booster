@@ -31,6 +31,7 @@ export const MODULE_ORDER = [
     'progressive-discount-banner',
     'floating-notification-bar',
     'bogo',
+    'smart-coupons',
     'upsell-order-bump',
     'quick-view',
     'fly-cart',
@@ -46,7 +47,7 @@ export const DASHBOARD_GROUPS: Array< {
     {
         id: 'order-value',
         title: 'Raise order value',
-        modules: [ 'bogo', 'upsell-order-bump' ],
+        modules: [ 'bogo', 'smart-coupons', 'upsell-order-bump' ],
     },
     {
         id: 'checkout-path',
@@ -82,7 +83,7 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
         summary: '',
     },
     'progressive-discount-banner': {
-        label: 'Free Shipping Rules',
+        label: 'Cart Rewards',
         group: null,
         summary: '',
     },
@@ -97,6 +98,13 @@ export const MODULE_CATALOG: Record< string, ModuleCatalogEntry > = {
         summary:
             'Buy one, get one. Pair a product with a free or discounted second item.',
         route: '/bogo',
+    },
+    'smart-coupons': {
+        label: 'Smart Coupons',
+        group: 'order-value',
+        summary:
+            'Automatic, code and link coupons. The shopper always keeps the better deal.',
+        route: '/smart-coupons',
     },
     'upsell-order-bump': {
         label: 'Upsell Order Bump',

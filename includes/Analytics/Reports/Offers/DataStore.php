@@ -131,9 +131,12 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 		$table   = self::get_db_table_name();
 		$alias   = self::ALIAS;
 		$trigger = in_array( 'trigger', (array) $query_args['spsg_role'], true );
-		$group   = 'product' === $query_args['spsg_group']
-			? "{$table}.product_id"
-			: ( $trigger ? "{$alias}.trigger_campaign_id" : "{$alias}.campaign_id" );
+		$groups  = [
+			'product'   => "{$table}.product_id",
+			'surface'   => "{$alias}.promotion_surface",
+			'promotion' => "{$alias}.promotion_id",
+		];
+		$group   = $groups[ $query_args['spsg_group'] ] ?? ( $trigger ? "{$alias}.trigger_campaign_id" : "{$alias}.campaign_id" );
 
 		$this->clear_all_clauses();
 

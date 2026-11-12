@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Migrations;
 
 use StorePulse\StoreGrowth\Analytics\Backfill;
 use StorePulse\StoreGrowth\Analytics\Schema;
+use RuntimeException;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,11 +30,19 @@ class V_3_0_0 extends BaseMigration {
 	 * Create the analytics tables.
 	 *
 	 * @since 3.0.0
+	 * @since 3.1.0 Throws when the tables aren't there afterwards, so
+	 *                     the version isn't stamped and the update can be retried.
+	 *
+	 * @throws RuntimeException When the tables could not be created.
 	 *
 	 * @return void
 	 */
 	public static function create_analytics_tables(): void {
 		Schema::install();
+
+		if ( ! Schema::is_installed() ) {
+			throw new RuntimeException( esc_html__( 'The analytics tables could not be created.', 'storegrowth-sales-booster' ) );
+		}
 	}
 
 	/**

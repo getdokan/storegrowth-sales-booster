@@ -138,7 +138,23 @@ class Assets {
 			filemtime( Helper::get_plugin_path( 'assets/js/storefront-tracker.js' ) ),
 			true
 		);
-		wp_localize_script( 'spsg-storefront-tracker', 'spsgTracker', [ 'url' => rest_url( TrackController::NAMESPACE . '/' . TrackController::ROUTE ) ] );
+		/**
+		 * Filters the storefront tracker's settings. StoreGrowth Pro adds the
+		 * campaign link cookie (`promoCookie`, `promoDays`); without it the
+		 * tracker sets no cookie.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array $settings `url`: the tracking route.
+		 */
+		$tracker = (array) apply_filters(
+			'spsg_tracker_settings',
+			[
+				'url' => rest_url( TrackController::NAMESPACE . '/' . TrackController::ROUTE ),
+			]
+		);
+
+		wp_localize_script( 'spsg-storefront-tracker', 'spsgTracker', $tracker );
 	}
 
 	/**

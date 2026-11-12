@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
+use WC_Product;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -195,6 +196,19 @@ class Helper {
 	 * @return array|mixed|void
 	 */
 	public static function get_product_bogo_settings_for_cart( $product_id ) {
+		return BogoDataManager::with_campaign_rule( self::get_everyday_bogo_settings_for_cart( $product_id ), (int) $product_id );
+	}
+
+	/**
+	 * The everyday rule the cart uses for a product.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int $product_id Product ID.
+	 *
+	 * @return array|null
+	 */
+	private static function get_everyday_bogo_settings_for_cart( $product_id ) {
 		$product_settings = self::get_product_bogo_settings( $product_id );
 		if ( isset( $product_settings['status'] ) && 'active' === $product_settings['status'] ) {
 			return $product_settings;
@@ -368,8 +382,9 @@ class Helper {
 	 */
 	public static function build_offer_stamp( $settings, $price_product ) {
 		$offer_id = isset( $settings['id'] ) ? (int) $settings['id'] : 0;
+		$row_id   = (int) ( $settings['campaign_offer_id'] ?? 0 );
 
-		if ( ! $offer_id || ! $price_product instanceof \WC_Product ) {
+		if ( ( ! $offer_id && ! $row_id ) || ! $price_product instanceof \WC_Product ) {
 			return array();
 		}
 
@@ -378,6 +393,10 @@ class Helper {
 
 		// Per-unit discount contributed: the price less what the gift costs.
 		$discount_value = $base_price - self::calculate_offer_price( $reward_type, $base_price, $settings['discount_amount'] ?? 0 );
+
+		if ( ! $offer_id ) {
+			return OfferAttribution::campaign_only_stamp( 'bogo', $row_id, $reward_type, $discount_value );
+		}
 
 		return OfferAttribution::stamp( 'bogo', $offer_id, $reward_type, $discount_value );
 	}
@@ -399,6 +418,74 @@ class Helper {
 		$trigger = self::find_gift_trigger( $gift_product_id );
 
 		return $trigger ? $trigger['settings'] : null;
+	}
+
+	/**
+	 * Whether a cart line is a BOGO gift. Gifts added from the old offer popup
+	 * have no `bogo_offer` flag, and carts from before 3.1 may hold only the
+	 * saved price.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $cart_item Cart item.
+	 *
+	 * @return bool
+	 */
+	public static function is_gift_line( array $cart_item ): bool {
+		return ! empty( $cart_item['bogo_offer'] ) || ! empty( $cart_item['linked_to_product_key'] ) || isset( $cart_item['bogo_offer_price'] );
+	}
+
+	/**
+	 * Find the cart line and active offer that allow a product as a gift: the
+	 * offer's reward or one of its alternates, with the line meeting the
+	 * offer's minimum quantity.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int    $offer_product_id Gift product id (the parent of a variable gift).
+	 * @param string $only_key         Check only this cart line, when given.
+	 *
+	 * @return array{key: string, settings: array}|null Null when nothing in the cart allows it.
+	 */
+	public static function find_authorized_trigger( int $offer_product_id, string $only_key = '' ): ?array {
+		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+			return null;
+		}
+
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+			if ( '' !== $only_key && $cart_item_key !== $only_key ) {
+				continue;
+			}
+
+			$trigger_product_id = (int) $cart_item['product_id'];
+
+			$settings = BogoValidator::get_product_bogo_settings( $trigger_product_id );
+			if ( empty( $settings ) ) {
+				continue;
+			}
+
+			$trigger_category_ids = $cart_item['data'] instanceof WC_Product ? $cart_item['data']->get_category_ids() : [];
+			if ( ! BogoValidator::should_display_offer( $settings, $trigger_product_id, $trigger_category_ids ) ) {
+				continue;
+			}
+
+			// The trigger must meet the offer's minimum quantity condition.
+			if ( self::get_offer_quantity( $settings, (int) $cart_item['quantity'] ) < 1 ) {
+				continue;
+			}
+
+			$reward_id  = (int) BogoValidator::get_offer_product_id( $settings, $trigger_product_id );
+			$alternates = $settings['alternate_products'] ?? $settings['get_alternate_products'] ?? [];
+
+			if ( in_array( $offer_product_id, array_map( 'intval', array_merge( [ $reward_id ], (array) $alternates ) ), true ) ) {
+				return [
+					'key'      => $cart_item_key,
+					'settings' => $settings,
+				];
+			}
+		}
+
+		return null;
 	}
 
 	/**

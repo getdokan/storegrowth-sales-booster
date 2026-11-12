@@ -28,8 +28,14 @@ ADRs, `docs/adr/` (apply to all code):
 | ADR-010 | Record editors (a table row: BOGO offer, order bump) are defined in PHP like settings pages (fields + `get_page()`), served by the record's REST routes (`GET …/editor`), drawn by `ModuleSettingsPage` from a hook in the `ModuleSettings` shape; extended by PHP filters (`spsg_bogo_offer_fields` / `spsg_bogo_offer_page`, `spsg_order_bump_fields` / `spsg_order_bump_page`), not JS slots |
 | ADR-011 | Dokan vendor dashboard: an integration bundle (`integrations/src/<integration>/<bundle>`, e.g. `integrations/src/dokan/bogo`) draws the module's own pages in vendor mode (`vendor` prop), with the shared bundles and `spsg-tailwind` (`.spsg-layout`, after Dokan's) registered there by `Assets::register_shared_bundles()`; Dokan's router bridged through the shared `Router`; localized `spsgAdmin` / `spsgAdminHeader` subset, never the admin nonce |
 | ADR-012 | Module analytics: StoreGrowth keys written at checkout through the CRUD API (never on subscriptions) are mirrored into `spsg_offer_lookup` from WooCommerce Analytics' import (`woocommerce_analytics_update_product`); reports are data stores extending WooCommerce's (`Analytics\Reports\…`, dokan-lite style), money from `wc_order_product_lookup`, discount = `unit_discount × product_qty`; the bar discount stays a fee, tagged on its fee line; views/clicks go to one counts table `spsg_analytics_daily` via one storefront tracker. Plan: `docs/analytics/README.md` |
+| ADR-013 | Offer versions: a campaign's version of an offer and campaign-only offers live on the campaign's list (`spsg_campaign_offers`), never on the offer; `OfferVersions::effective_offer( $offer, $now )` says what applies, live, writing nothing; campaign values are merged only in storefront lookups; Free limits (`OfferLimits`, `spsg_offer_limits`) count active everyday offers and pause the newest live; real campaigns are "promotion" in new stored keys and API fields |
+| ADR-014 | Deal list and referee: modules report per-line deals on `spsg_cart_deals`, `Pricing\Referee` decides only for a cart with a Smart Coupon or campaign deal (`Referee::for_cart()`, on demand, fresh prices, price-entry basis), `Pricing\CouponGate` applies it through WooCommerce's coupon filters, gifts exist only by the decision; Smart Coupons are real `shop_coupon` posts with the `Pricing\SmartCoupon` meta; observe-only is `spsg_referee_observe_only` (log source `spsg-referee`) |
+| ADR-015 | Store API cart extension: one extension in core (`StoreApi\CartExtension`, under `extensions.storegrowth`) carries notices, automatic coupon names and module data (filter `spsg_store_api_cart_data`); line labels and price steps stay in `woocommerce_get_item_data`; block script `src/storefront/cart-blocks`; the block mini-cart's bar is PHP bound to WooCommerce's cart state (WooCommerce 11.1+) |
+| ADR-016 | Campaigns and attribution: new keys say "promotion" (`_spsg_promotion_id`, `_spsg_promotion_source`, `spsg_offer_lookup.promotion_id`), `_spsg_campaign_id` still means offer; one order, one campaign from `Decision::promotions()`, then the first-party link cookie set by the storefront tracker; surfaces go through `DisplayRules::should_show()`; reports read the offer data stores with `spsg_promotion` |
+| ADR-017 | Campaigns live in StoreGrowth Pro (supersedes ADR-016's placement): Free has no campaign code, route, page or menu item; Free asks through filters with "no campaign" defaults (`spsg_offer_campaign_row`, `spsg_running_campaign_offers`, `spsg_campaign_price`, `spsg_offer_timeline`, …) and Pro answers; editors get a campaign version through the JS filter `storegrowth.offer.useVersion`; promotion keys, lookup columns and `OfferVersions` stay in Free |
+| ADR-018 | Smart Coupons' Pro options (tiers by quantity or subtotal, first-time / returning / specific customers, more uses per customer) live in Pro through `spsg_smart_coupon_*` filters; Free keeps the data, `needs_pro()` / `pro_options_available()`, pauses a coupon whose Pro option doesn't run (never clearing it) and refuses new Pro choices; the Free limit counts active automatic coupons only |
 
-A new decision takes the next `ADR-###`, in a file named `docs/adr/NNNN-short-title.md` (e.g. `0013-…`); numbers are never reused.
+A new decision takes the next `ADR-###`, in a file named `docs/adr/NNNN-short-title.md` (e.g. `0015-…`); numbers are never reused.
 
 ## Build / dev commands
 
@@ -41,7 +47,6 @@ npm run start          # watch + rebuild (restart it after adding an entry to we
 npm run build          # production build
 npm run type-check     # tsc --noEmit
 npm run lint:js        # src, modules/*/src, integrations/src
-npm run check:hooks    # every hook in tests/compat/php-hooks-baseline.txt still fires
 npm run makepot        # regenerate languages/storegrowth-sales-booster.pot
 npm run version        # replace SPSG_VERSION placeholders (bin/version-replace.sh)
 npm run archiver       # zip a distributable build into dist/ (bin/archiver.mjs; dist/ is git-ignored)
@@ -51,13 +56,6 @@ npm run release:dev    # same zip without `version` (SPSG_VERSION placeholders s
 ```
 
 While a dev server (`npm run start`) is running, don't run `npm run build`; reload the site instead.
-
-Checks against a live site (run from the plugin folder; WP-CLI finds the WordPress root):
-
-```bash
-wp eval-file tests/compat/settings-roundtrip.php     # saving settings never loses or alters stored data
-wp eval-file tests/compat/storefront-foundation.php  # storefront helpers (ADR-005)
-```
 
 PHP:
 ```bash
@@ -130,7 +128,6 @@ To add a module: create the directory, add its `require_once .../bootstrap.php` 
 
 ### Conventions
 - Option/meta/prefix naming uses `spsg_` (and constants `STOREGROWTH_*`); module IDs are lowercase slugs (`bogo`, `fly-cart`, …). In PHP, take a module's id from its class (`StockBarModule::get_id()`), never a repeated string. New feature hooks use `spsg_`; lifecycle hooks `storegrowth_`.
-- **New hooks** go in `tests/compat/php-hooks-baseline.txt` (sorted); `npm run check:hooks` fails when one stops firing.
 - **Option autoload:** pass `false` to `add_option()` / `update_option()` for any option that isn't read on most front-end requests (admin-only flags, versions, backups, one-shot state). Leave it out (WordPress's default `auto`) only for options the storefront or every request reads: `spsg_active_module_ids` and the module settings options.
 - TypeScript/CSS: 4-space indentation, kebab-case file names inside `src/`. PHP: WordPress coding standards (tabs), PSR-4 PascalCase class files, **`array_merge()` to combine arrays, not the `+` union operator**, **short array syntax `[]`, never `array()`** in new code (the house style, allowed in `phpcs.xml`; legacy files keep theirs until they're rewritten).
 - PHP classes: **import with `use` at the top of the file, then use the short name** (`use StorePulse\StoreGrowth\Helper;` → `Helper::get_settings()`); never a fully-qualified name inline (`\StorePulse\StoreGrowth\Helper::…`). When two classes share a short name (a module's own `Helper`), alias one (`use StorePulse\StoreGrowth\Helper as PluginHelper;`). Templates can `use` too.

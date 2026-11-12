@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test';
 import { gotoModules, setModuleState, moduleToggle, moduleCardLink } from '../../helpers/modules';
 import { isModuleActive, listModules, setModuleStatus } from '../../helpers/rest';
-import { MODULES } from '../../data/modules';
+import { BASELINE_ACTIVE, BASELINE_INACTIVE, MODULES } from '../../data/modules';
 
 // The Modules screen (`#/modules`): one card per module, each with an
 // "Enable <name>" switch that saves through `POST sales-booster/v1/modules/<id>`.
@@ -18,7 +18,7 @@ test.describe('Admin · Modules catalog', { tag: '@ui' }, () => {
 
   test('the catalog matches the REST module list', async ({ page, api }) => {
     const modules = await listModules(api);
-    expect(modules.map((m) => m.id).sort()).toEqual(Object.values(MODULES).map((m) => m.id).sort());
+    expect(modules.map((m) => m.id).sort()).toEqual([...BASELINE_ACTIVE, ...BASELINE_INACTIVE].sort());
 
     await gotoModules(page);
     for (const mod of modules) {

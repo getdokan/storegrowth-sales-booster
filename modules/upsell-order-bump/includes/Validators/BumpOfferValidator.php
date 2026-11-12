@@ -3,6 +3,7 @@
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Validators;
 
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
+use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 
 class BumpOfferValidator {
     private $orderBumpData;
@@ -79,7 +80,7 @@ class BumpOfferValidator {
             $cartVariationId = $cartItem['variation_id'] ?? 0;
             $cartItemId = $cartVariationId > 0 ? $cartVariationId : $cartProductId;
 
-            if ($cartItemId == $offerProductId && isset($cartItem['custom_price'])) {
+            if ($cartItemId == $offerProductId && OrderBump::is_bump_cart_item($cartItem)) { // phpcs:ignore -- Legacy file, kept in its own style.
                 $cart->remove_cart_item($cartItemKey);
             }
         }

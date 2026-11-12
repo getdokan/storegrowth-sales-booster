@@ -27,6 +27,7 @@ import {
     ProBadge,
     ProductCell,
     RecordList,
+    TimelineChip,
 } from '@storegrowth/components';
 import {
     Navigate,
@@ -287,6 +288,18 @@ function OfferList( {
             ) }
             onCanCreate={ onCanCreate }
             statusLabel={ statusLabel }
+            statusNote={ ( item ) => {
+                return (
+                    <>
+                        { item.chip && (
+                            <span className="text-xs text-sg-help">
+                                { item.chip }
+                            </span>
+                        ) }
+                        <TimelineChip timeline={ item.timeline } />
+                    </>
+                );
+            } }
             messages={ MESSAGES }
         />
     );

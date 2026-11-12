@@ -17,6 +17,8 @@ export interface CheckboxFieldProps {
     /** Pro field without pro. */
     locked?: boolean;
     id?: string;
+    /** Help line under the label. */
+    help?: ReactNode;
 }
 
 /**
@@ -28,6 +30,7 @@ export interface CheckboxFieldProps {
  * @param props.onChange Change handler.
  * @param props.locked   Pro field without pro.
  * @param props.id       Checkbox id.
+ * @param props.help     Help line under the label.
  */
 export function CheckboxField( {
     label,
@@ -35,6 +38,7 @@ export function CheckboxField( {
     onChange,
     locked,
     id,
+    help,
 }: CheckboxFieldProps ) {
     const fallbackId = useId();
     const inputId = id ?? fallbackId;
@@ -51,7 +55,12 @@ export function CheckboxField( {
                 onCheckedChange={ onChange }
                 className="border-sg-stroke group-hover:border-sg-brand data-checked:border-sg-brand data-checked:bg-sg-brand"
             />
-            { label }
+            <span className="flex flex-col gap-0.5">
+                <span>{ label }</span>
+                { help && (
+                    <span className="text-xs text-sg-help">{ help }</span>
+                ) }
+            </span>
             { locked && <ProBadge /> }
         </label>
     );

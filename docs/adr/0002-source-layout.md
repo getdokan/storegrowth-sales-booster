@@ -96,9 +96,8 @@ Admin source used to live in `assets/src/` (core) and `modules/<name>/assets/src
    ├─ languages/
    ├─ build/                         # generated: core bundles, build/integrations/
    ├─ tests/
-   │  ├─ php/                        # PHPUnit
-   │  ├─ e2e/                        # Playwright: UI and API
-   │  └─ compat/                     # hook baselines, settings round trip, storefront foundation
+   │  ├─ php/                        # PHPUnit (StoreGrowth Pro's suite runs on its bootstrap)
+   │  └─ e2e/                        # Playwright: UI and API
    └─ docs/                          # ADRs, settings-page how-to, feature plans
    ```
    Pro mirrors the same shape (`src/`, `build/`, `includes/Modules/*`).

@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Settings\FloatingNotificationBarSettings;
+use StorePulse\StoreGrowth\Storefront\DisplayRules;
 
 // If this file is called directly, abort.
 
@@ -66,6 +67,12 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_text( $settings ) {
+		$campaign_copy = DisplayRules::campaign_copy( 'floating_bar', (array) $settings );
+
+		if ( '' !== $campaign_copy ) {
+			return $campaign_copy;
+		}
+
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
 		return PluginHelper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}

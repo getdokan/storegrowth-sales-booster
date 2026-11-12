@@ -23,6 +23,8 @@ import {
 export interface SelectOption {
     value: string;
     label: string;
+    /** Shown but not selectable, e.g. a Pro choice without Pro. */
+    disabled?: boolean;
 }
 
 export interface SelectFieldProps extends BaseFieldProps {
@@ -89,6 +91,7 @@ export function SelectField( {
                         <SelectItem
                             key={ option.value }
                             value={ option.value }
+                            disabled={ option.disabled }
                             className="cursor-pointer"
                         >
                             { option.label }

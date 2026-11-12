@@ -12,6 +12,8 @@ use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpDesign;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Settings\OrderBumpFields;
+use StorePulse\StoreGrowth\Offers\OfferLimits;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
 use WC_Product;
 use WP_REST_Controller;
 use WP_REST_Server;
@@ -321,8 +323,8 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Create a single order bump. Lite keeps two bumps (any status): at the
-	 * limit, a create gets 403 `salesbooster_limit_exceeded`.
+	 * Create a single order bump. Lite runs two active bumps: at the limit, a
+	 * create gets 403 `salesbooster_limit_exceeded`.
 	 *
 	 * @param WP_REST_Request $request Full details about the request.
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
@@ -414,8 +416,8 @@ class OrderBumpController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Turn an order bump on or off (the list's switch). Lite's limit doesn't
-	 * apply: it counts bumps of any status.
+	 * Turn an order bump on or off (the list's switch). Turning on one over
+	 * lite's limit is allowed: the limit pauses the newest live (`OfferLimits`).
 	 *
 	 * @since 3.0.0
 	 *
@@ -577,6 +579,62 @@ class OrderBumpController extends WP_REST_Controller {
 		unset( $sent['id'], $sent['created_by'], $sent['updated_by'] );
 
 		return $sent;
+	}
+
+	/**
+	 * Validate a campaign's version of a bump, or a campaign-only bump, as an
+	 * update or a create would, and return it in the stored shape.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $bump Stored values; empty for a new campaign-only bump.
+	 * @param array $sent What the editor sent.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function campaign_values( array $bump, array $sent ) {
+		unset( $sent['id'], $sent['created_by'], $sent['updated_by'] );
+
+		$base = $bump ? $this->to_request_data( $bump ) : [
+			'status'            => 'active',
+			'target_type'       => 'products',
+			'target_products'   => [],
+			'target_categories' => [],
+			'offer_type'        => 'discount',
+			'offer_amount'      => 0,
+		];
+		$data = array_merge( $base, $sent );
+
+		$data['design_settings'] = array_merge( $bump ? (array) $bump['design_settings'] : OrderBumpDesign::get_defaults(), $this->sent_design( $sent ) );
+
+		$data  = $this->prepare_bump_for_database( $data, $sent );
+		$rules = $this->check_bump_rules( $data, $bump ? $sent : null );
+
+		return is_wp_error( $rules ) ? $rules : $data;
+	}
+
+	/**
+	 * Stored values as this editor reads them.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $values Stored values.
+	 *
+	 * @return array
+	 */
+	public function campaign_record( array $values ): array {
+		$item = array_merge(
+			[
+				'created_by' => 0,
+				'updated_by' => 0,
+				'created_at' => '',
+				'updated_at' => '',
+			],
+			$values,
+			[ 'id' => 0 ]
+		);
+
+		return (array) $this->prepare_item_for_response( $item, new WP_REST_Request() )->get_data();
 	}
 
 	/**
@@ -791,6 +849,8 @@ class OrderBumpController extends WP_REST_Controller {
 			'created_at'           => $item['created_at'],
 			'updated_at'           => $item['updated_at'],
 			'targets'              => $this->get_targets( $item ),
+			'chip'                 => OfferLimits::is_paused( OfferVersions::ORDER_BUMP, (int) $item['id'] ) ? OfferLimits::chip_text() : '',
+			'timeline'             => OfferVersions::timeline( OfferVersions::ORDER_BUMP, (int) $item['id'], 'active' === $item['status'], (string) $item['name'] ),
 			'offer_product_info'   => null,
 			'offer_prices'         => null,
 		];

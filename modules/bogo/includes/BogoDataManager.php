@@ -7,8 +7,11 @@
 
 namespace StorePulse\StoreGrowth\Modules\BoGo;
 
+use DateTimeImmutable;
 use Exception;
 use StorePulse\StoreGrowth\Helper;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
+use StorePulse\StoreGrowth\Support\SiteTime;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -51,6 +54,16 @@ class BogoDataManager {
 	 * @var string[]
 	 */
 	const BADGE_KEYS = [ 'enable_custom_badge_image', 'default_badge_icon_name', 'default_custom_badge_icon' ];
+
+	/**
+	 * Key, stored inside `design_settings`, of a rule that applies only with
+	 * a coupon (one used by a code or link Smart Coupon).
+	 *
+	 * @since 3.1.0
+	 *
+	 * @var string
+	 */
+	const ONLY_WITH_COUPON = 'only_with_coupon';
 
 	/**
 	 * Whether another global offer can be created: always with pro, and in
@@ -97,6 +110,34 @@ class BogoDataManager {
 			],
 			self::get_design_settings( $offer['design_settings'] ?? null )
 		);
+	}
+
+	/**
+	 * An offer's request data as a stored offer reads, for an offer that lives
+	 * on a campaign's list instead of this table.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $data       Validated request data.
+	 * @param int   $product_id The product a product-level rule is for; 0 for a global rule.
+	 *
+	 * @return array
+	 */
+	public static function to_offer_values( array $data, int $product_id = 0 ): array {
+		if ( ! $product_id ) {
+			return self::format_settings( self::map_bogo_data( $data, 'global' ) );
+		}
+
+		$values = array_merge(
+			self::map_bogo_data( $data, 'product', $product_id ),
+			// Only a product rule in the table has a generated name.
+			[
+				'name'               => $data['name_of_order_bogo'] ?? '',
+				'offered_categories' => wp_json_encode( [] ),
+			]
+		);
+
+		return array_merge( self::format_settings( $values ), [ 'name_of_order_bogo' => $values['name'] ] );
 	}
 
 	/**
@@ -275,6 +316,117 @@ class BogoDataManager {
 	}
 
 	/**
+	 * The rule the storefront uses for a product once running campaigns are
+	 * counted. For the storefront only: the values may be a campaign's, and
+	 * must never be saved over the everyday rule.
+	 *
+	 * A product's own rule still beats a store-wide one, and a campaign-only
+	 * rule comes before an attached one.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array|null $everyday   The rule without campaigns.
+	 * @param int        $product_id Product ID.
+	 *
+	 * @return array|null
+	 */
+	public static function with_campaign_rule( ?array $everyday, int $product_id ): ?array {
+		$now   = SiteTime::now();
+		$rules = [];
+
+		foreach ( OfferVersions::running_campaign_offers( OfferVersions::BOGO, $now ) as $row ) {
+			$rule = $row['offer_id'] ? self::get_bogo_offer( $row['offer_id'] ) : $row['values'];
+
+			if ( $rule ) {
+				$rules[] = self::campaign_values( $rule, $now );
+			}
+		}
+
+		if ( ! $rules ) {
+			return $everyday;
+		}
+
+		$product_rules = array_filter(
+			$rules,
+			static function ( array $rule ) use ( $product_id ): bool {
+				return 'product' === ( $rule['type'] ?? '' ) && (int) ( $rule['product_id'] ?? 0 ) === $product_id;
+			}
+		);
+
+		if ( $product_rules ) {
+			return reset( $product_rules );
+		}
+
+		if ( 'product' === ( $everyday['type'] ?? '' ) ) {
+			return $everyday;
+		}
+
+		foreach ( $rules as $rule ) {
+			if ( 'product' !== ( $rule['type'] ?? '' ) && self::product_in_global_offer( $rule, $product_id ) ) {
+				return $rule;
+			}
+		}
+
+		return $everyday;
+	}
+
+	/**
+	 * A rule's values with its campaign's changes, with the key the cart
+	 * reads for a product rule's gift kept in step.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array             $rule Stored rule.
+	 * @param DateTimeImmutable $now  Moment to check.
+	 *
+	 * @return array
+	 */
+	private static function campaign_values( array $rule, DateTimeImmutable $now ): array {
+		$effective = OfferVersions::effective_offer( array_merge( $rule, [ 'offer_kind' => OfferVersions::BOGO ] ), $now );
+		$values    = $effective['values'];
+
+		if ( isset( $values['offer_product_id'] ) ) {
+			$values['get_different_product_field'] = $values['offer_product_id'];
+		}
+
+		if ( isset( $values['alternate_products'] ) ) {
+			$values['get_alternate_products'] = $values['alternate_products'];
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Mark a rule as applying only with a coupon, or clear the mark.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int  $id                Rule id.
+	 * @param bool $only_with_coupon  Whether the rule needs a coupon.
+	 *
+	 * @return bool
+	 */
+	public static function set_only_with_coupon( int $id, bool $only_with_coupon ): bool {
+		global $wpdb;
+
+		$rule = self::get_bogo_offer( $id );
+
+		if ( ! $rule ) {
+			return false;
+		}
+
+		$design = is_string( $rule['design_settings'] ?? null ) ? (array) json_decode( $rule['design_settings'], true ) : [];
+
+		unset( $design[ self::ONLY_WITH_COUPON ] );
+
+		if ( $only_with_coupon ) {
+			$design[ self::ONLY_WITH_COUPON ] = true;
+		}
+
+		return false !== $wpdb->update( self::get_table_name(), [ 'design_settings' => wp_json_encode( $design ) ], [ 'id' => $id ] );
+	}
+
+	/**
 	 * Check if a product is included in a global BOGO offer.
 	 *
 	 * @param array $offer Global BOGO offer data.
@@ -436,6 +588,12 @@ class BogoDataManager {
 		);
 
 		if ( $existing ) {
+			// The product tab knows nothing of the coupon mark: it survives a save.
+			$stored = self::get_bogo_offer( (int) $existing );
+			if ( ! empty( $stored[ self::ONLY_WITH_COUPON ] ) ) {
+				$data['design_settings'] = wp_json_encode( array_merge( (array) json_decode( $data['design_settings'], true ), [ self::ONLY_WITH_COUPON => true ] ) );
+			}
+
 			/**
 			 * Filters the user recorded as the last editor of a BOGO offer.
 			 *
@@ -752,7 +910,7 @@ class BogoDataManager {
 		// where the badge code reads them (only when an offer has them).
 		$stored_design = is_string( $settings['design_settings'] ?? null ) ? json_decode( $settings['design_settings'], true ) : null;
 		if ( is_array( $stored_design ) ) {
-			$settings = array_merge( $settings, array_intersect_key( $stored_design, array_flip( self::BADGE_KEYS ) ) );
+			$settings = array_merge( $settings, array_intersect_key( $stored_design, array_flip( array_merge( self::BADGE_KEYS, [ self::ONLY_WITH_COUPON ] ) ) ) );
 		}
 
 		return $settings;
@@ -920,8 +1078,6 @@ class BogoDataManager {
 			return true;
 		}
 
-		// Check if current day is in schedule. WordPress runs PHP in UTC, so gmdate() equals date() here.
-		$current_day = strtolower( gmdate( 'l' ) );
-		return in_array( $current_day, $schedule ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
+		return in_array( SiteTime::weekday(), $schedule ); // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored schedule values are not type-checked; loose match kept.
 	}
 }

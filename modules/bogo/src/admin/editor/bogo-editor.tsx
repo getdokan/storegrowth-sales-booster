@@ -22,10 +22,13 @@ import {
     ModuleSettingsPage,
     MultiSelectField,
     ProBadge,
+    OfferBanner,
+    type OfferTimelineData,
 } from '@storegrowth/components';
 import {
     Navigate,
     useModules,
+    useOfferVersion,
     useNavigate,
     useSearchParams,
 } from '@storegrowth/hooks';
@@ -152,7 +155,20 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
         },
         [ navigate, searchParams ]
     );
-    const offer = useBogoOffer( id, onCreated, vendor );
+    const version = useOfferVersion( 'bogo' );
+    const offer = useBogoOffer(
+        version.row || id,
+        ( created ) => {
+            if ( version.returnTo ) {
+                navigate( version.returnTo );
+                return;
+            }
+
+            onCreated( created );
+        },
+        vendor,
+        version.route
+    );
 
     const title = __( 'BOGO', 'storegrowth-sales-booster' );
     // Dokan's page header has its own Back button.
@@ -265,12 +281,22 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
 
     return (
         <ModuleSettingsPage
+            notice={
+                <OfferBanner
+                    timeline={ offer.record?.timeline as OfferTimelineData }
+                />
+            }
             title={ title }
             settings={ offer }
             preview={ preview }
             hasPreview
             controls={ loaded ? controls( offer ) : undefined }
-            actions={ toList }
+            actions={
+                <>
+                    { version.header }
+                    { toList }
+                </>
+            }
             // Dokan's page header is the heading on the vendor dashboard.
             hideTitle={ vendor }
             savedMessage={

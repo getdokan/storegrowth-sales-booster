@@ -53,6 +53,13 @@ class EnqueueScript implements HookRegistry {
 			filemtime( $style_file )
 		);
 
+		wp_enqueue_style(
+			'spsg-cart-rewards',
+			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/css/cart-rewards.css' ),
+			[],
+			filemtime( PluginHelper::get_modules_path( 'progressive-discount-banner/assets/css/cart-rewards.css' ) )
+		);
+
 		wp_enqueue_script(
 			'spsg-pd-banner-bar-remove',
 			PluginHelper::get_modules_url( 'progressive-discount-banner/assets/js/banner-bar-remove.js' ),
@@ -63,6 +70,9 @@ class EnqueueScript implements HookRegistry {
 		);
 
 		$localized_fsb_data = Helper::get_settings();
+
+		// The block carts change through the Store API; the bar refreshes from here.
+		$localized_fsb_data['fragments_url'] = \WC_AJAX::get_endpoint( 'get_refreshed_fragments' );
 
 		// Use wp_localize_script to pass the data to your script.
 		wp_localize_script( 'spsg-pd-banner-bar-remove', 'spsg_fsb_data', $localized_fsb_data );

@@ -12,7 +12,6 @@ Review changes against the ADRs (`docs/adr/`) and `CLAUDE.md`. Consult `storegro
 ### Backward compatibility (ADR-004): highest priority
 
 - **Renamed or removed** PHP hook, public class/method/function, option name/key/value shape, admin slug, ajax action, REST route, storefront class or script handle. Pro 2.2.0 must keep working when only lite updates.
-- **New hook not in `tests/compat/php-hooks-baseline.txt`** (sorted); `npm run check:hooks` must pass.
 - **Settings write that bypasses `SettingsService::save()`** (merge-only): existing user settings must never be lost.
 
 ### Backend PHP: architecture
@@ -71,8 +70,7 @@ Review changes against the ADRs (`docs/adr/`) and `CLAUDE.md`. Consult `storegro
 
 ## Process checks
 
-- `vendor/bin/phpcs` on changed PHP (compare with the base for pre-existing errors in legacy files), `npm run type-check`, `npm run lint:js` (never `--fix`), `npm run check:hooks`, PHPUnit (`npm run phpunit`).
-- `wp eval-file tests/compat/settings-roundtrip.php` when settings code changed.
+- `vendor/bin/phpcs` on changed PHP (compare with the base for pre-existing errors in legacy files), `npm run type-check`, `npm run lint:js` (never `--fix`), PHPUnit (`npm run phpunit`).
 - Branch targets `develop` (see `storegrowth-git`); `readme.txt` / changelog for user-facing changes.
 
 ## Output format

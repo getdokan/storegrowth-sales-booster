@@ -12,6 +12,8 @@ use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Ajax;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\CommonHooks;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\EnqueueScript;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\OrderAttribution;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\RewardGifts;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\RewardsBar;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\WoocommerceDiscount;
 
 /**
@@ -38,6 +40,8 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 		Ajax::class,
 		WoocommerceDiscount::class,
 		OrderAttribution::class,
+		RewardGifts::class,
+		RewardsBar::class,
 	];
 
 	/**
@@ -77,8 +81,8 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 		}
 		$default_data = array(
 			'default_banner_text'     => 'Shop more than $100 to get free shipping.',
-			'progressive_banner_text' => 'Add more [amount] to get free shipping.',
-			'goal_completion_text'    => 'You have successfully acquired free shipping.',
+			'progressive_banner_text' => 'Add {remaining} more for {reward}',
+			'goal_completion_text'    => 'All rewards unlocked',
 		);
 
 		// Seed only a missing option: a store whose flag was lost (cleanup
