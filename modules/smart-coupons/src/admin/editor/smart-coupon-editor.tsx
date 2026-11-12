@@ -25,18 +25,17 @@ import {
     MultiSelectField,
     type MultiSelectOption,
     NumberField,
-    CampaignBanner,
+    OfferBanner,
     type OfferTimelineData,
     PickerCards,
     ProBadge,
     SelectField,
-    VersionHeader,
 } from '@storegrowth/components';
 import {
     Navigate,
-    useCampaignVersion,
     useModules,
     useNavigate,
+    useOfferVersion,
 } from '@storegrowth/hooks';
 import {
     fetchProductCategories,
@@ -284,7 +283,7 @@ function CampaignDates( {
             <Button
                 variant="link"
                 onClick={ () => {
-                    navigate( `/campaigns/${ campaign.id }` );
+                    navigate( campaign.route );
                 } }
             >
                 { __( 'Open campaign', 'storegrowth-sales-booster' ) }
@@ -612,12 +611,12 @@ function CouponEditor( { id }: { id: number | null } ) {
         },
         [ navigate ]
     );
-    const version = useCampaignVersion( 'smart_coupon' );
+    const version = useOfferVersion( 'smart_coupon' );
     const coupon = useSmartCoupon(
         version.row || id,
         ( created ) => {
-            if ( version.campaignId ) {
-                navigate( `/campaigns/${ version.campaignId }` );
+            if ( version.returnTo ) {
+                navigate( version.returnTo );
                 return;
             }
 
@@ -677,7 +676,7 @@ function CouponEditor( { id }: { id: number | null } ) {
     return (
         <ModuleSettingsPage
             notice={
-                <CampaignBanner
+                <OfferBanner
                     timeline={ coupon.record?.timeline as OfferTimelineData }
                 />
             }
@@ -702,17 +701,7 @@ function CouponEditor( { id }: { id: number | null } ) {
             }
             actions={
                 <>
-                    <VersionHeader
-                        campaign={
-                            version.name ||
-                            ( coupon.record?.campaign as CouponCampaign | null )
-                                ?.name
-                        }
-                        campaignOnly={
-                            version.only ||
-                            Boolean( coupon.record?.campaign_only )
-                        }
-                    />
+                    { version.header }
                     { toList }
                 </>
             }

@@ -1,6 +1,6 @@
 # ADR-016: Campaigns and campaign attribution
 
-Status: accepted (3.1.0).
+Status: accepted (3.1.0). "Where it lives" is superseded by ADR-017: campaigns live in StoreGrowth Pro.
 
 ## Context
 

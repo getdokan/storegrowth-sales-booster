@@ -10,7 +10,6 @@ namespace StorePulse\StoreGrowth\Modules\BoGo;
 use DateTimeImmutable;
 use Exception;
 use StorePulse\StoreGrowth\Helper;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Support\SiteTime;
 
@@ -335,7 +334,7 @@ class BogoDataManager {
 		$now   = SiteTime::now();
 		$rules = [];
 
-		foreach ( CampaignRepository::running_offers( OfferVersions::BOGO, $now ) as $row ) {
+		foreach ( OfferVersions::running_campaign_offers( OfferVersions::BOGO, $now ) as $row ) {
 			$rule = $row['offer_id'] ? self::get_bogo_offer( $row['offer_id'] ) : $row['values'];
 
 			if ( $rule ) {

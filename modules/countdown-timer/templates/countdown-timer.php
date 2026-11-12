@@ -11,7 +11,6 @@
  * @package SBFW
  */
 
-use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\CountdownTimerModule;
 use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper;
@@ -31,7 +30,7 @@ if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
 }
 
-$end_date        = CampaignSurfaces::countdown_end( $product->get_id() ) ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
+$end_date        = Helper::campaign_countdown_end( $product->get_id() ) ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
 $discount_amount = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 $heading_text    = PluginHelper::find_option_settings( $settings, 'countdown_heading', __( 'Last chance! [discount]% OFF', 'storegrowth-sales-booster' ) );
 $heading         = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );

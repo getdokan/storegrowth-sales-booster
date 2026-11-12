@@ -25,11 +25,10 @@ export {
     TargetingFields,
 } from './bar-fields';
 export {
-    CampaignBanner,
+    OfferBanner,
     TimelineChip,
-    VersionHeader,
     type OfferTimelineData,
-} from './campaign-chips';
+} from './offer-timeline';
 export { OfferLimitNotice } from './offer-limit-notice';
 export { Card, type CardProps } from './card';
 export { CardHead, type CardHeadProps } from './card-head';

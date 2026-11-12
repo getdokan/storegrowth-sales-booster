@@ -1,5 +1,4 @@
 free_shipping_bar_content_pro
-litespeed_purge_all
 options_spsg_bogo_type
 sales_boster_floating_notification_bar_text
 sales_boster_pd_banner_text
@@ -34,7 +33,13 @@ spsg_bogo_single_item_permission
 spsg_bogo_status
 spsg_bogo_updated_by
 spsg_bogo_validator_prepared_settings
+spsg_campaign_offer_name
+spsg_campaign_only_offer_state
+spsg_campaign_price
+spsg_campaign_prices
+spsg_campaign_prices_running
 spsg_cart_deals
+spsg_countdown_campaign_end
 spsg_countdown_timer_fields_defaults
 spsg_countdown_timer_meta_keys
 spsg_countdown_timer_meta_value
@@ -61,8 +66,10 @@ spsg_load_product_bogo_offer
 spsg_module_activated
 spsg_module_deactivated
 spsg_modules
+spsg_offer_campaign_row
 spsg_offer_is_live
 spsg_offer_limits
+spsg_offer_timeline
 spsg_order_bump_created
 spsg_order_bump_created_by
 spsg_order_bump_deleted
@@ -73,7 +80,6 @@ spsg_order_bump_page
 spsg_order_bump_update_data
 spsg_order_bump_updated
 spsg_order_bump_updated_by
-spsg_page_cache_purgers
 spsg_product_description_heading
 spsg_product_query_args
 spsg_qcv_inline_styles
@@ -82,10 +88,12 @@ spsg_quick_view_icon_button
 spsg_referee_decided
 spsg_referee_ignores_coupon
 spsg_referee_observe_only
+spsg_running_campaign_offers
 spsg_sales_pop_billing_orders_limit
 spsg_sales_pop_category_products_limit
 spsg_sales_pop_id_list_fields
 spsg_sales_pop_image_position
+spsg_sales_pop_product_ids
 spsg_sales_pop_selection_products_limit
 spsg_sales_pop_visbility_controller
 spsg_settings_page
@@ -95,10 +103,13 @@ spsg_settings_schemas
 spsg_should_save_product_bogo
 spsg_smart_coupon_fields
 spsg_smart_coupon_page
+spsg_smart_coupon_response
 spsg_stock_bar_stock_below
 spsg_store_api_cart_data
 spsg_stock_bar_warning_contents
+spsg_surface_campaign_copy
 spsg_template_path
+spsg_tracker_settings
 spsg_uninstall_scheduled_hooks
 spsg_woocommerce_before_cart_collaterals
 spsg_{$slug}_settings_schema

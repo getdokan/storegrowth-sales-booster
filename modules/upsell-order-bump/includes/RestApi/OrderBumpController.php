@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\RestApi;
 
-use StorePulse\StoreGrowth\Campaigns\OfferTimeline;
 use StorePulse\StoreGrowth\Helper;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
@@ -851,7 +850,7 @@ class OrderBumpController extends WP_REST_Controller {
 			'updated_at'           => $item['updated_at'],
 			'targets'              => $this->get_targets( $item ),
 			'chip'                 => OfferLimits::is_paused( OfferVersions::ORDER_BUMP, (int) $item['id'] ) ? OfferLimits::chip_text() : '',
-			'timeline'             => OfferTimeline::for_offer( OfferVersions::ORDER_BUMP, (int) $item['id'], 'active' === $item['status'], (string) $item['name'] ),
+			'timeline'             => OfferVersions::timeline( OfferVersions::ORDER_BUMP, (int) $item['id'], 'active' === $item['status'], (string) $item['name'] ),
 			'offer_product_info'   => null,
 			'offer_prices'         => null,
 		];

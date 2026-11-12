@@ -41,10 +41,6 @@ function submenuTarget(
         return 'page=storegrowth#/modules';
     }
 
-    if ( pathname.startsWith( '/campaigns' ) ) {
-        return 'page=storegrowth#/campaigns';
-    }
-
     // The setup wizard opens from the settings page.
     if (
         pathname.startsWith( '/settings' ) ||
@@ -53,8 +49,9 @@ function submenuTarget(
         return 'page=storegrowth#/settings';
     }
 
-    // A route with its own submenu item (e.g. pro's `#/license`).
-    const own = `page=storegrowth#${ pathname }`;
+    // A route with its own submenu item (e.g. pro's `#/license`, or
+    // `#/campaigns` for `/campaigns/12`): matched on its first segment.
+    const own = `page=storegrowth#/${ pathname.split( '/' )[ 1 ] ?? '' }`;
 
     if (
         hrefs.some( ( href ) => {

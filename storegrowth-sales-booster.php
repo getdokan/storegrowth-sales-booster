@@ -88,7 +88,6 @@ register_activation_hook(
 		// tables an update gets from its migration.
 		if ( \StorePulse\StoreGrowth\Upgrader::maybe_stamp_fresh_install() ) {
 			\StorePulse\StoreGrowth\Analytics\Schema::install();
-			\StorePulse\StoreGrowth\Offers\CampaignRepository::install();
 		}
 	}
 );

@@ -70,13 +70,58 @@ jobs:
         with:
           node-version: 20
 
+      # ---- StoreGrowth Pro (optional) ----------------------------------------
+      # Campaigns are Pro's; their tests live in Pro and run on this plugin's
+      # test bootstrap. With the Pro token, check out Pro's branch of the same
+      # name (else develop) next to this plugin and run its suite too.
+      - name: Detect Pro access
+        id: pro
+        env:
+          PRO_REPO_TOKEN: ${{ secrets.SG_PRO_TOKEN }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          if [ -z "$PRO_REPO_TOKEN" ]; then
+            echo "has-pro=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          ref=develop
+          if git ls-remote --exit-code --heads "https://x-access-token:${PRO_REPO_TOKEN}@github.com/getdokan/storegrowth-sales-booster-pro.git" "$BRANCH" >/dev/null 2>&1; then
+            ref="$BRANCH"
+          fi
+          echo "has-pro=true" >> "$GITHUB_OUTPUT"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "StoreGrowth Pro ref: $ref"
+
+      - name: Checkout StoreGrowth Pro
+        if: ${{ steps.pro.outputs.has-pro == 'true' }}
+        uses: actions/checkout@v6
+        with:
+          repository: getdokan/storegrowth-sales-booster-pro
+          ref: ${{ steps.pro.outputs.ref }}
+          token: ${{ secrets.SG_PRO_TOKEN }}
+          path: storegrowth-sales-booster-pro
+          fetch-depth: 1
+
+      - name: Install StoreGrowth Pro dependencies
+        if: ${{ steps.pro.outputs.has-pro == 'true' }}
+        working-directory: storegrowth-sales-booster-pro
+        run: composer install --prefer-dist --no-progress --no-interaction
+
       # .wp-env.override.json is deep-merged over .wp-env.json, so a manual run
-      # can test another PHP without editing the committed config.
-      - name: Configure wp-env override (PHP version)
+      # can test another PHP without editing the committed config. With Pro it
+      # also maps Pro next to this plugin, where its test bootstrap looks.
+      - name: Configure wp-env override (PHP version + Pro mapping)
         env:
           PHP_VERSION: ${{ github.event.inputs.php_version || '7.4' }}
+          HAS_PRO: ${{ steps.pro.outputs.has-pro }}
         run: |
-          jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          if [ "$HAS_PRO" = "true" ]; then
+            jq -n --arg php "$PHP_VERSION" --arg pro "./storegrowth-sales-booster-pro" \
+              '{phpVersion: $php, mappings: {"wp-content/plugins/storegrowth-sales-booster-pro": $pro}}' \
+              > .wp-env.override.json
+          else
+            jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          fi
           cat .wp-env.override.json
 
       - name: Start WordPress (wp-env)
@@ -93,6 +138,10 @@ jobs:
 
       - name: Run PHPUnit
         run: wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster vendor/bin/phpunit -c phpunit.xml
+
+      - name: Run StoreGrowth Pro's PHPUnit (campaigns)
+        if: ${{ steps.pro.outputs.has-pro == 'true' }}
+        run: wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster-pro ../storegrowth-sales-booster/vendor/bin/phpunit -c phpunit.xml
 
       # A failed boot says nothing useful on its own; the container logs do.
       - name: Container logs on failure

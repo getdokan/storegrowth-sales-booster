@@ -54,7 +54,7 @@ class CartLine {
 
 	/**
 	 * Notice data marking a notice as a line's own: a campaign's notice takes
-	 * its place when both come from one event (`Campaigns\CartNotices`).
+	 * its place when both come from one event (StoreGrowth Pro's campaign notices).
 	 *
 	 * @since SPSG_VERSION
 	 *

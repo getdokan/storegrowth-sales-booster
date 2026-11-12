@@ -9,7 +9,6 @@ namespace StorePulse\StoreGrowth;
 
 use StorePulse\StoreGrowth\Admin\AdminMenu;
 use StorePulse\StoreGrowth\Analytics\TrackController;
-use StorePulse\StoreGrowth\Campaigns\CampaignAttribution;
 use StorePulse\StoreGrowth\Traits\Singleton;
 
 // If this file is called directly, abort.
@@ -139,15 +138,23 @@ class Assets {
 			filemtime( Helper::get_plugin_path( 'assets/js/storefront-tracker.js' ) ),
 			true
 		);
-		wp_localize_script(
-			'spsg-storefront-tracker',
-			'spsgTracker',
+		/**
+		 * Filters the storefront tracker's settings. StoreGrowth Pro adds the
+		 * campaign link cookie (`promoCookie`, `promoDays`); without it the
+		 * tracker sets no cookie.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array $settings `url`: the tracking route.
+		 */
+		$tracker = (array) apply_filters(
+			'spsg_tracker_settings',
 			[
-				'url'         => rest_url( TrackController::NAMESPACE . '/' . TrackController::ROUTE ),
-				'promoCookie' => CampaignAttribution::LINK_COOKIE,
-				'promoDays'   => CampaignAttribution::window_days(),
+				'url' => rest_url( TrackController::NAMESPACE . '/' . TrackController::ROUTE ),
 			]
 		);
+
+		wp_localize_script( 'spsg-storefront-tracker', 'spsgTracker', $tracker );
 	}
 
 	/**

@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Settings;
 
-use StorePulse\StoreGrowth\Campaigns\CampaignAttribution;
 use StorePulse\StoreGrowth\Interfaces\SettingsPage;
 use StorePulse\StoreGrowth\Interfaces\SettingsSchema;
 use StorePulse\StoreGrowth\Uninstaller;
@@ -64,20 +63,11 @@ class GeneralSettings implements SettingsSchema, SettingsPage {
 	 */
 	public function get_fields(): array {
 		return [
-			Uninstaller::DATA_REMOVAL_OPTION   => [
+			Uninstaller::DATA_REMOVAL_OPTION => [
 				'type'    => 'toggle',
 				'default' => false,
 				'label'   => __( 'Remove data on uninstall', 'storegrowth-sales-booster' ),
 				'help'    => __( 'Delete every StoreGrowth setting, offer and table when the plugin is deleted. This cannot be undone.', 'storegrowth-sales-booster' ),
-			],
-			CampaignAttribution::WINDOW_OPTION => [
-				'type'    => 'number',
-				'default' => CampaignAttribution::DEFAULT_WINDOW,
-				'min'     => 1,
-				'max'     => 90,
-				'pro'     => true,
-				'label'   => __( 'Campaign link attribution window (days)', 'storegrowth-sales-booster' ),
-				'help'    => __( 'How long a campaign link visit credits an order.', 'storegrowth-sales-booster' ),
 			],
 		];
 	}

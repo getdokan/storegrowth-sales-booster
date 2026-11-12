@@ -24,8 +24,6 @@ import { Navigate, useModules, useParams } from '@storegrowth/hooks';
 import { moduleRoute } from '@storegrowth/utilities';
 
 import AnalyticsPage from './pages/analytics';
-import CampaignDetailPage from './pages/campaigns/campaign-detail';
-import CampaignListPage from './pages/campaigns/campaign-list';
 import DashboardPage from './pages/dashboard';
 import ModulesPage from './pages/modules';
 import OnboardingPage from './pages/onboarding';
@@ -90,12 +88,6 @@ const coreRoutes: AdminRoute[] = [
     { id: 'home', path: '/', element: <Navigate to="/dashboard" replace /> },
     { id: 'dashboard', path: '/dashboard', element: <DashboardPage /> },
     { id: 'analytics', path: '/analytics', element: <AnalyticsPage /> },
-    { id: 'campaigns', path: '/campaigns', element: <CampaignListPage /> },
-    {
-        id: 'campaigns-detail',
-        path: '/campaigns/:id',
-        element: <CampaignDetailPage />,
-    },
     { id: 'features', path: '/features', element: <FeaturesRedirect /> },
     { id: 'modules', path: '/modules', element: <ModulesPage /> },
     { id: 'settings', path: '/settings', element: <SettingsPage /> },

@@ -15,18 +15,11 @@ use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Analytics\TrackController;
 use StorePulse\StoreGrowth\Analytics\WcAnalytics;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
-use StorePulse\StoreGrowth\Campaigns\CampaignAttribution;
-use StorePulse\StoreGrowth\Campaigns\CampaignBoundary;
-use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
-use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
-use StorePulse\StoreGrowth\Campaigns\CartNotices;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Pricing\CouponAmount;
 use StorePulse\StoreGrowth\Pricing\CouponGate;
 use StorePulse\StoreGrowth\Pricing\Referee;
 use StorePulse\StoreGrowth\Upgrader;
-use StorePulse\StoreGrowth\REST\CampaignsController;
 use StorePulse\StoreGrowth\REST\DashboardController;
 use StorePulse\StoreGrowth\REST\ModuleSettingsController;
 use StorePulse\StoreGrowth\REST\ModulesController;
@@ -69,14 +62,7 @@ class CommonServiceProvider extends BootableServiceProvider {
 		AnalyticsController::class,
 		WcAnalytics::class,
 		OffersStatsController::class,
-		CampaignRepository::class,
 		OfferLimitsController::class,
-		CampaignsController::class,
-		CampaignAttribution::class,
-		CampaignPrice::class,
-		CampaignBoundary::class,
-		CampaignSurfaces::class,
-		CartNotices::class,
 		Referee::class,
 		CouponGate::class,
 		CouponAmount::class,

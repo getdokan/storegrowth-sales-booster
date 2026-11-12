@@ -14,7 +14,6 @@ use StorePulse\StoreGrowth\Modules\CountdownTimer\CommonHooks;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBump;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\OrderBumpAjax;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\CouponGate;
@@ -46,6 +45,8 @@ class RefereeTest extends StoreGrowthTestCase {
 		'storegrowth_pro_is_active',
 		'woocommerce_price_trim_zeros',
 		'woocommerce_logger_log_message',
+		'spsg_running_campaign_offers',
+		'spsg_offer_campaign_row',
 	];
 
 	/**
@@ -58,11 +59,10 @@ class RefereeTest extends StoreGrowthTestCase {
 
 		global $wpdb;
 
-		foreach ( [ CampaignRepository::CAMPAIGNS, CampaignRepository::OFFERS, 'spsg_order_bumps', Schema::DAILY ] as $table ) {
+		foreach ( [ 'spsg_order_bumps', Schema::DAILY ] as $table ) {
 			$wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}{$table}" ); // phpcs:ignore WordPress.DB
 		}
 
-		CampaignRepository::flush();
 		OfferLimits::flush();
 		Referee::flush();
 
@@ -493,6 +493,8 @@ class RefereeTest extends StoreGrowthTestCase {
 
 	/**
 	 * A running campaign's deal makes the referee act without a Smart Coupon.
+	 * The campaign comes through StoreGrowth's campaign filters, as Pro
+	 * supplies it.
 	 *
 	 * @return void
 	 */
@@ -500,20 +502,37 @@ class RefereeTest extends StoreGrowthTestCase {
 		$boots = $this->product( 95, 10 );
 		$offer = $this->boots_bogo( $boots );
 
-		CampaignRepository::attach(
-			(int) CampaignRepository::save(
-				[
-					'name'      => 'Black Friday',
-					'status'    => 'scheduled',
-					'starts_at' => wp_date( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS ),
-					'ends_at'   => wp_date( 'Y-m-d H:i:s', time() + DAY_IN_SECONDS ),
-				]
-			),
-			OfferVersions::BOGO,
-			$offer
+		add_filter(
+			'spsg_running_campaign_offers',
+			static function ( $rows, string $kind ) use ( $offer ) {
+				return OfferVersions::BOGO === $kind
+					? [
+						[
+							'id'           => 1,
+							'promotion_id' => 9,
+							'offer_id'     => $offer,
+							'values'       => [],
+							'overrides'    => [],
+						],
+					]
+					: $rows;
+			},
+			10,
+			2
 		);
-
-		CampaignRepository::flush();
+		add_filter(
+			'spsg_offer_campaign_row',
+			static function ( $row, string $kind, int $offer_id ) use ( $offer ) {
+				return OfferVersions::BOGO === $kind && $offer === $offer_id
+					? [
+						'promotion_id' => 9,
+						'overrides'    => [],
+					]
+					: $row;
+			},
+			10,
+			3
+		);
 
 		$key = $this->add_with_gift( $boots, $offer, 2 );
 		$this->line_totals();

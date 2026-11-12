@@ -12,8 +12,8 @@ export type { ModuleSettings } from './use-module-settings';
 export { useSettingsPages } from './use-settings';
 export type { SettingsPages } from './use-settings';
 export { usePreviewFont } from './use-preview-font';
-export { useCampaignVersion } from './use-campaign-version';
-export type { CampaignVersion } from './use-campaign-version';
+export { useOfferVersion } from './use-offer-version';
+export type { OfferVersion } from './use-offer-version';
 export { useRecordEditor } from './use-record-editor';
 export type {
     RecordEditor,

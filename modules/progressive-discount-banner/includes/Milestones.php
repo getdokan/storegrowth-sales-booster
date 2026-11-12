@@ -7,13 +7,13 @@
 
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
-use StorePulse\StoreGrowth\Campaigns\CampaignSurfaces;
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Pricing\CouponAmount;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
+use StorePulse\StoreGrowth\Storefront\DisplayRules;
 use StorePulse\StoreGrowth\Support\Money;
 use WC_Cart;
 use WC_Coupon;
@@ -624,7 +624,7 @@ class Milestones {
 		$percent = $next && $next['threshold'] > 0 ? (int) min( 100, floor( $subtotal / $next['threshold'] * 100 ) ) : 100;
 
 		// A running campaign's copy, on the module's own milestones.
-		$campaign_copy = CampaignSurfaces::copy( CampaignSurfaces::CART_REWARDS, (array) $settings );
+		$campaign_copy = DisplayRules::campaign_copy( 'cart_rewards', (array) $settings );
 
 		return [
 			'placement'     => (string) PluginHelper::find_option_settings( $settings, 'bar_placement', 'both' ),

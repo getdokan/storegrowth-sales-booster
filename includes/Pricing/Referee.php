@@ -7,9 +7,8 @@
 
 namespace StorePulse\StoreGrowth\Pricing;
 
-use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
+use DateTimeImmutable;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Support\Money;
 use StorePulse\StoreGrowth\Support\SiteTime;
@@ -403,7 +402,20 @@ class Referee implements HookRegistry {
 	private static function has_running_campaign(): bool {
 		$now = SiteTime::now();
 
-		return ! empty( CampaignRepository::running_offers( OfferVersions::BOGO, $now ) ) || ! empty( CampaignRepository::running_offers( OfferVersions::ORDER_BUMP, $now ) ) || CampaignPrice::any_running( $now );
+		if ( OfferVersions::running_campaign_offers( OfferVersions::BOGO, $now ) || OfferVersions::running_campaign_offers( OfferVersions::ORDER_BUMP, $now ) ) {
+			return true;
+		}
+
+		/**
+		 * Filters whether a campaign sets product prices at a moment, so the
+		 * referee decides carts that may hold a campaign price.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool              $running Whether a campaign price is running.
+		 * @param DateTimeImmutable $now     Moment checked.
+		 */
+		return (bool) apply_filters( 'spsg_campaign_prices_running', false, $now );
 	}
 
 	/**

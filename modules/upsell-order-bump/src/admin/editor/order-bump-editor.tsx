@@ -20,14 +20,13 @@ import {
     type MultiSelectOption,
     NumberField,
     ProBadge,
-    CampaignBanner,
+    OfferBanner,
     type OfferTimelineData,
-    VersionHeader,
 } from '@storegrowth/components';
 import {
     Navigate,
-    useCampaignVersion,
     useModules,
+    useOfferVersion,
     useNavigate,
     useSearchParams,
 } from '@storegrowth/hooks';
@@ -217,12 +216,12 @@ function BumpEditor( { id }: { id: number | null } ) {
         },
         [ navigate, searchParams ]
     );
-    const version = useCampaignVersion( 'order_bump' );
+    const version = useOfferVersion( 'order_bump' );
     const bump = useOrderBump(
         version.row || id,
         ( created ) => {
-            if ( version.campaignId ) {
-                navigate( `/campaigns/${ version.campaignId }` );
+            if ( version.returnTo ) {
+                navigate( version.returnTo );
                 return;
             }
 
@@ -298,7 +297,7 @@ function BumpEditor( { id }: { id: number | null } ) {
     return (
         <ModuleSettingsPage
             notice={
-                <CampaignBanner
+                <OfferBanner
                     timeline={ bump.record?.timeline as OfferTimelineData }
                 />
             }
@@ -309,10 +308,7 @@ function BumpEditor( { id }: { id: number | null } ) {
             controls={ loaded ? controls( bump, categories ) : undefined }
             actions={
                 <>
-                    <VersionHeader
-                        campaign={ version.name }
-                        campaignOnly={ version.only }
-                    />
+                    { version.header }
                     { toList }
                 </>
             }

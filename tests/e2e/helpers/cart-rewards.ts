@@ -29,23 +29,8 @@ export type Milestone = {
 
 /* -- Pro ------------------------------------------------------------------ */
 
-let pro: boolean | undefined;
-
-/**
- * Whether `has_pro()` is true on the stack: the plugin active AND licensed.
- * `hasPro()` (helpers/rest.ts) only says the Pro plugin is active. Campaign
- * writes need the licence, so an update of a campaign that doesn't exist
- * answers 403 `spsg_campaigns_need_pro` on Free and 404 with Pro, writing
- * nothing either way.
- */
-export async function proActive(api: APIRequestContext): Promise<boolean> {
-  if (pro === undefined) {
-    const res = await api.post(`${NS}/campaigns/999999999`, { data: {} });
-    const body = await res.json().catch(() => ({}));
-    pro = !(res.status() === 403 && body.code === 'spsg_campaigns_need_pro');
-  }
-  return pro;
-}
+/** Whether `has_pro()` is true on the stack (helpers/rest.ts). */
+export { proActive } from './rest';
 
 /* -- Settings ------------------------------------------------------------- */
 

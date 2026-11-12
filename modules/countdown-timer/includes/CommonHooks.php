@@ -7,7 +7,6 @@
 
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
-use StorePulse\StoreGrowth\Campaigns\CampaignPrice;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\Pricing\DealList;
 use WC_Product;
@@ -105,7 +104,7 @@ class CommonHooks implements HookRegistry {
 
 		$hash['spsg_discounts'] = [
 			'countdown' => $countdown,
-			'campaigns' => CampaignPrice::running_prices(),
+			'campaigns' => Helper::campaign_prices(),
 		];
 
 		return $hash;
@@ -130,7 +129,7 @@ class CommonHooks implements HookRegistry {
 				continue;
 			}
 
-			$campaign = CampaignPrice::for_product( $product->get_id() );
+			$campaign = Helper::campaign_price( $product->get_id() );
 
 			if ( ! $campaign && ! Helper::is_product_discountable( $product->get_id() ) ) {
 				continue;
@@ -240,7 +239,7 @@ class CommonHooks implements HookRegistry {
 		}
 
 		// A campaign's price replaces the product's own Countdown while it runs.
-		$campaign = CampaignPrice::for_product( $product->get_id() );
+		$campaign = Helper::campaign_price( $product->get_id() );
 
 		if ( $campaign ) {
 			return ( floatval( $price ) * ( 100 - $campaign['percent'] ) ) / 100;
@@ -266,7 +265,7 @@ class CommonHooks implements HookRegistry {
 	 */
 	public function woocommerce_product_is_on_sale( $is_on_sale, $product ) {
 		// Check countdown discount is set, or a campaign price is on it.
-		if ( CampaignPrice::for_product( $product->get_id() ) || Helper::is_product_discountable( $product->get_id() ) ) {
+		if ( Helper::campaign_price( $product->get_id() ) || Helper::is_product_discountable( $product->get_id() ) ) {
 			return true;
 		}
 

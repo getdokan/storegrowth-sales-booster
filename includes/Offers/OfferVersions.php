@@ -110,10 +110,23 @@ class OfferVersions {
 			return self::campaign_only( $kind, $offer, $now );
 		}
 
-		$row = CampaignRepository::running_row( $kind, (int) ( $offer['id'] ?? 0 ), $now );
+		/**
+		 * Filters the campaign version running over an offer at a moment.
+		 * StoreGrowth has no campaigns itself; StoreGrowth Pro supplies them.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array|null        $row      Null when no campaign runs over the offer, or
+		 *                                    `promotion_id` (int) and `overrides` (the values
+		 *                                    the campaign changes; empty for "Use as is").
+		 * @param string            $kind     Offer kind.
+		 * @param int               $offer_id Offer id.
+		 * @param DateTimeImmutable $now      Moment checked.
+		 */
+		$row = apply_filters( 'spsg_offer_campaign_row', null, $kind, (int) ( $offer['id'] ?? 0 ), $now );
 
-		if ( $row ) {
-			$values = self::switch_on( $kind, self::apply_overrides( $offer, $row['overrides'] ) );
+		if ( is_array( $row ) ) {
+			$values = self::switch_on( $kind, self::apply_overrides( $offer, (array) ( $row['overrides'] ?? [] ) ) );
 
 			return self::result( self::CAMPAIGN, $kind, $values, (int) $row['promotion_id'], self::is_live( $kind, $values, $now ) );
 		}
@@ -129,6 +142,67 @@ class OfferVersions {
 	}
 
 	/**
+	 * The offer rows of the campaigns running at a moment: attached offers
+	 * (`offer_id`) and campaign-only ones (`offer_id` 0, their `values`).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string            $kind Offer kind.
+	 * @param DateTimeImmutable $now  Moment to check.
+	 *
+	 * @return array[] Rows with `id`, `promotion_id`, `offer_id`, `values`, `overrides`.
+	 */
+	public static function running_campaign_offers( string $kind, DateTimeImmutable $now ): array {
+		/**
+		 * Filters the offer rows of the campaigns running at a moment.
+		 * StoreGrowth has no campaigns itself; StoreGrowth Pro supplies them.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array[]           $rows Rows with `id`, `promotion_id`, `offer_id`, `values`, `overrides`.
+		 * @param string            $kind Offer kind.
+		 * @param DateTimeImmutable $now  Moment checked.
+		 */
+		return (array) apply_filters( 'spsg_running_campaign_offers', [], $kind, $now );
+	}
+
+	/**
+	 * An offer's campaign timeline, for its list chip and editor banner.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $kind     Offer kind.
+	 * @param int    $offer_id Offer id.
+	 * @param bool   $is_on    Whether the everyday version is on.
+	 * @param string $name     Offer name, for the banner.
+	 *
+	 * @return array{chip: string, tooltip: string, banner: array|null}
+	 */
+	public static function timeline( string $kind, int $offer_id, bool $is_on, string $name = '' ): array {
+		$empty = [
+			'chip'    => '',
+			'tooltip' => '',
+			'banner'  => null,
+		];
+
+		/**
+		 * Filters an offer's campaign timeline: the list chip ("… version ·
+		 * until …") and the editor banner. Empty without StoreGrowth Pro.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array  $timeline `chip`, `tooltip` and `banner` (`campaign_id`, `text`, `button`, or null).
+		 * @param string $kind     Offer kind.
+		 * @param int    $offer_id Offer id.
+		 * @param bool   $is_on    Whether the everyday version is on.
+		 * @param string $name     Offer name.
+		 */
+		$timeline = apply_filters( 'spsg_offer_timeline', $empty, $kind, $offer_id, $is_on, $name );
+
+		return is_array( $timeline ) ? array_merge( $empty, $timeline ) : $empty;
+	}
+
+	/**
 	 * What applies to an offer that exists only inside a campaign: its own
 	 * values while the campaign runs, offline otherwise.
 	 *
@@ -141,11 +215,23 @@ class OfferVersions {
 	 * @return array
 	 */
 	private static function campaign_only( string $kind, array $offer, DateTimeImmutable $now ): array {
-		$row     = CampaignRepository::find_offer_row( (int) $offer['campaign_offer_id'] );
-		$running = $row && sp_store_growth()->has_pro() && CampaignRepository::STATUS_RUNNING === CampaignRepository::status_at( $row, $now );
+		/**
+		 * Filters the state of the campaign a campaign-only offer belongs to.
+		 * Without StoreGrowth Pro there is none, and the offer stays offline.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array|null        $state  Null for no campaign, or `promotion_id` (int)
+		 *                                  and `running` (bool).
+		 * @param int               $row_id The offer's row on its campaign.
+		 * @param string            $kind   Offer kind.
+		 * @param DateTimeImmutable $now    Moment checked.
+		 */
+		$state   = apply_filters( 'spsg_campaign_only_offer_state', null, (int) $offer['campaign_offer_id'], $kind, $now );
+		$running = is_array( $state ) && ! empty( $state['running'] );
 		$values  = $running ? self::switch_on( $kind, $offer ) : $offer;
 
-		return self::result( self::CAMPAIGN, $kind, $values, $row ? (int) $row['promotion_id'] : 0, $running && self::is_live( $kind, $values, $now ) );
+		return self::result( self::CAMPAIGN, $kind, $values, is_array( $state ) ? (int) ( $state['promotion_id'] ?? 0 ) : 0, $running && self::is_live( $kind, $values, $now ) );
 	}
 
 	/**

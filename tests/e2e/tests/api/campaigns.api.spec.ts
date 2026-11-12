@@ -5,6 +5,7 @@ import {
   CampaignTracker,
   campaignAction,
   campaignDate,
+  campaignRoutesExist,
   campaignsAvailable,
   createCampaign,
   listCampaigns,
@@ -13,10 +14,11 @@ import {
 import { createBogoOffer, deleteBogoOffer } from '../../helpers/records';
 import { PRODUCTS } from '../../data/products';
 
-// Campaigns REST (`sales-booster/v1/campaigns`, ADR-016). Reading is open to
-// shop managers; every write needs an active Pro licence. Each test deletes
-// the campaigns (and offers) it made, also on failure: a leftover running
-// campaign would change every later cart.
+// Campaigns REST (`sales-booster/v1/campaigns`), StoreGrowth Pro's (ADR-017):
+// StoreGrowth alone has no campaign routes. With the Pro plugin reading is
+// open to shop managers and every write needs an active licence. Each test
+// deletes the campaigns (and offers) it made, also on failure: a leftover
+// running campaign would change every later cart.
 
 test.describe('API · Campaigns', () => {
   let tracker: CampaignTracker;
@@ -33,7 +35,22 @@ test.describe('API · Campaigns', () => {
     }
   });
 
-  test('anonymous callers are refused on every route', async ({ playwright }) => {
+  test('StoreGrowth alone has no campaign routes', async ({ api }) => {
+    test.skip(await campaignRoutesExist(api), 'StoreGrowth Pro is active');
+
+    for (const [method, path] of [
+      ['get', CAMPAIGNS],
+      ['get', `${CAMPAIGNS}/templates`],
+      ['post', CAMPAIGNS],
+    ] as const) {
+      const res = await api[method](path);
+      expect(res.status(), `${method} ${path}`).toBe(404);
+      expect((await res.json()).code).toBe('rest_no_route');
+    }
+  });
+
+  test('anonymous callers are refused on every route', async ({ api, playwright }) => {
+    test.skip(!(await campaignRoutesExist(api)), 'Campaigns are StoreGrowth Pro’s');
     const anon = await playwright.request.newContext({ baseURL: env.baseURL });
 
     for (const [method, path] of [
@@ -52,6 +69,7 @@ test.describe('API · Campaigns', () => {
   });
 
   test('the list and the templates can be read', async ({ api }) => {
+    test.skip(!(await campaignRoutesExist(api)), 'Campaigns are StoreGrowth Pro’s');
     const list = await api.get(CAMPAIGNS);
     expect(list.status()).toBe(200);
     const body = await list.json();
@@ -63,9 +81,10 @@ test.describe('API · Campaigns', () => {
     expect(templates['flash-sale'].percent).toBe(20);
   });
 
-  test.describe('lite', () => {
-    test('writes are refused without Pro (403 spsg_campaigns_need_pro)', async ({ api }) => {
-      test.skip(await campaignsAvailable(api), 'Pro is active');
+  test.describe('Pro without a licence', () => {
+    test('writes are refused (403 spsg_campaigns_need_pro)', async ({ api }) => {
+      test.skip(!(await campaignRoutesExist(api)), 'Campaigns are StoreGrowth Pro’s');
+      test.skip(await campaignsAvailable(api), 'Pro is licensed');
 
       const created = await api.post(CAMPAIGNS, { data: { name: 'Lite' } });
       expect(created.status()).toBe(403);

@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test';
 import { Page } from '@playwright/test';
-import { gotoAppRoute } from '../../helpers/modules';
+import { gotoAppRoute, gotoDashboard } from '../../helpers/modules';
 import { expectOk } from '../../helpers/rest';
 import { PRODUCTS } from '../../data/products';
 import {
@@ -8,15 +8,17 @@ import {
   CampaignTracker,
   campaignDate,
   campaignName,
+  campaignRoutesExist,
   campaignsAvailable,
   createCampaign,
   getCampaign,
   updateCampaign,
 } from '../../helpers/campaigns';
 
-// The Campaigns admin (`#/campaigns`, `#/campaigns/<id>`, ADR-016). With Pro
-// the list, the New campaign dialog and the campaign page edit real
-// campaigns; Free shows a preview with sample data and nothing to change.
+// The Campaigns admin (`#/campaigns`, `#/campaigns/<id>`), StoreGrowth Pro's
+// (ADR-017). StoreGrowth alone has no Campaigns page or menu item. With Pro
+// licensed the list, the New campaign dialog and the campaign page edit real
+// campaigns; Pro without a licence shows a preview with sample data.
 // Every campaign a test makes is deleted after it, also on failure.
 
 /** The campaign id in the page's `#/campaigns/<id>` route. */
@@ -43,8 +45,25 @@ test.describe('Admin · Campaigns', () => {
   });
 
   test.describe('lite', () => {
+    test('StoreGrowth alone has no Campaigns page or menu item @ui', async ({ api, page }) => {
+      test.skip(await campaignRoutesExist(api), 'StoreGrowth Pro is active');
+
+      await gotoDashboard(page);
+      await expect(page.locator('#adminmenu a[href*="#/campaigns"]')).toHaveCount(0);
+
+      // No such route: the app falls back to another page.
+      await gotoAppRoute(page, '/campaigns');
+      await page.waitForLoadState('networkidle');
+      await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Campaigns', level: 1 })).toHaveCount(0);
+      await expect(page.getByRole('button', { name: 'New campaign' })).toHaveCount(0);
+    });
+  });
+
+  test.describe('Pro without a licence', () => {
     test('shows a sample-data preview with nothing to create @ui', async ({ api, page }) => {
-      test.skip(await campaignsAvailable(api), 'Pro is active');
+      test.skip(!(await campaignRoutesExist(api)), 'Campaigns are StoreGrowth Pro’s');
+      test.skip(await campaignsAvailable(api), 'Pro is licensed');
 
       await gotoAppRoute(page, 'campaigns');
       await expect(page.getByRole('heading', { name: 'Campaigns', level: 1 })).toBeVisible();

@@ -58,6 +58,11 @@ function spsg_manually_load_plugin() {
 
 	require TEST_WC_DIR . '/woocommerce.php';
 	require TEST_SPSG_PLUGIN_DIR . '/storegrowth-sales-booster.php';
+
+	// StoreGrowth Pro's suite (its campaign tests) runs on this bootstrap.
+	if ( defined( 'TEST_SPSG_PRO_DIR' ) ) {
+		require TEST_SPSG_PRO_DIR . '/storegrowth-sales-booster-pro.php';
+	}
 }
 
 tests_add_filter( 'muplugins_loaded', 'spsg_manually_load_plugin' );
@@ -100,7 +105,10 @@ function spsg_install_storegrowth() {
 	}
 
 	\StorePulse\StoreGrowth\Analytics\Schema::install();
-	\StorePulse\StoreGrowth\Offers\CampaignRepository::install();
+
+	if ( defined( 'TEST_SPSG_PRO_DIR' ) ) {
+		\StorePulse\StoreGrowthPro\Campaigns\CampaignRepository::install();
+	}
 
 	echo esc_html( 'Installing StoreGrowth...' . PHP_EOL );
 }

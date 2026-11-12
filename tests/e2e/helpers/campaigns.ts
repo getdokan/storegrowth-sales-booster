@@ -77,20 +77,36 @@ export function campaignDate(days: number): string {
 }
 
 /**
- * Whether campaign writes are allowed: the write routes answer 403
- * `spsg_campaigns_need_pro` without an active Pro licence. Probes with an
- * invalid action id so nothing is written either way.
+ * Whether the Campaigns routes exist: they are StoreGrowth Pro's, registered
+ * whenever the Pro plugin is active (licensed or not).
+ */
+export async function campaignRoutesExist(api: APIRequestContext): Promise<boolean> {
+  const res = await api.get(CAMPAIGNS);
+  if (res.status() === 404) {
+    expect((await res.json()).code).toBe('rest_no_route');
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Whether campaigns can be written. Campaigns are StoreGrowth Pro's: without
+ * the Pro plugin the route doesn't exist (404 `rest_no_route`); with Pro but
+ * no licence the write routes answer 403 `spsg_campaigns_need_pro`. Probes
+ * with an invalid campaign id so nothing is written either way.
  */
 export async function campaignsAvailable(api: APIRequestContext): Promise<boolean> {
   const res = await api.post(`${CAMPAIGNS}/0/publish`);
+  const body = await res.json().catch(() => ({}));
+
   if (res.status() === 403) {
-    const body = await res.json();
     expect(body.code).toBe('spsg_campaigns_need_pro');
     return false;
   }
-  // With Pro the request reaches the handler: campaign 0 doesn't exist.
+
   expect(res.status()).toBe(404);
-  return true;
+  // With Pro licensed the request reaches the handler: campaign 0 doesn't exist.
+  return body.code !== 'rest_no_route';
 }
 
 /** Remembers the campaigns a spec made and deletes only those. */

@@ -9,7 +9,6 @@ namespace StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database;
 
 use DateTimeImmutable;
 use StorePulse\StoreGrowth\Helper;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Support\SiteTime;
@@ -501,7 +500,7 @@ class OrderBumpData {
 	private function with_campaign_bumps( array $bumps, DateTimeImmutable $now ): array {
 		$active_ids = array_map( 'intval', wp_list_pluck( $bumps, 'id' ) );
 
-		foreach ( CampaignRepository::running_offers( OfferVersions::ORDER_BUMP, $now ) as $row ) {
+		foreach ( OfferVersions::running_campaign_offers( OfferVersions::ORDER_BUMP, $now ) as $row ) {
 			if ( ! $row['offer_id'] ) {
 				$bumps[] = array_merge(
 					[

@@ -8,7 +8,6 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo\REST;
 
 use Exception;
-use StorePulse\StoreGrowth\Campaigns\OfferTimeline;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use WP_Error;
 use WP_HTTP_Response;
@@ -1512,7 +1511,7 @@ class BogoController extends WP_REST_Controller {
 
 		// Why a rule isn't running now, and which campaign takes it over.
 		$data['chip']     = OfferVersions::effective_offer( array_merge( $item, [ 'offer_kind' => OfferVersions::BOGO ] ) )['chip'];
-		$data['timeline'] = OfferTimeline::for_offer( OfferVersions::BOGO, (int) ( $item['id'] ?? 0 ), 'active' === ( $item['status'] ?? '' ), (string) ( $item['name_of_order_bogo'] ?? $item['name'] ?? '' ) );
+		$data['timeline'] = OfferVersions::timeline( OfferVersions::BOGO, (int) ( $item['id'] ?? 0 ), 'active' === ( $item['status'] ?? '' ), (string) ( $item['name_of_order_bogo'] ?? $item['name'] ?? '' ) );
 
 		// A product offer ("Specific") is edited on its product's BOGO tab.
 		$data['product_id'] = absint( $item['product_id'] ?? 0 );

@@ -10,8 +10,6 @@ namespace StorePulse\StoreGrowth\Modules\SmartCoupons;
 use Exception;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\Settings\SmartCouponFields;
-use StorePulse\StoreGrowth\Campaigns\OfferTimeline;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
@@ -764,72 +762,32 @@ class SmartCouponRepository {
 	 * @return array
 	 */
 	public static function to_response( WC_Coupon $coupon ): array {
-		$campaigns = CampaignRepository::campaigns_of_offer( OfferVersions::SMART_COUPON, $coupon->get_id() );
-		$campaign  = self::campaign_of( $coupon, $campaigns );
-
-		return array_merge(
+		$response = array_merge(
 			self::values( $coupon ),
 			[
 				'id'            => $coupon->get_id(),
 				'name'          => SmartCoupon::name( $coupon ),
 				'chip'          => self::chip( $coupon ),
-				'timeline'      => OfferTimeline::for_offer( OfferVersions::SMART_COUPON, $coupon->get_id(), 'publish' === $coupon->get_status( 'edit' ), SmartCoupon::name( $coupon ) ),
-				'used_in'       => self::used_in( $coupon, $campaigns ),
+				'timeline'      => OfferVersions::timeline( OfferVersions::SMART_COUPON, $coupon->get_id(), 'publish' === $coupon->get_status( 'edit' ), SmartCoupon::name( $coupon ) ),
+				'used_in'       => __( 'Everyday', 'storegrowth-sales-booster' ),
 				'uses'          => (int) $coupon->get_usage_count( 'edit' ),
-				'campaign'      => $campaign,
+				'campaign'      => null,
 				'campaign_only' => (bool) $coupon->get_meta( SmartCoupon::CAMPAIGN_OFFER ),
 				'link'          => SmartCoupon::LINK === $coupon->get_meta( SmartCoupon::METHOD ) ? LinkCoupons::url( $coupon ) : '',
 			]
 		);
-	}
 
-	/**
-	 * The campaign that sets a coupon's dates, for the editor's locked panel.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @param WC_Coupon $coupon    Coupon.
-	 * @param array[]   $campaigns Campaigns the coupon is attached to.
-	 *
-	 * @return array|null `id`, `name`, `starts_at`, `ends_at`.
-	 */
-	private static function campaign_of( WC_Coupon $coupon, array $campaigns ): ?array {
-		$row_id = (int) $coupon->get_meta( SmartCoupon::CAMPAIGN_OFFER );
-
-		if ( $row_id ) {
-			$row      = CampaignRepository::find_offer_row( $row_id );
-			$campaign = $row ? CampaignRepository::get( (int) $row['promotion_id'] ) : null;
-
-			return $campaign ? array_intersect_key( $campaign, array_flip( [ 'id', 'name', 'starts_at', 'ends_at' ] ) ) : null;
-		}
-
-		return $campaigns ? array_intersect_key( $campaigns[0], array_flip( [ 'id', 'name', 'starts_at', 'ends_at' ] ) ) : null;
-	}
-
-	/**
-	 * Where a coupon is used, as the list says it.
-	 *
-	 * @since SPSG_VERSION
-	 *
-	 * @param WC_Coupon $coupon    Coupon.
-	 * @param array[]   $campaigns Campaigns the coupon is attached to.
-	 *
-	 * @return string
-	 */
-	private static function used_in( WC_Coupon $coupon, array $campaigns ): string {
-		$campaign = self::campaign_of( $coupon, $campaigns );
-
-		if ( $coupon->get_meta( SmartCoupon::CAMPAIGN_OFFER ) ) {
-			/* translators: %s: campaign name. */
-			return sprintf( __( 'Campaign-only: %s', 'storegrowth-sales-booster' ), $campaign['name'] ?? '' );
-		}
-
-		if ( ! $campaign ) {
-			return __( 'Everyday', 'storegrowth-sales-booster' );
-		}
-
-		/* translators: %s: campaign name. */
-		return sprintf( __( 'Everyday + %s', 'storegrowth-sales-booster' ), $campaign['name'] );
+		/**
+		 * Filters a Smart Coupon as the routes return it, e.g. with the
+		 * campaign that sets its dates (`campaign`: `id`, `name`, `starts_at`,
+		 * `ends_at`) and where it is used (`used_in`) from StoreGrowth Pro.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param array     $response Coupon response.
+		 * @param WC_Coupon $coupon   Coupon.
+		 */
+		return (array) apply_filters( 'spsg_smart_coupon_response', $response, $coupon );
 	}
 
 	/**

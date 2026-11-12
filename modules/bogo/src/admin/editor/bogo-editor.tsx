@@ -22,14 +22,13 @@ import {
     ModuleSettingsPage,
     MultiSelectField,
     ProBadge,
-    CampaignBanner,
+    OfferBanner,
     type OfferTimelineData,
-    VersionHeader,
 } from '@storegrowth/components';
 import {
     Navigate,
-    useCampaignVersion,
     useModules,
+    useOfferVersion,
     useNavigate,
     useSearchParams,
 } from '@storegrowth/hooks';
@@ -156,12 +155,12 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
         },
         [ navigate, searchParams ]
     );
-    const version = useCampaignVersion( 'bogo' );
+    const version = useOfferVersion( 'bogo' );
     const offer = useBogoOffer(
         version.row || id,
         ( created ) => {
-            if ( version.campaignId ) {
-                navigate( `/campaigns/${ version.campaignId }` );
+            if ( version.returnTo ) {
+                navigate( version.returnTo );
                 return;
             }
 
@@ -283,7 +282,7 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
     return (
         <ModuleSettingsPage
             notice={
-                <CampaignBanner
+                <OfferBanner
                     timeline={ offer.record?.timeline as OfferTimelineData }
                 />
             }
@@ -294,10 +293,7 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
             controls={ loaded ? controls( offer ) : undefined }
             actions={
                 <>
-                    <VersionHeader
-                        campaign={ version.name }
-                        campaignOnly={ version.only }
-                    />
+                    { version.header }
                     { toList }
                 </>
             }

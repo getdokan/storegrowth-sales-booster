@@ -24,12 +24,14 @@ export interface SmartCouponRow {
     discount_given: string;
 }
 
-/** The campaign that sets a coupon's dates. */
+/** The campaign that sets a coupon's dates (StoreGrowth Pro). */
 export interface CouponCampaign {
     id: number;
     name: string;
     starts_at: string;
     ends_at: string;
+    /** Admin route of the campaign. */
+    route: string;
 }
 
 /** What the editor is drawn from (`GET /smart-coupons/editor`). */

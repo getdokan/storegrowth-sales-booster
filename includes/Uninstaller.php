@@ -10,7 +10,6 @@ namespace StorePulse\StoreGrowth;
 use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -137,8 +136,9 @@ class Uninstaller {
 
 		$tables[] = Schema::OFFER_LOOKUP;
 		$tables[] = Schema::DAILY;
-		$tables[] = CampaignRepository::CAMPAIGNS;
-		$tables[] = CampaignRepository::OFFERS;
+		// StoreGrowth Pro's campaign tables: uninstall runs without Pro loaded.
+		$tables[] = 'spsg_campaigns';
+		$tables[] = 'spsg_campaign_offers';
 
 		return $tables;
 	}

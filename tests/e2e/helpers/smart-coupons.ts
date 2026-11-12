@@ -146,17 +146,5 @@ export function trackCoupons() {
   };
 }
 
-/**
- * Whether StoreGrowth's `has_pro()` is true: Pro active AND licensed. Probed
- * by capability: a Campaigns write refuses without it (403
- * `spsg_campaigns_need_pro`) before looking for the campaign, and a delete
- * of a campaign that can't exist changes nothing either way (404 with Pro).
- * `hasPro()` in helpers/rest.ts only says the Pro plugin is active.
- */
-export async function proActive(api: APIRequestContext): Promise<boolean> {
-  const res = await api.delete(`${NS}/campaigns/999999999`);
-  const body = await res.json().catch(() => ({}));
-  if (res.status() === 403 && body?.code === 'spsg_campaigns_need_pro') return false;
-  expect(res.status(), `probe has_pro (DELETE campaigns/999999999): ${JSON.stringify(body)}`).toBe(404);
-  return true;
-}
+/** Whether `has_pro()` is true on the stack (helpers/rest.ts). */
+export { proActive } from './rest';

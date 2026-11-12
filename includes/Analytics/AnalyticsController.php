@@ -19,7 +19,6 @@ use StorePulse\StoreGrowth\Modules\CountdownTimer\Helper as CountdownHelper;
 use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\ProgressiveDiscountBannerModule;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\Migration as OrderBumpTable;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
-use StorePulse\StoreGrowth\Offers\CampaignRepository;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -592,8 +591,16 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 
 			// A campaign-only offer (`bogo:co12`) has its name on its campaign row.
 			if ( 0 === strpos( (string) $id, 'co' ) ) {
-				$row                   = CampaignRepository::find_offer_row( (int) substr( $id, 2 ) );
-				$names[ $campaign_id ] = (string) ( $row['overrides']['name'] ?? $row['overrides']['name_of_order_bogo'] ?? '' );
+				/**
+				 * Filters the name of a campaign-only offer in reports. Its name
+				 * lives on its campaign row, which StoreGrowth Pro keeps.
+				 *
+				 * @since SPSG_VERSION
+				 *
+				 * @param string $name   Offer name; empty by default.
+				 * @param int    $row_id The offer's row on its campaign.
+				 */
+				$names[ $campaign_id ] = (string) apply_filters( 'spsg_campaign_offer_name', '', (int) substr( $id, 2 ) );
 			}
 		}
 
