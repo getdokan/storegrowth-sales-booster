@@ -68,7 +68,7 @@ class DisplayRules {
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param string $surface  Surface: `floating_bar`, `cart_rewards`, …
+	 * @param string $surface  Surface (`floating_bar`, `cart_rewards`, …).
 	 * @param array  $settings The module's settings.
 	 *
 	 * @return string Empty when no campaign controls the surface.

@@ -619,10 +619,16 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	 */
 	public function test_pro_options_pause_and_survive_a_save_without_pro(): void {
 		$coupon = $this->save_coupon( 'keepers', [ 'amount' => 15 ] );
+		$tiers  = [
+			[
+				'qty'     => 2,
+				'percent' => 15,
+			],
+		];
 
 		// Pro options as StoreGrowth Pro stores them, written directly.
 		$coupon->update_meta_data( SmartCoupon::TYPE, SmartCoupon::TYPE_TIERS );
-		$coupon->update_meta_data( SmartCoupon::TIERS, [ [ 'qty' => 2, 'percent' => 15 ] ] );
+		$coupon->update_meta_data( SmartCoupon::TIERS, $tiers );
 		$coupon->update_meta_data( SmartCoupon::ELIGIBILITY, 'customers' );
 		$coupon->set_email_restrictions( [ 'jane@example.com' ] );
 		$coupon->set_usage_limit_per_user( 3 );
@@ -647,7 +653,7 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 
 		$this->assertSame( 'Renamed', $read->get_meta( SmartCoupon::TITLE ) );
 		$this->assertSame( SmartCoupon::TYPE_TIERS, $read->get_meta( SmartCoupon::TYPE ) );
-		$this->assertSame( [ [ 'qty' => 2, 'percent' => 15 ] ], $read->get_meta( SmartCoupon::TIERS ) );
+		$this->assertSame( $tiers, $read->get_meta( SmartCoupon::TIERS ) );
 		$this->assertSame( 'customers', $read->get_meta( SmartCoupon::ELIGIBILITY ) );
 		$this->assertSame( [ 'jane@example.com' ], $read->get_email_restrictions() );
 		$this->assertSame( 3, $read->get_usage_limit_per_user() );

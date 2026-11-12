@@ -139,8 +139,10 @@ jobs:
           PRO_REPO_TOKEN: ${{ secrets.SG_PRO_TOKEN }}
           BRANCH: ${{ github.head_ref || github.ref_name }}
         run: |
+          # Ask the API with Pro's token: git here would send this checkout's
+          # own token (actions/checkout's extraheader), which can't see Pro.
           ref=develop
-          if git ls-remote --exit-code --heads "https://x-access-token:${PRO_REPO_TOKEN}@github.com/getdokan/storegrowth-sales-booster-pro.git" "$BRANCH" >/dev/null 2>&1; then
+          if GH_TOKEN="$PRO_REPO_TOKEN" gh api "repos/getdokan/storegrowth-sales-booster-pro/git/ref/heads/$BRANCH" --silent; then
             ref="$BRANCH"
           fi
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
