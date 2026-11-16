@@ -171,10 +171,10 @@ test.describe('Admin · Campaigns', () => {
 
       await gotoAppRoute(page, `campaigns/${campaign.id}`);
       await page.getByRole('button', { name: /Set a start date/ }).click();
-      await expect(page.getByLabel('Start date')).toBeFocused();
+      await expect(page.getByLabel('Start date', { exact: true })).toBeFocused();
 
-      await page.getByLabel('Campaign name').fill(campaignName('E2E UI Steps'));
-      await page.getByLabel('Start date').fill(day(campaignDate(4)));
+      await page.getByLabel('Campaign name', { exact: true }).fill(campaignName('E2E UI Steps'));
+      await page.getByLabel('Start date', { exact: true }).fill(day(campaignDate(4)));
       await expect(page.getByText('1 of 2 done')).toBeVisible();
       await expect(page.getByRole('img', { name: 'Step 1, done' })).toBeVisible();
 
@@ -194,9 +194,9 @@ test.describe('Admin · Campaigns', () => {
 
       await gotoAppRoute(page, `campaigns/${campaign.id}`);
       await expect(page.getByText('Not saved yet')).toBeVisible();
-      await page.getByLabel('Campaign name').fill(name);
-      await page.getByLabel('Start date').fill(day(starts));
-      await page.getByLabel('End date').fill(day(ends));
+      await page.getByLabel('Campaign name', { exact: true }).fill(name);
+      await page.getByLabel('Start date', { exact: true }).fill(day(starts));
+      await page.getByLabel('End date', { exact: true }).fill(day(ends));
       await page.getByRole('switch', { name: 'Product badge' }).click();
 
       // Nothing is saved until Save draft.
@@ -231,8 +231,8 @@ test.describe('Admin · Campaigns', () => {
       await updateCampaign(api, campaign.id, { starts_at: campaignDate(4) });
 
       await gotoAppRoute(page, `campaigns/${campaign.id}`);
-      await page.getByLabel('End date').fill(day(ends));
-      await page.getByLabel('End time').fill('10:30');
+      await page.getByLabel('End date', { exact: true }).fill(day(ends));
+      await page.getByLabel('End time', { exact: true }).fill('10:30');
       const saved = saveRequest(page, campaign.id);
       await page.getByRole('button', { name: 'Save draft' }).click();
       expect((await saved).ok()).toBeTruthy();
@@ -245,13 +245,20 @@ test.describe('Admin · Campaigns', () => {
       const saved = (await getCampaign(api, campaign.id)).name;
 
       await gotoAppRoute(page, `campaigns/${campaign.id}`);
-      await page.getByLabel('Campaign name').fill(`${saved} edited`);
+      // A draft made through the API was never saved: save it once first.
+      await expect(page.getByText('Not saved yet')).toBeVisible();
+      const first = saveRequest(page, campaign.id);
+      await page.getByRole('button', { name: 'Save draft' }).click();
+      expect((await first).ok()).toBeTruthy();
+      await expect(page.getByText('Saved just now')).toBeVisible();
+
+      await page.getByLabel('Campaign name', { exact: true }).fill(`${saved} edited`);
       await expect(page.getByText('Unsaved changes')).toBeVisible();
 
       await page.getByRole('button', { name: 'Campaigns', exact: true }).click();
       const dialog = page.getByRole('alertdialog', { name: 'Leave without saving?' });
       await dialog.getByRole('button', { name: 'Keep editing' }).click();
-      await expect(page.getByLabel('Campaign name')).toHaveValue(`${saved} edited`);
+      await expect(page.getByLabel('Campaign name', { exact: true })).toHaveValue(`${saved} edited`);
 
       await page.getByRole('button', { name: 'Campaigns', exact: true }).click();
       await page.getByRole('button', { name: 'Leave without saving' }).click();
