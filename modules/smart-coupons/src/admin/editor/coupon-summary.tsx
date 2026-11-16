@@ -10,6 +10,8 @@ import type { SettingValue } from '@storegrowth/utilities';
 interface CouponSummaryProps {
     values: Record< string, SettingValue >;
     currency: string;
+    /** The campaign a coupon was made for (StoreGrowth Pro). */
+    madeFor?: string;
 }
 
 /**
@@ -105,9 +107,28 @@ function summaryLines(
  * @param props          Props.
  * @param props.values   Editor values.
  * @param props.currency Store currency symbol.
+ * @param props.madeFor  The campaign it was made for, if any.
  */
-export function CouponSummary( { values, currency }: CouponSummaryProps ) {
-    const lines = summaryLines( values, currency );
+export function CouponSummary( {
+    values,
+    currency,
+    madeFor,
+}: CouponSummaryProps ) {
+    const lines = [
+        ...( madeFor
+            ? [
+                  sprintf(
+                      /* translators: %s: campaign name. */
+                      __(
+                          'Made for %s, dates set by the campaign',
+                          'storegrowth-sales-booster'
+                      ),
+                      madeFor
+                  ),
+              ]
+            : [] ),
+        ...summaryLines( values, currency ),
+    ];
     const title =
         String( values.title ) ||
         __( 'Your coupon', 'storegrowth-sales-booster' );

@@ -40,6 +40,9 @@ export type Campaign = {
   starts_at: string | null;
   ends_at: string | null;
   paused_at: string | null;
+  /** Last Save draft; null when never saved. */
+  saved_at: string | null;
+  never_saved: boolean;
   slug: string;
   settings: Record<string, any>;
   offers: CampaignOfferRow[];

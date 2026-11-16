@@ -172,14 +172,17 @@ function OfferEditor( { id, vendor }: { id: number | null; vendor: boolean } ) {
 
     const title = __( 'BOGO', 'storegrowth-sales-booster' );
     // Dokan's page header has its own Back button.
+    // A campaign's version goes back to its campaign.
     const toList = vendor ? undefined : (
         <Button
             variant="outline"
             onClick={ () => {
-                navigate( '/bogo' );
+                navigate( version.returnTo ?? '/bogo' );
             } }
         >
-            { __( 'BOGO List', 'storegrowth-sales-booster' ) }
+            { version.returnTo
+                ? __( 'Back to campaign', 'storegrowth-sales-booster' )
+                : __( 'BOGO List', 'storegrowth-sales-booster' ) }
         </Button>
     );
 

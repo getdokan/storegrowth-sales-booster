@@ -231,14 +231,17 @@ function BumpEditor( { id }: { id: number | null } ) {
     );
 
     const title = __( 'Upsell Order Bump', 'storegrowth-sales-booster' );
+    // A campaign's version goes back to its campaign.
     const toList = (
         <Button
             variant="outline"
             onClick={ () => {
-                navigate( '/upsell-order-bump' );
+                navigate( version.returnTo ?? '/upsell-order-bump' );
             } }
         >
-            { __( 'Bump List', 'storegrowth-sales-booster' ) }
+            { version.returnTo
+                ? __( 'Back to campaign', 'storegrowth-sales-booster' )
+                : __( 'Bump List', 'storegrowth-sales-booster' ) }
         </Button>
     );
 

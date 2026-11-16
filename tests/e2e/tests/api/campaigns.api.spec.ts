@@ -120,8 +120,11 @@ test.describe('API · Campaigns', () => {
       expect(rows.find((r) => r.id === campaign.id)).toEqual(expect.objectContaining({ status: 'draft' }));
     });
 
-    test('a template fills the draft', async ({ api }) => {
+    test('a template fills the draft, with dates from tomorrow', async ({ api }) => {
       const campaign = await createCampaign(api, tracker, { template: 'flash-sale' });
+      expect(campaign.starts_at).toMatch(/ 00:00:00$/);
+      expect(campaign.ends_at).toMatch(/ 23:59:59$/);
+      expect(campaign.never_saved).toBe(true);
       expect(campaign.settings.campaign_price?.percent).toBe(20);
       expect(campaign.settings.exclude_on_sale).toBe(true);
       expect(Object.keys(campaign.settings.surfaces ?? {})).toEqual(

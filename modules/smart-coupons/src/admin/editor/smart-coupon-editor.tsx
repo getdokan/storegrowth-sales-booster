@@ -152,13 +152,15 @@ function CampaignDates( {
  * @param navigate   Router.
  * @param bogoOn     Whether the BOGO module is on.
  * @param enableBogo Turn the BOGO module on.
+ * @param isVersion  Editing a campaign's version: method and code stay.
  */
 function controls(
     coupon: SmartCouponEditor,
     categories: MultiSelectOption[],
     navigate: ( path: string ) => void,
     bogoOn: boolean,
-    enableBogo: () => void
+    enableBogo: () => void,
+    isVersion = false
 ) {
     const { values, schema, setValue, errors, editor, record } = coupon;
     // Pro's coupon options run only with a licence AND StoreGrowth Pro answering.
@@ -175,34 +177,48 @@ function controls(
 
     return {
         method: (
-            <PickerCards
-                label={ schema.method?.label ?? '' }
-                columns={ 3 }
-                value={ String( values.method ) }
-                onChange={ ( next ) => {
-                    setValue( 'method', next );
-                } }
-                options={ [
-                    {
-                        value: 'automatic',
-                        label: __( 'Automatic', 'storegrowth-sales-booster' ),
-                        art: iconArt( Zap ),
-                    },
-                    {
-                        value: 'code',
-                        label: __(
-                            'Discount code',
+            <div className="flex w-full flex-col gap-2">
+                <PickerCards
+                    label={ schema.method?.label ?? '' }
+                    columns={ 3 }
+                    locked={ isVersion }
+                    value={ String( values.method ) }
+                    onChange={ ( next ) => {
+                        setValue( 'method', next );
+                    } }
+                    options={ [
+                        {
+                            value: 'automatic',
+                            label: __(
+                                'Automatic',
+                                'storegrowth-sales-booster'
+                            ),
+                            art: iconArt( Zap ),
+                        },
+                        {
+                            value: 'code',
+                            label: __(
+                                'Discount code',
+                                'storegrowth-sales-booster'
+                            ),
+                            art: iconArt( Ticket ),
+                        },
+                        {
+                            value: 'link',
+                            label: __( 'Link', 'storegrowth-sales-booster' ),
+                            art: iconArt( Link2 ),
+                        },
+                    ] }
+                />
+                { isVersion && (
+                    <p className="m-0 text-xs text-sg-help">
+                        { __(
+                            'Method and code are read-only in a campaign version. A different code needs a coupon made for this campaign.',
                             'storegrowth-sales-booster'
-                        ),
-                        art: iconArt( Ticket ),
-                    },
-                    {
-                        value: 'link',
-                        label: __( 'Link', 'storegrowth-sales-booster' ),
-                        art: iconArt( Link2 ),
-                    },
-                ] }
-            />
+                        ) }
+                    </p>
+                ) }
+            </div>
         ),
         discount_type: (
             <div className="flex w-full flex-col gap-3">
@@ -515,14 +531,22 @@ function CouponEditor( { id }: { id: number | null } ) {
         };
     }, [ coupon, id, version.route, swap ] );
 
+    // The campaign a coupon was made for (StoreGrowth Pro).
+    const madeForCampaign = coupon.record?.campaign as
+        | CouponCampaign
+        | undefined;
+
+    // A campaign's version goes back to its campaign.
     const toList = (
         <Button
             variant="outline"
             onClick={ () => {
-                navigate( '/smart-coupons' );
+                navigate( version.returnTo ?? '/smart-coupons' );
             } }
         >
-            { __( 'Coupon list', 'storegrowth-sales-booster' ) }
+            { version.returnTo
+                ? __( 'Back to campaign', 'storegrowth-sales-booster' )
+                : __( 'Coupon list', 'storegrowth-sales-booster' ) }
         </Button>
     );
 
@@ -544,14 +568,28 @@ function CouponEditor( { id }: { id: number | null } ) {
                     <CouponSummary
                         values={ coupon.values }
                         currency={ coupon.editor?.currency ?? '' }
+                        madeFor={
+                            coupon.record?.campaign_only
+                                ? madeForCampaign?.name
+                                : undefined
+                        }
                     />
                 ) : null
             }
             controls={
                 loaded
-                    ? controls( coupon, categories, navigate, bogoOn, () => {
-                          setModuleStatus( BOGO_ID, true );
-                      } )
+                    ? controls(
+                          coupon,
+                          categories,
+                          navigate,
+                          bogoOn,
+                          () => {
+                              setModuleStatus( BOGO_ID, true );
+                          },
+                          // A campaign's version of an everyday coupon.
+                          Boolean( version.row ) &&
+                              ! coupon.record?.campaign_only
+                      )
                     : undefined
             }
             actions={
