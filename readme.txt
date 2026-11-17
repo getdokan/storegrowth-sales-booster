@@ -332,7 +332,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 
 == Changelog ==
 
-= v3.1.0 (November 12, 2026) =
+= v3.1.0 (November 17, 2026) =
 
 * New: Smart Coupons — create coupons that apply on their own, with a code, or from a link you share. Give a percentage off, a fixed amount off or Buy X Get Y, choose who can use them and how many times, and set start and end dates. See each coupon's uses, discount given and revenue at a glance. Free includes unlimited code and link coupons and one automatic coupon at a time.
 * New: Cart Rewards, replacing Free Shipping Rules — reward shoppers as their cart grows with free shipping, a coupon code, a free gift or a discount, and a progress bar showing how close they are. Your free shipping rules carry over as the first milestone. Free includes one milestone.

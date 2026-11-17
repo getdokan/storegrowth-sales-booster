@@ -1,6 +1,6 @@
 == Changelog ==
 
-### v3.1.0 (November 12, 2026) ###
+### v3.1.0 (November 17, 2026) ###
 
 - **new:** Smart Coupons: create coupons that apply on their own, with a code, or from a link you share. Give a percentage off, a fixed amount off or Buy X Get Y, choose who can use them and how many times, and set start and end dates. See each coupon's uses, discount given and revenue at a glance. They are regular WooCommerce coupons, so code and link coupons also appear under WooCommerce > Coupons. Free includes unlimited code and link coupons and one automatic coupon at a time.
 - **new:** Cart Rewards, replacing Free Shipping Rules: reward shoppers as their cart grows with free shipping, a coupon code, a free gift or a discount at each milestone, and a progress bar on the cart, Fly Cart and block cart showing how close they are. Your free shipping rules carry over as the first milestone. Free includes one milestone.
