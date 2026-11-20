@@ -51,11 +51,32 @@ class RewardsBar implements HookRegistry {
 			! WC()->cart
 			|| ! PluginHelper::is_current_user_allowed_to_view_promotions()
 			|| ! storegrowth_get_container()->get( SettingsService::class )->is_published( ProgressiveDiscountBannerModule::get_id() )
+			|| ! $this->audience_sees_it()
 		) {
 			return null;
 		}
 
 		return Milestones::progress( WC()->cart );
+	}
+
+	/**
+	 * Whether the visitor is in the bar's "Who Can See" audience, a Pro
+	 * setting the top bar follows too.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return bool
+	 */
+	private function audience_sees_it(): bool {
+		if ( ! sp_store_growth()->has_pro() ) {
+			return true;
+		}
+
+		$who = PluginHelper::find_option_settings( Helper::get_settings(), 'user_type', 'both' );
+
+		return 'both' === $who
+			|| ( 'logged_in' === $who && is_user_logged_in() )
+			|| ( 'not_logged_in' === $who && ! is_user_logged_in() );
 	}
 
 	/**

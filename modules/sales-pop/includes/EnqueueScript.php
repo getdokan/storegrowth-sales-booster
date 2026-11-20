@@ -137,26 +137,41 @@ class EnqueueScript implements HookRegistry {
 			return $this->popup_info_memo;
 		}
 
-		$cached = get_transient( self::POPUP_CACHE_KEY );
-		if ( is_array( $cached ) ) {
-			$this->popup_info_memo = $cached;
-			return $cached;
-		}
-
-		$popup_properties = PluginHelper::get_settings( 'spsg_popup_products', false );
-
-		if ( false === $popup_properties || empty( $popup_properties ) ) {
-			$this->popup_info_memo = null;
-			return null;
-		}
-
-		$popup_properties = maybe_unserialize( $popup_properties );
+		$popup_properties = maybe_unserialize( PluginHelper::get_settings( 'spsg_popup_products', array() ) );
 
 		// Neutralize any HTML/script that may already be stored (e.g. from a
 		// payload saved before the create_popup handler was hardened), then
 		// fill the keys never saved (saves write only changed keys).
-		$popup_properties = Ajax::sanitize_popup_data( $popup_properties );
+		$popup_properties = Ajax::sanitize_popup_data( is_array( $popup_properties ) ? $popup_properties : array() );
 		$popup_properties = storegrowth_get_container()->get( SalesPopSettings::class )->storefront_settings( $popup_properties );
+
+		/**
+		 * Filters Sales Pop's storefront settings (documented in `SalesPOP::footer_files()`).
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array $settings Sales Pop settings.
+		 */
+		$filtered = (array) apply_filters( 'spsg_sales_pop_settings', $popup_properties );
+
+		// The cache holds the popup from Sales Pop's own settings only.
+		$own = $filtered === $popup_properties;
+
+		if ( $own ) {
+			$cached = get_transient( self::POPUP_CACHE_KEY );
+
+			if ( is_array( $cached ) ) {
+				$this->popup_info_memo = $cached;
+				return $cached;
+			}
+		}
+
+		$popup_properties = $filtered;
+
+		if ( empty( $popup_properties['enable'] ) ) {
+			$this->popup_info_memo = null;
+			return null;
+		}
 
 		$popup_products = $popup_properties['popup_products'] ?? array();
 		$popup_products = array_values( array_filter( array_map( 'absint', (array) $popup_products ) ) );
@@ -233,7 +248,10 @@ class EnqueueScript implements HookRegistry {
 			'fallback_image_url'   => plugin_dir_url( __DIR__ ) . 'assets/images/sale_product.png',
 		);
 
-		set_transient( self::POPUP_CACHE_KEY, $popup_info, DAY_IN_SECONDS );
+		if ( $own ) {
+			set_transient( self::POPUP_CACHE_KEY, $popup_info, DAY_IN_SECONDS );
+		}
+
 		$this->popup_info_memo = $popup_info;
 
 		return $popup_info;

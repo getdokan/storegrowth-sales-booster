@@ -40,4 +40,26 @@ class V_3_1_0 extends BaseMigration {
 			throw new RuntimeException( esc_html__( 'The offer report table could not be updated.', 'storegrowth-sales-booster' ) );
 		}
 	}
+
+	/**
+	 * Replace the Free Shipping Bar's default goal text: a Cart Rewards
+	 * milestone can now give a discount, a coupon or a gift, so "You have
+	 * successfully acquired free shipping." would be wrong for them. Only
+	 * the old default is replaced; a text the store owner wrote stays.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @return void
+	 */
+	public static function replace_free_shipping_goal_text(): void {
+		$settings = get_option( 'spsg_progressive_discount_banner_settings' );
+
+		if ( ! is_array( $settings ) || 'You have successfully acquired free shipping.' !== ( $settings['goal_completion_text'] ?? '' ) ) {
+			return;
+		}
+
+		$settings['goal_completion_text'] = 'All rewards unlocked';
+
+		update_option( 'spsg_progressive_discount_banner_settings', $settings );
+	}
 }

@@ -21,7 +21,8 @@ ADR-016 put the campaign manager in Free under `includes/Campaigns/`, gated by `
 | Campaign price on a product / all prices | `spsg_campaign_price` (null), `spsg_campaign_prices` ([]) |
 | Countdown end a campaign sets | `spsg_countdown_campaign_end` (null) |
 | Campaign copy on a surface | `spsg_surface_campaign_copy` ('') |
-| Sales Pop products | `spsg_sales_pop_product_ids` (unchanged) |
+| Sales Pop settings (on, products) | `spsg_sales_pop_settings` (unchanged) |
+| A surface a campaign shows | `spsg_campaign_shows_surface` (false) |
 | Offer timeline (list chip, editor banner) | `spsg_offer_timeline` (empty) |
 | Smart Coupon's campaign | `spsg_smart_coupon_response` (unchanged) |
 | Campaign-only offer name in reports | `spsg_campaign_offer_name` ('') |

@@ -24,6 +24,8 @@ export interface SmartCouponRow {
     discount_given: string;
     /** Net sales of the orders that used it, in the store's price format. */
     revenue: string;
+    /** A link coupon's link; empty for other methods. */
+    link?: string;
 }
 
 /** A coupon by id and name. */

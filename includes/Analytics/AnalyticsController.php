@@ -704,7 +704,9 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	 * @return float|null
 	 */
 	protected static function rate( int $part, int $base ): ?float {
-		return $base > 0 ? round( 100 * $part / $base, 1 ) : null;
+		// Views are estimated (page caches, orders from before tracking), so
+		// orders can outnumber them: a share never goes past 100%.
+		return $base > 0 ? min( 100.0, round( 100 * $part / $base, 1 ) ) : null;
 	}
 
 	/**

@@ -18,7 +18,7 @@ import {
 import { useState } from '@wordpress/element';
 import { decodeEntities } from '@wordpress/html-entities';
 import { __, sprintf } from '@wordpress/i18n';
-import { Pencil, Plus, TicketPercent } from 'lucide-react';
+import { Link, Pencil, Plus, TicketPercent } from 'lucide-react';
 import {
     CardHead,
     FeatureLayout,
@@ -210,6 +210,20 @@ function CouponList() {
             icon: <Pencil size={ 16 } />,
             callback: ( [ item ] ) => {
                 navigate( `/smart-coupons/${ item.id }` );
+            },
+        },
+        {
+            id: 'copy-link',
+            label: __( 'Copy link', 'storegrowth-sales-booster' ),
+            icon: <Link size={ 16 } />,
+            isEligible: ( item ) => {
+                return Boolean( item.link );
+            },
+            callback: ( [ item ] ) => {
+                window.navigator.clipboard?.writeText( item.link ?? '' );
+                toast.success(
+                    __( 'Coupon link copied.', 'storegrowth-sales-booster' )
+                );
             },
         },
     ];

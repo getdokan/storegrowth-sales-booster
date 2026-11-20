@@ -305,6 +305,12 @@
     display: none;
 }
 
+/* Item data (variations, deal labels) wraps its values in a <p>. */
+.spsg-fly-cart-table td.product-name .spsg-product-title dl.variation p {
+    display: inline;
+    margin: 0;
+}
+
 .spsg-fly-cart-table td.product-name .spsg-product-title .spsg-product-category {
     font-size: 12px;
     font-weight: initial;

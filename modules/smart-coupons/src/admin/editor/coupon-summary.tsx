@@ -4,6 +4,8 @@
  *
  * @since 3.1.0
  */
+import { Button, Input } from '@wedevs/plugin-ui';
+import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import type { SettingValue } from '@storegrowth/utilities';
 
@@ -12,6 +14,61 @@ interface CouponSummaryProps {
     currency: string;
     /** The campaign a coupon was made for (StoreGrowth Pro). */
     madeFor?: string;
+    /** A saved link coupon's link. */
+    link?: string;
+}
+
+/**
+ * A link coupon's link, to copy and share.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param props      Props.
+ * @param props.link Link.
+ */
+function CouponLink( { link }: { link: string } ) {
+    const [ copied, setCopied ] = useState( false );
+
+    return (
+        <section className="flex flex-col gap-2">
+            <h2 className="m-0 text-sm font-semibold text-sg-heading">
+                { __( 'Coupon link', 'storegrowth-sales-booster' ) }
+            </h2>
+            <div className="flex gap-2">
+                <Input
+                    readOnly
+                    value={ link }
+                    aria-label={ __(
+                        'Coupon link',
+                        'storegrowth-sales-booster'
+                    ) }
+                    onFocus={ ( event: { target: HTMLInputElement } ) => {
+                        event.target.select();
+                    } }
+                />
+                <Button
+                    variant="outline"
+                    onClick={ () => {
+                        window.navigator.clipboard?.writeText( link );
+                        setCopied( true );
+                        window.setTimeout( () => {
+                            setCopied( false );
+                        }, 1500 );
+                    } }
+                >
+                    { copied
+                        ? __( 'Copied', 'storegrowth-sales-booster' )
+                        : __( 'Copy', 'storegrowth-sales-booster' ) }
+                </Button>
+            </div>
+            <p className="m-0 text-xs text-sg-help">
+                { __(
+                    'Shoppers who open this link get the coupon in their cart.',
+                    'storegrowth-sales-booster'
+                ) }
+            </p>
+        </section>
+    );
 }
 
 /**
@@ -108,11 +165,13 @@ function summaryLines(
  * @param props.values   Editor values.
  * @param props.currency Store currency symbol.
  * @param props.madeFor  The campaign it was made for, if any.
+ * @param props.link     A saved link coupon's link.
  */
 export function CouponSummary( {
     values,
     currency,
     madeFor,
+    link,
 }: CouponSummaryProps ) {
     const lines = [
         ...( madeFor
@@ -145,6 +204,7 @@ export function CouponSummary( {
                     } ) }
                 </ul>
             </section>
+            { link && values.method === 'link' && <CouponLink link={ link } /> }
             <section className="flex flex-col gap-2">
                 <h2 className="m-0 text-sm font-semibold text-sg-heading">
                     { __( 'Shoppers will see', 'storegrowth-sales-booster' ) }

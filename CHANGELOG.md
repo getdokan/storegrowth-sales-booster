@@ -15,7 +15,7 @@
 - **enhancement:** StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 8.8 or newer.
 - **change:** Cart Rewards milestones now count the cart subtotal after discounts, with or without tax the way your store shows prices (before, it was the subtotal before tax and discounts).
 - **change:** Rewards follow the cart: a shopper who drops below a milestone loses the reward and gets it back when they go above it again. Below a free shipping milestone, WooCommerce's Free shipping option is hidden. If you offered free shipping to everyone, check your shipping settings after updating.
-- **fix:** Deals start and end at the exact time you set, in your site's timezone: Countdown Timer (which used UTC), BOGO weekday deals and Pro's same-product BOGO. A Countdown sale running during the update moves once by your site's UTC offset.
+- **fix:** Deals start and end at the exact time you set, in your site's timezone: Countdown Timer, BOGO weekday deals and Pro's same-product BOGO. Countdown used each shopper's own computer clock, so a timer running during the update may show a different time left afterwards, by up to the gap between the shopper's timezone and your store's.
 - **fix:** BOGO prices on product pages and crossed-out cart prices match your store's currency format and tax display.
 - **fix:** Price ranges of variable products show Countdown sale prices.
 - **fix:** On Dokan marketplaces, coupon data and vendor earnings stay correct when StoreGrowth deals apply.

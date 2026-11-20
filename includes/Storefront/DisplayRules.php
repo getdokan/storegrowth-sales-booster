@@ -86,4 +86,29 @@ class DisplayRules {
 		 */
 		return (string) apply_filters( 'spsg_surface_campaign_copy', '', $surface, $settings );
 	}
+
+	/**
+	 * Whether a running campaign shows a surface, so it shows even while
+	 * the module's own settings keep it off (never saved, switched off).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param string $surface  Surface (`floating_bar`, `sales_pop`, …).
+	 * @param array  $settings The module's settings.
+	 *
+	 * @return bool
+	 */
+	public static function campaign_shows( string $surface, array $settings = [] ): bool {
+		/**
+		 * Filters whether a running campaign shows a surface. StoreGrowth
+		 * has no campaigns itself; StoreGrowth Pro supplies them.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param bool   $shows    False: no campaign shows it.
+		 * @param string $surface  Surface.
+		 * @param array  $settings The module's settings.
+		 */
+		return (bool) apply_filters( 'spsg_campaign_shows_surface', false, $surface, $settings );
+	}
 }

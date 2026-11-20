@@ -573,6 +573,7 @@ function CouponEditor( { id }: { id: number | null } ) {
                                 ? madeForCampaign?.name
                                 : undefined
                         }
+                        link={ coupon.record?.link as string | undefined }
                     />
                 ) : null
             }

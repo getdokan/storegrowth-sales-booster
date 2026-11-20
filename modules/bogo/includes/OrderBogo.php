@@ -422,8 +422,10 @@ class OrderBogo implements HookRegistry {
 			if ( $free_product_quantity > 0 ) {
 				WC()->cart->cart_contents[ $existing_offer_key ]['quantity'] = $free_product_quantity;
 			} else {
-				// Remove offer product if quantity is 0
-				WC()->cart->remove_cart_item( $existing_offer_key );
+				// No longer earned: remove the gift and tell the shopper why.
+				$gift = WC()->cart->cart_contents[ $existing_offer_key ];
+
+				$this->remove_gift( WC()->cart, $existing_offer_key, $this->get_gift_ended_message( $gift, $bogo_settings ) );
 				unset( WC()->cart->cart_contents[ $cart_item_key ]['child_key'] );
 			}
 		} elseif ( $free_product_quantity > 0 ) {
