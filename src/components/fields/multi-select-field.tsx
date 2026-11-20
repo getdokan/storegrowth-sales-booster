@@ -210,7 +210,7 @@ export function MultiSelectField( {
                         placeholder={ selected.length ? '' : placeholder }
                         // wp-admin styles bare text inputs (border, padding,
                         // a 40px min-height).
-                        className="m-0 h-7 min-h-0 border-0 bg-transparent p-0 text-sm text-sg-text shadow-none placeholder:text-sg-field focus:shadow-none"
+                        className="m-0 h-7 min-h-0 border-0 bg-transparent p-0 text-sm text-sg-text shadow-none placeholder:text-sg-help focus:shadow-none"
                     />
                 </ComboboxChips>
                 <ComboboxContent anchor={ anchor }>

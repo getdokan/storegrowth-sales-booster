@@ -527,14 +527,14 @@ class OrderBumpRestTest extends StoreGrowthTestCase {
 	}
 
 	/**
-	 * Lite keeps two bumps of any status: a third create gets 403, pro lifts
-	 * it, existing bumps stay editable.
+	 * Lite runs two active bumps: a third create gets 403, a bump switched
+	 * off doesn't count, pro lifts it, existing bumps stay editable.
 	 *
 	 * @return void
 	 */
 	public function test_lite_limit() {
 		$this->insert_bump();
-		$second = $this->insert_bump( [ 'status' => 'inactive' ] );
+		$second = $this->insert_bump();
 
 		$response = $this->request( 'POST', self::BASE, $this->payload() );
 		$this->assertSame( 403, $response->get_status() );

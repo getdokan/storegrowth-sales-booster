@@ -16,7 +16,7 @@ $button_action = PluginHelper::find_option_settings( $settings, 'button_action',
 $redirect_url  = PluginHelper::find_option_settings( $settings, 'redirect_url', '#' );
 
 ?>
-<div class="spsg-floating-notification-bar-wrapper">
+<div class="spsg-floating-notification-bar-wrapper" data-spsg-surface="floating_bar">
 	<div class="spsg-floating-notification-bar">
 		<div class='spsg-floating-notification-bar-icon'>
 			<?php // The stored icon slugs as lucide icons: gift, badge-percent, hand-coins. ?>

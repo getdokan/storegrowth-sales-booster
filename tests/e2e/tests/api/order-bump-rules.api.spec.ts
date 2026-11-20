@@ -236,13 +236,16 @@ test.describe('API · Order Bump rules', () => {
     expect(await (await api.get(NEW)).json()).toEqual([]);
   });
 
-  test('lite caps bumps at two of any status (creates only)', async ({ api }) => {
+  test('lite caps active bumps at two (creates only)', async ({ api }) => {
     test.skip(await hasPro(api), 'pro lifts the cap');
 
     const first = await createOrderBump(api, valid());
     await createOrderBump(api, valid());
-    // An inactive bump still counts.
+
+    // A bump switched off doesn't count (offer limits count active offers).
     await api.post(`${NEW}/${first.id}/status`, { data: { status: 'no' } });
+    expect((await api.get(NEW)).headers()['x-spsg-can-create']).toBe('1');
+    await api.post(`${NEW}/${first.id}/status`, { data: { status: 'yes' } });
 
     const list = await api.get(NEW);
     expect(list.headers()['x-spsg-can-create']).toBe('0');

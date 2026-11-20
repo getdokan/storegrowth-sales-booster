@@ -84,8 +84,13 @@ class OrderBumpBlockTest extends StoreGrowthTestCase {
 			'Precondition: Order Bump is inactive in the suite.'
 		);
 
+		// The Store API extension (ADR-015) hooks these actions for every store.
 		foreach ( self::BLOCK_ACTIONS as $action ) {
-			$this->assertFalse( has_action( $action ), "{$action} is hooked with the module off." );
+			foreach ( $GLOBALS['wp_filter'][ $action ]->callbacks ?? [] as $callbacks ) {
+				foreach ( $callbacks as $callback ) {
+					$this->assertNotInstanceOf( BlockRegistry::class, $callback['function'][0] ?? null, "{$action} is hooked by Order Bump with the module off." );
+				}
+			}
 		}
 
 		$container = storegrowth_get_container();

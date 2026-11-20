@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner;
 
 use StorePulse\StoreGrowth\Admin\ModuleAdminPage;
+use StorePulse\StoreGrowth\Modules\ProgressiveDiscountBanner\Settings\ProgressiveDiscountBannerSettings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -71,7 +72,24 @@ class AdminPage extends ModuleAdminPage {
 				'decimals'          => wc_get_price_decimals(),
 				'decimal_separator' => wc_get_price_decimal_separator(),
 				'cart_url'          => wc_get_cart_url(),
+				'shipping_zones'    => Milestones::shipping_zones(),
+				'shipping_url'      => admin_url( 'admin.php?page=wc-settings&tab=shipping' ),
+				'migrated'          => $this->is_migrated(),
 			],
 		];
+	}
+
+	/**
+	 * Whether a store from before 3.1 had a rule that became milestone 1.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return bool
+	 */
+	private function is_migrated(): bool {
+		$stored = (array) get_option( 'spsg_progressive_discount_banner_settings', [] );
+
+		return false !== get_option( ProgressiveDiscountBannerSettings::BACKUP_OPTION, false )
+			|| ( empty( $stored['milestones'] ) && storegrowth_get_container()->get( ProgressiveDiscountBannerSettings::class )->is_saved( $stored ) );
 	}
 }

@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
 
     return (
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
-            <div className="flex w-full max-w-[1280px] flex-col items-start gap-6">
+            <div className="flex w-full flex-col items-start gap-6">
                 <div className="flex flex-col items-start gap-1">
                     <h1 className="sg-display flex items-center gap-2 text-[24px] font-bold leading-[1.3] text-sg-text">
                         { __( 'Analytics', 'storegrowth-sales-booster' ) }

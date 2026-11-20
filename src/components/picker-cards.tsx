@@ -17,6 +17,8 @@ export interface PickerCardOption {
     art: ReactNode;
     /** Not selectable (a pro choice without pro). */
     locked?: boolean;
+    /** Instead of the Pro badge, when something else locks the card. */
+    badge?: ReactNode;
 }
 
 export interface PickerCardsProps {
@@ -85,7 +87,7 @@ export function PickerCards( {
                     </span>
                     { option.locked && (
                         <span className="absolute right-1.5 top-1.5">
-                            <ProBadge />
+                            { option.badge ?? <ProBadge /> }
                         </span>
                     ) }
                 </ToggleGroupItem>

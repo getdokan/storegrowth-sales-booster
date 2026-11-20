@@ -1,14 +1,14 @@
 # Copyright (c) 2026 All Rights Reserved by weDevs.
 msgid ""
 msgstr ""
-"Project-Id-Version: StoreGrowth 3.0.0\n"
+"Project-Id-Version: StoreGrowth 3.1.0\n"
 "Report-Msgid-Bugs-To: https://storegrowth.io/contact-us/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-04T03:18:17+00:00\n"
+"POT-Creation-Date: 2026-11-12T09:46:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: storegrowth-sales-booster\n"
@@ -104,6 +104,8 @@ msgstr ""
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 #: modules/bogo/assets/js/admin.js:6
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+#: modules/smart-coupons/assets/js/admin.js:2
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Upgrade to Pro"
 msgstr ""
@@ -112,10 +114,10 @@ msgstr ""
 #: includes/Ajax.php:118
 #: integrations/includes/Dokan/Ajax.php:47
 #: integrations/includes/Dokan/Ajax.php:81
-#: modules/bogo/includes/Ajax.php:226
-#: modules/bogo/includes/Ajax.php:272
-#: modules/bogo/includes/Ajax.php:287
-#: modules/bogo/includes/Ajax.php:350
+#: modules/bogo/includes/Ajax.php:213
+#: modules/bogo/includes/Ajax.php:259
+#: modules/bogo/includes/Ajax.php:274
+#: modules/bogo/includes/Ajax.php:337
 #: modules/countdown-timer/includes/Ajax.php:43
 #: modules/countdown-timer/includes/Ajax.php:81
 #: modules/direct-checkout/includes/Ajax.php:43
@@ -183,7 +185,7 @@ msgstr ""
 msgid "Orders with an offer."
 msgstr ""
 
-#: includes/Analytics/Reports/Offers/OfferQuery.php:88
+#: includes/Analytics/Reports/Offers/OfferQuery.php:90
 msgid "Run the StoreGrowth database upgrade to see offer reports."
 msgstr ""
 
@@ -196,14 +198,24 @@ msgstr ""
 msgid "StoreGrowth offer revenue."
 msgstr ""
 
+#. translators: 1: required StoreGrowth Pro version, 2: installed StoreGrowth Pro version.
+#: includes/Bootstrap.php:86
+#, php-format
+msgid "This version of StoreGrowth needs StoreGrowth Pro %1$s or newer for its newest features. You are running %2$s."
+msgstr ""
+
+#: includes/Bootstrap.php:92
+msgid "Update StoreGrowth Pro"
+msgstr ""
+
 #. translators: %s is a placeholder for the WooCommerce plugin link.
-#: includes/Bootstrap.php:57
+#: includes/Bootstrap.php:103
 #, php-format
 msgid "StoreGrowth requires %s to be installed and active."
 msgstr ""
 
 #. translators: 1: required WooCommerce version, 2: active WooCommerce version.
-#: includes/Bootstrap.php:79
+#: includes/Bootstrap.php:125
 #, php-format
 msgid "StoreGrowth is built for WooCommerce %1$s or newer. You are running %2$s; please update WooCommerce for full compatibility."
 msgstr ""
@@ -254,6 +266,21 @@ msgstr ""
 msgid "Friday"
 msgstr ""
 
+#. translators: %s: the error of the failed migration.
+#: includes/Migrations/UpgradeRESTController.php:46
+#: includes/Upgrader.php:163
+#, php-format
+msgid "The database update failed: %s"
+msgstr ""
+
+#: includes/Migrations/V_3_0_0.php:44
+msgid "The analytics tables could not be created."
+msgstr ""
+
+#: includes/Migrations/V_3_1_0.php:40
+msgid "The offer report table could not be updated."
+msgstr ""
+
 #: includes/Notices/UpgradeNoticeProvider.php:62
 msgid "StoreGrowth database update required"
 msgstr ""
@@ -263,14 +290,65 @@ msgid "StoreGrowth needs to update its database: it sets up offer reports and re
 msgstr ""
 
 #: includes/Notices/UpgradeNoticeProvider.php:109
-#: includes/Upgrader.php:153
-#: includes/Upgrader.php:175
+#: includes/Upgrader.php:169
 msgid "Run the update"
 msgstr ""
 
 #: includes/Notices/UpgradeNoticeProvider.php:110
-#: includes/Upgrader.php:152
+#: includes/Upgrader.php:168
 msgid "Updating…"
+msgstr ""
+
+#: includes/Offers/OfferLimits.php:163
+msgid "Paused: over Free limit"
+msgstr ""
+
+#: includes/Offers/OfferLimits.php:224
+msgid "This kind of offer has no limit."
+msgstr ""
+
+#: includes/Offers/OfferLimits.php:231
+msgid "Choose active offers, no more than the Free plan allows."
+msgstr ""
+
+#: includes/Offers/OfferVersions.php:347
+msgid "Paused: needs Smart Coupons"
+msgstr ""
+
+#: includes/Pricing/CartLine.php:98
+msgid "Prices updated."
+msgstr ""
+
+#: includes/Pricing/Referee.php:150
+#: modules/bogo/templates/product-bogo-settings.php:77
+msgid "Deal"
+msgstr ""
+
+#: includes/Pricing/Referee.php:156
+#: modules/upsell-order-bump/assets/js/admin.js:1
+msgid "Price"
+msgstr ""
+
+#. translators: %1$s: coupon code, %2$s: deal name.
+#: includes/Pricing/Referee.php:456
+#, php-format
+msgid "%1$s wasn't applied because %2$s saves you more."
+msgstr ""
+
+#. translators: %s: coupon name.
+#: includes/Pricing/Referee.php:612
+#, php-format
+msgid "Only one of these coupons can be used. We kept %s, which saves you more."
+msgstr ""
+
+#. translators: %s: deal name.
+#: includes/Pricing/Referee.php:700
+#, php-format
+msgid "Larger deal applied: %s"
+msgstr ""
+
+#: includes/Pricing/Referee.php:701
+msgid "Deals combined"
 msgstr ""
 
 #: includes/REST/ModulesController.php:85
@@ -298,8 +376,12 @@ msgid "Values keyed by setting key."
 msgstr ""
 
 #: includes/REST/ModuleSettingsController.php:197
-#: includes/Settings/SettingsService.php:458
+#: includes/Settings/SettingsService.php:461
 msgid "This module has no settings."
+msgstr ""
+
+#: includes/REST/OfferLimitsController.php:77
+msgid "Ids of the offers that stay on."
 msgstr ""
 
 #: includes/REST/ProductController.php:57
@@ -531,74 +613,95 @@ msgstr ""
 msgid "Initial Setup"
 msgstr ""
 
-#: includes/Settings/SettingsService.php:466
+#: includes/Settings/SettingsService.php:469
 msgid "The stored settings are in an unexpected format, so they were not changed."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:519
+#: includes/Settings/SettingsService.php:523
 msgid "Some settings are not valid."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:753
+#: includes/Settings/SettingsService.php:813
 msgid "Enter a number."
 msgstr ""
 
 #. translators: %s: smallest allowed value.
-#: includes/Settings/SettingsService.php:760
+#: includes/Settings/SettingsService.php:820
 #, php-format
 msgid "Enter %s or more."
 msgstr ""
 
 #. translators: %s: largest allowed value.
-#: includes/Settings/SettingsService.php:765
+#: includes/Settings/SettingsService.php:825
 #, php-format
 msgid "Enter %s or less."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:775
+#: includes/Settings/SettingsService.php:835
 msgid "Enter a hex colour, e.g. #0875FF."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:784
+#: includes/Settings/SettingsService.php:844
 msgid "Choose one of the listed options."
 msgstr ""
 
 #. translators: %s: smallest allowed value.
-#: includes/Settings/SettingsService.php:794
+#: includes/Settings/SettingsService.php:854
 #, php-format
 msgid "Enter a whole number of %s or more for each side."
 msgstr ""
 
 #. translators: %s: largest allowed value.
-#: includes/Settings/SettingsService.php:799
+#: includes/Settings/SettingsService.php:859
 #, php-format
 msgid "Enter %s or less for each side."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:812
+#: includes/Settings/SettingsService.php:872
 msgid "Send a list."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:826
+#: includes/Settings/SettingsService.php:886
+#: includes/Settings/SettingsService.php:900
 msgid "Some items are not valid."
 msgstr ""
 
 #. translators: %d: most items allowed.
-#: includes/Settings/SettingsService.php:831
+#: includes/Settings/SettingsService.php:891
 #, php-format
 msgid "Choose up to %d."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:843
+#: includes/Settings/SettingsService.php:908
 msgid "Enter a web address."
 msgstr ""
 
-#: includes/Settings/SettingsService.php:852
+#: includes/Settings/SettingsService.php:917
 msgid "Enter a date as YYYY-MM-DD."
 msgstr ""
 
-#: includes/Upgrader.php:176
-msgid "The update failed. Please try again."
+#: includes/StoreApi/CartExtension.php:203
+msgid "Notices for the shopper."
+msgstr ""
+
+#: includes/StoreApi/CartExtension.php:210
+msgid "Names of automatic coupons, by code."
+msgstr ""
+
+#: includes/StoreApi/CartExtension.php:216
+msgid "The Cart Rewards bar."
+msgstr ""
+
+#: includes/StoreApi/CartExtension.php:247
+msgid "Whether the line is a Cart Rewards free gift."
+msgstr ""
+
+#: includes/Upgrader.php:154
+msgid "Try again"
+msgstr ""
+
+#: includes/Upgrader.php:198
+msgid "The database update failed. Please try again, or contact support if it keeps failing."
 msgstr ""
 
 #: integrations/includes/Dokan/BogoVendorRules.php:108
@@ -631,7 +734,7 @@ msgstr ""
 
 #: integrations/includes/Dokan/Dashboard/Bogo.php:96
 #: modules/bogo/includes/BoGoModule.php:73
-#: modules/bogo/includes/OrderBogo.php:960
+#: modules/bogo/includes/OrderBogo.php:1486
 #: modules/bogo/includes/Settings/BogoOfferFields.php:310
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
@@ -665,19 +768,19 @@ msgstr ""
 
 #. translators: %d: available stock quantity
 #: integrations/includes/Dokan/Frontend/Frontend.php:110
-#: modules/fly-cart/templates/cart-contents.php:160
+#: modules/fly-cart/templates/cart-contents.php:156
 #, php-format
 msgid "Available: %d"
 msgstr ""
 
 #: integrations/includes/Dokan/REST/VendorBogoController.php:52
-#: modules/bogo/includes/REST/BogoController.php:1078
+#: modules/bogo/includes/REST/BogoController.php:1160
 #: modules/bogo/includes/REST/CategoryMessagesController.php:112
 msgid "Sorry! You are not permitted to do the current action."
 msgstr ""
 
 #: integrations/includes/Dokan/REST/VendorBogoController.php:172
-#: modules/bogo/includes/REST/BogoController.php:379
+#: modules/bogo/includes/REST/BogoController.php:380
 msgid "BOGO limit exceeded. Upgrade to PRO for unlimited offers."
 msgstr ""
 
@@ -705,17 +808,16 @@ msgstr ""
 msgid "What Dokan vendors can create from their dashboard"
 msgstr ""
 
-#: modules/bogo/includes/Ajax.php:74
-#: modules/bogo/includes/Ajax.php:101
+#: modules/bogo/includes/Ajax.php:98
 msgid "This gift is not available for your cart."
 msgstr ""
 
-#: modules/bogo/includes/Ajax.php:170
+#: modules/bogo/includes/Ajax.php:167
 msgid "No available variation found for this product."
 msgstr ""
 
-#: modules/bogo/includes/Ajax.php:230
-#: modules/bogo/includes/Ajax.php:240
+#: modules/bogo/includes/Ajax.php:217
+#: modules/bogo/includes/Ajax.php:227
 #: modules/countdown-timer/includes/Ajax.php:50
 #: modules/direct-checkout/includes/Ajax.php:57
 #: modules/floating-notification-bar/includes/Ajax.php:56
@@ -728,18 +830,18 @@ msgid "Invalid settings payload."
 msgstr ""
 
 #. translators: %d: maximum number of category messages.
-#: modules/bogo/includes/Ajax.php:329
+#: modules/bogo/includes/Ajax.php:316
 #: modules/bogo/includes/CategoryMessages.php:137
 #, php-format
 msgid "You can store at most %d category messages."
 msgstr ""
 
-#: modules/bogo/includes/Ajax.php:393
+#: modules/bogo/includes/Ajax.php:380
 #: modules/upsell-order-bump/includes/OrderBumpAjax.php:60
 msgid "Invalid product."
 msgstr ""
 
-#: modules/bogo/includes/Ajax.php:398
+#: modules/bogo/includes/Ajax.php:385
 #: modules/upsell-order-bump/includes/OrderBumpAjax.php:71
 msgid "This offer is not available."
 msgstr ""
@@ -754,72 +856,72 @@ msgstr ""
 msgid "Upsell"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:288
+#: modules/bogo/includes/BogoValidator.php:312
 msgid "BOGO status is required"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:293
+#: modules/bogo/includes/BogoValidator.php:317
 msgid "BOGO deal type is required"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:302
+#: modules/bogo/includes/BogoValidator.php:326
 msgid "Product ID is required for product type BOGO"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:305
+#: modules/bogo/includes/BogoValidator.php:329
 msgid "Product ID is empty for product type BOGO"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:315
+#: modules/bogo/includes/BogoValidator.php:339
 msgid "Global BOGO must specify either offered products or categories"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:318
+#: modules/bogo/includes/BogoValidator.php:342
 msgid "Global BOGO has no offered products or categories specified"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:327
+#: modules/bogo/includes/BogoValidator.php:351
 msgid "Offer product ID is required for different deal type"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:333
+#: modules/bogo/includes/BogoValidator.php:357
 msgid "Offer product cannot be the same as a target product in Buy X Get Y deal"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:338
+#: modules/bogo/includes/BogoValidator.php:362
 msgid "Offer product cannot be the same as the target product in Buy X Get Y deal"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:348
+#: modules/bogo/includes/BogoValidator.php:372
 msgid "Discount amount must be between 1 and 100"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:359
+#: modules/bogo/includes/BogoValidator.php:383
 msgid "Offer start date has invalid format (0000-00-00)"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:364
+#: modules/bogo/includes/BogoValidator.php:388
 msgid "Offer end date has invalid format (0000-00-00)"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:371
+#: modules/bogo/includes/BogoValidator.php:395
 msgid "Offer start date must be before end date"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:378
+#: modules/bogo/includes/BogoValidator.php:402
 msgid "No display messages specified - users may not see BOGO offer information"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:383
+#: modules/bogo/includes/BogoValidator.php:407
 msgid "No badge image specified - offer may not be visually prominent"
 msgstr ""
 
-#: modules/bogo/includes/BogoValidator.php:389
+#: modules/bogo/includes/BogoValidator.php:413
 msgid "Minimum quantity required must be at least 1"
 msgstr ""
 
 #. translators: %s: the invalid status value
-#: modules/bogo/includes/BogoValidator.php:398
+#: modules/bogo/includes/BogoValidator.php:422
 #, php-format
 msgid "Invalid status value: %s (should be active or inactive)"
 msgstr ""
@@ -840,511 +942,529 @@ msgstr ""
 msgid "This category has no message."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1079
+#: modules/bogo/includes/OrderBogo.php:724
+msgid "your deal"
+msgstr ""
+
+#: modules/bogo/includes/OrderBogo.php:758
+msgid "BOGO deal"
+msgstr ""
+
+#. translators: %s: deal name.
+#: modules/bogo/includes/OrderBogo.php:1435
+#, php-format
+msgid "%s ended. Your free item was removed."
+msgstr ""
+
+#: modules/bogo/includes/OrderBogo.php:1436
+msgid "Your deal"
+msgstr ""
+
+#: modules/bogo/includes/OrderBogo.php:1605
 msgid "BOGO was not enabled for this product — please select an offer product for a \"Buy X Get Y\" offer."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1143
+#: modules/bogo/includes/OrderBogo.php:1669
 msgid "The quantity of BOGO offer products cannot be changed manually. It is automatically managed based on your purchase."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1177
+#: modules/bogo/includes/OrderBogo.php:1708
 msgid "The BOGO offer products cannot be removed manually. It will be automatically added based on your purchase."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:101
-#: modules/bogo/includes/REST/BogoController.php:147
+#: modules/bogo/includes/REST/BogoController.php:102
+#: modules/bogo/includes/REST/BogoController.php:148
 msgid "Bogo offer ID"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:337
-#: modules/bogo/includes/REST/BogoController.php:782
+#: modules/bogo/includes/REST/BogoController.php:338
+#: modules/bogo/includes/REST/BogoController.php:864
 msgid "No BOGO offer found for the given ID."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:436
+#: modules/bogo/includes/REST/BogoController.php:437
 msgid "This product already has an active BOGO offer. Please remove the previous offer or select different products to create a new one."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:445
+#: modules/bogo/includes/REST/BogoController.php:446
 msgid "Failed to create BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:450
+#: modules/bogo/includes/REST/BogoController.php:451
 msgid "Failed to retrieve created BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:471
-#: modules/bogo/includes/REST/BogoController.php:715
+#: modules/bogo/includes/REST/BogoController.php:472
+#: modules/bogo/includes/REST/BogoController.php:797
 msgid "BOGO offer not found."
 msgstr ""
 
 #. translators: %s: Parameter name.
-#: modules/bogo/includes/REST/BogoController.php:586
+#: modules/bogo/includes/REST/BogoController.php:668
 #, php-format
 msgid "Invalid parameter(s): %s"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:599
+#: modules/bogo/includes/REST/BogoController.php:681
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 msgid "Enter a discount from 1 to 100%."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:609
+#: modules/bogo/includes/REST/BogoController.php:691
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 msgid "The end date is before the start date."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:617
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:704
+#: modules/bogo/includes/REST/BogoController.php:699
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:762
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Select at least one target product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:627
+#: modules/bogo/includes/REST/BogoController.php:709
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Select the offer product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:688
+#: modules/bogo/includes/REST/BogoController.php:770
 #: modules/bogo/includes/Settings/BogoOfferFields.php:197
 #: modules/bogo/includes/Settings/BogoOfferFields.php:202
-#: modules/bogo/templates/bogo-product-front-view.php:23
-#: modules/bogo/templates/bogo-product-meta-front-view.php:29
+#: modules/bogo/templates/bogo-product-front-view.php:24
+#: modules/bogo/templates/bogo-product-meta-front-view.php:30
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 msgid "Free Gift"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:727
+#: modules/bogo/includes/REST/BogoController.php:809
 msgid "Failed to delete BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:794
+#: modules/bogo/includes/REST/BogoController.php:876
 msgid "Failed to update BOGO offer status."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:811
+#: modules/bogo/includes/REST/BogoController.php:893
 msgid "No data provided"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:823
+#: modules/bogo/includes/REST/BogoController.php:905
 msgid "Missing or empty required field: name_of_order_bogo"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:831
+#: modules/bogo/includes/REST/BogoController.php:913
 msgid "Missing or empty required field: offer_type"
 msgstr ""
 
 #. translators: %s: Design field key.
-#: modules/bogo/includes/REST/BogoController.php:854
+#: modules/bogo/includes/REST/BogoController.php:936
 #, php-format
 msgid "Missing or empty required design field: %s"
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:876
+#: modules/bogo/includes/REST/BogoController.php:958
 msgid "Offer product cannot be the same as a target product. Use 'Buy X Get X' deal type for same product offers."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1095
+#: modules/bogo/includes/REST/BogoController.php:1177
 msgid "Name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1100
+#: modules/bogo/includes/REST/BogoController.php:1182
 msgid "Name of the BOGO offer (alternative to name_of_order_bogo)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1106
+#: modules/bogo/includes/REST/BogoController.php:1188
 msgid "Array of target product IDs or comma-separated string."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1111
-#: modules/bogo/includes/REST/BogoController.php:1655
+#: modules/bogo/includes/REST/BogoController.php:1193
+#: modules/bogo/includes/REST/BogoController.php:1741
 msgid "ID of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1120
+#: modules/bogo/includes/REST/BogoController.php:1202
 msgid "Type of BOGO deal."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1127
+#: modules/bogo/includes/REST/BogoController.php:1209
 msgid "Offer types: free, discount."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1134
+#: modules/bogo/includes/REST/BogoController.php:1216
 msgid "Discount value or percentage."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1141
+#: modules/bogo/includes/REST/BogoController.php:1223
 msgid "Whether the BOGO applies to products or categories."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1147
+#: modules/bogo/includes/REST/BogoController.php:1229
 msgid "Minimum quantity required to trigger the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1153
-#: modules/bogo/includes/REST/BogoController.php:1357
+#: modules/bogo/includes/REST/BogoController.php:1235
+#: modules/bogo/includes/REST/BogoController.php:1439
 msgid "Offer start date."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1159
-#: modules/bogo/includes/REST/BogoController.php:1362
+#: modules/bogo/includes/REST/BogoController.php:1241
+#: modules/bogo/includes/REST/BogoController.php:1444
 msgid "Offer end date."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1165
+#: modules/bogo/includes/REST/BogoController.php:1247
 msgid "Default badge icon name."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1171
+#: modules/bogo/includes/REST/BogoController.php:1253
 msgid "Enable custom badge image."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1176
+#: modules/bogo/includes/REST/BogoController.php:1258
 msgid "Custom badge image URL or ID."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1182
+#: modules/bogo/includes/REST/BogoController.php:1264
 msgid "Target category IDs (array or comma-separated string)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1188
+#: modules/bogo/includes/REST/BogoController.php:1270
 msgid "Alternate product IDs for GET BOGO type (array or comma-separated string)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1194
+#: modules/bogo/includes/REST/BogoController.php:1276
 msgid "Alternate category IDs for GET BOGO type."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1200
+#: modules/bogo/includes/REST/BogoController.php:1282
 msgid "Product IDs to exclude."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1206
+#: modules/bogo/includes/REST/BogoController.php:1288
 msgid "Offer schedule types (e.g., daily)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1211
+#: modules/bogo/includes/REST/BogoController.php:1293
 msgid "Enable smart offer logic."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1216
+#: modules/bogo/includes/REST/BogoController.php:1298
 msgid "Border style for display box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1221
+#: modules/bogo/includes/REST/BogoController.php:1303
 msgid "Box border color."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1226
+#: modules/bogo/includes/REST/BogoController.php:1308
 msgid "Top margin for the box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1231
+#: modules/bogo/includes/REST/BogoController.php:1313
 msgid "Bottom margin for the box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1236
+#: modules/bogo/includes/REST/BogoController.php:1318
 msgid "Background color for discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1241
+#: modules/bogo/includes/REST/BogoController.php:1323
 msgid "Color of discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1246
-#: modules/bogo/includes/REST/BogoController.php:1728
+#: modules/bogo/includes/REST/BogoController.php:1328
+#: modules/bogo/includes/REST/BogoController.php:1814
 msgid "Font size for discount text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1251
+#: modules/bogo/includes/REST/BogoController.php:1333
 msgid "Color of product description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1256
+#: modules/bogo/includes/REST/BogoController.php:1338
 msgid "Font size of product description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1261
+#: modules/bogo/includes/REST/BogoController.php:1343
 msgid "Background color for accept offer button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1266
+#: modules/bogo/includes/REST/BogoController.php:1348
 msgid "Text color for accept offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1271
+#: modules/bogo/includes/REST/BogoController.php:1353
 msgid "Font size for accept offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1276
+#: modules/bogo/includes/REST/BogoController.php:1358
 msgid "Background color for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1281
+#: modules/bogo/includes/REST/BogoController.php:1363
 msgid "Text color for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1286
+#: modules/bogo/includes/REST/BogoController.php:1368
 msgid "Font size for offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1291
+#: modules/bogo/includes/REST/BogoController.php:1373
 msgid "Image URL for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1296
+#: modules/bogo/includes/REST/BogoController.php:1378
 msgid "Title shown for the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1301
+#: modules/bogo/includes/REST/BogoController.php:1383
 msgid "Product ID of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1306
+#: modules/bogo/includes/REST/BogoController.php:1388
 msgid "Discount title shown on frontend."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1311
+#: modules/bogo/includes/REST/BogoController.php:1393
 msgid "Fixed price title for offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1316
+#: modules/bogo/includes/REST/BogoController.php:1398
 msgid "Product description shown on the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1321
+#: modules/bogo/includes/REST/BogoController.php:1403
 msgid "Title for product selection."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1326
+#: modules/bogo/includes/REST/BogoController.php:1408
 msgid "Detailed offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1331
-#: modules/bogo/includes/REST/BogoController.php:1814
+#: modules/bogo/includes/REST/BogoController.php:1413
+#: modules/bogo/includes/REST/BogoController.php:1900
 msgid "Regular price of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1336
+#: modules/bogo/includes/REST/BogoController.php:1418
 msgid "Message shown on product page."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1341
+#: modules/bogo/includes/REST/BogoController.php:1423
 msgid "Message shown on shop page."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1346
-#: modules/bogo/includes/REST/BogoController.php:1829
+#: modules/bogo/includes/REST/BogoController.php:1428
+#: modules/bogo/includes/REST/BogoController.php:1915
 msgid "Badge image for the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1352
+#: modules/bogo/includes/REST/BogoController.php:1434
 msgid "Array of alternate product IDs."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1575
+#: modules/bogo/includes/REST/BogoController.php:1661
 msgid "Unique identifier for the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1581
+#: modules/bogo/includes/REST/BogoController.php:1667
 msgid "The internal name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1586
+#: modules/bogo/includes/REST/BogoController.php:1672
 msgid "The name of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1591
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1032
+#: modules/bogo/includes/REST/BogoController.php:1677
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1092
 msgid "Array of target product IDs."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1598
+#: modules/bogo/includes/REST/BogoController.php:1684
 msgid "The deal type for BOGO (e.g., same or different products)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1603
+#: modules/bogo/includes/REST/BogoController.php:1689
 msgid "The target type of the BOGO deal, such as products or categories."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1608
+#: modules/bogo/includes/REST/BogoController.php:1694
 msgid "Minimum quantity required to trigger the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1613
+#: modules/bogo/includes/REST/BogoController.php:1699
 msgid "The formatted start date of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1619
+#: modules/bogo/includes/REST/BogoController.php:1705
 msgid "The formatted end date of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1625
+#: modules/bogo/includes/REST/BogoController.php:1711
 msgid "The start date in YYYY-MM-DD format."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1631
+#: modules/bogo/includes/REST/BogoController.php:1717
 msgid "The end date in YYYY-MM-DD format."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1637
+#: modules/bogo/includes/REST/BogoController.php:1723
 msgid "Array of category IDs eligible for BOGO."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1643
+#: modules/bogo/includes/REST/BogoController.php:1729
 msgid "Recurring schedule settings for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1649
+#: modules/bogo/includes/REST/BogoController.php:1735
 msgid "Whether the offer is a smart (dynamic) offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1660
-#: modules/bogo/includes/REST/BogoController.php:1666
+#: modules/bogo/includes/REST/BogoController.php:1746
+#: modules/bogo/includes/REST/BogoController.php:1752
 msgid "Array of alternate product IDs for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1672
+#: modules/bogo/includes/REST/BogoController.php:1758
 msgid "Type of benefit offered (free, fixed price, etc.)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1677
+#: modules/bogo/includes/REST/BogoController.php:1763
 msgid "Amount of discount applied in the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1682
+#: modules/bogo/includes/REST/BogoController.php:1768
 msgid "Name of the default badge icon."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1687
+#: modules/bogo/includes/REST/BogoController.php:1773
 msgid "Whether a custom badge image is enabled (0 or 1)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1693
+#: modules/bogo/includes/REST/BogoController.php:1779
 msgid "URL or path to the custom badge image."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1698
+#: modules/bogo/includes/REST/BogoController.php:1784
 msgid "CSS style for box border (e.g., solid, dashed)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1703
+#: modules/bogo/includes/REST/BogoController.php:1789
 msgid "Color code of the border."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1708
+#: modules/bogo/includes/REST/BogoController.php:1794
 msgid "Top margin value of the BOGO box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1713
+#: modules/bogo/includes/REST/BogoController.php:1799
 msgid "Bottom margin value of the BOGO box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1718
+#: modules/bogo/includes/REST/BogoController.php:1804
 msgid "Background color of the discount box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1723
+#: modules/bogo/includes/REST/BogoController.php:1809
 msgid "Text color for discount information."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1733
+#: modules/bogo/includes/REST/BogoController.php:1819
 msgid "Text color for product descriptions."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1738
+#: modules/bogo/includes/REST/BogoController.php:1824
 msgid "Font size for product descriptions."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1743
+#: modules/bogo/includes/REST/BogoController.php:1829
 msgid "Background color of the \"Accept Offer\" button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1748
+#: modules/bogo/includes/REST/BogoController.php:1834
 msgid "Text color of the \"Accept Offer\" button."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1753
+#: modules/bogo/includes/REST/BogoController.php:1839
 msgid "Font size for the \"Accept Offer\" button text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1758
+#: modules/bogo/includes/REST/BogoController.php:1844
 msgid "Background color for the offer description box."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1763
+#: modules/bogo/includes/REST/BogoController.php:1849
 msgid "Text color for the offer description."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1768
+#: modules/bogo/includes/REST/BogoController.php:1854
 msgid "Font size of the offer description text."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1773
+#: modules/bogo/includes/REST/BogoController.php:1859
 msgid "URL to the promotional image or icon."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1779
+#: modules/bogo/includes/REST/BogoController.php:1865
 msgid "Title of the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1784
+#: modules/bogo/includes/REST/BogoController.php:1870
 msgid "Product ID for the offered product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1789
+#: modules/bogo/includes/REST/BogoController.php:1875
 msgid "Title shown for the discount."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1794
+#: modules/bogo/includes/REST/BogoController.php:1880
 msgid "Title for fixed-price deals."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1799
+#: modules/bogo/includes/REST/BogoController.php:1885
 msgid "Short description for the offer product."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1804
+#: modules/bogo/includes/REST/BogoController.php:1890
 msgid "Title shown during offer product selection."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1809
+#: modules/bogo/includes/REST/BogoController.php:1895
 msgid "The long description of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1819
+#: modules/bogo/includes/REST/BogoController.php:1905
 msgid "Message shown on the product page for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1824
+#: modules/bogo/includes/REST/BogoController.php:1910
 msgid "Message shown on the shop page for the offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1834
+#: modules/bogo/includes/REST/BogoController.php:1920
 msgid "Type of BOGO offer (global or product)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1840
+#: modules/bogo/includes/REST/BogoController.php:1926
 msgid "Status of the BOGO offer (active or inactive)."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1846
+#: modules/bogo/includes/REST/BogoController.php:1932
 msgid "Creation timestamp of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1852
+#: modules/bogo/includes/REST/BogoController.php:1938
 msgid "Last update timestamp of the BOGO offer."
 msgstr ""
 
-#: modules/bogo/includes/REST/BogoController.php:1858
+#: modules/bogo/includes/REST/BogoController.php:1944
 msgid "Schedule configuration for offers."
 msgstr ""
 
@@ -1395,6 +1515,7 @@ msgid "Select Target Product(s)"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:91
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:121
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:99
 msgid "Search for products"
 msgstr ""
@@ -1432,7 +1553,7 @@ msgstr ""
 #: modules/bogo/includes/Settings/BogoOfferFields.php:128
 #: modules/bogo/templates/product-bogo-settings.php:70
 #: modules/bogo/templates/product-bogo-settings.php:165
-#: modules/upsell-order-bump/includes/OrderBump.php:217
+#: modules/upsell-order-bump/includes/OrderBump.php:222
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:135
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Free"
@@ -1592,7 +1713,7 @@ msgstr ""
 
 #: modules/bogo/includes/Settings/BogoOfferFields.php:336
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:269
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:267
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:301
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:257
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:303
 msgid "Content"
@@ -1603,7 +1724,7 @@ msgstr ""
 #: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:257
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:298
 #: modules/fly-cart/includes/Settings/FlyCartSettings.php:166
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:279
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:313
 #: modules/quick-view/includes/Settings/QuickViewSettings.php:292
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:380
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:269
@@ -1677,7 +1798,7 @@ msgid "BOGO Settings"
 msgstr ""
 
 #: modules/bogo/includes/Settings/BogoSettings.php:140
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:143
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:178
 #: modules/progressive-discount-banner/templates/bar.php:16
 msgid "Cart"
 msgstr ""
@@ -1704,15 +1825,15 @@ msgid "Choose"
 msgstr ""
 
 #. translators: %s: discount percent.
-#: modules/bogo/templates/bogo-product-front-view.php:19
-#: modules/bogo/templates/bogo-product-meta-front-view.php:25
+#: modules/bogo/templates/bogo-product-front-view.php:20
+#: modules/bogo/templates/bogo-product-meta-front-view.php:26
 #: build/integrations/dokan/bogo.js:3
 #: modules/bogo/assets/js/admin.js:3
 #, php-format,js-format
 msgid "%s%% Off"
 msgstr ""
 
-#: modules/bogo/templates/bogo-product-front-view.php:133
+#: modules/bogo/templates/bogo-product-front-view.php:134
 #, php-format
 msgid "Select %s"
 msgstr ""
@@ -1722,7 +1843,9 @@ msgid "Attention Admin: Product Meta Update Required. Please review and update t
 msgstr ""
 
 #. translators: %s: discount percent.
+#. translators: %s: percentage.
 #: modules/bogo/templates/product-bogo-settings.php:69
+#: modules/progressive-discount-banner/includes/Milestones.php:516
 #, php-format
 msgid "%s%% off"
 msgstr ""
@@ -1736,11 +1859,8 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: modules/bogo/templates/product-bogo-settings.php:77
-msgid "Deal"
-msgstr ""
-
 #: modules/bogo/templates/product-bogo-settings.php:79
+#: modules/progressive-discount-banner/assets/js/admin.js:1
 msgid "Gift product"
 msgstr ""
 
@@ -1753,6 +1873,7 @@ msgid "Enable below only to set a product-specific offer that overrides this glo
 msgstr ""
 
 #: modules/bogo/templates/product-bogo-settings.php:96
+#: modules/smart-coupons/assets/js/admin.js:5
 msgid "Enable BOGO"
 msgstr ""
 
@@ -1795,6 +1916,8 @@ msgstr ""
 
 #: modules/bogo/templates/product-bogo-settings.php:205
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:363
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:107
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:120
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:87
 msgid "Products"
 msgstr ""
@@ -1828,7 +1951,13 @@ msgstr ""
 msgid "Upload a custom image."
 msgstr ""
 
-#: modules/countdown-timer/includes/CommonHooks.php:68
+#. translators: %d: discount percent.
+#: modules/countdown-timer/includes/CommonHooks.php:146
+#, php-format
+msgid "Countdown %d%%"
+msgstr ""
+
+#: modules/countdown-timer/includes/CommonHooks.php:182
 #: modules/countdown-timer/includes/CountdownTimerModule.php:66
 #: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:396
 #: modules/countdown-timer/templates/dokan-countdown-timer-fields.php:52
@@ -1974,8 +2103,8 @@ msgstr ""
 #: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:382
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:213
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:309
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:249
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:290
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:280
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:324
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:233
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:383
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:240
@@ -1985,7 +2114,7 @@ msgstr ""
 
 #: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:399
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:272
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:270
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:304
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:260
 msgid "Configure"
 msgstr ""
@@ -2028,7 +2157,7 @@ msgstr ""
 
 #: modules/countdown-timer/includes/Settings/CountdownTimerSettings.php:425
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:310
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:291
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:325
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:281
 msgid "Presets that fill the colour fields above"
 msgstr ""
@@ -2259,7 +2388,7 @@ msgstr ""
 #: modules/direct-checkout/includes/Settings/DirectCheckoutSettings.php:260
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:305
 #: modules/fly-cart/includes/Settings/FlyCartSettings.php:177
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:286
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:320
 msgid "Colors"
 msgstr ""
 
@@ -2305,7 +2434,7 @@ msgstr ""
 msgid "Discount Banner"
 msgstr ""
 
-#: modules/floating-notification-bar/includes/Helper.php:69
+#: modules/floating-notification-bar/includes/Helper.php:76
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:84
 msgid "Shop More Than $100 to get Free Shipping"
 msgstr ""
@@ -2315,9 +2444,9 @@ msgid "Default Banner Text"
 msgstr ""
 
 #: modules/floating-notification-bar/includes/Settings/FloatingNotificationBarSettings.php:96
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:127
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:162
 #: modules/floating-notification-bar/assets/js/admin.js:1
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "Banner Icon"
 msgstr ""
 
@@ -2537,7 +2666,7 @@ msgstr ""
 msgid "Checkout"
 msgstr ""
 
-#: modules/fly-cart/templates/cart-contents.php:148
+#: modules/fly-cart/templates/cart-contents.php:144
 msgid "Remove this item"
 msgstr ""
 
@@ -2546,95 +2675,149 @@ msgstr ""
 msgid "Shopping Cart"
 msgstr ""
 
+#. translators: %s: product name.
+#: modules/progressive-discount-banner/includes/Milestones.php:506
+#, php-format
+msgid "a free %s"
+msgstr ""
+
+#. translators: %s: product name.
+#: modules/progressive-discount-banner/includes/Milestones.php:506
+msgid "a free gift"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Milestones.php:511
+#: modules/progressive-discount-banner/includes/Milestones.php:554
+msgid "a coupon"
+msgstr ""
+
+#. translators: %s: amount.
+#: modules/progressive-discount-banner/includes/Milestones.php:518
+#, php-format
+msgid "%s off"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Milestones.php:521
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "free shipping"
+msgstr ""
+
+#. translators: %1$s: coupon name, %2$s: coupon code.
+#: modules/progressive-discount-banner/includes/Milestones.php:578
+#, php-format
+msgid "You unlocked %1$s: %2$s"
+msgstr ""
+
 #: modules/progressive-discount-banner/includes/ProgressiveDiscountBannerModule.php:73
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:264
-msgid "Free Shipping Rules"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:295
+msgid "Cart Rewards"
 msgstr ""
 
 #: modules/progressive-discount-banner/includes/ProgressiveDiscountBannerModule.php:83
-msgid "Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more."
+msgid "Milestones shoppers unlock as the cart grows, with a progress bar: free shipping, coupons and free gifts."
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:102
-msgid "Add more [amount] to get free shipping."
+#: modules/progressive-discount-banner/includes/RewardGifts.php:174
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Reward"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:107
-msgid "Banner Text"
+#: modules/progressive-discount-banner/includes/RewardGifts.php:175
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Free gift"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:108
-msgid "[amount] is replaced with what is left to spend."
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:119
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:298
+msgid "Milestones"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:112
-msgid "You have successfully acquired free shipping."
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:122
+msgid "Add {remaining} more for {reward}"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:117
-msgid "Goal Completion Text"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:127
+msgid "Bar Copy"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:128
+msgid "Placeholders: {remaining} and {reward}. [amount] still works."
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:136
+msgid "Placement"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:138
+msgid "Fly cart"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:139
+msgid "Cart page"
 msgstr ""
 
 #: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:140
-msgid "Display CTA Button"
+msgid "Both"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:146
-msgid "CTA Name"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:147
+msgid "All rewards unlocked"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:154
-msgid "CTA Target URI"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:152
+msgid "Goal Completion Text"
 msgstr ""
 
 #: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:175
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "Discount Type"
+msgid "Display CTA Button"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:193
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "Discount Amount"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:181
+msgid "CTA Name"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:202
-msgid "Cart Minimum Amount"
-msgstr ""
-
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:209
-msgid "Show Banner"
-msgstr ""
-
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:234
-msgid "Close Button Color"
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:189
+msgid "CTA Target URI"
 msgstr ""
 
 #: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:240
+msgid "Show Banner"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:265
+msgid "Close Button Color"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:271
 msgid "CTA Background"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:241
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:272
 msgid "CTA Text Color"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:273
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:307
 msgid "Display Rules"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:274
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:308
 msgid "Who sees the banner, and when"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:282
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:316
 msgid "Banner"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:283
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:317
 msgid "Size and typography of the banner"
 msgstr ""
 
-#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:287
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:321
 msgid "Every colour on the banner"
+msgstr ""
+
+#: modules/progressive-discount-banner/includes/Settings/ProgressiveDiscountBannerSettings.php:401
+msgid "Upgrade to Pro to add more milestones."
 msgstr ""
 
 #: modules/quick-view/includes/EnqueueScript.php:133
@@ -2811,6 +2994,7 @@ msgid "Build trust, create urgency. Real-time sales notifications enhance credib
 msgstr ""
 
 #: modules/sales-pop/includes/SalesPopModule.php:93
+#: modules/smart-coupons/includes/SmartCouponsModule.php:90
 msgid "Sales"
 msgstr ""
 
@@ -3086,6 +3270,365 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+#. translators: %s: coupon code.
+#: modules/smart-coupons/includes/CouponGuard.php:308
+#, php-format
+msgid "%s isn't a valid coupon right now."
+msgstr ""
+
+#: modules/smart-coupons/includes/CouponScreens.php:75
+msgid "Managed by Smart Coupons"
+msgstr ""
+
+#: modules/smart-coupons/includes/CouponScreens.php:200
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Free item added"
+msgstr ""
+
+#: modules/smart-coupons/includes/REST/SmartCouponsController.php:137
+msgid "The new status; `yes` / `no` as the record list sends it."
+msgstr ""
+
+#: modules/smart-coupons/includes/REST/SmartCouponsController.php:351
+msgid "The coupon could not be deleted."
+msgstr ""
+
+#: modules/smart-coupons/includes/REST/SmartCouponsController.php:400
+msgid "Coupon not found."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:44
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:297
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Method"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:46
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Automatic"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:47
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:55
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Discount code"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:48
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Link"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:56
+msgid "For a link coupon, changing the code changes its link."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:57
+msgid "SAVE20"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:64
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:298
+msgid "Title"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:65
+msgid "Shoppers see this in their cart and at checkout."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:66
+msgid "30% off Outerwear"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:75
+msgid "Discount type"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:77
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Percentage"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:78
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Fixed amount"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:79
+#: modules/smart-coupons/assets/js/admin.js:4
+#: modules/smart-coupons/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Buy more save more"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:80
+#: modules/smart-coupons/assets/js/admin.js:4
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Buy X get Y"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:89
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Percent off"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:98
+msgid "BOGO rule"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:109
+msgid "Specific categories"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:110
+msgid "Specific products"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:111
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Entire store"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:130
+#: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:88
+msgid "Categories"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:131
+#: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:110
+msgid "Search for categories"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:141
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:301
+msgid "Minimum purchase"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:143
+msgid "No minimum"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:144
+msgid "Cart subtotal of at least"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:145
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:162
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Minimum quantity"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:154
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Minimum subtotal"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:172
+msgid "Customers"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:174
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "All customers"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:175
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Specific roles"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:176
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "First-time customers"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:177
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Returning customers"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:178
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Specific customers"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:187
+msgid "Roles"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:196
+msgid "Total uses"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:197
+msgid "How many times the coupon can be used in all. 0 for no limit."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:205
+msgid "Limit uses per customer"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:212
+msgid "Skip products already on sale"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:213
+msgid "Countdown prices count as on sale."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:221
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Can combine with other StoreGrowth deals"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:222
+msgid "Other Smart Coupons and BOGO deals. Countdown prices always combine."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:229
+msgid "Allow with other coupons"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:230
+msgid "Coupons from outside StoreGrowth."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:239
+msgid "Start"
+msgstr ""
+
+#. translators: %s: site timezone.
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:241
+#, php-format
+msgid "Timezone: %s"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:249
+msgid "End"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:250
+msgid "The coupon stays Inactive until dates are set."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:295
+#: modules/smart-coupons/includes/SmartCouponsModule.php:68
+#: modules/smart-coupons/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Smart Coupons"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:299
+msgid "Discount value"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:300
+msgid "Applies to"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:302
+msgid "Eligibility"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:304
+msgid "Combinations"
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:305
+msgid "When deals can't combine, the shopper gets the larger one."
+msgstr ""
+
+#: modules/smart-coupons/includes/Settings/SmartCouponFields.php:307
+msgid "Active dates"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:463
+msgid "Give the coupon a title."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:469
+msgid "Enter a discount code."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:473
+msgid "Another coupon already uses this code."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:483
+msgid "Choose a BOGO rule for the Buy X get Y deal."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:487
+msgid "Choose at least one product."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:491
+msgid "Choose at least one category."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:495
+msgid "Enter a minimum subtotal greater than 0."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:499
+msgid "Enter a minimum quantity of at least 1."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:503
+msgid "Choose at least one role."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:507
+msgid "The end must be after the start."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:527
+msgid "This option needs StoreGrowth Pro."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:546
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:780
+#: modules/upsell-order-bump/assets/js/admin.js:1
+msgid "Enter a discount of more than 0 and at most 100%."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:550
+msgid "Enter an amount greater than 0."
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:841
+msgid "Everyday"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:877
+msgid "Paused: needs Pro"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:889
+msgid "Offline"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:889
+msgid "Set dates to activate"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:892
+msgid "Expired"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponRepository.php:892
+msgid "Scheduled"
+msgstr ""
+
+#: modules/smart-coupons/includes/SmartCouponsModule.php:79
+msgid "Automatic, code and link coupons that always leave the shopper with the better deal."
+msgstr ""
+
 #: modules/stock-bar/includes/Settings/StockBarSettings.php:68
 #: modules/stock-bar/assets/js/admin.js:1
 msgid "Total Sold"
@@ -3213,146 +3756,151 @@ msgstr ""
 msgid "Hurry! only %d stocks left."
 msgstr ""
 
+#: modules/upsell-order-bump/includes/OrderBump.php:395
+msgid "bump"
+msgstr ""
+
+#. translators: %s: product name.
+#: modules/upsell-order-bump/includes/OrderBump.php:428
+#, php-format
+msgid "%s is no longer on offer and was removed from your cart."
+msgstr ""
+
 #: modules/upsell-order-bump/includes/OrderBumpAjax.php:76
 msgid "This offer could not be added to the cart."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:102
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1006
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:104
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1066
 msgid "Unique identifier for the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:195
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:197
 msgid "The new status; `yes` / `no` as the BOGO list sends it."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:214
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:216
 msgid "Array of product IDs in cart."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:220
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:222
 msgid "Array of category IDs in cart."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:334
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:336
 msgid "Order bump limit exceeded. Upgrade to PRO for unlimited order bumps."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:366
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:368
 msgid "Failed to create order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:408
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:437
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:410
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:439
 msgid "Failed to update order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:465
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:467
 msgid "Failed to delete order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:537
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:539
 msgid "Order bump not found."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:693
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:751
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Enter a name for the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:703
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:761
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Select at least one target category."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:713
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:771
 msgid "Select the offer product: a simple product, or a variation with every attribute set."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:722
-#: modules/upsell-order-bump/assets/js/admin.js:1
-msgid "Enter a discount of more than 0 and at most 100%."
-msgstr ""
-
 #. translators: %s: the largest price.
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:731
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:789
 #, php-format
 msgid "Enter a price from 0 to %s."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:944
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1004
 msgid "Current page of the collection."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:952
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1012
 msgid "Maximum number of items to be returned in result set."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:961
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1021
 msgid "Limit results to order bumps whose name contains the text."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:965
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1025
 msgid "Limit result set to order bumps with a specific status."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:972
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1032
 msgid "Sort collection by object attribute."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:980
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1040
 msgid "Order sort attribute ascending or descending."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1012
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1072
 msgid "Name of the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1018
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1078
 msgid "Status of the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1025
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1085
 msgid "Type of targeting (products or categories)."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1039
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1099
 msgid "Array of target category IDs."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1046
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1106
 msgid "ID of the offer product (a simple product or a variation)."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1052
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1112
 msgid "Type of offer: a percentage discount, a fixed price, or free."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1059
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1119
 msgid "Amount of the offer: the percentage (over 0, at most 100) or the price (0 or more); 0 for free."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1065
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1125
 msgid "Title for the discount offer."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1071
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1131
 msgid "ID of the user who created the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1077
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1137
 msgid "ID of the user who last updated the order bump."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1083
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1143
 msgid "Design settings for the order bump; an update merges them key by key."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1089
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1149
 msgid "The date the order bump was created."
 msgstr ""
 
-#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1096
+#: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:1156
 msgid "The date the order bump was last updated."
 msgstr ""
 
@@ -3368,16 +3916,8 @@ msgstr ""
 msgid "Select Bump Type"
 msgstr ""
 
-#: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:88
-msgid "Categories"
-msgstr ""
-
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:109
 msgid "Select Target Categories"
-msgstr ""
-
-#: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:110
-msgid "Search for categories"
 msgstr ""
 
 #: modules/upsell-order-bump/includes/Settings/OrderBumpFields.php:134
@@ -3451,10 +3991,12 @@ msgid "Out of Stock"
 msgstr ""
 
 #: build/admin.js:1
+#: modules/smart-coupons/assets/js/admin.js:7
 msgid "Revenue"
 msgstr ""
 
 #: build/admin.js:1
+#: modules/smart-coupons/assets/js/admin.js:7
 msgid "Discount given"
 msgstr ""
 
@@ -3795,6 +4337,33 @@ msgid "Mobile"
 msgstr ""
 
 #: build/components.js:5
+msgid "You have more offers than the Free plan allows. Choose which stay on."
+msgstr ""
+
+#: build/components.js:5
+msgid "Choose offers"
+msgstr ""
+
+#: build/components.js:5
+msgid "Choose which stay on"
+msgstr ""
+
+#: build/components.js:5
+#: modules/bogo/assets/js/admin.js:6
+msgid "Saved."
+msgstr ""
+
+#: build/components.js:5
+msgid "Your choice could not be saved."
+msgstr ""
+
+#: build/components.js:5
+#: build/components.js:8
+#: modules/bogo/assets/js/admin.js:6
+msgid "Save"
+msgstr ""
+
+#: build/components.js:5
 msgid "No offer revenue in this range yet."
 msgstr ""
 
@@ -3816,6 +4385,7 @@ msgstr ""
 
 #: build/components.js:7
 #: modules/bogo/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:2
 msgid "Cancel"
 msgstr ""
 
@@ -3903,11 +4473,6 @@ msgstr ""
 #: build/components.js:8
 #: modules/bogo/assets/js/admin.js:6
 msgid "Saving…"
-msgstr ""
-
-#: build/components.js:8
-#: modules/bogo/assets/js/admin.js:6
-msgid "Save"
 msgstr ""
 
 #: build/components.js:8
@@ -4105,6 +4670,7 @@ msgstr ""
 
 #: build/integrations/dokan/bogo.js:4
 #: modules/bogo/assets/js/admin.js:4
+#: modules/smart-coupons/assets/js/admin.js:7
 msgid "Type"
 msgstr ""
 
@@ -4121,6 +4687,7 @@ msgstr ""
 #: build/integrations/dokan/bogo.js:4
 #: modules/bogo/assets/js/admin.js:4
 #: modules/bogo/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:7
 #: modules/upsell-order-bump/assets/js/admin.js:4
 msgid "Edit"
 msgstr ""
@@ -4265,10 +4832,6 @@ msgid "Choose a category."
 msgstr ""
 
 #: modules/bogo/assets/js/admin.js:6
-msgid "Saved."
-msgstr ""
-
-#: modules/bogo/assets/js/admin.js:6
 msgid "The message could not be saved."
 msgstr ""
 
@@ -4294,7 +4857,7 @@ msgstr ""
 
 #: modules/countdown-timer/assets/js/admin.js:1
 #: modules/floating-notification-bar/assets/js/admin.js:1
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 #: modules/stock-bar/assets/js/admin.js:1
 msgid "Blue template"
 msgstr ""
@@ -4397,7 +4960,7 @@ msgid "Amber template"
 msgstr ""
 
 #: modules/floating-notification-bar/assets/js/admin.js:1
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "The bar shows on your store once you save these settings."
 msgstr ""
 
@@ -4492,42 +5055,84 @@ msgid "Centre Left"
 msgstr ""
 
 #: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Free shipping"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Coupon"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Fixed discount"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Percentage discount"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Threshold"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Remove milestone"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Choose a coupon"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:1
+msgid "Amount"
+msgstr ""
+
+#. translators: %s: shipping zone name.
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+#, js-format
+msgid "Your %s zone has no Free shipping method, so this reward won’t apply there."
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "Open shipping settings"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "Add milestone"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "More milestones"
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "Stack free shipping, gifts and coupons at different cart totals."
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "Thresholds use the cart subtotal after discounts, with or without tax as your store shows prices."
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "Existing Free Shipping Rules became milestone 1."
+msgstr ""
+
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "Caravan"
 msgstr ""
 
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "Truck"
 msgstr ""
 
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "Bus"
 msgstr ""
 
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "Free Shipping"
+#: modules/progressive-discount-banner/assets/js/admin.js:2
+msgid "your reward"
 msgstr ""
 
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "Percentage Discount"
-msgstr ""
-
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "Fixed Discount"
-msgstr ""
-
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "How to set up free shipping in WooCommerce"
-msgstr ""
-
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "To set the free shipping method, go to <shipping>Shipping</shipping> in WooCommerce settings. Then add a <zone>Shipping Zone</zone>. In the zone, add the <b>Free Shipping</b> shipping method and set the minimum amount it needs."
-msgstr ""
-
-#: modules/progressive-discount-banner/assets/js/admin.js:1
-msgid "For more, see the <docs>WooCommerce documentation</docs>."
-msgstr ""
-
-#: modules/progressive-discount-banner/assets/js/admin.js:1
+#: modules/progressive-discount-banner/assets/js/admin.js:2
 msgid "Preview with the goal reached"
 msgstr ""
 
@@ -4623,6 +5228,222 @@ msgstr ""
 msgid "Filled from the source when you pick it; you can still change them."
 msgstr ""
 
+#: modules/smart-coupons/assets/js/admin.js:1
+msgid "Free includes one active automatic coupon"
+msgstr ""
+
+#. translators: %s: the automatic coupon that's on.
+#: modules/smart-coupons/assets/js/admin.js:2
+#, js-format
+msgid "“%s” is on. Swap it for this one, or upgrade to Pro for unlimited automatic coupons. Code and link coupons are unlimited."
+msgstr ""
+
+#. translators: %s: the automatic coupon that's on.
+#: modules/smart-coupons/assets/js/admin.js:3
+#, js-format
+msgid "Turn off “%s”"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:3
+msgid "Applies automatically"
+msgstr ""
+
+#. translators: %s: discount code.
+#: modules/smart-coupons/assets/js/admin.js:4
+#, js-format
+msgid "Code %s"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Applies from a link"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Specific items"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "One use per customer"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Skips products already on sale"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Allowed with other coupons"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Your coupon"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Summary"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "Shoppers will see"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "- discount"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:4
+msgid "The coupon could not be loaded."
+msgstr ""
+
+#. translators: 1: campaign name, 2: start, 3: end.
+#: modules/smart-coupons/assets/js/admin.js:5
+#, js-format
+msgid "Set by campaign: %1$s, %2$s to %3$s"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Open campaign"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Buy X get Y · uses the BOGO module"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Buy X get Y · BOGO module is off"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Taken off the cart, split across eligible products by price."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Amount off"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:5
+msgid "Choose a BOGO rule"
+msgstr ""
+
+#. translators: %s: BOGO rule name.
+#: modules/smart-coupons/assets/js/admin.js:6
+#, js-format
+msgid "Deal defined by BOGO rule: %s"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Edit deal"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "This BOGO rule will only apply when shoppers use this coupon."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "First-time customers (Pro)"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Returning customers (Pro)"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Specific customers (Pro)"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "The coupon was not saved."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Coupon list"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Coupon saved."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Coupon created."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "The coupons could not be loaded."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Delete coupons?"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "The selected coupons will be deleted. This cannot be undone."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Some coupons could not be deleted."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "The coupons could not be deleted."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "Search coupons"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:6
+msgid "No coupons match your search"
+msgstr ""
+
+#. translators: %s: coupon title.
+#: modules/smart-coupons/assets/js/admin.js:7
+#, js-format
+msgid "Coupon status: %s"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "BOGO module"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Used in"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Uses"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "New coupon"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Coupons are turned off in WooCommerce > Settings > General. Automatic coupons won’t apply and codes can’t be entered until they’re on."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "No coupons yet"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Create a coupon that applies by itself, or one shoppers type at checkout."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Code and link coupons also appear in WooCommerce > Coupons, marked Managed by Smart Coupons."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Smart Coupons is turned off. While it’s off, its coupons are invalid. Turn it on to create and manage coupons."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Smart Coupons could not be turned on."
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Turn on Smart Coupons"
+msgstr ""
+
 #: modules/stock-bar/assets/js/admin.js:1
 msgid "Green template"
 msgstr ""
@@ -4637,10 +5458,6 @@ msgstr ""
 
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "The order bump could not be loaded."
-msgstr ""
-
-#: modules/upsell-order-bump/assets/js/admin.js:1
-msgid "Price"
 msgstr ""
 
 #: modules/upsell-order-bump/assets/js/admin.js:1

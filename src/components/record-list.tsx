@@ -83,25 +83,37 @@ export interface RecordListProps< T extends ListRecord > {
     onCanCreate?: ( canCreate: boolean ) => void;
     /** The status switch's accessible name for a record. */
     statusLabel: ( item: T ) => string;
+    /** The field the Status column follows; by default it comes last. */
+    statusAfter?: string;
+    /** Under the status switch, e.g. why a record that's on isn't running. */
+    statusNote?: ( item: T ) => ReactNode;
+    /**
+     * Before a status switch changes: resolve false to leave it (e.g. after
+     * asking the user, or when the module changed it itself).
+     */
+    beforeStatusChange?: ( item: T, active: boolean ) => Promise< boolean >;
     messages: RecordListMessages;
 }
 
 /**
  * @since 3.0.0
  *
- * @param props               Props.
- * @param props.route         Records route.
- * @param props.namespace     DataViews namespace.
- * @param props.title         Card title.
- * @param props.headerActions Beside the title.
- * @param props.fields        Module columns.
- * @param props.actions       Row actions before Delete.
- * @param props.icon          The records' icon.
- * @param props.empty         No records at all.
- * @param props.limitNotice   Above the card at lite's limit.
- * @param props.onCanCreate   Called with whether a record can be created.
- * @param props.statusLabel   The status switch's accessible name.
- * @param props.messages      Module-worded texts.
+ * @param props                    Props.
+ * @param props.route              Records route.
+ * @param props.namespace          DataViews namespace.
+ * @param props.title              Card title.
+ * @param props.headerActions      Beside the title.
+ * @param props.fields             Module columns.
+ * @param props.actions            Row actions before Delete.
+ * @param props.icon               The records' icon.
+ * @param props.empty              No records at all.
+ * @param props.limitNotice        Above the card at lite's limit.
+ * @param props.onCanCreate        Called with whether a record can be created.
+ * @param props.statusLabel        The status switch's accessible name.
+ * @param props.statusAfter        The field the Status column follows.
+ * @param props.statusNote         Under the status switch.
+ * @param props.beforeStatusChange Before a status switch changes.
+ * @param props.messages           Module-worded texts.
  */
 export function RecordList< T extends ListRecord >( {
     route,
@@ -115,8 +127,20 @@ export function RecordList< T extends ListRecord >( {
     limitNotice,
     onCanCreate,
     statusLabel,
+    statusAfter,
+    statusNote,
+    beforeStatusChange,
     messages,
 }: RecordListProps< T > ) {
+    // The module's fields split at the Status column.
+    const splitAt = statusAfter
+        ? fields.findIndex( ( field ) => {
+              return field.id === statusAfter;
+          } ) + 1
+        : fields.length;
+    const fieldsBefore = fields.slice( 0, splitAt );
+    const fieldsAfter = fields.slice( splitAt );
+
     const [ view, setView ] = useState< DataViewState >( () => {
         return {
             type: 'table',
@@ -125,10 +149,13 @@ export function RecordList< T extends ListRecord >( {
             search: '',
             // `status` is plugin-ui's tab key, so the column is `active`.
             fields: [
-                ...fields.map( ( field ) => {
+                ...fieldsBefore.map( ( field ) => {
                     return field.id;
                 } ),
                 'active',
+                ...fieldsAfter.map( ( field ) => {
+                    return field.id;
+                } ),
             ],
             titleField: 'name',
             layout: {},
@@ -189,6 +216,13 @@ export function RecordList< T extends ListRecord >( {
             return [ ...ids, item.id ];
         } );
         try {
+            if (
+                beforeStatusChange &&
+                ! ( await beforeStatusChange( item, active ) )
+            ) {
+                return;
+            }
+
             await setRecordStatus( route, item.id, active );
             setPage( ( current ) => {
                 return current
@@ -246,7 +280,7 @@ export function RecordList< T extends ListRecord >( {
                 );
             },
         },
-        ...fields,
+        ...fieldsBefore,
         {
             id: 'active',
             label: __( 'Status', 'storegrowth-sales-booster' ),
@@ -259,7 +293,7 @@ export function RecordList< T extends ListRecord >( {
                     // under the sticky Actions column. Relies on DataViews'
                     // list layout class `dataviews-view-list` (recheck it
                     // when `@wordpress/dataviews` is updated).
-                    <span className="inline-flex [.dataviews-view-list_&]:relative [.dataviews-view-list_&]:z-[1]">
+                    <span className="inline-flex flex-col items-start gap-1 [.dataviews-view-list_&]:relative [.dataviews-view-list_&]:z-[1]">
                         <Switch
                             checked={ item.status === 'active' }
                             disabled={ pending.includes( item.id ) }
@@ -268,10 +302,12 @@ export function RecordList< T extends ListRecord >( {
                             } }
                             aria-label={ statusLabel( item ) }
                         />
+                        { statusNote?.( item ) }
                     </span>
                 );
             },
         },
+        ...fieldsAfter,
     ];
 
     const allActions: DataViewAction< T >[] = [

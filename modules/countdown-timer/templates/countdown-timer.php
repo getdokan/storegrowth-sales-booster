@@ -30,7 +30,7 @@ if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
 }
 
-$end_date        = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
+$end_date        = Helper::campaign_countdown_end( $product->get_id() ) ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
 $discount_amount = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 $heading_text    = PluginHelper::find_option_settings( $settings, 'countdown_heading', __( 'Last chance! [discount]% OFF', 'storegrowth-sales-booster' ) );
 $heading         = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );
@@ -113,7 +113,7 @@ $units = [
 			</p>
 		<?php endif; ?>
 
-		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-spsg-surface="countdown" data-end-date="<?php echo esc_attr( Helper::timer_end( $end_date ) ); ?>">
 			<?php foreach ( $units as $unit => [ $digit, $label ] ) : ?>
 				<?php if ( 'days' !== $unit ) : ?>
 					<span class="spsg-colon <?php echo esc_attr( $layout_class ); ?>">:</span>

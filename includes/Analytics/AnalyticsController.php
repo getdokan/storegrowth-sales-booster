@@ -578,14 +578,29 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	protected function campaign_names( array $campaign_ids ): array {
 		global $wpdb;
 
-		$ids = [
+		$ids   = [
 			'bogo'       => [],
 			'order_bump' => [],
 		];
+		$names = [];
 		foreach ( $campaign_ids as $campaign_id ) {
 			list( $type, $id ) = array_pad( explode( ':', (string) $campaign_id, 2 ), 2, '0' );
 			if ( isset( $ids[ $type ] ) && (int) $id ) {
 				$ids[ $type ][] = (int) $id;
+			}
+
+			// A campaign-only offer (`bogo:co12`) has its name on its campaign row.
+			if ( 0 === strpos( (string) $id, 'co' ) ) {
+				/**
+				 * Filters the name of a campaign-only offer in reports. Its name
+				 * lives on its campaign row, which StoreGrowth Pro keeps.
+				 *
+				 * @since 3.1.0
+				 *
+				 * @param string $name   Offer name; empty by default.
+				 * @param int    $row_id The offer's row on its campaign.
+				 */
+				$names[ $campaign_id ] = (string) apply_filters( 'spsg_campaign_offer_name', '', (int) substr( $id, 2 ) );
 			}
 		}
 
@@ -593,7 +608,6 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 			'bogo'       => $wpdb->prefix . BogoDataManager::TABLE_NAME,
 			'order_bump' => $wpdb->prefix . OrderBumpTable::TABLE_NAME,
 		];
-		$names  = [];
 
 		foreach ( $ids as $type => $type_ids ) {
 			if ( ! $type_ids ) {
@@ -690,7 +704,9 @@ class AnalyticsController extends WP_REST_Controller implements HookRegistry {
 	 * @return float|null
 	 */
 	protected static function rate( int $part, int $base ): ?float {
-		return $base > 0 ? round( 100 * $part / $base, 1 ) : null;
+		// Views are estimated (page caches, orders from before tracking), so
+		// orders can outnumber them: a share never goes past 100%.
+		return $base > 0 ? min( 100.0, round( 100 * $part / $base, 1 ) ) : null;
 	}
 
 	/**

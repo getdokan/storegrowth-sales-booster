@@ -72,7 +72,7 @@ test.describe('Storefront · Countdown Timer', { tag: '@ui' }, () => {
       await expect(page.locator('.spsg-countdown-timer-item-hours')).toBeVisible();
       await expect(page.locator('.spsg-countdown-timer-item-minutes')).toBeVisible();
       await expect(page.locator('.spsg-countdown-timer-item-seconds')).toBeVisible();
-      await expect(page.locator(ITEMS)).toHaveAttribute('data-end-date', /\d{4}-\d{2}-\d{2}/);
+      await expect(page.locator(ITEMS)).toHaveAttribute('data-end-date', /^\d{13}$/);
     });
 
     test('heading shows the configured discount percentage', async ({ page }) => {
@@ -147,10 +147,10 @@ test.describe('Storefront · Countdown Timer', { tag: '@ui' }, () => {
 
       await gotoProduct(page, PRODUCTS.a.slug);
 
-      await expect(page.locator(ITEMS)).toHaveAttribute('data-end-date', end);
+      await expect(page.locator(ITEMS)).toHaveAttribute('data-end-date', /^\d{13}$/);
       await expect(page.locator('.spsg-countdown-timer-item-days')).not.toHaveText('00');
 
-      // Compute remaining time in-browser so the timezone matches the countdown JS.
+      // The attribute is an absolute moment (epoch milliseconds).
       const deltaSec = await page.evaluate(() => {
         const n = (s: string) => parseInt(document.querySelector(s)!.textContent!.trim(), 10);
         const d = n('.spsg-countdown-timer-item-days');
@@ -159,7 +159,7 @@ test.describe('Storefront · Countdown Timer', { tag: '@ui' }, () => {
         const s = n('.spsg-countdown-timer-item-seconds');
         const ui = ((d * 24 + h) * 60 + m) * 60 + s;
         const endAttr = document.querySelector('.spsg-countdown-timer-items')!.getAttribute('data-end-date')!;
-        const expected = Math.round((new Date(endAttr.replace(' ', 'T')).getTime() - Date.now()) / 1000);
+        const expected = Math.round((Number(endAttr) - Date.now()) / 1000);
         return ui - expected;
       });
       expect(Math.abs(deltaSec)).toBeLessThan(120);

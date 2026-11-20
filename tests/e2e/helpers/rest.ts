@@ -144,6 +144,22 @@ export async function hasPro(api: APIRequestContext): Promise<boolean> {
   return plugins.some((p) => p.plugin.startsWith('storegrowth-sales-booster-pro/') && p.status === 'active');
 }
 
+/**
+ * Whether `has_pro()` is true on the stack: Pro active AND licensed (or a
+ * stack forcing `storegrowth_pro_is_active`). Read from the analytics report's
+ * `status.pro`, which is `has_pro()`. Cached per worker.
+ */
+let proCache: boolean | undefined;
+
+export async function proActive(api: APIRequestContext): Promise<boolean> {
+  if (proCache === undefined) {
+    const res = await api.get(`${NS}/analytics`, { params: { days: 7 } });
+    await expectOk(res, 'probe has_pro (GET analytics)');
+    proCache = Boolean((await res.json())?.status?.pro);
+  }
+  return proCache;
+}
+
 /** Resolve a product id from its slug (WooCommerce REST). */
 export async function productIdBySlug(api: APIRequestContext, slug: string): Promise<number> {
   const res = await api.get('/wp-json/wc/v3/products', { params: { slug, _fields: 'id' } });

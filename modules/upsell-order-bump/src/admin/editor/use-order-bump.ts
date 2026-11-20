@@ -202,15 +202,17 @@ const LOAD_ERROR = __(
 /**
  * @since 3.0.0
  *
- * @param id        Bump id, or null for a new bump.
- * @param onCreated Called with the new bump's id after it's created.
+ * @param id            Bump id, or null for a new bump.
+ * @param onCreated     Called with the new bump's id after it's created.
+ * @param campaignRoute A campaign's records route, when editing its version.
  */
 export function useOrderBump(
     id: number | null,
-    onCreated: ( id: number ) => void
+    onCreated: ( id: number ) => void,
+    campaignRoute: string | null = null
 ): OrderBumpEditor {
     const bump = useRecordEditor< BumpEditor >( {
-        route: bumpsRoute(),
+        route: campaignRoute ?? bumpsRoute(),
         id,
         onCreated,
         rules: RULES,

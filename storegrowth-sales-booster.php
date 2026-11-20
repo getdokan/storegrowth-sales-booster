@@ -2,7 +2,7 @@
 /**
  * Plugin Name: StoreGrowth
  * Description: Best WooCommerce Direct Checkout, Fly Cart, BOGO, Quick View, Live Sales Notifications, Floating Notification Bar and More Essential Features for Every WooCommerce Site!
- * Version:     3.0.0
+ * Version:     3.1.0
  * Author:      Dokan Inc.
  * Author URI:  https://storegrowth.io
  * License:     GPL-2.0+
@@ -12,7 +12,7 @@
  * Requires Plugins: woocommerce
  * Requires at least: 6.2
  * Requires PHP: 7.4
- * WC requires at least: 8.0
+ * WC requires at least: 8.8
  *
  * @package SPSG
  */
@@ -35,7 +35,7 @@ require_once __DIR__ . '/vendor/autoload.php';
  * Define plugin __FILE__
  */
 if ( ! defined( 'STOREGROWTH_VERSION' ) ) {
-	define( 'STOREGROWTH_VERSION', '3.0.0' );
+	define( 'STOREGROWTH_VERSION', '3.1.0' );
 }
 
 /**
@@ -156,6 +156,7 @@ require_once STOREGROWTH_MODULE_DIR . '/fly-cart/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/progressive-discount-banner/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/quick-view/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/sales-pop/bootstrap.php';
+require_once STOREGROWTH_MODULE_DIR . '/smart-coupons/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/stock-bar/bootstrap.php';
 require_once STOREGROWTH_MODULE_DIR . '/upsell-order-bump/bootstrap.php';
 

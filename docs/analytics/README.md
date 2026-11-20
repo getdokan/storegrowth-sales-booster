@@ -308,7 +308,7 @@ Primary key `(day, module, metric, object_type, object_id)`. Writes are `INSERT 
 
 ## 4. Conventions that apply
 
-- New symbols, hooks and routes: `@since SPSG_VERSION`. Any new hook goes into `tests/compat/php-hooks-baseline.txt`.
+- New symbols, hooks and routes: `@since SPSG_VERSION`.
 - Options autoload `false` (`spsg_analytics_db_version`).
 - Order data only through `wc_get_order()` and the CRUD API (HPOS). Reads of WooCommerce's lookup tables and our counts table use `$wpdb->prepare()`.
 - Storefront: plain JS/CSS (ADR-005). Admin: TypeScript, plugin-ui; the WC Analytics bundle uses WC Admin components because it runs on their screens.
@@ -346,7 +346,7 @@ Primary key `(day, module, metric, object_type, object_id)`. Writes are `INSERT 
 | 8 | Pro: range, comparison, CSV, per-vendor (via `dokan_order_stats`) | M (pro repo) |
 | 9 | **Done (moved up):** WooCommerce Analytics extension: "StoreGrowth offer" filter on Orders and Products (query args, table and chart clauses, JS filters), Offer column, Overview indicator | L |
 
-Each step: `sg-developer` + `sg-qa`. Check with and without Pro, classic and blocks checkout, with and without Dokan, and with WC Analytics on and off. Also run `npm run check:hooks`.
+Each step: `sg-developer` + `sg-qa`. Check with and without Pro, classic and blocks checkout, with and without Dokan, and with WC Analytics on and off.
 
 ---
 

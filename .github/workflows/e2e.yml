@@ -129,12 +129,31 @@ jobs:
       # lite plugin dir, but WordPress only scans one dir deep so the nested copy
       # is inert — the shards mount the real Pro at the right path via
       # .wp-env.override.json.
+      # A change spanning both plugins lives on one branch name in both repos
+      # (e.g. Campaigns, which are Pro's and plug into lite's filters): test
+      # against Pro's branch of the same name when it exists, else develop.
+      - name: Pick the StoreGrowth Pro branch
+        if: ${{ steps.pro.outputs.has-pro == 'true' }}
+        id: pro-ref
+        env:
+          PRO_REPO_TOKEN: ${{ secrets.SG_PRO_TOKEN }}
+          BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          # Ask the API with Pro's token: git here would send this checkout's
+          # own token (actions/checkout's extraheader), which can't see Pro.
+          ref=develop
+          if GH_TOKEN="$PRO_REPO_TOKEN" gh api "repos/getdokan/storegrowth-sales-booster-pro/git/ref/heads/$BRANCH" --silent; then
+            ref="$BRANCH"
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "StoreGrowth Pro ref: $ref"
+
       - name: Checkout StoreGrowth Pro
         if: ${{ steps.pro.outputs.has-pro == 'true' }}
         uses: actions/checkout@v6
         with:
           repository: getdokan/storegrowth-sales-booster-pro
-          ref: develop
+          ref: ${{ steps.pro-ref.outputs.ref }}
           token: ${{ secrets.SG_PRO_TOKEN }}
           path: storegrowth-sales-booster-pro
           fetch-depth: 1

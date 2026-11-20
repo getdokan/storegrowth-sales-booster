@@ -4,9 +4,9 @@ Tags: BOGO, Upsells, Direct Checkout, Quick View, Order Bumps
 
 Requires at least: 6.2
 Tested up to: 7.0
-Stable tag: 3.0.0
+Stable tag: 3.1.0
 Requires PHP: 7.4
-WC requires at least: 8.0
+WC requires at least: 8.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -331,6 +331,26 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 3. Use the Sales Booster admin menu to configure the plugin
 
 == Changelog ==
+
+= v3.1.0 (November 17, 2026) =
+
+* New: Smart Coupons — create coupons that apply on their own, with a code, or from a link you share. Give a percentage off, a fixed amount off or Buy X Get Y, choose who can use them and how many times, and set start and end dates. See each coupon's uses, discount given and revenue at a glance. They are regular WooCommerce coupons, so code and link coupons also appear under WooCommerce > Coupons. Free includes unlimited code and link coupons and one automatic coupon at a time.
+* New: Cart Rewards, replacing Free Shipping Rules — reward shoppers as their cart grows with free shipping, a coupon code, a free gift or a discount, and a progress bar showing how close they are. Your free shipping rules carry over as the first milestone. Free includes one milestone.
+* New: Shoppers always get the better deal: when a Smart Coupon and a BOGO deal both apply, the bigger saving wins, and the cart tells them why.
+* New: Works with WooCommerce's block cart and checkout: StoreGrowth messages, the rewards bar and automatic coupon names show on the block cart, mini-cart (WooCommerce 11.1+) and checkout.
+* New: Ready for Campaigns in StoreGrowth Pro: an offer's screen tells you when a campaign is changing it, and editing an offer from a campaign takes you back to the campaign.
+* Enhancement: Carts always match the deals running right now. A free BOGO gift leaves the cart, with a message, when its deal ends or the shopper no longer qualifies, and BOGO and Order Bump prices update with every cart change.
+* Enhancement: On Free, if you have more offers than the limit, you choose which stay on from the module's page.
+* Enhancement: The Fly Cart shows the same product details as the cart, such as variation options and deal labels.
+* Enhancement: If a database update fails, you can retry it, and the notice stays until it's done.
+* Enhancement: The Analytics page uses the full screen width, and placeholder text is lighter, so it's easy to tell from what you typed.
+* Enhancement: StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 8.8 or newer.
+* Change: Cart Rewards milestones now count the cart subtotal after discounts, and rewards follow the cart: dropping below a milestone removes the reward, going back above returns it. Below a free shipping milestone, WooCommerce's Free shipping option is hidden. If you offered free shipping to everyone, check your shipping settings after updating.
+* Fix: Deals start and end at the exact time you set, in your site's timezone: Countdown Timer, BOGO weekday deals and Pro's same-product BOGO. Countdown used each shopper's own computer clock, so a timer running during the update may show a different time left afterwards.
+* Fix: BOGO prices match your store's currency format and tax display.
+* Fix: Price ranges of variable products show Countdown sale prices.
+* Fix: On Dokan marketplaces, coupon data and vendor earnings stay correct when StoreGrowth deals apply.
+* Note: Fixed amounts and milestones use your store's base currency. Multi-currency is not supported.
 
 = v3.0.0 (November 4, 2026) =
 

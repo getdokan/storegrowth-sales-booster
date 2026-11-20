@@ -82,4 +82,4 @@ The extension contract (PHP arrays, element shape, hook name, `onChange`) is the
 - Pro adds a field with a PHP array and no JS; only a custom control needs a JS filter, written against plugin-ui's field contract.
 - Tab and section ids are extension API: renaming or removing one breaks extensions that place fields there (ADR-004), and a new one is noted in the changelog.
 - A new field type is a `SettingsService` change plus a default control in `DefaultField`.
-- Checks: `wp eval-file tests/compat/settings-roundtrip.php`; an extension field on every tab of a changed page renders above Save and saves only its key.
+- Checks: an extension field on every tab of a changed page renders above Save and saves only its key.

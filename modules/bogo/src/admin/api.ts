@@ -8,6 +8,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addQueryArgs } from '@wordpress/url';
+import type { OfferTimelineData } from '@storegrowth/components';
 import {
     type Currency,
     getAdminData,
@@ -30,6 +31,8 @@ export interface BogoOffer {
     name: string;
     type: 'global' | 'product';
     status: 'active' | 'inactive';
+    chip?: string;
+    timeline?: OfferTimelineData;
     offer_type: string;
     discount_amount: string;
     bogo_deal_type: 'same' | 'different';

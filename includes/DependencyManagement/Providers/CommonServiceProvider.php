@@ -16,14 +16,19 @@ use StorePulse\StoreGrowth\Analytics\TrackController;
 use StorePulse\StoreGrowth\Analytics\WcAnalytics;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Pricing\CouponAmount;
+use StorePulse\StoreGrowth\Pricing\CouponGate;
+use StorePulse\StoreGrowth\Pricing\Referee;
 use StorePulse\StoreGrowth\Upgrader;
 use StorePulse\StoreGrowth\REST\DashboardController;
 use StorePulse\StoreGrowth\REST\ModuleSettingsController;
 use StorePulse\StoreGrowth\REST\ModulesController;
+use StorePulse\StoreGrowth\REST\OfferLimitsController;
 use StorePulse\StoreGrowth\REST\ProductController;
 use StorePulse\StoreGrowth\REST\SettingsController;
 use StorePulse\StoreGrowth\Settings\GeneralSettings;
 use StorePulse\StoreGrowth\Settings\SettingsService;
+use StorePulse\StoreGrowth\StoreApi\CartExtension;
 use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
 
 /**
@@ -57,6 +62,11 @@ class CommonServiceProvider extends BootableServiceProvider {
 		AnalyticsController::class,
 		WcAnalytics::class,
 		OffersStatsController::class,
+		OfferLimitsController::class,
+		Referee::class,
+		CouponGate::class,
+		CouponAmount::class,
+		CartExtension::class,
 	];
 
 	/**
