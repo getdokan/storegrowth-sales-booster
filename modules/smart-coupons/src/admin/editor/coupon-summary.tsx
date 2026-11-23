@@ -159,6 +159,41 @@ function summaryLines(
 }
 
 /**
+ * The cart totals row shoppers see: WooCommerce's "Coupon: code" (an
+ * automatic coupon shows its title), and the discount it takes off.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param values   Editor values.
+ * @param currency Store currency symbol.
+ */
+function cartLine(
+    values: Record< string, SettingValue >,
+    currency: string
+): [ string, string ] {
+    const name =
+        values.method === 'automatic' || ! values.code
+            ? String( values.title ) ||
+              __( 'Your coupon', 'storegrowth-sales-booster' )
+            : sprintf(
+                  /* translators: %s: discount code. */
+                  __( 'Coupon: %s', 'storegrowth-sales-booster' ),
+                  String( values.code ).toLowerCase()
+              );
+    let amount: string = __( '- discount', 'storegrowth-sales-booster' );
+
+    if ( values.discount_type === 'buy_x_get_y' ) {
+        amount = __( 'Free item added', 'storegrowth-sales-booster' );
+    } else if ( values.discount_type === 'percentage' && values.amount ) {
+        amount = `-${ values.amount }%`;
+    } else if ( values.discount_type === 'fixed' && values.amount ) {
+        amount = `-${ currency }${ values.amount }`;
+    }
+
+    return [ name, amount ];
+}
+
+/**
  * @since 3.1.0
  *
  * @param props          Props.
@@ -188,9 +223,7 @@ export function CouponSummary( {
             : [] ),
         ...summaryLines( values, currency ),
     ];
-    const title =
-        String( values.title ) ||
-        __( 'Your coupon', 'storegrowth-sales-booster' );
+    const [ name, amount ] = cartLine( values, currency );
 
     return (
         <div className="flex w-full flex-col gap-4 rounded-br-lg border border-l-0 border-t-0 border-sg-cardline bg-white p-6 @max-[932px]:rounded-b-lg @max-[932px]:border-l">
@@ -210,15 +243,8 @@ export function CouponSummary( {
                     { __( 'Shoppers will see', 'storegrowth-sales-booster' ) }
                 </h2>
                 <div className="flex justify-between rounded-lg border border-sg-line p-3 text-sm text-sg-text">
-                    <span>{ title }</span>
-                    <span>
-                        { values.discount_type === 'buy_x_get_y'
-                            ? __(
-                                  'Free item added',
-                                  'storegrowth-sales-booster'
-                              )
-                            : __( '- discount', 'storegrowth-sales-booster' ) }
-                    </span>
+                    <span>{ name }</span>
+                    <span>{ amount }</span>
                 </div>
             </section>
         </div>
