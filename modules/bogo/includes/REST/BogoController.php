@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\BoGo\REST;
 
 use Exception;
 use StorePulse\StoreGrowth\Offers\OfferVersions;
+use WC_Product_Variable;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Controller;
@@ -1541,12 +1542,31 @@ class BogoController extends WP_REST_Controller {
 				return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
 			};
 
-			$regular_price = $offer_product->get_regular_price();
+			$offer_price = static function ( $price ) use ( $item ) {
+				return Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $price, $item['discount_amount'] ?? 0 );
+			};
 
-			$data['offer_prices'] = [
-				'regular' => $as_text( (float) ( $regular_price ? $regular_price : $offer_product->get_price() ) ),
-				'offer'   => $as_text( Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $offer_product->get_price(), $item['discount_amount'] ?? 0 ) ),
-			];
+			if ( $offer_product instanceof WC_Product_Variable ) {
+				// The shopper picks the variation: from the cheapest to the
+				// dearest, as a range when they differ.
+				$as_range = static function ( $min, $max ) use ( $as_text ) {
+					return (float) $min === (float) $max
+						? $as_text( $min )
+						: $as_text( $min ) . ' – ' . $as_text( $max );
+				};
+
+				$data['offer_prices'] = [
+					'regular' => $as_range( (float) $offer_product->get_variation_regular_price( 'min' ), (float) $offer_product->get_variation_regular_price( 'max' ) ),
+					'offer'   => $as_range( $offer_price( $offer_product->get_variation_price( 'min' ) ), $offer_price( $offer_product->get_variation_price( 'max' ) ) ),
+				];
+			} else {
+				$regular_price = $offer_product->get_regular_price();
+
+				$data['offer_prices'] = [
+					'regular' => $as_text( (float) ( $regular_price ? $regular_price : $offer_product->get_price() ) ),
+					'offer'   => $as_text( $offer_price( $offer_product->get_price() ) ),
+				];
+			}
 		}
 
 		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );

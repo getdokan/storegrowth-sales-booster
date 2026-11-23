@@ -84,6 +84,9 @@ export interface PreviewProduct {
     /** Current price (sale price when on sale). */
     price: number;
     regular: number;
+    /** A variable product's dearest variation (its cheapest is `price`). */
+    maxPrice?: number;
+    maxRegular?: number;
     categories: string[];
 }
 
@@ -92,6 +95,8 @@ interface WcProduct {
     name: string;
     price: string;
     regular_price: string;
+    max_price?: string;
+    max_regular_price?: string;
     images?: Array< { thumbnail?: string; src: string } >;
     categories?: Array< { name: string } >;
 }
@@ -114,7 +119,8 @@ export async function fetchPreviewProducts(
         path: addQueryArgs( `/${ getAdminData().restNamespace }/products`, {
             include: ids.join( ',' ),
             per_page: ids.length,
-            _fields: 'id,name,price,regular_price,images,categories',
+            _fields:
+                'id,name,price,regular_price,max_price,max_regular_price,images,categories',
         } ),
     } );
 
@@ -130,6 +136,8 @@ export async function fetchPreviewProducts(
                 '',
             price,
             regular: Number( product.regular_price ) || price,
+            maxPrice: Number( product.max_price ) || undefined,
+            maxRegular: Number( product.max_regular_price ) || undefined,
             categories: ( product.categories ?? [] ).map( ( category ) => {
                 return decodeEntities( category.name );
             } ),
