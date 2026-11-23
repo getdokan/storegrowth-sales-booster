@@ -595,7 +595,23 @@ function CouponEditor( { id }: { id: number | null } ) {
             }
             actions={
                 <>
-                    { version.header }
+                    { ! version.route &&
+                    coupon.record?.campaign_only &&
+                    madeForCampaign ? (
+                        // Opened from the list: it is still the campaign's.
+                        <span className="inline-flex w-fit rounded-[20px] bg-sg-chip px-3 py-1 text-xs font-semibold text-sg-heading">
+                            { sprintf(
+                                /* translators: %s: campaign name. */
+                                __(
+                                    'Made for %s',
+                                    'storegrowth-sales-booster'
+                                ),
+                                madeForCampaign.name
+                            ) }
+                        </span>
+                    ) : (
+                        version.header
+                    ) }
                     { toList }
                 </>
             }
