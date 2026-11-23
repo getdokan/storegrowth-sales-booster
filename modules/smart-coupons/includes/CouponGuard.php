@@ -288,10 +288,49 @@ class CouponGuard implements HookRegistry {
 			return $message;
 		}
 
+		// An automatic coupon switched off (or no longer valid) in a cart: the
+		// shopper knows it by its title, never its internal code.
+		if ( WC_Coupon::E_WC_COUPON_INVALID_REMOVED === (int) $code ) {
+			$switched_off = self::switched_off( $coupon );
+
+			if ( $switched_off && SmartCoupon::is_automatic( $switched_off ) ) {
+				/* translators: %s: the automatic coupon's title. */
+				return esc_html( sprintf( __( '%s has ended, so it was removed from your cart.', 'storegrowth-sales-booster' ), SmartCoupon::name( $switched_off ) ) );
+			}
+		}
+
 		$is_missing = WC_Coupon::E_WC_COUPON_NOT_EXIST === (int) $code && Helper::is_module_active( SmartCouponsModule::get_id() );
 		$is_expired = WC_Coupon::E_WC_COUPON_EXPIRED === (int) $code && SmartCoupon::is_smart( $coupon );
 
 		return $is_missing || $is_expired ? esc_html( self::unavailable_message( $coupon ) ) : $message;
+	}
+
+	/**
+	 * The coupon as stored: a switched-off coupon is a draft, which
+	 * WooCommerce doesn't load by code, so it reads as an empty coupon.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon WooCommerce loaded by code.
+	 *
+	 * @return WC_Coupon|null
+	 */
+	private static function switched_off( WC_Coupon $coupon ): ?WC_Coupon {
+		if ( $coupon->get_id() ) {
+			return $coupon;
+		}
+
+		$ids = get_posts(
+			[
+				'post_type'   => 'shop_coupon',
+				'post_status' => 'draft',
+				'title'       => $coupon->get_code(),
+				'fields'      => 'ids',
+				'numberposts' => 1,
+			]
+		);
+
+		return $ids ? new WC_Coupon( (int) $ids[0] ) : null;
 	}
 
 	/**

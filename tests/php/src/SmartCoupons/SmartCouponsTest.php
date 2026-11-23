@@ -504,6 +504,32 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
+	 * An automatic coupon switched off in a cart is named by its title, not
+	 * its internal code (Pro #340).
+	 *
+	 * @return void
+	 */
+	public function test_a_switched_off_automatic_coupon_is_named_by_its_title(): void {
+		$auto = $this->save_coupon(
+			'',
+			[
+				'method' => SmartCoupon::AUTOMATIC,
+				'title'  => 'Vendor auto 20%',
+			]
+		);
+		WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
+
+		$this->assertContains( $auto->get_code(), WC()->cart->get_applied_coupons() );
+
+		SmartCouponRepository::set_active( new WC_Coupon( $auto->get_id() ), false );
+		WC()->cart->check_cart_coupons();
+
+		$this->assertNotContains( $auto->get_code(), WC()->cart->get_applied_coupons() );
+		$this->assertTrue( wc_has_notice( esc_html( 'Vendor auto 20% has ended, so it was removed from your cart.' ), 'error' ) );
+		$this->assertStringNotContainsString( $auto->get_code(), wp_json_encode( wc_get_notices() ) );
+	}
+
+	/**
 	 * Free: code and link coupons are unlimited; one automatic coupon is
 	 * active, a second pauses (the newest) and the editor names the one on.
 	 *
