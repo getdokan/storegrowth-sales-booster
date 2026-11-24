@@ -873,6 +873,47 @@ class OrderBogo implements HookRegistry {
 	}
 
 	/**
+	 * Another rule holding a bought line a rule targets: a line gets one rule,
+	 * so the given rule can't give its gift there (pro#354).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $rule_id BOGO rule id.
+	 *
+	 * @return array{rule: string, product: string}|null The other rule's and the product's names.
+	 */
+	public function rule_holding_line_of( int $rule_id ): ?array {
+		$cart = WC()->cart;
+		$rule = $rule_id ? BogoDataManager::get_bogo_offer( $rule_id ) : null;
+
+		if ( ! $cart || ! $rule ) {
+			return null;
+		}
+
+		$targets = array_map( 'intval', (array) ( $rule['offered_products'] ?? [] ) );
+
+		foreach ( $cart->get_cart() as $item ) {
+			if ( Helper::is_gift_line( $item ) || ! in_array( (int) $item['product_id'], $targets, true ) ) {
+				continue;
+			}
+
+			$holder = $this->get_trigger_effective( $item );
+			$values = $holder ? $holder['values'] : null;
+
+			if ( $values && (int) ( $values['id'] ?? 0 ) !== $rule_id ) {
+				$name = (string) ( $values['name_of_order_bogo'] ?? '' );
+
+				return [
+					'rule'    => '' !== $name ? $name : (string) ( $values['name'] ?? '' ),
+					'product' => $item['data']->get_name(),
+				];
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Add the gifts a rule's bought lines have earned, for a coupon that just
 	 * unlocked it. Works for every deal type: Pro adds a same-product gift only
 	 * when a product is added or a quantity changes.

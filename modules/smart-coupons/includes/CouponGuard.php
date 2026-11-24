@@ -82,7 +82,33 @@ class CouponGuard implements HookRegistry {
 			throw new Exception( esc_html( self::unavailable_message( $coupon ) ) );
 		}
 
+		$held = $this->gift_held_by_other_rule( $coupon );
+
+		// Never "applied" with no gift: the bought line already has its own BOGO deal (pro#354).
+		if ( $held ) {
+			/* translators: 1: coupon code, 2: product name, 3: the other BOGO deal's name. */
+			throw new Exception( esc_html( sprintf( __( '%1$s can\'t be used with %2$s: the deal "%3$s" already applies to it.', 'storegrowth-sales-booster' ), SmartCoupon::shown_code( $coupon ), $held['product'], $held['rule'] ) ) );
+		}
+
 		return $valid;
+	}
+
+	/**
+	 * For a Buy X get Y coupon: the other BOGO rule holding a cart line its
+	 * rule targets, so its gift can't be added.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return array{rule: string, product: string}|null
+	 */
+	private function gift_held_by_other_rule( WC_Coupon $coupon ): ?array {
+		if ( ! SmartCoupon::is_buy_x_get_y( $coupon ) || ! Helper::is_module_active( BoGoModule::get_id() ) ) {
+			return null;
+		}
+
+		return OrderBogo::instance()->rule_holding_line_of( (int) $coupon->get_meta( SmartCoupon::BOGO_RULE ) );
 	}
 
 	/**

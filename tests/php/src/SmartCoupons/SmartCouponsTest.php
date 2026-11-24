@@ -804,6 +804,55 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
+	 * A Buy X get Y code whose bought product already has another BOGO deal
+	 * is refused, saying why, instead of reading "applied" with no gift
+	 * (pro#354).
+	 *
+	 * @return void
+	 */
+	public function test_buy_x_get_y_code_is_refused_when_another_rule_holds_the_product(): void {
+		$gloves = $this->product( 32 );
+		$boots  = $this->product( 95 );
+		$beanie = $this->product( 25 );
+
+		$this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Gloves get boots half off',
+				'bogo_deal_type'            => 'different',
+				'offered_products'          => [ $gloves->get_id() ],
+				'get_alternate_products'    => [ $boots->get_id() ],
+				'minimum_quantity_required' => 1,
+				'offer_product_id'          => $boots->get_id(),
+			]
+		);
+
+		$rule = $this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Beanie with the gloves code',
+				'bogo_deal_type'            => 'different',
+				'offered_products'          => [ $gloves->get_id() ],
+				'get_alternate_products'    => [ $beanie->get_id() ],
+				'minimum_quantity_required' => 1,
+				'offer_product_id'          => $beanie->get_id(),
+			]
+		);
+
+		$this->save_coupon(
+			'glovegift',
+			[
+				'discount_type' => SmartCoupon::TYPE_BUY_X_GET_Y,
+				'bogo_rule'     => $rule,
+			]
+		);
+
+		WC()->cart->add_to_cart( $gloves->get_id() );
+
+		$this->assertFalse( WC()->cart->apply_coupon( 'glovegift' ) );
+		$this->assertSame( [], WC()->cart->get_applied_coupons() );
+		$this->assertTrue( wc_has_notice( esc_html( sprintf( 'GLOVEGIFT can\'t be used with %s: the deal "Gloves get boots half off" already applies to it.', $gloves->get_name() ) ), 'error' ) );
+	}
+
+	/**
 	 * A same-product Buy X get Y code adds its gift on applying, as Pro only
 	 * adds those on an add or a quantity change, and takes it away on removal.
 	 *
