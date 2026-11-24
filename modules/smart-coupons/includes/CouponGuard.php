@@ -53,6 +53,12 @@ class CouponGuard implements HookRegistry {
 		add_filter( 'woocommerce_coupon_validate_expiry_date', [ $this, 'ignore_expiry_in_campaign' ], 10, 2 );
 		// WooCommerce 11.1+: without it a fixed amount is refused outright by one sale line.
 		add_filter( 'woocommerce_coupon_is_valid_for_sale_items', [ $this, 'skip_sale_items' ], 10, 2 );
+
+		// Before 11.1 there's no such filter: WooCommerce's checks see "skip
+		// sale items" off, and StoreGrowth skips sale lines itself (DealList).
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '11.1', '<' ) ) {
+			add_filter( 'woocommerce_coupon_get_exclude_sale_items', [ $this, 'hide_skip_sale' ], 10, 2 );
+		}
 		add_filter( 'woocommerce_coupon_error', [ $this, 'explain_unavailable_coupon' ], 10, 3 );
 		add_filter( 'spsg_offer_limits', [ $this, 'add_free_limit' ] );
 		add_filter( 'spsg_offer_is_live', [ $this, 'check_dates' ], 10, 4 );
@@ -296,6 +302,23 @@ class CouponGuard implements HookRegistry {
 	 */
 	public function skip_sale_items( $valid, $coupon ) {
 		return $valid || SmartCoupon::is_smart( $coupon );
+	}
+
+	/**
+	 * Before WooCommerce 11.1: a Smart Coupon's "Skip products already on
+	 * sale" reads as off to WooCommerce (view context), which would refuse a
+	 * fixed amount outright for one sale line; `DealList::coupon_applies()`
+	 * reads the stored value and skips the sale lines.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param bool      $exclude Whether sale items are excluded.
+	 * @param WC_Coupon $coupon  Coupon.
+	 *
+	 * @return bool
+	 */
+	public function hide_skip_sale( $exclude, $coupon ) {
+		return $coupon instanceof WC_Coupon && SmartCoupon::is_smart( $coupon ) ? false : $exclude;
 	}
 
 	/**

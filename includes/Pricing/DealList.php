@@ -222,6 +222,12 @@ class DealList {
 	 * @return bool
 	 */
 	public static function coupon_applies( WC_Coupon $coupon, WC_Product $product, array $item ): bool {
+		// "Skip products already on sale", read as stored: before WooCommerce
+		// 11.1 StoreGrowth hides it from WooCommerce's own checks (CouponGuard).
+		if ( SmartCoupon::is_smart( $coupon ) && $coupon->get_exclude_sale_items( 'edit' ) && $product->is_on_sale() ) {
+			return false;
+		}
+
 		if ( $coupon->is_type( 'fixed_cart' ) && SmartCoupon::is_smart( $coupon ) ) {
 			$coupon = clone $coupon;
 			$coupon->set_discount_type( 'percent' );

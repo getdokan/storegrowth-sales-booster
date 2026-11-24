@@ -50,7 +50,8 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 		$this->assertSame( [ $jacket->get_id() ], $read->get_product_ids() );
 		$this->assertSame( '50', (string) $read->get_minimum_amount( 'edit' ) );
 		$this->assertSame( 1, $read->get_usage_limit_per_user( 'edit' ) );
-		$this->assertTrue( $read->get_exclude_sale_items() );
+		// As stored: before WooCommerce 11.1 the view context reads false (CouponGuard::hide_skip_sale()).
+		$this->assertTrue( $read->get_exclude_sale_items( 'edit' ) );
 		$this->assertFalse( $read->get_individual_use() );
 		$this->assertSame( $end, wp_date( 'Y-m-d\TH:i', $read->get_date_expires()->getTimestamp() ) );
 		$this->assertSame( 'yes', $read->get_meta( SmartCoupon::MANAGED ) );
