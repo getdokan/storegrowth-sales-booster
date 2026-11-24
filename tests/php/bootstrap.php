@@ -9,7 +9,8 @@
  */
 
 define( 'TEST_SPSG_PLUGIN_DIR', dirname( __DIR__, 2 ) );
-define( 'TEST_WC_DIR', dirname( TEST_SPSG_PLUGIN_DIR, 1 ) . '/woocommerce' );
+// TEST_WC_DIR in the environment runs the suite on another WooCommerce, e.g. the oldest supported one.
+define( 'TEST_WC_DIR', getenv( 'TEST_WC_DIR' ) ? getenv( 'TEST_WC_DIR' ) : dirname( TEST_SPSG_PLUGIN_DIR, 1 ) . '/woocommerce' );
 
 // The composer autoloader must load first so WP_PHPUNIT__DIR becomes available.
 require_once TEST_SPSG_PLUGIN_DIR . '/vendor/autoload.php';

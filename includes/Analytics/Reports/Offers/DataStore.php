@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Analytics\Reports\Offers;
 
 use Automattic\WooCommerce\Admin\API\Reports\DataStore as ReportsDataStore;
 use Automattic\WooCommerce\Admin\API\Reports\DataStoreInterface;
+use Automattic\WooCommerce\Admin\API\Reports\TimeInterval;
 use StorePulse\StoreGrowth\Analytics\Schema;
 
 // If this file is called directly, abort.
@@ -83,6 +84,9 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 	/**
 	 * Rows, or an error until the upgrade has created the lookup table.
 	 *
+	 * WooCommerce's own `get_data()` flow, written out: its base data store
+	 * has it only from WooCommerce 9 (pro#345).
+	 *
 	 * @since 3.0.0
 	 *
 	 * @param array $query_args Query args.
@@ -94,11 +98,24 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 			return $this->not_installed_error();
 		}
 
-		return parent::get_data( $this->scoped_args( $query_args ) );
+		$defaults   = $this->get_default_query_vars();
+		$query_args = wp_parse_args( $this->scoped_args( $query_args ), $defaults );
+		$this->normalize_timezones( $query_args, $defaults );
+
+		$cache_key = $this->get_cache_key( $query_args );
+		$data      = $this->get_cached_data( $cache_key );
+
+		if ( false === $data ) {
+			$data = $this->get_noncached_data( $query_args );
+			$this->set_cached_data( $cache_key, $data );
+		}
+
+		return $data;
 	}
 
 	/**
-	 * Default query args.
+	 * Default query args. WooCommerce's are written out: its base data store
+	 * has `get_default_query_vars()` only from WooCommerce 9.
 	 *
 	 * @since 3.0.0
 	 *
@@ -106,7 +123,13 @@ class DataStore extends ReportsDataStore implements DataStoreInterface {
 	 */
 	public function get_default_query_vars() {
 		return array_merge(
-			parent::get_default_query_vars(),
+			[
+				'page'   => 1,
+				'order'  => 'DESC',
+				'before' => TimeInterval::default_before(),
+				'after'  => TimeInterval::default_after(),
+				'fields' => '*',
+			],
 			$this->offer_query_vars(),
 			[
 				'spsg_group' => 'campaign',
