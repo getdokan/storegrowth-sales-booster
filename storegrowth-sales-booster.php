@@ -12,7 +12,7 @@
  * Requires Plugins: woocommerce
  * Requires at least: 6.2
  * Requires PHP: 7.4
- * WC requires at least: 8.8
+ * WC requires at least: 9.6
  *
  * @package SPSG
  */

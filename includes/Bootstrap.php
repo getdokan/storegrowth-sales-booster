@@ -35,7 +35,7 @@ class Bootstrap {
 	 *
 	 * @var string
 	 */
-	const MIN_WC_VERSION = '8.8';
+	const MIN_WC_VERSION = '9.6';
 
 	/**
 	 * Oldest Pro that supports this version's features. The release script

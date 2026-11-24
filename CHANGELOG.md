@@ -12,7 +12,7 @@
 - **enhancement:** The Fly Cart shows the same product details as the cart, such as variation options and deal labels.
 - **enhancement:** If a database update fails, you can retry it, and the notice stays until it's done.
 - **enhancement:** The Analytics page uses the full screen width, and placeholder text is lighter, so it's easy to tell from what you typed.
-- **enhancement:** StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 8.8 or newer.
+- **enhancement:** StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 9.6 or newer.
 - **change:** Cart Rewards milestones now count the cart subtotal after discounts, with or without tax the way your store shows prices (before, it was the subtotal before tax and discounts).
 - **change:** Rewards follow the cart: a shopper who drops below a milestone loses the reward and gets it back when they go above it again. Below a free shipping milestone, WooCommerce's Free shipping option is hidden. If you offered free shipping to everyone, check your shipping settings after updating.
 - **fix:** Deals start and end at the exact time you set, in your site's timezone: Countdown Timer, BOGO weekday deals and Pro's same-product BOGO. Countdown used each shopper's own computer clock, so a timer running during the update may show a different time left afterwards, by up to the gap between the shopper's timezone and your store's.

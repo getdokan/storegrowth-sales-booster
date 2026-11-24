@@ -6,7 +6,7 @@ Requires at least: 6.2
 Tested up to: 7.0
 Stable tag: 3.1.0
 Requires PHP: 7.4
-WC requires at least: 8.8
+WC requires at least: 9.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -344,7 +344,7 @@ StoreGrowth floating notification bar displays ongoing offers and discounts whil
 * Enhancement: The Fly Cart shows the same product details as the cart, such as variation options and deal labels.
 * Enhancement: If a database update fails, you can retry it, and the notice stays until it's done.
 * Enhancement: The Analytics page uses the full screen width, and placeholder text is lighter, so it's easy to tell from what you typed.
-* Enhancement: StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 8.8 or newer.
+* Enhancement: StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 9.6 or newer.
 * Change: Cart Rewards milestones now count the cart subtotal after discounts, and rewards follow the cart: dropping below a milestone removes the reward, going back above returns it. Below a free shipping milestone, WooCommerce's Free shipping option is hidden. If you offered free shipping to everyone, check your shipping settings after updating.
 * Fix: Deals start and end at the exact time you set, in your site's timezone: Countdown Timer, BOGO weekday deals and Pro's same-product BOGO. Countdown used each shopper's own computer clock, so a timer running during the update may show a different time left afterwards.
 * Fix: BOGO prices match your store's currency format and tax display.

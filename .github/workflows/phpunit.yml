@@ -53,8 +53,14 @@ concurrency:
 
 jobs:
   phpunit:
-    name: PHPUnit (PHP ${{ github.event.inputs.php_version || '7.4' }})
+    # The latest WooCommerce, and the oldest one StoreGrowth supports
+    # (`Bootstrap::MIN_WC_VERSION`, "WC requires at least"): keep them in step.
+    name: PHPUnit (PHP ${{ github.event.inputs.php_version || '7.4' }}, WooCommerce ${{ matrix.woocommerce }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        woocommerce: [ latest, '9.6.0' ]
 
     steps:
       - name: Checkout plugin
@@ -141,19 +147,24 @@ jobs:
 
       # .wp-env.override.json is deep-merged over .wp-env.json, so a manual run
       # can test another PHP without editing the committed config. With Pro it
-      # also maps Pro next to this plugin, where its test bootstrap looks.
-      - name: Configure wp-env override (PHP version + Pro mapping)
+      # also maps Pro next to this plugin, where its test bootstrap looks. The
+      # minimum-WooCommerce job replaces the plugin list with that version's zip.
+      - name: Configure wp-env override (PHP version, WooCommerce version, Pro mapping)
         env:
           PHP_VERSION: ${{ github.event.inputs.php_version || '7.4' }}
           HAS_PRO: ${{ steps.pro.outputs.has-pro }}
+          WC_VERSION: ${{ matrix.woocommerce }}
         run: |
-          if [ "$HAS_PRO" = "true" ]; then
-            jq -n --arg php "$PHP_VERSION" --arg pro "./storegrowth-sales-booster-pro" \
-              '{phpVersion: $php, mappings: {"wp-content/plugins/storegrowth-sales-booster-pro": $pro}}' \
-              > .wp-env.override.json
-          else
-            jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}' > .wp-env.override.json
+          override=$(jq -n --arg php "$PHP_VERSION" '{phpVersion: $php}')
+          if [ "$WC_VERSION" != "latest" ]; then
+            override=$(jq --arg wc "https://downloads.wordpress.org/plugin/woocommerce.$WC_VERSION.zip" \
+              '. + {plugins: [$wc, "."]}' <<<"$override")
           fi
+          if [ "$HAS_PRO" = "true" ]; then
+            override=$(jq --arg pro "./storegrowth-sales-booster-pro" \
+              '. + {mappings: {"wp-content/plugins/storegrowth-sales-booster-pro": $pro}}' <<<"$override")
+          fi
+          echo "$override" > .wp-env.override.json
           cat .wp-env.override.json
 
       - name: Start WordPress (wp-env)
@@ -163,10 +174,11 @@ jobs:
 
       # Prove the container really is on the requested PHP, so a run labelled
       # "PHP 7.4" can't quietly have tested something else.
-      - name: Report the PHP version under test
+      - name: Report the PHP and WooCommerce versions under test
         run: |
           wp-env run tests-cli php -v
           echo "PHP under test: $(wp-env run tests-cli php -r 'echo PHP_VERSION;' 2>/dev/null | tr -d '\r')" >> "$GITHUB_STEP_SUMMARY"
+          echo "WooCommerce under test: $(wp-env run tests-cli wp plugin get woocommerce --field=version 2>/dev/null | tr -d '\r')" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run PHPUnit
         run: wp-env run tests-cli --env-cwd=wp-content/plugins/storegrowth-sales-booster vendor/bin/phpunit -c phpunit.xml
@@ -189,7 +201,9 @@ jobs:
           STATE: ${{ job.status == 'success' && 'success' || 'failure' }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           LITE_REF: ${{ github.ref_name }}
+          # The latest WooCommerce keeps the "phpunit" check; the minimum gets its own.
+          CONTEXT: ${{ matrix.woocommerce == 'latest' && 'phpunit' || format('phpunit (WooCommerce {0})', matrix.woocommerce) }}
         run: |
           gh api "repos/getdokan/storegrowth-sales-booster-pro/statuses/$PRO_SHA" \
-            -f state="$STATE" -f context=phpunit -f target_url="$RUN_URL" \
+            -f state="$STATE" -f context="$CONTEXT" -f target_url="$RUN_URL" \
             -f description="lite ${LITE_REF:0:100}: $STATE"
