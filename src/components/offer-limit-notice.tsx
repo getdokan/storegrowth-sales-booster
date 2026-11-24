@@ -12,13 +12,14 @@ import {
     Checkbox,
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     Label,
     toast,
 } from '@wedevs/plugin-ui';
 import { useEffect, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import { errorMessage, getAdminData } from '@storegrowth/utilities';
 
 interface LimitOffer {
@@ -163,10 +164,25 @@ export function OfferLimitNotice( {
                                 'storegrowth-sales-booster'
                             ) }
                         </DialogTitle>
+                        { /* How many stay on, and why a box can't be ticked (pro#365). */ }
+                        <DialogDescription id={ `spsg-limit-help-${ kind }` }>
+                            { sprintf(
+                                /* translators: %d: offers the Free plan keeps on. */
+                                _n(
+                                    'The Free plan keeps %d on. To choose another, untick one first.',
+                                    'The Free plan keeps %d on. To choose another, untick one first.',
+                                    limit.limit,
+                                    'storegrowth-sales-booster'
+                                ),
+                                limit.limit
+                            ) }
+                        </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-2">
                         { limit.offers.map( ( offer ) => {
                             const checked = picked.includes( offer.id );
+                            const full =
+                                ! checked && picked.length >= limit.limit;
 
                             return (
                                 <div
@@ -176,9 +192,19 @@ export function OfferLimitNotice( {
                                     <Checkbox
                                         id={ `spsg-limit-${ offer.id }` }
                                         checked={ checked }
-                                        disabled={
-                                            ! checked &&
-                                            picked.length >= limit.limit
+                                        disabled={ full }
+                                        aria-describedby={
+                                            full
+                                                ? `spsg-limit-help-${ kind }`
+                                                : undefined
+                                        }
+                                        title={
+                                            full
+                                                ? __(
+                                                      'Untick one first: the Free plan keeps no more on.',
+                                                      'storegrowth-sales-booster'
+                                                  )
+                                                : undefined
                                         }
                                         onCheckedChange={ (
                                             value: boolean
