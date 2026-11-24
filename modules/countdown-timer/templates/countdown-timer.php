@@ -35,11 +35,13 @@ if ( is_product() && ! $enable_countdown_in_product_page ) {
 
 $campaign_price  = null !== $campaign_end ? Helper::campaign_price( $product->get_id() ) : null;
 $end_date        = $campaign_end ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
-$discount_amount = $campaign_price ? $campaign_price['percent'] : get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
+$own_discount    = Helper::is_product_discountable( $product->get_id() ) ? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true ) : '';
+$discount_amount = $campaign_price ? $campaign_price['percent'] : $own_discount;
 $heading_text    = PluginHelper::find_option_settings( $settings, 'countdown_heading', __( 'Last chance! [discount]% OFF', 'storegrowth-sales-booster' ) );
 
-// A campaign countdown with no percent to name (no campaign price, no timer of its own).
-if ( '' === (string) $discount_amount || ! (float) $discount_amount ) {
+// A campaign countdown with no percent to name (no campaign price, no live
+// timer of its own), under a heading that would name one.
+if ( ! (float) $discount_amount && preg_match( '/[\[{]discount[\]}]/', (string) $heading_text ) ) {
 	$heading_text = __( 'Offer ends in', 'storegrowth-sales-booster' );
 }
 
