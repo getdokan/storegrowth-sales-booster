@@ -14,7 +14,7 @@ import {
     AlertDialogTitle,
     Button,
 } from '@wedevs/plugin-ui';
-import { useCallback, useState } from '@wordpress/element';
+import { useCallback, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
 import {
@@ -66,16 +66,44 @@ interface Pending {
  */
 export function useAutomaticSwap() {
     const [ pending, setPending ] = useState< Pending | null >( null );
+    // The control that asked (e.g. a list switch): focus goes back to it on
+    // close (pro#361). It may be disabled while the question is open, so it
+    // is found again and focused once it can take focus.
+    const opener = useRef< ( () => HTMLElement | null ) | null >( null );
 
-    const ask = useCallback( ( current: CouponRef ) => {
-        return new Promise< boolean >( ( resolve ) => {
-            setPending( { current, resolve } );
-        } );
-    }, [] );
+    const ask = useCallback(
+        ( current: CouponRef, returnFocus?: () => HTMLElement | null ) => {
+            opener.current = returnFocus ?? null;
+
+            return new Promise< boolean >( ( resolve ) => {
+                setPending( { current, resolve } );
+            } );
+        },
+        []
+    );
 
     const close = ( swap: boolean ) => {
+        const find = opener.current;
+        let tries = 0;
+
         pending?.resolve( swap );
         setPending( null );
+
+        const refocus = () => {
+            const target = find?.();
+
+            target?.focus();
+
+            if ( target && target.ownerDocument.activeElement !== target ) {
+                tries += 1;
+
+                if ( tries < 20 ) {
+                    window.setTimeout( refocus, 50 );
+                }
+            }
+        };
+
+        window.setTimeout( refocus, 0 );
     };
 
     const name = decodeEntities( pending?.current.name ?? '' );
@@ -89,7 +117,11 @@ export function useAutomaticSwap() {
                 }
             } }
         >
-            <AlertDialogContent className="max-w-[440px]!">
+            <AlertDialogContent
+                className="max-w-[440px]!"
+                // Focus goes back through `close()` instead.
+                finalFocus={ false }
+            >
                 <AlertDialogHeader>
                     <AlertDialogTitle>
                         { __(

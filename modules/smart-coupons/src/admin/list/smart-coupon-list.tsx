@@ -112,7 +112,20 @@ function CouponList() {
             return true;
         }
 
-        if ( ! ( await swap.ask( current ) ) ) {
+        // Focus goes back to this row's switch when the dialog closes (pro#361).
+        const returnFocus = () => {
+            const switches =
+                document.querySelectorAll< HTMLElement >( '[role="switch"]' );
+            const label = statusLabel( item );
+
+            return (
+                Array.from( switches ).find( ( element ) => {
+                    return element.getAttribute( 'aria-label' ) === label;
+                } ) ?? null
+            );
+        };
+
+        if ( ! ( await swap.ask( current, returnFocus ) ) ) {
             return false;
         }
 
