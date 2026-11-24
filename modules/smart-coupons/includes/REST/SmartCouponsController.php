@@ -323,6 +323,11 @@ class SmartCouponsController extends WP_REST_Controller {
 
 		SmartCouponRepository::set_active( $coupon, $active );
 
+		// Say so when the status didn't stick, never "saved" (pro#346).
+		if ( get_post_status( $coupon->get_id() ) !== ( $active ? 'publish' : 'draft' ) ) {
+			return new WP_Error( 'smart_coupon_status_not_saved', __( 'The coupon’s status could not be saved. Please try again.', 'storegrowth-sales-booster' ), [ 'status' => 500 ] );
+		}
+
 		return rest_ensure_response(
 			[
 				'id'     => $coupon->get_id(),
