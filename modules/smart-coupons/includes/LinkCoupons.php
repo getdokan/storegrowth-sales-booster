@@ -74,7 +74,8 @@ class LinkCoupons implements HookRegistry {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- A public link; only an existing link coupon is applied.
 		$code = isset( $_GET[ self::QUERY_ARG ] ) ? wc_format_coupon_code( sanitize_text_field( wp_unslash( $_GET[ self::QUERY_ARG ] ) ) ) : '';
 
-		if ( '' === $code || ! sp_store_growth()->has_pro() || ! WC()->session ) {
+		// Link coupons are part of Free (ADR-018).
+		if ( '' === $code || ! WC()->session ) {
 			return;
 		}
 
