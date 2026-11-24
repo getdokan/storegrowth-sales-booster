@@ -112,11 +112,12 @@ class ProgressiveDiscountBannerSettings implements GatedSettingsSchema, DerivedS
 			[
 				// Drawn by the page: one row per milestone.
 				'milestones'              => [
-					'type'    => 'rows',
-					'default' => [],
-					'row'     => [ Milestones::class, 'normalize_row' ],
-					'tab'     => 'milestones',
-					'label'   => __( 'Milestones', 'storegrowth-sales-booster' ),
+					'type'      => 'rows',
+					'default'   => [],
+					'row'       => [ Milestones::class, 'normalize_row' ],
+					'row_error' => [ Milestones::class, 'row_error' ],
+					'tab'       => 'milestones',
+					'label'     => __( 'Milestones', 'storegrowth-sales-booster' ),
 				],
 				'progressive_banner_text' => $text(
 					__( 'Add {remaining} more for {reward}', 'storegrowth-sales-booster' ),

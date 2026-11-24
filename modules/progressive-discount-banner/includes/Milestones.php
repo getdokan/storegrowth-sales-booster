@@ -110,15 +110,53 @@ class Milestones {
 			return null;
 		}
 
+		$percentage = 'percentage' === ( $row['discount_mode'] ?? '' );
+		$value      = is_numeric( $row['discount_value'] ?? null ) ? max( 0.0, (float) $row['discount_value'] ) : 0.0;
+
 		return [
 			'id'              => absint( $row['id'] ?? 0 ),
 			'threshold'       => (float) $threshold,
 			'reward'          => $reward,
 			'coupon_id'       => $coupon_id,
 			'gift_product_id' => $gift_id,
-			'discount_mode'   => 'percentage' === ( $row['discount_mode'] ?? '' ) ? 'percentage' : 'fixed-amount',
-			'discount_value'  => is_numeric( $row['discount_value'] ?? null ) ? max( 0.0, (float) $row['discount_value'] ) : 0.0,
+			'discount_mode'   => $percentage ? 'percentage' : 'fixed-amount',
+			// A percentage saved above 100 before saves were checked reads as 100 (pro#357).
+			'discount_value'  => $percentage ? min( 100.0, $value ) : $value,
 		];
+	}
+
+	/**
+	 * What is wrong with a milestone a save sends, naming it by position;
+	 * '' when nothing is (pro#357).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $row      Milestone.
+	 * @param int   $position Its position, from 1.
+	 *
+	 * @return string
+	 */
+	public static function row_error( array $row, int $position ): string {
+		$reward    = (string) ( $row['reward'] ?? '' );
+		$threshold = $row['threshold'] ?? null;
+		$problem   = '';
+
+		if ( ! in_array( $reward, [ self::FREE_SHIPPING, self::COUPON, self::GIFT, self::DISCOUNT ], true ) ) {
+			$problem = __( 'choose a reward', 'storegrowth-sales-booster' );
+		} elseif ( ! is_numeric( $threshold ) || (float) $threshold < 0 ) {
+			$problem = __( 'enter a threshold of 0 or more', 'storegrowth-sales-booster' );
+		} elseif ( self::GIFT === $reward && ! absint( $row['gift_product_id'] ?? 0 ) ) {
+			$problem = __( 'choose a gift product', 'storegrowth-sales-booster' );
+		} elseif ( self::COUPON === $reward && ! absint( $row['coupon_id'] ?? 0 ) ) {
+			$problem = __( 'choose a coupon', 'storegrowth-sales-booster' );
+		} elseif ( self::DISCOUNT === $reward && 'percentage' === ( $row['discount_mode'] ?? '' ) && (float) ( $row['discount_value'] ?? 0 ) > 100 ) {
+			$problem = __( 'enter a percentage of 100 or less', 'storegrowth-sales-booster' );
+		}
+
+		return '' === $problem
+			? ''
+			/* translators: 1: milestone number, 2: what to fix. */
+			: sprintf( __( 'Milestone %1$d: %2$s.', 'storegrowth-sales-booster' ), $position, $problem );
 	}
 
 	/**

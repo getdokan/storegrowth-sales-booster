@@ -177,9 +177,13 @@ class WoocommerceDiscount implements HookRegistry {
 	 * @param array $discount Discount milestone.
 	 */
 	private function set_discount_amount( array $discount ) {
+		$subtotal        = (float) wc()->cart->get_subtotal();
 		$discount_amount = 'percentage' === $discount['discount_mode']
-			? wc()->cart->get_subtotal() * $discount['discount_value'] / 100
+			? $subtotal * $discount['discount_value'] / 100
 			: $discount['discount_value'];
+
+		// Never more than the products: the rest would come off the shipping (pro#357).
+		$discount_amount = min( (float) $discount_amount, $subtotal );
 
 		if ( ! $discount_amount ) {
 			return;

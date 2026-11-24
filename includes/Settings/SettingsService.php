@@ -895,6 +895,18 @@ class SettingsService {
 				return $items;
 
 			case 'rows':
+				// A field's `row_error` names what is wrong with a row a save sends
+				// (`row_error( $row, $position )`, '' when nothing is).
+				if ( isset( $field['row_error'] ) && is_array( $value ) ) {
+					foreach ( array_values( $value ) as $index => $row ) {
+						$message = (string) call_user_func( $field['row_error'], is_array( $row ) ? $row : [], $index + 1 );
+
+						if ( '' !== $message ) {
+							return new WP_Error( 'invalid', $message );
+						}
+					}
+				}
+
 				$rows = $this->rows( $field, $value );
 
 				return null === $rows ? new WP_Error( 'invalid', __( 'Some items are not valid.', 'storegrowth-sales-booster' ) ) : $rows;

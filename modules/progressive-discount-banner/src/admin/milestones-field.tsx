@@ -287,6 +287,11 @@ function MilestoneRow( {
                             : undefined
                     }
                     min={ 0 }
+                    max={
+                        milestone.discount_mode === 'percentage'
+                            ? 100
+                            : undefined
+                    }
                     step={ 0.01 }
                     value={ milestone.discount_value }
                     onChange={ ( amount ) => {

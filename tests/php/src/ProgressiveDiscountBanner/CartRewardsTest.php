@@ -513,6 +513,69 @@ class CartRewardsTest extends StoreGrowthTestCase {
 	}
 
 	/**
+	 * A refused milestone says which one and what to fix; a percentage above
+	 * 100 is refused (pro#357).
+	 *
+	 * @return void
+	 */
+	public function test_a_refused_milestone_names_itself(): void {
+		$service = storegrowth_get_container()->get( SettingsService::class );
+		$cases   = [
+			'Milestone 2: choose a gift product.'            => [ 'reward' => Milestones::GIFT ],
+			'Milestone 2: choose a coupon.'                  => [ 'reward' => Milestones::COUPON ],
+			'Milestone 2: enter a threshold of 0 or more.'   => [
+				'reward'    => Milestones::FREE_SHIPPING,
+				'threshold' => -10,
+			],
+			'Milestone 2: enter a percentage of 100 or less.' => [
+				'reward'         => Milestones::DISCOUNT,
+				'discount_mode'  => 'percentage',
+				'discount_value' => 150,
+			],
+		];
+
+		foreach ( $cases as $message => $row ) {
+			$saved = $service->save(
+				ProgressiveDiscountBannerModule::get_id(),
+				[
+					'milestones' => [
+						[
+							'threshold' => 50,
+							'reward'    => Milestones::FREE_SHIPPING,
+						],
+						array_merge( [ 'threshold' => 120 ], $row ),
+					],
+				]
+			);
+
+			$this->assertWPError( $saved, $message );
+			$this->assertSame( $message, $saved->get_error_data()['params']['milestones'] ?? '', $message );
+		}
+	}
+
+	/**
+	 * The discount never comes off more than the products (pro#357).
+	 *
+	 * @return void
+	 */
+	public function test_the_discount_never_passes_the_subtotal(): void {
+		$this->set_rewards(
+			[
+				[
+					'id'             => 1,
+					'threshold'      => 10,
+					'reward'         => Milestones::DISCOUNT,
+					'discount_mode'  => 'percentage',
+					'discount_value' => 150,
+				],
+			]
+		);
+
+		$this->fill_cart( 50, 2 );
+		$this->assertEqualsWithDelta( -100.0, WC()->cart->get_fee_total(), 0.001 );
+	}
+
+	/**
 	 * Saving keeps the old keys for milestone 1 and backs up first.
 	 *
 	 * @return void
