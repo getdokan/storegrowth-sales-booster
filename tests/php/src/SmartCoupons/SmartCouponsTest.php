@@ -195,6 +195,25 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
+	 * The list's switch decides whether shoppers can use the coupon (pro#346).
+	 *
+	 * @return void
+	 */
+	public function test_the_switch_decides_whether_the_coupon_applies(): void {
+		$coupon = $this->save_coupon( 'switched', [ 'status' => 'inactive' ] );
+
+		WC()->cart->add_to_cart( $this->product( 100 )->get_id() );
+		$this->assertFalse( WC()->cart->apply_coupon( 'switched' ) );
+
+		$this->rest( 'POST', '/' . $coupon->get_id() . '/status', [ 'status' => 'yes' ] );
+		$this->assertTrue( WC()->cart->apply_coupon( 'switched' ) );
+
+		$this->rest( 'POST', '/' . $coupon->get_id() . '/status', [ 'status' => 'no' ] );
+		WC()->cart->remove_coupons();
+		$this->assertFalse( WC()->cart->apply_coupon( 'switched' ) );
+	}
+
+	/**
 	 * A Smart Coupon is invalid while the module is off.
 	 *
 	 * @return void
@@ -998,6 +1017,10 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 		$status = $this->rest( 'POST', '/' . $coupon->get_id() . '/status', [ 'status' => 'no' ] );
 
 		$this->assertSame( 'inactive', $status->get_data()['status'] );
+		$this->assertSame( 'draft', get_post_status( $coupon->get_id() ) );
+
+		// A coupon created off stays off; WooCommerce before 9 creates every coupon published (pro#346).
+		$this->assertSame( 'draft', get_post_status( $this->save_coupon( 'made-off', [ 'status' => 'inactive' ] )->get_id() ) );
 	}
 
 	/**

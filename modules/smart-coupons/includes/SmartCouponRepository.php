@@ -252,7 +252,7 @@ class SmartCouponRepository {
 
 		try {
 			self::write( $coupon, $values, $existing );
-			$coupon->save();
+			self::store( $coupon );
 		} catch ( WC_Data_Exception $e ) {
 			return new WP_Error( 'smart_coupon_invalid', $e->getMessage(), [ 'status' => 400 ] );
 		}
@@ -342,9 +342,35 @@ class SmartCouponRepository {
 	 */
 	public static function set_active( WC_Coupon $coupon, bool $active ): void {
 		$coupon->set_status( $active ? 'publish' : 'draft' );
-		$coupon->save();
+		self::store( $coupon );
 
 		OfferLimits::flush();
+	}
+
+	/**
+	 * Save a coupon with its status. Before WooCommerce 9 the coupon data
+	 * store doesn't write the status: it creates every coupon published and
+	 * leaves the status as it was on an update (pro#346).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon.
+	 *
+	 * @return void
+	 */
+	private static function store( WC_Coupon $coupon ): void {
+		$coupon->save();
+
+		$status = (string) $coupon->get_status( 'edit' );
+
+		if ( '' !== $status && get_post_status( $coupon->get_id() ) !== $status ) {
+			wp_update_post(
+				[
+					'ID'          => $coupon->get_id(),
+					'post_status' => $status,
+				]
+			);
+		}
 	}
 
 	/**
