@@ -339,7 +339,17 @@ class RefereeTest extends StoreGrowthTestCase {
 
 		// Right to left: each step isolated, the line laid out right to left, arrows to the next step (pro#364).
 		$GLOBALS['wp_locale']->text_direction = 'rtl';
-		$rtl                                  = apply_filters( 'woocommerce_get_item_data', [], WC()->cart->get_cart_item( $key ) );
+
+		/**
+		 * WooCommerce's cart line data, as `wc_get_formatted_cart_item_data()` runs it.
+		 *
+		 * @since 2.1.0
+		 *
+		 * @param array $item_data Item data.
+		 * @param array $cart_item Cart item.
+		 */
+		$rtl = apply_filters( 'woocommerce_get_item_data', [], WC()->cart->get_cart_item( $key ) );
+
 		$GLOBALS['wp_locale']->text_direction = 'ltr';
 
 		$this->assertSame( "\u{2067}\u{2068}\$120\u{2069} ← \u{2068}\$108 Countdown 10%\u{2069} ← \u{2068}\$75.60 30% off Outerwear\u{2069}\u{2069}", end( $rtl )['value'] );

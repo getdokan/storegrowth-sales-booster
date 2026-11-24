@@ -521,20 +521,26 @@ class CartRewardsTest extends StoreGrowthTestCase {
 	public function test_a_refused_milestone_names_itself(): void {
 		$service = storegrowth_get_container()->get( SettingsService::class );
 		$cases   = [
-			'Milestone 2: choose a gift product.'            => [ 'reward' => Milestones::GIFT ],
-			'Milestone 2: choose a coupon.'                  => [ 'reward' => Milestones::COUPON ],
-			'Milestone 2: enter a threshold of 0 or more.'   => [
-				'reward'    => Milestones::FREE_SHIPPING,
-				'threshold' => -10,
+			[ 'Milestone 2: choose a gift product.', [ 'reward' => Milestones::GIFT ] ],
+			[ 'Milestone 2: choose a coupon.', [ 'reward' => Milestones::COUPON ] ],
+			[
+				'Milestone 2: enter a threshold of 0 or more.',
+				[
+					'reward'    => Milestones::FREE_SHIPPING,
+					'threshold' => -10,
+				],
 			],
-			'Milestone 2: enter a percentage of 100 or less.' => [
-				'reward'         => Milestones::DISCOUNT,
-				'discount_mode'  => 'percentage',
-				'discount_value' => 150,
+			[
+				'Milestone 2: enter a percentage of 100 or less.',
+				[
+					'reward'         => Milestones::DISCOUNT,
+					'discount_mode'  => 'percentage',
+					'discount_value' => 150,
+				],
 			],
 		];
 
-		foreach ( $cases as $message => $row ) {
+		foreach ( $cases as [ $message, $row ] ) {
 			$saved = $service->save(
 				ProgressiveDiscountBannerModule::get_id(),
 				[

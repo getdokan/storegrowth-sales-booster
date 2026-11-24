@@ -143,7 +143,7 @@ test.describe('API · Campaigns', () => {
         starts_at: '2030-01-01 09:00',
         ends_at: '2030-01-10 18:30',
         settings: {
-          campaign_price: { percent: 150, products: [PRODUCTS.a.id, '0', 'x'] },
+          campaign_price: { percent: 99, products: [PRODUCTS.a.id, '0', 'x'] },
           products: [PRODUCTS.b.id],
           exclude_on_sale: 'true',
           unknown_key: 'dropped',
@@ -154,7 +154,16 @@ test.describe('API · Campaigns', () => {
       expect(saved.starts_at).toBe('2030-01-01 09:00:00');
       // An end runs through its last minute.
       expect(saved.ends_at).toBe('2030-01-10 18:30:59');
-      expect(saved.settings.campaign_price).toEqual({ percent: 100, products: [PRODUCTS.a.id], categories: [] });
+      expect(saved.settings.campaign_price).toEqual({ percent: 99, products: [PRODUCTS.a.id], categories: [] });
+
+      // A percent outside 1–99 (or not whole) is refused, not clamped (pro#347).
+      for (const percent of [150, 100, -5, 12.5, 'abc']) {
+        const refused = await api.post(`${CAMPAIGNS}/${campaign.id}`, {
+          data: { settings: { campaign_price: { percent, products: [PRODUCTS.a.id] } } },
+        });
+        expect(refused.status(), String(percent)).toBe(400);
+        expect((await refused.json()).code).toBe('spsg_campaign_invalid_percent');
+      }
       expect(saved.settings.products).toEqual([PRODUCTS.b.id]);
       expect(saved.settings.exclude_on_sale).toBe(true);
       expect(saved.settings).not.toHaveProperty('unknown_key');
