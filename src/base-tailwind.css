@@ -160,6 +160,13 @@
     font-family: inherit;
 }
 
+/* Placeholders at 4.5:1 or more on a white field (WCAG 1.4.3, pro#352):
+   #737373 is 4.74:1, where the muted #828282 is 3.84:1. Important and
+   `[placeholder]`, to win over the controls' important placeholder utilities. */
+.spsg-layout :is(input, textarea)[placeholder]::placeholder {
+    color: #737373 !important;
+}
+
 /* Keyboard focus ring for everything interactive (design rule); controls
    with their own focus style (fields, important utilities) override it.
    `:is()`, not `:where()`, so a theme's or Dokan's element focus rule
