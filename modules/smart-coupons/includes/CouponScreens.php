@@ -120,8 +120,12 @@ class CouponScreens implements HookRegistry {
 	public function redirect_edit_screen(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only redirects; nothing is changed.
 		$post_id = isset( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reads which screen; WordPress checks the action's nonce.
+		$action = isset( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : 'edit';
 
-		if ( $post_id && 'shop_coupon' === get_post_type( $post_id ) && $this->smart_coupon( $post_id ) && wp_safe_redirect( self::editor_url( $post_id ) ) ) {
+		// Only the edit screen moves: Trash, Restore and Delete Permanently
+		// go through post.php too and must reach WordPress (pro#355).
+		if ( 'edit' === $action && $post_id && 'shop_coupon' === get_post_type( $post_id ) && $this->smart_coupon( $post_id ) && wp_safe_redirect( self::editor_url( $post_id ) ) ) {
 			exit;
 		}
 	}
