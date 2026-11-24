@@ -37,7 +37,13 @@ $campaign_price  = null !== $campaign_end ? Helper::campaign_price( $product->ge
 $end_date        = $campaign_end ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
 $discount_amount = $campaign_price ? $campaign_price['percent'] : get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
 $heading_text    = PluginHelper::find_option_settings( $settings, 'countdown_heading', __( 'Last chance! [discount]% OFF', 'storegrowth-sales-booster' ) );
-$heading         = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );
+
+// A campaign countdown with no percent to name (no campaign price, no timer of its own).
+if ( '' === (string) $discount_amount || ! (float) $discount_amount ) {
+	$heading_text = __( 'Offer ends in', 'storegrowth-sales-booster' );
+}
+
+$heading = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );
 
 // The second old layout draws the heading as a gradient when its colour is transparent.
 $heading_class = 'ct-layout-2' === $layout_class && 'transparent' === PluginHelper::find_option_settings( $settings, 'heading_text_color', '' ) ? 'default' : '';
