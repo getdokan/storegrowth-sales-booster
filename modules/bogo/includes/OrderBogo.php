@@ -92,6 +92,7 @@ class OrderBogo implements HookRegistry {
 
 		// Store API validation for BOGO offers
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( $this, 'prevent_bogo_cart_item_qty_update' ), 10, 4 );
+		add_filter( 'woocommerce_store_api_product_quantity_editable', [ $this, 'lock_block_gift_quantity' ], 10, 3 );
 
         // Prevent BOGO offers product removing option from the cart.
 		add_action( 'woocommerce_remove_cart_item', array( $this, 'prevent_bogo_cart_item_remove' ), 10, 2 );
@@ -1650,6 +1651,22 @@ class OrderBogo implements HookRegistry {
 
 		// Sync offer schedules between product and global offers
 		\StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager::sync_offer_schedules( $post_id );
+	}
+
+	/**
+	 * A BOGO offer line's quantity can't be changed on the block cart either,
+	 * so it shows no quantity buttons (pro#356).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param bool        $editable  Whether the quantity can be changed.
+	 * @param \WC_Product $product   Product.
+	 * @param array|null  $cart_item Cart item.
+	 *
+	 * @return bool
+	 */
+	public function lock_block_gift_quantity( $editable, $product, $cart_item ) {
+		return empty( $cart_item['bogo_offer'] ) && $editable;
 	}
 
 	/**

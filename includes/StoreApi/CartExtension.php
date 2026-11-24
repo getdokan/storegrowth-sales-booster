@@ -231,7 +231,10 @@ class CartExtension implements HookRegistry {
 	 * @return array
 	 */
 	public function cart_item_data( $cart_item ): array {
-		return [ 'is_reward_gift' => ! empty( $cart_item[ CartLine::REWARD_GIFT ] ) ];
+		return [
+			'is_reward_gift' => ! empty( $cart_item[ CartLine::REWARD_GIFT ] ),
+			'is_bogo_gift'   => ! empty( $cart_item['bogo_offer'] ),
+		];
 	}
 
 	/**
@@ -245,6 +248,13 @@ class CartExtension implements HookRegistry {
 		return [
 			'is_reward_gift' => [
 				'description' => __( 'Whether the line is a Cart Rewards free gift.', 'storegrowth-sales-booster' ),
+				'type'        => 'boolean',
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
+			// @since SPSG_VERSION
+			'is_bogo_gift'   => [
+				'description' => __( 'Whether the line is a BOGO offer product, which follows its bought product.', 'storegrowth-sales-booster' ),
 				'type'        => 'boolean',
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,

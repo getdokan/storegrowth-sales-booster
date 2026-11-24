@@ -35,7 +35,10 @@ export interface CartCoupon {
 
 type CheckoutFilter< V > = (
     value: V,
-    extensions?: Record< string, { is_reward_gift?: boolean } >
+    extensions?: Record<
+        string,
+        { is_reward_gift?: boolean; is_bogo_gift?: boolean }
+    >
 ) => V;
 
 export interface WcBlocksCheckout {

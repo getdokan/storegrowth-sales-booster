@@ -96,8 +96,13 @@ wc.blocksCheckout.registerCheckoutFilters( 'storegrowth', {
                 : coupon;
         } );
     },
+    // Gift lines follow the cart; the shopper can't remove them (pro#356).
     showRemoveItemLink: ( value, extensions ) => {
-        return value && ! extensions?.storegrowth?.is_reward_gift;
+        return (
+            value &&
+            ! extensions?.storegrowth?.is_reward_gift &&
+            ! extensions?.storegrowth?.is_bogo_gift
+        );
     },
 } );
 
