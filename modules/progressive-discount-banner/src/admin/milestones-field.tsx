@@ -7,7 +7,7 @@
  */
 import { Button, Notice } from '@wedevs/plugin-ui';
 import apiFetch from '@wordpress/api-fetch';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { Plus, Trash2 } from 'lucide-react';
 import {
@@ -223,6 +223,7 @@ function MilestoneRow( {
                 </div>
                 <Button
                     variant="ghost"
+                    data-remove-milestone
                     disabled={ ! canRemove }
                     aria-label={ __(
                         'Remove milestone',
@@ -329,6 +330,8 @@ export function MilestonesField( {
     error,
 }: MilestonesFieldProps ) {
     const [ showUpgrade, setShowUpgrade ] = useState( false );
+    const rowsRef = useRef< HTMLDivElement >( null );
+    const addRef = useRef< HTMLButtonElement >( null );
     // Saved milestones over the Free limit (ADR-013).
     const [ paused, setPaused ] = useState< number[] >( [] );
     const coupons = useCoupons();
@@ -372,7 +375,7 @@ export function MilestonesField( {
                     );
                 } ) }
 
-            <div className="flex flex-col gap-4">
+            <div ref={ rowsRef } className="flex flex-col gap-4">
                 { value.map( ( milestone, index ) => {
                     return (
                         <MilestoneRow
@@ -395,6 +398,23 @@ export function MilestonesField( {
                                         return position !== index;
                                     } )
                                 );
+                                // Focus a nearby control, not the page (pro#366).
+                                window.setTimeout( () => {
+                                    const removes = Array.from(
+                                        rowsRef.current?.querySelectorAll< HTMLButtonElement >(
+                                            'button[data-remove-milestone]:not(:disabled)'
+                                        ) ?? []
+                                    );
+
+                                    (
+                                        removes[
+                                            Math.min(
+                                                index,
+                                                removes.length - 1
+                                            )
+                                        ] ?? addRef.current
+                                    )?.focus();
+                                }, 0 );
                             } }
                         />
                     );
@@ -405,6 +425,7 @@ export function MilestonesField( {
 
             <div>
                 <Button
+                    ref={ addRef }
                     variant="outline"
                     onClick={ () => {
                         if ( ! isPro && value.length >= 1 ) {

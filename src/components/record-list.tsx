@@ -212,6 +212,13 @@ export function RecordList< T extends ListRecord >( {
     }, [ load ] );
 
     const toggle = async ( item: T, active: boolean ) => {
+        const label = statusLabel( item );
+        // The switch's cell is drawn again after the save; focus goes back to
+        // it, as a keyboard user left it there (pro#366).
+        const hadFocus =
+            // eslint-disable-next-line @wordpress/no-global-active-element
+            document.activeElement?.getAttribute( 'aria-label' ) === label;
+
         setPending( ( ids ) => {
             return [ ...ids, item.id ];
         } );
@@ -255,6 +262,22 @@ export function RecordList< T extends ListRecord >( {
                     return id !== item.id;
                 } );
             } );
+
+            if ( hadFocus ) {
+                window.setTimeout( () => {
+                    Array.from(
+                        document.querySelectorAll< HTMLElement >(
+                            '[role="switch"]'
+                        )
+                    )
+                        .find( ( element ) => {
+                            return (
+                                element.getAttribute( 'aria-label' ) === label
+                            );
+                        } )
+                        ?.focus();
+                }, 0 );
+            }
         }
     };
 
@@ -296,9 +319,13 @@ export function RecordList< T extends ListRecord >( {
                     <span className="inline-flex flex-col items-start gap-1 [.dataviews-view-list_&]:relative [.dataviews-view-list_&]:z-[1]">
                         <Switch
                             checked={ item.status === 'active' }
-                            disabled={ pending.includes( item.id ) }
+                            // Not `disabled` while saving: a disabled control
+                            // drops keyboard focus to the page (pro#366).
+                            aria-disabled={ pending.includes( item.id ) }
                             onCheckedChange={ ( checked ) => {
-                                toggle( item, checked );
+                                if ( ! pending.includes( item.id ) ) {
+                                    toggle( item, checked );
+                                }
                             } }
                             aria-label={ statusLabel( item ) }
                         />
