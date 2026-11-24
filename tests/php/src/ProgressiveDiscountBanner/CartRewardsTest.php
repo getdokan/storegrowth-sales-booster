@@ -573,6 +573,17 @@ class CartRewardsTest extends StoreGrowthTestCase {
 
 		$this->fill_cart( 50, 2 );
 		$this->assertEqualsWithDelta( -100.0, WC()->cart->get_fee_total(), 0.001 );
+
+		// With a coupon, the products left to pay for are the cap.
+		$coupon = new \WC_Coupon();
+		$coupon->set_code( 'rewards-cap' );
+		$coupon->set_discount_type( 'fixed_cart' );
+		$coupon->set_amount( 20 );
+		$coupon->save();
+
+		WC()->cart->apply_coupon( 'rewards-cap' );
+		WC()->cart->calculate_totals();
+		$this->assertEqualsWithDelta( -80.0, WC()->cart->get_fee_total(), 0.001 );
 	}
 
 	/**

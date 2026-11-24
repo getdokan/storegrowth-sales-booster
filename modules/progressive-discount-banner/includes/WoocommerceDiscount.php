@@ -182,8 +182,9 @@ class WoocommerceDiscount implements HookRegistry {
 			? $subtotal * $discount['discount_value'] / 100
 			: $discount['discount_value'];
 
-		// Never more than the products: the rest would come off the shipping (pro#357).
-		$discount_amount = min( (float) $discount_amount, $subtotal );
+		// Never more than the products after coupons: the rest would come off
+		// the shipping (pro#357).
+		$discount_amount = min( (float) $discount_amount, max( 0.0, $subtotal - (float) wc()->cart->get_discount_total() ) );
 
 		if ( ! $discount_amount ) {
 			return;
