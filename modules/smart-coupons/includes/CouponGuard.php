@@ -82,7 +82,7 @@ class CouponGuard implements HookRegistry {
 			throw new Exception( esc_html( self::unavailable_message( $coupon ) ) );
 		}
 
-		$held = $this->gift_held_by_other_rule( $coupon );
+		$held = $this->gift_held_by_other_rule( $coupon, $discounts->get_object() );
 
 		// Never "applied" with no gift: the bought line already has its own BOGO deal (pro#354).
 		if ( $held ) {
@@ -100,15 +100,17 @@ class CouponGuard implements HookRegistry {
 	 * @since SPSG_VERSION
 	 *
 	 * @param WC_Coupon $coupon Coupon.
+	 * @param mixed     $checked What the coupon is checked against: a cart, or an order.
 	 *
 	 * @return array{rule: string, product: string}|null
 	 */
-	private function gift_held_by_other_rule( WC_Coupon $coupon ): ?array {
-		if ( ! SmartCoupon::is_buy_x_get_y( $coupon ) || ! Helper::is_module_active( BoGoModule::get_id() ) ) {
+	private function gift_held_by_other_rule( WC_Coupon $coupon, $checked ): ?array {
+		// Only a cart: an order's gifts are already decided.
+		if ( ! $checked instanceof WC_Cart || ! SmartCoupon::is_buy_x_get_y( $coupon ) || ! Helper::is_module_active( BoGoModule::get_id() ) ) {
 			return null;
 		}
 
-		return OrderBogo::instance()->rule_holding_line_of( (int) $coupon->get_meta( SmartCoupon::BOGO_RULE ) );
+		return OrderBogo::instance()->rule_holding_line_of( (int) $coupon->get_meta( SmartCoupon::BOGO_RULE ), $checked );
 	}
 
 	/**

@@ -878,12 +878,13 @@ class OrderBogo implements HookRegistry {
 	 *
 	 * @since SPSG_VERSION
 	 *
-	 * @param int $rule_id BOGO rule id.
+	 * @param int           $rule_id BOGO rule id.
+	 * @param \WC_Cart|null $cart    Cart being checked; the shopper's by default.
 	 *
 	 * @return array{rule: string, product: string}|null The other rule's and the product's names.
 	 */
-	public function rule_holding_line_of( int $rule_id ): ?array {
-		$cart = WC()->cart;
+	public function rule_holding_line_of( int $rule_id, $cart = null ): ?array {
+		$cart = $cart instanceof \WC_Cart ? $cart : WC()->cart;
 		$rule = $rule_id ? BogoDataManager::get_bogo_offer( $rule_id ) : null;
 
 		if ( ! $cart || ! $rule ) {
@@ -893,7 +894,19 @@ class OrderBogo implements HookRegistry {
 		$targets = array_map( 'intval', (array) ( $rule['offered_products'] ?? [] ) );
 
 		foreach ( $cart->get_cart() as $item ) {
-			if ( Helper::is_gift_line( $item ) || ! in_array( (int) $item['product_id'], $targets, true ) ) {
+			/**
+			 * Filters the product id a cart line's BOGO offer is looked up by
+			 * (documented in `get_trigger_settings()`).
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param int $product_id   Product id.
+			 * @param int $variation_id Variation id.
+			 */
+			$lookup = (int) apply_filters( 'spsg_bogo_get_apply_able_product_id', (int) $item['product_id'], (int) ( $item['variation_id'] ?? 0 ) );
+
+			// The id the line's rule is looked up by, as `get_trigger_settings()` reads it.
+			if ( Helper::is_gift_line( $item ) || ! array_intersect( [ (int) $item['product_id'], $lookup ], $targets ) ) {
 				continue;
 			}
 
