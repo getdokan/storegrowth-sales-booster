@@ -849,11 +849,18 @@ class Referee implements HookRegistry {
 		$parts = [];
 
 		foreach ( $steps as $step ) {
-			$price   = html_entity_decode( wp_strip_all_tags( Money::price_html( $product, (float) $step['price'], 'cart' ) ), ENT_QUOTES, 'UTF-8' );
-			$parts[] = trim( $price . ' ' . $step['label'] );
+			$price = html_entity_decode( wp_strip_all_tags( Money::price_html( $product, (float) $step['price'], 'cart' ) ), ENT_QUOTES, 'UTF-8' );
+			// Each step isolated (FSI … PDI), so a price stays next to its label (pro#364).
+			$parts[] = "\u{2068}" . trim( $price . ' ' . $step['label'] ) . "\u{2069}";
 		}
 
-		return implode( ' → ', $parts );
+		if ( ! is_rtl() ) {
+			return implode( ' → ', $parts );
+		}
+
+		// Right to left: the first step on the right, each arrow pointing to the
+		// next, laid out so (RLI … PDI) in the classic and the block cart alike.
+		return "\u{2067}" . implode( ' ← ', $parts ) . "\u{2069}";
 	}
 
 	/**

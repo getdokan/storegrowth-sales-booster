@@ -222,7 +222,8 @@ class RefereeTest extends StoreGrowthTestCase {
 		$item_data = apply_filters( 'woocommerce_get_item_data', [], WC()->cart->get_cart_item( $key ) );
 
 		foreach ( $item_data as $data ) {
-			$labels[ $data['key'] ] = $data['value'];
+			// Without the bidi isolates around each price step, as they read.
+			$labels[ $data['key'] ] = preg_replace( '/[\x{2066}-\x{2069}]/u', '', (string) $data['value'] );
 		}
 
 		return $labels;
@@ -335,6 +336,13 @@ class RefereeTest extends StoreGrowthTestCase {
 		$this->assertSame( 75.6, round( $totals[ $key ], 2 ) );
 		$this->assertSame( 'Deals combined', $this->labels( $key )['Deal'] );
 		$this->assertSame( '$120 → $108 Countdown 10% → $75.60 30% off Outerwear', $this->labels( $key )['Price'] );
+
+		// Right to left: each step isolated, the line laid out right to left, arrows to the next step (pro#364).
+		$GLOBALS['wp_locale']->text_direction = 'rtl';
+		$rtl                                  = apply_filters( 'woocommerce_get_item_data', [], WC()->cart->get_cart_item( $key ) );
+		$GLOBALS['wp_locale']->text_direction = 'ltr';
+
+		$this->assertSame( "\u{2067}\u{2068}\$120\u{2069} ← \u{2068}\$108 Countdown 10%\u{2069} ← \u{2068}\$75.60 30% off Outerwear\u{2069}\u{2069}", end( $rtl )['value'] );
 	}
 
 	/**
