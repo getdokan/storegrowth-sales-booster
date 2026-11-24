@@ -40,20 +40,44 @@ export interface OfferLimitNoticeProps {
     kind: string;
     /** Called after a choice is saved, for the page to reload its list. */
     onSaved?: () => void;
+    /**
+     * Called with the ids over the limit whenever they're read, for a page
+     * whose rows aren't records with their own chip (Cart Rewards milestones).
+     *
+     * @since SPSG_VERSION
+     */
+    onPaused?: ( ids: number[] ) => void;
 }
 
 /**
  * @since 3.1.0
  *
- * @param props         Props.
- * @param props.kind    Offer kind.
- * @param props.onSaved Called after a choice is saved.
+ * @param props          Props.
+ * @param props.kind     Offer kind.
+ * @param props.onSaved  Called after a choice is saved.
+ * @param props.onPaused Called with the ids over the limit.
  */
-export function OfferLimitNotice( { kind, onSaved }: OfferLimitNoticeProps ) {
+export function OfferLimitNotice( {
+    kind,
+    onSaved,
+    onPaused,
+}: OfferLimitNoticeProps ) {
     const route = `/${ getAdminData().restNamespace }/offer-limits`;
     const [ limit, setLimit ] = useState< OfferLimit | null >( null );
     const [ open, setOpen ] = useState( false );
     const [ picked, setPicked ] = useState< number[] >( [] );
+
+    useEffect( () => {
+        onPaused?.(
+            ( limit?.offers ?? [] )
+                .filter( ( offer ) => {
+                    return offer.paused;
+                } )
+                .map( ( offer ) => {
+                    return offer.id;
+                } )
+        );
+    }, [ limit, onPaused ] );
 
     useEffect( () => {
         apiFetch< OfferLimit[] >( { path: route } )

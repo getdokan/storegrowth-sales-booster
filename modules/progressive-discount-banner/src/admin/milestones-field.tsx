@@ -144,6 +144,8 @@ interface RowProps {
     onChange: ( next: Milestone ) => void;
     onRemove: () => void;
     canRemove: boolean;
+    /** Over the Free limit, so it doesn't pay out. */
+    paused: boolean;
 }
 
 /**
@@ -155,6 +157,7 @@ interface RowProps {
  * @param props.onChange  Change handler.
  * @param props.onRemove  Remove handler.
  * @param props.canRemove Whether the row can be removed.
+ * @param props.paused    Over the Free limit.
  */
 function MilestoneRow( {
     milestone,
@@ -164,6 +167,7 @@ function MilestoneRow( {
     onChange,
     onRemove,
     canRemove,
+    paused,
 }: RowProps ) {
     const isDiscount = milestone.reward === 'discount-amount';
     const rewardValue =
@@ -173,6 +177,14 @@ function MilestoneRow( {
 
     return (
         <div className="flex flex-col gap-3 border-t border-sg-line pt-4 first:border-0 first:pt-0">
+            { paused && (
+                <span className="text-xs text-sg-help">
+                    { __(
+                        'Paused: over Free limit',
+                        'storegrowth-sales-booster'
+                    ) }
+                </span>
+            ) }
             <div className="flex flex-wrap items-end gap-3">
                 <span className="pb-2 text-xs text-sg-help">{ index + 1 }</span>
                 <div className="min-w-[120px] flex-1">
@@ -312,6 +324,8 @@ export function MilestonesField( {
     error,
 }: MilestonesFieldProps ) {
     const [ showUpgrade, setShowUpgrade ] = useState( false );
+    // Saved milestones over the Free limit (ADR-013).
+    const [ paused, setPaused ] = useState< number[] >( [] );
     const coupons = useCoupons();
     const usesFreeShipping = value.some( ( milestone ) => {
         return milestone.reward === 'free-shipping';
@@ -330,7 +344,7 @@ export function MilestonesField( {
 
     return (
         <div className="flex w-full flex-col gap-4">
-            <OfferLimitNotice kind="cart_reward" />
+            <OfferLimitNotice kind="cart_reward" onPaused={ setPaused } />
             { usesFreeShipping &&
                 zonesWithout.map( ( zone ) => {
                     return (
@@ -363,6 +377,10 @@ export function MilestonesField( {
                             currency={ data.currency }
                             coupons={ coupons }
                             canRemove={ value.length > 1 }
+                            paused={
+                                milestone.id > 0 &&
+                                paused.includes( milestone.id )
+                            }
                             onChange={ ( next ) => {
                                 update( index, next );
                             } }
