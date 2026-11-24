@@ -764,6 +764,24 @@ class SmartCouponRepository {
 	}
 
 	/**
+	 * Release a coupon's BOGO rule, for a coupon deleted outside Smart
+	 * Coupons (WooCommerce's Coupons Trash, pro#355).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param WC_Coupon $coupon Coupon being deleted.
+	 *
+	 * @return void
+	 */
+	public static function release_bogo_rule_of( WC_Coupon $coupon ): void {
+		$rule = (int) $coupon->get_meta( SmartCoupon::BOGO_RULE );
+
+		if ( $rule ) {
+			self::release_bogo_rule( $rule, $coupon->get_id() );
+		}
+	}
+
+	/**
 	 * Clear a rule's flag unless another coupon still holds it.
 	 *
 	 * @since 3.1.0

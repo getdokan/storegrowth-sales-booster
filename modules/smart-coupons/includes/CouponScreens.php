@@ -40,6 +40,7 @@ class CouponScreens implements HookRegistry {
 		add_filter( 'get_edit_post_link', [ $this, 'link_to_smart_coupons' ], 10, 2 );
 		add_filter( 'post_row_actions', [ $this, 'remove_quick_edit' ], 10, 2 );
 		add_action( 'load-post.php', [ $this, 'redirect_edit_screen' ] );
+		add_action( 'before_delete_post', [ $this, 'release_bogo_rule' ], 10, 2 );
 		add_action( 'pre_get_posts', [ $this, 'hide_automatic_coupons' ] );
 
 		add_filter( 'woocommerce_cart_totals_coupon_label', [ $this, 'label_automatic_coupon' ], 10, 2 );
@@ -108,6 +109,29 @@ class CouponScreens implements HookRegistry {
 		}
 
 		return $actions;
+	}
+
+	/**
+	 * A Smart Coupon deleted from WooCommerce's Coupons Trash lets its BOGO
+	 * rule run without a coupon again, as a delete from Smart Coupons does.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int          $post_id Post id.
+	 * @param WP_Post|null $post    Post.
+	 *
+	 * @return void
+	 */
+	public function release_bogo_rule( $post_id, $post = null ): void {
+		if ( ! $post instanceof WP_Post || 'shop_coupon' !== $post->post_type ) {
+			return;
+		}
+
+		$coupon = $this->smart_coupon( (int) $post_id );
+
+		if ( $coupon ) {
+			SmartCouponRepository::release_bogo_rule_of( $coupon );
+		}
 	}
 
 	/**

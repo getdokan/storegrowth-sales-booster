@@ -804,6 +804,39 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
+	 * Deleting a Buy X get Y coupon from WooCommerce's Coupons Trash lets its
+	 * rule run without a coupon again, as a delete from Smart Coupons does.
+	 *
+	 * @return void
+	 */
+	public function test_deleting_a_coupon_in_the_trash_releases_its_rule(): void {
+		$boots  = $this->product( 95 );
+		$gift   = $this->product( 40 );
+		$rule   = $this->create_global_offer(
+			[
+				'bogo_deal_type'            => 'different',
+				'offered_products'          => [ $boots->get_id() ],
+				'get_alternate_products'    => [ $gift->get_id() ],
+				'minimum_quantity_required' => 1,
+				'offer_product_id'          => $gift->get_id(),
+			]
+		);
+		$coupon = $this->save_coupon(
+			'trash-deal',
+			[
+				'discount_type' => SmartCoupon::TYPE_BUY_X_GET_Y,
+				'bogo_rule'     => $rule,
+			]
+		);
+
+		$this->assertTrue( (bool) BogoDataManager::get_bogo_offer( $rule )[ BogoDataManager::ONLY_WITH_COUPON ] );
+
+		wp_delete_post( $coupon->get_id(), true );
+
+		$this->assertEmpty( BogoDataManager::get_bogo_offer( $rule )[ BogoDataManager::ONLY_WITH_COUPON ] ?? null );
+	}
+
+	/**
 	 * A Buy X get Y code whose bought product already has another BOGO deal
 	 * is refused, saying why, instead of reading "applied" with no gift
 	 * (pro#354).
