@@ -48,7 +48,7 @@ class ProductController extends WC_REST_Products_Controller {
 
 		// A variable product's `price` is its cheapest variation's: the
 		// highest prices too, so a preview can show the range
-		// (`max_price`, `max_regular_price`; @since SPSG_VERSION).
+		// (`max_price`, `max_regular_price`; @since 3.1.0).
 		if ( $product instanceof WC_Product_Variable ) {
 			$data                      = $response->get_data();
 			$data['max_price']         = (string) $product->get_variation_price( 'max' );

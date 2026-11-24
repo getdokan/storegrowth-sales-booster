@@ -115,7 +115,7 @@ class CouponScreens implements HookRegistry {
 	 * A Smart Coupon deleted from WooCommerce's Coupons Trash lets its BOGO
 	 * rule run without a coupon again, as a delete from Smart Coupons does.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int          $post_id Post id.
 	 * @param WP_Post|null $post    Post.

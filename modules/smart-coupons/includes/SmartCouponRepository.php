@@ -352,7 +352,7 @@ class SmartCouponRepository {
 	 * store doesn't write the status: it creates every coupon published and
 	 * leaves the status as it was on an update (pro#346).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -767,7 +767,7 @@ class SmartCouponRepository {
 	 * Release a coupon's BOGO rule, for a coupon deleted outside Smart
 	 * Coupons (WooCommerce's Coupons Trash, pro#355).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon being deleted.
 	 *

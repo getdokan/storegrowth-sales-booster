@@ -47,7 +47,7 @@ class V_3_1_0 extends BaseMigration {
 	 * successfully acquired free shipping." would be wrong for them. Only
 	 * the old default is replaced; a text the store owner wrote stays.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

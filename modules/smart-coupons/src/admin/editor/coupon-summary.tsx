@@ -21,7 +21,7 @@ interface CouponSummaryProps {
 /**
  * A link coupon's link, to copy and share.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props      Props.
  * @param props.link Link.
@@ -162,7 +162,7 @@ function summaryLines(
  * The cart totals row shoppers see: WooCommerce's "Coupon: code" (an
  * automatic coupon shows its title), and the discount it takes off.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param values   Editor values.
  * @param currency Store currency symbol.

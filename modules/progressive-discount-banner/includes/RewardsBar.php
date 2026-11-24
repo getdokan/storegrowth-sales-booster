@@ -63,7 +63,7 @@ class RewardsBar implements HookRegistry {
 	 * Whether the visitor is in the bar's "Who Can See" audience, a Pro
 	 * setting the top bar follows too.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return bool
 	 */

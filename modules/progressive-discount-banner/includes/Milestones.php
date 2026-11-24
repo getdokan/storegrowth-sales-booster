@@ -129,7 +129,7 @@ class Milestones {
 	 * What is wrong with a milestone a save sends, naming it by position;
 	 * '' when nothing is (pro#357).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $row      Milestone.
 	 * @param int   $position Its position, from 1.

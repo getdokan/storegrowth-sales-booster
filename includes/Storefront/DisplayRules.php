@@ -91,7 +91,7 @@ class DisplayRules {
 	 * Whether a running campaign shows a surface, so it shows even while
 	 * the module's own settings keep it off (never saved, switched off).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param string $surface  Surface (`floating_bar`, `sales_pop`, …).
 	 * @param array  $settings The module's settings.
@@ -103,7 +103,7 @@ class DisplayRules {
 		 * Filters whether a running campaign shows a surface. StoreGrowth
 		 * has no campaigns itself; StoreGrowth Pro supplies them.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param bool   $shows    False: no campaign shows it.
 		 * @param string $surface  Surface.

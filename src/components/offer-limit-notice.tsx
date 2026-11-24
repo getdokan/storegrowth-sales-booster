@@ -45,7 +45,7 @@ export interface OfferLimitNoticeProps {
      * Called with the ids over the limit whenever they're read, for a page
      * whose rows aren't records with their own chip (Cart Rewards milestones).
      *
-     * @since SPSG_VERSION
+     * @since 3.1.0
      */
     onPaused?: ( ids: number[] ) => void;
 }

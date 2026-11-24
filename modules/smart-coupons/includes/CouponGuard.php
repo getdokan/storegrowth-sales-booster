@@ -103,7 +103,7 @@ class CouponGuard implements HookRegistry {
 	 * For a Buy X get Y coupon: the other BOGO rule holding a cart line its
 	 * rule targets, so its gift can't be added.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 * @param mixed     $checked What the coupon is checked against: a cart, or an order.
@@ -310,7 +310,7 @@ class CouponGuard implements HookRegistry {
 	 * fixed amount outright for one sale line; `DealList::coupon_applies()`
 	 * reads the stored value and skips the sale lines.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool      $exclude Whether sale items are excluded.
 	 * @param WC_Coupon $coupon  Coupon.
@@ -360,7 +360,7 @@ class CouponGuard implements HookRegistry {
 	 * The coupon as stored: a switched-off coupon is a draft, which
 	 * WooCommerce doesn't load by code, so it reads as an empty coupon.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon WooCommerce loaded by code.
 	 *

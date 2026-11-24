@@ -252,7 +252,7 @@ class CartExtension implements HookRegistry {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			// @since SPSG_VERSION
+			// @since 3.1.0
 			'is_bogo_gift'   => [
 				'description' => __( 'Whether the line is a BOGO offer product, which follows its bought product.', 'storegrowth-sales-booster' ),
 				'type'        => 'boolean',

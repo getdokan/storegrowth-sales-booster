@@ -876,7 +876,7 @@ class OrderBogo implements HookRegistry {
 	 * Another rule holding a bought line a rule targets: a line gets one rule,
 	 * so the given rule can't give its gift there (pro#354).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int           $rule_id BOGO rule id.
 	 * @param \WC_Cart|null $cart    Cart being checked; the shopper's by default.
@@ -1711,7 +1711,7 @@ class OrderBogo implements HookRegistry {
 	 * A BOGO offer line's quantity can't be changed on the block cart either,
 	 * so it shows no quantity buttons (pro#356).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param bool        $editable  Whether the quantity can be changed.
 	 * @param \WC_Product $product   Product.
