@@ -1,23 +1,24 @@
 == Changelog ==
 
-### v3.1.0 (November 17, 2026) ###
+### v3.1.0 (November 24, 2026) ###
 
 - **new:** Smart Coupons: create coupons that apply on their own, with a code, or from a link you share. Give a percentage off, a fixed amount off or Buy X Get Y, choose who can use them and how many times, and set start and end dates. See each coupon's uses, discount given and revenue at a glance. They are regular WooCommerce coupons, so code and link coupons also appear under WooCommerce > Coupons. Free includes unlimited code and link coupons and one automatic coupon at a time.
 - **new:** Cart Rewards, replacing Free Shipping Rules: reward shoppers as their cart grows with free shipping, a coupon code, a free gift or a discount at each milestone, and a progress bar on the cart, Fly Cart and block cart showing how close they are. Your free shipping rules carry over as the first milestone. Free includes one milestone.
-- **new:** Shoppers always get the better deal: when a Smart Coupon and a BOGO deal both apply, the bigger saving wins, and the cart tells them why ("Larger deal applied", "Deals combined").
+- **new:** Shoppers always get the better deal: when a Smart Coupon and a BOGO deal both apply, the bigger saving wins, and the cart tells them why ("Larger deal applied", "Deals combined"). A Buy X Get Y code can't be used on a product that already has its own BOGO deal, and the cart says why.
 - **new:** Works with WooCommerce's block cart and checkout: StoreGrowth messages, the rewards bar and automatic coupon names show on the block cart, mini-cart (WooCommerce 11.1+) and checkout.
 - **new:** Ready for Campaigns in StoreGrowth Pro: an offer's screen tells you when a campaign is changing it and until when, and editing an offer from a campaign takes you back to the campaign.
 - **enhancement:** Carts always match the deals running right now. A free BOGO gift leaves the cart, with a message, when its deal ends or the shopper no longer qualifies, and BOGO and Order Bump prices update with every cart change.
 - **enhancement:** On Free, if you have more offers than the limit, you choose which stay on from the module's page.
 - **enhancement:** The Fly Cart shows the same product details as the cart, such as variation options and deal labels.
 - **enhancement:** If a database update fails, you can retry it, and the notice stays until it's done.
-- **enhancement:** The Analytics page uses the full screen width, and placeholder text is lighter, so it's easy to tell from what you typed.
+- **enhancement:** The Analytics page uses the full screen width, and placeholder text is easier to read while still lighter than what you type.
 - **enhancement:** StoreGrowth and StoreGrowth Pro tell you when one needs updating to work with the other. StoreGrowth now requires WooCommerce 9.6 or newer.
 - **change:** Cart Rewards milestones now count the cart subtotal after discounts, with or without tax the way your store shows prices (before, it was the subtotal before tax and discounts).
 - **change:** Rewards follow the cart: a shopper who drops below a milestone loses the reward and gets it back when they go above it again. Below a free shipping milestone, WooCommerce's Free shipping option is hidden. If you offered free shipping to everyone, check your shipping settings after updating.
 - **fix:** Deals start and end at the exact time you set, in your site's timezone: Countdown Timer, BOGO weekday deals and Pro's same-product BOGO. Countdown used each shopper's own computer clock, so a timer running during the update may show a different time left afterwards, by up to the gap between the shopper's timezone and your store's.
 - **fix:** BOGO prices on product pages and crossed-out cart prices match your store's currency format and tax display.
 - **fix:** Price ranges of variable products show Countdown sale prices.
+- **fix:** A BOGO offer whose free product is a variable product shows its full price range, not just the cheapest variation.
 - **fix:** On Dokan marketplaces, coupon data and vendor earnings stay correct when StoreGrowth deals apply.
 - **note:** Fixed amounts and milestones use your store's base currency. Multi-currency is not supported.
 
