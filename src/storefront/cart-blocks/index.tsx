@@ -64,6 +64,24 @@ function RewardsBar( { rewards }: { rewards: RewardsProgress } ) {
 }
 
 /**
+ * An automatic coupon's minimum still to reach (pro#341).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param props      Props.
+ * @param props.text Nudge text.
+ */
+function CouponNudge( { text }: { text: string } ) {
+    return (
+        <div className="wc-block-components-notice-banner is-info spsg-coupon-nudge">
+            <div className="wc-block-components-notice-banner__content">
+                { text }
+            </div>
+        </div>
+    );
+}
+
+/**
  * The bar in the order summary of the block cart and checkout.
  *
  * @since 3.1.0
@@ -74,26 +92,22 @@ function RewardsSlot() {
         return select( CART_STORE ).getCartData().extensions?.storegrowth;
     }, [] );
     const rewards = data?.rewards;
-    const showBar = Boolean( rewards ) && 'fly-cart' !== rewards?.placement;
-    // An automatic coupon's minimum still to reach (pro#341).
-    const nudge = data?.coupon_nudge;
+    // The slot clones each child, so it gets only elements, never `null`.
+    const parts = [];
 
-    if ( ! showBar && ! nudge ) {
+    if ( data?.coupon_nudge ) {
+        parts.push( <CouponNudge key="nudge" text={ data.coupon_nudge } /> );
+    }
+
+    if ( rewards && 'fly-cart' !== rewards.placement ) {
+        parts.push( <RewardsBar key="rewards" rewards={ rewards } /> );
+    }
+
+    if ( ! parts.length ) {
         return null;
     }
 
-    return (
-        <ExperimentalOrderMeta>
-            { nudge && (
-                <div className="wc-block-components-notice-banner is-info spsg-coupon-nudge">
-                    <div className="wc-block-components-notice-banner__content">
-                        { nudge }
-                    </div>
-                </div>
-            ) }
-            { showBar && rewards && <RewardsBar rewards={ rewards } /> }
-        </ExperimentalOrderMeta>
-    );
+    return <ExperimentalOrderMeta>{ parts }</ExperimentalOrderMeta>;
 }
 
 wc.blocksCheckout.registerCheckoutFilters( 'storegrowth', {
