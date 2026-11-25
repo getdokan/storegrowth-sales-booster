@@ -194,6 +194,119 @@ function cartLine(
 }
 
 /**
+ * What an automatic coupon gives, as the store words it (PHP
+ * `CouponPromos::deal_text()`).
+ *
+ * @since SPSG_VERSION
+ *
+ * @param values   Editor values.
+ * @param currency Store currency symbol.
+ */
+function dealText(
+    values: Record< string, SettingValue >,
+    currency: string
+): string {
+    if ( values.discount_type === 'fixed' ) {
+        return sprintf(
+            /* translators: %s: amount, e.g. "$5". */
+            __( '%s off', 'storegrowth-sales-booster' ),
+            `${ currency }${ values.amount }`
+        );
+    }
+
+    if ( values.discount_type === 'tiers' ) {
+        return __( 'Buy more, save more', 'storegrowth-sales-booster' );
+    }
+
+    return sprintf(
+        /* translators: %s: percent number. */
+        __( '%s%% off', 'storegrowth-sales-booster' ),
+        String( values.amount )
+    );
+}
+
+/**
+ * The product page badge and the cart nudge an automatic coupon shows (PHP
+ * `CouponPromos`, pro#341); none for other methods or Buy X get Y.
+ *
+ * @since SPSG_VERSION
+ *
+ * @param values   Editor values.
+ * @param currency Store currency symbol.
+ */
+function promos(
+    values: Record< string, SettingValue >,
+    currency: string
+): { badge: string; nudge: string } {
+    if (
+        values.method !== 'automatic' ||
+        values.discount_type === 'buy_x_get_y'
+    ) {
+        return { badge: '', nudge: '' };
+    }
+
+    const deal = dealText( values, currency );
+    const minimum = Number( values.minimum_amount ) || 0;
+    const items = Number( values.minimum_quantity ) || 0;
+
+    if ( values.minimum_type === 'subtotal' && minimum > 0 ) {
+        return {
+            badge: sprintf(
+                /* translators: 1: deal, e.g. "30% off", 2: amount. */
+                __(
+                    '%1$s on orders of %2$s or more',
+                    'storegrowth-sales-booster'
+                ),
+                deal,
+                `${ currency }${ minimum }`
+            ),
+            // An example cart part of the way there.
+            nudge: sprintf(
+                /* translators: 1: amount still to add, 2: deal, e.g. "30% off". */
+                __(
+                    'Add %1$s more to unlock %2$s',
+                    'storegrowth-sales-booster'
+                ),
+                `${ currency }${ ( minimum * 0.4 ).toFixed( 2 ) }`,
+                deal
+            ),
+        };
+    }
+
+    if ( values.minimum_type === 'quantity' && items > 1 ) {
+        return {
+            badge: sprintf(
+                /* translators: 1: deal, e.g. "30% off", 2: number of items. */
+                __(
+                    '%1$s when you buy %2$d or more',
+                    'storegrowth-sales-booster'
+                ),
+                deal,
+                items
+            ),
+            nudge: sprintf(
+                /* translators: 1: number of items still to add, 2: deal. */
+                __(
+                    'Add %1$d more item to unlock %2$s',
+                    'storegrowth-sales-booster'
+                ),
+                1,
+                deal
+            ),
+        };
+    }
+
+    return {
+        badge: sprintf(
+            /* translators: %s: deal, e.g. "30% off". */
+            __( '%s in your cart', 'storegrowth-sales-booster' ),
+            deal
+        ),
+        nudge: '',
+    };
+}
+
+/**
  * @since 3.1.0
  *
  * @param props          Props.
@@ -224,6 +337,7 @@ export function CouponSummary( {
         ...summaryLines( values, currency ),
     ];
     const [ name, amount ] = cartLine( values, currency );
+    const { badge, nudge } = promos( values, currency );
 
     return (
         <div className="flex w-full flex-col gap-4 rounded-br-lg border border-l-0 border-t-0 border-sg-cardline bg-white p-6 @max-[932px]:rounded-b-lg @max-[932px]:border-l">
@@ -242,9 +356,46 @@ export function CouponSummary( {
                 <h2 className="m-0 text-sm font-semibold text-sg-heading">
                     { __( 'Shoppers will see', 'storegrowth-sales-booster' ) }
                 </h2>
-                <div className="flex justify-between rounded-lg border border-sg-line p-3 text-sm text-sg-text">
-                    <span>{ name }</span>
-                    <span>{ amount }</span>
+                { badge && (
+                    <div className="flex flex-col gap-1">
+                        <span className="text-xs text-sg-help">
+                            { __(
+                                'Product page',
+                                'storegrowth-sales-booster'
+                            ) }
+                        </span>
+                        <p className="m-0 w-fit rounded bg-[#ecfdf5] px-2.5 py-1.5 text-sm text-[#065f46]">
+                            <b className="font-semibold">{ badge }</b>{ ' ' }
+                            { String( values.title ) }
+                        </p>
+                    </div>
+                ) }
+                { nudge && (
+                    <div className="flex flex-col gap-1">
+                        <span className="text-xs text-sg-help">
+                            { __(
+                                'Cart, below the minimum (example)',
+                                'storegrowth-sales-booster'
+                            ) }
+                        </span>
+                        <p className="m-0 rounded-lg border border-sg-line p-3 text-sm text-sg-text">
+                            { nudge }
+                        </p>
+                    </div>
+                ) }
+                <div className="flex flex-col gap-1">
+                    { ( badge || nudge ) && (
+                        <span className="text-xs text-sg-help">
+                            { __(
+                                'Cart, once it applies',
+                                'storegrowth-sales-booster'
+                            ) }
+                        </span>
+                    ) }
+                    <div className="flex justify-between rounded-lg border border-sg-line p-3 text-sm text-sg-text">
+                        <span>{ name }</span>
+                        <span>{ amount }</span>
+                    </div>
                 </div>
             </section>
         </div>

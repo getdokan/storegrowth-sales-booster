@@ -1,0 +1,26 @@
+/**
+ * Smart Coupons' product page badge for an automatic coupon (pro#341).
+ *
+ * @since SPSG_VERSION
+ */
+.spsg-coupon-badge {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    margin: 0 0 1em;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: var(--spsg-smart-coupons-badge-bg, #ecfdf5);
+    color: var(--spsg-smart-coupons-badge-color, #065f46);
+    font-size: 0.875em;
+    line-height: 1.4;
+}
+
+.spsg-coupon-badge__deal {
+    font-weight: 600;
+}
+
+.spsg-coupon-badge__name {
+    opacity: 0.85;
+}

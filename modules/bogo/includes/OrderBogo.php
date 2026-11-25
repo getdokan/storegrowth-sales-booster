@@ -873,8 +873,10 @@ class OrderBogo implements HookRegistry {
 	}
 
 	/**
-	 * Another rule holding a bought line a rule targets: a line gets one rule,
-	 * so the given rule can't give its gift there (pro#354).
+	 * Another rule holding a bought line a rule targets with a deal worth as
+	 * much or more: a line gets one rule, and the larger deal keeps it, so
+	 * the given rule can't give its gift there (pro#354). A smaller one gives
+	 * the line up (`with_larger_coupon_rule()`).
 	 *
 	 * @since 3.1.0
 	 *
@@ -885,35 +887,26 @@ class OrderBogo implements HookRegistry {
 	 */
 	public function rule_holding_line_of( int $rule_id, $cart = null ): ?array {
 		$cart = $cart instanceof \WC_Cart ? $cart : WC()->cart;
-		$rule = $rule_id ? BogoDataManager::get_bogo_offer( $rule_id ) : null;
+		$rule = $this->coupon_rule( $rule_id );
 
 		if ( ! $cart || ! $rule ) {
 			return null;
 		}
 
-		$targets = array_map( 'intval', (array) ( $rule['offered_products'] ?? [] ) );
+		// The rule's values as its campaign runs them, though not "live": while
+		// its code is being entered the rule is still locked.
+		$version = OfferVersions::effective_offer( array_merge( $rule, [ 'offer_kind' => OfferVersions::BOGO ] ) )['values'];
 
 		foreach ( $cart->get_cart() as $item ) {
-			/**
-			 * Filters the product id a cart line's BOGO offer is looked up by
-			 * (documented in `get_trigger_settings()`).
-			 *
-			 * @since 2.0.0
-			 *
-			 * @param int $product_id   Product id.
-			 * @param int $variation_id Variation id.
-			 */
-			$lookup = (int) apply_filters( 'spsg_bogo_get_apply_able_product_id', (int) $item['product_id'], (int) ( $item['variation_id'] ?? 0 ) );
-
-			// The id the line's rule is looked up by, as `get_trigger_settings()` reads it.
-			if ( Helper::is_gift_line( $item ) || ! array_intersect( [ (int) $item['product_id'], $lookup ], $targets ) ) {
+			if ( Helper::is_gift_line( $item ) || ! $this->rule_targets( $rule, $item ) ) {
 				continue;
 			}
 
 			$holder = $this->get_trigger_effective( $item );
 			$values = $holder ? $holder['values'] : null;
+			$worth  = $this->deal_value( (array) $version, $item );
 
-			if ( $values && (int) ( $values['id'] ?? 0 ) !== $rule_id ) {
+			if ( $values && (int) ( $values['id'] ?? 0 ) !== $rule_id && $this->deal_value( $values, $item ) >= $worth ) {
 				$name = (string) ( $values['name_of_order_bogo'] ?? '' );
 
 				return [
@@ -1342,6 +1335,15 @@ class OrderBogo implements HookRegistry {
 			return;
 		}
 
+		// The line's rule changed (a coupon's larger deal took it, or gave it
+		// back): the gift becomes the new rule's, with no notice (pro#354).
+		if ( ! $this->is_rule_gift( $settings, $trigger, $item ) ) {
+			$this->remove_gift( $cart, $key );
+			$this->return_gift( $cart, $trigger_key, $trigger );
+
+			return;
+		}
+
 		if ( (int) $item['quantity'] > $earned ) {
 			$cart->cart_contents[ $key ]['quantity'] = $earned;
 		}
@@ -1429,20 +1431,204 @@ class OrderBogo implements HookRegistry {
 	 * @return array|null `effective_offer()`'s answer; null when no offer applies right now.
 	 */
 	private function get_trigger_effective( array $trigger ): ?array {
-		$settings = $this->get_trigger_settings( $trigger );
+		return $this->with_larger_coupon_rule( $trigger, $this->live_effective( $this->get_trigger_settings( $trigger ) ) );
+	}
 
+	/**
+	 * An offer as it runs right now, or null when it doesn't.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array|null $settings The offer.
+	 *
+	 * @return array|null `effective_offer()`'s answer.
+	 */
+	private function live_effective( ?array $settings ): ?array {
 		// Buy X Get X is a Pro deal: without a valid licence it gives nothing.
-		if ( 'same' === ( $settings['bogo_deal_type'] ?? '' ) && ! sp_store_growth()->has_pro() ) {
-			return null;
-		}
-
-		if ( empty( $settings ) ) {
+		if ( empty( $settings ) || ( 'same' === ( $settings['bogo_deal_type'] ?? '' ) && ! sp_store_growth()->has_pro() ) ) {
 			return null;
 		}
 
 		$effective = OfferVersions::effective_offer( array_merge( $settings, [ 'offer_kind' => OfferVersions::BOGO ] ) );
 
 		return $effective['live'] ? $effective : null;
+	}
+
+	/**
+	 * A line gets one rule. A rule a coupon in the cart unlocks takes the line
+	 * from the line's own rule when its gift is worth more: the larger deal
+	 * wins (pro#354).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array      $trigger Bought line.
+	 * @param array|null $own     The line's own rule as it runs, if any.
+	 *
+	 * @return array|null `effective_offer()`'s answer.
+	 */
+	private function with_larger_coupon_rule( array $trigger, ?array $own ): ?array {
+		/**
+		 * Filters the BOGO rules the coupons in the cart unlock. Smart Coupons'
+		 * Buy X get Y coupons answer it.
+		 *
+		 * @since SPSG_VERSION
+		 *
+		 * @param int[] $rule_ids Rule ids.
+		 */
+		$rule_ids = array_map( 'intval', (array) apply_filters( 'spsg_bogo_coupon_rule_ids', [] ) );
+
+		if ( ! $rule_ids ) {
+			return $own;
+		}
+
+		$best  = $own;
+		$value = $own ? $this->deal_value( $own['values'], $trigger ) : 0.0;
+
+		foreach ( $rule_ids as $rule_id ) {
+			if ( $own && (int) ( $own['values']['id'] ?? 0 ) === $rule_id ) {
+				continue;
+			}
+
+			$candidate = $this->rule_for_line( $rule_id, $trigger );
+			$worth     = $candidate ? $this->deal_value( $candidate['values'], $trigger ) : 0.0;
+
+			if ( $candidate && $worth > $value ) {
+				$best  = $candidate;
+				$value = $worth;
+			}
+		}
+
+		return $best;
+	}
+
+	/**
+	 * A rule as it runs on a bought line it targets, or null.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int   $rule_id BOGO rule id.
+	 * @param array $trigger Bought line.
+	 *
+	 * @return array|null `effective_offer()`'s answer.
+	 */
+	private function rule_for_line( int $rule_id, array $trigger ): ?array {
+		$rule = $this->coupon_rule( $rule_id );
+
+		// Its own campaign version comes through `effective_offer()`.
+		return $rule && $this->rule_targets( $rule, $trigger ) ? $this->live_effective( $rule ) : null;
+	}
+
+	/**
+	 * A BOGO rule by id, read once per request: a coupon's rule is weighed
+	 * on every cart line, each time the cart is worked out.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int $rule_id Rule id.
+	 *
+	 * @return array|null
+	 */
+	private function coupon_rule( int $rule_id ): ?array {
+		if ( ! $rule_id ) {
+			return null;
+		}
+
+		// The non-persistent group: within this request only.
+		$found = false;
+		$rule  = wp_cache_get( $rule_id, 'spsg_bogo_coupon_rules', false, $found );
+
+		if ( ! $found ) {
+			$rule = BogoDataManager::get_bogo_offer( $rule_id );
+
+			// Never kept past the request, by a persistent object cache either.
+			wp_cache_add_non_persistent_groups( [ 'spsg_bogo_coupon_rules' ] );
+			wp_cache_set( $rule_id, $rule, 'spsg_bogo_coupon_rules' );
+		}
+
+		return is_array( $rule ) ? $rule : null;
+	}
+
+	/**
+	 * Whether a rule targets a bought line: its products or categories, by
+	 * the product or the id the line's rule is looked up by.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $rule    Rule.
+	 * @param array $trigger Bought line.
+	 *
+	 * @return bool
+	 */
+	private function rule_targets( array $rule, array $trigger ): bool {
+		$product_id = (int) $trigger['product_id'];
+
+		/**
+		 * Filters the product id a cart line's BOGO offer is looked up by
+		 * (documented in `get_trigger_settings()`).
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int $product_id   Product id.
+		 * @param int $variation_id Variation id.
+		 */
+		$lookup = (int) apply_filters( 'spsg_bogo_get_apply_able_product_id', $product_id, (int) ( $trigger['variation_id'] ?? 0 ) );
+
+		return BogoDataManager::product_in_global_offer( $rule, $product_id ) || ( $lookup !== $product_id && BogoDataManager::product_in_global_offer( $rule, $lookup ) );
+	}
+
+	/**
+	 * Whether a gift line is one a rule gives its bought line: the rule's
+	 * reward or one of its alternates.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings The offer.
+	 * @param array $trigger  Bought line.
+	 * @param array $gift     Gift line.
+	 *
+	 * @return bool
+	 */
+	private function is_rule_gift( array $settings, array $trigger, array $gift ): bool {
+		/**
+		 * Filters the product id a cart line's BOGO offer is looked up by
+		 * (documented in `get_trigger_settings()`).
+		 *
+		 * @since 2.0.0
+		 *
+		 * @param int $product_id   Product id.
+		 * @param int $variation_id Variation id.
+		 */
+		$apply_id   = (int) apply_filters( 'spsg_bogo_get_apply_able_product_id', (int) $trigger['product_id'], (int) ( $trigger['variation_id'] ?? 0 ) );
+		$alternates = $settings['alternate_products'] ?? $settings['get_alternate_products'] ?? [];
+		$allowed    = array_map( 'intval', array_merge( [ BogoValidator::get_offer_product_id( $settings, $apply_id ) ], (array) $alternates ) );
+
+		return (bool) array_intersect( [ (int) $gift['product_id'], (int) ( $gift['variation_id'] ?? 0 ) ], $allowed );
+	}
+
+	/**
+	 * What a rule gives a bought line: its gifts' saving.
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param array $settings The offer.
+	 * @param array $trigger  Bought line.
+	 *
+	 * @return float
+	 */
+	private function deal_value( array $settings, array $trigger ): float {
+		$earned   = $this->get_earned_gifts( $settings, $trigger );
+		$apply_id = ! empty( $trigger['variation_id'] ) ? (int) $trigger['variation_id'] : (int) $trigger['product_id'];
+		$gift     = $earned > 0 ? wc_get_product( BogoValidator::get_offer_product_id( $settings, $apply_id ) ) : null;
+
+		// A gift that can't go in the cart gives nothing, so it never wins a line.
+		if ( ! $gift || ! $gift->is_purchasable() || ! $gift->is_in_stock() ) {
+			return 0.0;
+		}
+
+		$price = (float) $gift->get_price();
+		$offer = (float) Helper::calculate_offer_price( $settings['offer_type'] ?? 'free', $price, $settings['discount_amount'] ?? 0 );
+
+		return max( 0.0, $price - $offer ) * $earned;
 	}
 
 	/**
@@ -1720,7 +1906,7 @@ class OrderBogo implements HookRegistry {
 	 * @return bool
 	 */
 	public function lock_block_gift_quantity( $editable, $product, $cart_item ) {
-		return empty( $cart_item['bogo_offer'] ) && $editable;
+		return ! Helper::is_gift_line( (array) $cart_item ) && $editable;
 	}
 
 	/**

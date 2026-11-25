@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\SmartCoupons\Providers;
 
 use StorePulse\StoreGrowth\DependencyManagement\BootableServiceProvider;
+use StorePulse\StoreGrowth\Modules\SmartCoupons\CouponPromos;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\LinkCoupons;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\REST\SmartCouponsController;
 
@@ -33,6 +34,7 @@ class BootstrapServiceProvider extends BootableServiceProvider {
 	protected $services = [
 		SmartCouponsController::class,
 		LinkCoupons::class,
+		CouponPromos::class,
 	];
 
 	/**

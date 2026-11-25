@@ -109,7 +109,7 @@ class CartBlocksIntegration implements IntegrationInterface {
 			self::HANDLE,
 			Helper::get_plugin_url( 'build/cart-blocks.js' ),
 			// The bundle reads these from `window` directly, so the build can't list them.
-			array_merge( [ 'wc-blocks-checkout', 'wc-blocks-data-store', 'wp-data', 'wp-plugins' ], $asset['dependencies'] ),
+			array_merge( [ 'wc-blocks-checkout', 'wc-blocks-data-store', 'wp-data', 'wp-hooks', 'wp-plugins' ], $asset['dependencies'] ),
 			$asset['version'],
 			true
 		);

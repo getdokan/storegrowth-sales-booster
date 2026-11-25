@@ -70,18 +70,28 @@ function RewardsBar( { rewards }: { rewards: RewardsProgress } ) {
  */
 function RewardsSlot() {
     const { ExperimentalOrderMeta } = wc.blocksCheckout;
-    const rewards = wp.data.useSelect( ( select ) => {
-        return select( CART_STORE ).getCartData().extensions?.storegrowth
-            ?.rewards;
+    const data = wp.data.useSelect( ( select ) => {
+        return select( CART_STORE ).getCartData().extensions?.storegrowth;
     }, [] );
+    const rewards = data?.rewards;
+    const showBar = Boolean( rewards ) && 'fly-cart' !== rewards?.placement;
+    // An automatic coupon's minimum still to reach (pro#341).
+    const nudge = data?.coupon_nudge;
 
-    if ( ! rewards || 'fly-cart' === rewards.placement ) {
+    if ( ! showBar && ! nudge ) {
         return null;
     }
 
     return (
         <ExperimentalOrderMeta>
-            <RewardsBar rewards={ rewards } />
+            { nudge && (
+                <div className="wc-block-components-notice-banner is-info spsg-coupon-nudge">
+                    <div className="wc-block-components-notice-banner__content">
+                        { nudge }
+                    </div>
+                </div>
+            ) }
+            { showBar && rewards && <RewardsBar rewards={ rewards } /> }
         </ExperimentalOrderMeta>
     );
 }
@@ -105,6 +115,19 @@ wc.blocksCheckout.registerCheckoutFilters( 'storegrowth', {
         );
     },
 } );
+
+// A gift StoreGrowth takes away gets its own notice ("[Deal] ended. Your free
+// item was removed."); WooCommerce's "'X' was removed from your cart." would
+// read as if the paid line went too (pro#327).
+wp.hooks.addFilter(
+    'woocommerce_show_cart_item_removed_notice',
+    'storegrowth',
+    ( show, item ) => {
+        const line = item?.extensions?.storegrowth;
+
+        return show && ! line?.is_bogo_gift && ! line?.is_reward_gift;
+    }
+);
 
 wp.plugins.registerPlugin( 'storegrowth-cart-rewards', {
     scope: 'woocommerce-checkout',

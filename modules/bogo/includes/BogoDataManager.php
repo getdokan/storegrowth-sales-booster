@@ -433,7 +433,7 @@ class BogoDataManager {
 	 * @param int   $product_id Product ID to check.
 	 * @return bool Whether the product is included.
 	 */
-	private static function product_in_global_offer( $offer, $product_id ) {
+	public static function product_in_global_offer( $offer, $product_id ) {
 		// Check offered products.
 		if ( ! empty( $offer['offered_products'] ) && is_array( $offer['offered_products'] ) ) {
 			if ( in_array( $product_id, $offer['offered_products'] ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- Stored IDs may be strings; loose match kept on purpose.

@@ -26,6 +26,8 @@ export interface CartExtensionData {
     notices: string[];
     coupon_labels: Record< string, string >;
     rewards: RewardsProgress | null;
+    /** An automatic coupon's minimum still to reach (Smart Coupons). */
+    coupon_nudge?: string | null;
 }
 
 export interface CartCoupon {
@@ -83,5 +85,21 @@ export interface WpGlobals {
 
 export interface CartBlocksWindow {
     wc: { blocksCheckout: WcBlocksCheckout };
-    wp: WpGlobals;
+    wp: WpGlobals & {
+        hooks: {
+            addFilter: (
+                hook: string,
+                namespace: string,
+                callback: (
+                    value: boolean,
+                    item: {
+                        extensions?: Record<
+                            string,
+                            { is_reward_gift?: boolean; is_bogo_gift?: boolean }
+                        >;
+                    }
+                ) => boolean
+            ) => void;
+        };
+    };
 }

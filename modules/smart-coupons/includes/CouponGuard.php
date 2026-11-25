@@ -63,6 +63,7 @@ class CouponGuard implements HookRegistry {
 		add_filter( 'spsg_offer_limits', [ $this, 'add_free_limit' ] );
 		add_filter( 'spsg_offer_is_live', [ $this, 'check_dates' ], 10, 4 );
 		add_filter( 'spsg_bogo_coupon_unlocks_rule', [ $this, 'unlock_bogo_rule' ], 10, 2 );
+		add_filter( 'spsg_bogo_coupon_rule_ids', [ $this, 'unlocked_rule_ids' ] );
 		add_action( 'woocommerce_applied_coupon', [ $this, 'add_unlocked_gifts' ] );
 	}
 
@@ -90,10 +91,11 @@ class CouponGuard implements HookRegistry {
 
 		$held = $this->gift_held_by_other_rule( $coupon, $discounts->get_object() );
 
-		// Never "applied" with no gift: the bought line already has its own BOGO deal (pro#354).
+		// Never "applied" with no gift: the bought line keeps its own BOGO deal
+		// when that one saves as much or more; a larger code takes the line (pro#354).
 		if ( $held ) {
-			/* translators: 1: coupon code, 2: product name, 3: the other BOGO deal's name. */
-			throw new Exception( esc_html( sprintf( __( '%1$s can\'t be used with %2$s: the deal "%3$s" already applies to it.', 'storegrowth-sales-booster' ), SmartCoupon::shown_code( $coupon ), $held['product'], $held['rule'] ) ) );
+			/* translators: %1$s: coupon code, %2$s: deal name. */
+			throw new Exception( esc_html( sprintf( __( '%1$s wasn\'t applied because %2$s saves you more.', 'storegrowth-sales-booster' ), SmartCoupon::shown_code( $coupon ), $held['rule'] ) ) );
 		}
 
 		return $valid;
@@ -153,7 +155,7 @@ class CouponGuard implements HookRegistry {
 		return ! $this->is_typed_automatic_code( $coupon, $cart )
 			&& $this->meets_min_quantity( $coupon, $cart )
 			&& $this->reaches_a_line( $coupon, $discounts )
-			&& $this->customer_may_use( $coupon );
+			&& self::customer_may_use( $coupon );
 	}
 
 	/**
@@ -244,7 +246,7 @@ class CouponGuard implements HookRegistry {
 	 *
 	 * @return bool
 	 */
-	private function customer_may_use( WC_Coupon $coupon ): bool {
+	public static function customer_may_use( WC_Coupon $coupon ): bool {
 		$eligibility = (string) $coupon->get_meta( SmartCoupon::ELIGIBILITY );
 
 		if ( 'roles' === $eligibility ) {
@@ -467,6 +469,34 @@ class CouponGuard implements HookRegistry {
 		}
 
 		return $unlocked;
+	}
+
+	/**
+	 * The BOGO rules the Buy X get Y coupons in the cart unlock, for BOGO to
+	 * weigh against a line's own rule: the larger deal takes the line (pro#354).
+	 *
+	 * @since SPSG_VERSION
+	 *
+	 * @param int[] $rule_ids Rule ids so far.
+	 *
+	 * @return int[]
+	 */
+	public function unlocked_rule_ids( $rule_ids ): array {
+		$rule_ids = (array) $rule_ids;
+
+		if ( ! WC()->cart || ! Helper::is_module_active( SmartCouponsModule::get_id() ) ) {
+			return $rule_ids;
+		}
+
+		foreach ( WC()->cart->get_applied_coupons() as $code ) {
+			$coupon = new WC_Coupon( $code );
+
+			if ( SmartCoupon::is_buy_x_get_y( $coupon ) && SmartCoupon::effective( $coupon )['live'] ) {
+				$rule_ids[] = (int) $coupon->get_meta( SmartCoupon::BOGO_RULE );
+			}
+		}
+
+		return array_values( array_unique( array_filter( array_map( 'intval', $rule_ids ) ) ) );
 	}
 
 	/**

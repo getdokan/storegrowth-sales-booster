@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\StoreApi;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CartItemSchema;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CartSchema;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
+use StorePulse\StoreGrowth\Modules\BoGo\Helper as BogoHelper;
 use StorePulse\StoreGrowth\Pricing\CartLine;
 use StorePulse\StoreGrowth\Pricing\SmartCoupon;
 use WC_Cart;
@@ -218,6 +219,13 @@ class CartExtension implements HookRegistry {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
+			// @since SPSG_VERSION
+			'coupon_nudge'  => [
+				'description' => __( 'How far the cart is from an automatic coupon\'s minimum, e.g. "Add $20.00 more to unlock 30% off".', 'storegrowth-sales-booster' ),
+				'type'        => [ 'string', 'null' ],
+				'context'     => [ 'view', 'edit' ],
+				'readonly'    => true,
+			],
 		];
 	}
 
@@ -233,7 +241,7 @@ class CartExtension implements HookRegistry {
 	public function cart_item_data( $cart_item ): array {
 		return [
 			'is_reward_gift' => ! empty( $cart_item[ CartLine::REWARD_GIFT ] ),
-			'is_bogo_gift'   => ! empty( $cart_item['bogo_offer'] ),
+			'is_bogo_gift'   => BogoHelper::is_gift_line( (array) $cart_item ),
 		];
 	}
 

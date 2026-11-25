@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Test\SmartCoupons;
 
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\BoGo\OrderBogo;
+use StorePulse\StoreGrowth\Modules\SmartCoupons\CouponPromos;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\LinkCoupons;
 use StorePulse\StoreGrowth\Modules\SmartCoupons\SmartCouponRepository;
 use StorePulse\StoreGrowth\Offers\OfferLimits;
@@ -805,6 +806,55 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 	}
 
 	/**
+	 * An automatic coupon with a minimum shows a badge on the products it
+	 * reaches and a nudge in a cart below the minimum, gone once it applies
+	 * (pro#341). A code coupon shows neither.
+	 *
+	 * @return void
+	 */
+	public function test_an_automatic_coupon_shows_a_badge_and_a_cart_nudge(): void {
+		$jacket = $this->product( 30 );
+		$other  = $this->product( 30 );
+
+		$this->save_coupon(
+			'',
+			[
+				'method'         => SmartCoupon::AUTOMATIC,
+				'title'          => 'Rail check',
+				'apply_to'       => 'products',
+				'product_ids'    => [ $jacket->get_id() ],
+				'minimum_type'   => 'subtotal',
+				'minimum_amount' => 50,
+			]
+		);
+		$this->save_coupon( 'typed10', [ 'amount' => 50 ] );
+
+		CouponPromos::flush();
+		$coupons = CouponPromos::live_coupons();
+		$money   = static function ( float $amount ): string {
+			return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
+		};
+
+		$this->assertCount( 1, $coupons, 'only the automatic coupon' );
+		$this->assertSame( '10% off on orders of ' . $money( 50 ) . ' or more', CouponPromos::badge_text( $coupons[0], $jacket ) );
+		$this->assertSame( '', CouponPromos::badge_text( $coupons[0], $other ), 'not on a product it does not reach' );
+
+		WC()->cart->add_to_cart( $jacket->get_id() );
+		$this->assertSame( 'Add ' . $money( 20 ) . ' more to unlock 10% off', CouponPromos::nudge_text( WC()->cart ) );
+
+		WC()->cart->add_to_cart( $jacket->get_id() );
+		WC()->cart->calculate_totals();
+		$this->assertSame( '', CouponPromos::nudge_text( WC()->cart ), 'reached: the coupon applies' );
+
+		// Used up: nothing advertises it.
+		$coupons[0]->set_usage_limit( 1 );
+		$coupons[0]->set_usage_count( 1 );
+		$coupons[0]->save();
+		CouponPromos::flush();
+		$this->assertSame( [], CouponPromos::live_coupons() );
+	}
+
+	/**
 	 * Deleting a Buy X get Y coupon from WooCommerce's Coupons Trash lets its
 	 * rule run without a coupon again, as a delete from Smart Coupons does.
 	 *
@@ -881,9 +931,89 @@ class SmartCouponsTest extends SmartCouponsTestCase {
 
 		WC()->cart->add_to_cart( $gloves->get_id() );
 
+		// The rule's free boots ($95) beat the code's free beanie ($25).
 		$this->assertFalse( WC()->cart->apply_coupon( 'glovegift' ) );
 		$this->assertSame( [], WC()->cart->get_applied_coupons() );
-		$this->assertTrue( wc_has_notice( esc_html( sprintf( 'GLOVEGIFT can\'t be used with %s: the deal "Gloves get boots half off" already applies to it.', $gloves->get_name() ) ), 'error' ) );
+		$this->assertTrue( wc_has_notice( esc_html( 'GLOVEGIFT wasn\'t applied because Gloves get boots half off saves you more.' ), 'error' ) );
+	}
+
+	/**
+	 * A Buy X get Y code whose gift is worth more than the line's own BOGO deal
+	 * takes the line, and gives it back when it's removed (pro#354).
+	 *
+	 * @return void
+	 */
+	public function test_a_larger_buy_x_get_y_code_takes_the_line_from_a_bogo_rule(): void {
+		$gloves = $this->product( 32 );
+		$boots  = $this->product( 95 );
+		$beanie = $this->product( 25 );
+
+		$everyday = $this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Gloves get boots 10% off',
+				'bogo_deal_type'            => 'different',
+				'offered_products'          => [ $gloves->get_id() ],
+				'offer_type'                => 'discount',
+				'discount_amount'           => 10,
+				'get_alternate_products'    => [ $boots->get_id() ],
+				'minimum_quantity_required' => 1,
+				'offer_product_id'          => $boots->get_id(),
+			]
+		);
+
+		$rule = $this->create_global_offer(
+			[
+				'name_of_order_bogo'        => 'Beanie with the gloves code',
+				'bogo_deal_type'            => 'different',
+				'offered_products'          => [ $gloves->get_id() ],
+				'get_alternate_products'    => [ $beanie->get_id() ],
+				'minimum_quantity_required' => 1,
+				'offer_product_id'          => $beanie->get_id(),
+			]
+		);
+
+		$this->save_coupon(
+			'glovegift',
+			[
+				'discount_type' => SmartCoupon::TYPE_BUY_X_GET_Y,
+				'bogo_rule'     => $rule,
+			]
+		);
+
+		$gifts = static function (): array {
+			$ids = [];
+
+			foreach ( WC()->cart->get_cart() as $item ) {
+				if ( ! empty( $item['bogo_offer'] ) ) {
+					$ids[] = (int) $item['product_id'];
+				}
+			}
+
+			return $ids;
+		};
+
+		// As BOGO's add-to-cart hook does.
+		$key = WC()->cart->add_to_cart( $gloves->get_id() );
+		OrderBogo::instance()->apply_bogo_product( BogoDataManager::get_bogo_offer( $everyday ), $gloves->get_id(), $key, 1 );
+		WC()->cart->calculate_totals();
+		$this->assertSame( [ $boots->get_id() ], $gifts(), 'the rule\'s boots at 10% off ($9.50)' );
+
+		// The code's free beanie ($25) saves more: it takes the line.
+		$this->assertTrue( WC()->cart->apply_coupon( 'glovegift' ) );
+		WC()->cart->calculate_totals();
+		$this->assertSame( [ $beanie->get_id() ], $gifts() );
+
+		// Removed, the line's own deal comes back.
+		WC()->cart->remove_coupon( 'glovegift' );
+		WC()->cart->calculate_totals();
+		$this->assertSame( [ $boots->get_id() ], $gifts() );
+
+		// A larger gift that can't go in the cart wins nothing: the code is refused.
+		$beanie->set_stock_status( 'outofstock' );
+		$beanie->save();
+		$this->assertFalse( WC()->cart->apply_coupon( 'glovegift' ) );
+		WC()->cart->calculate_totals();
+		$this->assertSame( [ $boots->get_id() ], $gifts() );
 	}
 
 	/**
