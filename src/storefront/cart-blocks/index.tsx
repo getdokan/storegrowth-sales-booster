@@ -66,7 +66,7 @@ function RewardsBar( { rewards }: { rewards: RewardsProgress } ) {
 /**
  * An automatic coupon's minimum still to reach (pro#341).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param props      Props.
  * @param props.text Nudge text.
