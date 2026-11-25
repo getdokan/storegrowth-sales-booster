@@ -228,6 +228,22 @@ export function OfferPreview( {
                     <b className="font-semibold">
                         { range( offerPrice, offerMax ) }
                     </b>
+                    { /* A variable gift: the shopper picks the variation, so
+                       say what it can be worth even without the regular
+                       price shown (pro#332). */ }
+                    { ! showRegularPrice &&
+                        ( product.maxRegular ?? 0 ) > product.regular && (
+                            <span className="text-[11px] text-[#6B7280]">
+                                { sprintf(
+                                    /* translators: %s: price range, e.g. "$10 – $50". */
+                                    __(
+                                        'Variations: %s',
+                                        'storegrowth-sales-booster'
+                                    ),
+                                    range( product.regular, product.maxRegular )
+                                ) }
+                            </span>
+                        ) }
                 </span>
             </div>
         </div>
