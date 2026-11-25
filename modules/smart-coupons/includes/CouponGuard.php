@@ -475,7 +475,7 @@ class CouponGuard implements HookRegistry {
 	 * The BOGO rules the Buy X get Y coupons in the cart unlock, for BOGO to
 	 * weigh against a line's own rule: the larger deal takes the line (pro#354).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int[] $rule_ids Rule ids so far.
 	 *

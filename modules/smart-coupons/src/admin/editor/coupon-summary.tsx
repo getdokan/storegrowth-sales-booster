@@ -197,7 +197,7 @@ function cartLine(
  * What an automatic coupon gives, as the store words it (PHP
  * `CouponPromos::deal_text()`).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param values   Editor values.
  * @param currency Store currency symbol.
@@ -229,7 +229,7 @@ function dealText(
  * The product page badge and the cart nudge an automatic coupon shows (PHP
  * `CouponPromos`, pro#341); none for other methods or Buy X get Y.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  *
  * @param values   Editor values.
  * @param currency Store currency symbol.

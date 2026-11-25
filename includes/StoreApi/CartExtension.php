@@ -219,7 +219,7 @@ class CartExtension implements HookRegistry {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			// @since SPSG_VERSION
+			// @since 3.1.0
 			'coupon_nudge'  => [
 				'description' => __( 'How far the cart is from an automatic coupon\'s minimum, e.g. "Add $20.00 more to unlock 30% off".', 'storegrowth-sales-booster' ),
 				'type'        => [ 'string', 'null' ],

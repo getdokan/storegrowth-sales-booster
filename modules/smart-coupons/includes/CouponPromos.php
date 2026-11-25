@@ -27,21 +27,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * product page says what it gives, and the cart says how far a minimum is.
  * Code and link coupons need the shopper to act, so they show neither.
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 class CouponPromos implements HookRegistry {
 
 	/**
 	 * Stylesheet handle.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 */
 	const STYLE = 'spsg-coupon-promos';
 
 	/**
 	 * The automatic coupons the shopper may use, this request.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @var WC_Coupon[]|null
 	 */
@@ -50,7 +50,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * Register hooks.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -66,7 +66,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * The automatic coupons running now that the current shopper may use.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return WC_Coupon[]
 	 */
@@ -92,7 +92,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * Forget this request's coupons, after one is saved.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -106,7 +106,7 @@ class CouponPromos implements HookRegistry {
 	 * is known only by the cart, so a per-customer or email limit is left to
 	 * the checkout, but a coupon limited to emails isn't shown to guests.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -136,7 +136,7 @@ class CouponPromos implements HookRegistry {
 	 * What a coupon gives, in a few words: "30% off", "$5 off", "Buy more,
 	 * save more", "a free item".
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 *
@@ -163,7 +163,7 @@ class CouponPromos implements HookRegistry {
 	 * The product page badge of a coupon on a product, or '' when it doesn't
 	 * reach the product.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon  $coupon  Coupon.
 	 * @param WC_Product $product Product.
@@ -197,7 +197,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * The badge under the price of the product page.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -228,7 +228,7 @@ class CouponPromos implements HookRegistry {
 	 * The nudge for the automatic coupon closest to its minimum, among those
 	 * not in the cart that reach one of its lines; '' when there is none.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Cart $cart Cart.
 	 *
@@ -285,7 +285,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * The nudge above the classic cart table.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */
@@ -300,7 +300,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * The nudge on the Store API cart, for the block cart (ADR-015).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array   $data Data under `extensions.storegrowth`.
 	 * @param WC_Cart $cart Cart.
@@ -319,7 +319,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * Whether a coupon reaches one of these cart lines.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param WC_Coupon $coupon Coupon.
 	 * @param array[]   $lines  Cart lines.
@@ -339,7 +339,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * An amount as plain text in the store's currency format.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param float $amount Amount.
 	 *
@@ -352,7 +352,7 @@ class CouponPromos implements HookRegistry {
 	/**
 	 * The badge's stylesheet, on product pages.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @return void
 	 */

@@ -1437,7 +1437,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * An offer as it runs right now, or null when it doesn't.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array|null $settings The offer.
 	 *
@@ -1459,7 +1459,7 @@ class OrderBogo implements HookRegistry {
 	 * from the line's own rule when its gift is worth more: the larger deal
 	 * wins (pro#354).
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array      $trigger Bought line.
 	 * @param array|null $own     The line's own rule as it runs, if any.
@@ -1471,7 +1471,7 @@ class OrderBogo implements HookRegistry {
 		 * Filters the BOGO rules the coupons in the cart unlock. Smart Coupons'
 		 * Buy X get Y coupons answer it.
 		 *
-		 * @since SPSG_VERSION
+		 * @since 3.1.0
 		 *
 		 * @param int[] $rule_ids Rule ids.
 		 */
@@ -1504,7 +1504,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * A rule as it runs on a bought line it targets, or null.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int   $rule_id BOGO rule id.
 	 * @param array $trigger Bought line.
@@ -1522,7 +1522,7 @@ class OrderBogo implements HookRegistry {
 	 * A BOGO rule by id, read once per request: a coupon's rule is weighed
 	 * on every cart line, each time the cart is worked out.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param int $rule_id Rule id.
 	 *
@@ -1552,7 +1552,7 @@ class OrderBogo implements HookRegistry {
 	 * Whether a rule targets a bought line: its products or categories, by
 	 * the product or the id the line's rule is looked up by.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $rule    Rule.
 	 * @param array $trigger Bought line.
@@ -1580,7 +1580,7 @@ class OrderBogo implements HookRegistry {
 	 * Whether a gift line is one a rule gives its bought line: the rule's
 	 * reward or one of its alternates.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings The offer.
 	 * @param array $trigger  Bought line.
@@ -1608,7 +1608,7 @@ class OrderBogo implements HookRegistry {
 	/**
 	 * What a rule gives a bought line: its gifts' saving.
 	 *
-	 * @since SPSG_VERSION
+	 * @since 3.1.0
 	 *
 	 * @param array $settings The offer.
 	 * @param array $trigger  Bought line.

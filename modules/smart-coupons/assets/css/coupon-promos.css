@@ -1,7 +1,7 @@
 /**
  * Smart Coupons' product page badge for an automatic coupon (pro#341).
  *
- * @since SPSG_VERSION
+ * @since 3.1.0
  */
 .spsg-coupon-badge {
     display: inline-flex;

@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-24T07:03:42+00:00\n"
+"POT-Creation-Date: 2026-11-25T05:58:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: storegrowth-sales-booster\n"
@@ -53,8 +53,8 @@ msgstr ""
 #: includes/Admin/AdminMenu.php:315
 #: includes/Settings/GeneralSettings.php:85
 #: build/admin.js:5
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "Settings"
 msgstr ""
 
@@ -101,9 +101,9 @@ msgstr ""
 #: includes/Admin/AdminMenu.php:338
 #: includes/Admin/AdminMenu.php:339
 #: build/admin.js:1
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
-#: modules/bogo/assets/js/admin.js:6
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:7
 #: modules/progressive-discount-banner/assets/js/admin.js:2
 #: modules/smart-coupons/assets/js/admin.js:2
 #: modules/upsell-order-bump/assets/js/admin.js:1
@@ -332,6 +332,7 @@ msgstr ""
 
 #. translators: %1$s: coupon code, %2$s: deal name.
 #: includes/Pricing/Referee.php:456
+#: modules/smart-coupons/includes/CouponGuard.php:98
 #, php-format
 msgid "%1$s wasn't applied because %2$s saves you more."
 msgstr ""
@@ -681,23 +682,27 @@ msgstr ""
 msgid "Enter a date as YYYY-MM-DD."
 msgstr ""
 
-#: includes/StoreApi/CartExtension.php:203
+#: includes/StoreApi/CartExtension.php:204
 msgid "Notices for the shopper."
 msgstr ""
 
-#: includes/StoreApi/CartExtension.php:210
+#: includes/StoreApi/CartExtension.php:211
 msgid "Names of automatic coupons, by code."
 msgstr ""
 
-#: includes/StoreApi/CartExtension.php:216
+#: includes/StoreApi/CartExtension.php:217
 msgid "The Cart Rewards bar."
 msgstr ""
 
-#: includes/StoreApi/CartExtension.php:250
+#: includes/StoreApi/CartExtension.php:224
+msgid "How far the cart is from an automatic coupon's minimum, e.g. \"Add $20.00 more to unlock 30% off\"."
+msgstr ""
+
+#: includes/StoreApi/CartExtension.php:258
 msgid "Whether the line is a Cart Rewards free gift."
 msgstr ""
 
-#: includes/StoreApi/CartExtension.php:257
+#: includes/StoreApi/CartExtension.php:265
 msgid "Whether the line is a BOGO offer product, which follows its bought product."
 msgstr ""
 
@@ -739,10 +744,10 @@ msgstr ""
 
 #: integrations/includes/Dokan/Dashboard/Bogo.php:96
 #: modules/bogo/includes/BoGoModule.php:73
-#: modules/bogo/includes/OrderBogo.php:1543
+#: modules/bogo/includes/OrderBogo.php:1729
 #: modules/bogo/includes/Settings/BogoOfferFields.php:310
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "BOGO"
 msgstr ""
 
@@ -956,24 +961,24 @@ msgid "BOGO deal"
 msgstr ""
 
 #. translators: %s: deal name.
-#: modules/bogo/includes/OrderBogo.php:1492
+#: modules/bogo/includes/OrderBogo.php:1678
 #, php-format
 msgid "%s ended. Your free item was removed."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1493
+#: modules/bogo/includes/OrderBogo.php:1679
 msgid "Your deal"
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1662
+#: modules/bogo/includes/OrderBogo.php:1848
 msgid "BOGO was not enabled for this product — please select an offer product for a \"Buy X Get Y\" offer."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1742
+#: modules/bogo/includes/OrderBogo.php:1928
 msgid "The quantity of BOGO offer products cannot be changed manually. It is automatically managed based on your purchase."
 msgstr ""
 
-#: modules/bogo/includes/OrderBogo.php:1781
+#: modules/bogo/includes/OrderBogo.php:1967
 msgid "The BOGO offer products cannot be removed manually. It will be automatically added based on your purchase."
 msgstr ""
 
@@ -1011,28 +1016,28 @@ msgid "Invalid parameter(s): %s"
 msgstr ""
 
 #: modules/bogo/includes/REST/BogoController.php:682
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Enter a discount from 1 to 100%."
 msgstr ""
 
 #: modules/bogo/includes/REST/BogoController.php:692
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "The end date is before the start date."
 msgstr ""
 
 #: modules/bogo/includes/REST/BogoController.php:700
 #: modules/upsell-order-bump/includes/RestApi/OrderBumpController.php:762
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Select at least one target product."
 msgstr ""
 
 #: modules/bogo/includes/REST/BogoController.php:710
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Select the offer product."
 msgstr ""
@@ -1502,7 +1507,7 @@ msgid "Shown on the category page."
 msgstr ""
 
 #: modules/bogo/includes/REST/CategoryMessagesController.php:342
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Enter a message."
 msgstr ""
 
@@ -1849,9 +1854,12 @@ msgstr ""
 
 #. translators: %s: discount percent.
 #. translators: %s: percentage.
+#. translators: %s: percent number.
 #: modules/bogo/templates/product-bogo-settings.php:69
 #: modules/progressive-discount-banner/includes/Milestones.php:554
-#, php-format
+#: modules/smart-coupons/includes/CouponPromos.php:158
+#: modules/smart-coupons/assets/js/admin.js:8
+#, php-format,js-format
 msgid "%s%% off"
 msgstr ""
 
@@ -1878,7 +1886,7 @@ msgid "Enable below only to set a product-specific offer that overrides this glo
 msgstr ""
 
 #: modules/bogo/templates/product-bogo-settings.php:96
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Enable BOGO"
 msgstr ""
 
@@ -2727,8 +2735,12 @@ msgid "a coupon"
 msgstr ""
 
 #. translators: %s: amount.
+#. translators: %s: amount, e.g. "$5.00".
+#. translators: %s: amount, e.g. "$5".
 #: modules/progressive-discount-banner/includes/Milestones.php:556
-#, php-format
+#: modules/smart-coupons/includes/CouponPromos.php:151
+#: modules/smart-coupons/assets/js/admin.js:7
+#, php-format,js-format
 msgid "%s off"
 msgstr ""
 
@@ -3253,8 +3265,8 @@ msgid "Which products the popup notifies about, and how they link"
 msgstr ""
 
 #: modules/sales-pop/includes/Settings/SalesPopSettings.php:368
-#: modules/bogo/assets/js/admin.js:4
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:7
 msgid "Message"
 msgstr ""
 
@@ -3305,23 +3317,66 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#. translators: 1: coupon code, 2: product name, 3: the other BOGO deal's name.
-#: modules/smart-coupons/includes/CouponGuard.php:96
-#, php-format
-msgid "%1$s can't be used with %2$s: the deal \"%3$s\" already applies to it."
-msgstr ""
-
 #. translators: %s: the automatic coupon's title.
-#: modules/smart-coupons/includes/CouponGuard.php:349
+#: modules/smart-coupons/includes/CouponGuard.php:351
 #, php-format
 msgid "%s has ended, so it was removed from your cart."
 msgstr ""
 
 #. translators: %s: coupon code.
-#: modules/smart-coupons/includes/CouponGuard.php:398
+#: modules/smart-coupons/includes/CouponGuard.php:400
 #, php-format
 msgid "%s isn't a valid coupon right now."
 msgstr ""
+
+#: modules/smart-coupons/includes/CouponPromos.php:153
+#: modules/smart-coupons/assets/js/admin.js:7
+msgid "Buy more, save more"
+msgstr ""
+
+#: modules/smart-coupons/includes/CouponPromos.php:155
+msgid "a free item"
+msgstr ""
+
+#. translators: 1: deal, e.g. "30% off", 2: amount, e.g. "$50.00".
+#. translators: 1: deal, e.g. "30% off", 2: amount.
+#: modules/smart-coupons/includes/CouponPromos.php:185
+#: modules/smart-coupons/assets/js/admin.js:9
+#, php-format,js-format
+msgid "%1$s on orders of %2$s or more"
+msgstr ""
+
+#. translators: 1: deal, e.g. "30% off", 2: number of items.
+#: modules/smart-coupons/includes/CouponPromos.php:190
+#: modules/smart-coupons/assets/js/admin.js:11
+#, php-format,js-format
+msgid "%1$s when you buy %2$d or more"
+msgstr ""
+
+#. translators: %s: deal, e.g. "30% off".
+#: modules/smart-coupons/includes/CouponPromos.php:194
+#: modules/smart-coupons/assets/js/admin.js:13
+#, php-format,js-format
+msgid "%s in your cart"
+msgstr ""
+
+#. translators: 1: amount still to add, e.g. "$20.00", 2: deal, e.g. "30% off".
+#. translators: 1: amount still to add, 2: deal, e.g. "30% off".
+#: modules/smart-coupons/includes/CouponPromos.php:267
+#: modules/smart-coupons/assets/js/admin.js:10
+#, php-format,js-format
+msgid "Add %1$s more to unlock %2$s"
+msgstr ""
+
+#. translators: 1: number of items still to add, 2: deal, e.g. "30% off".
+#. translators: 1: number of items still to add, 2: deal.
+#: modules/smart-coupons/includes/CouponPromos.php:271
+#: modules/smart-coupons/assets/js/admin.js:12
+#, php-format,js-format
+msgid "Add %1$d more item to unlock %2$s"
+msgid_plural "Add %1$d more items to unlock %2$s"
+msgstr[0] ""
+msgstr[1] ""
 
 #: modules/smart-coupons/includes/CouponScreens.php:76
 msgid "Managed by Smart Coupons"
@@ -3350,26 +3405,26 @@ msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:44
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:297
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Method"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:46
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Automatic"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:47
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:55
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Discount code"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:48
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Link"
 msgstr ""
 
@@ -3399,32 +3454,32 @@ msgid "Discount type"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:77
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Percentage"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:78
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Fixed amount"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:79
 #: modules/smart-coupons/assets/js/admin.js:4
-#: modules/smart-coupons/assets/js/admin.js:7
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:14
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Buy more save more"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:80
 #: modules/smart-coupons/assets/js/admin.js:4
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Buy X get Y"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:89
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Percent off"
 msgstr ""
 
@@ -3484,27 +3539,27 @@ msgid "Customers"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:174
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "All customers"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:175
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Specific roles"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:176
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "First-time customers"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:177
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Returning customers"
 msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:178
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Specific customers"
 msgstr ""
 
@@ -3569,8 +3624,8 @@ msgstr ""
 
 #: modules/smart-coupons/includes/Settings/SmartCouponFields.php:295
 #: modules/smart-coupons/includes/SmartCouponsModule.php:68
-#: modules/smart-coupons/assets/js/admin.js:8
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:15
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Smart Coupons"
 msgstr ""
 
@@ -4042,12 +4097,12 @@ msgid "Out of Stock"
 msgstr ""
 
 #: build/admin.js:1
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Revenue"
 msgstr ""
 
 #: build/admin.js:1
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Discount given"
 msgstr ""
 
@@ -4412,7 +4467,7 @@ msgid "Untick one first: the Free plan keeps no more on."
 msgstr ""
 
 #: build/components.js:6
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Saved."
 msgstr ""
 
@@ -4422,7 +4477,7 @@ msgstr ""
 
 #: build/components.js:6
 #: build/components.js:9
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Save"
 msgstr ""
 
@@ -4447,7 +4502,7 @@ msgid "Activate this module to use it on your store. You can turn it off anytime
 msgstr ""
 
 #: build/components.js:8
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 #: modules/smart-coupons/assets/js/admin.js:2
 msgid "Cancel"
 msgstr ""
@@ -4534,7 +4589,7 @@ msgid "Reset"
 msgstr ""
 
 #: build/components.js:9
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Saving…"
 msgstr ""
 
@@ -4553,22 +4608,22 @@ msgid "%s settings"
 msgstr ""
 
 #: build/components.js:10
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "Status"
 msgstr ""
 
 #: build/components.js:10
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "The status could not be changed."
 msgstr ""
 
 #: build/components.js:10
-#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:6
 msgid "Delete"
 msgstr ""
 
 #: build/components.js:10
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Deleted."
 msgstr ""
 
@@ -4639,184 +4694,191 @@ msgstr ""
 msgid "Men’s Shoe"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#. translators: %s: price range, e.g. "$10 – $50".
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
+#, js-format
+msgid "Variations: %s"
+msgstr ""
+
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Enter a name for the offer."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "The offer could not be loaded."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
-#: modules/smart-coupons/assets/js/admin.js:8
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
+#: modules/smart-coupons/assets/js/admin.js:15
 #: modules/upsell-order-bump/assets/js/admin.js:1
 msgid "Back to campaign"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
-#: modules/bogo/assets/js/admin.js:6
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:7
 msgid "BOGO List"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
 #: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:5
 #: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "This store has reached its BOGO offer limit."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "You’ve reached the free version’s BOGO offer limit. Upgrade to Pro for unlimited offers, or edit an existing one."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Offer saved."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Offer created."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "The offers could not be loaded."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Delete offers?"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "The selected BOGO offers will be deleted. This cannot be undone."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Some offers could not be deleted."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "The offers could not be deleted."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "Search offers"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:3
-#: modules/bogo/assets/js/admin.js:3
+#: build/integrations/dokan/bogo.js:4
+#: modules/bogo/assets/js/admin.js:4
 msgid "No offers match your search"
 msgstr ""
 
 #. translators: %s: offer name.
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 #, js-format
 msgid "Offer status: %s"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 #: modules/upsell-order-bump/assets/js/admin.js:3
 msgid "Target Product"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 #: modules/upsell-order-bump/assets/js/admin.js:3
 msgid "Offers"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
-#: modules/smart-coupons/assets/js/admin.js:10
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Type"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "Global"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "Specific"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
 #: modules/bogo/assets/js/admin.js:5
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/bogo/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:17
 #: modules/upsell-order-bump/assets/js/admin.js:4
 msgid "Edit"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 #: modules/upsell-order-bump/assets/js/admin.js:4
 msgid "Add New"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "BOGO Offers"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
-#: modules/bogo/assets/js/admin.js:6
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:7
 msgid "Category Messages"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "No BOGO offers yet"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "Create a buy-one-get-one rule to pair a product with a free or discounted second item."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "BOGO is turned off. Turn it on to create and manage offers."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "BOGO could not be turned on."
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
-#: modules/bogo/assets/js/admin.js:4
+#: build/integrations/dokan/bogo.js:5
+#: modules/bogo/assets/js/admin.js:5
 msgid "Turn on BOGO"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
+#: build/integrations/dokan/bogo.js:5
 msgid "Create New Offer"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
+#: build/integrations/dokan/bogo.js:5
 msgid "StoreGrowth BOGO"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
+#: build/integrations/dokan/bogo.js:5
 msgid "StoreGrowth BOGO Create"
 msgstr ""
 
-#: build/integrations/dokan/bogo.js:4
+#: build/integrations/dokan/bogo.js:5
 msgid "StoreGrowth BOGO Edit"
 msgstr ""
 
@@ -4840,88 +4902,88 @@ msgstr ""
 msgid "All products"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "Buy 1, unit of any product from this category and get 1 unit free of the same product"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "(Deleted category)"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "The messages could not be loaded."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:4
+#: modules/bogo/assets/js/admin.js:5
 msgid "The categories could not be loaded."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:4
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:7
 msgid "Category"
 msgstr ""
 
 #. translators: %s: category name.
-#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:6
 #, js-format
 msgid "Message status: %s"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:6
 msgid "Delete messages?"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:5
+#: modules/bogo/assets/js/admin.js:6
 msgid "The selected category messages will be deleted. This cannot be undone."
 msgstr ""
 
 #. translators: %d: number of messages.
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 #, js-format
 msgid "%d messages could not be deleted."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Add Message"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Show a BOGO message on a product category page. Category messages are a Pro feature."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Edit Category Message"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Add Category Message"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Choose a category."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "The message could not be saved."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "The message shows on the chosen product category’s page."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Select a category"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "The message shows on this category’s page."
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "No category messages yet"
 msgstr ""
 
-#: modules/bogo/assets/js/admin.js:6
+#: modules/bogo/assets/js/admin.js:7
 msgid "Tell shoppers about your BOGO deals on a product category page."
 msgstr ""
 
@@ -5380,183 +5442,195 @@ msgstr ""
 msgid "- discount"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:13
 msgid "Summary"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:13
 msgid "Shoppers will see"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:6
+#: modules/smart-coupons/assets/js/admin.js:13
+msgid "Product page"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:13
+msgid "Cart, below the minimum (example)"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:13
+msgid "Cart, once it applies"
+msgstr ""
+
+#: modules/smart-coupons/assets/js/admin.js:13
 msgid "The coupon could not be loaded."
 msgstr ""
 
 #. translators: 1: campaign name, 2: start, 3: end.
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 #, js-format
 msgid "Set by campaign: %1$s, %2$s to %3$s"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Open campaign"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Method and code are read-only in a campaign version. A different code needs a coupon made for this campaign."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Buy X get Y · uses the BOGO module"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Buy X get Y · BOGO module is off"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Taken off the cart, split across eligible products by price."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Amount off"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:7
+#: modules/smart-coupons/assets/js/admin.js:14
 msgid "Choose a BOGO rule"
 msgstr ""
 
 #. translators: %s: BOGO rule name.
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 #, js-format
 msgid "Deal defined by BOGO rule: %s"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Edit deal"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "This BOGO rule will only apply when shoppers use this coupon."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "First-time customers (Pro)"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Returning customers (Pro)"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Specific customers (Pro)"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "The coupon was not saved."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:8
+#: modules/smart-coupons/assets/js/admin.js:15
 msgid "Coupon list"
 msgstr ""
 
 #. translators: %s: campaign name.
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 #, js-format
 msgid "Made for %s"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Coupon saved."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Coupon created."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "The coupons could not be loaded."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Delete coupons?"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "The selected coupons will be deleted. This cannot be undone."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Some coupons could not be deleted."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "The coupons could not be deleted."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "Search coupons"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:9
+#: modules/smart-coupons/assets/js/admin.js:16
 msgid "No coupons match your search"
 msgstr ""
 
 #. translators: %s: coupon title.
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 #, js-format
 msgid "Coupon status: %s"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "BOGO module"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Used in"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Uses"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Copy link"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Coupon link copied."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "New coupon"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Coupons are turned off in WooCommerce > Settings > General. Automatic coupons won’t apply and codes can’t be entered until they’re on."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "No coupons yet"
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Create a coupon that applies by itself, or one shoppers type at checkout."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Code and link coupons also appear in WooCommerce > Coupons, marked Managed by Smart Coupons."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Smart Coupons is turned off. While it’s off, its coupons are invalid. Turn it on to create and manage coupons."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Smart Coupons could not be turned on."
 msgstr ""
 
-#: modules/smart-coupons/assets/js/admin.js:10
+#: modules/smart-coupons/assets/js/admin.js:17
 msgid "Turn on Smart Coupons"
 msgstr ""
 
