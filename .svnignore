@@ -35,3 +35,5 @@ DEVELOPER.md
 CLAUDE.md
 .wp-env.json
 .wp-env.override.json
+.phpunit.result.cache
+.playwright-mcp
