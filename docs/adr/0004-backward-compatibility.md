@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-09-25
-- Related: ADR-007 (settings engine), ADR-008 (one admin page; the old screen IDs), baselines in `tests/compat/`
+- Related: ADR-007 (settings engine), ADR-008 (one admin page; the old screen IDs)
 
 ## Context
 
@@ -21,7 +21,7 @@ The admin is a TypeScript app on REST and plugin-ui; antd, `window.SGSettings` a
 ## Decision
 
 ### 1. PHP hook freeze
-- No PHP hook is ever renamed or removed. This covers every entry in `tests/compat/php-hooks-baseline.txt`, dynamic hook patterns, and every `wp_ajax_*` / `wp_ajax_nopriv_*` registration.
+- No PHP hook is ever renamed or removed. This covers every hook a release has shipped, dynamic hook patterns, and every `wp_ajax_*` / `wp_ajax_nopriv_*` registration.
 - Each hook keeps its behaviour:
   - same name, including misspellings (`spsg_sales_pop_visbility_controller`, `sales_boster_*`);
   - same arguments, order and types;
@@ -49,7 +49,7 @@ These keep their names and signatures and may only be extended:
 
 **Changing an option's value set** (a new layout, a renamed choice) is a versioned migration in `includes/Migrations/` run by `Upgrader`, never a translation at read time.
 
-A sanitizer may never be stricter than what the old admin accepted for a value it could store, or that setting can't be saved again. Every module with a settings schema must pass `wp eval-file tests/compat/settings-roundtrip.php` (round trip byte-identical, one change touches one key, pro keys and invalid values write nothing).
+A sanitizer may never be stricter than what the old admin accepted for a value it could store, or that setting can't be saved again. For every module with a settings schema, a round trip is byte-identical, one change touches one key, and pro keys and invalid values write nothing.
 
 Ajax and REST rules:
 - **Admin ajax actions stay registered** as thin adapters that call the same service as the REST controllers. Same sanitization, same stored data.
@@ -64,7 +64,7 @@ Ajax and REST rules:
 - **New pro versions** extend through the additive PHP filters (`spsg_settings_schema`, `spsg_settings_page`, record-editor filters; ADR-007, ADR-009, ADR-010) and the JS extension points in §4.
 
 ### 4. JS hooks — the one deliberate exception
-The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belonged to the antd UI. Their contract was "receive `(value, formData, onFieldChange)` and return an antd element", which can't be honoured without antd and `window.SGSettings`.
+The 83 JS hooks of the old admin belonged to the antd UI. Their contract was "receive `(value, formData, onFieldChange)` and return an antd element", which can't be honoured without antd and `window.SGSettings`.
 
 - These hook names are **retired**. This is the only exception to "never remove hooks", and it's recorded here on purpose. The baseline file stays as the record of what was retired.
 - Nothing breaks at runtime: an `addFilter` on a hook nobody fires is a no-op. The fields pro used to inject are rendered by lite from the schema (§3).
@@ -76,8 +76,6 @@ The 83 JS hooks in `tests/compat/js-hooks-baseline.txt` belonged to the antd UI.
 - Record editors have no JS tab hooks; they're extended in PHP (ADR-010).
 
 ### 5. Enforcement
-- **Hook baseline:** `npm run check:hooks` re-extracts PHP hook names from `includes/`, `modules/`, `integrations/`, `helpers/`, `templates/` and fails if any name in `php-hooks-baseline.txt` is missing.
-- **Settings round trip:** `wp eval-file tests/compat/settings-roundtrip.php` for every schema.
 - **With and without pro:** every change is checked with no pro, pro 2.2.0 and the current pro: pro fields locked without pro and editable with it; saved options keep the stored shape; pro storefront features read them correctly.
 - **Code review:** the `storegrowth-code-review` checklist has "no PHP hook, public method, option key, slug, ajax action, REST route or handle removed or renamed".
 

@@ -65,6 +65,7 @@ const VARIANTS: Record< SettingField[ 'type' ], string > = {
     color: 'color_picker',
     select: 'select',
     list: 'multicheck',
+    rows: 'rows',
     box: 'box',
 };
 
@@ -217,6 +218,7 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
         case 'text':
         case 'url':
         case 'date':
+        case 'datetime-local':
             return (
                 <TextField
                     { ...common }
@@ -267,6 +269,7 @@ export function DefaultField( { element, onChange }: DefaultFieldProps ) {
             return (
                 <CheckboxField
                     label={ element.label }
+                    help={ element.description }
                     locked={ element.disabled }
                     checked={ Boolean( value ) }
                     onChange={ change }

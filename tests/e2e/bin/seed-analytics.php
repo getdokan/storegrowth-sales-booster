@@ -16,7 +16,15 @@
  *   - 0–4 orders a day (created via `spsg-seed`) with an order bump, a BOGO
  *     gift and its trigger, or a Countdown Timer line; a few partly refunded;
  *   - bump views / accepts / removes and BOGO offer views per day in
- *     `spsg_analytics_daily`.
+ *     `spsg_analytics_daily`;
+ *   - 3 Smart Coupons (`seed-…` codes: a code, a link and an automatic one)
+ *     applied as real coupon lines to about a third of the orders, so the
+ *     coupon list shows uses, discount given and revenue (the automatic one
+ *     is switched off at the end, so the storefront doesn't change);
+ *   - with StoreGrowth Pro: 4 campaigns (two ended, one running, one
+ *     scheduled) with the seeded offers attached; orders inside a campaign's
+ *     dates are credited to it (`_spsg_promotion_id`, a source and a
+ *     surface), and qualified carts are counted for its acceptance.
  *
  * Needs the StoreGrowth database update run and WooCommerce Analytics on.
  * Seeds once: run `clean` before seeding again. Deterministic (fixed seed).
@@ -32,8 +40,13 @@ use StorePulse\StoreGrowth\Analytics\Schema;
 use StorePulse\StoreGrowth\Attribution\OfferAttribution;
 use StorePulse\StoreGrowth\Modules\BoGo\BogoDataManager;
 use StorePulse\StoreGrowth\Modules\BoGo\BoGoModule;
+use StorePulse\StoreGrowth\Modules\SmartCoupons\SmartCouponRepository;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\Database\OrderBumpData;
 use StorePulse\StoreGrowth\Modules\UpsellOrderBump\UpsellOrderBumpModule;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
+use StorePulse\StoreGrowth\Pricing\SmartCoupon;
+use StorePulse\StoreGrowthPro\Campaigns\CampaignRepository;
+use StorePulse\StoreGrowthPro\Campaigns\CampaignSurfaces;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -106,7 +119,7 @@ function spsg_seed_clean(): void {
 		$wpdb->query( "DELETE FROM {$wpdb->comments} WHERE comment_post_ID IN ( {$in} )" );
 		$wpdb->query( "DELETE im FROM {$wpdb->prefix}woocommerce_order_itemmeta im JOIN {$wpdb->prefix}woocommerce_order_items i ON i.order_item_id = im.order_item_id WHERE i.order_id IN ( {$in} )" );
 		$wpdb->query( "DELETE FROM {$wpdb->prefix}woocommerce_order_items WHERE order_id IN ( {$in} )" );
-		foreach ( [ 'dokan_orders', 'dokan_order_stats', 'wc_order_stats', 'wc_order_product_lookup', Schema::OFFER_LOOKUP ] as $table ) {
+		foreach ( [ 'dokan_orders', 'dokan_order_stats', 'wc_order_stats', 'wc_order_product_lookup', 'wc_order_coupon_lookup', Schema::OFFER_LOOKUP ] as $table ) {
 			if ( spsg_seed_has_table( $table ) ) {
 				$wpdb->query( "DELETE FROM {$wpdb->prefix}{$table} WHERE order_id IN ( {$in} )" );
 			}
@@ -134,6 +147,25 @@ function spsg_seed_clean(): void {
 		}
 	}
 
+	// Campaigns before the offers they list.
+	$campaigns = array_map( 'intval', $seed['campaigns'] ?? [] );
+	if ( $campaigns ) {
+		$in = implode( ',', $campaigns );
+		$wpdb->query( "DELETE FROM {$wpdb->prefix}" . Schema::DAILY . " WHERE module = 'campaigns' AND object_type = 'promotion' AND object_id IN ( {$in} )" );
+		if ( class_exists( CampaignRepository::class ) ) {
+			foreach ( $campaigns as $campaign_id ) {
+				CampaignRepository::delete( $campaign_id );
+			}
+		}
+	}
+
+	foreach ( $seed['coupons'] ?? [] as $coupon_id ) {
+		$coupon = new WC_Coupon( (int) $coupon_id );
+		if ( $coupon->get_id() ) {
+			SmartCouponRepository::delete( $coupon );
+		}
+	}
+
 	foreach ( $seed['products'] ?? [] as $product_id ) {
 		wp_delete_post( (int) $product_id, true );
 	}
@@ -143,10 +175,12 @@ function spsg_seed_clean(): void {
 
 	spsg_seed_say(
 		sprintf(
-			'Removed %d orders (with their refunds), %d bumps, %d BOGO offers, %d products and their view counts.',
+			'Removed %d orders (with their refunds), %d bumps, %d BOGO offers, %d Smart Coupons, %d campaigns, %d products and their counts.',
 			count( $orders ),
 			count( $bumps ),
 			count( $seed['bogos'] ?? [] ),
+			count( $seed['coupons'] ?? [] ),
+			count( $campaigns ),
 			count( $seed['products'] ?? [] )
 		)
 	);
@@ -310,15 +344,168 @@ function spsg_seed_refund( WC_Order $order ): bool {
 }
 
 /**
+ * Apply a Smart Coupon to an order as WooCommerce stores it: the paid lines
+ * lose the discount and a coupon line carries the code and the total.
+ *
+ * @param WC_Order $order  Order.
+ * @param array    $coupon Coupon: code, type (`percentage` or `fixed`), amount.
+ *
+ * @return bool Whether it took anything off.
+ */
+function spsg_seed_coupon( WC_Order $order, array $coupon ): bool {
+	$left     = (float) $coupon['amount'];
+	$discount = 0.0;
+
+	foreach ( $order->get_items() as $item ) {
+		$total = (float) $item->get_total();
+		if ( $total <= 0 ) {
+			continue;
+		}
+
+		$off = SmartCoupon::TYPE_FIXED === $coupon['type'] ? min( $left, $total ) : round( $total * $coupon['amount'] / 100, 2 );
+		if ( $off <= 0 ) {
+			continue;
+		}
+
+		$left     -= $off;
+		$discount += $off;
+		$item->set_total( $total - $off );
+	}
+
+	if ( $discount <= 0 ) {
+		return false;
+	}
+
+	$line = new WC_Order_Item_Coupon();
+	$line->set_code( $coupon['code'] );
+	$line->set_discount( $discount );
+	$line->set_discount_tax( 0 );
+	$order->add_item( $line );
+
+	return true;
+}
+
+/**
+ * Pro's campaigns, by days ago (negative: ahead), with the seeded offers
+ * attached. Ids are saved into the seed as they're made.
+ *
+ * @param array $seed    Seed record (by reference).
+ * @param array $bumps   Seeded bumps.
+ * @param array $bogos   Seeded BOGO offers.
+ * @param array $coupons Seeded coupons by key.
+ *
+ * @return array Campaigns: id, from (days ago), to (days ago).
+ */
+function spsg_seed_campaigns( array &$seed, array $bumps, array $bogos, array $coupons ): array {
+	if ( ! class_exists( CampaignRepository::class ) || ! CampaignRepository::is_installed() ) {
+		return [];
+	}
+
+	$now   = current_datetime();
+	$plans = [
+		[
+			'name'   => 'Back to school',
+			'from'   => 75,
+			'to'     => 62,
+			'offers' => [ [ OfferVersions::ORDER_BUMP, $bumps[1]['id'] ] ],
+		],
+		[
+			'name'   => 'Black Friday',
+			'from'   => 40,
+			'to'     => 27,
+			'offers' => [
+				[ OfferVersions::BOGO, $bogos[0]['id'] ],
+				[ OfferVersions::SMART_COUPON, $coupons['automatic']['id'] ],
+			],
+		],
+		[
+			'name'   => 'Winter sale',
+			'from'   => 9,
+			'to'     => -12,
+			'offers' => [
+				[ OfferVersions::BOGO, $bogos[1]['id'] ],
+				[ OfferVersions::SMART_COUPON, $coupons['code']['id'] ],
+			],
+		],
+		[
+			'name'   => 'New year',
+			'from'   => -40,
+			'to'     => -50,
+			'offers' => [ [ OfferVersions::ORDER_BUMP, $bumps[0]['id'] ] ],
+		],
+	];
+
+	$campaigns = [];
+	foreach ( $plans as $plan ) {
+		$id = CampaignRepository::save(
+			[
+				'name'      => SPSG_SEED_PREFIX . $plan['name'],
+				'status'    => CampaignRepository::STATUS_SCHEDULED,
+				'starts_at' => $now->modify( ( 0 - $plan['from'] ) . ' days' )->format( 'Y-m-d' ) . ' 00:00',
+				'ends_at'   => $now->modify( ( 0 - $plan['to'] ) . ' days' )->format( 'Y-m-d' ) . ' 23:59',
+				'settings'  => [
+					// Below the seeded orders' value, so campaigns show a lift.
+					'baseline' => [
+						'revenue_per_day' => 45.0,
+						'aov'             => 31.0,
+					],
+				],
+			]
+		);
+		if ( is_wp_error( $id ) ) {
+			spsg_seed_say( "Campaign {$plan['name']}: " . $id->get_error_message() );
+			continue;
+		}
+
+		$seed['campaigns'][] = $id;
+		update_option( SPSG_SEED_OPTION, $seed, false );
+
+		foreach ( $plan['offers'] as [ $kind, $offer_id ] ) {
+			$row = CampaignRepository::attach( $id, $kind, (int) $offer_id );
+			if ( is_wp_error( $row ) ) {
+				spsg_seed_say( "Campaign {$plan['name']}: " . $row->get_error_message() );
+			}
+		}
+
+		$campaigns[] = [
+			'id'   => $id,
+			'from' => $plan['from'],
+			'to'   => $plan['to'],
+		];
+	}
+
+	return $campaigns;
+}
+
+/**
+ * The campaign running on a day, if any.
+ *
+ * @param array $campaigns Campaigns: id, from, to (days ago).
+ * @param int   $days_ago  Day.
+ *
+ * @return int Campaign id, 0 for none.
+ */
+function spsg_seed_campaign_on( array $campaigns, int $days_ago ): int {
+	foreach ( $campaigns as $campaign ) {
+		if ( $days_ago <= $campaign['from'] && $days_ago >= $campaign['to'] ) {
+			return $campaign['id'];
+		}
+	}
+
+	return 0;
+}
+
+/**
  * Add to a campaign's count on a day (`Counter::bump()` only writes today).
  *
  * @param string $day         `Y-m-d`.
  * @param string $module      Module id.
  * @param string $metric      Metric.
- * @param int    $campaign_id Bump or BOGO offer id.
+ * @param int    $campaign_id Bump or BOGO offer id (a campaign's id for `promotion`).
  * @param int    $count       Count.
+ * @param string $object_type What the id is.
  */
-function spsg_seed_count( string $day, string $module, string $metric, int $campaign_id, int $count ): void {
+function spsg_seed_count( string $day, string $module, string $metric, int $campaign_id, int $count, string $object_type = Counter::CAMPAIGN ): void {
 	global $wpdb;
 
 	if ( $count < 1 ) {
@@ -332,7 +519,7 @@ function spsg_seed_count( string $day, string $module, string $metric, int $camp
 			$day,
 			$module,
 			$metric,
-			Counter::CAMPAIGN,
+			$object_type,
 			$campaign_id,
 			$count
 		)
@@ -386,8 +573,10 @@ function spsg_seed(): void {
 			},
 			array_values( $products )
 		),
-		'bumps'    => [],
-		'bogos'    => [],
+		'bumps'     => [],
+		'bogos'     => [],
+		'coupons'   => [],
+		'campaigns' => [],
 	];
 	update_option( SPSG_SEED_OPTION, $seed, false );
 
@@ -450,17 +639,75 @@ function spsg_seed(): void {
 		update_option( SPSG_SEED_OPTION, $seed, false );
 	}
 
+	// Active while orders are made: WooCommerce counts a use only for a
+	// coupon it can find. `share`: percent of coupon orders using it.
+	$coupons = [
+		'code'      => [
+			'title'  => 'Save 10% sitewide',
+			'method' => SmartCoupon::CODE,
+			'code'   => 'seed-save10',
+			'type'   => SmartCoupon::TYPE_PERCENTAGE,
+			'amount' => 10,
+			'share'  => 50,
+		],
+		'link'      => [
+			'title'  => 'Newsletter $5 off',
+			'method' => SmartCoupon::LINK,
+			'code'   => 'seed-welcome5',
+			'type'   => SmartCoupon::TYPE_FIXED,
+			'amount' => 5,
+			'share'  => 25,
+		],
+		'automatic' => [
+			'title'  => 'Hoodie week 15% off',
+			'method' => SmartCoupon::AUTOMATIC,
+			'code'   => '',
+			'type'   => SmartCoupon::TYPE_PERCENTAGE,
+			'amount' => 15,
+			'share'  => 25,
+		],
+	];
+	foreach ( $coupons as $key => $coupon ) {
+		$saved = SmartCouponRepository::save(
+			[
+				'status'        => 'active',
+				'title'         => SPSG_SEED_PREFIX . $coupon['title'],
+				'method'        => $coupon['method'],
+				'code'          => $coupon['code'],
+				'discount_type' => $coupon['type'],
+				'amount'        => $coupon['amount'],
+			]
+		);
+		if ( is_wp_error( $saved ) ) {
+			spsg_seed_say( "Smart Coupon {$coupon['title']}: " . $saved->get_error_message() );
+			unset( $coupons[ $key ] );
+			continue;
+		}
+
+		$coupons[ $key ]['id']   = $saved->get_id();
+		$coupons[ $key ]['code'] = $saved->get_code();
+		$seed['coupons'][]       = $saved->get_id();
+		update_option( SPSG_SEED_OPTION, $seed, false );
+	}
+
+	$campaigns = isset( $coupons['code'], $coupons['automatic'] ) ? spsg_seed_campaigns( $seed, $bumps, $bogos, $coupons ) : [];
+	$surfaces  = class_exists( CampaignSurfaces::class ) ? array_merge( [ '' ], array_keys( CampaignSurfaces::modules() ) ) : [ '' ];
+
 	$statuses  = [ 'completed', 'completed', 'completed', 'processing' ];
 	$now       = current_datetime();
 	$order_ids = [];
 	$refunds   = 0;
+	$used      = 0;
+	$credited  = 0;
 
 	for ( $days_ago = SPSG_SEED_DAYS - 1; $days_ago >= 0; $days_ago-- ) {
 		$day     = $now->setTime( 0, 0 )->modify( "-{$days_ago} days" );
 		$accepts = array_fill_keys( $seed['bumps'], 0 );
 		$gifts   = array_fill_keys( $seed['bogos'], 0 );
-		// Busier lately, so the chart has a shape.
-		$orders = mt_rand( 0, $days_ago >= 30 ? 2 : 4 );
+		$campaign = spsg_seed_campaign_on( $campaigns, $days_ago );
+		$promoted = 0;
+		// Busier lately and during campaigns, so the chart has a shape.
+		$orders = mt_rand( 0, $days_ago >= 30 ? 2 : 4 ) + ( $campaign ? mt_rand( 1, 3 ) : 0 );
 
 		for ( $i = 0; $i < $orders; $i++ ) {
 			$bump  = $bumps[ $i % 2 ];
@@ -475,6 +722,27 @@ function spsg_seed(): void {
 				++$accepts[ $bump['id'] ];
 			} elseif ( 'bogo' === $taken ) {
 				++$gifts[ $bogo['id'] ];
+			}
+
+			// About a third of the orders use a coupon.
+			if ( $coupons && mt_rand( 1, 100 ) <= 33 ) {
+				$pick = mt_rand( 1, 100 );
+				foreach ( $coupons as $coupon ) {
+					$pick -= $coupon['share'];
+					if ( $pick <= 0 ) {
+						$used += (int) spsg_seed_coupon( $order, $coupon );
+						break;
+					}
+				}
+			}
+
+			// Most orders during a campaign credit it.
+			if ( $campaign && mt_rand( 1, 100 ) <= 70 ) {
+				$order->update_meta_data( OfferAttribution::PROMOTION_ID, $campaign );
+				$order->update_meta_data( OfferAttribution::PROMOTION_SOURCE, mt_rand( 1, 100 ) <= 70 ? 'offer' : 'link' );
+				$order->update_meta_data( OfferAttribution::PROMOTION_SURFACE, $surfaces[ mt_rand( 0, count( $surfaces ) - 1 ) ] );
+				++$promoted;
+				++$credited;
 			}
 
 			$created = $day->setTime( mt_rand( 8, 22 ), mt_rand( 0, 59 ) );
@@ -509,6 +777,15 @@ function spsg_seed(): void {
 		foreach ( $gifts as $bogo_id => $taken ) {
 			spsg_seed_count( $date, BoGoModule::get_id(), 'view', $bogo_id, mt_rand( 1, 4 ) + $taken * 4 );
 		}
+		// Carts that qualified for the campaign's deal, for its acceptance.
+		if ( $campaign ) {
+			spsg_seed_count( $date, 'campaigns', 'qualified', $campaign, $promoted * 2 + mt_rand( 1, 3 ), 'promotion' );
+		}
+	}
+
+	// The automatic coupon would apply to every cart on the storefront.
+	if ( isset( $coupons['automatic'] ) ) {
+		SmartCouponRepository::save( [ 'status' => 'inactive' ], new WC_Coupon( $coupons['automatic']['id'] ) );
 	}
 
 	// Into WooCommerce Analytics now (the import also fills spsg_offer_lookup).
@@ -523,10 +800,14 @@ function spsg_seed(): void {
 
 	spsg_seed_say(
 		sprintf(
-			'Seeded %d orders over %d days (%d partly refunded), 2 bumps, 2 BOGO offers, 4 products%s. Open StoreGrowth > Analytics.',
+			'Seeded %d orders over %d days (%d partly refunded, %d with a coupon, %d credited to a campaign), 2 bumps, 2 BOGO offers, %d Smart Coupons, %d campaigns, 4 products%s. Open StoreGrowth > Analytics.',
 			count( $order_ids ),
 			SPSG_SEED_DAYS,
 			$refunds,
+			$used,
+			$credited,
+			count( $coupons ),
+			count( $campaigns ),
 			$vendor_id ? " (vendor {$vendor_id})" : ''
 		)
 	);

@@ -20,10 +20,13 @@ import {
     type MultiSelectOption,
     NumberField,
     ProBadge,
+    OfferBanner,
+    type OfferTimelineData,
 } from '@storegrowth/components';
 import {
     Navigate,
     useModules,
+    useOfferVersion,
     useNavigate,
     useSearchParams,
 } from '@storegrowth/hooks';
@@ -213,17 +216,32 @@ function BumpEditor( { id }: { id: number | null } ) {
         },
         [ navigate, searchParams ]
     );
-    const bump = useOrderBump( id, onCreated );
+    const version = useOfferVersion( 'order_bump' );
+    const bump = useOrderBump(
+        version.row || id,
+        ( created ) => {
+            if ( version.returnTo ) {
+                navigate( version.returnTo );
+                return;
+            }
+
+            onCreated( created );
+        },
+        version.route
+    );
 
     const title = __( 'Upsell Order Bump', 'storegrowth-sales-booster' );
+    // A campaign's version goes back to its campaign.
     const toList = (
         <Button
             variant="outline"
             onClick={ () => {
-                navigate( '/upsell-order-bump' );
+                navigate( version.returnTo ?? '/upsell-order-bump' );
             } }
         >
-            { __( 'Bump List', 'storegrowth-sales-booster' ) }
+            { version.returnTo
+                ? __( 'Back to campaign', 'storegrowth-sales-booster' )
+                : __( 'Bump List', 'storegrowth-sales-booster' ) }
         </Button>
     );
 
@@ -281,12 +299,22 @@ function BumpEditor( { id }: { id: number | null } ) {
 
     return (
         <ModuleSettingsPage
+            notice={
+                <OfferBanner
+                    timeline={ bump.record?.timeline as OfferTimelineData }
+                />
+            }
             title={ title }
             settings={ bump }
             preview={ preview }
             hasPreview
             controls={ loaded ? controls( bump, categories ) : undefined }
-            actions={ toList }
+            actions={
+                <>
+                    { version.header }
+                    { toList }
+                </>
+            }
             savedMessage={
                 id
                     ? __( 'Order bump saved.', 'storegrowth-sales-booster' )

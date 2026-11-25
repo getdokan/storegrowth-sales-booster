@@ -8,6 +8,7 @@
 namespace StorePulse\StoreGrowth\Modules\CountdownTimer;
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
+use StorePulse\StoreGrowth\Support\SiteTime;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -153,21 +154,94 @@ class Helper {
 		$end_date        = get_post_meta( $product_id, '_spsg_countdown_timer_discount_end', true );
 
 		// If data is not set.
-		if ( ! $discount_amount || ! $end_date ) {
+		if ( ! $discount_amount || ! SiteTime::parse( $end_date, true ) ) {
 			return false;
 		}
 
-		// Check start date is later.
-		if ( strtotime( $start_date ) > time() ) {
-			return false;
-		}
+		return SiteTime::is_within( $start_date, $end_date );
+	}
 
-		// Check end date has passed.
-		if ( strtotime( $end_date ) < time() ) {
-			return false;
-		}
+	/**
+	 * The campaign price running on a product, which replaces the product's
+	 * own timer discount while it runs.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int $product_id Product or variation id.
+	 *
+	 * @return array{percent: int, promotion_id: int}|null
+	 */
+	public static function campaign_price( int $product_id ): ?array {
+		/**
+		 * Filters the campaign price running on a product. StoreGrowth has no
+		 * campaigns itself; StoreGrowth Pro supplies them.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array|null $price      Null for none, or `percent` (1–100) and `promotion_id`.
+		 * @param int        $product_id Product or variation id.
+		 */
+		$price = apply_filters( 'spsg_campaign_price', null, $product_id );
 
-		return true;
+		return is_array( $price ) && ! empty( $price['percent'] ) ? $price : null;
+	}
+
+	/**
+	 * Everything the running campaigns set on prices, for the cart hash: a
+	 * change in it changes the shopper's prices.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return array
+	 */
+	public static function campaign_prices(): array {
+		/**
+		 * Filters what the running campaigns set on product prices.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array $prices Campaign prices by campaign id; empty without campaigns.
+		 */
+		return (array) apply_filters( 'spsg_campaign_prices', [] );
+	}
+
+	/**
+	 * When the campaign controlling a product's timer ends, if one does.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int $product_id Product id.
+	 *
+	 * @return string|null Site-time date, or null for the product's own timer.
+	 */
+	public static function campaign_countdown_end( int $product_id ): ?string {
+		/**
+		 * Filters the end of the campaign a product's countdown shows.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param string|null $end        Null for the product's own timer.
+		 * @param int         $product_id Product id.
+		 */
+		$end = apply_filters( 'spsg_countdown_campaign_end', null, $product_id );
+
+		return is_string( $end ) && '' !== $end ? $end : null;
+	}
+
+	/**
+	 * A stored end date as the storefront timer reads it: milliseconds since
+	 * the epoch, so it ends at the same moment as the price for every shopper.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param mixed $end_date Stored end date.
+	 *
+	 * @return int Milliseconds, or 0 without a readable date.
+	 */
+	public static function timer_end( $end_date ): int {
+		$end = SiteTime::parse( $end_date, true );
+
+		return $end ? $end->getTimestamp() * 1000 : 0;
 	}
 
 	/**

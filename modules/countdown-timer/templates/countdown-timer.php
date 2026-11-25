@@ -18,7 +18,10 @@ use StorePulse\StoreGrowth\Storefront\StorefrontFonts;
 use StorePulse\StoreGrowth\Storefront\StorefrontStyle;
 use StorePulse\StoreGrowth\Storefront\StorefrontText;
 
-if ( ! Helper::is_product_discountable( $product->get_id() ) ) {
+// The product's own timer, or a running campaign's countdown on it (pro#351).
+$campaign_end = Helper::campaign_countdown_end( $product->get_id() );
+
+if ( null === $campaign_end && ! Helper::is_product_discountable( $product->get_id() ) ) {
 	return;
 }
 
@@ -30,10 +33,19 @@ if ( is_product() && ! $enable_countdown_in_product_page ) {
 	return;
 }
 
-$end_date        = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
-$discount_amount = get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true );
+$campaign_price  = null !== $campaign_end ? Helper::campaign_price( $product->get_id() ) : null;
+$end_date        = $campaign_end ?? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_end', true );
+$own_discount    = Helper::is_product_discountable( $product->get_id() ) ? get_post_meta( $product->get_id(), '_spsg_countdown_timer_discount_amount', true ) : '';
+$discount_amount = $campaign_price ? $campaign_price['percent'] : $own_discount;
 $heading_text    = PluginHelper::find_option_settings( $settings, 'countdown_heading', __( 'Last chance! [discount]% OFF', 'storegrowth-sales-booster' ) );
-$heading         = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );
+
+// A campaign countdown with no percent to name (no campaign price, no live
+// timer of its own), under a heading that would name one.
+if ( ! (float) $discount_amount && preg_match( '/[\[{]discount[\]}]/', (string) $heading_text ) ) {
+	$heading_text = __( 'Offer ends in', 'storegrowth-sales-booster' );
+}
+
+$heading = StorefrontText::replace( (string) $heading_text, [ 'discount' => $discount_amount ] );
 
 // The second old layout draws the heading as a gradient when its colour is transparent.
 $heading_class = 'ct-layout-2' === $layout_class && 'transparent' === PluginHelper::find_option_settings( $settings, 'heading_text_color', '' ) ? 'default' : '';
@@ -113,7 +125,7 @@ $units = [
 			</p>
 		<?php endif; ?>
 
-		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-end-date="<?php echo esc_attr( $end_date ); ?>">
+		<div class="spsg-countdown-timer-items <?php echo esc_attr( $layout_class ); ?>" data-spsg-surface="countdown" data-end-date="<?php echo esc_attr( Helper::timer_end( $end_date ) ); ?>">
 			<?php foreach ( $units as $unit => [ $digit, $label ] ) : ?>
 				<?php if ( 'days' !== $unit ) : ?>
 					<span class="spsg-colon <?php echo esc_attr( $layout_class ); ?>">:</span>

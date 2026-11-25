@@ -400,7 +400,9 @@ class OfferReportTest extends StoreGrowthTestCase {
 		$this->import( $created['order']->get_id() );
 
 		$bump = $this->totals( [ 'spsg_module' => 'upsell-order-bump' ] );
-		$this->assertEquals( 25, $bump->net_revenue );
+		// Revenue follows WooCommerce's product lookup, which records a refund
+		// with no quantity only from WooCommerce 11.0 (ADR-012).
+		$this->assertEquals( version_compare( WC()->version, '11.0', '>=' ) ? 25 : 30, $bump->net_revenue );
 		$this->assertEquals( 10, $bump->discount );
 	}
 

@@ -46,3 +46,4 @@ phpunit.xml
 .phpunit.result.cache
 .wp-env.json
 .wp-env.override.json
+.playwright-mcp

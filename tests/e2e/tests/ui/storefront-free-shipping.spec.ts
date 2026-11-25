@@ -82,9 +82,9 @@ test.describe('Storefront · Free Shipping Rules', { tag: '@ui' }, () => {
   });
 
   test.describe('Admin UI → storefront', { tag: '@admin' }, () => {
-    test('Banner Text (Content) updates the bar text', async ({ page, guestPage }) => {
-      await gotoSettings(page, id, 'content');
-      await setText(page, 'Banner Text', 'Spend more, ship free today!');
+    test('Bar Copy (Milestones) updates the bar text', async ({ page, guestPage }) => {
+      await gotoSettings(page, id, 'milestones');
+      await setText(page, 'Bar Copy', 'Spend more, ship free today!');
       await saveSettings(page, id);
 
       await gotoShopAsGuest(guestPage);
@@ -114,7 +114,7 @@ test.describe('Storefront · Free Shipping Rules', { tag: '@ui' }, () => {
       const def = (await getModuleSettings(api, id)).schema.progressive_banner_text.default;
       await saveModuleSettings(api, id, { progressive_banner_text: 'Temporary text 999' });
 
-      await gotoSettings(page, id, 'content');
+      await gotoSettings(page, id, 'milestones');
       await resetSettings(page, id);
       expect((await getModuleSettings(api, id)).values.progressive_banner_text).toBe(def);
     });

@@ -9,6 +9,7 @@ namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 
 use StorePulse\StoreGrowth\Helper as PluginHelper;
 use StorePulse\StoreGrowth\Modules\FloatingNotificationBar\Settings\FloatingNotificationBarSettings;
+use StorePulse\StoreGrowth\Storefront\DisplayRules;
 
 // If this file is called directly, abort.
 
@@ -48,9 +49,14 @@ class Helper {
 	public static function get_settings() {
 		// Saves write only changed keys: the rest come from the defaults (not
 		// for a store that never saved, so its bar stays off as before).
-		$settings = storegrowth_get_container()->get( FloatingNotificationBarSettings::class )->storefront_settings(
-			PluginHelper::get_settings( 'spsg_floating_notification_bar_settings', array() )
-		);
+		$stored   = PluginHelper::get_settings( 'spsg_floating_notification_bar_settings', array() );
+		$settings = storegrowth_get_container()->get( FloatingNotificationBarSettings::class )->storefront_settings( $stored );
+
+		// A running campaign shows the bar before its settings were ever
+		// saved: draw it with the defaults.
+		if ( empty( $stored ) && DisplayRules::campaign_shows( 'floating_bar', self::get_default_settings() ) ) {
+			$settings = wp_list_pluck( storegrowth_get_container()->get( FloatingNotificationBarSettings::class )->get_fields(), 'default' );
+		}
 
 		// Only fills in keys that are absent, so an explicitly emptied setting is preserved.
 		return wp_parse_args( $settings, self::get_default_settings() );
@@ -66,6 +72,12 @@ class Helper {
 	 * @return string
 	 */
 	public static function get_banner_text( $settings ) {
+		$campaign_copy = DisplayRules::campaign_copy( 'floating_bar', (array) $settings );
+
+		if ( '' !== $campaign_copy ) {
+			return $campaign_copy;
+		}
+
 		$banner_text = __( 'Shop More Than $100 to get Free Shipping', 'storegrowth-sales-booster' );
 		return PluginHelper::find_option_settings( $settings, 'default_banner_text', $banner_text );
 	}

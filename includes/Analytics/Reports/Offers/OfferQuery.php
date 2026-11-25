@@ -44,10 +44,12 @@ trait OfferQuery {
 	 */
 	protected function offer_query_vars(): array {
 		return [
-			'spsg_module'   => '',
-			'spsg_campaign' => '',
-			'spsg_role'     => [ OfferLookup::ROLE_REWARD, OfferLookup::ROLE_DISCOUNTED ],
-			'spsg_vendor'   => 0,
+			'spsg_module'    => '',
+			'spsg_campaign'  => '',
+			'spsg_role'      => [ OfferLookup::ROLE_REWARD, OfferLookup::ROLE_DISCOUNTED ],
+			'spsg_vendor'    => 0,
+			// One campaign's whole-order lines (ADR-016); pass `spsg_role` empty with it.
+			'spsg_promotion' => 0,
 		];
 	}
 
@@ -148,6 +150,12 @@ trait OfferQuery {
 		// One vendor's orders (the Dokan join is there whenever Dokan is).
 		if ( ! empty( $query_args['spsg_vendor'] ) && function_exists( 'dokan' ) && class_exists( OrderType::class ) ) {
 			$where .= $wpdb->prepare( ' AND spsg_dokan.vendor_id = %d', (int) $query_args['spsg_vendor'] );
+		}
+
+		if ( 'any' === ( $query_args['spsg_promotion'] ?? 0 ) ) {
+			$where .= " AND {$alias}.promotion_id <> 0";
+		} elseif ( ! empty( $query_args['spsg_promotion'] ) ) {
+			$where .= $wpdb->prepare( " AND {$alias}.promotion_id = %d", (int) $query_args['spsg_promotion'] ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		if ( in_array( 'trigger', $roles, true ) ) {

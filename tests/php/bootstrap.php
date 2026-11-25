@@ -9,7 +9,8 @@
  */
 
 define( 'TEST_SPSG_PLUGIN_DIR', dirname( __DIR__, 2 ) );
-define( 'TEST_WC_DIR', dirname( TEST_SPSG_PLUGIN_DIR, 1 ) . '/woocommerce' );
+// TEST_WC_DIR in the environment runs the suite on another WooCommerce, e.g. the oldest supported one.
+define( 'TEST_WC_DIR', getenv( 'TEST_WC_DIR' ) ? getenv( 'TEST_WC_DIR' ) : dirname( TEST_SPSG_PLUGIN_DIR, 1 ) . '/woocommerce' );
 
 // The composer autoloader must load first so WP_PHPUNIT__DIR becomes available.
 require_once TEST_SPSG_PLUGIN_DIR . '/vendor/autoload.php';
@@ -32,6 +33,21 @@ if ( ! file_exists( TEST_WC_DIR . '/woocommerce.php' ) ) {
 
 require_once $_tests_dir . '/includes/functions.php';
 
+if ( ! function_exists( 'dokan_is_user_seller' ) ) {
+	/**
+	 * Dokan's seller check, as it reads: any user with `dokandar`.
+	 *
+	 * @param int  $user_id       User.
+	 * @param bool $exclude_staff Whether vendor staff don't count.
+	 *
+	 * @return bool
+	 */
+	function dokan_is_user_seller( $user_id, $exclude_staff = false ) {
+		// phpcs:ignore WordPress.WP.Capabilities.Unknown -- Dokan's capabilities.
+		return user_can( $user_id, 'dokandar' ) && ! ( $exclude_staff && user_can( $user_id, 'vendor_staff' ) );
+	}
+}
+
 /**
  * Load WooCommerce and StoreGrowth into the test environment.
  *
@@ -43,6 +59,11 @@ function spsg_manually_load_plugin() {
 
 	require TEST_WC_DIR . '/woocommerce.php';
 	require TEST_SPSG_PLUGIN_DIR . '/storegrowth-sales-booster.php';
+
+	// StoreGrowth Pro's suite (its campaign tests) runs on this bootstrap.
+	if ( defined( 'TEST_SPSG_PRO_DIR' ) ) {
+		require TEST_SPSG_PRO_DIR . '/storegrowth-sales-booster-pro.php';
+	}
 }
 
 tests_add_filter( 'muplugins_loaded', 'spsg_manually_load_plugin' );
@@ -85,6 +106,10 @@ function spsg_install_storegrowth() {
 	}
 
 	\StorePulse\StoreGrowth\Analytics\Schema::install();
+
+	if ( defined( 'TEST_SPSG_PRO_DIR' ) ) {
+		\StorePulse\StoreGrowthPro\Campaigns\CampaignRepository::install();
+	}
 
 	echo esc_html( 'Installing StoreGrowth...' . PHP_EOL );
 }

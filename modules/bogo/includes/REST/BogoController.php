@@ -8,6 +8,8 @@
 namespace StorePulse\StoreGrowth\Modules\BoGo\REST;
 
 use Exception;
+use StorePulse\StoreGrowth\Offers\OfferVersions;
+use WC_Product_Variable;
 use WP_Error;
 use WP_HTTP_Response;
 use WP_REST_Controller;
@@ -534,6 +536,87 @@ class BogoController extends WP_REST_Controller {
 		}
 
 		return $sent;
+	}
+
+	/**
+	 * Validate a campaign's version of an offer, or a campaign-only offer,
+	 * as an update or a create would, and return it in the stored shape.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $offer Stored values; empty for a new campaign-only offer.
+	 * @param array $sent  What the editor sent.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function campaign_values( array $offer, array $sent ) {
+		unset( $sent['id'] );
+
+		if ( isset( $sent['name'] ) && ! isset( $sent['name_of_order_bogo'] ) ) {
+			$sent['name_of_order_bogo'] = $sent['name'];
+		}
+
+		if ( 'product' === ( $sent['type'] ?? '' ) && empty( $sent['offered_products'] ) && ! empty( $sent['product_id'] ) ) {
+			$sent['offered_products'] = [ (int) $sent['product_id'] ];
+		}
+
+		$stored = BogoDataManager::to_request_data( $offer );
+		$data   = $this->validate_and_normalize_data( $this->ignore_pro_values( array_merge( $stored, $sent ), $offer ? $stored : [] ) );
+
+		if ( is_wp_error( $data ) ) {
+			return $data;
+		}
+
+		$rules = $this->check_offer_rules( $data, $offer ? $sent : null );
+
+		if ( is_wp_error( $rules ) ) {
+			return $rules;
+		}
+
+		$rules = $this->check_extension_rules( $data, $offer ? $stored : [], new WP_REST_Request() );
+
+		return is_wp_error( $rules ) ? $rules : BogoDataManager::to_offer_values( $data, $this->campaign_rule_product( $offer, $data ) );
+	}
+
+	/**
+	 * The product a campaign-only rule is for, when it targets one product
+	 * alone: such a rule is that product's own rule while the campaign runs,
+	 * and takes over from its everyday product rule.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $offer Stored values; an attached offer's have its id.
+	 * @param array $data  Normalized offer data.
+	 *
+	 * @return int 0 for an attached offer or a rule with wider targets.
+	 */
+	private function campaign_rule_product( array $offer, array $data ): int {
+		$products = (array) ( $data['offered_products'] ?? [] );
+
+		return empty( $offer['id'] ) && 1 === count( $products ) && empty( $data['offered_categories'] ) ? (int) reset( $products ) : 0;
+	}
+
+	/**
+	 * Stored values as this editor reads them. A campaign-only rule always
+	 * opens in this editor, never on a product's BOGO tab.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $values Stored values.
+	 *
+	 * @return array
+	 */
+	public function campaign_record( array $values ): array {
+		$record = array_merge(
+			$values,
+			[
+				'id'         => 0,
+				'type'       => 'global',
+				'product_id' => 0,
+			]
+		);
+
+		return (array) $this->prepare_item_for_response( $record, new WP_REST_Request() )->get_data();
 	}
 
 	/**
@@ -1427,6 +1510,10 @@ class BogoController extends WP_REST_Controller {
 		$data                   = array_merge( $data, BogoDataManager::get_design_settings( $item['design_settings'] ?? null ) );
 		$data['offer_schedule'] = ! empty( $item['offer_schedule'] ) ? $item['offer_schedule'] : [ 'daily' ];
 
+		// Why a rule isn't running now, and which campaign takes it over.
+		$data['chip']     = OfferVersions::effective_offer( array_merge( $item, [ 'offer_kind' => OfferVersions::BOGO ] ) )['chip'];
+		$data['timeline'] = OfferVersions::timeline( OfferVersions::BOGO, (int) ( $item['id'] ?? 0 ), 'active' === ( $item['status'] ?? '' ), (string) ( $item['name_of_order_bogo'] ?? $item['name'] ?? '' ) );
+
 		// A product offer ("Specific") is edited on its product's BOGO tab.
 		$data['product_id'] = absint( $item['product_id'] ?? 0 );
 		if ( $data['product_id'] ) {
@@ -1455,12 +1542,31 @@ class BogoController extends WP_REST_Controller {
 				return html_entity_decode( wp_strip_all_tags( wc_price( $amount ) ), ENT_QUOTES, 'UTF-8' );
 			};
 
-			$regular_price = $offer_product->get_regular_price();
+			$offer_price = static function ( $price ) use ( $item ) {
+				return Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $price, $item['discount_amount'] ?? 0 );
+			};
 
-			$data['offer_prices'] = [
-				'regular' => $as_text( (float) ( $regular_price ? $regular_price : $offer_product->get_price() ) ),
-				'offer'   => $as_text( Helper::calculate_offer_price( $item['offer_type'] ?? 'free', $offer_product->get_price(), $item['discount_amount'] ?? 0 ) ),
-			];
+			if ( $offer_product instanceof WC_Product_Variable ) {
+				// The shopper picks the variation: from the cheapest to the
+				// dearest, as a range when they differ.
+				$as_range = static function ( $min, $max ) use ( $as_text ) {
+					return (float) $min === (float) $max
+						? $as_text( $min )
+						: $as_text( $min ) . ' – ' . $as_text( $max );
+				};
+
+				$data['offer_prices'] = [
+					'regular' => $as_range( (float) $offer_product->get_variation_regular_price( 'min' ), (float) $offer_product->get_variation_regular_price( 'max' ) ),
+					'offer'   => $as_range( $offer_price( $offer_product->get_variation_price( 'min' ) ), $offer_price( $offer_product->get_variation_price( 'max' ) ) ),
+				];
+			} else {
+				$regular_price = $offer_product->get_regular_price();
+
+				$data['offer_prices'] = [
+					'regular' => $as_text( (float) ( $regular_price ? $regular_price : $offer_product->get_price() ) ),
+					'offer'   => $as_text( $offer_price( $offer_product->get_price() ) ),
+				];
+			}
 		}
 
 		$currency = wp_strip_all_tags( html_entity_decode( get_woocommerce_currency_symbol() ) );

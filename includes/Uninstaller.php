@@ -136,6 +136,9 @@ class Uninstaller {
 
 		$tables[] = Schema::OFFER_LOOKUP;
 		$tables[] = Schema::DAILY;
+		// StoreGrowth Pro's campaign tables: uninstall runs without Pro loaded.
+		$tables[] = 'spsg_campaigns';
+		$tables[] = 'spsg_campaign_offers';
 
 		return $tables;
 	}

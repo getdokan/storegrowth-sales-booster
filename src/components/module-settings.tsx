@@ -60,6 +60,8 @@ export interface ModuleSettingsPageProps< V extends Values > {
      * dashboard, ADR-011). The card then starts with the tabs.
      */
     hideTitle?: boolean;
+    /** Above the page, e.g. a campaign's banner on a record editor. */
+    notice?: ReactNode;
 }
 
 interface SkeletonShape {
@@ -199,6 +201,7 @@ function runs< T >( keys: string[], by: ( key: string ) => T ) {
  * @param props.actions      Beside the title.
  * @param props.savedMessage Toast after a save.
  * @param props.hideTitle    No title card (the host page has the heading).
+ * @param props.notice       Above the page.
  */
 export function ModuleSettingsPage< V extends Values >( {
     title,
@@ -210,6 +213,7 @@ export function ModuleSettingsPage< V extends Values >( {
     actions,
     savedMessage,
     hideTitle = false,
+    notice,
 }: ModuleSettingsPageProps< V > ) {
     const schema = settings.schema as Record< string, SettingField >;
     const pageTitle = settings.page.title ?? title ?? '';
@@ -505,6 +509,7 @@ export function ModuleSettingsPage< V extends Values >( {
                     : 'flex w-full flex-col'
             }
         >
+            { notice && <div className="pb-3">{ notice }</div> }
             { ! hideTitle && (
                 <CardHead
                     title={ pageTitle }

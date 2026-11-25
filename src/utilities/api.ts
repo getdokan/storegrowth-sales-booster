@@ -140,7 +140,16 @@ export interface BoxValue {
 /** Value of a `list` field: product ids, names, page conditions, … */
 export type ListValue = Array< string | number >;
 
-export type SettingValue = string | number | boolean | BoxValue | ListValue;
+/** Value of a `rows` field: a list of records, e.g. Cart Rewards milestones. */
+export type RowsValue = Array< Record< string, string | number > >;
+
+export type SettingValue =
+    | string
+    | number
+    | boolean
+    | BoxValue
+    | ListValue
+    | RowsValue;
 
 /** One field of a module's settings schema (PHP `SettingsSchema`). */
 export interface SettingField {
@@ -153,6 +162,7 @@ export interface SettingField {
         | 'select'
         | 'box'
         | 'list'
+        | 'rows'
         | 'url'
         | 'date';
     default: SettingValue;

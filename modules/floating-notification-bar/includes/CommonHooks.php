@@ -10,6 +10,7 @@ namespace StorePulse\StoreGrowth\Modules\FloatingNotificationBar;
 use StorePulse\StoreGrowth\Interfaces\HookRegistry;
 use StorePulse\StoreGrowth\helper as PluginHelper;
 use StorePulse\StoreGrowth\Settings\SettingsService;
+use StorePulse\StoreGrowth\Storefront\DisplayRules;
 
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,12 +66,15 @@ class CommonHooks implements HookRegistry {
             return;
         }
 
-		// Never saved: no bar, as before (the script used to hide it).
-		if ( ! storegrowth_get_container()->get( SettingsService::class )->is_published( FloatingNotificationBarModule::get_id() ) ) {
+		$settings = Helper::get_settings();
+
+		// Never saved: no bar, as before (the script used to hide it), unless
+		// a running campaign shows it.
+		if ( ! storegrowth_get_container()->get( SettingsService::class )->is_published( FloatingNotificationBarModule::get_id() )
+			&& ! DisplayRules::campaign_shows( 'floating_bar', $settings ) ) {
 			return;
 		}
 
-		$settings            = Helper::get_settings();
 		$default_device_view = array( 'banner-show-desktop' );
 		$device_view         = PluginHelper::find_option_settings( $settings, 'banner_device_view', $default_device_view );
 		if ( empty( $device_view ) ) {

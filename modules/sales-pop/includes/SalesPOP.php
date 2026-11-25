@@ -50,6 +50,16 @@ class SalesPOP implements HookRegistry {
 		// Saves write only changed keys: fill the rest from the defaults.
 		$popup_properties = storegrowth_get_container()->get( SalesPopSettings::class )->storefront_settings( PluginHelper::get_settings( 'spsg_popup_products', true ) );
 
+		/**
+		 * Filters Sales Pop's storefront settings, e.g. switched on for a
+		 * running campaign's products by StoreGrowth Pro.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param array $settings Sales Pop settings.
+		 */
+		$popup_properties = (array) apply_filters( 'spsg_sales_pop_settings', (array) $popup_properties );
+
 		if ( ! empty( $popup_properties['enable'] ) && ! empty( $popup_properties['popup_products'] ) ) {
 			include __DIR__ . '/../templates/popup-style.php';
 			$path = apply_filters( 'spsg_sales_pop_visbility_controller', __DIR__ . '/../templates/popup.php' );

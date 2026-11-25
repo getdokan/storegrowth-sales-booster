@@ -40,6 +40,7 @@ const EXCLUDED = [
   "phpcs.xml",
   "phpcs.xml.dist",
   "phpcs.xml.dist.sample",
+  "phpunit.xml",
   "postcss.config.js",
   // TypeScript / legacy sources; the zip ships the built bundles.
   "src",
@@ -62,7 +63,10 @@ const EXCLUDED = [
  * @return {boolean}
  */
 function isExcluded(name) {
-  return EXCLUDED.includes(name);
+  // Hidden files and folders are tooling a merchant never needs, and a site
+  // would serve them to anyone: `.phpunit.result.cache`, `.playwright-mcp/`
+  // console logs, `.wp-env.json` (pro#367).
+  return name.startsWith(".") || EXCLUDED.includes(name);
 }
 
 /**

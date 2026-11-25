@@ -120,6 +120,12 @@ class EnqueueScript implements HookRegistry {
 				'ajax_url_for_front' => admin_url( 'admin-ajax.php' ),
 				'ajd_nonce'          => $ajd_nonce,
 				'rest_nonce'         => wp_create_nonce( 'wp_rest' ),
+				// The store's number format, for prices the script redraws.
+				'price_format'       => [
+					'decimals'           => wc_get_price_decimals(),
+					'decimal_separator'  => wc_get_price_decimal_separator(),
+					'thousand_separator' => wc_get_price_thousand_separator(),
+				],
 			)
 		);
 	}

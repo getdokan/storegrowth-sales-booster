@@ -117,6 +117,17 @@ export function OfferPreview( {
     const money = ( amount: number ) => {
         return formatPrice( amount, currency );
     };
+    // A variable product: the shopper picks the variation, so the price runs
+    // from the cheapest to the dearest.
+    const range = ( min: number, max = min ) => {
+        return max > min
+            ? `${ money( min ) } – ${ money( max ) }`
+            : money( min );
+    };
+    const offerMax =
+        product.maxPrice !== undefined
+            ? product.maxPrice * ( 1 - percent / 100 )
+            : offerPrice;
 
     // As the template: the discount while the offer costs something, else
     // the message (or "Free Gift") with the offer product's name.
@@ -211,10 +222,28 @@ export function OfferPreview( {
                 <span className="ml-auto flex shrink-0 flex-col items-end gap-0.5 text-[13px] text-[#25252D]">
                     { showRegularPrice && (
                         <s className="text-[#6B7280]">
-                            { money( product.regular ) }
+                            { range( product.regular, product.maxRegular ) }
                         </s>
                     ) }
-                    <b className="font-semibold">{ money( offerPrice ) }</b>
+                    <b className="font-semibold">
+                        { range( offerPrice, offerMax ) }
+                    </b>
+                    { /* A variable gift: the shopper picks the variation, so
+                       say what it can be worth even without the regular
+                       price shown (pro#332). */ }
+                    { ! showRegularPrice &&
+                        ( product.maxRegular ?? 0 ) > product.regular && (
+                            <span className="text-[11px] text-[#6B7280]">
+                                { sprintf(
+                                    /* translators: %s: price range, e.g. "$10 – $50". */
+                                    __(
+                                        'Variations: %s',
+                                        'storegrowth-sales-booster'
+                                    ),
+                                    range( product.regular, product.maxRegular )
+                                ) }
+                            </span>
+                        ) }
                 </span>
             </div>
         </div>

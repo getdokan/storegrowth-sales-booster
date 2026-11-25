@@ -2,10 +2,13 @@
  * StoreGrowth storefront tracker (ADR-012): counts views and clicks of
  * module widgets and sends them in one batch when the page is left.
  *
- * Plain JS, no cookies, no visitor id, so it works on cached pages. Handle
+ * Plain JS, no visitor id, so it works on cached pages. Handle
  * `spsg-storefront-tracker`; adds `track()` to `window.spsgStorefront`
  * (loads after `spsg-storefront-core`, which creates it). Settings:
- * `window.spsgTracker = { url }`, the `sales-booster/v1/analytics/track` route.
+ * `window.spsgTracker = { url, promoCookie, promoDays }`; `url` is the
+ * `sales-booster/v1/analytics/track` route. The campaign link (`?sg=<slug>`,
+ * ADR-016) is the one cookie: `promoCookie`, for `promoDays` days, read when
+ * an order is placed, plus the last surface clicked (`data-spsg-surface`).
  *
  * Usage:
  * - Markup: `data-spsg-track="upsell-order-bump" data-spsg-object="campaign:12"`
@@ -195,6 +198,64 @@
         }
     }
 
+    /**
+     * Save the campaign link visit (slug and when, plus the last surface
+     * clicked) in the cookie. A slug left empty keeps the one saved.
+     *
+     * @param {string} slug    Campaign slug, or '' to keep the saved one.
+     * @param {string} surface Surface id, or '' to keep the saved one.
+     */
+    function savePromo( slug, surface ) {
+        if ( ! settings.promoCookie ) {
+            return;
+        }
+
+        var current = readPromo();
+        var value = [
+            slug || current.slug,
+            slug ? Math.floor( Date.now() / 1000 ) : current.at,
+            surface || ( slug ? '' : current.surface ),
+        ].join( ':' );
+
+        document.cookie =
+            encodeURIComponent( settings.promoCookie ) +
+            '=' +
+            value +
+            ';path=/;SameSite=Lax;max-age=' +
+            ( parseInt( settings.promoDays, 10 ) || 7 ) * 86400;
+    }
+
+    /**
+     * The saved campaign link visit.
+     *
+     * @return {{slug: string, at: string, surface: string}} Visit.
+     */
+    function readPromo() {
+        var match = document.cookie.match( new RegExp( '(?:^|; )' + settings.promoCookie + '=([^;]*)' ) );
+        var parts = ( match ? match[ 1 ] : '' ).split( ':' );
+
+        return { slug: parts[ 0 ] || '', at: parts[ 1 ] || '', surface: parts[ 2 ] || '' };
+    }
+
+    /**
+     * Remember a campaign link landing and the last surface clicked.
+     */
+    function watchCampaignLink() {
+        var slug = new URLSearchParams( window.location.search ).get( 'sg' );
+
+        if ( slug ) {
+            savePromo( slug.replace( /[^a-z0-9-]/gi, '' ).toLowerCase(), '' );
+        }
+
+        document.addEventListener( 'click', function ( event ) {
+            var surface = event.target.closest && event.target.closest( '[data-spsg-surface]' );
+
+            if ( surface ) {
+                savePromo( '', surface.getAttribute( 'data-spsg-surface' ) );
+            }
+        } );
+    }
+
     window.addEventListener( 'pagehide', flush );
     document.addEventListener( 'visibilitychange', function () {
         if ( 'hidden' === document.visibilityState ) {
@@ -209,6 +270,9 @@
         watchMarkedElements();
         watchAddToCart();
     }
+
+    // The click listener works before the page is ready.
+    watchCampaignLink();
 
     window.spsgStorefront = window.spsgStorefront || {};
     window.spsgStorefront.track = track;

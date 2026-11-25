@@ -2,6 +2,7 @@
 
 namespace StorePulse\StoreGrowth\REST;
 
+use WC_Product_Variable;
 use WC_Product_Variation;
 use WC_REST_Products_Controller;
 
@@ -42,6 +43,16 @@ class ProductController extends WC_REST_Products_Controller {
 		if ( $request->get_param( 'include_variations' ) && $product instanceof WC_Product_Variation ) {
 			$data                  = $response->get_data();
 			$data['any_attribute'] = in_array( '', array_map( 'strval', $product->get_variation_attributes() ), true );
+			$response->set_data( $data );
+		}
+
+		// A variable product's `price` is its cheapest variation's: the
+		// highest prices too, so a preview can show the range
+		// (`max_price`, `max_regular_price`; @since 3.1.0).
+		if ( $product instanceof WC_Product_Variable ) {
+			$data                      = $response->get_data();
+			$data['max_price']         = (string) $product->get_variation_price( 'max' );
+			$data['max_regular_price'] = (string) $product->get_variation_regular_price( 'max' );
 			$response->set_data( $data );
 		}
 

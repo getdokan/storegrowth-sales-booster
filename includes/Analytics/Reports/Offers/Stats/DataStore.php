@@ -94,7 +94,9 @@ class DataStore extends ProductsStatsDataStore {
 			return $this->not_installed_error();
 		}
 
-		return parent::get_data( $this->scoped_args( $query_args ) );
+		// The StoreGrowth defaults go in here too: before WooCommerce 9 its
+		// `get_data()` has its own defaults and never asks for ours (pro#345).
+		return parent::get_data( wp_parse_args( $this->scoped_args( $query_args ), $this->offer_query_vars() ) );
 	}
 
 	/**
@@ -119,7 +121,10 @@ class DataStore extends ProductsStatsDataStore {
 	 * @return array
 	 */
 	public function get_default_query_vars() {
-		return array_merge( parent::get_default_query_vars(), $this->offer_query_vars() );
+		// WooCommerce has `get_default_query_vars()` only from version 9.
+		$defaults = method_exists( ProductsStatsDataStore::class, 'get_default_query_vars' ) ? parent::get_default_query_vars() : [];
+
+		return array_merge( $defaults, $this->offer_query_vars() );
 	}
 
 	/**

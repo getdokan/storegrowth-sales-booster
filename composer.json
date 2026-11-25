@@ -22,6 +22,7 @@
       "StorePulse\\StoreGrowth\\Modules\\ProgressiveDiscountBanner\\": "modules/progressive-discount-banner/includes",
       "StorePulse\\StoreGrowth\\Modules\\QuickView\\": "modules/quick-view/includes",
       "StorePulse\\StoreGrowth\\Modules\\SalesPop\\": "modules/sales-pop/includes",
+      "StorePulse\\StoreGrowth\\Modules\\SmartCoupons\\": "modules/smart-coupons/includes",
       "StorePulse\\StoreGrowth\\Modules\\StockBar\\": "modules/stock-bar/includes",
       "StorePulse\\StoreGrowth\\Modules\\UpsellOrderBump\\": "modules/upsell-order-bump/includes"
     },

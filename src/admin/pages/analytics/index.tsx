@@ -45,8 +45,8 @@ const SAMPLE_DAYS = [ 3, 5, 4, 7, 6, 9, 8, 11, 9, 12, 10, 14, 13, 15 ].map(
     }
 );
 
-/** Made-up rows of the campaigns table. */
-const SAMPLE_CAMPAIGNS = [
+/** Made-up rows of the modules table (Free names no campaigns, ADR-017). */
+const SAMPLE_MODULES = [
     { module: 'upsell-order-bump', revenue: 2140, orders: 61 },
     { module: 'bogo', revenue: 1530, orders: 38 },
     { module: 'countdown-timer', revenue: 1150, orders: 29 },
@@ -106,7 +106,7 @@ function SamplePreview() {
                 />
             </Card>
             <Card
-                title={ __( 'Campaigns', 'storegrowth-sales-booster' ) }
+                title={ __( 'Revenue by module', 'storegrowth-sales-booster' ) }
                 className="w-full"
             >
                 <ReportTable
@@ -121,13 +121,13 @@ function SamplePreview() {
                             end: true,
                         },
                     ] }
-                    rows={ SAMPLE_CAMPAIGNS.map( ( campaign ) => {
+                    rows={ SAMPLE_MODULES.map( ( row ) => {
                         return {
-                            key: campaign.module,
+                            key: row.module,
                             cells: [
-                                moduleName( campaign.module ),
-                                formatMoney( campaign.revenue, SAMPLE_PRICE ),
-                                String( campaign.orders ),
+                                moduleName( row.module ),
+                                formatMoney( row.revenue, SAMPLE_PRICE ),
+                                String( row.orders ),
                             ],
                         };
                     } ) }
@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
 
     return (
         <div className="spsg-page flex w-full flex-col items-center px-4 pb-12 pt-12 sm:px-8">
-            <div className="flex w-full max-w-[1280px] flex-col items-start gap-6">
+            <div className="flex w-full flex-col items-start gap-6">
                 <div className="flex flex-col items-start gap-1">
                     <h1 className="sg-display flex items-center gap-2 text-[24px] font-bold leading-[1.3] text-sg-text">
                         { __( 'Analytics', 'storegrowth-sales-booster' ) }
@@ -169,7 +169,7 @@ export default function AnalyticsPage() {
                             </h2>
                             <p className="text-[14px] leading-5 text-sg-muted">
                                 { __(
-                                    'Revenue, discounts and orders from every offer, by day, module and campaign. Compare periods, filter by vendor and export to CSV with StoreGrowth Pro.',
+                                    'Revenue, discounts and orders from every offer, by day and module. Compare periods, filter by vendor and export to CSV with StoreGrowth Pro.',
                                     'storegrowth-sales-booster'
                                 ) }
                             </p>

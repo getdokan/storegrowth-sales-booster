@@ -26,6 +26,10 @@ export {
     useNavigate,
     useParams,
     useSearchParams,
+    // Lets StoreGrowth Pro draw an offer's editor route inside the campaign
+    // page (a drawer) with a route context of its own.
+    // eslint-disable-next-line camelcase -- react-router's own export name.
+    UNSAFE_RouteContext,
 } from 'react-router-dom';
 
 export type {

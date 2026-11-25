@@ -35,7 +35,7 @@ export const FIELD_LABEL = 'text-sm font-medium text-sg-text';
  * @since 3.0.0
  */
 export const FIELD_CONTROL =
-    'h-10 w-full rounded-[5px] border-sg-stroke bg-white px-4 text-sm leading-[1.4] text-sg-text shadow-none placeholder:text-sg-field focus-visible:border-sg-brand focus-visible:ring-[3px] focus-visible:ring-sg-brand/25 disabled:cursor-not-allowed disabled:bg-sg-chip disabled:opacity-100';
+    'h-10 w-full rounded-[5px] border-sg-stroke bg-white px-4 text-sm leading-[1.4] text-sg-text shadow-none placeholder:text-sg-help focus-visible:border-sg-brand focus-visible:ring-[3px] focus-visible:ring-sg-brand/25 disabled:cursor-not-allowed disabled:bg-sg-chip disabled:opacity-100';
 
 /**
  * "Pro" pill beside a locked field's label (same look as the dashboard's

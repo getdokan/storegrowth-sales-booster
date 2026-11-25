@@ -70,7 +70,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string The module name.
 	 */
 	public function get_name(): string {
-		return __( 'Free Shipping Rules', 'storegrowth-sales-booster' );
+		return __( 'Cart Rewards', 'storegrowth-sales-booster' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class ProgressiveDiscountBannerModule extends BaseModule {
 	 * @return string The module description.
 	 */
 	public function get_description(): string {
-		return __( 'Entice larger orders. Prominently display progress toward free shipping, encouraging customers to add more.', 'storegrowth-sales-booster' );
+		return __( 'Milestones shoppers unlock as the cart grows, with a progress bar: free shipping, coupons and free gifts.', 'storegrowth-sales-booster' );
 	}
 
 	/**
